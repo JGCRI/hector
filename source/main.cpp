@@ -76,6 +76,7 @@ int main (int argc, char * const argv[]) {
         for(double t=core.getStartDate()+5.0; t<=core.getEndDate(); t+=5.0) {
             core.run(t);
             H_LOG(glog, Logger::NOTICE) << "Run through t= " << t << "\n";
+            cerr << "**************** t= " << t << endl;
         }
 
         H_LOG(glog, Logger::NOTICE) << "Shutting down all components.\n";

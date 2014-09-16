@@ -410,9 +410,8 @@ void Core::run(double runtodate) throw ( h_exception ) {
 
     // ------------------------------------
     // 6. Run all model dates.
-    H_LOG( glog, Logger::NOTICE) << "Running..." << endl;
-    double currDate = lastDate+1.0;
-    for( ; currDate <= runtodate; currDate += 1.0 ) {
+    H_LOG( glog, Logger::NOTICE) << "Running..." << endl; 
+    for(double currDate = lastDate+1.0; currDate <= runtodate; currDate += 1.0 ) {
         for( NameComponentIterator it = modelComponents.begin(); it != modelComponents.end(); ++it ) {
             ( *it ).second->run( currDate );
         }
@@ -425,7 +424,7 @@ void Core::run(double runtodate) throw ( h_exception ) {
         }
     }
     // Record the last finished date.  We will resume here the next time run is called
-    lastDate = currDate;
+    lastDate = runtodate;
 }
 
 /*! \brief Shut down all model components 
