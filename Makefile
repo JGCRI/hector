@@ -1,0 +1,4 @@
+
+%: 
+	cd source && $(MAKE) $@
+
