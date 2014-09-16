@@ -45,12 +45,12 @@ OBJS	= $(SRCS:.cpp=.o)
 DEPS	= $(SRCS:.cpp=.d)
 
 ## default target
-hector: subdirs topdir
-	$(CXX) $(LDFLAGS) -o hector main.o build/*.o -lgsl -lgslcblas -lm
+hector: subdirs $(OBJS)
+	$(CXX) $(LDFLAGS) -o hector $(OBJS) build/*.o -lgsl -lgslcblas -lm
 
 
 ## Targets that do not literally name files
-.PHONY: subdirs $(DIRS) topdir clean test gtest
+.PHONY: subdirs $(DIRS) clean test gtest
 
 test: testing
 	cd testing && ./hector-unit-tests
@@ -78,8 +78,6 @@ build:
 
 ## top level directory objects
 -include $(DEPS)
-
-topdir: $(OBJS)
 
 gtest:
 	if [ ! -f $(GTROOT)/config.status ] ; then cd $(GTROOT) && ./configure; fi

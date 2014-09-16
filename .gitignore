@@ -4,6 +4,9 @@
 *.o
 *.obj
 
+# make dependency files
+*.d
+
 # Compiled Dynamic libraries
 *.so
 *.dylib
@@ -19,6 +22,7 @@
 *.exe
 *.out
 *.app
+source/hector
 
 # Hector outputs
 logs/*.*

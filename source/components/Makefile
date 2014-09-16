@@ -7,7 +7,7 @@ DEPS	= $(SRCS:.cpp=.d)
 
 -include $(DEPS)
 
-all: $(OBJS)
+all: $(OBJS) 
 
 clean:
 	-rm *.o
