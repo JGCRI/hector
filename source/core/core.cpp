@@ -40,8 +40,9 @@ using namespace std;
  *  \sa init()
  */
 Core::Core()
-:startDate( -1 ),
-endDate( -1 ),
+:startDate( -1.0 ),
+endDate( -1.0 ),
+lastDate( -1.0), 
 run_name( "" ),
 do_spinup( true ),
 max_spinup( 2000 ),
@@ -194,7 +195,7 @@ void Core::setData( const string& componentName, const string& varName,
                 run_name = data.value_str;
             } else if( varName == D_START_DATE ) {
                 H_ASSERT( data.date == undefinedIndex(), "date not allowed" );
-                startDate = lexical_cast<double>( data.value_str );
+                lastDate = startDate = lexical_cast<double>( data.value_str );
             } else if( varName == D_END_DATE ) {
                 H_ASSERT( data.date == undefinedIndex(), "date not allowed" );
                 endDate = lexical_cast<double>( data.value_str );
@@ -252,19 +253,24 @@ void Core::addVisitor( AVisitor* visitor ) {
     modelVisitors.push_back( visitor );
 }
 
+
 //------------------------------------------------------------------------------
-/*! \brief Run the components for all model dates.
+/*! \brief Prepare model components to run
+ *  \details This subroutine does the last phase of the setup.  It comprises all
+ *           of the things that need to be done after parsing is complete but before
+ *           we begin the runs proper.  As such, this subroutine should be called only
+ *           once per run.  The steps performed are:
  *
- *  First all model components will be prepared to run.  The run from startDate
- *  to endDate at the defined time-steps.  Model components will be run in an
- *  internally determined order and are responsible for determining how to take
- *  a time-step.  After all model components have been solved at a given time-step
- *  all added visitors will be given an opportunity to visit the model components.
- *  Once all model dates have been run the model components will be shut down.
- *
+ *           1) Remove disabled components
+ *           2) Construct dependency graph
+ *           3) Topological sort components over dependency graph
+ *           4) Call each component's prepareToRun() subroutine
+ *           5) Run spin-up, if required
+ *  
  *  \exception h_exception An error which may occur at any stage of the process.
  */
-void Core::run() throw ( h_exception ) {
+void Core::prepareToRun(void) throw (h_exception)
+{
     
     Logger& glog = Logger::getGlobalLogger();
     
@@ -353,12 +359,60 @@ void Core::run() throw ( h_exception ) {
         in_spinup = false;
     } else {
         H_LOG( glog, Logger::WARNING) << "No model spinup was requested" << endl;
-    } // if
-    
+    } // if 
+}
+
+//------------------------------------------------------------------------------
+/*! \brief Run the components for one-year time steps through runtodate
+ *
+ *  \details This subroutine runs the model components.  The argument
+ *           runtodate determines how far to advance the model.  It's
+ *           given as a double, but since the time is advanced in
+ *           one-year time steps, it needs to be an integer value.
+ *           For backward compatibility the runtodate argument can be
+ *           omitted, in which case we run to the end date configured
+ *           for the core.  The end date still serves as a guarantee
+ *           to the components about the latest date they will be
+ *           required to run to.  Components are not required to be
+ *           valid after the end date; therefore, trying to run past
+ *           the configured end date produces a warning.  However, in
+ *           these cases the model will gamely try to press on in the
+ *           face of adversity.  Hector is nothing if not plucky.
+ *
+ *           At the end of each time step visitors will visit all the
+ *           model components, and then the next time step will run.
+ *           Once all the time steps up to the run-to date have run,
+ *           this subroutine will exit.  It can be called repeatedly
+ *           with progressively larger run-to dates to pick up each
+ *           time where it left off before.
+ *
+ *  \exception h_exception An error which may occur at any stage of the process.
+ */
+
+void Core::run(double runtodate) throw ( h_exception ) {
+    Logger& glog = Logger::getGlobalLogger();
+    if(runtodate < 0.0) {
+        // run to the configured default enddate.  This is mainly for
+        // backward compatibility.  The input run-to date will always
+        // override the enddate stored in the core object.
+        runtodate = endDate;
+    }
+    else if(runtodate < lastDate+1) {
+        H_LOG(glog, Logger::WARNING)
+            << "Requested run-to date is less than 1+lastDate.  Models not run." << endl;
+        return;
+    }
+    else if(runtodate > endDate) {
+        H_LOG(glog, Logger::WARNING)
+            << "Requested run-to date is after the configured end date.  "
+            << "Components are not guaranteed to be valid after endDate." << endl;
+    }
+
     // ------------------------------------
     // 6. Run all model dates.
     H_LOG( glog, Logger::NOTICE) << "Running..." << endl;
-    for( double currDate = startDate + 1; currDate <= endDate; currDate += 1 ) {
+    double currDate = lastDate+1.0;
+    for( ; currDate <= runtodate; currDate += 1.0 ) {
         for( NameComponentIterator it = modelComponents.begin(); it != modelComponents.end(); ++it ) {
             ( *it ).second->run( currDate );
         }
@@ -370,7 +424,16 @@ void Core::run() throw ( h_exception ) {
             }
         }
     }
-    
+    // Record the last finished date.  We will resume here the next time run is called
+    lastDate = currDate;
+}
+
+/*! \brief Shut down all model components 
+ *  \details After this function is called no components are valid,
+ *           and you must not call run() again.
+ */
+void Core::shutDown()
+{
     // ------------------------------------
     // 7. Tell model components we are finished.
     for( NameComponentIterator it = modelComponents.begin(); it != modelComponents.end(); ++it ) {

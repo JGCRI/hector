@@ -68,9 +68,18 @@ int main (int argc, char * const argv[]) {
         ostream outputStream( &csvoutputStreamFile );
         CSVOutputStreamVisitor csvOutputStreamVisitor( outputStream );
         core.addVisitor( &csvOutputStreamVisitor );
+
+        H_LOG(glog, Logger::NOTICE) << "Calling prepareToRun()\n";
+        core.prepareToRun();
         
         H_LOG( glog, Logger::NOTICE ) << "Running the core." << endl;
-        core.run();
+        for(double t=core.getStartDate()+5.0; t<=core.getEndDate(); t+=5.0) {
+            core.run(t);
+            H_LOG(glog, Logger::NOTICE) << "Run through t= " << t << "\n";
+        }
+
+        H_LOG(glog, Logger::NOTICE) << "Shutting down all components.\n";
+        core.shutDown();
         
         H_LOG( glog, Logger::NOTICE ) << "Hector wrapper end" << endl;
         glog.close();

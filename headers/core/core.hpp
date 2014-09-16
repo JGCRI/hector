@@ -40,11 +40,11 @@ public:
     
     void addVisitor( AVisitor* visitor );
     
-    //void prepareToRun() throw ( h_exception );
+    void prepareToRun() throw ( h_exception );
     
-    void run() throw ( h_exception );
+    void run(double runtodate=-1.0) throw ( h_exception );
     
-    //void shutDown();
+    void shutDown();
     
     IModelComponent* getComponentByCapability( const std::string& capabilityName
                                               ) const throw ( h_exception );
@@ -93,6 +93,10 @@ private:
     //------------------------------------------------------------------------------
     //! The end date for the models.
     double endDate;
+
+    //------------------------------------------------------------------------------
+    //! The last date we've run up to
+    double lastDate; 
     
     //------------------------------------------------------------------------------
     //! A flag to indicate that the core has been initialized.
