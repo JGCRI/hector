@@ -1,0 +1,95 @@
+CXX	= g++
+CXXFLAGS = -g  $(INCLUDES) $(OPTFLAGS) $(CXXEXTRA) $(CXXPROF) -MMD
+INCLUDES = -I$(BOOSTROOT) -I$(HDRDIR) -I$(GSLINC)
+OPTFLAGS = -O3
+LDFLAGS	 = $(CXXPROF) -L$(GSLLIB)
+
+export CXXFLAGS OPTFLAGS
+
+## project root
+HROOT	= $(PWD)/..
+HDRDIR	= $(HROOT)/headers
+export HROOT
+
+## Boost root
+ifeq ($(strip $(BOOSTVERSION)),)
+BOOSTVERSION	= 1_45_0
+endif
+ifeq ($(strip $(BOOSTROOT)),)
+BOOSTROOT	= $(HOME)/src/boost_$(BOOSTVERSION)
+endif
+
+## Gtest root
+GTVERS	= 1.5.0
+GTROOT	= $(HROOT)/libs/gtest-$(GTVERS)
+GTINC	= $(GTROOT)/include
+GTLIB	= $(GTROOT)/lib/.libs
+
+## Location of GSL (default is /usr/local -- can be overridden by environment)
+ifeq ($(strip $(GSLROOT)),)
+GSLROOT	= /usr/local
+endif
+GSLINC	= $(GSLROOT)/include/gsl
+GSLLIB	= $(GSLROOT)/lib
+
+
+export GTLIB GTINC GSLINC GSLLIB
+
+
+## component subdirectories
+DIRS	= core input input/inih models components visitors data
+
+## sources in the top level directory
+SRCS	= $(wildcard *.cpp)
+OBJS	= $(SRCS:.cpp=.o)
+DEPS	= $(SRCS:.cpp=.d)
+
+## default target
+hector: subdirs topdir
+	$(CXX) $(LDFLAGS) -o hector main.o build/*.o -lgsl -lgslcblas -lm
+
+
+## Targets that do not literally name files
+.PHONY: subdirs $(DIRS) topdir clean test gtest
+
+test: testing
+	cd testing && ./hector-unit-tests
+
+testing: INCLUDES += -I$(GTINC)
+testing: gtest components topdir
+	$(MAKE) -C testing hector-unit-tests
+
+subdirs: build $(DIRS)
+
+## When building a directory, include its corresponding subdirectory
+## in the headers directory.  Note that the headers base directory is
+## included by default, so, e.g., a source file in source/core could
+## include a header from input by saying #include<input/file.hh>
+$(DIRS): INCLUDES += -I$(HDRDIR)/$@
+## input directory needs an additional include
+input: INCLUDES += -I$(HDRDIR)/input/inih
+
+$(DIRS):
+	$(MAKE) -C $@ all
+	ln -sf $(PWD)/$@/*.o build/
+
+build:
+	mkdir -p build
+
+## top level directory objects
+-include $(DEPS)
+
+topdir: $(OBJS)
+
+gtest:
+	if [ ! -f $(GTROOT)/config.status ] ; then cd $(GTROOT) && ./configure; fi
+	$(MAKE) -C $(GTROOT)
+
+clean:
+	for dir in $(DIRS); do \
+	    $(MAKE) -C $$dir clean; \
+	done
+	$(MAKE) -C testing clean
+	-rm hector *.o
+	-rm -rf build
+

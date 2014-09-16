@@ -19,3 +19,10 @@
 *.exe
 *.out
 *.app
+
+# Hector outputs
+logs/*.*
+output/*.*
+
+# Project files
+project_files/*.*
