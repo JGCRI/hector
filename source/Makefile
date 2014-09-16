@@ -2,7 +2,7 @@ CXX	= g++
 CXXFLAGS = -g  $(INCLUDES) $(OPTFLAGS) $(CXXEXTRA) $(CXXPROF) -MMD
 INCLUDES = -I$(BOOSTROOT) -I$(HDRDIR) -I$(GSLINC)
 OPTFLAGS = -O3
-LDFLAGS	 = $(CXXPROF) -L$(GSLLIB)
+LDFLAGS	 = $(CXXPROF) -L$(GSLLIB) -L.
 
 export CXXFLAGS OPTFLAGS
 
@@ -45,8 +45,8 @@ OBJS	= $(SRCS:.cpp=.o)
 DEPS	= $(SRCS:.cpp=.d)
 
 ## default target
-hector: subdirs $(OBJS)
-	$(CXX) $(LDFLAGS) -o hector $(OBJS) build/*.o -lgsl -lgslcblas -lm
+hector: libhector.a $(OBJS)
+	$(CXX) $(LDFLAGS) -o hector $(OBJS) -lhector -lgsl -lgslcblas -lm
 
 
 ## Targets that do not literally name files
@@ -58,6 +58,9 @@ test: testing
 testing: INCLUDES += -I$(GTINC)
 testing: gtest components topdir
 	$(MAKE) -C testing hector-unit-tests
+
+libhector.a: subdirs
+	ar ru libhector.a build/*.o
 
 subdirs: build $(DIRS)
 
