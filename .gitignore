@@ -7,6 +7,9 @@
 # make dependency files
 *.d
 
+# emacs backup files
+*~
+
 # Compiled Dynamic libraries
 *.so
 *.dylib
@@ -30,3 +33,4 @@ output/*.*
 
 # Project files
 project_files/*.*
+*.kdev4
