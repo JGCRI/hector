@@ -14,7 +14,8 @@
 #include "models/simpleNbox.hpp"
 #include "visitors/avisitor.hpp"
 
-
+namespace Hector {
+  
 //------------------------------------------------------------------------------
 /*! \brief constructor
  */
@@ -817,4 +818,6 @@ void SimpleNbox::slowparameval( double t, const double c[] )
                 << ", tempferts=" << tempferts[ itd->first ] << std::endl;
         }
     } // for itd
+}
+
 }

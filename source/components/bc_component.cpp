@@ -11,6 +11,8 @@
 #include "h_util.hpp"
 #include "visitors/avisitor.hpp"
 
+namespace Hector {
+  
 using namespace std;
 
 //------------------------------------------------------------------------------
@@ -133,4 +135,6 @@ void BlackCarbonComponent::shutDown() {
 // documentation is inherited
 void BlackCarbonComponent::accept( AVisitor* visitor ) {
     visitor->visit( this );
+}
+
 }

@@ -23,6 +23,8 @@
 #include "h_exception.hpp"
 #include "models/ocean_csys.hpp"
 
+namespace Hector {
+  
 using namespace std;
 
 //------------------------------------------------------------------------------
@@ -265,5 +267,4 @@ unitval oceancsys::convertToDIC( const unitval carbon ) {
 	return unitval( dic * 1e6, U_UMOL_KG );
 }
 
-
-
+}

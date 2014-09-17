@@ -14,6 +14,8 @@
 
 #define DELIMITER ","
 
+namespace Hector {
+  
 /*! \brief A visitor which will report all results at each model period.
  */
 class CSVOutputStreamVisitor : public AVisitor {
@@ -59,5 +61,7 @@ private:
     //! pointers to other components and stuff
     Core*             core;
 };
+
+}
 
 #endif // CSV_OUTPUTSTREAM_VISITOR_H

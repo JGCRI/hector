@@ -12,6 +12,8 @@
 #include "h_util.hpp"
 #include "visitors/avisitor.hpp"
 
+namespace Hector {
+  
 using namespace std;
 
 //------------------------------------------------------------------------------
@@ -141,4 +143,6 @@ void CH4Component::shutDown() {
 // documentation is inherited
 void CH4Component::accept( AVisitor* visitor ) {
     visitor->visit( this );
+}
+
 }

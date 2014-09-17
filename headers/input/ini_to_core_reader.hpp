@@ -10,6 +10,8 @@
 
 #include "h_exception.hpp"
 
+namespace Hector {
+
 class Core;
 
 /*! \brief An adaptor class to send data read from an INI file directly to the
@@ -47,5 +49,7 @@ class INIToCoreReader {
                                      const StringIter endBracket,
                                      const StringIter strEnd );
 };
+
+}
 
 #endif // INI_TO_CORE_READER_H

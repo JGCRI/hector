@@ -8,6 +8,7 @@
  *
  */
 
+namespace Hector {
 
 enum interpolation_methods { DEFAULT, LINEAR, SPLINE_FORSYTHE };
 
@@ -104,6 +105,7 @@ inline void h_interpolator::locate(double x, int &iprev, int &inext) const
     ilast = iprev;
     
 }
-                
+
+}
 
 #endif

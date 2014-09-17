@@ -13,6 +13,7 @@
 #include "data/tseries.hpp"
 #include "data/unitval.hpp"
 
+namespace Hector {
 //------------------------------------------------------------------------------
 /*! \brief Ozone model component.
  *
@@ -67,5 +68,7 @@ private:
 	Core *core;
     double oldDate;
 };
+
+}
 
 #endif // OZONE_COMPONENT_H

@@ -16,7 +16,8 @@
 // Need to forward declare the components which depend on each other
 #include "components/temperature_component.hpp"
 
-
+namespace Hector {
+  
 //------------------------------------------------------------------------------
 /*! \brief The sea level rise component.
  *
@@ -75,5 +76,7 @@ private:
     //! logger
     Logger logger;
 };
+
+}
 
 #endif // SLR_COMPONENT_H

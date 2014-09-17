@@ -13,6 +13,8 @@
 #include "data/unitval.hpp"
 #include "imodel_component.hpp"
 
+namespace Hector {
+  
 //------------------------------------------------------------------------------
 /*! \brief Model component for a halocarbon.
  *
@@ -82,5 +84,7 @@ private:
 	Core *core;
     double oldDate;
 };
+
+}
 
 #endif // HALOCARBON_COMPONENT_HPP

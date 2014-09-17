@@ -23,6 +23,8 @@
 #define SNBOX_PARSECHAR "."             //!< input separator between <biome> and <pool>
 #define SNBOX_DEFAULT_BIOME "global"    //!< value if no biome supplied
 
+namespace Hector {
+
 /*! \brief The simple global carbon model, not including the ocean
  *
  *  SimpleNbox tracks atmosphere (1 pool), land (3 pools), ocean (1 pool from its p.o.v.), 
@@ -139,4 +141,7 @@ private:
     CarbonCycleModel *omodel;           //!< pointer to the ocean model in use
 
 };
+
+}
+
 #endif

@@ -11,6 +11,8 @@
 #include "core/logger.hpp"
 #include "h_exception.hpp"
 
+namespace Hector {
+  
 /*! \brief A simple value-and-units capability.
  *
  *  What was wrong with using the Boost Units (BU) package?
@@ -281,6 +283,8 @@ inline
 std::ostream& operator<<( std::ostream &out, unitval &x ) {
     out << x.value( x.units() ) << " " << x.unitsName();
     return out;
+}
+
 }
 
 #endif

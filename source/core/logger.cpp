@@ -10,6 +10,8 @@
 
 #include "core/logger.hpp"
 
+namespace Hector {
+
 using namespace std;
 
 //------------------------------------------------------------------------------
@@ -233,4 +235,6 @@ const char* Logger::getDateTimeStamp() {
     }
     
     return ret;
+}
+
 }

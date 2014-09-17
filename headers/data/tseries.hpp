@@ -16,6 +16,8 @@
 #include "data/unitval.hpp"
 #include "h_exception.hpp"
 
+namespace Hector {
+  
 /*! \brief Time series data type.
  *
  *  Currently implemented as an STL map.
@@ -287,6 +289,8 @@ double tseries<T_data>::last() const {
 template <class T_data>
 int tseries<T_data>::size() const {
     return mapdata.size();
+}
+
 }
 
 #endif

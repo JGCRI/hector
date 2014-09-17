@@ -12,6 +12,8 @@
 #include "h_exception.hpp"
 
 
+namespace Hector {
+  
 //-----------------------------------------------------------------------
 /*! \brief Constructor for spline class.
  *
@@ -148,4 +150,6 @@ void h_interpolator::set_method( interpolation_methods m ) {
     //TODO: log method set
     if( ndata )
         refit_data();
+}
+
 }

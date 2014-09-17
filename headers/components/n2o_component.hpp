@@ -13,6 +13,8 @@
 #include "data/tseries.hpp"
 #include "data/unitval.hpp"
 
+namespace Hector {
+  
 //------------------------------------------------------------------------------
 /*! \brief Nitrous oxide model component.
  *
@@ -60,5 +62,7 @@ private:
 	Core *core;
     double oldDate;
 };
+
+}
 
 #endif // N2O_COMPONENT_H

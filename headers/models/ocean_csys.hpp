@@ -12,6 +12,8 @@
 
 #include "data/unitval.hpp"
 
+namespace Hector {
+  
 class oceancsys
 {
     /*! /brief  Ocean Carbon Chemistry
@@ -72,4 +74,8 @@ private:
     Logger* logger;
 
 };
+
+}
+
 #endif
+  

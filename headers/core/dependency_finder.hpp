@@ -19,6 +19,8 @@
 
 #include "h_exception.hpp"
 
+namespace Hector {
+
 /*! 
 * \brief This class calculates an ordering of named objects through a scheduling
 *        algorithm based on supplied dependencies.
@@ -69,5 +71,7 @@ private:
     //! The correctly ordered list of sectors.
     std::vector<std::string> mOrdering;
 };
+
+}
 
 #endif // _DEPENDENCY_FINDER_H_
