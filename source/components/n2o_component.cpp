@@ -11,6 +11,8 @@
 #include "visitors/avisitor.hpp"
 #include "h_util.hpp"
 
+namespace Hector {
+  
 using namespace std;
 
 //------------------------------------------------------------------------------
@@ -141,3 +143,4 @@ void N2OComponent::accept( AVisitor* visitor ) {
     visitor->visit( this );
 }
 
+}

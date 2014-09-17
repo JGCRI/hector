@@ -12,6 +12,8 @@
 #include "core/logger.hpp"
 #include "data/unitval.hpp"
 
+namespace Hector {
+  
 //------------------------------------------------------------------------------
 /*! \brief A one-line ocean model component.
  *
@@ -59,5 +61,7 @@ private:
     //! logger
     Logger logger;
 };
+
+}
 
 #endif // ONELINEOCEAN_COMPONENT_H

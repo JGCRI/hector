@@ -26,6 +26,7 @@
 // need to stash C values and re-try reaching next timestep
 #define CARBON_CYCLE_RETRY 1234
 
+namespace Hector {
 
 /*! \brief Carbon cycle model class
  *
@@ -110,5 +111,7 @@ protected:
     //! Pointers to the core
     Core *core;
 };
+
+}
 
 #endif

@@ -11,6 +11,8 @@
 #include "h_util.hpp"
 #include "visitors/avisitor.hpp"
 
+namespace Hector {
+  
 using namespace std;
 
 //------------------------------------------------------------------------------
@@ -140,4 +142,6 @@ void OneLineOceanComponent::shutDown() {
 // documentation is inherited
 void OneLineOceanComponent::accept( AVisitor* visitor ) {
     visitor->visit( this );
+}
+
 }

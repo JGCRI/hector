@@ -16,7 +16,8 @@
 #define LOG_DIRECTORY "logs/"
 #define LOG_EXTENSION ".log"
 
-
+namespace Hector {
+  
 //------------------------------------------------------------------------------
 /*! \brief Logger class
  *
@@ -93,6 +94,8 @@ public:
     
     static Logger& getGlobalLogger();
 };
+
+}
 
 /*!
  * \brief Some systems define the function name macro differently, so double

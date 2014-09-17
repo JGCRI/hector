@@ -15,6 +15,8 @@
 #include "data/message_data.hpp"
 #include "h_exception.hpp"
 
+namespace Hector {
+  
 class Core;
 class DependencyFinder;
 
@@ -148,6 +150,8 @@ private:
 
 // Inline methods
 IModelComponent::~IModelComponent() {
+}
+
 }
 
 #endif // IMODEL_COMPONENT_H

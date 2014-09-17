@@ -17,6 +17,8 @@
 #include "h_exception.hpp"
 #include "ivisitable.hpp"
 
+namespace Hector {
+  
 class unitval;
 class message_data;
 class IModelComponent;
@@ -170,5 +172,7 @@ private:
     // Some helpful typedefs to clean up syntax
     typedef std::vector<AVisitor*>::iterator VisitorIterator;
 };
+
+}
 
 #endif // CORE_H

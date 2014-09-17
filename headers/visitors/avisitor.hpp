@@ -8,6 +8,8 @@
  *
  */
 
+namespace Hector {
+  
 // Forward declare all visitable subclasses.
 class Core;
 class DummyModelComponent;
@@ -65,6 +67,8 @@ public:
 
 // Inline methods
 AVisitor::~AVisitor() {
+}
+
 }
 
 #endif // AVISITOR_H

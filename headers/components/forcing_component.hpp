@@ -20,6 +20,8 @@
 #include "data/unitval.hpp"
 #include "models/carbon-cycle-model.hpp"
 
+namespace Hector {
+  
 // Need to forward declare the components which depend on each other
 class SimpleNbox;
 class HalocarbonComponent;
@@ -78,5 +80,7 @@ private:
     double oldDate;
     Logger logger;          //! Logger
 };
+
+}
 
 #endif // FORCING_COMPONENT_H

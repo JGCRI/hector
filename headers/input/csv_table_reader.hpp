@@ -12,6 +12,8 @@
 
 #include "h_exception.hpp"
 
+namespace Hector {
+
 class Core;
 
 /*! \brief A class responsible for reading time series data from a CSV file and
@@ -52,5 +54,7 @@ private:
     std::string csv_getline();
 
 };
+
+}
 
 #endif // CSV_TABLE_READER_H

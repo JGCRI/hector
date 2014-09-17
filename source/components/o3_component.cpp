@@ -13,6 +13,8 @@
 #include "h_util.hpp"
 #include "visitors/avisitor.hpp"
 
+namespace Hector {
+  
 using namespace std;
 
 //------------------------------------------------------------------------------
@@ -160,4 +162,6 @@ void OzoneComponent::shutDown() {
 // documentation is inherited
 void OzoneComponent::accept( AVisitor* visitor ) {
     visitor->visit( this );
+}
+
 }

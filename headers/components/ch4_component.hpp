@@ -14,6 +14,8 @@
 #include "data/tseries.hpp"
 #include "data/unitval.hpp"
 
+namespace Hector {
+  
 //------------------------------------------------------------------------------
 /*! \brief Methane model component.
  *
@@ -62,6 +64,8 @@ private:
 	Core *core;
     double oldDate;
 };
+
+}
 
 #endif // CH4_COMPONENT_H
 

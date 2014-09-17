@@ -10,6 +10,8 @@
 
 #include "visitors/csv_output_visitor.hpp"
 
+namespace Hector {
+  
 using namespace std;
 
 //------------------------------------------------------------------------------
@@ -48,4 +50,6 @@ void CSVOutputVisitor::visit( Core* c ) {
     csvFile << DELIMITER << c->sendMessage( M_GETDATA, D_ATMOSPHERIC_CO2 ).value( U_PPMV_CO2 );
     csvFile << DELIMITER << c->sendMessage( M_GETDATA, D_RF_TOTAL ).value( U_W_M2 );
     csvFile << std::endl;
+}
+
 }

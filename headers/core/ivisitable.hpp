@@ -8,6 +8,8 @@
  *
  */
 
+namespace Hector {
+  
 class AVisitor;
 
 //------------------------------------------------------------------------------
@@ -29,6 +31,8 @@ public:
 
 // Inline methods
 IVisitable::~IVisitable() {
+}
+
 }
 
 #endif // IVISITABLE_H

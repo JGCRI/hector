@@ -16,6 +16,8 @@
 #include "models/simpleNbox.hpp"
 #include "visitors/ini_restart_visitor.hpp"
 
+namespace Hector {
+  
 using namespace std;
 
 //------------------------------------------------------------------------------
@@ -75,4 +77,6 @@ void INIRestartVisitor::visit( ForcingComponent* c ) {
 void INIRestartVisitor::visit( HalocarbonComponent* c ) {
     restartFile << "[" << c->getComponentName() << "]" << endl;
     restartFile << D_HC_CALCDATE << "= " << restartDate << endl;
+}
+
 }

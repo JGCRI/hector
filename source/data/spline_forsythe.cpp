@@ -8,6 +8,8 @@
 
 #include "h_exception.hpp"
 
+namespace Hector {
+
 /*  Interpolating cubic-spline function.
  Forsythe, G. E., M. A. Malcolm, and C. B. Moler. 1977. Computer Methods for
  Mathematical Computations. Prentice-Hall, Englewood Cliffs, New Jersey.
@@ -173,4 +175,6 @@ double seval_forsythe( int n, double u, double *x, double *y, double *b, double 
     /* Evaluate spline function at the argument u. */
     dx = u - x[i];
     return y[i] + dx * (b[i] + dx * (c[i] + dx * d[i]));
+}
+
 }

@@ -25,6 +25,8 @@
 
 #define MEAN_GLOBAL_TEMP 15
 
+namespace Hector {
+
 class oceanbox {
     /*! /brief  An ocean box
      *
@@ -95,4 +97,7 @@ public:
 	// logger
     Logger* logger;
 };
+
+}
+
 #endif

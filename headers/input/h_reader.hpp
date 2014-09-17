@@ -7,8 +7,13 @@
  *
  */
 
+#ifndef H_READER_HPP_
+#define H_READER_HPP_
+
 #include "inih/INIReader.h"
 #include "h_exception.hpp"
+
+namespace Hector {
 
 enum readertype_t { INI_style, table_style };
 
@@ -27,3 +32,7 @@ private:
     INIReader* reader;
     std::string filename;
 };
+
+}
+
+#endif
