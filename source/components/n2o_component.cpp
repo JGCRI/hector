@@ -63,6 +63,7 @@ unitval N2OComponent::sendMessage( const std::string& message,
         return getData( datum, info.date );
         
     } else if( message==M_SETDATA ) {   //! Caller is requesting to set data
+        H_THROW("N2O sendMessage not yet implemented for message=M_SETDATA");
         //TODO: call setData below
         //TODO: change core so that parsing is routed through sendMessage
         //TODO: make setData private
