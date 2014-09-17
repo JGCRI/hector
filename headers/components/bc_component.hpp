@@ -13,6 +13,8 @@
 #include "data/tseries.hpp"
 #include "data/unitval.hpp"
 
+namespace Hector {
+  
 //------------------------------------------------------------------------------
 /*! \brief Black carbon model component.
  *
@@ -60,5 +62,7 @@ private:
     Core *core;
     double oldDate;
 };
+
+}
 
 #endif // BLACK_CARBON_COMPONENT_H

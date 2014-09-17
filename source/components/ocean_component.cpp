@@ -15,6 +15,8 @@
 #include "models/simpleNbox.hpp"
 #include "visitors/avisitor.hpp"
 
+namespace Hector {
+  
 using namespace std;
 
 //------------------------------------------------------------------------------
@@ -589,4 +591,6 @@ void OceanComponent::shutDown() {
 // documentation is inherited
 void OceanComponent::accept( AVisitor* visitor ) {
     visitor->visit( this );
+}
+
 }

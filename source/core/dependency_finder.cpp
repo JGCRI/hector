@@ -14,6 +14,8 @@
 #include "h_exception.hpp"
 #include "core/logger.hpp"
 
+namespace Hector {
+  
 using namespace std;
 
 /*!
@@ -214,3 +216,4 @@ const string& DependencyFinder::getNameFromIndex( const size_t aIndex ) const {
     return NO_NAME;
 }
 
+}

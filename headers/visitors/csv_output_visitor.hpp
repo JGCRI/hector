@@ -16,6 +16,8 @@
 #include "h_util.hpp"
 #include "visitors/avisitor.hpp"
 
+namespace Hector {
+  
 /*! \brief A visitor which will report a few results at each model period.
  */
 class CSVOutputVisitor : public AVisitor {
@@ -36,5 +38,7 @@ private:
     
 #define DELIMITER ","
 };
+
+}
 
 #endif // CSV_OUTPUT_VISITOR_H

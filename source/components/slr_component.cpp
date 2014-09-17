@@ -16,6 +16,8 @@
 #include "h_util.hpp"
 #include "visitors/avisitor.hpp"
 
+namespace Hector {
+  
 using namespace std;
 
 
@@ -251,4 +253,6 @@ void slrComponent::shutDown() {
 // documentation is inherited
 void slrComponent::accept( AVisitor* visitor ) {
     visitor->visit( this );
+}
+
 }

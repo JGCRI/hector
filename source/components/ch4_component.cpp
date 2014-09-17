@@ -12,8 +12,7 @@
 #include "h_util.hpp"
 #include "visitors/avisitor.hpp"
 
-#include <stdlib.h>
-
+namespace Hector {
 using namespace std;
 
 //------------------------------------------------------------------------------
@@ -108,10 +107,6 @@ void CH4Component::prepareToRun() throw ( h_exception ) {
 //------------------------------------------------------------------------------
 // documentation is inherited
 void CH4Component::run( const double runToDate ) throw ( h_exception ) {
-  if(runToDate-oldDate != 1) {
-    cerr << "run-to= " << runToDate << "\told= " << oldDate << "\n";
-    abort();
-  }
 	H_ASSERT( !core->inSpinup() && runToDate-oldDate == 1, "timestep must equal 1" );
     oldDate = runToDate;
 }

@@ -16,6 +16,8 @@
 #include "h_util.hpp"
 #include "visitors/avisitor.hpp"
 
+namespace Hector {
+  
 using namespace std;
 
 //------------------------------------------------------------------------------
@@ -370,4 +372,6 @@ void ForcingComponent::shutDown() {
 // documentation is inherited
 void ForcingComponent::accept( AVisitor* visitor ) {
     visitor->visit( this );
+}
+
 }

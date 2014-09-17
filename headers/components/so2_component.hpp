@@ -14,6 +14,7 @@
 #include "data/unitval.hpp"
 
 
+namespace Hector {
 //------------------------------------------------------------------------------
 /*! \brief Sulfur model component.
  *
@@ -67,5 +68,7 @@ private:
 	Core *core;
     double oldDate;
 };
+
+}
 
 #endif  // SULFUR_COMPONENT_H

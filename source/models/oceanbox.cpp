@@ -11,6 +11,8 @@
 
 #include "models/oceanbox.hpp"
 
+namespace Hector {
+  
 using namespace std;
 
 //------------------------------------------------------------------------------
@@ -486,4 +488,6 @@ void oceanbox::chem_equilibrate() {
     
 	// sensitivity of the input paramaters for csys
 	//sens_parameters();
+}
+
 }

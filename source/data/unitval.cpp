@@ -13,6 +13,8 @@
 #include "data/unitval.hpp"
 #include "h_util.hpp"
 
+namespace Hector {
+  
 using namespace std;
 using namespace boost;
 
@@ -199,4 +201,6 @@ unitval unitval::parse_unitval( const string& valueStr, const string& unitsStr,
     }
     
     return unitval( value, units );
+}
+
 }

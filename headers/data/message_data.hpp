@@ -13,6 +13,8 @@
 #include "core/core.hpp"
 #include "data/unitval.hpp"
 
+namespace Hector {
+  
 /*! \brief Message data type.
  *
  *  Contains fields for all the types of data that may be passed around with
@@ -51,5 +53,7 @@ struct message_data {
     //! A string characterizing the units of value (if applicable).
     std::string units_str;
 };
+
+}
 
 #endif

@@ -16,7 +16,8 @@
 #include "core/carbon-cycle-solver.hpp"
 #include "visitors/avisitor.hpp"
 
-
+namespace Hector {
+  
 //------------------------------------------------------------------------------
 /*! \brief Constructor
  */
@@ -390,4 +391,6 @@ bool CarbonCycleSolver::run_spinup( const int step ) throw( h_exception )
 void CarbonCycleSolver::accept( AVisitor* visitor )
 {
     visitor->visit( this );
+}
+
 }

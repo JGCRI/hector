@@ -12,6 +12,7 @@
 #include "input/h_reader.hpp"
 #include "core/logger.hpp"
 
+namespace Hector {
 
 /*! \brief Constructor for h_reader.
  *
@@ -63,4 +64,6 @@ std::string h_reader::get_string( std::string section, std::string name, std::st
  */
 double h_reader::get_number( std::string section, std::string name, double defaultvalue ) {
     return (*reader).GetInteger( section, name, defaultvalue );
+}
+
 }

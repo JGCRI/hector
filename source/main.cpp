@@ -26,7 +26,8 @@ using namespace std;
  *  Starting point for wrapper, not the core.
  */
 int main (int argc, char * const argv[]) {
-	
+  using namespace Hector;
+  
 	try {
         
         // Create the global log

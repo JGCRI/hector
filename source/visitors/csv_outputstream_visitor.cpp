@@ -23,6 +23,8 @@
 #include "models/simpleNbox.hpp"
 #include "visitors/csv_outputstream_visitor.hpp"
 
+namespace Hector {
+  
 using namespace std;
 
 //------------------------------------------------------------------------------
@@ -253,4 +255,6 @@ void CSVOutputStreamVisitor::visit( OrganicCarbonComponent* c ) {
 void CSVOutputStreamVisitor::visit( OzoneComponent* c ) {
     if( !core->outputEnabled( c->getComponentName() ) ) return;
     STREAM_MESSAGE( csvFile, c, D_ATMOSPHERIC_O3 );
+}
+
 }

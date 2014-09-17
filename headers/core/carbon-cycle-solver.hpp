@@ -9,7 +9,6 @@
  */
 
 #include <string>
-//#include <gsl/gsl_odeiv.h>
 #include <gsl/gsl_odeiv2.h>
 
 #include "core/logger.hpp"
@@ -18,6 +17,8 @@
 
 #define MAX_CARBON_MODEL_RETRIES 8
 
+namespace Hector {
+  
 /*! \brief The carbon cycle solver component
  *
  * The strategy in this solver is to write the carbon cycle as
@@ -120,5 +121,7 @@ private:
     //! Logger for solver
     Logger logger;
 };
+
+}
 
 #endif

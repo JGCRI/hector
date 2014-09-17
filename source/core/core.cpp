@@ -29,6 +29,8 @@
 #include "models/simpleNbox.hpp"
 #include "visitors/avisitor.hpp"
 
+namespace Hector {
+  
 using namespace std;
 
 //------------------------------------------------------------------------------
@@ -589,4 +591,6 @@ void Core::accept( AVisitor* visitor ) {
  */
 double Core::undefinedIndex() {
     return -1;
+}
+
 }

@@ -11,6 +11,8 @@
 #include "h_util.hpp"
 #include "visitors/avisitor.hpp"
 
+namespace Hector {
+  
 using namespace std;
 
 //------------------------------------------------------------------------------
@@ -134,4 +136,6 @@ void OrganicCarbonComponent::shutDown() {
 // documentation is inherited
 void OrganicCarbonComponent::accept( AVisitor* visitor ) {
     visitor->visit( this );
+}
+
 }

@@ -12,6 +12,8 @@
 
 #include "visitors/avisitor.hpp"
 
+namespace Hector {
+  
 /*! \brief A visitor which will attempt to gather all information to restart the
  *         model and write them in an INI style restart file.
  *  \todo This class strips all units from the output variables since unit input
@@ -37,5 +39,7 @@ private:
     //! sophisticated in the future.
     const double restartDate;
 };
+
+}
 
 #endif // INI_RESTART_VISITOR_H

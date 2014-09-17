@@ -16,6 +16,8 @@
 #include "data/message_data.hpp"
 #include "input/csv_table_reader.hpp"
 
+namespace Hector {
+  
 using namespace std;
 
 //------------------------------------------------------------------------------
@@ -181,4 +183,6 @@ void CSVTableReader::process( Core* core, const string& componentName,
                 +castException.what() );
     }
     // h_exceptions from setData should just be passed along
+}
+
 }

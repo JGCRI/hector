@@ -14,6 +14,8 @@
 #include "data/unitval.hpp"
 
 
+namespace Hector {
+  
 //------------------------------------------------------------------------------
 /*! \brief Temperature model component.
  *
@@ -63,5 +65,7 @@ private:
     //! logger
     Logger logger;
 };
+
+}
 
 #endif // TEMP_COMPONENT_H

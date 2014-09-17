@@ -21,6 +21,8 @@
 #include "input/inih/ini.h"
 #include "input/inih/INIReader.h"
 
+namespace Hector {
+  
 using std::string;
 
 INIReader::INIReader( string filename )
@@ -64,4 +66,6 @@ int INIReader::ValueHandler(void* user, const char* section, const char* name,
     INIReader* reader = (INIReader*)user;
     reader->_values[MakeKey(section, name)] = value;
     return 1;
+}
+
 }

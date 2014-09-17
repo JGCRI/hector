@@ -12,6 +12,8 @@
 #include "h_util.hpp"
 #include "visitors/avisitor.hpp"
 
+namespace Hector {
+  
 using namespace std;
 
 //------------------------------------------------------------------------------
@@ -165,4 +167,6 @@ void TemperatureComponent::shutDown() {
 // documentation is inherited
 void TemperatureComponent::accept( AVisitor* visitor ) {
     visitor->visit( this );
+}
+
 }

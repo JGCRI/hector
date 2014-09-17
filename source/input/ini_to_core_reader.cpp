@@ -16,6 +16,8 @@
 #include "input/inih/ini.h"
 #include "input/csv_table_reader.hpp"
 
+namespace Hector {
+  
 using namespace std;
 
 //------------------------------------------------------------------------------
@@ -156,4 +158,6 @@ double INIToCoreReader::parseTSeriesIndex( const StringIter startBracket,
         H_THROW( "Could not convert index to double: "+dateIndexStr+", exception: "
                 +castException.what() );
     }
+}
+
 }

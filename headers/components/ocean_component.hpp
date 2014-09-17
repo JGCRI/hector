@@ -22,6 +22,8 @@
 #define OCEAN_TSR_TRIGGER1      0.1     //!< trigger1 to reduce timestep:
                                         //!< absolute diff between successive annual fluxes (Pg C)
 
+namespace Hector {
+  
 //------------------------------------------------------------------------------
 /*! \brief Ocean model component.
  *
@@ -114,5 +116,7 @@ private:
     //! logger
     Logger logger;
 };
+
+}
 
 #endif // OCEAN_COMPONENT_H

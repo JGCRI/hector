@@ -13,6 +13,8 @@
 #include "data/tseries.hpp"
 #include "data/unitval.hpp"
 
+namespace Hector {
+  
 //------------------------------------------------------------------------------
 /*! \brief A Dummy model component.
  *
@@ -70,5 +72,7 @@ private:
     // logger
     Logger logger;
 };
+
+}
 
 #endif // DUMMY_MODEL_COMPONENT_H

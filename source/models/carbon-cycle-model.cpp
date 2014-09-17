@@ -8,6 +8,8 @@
 
 #include "models/carbon-cycle-model.hpp"
 
+namespace Hector {
+  
 //------------------------------------------------------------------------------
 // documentation is inherited
 void CarbonCycleModel::init( Core* core ) {
@@ -46,4 +48,6 @@ void CarbonCycleModel::prepareToRun() throw(h_exception) {
 void CarbonCycleModel::shutDown() {
 	H_LOG( logger, Logger::DEBUG ) << "goodbye " << getComponentName() << std::endl;
     logger.close();
+}
+
 }
