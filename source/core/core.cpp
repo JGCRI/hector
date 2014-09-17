@@ -549,6 +549,7 @@ unitval Core::sendMessage( const std::string& message,
 {
     if( message==M_GETDATA )
         H_ASSERT( isInited, "message getData not available until core is initialized" );
+    // XXX need to remove this restriction for GCAM ops.
     if( message==M_SETDATA )
         H_ASSERT( !isInited, "message setData not available after core is initialized" );
     

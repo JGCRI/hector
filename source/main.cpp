@@ -76,7 +76,21 @@ int main (int argc, char * const argv[]) {
         H_LOG( glog, Logger::NOTICE ) << "Running the core." << endl;
         for(double t=core.getStartDate()+5.0; t<=core.getEndDate(); t+=5.0) {
             core.run(t);
-            H_LOG(glog, Logger::NOTICE) << "Run through t= " << t << "\n";
+            // The following provide an example of how to request data from components.
+            unitval temp = core.sendMessage(M_GETDATA, D_GLOBAL_TEMP);
+            unitval ca   = core.sendMessage(M_GETDATA, D_ATMOSPHERIC_CO2);
+            unitval forc = core.sendMessage(M_GETDATA, D_RF_TOTAL);
+            H_LOG(glog, Logger::NOTICE)
+                << "t= " << t << "\t"
+                << "temp= " << temp << "\t"
+                << "atmos. C= " << ca << "\t"
+                << "RF= " << forc << endl;
+            // logging doesn't seem to be working properly right now, so repeat
+            // the info to stdout
+            cout << "t= " << t << "\t"
+                 << "temp= " << temp << "\t"
+                 << "atmos. C= " << ca << "\t"
+                 << "RF= " << forc << endl; 
         }
 
         H_LOG(glog, Logger::NOTICE) << "Shutting down all components.\n";

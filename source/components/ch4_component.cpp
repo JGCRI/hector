@@ -143,3 +143,5 @@ void CH4Component::shutDown() {
 void CH4Component::accept( AVisitor* visitor ) {
     visitor->visit( this );
 }
+
+}
