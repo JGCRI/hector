@@ -76,7 +76,6 @@ int main (int argc, char * const argv[]) {
         for(double t=core.getStartDate()+5.0; t<=core.getEndDate(); t+=5.0) {
             core.run(t);
             H_LOG(glog, Logger::NOTICE) << "Run through t= " << t << "\n";
-            cerr << "**************** t= " << t << endl;
         }
 
         H_LOG(glog, Logger::NOTICE) << "Shutting down all components.\n";
@@ -95,7 +94,7 @@ int main (int argc, char * const argv[]) {
     catch( ... ) {
         cerr << "Other exception! " << endl;
     }
-        cout << "\nRun completed. Press [ENTER] to finish." << endl;
+        cerr << "\nRun completed. Press [ENTER] to finish." << endl;
 	cin.get();
     return 0;
 }
