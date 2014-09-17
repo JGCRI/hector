@@ -40,6 +40,9 @@ struct message_data {
     message_data( const unitval& value ): date( Core::undefinedIndex() ), value_unitval( value )
     {
     }
+
+    // Create message data with both date and value
+    message_data(double d, const unitval&val) : date(d), value_unitval(val){}
     
     //! (optional) a date for which this value is for.
     double date;

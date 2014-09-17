@@ -167,15 +167,27 @@ void SimpleNbox::setData( const std::string &varName,
             npp_flux0[ biome ] = unitval::parse_unitval( data.value_str, data.units_str, U_PGC_YR );
         }
         
-        // Anthropogenic contributions--time series
+        // Anthropogenic contributions--time series.  There are two
+        // message versions for each of these: one for string data
+        // read from an input file, and another for actual values
+        // passed from another part of the program.
         else if( varNameParsed == D_ANTHRO_EMISSIONS ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
             H_ASSERT( biome == SNBOX_DEFAULT_BIOME, "anthro emissions must be global" );
             anthroEmissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_PGC_YR ) );
         }
+        else if(varNameParsed == D_ANTHRO_EMISSIONS_VAL) {
+            H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
+            H_ASSERT( biome == SNBOX_DEFAULT_BIOME, "anthro emissions must be global" );
+            anthroEmissions.set(data.date, data.value_unitval);
+        }
         else if( varNameParsed == D_LUC_EMISSIONS ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
             lucEmissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_PGC_YR ) );
+        }
+        else if(varNameParsed == D_LUC_EMISSIONS_VAL) {
+            H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
+            lucEmissions.set(data.date, data.value_unitval);
         }
         
         // Atmospheric CO2 record to constrain model to (optional)

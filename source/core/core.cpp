@@ -549,10 +549,20 @@ unitval Core::sendMessage( const std::string& message,
 {
     if( message==M_GETDATA )
         H_ASSERT( isInited, "message getData not available until core is initialized" );
-    // XXX need to remove this restriction for GCAM ops.
-    if( message==M_SETDATA )
-        H_ASSERT( !isInited, "message setData not available after core is initialized" );
-    
+
+    if( message==M_SETDATA && isInited ) {
+        // If core initialization has been completed, then the only
+        // setdata messages allowed are ones keyed to a date that we
+        // haven't gotten to yet.
+        if(info.date == Core::undefinedIndex() || info.date <= lastDate) {
+            H_LOG(Logger::getGlobalLogger(), Logger::SEVERE)
+                << "Once core is initialized, the only SETDATA messages allowed are for dates after the current model date.\n"
+                << "\tdatum: " << datum
+                << "\tcurrent date: " << lastDate << "\tmessage date: " << info.date
+                << std::endl;
+            H_THROW("Invalid sendMessage.  Check global log for details.");
+        }
+    }
     componentMapIterator it = componentCapabilities.find( datum );
     
     string err = "Unknown model datum: " + datum;

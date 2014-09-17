@@ -147,8 +147,10 @@
 #define D_VEGC                  "veg_c"
 #define D_DETRITUSC             "detritus_c"
 #define D_SOILC                 "soil_c"
-#define D_ANTHRO_EMISSIONS      "anthroEmissions"
-#define D_LUC_EMISSIONS         "lucEmissions"
+#define D_ANTHRO_EMISSIONS      "anthroEmissions"        // anthro emiss. as string
+#define D_ANTHRO_EMISSIONS_VAL  "anthroEmissionsVal"     // anthro emiss. as value
+#define D_LUC_EMISSIONS_VAL     "lucEmissionsVal"        // LUC emiss. as string
+#define D_LUC_EMISSIONS         "lucEmissions"           // LUC emiss as value
 #define D_CO2FERT               "co2fert"
 #define D_TEMPFERTD              "detritus_tempfert"
 #define D_TEMPFERTS              "soil_tempfert"
