@@ -157,9 +157,9 @@ void read_and_set_co2(double tstrt, double tend, Core &core, istream &sim_gcam_e
             double luc    = atof(splitvec[2].c_str());
 
             // This is how you set annual emissions into the model
-            core.sendMessage(M_SETDATA, D_ANTHRO_EMISSIONS_VAL,
+            core.sendMessage(M_SETDATA, D_ANTHRO_EMISSIONS,
                              message_data(t, unitval(anthro, U_PGC_YR)));
-            core.sendMessage(M_SETDATA, D_LUC_EMISSIONS_VAL,
+            core.sendMessage(M_SETDATA, D_LUC_EMISSIONS,
                              message_data(t, unitval(luc, U_PGC_YR)));
             std::cout << "t= " << t << "\tanthro= " << anthro
                       << "\tluc= " << luc << "\n";
