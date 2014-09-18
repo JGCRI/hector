@@ -499,6 +499,18 @@ void Core::registerCapability( const string& capabilityName, const string& compo
 }
 
 //------------------------------------------------------------------------------
+/*! \brief Register a component as accepting a certain input
+ *  \param inputName The name of the input the component can accept
+ *  \param componentName The name of the component.
+ *  \note It is permissible for more than one component to accept the same
+ *        inputs.
+ */
+void Core::registerInput( const string& inputName, const string& componentName ) {
+    H_ASSERT( !isInited, "registerInput not available after core is initialized") 
+    componentInputs.insert( pair<string, string>( inputName, componentName ) );
+} 
+
+//------------------------------------------------------------------------------
 /*! \brief Check whether a capability has been registered with the core
  *  \param capabilityName The capability of the component to register.
  *  \param componentName The name of the associated component.
@@ -522,6 +534,7 @@ void Core::registerDependency( const string& capabilityName, const string& compo
     
     componentDependencies.insert( pair<string, string>( componentName, capabilityName ) );
 }
+   
 
 //------------------------------------------------------------------------------
 /*! \brief Look up component and send message in one operation without any need
@@ -547,29 +560,57 @@ unitval Core::sendMessage( const std::string& message,
                           const std::string& datum,
                           const message_data& info ) throw ( h_exception )
 {
-    if( message==M_GETDATA )
-        H_ASSERT( isInited, "message getData not available until core is initialized" );
-
-    if( message==M_SETDATA && isInited ) {
-        // If core initialization has been completed, then the only
-        // setdata messages allowed are ones keyed to a date that we
-        // haven't gotten to yet.
-        if(info.date == Core::undefinedIndex() || info.date <= lastDate) {
+    if (message == M_GETDATA) {
+        if(!isInited) {
             H_LOG(Logger::getGlobalLogger(), Logger::SEVERE)
-                << "Once core is initialized, the only SETDATA messages allowed are for dates after the current model date.\n"
-                << "\tdatum: " << datum
-                << "\tcurrent date: " << lastDate << "\tmessage date: " << info.date
-                << std::endl;
-            H_THROW("Invalid sendMessage.  Check global log for details.");
+                << "message getData not available until core is initialized."
+                << "\n\tmessage: " << message << "\tdatum: " << datum << endl;
+            H_THROW("Invalid sendMessage/GETDATA.  Check global log for details.");
+        }
+        else {
+            componentMapIterator it = componentCapabilities.find( datum );
+            
+            string err = "Unknown model datum: " + datum;
+            H_ASSERT( checkCapability( datum ), err );
+            return getComponentByName( ( *it ).second )->sendMessage( message, datum, info );
         }
     }
-    componentMapIterator it = componentCapabilities.find( datum );
-    
-    string err = "Unknown model datum: " + datum;
-    H_ASSERT( checkCapability( datum ), err );
-    return getComponentByName( ( *it ).second )->sendMessage( message, datum, info );
+    else if (message == M_SETDATA) {
+        if( isInited ) {
+            // If core initialization has been completed, then the only
+            // setdata messages allowed are ones keyed to a date that we
+            // haven't gotten to yet.
+            if(info.date == Core::undefinedIndex()) {
+                H_LOG(Logger::getGlobalLogger(), Logger::SEVERE)
+                    << "Once core is initialized, the only SETDATA messages allowed are for dates after the current model date.\n"
+                    << "\tdatum: " << datum
+                    << "\tcurrent date: " << lastDate << "\tmessage date: " << info.date
+                    << std::endl;
+                H_THROW("Invalid sendMessage/SETDATA.  Check global log for details.");
+            }
+        }
+        
+        // locate the components that take this kind of input.  If
+        // there are multiple, we send the message to all of them.
+        pair<componentMapIterator, componentMapIterator> itpr =
+            componentInputs.equal_range(datum);
+        if(itpr.first == itpr.second) {
+            H_LOG(Logger::getGlobalLogger(), Logger::SEVERE)
+                << "No such input: " << datum << "  Aborting.";
+            H_THROW("Invalid datum in sendMessage/SETDATA.");
+        }
+        for(componentMapIterator it=itpr.first; it != itpr.second; ++it)
+            getComponentByName(it->second)->sendMessage(message, datum, info);
+        
+        return info.value_unitval;
+    }
+    else {
+        H_LOG(Logger::getGlobalLogger(), Logger::SEVERE)
+            << "Unknown message: " << message << "  Aborting.";
+        H_THROW("Invalid message type in sendMessage.");
+    } 
 }
-
+    
 //------------------------------------------------------------------------------
 /*! \brief Add an additional model component to be run.
  *  \param modelComponent The model component to add.
