@@ -48,7 +48,8 @@ void N2OComponent::init( Core* coreptr ) {
     // Inform core what data we can provide
     core->registerCapability( D_ATMOSPHERIC_N2O, getComponentName() );
     core->registerCapability( D_PREINDUSTRIAL_N2O, getComponentName() );
-    
+    // register data we can accept as input
+    core->registerInput(D_EMISSIONS_N2O, getComponentName());
 }
 
 //------------------------------------------------------------------------------
