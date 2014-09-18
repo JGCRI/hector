@@ -141,7 +141,6 @@ void read_and_set_co2(double tstrt, double tend, Core &core, istream &sim_gcam_e
     // For now we need to get the simpleNbox component by name because
     // there is no way to register a component's inputs; however, we
     // will add that capability shortly.
-    IModelComponent *nbox = core.getComponentByName(SIMPLENBOX_COMPONENT_NAME);
 
     double t;
     std::string line;
@@ -158,9 +157,9 @@ void read_and_set_co2(double tstrt, double tend, Core &core, istream &sim_gcam_e
             double luc    = atof(splitvec[2].c_str());
 
             // This is how you set annual emissions into the model
-            nbox->sendMessage(M_SETDATA, D_ANTHRO_EMISSIONS_VAL,
+            core.sendMessage(M_SETDATA, D_ANTHRO_EMISSIONS_VAL,
                              message_data(t, unitval(anthro, U_PGC_YR)));
-            nbox->sendMessage(M_SETDATA, D_LUC_EMISSIONS_VAL,
+            core.sendMessage(M_SETDATA, D_LUC_EMISSIONS_VAL,
                              message_data(t, unitval(luc, U_PGC_YR)));
             std::cout << "t= " << t << "\tanthro= " << anthro
                       << "\tluc= " << luc << "\n";

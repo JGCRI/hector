@@ -79,11 +79,10 @@ public:
     
     static double undefinedIndex();
     
-    IModelComponent* getComponentByName( const std::string& componentName
-                                        ) const throw ( h_exception );
-    
 private:
     
+    IModelComponent* getComponentByName( const std::string& componentName
+                                        ) const throw ( h_exception );
     
     //------------------------------------------------------------------------------
     //! Current run name.
