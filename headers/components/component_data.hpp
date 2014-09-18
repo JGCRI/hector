@@ -77,12 +77,12 @@
 #define D_ATMOSPHERIC_CH4       "Ma"
 #define D_PREINDUSTRIAL_CH4     "M0"
 #define D_RF_CH4                "FCH4"
-//#define D_EMISSIONS_CH4 "CH4_emissions"
+#define D_EMISSIONS_CH4 "CH4_emissions"
 
 // n2o component
 #define D_ATMOSPHERIC_N2O       "Na"
 #define D_PREINDUSTRIAL_N2O     "N0"
-//#define D_EMISSIONS_N2O "N2O_emissions"
+#define D_EMISSIONS_N2O "N2O_emissions"
 
 //o3 component
 #define D_ATMOSPHERIC_O3	   "O3"

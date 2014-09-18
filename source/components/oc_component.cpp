@@ -46,6 +46,8 @@ void OrganicCarbonComponent::init( Core* coreptr ) {
 
     // Inform core what data we can provide
     core->registerCapability( D_EMISSIONS_OC, getComponentName() );
+    // OC emissions are also an input
+    core->registerInput(D_EMISSIONS_OC, getComponentName());
 }
 
 
@@ -61,10 +63,9 @@ unitval OrganicCarbonComponent::sendMessage( const std::string& message,
         return getData( datum, info.date );
         
     } else if( message==M_SETDATA ) {   //! Caller is requesting to set data
-        H_THROW("OC sendMessage not yet implemented for message=M_SETDATA");
-        //TODO: call setData below
         //TODO: change core so that parsing is routed through sendMessage
         //TODO: make setData private
+        setData(datum, info);
         
     } else {                        //! We don't handle any other messages
         H_THROW( "Caller sent unknown message: "+message );
@@ -83,7 +84,10 @@ void OrganicCarbonComponent::setData( const string& varName,
     try {
         if( varName ==  D_EMISSIONS_OC ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            OC_emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_KG ) );
+            if(data.isVal)
+                OC_emissions.set(data.date, data.value_unitval);
+            else
+                OC_emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_KG ) );
         } else {
             H_THROW( "Unknown variable name while parsing " + getComponentName() + ": "
                     + varName );

@@ -50,7 +50,10 @@ void SulfurComponent::init( Core* coreptr ) {
     core->registerCapability( D_ATMOSPHERIC_SO2, getComponentName() );
     core->registerCapability( D_PREINDUSTRIAL_SO2, getComponentName() );
     core->registerCapability( D_EMISSIONS_SO2, getComponentName() );
-	core->registerCapability( D_VOLCANIC_SO2, getComponentName() );
+    core->registerCapability( D_VOLCANIC_SO2, getComponentName() );
+    // accept anthro emissions and volcanic emissions as inputs
+    core->registerInput(D_EMISSIONS_SO2, getComponentName());
+    core->registerInput(D_VOLCANIC_SO2, getComponentName());
 }
 
 //------------------------------------------------------------------------------
@@ -65,10 +68,9 @@ unitval SulfurComponent::sendMessage( const std::string& message,
         return getData( datum, info.date );
         
     } else if( message==M_SETDATA ) {   //! Caller is requesting to set data
-        H_THROW("SO2: sendMessage not yet implemented for message=M_SETDATA.");
-        //TODO: call setData below
         //TODO: change core so that parsing is routed through sendMessage
         //TODO: make setData private
+        setData(datum, info);
         
     } else {                        //! We don't handle any other messages
         H_THROW( "Caller sent unknown message: "+message );
@@ -87,23 +89,29 @@ void SulfurComponent::setData( const string& varName,
     try {
         if( varName ==  D_EMISSIONS_SO2 ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            SO2_emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_GG ) );
+            if(data.isVal)
+                SO2_emissions.set(data.date, data.value_unitval);
+            else
+                SO2_emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_GG ) );
         }
-		else if( varName ==  D_PREINDUSTRIAL_SO2  ) {
+        else if( varName ==  D_PREINDUSTRIAL_SO2  ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
             S0 = unitval::parse_unitval( data.value_str, data.units_str, U_GG );
         }
-		else if( varName ==  D_ATMOSPHERIC_SO2  ) {
+        else if( varName ==  D_ATMOSPHERIC_SO2  ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
             SN = unitval::parse_unitval( data.value_str, data.units_str, U_GG );
         }
-		else if( varName ==  D_VOLCANIC_SO2  ) {
+        else if( varName ==  D_VOLCANIC_SO2  ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            SV.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_W_M2 ) );
+            if(data.isVal)
+                SV.set(data.date, data.value_unitval);
+            else
+                SV.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_W_M2 ) );
         }
-		else {
+        else {
             H_THROW( "Unknown variable name while parsing " + getComponentName() + ": "
-                    + varName );
+                     + varName );
         }
     } catch( h_exception& parseException ) {
         H_RETHROW( parseException, "Could not parse var: "+varName );
