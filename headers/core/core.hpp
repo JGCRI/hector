@@ -57,6 +57,7 @@ public:
     int checkCapability( const std::string& capabilityName );
 
     void registerDependency( const std::string& capabilityName, const std::string& componentName );
+    void registerInput(const std::string &inputName, const std::string &componentName);
     
     unitval sendMessage( const std::string& message,
                         const std::string& datum ) throw ( h_exception );
@@ -147,6 +148,13 @@ private:
     
     // A map of component dependencies (depending on CAPABILITY, not component name).
     std::multimap<std::string, std::string> componentDependencies;
+
+    // Map of component inputs, as reported by the components.  This
+    // map doesn't play any role in establishing the dependency graph
+    // (see capabilities for that).  Instead it's used by outside
+    // functions to figure out where to send the data they're pushing
+    // into the model (e.g., emissions).
+    std::multimap<std::string, std::string> componentInputs;
     
     // A list of components that have been disabled
     // When a component is disabled, it still receives input data
