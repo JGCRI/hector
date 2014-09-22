@@ -7,7 +7,7 @@ LDFLAGS	 = $(CXXPROF) -L$(GSLLIB) -L.
 export CXXFLAGS OPTFLAGS
 
 ## project root
-HROOT	= $(PWD)/..
+HROOT	= $(CURDIR)/..
 HDRDIR	= $(HROOT)/headers
 export HROOT
 
@@ -59,6 +59,7 @@ testing: INCLUDES += -I$(GTINC)
 testing: gtest components topdir
 	$(MAKE) -C testing hector-unit-tests
 
+lib: libhector.a
 libhector.a: subdirs
 	ar ru libhector.a build/*.o
 
@@ -74,7 +75,7 @@ input: INCLUDES += -I$(HDRDIR)/input/inih
 
 $(DIRS):
 	$(MAKE) -C $@ all
-	ln -sf $(PWD)/$@/*.o build/
+	ln -sf $(CURDIR)/$@/*.o build/
 
 build:
 	mkdir -p build
