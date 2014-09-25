@@ -319,7 +319,7 @@ int tseries<T_data>::size() const {
 template <class T>
 void tseries<T>::truncate(double t, bool after)
 {
-    std::map<double, T>::iterator it1, it2;
+    typename std::map<double, T>::iterator it1, it2;
     if(after) {
         it1 = mapdata.upper_bound(t);
         it2 = mapdata.end();
@@ -329,6 +329,8 @@ void tseries<T>::truncate(double t, bool after)
         it2 = mapdata.lower_bound(t);
     } 
     mapdata.erase(it1,it2); 
+}
+
 }
 
 #endif
