@@ -8,6 +8,8 @@
  *
  */
 
+#include "components/component_names.hpp"
+
 // ------------------- names of data being passed between components -------------------------
 
 // Note names in INI input need to match these.
