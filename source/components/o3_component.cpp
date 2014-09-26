@@ -55,6 +55,11 @@ void OzoneComponent::init( Core* coreptr ) {
 	// Inform core what data we can provide
     core->registerCapability(  D_ATMOSPHERIC_O3, getComponentName() );
 	//core->registerCapability(  D_PREINDUSTRIAL_O3, getComponentName() );
+
+    // register to accept inputs
+    core->registerInput(D_EMISSIONS_NOX,   getComponentName());
+    core->registerInput(D_EMISSIONS_CO,    getComponentName());
+    core->registerInput(D_EMISSIONS_NMVOC, getComponentName()); 
 }
 
 //------------------------------------------------------------------------------
@@ -69,8 +74,7 @@ unitval OzoneComponent::sendMessage( const std::string& message,
         return getData( datum, info.date );
         
     } else if( message==M_SETDATA ) {   //! Caller is requesting to set data
-        H_THROW("O3 sendMessage not yet implemented for message=M_SETDATA");
-        //TODO: call setData below
+        setData(datum, info);
         //TODO: change core so that parsing is routed through sendMessage
         //TODO: make setData private
         
@@ -89,13 +93,13 @@ void OzoneComponent::setData( const string& varName,
     H_LOG( logger, Logger::DEBUG ) << "Setting " << varName << "[" << data.date << "]=" << data.value_str << std::endl;
     
     try {
-       if( varName == D_ATMOSPHERIC_NOX ) {
+       if( varName == D_EMISSIONS_NOX ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            NOX.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG_NOX ) );
-        } else if( varName == D_ATMOSPHERIC_CO ) {
+            NOX.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG_N ) );
+        } else if( varName == D_EMISSIONS_CO ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
            CO.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG_CO ) );
-        } else if( varName == D_ATMOSPHERIC_NMVOC ) {
+        } else if( varName == D_EMISSIONS_NMVOC ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
             NMVOC.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG_NMVOC ) );
         } else if( varName ==  D_ATMOSPHERIC_CH4 ) {
@@ -124,7 +128,7 @@ void OzoneComponent::run( const double runToDate ) throw ( h_exception ) {
 
 	// Calculate O3 based on NOX, CO, NMVOC, CH4.
 
-	const double current_nox = NOX.get( runToDate ).value( U_TG_NOX );
+	const double current_nox = NOX.get( runToDate ).value( U_TG_N );
 	const double current_co = CO.get( runToDate ).value( U_TG_CO );
 	const double current_nmvoc = NMVOC.get( runToDate ).value( U_TG_NMVOC );
 	const double current_ch4 = Ma.get( runToDate ).value( U_PPBV_CH4 );

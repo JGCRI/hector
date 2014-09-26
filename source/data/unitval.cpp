@@ -41,7 +41,7 @@ string unitval::unitsName( const unit_types u ) {
 			break;
 		case U_DU_O3: return "DU O3";
             break;
-		case U_TG_NOX: return "Tg NOX";
+		case U_TG_N: return "Tg N";
             break;
 		case U_TG_CO: return "Tg CO";
             break;

@@ -59,7 +59,7 @@ enum unit_types {
 					U_TG_CH4,
 				    U_TG_NMVOC,
 					U_DU_O3,
-					U_TG_NOX,
+					U_TG_N, // NOX emissions given in TG-N/yr
     
                     U_DEGC,             // Temperature
                     U_K,				// Temperature
