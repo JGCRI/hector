@@ -94,14 +94,23 @@ void OzoneComponent::setData( const string& varName,
     
     try {
        if( varName == D_EMISSIONS_NOX ) {
-            H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            NOX.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG_N ) );
+           H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
+           if(data.isVal)
+               NOX.set(data.date, data.value_unitval);
+           else
+               NOX.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG_N ) );
         } else if( varName == D_EMISSIONS_CO ) {
-            H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-           CO.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG_CO ) );
+           H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
+           if(data.isVal)
+               CO.set(data.date, data.value_unitval);
+           else 
+               CO.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG_CO ) );
         } else if( varName == D_EMISSIONS_NMVOC ) {
-            H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            NMVOC.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG_NMVOC ) );
+           H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
+           if(data.isVal)
+               NMVOC.set(data.date, data.value_unitval);
+           else
+               NMVOC.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG_NMVOC ) );
         } else if( varName ==  D_ATMOSPHERIC_CH4 ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
             Ma.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_PPBV_CH4 ) );

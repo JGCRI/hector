@@ -154,6 +154,7 @@ void read_and_set_co2(double tstrt, double tend, Core &core, istream &sim_gcam_e
             double oc     = atof(splitvec[16].c_str());
             double cf4    = atof(splitvec[18].c_str());
             double hcf22  = atof(splitvec[37].c_str());
+            double nmvoc  = atof(splitvec[10].c_str());
 
             // This is how you set annual emissions into the model
             core.sendMessage(M_SETDATA, D_ANTHRO_EMISSIONS,
@@ -170,6 +171,8 @@ void read_and_set_co2(double tstrt, double tend, Core &core, istream &sim_gcam_e
                              message_data(t, unitval(cf4, U_GG)));
             core.sendMessage(M_SETDATA, D_EMISSIONS_HCF22,
                              message_data(t, unitval(hcf22, U_GG)));
+            core.sendMessage(M_SETDATA, D_EMISSIONS_NMVOC,
+                              message_data(t, unitval(nmvoc, U_TG_NMVOC)));
             std::cout << "t= " << t << "\n"
                       << "\t\tanthro= " << anthro << "\n"
                       << "\t\tluc= " << luc << "\n"
@@ -178,6 +181,7 @@ void read_and_set_co2(double tstrt, double tend, Core &core, istream &sim_gcam_e
                       << "\t\tOC= "  << oc << "\n"
                       << "\t\tCF4= " << cf4 << "\n"
                       << "\t\tHCF22= " << hcf22 << "\n"
+                      << "\t\tNMVOC= " << nmvoc << "\n"
               ;
         }
     } while(t < tend);
