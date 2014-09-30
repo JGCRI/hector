@@ -86,10 +86,13 @@
 
 //o3 component
 #define D_ATMOSPHERIC_O3	   "O3"
-#define D_ATMOSPHERIC_CO      "CO"
-#define D_ATMOSPHERIC_NOX      "NOX"
-#define D_ATMOSPHERIC_NMVOC    "NMVOC"
+// #define D_ATMOSPHERIC_CO      "CO"
+// #define D_ATMOSPHERIC_NOX      "NOX"
+// #define D_ATMOSPHERIC_NMVOC    "NMVOC"
 #define D_ATMOSPHERIC_EM_CH4      "CH4"
+#define D_EMISSIONS_NOX           "NOX_emissions"
+#define D_EMISSIONS_CO            "CO_emissions"
+#define D_EMISSIONS_NMVOC         "NMVOC_emissions"
 //Do not redefine Ma though it is used for o3 component
 //#define D_EMISSIONS_O3 "O3_concentration"
 
