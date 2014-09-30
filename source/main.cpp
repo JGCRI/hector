@@ -99,17 +99,23 @@ int main (int argc, char * const argv[]) {
             unitval temp = core.sendMessage(M_GETDATA, D_GLOBAL_TEMP);
             unitval ca   = core.sendMessage(M_GETDATA, D_ATMOSPHERIC_CO2);
             unitval forc = core.sendMessage(M_GETDATA, D_RF_TOTAL);
+            unitval n2o  = core.sendMessage(M_GETDATA, D_ATMOSPHERIC_N2O, t);
             H_LOG(glog, Logger::NOTICE)
                 << "t= " << t << "\t"
                 << "temp= " << temp << "\t"
                 << "atmos. C= " << ca << "\t"
-                << "RF= " << forc << endl;
+                << "RF= " << forc << "\t"
+                << "Na= " << n2o 
+                << endl;
             // logging doesn't seem to be working properly right now, so repeat
             // the info to stdout
-            cout << "t= " << t << "\t"
-                 << "temp= " << temp << "\t"
-                 << "atmos. C= " << ca << "\t"
-                 << "RF= " << forc << endl;
+            cout 
+                << "t= " << t << "\t"
+                << "temp= " << temp << "\t"
+                << "atmos. C= " << ca << "\t"
+                << "RF= " << forc << "\t"
+                << "Na= " << n2o 
+                << endl;
 
             tlast = t;
         }
