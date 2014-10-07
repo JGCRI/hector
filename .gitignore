@@ -28,5 +28,5 @@ source/hector
 logs/*.*
 output/*.*
 
-# Project files
-project_files/*.*
+# OS-specific files
+.DS_Store
