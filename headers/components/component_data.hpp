@@ -36,6 +36,16 @@
 #define D_RF_T_ALBEDO           D_RF_PREFIX "talbedo"
 #define D_FTOT_CONSTRAIN        D_RF_PREFIX "tot_constrain"
 #define D_RF_BASEYEAR           "baseyear"
+#define D_RF_CO2                D_RF_PREFIX "CO2"
+#define D_RF_N2O                D_RF_PREFIX "N2O"
+#define D_RF_H2O                D_RF_PREFIX "H2O"
+#define D_RF_O3                 D_RF_PREFIX "O3"
+#define D_RF_BC                 D_RF_PREFIX "BC"
+#define D_RF_OC                 D_RF_PREFIX "OC"
+#define D_RF_SO2d               D_RF_PREFIX "SO2d"
+#define D_RF_SO2i               D_RF_PREFIX "SO2i"
+#define D_RF_SO2                D_RF_PREFIX "SO2"
+#define D_RF_VOL                D_RF_PREFIX "vol" // forcing from volcanic so2
 
 // halocarbon components
 #define D_RF_CF4                D_RF_PREFIX CF4_COMPONENT_BASE
@@ -86,10 +96,13 @@
 
 //o3 component
 #define D_ATMOSPHERIC_O3	   "O3"
-#define D_ATMOSPHERIC_CO      "CO"
-#define D_ATMOSPHERIC_NOX      "NOX"
-#define D_ATMOSPHERIC_NMVOC    "NMVOC"
+// #define D_ATMOSPHERIC_CO      "CO"
+// #define D_ATMOSPHERIC_NOX      "NOX"
+// #define D_ATMOSPHERIC_NMVOC    "NMVOC"
 #define D_ATMOSPHERIC_EM_CH4      "CH4"
+#define D_EMISSIONS_NOX           "NOX_emissions"
+#define D_EMISSIONS_CO            "CO_emissions"
+#define D_EMISSIONS_NMVOC         "NMVOC_emissions"
 //Do not redefine Ma though it is used for o3 component
 //#define D_EMISSIONS_O3 "O3_concentration"
 

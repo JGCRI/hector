@@ -59,7 +59,7 @@ enum unit_types {
 					U_TG_CH4,
 				    U_TG_NMVOC,
 					U_DU_O3,
-					U_TG_NOX,
+					U_TG_N, // NOX emissions given in TG-N/yr
     
                     U_DEGC,             // Temperature
                     U_K,				// Temperature
@@ -119,6 +119,13 @@ public:
 
     static unitval parse_unitval( const std::string&, const unit_types& ) throw( h_exception );
     static unitval parse_unitval( const std::string&, const std::string&, const unit_types& ) throw( h_exception );
+
+    /*! Allow us to assign a unitval to a double. 
+     *  \note    Do not use this in Hector.  It is intended for other
+     *           codes that use libhector and don't want to carry
+     *           around units.
+     */
+    operator double() const {return val;}
     
     friend unitval operator+ ( const unitval&, const unitval& );
     friend unitval operator- ( const unitval&, const unitval& );
@@ -152,7 +159,6 @@ unitval::unitval() {
  */
 inline
 unitval::unitval( double v, unit_types u ) {
-    unitval();
     val=v;
     valUnits=u;
 }
