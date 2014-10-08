@@ -30,9 +30,6 @@
 		B5027FB019E437A300E78D4D /* csv_table_reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5027F7119E437A300E78D4D /* csv_table_reader.cpp */; };
 		B5027FB119E437A300E78D4D /* h_reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5027F7219E437A300E78D4D /* h_reader.cpp */; };
 		B5027FB219E437A300E78D4D /* ini_to_core_reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5027F7319E437A300E78D4D /* ini_to_core_reader.cpp */; };
-		B5027FB319E437A300E78D4D /* ini_dump.c in Sources */ = {isa = PBXBuildFile; fileRef = B5027F7619E437A300E78D4D /* ini_dump.c */; };
-		B5027FB419E437A300E78D4D /* ini_example.c in Sources */ = {isa = PBXBuildFile; fileRef = B5027F7719E437A300E78D4D /* ini_example.c */; };
-		B5027FB519E437A300E78D4D /* ini_xmacros.c in Sources */ = {isa = PBXBuildFile; fileRef = B5027F7819E437A300E78D4D /* ini_xmacros.c */; };
 		B5027FB619E437A300E78D4D /* ini.c in Sources */ = {isa = PBXBuildFile; fileRef = B5027F7919E437A300E78D4D /* ini.c */; };
 		B5027FB719E437A300E78D4D /* INIReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5027F7A19E437A300E78D4D /* INIReader.cpp */; };
 		B5027FBA19E437A300E78D4D /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5027F7F19E437A300E78D4D /* main.cpp */; };
@@ -473,7 +470,6 @@
 				B5027FAF19E437A300E78D4D /* unitval.cpp in Sources */,
 				B5027F9F19E437A300E78D4D /* n2o_component.cpp in Sources */,
 				B5027FB619E437A300E78D4D /* ini.c in Sources */,
-				B5027FB419E437A300E78D4D /* ini_example.c in Sources */,
 				B5027F9919E437A300E78D4D /* bc_component.cpp in Sources */,
 				B5027FA619E437A300E78D4D /* temperature_component.cpp in Sources */,
 				B5027FA219E437A300E78D4D /* ocean_component.cpp in Sources */,
@@ -486,11 +482,9 @@
 				B5027FB719E437A300E78D4D /* INIReader.cpp in Sources */,
 				B5027FAA19E437A300E78D4D /* logger.cpp in Sources */,
 				B5027FA519E437A300E78D4D /* so2_component.cpp in Sources */,
-				B5027FB319E437A300E78D4D /* ini_dump.c in Sources */,
 				B5027FA319E437A300E78D4D /* onelineocean_component.cpp in Sources */,
 				B5027FCF19E437A300E78D4D /* ini_restart_visitor.cpp in Sources */,
 				B5027FA819E437A300E78D4D /* core.cpp in Sources */,
-				B5027FB519E437A300E78D4D /* ini_xmacros.c in Sources */,
 				B5027F9C19E437A300E78D4D /* forcing_component.cpp in Sources */,
 				B5027FCE19E437A300E78D4D /* csv_outputstream_visitor.cpp in Sources */,
 				B5027FBE19E437A300E78D4D /* ocean_csys.cpp in Sources */,
@@ -507,7 +501,7 @@
 		B5027F2019E4378E00E78D4D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = YES;
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -525,10 +519,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
+				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -538,10 +529,10 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"\"$(SRCROOT)/../../../headers/\"",
 					/usr/local/lib/boost_1_52_0/,
 					/usr/local/include/,
-					"\"$(SRCROOT)/../../../headers/\"",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 				);
 				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
@@ -559,7 +550,7 @@
 		B5027F2119E4378E00E78D4D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = YES;
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -585,10 +576,10 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"\"$(SRCROOT)/../../../headers/\"",
 					/usr/local/lib/boost_1_52_0/,
 					/usr/local/include/,
-					"\"$(SRCROOT)/../../../headers/\"",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 				);
 				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
@@ -605,6 +596,7 @@
 		B5027F2319E4378E00E78D4D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx10.8;
 				USER_HEADER_SEARCH_PATHS = "";
@@ -639,6 +631,7 @@
 				B5027F2419E4378E00E78D4D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

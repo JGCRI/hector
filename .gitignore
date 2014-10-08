@@ -30,3 +30,6 @@ output/*.*
 
 # OS-specific files
 .DS_Store
+
+# Xcode build directories
+DerivedData/
