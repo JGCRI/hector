@@ -33,3 +33,12 @@ output/*.*
 
 # Xcode build directories
 DerivedData/
+
+# Project files
+project_files/*.*
+Release
+ipch
+Run Test Cases
+Debug
+libs
+
