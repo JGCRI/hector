@@ -124,7 +124,7 @@ double oceanbox::vectorHistoryMean( std::vector<double> v, int lookback ) const 
     H_ASSERT( lookback > 0, "lookback must be >0" );
     H_ASSERT( v.size() > 0, "vector size must be >0" );
 
-    lookback = min<int>( v.size(), lookback );
+    lookback = min<int>( int( v.size() ), lookback );
 
     double sum = 0.0;
     for ( int j=0; j<lookback; j++ )  {
@@ -436,7 +436,7 @@ void oceanbox::chem_equilibrate() {
 	OB_LOG( logger, Logger::DEBUG) << setw( w ) << "Alk" << setw( w ) << "FPgC"
         << setw( w ) << "f_target" << setw( w ) << "diff" << endl;
 	double min_diff = 1e6;
-	double min_point;
+	double min_point = ( alk_min + alk_max ) / 2.0;
 	for( double alk1=alk_min; alk1 <= alk_max; alk1 += (alk_max-alk_min)/20 ) {
 		double diff = fmin( alk1, &f_target );
 		if( diff < min_diff ) {
