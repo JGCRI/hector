@@ -20,7 +20,7 @@ class h_exception /* : public std::exception */ {
 public:
 	std::string extractFilename( const std::string& path )
 	{
-		int pos = path.find_last_of( '/' );						// *nix
+		unsigned long pos = path.find_last_of( '/' );						// *nix
 		if( pos == path.npos ) pos = path.find_last_of( '\\' );	// win
 		return path.substr( ( pos == path.npos ) ? 0 : pos+1 );
         // degrades gracefully if no separators found

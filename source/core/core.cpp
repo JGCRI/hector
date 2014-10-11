@@ -444,7 +444,7 @@ void Core::registerCapability( const string& capabilityName, const string& compo
  */
 int Core::checkCapability( const string& capabilityName ) {
     
-    return( componentCapabilities.count( capabilityName ) );
+    return( int( componentCapabilities.count( capabilityName ) ) );
 }
 
 //------------------------------------------------------------------------------
