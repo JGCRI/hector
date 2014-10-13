@@ -356,14 +356,12 @@ bool CarbonCycleSolver::run_spinup( const int step ) throw( h_exception )
     
     int max_dcdt_pool = 0;
     double max_dcdt = 0.0;
-    int max_dcdt_i;
     
     for( int i=0; i<nc; i++ ) {     // find the biggest difference
         dcdt[ i ] = fabs( c_new[ i ] - c_old[ i ] );
         c_old[ i ] = c_new[ i ];
         if (dcdt[ i ] > max_dcdt) {
             max_dcdt = dcdt[i];
-            max_dcdt_i = i;
         }
     }
 
