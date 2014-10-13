@@ -115,7 +115,7 @@ public:
     
     double value( unit_types ) const throw( h_exception );
     unit_types units() const { return valUnits; };
-    std::string unitsName() { return unitsName( valUnits ); };
+    std::string unitsName() const { return unitsName( valUnits ); };
 
     static unitval parse_unitval( const std::string&, const unit_types& ) throw( h_exception );
     static unitval parse_unitval( const std::string&, const std::string&, const unit_types& ) throw( h_exception );
@@ -135,7 +135,7 @@ public:
     friend unitval operator/ ( const unitval&, const double );
     friend unitval operator/ ( const double, const unitval& );
     friend double operator/ ( const unitval&, const unitval&  );
-    friend std::ostream& operator<<( std::ostream &out, unitval &x );
+    friend std::ostream& operator<<( std::ostream &out, const unitval &x );
 
 };
 
@@ -286,7 +286,7 @@ double operator/ ( const unitval& lhs, const unitval& rhs ) {
  *  Print a unitval.
  */
 inline
-std::ostream& operator<<( std::ostream &out, unitval &x ) {
+std::ostream& operator<<( std::ostream &out, const unitval &x ) {
     out << x.value( x.units() ) << " " << x.unitsName();
     return out;
 }
