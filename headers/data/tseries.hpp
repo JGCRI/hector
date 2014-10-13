@@ -289,7 +289,7 @@ double tseries<T_data>::last() const {
  */
 template <class T_data>
 int tseries<T_data>::size() const {
-    return mapdata.size();
+    return int( mapdata.size() );
 }
 
 /*! \brief truncate a time series

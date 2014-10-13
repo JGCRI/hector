@@ -518,7 +518,7 @@ void Core::registerInput( const string& inputName, const string& componentName )
  */
 int Core::checkCapability( const string& capabilityName ) {
     
-    return( componentCapabilities.count( capabilityName ) );
+    return( int( componentCapabilities.count( capabilityName ) ) );
 }
 
 //------------------------------------------------------------------------------

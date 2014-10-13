@@ -9,7 +9,6 @@
 
 # emacs backup files
 *~
-
 # Compiled Dynamic libraries
 *.so
 *.dylib
@@ -31,6 +30,17 @@ source/hector
 logs/*.*
 output/*.*
 
+# OS-specific files
+.DS_Store
+
+# Xcode build directories
+DerivedData/
+
 # Project files
 project_files/*.*
+Release
+ipch
+Run Test Cases
+Debug
+libs
 *.kdev4

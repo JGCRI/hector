@@ -120,7 +120,7 @@ void CSVTableReader::process( Core* core, const string& componentName,
         line = csv_getline();
         H_ASSERT( !line.empty(), "line empty" );
         split( row, line, is_any_of( "," ) );
-        const int headerRowSize = row.size();
+//        const int headerRowSize = row.size();
         for( size_t col = 1; col < row.size() && columnIndex == -1; ++col ) {
             // ignore white space before comparing variable names
             trim( row[ col ] );
