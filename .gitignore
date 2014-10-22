@@ -26,7 +26,6 @@ source/hector
 
 # Hector outputs
 logs/*.*
-output/*.*
 
 # OS-specific files
 .DS_Store
@@ -42,3 +41,39 @@ Run Test Cases
 Debug
 libs
 
+rcp85
+output
+output
+rcp85
+op_ch.R
+quicklook.R
+output.csv
+outputstream_rcp85.csv
+restart.ini
+.Rhistory
+Other_models
+TAS
+NBP
+BGS_2014
+CMIP5
+Historical
+IPCC
+MAGICC
+MAGICC6
+historical_OC.csv
+BATS_DIC.csv
+LeQuere_co2_sinks.csv
+ESTOC_pco2.csv
+ESTOC_dic.csv
+ESTOC_ph.csv
+BATS_CO3.csv
+BATS_ArOmega.csv
+BATS_CaOmega.csv
+BATS_PCO2.csv
+BATS_chemistry.xlsx
+Takahashi_fgco2.csv
+HOTS_ArOmega.csv
+HOTS_CaOmega.csv
+HOTS_DIC.csv
+historical_BC.csv
+Other_models
