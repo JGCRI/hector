@@ -77,3 +77,12 @@ HOTS_CaOmega.csv
 HOTS_DIC.csv
 historical_BC.csv
 Other_models
+Hector_models_fgco2
+TAS
+NBP
+Hector_models_tas
+Hector_models_nbp
+Hector_models_ph
+ESM_CO2
+CCSM4_temp.csv
+CCSM4_pco2.csv
