@@ -84,21 +84,22 @@
 #define D_HC_CALCDATE           "calcDate"
 
 // methane component
-#define D_ATMOSPHERIC_CH4       "Ma"
+#define D_ATMOSPHERIC_CH4       "CH4"
 #define D_PREINDUSTRIAL_CH4     "M0"
 #define D_RF_CH4                "FCH4"
-//#define D_EMISSIONS_CH4 "CH4_emissions"
+#define D_EMISSIONS_CH4         "CH4_emissions"
+#define D_NATURAL_CH4           "CH4N"
 
 // n2o component
 #define D_ATMOSPHERIC_N2O       "Na"
 #define D_PREINDUSTRIAL_N2O     "N0"
 //#define D_EMISSIONS_N2O "N2O_emissions"
 
+// oh component
+#define D_LIFETIME_OH           "TAU_OH"
+
 //o3 component
-#define D_ATMOSPHERIC_O3	   "O3"
-// #define D_ATMOSPHERIC_CO      "CO"
-// #define D_ATMOSPHERIC_NOX      "NOX"
-// #define D_ATMOSPHERIC_NMVOC    "NMVOC"
+#define D_ATMOSPHERIC_O3	      "O3"
 #define D_ATMOSPHERIC_EM_CH4      "CH4"
 #define D_EMISSIONS_NOX           "NOX_emissions"
 #define D_EMISSIONS_CO            "CO_emissions"

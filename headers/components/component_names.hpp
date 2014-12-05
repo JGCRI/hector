@@ -17,6 +17,7 @@
 #define SIMPLENBOX_COMPONENT_NAME "simpleNbox"
 
 #define CH4_COMPONENT_NAME "methane"
+#define OH_COMPONENT_NAME   "oh"
 #define N2O_COMPONENT_NAME "nitrous"
 #define TEMPERATURE_COMPONENT_NAME "temperature"
 #define OCEAN_COMPONENT_NAME "ocean"

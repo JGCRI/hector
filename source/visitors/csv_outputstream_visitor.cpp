@@ -17,6 +17,7 @@
 #include "components/oc_component.hpp"
 #include "components/slr_component.hpp"
 #include "components/o3_component.hpp"
+#include "components/oh_component.hpp"
 #include "core/core.hpp"
 #include "data/unitval.hpp"
 #include "h_util.hpp"
@@ -255,6 +256,13 @@ void CSVOutputStreamVisitor::visit( OrganicCarbonComponent* c ) {
 void CSVOutputStreamVisitor::visit( OzoneComponent* c ) {
     if( !core->outputEnabled( c->getComponentName() ) ) return;
     STREAM_MESSAGE( csvFile, c, D_ATMOSPHERIC_O3 );
+}
+
+//------------------------------------------------------------------------------
+// documentation is inherited
+void CSVOutputStreamVisitor::visit( OHComponent* c ) {
+    if( !core->outputEnabled( c->getComponentName() ) ) return;
+    STREAM_MESSAGE_DATE( csvFile, c, D_LIFETIME_OH, current_date );
 }
 
 }

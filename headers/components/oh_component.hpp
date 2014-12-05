@@ -1,11 +1,11 @@
 
-#ifndef CH4_COMPONENT_H
-#define CH4_COMPONENT_H
+#ifndef OH_COMPONENT_H
+#define OH_COMPONENT_H
 /*
- *  ch4_component.hpp
+ *  oh_component.hpp
  *  hector
  *
- *  Created by Ben on 05/19/2011.
+ *  Created by Corinne on 11/20/2014.
  *
  */
 
@@ -21,12 +21,12 @@ namespace Hector {
  *
  *  This doesn't do much yet.
  */
-class CH4Component : public IModelComponent {
+class OHComponent : public IModelComponent {
     friend class INIRestartVisitor; // To allow creation of a restart file.
     
 public:
-    CH4Component();
-    ~CH4Component();
+    OHComponent();
+    ~OHComponent();
     
     // IModelComponent methods
     virtual std::string getComponentName() const;
@@ -49,19 +49,24 @@ public:
     // IVisitable methods
     virtual void accept( AVisitor* visitor );
     
-	unitval M0;     // preindustrial methane
-    double UC_CH4;  // conversion factor between emissions and concentration
-    unitval CH4N;   // natural emissions
-    unitval Tsoil;  // CH4 loss to soil
-    unitval Tstrat; //  CH4 loss to stratosphere
-
+	
    private:
     virtual unitval getData( const std::string& varName,
                             const double date ) throw ( h_exception );   
      //! emissions time series
-    tseries<unitval> CH4_emissions;
-
+    tseries<unitval> CO_emissions;
+    tseries<unitval> NOX_emissions;
+    tseries<unitval> NMVOC_emissions;
    
+    unitval M0;  //initial CH4 concentration
+   tseries<unitval> TAU_OH; 
+
+    unitval TOH0;            // preindustrial OH lifetime
+    double CCO;       // coefficent for CO
+    double CNMVOC;    // coefficent for NMVOC
+    double CNOX;      // coefficent for NOX
+    double CCH4;      // coefficent for CH4
+
     // logger
     Logger logger;
 
@@ -71,5 +76,5 @@ public:
 
 }
 
-#endif // CH4_COMPONENT_H
+#endif // OH_COMPONENT_H
 

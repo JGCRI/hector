@@ -1,13 +1,13 @@
 /*
- *  ch4_component.cpp
+ *  oh_component.cpp
  *  hector
  *
- *  Created by Ben on 05/19/2011.
+ *  Created by Corinne on 11/20/2014.
  *
  */
 // changed back to using only concentrations
 
-#include "components/ch4_component.hpp"
+#include "components/oh_component.hpp"
 #include "core/core.hpp"
 #include "h_util.hpp"
 #include "visitors/avisitor.hpp"
@@ -19,43 +19,43 @@ using namespace std;
 //------------------------------------------------------------------------------
 /*! \brief Constructor
  */
-CH4Component::CH4Component() {
-    CH4_emissions.allowInterp( true ); 
-    CH4_emissions.name = CH4_COMPONENT_NAME; 
-	M0.set( 0.0, U_PPBV_CH4 );
-    CH4N.set( 0.0, U_GG_CH4 );
+OHComponent::OHComponent() {
+    //CH4_emissions.allowInterp( true ); 
+    //CH4_emissions.name = CH4_COMPONENT_NAME; 
+	TOH0.set( 0.0, U_YRS );
+    
 
 }
 
 //------------------------------------------------------------------------------
 /*! \brief Destructor
  */
-CH4Component::~CH4Component() {
+OHComponent::~OHComponent() {
 }
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-string CH4Component::getComponentName() const {
-    const string name = CH4_COMPONENT_NAME;
+string OHComponent::getComponentName() const {
+    const string name = OH_COMPONENT_NAME;
     
     return name;
 }
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-void CH4Component::init( Core* coreptr ) {
+void OHComponent::init( Core* coreptr ) {
     logger.open( getComponentName(), false, Logger::DEBUG );
     H_LOG( logger, Logger::DEBUG ) << "hello " << getComponentName() << std::endl;
     core = coreptr;
 
     // Inform core what data we can provide
-    core->registerCapability( D_ATMOSPHERIC_CH4, getComponentName() );
-    core->registerCapability( D_PREINDUSTRIAL_CH4, getComponentName() );
+    core->registerCapability( D_LIFETIME_OH, getComponentName() );
+    
 }
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-unitval CH4Component::sendMessage( const std::string& message,
+unitval OHComponent::sendMessage( const std::string& message,
                                   const std::string& datum,
                                   const message_data info ) throw ( h_exception )
 {
@@ -78,7 +78,7 @@ unitval CH4Component::sendMessage( const std::string& message,
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-void CH4Component::setData( const string& varName,
+void OHComponent::setData( const string& varName,
                             const message_data& data ) throw ( h_exception )
 {
     try {
@@ -100,7 +100,7 @@ void CH4Component::setData( const string& varName,
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-void CH4Component::prepareToRun() throw ( h_exception ) {
+void OHComponent::prepareToRun() throw ( h_exception ) {
     
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
 	oldDate = core->getStartDate();
@@ -108,22 +108,34 @@ void CH4Component::prepareToRun() throw ( h_exception ) {
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-void CH4Component::run( const double runToDate ) throw ( h_exception ) {
+void OHComponent::run( const double runToDate ) throw ( h_exception ) {
 	H_ASSERT( !core->inSpinup() && runToDate-oldDate == 1, "timestep must equal 1" );
     oldDate = runToDate;
 
-    // modified from Wigley et al, 2002.
-    const double current_ch4 = CH4_emissions.get( runToDate ).value( U_GG_CH4 ); 
-    const double current_toh = TAU_OH.get( runToDate ).value( U_YRS);
+    // modified from Tanaka et al 2007.
+    const double current_nox = NOX_emissions.get( runToDate ).value( U_GG_NOX ); 
+    const double current_co = CO_emissions.get( runToDate ).value( U_GG_CO ); 
+    const double current_nmvoc = NMVOC_emissions.get( runToDate ).value( U_GG_NMVOC ); 
+    const double current_ch4 = CH4.get( runToDate ).value( U_PPBV_CH4);
 
-    CH4.set( ( current_ch4 + ( CH4N.value ( U_GG ) ) / UC_CH4 + concentration/( Tsoil.value ( U_YRS ) ) + concentration/( Tstrat.value ( U_YRS ) ) + concentration/current_toh ), U_PPBV_CH4) ;
-       
+    //if at first time set use....
+    double a =  CCH4.value * ( log( concentation ) - log( M0 ) ) ;
+        
+    double b = CNOX.value * ( current_nox - current_nox.first()  ) ;
+
+    double c = CCO.value * ( current_co - current_co.first() ) ;
+
+    double d = CNMVOC.value * (current_nmvoc - current_nmvoc.first() ) ;
+
+    TOH.set( a + b + c + d, U_YRS );
+      
+    
     H_LOG( logger, Logger::DEBUG ) << "Year " << runToDate << " OH lifetime = " << TOH << std::endl;
 }
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-unitval CH4Component::getData( const std::string& varName,
+unitval COHComponent::getData( const std::string& varName,
                               const double date ) throw ( h_exception ) {
     
     unitval returnval;
@@ -148,14 +160,14 @@ unitval CH4Component::getData( const std::string& varName,
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-void CH4Component::shutDown() {
+void OHComponent::shutDown() {
 	H_LOG( logger, Logger::DEBUG ) << "goodbye " << getComponentName() << std::endl;
     logger.close();
 }
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-void CH4Component::accept( AVisitor* visitor ) {
+void OHComponent::accept( AVisitor* visitor ) {
     visitor->visit( this );
 }
 
