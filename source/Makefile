@@ -1,6 +1,7 @@
 CXX	= g++
-CXXFLAGS = -g  $(INCLUDES) $(OPTFLAGS) $(CXXEXTRA) $(CXXPROF) -MMD
+CXXFLAGS = -g  $(INCLUDES) $(OPTFLAGS) $(CXXEXTRA) $(CXXPROF) $(WFLAGS) -MMD
 INCLUDES = -I$(BOOSTROOT) -I$(HDRDIR) -I$(GSLINC)
+WFLAGS   = -Wall -Wno-unused-local-typedefs # Turn on warnings, turn off one particularly annoying one that infests Boost libs
 OPTFLAGS = -O3
 LDFLAGS	 = $(CXXPROF) -L$(GSLLIB) -L.
 
@@ -29,9 +30,17 @@ GTLIB	= $(GTROOT)/lib/.libs
 ifeq ($(strip $(GSLROOT)),)
 GSLROOT	= /usr/local
 endif
+
+## Set the GSL include and library locations.  There is a special case for Evergreen users.
+ifeq ($(strip $(GSLROOT)),EVERGREEN)
+GSLINC  = $(GSL_INC)
+GSLLIB  = $(GSL_LIB)
+# remove warning flags on Evergreen too:  old version of g++
+CXXFLAGS = -g  $(INCLUDES) $(OPTFLAGS) $(CXXEXTRA) $(CXXPROF) -MMD
+else
 GSLINC	= $(GSLROOT)/include/gsl
 GSLLIB	= $(GSLROOT)/lib
-
+endif
 
 export GTLIB GTINC GSLINC GSLLIB
 

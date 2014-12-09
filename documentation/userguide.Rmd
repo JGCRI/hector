@@ -90,11 +90,19 @@ you will not need to override the Hector defaults. If you choose to
 install GSL somewhere else, use the environment variable below to indicate
 where you installed it.
 
+Users running on the *Evergreen* computing system at PNNL need not
+follow the procedure above to install the GSL; however, they must load
+the GSL module by adding the following command to their login script:
+`module load gsl`; then, see below for the correct environment
+variable settings.
+
 Environment variables:
 
 * GSLROOT (default: `/usr/local`).
     Set this variable to the same install directory that you used when you
-    configured GSL.
+    configured GSL. **Exception**:  If you are running on the
+    *Evergreen* computing system at PNNL, use the special string
+    `EVERGREEN`. 
 
 ### Google Test Framework (gtest)
 TODO
