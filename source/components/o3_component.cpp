@@ -97,9 +97,6 @@ void OzoneComponent::setData( const string& varName,
         } else if( varName == D_EMISSIONS_NMVOC ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
             NMVOC.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG_NMVOC ) );
-        } else if( varName ==  D_ATMOSPHERIC_CH4 ) {
-            H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            Ma.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_PPBV_CH4 ) );
         } else {
             H_THROW( "Unknown variable name while parsing " + getComponentName() + ": "
                     + varName );

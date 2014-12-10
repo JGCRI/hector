@@ -18,6 +18,8 @@
 #include "components/slr_component.hpp"
 #include "components/o3_component.hpp"
 #include "components/oh_component.hpp"
+#include "components/ch4_component.hpp"
+#include "components/n2o_component.hpp"
 #include "core/core.hpp"
 #include "data/unitval.hpp"
 #include "h_util.hpp"
@@ -261,8 +263,21 @@ void CSVOutputStreamVisitor::visit( OzoneComponent* c ) {
 //------------------------------------------------------------------------------
 // documentation is inherited
 void CSVOutputStreamVisitor::visit( OHComponent* c ) {
-    if( !core->outputEnabled( c->getComponentName() ) ) return;
-    STREAM_MESSAGE_DATE( csvFile, c, D_LIFETIME_OH, current_date );
+   if( !core->outputEnabled( c->getComponentName() ) ) return;
+ STREAM_MESSAGE_DATE( csvFile, c, D_LIFETIME_OH, current_date );
 }
 
+//------------------------------------------------------------------------------
+// documentation is inherited
+void CSVOutputStreamVisitor::visit( CH4Component* c ) {
+   if( !core->outputEnabled( c->getComponentName() ) ) return;
+ STREAM_MESSAGE_DATE( csvFile, c, D_ATMOSPHERIC_CH4, current_date );
+}
+
+//------------------------------------------------------------------------------
+// documentation is inherited
+void CSVOutputStreamVisitor::visit( N2OComponent* c ) {
+   if( !core->outputEnabled( c->getComponentName() ) ) return;
+ STREAM_MESSAGE_DATE( csvFile, c, D_ATMOSPHERIC_N2O, current_date );
+}
 }

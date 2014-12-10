@@ -35,7 +35,10 @@ public:
     virtual void visit( slrComponent* c );
     virtual void visit( OceanComponent* c );
     virtual void visit( OzoneComponent* c );
-	
+    virtual void visit( OHComponent* c );
+    virtual void visit( CH4Component* c );
+	virtual void visit( N2OComponent* c );
+
 private:
     //! The file output stream in which the csv output will be written to.
     std::ostream& csvFile;

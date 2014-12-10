@@ -89,11 +89,18 @@
 #define D_RF_CH4                "FCH4"
 #define D_EMISSIONS_CH4         "CH4_emissions"
 #define D_NATURAL_CH4           "CH4N"
+#define D_CONVERSION_CH4        "UC_CH4"
+#define D_LIFETIME_SOIL         "Tsoil"
+#define D_LIFETIME_STRAT        "Tstrat"
 
 // n2o component
-#define D_ATMOSPHERIC_N2O       "Na"
+#define D_ATMOSPHERIC_N2O       "N2O"
 #define D_PREINDUSTRIAL_N2O     "N0"
-//#define D_EMISSIONS_N2O "N2O_emissions"
+#define D_EMISSIONS_N2O         "N2O_emissions"
+#define D_NAT_EMISSIONS_N2O         "N2ON_emissions"
+#define D_CONVERSION_N2O        "UC_N2O"
+#define D_INITIAL_LIFETIME_N2O   "TN2O0"
+#define D_LIFETIME_N2O          "TAU_N2O"
 
 // oh component
 #define D_LIFETIME_OH           "TAU_OH"

@@ -60,7 +60,7 @@ public:
                             const double date ) throw ( h_exception );   
      //! emissions time series
     tseries<unitval> CH4_emissions;
-
+    tseries<unitval> CH4;  //CH4 concentrations
    
     // logger
     Logger logger;

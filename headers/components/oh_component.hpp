@@ -57,15 +57,19 @@ public:
     tseries<unitval> CO_emissions;
     tseries<unitval> NOX_emissions;
     tseries<unitval> NMVOC_emissions;
-   
+    tseries<unitval> TAU_OH; 
+    
     unitval M0;  //initial CH4 concentration
-   tseries<unitval> TAU_OH; 
+    unitval TOH0;      // preindustrial OH lifetime
 
-    unitval TOH0;            // preindustrial OH lifetime
     double CCO;       // coefficent for CO
     double CNMVOC;    // coefficent for NMVOC
     double CNOX;      // coefficent for NOX
     double CCH4;      // coefficent for CH4
+
+    double NOX0;     //inital NOx emissions
+    double CO0;      //inital CO emissions
+    double NMVOC0;   //inital NMVOC emissions
 
     // logger
     Logger logger;

@@ -108,6 +108,9 @@ void OHComponent::prepareToRun() throw ( h_exception ) {
 	oldDate = core->getStartDate();
     //get intial CH4 concentration
     M0 = core->sendMessage( M_GETDATA, D_PREINDUSTRIAL_CH4 );
+    double const NOX0 = NOX_emissions.first();
+    double const CO0 = CO_emissions.first();
+    double const NMVOC0 = NMVOC_emissions.first();
 
  }
 
@@ -125,26 +128,14 @@ void OHComponent::run( const double runToDate ) throw ( h_exception ) {
     //get this from CH4 component, this is last year's value
    const double previous_ch4 = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_CH4 ).value( U_PPBV_CH4 );
    
-
-    //if at first time set use....MO is from CH4 component
-   // concentration0 = M0.value( U_PPBV_CH4 );
-   // put this in methane component
-   // put M0 in prepare to run
    double toh = 0.0;
-
-   if ( previous_ch4 != M0 )
+   if ( previous_ch4 != M0 ) // if we are not at the first time
    {
-
    const double a =  CCH4 * ( log( previous_ch4 ) - log( M0.value(U_PPBV_CH4) ) ) ;
-            
-   const double b = CNOX * ( current_nox - NOX_emissions.first() ) ;  //put the first value up in prepare to run
-
-   const double c = CCO * ( current_co - CO_emissions.first() ) ;
-
-   const double d = CNMVOC * (current_nmvoc - NMVOC_emissions.first() ) ;
-   
+   const double b = CNOX * ( current_nox - NOX0 ) ;  //put the first value up in prepare to run
+   const double c = CCO * ( current_co - CO0 ) ;
+   const double d = CNMVOC * (current_nmvoc - NMVOC0 ) ;
    toh = a + b + c + d;
-
    }
 
   TAU_OH.set( runToDate, unitval( TOH0 * exp( toh ), U_YRS ) );
