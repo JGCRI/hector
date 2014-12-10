@@ -20,9 +20,14 @@ using namespace std;
  */
 N2OComponent::N2OComponent() {
     N2O_emissions.allowInterp( true ); 
+    //N2O_emissions.name = N2O_COMPONENT_NAME; 
     N2ON_emissions.allowInterp( true ); 
-    N2O_emissions.name = N2O_COMPONENT_NAME; 
-}
+    //N2ON_emissions.name = D_NAT_EMISSIONS_N2O; 
+    N2O.allowInterp( true );
+    //N2O.name = D_ATMOSPHERIC_N2O;
+    TAU_N2O.allowInterp( true );
+    //TAU_N2O.name = D_LIFETIME_N2O;
+  }
 
 //------------------------------------------------------------------------------
 /*! \brief Destructor
@@ -111,6 +116,7 @@ void N2OComponent::prepareToRun() throw ( h_exception ) {
     
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
 	oldDate = core->getStartDate();
+    N2O.set(oldDate, N0);  // set the first year's value    
   }
 
 //------------------------------------------------------------------------------
@@ -123,7 +129,7 @@ void N2OComponent::run( const double runToDate ) throw ( h_exception ) {
 
     if (runToDate!=oldDate)
     {
-     previous_n2o = N2O.get( oldDate );
+      previous_n2o = N2O.get( oldDate );
     }
 
     //Lifetime varys based on N2O concentrations

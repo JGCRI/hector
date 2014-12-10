@@ -22,9 +22,7 @@ using namespace std;
 CH4Component::CH4Component() {
     CH4_emissions.allowInterp( true ); 
     CH4_emissions.name = CH4_COMPONENT_NAME; 
-	M0.set( 0.0, U_PPBV_CH4 );
-    CH4N.set( 0.0, U_GG_CH4 );
-
+	    
 }
 
 //------------------------------------------------------------------------------
@@ -95,10 +93,10 @@ void CH4Component::setData( const string& varName,
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
             Tstrat = unitval::parse_unitval( data.value_str, data.units_str, U_YRS );
          } else if( varName == D_CONVERSION_CH4 ) {
-            H_ASSERT( data.date != Core::undefinedIndex(), "date not allowed" );
+            H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
             UC_CH4 = unitval::parse_unitval( data.value_str, data.units_str, U_TG_PPBV );
          } else if( varName == D_NATURAL_CH4 ) {
-            H_ASSERT( data.date != Core::undefinedIndex(), "date not allowed" );
+            H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
             CH4N = unitval::parse_unitval( data.value_str, data.units_str, U_GG_CH4 );
          }
 		else {
@@ -135,8 +133,8 @@ void CH4Component::run( const double runToDate ) throw ( h_exception ) {
     {
      previous_ch4 = CH4.get( oldDate );
     }
-    const double soil_sink = previous_ch4/Tsoil.value( U_YRS );  
-
+    
+   const double soil_sink = previous_ch4/Tsoil.value( U_YRS );  
    const double strat_sink = previous_ch4/Tstrat.value( U_YRS ); 
    const double oh_sink = previous_ch4/ current_toh;
        
@@ -158,6 +156,9 @@ unitval CH4Component::getData( const std::string& varName,
     if( varName == D_ATMOSPHERIC_CH4 ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for atmospheric CH4" ); 
         returnval = CH4.get( date );
+    } else if( varName == D_PREINDUSTRIAL_CH4 ) {
+        H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for preindustrial CH4" );
+        returnval = M0;
     } else {
         H_THROW( "Caller is requesting unknown variable: " + varName );
     }
