@@ -53,7 +53,7 @@ private:
                             const double date ) throw ( h_exception );
     
     unitval N0;    //! preindustrial N2O
-    double UC_N2O;  //! conversion from emissions to concentration
+    unitval UC_N2O;  //! conversion from emissions to concentration
 	tseries<unitval> N2O_emissions; //! anthropogenic emissions time series
     tseries<unitval> N2ON_emissions; //! natural emissions time series
     tseries<unitval> N2O; //! N2O concentrations
