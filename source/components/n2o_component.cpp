@@ -155,8 +155,7 @@ unitval N2OComponent::getData( const std::string& varName,
                               const double date ) throw ( h_exception ) {
     
     unitval returnval;
-    std::cout << N2O.size() << std::endl;
-
+   
     if( varName == D_ATMOSPHERIC_N2O ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for atmospheric N2O" );
         returnval = N2O.get( date );

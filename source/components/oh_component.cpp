@@ -26,7 +26,8 @@ OHComponent::OHComponent() {
     NOX_emissions.allowInterp( true ); 
     NMVOC_emissions.allowInterp( true ); 
     CO_emissions.allowInterp( true ); 
-	TOH0.set( 0.0, U_YRS );
+    TAU_OH.allowInterp( true );
+	//TOH0.set( 0.0, U_YRS );
         
 }
 
@@ -53,7 +54,7 @@ void OHComponent::init( Core* coreptr ) {
 
      // Inform core what data we can provide
     core->registerCapability( D_LIFETIME_OH, getComponentName() );
-            
+                    
 }
 
 //------------------------------------------------------------------------------
@@ -94,7 +95,7 @@ void OHComponent::setData( const string& varName,
             CO_emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG_CO ) );
          } else if( varName == D_EMISSIONS_NMVOC ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            NMVOC_emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_GG_NMVOC ) );
+            NMVOC_emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG_NMVOC ) );
         } else if( varName == D_INITIAL_LIFETIME_OH ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
             TOH0 = unitval::parse_unitval( data.value_str, data.units_str, U_YRS );
@@ -130,6 +131,8 @@ void OHComponent::prepareToRun() throw ( h_exception ) {
     double const NOX0 = NOX_emissions.first();
     double const CO0 = CO_emissions.first();
     double const NMVOC0 = NMVOC_emissions.first();
+    TAU_OH.set( oldDate, TOH0 );
+    TAU_OH.set( 0.0, TOH0 );
 
  }
 
@@ -140,12 +143,12 @@ void OHComponent::run( const double runToDate ) throw ( h_exception ) {
     oldDate = runToDate;
 
     // modified from Tanaka et al 2007.
-    const double current_nox = NOX_emissions.get( runToDate ).value( U_GG_NOX ); 
-    const double current_co = CO_emissions.get( runToDate ).value( U_GG_CO ); 
-    const double current_nmvoc = NMVOC_emissions.get( runToDate ).value( U_GG_NMVOC ); 
+    const double current_nox = NOX_emissions.get( runToDate ).value( U_TG_N ); 
+    const double current_co = CO_emissions.get( runToDate ).value( U_TG_CO ); 
+    const double current_nmvoc = NMVOC_emissions.get( runToDate ).value( U_TG_NMVOC ); 
     
     //get this from CH4 component, this is last year's value
-   const double previous_ch4 = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_CH4 ).value( U_PPBV_CH4 );
+   const double previous_ch4 = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_CH4, runToDate ).value( U_PPBV_CH4 );
    
    double toh = 0.0;
    if ( previous_ch4 != M0 ) // if we are not at the first time
@@ -171,8 +174,8 @@ unitval OHComponent::getData( const std::string& varName,
     unitval returnval;
     
     if( varName == D_LIFETIME_OH ) {
-        H_ASSERT( date != Core::undefinedIndex(), "Date required" ); 
-		returnval = TAU_OH.get( date );
+        H_ASSERT( date != Core::undefinedIndex(), "Date required for OH lifetime" ); 
+        returnval = TAU_OH.get( date );
       } else {
         H_THROW( "Caller is requesting unknown variable: " + varName );
     }

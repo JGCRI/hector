@@ -49,7 +49,9 @@ string unitval::unitsName( const unit_types u ) {
             break;
 		case U_TG_NMVOC: return "Tg NMVOC";
             break;
-        case U_MOL_YR: return "mol/yr";
+        case U_TG_PPBV: return "Tg/ppbv";
+            break;
+       case U_MOL_YR: return "mol/yr";
             break;
         case U_PPTV: return "pptv";
             break;
@@ -98,6 +100,8 @@ string unitval::unitsName( const unit_types u ) {
         case U_MOL_KG_ATM: return "mol/kg/atm";
             break;
         case U_DOBSON: return "dobson";
+            break;
+        case U_YRS: return "Years";
             break;
             
         default: H_THROW( "Unhandled unit!" );
