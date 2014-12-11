@@ -20,13 +20,13 @@ using namespace std;
  */
 N2OComponent::N2OComponent() {
     N2O_emissions.allowInterp( true ); 
-    //N2O_emissions.name = N2O_COMPONENT_NAME; 
+    N2O_emissions.name = N2O_COMPONENT_NAME; 
     N2ON_emissions.allowInterp( true ); 
-    //N2ON_emissions.name = D_NAT_EMISSIONS_N2O; 
+    N2ON_emissions.name = D_NAT_EMISSIONS_N2O; 
     N2O.allowInterp( true );
-    //N2O.name = D_ATMOSPHERIC_N2O;
+    N2O.name = D_ATMOSPHERIC_N2O;
     TAU_N2O.allowInterp( true );
-    //TAU_N2O.name = D_LIFETIME_N2O;
+    TAU_N2O.name = D_LIFETIME_N2O;
   }
 
 //------------------------------------------------------------------------------
@@ -91,10 +91,10 @@ void N2OComponent::setData( const string& varName,
             N0 = unitval::parse_unitval( data.value_str, data.units_str, U_PPBV_N2O );
         } else if( varName == D_EMISSIONS_N2O ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            N2O_emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG_N ) );
+            N2O_emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG_N2O ) );
         } else if( varName == D_NAT_EMISSIONS_N2O ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            N2ON_emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG_N ) );
+            N2ON_emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG_N2O ) );
         } else if( varName == D_CONVERSION_N2O ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
             UC_N2O = unitval::parse_unitval( data.value_str, data.units_str, U_TG_PPBV );
@@ -117,11 +117,13 @@ void N2OComponent::prepareToRun() throw ( h_exception ) {
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
 	oldDate = core->getStartDate();
     N2O.set(oldDate, N0);  // set the first year's value    
+    N2O.set(0, N0); 
   }
 
 //------------------------------------------------------------------------------
 // documentation is inherited
 void N2OComponent::run( const double runToDate ) throw ( h_exception ) {
+    
 	H_ASSERT( !core->inSpinup() && runToDate-oldDate == 1, "timestep must equal 1" );
    
     // modified from Ward and Mahowald, 2014
@@ -153,7 +155,8 @@ unitval N2OComponent::getData( const std::string& varName,
                               const double date ) throw ( h_exception ) {
     
     unitval returnval;
-    
+    std::cout << N2O.size() << std::endl;
+
     if( varName == D_ATMOSPHERIC_N2O ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for atmospheric N2O" );
         returnval = N2O.get( date );
