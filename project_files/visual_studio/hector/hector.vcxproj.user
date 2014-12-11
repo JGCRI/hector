@@ -9,7 +9,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LocalDebuggerWorkingDirectory>..\..\..</LocalDebuggerWorkingDirectory>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-    <LocalDebuggerCommandArguments>input/hector_rcp26.ini</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>input/hector_rcp85.ini</LocalDebuggerCommandArguments>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='debug fast|Win32'">
     <LocalDebuggerCommandArguments>input/hector.ini</LocalDebuggerCommandArguments>

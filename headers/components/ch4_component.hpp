@@ -56,7 +56,7 @@ public:
     tseries<unitval> CH4_emissions;
     tseries<unitval> CH4;  //CH4 concentrations
     unitval M0;     // preindustrial methane
-    double UC_CH4;  // conversion factor between emissions and concentration
+    unitval UC_CH4;  // conversion factor between emissions and concentration
     unitval CH4N;   // natural emissions
     unitval Tsoil;  // CH4 loss to soil
     unitval Tstrat; //  CH4 loss to stratosphere

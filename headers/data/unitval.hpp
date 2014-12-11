@@ -73,10 +73,6 @@ enum unit_types {
                     U_G,
                     U_KG,               // Mass-related
                     U_GG,				// Giga-grams
-                    U_GG_CH4,
-                    U_GG_CO,
-                    U_GG_NOX,
-                    U_GG_NMVOC,
                     U_MOL,
                     U_GMOL,
 					U_GT,	
