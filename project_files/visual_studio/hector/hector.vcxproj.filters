@@ -185,6 +185,12 @@
     <ClInclude Include="..\..\..\headers\core\logger.hpp">
       <Filter>Header Files\core</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\headers\components\oh_component.hpp">
+      <Filter>Header Files\component</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\headers\visitors\avisitor.hpp">
+      <Filter>Header Files\visitors</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\source\main.cpp">
@@ -318,6 +324,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\source\data\spline_forsythe.cpp">
       <Filter>Source Files\data</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\source\components\oh_component.cpp">
+      <Filter>Source Files\components</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

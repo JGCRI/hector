@@ -19,6 +19,7 @@ class HalocarbonComponent;
 class SimpleNbox;
 class CarbonCycleSolver;
 class CH4Component;
+class OHComponent;
 class N2OComponent;
 class TemperatureComponent;
 class BlackCarbonComponent;
@@ -54,6 +55,7 @@ public:
     virtual void visit( CarbonCycleSolver* c ) {}
     virtual void visit( SimpleNbox* c ) {}
     virtual void visit( HalocarbonComponent* c ) {}
+    virtual void visit( OHComponent* c ) {}
     virtual void visit( CH4Component* c ) {}
     virtual void visit( N2OComponent* c ) {}
     virtual void visit( TemperatureComponent* c ) {}

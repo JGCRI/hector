@@ -10,6 +10,7 @@
 
 #include "components/imodel_component.hpp"
 #include "components/halocarbon_component.hpp"
+#include "components/oh_component.hpp"
 #include "components/ch4_component.hpp"
 #include "components/n2o_component.hpp"
 #include "components/bc_component.hpp"
@@ -88,9 +89,14 @@ void Core::init() {
     temp = new CarbonCycleSolver();
     modelComponents[ temp->getComponentName() ] = temp;
     
+    temp = new OHComponent();
+    modelComponents[ temp->getComponentName() ] = temp;
     temp = new CH4Component();
     modelComponents[ temp->getComponentName() ] = temp;
     temp = new N2OComponent();
+    modelComponents[ temp->getComponentName() ] = temp;
+
+    temp = new OzoneComponent();
     modelComponents[ temp->getComponentName() ] = temp;
 
 	temp = new ForcingComponent();

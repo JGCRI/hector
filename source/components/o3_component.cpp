@@ -97,9 +97,6 @@ void OzoneComponent::setData( const string& varName,
         } else if( varName == D_EMISSIONS_NMVOC ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
             NMVOC.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG_NMVOC ) );
-        } else if( varName ==  D_ATMOSPHERIC_CH4 ) {
-            H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            Ma.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_PPBV_CH4 ) );
         } else {
             H_THROW( "Unknown variable name while parsing " + getComponentName() + ": "
                     + varName );
@@ -126,11 +123,11 @@ void OzoneComponent::run( const double runToDate ) throw ( h_exception ) {
 	const double current_nox = NOX.get( runToDate ).value( U_TG_N );
 	const double current_co = CO.get( runToDate ).value( U_TG_CO );
 	const double current_nmvoc = NMVOC.get( runToDate ).value( U_TG_NMVOC );
-	const double current_ch4 = Ma.get( runToDate ).value( U_PPBV_CH4 );
+	const double current_ch4 = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_CH4 );
 
     O3.set( ( 5*log(current_ch4 ) ) + ( 0.125*current_nox ) + ( 0.0011*current_co )
                + ( 0.0033*current_nmvoc ), U_DU_O3 );
-	H_LOG( logger, Logger::DEBUG ) << "Year " << runToDate << " O3 level = " << O3 << std::endl;
+	H_LOG( logger, Logger::DEBUG ) << "Year " << runToDate << " O3 concentration = " << O3 << std::endl;
 }
 
 

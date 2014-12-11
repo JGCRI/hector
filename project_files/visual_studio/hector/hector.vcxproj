@@ -167,6 +167,7 @@
     <ClInclude Include="..\..\..\headers\components\o3_component.hpp" />
     <ClInclude Include="..\..\..\headers\components\ocean_component.hpp" />
     <ClInclude Include="..\..\..\headers\components\oc_component.hpp" />
+    <ClInclude Include="..\..\..\headers\components\oh_component.hpp" />
     <ClInclude Include="..\..\..\headers\components\onelineocean_component.hpp" />
     <ClInclude Include="..\..\..\headers\components\slr_component.hpp" />
     <ClInclude Include="..\..\..\headers\components\so2_component.hpp" />
@@ -194,6 +195,7 @@
     <ClInclude Include="..\..\..\headers\models\oceanbox.hpp" />
     <ClInclude Include="..\..\..\headers\models\ocean_csys.hpp" />
     <ClInclude Include="..\..\..\headers\models\simpleNbox.hpp" />
+    <ClInclude Include="..\..\..\headers\visitors\avisitor.hpp" />
     <ClInclude Include="..\..\..\headers\visitors\csv_outputstream_visitor.hpp" />
     <ClInclude Include="..\..\..\headers\visitors\csv_output_visitor.hpp" />
     <ClInclude Include="..\..\..\headers\visitors\ini_restart_visitor.hpp" />
@@ -208,6 +210,7 @@
     <ClCompile Include="..\..\..\source\components\o3_component.cpp" />
     <ClCompile Include="..\..\..\source\components\ocean_component.cpp" />
     <ClCompile Include="..\..\..\source\components\oc_component.cpp" />
+    <ClCompile Include="..\..\..\source\components\oh_component.cpp" />
     <ClCompile Include="..\..\..\source\components\onelineocean_component.cpp" />
     <ClCompile Include="..\..\..\source\components\slr_component.cpp" />
     <ClCompile Include="..\..\..\source\components\so2_component.cpp" />
