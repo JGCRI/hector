@@ -8,6 +8,7 @@
  *
  */
 
+#include <unistd.h>
 #include <iostream>
 #include <fstream>
 
@@ -54,6 +55,8 @@ private:
     static const std::string& logLevelToStr( const LogLevel logLevel );
     
     static const char* getDateTimeStamp();
+
+    static int chk_logdir(std::string dir);
     
     /*! \brief A customized file stream buffer to enable echoing to a console.
      *
