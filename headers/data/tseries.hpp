@@ -206,9 +206,14 @@ bool tseries<T_data>::exists( double t ) const {
  *
  *  Returns data associated with time t.
  *  If no value exists, behavior is defined by 'interp_allowed'.
+ *
+ *  If there is only a single value in the time series, then treat it
+ *  as a constant (i.e, return the single value that we have).
  */
 template <class T_data>
 T_data tseries<T_data>::get( double t ) const throw( h_exception ) {
+    if(mapdata.size() == 1)
+        return mapdata.begin()->second;
     typename std::map<double,T_data>::const_iterator itr = mapdata.find( t );
     if( itr != mapdata.end() )
         return (*itr).second;

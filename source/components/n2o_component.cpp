@@ -6,6 +6,7 @@
  *
  */
 
+#include <math.h>
 #include "components/n2o_component.hpp"
 #include "core/core.hpp"
 #include "visitors/avisitor.hpp"
@@ -117,7 +118,6 @@ void N2OComponent::prepareToRun() throw ( h_exception ) {
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
 	oldDate = core->getStartDate();
     N2O.set(oldDate, N0);  // set the first year's value    
-    N2O.set(0, N0); 
   }
 
 //------------------------------------------------------------------------------
