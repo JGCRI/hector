@@ -7,6 +7,8 @@
  */
 // changed back to using only concentrations
 
+#include <math.h>
+
 #include "components/oh_component.hpp"
 #include <boost/lexical_cast.hpp>
 #include "core/core.hpp"
