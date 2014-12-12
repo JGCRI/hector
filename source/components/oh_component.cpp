@@ -8,7 +8,6 @@
 // changed back to using only concentrations
 
 #include <math.h>
-
 #include "components/oh_component.hpp"
 #include <boost/lexical_cast.hpp>
 #include "core/core.hpp"
@@ -127,42 +126,37 @@ void OHComponent::prepareToRun() throw ( h_exception ) {
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
 	oldDate = core->getStartDate();
     //get intial CH4 concentration
-    M0 = core->sendMessage( M_GETDATA, D_PREINDUSTRIAL_CH4 );
-    double const NOX0 = NOX_emissions.first();
-    double const CO0 = CO_emissions.first();
-    double const NMVOC0 = NMVOC_emissions.first();
+     M0 = core->sendMessage( M_GETDATA, D_PREINDUSTRIAL_CH4 );
     TAU_OH.set( oldDate, TOH0 );
-    TAU_OH.set( 0.0, TOH0 );
-
+    
  }
 
 //------------------------------------------------------------------------------
 // documentation is inherited
 void OHComponent::run( const double runToDate ) throw ( h_exception ) {
 	H_ASSERT( !core->inSpinup() && runToDate-oldDate == 1, "timestep must equal 1" );
-    oldDate = runToDate;
 
-    // modified from Tanaka et al 2007.
-    const double current_nox = NOX_emissions.get( runToDate ).value( U_TG_N ); 
+       // modified from Tanaka et al 2007.
+    unitval current_nox = NOX_emissions.get( runToDate ); 
     const double current_co = CO_emissions.get( runToDate ).value( U_TG_CO ); 
     const double current_nmvoc = NMVOC_emissions.get( runToDate ).value( U_TG_NMVOC ); 
     
     //get this from CH4 component, this is last year's value
-   const double previous_ch4 = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_CH4, runToDate ).value( U_PPBV_CH4 );
-   
+   const double previous_ch4 = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_CH4, oldDate ).value( U_PPBV_CH4 );
+       
    double toh = 0.0;
    if ( previous_ch4 != M0 ) // if we are not at the first time
    {
    const double a =  CCH4 * ( log( previous_ch4 ) - log( M0.value(U_PPBV_CH4) ) ) ;
-   const double b = CNOX * ( current_nox - NOX0 ) ;  //put the first value up in prepare to run
-   const double c = CCO * ( current_co - CO0 ) ;
-   const double d = CNMVOC * (current_nmvoc - NMVOC0 ) ;
-   toh = a + b + c + d;
+   const double b = CNOX * ( current_nox - NOX_emissions.get( NOX_emissions.first() ) ).value( U_TG_N ) ;  
+   const double c = CCO * ( current_co - CO_emissions.get( CO_emissions.first() ).value( U_TG_CO ) ) ;
+   const double d = CNMVOC * (current_nmvoc - NMVOC_emissions.get( NMVOC_emissions.first() ).value( U_TG_NMVOC ) ) ;
+    toh = a + b + c + d;
    }
+    
+   TAU_OH.set( runToDate,  TOH0 * exp( toh ) );
 
-  TAU_OH.set( runToDate, unitval( TOH0 * exp( toh ), U_YRS ) );
-
-          
+    oldDate = runToDate;       
     H_LOG( logger, Logger::DEBUG ) << "Year " << runToDate << " OH lifetime = " << TAU_OH.get( runToDate ) << std::endl;
 }
 
