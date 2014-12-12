@@ -7,6 +7,7 @@
  */
 // changed back to using only concentrations
 
+#include <math.h>
 #include "components/ch4_component.hpp"
 #include "core/core.hpp"
 #include "h_util.hpp"
@@ -118,33 +119,39 @@ void CH4Component::prepareToRun() throw ( h_exception ) {
     
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
 	oldDate = core->getStartDate();
-    CH4.set(oldDate, M0);  // set the first year's value    
-    CH4.set(0, M0);
-}
+    CH4.set(oldDate, M0);  // set the first year's value  
+ }
 
 //------------------------------------------------------------------------------
 // documentation is inherited
 void CH4Component::run( const double runToDate ) throw ( h_exception ) {
 	H_ASSERT( !core->inSpinup() && runToDate-oldDate == 1, "timestep must equal 1" );
-    
-
+  
+     
     // modified from Wigley et al, 2002
    const double current_ch4em = CH4_emissions.get( runToDate ).value( U_TG_CH4 ); 
    const double current_toh = core->sendMessage( M_GETDATA, D_LIFETIME_OH, runToDate ).value( U_YRS );
-       
-   const double emis_con = current_ch4em + CH4N.value( U_TG_CH4 ) / UC_CH4.value( U_TG_PPBV );
-   double previous_ch4 = M0.value( U_PPBV_CH4 );
+    H_LOG( logger, Logger::DEBUG ) << "Year " << runToDate << " current_toh = " << current_toh << std::endl;
+   
 
+   const double ch4n =  CH4N.value( U_TG_CH4 );
+  
+     const double emisTocon = current_ch4em + ch4n / UC_CH4.value( U_TG_PPBV ); //something weird here... there is no CH4N value.
+    double previous_ch4 = M0.value( U_PPBV_CH4 ); //shouldn't the first value in the output be the value in the ini file?
+     
+    H_LOG( logger, Logger::DEBUG ) << "Year " << runToDate << " previous CH4 = " << previous_ch4 << std::endl;
+    
     if (runToDate!=oldDate)
     {
      previous_ch4 = CH4.get( oldDate );
     }
     
-   const double soil_sink = previous_ch4/Tsoil.value( U_YRS );  
+   const double soil_sink = previous_ch4/Tsoil.value( U_YRS );   
    const double strat_sink = previous_ch4/Tstrat.value( U_YRS ); 
    const double oh_sink = previous_ch4/ current_toh;
        
-  const double dCH4 = emis_con + soil_sink + strat_sink + oh_sink; //change in CH4 concentration to be added to previous_ch4
+  const double dCH4 = emisTocon - soil_sink - strat_sink - oh_sink; //change in CH4 concentration to be added to previous_ch4
+  H_LOG( logger, Logger::DEBUG ) << "Year " << runToDate << " dCH4 = " << dCH4 << std::endl;
 
    CH4.set( runToDate, unitval( previous_ch4 + dCH4, U_PPBV_CH4 ) );
 
