@@ -9,7 +9,7 @@
 #include <time.h>
 #include "core/logger.hpp"
 
-#if !defined(_WIN32)
+#if defined (__unix__) || defined (__MACH__)
 #include <unistd.h>
 #include <sys/stat.h>
 #include <sys/types.h> 
@@ -245,7 +245,7 @@ const char* Logger::getDateTimeStamp() {
     return ret;
 }
 
-#if !defined(_WIN32)
+#if defined (__unix__) || defined (__MACH__)
 int Logger::chk_logdir(std::string dir)
 {
     // clip trailing /, if any.  
