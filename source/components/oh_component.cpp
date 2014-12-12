@@ -138,8 +138,8 @@ void OHComponent::run( const double runToDate ) throw ( h_exception ) {
 
        // modified from Tanaka et al 2007.
     unitval current_nox = NOX_emissions.get( runToDate ); 
-    const double current_co = CO_emissions.get( runToDate ).value( U_TG_CO ); 
-    const double current_nmvoc = NMVOC_emissions.get( runToDate ).value( U_TG_NMVOC ); 
+    unitval current_co = CO_emissions.get( runToDate ); 
+    unitval current_nmvoc = NMVOC_emissions.get( runToDate ); 
     
     //get this from CH4 component, this is last year's value
    const double previous_ch4 = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_CH4, oldDate ).value( U_PPBV_CH4 );
@@ -149,8 +149,8 @@ void OHComponent::run( const double runToDate ) throw ( h_exception ) {
    {
    const double a =  CCH4 * ( log( previous_ch4 ) - log( M0.value(U_PPBV_CH4) ) ) ;
    const double b = CNOX * ( current_nox - NOX_emissions.get( NOX_emissions.first() ) ).value( U_TG_N ) ;  
-   const double c = CCO * ( current_co - CO_emissions.get( CO_emissions.first() ).value( U_TG_CO ) ) ;
-   const double d = CNMVOC * (current_nmvoc - NMVOC_emissions.get( NMVOC_emissions.first() ).value( U_TG_NMVOC ) ) ;
+   const double c = CCO * ( current_co - CO_emissions.get( CO_emissions.first() ) ).value( U_TG_CO );
+   const double d = CNMVOC * (current_nmvoc - NMVOC_emissions.get( NMVOC_emissions.first() ) ).value( U_TG_NMVOC );
     toh = a + b + c + d;
    }
     
