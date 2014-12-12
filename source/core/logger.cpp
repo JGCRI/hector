@@ -94,9 +94,9 @@ streamsize Logger::LoggerStreamBuf::xsputn( const char* s, streamsize n ) {
 //------------------------------------------------------------------------------
 /*! \brief Create an uninitialized logger.
  */
-Logger::Logger()
-:isInitialized( false ),
+Logger::Logger() :
 minLogLevel( WARNING ),
+isInitialized( false ),
 loggerStream( 0 )
 {
 }

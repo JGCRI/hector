@@ -113,7 +113,7 @@ void CSVTableReader::process( Core* core, const string& componentName,
         string line;
         vector<string> row;
         string unitsLabel;
-        size_t columnIndex = -1;
+        size_t columnIndex = 0; // code for "not found", takes advantage of skipping col==0 in the loop below.
         
         // read the header line and attempt to find varName. The first column is
         // not considered because that should be the index column.
@@ -121,14 +121,14 @@ void CSVTableReader::process( Core* core, const string& componentName,
         H_ASSERT( !line.empty(), "line empty" );
         split( row, line, is_any_of( "," ) );
 //        const int headerRowSize = row.size();
-        for( size_t col = 1; col < row.size() && columnIndex == -1; ++col ) {
+        for( size_t col = 1; col < row.size() && columnIndex == 0; ++col ) {
             // ignore white space before comparing variable names
             trim( row[ col ] );
             if( row[ col ] == varName ) {
                 columnIndex = col;
             }
         }
-        if( columnIndex == -1 ) {
+        if( columnIndex == 0 ) {
             H_THROW( "Could not find a column for "+varName+" in "+fileName+" header="+line );
         }
         

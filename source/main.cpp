@@ -18,6 +18,8 @@
 #include "visitors/csv_output_visitor.hpp"
 #include "visitors/csv_outputstream_visitor.hpp"
 
+#include "data/unitval.hpp"
+
 using namespace std;
 
 //-----------------------------------------------------------------------
@@ -29,7 +31,11 @@ int main (int argc, char * const argv[]) {
   using namespace Hector;
   
 	try {
-        
+            const unitval test(42.0, U_K);
+
+            std::cout << "Test value:  " << test << "\n";
+
+          
         // Create the global log
         Logger& glog = Logger::getGlobalLogger();
         glog.open( string( MODEL_NAME ), true, Logger::DEBUG );
