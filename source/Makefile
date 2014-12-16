@@ -30,9 +30,17 @@ GTLIB	= $(GTROOT)/lib/.libs
 ifeq ($(strip $(GSLROOT)),)
 GSLROOT	= /usr/local
 endif
+
+## Set the GSL include and library locations.  There is a special case for Evergreen users.
+ifeq ($(strip $(GSLROOT)),EVERGREEN)
+GSLINC  = $(GSL_INC)
+GSLLIB  = $(GSL_LIB)
+# remove warning flags on Evergreen too:  old version of g++
+CXXFLAGS = -g  $(INCLUDES) $(OPTFLAGS) $(CXXEXTRA) $(CXXPROF) -MMD
+else
 GSLINC	= $(GSLROOT)/include/gsl
 GSLLIB	= $(GSLROOT)/lib
-
+endif
 
 export GTLIB GTINC GSLINC GSLLIB
 
