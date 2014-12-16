@@ -7,8 +7,13 @@
  */
 
 #include <time.h>
-
 #include "core/logger.hpp"
+
+#if !defined(_WIN32)
+#include <unistd.h>
+#include <sys/stat.h>
+#include <sys/types.h> 
+#endif
 
 namespace Hector {
 
@@ -124,15 +129,18 @@ void Logger::open( const string& logName, const bool echoToScreen,
                   LogLevel minLogLevel ) throw ( h_exception )
 {
     H_ASSERT( !isInitialized, "This log has already been initialized." );
+
+    chk_logdir(LOG_DIRECTORY);
     
-	const string fqName = LOG_DIRECTORY + logName + LOG_EXTENSION;	// fully-qualified name
+    const string fqName = LOG_DIRECTORY + logName + LOG_EXTENSION;	// fully-qualified name
 	
     this->minLogLevel = minLogLevel;
     
     // TODO: does the logger or the ostream manage this memory?
     // FIXME:  currently nobody does.  The memory is leaked.
     LoggerStreamBuf* buff = new LoggerStreamBuf( echoToScreen );
-    buff->open( fqName.c_str(), ios::out );
+    if( !buff->open( fqName.c_str(), ios::out ) )
+        H_THROW("Unable to open log file " + fqName);
     
     loggerStream.rdbuf( buff );
     isInitialized = true;
@@ -237,4 +245,41 @@ const char* Logger::getDateTimeStamp() {
     return ret;
 }
 
+#if !defined(_WIN32)
+int Logger::chk_logdir(std::string dir)
+{
+    // clip trailing /, if any.  
+    int len = dir.size(); 
+    if(dir[len-1] == '/')
+        dir[len-1] = '\0';    // ok to modify because dir is a copy
+
+    const char *cdir = dir.c_str(); 
+    if(access(cdir, F_OK)) {    // NB: access and mkdir return 0 on success.
+        // directory doesn't exist.  Attempt to create it
+        if(mkdir(cdir, 0755)) {
+            // failed.  Throw an error
+            H_THROW("Log directory " + dir + " does not exist and can't be created.");
+        }
+        else 
+            return 1; 
+    }
+    
+    struct stat statbuf;
+
+    stat(cdir, &statbuf);
+
+    if(!S_ISDIR(statbuf.st_mode))
+        H_THROW("Log directory " + dir + " exists but is not a directory.");
+
+    if(access(cdir, W_OK))
+        H_THROW("Log directory " + dir + " lacks write permission.");
+
+    return 1;
+}
+#else  // Windows version of this function is a no-op.
+int Logger::chk_logdir(std::string dir)
+{
+    return 1;
+}
+#endif
 }

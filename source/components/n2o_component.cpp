@@ -6,6 +6,7 @@
  *
  */
 
+#include <math.h>
 #include "components/n2o_component.hpp"
 #include "core/core.hpp"
 #include "visitors/avisitor.hpp"
@@ -19,10 +20,15 @@ using namespace std;
 /*! \brief Constructor
  */
 N2OComponent::N2OComponent() {
-    Na.allowInterp( true );
-    Na.name = N2O_COMPONENT_NAME;
-	N0.set( 0.0, U_PPBV_N2O );
-}
+    N2O_emissions.allowInterp( true ); 
+    N2O_emissions.name = N2O_COMPONENT_NAME; 
+    N2ON_emissions.allowInterp( true ); 
+    N2ON_emissions.name = D_NAT_EMISSIONS_N2O; 
+    N2O.allowInterp( true );
+    N2O.name = D_ATMOSPHERIC_N2O;
+    TAU_N2O.allowInterp( true );
+    TAU_N2O.name = D_LIFETIME_N2O;
+  }
 
 //------------------------------------------------------------------------------
 /*! \brief Destructor
@@ -44,6 +50,7 @@ void N2OComponent::init( Core* coreptr ) {
     logger.open( getComponentName(), false, Logger::DEBUG );
     H_LOG( logger, Logger::DEBUG ) << "hello " << getComponentName() << std::endl;
     core = coreptr;
+    oldDate = core->getStartDate();  //old date will start wehere we begin. 
 
     // Inform core what data we can provide
     core->registerCapability( D_ATMOSPHERIC_N2O, getComponentName() );
@@ -85,9 +92,18 @@ void N2OComponent::setData( const string& varName,
         if( varName == D_PREINDUSTRIAL_N2O ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
             N0 = unitval::parse_unitval( data.value_str, data.units_str, U_PPBV_N2O );
-        } else if( varName == D_ATMOSPHERIC_N2O ) {
+        } else if( varName == D_EMISSIONS_N2O ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            Na.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_PPBV_N2O ) );
+            N2O_emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG_N2O ) );
+        } else if( varName == D_NAT_EMISSIONS_N2O ) {
+            H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
+            N2ON_emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG_N2O ) );
+        } else if( varName == D_CONVERSION_N2O ) {
+            H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
+            UC_N2O = unitval::parse_unitval( data.value_str, data.units_str, U_TG_PPBV );
+        } else if( varName == D_INITIAL_LIFETIME_N2O ) {
+            H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
+            TN2O0 = unitval::parse_unitval( data.value_str, data.units_str, U_YRS );
         } else {
             H_THROW( "Unknown variable name while parsing " + getComponentName() + ": "
                     + varName );
@@ -103,13 +119,36 @@ void N2OComponent::prepareToRun() throw ( h_exception ) {
     
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
 	oldDate = core->getStartDate();
-}
+    N2O.set(oldDate, N0);  // set the first year's value    
+  }
 
 //------------------------------------------------------------------------------
 // documentation is inherited
 void N2OComponent::run( const double runToDate ) throw ( h_exception ) {
+    
 	H_ASSERT( !core->inSpinup() && runToDate-oldDate == 1, "timestep must equal 1" );
+   
+    // modified from Ward and Mahowald, 2014
+    double previous_n2o = N0.value( U_PPBV_N2O );
+
+    if (runToDate!=oldDate)
+    {
+      previous_n2o = N2O.get( oldDate );
+    }
+
+    //Lifetime varys based on N2O concentrations
+    TAU_N2O.set( runToDate, unitval( TN2O0.value( U_YRS ) * ( pow( previous_n2o/N0.value( U_PPBV_N2O ),-0.05 ) ), U_YRS ) ); 
+    
+    //varying natural emissions from preindustrial to 2000.  After 2000, we hold natural emissions constant
+       
+    const double current_n2oem = N2O_emissions.get( runToDate ).value( U_TG_N2O ) + N2ON_emissions.get( runToDate ).value( U_TG_N2O ); 
+    
+    double dN2O = current_n2oem/UC_N2O - previous_n2o/TAU_N2O.get( runToDate ).value( U_YRS );
+
+     N2O.set( runToDate, unitval( previous_n2o + dN2O, U_PPBV_N2O ) );
+
     oldDate = runToDate;
+    H_LOG( logger, Logger::DEBUG ) << "Year " << runToDate << " N2O concentraion = " << N2O.get( runToDate ) << std::endl;
 }
 
 //------------------------------------------------------------------------------
@@ -118,14 +157,14 @@ unitval N2OComponent::getData( const std::string& varName,
                               const double date ) throw ( h_exception ) {
     
     unitval returnval;
-    
+   
     if( varName == D_ATMOSPHERIC_N2O ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for atmospheric N2O" );
-        returnval = Na.get( date );
+        returnval = N2O.get( date );
     } else if( varName == D_PREINDUSTRIAL_N2O ) {
         H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for preindustrial N2O" );
         returnval = N0;
-    } else {
+   } else {
         H_THROW( "Caller is requesting unknown variable: " + varName );
     }
     

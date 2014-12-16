@@ -112,8 +112,7 @@ void oceancsys::ocean_csys_run( unitval tbox, unitval carbon )
     
 	// --------------------- Kwater -----------------------------------
 	// table 1.1 in Part1: Seawater carbonate chemistry Andrew Dickson
-	// DOE 1994
-    // Millero (1995)(in Dickson and Goyet (1994, Chapter 5, p.18))
+	// Millero (1995)(in Dickson and Goyet (1994, Chapter 5, p.18))
 	tmp1 = -13847.26/Tk + 148.96502 - 23.6521 * log( Tk );
 	tmp2 = + (118.67/Tk - 5.977 + 1.0495*log( Tk ) ) * sqrt( S ) - 0.01615 * S;
 	const double lnKw =  tmp1 + tmp2;
@@ -202,17 +201,17 @@ void oceancsys::ocean_csys_run( unitval tbox, unitval carbon )
     
 	const double h      = find_largest_root( ncoeffs, a );
     
-	const double s      = dic/( 1.0 + K1_val / h + K1_val * K2_val / h / h );
+	const double co2st      = dic/( 1.0 + K1_val / h + K1_val * K2_val / h / h ); // co2st = CO2*
 	const double hco3   = dic/( 1.0 + h / K1_val + K2_val / h );
 	const double co3    = dic/( 1.0 + h / K2_val + h * h / K1_val / K2_val ); // mol/kg
     
 	const double million = 1e6; // unit conversion
     
 	// Output (all variables beginning with capital letter below)
-	TCO2o.set( s * million, U_UMOL_KG );
+	TCO2o.set( co2st * million, U_UMOL_KG );
 	HCO3.set( hco3 * million, U_UMOL_KG );
 	CO3.set( co3 * million, U_UMOL_KG );
-	PCO2o.set ( s * million/Kh.value( U_MOL_KG_ATM ), U_UATM );
+	PCO2o.set ( co2st * million/Kh.value( U_MOL_KG_ATM ), U_UATM );
 	pH.set (-log10( h ), U_PH);
     
     // ----------------------------------------------------------------------------

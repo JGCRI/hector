@@ -43,4 +43,7 @@ ipch
 Run Test Cases
 Debug
 libs
+project_files/visual_studio/
+libs/
 *.kdev4
+

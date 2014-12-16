@@ -49,15 +49,18 @@ public:
     // IVisitable methods
     virtual void accept( AVisitor* visitor );
     
-	unitval M0;    // preindustrial methane
-    
-private:
+	private:
     virtual unitval getData( const std::string& varName,
-                            const double date ) throw ( h_exception );
-    
-    //! concentrations time series
-    tseries<unitval> Ma;
-    
+                            const double date ) throw ( h_exception );   
+     //! emissions time series
+    tseries<unitval> CH4_emissions;
+    tseries<unitval> CH4;  //CH4 concentrations
+    unitval M0;     // preindustrial methane
+    unitval UC_CH4;  // conversion factor between emissions and concentration
+    unitval CH4N;   // natural emissions
+    unitval Tsoil;  // CH4 loss to soil
+    unitval Tstrat; //  CH4 loss to stratosphere
+
     // logger
     Logger logger;
 

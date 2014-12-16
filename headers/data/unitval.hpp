@@ -57,9 +57,12 @@ enum unit_types {
                     U_MOL_YR,
 					U_TG_CO,
 					U_TG_CH4,
+                    U_TG_N2O,
 				    U_TG_NMVOC,
 					U_DU_O3,
-					U_TG_N, // NOX emissions given in TG-N/yr
+					U_TG_N,             // NOX emissions given in TG-N/yr
+
+                    U_TG_PPBV,          // Conversion for CH4 and N2O emission to concentrations
     
                     U_DEGC,             // Temperature
                     U_K,				// Temperature
@@ -92,7 +95,9 @@ enum unit_types {
 					U_J_KG_C,              // specific heat capacity
 
                     U_DOBSON,               // Dobson units (ozone)
-    
+                    
+                    U_YRS,                  // Years
+
                     U_UNDEFINED             // Undefined units,
                                             // Warning: all units should be defined
                                             // before U_UNDEFINED

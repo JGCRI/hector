@@ -16,8 +16,9 @@
 #define BOX_MODEL_COMPONENT_NAME "carbon-box-model"
 #define SIMPLENBOX_COMPONENT_NAME "simpleNbox"
 
-#define CH4_COMPONENT_NAME "methane"
-#define N2O_COMPONENT_NAME "nitrous"
+#define CH4_COMPONENT_NAME "CH4"
+#define OH_COMPONENT_NAME   "OH"
+#define N2O_COMPONENT_NAME "N2O"
 #define TEMPERATURE_COMPONENT_NAME "temperature"
 #define OCEAN_COMPONENT_NAME "ocean"
 #define ONELINEOCEAN_COMPONENT_NAME "onelineocean"
