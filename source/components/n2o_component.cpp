@@ -71,8 +71,7 @@ unitval N2OComponent::sendMessage( const std::string& message,
         return getData( datum, info.date );
         
     } else if( message==M_SETDATA ) {   //! Caller is requesting to set data
-        H_THROW("N2O sendMessage not yet implemented for message=M_SETDATA");
-        //TODO: call setData below
+        setData(datum, info);
         //TODO: change core so that parsing is routed through sendMessage
         //TODO: make setData private
         
@@ -94,10 +93,16 @@ void N2OComponent::setData( const string& varName,
             N0 = unitval::parse_unitval( data.value_str, data.units_str, U_PPBV_N2O );
         } else if( varName == D_EMISSIONS_N2O ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            N2O_emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG_N2O ) );
+            if(data.isVal)
+                N2O_emissions.set(data.date, data.value_unitval);
+            else
+                N2O_emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG_N2O ) );
         } else if( varName == D_NAT_EMISSIONS_N2O ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            N2ON_emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG_N2O ) );
+            if(data.isVal)
+                N2ON_emissions.set(data.date, data.value_unitval);
+            else
+                N2ON_emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG_N2O ) );
         } else if( varName == D_CONVERSION_N2O ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
             UC_N2O = unitval::parse_unitval( data.value_str, data.units_str, U_TG_PPBV );

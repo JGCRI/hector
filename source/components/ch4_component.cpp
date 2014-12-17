@@ -68,7 +68,7 @@ unitval CH4Component::sendMessage( const std::string& message,
         return getData( datum, info.date );
         
     } else if( message==M_SETDATA ) {   //! Caller is requesting to set data
-      H_THROW("CH4: sendMessage not yet implemented for message=M_SETDATA.");
+        setData(datum, info);
         //TODO: call setData below
         //TODO: change core so that parsing is routed through sendMessage
         //TODO: make setData private
@@ -90,8 +90,11 @@ void CH4Component::setData( const string& varName,
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
             M0 = unitval::parse_unitval( data.value_str, data.units_str, U_PPBV_CH4 );
          } else if( varName == D_EMISSIONS_CH4 ) {
-            H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            CH4_emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG_CH4 ) );
+             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
+             if(data.isVal)
+                 CH4_emissions.set(data.date, data.value_unitval);
+             else
+                 CH4_emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG_CH4 ) );
         } else if( varName == D_LIFETIME_SOIL ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
             Tsoil = unitval::parse_unitval( data.value_str, data.units_str, U_YRS );
