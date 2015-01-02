@@ -44,11 +44,11 @@ void OzoneComponent::init( Core* coreptr ) {
     H_LOG( logger, Logger::DEBUG ) << "hello " << getComponentName() << std::endl;
     core = coreptr;
 
-    CO.allowInterp( true );
-    NMVOC.allowInterp( true );
-    NOX.allowInterp( true );//Inputs like CO and NMVOC and NOX,
+    CO_emissions.allowInterp( true );
+    NMVOC_emissions.allowInterp( true );
+    NOX_emissions.allowInterp( true );//Inputs like CO and NMVOC and NOX,
     Ma.allowInterp( true );
-    O3.set( 0.0, U_DU_O3 );
+    O3.allowInterp(true);
 
    
     
@@ -88,15 +88,18 @@ void OzoneComponent::setData( const string& varName,
     H_LOG( logger, Logger::DEBUG ) << "Setting " << varName << "[" << data.date << "]=" << data.value_str << std::endl;
     
     try {
-       if( varName == D_EMISSIONS_NOX ) {
+        if (  varName == D_PREINDUSTRIAL_O3 ) {
+            H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
+            PO3 = unitval::parse_unitval( data.value_str, data.units_str, U_DU_O3 );
+        } else if( varName == D_EMISSIONS_NOX ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            NOX.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG_N ) );
+            NOX_emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG_N ) );
         } else if( varName == D_EMISSIONS_CO ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-           CO.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG_CO ) );
+           CO_emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG_CO ) );
         } else if( varName == D_EMISSIONS_NMVOC ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            NMVOC.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG_NMVOC ) );
+            NMVOC_emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG_NMVOC ) );
         } else {
             H_THROW( "Unknown variable name while parsing " + getComponentName() + ": "
                     + varName );
@@ -112,6 +115,7 @@ void OzoneComponent::prepareToRun() throw ( h_exception ) {
     
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
 	oldDate = core->getStartDate();
+    O3.set(oldDate, PO3);  // set the first year's value 
 }
 
 //------------------------------------------------------------------------------
@@ -119,19 +123,27 @@ void OzoneComponent::prepareToRun() throw ( h_exception ) {
 void OzoneComponent::run( const double runToDate ) throw ( h_exception ) {
 
 	// Calculate O3 based on NOX, CO, NMVOC, CH4.
+    // Modified from Tanaka et al 2007
 
-    unitval current_nox = NOX.get( runToDate );
-	unitval current_co = CO.get( runToDate );
-	unitval current_nmvoc = NMVOC.get( runToDate );
+    double previous_o3 = PO3.value( U_DU_O3 );
+
+    if (runToDate!=oldDate)
+    {
+     previous_o3 = O3.get( oldDate );
+    }
+
+    unitval current_nox = NOX_emissions.get( runToDate );
+	unitval current_co = CO_emissions.get( runToDate );
+	unitval current_nmvoc = NMVOC_emissions.get( runToDate );
 	unitval current_ch4 = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_CH4, runToDate );
 
-    O3.set( ( 5*log( current_ch4 ) ) + ( 0.125*current_nox ) + ( 0.0011*current_co )
-               + ( 0.0033*current_nmvoc ), U_DU_O3 );
-	H_LOG( logger, Logger::DEBUG ) << "Year " << runToDate << " O3 concentration = " << O3 << std::endl;
+    O3.set( runToDate, unitval( ( 5*log( current_ch4 ) ) + ( 0.125*current_nox ) + ( 0.0011*current_co )
+               + ( 0.0033*current_nmvoc ), U_DU_O3 ) );
+    
+    H_LOG( logger, Logger::DEBUG ) << "Year " << runToDate << " O3 concentration = " << O3.get( runToDate ) << std::endl;
 }
 
-
-//------------------------------------------------------------------------------
+ //------------------------------------------------------------------------------
 // documentation is inherited
 unitval OzoneComponent::getData( const std::string& varName,
                                  const double date ) throw ( h_exception ) {
@@ -140,7 +152,7 @@ unitval OzoneComponent::getData( const std::string& varName,
     
     if( varName == D_ATMOSPHERIC_O3 ) {
         H_ASSERT( date == Core::undefinedIndex(), "Date is not allowed" ); //== is a comparision
-		returnval = O3;
+		returnval = O3.get( date );
     }  else {
         H_THROW( "Caller is requesting unknown variable: " + varName );
     }

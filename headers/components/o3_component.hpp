@@ -54,11 +54,11 @@ private:
                             const double date ) throw ( h_exception );
     
     //! Current ozone concentration, relative to preindustrial, Dobson units
-    unitval O3;
-
-	tseries<unitval> CO;
-	tseries<unitval> NMVOC;
-    tseries<unitval> NOX;
+    unitval PO3;
+    tseries<unitval> O3;
+    tseries<unitval> CO_emissions;
+	tseries<unitval> NMVOC_emissions;
+    tseries<unitval> NOX_emissions;
 	tseries<unitval> Ma;
 
     

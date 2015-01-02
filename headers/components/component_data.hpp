@@ -112,6 +112,7 @@
 
 
 //o3 component
+#define D_PREINDUSTRIAL_O3	      "PO3"
 #define D_ATMOSPHERIC_O3	      "O3"
 #define D_ATMOSPHERIC_EM_CH4      "CH4"
 #define D_EMISSIONS_NOX           "NOX_emissions"
