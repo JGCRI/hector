@@ -136,7 +136,7 @@ void OHComponent::prepareToRun() throw ( h_exception ) {
 void OHComponent::run( const double runToDate ) throw ( h_exception ) {
 	H_ASSERT( !core->inSpinup() && runToDate-oldDate == 1, "timestep must equal 1" );
 
-       // modified from Tanaka et al 2007.
+       // modified from Tanaka et al 2007 and Wigley et al 2002.
     unitval current_nox = NOX_emissions.get( runToDate ); 
     unitval current_co = CO_emissions.get( runToDate ); 
     unitval current_nmvoc = NMVOC_emissions.get( runToDate ); 
@@ -147,11 +147,25 @@ void OHComponent::run( const double runToDate ) throw ( h_exception ) {
    double toh = 0.0;
    if ( previous_ch4 != M0 ) // if we are not at the first time
    {
-   const double a =  CCH4 * ( log( previous_ch4 ) - log( M0.value(U_PPBV_CH4) ) ) ;
-   const double b = CNOX * ( current_nox - NOX_emissions.get( NOX_emissions.first() ) ).value( U_TG_N ) ;  
-   const double c = CCO * ( current_co - CO_emissions.get( CO_emissions.first() ) ).value( U_TG_CO );
-   const double d = CNMVOC * (current_nmvoc - NMVOC_emissions.get( NMVOC_emissions.first() ) ).value( U_TG_NMVOC );
+ //  toh= ( CCH4 * ( ( -1.0 * log( M0.value(U_PPBV_CH4) ) ) + log( previous_ch4 ) ) ) + ( CNOX * ( ( -1.0 * NOX_emissions.get( NOX_emissions.first() ).value( U_TG_N ) ) + current_nox ) )
+  //     + ( CCO * ( ( -1.0 * CO_emissions.get( CO_emissions.first() ).value( U_TG_CO ) ) + current_co ) ) + ( CNMVOC * ( (-1.0 * NMVOC_emissions.get( NMVOC_emissions.first() ).value( U_TG_NMVOC ) ) + current_nmvoc ) ); 
+   const double a =  CCH4 * ( ( -1.0 * log( previous_ch4 ) ) + log( M0.value(U_PPBV_CH4) ) );
+   const double b = CNOX * ( ( -1.0 * current_nox ) + NOX_emissions.get( NOX_emissions.first() ).value( U_TG_N ) ); 
+   const double c = CCO * ( ( -1.0 * + current_co ) + CO_emissions.get( CO_emissions.first() ).value( U_TG_CO ) );
+   const double d = CNMVOC * ( (-1.0 * + current_nmvoc ) + NMVOC_emissions.get( NMVOC_emissions.first() ).value( U_TG_NMVOC ) );
+    H_LOG( logger, Logger::DEBUG ) << "Year " << runToDate << " a = " << a << std::endl;
+    H_LOG( logger, Logger::DEBUG ) << "Year " << runToDate << " previous_ch4 = " << previous_ch4 << std::endl;
+    H_LOG( logger, Logger::DEBUG ) << "Year " << runToDate << " M0 = " << M0 << std::endl;
+    H_LOG( logger, Logger::DEBUG ) << "Year " << runToDate << " log(prev) = " << log(previous_ch4) << std::endl;
+    H_LOG( logger, Logger::DEBUG ) << "Year " << runToDate << " log(M0) = " << log(M0) << std::endl;
+    H_LOG( logger, Logger::DEBUG ) << "Year " << runToDate << " x = " << (-1.0* log(previous_ch4)) + log(M0) << std::endl;
+    H_LOG( logger, Logger::DEBUG ) << "Year " << runToDate << " x = " << ( (-1.0* log(previous_ch4)) + log(M0) ) * -.32 << std::endl;
+
+    H_LOG( logger, Logger::DEBUG ) << "Year " << runToDate << " b = " << b << std::endl;
+    H_LOG( logger, Logger::DEBUG ) << "Year " << runToDate << " c = " << c << std::endl;
+    H_LOG( logger, Logger::DEBUG ) << "Year " << runToDate << " d = " << d << std::endl;
     toh = a + b + c + d;
+    H_LOG( logger, Logger::DEBUG ) << "Year " << runToDate << " toh = " << toh << std::endl;
    }
     
    TAU_OH.set( runToDate,  TOH0 * exp( toh ) );
