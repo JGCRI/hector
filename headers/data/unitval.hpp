@@ -71,7 +71,7 @@ enum unit_types {
                     U_CM_YR,            
     
                     U_G,
-                    U_KG,               // Mass-related
+                    U_TG,               // Mass-related
                     U_GG,				// Giga-grams
                     U_MOL,
                     U_GMOL,

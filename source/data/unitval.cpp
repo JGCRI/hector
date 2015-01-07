@@ -67,7 +67,7 @@ string unitval::unitsName( const unit_types u ) {
             break;
         case U_GG: return "Gg";
             break;
-        case U_KG: return "kg";
+        case U_TG: return "Tg";
             break;
         case U_MOL: return "mol";
             break;
