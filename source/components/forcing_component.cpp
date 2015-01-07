@@ -269,20 +269,18 @@ void ForcingComponent::run( const double runToDate ) throw ( h_exception ) {
         
         // ---------- Black carbon ----------
         if( core->checkCapability( D_EMISSIONS_BC ) ) {
-            double fbc = 0.0743e-9 * core->sendMessage( M_GETDATA, D_EMISSIONS_BC, message_data( runToDate ) ).value( U_KG );
+            double fbc = 0.0743 * core->sendMessage( M_GETDATA, D_EMISSIONS_BC, message_data( runToDate ) ).value( U_TG );
             forcings[D_RF_BC].set( fbc, U_W_M2 );
-            // includes both indirect and direct forcings from Bond et al 2013, Journal of Geophysical Research Atmo
-            // PI value from RCP sceanrios is subtracted off all emissions
-          }
+            // includes both indirect and direct forcings from Bond et al 2013, Journal of Geophysical Research Atmo (table C1 - Central)
+           }
         
         // ---------- Organic carbon ----------
         if( core->checkCapability( D_EMISSIONS_OC ) ) {
-            double foc = -0.0128e-9 * core->sendMessage( M_GETDATA, D_EMISSIONS_OC, message_data( runToDate ) ).value( U_KG );
+            double foc = -0.0128 * core->sendMessage( M_GETDATA, D_EMISSIONS_OC, message_data( runToDate ) ).value( U_TG );
             forcings[D_RF_OC].set( foc, U_W_M2 );
-            // includes both indirect and direct forcings from Bond et al 2013, Journal of Geophysical Research Atmo (table C1). 
-            // The fossil fuel and biomass are weighted (-4.5) then added to the snow and clouds for a total of -12.8.  
-            // PI value from RCP scenarios is subtracted off all emissions
-          }
+            // includes both indirect and direct forcings from Bond et al 2013, Journal of Geophysical Research Atmo (table C1 - Central). 
+            // The fossil fuel and biomass are weighted (-4.5) then added to the snow and clouds for a total of -12.8 (personal communication Steve Smith, PNNL)  
+        }
         
         // ---------- Sulphate Aerosols ----------
         if( core->checkCapability( D_ATMOSPHERIC_SO2 ) && core->checkCapability( D_EMISSIONS_SO2 ) ) {
