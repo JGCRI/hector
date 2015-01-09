@@ -30,8 +30,9 @@ logs/*.*
 # OS-specific files
 .DS_Store
 
-# Xcode build directories
+# Xcode build directories and interface state
 DerivedData/
+*.xcuserstate
 
 # Project files
 project_files/*.*
