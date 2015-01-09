@@ -148,9 +148,9 @@ void OHComponent::run( const double runToDate ) throw ( h_exception ) {
    if ( previous_ch4 != M0 ) // if we are not at the first time
    {
    const double a =  CCH4 * ( ( -1.0 * log( previous_ch4 ) ) + log( M0.value(U_PPBV_CH4) ) );
-   const double b = CNOX * ( ( -1.0 * current_nox ) + NOX_emissions.get( NOX_emissions.first() ).value( U_TG_N ) ); 
-   const double c = CCO * ( ( -1.0 * + current_co ) + CO_emissions.get( CO_emissions.first() ).value( U_TG_CO ) );
-   const double d = CNMVOC * ( (-1.0 * + current_nmvoc ) + NMVOC_emissions.get( NMVOC_emissions.first() ).value( U_TG_NMVOC ) );
+   const double b = CNOX * ( ( -1.0 * current_nox ) + NOX_emissions.get( NOX_emissions.firstdate() ).value( U_TG_N ) );
+   const double c = CCO * ( ( -1.0 * + current_co ) + CO_emissions.get( CO_emissions.firstdate() ).value( U_TG_CO ) );
+   const double d = CNMVOC * ( (-1.0 * + current_nmvoc ) + NMVOC_emissions.get( NMVOC_emissions.firstdate() ).value( U_TG_NMVOC ) );
     toh = a + b + c + d;
     H_LOG( logger, Logger::DEBUG ) << "Year " << runToDate << " toh = " << toh << std::endl;
    }

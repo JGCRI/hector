@@ -546,7 +546,7 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     lastsum = sum;
 
     // If user has supplied Ca values, adjust atmospheric C to match
-    if( !core->inSpinup() && Ca_constrain.size() && t <= Ca_constrain.last() ) {
+    if( !core->inSpinup() && Ca_constrain.size() && t <= Ca_constrain.lastdate() ) {
         
         H_LOG( logger, Logger::WARNING ) << "** Constraining atmospheric CO2 to user-supplied value" << std::endl;
         
