@@ -28,14 +28,9 @@ using namespace std;
  *  Starting point for wrapper, not the core.
  */
 int main (int argc, char * const argv[]) {
-  using namespace Hector;
-  
+    using namespace Hector;
+    
 	try {
-            const unitval test(42.0, U_K);
-
-            std::cout << "Test value:  " << test << "\n";
-
-          
         // Create the global log
         Logger& glog = Logger::getGlobalLogger();
         glog.open( string( MODEL_NAME ), true, Logger::DEBUG );
@@ -43,12 +38,18 @@ int main (int argc, char * const argv[]) {
         
         // Parse the main configuration file
         if( argc > 1 ) {
-            h_reader reader( argv[1], INI_style ); }
-        else {
+            if( ifstream( argv[1] ) ) {
+                h_reader reader( argv[1], INI_style );
+            } else {
+                H_LOG( glog, Logger::SEVERE ) << "Couldn't find input file " << argv[ 1 ] << endl;
+                H_THROW( "Couldn't find input file" )
+            }
+        } else {
             H_LOG( glog, Logger::SEVERE ) << "No configuration filename!" << endl;
             H_THROW( "Usage: <program> <config file name>" )
         }
         
+        // Initialize the core and send input data to it
         H_LOG( glog, Logger::NOTICE ) << "Creating and initializing the core." << endl;
         Core core;
         core.init();
@@ -57,6 +58,7 @@ int main (int argc, char * const argv[]) {
         INIToCoreReader coreParser( &core );
         coreParser.parse( argv[1] );
         
+        // Create visitors
         H_LOG( glog, Logger::NOTICE ) << "Adding visitors to the core." << endl;
         INIRestartVisitor restartVisitor( string( OUTPUT_DIRECTORY ) + "restart.ini", core.getEndDate() );
         core.addVisitor( &restartVisitor );
@@ -81,18 +83,17 @@ int main (int argc, char * const argv[]) {
         
         H_LOG( glog, Logger::NOTICE ) << "Hector wrapper end" << endl;
         glog.close();
-	}
-	catch( h_exception e ) {
-		cerr << "* Program exception: " << e.msg << "\n* Function " << e.func << ", file "
+    }
+    catch( h_exception e ) {
+        cerr << "* Program exception: " << e.msg << "\n* Function " << e.func << ", file "
         << e.file << ", line " << e.linenum << endl;
-	}
-	catch( std::exception &e ) {
-		cerr << "Standard exception: " << e.what() << endl;
-	}
+    }
+    catch( std::exception &e ) {
+        cerr << "Standard exception: " << e.what() << endl;
+    }
     catch( ... ) {
         cerr << "Other exception! " << endl;
     }
-        cout << "\nRun completed. Press [ENTER] to finish." << endl;
-	cin.get();
+    
     return 0;
 }
