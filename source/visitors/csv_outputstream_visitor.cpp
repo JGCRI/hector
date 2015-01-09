@@ -257,7 +257,7 @@ void CSVOutputStreamVisitor::visit( OrganicCarbonComponent* c ) {
 // documentation is inherited
 void CSVOutputStreamVisitor::visit( OzoneComponent* c ) {
     if( !core->outputEnabled( c->getComponentName() ) ) return;
-    STREAM_MESSAGE( csvFile, c, D_ATMOSPHERIC_O3, current_date );
+    STREAM_MESSAGE_DATE( csvFile, c, D_ATMOSPHERIC_O3, current_date );
 }
 
 //------------------------------------------------------------------------------

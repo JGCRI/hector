@@ -233,7 +233,7 @@ void ForcingComponent::run( const double runToDate ) throw ( h_exception ) {
 		// ---------- Troposheric Ozone ----------
         if( core->checkCapability( D_ATMOSPHERIC_O3 ) ) {
             //from Tanaka et al, 2007, but using Joos et al., 2001 value of 0.042
-            const double ozone = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_O3 ).value( U_DU_O3 );
+            const double ozone = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_O3, message_data( runToDate ) ).value( U_DU_O3 );
             const double fo3 = 0.042 * (ozone - 25.0);
             forcings[D_RF_O3].set( fo3, U_W_M2 );
         }

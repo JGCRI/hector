@@ -140,6 +140,8 @@ void OzoneComponent::run( const double runToDate ) throw ( h_exception ) {
     O3.set( runToDate, unitval( ( 5*log( current_ch4 ) ) + ( 0.125*current_nox ) + ( 0.0011*current_co )
                + ( 0.0033*current_nmvoc ), U_DU_O3 ) );
     
+    oldDate=runToDate;
+        
     H_LOG( logger, Logger::DEBUG ) << "Year " << runToDate << " O3 concentration = " << O3.get( runToDate ) << std::endl;
 }
 
@@ -151,7 +153,7 @@ unitval OzoneComponent::getData( const std::string& varName,
     unitval returnval;
     
     if( varName == D_ATMOSPHERIC_O3 ) {
-        H_ASSERT( date == Core::undefinedIndex(), "Date is not allowed" ); //== is a comparision
+        H_ASSERT( date != Core::undefinedIndex(), "Date required for O3" ); //== is a comparision
 		returnval = O3.get( date );
     }  else {
         H_THROW( "Caller is requesting unknown variable: " + varName );
