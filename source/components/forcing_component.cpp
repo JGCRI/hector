@@ -74,7 +74,7 @@ void ForcingComponent::init( Core* coreptr ) {
     core->registerDependency( D_ATMOSPHERIC_O3, getComponentName() );
     core->registerDependency( D_EMISSIONS_BC, getComponentName() );
     core->registerDependency( D_EMISSIONS_OC, getComponentName() );
-    core->registerDependency( D_ATMOSPHERIC_SO2, getComponentName() );
+    core->registerDependency( D_NATURAL_SO2, getComponentName() );
     core->registerDependency( D_ATMOSPHERIC_N2O, getComponentName() );
     
     core->registerDependency( D_RF_CF4, getComponentName() );
@@ -232,9 +232,9 @@ void ForcingComponent::run( const double runToDate ) throw ( h_exception ) {
         
 		// ---------- Troposheric Ozone ----------
         if( core->checkCapability( D_ATMOSPHERIC_O3 ) ) {
-            //from Tanaka et al, 2007, but using Joos et al., 2001 value of 0.042
+            //from Tanaka et al, 2007
             const double ozone = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_O3, message_data( runToDate ) ).value( U_DU_O3 );
-            const double fo3 = 0.042 * (ozone - 25.0);
+            const double fo3 = 0.042 * ozone;
             forcings[D_RF_O3].set( fo3, U_W_M2 );
         }
         
@@ -267,6 +267,7 @@ void ForcingComponent::run( const double runToDate ) throw ( h_exception ) {
         forcings[ D_RF_CH3Cl ] = core->sendMessage( M_GETDATA, D_RF_CH3Cl, message_data( runToDate ) );
         forcings[ D_RF_CH3Br ] = core->sendMessage( M_GETDATA, D_RF_CH3Br, message_data( runToDate ) );
         
+        
         // ---------- Black carbon ----------
         if( core->checkCapability( D_EMISSIONS_BC ) ) {
             double fbc = 0.0743 * core->sendMessage( M_GETDATA, D_EMISSIONS_BC, message_data( runToDate ) ).value( U_TG );
@@ -283,25 +284,22 @@ void ForcingComponent::run( const double runToDate ) throw ( h_exception ) {
         }
         
         // ---------- Sulphate Aerosols ----------
-        if( core->checkCapability( D_ATMOSPHERIC_SO2 ) && core->checkCapability( D_EMISSIONS_SO2 ) ) {
-            // calculated slightly different than BC/OC
-            unitval S0 = core->sendMessage( M_GETDATA, D_PREINDUSTRIAL_SO2 );
-            unitval SN = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_SO2 );
+        if( core->checkCapability( D_NATURAL_SO2 ) && core->checkCapability( D_EMISSIONS_SO2 ) ) {
             
-            // Our forcing calculation returns an absolute value. We store the first (preindustrial) value,
-            // and use that to compute a delta forcing, which is what we really want.
-            H_ASSERT( S0.value( U_GG ) >0, "S0 is 0" );
+            unitval S0 = core->sendMessage( M_GETDATA, D_2000_SO2 );
+            unitval SN = core->sendMessage( M_GETDATA, D_NATURAL_SO2 );
+            
+            // equations taken from Joos et al., 2001
+            H_ASSERT( S0.value( U_TG ) >0, "S0 is 0" );
             unitval emission = core->sendMessage( M_GETDATA, D_EMISSIONS_SO2, message_data( runToDate ) );
-            emission = ((emission/32e-9)*64e-9); // convert from Ggrams of sulfur to Ggrams of SO2.
             double fso2d = -0.4 * emission/S0;
             forcings[D_RF_SO2d].set( fso2d, U_W_M2 );
-            
             // includes only direct forcings from Forster etal 2007 (IPCC)
-            // emissions from RCP
-            
+                     
             // indirect aerosol effect via changes in cloud properties
-            //double SN = 42000; //Gg of S value take from Joos et al 2001. global biogeochem cycles
-            double fso2i = -0.8 * ( log( SN.value( U_GG ) + emission.value( U_GG ) ) / SN.value( U_GG ) ) / ( ( log( SN.value( U_GG ) + S0.value( U_GG ) )/SN.value( U_GG ) ) );
+            const double a = -0.8 * ( log( ( SN.value( U_TG ) + emission.value( U_TG ) ) / SN.value( U_TG ) ) ); 
+            const double b =  pow ( log ( ( SN.value( U_TG ) + S0.value( U_TG ) ) / SN.value( U_TG ) ), -1 );
+            double fso2i = a * b;
             forcings[D_RF_SO2i].set( fso2i, U_W_M2 );
             //includes only indirect forcing
         }
@@ -310,6 +308,7 @@ void ForcingComponent::run( const double runToDate ) throw ( h_exception ) {
            // volcanic forcings
             forcings[D_RF_VOL] = core->sendMessage( M_GETDATA, D_VOLCANIC_SO2, message_data( runToDate ) );
         }
+
         
         // ---------- Total ----------
         unitval Ftot( 0.0, U_W_M2 );  // W/m2
