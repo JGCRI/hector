@@ -88,8 +88,11 @@ private:
 
     // Heat flux
 	unitval heatflux;
-	unitval k;              //!< ocean heat uptake efficiency, W/m2/K     
+	unitval k_int;           //!< initial ocean heat uptake efficiency, W/m2/K     
 	unitval cp;             //!< Specific heat
+    unitval T_inv;          //!< used to calculate a new k value - exponential decrease with increasing temperature
+    unitval k;              //!< ocean heat uptake efficiency, W/m2/K  
+     tseries<double> Tgav_record;        //!< Record of global temperature values
     
     // Ocean circulation
     unitval tt;          //!< m3/s thermohaline overturning

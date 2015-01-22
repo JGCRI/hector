@@ -157,6 +157,8 @@
 #define D_TEMP_LL               "Temp_LL"
 #define D_SPINUP_CHEM           "spinup_chem"
 #define D_HEAT_UPTAKE_EFF       "k"
+#define D_INT_HEAT_UPTAKE_EFF   "k_int"
+#define D_INV_TEMP              "T_inv"
 #define D_SPECIFIC_HEAT			"cp"
 #define D_CO3_LL				"CO3_LL"
 #define D_CO3_HL				"CO3_HL"

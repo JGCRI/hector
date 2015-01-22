@@ -292,12 +292,12 @@ void ForcingComponent::run( const double runToDate ) throw ( h_exception ) {
             // equations taken from Joos et al., 2001
             H_ASSERT( S0.value( U_TG ) >0, "S0 is 0" );
             unitval emission = core->sendMessage( M_GETDATA, D_EMISSIONS_SO2, message_data( runToDate ) );
-            double fso2d = -0.35 * emission/S0;
+            double fso2d = -0.25 * emission/S0; //-0.35
             forcings[D_RF_SO2d].set( fso2d, U_W_M2 );
             // includes only direct forcings from Forster etal 2007 (IPCC)
                      
             // indirect aerosol effect via changes in cloud properties
-            const double a = -0.6 * ( log( ( SN.value( U_TG ) + emission.value( U_TG ) ) / SN.value( U_TG ) ) ); 
+            const double a = -0.2 * ( log( ( SN.value( U_TG ) + emission.value( U_TG ) ) / SN.value( U_TG ) ) ); // -.6
             const double b =  pow ( log ( ( SN.value( U_TG ) + S0.value( U_TG ) ) / SN.value( U_TG ) ), -1 );
             double fso2i = a * b;
             forcings[D_RF_SO2i].set( fso2i, U_W_M2 );
