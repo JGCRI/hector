@@ -128,12 +128,10 @@ void OceanComponent::setData( const string& varName,
           } else if( varName == D_INT_HEAT_UPTAKE_EFF ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
            k_int.set( lexical_cast<double>( data.value_str ), U_W_M2_K );
-		//} else if( varName == D_INT_HEAT_UPTAKE_EFF ) {
-         //   H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-          //  k_int.set( lexical_cast<double>( data.value_str ), U_W_M2_K );
-        //} else if( varName == D_INV_TEMP ) {
-         //   H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-          //  T_inv.set( lexical_cast<double>( data.value_str ), U_1_K );
+		
+       } else if( varName == D_INV_TEMP ) {
+            H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
+            T_inv.set( lexical_cast<double>( data.value_str ), U_1_K );
         //} else if( varName == D_CIRC_TOPT ) {
           //  H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
           // circ_Topt = unitval::parse_unitval( data.value_str, data.units_str, U_DEGC );
@@ -349,11 +347,10 @@ void OceanComponent::run( const double runToDate ) throw ( h_exception ) {
      */
 	if ( !in_spinup ) {       // do not run during spinup
 		unitval tgaveq = core->sendMessage( M_GETDATA, D_GLOBAL_TEMPEQ );
-  
-/* #define OCN_TEMPN 1
+   #define OCN_TEMPN 1
         
         Tgav_record.set( runToDate, core->sendMessage( M_GETDATA, D_GLOBAL_TEMP ).value( U_DEGC ) );
-        double Tgav_rm = 0.0;       /* window mean of Tgav 
+        double Tgav_rm = 0.0;       // window mean of Tgav 
             if( runToDate > core->getStartDate() + OCN_TEMPN ) {
                 for( int i = runToDate - OCN_TEMPN; i<= runToDate; i++ ) {
                  Tgav_rm += Tgav_record.get( i );
@@ -363,10 +360,10 @@ void OceanComponent::run( const double runToDate ) throw ( h_exception ) {
 
 
         static double last_k = k_int.value( U_W_M2_K );
-       */
+       
         // Compute what k should be based on initial value, extinction coefficient, and temperature
         //double k = T_inv.value( U_1_K ) * exp( k_int.value( U_W_M2_K ) * tgaveq.value( U_DEGC ) );  // W/m2/K
-       // unitval k (k_int.value( U_W_M2_K ) * exp( T_inv.value( U_1_K ) * tgaveq.value( U_DEGC ) ), U_W_M2_K );  // W/m2/K
+        unitval k (k_int.value( U_W_M2_K ) * exp( T_inv.value( U_1_K ) * tgaveq.value( U_DEGC ) ), U_W_M2_K );  // W/m2/K
    		//H_LOG( logger, Logger::DEBUG ) << "k wants to go to = " << k << " delta is " << k-last_k << std::endl;
         // ...but we don't allow it to increase (e.g. when Tgav is declining) too fast
     /*    if( k > last_k ) {
@@ -377,10 +374,13 @@ void OceanComponent::run( const double runToDate ) throw ( h_exception ) {
         */
 //        unitval k (  ), U_W_M2_K );
         
-        heatflux.set( k_int.value( U_W_M2_K ) * (tgaveq.value( U_DEGC )), U_W_M2 );
+        //heatflux.set( k_int.value( U_W_M2_K ) * (tgaveq.value( U_DEGC )), U_W_M2 );
         // heatflux.set( k * Tgav_rm, U_W_M2 );
-         		
-		H_LOG( logger, Logger::DEBUG ) << "heatflux = " << heatflux << ", kappa = " << k << std::endl;
+         
+       heatflux.set( k.value( U_W_M2_K ) * (tgaveq.value( U_DEGC )), U_W_M2 );
+       std::cout << "k = " << k << std::endl;
+		
+       H_LOG( logger, Logger::DEBUG ) << "heatflux = " << heatflux << ", kappa = " << k << std::endl;
 	}
 
     // Now wait for the solver to call us
