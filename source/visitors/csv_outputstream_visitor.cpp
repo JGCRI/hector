@@ -187,7 +187,6 @@ void CSVOutputStreamVisitor::visit( OceanComponent* c ) {
     STREAM_MESSAGE( csvFile, c, D_CARBON_HL );
     STREAM_MESSAGE( csvFile, c, D_CARBON_IO );
     STREAM_MESSAGE( csvFile, c, D_CARBON_LL );
-    STREAM_MESSAGE( csvFile, c, D_HEAT_FLUX );
     STREAM_MESSAGE( csvFile, c, D_DIC_HL );
     STREAM_MESSAGE( csvFile, c, D_DIC_LL );
     STREAM_MESSAGE( csvFile, c, D_HL_DO );
@@ -202,14 +201,15 @@ void CSVOutputStreamVisitor::visit( OceanComponent* c ) {
     STREAM_MESSAGE( csvFile, c, D_PH_LL );
     STREAM_MESSAGE( csvFile, c, D_TEMP_HL );
     STREAM_MESSAGE( csvFile, c, D_TEMP_LL );
-    STREAM_MESSAGE( csvFile, c, D_HEAT_FLUX );
     STREAM_MESSAGE( csvFile, c, D_OCEAN_C );
     STREAM_MESSAGE( csvFile, c, D_CO3_HL );
     STREAM_MESSAGE( csvFile, c, D_CO3_LL );
     STREAM_MESSAGE( csvFile, c, D_TIMESTEPS );
     if( !in_spinup ) {
-         STREAM_MESSAGE( csvFile, c, D_REVELLE_HL );
-         STREAM_MESSAGE( csvFile, c, D_REVELLE_LL );
+        STREAM_MESSAGE( csvFile, c, D_REVELLE_HL );
+        STREAM_MESSAGE( csvFile, c, D_REVELLE_LL );
+        STREAM_MESSAGE( csvFile, c, D_HEAT_FLUX );
+        STREAM_MESSAGE( csvFile, c, D_HEAT_UPTAKE_EFF );
     }
 }
 

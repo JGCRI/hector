@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		B53C186D16C98E010084BD6E /* libgtest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B53C186C16C98E010084BD6E /* libgtest.a */; };
 		B54987AA16C981060000A223 /* gtest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B54987A916C981060000A223 /* gtest.framework */; };
+		B58059451A72D26800022360 /* oh_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B58059441A72D26800022360 /* oh_component.cpp */; };
 		B5BD15C7189B3ED20020C554 /* bc_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15A4189B3ED10020C554 /* bc_component.cpp */; };
 		B5BD15C8189B3ED20020C554 /* bc_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15A4189B3ED10020C554 /* bc_component.cpp */; };
 		B5BD15C9189B3ED20020C554 /* ch4_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15A5189B3ED10020C554 /* ch4_component.cpp */; };
@@ -81,6 +82,8 @@
 		8DD76F6C0486A84900D96B5E /* hector */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = hector; sourceTree = BUILT_PRODUCTS_DIR; };
 		B53C186C16C98E010084BD6E /* libgtest.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgtest.a; path = "../../../../../../../../../../Library/Developer/Xcode/DerivedData/gtest-cumlpidgkhribbdlzgavdlnkcwyy/Build/Products/Debug/libgtest.a"; sourceTree = "<group>"; };
 		B54987A916C981060000A223 /* gtest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = gtest.framework; path = "../../../../../../../../../../Library/Developer/Xcode/DerivedData/gtest-cumlpidgkhribbdlzgavdlnkcwyy/Build/Products/Debug/gtest.framework"; sourceTree = "<group>"; };
+		B58059441A72D26800022360 /* oh_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = oh_component.cpp; sourceTree = "<group>"; };
+		B58059461A72D27600022360 /* oh_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = oh_component.hpp; sourceTree = "<group>"; };
 		B5BD1531189B3EB00020C554 /* bc_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = bc_component.hpp; sourceTree = "<group>"; };
 		B5BD1532189B3EB00020C554 /* ch4_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ch4_component.hpp; sourceTree = "<group>"; };
 		B5BD1533189B3EB00020C554 /* component_data.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = component_data.hpp; sourceTree = "<group>"; };
@@ -203,6 +206,7 @@
 		B5BD1530189B3EB00020C554 /* components */ = {
 			isa = PBXGroup;
 			children = (
+				B58059461A72D27600022360 /* oh_component.hpp */,
 				B5BD1531189B3EB00020C554 /* bc_component.hpp */,
 				B5BD1532189B3EB00020C554 /* ch4_component.hpp */,
 				B5BD1533189B3EB00020C554 /* component_data.hpp */,
@@ -291,6 +295,7 @@
 		B5BD15A3189B3ED10020C554 /* components */ = {
 			isa = PBXGroup;
 			children = (
+				B58059441A72D26800022360 /* oh_component.cpp */,
 				B5BD15A4189B3ED10020C554 /* bc_component.cpp */,
 				B5BD15A5189B3ED10020C554 /* ch4_component.cpp */,
 				B5BD15A6189B3ED10020C554 /* dummy_model_component.cpp */,
@@ -511,6 +516,7 @@
 				B5BD1608189B41340020C554 /* h_reader.cpp in Sources */,
 				B5BD163F189B42EB0020C554 /* simpleNbox.cpp in Sources */,
 				B5BD15E5189B3ED20020C554 /* unitval.cpp in Sources */,
+				B58059451A72D26800022360 /* oh_component.cpp in Sources */,
 				B5BD1606189B41340020C554 /* csv_table_reader.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

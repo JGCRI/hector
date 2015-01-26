@@ -801,8 +801,8 @@ void SimpleNbox::slowparameval( double t, const double c[] )
             // Slightly more complicated: use mean temperature of a window (size Q10_TEMPN) of
             // temperatures, lagged by Q10_TEMPLAG years. This reflects the slow warming of soils
             // relative to the atmosphere
-            #define Q10_TEMPLAG 125 //75//65         // TODO: put lag in input files 150, 25
-            #define Q10_TEMPN 25//35 
+            #define Q10_TEMPLAG 50 //125         // TODO: put lag in input files 150, 25
+            #define Q10_TEMPN 50//25
             double Tgav_rm = 0.0;       /* window mean of Tgav */
             if( t > core->getStartDate() + Q10_TEMPLAG ) {
                 for( int i=t-Q10_TEMPLAG; i<t-Q10_TEMPLAG+Q10_TEMPN; i++ ) {
