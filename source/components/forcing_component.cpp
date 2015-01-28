@@ -7,6 +7,7 @@
  */
 
 #include <boost/lexical_cast.hpp>
+#include <boost/array.hpp>
 #include <math.h>
 
 #include "components/forcing_component.hpp"
@@ -242,6 +243,7 @@ namespace Hector {
             
             // TODO: Would like to just 'know' all the halocarbon instances out there
             boost::array<string, 26> halos = {
+              {
                 D_RF_CF4,
                 D_RF_C2F6,
                 D_RF_HFC23,
@@ -268,10 +270,11 @@ namespace Hector {
                 D_RF_halon2402,
                 D_RF_CH3Cl,
                 D_RF_CH3Br
+              }
             };
             
             // Halocarbons can be disabled individually via the input file, so we run through all possible ones
-            for (int hc=0; hc<halos.size(); ++hc) {
+            for (unsigned hc=0; hc<halos.size(); ++hc) {
                 if( core->checkCapability( halos[hc] ) ) {
                     // Forcing values are actually computed by the halocarbon itself
                     forcings[ halos[hc] ] = core->sendMessage( M_GETDATA, halos[hc], message_data( runToDate ) );

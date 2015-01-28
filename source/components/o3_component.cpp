@@ -125,13 +125,6 @@ void OzoneComponent::run( const double runToDate ) throw ( h_exception ) {
 	// Calculate O3 based on NOX, CO, NMVOC, CH4.
     // Modified from Tanaka et al 2007
 
-    double previous_o3 = PO3.value( U_DU_O3 );
-
-    if (runToDate!=oldDate)
-    {
-     previous_o3 = O3.get( oldDate );
-    }
-
     unitval current_nox = NOX_emissions.get( runToDate );
 	unitval current_co = CO_emissions.get( runToDate );
 	unitval current_nmvoc = NMVOC_emissions.get( runToDate );
