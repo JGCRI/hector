@@ -209,7 +209,7 @@ unitval HalocarbonComponent::getData( const std::string& varName,
         returnval = Ha;
     } else if( varName == D_HC_EMISSION ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for hc emissions" );
-        if( date >= emissions.first() )
+        if( date >= emissions.firstdate() )
             returnval = emissions.get( date );
         else
             returnval.set( 0.0, U_GG );

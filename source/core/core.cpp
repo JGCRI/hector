@@ -396,7 +396,7 @@ IModelComponent* Core::getComponentByName( const string& componentName ) const t
     CNameComponentIterator it = modelComponents.find( componentName );
     
     // throw an exception for an unknown component
-    string err = "Unknown model component: " + componentName;
+    string err = "Unknown model component '" + componentName + "' in input file";
     H_ASSERT( it != modelComponents.end(), err );
     
     return ( *it ).second;

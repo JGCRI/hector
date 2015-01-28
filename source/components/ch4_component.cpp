@@ -131,13 +131,11 @@ void CH4Component::run( const double runToDate ) throw ( h_exception ) {
     // modified from Wigley et al, 2002
    const double current_ch4em = CH4_emissions.get( runToDate ).value( U_TG_CH4 ); 
    const double current_toh = core->sendMessage( M_GETDATA, D_LIFETIME_OH, runToDate ).value( U_YRS );
-    H_LOG( logger, Logger::DEBUG ) << "Year " << runToDate << " current_toh = " << current_toh << std::endl;
-   
+      
    const double ch4n =  CH4N.value( U_TG_CH4 );
+   const double emisTocon = ( current_ch4em + ch4n ) / UC_CH4.value( U_TG_PPBV ); 
+   double previous_ch4 = M0.value( U_PPBV_CH4 ); 
   
-    const double emisTocon = current_ch4em + ch4n / UC_CH4.value( U_TG_PPBV ); 
-    double previous_ch4 = M0.value( U_PPBV_CH4 ); 
-     
     H_LOG( logger, Logger::DEBUG ) << "Year " << runToDate << " previous CH4 = " << previous_ch4 << std::endl;
     
     if (runToDate!=oldDate)
@@ -148,7 +146,7 @@ void CH4Component::run( const double runToDate ) throw ( h_exception ) {
    const double soil_sink = previous_ch4/Tsoil.value( U_YRS );   
    const double strat_sink = previous_ch4/Tstrat.value( U_YRS ); 
    const double oh_sink = previous_ch4/ current_toh;
-       
+             
   const double dCH4 = emisTocon - soil_sink - strat_sink - oh_sink; //change in CH4 concentration to be added to previous_ch4
   H_LOG( logger, Logger::DEBUG ) << "Year " << runToDate << " dCH4 = " << dCH4 << std::endl;
 

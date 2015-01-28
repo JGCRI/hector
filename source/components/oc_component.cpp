@@ -82,7 +82,7 @@ void OrganicCarbonComponent::setData( const string& varName,
     try {
         if( varName ==  D_EMISSIONS_OC ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            OC_emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_KG ) );
+            OC_emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG ) );
         } else {
             H_THROW( "Unknown variable name while parsing " + getComponentName() + ": "
                     + varName );
