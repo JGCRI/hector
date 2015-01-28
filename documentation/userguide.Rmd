@@ -1,8 +1,6 @@
 ---
 title: "Hector User Guide"
 author: "Ben Bond-Lamberty and Corinne Hartin"
-date: "April 30, 2014"
-output: html_document
 ---
 
 Introduction: Hector
@@ -34,20 +32,42 @@ will need to download and install these libraries on your system. These include:
 * *REQUIRED*: Boost. Free peer-reviewed portable C++ source libraries, available at http://www.boost.org/. 
 Hector uses only the parts of Boost that are implemented as header libraries (i.e., all of the code is 
 contained in header files that are included and compiled with the Hector source). Therefore, all you need to 
-do to set up Boost is to download and extract it. Hector has been tested with Boost version 1_45_0.
+do to set up Boost is to download and extract it. Hector requires Boost version ≥ 1_52_0.
 
-* *REQUIRED*: Gnu Scientific Library. A numerical library for C and C++, available at http://www.gnu.org/software/gsl/. 
-You will need to download and follow the Boost README instructions. Hector has been tested with GSL version 1.16.
+* *REQUIRED*: Gnu Scientific Library. A numerical library for C and C++, available at http://www.gnu.org/software/gsl/. You will need to download and follow the Boost README instructions. You will need to compile and install the GSL. To do this, unpack the GSL tar file in the location of your choice. Follow the setup instructions in the GSL README file. Briefly, they comprise three steps:  `./configure`, `make`, and `make install`. You will need to have root (superuser) privilege to perform the last step, unless you choose an install directory somewhere under your own home directory (see the GSL README for instructions on how to do this).  Hector has been tested with, and is currently using, GSL version 1.16.
 
 * *OPTIONAL*: Googletest framework. TODO.
 
-Installing and building - Mac OS X
+
+Installing and building - Mac OS X (Xcode)
 ---------------------------------
-Installing and building - Mac OS X
+
+These directions assume a basic familiarity with Xcode and Mac OS X software installation. (If you're going to use `make` and not Xcode, see Linux directions below.)
+
+* Install [Xcode](https://developer.apple.com/xcode/downloads/) if necessary. Hector has been built and tested with Mac OS 10.8.5 ~~and 10.10 (Yosemite)~~. The project files are for Xcode 5.1.1.
+* Download and install Boost and GSL, following instructions above.
+* Download the [Hector zip file](https://github.com/JGCRI/hector/archive/master.zip) or check out the repository using Git.
+* From Xcode, open the project file in `project_files/Xcode/hector.cxodeproj`.
+* Build the project. See below if you encounter errors.
+* Change the current Scheme settings (Scheme->Edit Scheme) and add a command-line argument (*Arguments* tab, e.g. "input/hector_rcp45.ini").
+* Run!
+
+Xcode Build Settings to check/change if you encounter build errors:
+* *Architectures-Base SDK*: OS X 10.8 [or OS X version on machine] 
+* *Build Options-Compiler for C/C++/Objective-C*: Default compiler (Apple LLVM 5.1)
+* *Search Paths-Header Search Paths*: "/usr/local/include /usr/local/lib/boost_1_52_0/" [or other header directories]
+* *Search Paths-Library Search Paths*: "/usr/local/lib/" [or other library directories]
+* *LLVM-Language-C++-C++ Standard Library*: libc++ (LLVM C++ standard library with C++11 support)
+* *Linking-Other Linker Flags*: "-lgsl -lgslcblas -lm"
+* *User-Defined*: "GCC_MODEL_TUNING" defined as "G5"
+
 
 Installing and building - Windows
 ---------------------------------
-Installing and building - Windows
+* Install Visual Studio, if necessary.
+* Download and install *Boost* and *GSL*, following instructions above.
+* Download the [Hector zip file](https://github.com/JGCRI/hector/archive/master.zip) or check out the repository using Git.
+* TODO
 
 Installing and building - Linux
 ---------------------------------
@@ -55,36 +75,28 @@ The Hector makefiles look for the required libraries (above) in certain default
 locations, but those defaults can be overridden by setting the
 environment variables described below.
 
-### Boost
-Hector uses only the parts of Boost that are implemented as header
-libraries (i.e., all of the code is contained in header files that are
-included and compiled with the Hector source; you do not need to link
-to any precompiled libraries). Therefore, all you need to do to set
-up Boost is to download it and extract it from its tar file. 
+**Boost**
 
 Environment variables:
-
-* BOOSTVERSION (default: `1_45_0`). The Boost version will appear in the name of the tar file you downloaded. It is used only to determine the default installation
-directory (see below). If you override the default installation
-directory, then you can ignore this variable
 
 * BOOSTROOT (default `$(HOME)/src/boost_$(BOOSTVERSION)`).
 This variable should contain the full name of the directory created
 when you unpacked Boost. If you unpacked Boost in `$(HOME)/src`, then
-all you need to do is set the BOOSTVERSION variable and leave this everything else
-alone. If you unpacked it somewhere else, or if you changed the name
+all you need to do is set the `BOOSTVERSION` variable (*q.v.* below) and leave this variable
+at its default value. If you unpacked Boost somewhere else, or if you changed the name
 of the directory that was created when you unpacked it, then you will
-need to set this variable explicitly.
+need to set this variable explicitly. 
 
-### GNU Scientific Library (GSL)
-You will need to compile and install the GSL. To do this, unpack the
-GSL tar file in the location of your choice. Follow the setup
-instructions in the GSL README file. Briefly, they comprise three
-steps:  `./configure`, `make`, and `make install`. You will need to
-have root (superuser) privilege to perform the last step, unless you
-choose an install directory somewhere under your own home directory
-(see the GSL README for instructions on how to do this). The default
-install location is /usr/local, and that is also the default for
+* BOOSTVERSION (default: `1_52_0`). This variable should contain the
+version number of the version of Boost that you installed.  The
+version number will appear in the name of the tar file you
+downloaded. The `BOOSTVERSION` variable is used in the default value of `BOOSTROOT` to determine the default installation
+directory. If you override the default value of `BOOSTROOT` you can ignore this variable.
+
+**GNU Scientific Library (GSL)**
+
+The default
+install location for GSL is /usr/local, and that is also the default for
 Hector. Therefore, if you use the GSL default installation procedure,
 you will not need to override the Hector defaults. If you choose to
 install GSL somewhere else, use the environment variable below to indicate
@@ -96,10 +108,12 @@ Environment variables:
     Set this variable to the same install directory that you used when you
     configured GSL.
 
-### Google Test Framework (gtest)
-TODO
+**Google Test Framework (gtest)**
 
-### Shared Library Search Path
+TODO. This is not required to run Hector.
+
+**Shared Library Search Path**
+
 Some of the libraries used by Hector (such as the GSL) will be
 compiled into shared libraries that will loaded at run time. It is
 best if these libraries are in directories that are part of your
@@ -117,7 +131,8 @@ to the environment variable `LD_LIBRARY_PATH`.  Try not to use this approach if 
 can help it because it can cause some conflicts with other software on your system.
 Instead, ask your system administrator if ldconfig is right for you.
 
-### Building Hector
+**Building Hector**
+
 Once the necessary libraries are installed, change to the top-level
 Hector directory and type `make hector`. The hector executable will
 be built in the `source/` subdirectory. If you ever need to rebuild,
@@ -136,12 +151,14 @@ It is intended to turn on performance profiling, which must be
 specified at both the compile and link stages of the build, so it
 generally should be either unset (for normal operation) or set to -pg
 (for profiling). Profiling slows the code down dramatically, so if you use it, be
-sure to unset `CXXPROF` and rebuild when you are ready to go back to
+sure to unset `CXXPROF`, clean the build directories with `make clean`, 
+and rebuild when you are ready to go back to
 production runs.
 
 Installing and building - iOS/Android
 ---------------------------------
 Not yet. ;)
+
 
 Running Hector
 ==============================
@@ -156,9 +173,7 @@ Input files and formats
 Input files and formats
 Default RCP cases
 
-Parameters and options (by component)
-
-
+Parameters and options (by component) 
 
 Output files
 ---------------------------------

@@ -14,7 +14,7 @@ export HROOT
 
 ## Boost root
 ifeq ($(strip $(BOOSTVERSION)),)
-BOOSTVERSION	= 1_45_0
+BOOSTVERSION	= 1_52_0
 endif
 ifeq ($(strip $(BOOSTROOT)),)
 BOOSTROOT	= $(HOME)/src/boost_$(BOOSTVERSION)
