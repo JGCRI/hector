@@ -92,7 +92,6 @@ int main (int argc, char * const argv[]) {
     catch( ... ) {
         cerr << "Other exception! " << endl;
     }
-        cout << "\nRun completed. Press [ENTER] to finish." << endl;
-	cin.get();
+
     return 0;
 }

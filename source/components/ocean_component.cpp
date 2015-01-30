@@ -367,7 +367,7 @@ void OceanComponent::calcHeatflux( const double runToDate ) {
         // slope parameter (here negative -> declining), tmid is the midpoint of the
         // transition, and `kmin` the minimum heat uptake.
         const double t = Tgav.value( U_DEGC );
-        const double sl = -3;                   // 1/K
+        const double sl = -1.0;                   // 1/K
         const double tmid = t_mid.value( U_K );
         const double kmin = 0.0;                // W/m2/K
         const double kmax = k_max.value( U_W_M2_K );
@@ -387,7 +387,7 @@ void OceanComponent::calcHeatflux( const double runToDate ) {
         // Currently this is a big, big cheat, because it's time-based
         // What about if this is based on exceeding e.g. 1 K temperature rise?
         if( runToDate > 2000 ) {
-            min_k_so_far *= 0.995;
+//            min_k_so_far *= 0.995;
         }
         // For sl=-3, x0=2.75, L_min=0, L=0.8-L_min:
         // 0.995 is PERFECT for rcp4.5 (0.99 shoots it high) but 2.6 goes low
