@@ -59,3 +59,5 @@ output/rcp45_rcp85/011.ocean.ph_ll.csv
 output/rcp45_rcp85/011.ocean.ph_ll.pdf
 output/rcp45_rcp85/012.ocean.ph_ll.csv
 output/rcp45_rcp85/012.ocean.ph_ll.pdf
+
+*.xcuserstate
