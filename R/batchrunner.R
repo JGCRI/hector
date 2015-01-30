@@ -27,13 +27,13 @@ REFDATA <- read.csv("CMIP5_Tgav.csv")
 # Data structure holding information about variables to change between runs
 # A list of lists, holding var name, INI file section, and values
 VARDATA <- list(
-    k_max=list(section="ocean", values=c(0.6, 0.8, 1.0, 1.2)),
-    t_mid=list(section="ocean", values=c(2.0, 3.0, 4.0, 5.0))
+    k_max=list(section="ocean", values=c(0.8, 0.6, 1.0, 1.2)),
+    t_mid=list(section="ocean", values=c(2.75, 2.0, 3.0, 4.0, 5.0)),
+    slope=list(section="ocean", values=c(-1, -0.5, -1.5, -2)),
+    k_min=list(section="ocean", values=c(0, 0.1, 0.2, 0.3)),
+    S=list(section="temperature", values=c(3, 2, 2.5))
 )
 
-VARDATA1 <- list(
-    S=list(section="temperature", values=c(1.5, 2, 2.5, 3, 3.5))
-)
 # ----------------------------------------------------------------
 # Settings you will probably won't have to change
 
@@ -78,7 +78,7 @@ subparam <- function(flines, section, parameter, newvalue) {
     printlog("nextsecline =", nextsecline)
     
     # Find variable name occuring after that point
-    varline <- secline + grep(paste0("^", parameter), flines[secline:nextsecline])
+    varline <- secline - 1 + grep(paste0("^", parameter), flines[secline:nextsecline])
     printlog(parameter, "line =", varline)
     stopifnot(length(varline) == 1)
     
