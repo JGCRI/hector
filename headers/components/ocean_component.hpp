@@ -89,6 +89,8 @@ private:
     // Heat flux
 	unitval heatflux;
 	unitval k_max;           //!< maximum ocean heat uptake efficiency, W/m2/K
+    unitval k_min;          //!< minimum ocean heat uptake efficiency, W/m2/K
+    unitval slope;           //!< slope of the curve, 1/K
 //	unitval cp;             //!< Specific heat
     unitval t_mid;          //!< global temperature at which kappa has declined by 50%
     unitval kappa;              //!< ocean heat uptake efficiency, W/m2/K

@@ -64,6 +64,8 @@ void OceanComponent::init( Core* coreptr ) {
     heatflux.set( 0.0, U_W_M2 );
     k_max.set( 0.8, U_W_M2_K );    // default
     t_mid.set( 2.75, U_K );        // default
+    k_min.set( 0.0, U_W_M2_K );   // default
+    slope.set( -3.0, U_1_K );      // default
     
     lastflux_annualized.set( 0.0, U_PGC );
     
@@ -167,6 +169,12 @@ void OceanComponent::setData( const string& varName,
         } else if( varName == D_KAPPA50_TEMP ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
             t_mid.set( lexical_cast<double>( data.value_str ), U_K );
+        } else if( varName == D_MIN_HEAT_UPTAKE_EFF ) {
+            H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
+            k_min.set( lexical_cast<double>( data.value_str ), U_W_M2_K );
+        } else if( varName == D_SLOPE_HEAT_UPTAKE_EFF ) {
+            H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
+            slope.set( lexical_cast<double>( data.value_str ), U_1_K );
             
         } else {
             H_THROW( "Unknown variable name while parsing " + getComponentName() + ": "
@@ -367,9 +375,9 @@ void OceanComponent::calcHeatflux( const double runToDate ) {
         // slope parameter (here negative -> declining), tmid is the midpoint of the
         // transition, and `kmin` the minimum heat uptake.
         const double t = Tgav.value( U_DEGC );
-        const double sl = -1.0;                   // 1/K
+        const double sl = slope.value( U_1_K );                  
         const double tmid = t_mid.value( U_K );
-        const double kmin = 0.0;                // W/m2/K
+        const double kmin = k_min.value( U_W_M2_K );               // W/m2/K
         const double kmax = k_max.value( U_W_M2_K );
         
         double k =  kmin + ( kmax - kmin ) / ( 1 + exp( -sl * ( t - tmid ) ) );  // W/m2/K
