@@ -24,26 +24,24 @@
 *.app
 source/hector
 
-# Hector outputs
+# Hector logs
 logs/*.*
 
 # OS-specific files
 .DS_Store
 
-# Xcode build directories
+# Xcode information
 DerivedData/
+*.xcuserstate
 
 # Project files
 project_files/*.*
 project_files/visual_studio/
 libs/
 
-#output
+# Output
 output/*.csv
 output/*.ini
-input/emissions/for_kate.csv
-input/for_kate.ini
-output/comparison_data/AGU_poster.csv
 output/comparison_data
 output/output
 output/*.png
@@ -51,7 +49,6 @@ output/*.pdf
 output/*.csv
 output/rcp85
 output/rcp45
-output/.Rhistory
 output/figures.R
 output/logs/figures.R.txt
 output/op_ch.R
@@ -60,4 +57,7 @@ output/rcp45_rcp85/011.ocean.ph_ll.pdf
 output/rcp45_rcp85/012.ocean.ph_ll.csv
 output/rcp45_rcp85/012.ocean.ph_ll.pdf
 
-*.xcuserstate
+# R
+.Rhistory
+R/batchrunner/*.pdf
+R/batchrunner/*.csv
