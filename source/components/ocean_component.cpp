@@ -382,6 +382,8 @@ void OceanComponent::calcHeatflux( const double runToDate ) {
         
         double k =  kmin + ( kmax - kmin ) / ( 1 + exp( -sl * ( t - tmid ) ) );  // W/m2/K
         
+        if( sl == 0 ) k = kmax;
+        
         // Second assumption: there's a 'ratchet' effect, such that once k starts to decline,
         // it's not allowed to come back up. (This would not be true at longer timescales.)
         static double min_k_so_far = k_max.value( U_W_M2_K );
