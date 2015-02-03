@@ -32,7 +32,7 @@ namespace Hector {
      */
     ForcingComponent::~ForcingComponent() {
     }
-    
+
     //------------------------------------------------------------------------------
     // documentation is inherited
     string ForcingComponent::getComponentName() const {
@@ -165,19 +165,40 @@ namespace Hector {
     // documentation is inherited
     void ForcingComponent::prepareToRun() throw ( h_exception ) {
         
+<<<<<<< HEAD
         H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
+=======
+		// ---------- Troposheric Ozone ----------
+        if( core->checkCapability( D_ATMOSPHERIC_O3 ) ) {
+            //from Tanaka et al, 2007
+            const double ozone = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_O3, message_data( runToDate ) ).value( U_DU_O3 );
+            const double fo3 = 0.042 * ozone;
+            forcings[D_RF_O3].set( fo3, U_W_M2 );
+        }
+>>>>>>> SO2_fix
         
         if( baseyear==0.0 )
             baseyear = core->getStartDate() + 1;        // default, if not supplied by user
         H_LOG( logger, Logger::DEBUG ) << "Base year for reporting is " << baseyear << std::endl;
         
+<<<<<<< HEAD
         H_ASSERT( baseyear > core->getStartDate(), "Base year must be >= model start date" );
+=======
+        
+        // ---------- Black carbon ----------
+        if( core->checkCapability( D_EMISSIONS_BC ) ) {
+            double fbc = 0.0743 * core->sendMessage( M_GETDATA, D_EMISSIONS_BC, message_data( runToDate ) ).value( U_TG );
+            forcings[D_RF_BC].set( fbc, U_W_M2 );
+            // includes both indirect and direct forcings from Bond et al 2013, Journal of Geophysical Research Atmo (table C1 - Central)
+           }
+>>>>>>> SO2_fix
         
         if( Ftot_constrain.size() ) {
             Logger& glog = Logger::getGlobalLogger();
             H_LOG( glog, Logger::WARNING ) << "Total forcing will be overwritten by user-supplied values!" << std::endl;
         }
         
+<<<<<<< HEAD
         baseyear_forcings.clear();
     }
     
@@ -354,6 +375,27 @@ namespace Hector {
                 forcings[ ( *it ).first ] = ( *it ).second - baseyear_forcings[ ( *it ).first ];
             }
             
+=======
+        // ---------- Sulphate Aerosols ----------
+        if( core->checkCapability( D_NATURAL_SO2 ) && core->checkCapability( D_EMISSIONS_SO2 ) ) {
+            
+            unitval S0 = core->sendMessage( M_GETDATA, D_2000_SO2 );
+            unitval SN = core->sendMessage( M_GETDATA, D_NATURAL_SO2 );
+            
+            // equations taken from Joos et al., 2001
+            H_ASSERT( S0.value( U_TG ) >0, "S0 is 0" );
+            unitval emission = core->sendMessage( M_GETDATA, D_EMISSIONS_SO2, message_data( runToDate ) );
+            double fso2d = -0.25 * emission/S0; //-0.35
+            forcings[D_RF_SO2d].set( fso2d, U_W_M2 );
+            // includes only direct forcings from Forster etal 2007 (IPCC)
+                     
+            // indirect aerosol effect via changes in cloud properties
+            const double a = -0.2 * ( log( ( SN.value( U_TG ) + emission.value( U_TG ) ) / SN.value( U_TG ) ) ); // -.6
+            const double b =  pow ( log ( ( SN.value( U_TG ) + S0.value( U_TG ) ) / SN.value( U_TG ) ), -1 );
+            double fso2i = a * b;
+            forcings[D_RF_SO2i].set( fso2i, U_W_M2 );
+            //includes only indirect forcing
+>>>>>>> SO2_fix
         }
     }
     
@@ -362,6 +404,14 @@ namespace Hector {
     unitval ForcingComponent::getData( const std::string& varName,
                                       const double date ) throw ( h_exception ) {
         
+<<<<<<< HEAD
+=======
+        if( core->checkCapability( D_VOLCANIC_SO2 ) ) {
+           // volcanic forcings
+            forcings[D_RF_VOL] = core->sendMessage( M_GETDATA, D_VOLCANIC_SO2, message_data( runToDate ) );
+        }
+
+>>>>>>> SO2_fix
         
         unitval returnval;
         

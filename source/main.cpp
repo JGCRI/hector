@@ -94,6 +94,6 @@ int main (int argc, char * const argv[]) {
     catch( ... ) {
         cerr << "Other exception! " << endl;
     }
-    
+
     return 0;
 }

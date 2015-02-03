@@ -135,7 +135,6 @@
 #define D_CIRC_T50_HIGH         "circ_T50_high"
 #define D_CIRC_T50_LOW          "circ_T50_low"
 #define D_HL_DO                 "HL_DO_Cflux"
-#define D_HEAT_FLUX             "heatflux"
 #define D_PH_HL                 "pH_HL"
 #define D_PH_LL                 "ph_LL"
 #define D_ATM_OCEAN_FLUX_HL     "atm_ocean_flux_HL"
@@ -156,8 +155,15 @@
 #define D_TEMP_HL               "Temp_HL"
 #define D_TEMP_LL               "Temp_LL"
 #define D_SPINUP_CHEM           "spinup_chem"
-#define D_HEAT_UPTAKE_EFF       "k"
-#define D_SPECIFIC_HEAT			"cp"
+
+#define D_HEAT_FLUX             "heatflux"
+#define D_HEAT_UPTAKE_EFF       "kappa"
+#define D_MAX_HEAT_UPTAKE_EFF   "k_max"
+#define D_KAPPA50_TEMP          "t_mid"
+#define D_MIN_HEAT_UPTAKE_EFF   "k_min"
+#define D_SLOPE_HEAT_UPTAKE_EFF  "slope"
+//#define D_SPECIFIC_HEAT			"cp"
+
 #define D_CO3_LL				"CO3_LL"
 #define D_CO3_HL				"CO3_HL"
 #define D_ATM_OCEAN_CONSTRAIN   "atm_ocean_constrain"
@@ -201,8 +207,8 @@
 #define D_SLR_NO_ICE            "slr_no_ice"
 
 // so2 component
-#define D_ATMOSPHERIC_SO2       "SN"
-#define D_PREINDUSTRIAL_SO2     "S0"
+#define D_NATURAL_SO2       "SN"
+#define D_2000_SO2     "S0"
 #define D_EMISSIONS_SO2         "SO2_emissions"
 #define D_VOLCANIC_SO2          "SV"
 

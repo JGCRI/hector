@@ -124,7 +124,7 @@ void TemperatureComponent::run( const double runToDate ) throw ( h_exception ) {
     // So use this to compute a temperature resulting from total forcing
     unitval Ftot = core->sendMessage( M_GETDATA, D_RF_TOTAL );
 	tgaveq.set( (S.value( U_DEGC ) / 3.7 ) * Ftot.value( U_W_M2 ), U_DEGC );
-	unitval heatflux = core ->sendMessage( M_GETDATA, D_HEAT_FLUX );
+	unitval heatflux = core->sendMessage( M_GETDATA, D_HEAT_FLUX );
 	tgav.set( ( S.value( U_DEGC ) / 3.7 ) * ( Ftot.value( U_W_M2 ) - heatflux.value( U_W_M2) ), U_DEGC );
     
     // If the user has supplied temperature data, use that
