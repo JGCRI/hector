@@ -386,7 +386,7 @@ void OceanComponent::calcHeatflux( const double runToDate ) {
         // it's not allowed to come back up. (This would not be true at longer timescales.)
         static double min_k_so_far = k_max.value( U_W_M2_K );
         if( k > min_k_so_far ) {
-            k = min_k_so_far;
+ //           k = min_k_so_far;
         }
         min_k_so_far = k;
         

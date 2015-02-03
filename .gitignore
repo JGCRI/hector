@@ -33,6 +33,7 @@ logs/*.*
 # Xcode information
 DerivedData/
 *.xcuserstate
+xcuserdata/ 
 
 # Project files
 project_files/*.*

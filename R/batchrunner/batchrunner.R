@@ -12,9 +12,9 @@
 EXECUTABLE <- "/Users/ben/Library/Developer/Xcode/DerivedData/hector-cglywsekpzlzoxaqbdkpxegrhaba/Build/Products/Debug/hector"
 
 # Location of the main run (working) directory
-RUN_DIRECTORY <- "../"
+RUN_DIRECTORY <- "../../"
 
-# Hector INI files to modify parameters in and run
+# Hector INI files to (possibly modify parameters in and) run
 INFILES <- c("input/hector_rcp26.ini", 
              "input/hector_rcp45.ini", 
              "input/hector_rcp60.ini",
@@ -39,10 +39,12 @@ VARDATA <- list(
 # ----------------------------------------------------------------
 # Settings you will probably won't have to change
 
-RUN_NAME_TEXT   <- "run_name="
+RUN_NAME_TEXT   <- "run_name="       # search for this in INI file
 SCRIPTNAME      <- "batchrunner.R"
 OUTPUT_DIR    	<- "outputs/"
 LOG_DIR			<- "logs/"
+LOGFILE         <- "logfile"
+OUTFILE         <- "outfile"
 SEPARATOR		<- "-------------------"
 
 library(dplyr)
@@ -225,8 +227,8 @@ bruteforce <- function(vardata, infiles, refdata=NULL, logfile=NULL, outfile=NUL
 # Optimizing example driving run_hector above
 optimize <- function(vardata, infiles, refdata, suffix="") {
     
-    logfile <- paste0("logfile", suffix, ".csv")
-    outfile <- paste0("outfile", suffix, ".csv")
+    logfile <- paste0(LOGFILE, suffix, ".csv")
+    outfile <- paste0(OUTFILE, suffix, ".csv")
     
     # Get parameter starting values (the first ones in the list)    
     parlist <- unlist(lapply(vardata, FUN=function(x) { x=x$values[1] }))
@@ -282,36 +284,21 @@ optimize <- function(vardata, infiles, refdata, suffix="") {
     p3 <- p3 + ggtitle(title)
     print(p3)
     ggsave(paste0("optimize-runs", suffix, ".pdf"))
+    
+    invisible(results)
 } # optimize
 
 
+# Run the four RCP cases (no multiple runs or comparison to data)
+#bruteforce(vardata=NULL, INFILES, refdata=NULL, logfile="logfile.csv", outfile="outfile.csv")
+
+# An optimization exercise
 # Weight 1950-2050 observations heavily
 REFDATA$weight <- 1
-REFDATA$weight[REFDATA$year > 1950 & REFDATA$year <= 2050] <- 2
+REFDATA$weight[REFDATA$year > 1950 & REFDATA$year <= 2100] <- 2
 
-#bruteforce(VARDATA, INFILES, REFDATA, logfile="logfile.csv", outfile="outfile.csv")
-optimize(VARDATA, INFILES[1], REFDATA, suffix="-26")
-optimize(VARDATA, INFILES[2], REFDATA, suffix="-45")
-optimize(VARDATA, INFILES[3], REFDATA, suffix="-60")
-optimize(VARDATA, INFILES[4], REFDATA, suffix="-85")
-optimize(VARDATA, INFILES, REFDATA, suffix="-combined")
-
-
-
-if(0) {
-    library(ggplot2)
-    
-    # qplot(year,value,data=test,geom="line",color=t_mid,group=t_mid)+facet_wrap(~run_name,nrow=2,ncol=2)
-    logresults <- read.csv("logfile.csv")
-    p1 <- qplot(k_max, t_mid, geom="tile", fill=score, data=logresults)
-    p1 <- p1 + facet_wrap(~run_name)
-    print(p1)
-    ggsave("results_score.pdf")
-    
-    
-    results <- read.csv("outfile.csv")
-    p2 <- qplot(year,value,data=results,geom="line",color=t_mid,linetype=factor(k_max),group=paste(t_mid,k_max))
-    p2 <- p2 + facet_wrap(~run_name,nrow=2,ncol=2)
-    print(p2)
-    ggsave("results_time.pdf")
-}
+optimize(VARDATA, INFILES[1], REFDATA, suffix="-noratchet-26")
+optimize(VARDATA, INFILES[2], REFDATA, suffix="-noratchet-45")
+optimize(VARDATA, INFILES[3], REFDATA, suffix="-noratchet-60")
+optimize(VARDATA, INFILES[4], REFDATA, suffix="-noratchet-85")
+optimize(VARDATA, INFILES, REFDATA, suffix="-noratchet-combined")
