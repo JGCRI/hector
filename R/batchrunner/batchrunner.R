@@ -1,15 +1,19 @@
 # batchrunner.R
 # Ben Bond-Lamberty January 2015
 #
-# R script to batch-run Hector:
-# - run all four RCPs at once
+# R script to batch-run Hector, for various uses:
+# - run all four RCPs (or any number of cases) at once
 # - do a brute-force run varying parameters
 # - do a optimizer run looking for best set of parameters
 
 # ----------------------------------------------------------------
-# Settings you will probably need to change
+# Settings you will definitely need to change
+
 # Location of the Hector executable to run
 EXECUTABLE <- "/Users/ben/Library/Developer/Xcode/DerivedData/hector-cglywsekpzlzoxaqbdkpxegrhaba/Build/Products/Debug/hector"
+
+# ----------------------------------------------------------------
+# Settings you will probably need to change
 
 # Location of the main run (working) directory
 RUN_DIRECTORY <- "../../"
@@ -103,7 +107,8 @@ score <- function(scoredata) {
 run_hector <- function(vals, infiles, vardata, refdata=NULL, logfile=NULL, outfile=NULL) {
     
     printlog(vals)
-    if(!"weight" %in% names(refdata)) refdata$weight <- 1  # default: no weighting
+    if(!is.null(refdata) & !"weight" %in% names(refdata)) 
+        refdata$weight <- 1  # default: no weighting
     
     results <- data.frame()
     for(f in infiles) {
@@ -118,7 +123,7 @@ run_hector <- function(vals, infiles, vardata, refdata=NULL, logfile=NULL, outfi
         run_name <- sub(RUN_NAME_TEXT, "", gsub(" ", "", run_name_line))
         printlog("run_name =", run_name)
         
-        for(vn in 1:length(vardata)) {  
+        for(vn in seq_along(vardata)) {  
             v <- names(vardata)[vn]
             flines <- subparam(flines,
                                section=vardata[[v]]$section,
@@ -159,8 +164,8 @@ run_hector <- function(vals, infiles, vardata, refdata=NULL, logfile=NULL, outfi
         if(!is.null(logfile)) {
             if(!is.null(refdata)) {
                 printlog("Merging with refdata")
-                #    print(head(refdata))
-                #    print(head(results))
+                print(head(refdata))
+                print(head(results))
                 scoredata <- merge(refdata, d, 
                                    by=c("year", "run_name", "component", "variable"), 
                                    suffixes=c(".ref",".hector"))
@@ -188,7 +193,7 @@ run_hector <- function(vals, infiles, vardata, refdata=NULL, logfile=NULL, outfi
     
     # Save data if requested
     if(!is.null(outfile)) {
-        for(vn in 1:length(vardata))
+        for(vn in seq_along(vardata))
             results[names(vardata)[vn]] <- vals[vn]
         results$score <- finalscore
         printlog("Writing to", outfile)
@@ -206,10 +211,19 @@ run_hector <- function(vals, infiles, vardata, refdata=NULL, logfile=NULL, outfi
 
 # -----------------------------------------------------------------------------
 # Brute-force example driving run_hector above
-bruteforce <- function(vardata, infiles, refdata=NULL, logfile=NULL, outfile=NULL) {
-    runlist <- expand.grid(lapply(vardata, FUN=function(x) { x=x$values }))
+bruteforce <- function(infiles, vardata=NULL, refdata=NULL, suffix="") {
+
+    logfile <- paste0(LOGFILE, suffix, ".csv")
+    outfile <- paste0(OUTFILE, suffix, ".csv")
     
-    for(i in 1:nrow(runlist)) {
+    if(is.null(vardata)) {  # no parameter changing; just run infiles 
+        return(invisible(
+            run_hector(vals=NULL, infiles=infiles,
+                       vardata=vardata, refdata=refdata,
+                       logfile=logfile, outfile=outfile)))
+    }
+    
+    for(i in seq_along(runlist)) {
         printlog(SEPARATOR)
         printlog(i)
         runlist[i, "score"] <- run_hector(vals=as.numeric(runlist[i,]),
@@ -224,8 +238,8 @@ bruteforce <- function(vardata, infiles, refdata=NULL, logfile=NULL, outfile=NUL
 
 
 # -----------------------------------------------------------------------------
-# Optimizing example driving run_hector above
-optimize <- function(vardata, infiles, refdata, suffix="") {
+# Optimizing function using run_hector above
+optimize <- function(infiles, vardata, refdata, suffix="") {
     
     logfile <- paste0(LOGFILE, suffix, ".csv")
     outfile <- paste0(OUTFILE, suffix, ".csv")
@@ -290,15 +304,17 @@ optimize <- function(vardata, infiles, refdata, suffix="") {
 
 
 # Run the four RCP cases (no multiple runs or comparison to data)
-#bruteforce(vardata=NULL, INFILES, refdata=NULL, logfile="logfile.csv", outfile="outfile.csv")
+#bruteforce(INFILES)
+
+stop()
 
 # An optimization exercise
 # Weight 1950-2050 observations heavily
 REFDATA$weight <- 1
 REFDATA$weight[REFDATA$year > 1950 & REFDATA$year <= 2100] <- 2
 
-optimize(VARDATA, INFILES[1], REFDATA, suffix="-noratchet-26")
-optimize(VARDATA, INFILES[2], REFDATA, suffix="-noratchet-45")
-optimize(VARDATA, INFILES[3], REFDATA, suffix="-noratchet-60")
-optimize(VARDATA, INFILES[4], REFDATA, suffix="-noratchet-85")
-optimize(VARDATA, INFILES, REFDATA, suffix="-noratchet-combined")
+optimize(INFILES[1], VARDATA, REFDATA, suffix="-noratchet-26")
+optimize(INFILES[2], VARDATA, REFDATA, suffix="-noratchet-45")
+optimize(INFILES[3], VARDATA, REFDATA, suffix="-noratchet-60")
+optimize(INFILES[4], VARDATA, REFDATA, suffix="-noratchet-85")
+optimize(INFILES, VARDATA, REFDATA, suffix="-noratchet-combined")
