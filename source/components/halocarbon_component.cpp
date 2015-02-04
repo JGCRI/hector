@@ -6,6 +6,7 @@
  *
  */
 
+#include <math.h>
 #include <boost/lexical_cast.hpp>
 
 #include "components/halocarbon_component.hpp"
@@ -154,17 +155,17 @@ void HalocarbonComponent::run( const double runToDate ) throw ( h_exception ) {
     
     const double timestep = 1.0;
     const double alpha = 1 / tau;
-    
+
     // Compute the delta atmospheric concentration from current emissions
     double emissMol = emissions.get( runToDate ).value( U_GG ) / molarMass * timestep; // this is in U_GMOL
     unitval concDeltaEmiss;
     concDeltaEmiss.set( emissMol / ( 0.1 * AtmosphereDryAirConstant ), U_PPTV );
     
     // Update the atmospheric concentration, accounting for this delta and exponential decay
-    Ha = Ha - ( Ha * alpha ) + concDeltaEmiss;
+    double expfac = exp(-alpha);
+    Ha = Ha*expfac + concDeltaEmiss*tau * (1.0-expfac);
     H_LOG( logger, Logger::DEBUG ) << "date: " << runToDate << " concentration: "<< Ha << endl;
-    //    concentration.set( runToDate, Ha );
-    
+
     // Calculate radiative forcing    TODO: this should be moved to forcing component
     unitval rf;
     rf.set( rho.value( U_W_M2_PPTV ) * Ha.value( U_PPTV ), U_W_M2 );

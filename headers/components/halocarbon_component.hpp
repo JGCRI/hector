@@ -68,7 +68,6 @@ private:
     //! Forcing [W/m^2]
     tseries<unitval> hc_forcing;
     
-    //    tseries<unitval> concentration; //! Time series of concentration, pptv
     tseries<unitval> emissions;     //! Time series of emissions, pptv
     unitval Ha;                     //! Current (ambient) concentration, pptv
     unitval H0;                     //! Preindustrial concentration, pptv
