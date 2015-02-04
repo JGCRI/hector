@@ -66,6 +66,7 @@ enum unit_types {
     
                     U_DEGC,             // Temperature
                     U_K,				// Temperature
+                    U_1_K,               // Inverse Temperature
    
                     U_CM,               // Length-related
                     U_CM_YR,            

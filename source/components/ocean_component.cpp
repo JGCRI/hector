@@ -16,7 +16,7 @@
 #include "visitors/avisitor.hpp"
 
 namespace Hector {
-  
+
 using namespace std;
 
 //------------------------------------------------------------------------------
@@ -46,27 +46,32 @@ string OceanComponent::getComponentName() const {
 void OceanComponent::init( Core* coreptr ) {
     logger.open( getComponentName(), false, Logger::DEBUG );
     H_LOG( logger, Logger::DEBUG ) << "hello " << getComponentName() << std::endl;
-	
+    
     max_timestep = OCEAN_MAX_TIMESTEP;
     reduced_timestep_timeout = 0;
     
-	surfaceHL.logger = &logger;
-	surfaceLL.logger = &logger;
-	inter.logger = &logger;
-	deep.logger = &logger;
+    surfaceHL.logger = &logger;
+    surfaceLL.logger = &logger;
+    inter.logger = &logger;
+    deep.logger = &logger;
     
     core = coreptr;
     
-	oceanflux_constrain.allowInterp( true );
+    oceanflux_constrain.allowInterp( true );
     oceanflux_constrain.name = "atm_ocean_constrain";
-	
+    
     Tgav.set( 0.0, U_DEGC );
-	heatflux.set( 0.0, U_W_M2 );
-	lastflux_annualized.set( 0.0, U_PGC );
-        
+    heatflux.set( 0.0, U_W_M2 );
+    k_max.set( 0.8, U_W_M2_K );    // default
+    t_mid.set( 2.75, U_K );        // default
+    k_min.set( 0.0, U_W_M2_K );   // default
+    slope.set( -3.0, U_1_K );      // default
+    
+    lastflux_annualized.set( 0.0, U_PGC );
+    
     // Register the data we can provide
     core->registerCapability( D_OCEAN_CFLUX, getComponentName() );
-	core->registerCapability( D_OCEAN_C, getComponentName() );
+    core->registerCapability( D_OCEAN_C, getComponentName() );
     core->registerCapability( D_HEAT_FLUX, getComponentName() );
     core->registerCapability( D_CARBON_HL, getComponentName() );
     core->registerCapability( D_CARBON_LL, getComponentName() );
@@ -76,7 +81,6 @@ void OceanComponent::init( Core* coreptr ) {
     core->registerCapability( D_TU, getComponentName() );
     core->registerCapability( D_TWI, getComponentName() );
     core->registerCapability( D_TID, getComponentName() );
-    core->registerCapability( D_HEAT_UPTAKE_EFF, getComponentName() );
 }
 
 //------------------------------------------------------------------------------
@@ -95,7 +99,7 @@ unitval OceanComponent::sendMessage( const std::string& message,
         //TODO: change core so that parsing is routed through sendMessage
         //TODO: make setData private
         
-	} else if( message == M_DUMP_TO_DEEP_OCEAN ) {
+    } else if( message == M_DUMP_TO_DEEP_OCEAN ) {
         // info struct holds the amount being dumped/extracted from deep ocean
         unitval carbon = info.value_unitval;
         H_LOG( logger, Logger::DEBUG ) << "Atmosphere dumping " << carbon << " Pg C to deep ocean" << std::endl;
@@ -111,7 +115,7 @@ unitval OceanComponent::sendMessage( const std::string& message,
 //------------------------------------------------------------------------------
 // documentation is inherited
 void OceanComponent::setData( const string& varName,
-                              const message_data& data ) throw ( h_exception )
+                             const message_data& data ) throw ( h_exception )
 {
     using namespace boost;
     
@@ -121,19 +125,16 @@ void OceanComponent::setData( const string& varName,
         if( varName == D_CARBON_HL ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
             surfaceHL.set_carbon( unitval::parse_unitval( data.value_str, data.units_str, U_PGC ) );
-		} else if( varName == D_HEAT_UPTAKE_EFF ) {
-            H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            k.set( lexical_cast<double>( data.value_str ), U_W_M2_K );
-          //} else if( varName == D_CIRC_TOPT ) {
-          //  H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-          // circ_Topt = unitval::parse_unitval( data.value_str, data.units_str, U_DEGC );
-		//} else if( varName == D_CIRC_T50_HIGH ) {
-          //  H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-           // circ_T50_high = unitval::parse_unitval( data.value_str, data.units_str, U_DEGC );
-		//} else if( varName == D_CIRC_T50_LOW ) {
-          //  H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
+            //} else if( varName == D_CIRC_TOPT ) {
+            //  H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
+            // circ_Topt = unitval::parse_unitval( data.value_str, data.units_str, U_DEGC );
+            //} else if( varName == D_CIRC_T50_HIGH ) {
+            //  H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
+            // circ_T50_high = unitval::parse_unitval( data.value_str, data.units_str, U_DEGC );
+            //} else if( varName == D_CIRC_T50_LOW ) {
+            //  H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
             //circ_T50_low = unitval::parse_unitval( data.value_str, data.units_str, U_DEGC );
-		} else if( varName == D_CARBON_LL ) {
+        } else if( varName == D_CARBON_LL ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
             surfaceLL.set_carbon( unitval::parse_unitval( data.value_str, data.units_str, U_PGC ) );
         } else if( varName == D_CARBON_IO ) {
@@ -148,18 +149,32 @@ void OceanComponent::setData( const string& varName,
         } else if( varName == D_TU ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
             tu.set( lexical_cast<double>( data.value_str ), U_M3_S );
-       } else if( varName == D_TWI ) {
+        } else if( varName == D_TWI ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
             twi.set( lexical_cast<double>( data.value_str ), U_M3_S ) ;
-      } else if( varName == D_TID ) {
+        } else if( varName == D_TID ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
             tid.set( lexical_cast<double>( data.value_str ), U_M3_S) ;
-		} else if( varName == D_SPINUP_CHEM ) {
+        } else if( varName == D_SPINUP_CHEM ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
             spinup_chem = lexical_cast<bool>( data.value_str );
         } else if( varName == D_ATM_OCEAN_CONSTRAIN ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
             oceanflux_constrain.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_PGC_YR ) );
+           
+            // Heat uptake-related parameters
+        } else if( varName == D_MAX_HEAT_UPTAKE_EFF ) {
+            H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
+            k_max.set( lexical_cast<double>( data.value_str ), U_W_M2_K );
+        } else if( varName == D_KAPPA50_TEMP ) {
+            H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
+            t_mid.set( lexical_cast<double>( data.value_str ), U_K );
+        } else if( varName == D_MIN_HEAT_UPTAKE_EFF ) {
+            H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
+            k_min.set( lexical_cast<double>( data.value_str ), U_W_M2_K );
+        } else if( varName == D_SLOPE_HEAT_UPTAKE_EFF ) {
+            H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
+            slope.set( lexical_cast<double>( data.value_str ), U_1_K );
             
         } else {
             H_THROW( "Unknown variable name while parsing " + getComponentName() + ": "
@@ -183,73 +198,73 @@ void OceanComponent::prepareToRun() throw ( h_exception ) {
     // Set up our ocean box model. Carbon values here can be overridden by user input
     H_LOG( logger, Logger::DEBUG ) << "Setting up ocean box model" << std::endl;
     surfaceHL.initbox( unitval( 140, U_PGC ), "HL" );
-//  surfaceHL.warmingfactor = 1.5;    // HL box warm 50% faster than world
+    //  surfaceHL.warmingfactor = 1.5;    // HL box warm 50% faster than world
     surfaceHL.surfacebox = true;
     surfaceHL.preindustrial_flux.set( 1.000, U_PGC_YR );         // used if no spinup chemistry
-	surfaceHL.active_chemistry = spinup_chem;
+    surfaceHL.active_chemistry = spinup_chem;
     
-	surfaceLL.initbox( unitval( 770, U_PGC ),  "LL" );
+    surfaceLL.initbox( unitval( 770, U_PGC ),  "LL" );
     surfaceLL.surfacebox = true;
     surfaceLL.preindustrial_flux.set( -1.000, U_PGC_YR );        // used if no spinup chemistry
-	surfaceLL.active_chemistry = spinup_chem;
+    surfaceLL.active_chemistry = spinup_chem;
     
-	inter.initbox( unitval( 8400, U_PGC ),  "intermediate" );
-	deep.initbox( unitval( 26000, U_PGC ),  "deep" );
+    inter.initbox( unitval( 8400, U_PGC ),  "intermediate" );
+    deep.initbox( unitval( 26000, U_PGC ),  "deep" );
     
-	double time = 60*60*24*365.25;  // seconds per year
-    	
-	// ocean_volume = 1.36e18 m3
-	double thick_LL = 100;
-	double thick_HL = 100;
-	double thick_inter = 1000-thick_LL;
-	double thick_deep = 3777-thick_inter-thick_LL; // 3777m - 1000m - 100m
+    double time = 60*60*24*365.25;  // seconds per year
+    
+    // ocean_volume = 1.36e18 m3
+    double thick_LL = 100;
+    double thick_HL = 100;
+    double thick_inter = 1000-thick_LL;
+    double thick_deep = 3777-thick_inter-thick_LL; // 3777m - 1000m - 100m
     
     //	const double ocean_sarea = 5.101e14; // surface area m2
-	const double ocean_area = 3.6e14; // m2;
-	const double part_high = 0.15;
-	const double part_low = 1-part_high;
-	const double LL_volume = ocean_area * part_low * thick_LL;
-	const double HL_volume = ocean_area * part_high * thick_HL;
-	const double I_volume = ocean_area* thick_inter;
-	const double D_volume = ocean_area* thick_deep;
-	
+    const double ocean_area = 3.6e14; // m2;
+    const double part_high = 0.15;
+    const double part_low = 1-part_high;
+    const double LL_volume = ocean_area * part_low * thick_LL;
+    const double HL_volume = ocean_area * part_high * thick_HL;
+    const double I_volume = ocean_area* thick_inter;
+    const double D_volume = ocean_area* thick_deep;
+    
     // transport * seconds / volume of box
-	// Advection --> transport of carbon from one box to the next (k values, fraction/yr )
-	double LL_HL = ( tt.value( U_M3_S ) * time ) / LL_volume;
-	double HL_DO = ( ( tt + tu).value( U_M3_S ) * time ) / HL_volume;
-	double DO_IO = ( ( tt + tu).value( U_M3_S ) * time ) / D_volume;
-	double IO_HL = ( tu.value( U_M3_S) * time )  / I_volume;
-	double IO_LL = ( tt.value( U_M3_S) * time )  / I_volume;
+    // Advection --> transport of carbon from one box to the next (k values, fraction/yr )
+    double LL_HL = ( tt.value( U_M3_S ) * time ) / LL_volume;
+    double HL_DO = ( ( tt + tu).value( U_M3_S ) * time ) / HL_volume;
+    double DO_IO = ( ( tt + tu).value( U_M3_S ) * time ) / D_volume;
+    double IO_HL = ( tu.value( U_M3_S) * time )  / I_volume;
+    double IO_LL = ( tt.value( U_M3_S) * time )  / I_volume;
     
     // Exchange parameters --> not explicitly modeling diffusion
-	double IO_LLex = ( twi.value( U_M3_S) *time ) / I_volume;
-	double LL_IOex = ( twi.value( U_M3_S) * time ) / LL_volume;
-	double DO_IOex = ( tid.value( U_M3_S) *time ) / D_volume;
-	double IO_DOex = ( tid.value( U_M3_S) * time ) / I_volume;
+    double IO_LLex = ( twi.value( U_M3_S) *time ) / I_volume;
+    double LL_IOex = ( twi.value( U_M3_S) * time ) / LL_volume;
+    double DO_IOex = ( tid.value( U_M3_S) *time ) / D_volume;
+    double IO_DOex = ( tid.value( U_M3_S) * time ) / I_volume;
     
     // make_connection( box to connect to, k value, window size (0=present only) )
-	surfaceLL.make_connection( &surfaceHL, LL_HL, 1 );
-	surfaceLL.make_connection( &inter, LL_IOex, 1 );
-	surfaceHL.make_connection( &deep, HL_DO, 1 );
-	inter.make_connection( &surfaceLL, IO_LL + IO_LLex, 1 );
-	inter.make_connection( &surfaceHL, IO_HL, 1 );
-	inter.make_connection( &deep, IO_DOex, 1 );
-	deep.make_connection( &inter, DO_IO + DO_IOex, 1 );
-	
-	//inputs for surface chemistry boxes
-	//surfaceHL.mychemistry.alk = // mol/kg
-	surfaceHL.deltaT.set( -13.0, U_DEGC );  // delta T is added 288.15 to return the initial temperature value of the surface box 
-	surfaceHL.mychemistry.S             = 34.5; // Salinity
-	surfaceHL.mychemistry.volumeofbox   = HL_volume; //5.4e15; //m3
-	surfaceHL.mychemistry.As            = ocean_area * part_high ; // surface area m2
-	surfaceHL.mychemistry.U             = 6.7; // average wind speed m/s
-		
-	//surfaceLL.mychemistry.alk = // mol/kg
-	surfaceLL.deltaT.set( 7.0, U_DEGC );    // delta T is added to 288.15 to return the initial temperature value of the surface box 
-	surfaceLL.mychemistry.S             = 34.5; // Salinity
-	surfaceLL.mychemistry.volumeofbox   = LL_volume; //3.06e16; //m3
-	surfaceLL.mychemistry.As            = ocean_area * part_low; // surface area m2
-	surfaceLL.mychemistry.U             = 6.7; // average wind speed m/s
+    surfaceLL.make_connection( &surfaceHL, LL_HL, 1 );
+    surfaceLL.make_connection( &inter, LL_IOex, 1 );
+    surfaceHL.make_connection( &deep, HL_DO, 1 );
+    inter.make_connection( &surfaceLL, IO_LL + IO_LLex, 1 );
+    inter.make_connection( &surfaceHL, IO_HL, 1 );
+    inter.make_connection( &deep, IO_DOex, 1 );
+    deep.make_connection( &inter, DO_IO + DO_IOex, 1 );
+    
+    //inputs for surface chemistry boxes
+    //surfaceHL.mychemistry.alk = // mol/kg
+    surfaceHL.deltaT.set( -13.0, U_DEGC );  // delta T is added 288.15 to return the initial temperature value of the surface box
+    surfaceHL.mychemistry.S             = 34.5; // Salinity
+    surfaceHL.mychemistry.volumeofbox   = HL_volume; //5.4e15; //m3
+    surfaceHL.mychemistry.As            = ocean_area * part_high ; // surface area m2
+    surfaceHL.mychemistry.U             = 6.7; // average wind speed m/s
+    
+    //surfaceLL.mychemistry.alk = // mol/kg
+    surfaceLL.deltaT.set( 7.0, U_DEGC );    // delta T is added to 288.15 to return the initial temperature value of the surface box
+    surfaceLL.mychemistry.S             = 34.5; // Salinity
+    surfaceLL.mychemistry.volumeofbox   = LL_volume; //3.06e16; //m3
+    surfaceLL.mychemistry.As            = ocean_area * part_low; // surface area m2
+    surfaceLL.mychemistry.U             = 6.7; // average wind speed m/s
     
     // Log the state of all our boxes, so we know things are as they should be
     surfaceLL.log_state();
@@ -263,7 +278,7 @@ void OceanComponent::prepareToRun() throw ( h_exception ) {
  *  \returns    unitval, total carbon in the ocean
  */
 unitval OceanComponent::totalcpool() const {
-	return deep.get_carbon() + inter.get_carbon() + surfaceLL.get_carbon() + surfaceHL.get_carbon();
+    return deep.get_carbon() + inter.get_carbon() + surfaceLL.get_carbon() + surfaceHL.get_carbon();
 }
 
 //------------------------------------------------------------------------------
@@ -274,33 +289,33 @@ unitval OceanComponent::totalcpool() const {
  *  \returns                unitval, annual atmosphere-ocean C flux
  */
 unitval OceanComponent::annual_totalcflux( const double date, const unitval& Ca, const double cpoolscale ) const {
-	
+    
     unitval flux( 0.0, U_PGC_YR );
     
     if( in_spinup && !spinup_chem ) {
         flux = surfaceHL.preindustrial_flux + surfaceLL.preindustrial_flux;
     } else {
         flux = surfaceHL.mychemistry.calc_annual_surface_flux( Ca, cpoolscale )
-                            + surfaceLL.mychemistry.calc_annual_surface_flux( Ca, cpoolscale );
+        + surfaceLL.mychemistry.calc_annual_surface_flux( Ca, cpoolscale );
     }
-
+    
     if( !in_spinup && oceanflux_constrain.size() ) {
         flux = oceanflux_constrain.get( date );
     }
-
+    
     return flux;
 }
 
 //------------------------------------------------------------------------------
 // documentation is inherited
 void OceanComponent::run( const double runToDate ) throw ( h_exception ) {
-
+    
     Ca = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_CO2 );
     Tgav = core->sendMessage( M_GETDATA, D_GLOBAL_TEMP );
     in_spinup = core->inSpinup();
-	annualflux_sum.set( 0.0, U_PGC );
-	annualflux_sumHL.set( 0.0, U_PGC );
-	annualflux_sumLL.set( 0.0, U_PGC );
+    annualflux_sum.set( 0.0, U_PGC );
+    annualflux_sumHL.set( 0.0, U_PGC );
+    annualflux_sumLL.set( 0.0, U_PGC );
     timesteps = 0;
     
     // Initialize ocean box boundary conditions and inform them new year starting
@@ -311,7 +326,7 @@ void OceanComponent::run( const double runToDate ) throw ( h_exception ) {
     
     H_LOG( logger, Logger::DEBUG ) << "----------------------------------------------------" << std::endl;
     H_LOG( logger, Logger::DEBUG ) << "runToDate=" << runToDate << ", spinup=" << in_spinup << std::endl;
-   H_LOG( logger, Logger::DEBUG ) << "runToDate=" << runToDate << ", Ca=" << Ca << ", spinup=" << in_spinup << std::endl;
+    H_LOG( logger, Logger::DEBUG ) << "runToDate=" << runToDate << ", Ca=" << Ca << ", spinup=" << in_spinup << std::endl;
     
     // If chemistry models weren't turned on during spinup, do so now
     if( !spinup_chem && !in_spinup && !surfaceHL.active_chemistry ) {
@@ -320,19 +335,82 @@ void OceanComponent::run( const double runToDate ) throw ( h_exception ) {
         surfaceLL.active_chemistry = true;
         surfaceHL.chem_equilibrate();
         surfaceLL.chem_equilibrate();
-
+        
         // Warn if the user has supplied an atmosphere-ocean C flux constraint
         if( oceanflux_constrain.size() ) {
             unitval constrained_flux = oceanflux_constrain.get( runToDate );
             H_LOG( logger, Logger::WARNING ) << "Atm-ocean C fluxes will be constrained to " << constrained_flux << std::endl;
         }
-   }
-
+    }
+    
     // Call compute_fluxes with do_boxfluxes=false to run just chemistry
-	surfaceHL.compute_fluxes( Ca, 1.0, false );
-	surfaceLL.compute_fluxes( Ca, 1.0, false );
+    surfaceHL.compute_fluxes( Ca, 1.0, false );
+    surfaceLL.compute_fluxes( Ca, 1.0, false );
+    
+    calcHeatflux( runToDate );
     
     // Now wait for the solver to call us
+}
+
+//------------------------------------------------------------------------------
+/*! \brief Calculate ocean heat flux
+ */
+void OceanComponent::calcHeatflux( const double runToDate ) {
+    // k (kappa) is the ocean heat uptake efficiency, after Raper et al. 2002
+    
+    if( in_spinup ) {
+        heatflux.set( 0.0, U_W_M2 );  // during spinup ocean is neutral
+    } else {
+        unitval tgaveq = core->sendMessage( M_GETDATA, D_GLOBAL_TEMPEQ );
+        
+        // First assumption: the ocean's heat uptake efficiency `k` (kappa) is a function
+        // of global temperature and declines following a sigmoid model:
+        //   ^
+        //   |   ____
+        //   |       \
+        //   k        \____
+        //   |
+        //    -- Tgav -------->
+        // In this model `kmax` is the upper asymptote (maximum k heat uptake), `sl` a
+        // slope parameter (here negative -> declining), tmid is the midpoint of the
+        // transition, and `kmin` the minimum heat uptake.
+        const double t = Tgav.value( U_DEGC );
+        const double sl = slope.value( U_1_K );                  
+        const double tmid = t_mid.value( U_K );
+        const double kmin = k_min.value( U_W_M2_K );               // W/m2/K
+        const double kmax = k_max.value( U_W_M2_K );
+        
+        double k =  kmin + ( kmax - kmin ) / ( 1 + exp( -sl * ( t - tmid ) ) );  // W/m2/K
+        
+        if( sl == 0 ) k = kmax;
+        
+        // Second assumption: there's a 'ratchet' effect, such that once k starts to decline,
+        // it's not allowed to come back up. (This would not be true at longer timescales.)
+        static double min_k_so_far = k_max.value( U_W_M2_K );
+        if( k > min_k_so_far ) {
+ //           k = min_k_so_far;
+        }
+        min_k_so_far = k;
+        
+        // Third assumption: in the future, there's also a progressive weakening
+        // that's not captured by the code above.
+        // Currently this is a big, big cheat, because it's time-based
+        // What about if this is based on exceeding e.g. 1 K temperature rise?
+        if( runToDate > 2000 ) {
+//            min_k_so_far *= 0.995;
+        }
+        // For sl=-3, x0=2.75, L_min=0, L=0.8-L_min:
+        // 0.995 is PERFECT for rcp4.5 (0.99 shoots it high) but 2.6 goes low
+        // 0.99 is PERFECT for rcp2.6 (0.995 shoots it low, but not as ugly as above)
+        // rcp8.5 doesn't care
+        
+        heatflux.set( k * (tgaveq.value( U_DEGC )), U_W_M2 );
+        kappa.set( k, U_W_M2_K );
+        
+        //       std::cout << "Tgav = " << t << ", heatflux = " << heatflux << ", k = " << knum << std::endl;
+        
+        H_LOG( logger, Logger::DEBUG ) << "heatflux = " << heatflux << ", kappa = " << kappa << std::endl;
+    }
 }
 
 //------------------------------------------------------------------------------
@@ -355,64 +433,64 @@ unitval OceanComponent::getData( const std::string& varName,
         returnval = unitval( annualflux_sum.value( U_PGC ), U_PGC_YR );
     } else if( varName == D_OCEAN_C ) {
         returnval = totalcpool();
-	} else if( varName == D_HL_DO ) {
+    } else if( varName == D_HL_DO ) {
         returnval = surfaceHL.annual_box_fluxes[ &deep ] ;
-	} else if( varName == D_HEAT_FLUX ) {
-		returnval = heatflux;
+    } else if( varName == D_HEAT_FLUX ) {
+        returnval = heatflux;
     } else if( varName == D_PH_HL ) {
         returnval = surfaceHL.mychemistry.pH;
-	} else if( varName == D_PH_LL ) {
+    } else if( varName == D_PH_LL ) {
         returnval = surfaceLL.mychemistry.pH;
-	} else if( varName == D_ATM_OCEAN_FLUX_HL ) {
-		returnval = unitval( annualflux_sumHL.value( U_PGC ), U_PGC_YR );
+    } else if( varName == D_ATM_OCEAN_FLUX_HL ) {
+        returnval = unitval( annualflux_sumHL.value( U_PGC ), U_PGC_YR );
     } else if( varName == D_ATM_OCEAN_FLUX_LL ) {
-		returnval = unitval( annualflux_sumLL.value( U_PGC ), U_PGC_YR );
-	} else if( varName == D_PCO2_HL ) {
+        returnval = unitval( annualflux_sumLL.value( U_PGC ), U_PGC_YR );
+    } else if( varName == D_PCO2_HL ) {
         returnval = surfaceHL.mychemistry.PCO2o;
-	} else if( varName == D_PCO2_LL ) {
-		returnval = surfaceLL.mychemistry.PCO2o;
+    } else if( varName == D_PCO2_LL ) {
+        returnval = surfaceLL.mychemistry.PCO2o;
     } else if( varName == D_DIC_HL ) {
         returnval = surfaceHL.mychemistry.convertToDIC( surfaceHL.get_carbon() );
-	} else if( varName == D_DIC_LL ) {
+    } else if( varName == D_DIC_LL ) {
         returnval = surfaceLL.mychemistry.convertToDIC( surfaceLL.get_carbon() );
-	} else if( varName == D_CARBON_HL ) {
+    } else if( varName == D_CARBON_HL ) {
         returnval = surfaceHL.get_carbon();
-	} else if( varName == D_CARBON_LL ) {
+    } else if( varName == D_CARBON_LL ) {
         returnval = surfaceLL.get_carbon();
-	} else if( varName == D_CARBON_IO ) {
-		returnval = inter.get_carbon();
+    } else if( varName == D_CARBON_IO ) {
+        returnval = inter.get_carbon();
     } else if( varName == D_CARBON_DO ) {
         returnval = deep.get_carbon();
     } else if( varName == D_TT ) {
         returnval = tt;
     } else if( varName == D_TU ) {
         returnval = tu;
-     } else if( varName == D_TID ) {
+    } else if( varName == D_TID ) {
         returnval = tid;
-     } else if( varName == D_TWI ) {
+    } else if( varName == D_TWI ) {
         returnval = twi;
-	} else if( varName == D_OMEGACA_HL ) {
+    } else if( varName == D_OMEGACA_HL ) {
         returnval = surfaceHL.mychemistry.OmegaCa;
-	} else if( varName == D_OMEGACA_LL ) {
-		returnval = surfaceLL.mychemistry.OmegaCa;
-	} else if( varName == D_OMEGAAR_HL ) {
+    } else if( varName == D_OMEGACA_LL ) {
+        returnval = surfaceLL.mychemistry.OmegaCa;
+    } else if( varName == D_OMEGAAR_HL ) {
         returnval = surfaceHL.mychemistry.OmegaAr;
-	} else if( varName == D_OMEGAAR_LL ) {
+    } else if( varName == D_OMEGAAR_LL ) {
         returnval = surfaceLL.mychemistry.OmegaAr;
     } else if( varName == D_REVELLE_HL ) {
         returnval = surfaceHL.calc_revelle();
     } else if( varName == D_REVELLE_LL ) {
         returnval = surfaceLL.calc_revelle();
     } else if( varName == D_TEMP_HL ) {
-		returnval = surfaceHL.get_Tbox();
-	} else if( varName == D_TEMP_LL ) {
-		returnval = surfaceLL.get_Tbox();
-	} else if( varName == D_CO3_LL ) {
-		returnval = surfaceLL.mychemistry.CO3;
-	} else if( varName == D_CO3_HL ) {
-		returnval = surfaceHL.mychemistry.CO3;
+        returnval = surfaceHL.get_Tbox();
+    } else if( varName == D_TEMP_LL ) {
+        returnval = surfaceLL.get_Tbox();
+    } else if( varName == D_CO3_LL ) {
+        returnval = surfaceLL.mychemistry.CO3;
+    } else if( varName == D_CO3_HL ) {
+        returnval = surfaceHL.mychemistry.CO3;
     } else if( varName == D_HEAT_UPTAKE_EFF ) {
-        returnval =  unitval( k.value ( U_W_M2_K ), U_W_M2_K );
+        returnval =  kappa;
     } else if( varName == D_TIMESTEPS ) {
         returnval = unitval( timesteps, U_UNITLESS );
     } else {
@@ -437,14 +515,14 @@ void OceanComponent::getCValues( double t, double c[] ) {
  *  \param[out] dcdt    carbon deltas - we fill in only ocean change
  *  \returns            code indicating success or failure
  *
- *  \details "This function should store the vector elements f_i(t,y,params) 
+ *  \details "This function should store the vector elements f_i(t,y,params)
  *  in the array dydt, for arguments (t,y) and parameters params." -GSL docs
  *  Compute the air-ocean flux (Pg C/yr) at time t and for pools c[]
  */
 int  OceanComponent::calcderivs( double t, const double c[], double dcdt[] ) const {
-
+    
     const double yearfraction = ( t - ODEstartdate );
-
+    
     // If the solver has adjusted the ocean and/or atmosphere pools,
     // need to be take into account in the flux computation
     const unitval cpooldiff = unitval( c[ SNBOX_OCEAN ], U_PGC ) - totalcpool();
@@ -455,12 +533,12 @@ int  OceanComponent::calcderivs( double t, const double c[], double dcdt[] ) con
     const double cflux = annual_totalcflux( t, Ca, cpoolscale ).value( U_PGC_YR );
     dcdt[ SNBOX_OCEAN ] = cflux;
     
-//    std::cout << t << " cflux=" << cflux << " lastflux_annualized=" << lastflux_annualized.value( U_PGC ) << " Ca=" << Ca << std::endl;
-
+    //    std::cout << t << " cflux=" << cflux << " lastflux_annualized=" << lastflux_annualized.value( U_PGC ) << " Ca=" << Ca << std::endl;
+    
     // If too big a timestep--i.e., stashCvalues below has signalled a reduced step
     // that we're exceeding--signal to the solver that this won't work for us.
     if( yearfraction > max_timestep ) {
-//        std::cout << "Exceeded max_timestep of " << max_timestep << " (timeout=" << reduced_timestep_timeout << ")" << std::endl;
+        //        std::cout << "Exceeded max_timestep of " << max_timestep << " (timeout=" << reduced_timestep_timeout << ")" << std::endl;
         return CARBON_CYCLE_RETRY;
     } else {
         return GSL_SUCCESS;
@@ -470,35 +548,35 @@ int  OceanComponent::calcderivs( double t, const double c[], double dcdt[] ) con
 //------------------------------------------------------------------------------
 // documentation is inherited
 void OceanComponent::slowparameval( double t, const double c[] ) {
-
+    
     in_spinup = core->inSpinup();
 }
 
 //------------------------------------------------------------------------------
 // documentation is inherited
 void OceanComponent::stashCValues( double t, const double c[] ) {
-
+    
     H_LOG( logger,Logger::DEBUG ) << "Stashing at t=" << t << ", model pools at " << t << ": " << c[ 0 ] << " "
     << c[ 1 ] << " " << c[ 2 ] << " " << c[ 3 ] << " " << c[ 4 ] << " " << c[ 5 ] << std::endl;
-//    std::cout << "Stashing at t=" << t << ", model pools at " << t << ": " << c[ 0 ] << " "
-//    << c[ 1 ] << " " << c[ 2 ] << " " << c[ 3 ] << " " << c[ 4 ] << " " << c[ 5 ] << std::endl;
-
-	// At this point the solver has converged, going from ODEstartdate to t
+    //    std::cout << "Stashing at t=" << t << ", model pools at " << t << ": " << c[ 0 ] << " "
+    //    << c[ 1 ] << " " << c[ 2 ] << " " << c[ 3 ] << " " << c[ 4 ] << " " << c[ 5 ] << std::endl;
+    
+    // At this point the solver has converged, going from ODEstartdate to t
     // Now we finalize calculations: circulate ocean, update carbon states, heat flux, etc.
     const double yearfraction = ( t - ODEstartdate );
     H_LOG( logger, Logger::NOTICE ) << "Solver has finished. Yearfraction = " << yearfraction << std::endl;
     H_ASSERT( yearfraction >= 0 && yearfraction <= 1, "yearfraction out of bounds" );
-
+    
     timesteps++;
     const bool in_partial_year = ( t != int( t ) );
     
     unitval Ca( c[ SNBOX_ATMOS ] * PGC_TO_PPMVCO2, U_PPMV_CO2 );
-  
+    
     // Compute fluxes between the boxes (advection of carbon)
     surfaceHL.compute_fluxes( Ca, yearfraction );
-	surfaceLL.compute_fluxes( Ca, yearfraction );
-	inter.compute_fluxes( Ca, yearfraction );
-	deep.compute_fluxes( Ca, yearfraction );
+    surfaceLL.compute_fluxes( Ca, yearfraction );
+    inter.compute_fluxes( Ca, yearfraction );
+    deep.compute_fluxes( Ca, yearfraction );
     
     // At this point, compute_fluxes has (by calling the chemistry model) computed atmosphere-
     // ocean fluxes for the surface boxes. But these are end-of-timestep values, and we need to
@@ -508,7 +586,7 @@ void OceanComponent::stashCValues( double t, const double c[] ) {
     unitval solver_flux = unitval( c[ SNBOX_OCEAN ], U_PGC ) - totalcpool();
     unitval adjustment( 0.0, U_PGC );
     if( currentflux.value( U_PGC ) ) adjustment = ( solver_flux - currentflux ) / 2.0;
-	H_LOG( logger, Logger::DEBUG) << "Solver flux = " << solver_flux << ", currentflux = " << currentflux << ", adjust = " << adjustment << std::endl;
+    H_LOG( logger, Logger::DEBUG) << "Solver flux = " << solver_flux << ", currentflux = " << currentflux << ", adjust = " << adjustment << std::endl;
     surfaceHL.atmosphere_flux = surfaceHL.atmosphere_flux + adjustment;
     surfaceLL.atmosphere_flux = surfaceLL.atmosphere_flux + adjustment;
     
@@ -530,14 +608,14 @@ void OceanComponent::stashCValues( double t, const double c[] ) {
         H_LOG( logger, Logger::DEBUG ) << "OK, reduced_timestep_timeout =" << reduced_timestep_timeout << std::endl;
         if( !reduced_timestep_timeout ) {
             H_LOG( logger, Logger::DEBUG ) << "Reduced ts timeout done; raising" << std::endl;
-//            max_timestep = OCEAN_MAX_TIMESTEP;
+            //            max_timestep = OCEAN_MAX_TIMESTEP;
             max_timestep = min( OCEAN_MAX_TIMESTEP, max_timestep / OCEAN_TSR_FACTOR );
             if( max_timestep < OCEAN_MAX_TIMESTEP ) {
                 reduced_timestep_timeout = OCEAN_TSR_TIMEOUT; // set timer for another raise attempt
             }
         }
     }
-   
+    
     // Update lastflux and add it to annual sum
     unitval lastflux = surfaceLL.atmosphere_flux + surfaceHL.atmosphere_flux;
     annualflux_sumHL = annualflux_sumHL + surfaceHL.atmosphere_flux;
@@ -549,41 +627,28 @@ void OceanComponent::stashCValues( double t, const double c[] ) {
     
     H_LOG( logger, Logger::DEBUG ) << "lastflux_annualized=" << lastflux_annualized << std::endl;
     H_LOG( logger, Logger::DEBUG ) << "annualflux_sum=" << annualflux_sum << std::endl;
-
+    
     // Log the state of all our boxes
     surfaceLL.log_state();
     surfaceHL.log_state();
     inter.log_state();
     deep.log_state();
     
-	// Update box states
-	surfaceHL.update_state();
-	surfaceLL.update_state();
-	inter.update_state();
-	deep.update_state();
+    // Update box states
+    surfaceHL.update_state();
+    surfaceLL.update_state();
+    inter.update_state();
+    deep.update_state();
     
     // All good! t will be the start of the next timestep, so
     ODEstartdate = t;
-                
-    //--------------------- Ocean Heat Flux -----------------------------------
-    /*! \brief Ocean heat flux (W/m2)
-     * taken from Raper etal 2002
-     * k is the ocean heat uptake efficiency (W/m2/K)
-     */
-	if ( !in_spinup ) {       // do not run during spinup
-		//unitval k( 0.2, U_W_M2_K );
-		unitval tgaveq = core->sendMessage( M_GETDATA, D_GLOBAL_TEMPEQ );
-		heatflux.set( k.value( U_W_M2_K ) * (tgaveq.value( U_DEGC )), U_W_M2 );
-
-		H_LOG( logger, Logger::DEBUG ) << "heatflux = " << heatflux << ", kappa = " << k << std::endl;
-	}
     
-   }
+}
 
 //------------------------------------------------------------------------------
 // documentation is inherited
 void OceanComponent::shutDown() {
-	H_LOG( logger, Logger::DEBUG ) << "goodbye " << getComponentName() << std::endl;
+    H_LOG( logger, Logger::DEBUG ) << "goodbye " << getComponentName() << std::endl;
     logger.close();
 }
 
@@ -592,5 +657,5 @@ void OceanComponent::shutDown() {
 void OceanComponent::accept( AVisitor* visitor ) {
     visitor->visit( this );
 }
-
+    
 }

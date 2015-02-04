@@ -71,6 +71,7 @@ public:
 private:
     virtual unitval getData( const std::string& varName,
                             const double date ) throw ( h_exception );
+    void calcHeatflux( const double runToDate );
     
     // Ocean boxes
     oceanbox surfaceHL; //!< surface high latitude box 100m
@@ -85,11 +86,14 @@ private:
     bool spinup_chem;       //!< run chemistry during spinup?
     tseries<unitval> oceanflux_constrain;      //!< atmosphere->ocean C flux data to constrain to
     
-
     // Heat flux
 	unitval heatflux;
-	unitval k;              //!< ocean heat uptake efficiency, W/m2/K     
-	unitval cp;             //!< Specific heat
+	unitval k_max;           //!< maximum ocean heat uptake efficiency, W/m2/K
+    unitval k_min;          //!< minimum ocean heat uptake efficiency, W/m2/K
+    unitval slope;           //!< slope of the curve, 1/K
+//	unitval cp;             //!< Specific heat
+    unitval t_mid;          //!< global temperature at which kappa has declined by 50%
+    unitval kappa;              //!< ocean heat uptake efficiency, W/m2/K
     
     // Ocean circulation
     unitval tt;          //!< m3/s thermohaline overturning
