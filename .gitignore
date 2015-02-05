@@ -33,7 +33,8 @@ logs/*.*
 # Xcode build directories and interface state
 DerivedData/
 *.xcuserstate
-xcuserdata/ 
+xcodeuserstate
+*.xccheckout
 
 # Project files
 project_files/*.*
@@ -62,3 +63,4 @@ output/rcp45_rcp85/012.ocean.ph_ll.pdf
 .Rhistory
 R/batchrunner/*.pdf
 R/batchrunner/*.csv
+
