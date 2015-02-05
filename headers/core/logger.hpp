@@ -56,6 +56,8 @@ private:
     static const char* getDateTimeStamp();
 
     static int chk_logdir(std::string dir);
+
+    void printLogHeader( const LogLevel logLevel );
     
     /*! \brief A customized file stream buffer to enable echoing to a console.
      *

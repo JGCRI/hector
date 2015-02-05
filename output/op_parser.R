@@ -65,7 +65,7 @@ read_output_data <- function() {
 		printlog( f )
 		if( !file.exists( f ) )
 			stop( "File does not seem to exist!" )
-		d <- read.csv( f, stringsAsFactors=F )
+		d <- read.csv( f, comment.char="#", stringsAsFactors=F )
 		names( d ) <- tolower( names( d ) )
 		printlog( "-- fields:", names( d ) )
 		printlog( "-- rows:", nrow( d ) )

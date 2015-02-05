@@ -8,6 +8,7 @@
 
 #include <time.h>
 #include "core/logger.hpp"
+#include "h_util.hpp"
 
 #if defined (__unix__) || defined (__MACH__)
 #include <unistd.h>
@@ -136,14 +137,15 @@ void Logger::open( const string& logName, const bool echoToScreen,
 	
     this->minLogLevel = minLogLevel;
     
-    // TODO: does the logger or the ostream manage this memory?
-    // FIXME:  currently nobody does.  The memory is leaked.
     LoggerStreamBuf* buff = new LoggerStreamBuf( echoToScreen );
     if( !buff->open( fqName.c_str(), ios::out ) )
         H_THROW("Unable to open log file " + fqName);
     
     loggerStream.rdbuf( buff );
     isInitialized = true;
+
+    // ensure that the log header is always printed.
+    printLogHeader( max( minLogLevel, NOTICE ) );
 }
 
 //------------------------------------------------------------------------------
@@ -282,4 +284,16 @@ int Logger::chk_logdir(std::string dir)
     return 1;
 }
 #endif
+
+//------------------------------------------------------------------------------
+/*! \brief Print a standard header at the top of all logs that indicates the model version.
+ *  \param writeLevel The priority level to print the header.
+ */
+void Logger::printLogHeader( const LogLevel writeLevel ) {
+    H_ASSERT( isInitialized, "Logger must be initialized" );
+
+    H_LOG( (*this), writeLevel ) << MODEL_NAME << " version " << MODEL_VERSION << endl;
 }
+
+}
+

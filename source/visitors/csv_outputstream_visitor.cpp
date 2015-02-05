@@ -38,9 +38,13 @@ CSVOutputStreamVisitor::CSVOutputStreamVisitor( ostream& outputStream, const boo
 :csvFile( outputStream )
 {
     if( printHeader ) {
+        // Print model version header
+        csvFile << "# Output from " << MODEL_NAME << " version " << MODEL_VERSION << endl;
+
+        // Print table header
         csvFile << "year" << DELIMITER << "run_name" << DELIMITER << "spinup" << DELIMITER
-        << "component" << DELIMITER << "variable" << DELIMITER << "value" << DELIMITER
-        << "units" << endl;
+            << "component" << DELIMITER << "variable" << DELIMITER << "value" << DELIMITER
+            << "units" << endl;
     }
     run_name = "";
     current_date = 0;
