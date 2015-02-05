@@ -37,7 +37,9 @@ VARDATA <- list(
     t_mid=list(section="ocean", values=c(2.5, 2.0, 3.0, 4.0, 5.0)),
     slope=list(section="ocean", values=c(-1.5, -0.5, -1.5, -2)),
     k_min=list(section="ocean", values=c(0, 0.1, 0.2, 0.3)),
-    S=list(section="temperature", values=c(2.5, 2, 3))
+    #    S=list(section="temperature", values=c(2.5, 2, 3)),
+    beta=list(section="simpleNbox", values=c(0.36, 0.30, 0.42)),
+    q10_rh=list(section="simpleNbox", values=c(2, 1.5, 2.5))
 )
 
 # ----------------------------------------------------------------
@@ -212,7 +214,7 @@ run_hector <- function(vals, infiles, vardata, refdata=NULL, logfile=NULL, outfi
 # -----------------------------------------------------------------------------
 # Brute-force example driving run_hector above
 bruteforce <- function(infiles, vardata=NULL, refdata=NULL, suffix="") {
-
+    
     logfile <- paste0(LOGFILE, suffix, ".csv")
     outfile <- paste0(OUTFILE, suffix, ".csv")
     
@@ -239,7 +241,7 @@ bruteforce <- function(infiles, vardata=NULL, refdata=NULL, suffix="") {
 
 # -----------------------------------------------------------------------------
 # Optimizing function using run_hector above
-optimize <- function(infiles, vardata, refdata, suffix="") {
+optimize <- function(infiles, vardata, refdata, suffix="", graph=TRUE) {
     
     logfile <- paste0(LOGFILE, suffix, ".csv")
     outfile <- paste0(OUTFILE, suffix, ".csv")
@@ -252,13 +254,22 @@ optimize <- function(infiles, vardata, refdata, suffix="") {
                      fn=run_hector,
                      gr=NULL,
                      control=list(maxit=200,
-                                  reltol=1e-3), # don't need default 1e-8
+                                  reltol=1e-1), # don't need default 1e-8
                      # following parameters get passed to run_hector
                      infiles, vardata, refdata, logfile, outfile)
     
-    printlog(SEPARATOR)
-    printlog("Optimization finished.")
-    printlog("Message:", results$message)
+    if(graph) graph_optimized(results, vardata, refdata, suffix)
+    
+    invisible(results)
+}
+
+# -----------------------------------------------------------------------------
+# Graph results of optimize() above
+graph_optimized <- function(results, vardata, refdata, suffix="") {
+    logfile <- paste0(LOGFILE, suffix, ".csv")
+    outfile <- paste0(OUTFILE, suffix, ".csv")
+    
+    printlog("Optimization message:", results$message)
     printlog("Final score:", results$value)
     printlog("Final parameter values:", results$par)
     finalscore <- results$value
@@ -300,21 +311,25 @@ optimize <- function(infiles, vardata, refdata, suffix="") {
     ggsave(paste0("optimize-runs", suffix, ".pdf"))
     
     invisible(results)
-} # optimize
+} # graph_optimized
 
 
 # Run the four RCP cases (no multiple runs or comparison to data)
 #bruteforce(INFILES)
-
-stop()
 
 # An optimization exercise
 # Weight 1950-2050 observations heavily
 REFDATA$weight <- 1
 REFDATA$weight[REFDATA$year > 1950 & REFDATA$year <= 2100] <- 2
 
-optimize(INFILES[1], VARDATA, REFDATA, suffix="-noratchet-26")
-optimize(INFILES[2], VARDATA, REFDATA, suffix="-noratchet-45")
-optimize(INFILES[3], VARDATA, REFDATA, suffix="-noratchet-60")
-optimize(INFILES[4], VARDATA, REFDATA, suffix="-noratchet-85")
-optimize(INFILES, VARDATA, REFDATA, suffix="-noratchet-combined")
+#optimize(INFILES[1], VARDATA, REFDATA, suffix="-new-26") %>%
+#    graph_optimized(VARDATA, REFDATA, suffix="-new-26")
+#optimize(INFILES[2], VARDATA, REFDATA, suffix="-new-45")
+#optimize(INFILES[3], VARDATA, REFDATA, suffix="-new-60")
+#optimize(INFILES[4], VARDATA, REFDATA, suffix="-new-85")
+
+optimize(INFILES, VARDATA, REFDATA, suffix="-new-combined") %>%
+    graph_optimized(VARDATA, REFDATA, suffix="-new-combined")
+REFDATA$weight[REFDATA$run_name=="rcp26"] <- 0.0
+optimize(INFILES, VARDATA, REFDATA, suffix="-new-not26") %>%
+    graph_optimized(VARDATA, REFDATA, suffix="-new-not26")
