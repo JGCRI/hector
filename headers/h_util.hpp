@@ -18,10 +18,9 @@
 
 /*!
  * \brief The model version number to be included in logs and outputs.
- * \note This value must be updated manually when the model version
- *       changes.
+ * \note This must be updated manually when the model version changes.
  */
-#define MODEL_VERSION "0.1"
+#define MODEL_VERSION "1.0"
 
 #define OUTPUT_DIRECTORY "output/"
 

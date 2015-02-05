@@ -151,7 +151,7 @@ run_hector <- function(vals, infiles, vardata, refdata=NULL, logfile=NULL, outfi
         # Read outputstream
         osf <- paste0(RUN_DIRECTORY, "/output/outputstream_", run_name, ".csv")
         printlog("Reading", osf)
-        d <- read.csv(osf)
+        d <- read.csv(osf, comment.char="#")
         #        print(head(d))
         
         # Subset for vars in refdata
