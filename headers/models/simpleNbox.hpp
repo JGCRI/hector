@@ -86,7 +86,7 @@ private:
     unitval_stringmap veg_c;        //!< vegetation pools, Pg C
     unitval_stringmap detritus_c;   //!< detritus pools, Pg C
     unitval_stringmap soil_c;       //!< soil pool, Pg C
-
+    
     //    unitval ocean_c;          //!< ocean pool, Pg C
     unitval residual;               //!< residual (when constraining Ca) flux, Pg C
     
@@ -124,7 +124,6 @@ private:
 //                        sigma,          //!< shape of temperature response
                         warmingfactor,  //!< regional warming relative to global (1.0=same)
                         co2fert,        //!< CO2 fertilization effect (unitless)
-//                        Tgav_sum,
                         tempfertd, tempferts;        //!< temperature effect on respiration (unitless)
     
     double q10_rh;                      //!< Q10 for heterotrophic respiration (unitless)
