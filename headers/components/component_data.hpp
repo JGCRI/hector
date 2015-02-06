@@ -46,6 +46,7 @@
 #define D_RF_SO2i               D_RF_PREFIX "SO2i"
 #define D_RF_SO2                D_RF_PREFIX "SO2"
 #define D_RF_VOL                D_RF_PREFIX "vol" // forcing from volcanic so2
+#define D_RF_halocarbons        D_RF_PREFIX "halocarbons"
 
 // halocarbon components
 #define D_RF_CF4                D_RF_PREFIX CF4_COMPONENT_BASE

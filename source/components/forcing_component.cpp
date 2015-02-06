@@ -239,34 +239,45 @@ namespace Hector {
             }
             
             // ---------- Halocarbons ----------
-            // Forcing values are actually computed by the halocarbon itself
-            forcings[ D_RF_CF4 ] = core->sendMessage( M_GETDATA, D_RF_CF4, message_data( runToDate ) );
-            forcings[ D_RF_C2F6 ] = core->sendMessage( M_GETDATA, D_RF_C2F6, message_data( runToDate ) );
-            forcings[ D_RF_HFC23 ] = core->sendMessage( M_GETDATA, D_RF_HFC23, message_data( runToDate ) );
-            forcings[ D_RF_HFC32 ] = core->sendMessage( M_GETDATA, D_RF_HFC32, message_data( runToDate ) );
-            forcings[ D_RF_HFC4310 ] = core->sendMessage( M_GETDATA, D_RF_HFC4310, message_data( runToDate ) );
-            forcings[ D_RF_HFC125 ] = core->sendMessage( M_GETDATA, D_RF_HFC125, message_data( runToDate ) );
-            forcings[ D_RF_HFC134a ] = core->sendMessage( M_GETDATA, D_RF_HFC134a, message_data( runToDate ) );
-            forcings[ D_RF_HFC143a ] = core->sendMessage( M_GETDATA, D_RF_HFC143a, message_data( runToDate ) );
-            forcings[ D_RF_HFC227ea ] = core->sendMessage( M_GETDATA, D_RF_HFC227ea, message_data( runToDate ) );
-            forcings[ D_RF_HFC245fa ] = core->sendMessage( M_GETDATA, D_RF_HFC245fa, message_data( runToDate ) );
-            forcings[ D_RF_SF6 ] = core->sendMessage( M_GETDATA, D_RF_SF6, message_data( runToDate ) );
-            forcings[ D_RF_CFC11 ] = core->sendMessage( M_GETDATA, D_RF_CFC11, message_data( runToDate ) );
-            forcings[ D_RF_CFC12 ] = core->sendMessage( M_GETDATA, D_RF_CFC12, message_data( runToDate ) );
-            forcings[ D_RF_CFC113 ] = core->sendMessage( M_GETDATA, D_RF_CFC113, message_data( runToDate ) );
-            forcings[ D_RF_CFC114 ] = core->sendMessage( M_GETDATA, D_RF_CFC114, message_data( runToDate ) );
-            forcings[ D_RF_CFC115 ] = core->sendMessage( M_GETDATA, D_RF_CFC115, message_data( runToDate ) );
-            forcings[ D_RF_CCl4 ] = core->sendMessage( M_GETDATA, D_RF_CCl4, message_data( runToDate ) );
-            forcings[ D_RF_CH3CCl3 ] = core->sendMessage( M_GETDATA, D_RF_CH3CCl3, message_data( runToDate ) );
-            forcings[ D_RF_HCF22 ] = core->sendMessage( M_GETDATA, D_RF_HCF22, message_data( runToDate ) );
-            forcings[ D_RF_HCF141b ] = core->sendMessage( M_GETDATA, D_RF_HCF141b, message_data( runToDate ) );
-            forcings[ D_RF_HCF142b ] = core->sendMessage( M_GETDATA, D_RF_HCF142b, message_data( runToDate ) );
-            forcings[ D_RF_halon1211 ] = core->sendMessage( M_GETDATA, D_RF_halon1211, message_data( runToDate ) );
-            forcings[ D_RF_halon1301 ] = core->sendMessage( M_GETDATA, D_RF_halon1301, message_data( runToDate ) );
-            forcings[ D_RF_halon2402 ] = core->sendMessage( M_GETDATA, D_RF_halon2402, message_data( runToDate ) );
-            forcings[ D_RF_CH3Cl ] = core->sendMessage( M_GETDATA, D_RF_CH3Cl, message_data( runToDate ) );
-            forcings[ D_RF_CH3Br ] = core->sendMessage( M_GETDATA, D_RF_CH3Br, message_data( runToDate ) );
+            // TODO: Would like to just 'know' all the halocarbon instances out there
+            boost::array<string, 26> halos = {
+                D_RF_CF4,
+                D_RF_C2F6,
+                D_RF_HFC23,
+                D_RF_HFC32,
+                D_RF_HFC4310,
+                D_RF_HFC125,
+                D_RF_HFC134a,
+                D_RF_HFC143a,
+                D_RF_HFC227ea,
+                D_RF_HFC245fa,
+                D_RF_SF6,
+                D_RF_CFC11,
+                D_RF_CFC12,
+                D_RF_CFC113,
+                D_RF_CFC114,
+                D_RF_CFC115,
+                D_RF_CCl4,
+                D_RF_CH3CCl3,
+                D_RF_HCF22,
+                D_RF_HCF141b,
+                D_RF_HCF142b,
+                D_RF_halon1211,
+                D_RF_halon1301,
+                D_RF_halon2402,
+                D_RF_CH3Cl,
+                D_RF_CH3Br
+            };
             
+            // Halocarbons can be disabled individually via the input file, so we run through all possible ones
+            forcings[ D_RF_halocarbons ].set( 0.0, U_W_M2 );
+            for (int hc=0; hc<halos.size(); ++hc) {
+                if( core->checkCapability( halos[hc] ) ) {
+                    // Forcing values are actually computed by the halocarbon itself
+                    forcings[ halos[hc] ] = core->sendMessage( M_GETDATA, halos[hc], message_data( runToDate ) );
+                    forcings[ D_RF_halocarbons ] = forcings[ D_RF_halocarbons ] + forcings[ halos[hc] ];
+                }
+            }
             
             // ---------- Black carbon ----------
             if( core->checkCapability( D_EMISSIONS_BC ) ) {
