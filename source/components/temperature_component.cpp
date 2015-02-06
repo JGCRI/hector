@@ -128,7 +128,7 @@ void TemperatureComponent::run( const double runToDate ) throw ( h_exception ) {
 	tgav.set( ( S.value( U_DEGC ) / 3.7 ) * ( Ftot.value( U_W_M2 ) - heatflux.value( U_W_M2) ), U_DEGC );
     
     // If the user has supplied temperature data, use that (except if past its end)
-    if( tgav_constrain.size() && runToDate < tgav_constrain.lastdate() ) {
+    if( tgav_constrain.size() && runToDate <= tgav_constrain.lastdate() ) {
         H_LOG( logger, Logger::WARNING ) << "** Overwriting temperature with user-supplied value" << std::endl;
         tgav = tgav_constrain.get( runToDate );
     }
