@@ -230,10 +230,8 @@ const string& Logger::logLevelToStr( const LogLevel logLevel ) {
 const char* Logger::getDateTimeStamp() {
     time_t rawtime;
     struct tm* timeinfo;
-    // TODO: I think visual studio will complain about the use of these
     time( &rawtime );
     timeinfo = localtime( &rawtime );
-    // TODO: come up with our own formatted time output
     char* ret = asctime( timeinfo );
     // remove the newline at the end of the string
     int i = 0;
