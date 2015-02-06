@@ -39,7 +39,7 @@ CSVOutputStreamVisitor::CSVOutputStreamVisitor( ostream& outputStream, const boo
 {
     if( printHeader ) {
         // Print model version header
-        csvFile << "# Output from " << MODEL_NAME << " version " << MODEL_VERSION << endl;
+        csvFile << COMMENT_CHAR << " Output from " << MODEL_NAME << " version " << MODEL_VERSION << endl;
 
         // Print table header
         csvFile << "year" << DELIMITER << "run_name" << DELIMITER << "spinup" << DELIMITER

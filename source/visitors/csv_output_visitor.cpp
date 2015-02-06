@@ -22,7 +22,7 @@ CSVOutputVisitor::CSVOutputVisitor( const string& filename )
 :csvFile( filename.c_str(), ios::out )
 {
     // Print model version header
-    csvFile << "# Output from " << MODEL_NAME << " version " << MODEL_VERSION << endl;
+    csvFile << COMMENT_CHAR << " Output from " << MODEL_NAME << " version " << MODEL_VERSION << endl;
 
     // Print table header
     csvFile << "run_name" << DELIMITER << "Year" << DELIMITER << D_ATMOSPHERIC_CO2

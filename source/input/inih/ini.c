@@ -5,6 +5,8 @@ home page for more info:
 
 http://code.google.com/p/inih/
 
+Modified February 6, 2015 to support '#' comments. -BBL
+ 
 */
 
 #include <stdio.h>
@@ -12,6 +14,8 @@ http://code.google.com/p/inih/
 #include <string.h>
 
 #include "input/inih/ini.h"
+
+#include "h_util.hpp"
 
 #define MAX_LINE 200
 #define MAX_SECTION 50
@@ -40,7 +44,7 @@ static char* lskip(const char* s)
 static char* find_char_or_comment(const char* s, char c)
 {
     int was_whitespace = 0;
-    while (*s && *s != c && !(was_whitespace && *s == ';')) {
+    while (*s && *s != c && !(was_whitespace && (*s == ';' || *s == COMMENT_CHAR))) {
         was_whitespace = isspace(*s);
         s++;
     }
@@ -91,7 +95,7 @@ int ini_parse(const char* filename,
         }
         else
 #endif
-        if (*start == ';' || *start == '#') {
+        if (*start == ';' || *start == '#' || *start == COMMENT_CHAR) {
             /* Per Python ConfigParser, allow '#' comments at start of line */
         }
         else if (*start == '[') {
@@ -107,7 +111,7 @@ int ini_parse(const char* filename,
                 error = lineno;
             }
         }
-        else if (*start && *start != ';') {
+        else if (*start && *start != ';' && *start != COMMENT_CHAR) {
             /* Not a comment, must be a name=value pair */
             end = find_char_or_comment(start, '=');
             if (*end == '=') {
@@ -115,7 +119,7 @@ int ini_parse(const char* filename,
                 name = rstrip(start);
                 value = lskip(end + 1);
                 end = find_char_or_comment(value, '\0');
-                if (*end == ';')
+                if (*end == ';' || *end == COMMENT_CHAR)
                     *end = '\0';
                 rstrip(value);
 

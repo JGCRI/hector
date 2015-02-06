@@ -24,4 +24,6 @@
 
 #define OUTPUT_DIRECTORY "output/"
 
+#define COMMENT_CHAR '#'
+
 #endif // H_UTIL_H
