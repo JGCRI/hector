@@ -125,7 +125,7 @@ run_hector <- function(vals, infiles, vardata, refdata=NULL, logfile=NULL, outfi
         run_name <- sub(RUN_NAME_TEXT, "", gsub(" ", "", run_name_line))
         printlog("run_name =", run_name)
         
-        for(vn in seq_along(vardata)) {  
+        for(vn in seq_len(nrow(vardata))) {  
             v <- names(vardata)[vn]
             flines <- subparam(flines,
                                section=vardata[[v]]$section,
@@ -195,7 +195,7 @@ run_hector <- function(vals, infiles, vardata, refdata=NULL, logfile=NULL, outfi
     
     # Save data if requested
     if(!is.null(outfile)) {
-        for(vn in seq_along(vardata))
+        for(vn in seq_len(nrow(vardata)))
             results[names(vardata)[vn]] <- vals[vn]
         results$score <- finalscore
         printlog("Writing to", outfile)
@@ -225,7 +225,7 @@ bruteforce <- function(infiles, vardata=NULL, refdata=NULL, suffix="") {
                        logfile=logfile, outfile=outfile)))
     }
     
-    for(i in seq_along(runlist)) {
+    for(i in seq_len(nrow(runlist))) {
         printlog(SEPARATOR)
         printlog(i)
         runlist[i, "score"] <- run_hector(vals=as.numeric(runlist[i,]),
