@@ -29,12 +29,17 @@ logs/*.*
 
 # OS-specific files
 .DS_Store
+.Trashes
+*.swp
 
-# Xcode build directories and interface state
-DerivedData/
-*.xcuserstate
-xcodeuserstate
+# Xcode build directories, schemes, and interface state
+*.lock
 *.xccheckout
+*~.nib
+build/
+DerivedData/
+xcodeuserstate
+xcuserdata
 
 # Project files
 project_files/*.*
