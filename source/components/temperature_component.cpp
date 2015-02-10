@@ -151,13 +151,13 @@ namespace Hector {
             // we want to compute RF separately for land and ocean; for now, add a 'bonus'
             // for these forcing agents.
             const double fbc = core->sendMessage( M_GETDATA, D_RF_BC ).value( U_W_M2 );
-            Ftot += fbc * 0.5; // 30% extra
+            Ftot += fbc * 0.0; // 30% extra
             const double foc = core->sendMessage( M_GETDATA, D_RF_OC ).value( U_W_M2 );
-            Ftot += foc * 0.5; // 30% extra
+            Ftot += foc * 0.0; // 30% extra
             const double fso2d = core->sendMessage( M_GETDATA, D_RF_SO2d ).value( U_W_M2 );
-            Ftot += fso2d * 0.5; // 30% extra
+            Ftot += fso2d * 0.0; // 30% extra
             const double fso2i = core->sendMessage( M_GETDATA, D_RF_SO2i ).value( U_W_M2 );
-            Ftot += fso2i * 0.5; // 30% extra
+            Ftot += fso2i * 0.0; // 30% extra
 
             internal_Ftot += ( Ftot - last_Ftot );
             last_Ftot = Ftot;
