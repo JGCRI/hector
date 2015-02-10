@@ -329,7 +329,7 @@ namespace Hector {
             }
             
             // If the user has supplied total forcing data, use that
-            if( Ftot_constrain.size() ) {
+            if( Ftot_constrain.size() && runToDate <= Ftot_constrain.lastdate() ) {
                 H_LOG( logger, Logger::WARNING ) << "** Overwriting total forcing with user-supplied value" << std::endl;
                 forcings[ D_RF_TOTAL ] = Ftot_constrain.get( runToDate );
             } else {

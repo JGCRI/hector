@@ -299,7 +299,7 @@ namespace Hector {
             + surfaceLL.mychemistry.calc_annual_surface_flux( Ca, cpoolscale );
         }
         
-        if( !in_spinup && oceanflux_constrain.size() ) {
+        if( !in_spinup && oceanflux_constrain.size() && date <= oceanflux_constrain.lastdate() ) {
             flux = oceanflux_constrain.get( date );
         }
         
