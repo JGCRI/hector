@@ -144,23 +144,24 @@ namespace Hector {
             // Not subject to a constraint. Get total forcing and update our
             // internal tracking variables `internal_Ftot` (parallels Ftot, may
             // be identical if never had a constraint) and `last_Ftot`.
-            const double Ftot = core->sendMessage( M_GETDATA, D_RF_TOTAL ).value( U_W_M2 );
-            internal_Ftot += ( Ftot - last_Ftot );
-            last_Ftot = Ftot;
+          double Ftot = core->sendMessage( M_GETDATA, D_RF_TOTAL ).value( U_W_M2 );
             
             // A few forcing agents occur disproportionately over land, and thus exert
             // a stronger effect than their global mean RF would suggest. In the future,
             // we want to compute RF separately for land and ocean; for now, add a 'bonus'
             // for these forcing agents.
             const double fbc = core->sendMessage( M_GETDATA, D_RF_BC ).value( U_W_M2 );
-            internal_Ftot += fbc * 0.3; // 30% extra
+            Ftot += fbc * 0.5; // 30% extra
             const double foc = core->sendMessage( M_GETDATA, D_RF_OC ).value( U_W_M2 );
-            internal_Ftot += foc * 0.3; // 30% extra
+            Ftot += foc * 0.5; // 30% extra
             const double fso2d = core->sendMessage( M_GETDATA, D_RF_SO2d ).value( U_W_M2 );
-            internal_Ftot += fso2d * 0.3; // 30% extra
+            Ftot += fso2d * 0.5; // 30% extra
             const double fso2i = core->sendMessage( M_GETDATA, D_RF_SO2i ).value( U_W_M2 );
-            internal_Ftot += fso2i * 0.3; // 30% extra
-         
+            Ftot += fso2i * 0.5; // 30% extra
+
+            internal_Ftot += ( Ftot - last_Ftot );
+            last_Ftot = Ftot;
+
             // S is the equilibrium climate sensitivity for a doubling of CO2
             // this corresponds, according to Knutti and Hegerl (2008), to ~3.7 W/m2
             // Use this to compute a temperature resulting from total forcing
