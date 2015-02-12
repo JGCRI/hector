@@ -57,6 +57,11 @@ private:
 	unitval tgav;       //!< global temperature delta, deg C
 	unitval S;          //!< climate sensitivity for 2xCO2, deg C
     
+    unitval bc_b;
+    unitval oc_b;
+    unitval so2i_b;
+    unitval so2d_b;
+
     tseries<unitval> tgav_constrain;       //! Temperature change can be supplied
     
     //! pointers to other components and stuff

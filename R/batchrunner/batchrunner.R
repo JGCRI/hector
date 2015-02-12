@@ -10,7 +10,7 @@
 # Settings you will definitely need to change
 
 # Location of the Hector executable to run
-EXECUTABLE <- "/Users/ben/Library/Developer/Xcode/DerivedData/hector-cglywsekpzlzoxaqbdkpxegrhaba/Build/Products/Debug/hector"
+EXECUTABLE <- "C:/Users/hart428/Documents/GitHub/hector/project_files/visual_studio/hector/Release/hector.exe"
 
 # ----------------------------------------------------------------
 # Settings you will probably need to change
@@ -19,27 +19,31 @@ EXECUTABLE <- "/Users/ben/Library/Developer/Xcode/DerivedData/hector-cglywsekpzl
 RUN_DIRECTORY <- "../../"
 
 # Hector INI files to (possibly modify parameters in and) run
-INFILES <- c("input/hector_rcp26.ini", 
-             "input/hector_rcp45.ini", 
-             "input/hector_rcp60.ini",
-             "input/hector_rcp85.ini")   # relative to run directory
+INFILES <- c("input/hector_rcp26.ini") #, 
+             #"input/hector_rcp45.ini", 
+             #"input/hector_rcp60.ini",
+             #"input/hector_rcp85.ini")   # relative to run directory
 
 # Data to score the resulting runs against. These data should include run_name, 
 # year, component, variable, and value. Also (optionally) a 'weight' field if 
 # you want to weight some observations more than others.
 REFDATA <- read.csv("CMIP5_Tgav.csv")
+library(caTools)
+smoothDATA <- runmean(REFDATA$value, 15, alg=c("C"), endrule=c("mean"), align=c("center"))
+REFDATA<-cbind(smoothDATA = smoothDATA, REFDATA)
+REFDATA$value<-NULL
+colnames(REFDATA)[1] <- "value"
+
+#REFDATA$value<-runmean(REFDATA$value, 15, alg=c("C"), endrule=c("mean"), align=c("center"))
 
 # Data structure holding information about variables to change between runs
 # A list of lists, holding var name, INI file section, and values.
 # If optimizing, the FIRST value is used as the starting point.
 VARDATA <- list(
-    k_max=list(section="ocean", values=c(0.8, 0.6, 1.0, 1.2)),
-    t_mid=list(section="ocean", values=c(2.5, 2.0, 3.0, 4.0, 5.0)),
-    slope=list(section="ocean", values=c(-1.5, -0.5, -1.5, -2)),
-    k_min=list(section="ocean", values=c(0, 0.1, 0.2, 0.3)),
-    #    S=list(section="temperature", values=c(2.5, 2, 3)),
-    beta=list(section="simpleNbox", values=c(0.36, 0.30, 0.42)),
-    q10_rh=list(section="simpleNbox", values=c(2, 1.5, 2.5))
+    bc_b=list(section="temperature", values=c(0.1)),
+    oc_b=list(section="temperature", values=c(0.1)),
+    so2i_b=list(section="temperature", values=c(0.1)),
+    so2d_b=list(section="temperature", values=c(0.1))
 )
 
 # ----------------------------------------------------------------
@@ -125,7 +129,7 @@ run_hector <- function(vals, infiles, vardata, refdata=NULL, logfile=NULL, outfi
         run_name <- sub(RUN_NAME_TEXT, "", gsub(" ", "", run_name_line))
         printlog("run_name =", run_name)
         
-        for(vn in seq_len(nrow(vardata))) {  
+        for(vn in seq_len(length(vardata))) {  
             v <- names(vardata)[vn]
             flines <- subparam(flines,
                                section=vardata[[v]]$section,
@@ -140,9 +144,12 @@ run_hector <- function(vals, infiles, vardata, refdata=NULL, logfile=NULL, outfi
         cat(flines, file=tf, sep="\n")
         
         # Run Hector
-        cmd <- paste0("cd ", RUN_DIRECTORY, "; ", EXECUTABLE, " ", tf)
+        wd<-getwd()
+        setwd(normalizePath(RUN_DIRECTORY))
+        cmd <- paste0(normalizePath(EXECUTABLE), " ", tf)
         printlog(cmd)
-        error <- try(system(cmd, ignore.stdout = TRUE))
+        error <- try(system(cmd, ignore.stdout = TRUE, show.output.on.console=F))
+        setwd(wd)
         if(error) {
             stop("Hector error")
             # TODO return error/MAXINT or something like that
@@ -192,10 +199,15 @@ run_hector <- function(vals, infiles, vardata, refdata=NULL, logfile=NULL, outfi
         finalscore <- score(results_mrg)
     } else
         finalscore <- NA
+    #
+    if (any(par <0 | par >1)) {
+    finalscore <- finalscore * 100
+    }
+    print ("HERE!")
     
     # Save data if requested
     if(!is.null(outfile)) {
-        for(vn in seq_len(nrow(vardata)))
+        for(vn in seq_len(length(vardata)))
             results[names(vardata)[vn]] <- vals[vn]
         results$score <- finalscore
         printlog("Writing to", outfile)
@@ -225,7 +237,7 @@ bruteforce <- function(infiles, vardata=NULL, refdata=NULL, suffix="") {
                        logfile=logfile, outfile=outfile)))
     }
     
-    for(i in seq_len(nrow(runlist))) {
+    for(i in seq_len(length(runlist))) {
         printlog(SEPARATOR)
         printlog(i)
         runlist[i, "score"] <- run_hector(vals=as.numeric(runlist[i,]),
@@ -254,7 +266,7 @@ optimize <- function(infiles, vardata, refdata, suffix="", graph=TRUE) {
                      fn=run_hector,
                      gr=NULL,
                      control=list(maxit=200,
-                                  reltol=1e-1), # don't need default 1e-8
+                                  reltol=1e-5), # don't need default 1e-8
                      # following parameters get passed to run_hector
                      infiles, vardata, refdata, logfile, outfile)
     
@@ -320,7 +332,7 @@ graph_optimized <- function(results, vardata, refdata, suffix="") {
 # An optimization exercise
 # Weight 1950-2050 observations heavily
 REFDATA$weight <- 1
-REFDATA$weight[REFDATA$year > 1950 & REFDATA$year <= 2100] <- 2
+REFDATA$weight[REFDATA$year > 1960 & REFDATA$year <= 2150] <- 2
 
 #optimize(INFILES[1], VARDATA, REFDATA, suffix="-new-26") %>%
 #    graph_optimized(VARDATA, REFDATA, suffix="-new-26")

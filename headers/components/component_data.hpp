@@ -218,7 +218,10 @@
 #define D_GLOBAL_TEMP           "Tgav"
 #define D_GLOBAL_TEMPEQ         "Tgaveq"
 #define D_TGAV_CONSTRAIN        "tgav_constrain"
-
+#define D_SO2D_B                "so2d_b"
+#define D_SO2I_B                "so2i_b"
+#define D_OC_B                  "oc_b"
+#define D_BC_B                  "bc_b"
 // ------------------- messages being passed between components -------------------------
 
 #define M_GETDATA               "getData"
