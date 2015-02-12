@@ -68,4 +68,5 @@ output/rcp45_rcp85/012.ocean.ph_ll.pdf
 .Rhistory
 R/batchrunner/*.pdf
 R/batchrunner/*.csv
+.Rapp.history
 
