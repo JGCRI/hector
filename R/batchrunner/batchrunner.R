@@ -19,10 +19,10 @@ EXECUTABLE <- "C:/Users/hart428/Documents/GitHub/hector/project_files/visual_stu
 RUN_DIRECTORY <- "../../"
 
 # Hector INI files to (possibly modify parameters in and) run
-INFILES <- c("input/hector_rcp26.ini") #, 
-             #"input/hector_rcp45.ini", 
-             #"input/hector_rcp60.ini",
-             #"input/hector_rcp85.ini")   # relative to run directory
+INFILES <- c("input/hector_rcp26.ini",
+             "input/hector_rcp45.ini", 
+             "input/hector_rcp60.ini",
+             "input/hector_rcp85.ini")   # relative to run directory
 
 # Data to score the resulting runs against. These data should include run_name, 
 # year, component, variable, and value. Also (optionally) a 'weight' field if 
@@ -40,10 +40,13 @@ colnames(REFDATA)[1] <- "value"
 # A list of lists, holding var name, INI file section, and values.
 # If optimizing, the FIRST value is used as the starting point.
 VARDATA <- list(
-    bc_b=list(section="temperature", values=c(0.1)),
-    oc_b=list(section="temperature", values=c(0.1)),
-    so2i_b=list(section="temperature", values=c(0.1)),
-    so2d_b=list(section="temperature", values=c(0.1))
+    k_max=list(section="ocean", values=c(0.8, 0.6, 1.0, 1.2)),
+    t_mid=list(section="ocean", values=c(2.5, 2.0, 3.0, 4.0, 5.0)),
+    slope=list(section="ocean", values=c(0, -0.5, -1.5, -2))
+    #bc_b=list(section="temperature", values=c(0.1)),
+    #oc_b=list(section="temperature", values=c(0.1)),
+    #so2i_b=list(section="temperature", values=c(0.1)),
+    #so2d_b=list(section="temperature", values=c(0.1))
 )
 
 # ----------------------------------------------------------------
@@ -200,10 +203,10 @@ run_hector <- function(vals, infiles, vardata, refdata=NULL, logfile=NULL, outfi
     } else
         finalscore <- NA
     #
-    if (any(par <0 | par >1)) {
-    finalscore <- finalscore * 100
-    }
-    print ("HERE!")
+    #if (any(par <0 | par >1)) {
+    #finalscore <- finalscore * 100
+    #}
+    #print ("HERE!")
     
     # Save data if requested
     if(!is.null(outfile)) {
@@ -237,7 +240,7 @@ bruteforce <- function(infiles, vardata=NULL, refdata=NULL, suffix="") {
                        logfile=logfile, outfile=outfile)))
     }
     
-    for(i in seq_len(length(runlist))) {
+    for(i in seq_len(nrow(runlist))) {
         printlog(SEPARATOR)
         printlog(i)
         runlist[i, "score"] <- run_hector(vals=as.numeric(runlist[i,]),
