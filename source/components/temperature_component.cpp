@@ -49,6 +49,8 @@ namespace Hector {
         tgav_constrain.allowInterp( true );
         tgav_constrain.name = D_TGAV_CONSTRAIN;
         
+        FCO2_record.allowInterp( true );
+        
         // Register the data we can provide
         core->registerCapability( D_GLOBAL_TEMP, getComponentName() );
         core->registerCapability( D_GLOBAL_TEMPEQ, getComponentName() );
@@ -94,6 +96,18 @@ namespace Hector {
             } else if( varName == D_TGAV_CONSTRAIN ) {
                 H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
                 tgav_constrain.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_DEGC ) );
+            } else if( varName == D_SO2I_B ) {
+                H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
+                so2i_b = unitval::parse_unitval( data.value_str, data.units_str, U_UNITLESS );
+           } else if( varName == D_SO2D_B ) {
+                H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
+                so2d_b = unitval::parse_unitval( data.value_str, data.units_str, U_UNITLESS );
+            } else if( varName == D_OC_B ) {
+                H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
+                oc_b = unitval::parse_unitval( data.value_str, data.units_str, U_UNITLESS );
+        } else if( varName == D_BC_B ) {
+                H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
+                bc_b = unitval::parse_unitval( data.value_str, data.units_str, U_UNITLESS );
             } else {
                 H_THROW( "Unknown variable name while parsing " + getComponentName() + ": "
                         + varName );
@@ -150,15 +164,41 @@ namespace Hector {
             // a stronger effect than their global mean RF would suggest. In the future,
             // we want to compute RF separately for land and ocean; for now, add a 'bonus'
             // for these forcing agents.
+            
+            // NOTE: this is commented out and not used for now.
+            /*
             const double fbc = core->sendMessage( M_GETDATA, D_RF_BC ).value( U_W_M2 );
-            Ftot += fbc * 0.0; // 30% extra
+            Ftot += fbc * bc_b; // % extra
             const double foc = core->sendMessage( M_GETDATA, D_RF_OC ).value( U_W_M2 );
-            Ftot += foc * 0.0; // 30% extra
+            Ftot += foc * oc_b; // % extra
             const double fso2d = core->sendMessage( M_GETDATA, D_RF_SO2d ).value( U_W_M2 );
-            Ftot += fso2d * 0.0; // 30% extra
+            Ftot += fso2d * so2d_b; // % extra
             const double fso2i = core->sendMessage( M_GETDATA, D_RF_SO2i ).value( U_W_M2 );
-            Ftot += fso2i * 0.0; // 30% extra
+            Ftot += fso2i * so2i_b; // % extra
+            */
+            
+            // CO2 is subject to a lag effect, coded empirically here because a simple model
+            // like Hector doesn't account for all buffers and processes in the earth system
+            // We use a window (size CO2_WINDOW) CO2_LAG years in the past
+            const double FCO2_current = core->sendMessage( M_GETDATA, D_RF_CO2 ).value( U_W_M2 );
+            FCO2_record.set( runToDate, FCO2_current );
 
+            #define CO2_LAG 20
+            #define CO2_WINDOW 10
+            double FCO2_lagged_mean = 0.0;       /* window mean of FCO2_past */
+            if( runToDate > core->getStartDate() + CO2_LAG ) {
+                for( int i=runToDate-CO2_LAG-CO2_WINDOW; i<runToDate-CO2_LAG; i++ ) {
+                    FCO2_lagged_mean += FCO2_record.get( i );
+                }
+                FCO2_lagged_mean /= CO2_WINDOW;
+            }
+
+            // Subtract off the current FCO2 computed by ForcingComponent, and use the lagged
+            // window mean computed above instead
+            Ftot = Ftot - FCO2_current + FCO2_lagged_mean;
+
+            // At this point, adjust out internal Ftot tracking variable by the delta between
+            // Ftot and last_Ftot
             internal_Ftot += ( Ftot - last_Ftot );
             last_Ftot = Ftot;
 

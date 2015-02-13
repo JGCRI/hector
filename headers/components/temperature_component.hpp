@@ -57,7 +57,14 @@ private:
 	unitval tgav;       //!< global temperature delta, deg C
 	unitval S;          //!< climate sensitivity for 2xCO2, deg C
     
-    tseries<unitval> tgav_constrain;       //! Temperature change can be supplied
+    unitval bc_b;
+    unitval oc_b;
+    unitval so2i_b;
+    unitval so2d_b;
+
+    tseries<unitval> tgav_constrain;        //! Temperature change can be supplied
+    
+    tseries<double> FCO2_record;            //!< Record of CO2 forcing effect
     
     //! pointers to other components and stuff
     Core*             core;

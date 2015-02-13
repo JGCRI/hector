@@ -379,10 +379,12 @@ namespace Hector {
             const double tmid = t_mid.value( U_K );
             const double kmin = k_min.value( U_W_M2_K );               // W/m2/K
             const double kmax = k_max.value( U_W_M2_K );
-            
+
             double k = ( sl == 0 ?
                         kmax :
-                        kmin + ( kmax - kmin ) / ( 1 + exp( -sl * ( t - tmid ) ) ) );  // W/m2/K
+                        kmin + ( kmax - kmin ) / ( 1 + exp( sl * ( t - tmid ) ) ) );  // W/m2/K
+            
+            H_ASSERT( k >= kmin && k <= kmax, "kappa out of range");
             
             // Second assumption: there's a 'ratchet' effect, such that once k starts to decline,
             // it's not allowed to come back up. (This would not be true at longer timescales.)
@@ -392,22 +394,8 @@ namespace Hector {
             }
             min_k_so_far = k;
             
-            // Third assumption: in the future, there's also a progressive weakening
-            // that's not captured by the code above.
-            // Currently this is a big, big cheat, because it's time-based
-            // What about if this is based on exceeding e.g. 1 K temperature rise?
-            if( runToDate > 2000 ) {
-                //            min_k_so_far *= 0.995;
-            }
-            // For sl=-3, x0=2.75, L_min=0, L=0.8-L_min:
-            // 0.995 is PERFECT for rcp4.5 (0.99 shoots it high) but 2.6 goes low
-            // 0.99 is PERFECT for rcp2.6 (0.995 shoots it low, but not as ugly as above)
-            // rcp8.5 doesn't care
-            
             heatflux.set( k * (tgaveq.value( U_DEGC )), U_W_M2 );
             kappa.set( k, U_W_M2_K );
-            
-            //       std::cout << "Tgav = " << t << ", heatflux = " << heatflux << ", k = " << knum << std::endl;
             
             H_LOG( logger, Logger::DEBUG ) << "heatflux = " << heatflux << ", kappa = " << kappa << std::endl;
         }
