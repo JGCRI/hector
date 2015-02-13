@@ -7,13 +7,13 @@
 # - do a optimizer run looking for best set of parameters
 
 # ----------------------------------------------------------------
-# Settings you will definitely need to change
+# Settings you will definitely need to overwrite in your code
 
 # Location of the Hector executable to run
-EXECUTABLE <- "C:/Users/hart428/Documents/GitHub/hector/project_files/visual_studio/hector/Release/hector.exe"
+EXECUTABLE <- "/Users/ben/Library/Developer/Xcode/DerivedData/hector-cglywsekpzlzoxaqbdkpxegrhaba/Build/Products/Debug/hector"
 
 # ----------------------------------------------------------------
-# Settings you will probably need to change
+# Settings you will probably need to overwrite
 
 # Location of the main run (working) directory
 RUN_DIRECTORY <- "../../"
@@ -148,10 +148,10 @@ run_hector <- function(vals, infiles, vardata, refdata=NULL, logfile=NULL, outfi
         
         # Run Hector
         wd<-getwd()
-        setwd(normalizePath(RUN_DIRECTORY))
+        setwd(RUN_DIRECTORY) # need this for Windows
         cmd <- paste0(normalizePath(EXECUTABLE), " ", tf)
         printlog(cmd)
-        error <- try(system(cmd, ignore.stdout = TRUE, show.output.on.console=F))
+        error <- try(system(cmd, ignore.stdout = TRUE))
         setwd(wd)
         if(error) {
             stop("Hector error")
@@ -202,12 +202,7 @@ run_hector <- function(vals, infiles, vardata, refdata=NULL, logfile=NULL, outfi
         finalscore <- score(results_mrg)
     } else
         finalscore <- NA
-    #
-    #if (any(par <0 | par >1)) {
-    #finalscore <- finalscore * 100
-    #}
-    #print ("HERE!")
-    
+
     # Save data if requested
     if(!is.null(outfile)) {
         for(vn in seq_len(length(vardata)))
@@ -328,14 +323,15 @@ graph_optimized <- function(results, vardata, refdata, suffix="") {
     invisible(results)
 } # graph_optimized
 
+# Examples for how to use this code
 
 # Run the four RCP cases (no multiple runs or comparison to data)
 #bruteforce(INFILES)
 
 # An optimization exercise
 # Weight 1950-2050 observations heavily
-REFDATA$weight <- 1
-REFDATA$weight[REFDATA$year > 1960 & REFDATA$year <= 2150] <- 2
+#REFDATA$weight <- 1
+#REFDATA$weight[REFDATA$year > 1960 & REFDATA$year <= 2150] <- 2
 
 #optimize(INFILES[1], VARDATA, REFDATA, suffix="-new-26") %>%
 #    graph_optimized(VARDATA, REFDATA, suffix="-new-26")
@@ -343,8 +339,8 @@ REFDATA$weight[REFDATA$year > 1960 & REFDATA$year <= 2150] <- 2
 #optimize(INFILES[3], VARDATA, REFDATA, suffix="-new-60")
 #optimize(INFILES[4], VARDATA, REFDATA, suffix="-new-85")
 
-optimize(INFILES, VARDATA, REFDATA, suffix="-new-combined") %>%
-    graph_optimized(VARDATA, REFDATA, suffix="-new-combined")
-REFDATA$weight[REFDATA$run_name=="rcp26"] <- 0.0
-optimize(INFILES, VARDATA, REFDATA, suffix="-new-not26") %>%
-    graph_optimized(VARDATA, REFDATA, suffix="-new-not26")
+# optimize(INFILES, VARDATA, REFDATA, suffix="-new-combined") %>%
+#     graph_optimized(VARDATA, REFDATA, suffix="-new-combined")
+# REFDATA$weight[REFDATA$run_name=="rcp26"] <- 0.0
+# optimize(INFILES, VARDATA, REFDATA, suffix="-new-not26") %>%
+#     graph_optimized(VARDATA, REFDATA, suffix="-new-not26")
