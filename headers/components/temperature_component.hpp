@@ -62,7 +62,9 @@ private:
     unitval so2i_b;
     unitval so2d_b;
 
-    tseries<unitval> tgav_constrain;       //! Temperature change can be supplied
+    tseries<unitval> tgav_constrain;        //! Temperature change can be supplied
+    
+    tseries<double> FCO2_record;            //!< Record of CO2 forcing effect
     
     //! pointers to other components and stuff
     Core*             core;
