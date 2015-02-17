@@ -1,7 +1,7 @@
 hector
 ======
 
-This is the repository for **Hector**, an open source, object-oriented, simple global climate carbon-cycle model. It model runs essentially instantaneously while still representing the most critical global scale earth system processes, and is one of a class of models heavily used for for complex climate model emulation and uncertainty analyses. For example, the global temperature rise for the RCP 8.5 scenario, as simulated by Hector, looks like this:
+This is the repository for **Hector**, an open source, object-oriented, simple global climate carbon-cycle model. It model runs essentially instantaneously while still representing the most critical global scale earth system processes, and is one of a class of models heavily used for for complex climate model emulation and uncertainty analyses. For example, Hector's global temperature rise for the RCP 8.5 scenario, compared to observations and other model results, looks like this:
 
 ![](https://github.com/JGCRI/hector/wiki/rcp85.png)
 
