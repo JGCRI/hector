@@ -1,12 +1,13 @@
 hector
 ======
 
-The Hector wiki is [here](https://github.com/JGCRI/hector/wiki).
+This is the repository for **Hector**, an open source, object-oriented, simple global climate carbon-cycle model. It model runs essentially instantaneously while still representing the most critical global scale earth system processes, and is one of a class of models heavily used for for complex climate model emulation and uncertainty analyses. 
 
-~~The Hector model webpage is [here](http://jgcri.github.io/hector/).~~
+The Hector primary source of model documentation is the wiki, located [here](https://github.com/JGCRI/hector/wiki). The code is also well documented with [Doxygen](http://doxygen.org)-style comments.
 
 The Hector model description paper is [here](http://www.geosci-model-dev-discuss.net/7/7075/2014/gmdd-7-7075-2014.html).
 
+~~The Hector model webpage is [here](http://jgcri.github.io/hector/).~~
 
 This research is based on work supported by the U.S. Department of Energy, 
 Office of Science, Integrated Assessment Research Program.  The Pacific 
