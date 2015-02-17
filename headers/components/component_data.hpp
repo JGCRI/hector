@@ -8,6 +8,7 @@
  *
  */
 
+#include "components/component_names.hpp"
 // ------------------- names of data being passed between components -------------------------
 
 // Note names in INI input need to match these.
@@ -75,7 +76,6 @@
 #define D_RF_halon2402          D_RF_PREFIX halon2402_COMPONENT_BASE
 #define D_RF_CH3Cl              D_RF_PREFIX CH3Cl_COMPONENT_BASE
 #define D_RF_CH3Br              D_RF_PREFIX CH3Br_COMPONENT_BASE
-
 // halocarbon emissions
 #define D_EMISSIONS_CF4                CF4_COMPONENT_BASE EMISSIONS_EXTENSION
 #define D_EMISSIONS_C2F6               C2F6_COMPONENT_BASE EMISSIONS_EXTENSION
@@ -138,7 +138,6 @@
 #define D_COEFFICENT_CH4        "CCH4"
 #define D_COEFFICENT_NMVOC      "CNMVOC"
 #define D_COEFFICENT_CO         "CCO"
-
 
 //o3 component
 #define D_PREINDUSTRIAL_O3	      "PO3"

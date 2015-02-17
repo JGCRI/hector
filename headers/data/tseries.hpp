@@ -47,6 +47,8 @@ public:
     
     void allowInterp( bool eia );
     void allowPartialInterp( bool eia );
+
+    void truncate(double t, bool after=true);
     
     std::string name;
 };
@@ -197,7 +199,6 @@ void tseries<T_data>::set( double t, T_data d ) {
  */
 template <class T_data>
 bool tseries<T_data>::exists( double t ) const {
-//    H_ASSERT( !mapdata.empty() );
     return ( mapdata.find( t ) != mapdata.end() );
 }
 
@@ -294,6 +295,45 @@ double tseries<T_data>::lastdate() const {
 template <class T_data>
 int tseries<T_data>::size() const {
     return int( mapdata.size() );
+}
+
+/*! \brief truncate a time series
+ *
+ *  \details The default is to wipe all of the data in the time series
+ *           after the input date.  By setting the optional after
+ *           argument to false, you can wipe data before the input
+ *           date instead. 
+ *  \note If you're going to overwrite previously read-in data, and
+ *        you're not supplying input at every year, then you need to
+ *        trigger this function (probably by sending a M_TRUNCATE
+ *        message to the component that owns the time series) in order
+ *        to ensure that you don't have bad data in the in-between
+ *        years. 
+ *  \note I haven't actually implemented the M_TRUNCATE message yet.
+ *        We'd like to be able to read in an entire time series for
+ *        all gasses and then discard the ones that GCAM will be
+ *        providing emissions for.  Unfortunately, there's this
+ *        horrible snafu where the GCAM climate model components have
+ *        no way of knowing what emissions they will be getting until
+ *        the model is running, and emissions start coming in.
+ *        Eventually we may require GCAM to register the gasses it
+ *        plans to provide emissions for at setup time.  For the time
+ *        being we will just ensure that the hector ini file is
+ *        compatible with whatever GCAM is doing.
+ */
+template <class T>
+void tseries<T>::truncate(double t, bool after)
+{
+    typename std::map<double, T>::iterator it1, it2;
+    if(after) {
+        it1 = mapdata.upper_bound(t);
+        it2 = mapdata.end();
+    }
+    else {
+        it1 = mapdata.begin();
+        it2 = mapdata.lower_bound(t);
+    } 
+    mapdata.erase(it1,it2); 
 }
 
 }

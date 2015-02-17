@@ -54,7 +54,7 @@ void OzoneComponent::init( Core* coreptr ) {
     
 	// Inform core what data we can provide
     core->registerCapability(  D_ATMOSPHERIC_O3, getComponentName() );
-	//core->registerCapability(  D_PREINDUSTRIAL_O3, getComponentName() );
+    //core->registerCapability(  D_PREINDUSTRIAL_O3, getComponentName() );
 }
 
 //------------------------------------------------------------------------------

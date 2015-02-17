@@ -45,12 +45,12 @@ using namespace std;
 Core::Core() :
   run_name( "" ), 
   startDate( -1.0 ),
-  endDate( -1.0 ),
-  lastDate( -1.0), 
-  isInited( false ),
-  do_spinup( true ),
-  max_spinup( 2000 ),
-  in_spinup( false )
+endDate( -1.0 ),
+lastDate( -1.0), 
+isInited( false ),
+do_spinup( true ),
+max_spinup( 2000 ),
+in_spinup( false )
 {
 }
 
@@ -261,6 +261,7 @@ void Core::addVisitor( AVisitor* visitor ) {
     modelVisitors.push_back( visitor );
 }
 
+
 //------------------------------------------------------------------------------
 /*! \brief Prepare model components to run
  *  \details This subroutine does the last phase of the setup.  It comprises all
@@ -414,7 +415,7 @@ void Core::run(double runtodate) throw ( h_exception ) {
             << "Requested run-to date is after the configured end date.  "
             << "Components are not guaranteed to be valid after endDate." << endl;
     }
-    
+
     // ------------------------------------
     // 6. Run all model dates.
     H_LOG( glog, Logger::NOTICE) << "Running..." << endl; 
@@ -432,8 +433,8 @@ void Core::run(double runtodate) throw ( h_exception ) {
     }
     // Record the last finished date.  We will resume here the next time run is called
     lastDate = runtodate;
-    }
-    
+}
+
 /*! \brief Shut down all model components 
  *  \details After this function is called no components are valid,
  *           and you must not call run() again.
@@ -539,6 +540,7 @@ void Core::registerDependency( const string& capabilityName, const string& compo
     
     componentDependencies.insert( pair<string, string>( componentName, capabilityName ) );
 }
+   
 
 //------------------------------------------------------------------------------
 /*! \brief Look up component and send message in one operation without any need
@@ -572,11 +574,11 @@ unitval Core::sendMessage( const std::string& message,
             H_THROW("Invalid sendMessage/GETDATA.  Check global log for details.");
         }
         else {
-    componentMapIterator it = componentCapabilities.find( datum );
-    
-    string err = "Unknown model datum: " + datum;
-    H_ASSERT( checkCapability( datum ), err );
-    return getComponentByName( ( *it ).second )->sendMessage( message, datum, info );
+            componentMapIterator it = componentCapabilities.find( datum );
+            
+            string err = "Unknown model datum: " + datum;
+            H_ASSERT( checkCapability( datum ), err );
+            return getComponentByName( ( *it ).second )->sendMessage( message, datum, info );
         }
     }
     else if (message == M_SETDATA) {
@@ -614,7 +616,7 @@ unitval Core::sendMessage( const std::string& message,
         H_THROW("Invalid message type in sendMessage.");
     } 
 }
-
+    
 //------------------------------------------------------------------------------
 /*! \brief Add an additional model component to be run.
  *  \param modelComponent The model component to add.

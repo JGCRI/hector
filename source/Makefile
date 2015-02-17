@@ -8,7 +8,7 @@ LDFLAGS	 = $(CXXPROF) -L$(GSLLIB) -L.
 export CXXFLAGS OPTFLAGS
 
 ## project root
-HROOT	= $(PWD)/..
+HROOT	= $(CURDIR)/..
 HDRDIR	= $(HROOT)/headers
 export HROOT
 
@@ -30,9 +30,17 @@ GTLIB	= $(GTROOT)/lib/.libs
 ifeq ($(strip $(GSLROOT)),)
 GSLROOT	= /usr/local
 endif
+
+## Set the GSL include and library locations.  There is a special case for Evergreen users.
+ifeq ($(strip $(GSLROOT)),EVERGREEN)
+GSLINC  = $(GSL_INC)
+GSLLIB  = $(GSL_LIB)
+# remove warning flags on Evergreen too:  old version of g++
+CXXFLAGS = -g  $(INCLUDES) $(OPTFLAGS) $(CXXEXTRA) $(CXXPROF) -MMD
+else
 GSLINC	= $(GSLROOT)/include/gsl
 GSLLIB	= $(GSLROOT)/lib
-
+endif
 
 export GTLIB GTINC GSLINC GSLLIB
 
@@ -60,6 +68,7 @@ testing: INCLUDES += -I$(GTINC)
 testing: gtest components topdir
 	$(MAKE) -C testing hector-unit-tests
 
+lib: libhector.a
 libhector.a: subdirs
 	ar ru libhector.a build/*.o
 
@@ -75,7 +84,7 @@ input: INCLUDES += -I$(HDRDIR)/input/inih
 
 $(DIRS):
 	$(MAKE) -C $@ all
-	ln -sf $(PWD)/$@/*.o build/
+	ln -sf $(CURDIR)/$@/*.o build/
 
 build:
 	mkdir -p build

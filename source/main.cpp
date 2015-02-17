@@ -37,8 +37,8 @@ void init_emiss_strm(istream &sim_gcam_emiss);
  *  Starting point for wrapper, not the core.
  */
 int main (int argc, char * const argv[]) {
-  
-	try {
+
+    try {
         
         // Create the global log
         Logger& glog = Logger::getGlobalLogger();
