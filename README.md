@@ -9,8 +9,6 @@ The Hector primary source of model documentation is the wiki, located [here](htt
 
 The Hector model description paper is [here](http://www.geosci-model-dev-discuss.net/7/7075/2014/gmdd-7-7075-2014.html).
 
-~~The Hector model webpage is [here](http://jgcri.github.io/hector/).~~
-
 This research is based on work supported by the U.S. Department of Energy, 
 Office of Science, Integrated Assessment Research Program.  The Pacific 
 Northwest National Laboratory is operated for DOE by Battelle Memorial Institute 
