@@ -365,7 +365,7 @@ void OceanComponent::run( const double runToDate ) throw ( h_exception ) {
         } else {
             unitval tgaveq = core->sendMessage( M_GETDATA, D_GLOBAL_TEMPEQ );
             
-            // First assumption: the ocean's heat uptake efficiency `k` (kappa) is a function
+            /* First assumption: the ocean's heat uptake efficiency `k` (kappa) is a function
             // of global temperature and declines following a sigmoid model:
             //   ^
             //   |   ____
@@ -376,6 +376,7 @@ void OceanComponent::run( const double runToDate ) throw ( h_exception ) {
             // In this model `kmax` is the upper asymptote (maximum k heat uptake), `sl` a
             // slope parameter (here negative -> declining), tmid is the midpoint of the
             // transition, and `kmin` the minimum heat uptake.
+            */
             const double t = Tgav.value( U_DEGC );
             const double sl = slope.value( U_1_K );
             const double tmid = t_mid.value( U_K );

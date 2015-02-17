@@ -42,15 +42,15 @@ using namespace std;
  *
  *  \sa init()
  */
-Core::Core()
-:startDate( -1.0 ),
-endDate( -1.0 ),
-lastDate( -1.0), 
-run_name( "" ),
-do_spinup( true ),
-max_spinup( 2000 ),
-in_spinup( false ),
-isInited( false )
+Core::Core() :
+  run_name( "" ), 
+  startDate( -1.0 ),
+  endDate( -1.0 ),
+  lastDate( -1.0), 
+  isInited( false ),
+  do_spinup( true ),
+  max_spinup( 2000 ),
+  in_spinup( false )
 {
 }
 
