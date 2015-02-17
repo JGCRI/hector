@@ -63,6 +63,7 @@ unitval OrganicCarbonComponent::sendMessage( const std::string& message,
         return getData( datum, info.date );
         
     } else if( message==M_SETDATA ) {   //! Caller is requesting to set data
+        //TODO: call setData below
         //TODO: change core so that parsing is routed through sendMessage
         //TODO: make setData private
         setData(datum, info);
@@ -87,7 +88,7 @@ void OrganicCarbonComponent::setData( const string& varName,
             if(data.isVal)
                 OC_emissions.set(data.date, data.value_unitval);
             else
-                OC_emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_KG ) );
+            	OC_emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG ) );
         } else {
             H_THROW( "Unknown variable name while parsing " + getComponentName() + ": "
                     + varName );

@@ -73,7 +73,7 @@ public:
 	unitval get_carbon() const { return carbon; };
 	void add_carbon( unitval C );
     
-    bool oscillating( const int lookback, const double maxamp, const int maxflips ) const;
+    bool oscillating( const unsigned lookback, const double maxamp, const int maxflips ) const;
     
     // Functions to get internal box data
     unitval get_Tbox() const { return Tbox; };

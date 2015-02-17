@@ -46,8 +46,6 @@ void BlackCarbonComponent::init( Core* coreptr ) {
     
 	// Inform core what data we can provide
     core->registerCapability( D_EMISSIONS_BC, getComponentName() );
-    // Inform core what data we can accept
-    core->registerInput(D_EMISSIONS_BC, getComponentName());
 }
 
 //------------------------------------------------------------------------------
@@ -86,7 +84,7 @@ void BlackCarbonComponent::setData( const string& varName,
             if(data.isVal)
                 BC_emissions.set(data.date, data.value_unitval);
             else
-                BC_emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_KG ) );
+            	BC_emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG ) );
         } else {
             H_THROW( "Unknown variable name while parsing " + getComponentName() + ": "
                     + varName );

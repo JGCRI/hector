@@ -56,6 +56,17 @@ void ForcingComponent::init( Core* coreptr ) {
     // Register the data we can provide
     core->registerCapability( D_RF_TOTAL, getComponentName() );
     core->registerCapability( D_RF_BASEYEAR, getComponentName() );
+        core->registerCapability( D_RF_CO2, getComponentName());
+        core->registerCapability( D_RF_CH4, getComponentName());
+        core->registerCapability( D_RF_N2O, getComponentName());
+        core->registerCapability( D_RF_H2O, getComponentName());
+        core->registerCapability( D_RF_O3, getComponentName());
+        core->registerCapability( D_RF_BC, getComponentName());
+        core->registerCapability( D_RF_OC, getComponentName());
+        core->registerCapability( D_RF_SO2d, getComponentName());
+        core->registerCapability( D_RF_SO2i, getComponentName());
+        core->registerCapability( D_RF_SO2, getComponentName());
+        core->registerCapability( D_RF_VOL, getComponentName());
     
     // Register our dependencies
 
@@ -64,7 +75,7 @@ void ForcingComponent::init( Core* coreptr ) {
     core->registerDependency( D_ATMOSPHERIC_O3, getComponentName() );
     core->registerDependency( D_EMISSIONS_BC, getComponentName() );
     core->registerDependency( D_EMISSIONS_OC, getComponentName() );
-    core->registerDependency( D_ATMOSPHERIC_SO2, getComponentName() );
+        core->registerDependency( D_NATURAL_SO2, getComponentName() );
     core->registerDependency( D_ATMOSPHERIC_N2O, getComponentName() );
     
     core->registerDependency( D_RF_CF4, getComponentName() );
@@ -108,7 +119,6 @@ unitval ForcingComponent::sendMessage( const std::string& message,
         return getData( datum, info.date );
         
     } else if( message==M_SETDATA ) {   //! Caller is requesting to set data
-        H_THROW("Forcing: sendMessage() is not yet implemented for message=M_SETDATA");
         //TODO: call setData below
         //TODO: change core so that parsing is routed through sendMessage
         //TODO: make setData private
@@ -192,7 +202,7 @@ void ForcingComponent::run( const double runToDate ) throw ( h_exception ) {
         unitval Ca = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_CO2 );
         if( runToDate==baseyear )
             C0 = Ca;
-        forcings[ "FCO2" ].set( 5.35 * log( Ca/C0 ), U_W_M2 );
+            forcings[D_RF_CO2 ].set( 5.35 * log( Ca/C0 ), U_W_M2 );
         
         // ---------- Terrestrial albedo ----------
         if( core->checkCapability( D_RF_T_ALBEDO ) ) {
@@ -210,98 +220,105 @@ void ForcingComponent::run( const double runToDate ) throw ( h_exception ) {
             double N0 = core->sendMessage( M_GETDATA, D_PREINDUSTRIAL_N2O ).value( U_PPBV_N2O );
             
             double fch4 =  0.036 * ( sqrt( Ma ) - sqrt( M0 ) ) - ( f( Ma, N0 ) - f( M0, N0 ) );
-            forcings[ "Fch4" ].set( fch4, U_W_M2 );
+                forcings[D_RF_CH4].set( fch4, U_W_M2 );
             
             double fn2o =  0.12 * ( sqrt( Na ) - sqrt( N0 ) ) - ( f( M0, Na ) - f( M0, N0 ) );
-            forcings[ "Fn2o" ].set( fn2o, U_W_M2 );
+                forcings[D_RF_N2O].set( fn2o, U_W_M2 );
             
-            // ---------- Stratospheric H2O from CH4 oxidation ----------		
+                // ---------- Stratospheric H2O from CH4 oxidation ----------
             //from Tanaka et al, 2007, but using Joos et al., 2001 value of 0.05
             const double fh2o = 0.05 * ( 0.036 * ( sqrt( Ma ) - sqrt( M0 ) ) );
-            forcings[ "Fh2o" ].set( fh2o, U_W_M2 );
+                forcings[D_RF_H2O].set( fh2o, U_W_M2 );
         }
         
 		// ---------- Troposheric Ozone ----------
         if( core->checkCapability( D_ATMOSPHERIC_O3 ) ) {
-            //from Tanaka et al, 2007, but using Joos et al., 2001 value of 0.042
-            const double ozone = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_O3 ).value( U_DU_O3 );
-            const double fo3 = 0.042 * (ozone - 25.0);
-            forcings[ "fo3" ].set( fo3, U_W_M2 );
+                //from Tanaka et al, 2007
+                const double ozone = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_O3, message_data( runToDate ) ).value( U_DU_O3 );
+                const double fo3 = 0.042 * ozone;
+                forcings[D_RF_O3].set( fo3, U_W_M2 );
         }
         
 		// ---------- Halocarbons ----------
+            // TODO: Would like to just 'know' all the halocarbon instances out there
+            boost::array<string, 26> halos = {
+                D_RF_CF4,
+                D_RF_C2F6,
+                D_RF_HFC23,
+                D_RF_HFC32,
+                D_RF_HFC4310,
+                D_RF_HFC125,
+                D_RF_HFC134a,
+                D_RF_HFC143a,
+                D_RF_HFC227ea,
+                D_RF_HFC245fa,
+                D_RF_SF6,
+                D_RF_CFC11,
+                D_RF_CFC12,
+                D_RF_CFC113,
+                D_RF_CFC114,
+                D_RF_CFC115,
+                D_RF_CCl4,
+                D_RF_CH3CCl3,
+                D_RF_HCF22,
+                D_RF_HCF141b,
+                D_RF_HCF142b,
+                D_RF_halon1211,
+                D_RF_halon1301,
+                D_RF_halon2402,
+                D_RF_CH3Cl,
+                D_RF_CH3Br
+            };
+            
+            // Halocarbons can be disabled individually via the input file, so we run through all possible ones
+            forcings[ D_RF_halocarbons ].set( 0.0, U_W_M2 );
+            for (int hc=0; hc<halos.size(); ++hc) {
+                if( core->checkCapability( halos[hc] ) ) {
         // Forcing values are actually computed by the halocarbon itself
-        forcings[ D_RF_CF4 ] = core->sendMessage( M_GETDATA, D_RF_CF4, message_data( runToDate ) );
-        forcings[ D_RF_C2F6 ] = core->sendMessage( M_GETDATA, D_RF_C2F6, message_data( runToDate ) );
-        forcings[ D_RF_HFC23 ] = core->sendMessage( M_GETDATA, D_RF_HFC23, message_data( runToDate ) );
-        forcings[ D_RF_HFC32 ] = core->sendMessage( M_GETDATA, D_RF_HFC32, message_data( runToDate ) );
-        forcings[ D_RF_HFC4310 ] = core->sendMessage( M_GETDATA, D_RF_HFC4310, message_data( runToDate ) );
-        forcings[ D_RF_HFC125 ] = core->sendMessage( M_GETDATA, D_RF_HFC125, message_data( runToDate ) );
-        forcings[ D_RF_HFC134a ] = core->sendMessage( M_GETDATA, D_RF_HFC134a, message_data( runToDate ) );
-        forcings[ D_RF_HFC143a ] = core->sendMessage( M_GETDATA, D_RF_HFC143a, message_data( runToDate ) );
-        forcings[ D_RF_HFC227ea ] = core->sendMessage( M_GETDATA, D_RF_HFC227ea, message_data( runToDate ) );
-        forcings[ D_RF_HFC245fa ] = core->sendMessage( M_GETDATA, D_RF_HFC245fa, message_data( runToDate ) );
-        forcings[ D_RF_SF6 ] = core->sendMessage( M_GETDATA, D_RF_SF6, message_data( runToDate ) );
-        forcings[ D_RF_CFC11 ] = core->sendMessage( M_GETDATA, D_RF_CFC11, message_data( runToDate ) );
-        forcings[ D_RF_CFC12 ] = core->sendMessage( M_GETDATA, D_RF_CFC12, message_data( runToDate ) );
-        forcings[ D_RF_CFC113 ] = core->sendMessage( M_GETDATA, D_RF_CFC113, message_data( runToDate ) );
-        forcings[ D_RF_CFC114 ] = core->sendMessage( M_GETDATA, D_RF_CFC114, message_data( runToDate ) );
-        forcings[ D_RF_CFC115 ] = core->sendMessage( M_GETDATA, D_RF_CFC115, message_data( runToDate ) );
-        forcings[ D_RF_CCl4 ] = core->sendMessage( M_GETDATA, D_RF_CCl4, message_data( runToDate ) );
-        forcings[ D_RF_CH3CCl3 ] = core->sendMessage( M_GETDATA, D_RF_CH3CCl3, message_data( runToDate ) );
-        forcings[ D_RF_HCF22 ] = core->sendMessage( M_GETDATA, D_RF_HCF22, message_data( runToDate ) );
-        forcings[ D_RF_HCF141b ] = core->sendMessage( M_GETDATA, D_RF_HCF141b, message_data( runToDate ) );
-        forcings[ D_RF_HCF142b ] = core->sendMessage( M_GETDATA, D_RF_HCF142b, message_data( runToDate ) );
-        forcings[ D_RF_halon1211 ] = core->sendMessage( M_GETDATA, D_RF_halon1211, message_data( runToDate ) );
-        forcings[ D_RF_halon1301 ] = core->sendMessage( M_GETDATA, D_RF_halon1301, message_data( runToDate ) );
-        forcings[ D_RF_halon2402 ] = core->sendMessage( M_GETDATA, D_RF_halon2402, message_data( runToDate ) );
-        forcings[ D_RF_CH3Cl ] = core->sendMessage( M_GETDATA, D_RF_CH3Cl, message_data( runToDate ) );
-        forcings[ D_RF_CH3Br ] = core->sendMessage( M_GETDATA, D_RF_CH3Br, message_data( runToDate ) );
+                    forcings[ halos[hc] ] = core->sendMessage( M_GETDATA, halos[hc], message_data( runToDate ) );
+                    forcings[ D_RF_halocarbons ] = forcings[ D_RF_halocarbons ] + forcings[ halos[hc] ];
+                }
+            }
         
         // ---------- Black carbon ----------
         if( core->checkCapability( D_EMISSIONS_BC ) ) {
-            double fbc = 0.0743e-9 * core->sendMessage( M_GETDATA, D_EMISSIONS_BC, message_data( runToDate ) ).value( U_KG );
-            forcings[ "Fbc" ].set( fbc, U_W_M2 );
-            // includes both indirect and direct forcings from Bond et al 2013, Journal of Geophysical Research Atmo
-            // PI value from RCP sceanrios is subtracted off all emissions
+                double fbc = 0.0743 * core->sendMessage( M_GETDATA, D_EMISSIONS_BC, message_data( runToDate ) ).value( U_TG );
+                forcings[D_RF_BC].set( fbc, U_W_M2 );
+                // includes both indirect and direct forcings from Bond et al 2013, Journal of Geophysical Research Atmo (table C1 - Central)
           }
         
         // ---------- Organic carbon ----------
         if( core->checkCapability( D_EMISSIONS_OC ) ) {
-            double foc = -0.0128e-9 * core->sendMessage( M_GETDATA, D_EMISSIONS_OC, message_data( runToDate ) ).value( U_KG );
-            forcings[ "Foc" ].set( foc, U_W_M2 );
-            // includes both indirect and direct forcings from Bond et al 2013, Journal of Geophysical Research Atmo (table C1). 
-            // The fossil fuel and biomass are weighted (-4.5) then added to the snow and clouds for a total of -12.8.  
-            // PI value from RCP scenarios is subtracted off all emissions
+                double foc = -0.0128 * core->sendMessage( M_GETDATA, D_EMISSIONS_OC, message_data( runToDate ) ).value( U_TG );
+                forcings[D_RF_OC].set( foc, U_W_M2 );
+                // includes both indirect and direct forcings from Bond et al 2013, Journal of Geophysical Research Atmo (table C1 - Central).
+                // The fossil fuel and biomass are weighted (-4.5) then added to the snow and clouds for a total of -12.8 (personal communication Steve Smith, PNNL)
           }
         
         // ---------- Sulphate Aerosols ----------
-        if( core->checkCapability( D_ATMOSPHERIC_SO2 ) && core->checkCapability( D_EMISSIONS_SO2 ) ) {
-            // calculated slightly different than BC/OC
-            unitval S0 = core->sendMessage( M_GETDATA, D_PREINDUSTRIAL_SO2 );
-            unitval SN = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_SO2 );
+            if( core->checkCapability( D_NATURAL_SO2 ) && core->checkCapability( D_EMISSIONS_SO2 ) ) {
             
-            // Our forcing calculation returns an absolute value. We store the first (preindustrial) value,
-            // and use that to compute a delta forcing, which is what we really want.
-            H_ASSERT( S0.value( U_GG ) >0, "S0 is 0" );
+                unitval S0 = core->sendMessage( M_GETDATA, D_2000_SO2 );
+                unitval SN = core->sendMessage( M_GETDATA, D_NATURAL_SO2 );
+                
+                // equations taken from Joos et al., 2001
+                H_ASSERT( S0.value( U_TG ) >0, "S0 is 0" );
             unitval emission = core->sendMessage( M_GETDATA, D_EMISSIONS_SO2, message_data( runToDate ) );
-            emission = ((emission/32e-9)*64e-9); // convert from Ggrams of sulfur to Ggrams of SO2. 
-            forcings[ "Fso2d" ].set( -0.4 * emission/S0, U_W_M2 );
-            
+                double fso2d = -0.35 * emission/S0; //-0.35
+                forcings[D_RF_SO2d].set( fso2d, U_W_M2 );
             // includes only direct forcings from Forster etal 2007 (IPCC)
-            // emissions from RCP
             
             // indirect aerosol effect via changes in cloud properties
-            //double SN = 42000; //Gg of S value take from Joos et al 2001. global biogeochem cycles
-            double fso2i = -0.8 * ( log( SN.value( U_GG ) + emission.value( U_GG ) ) / SN.value( U_GG ) ) / ( ( log( SN.value( U_GG ) + S0.value( U_GG ) )/SN.value( U_GG ) ) );
-            forcings[ "Fso2i" ].set( fso2i, U_W_M2 );
+                const double a = -0.6 * ( log( ( SN.value( U_TG ) + emission.value( U_TG ) ) / SN.value( U_TG ) ) ); // -.6
+                const double b =  pow ( log ( ( SN.value( U_TG ) + S0.value( U_TG ) ) / SN.value( U_TG ) ), -1 );
+                double fso2i = a * b;
+                forcings[D_RF_SO2i].set( fso2i, U_W_M2 );
             //includes only indirect forcing
-            //double fso2 = fso2i + fso2;
         }
         
         if( core->checkCapability( D_VOLCANIC_SO2 ) ) {
            // volcanic forcings
-            forcings[ "Fvol" ] = core->sendMessage( M_GETDATA, D_VOLCANIC_SO2, message_data( runToDate ) );
+                forcings[D_RF_VOL] = core->sendMessage( M_GETDATA, D_VOLCANIC_SO2, message_data( runToDate ) );
         }
         
         // ---------- Total ----------
@@ -312,7 +329,7 @@ void ForcingComponent::run( const double runToDate ) throw ( h_exception ) {
         }
         
         // If the user has supplied total forcing data, use that
-        if( Ftot_constrain.size() ) {
+            if( Ftot_constrain.size() && runToDate <= Ftot_constrain.lastdate() ) {
             H_LOG( logger, Logger::WARNING ) << "** Overwriting total forcing with user-supplied value" << std::endl;
             forcings[ D_RF_TOTAL ] = Ftot_constrain.get( runToDate );
         } else {
@@ -353,9 +370,13 @@ unitval ForcingComponent::getData( const std::string& varName,
     
     if( varName == D_RF_BASEYEAR ) {
         returnval.set( baseyear, U_UNITLESS );
-	} else if ( forcings.find( varName ) != forcings.end() ) {  // from the forcing map
-        returnval = forcings[ varName ];
-    } else {
+        }
+        else if (varName == D_RF_SO2) // total SO2 forcing
+            returnval = forcings[D_RF_SO2d] + forcings[D_RF_SO2i];
+        else if ( forcings.find( varName ) != forcings.end() ) {  // from the forcing map
+            returnval = forcings[ varName ]; 
+        }
+        else {
         H_THROW( "Caller is requesting unknown variable: " + varName );
     }
     

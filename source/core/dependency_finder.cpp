@@ -8,7 +8,7 @@
 
 //#include <cassert>
 #include <algorithm>
-#include <limits.h>
+#include <limits>
 
 #include "core/dependency_finder.hpp"
 #include "h_exception.hpp"
@@ -65,71 +65,67 @@ bool DependencyFinder::addDependency( const string& aObjectName,
 /*!
  * \brief Find an ordering of the objects in the dependency finder which orders
  *        each object before each object that depends on it.
- * \details This is referred to as a topological sort. The algorithm is as
- *          follows: Search the adjacency matrix for a vertice, in this
- *          implementation a column in the matrix, with no dependencies. If there
- *          is none, the graph has a cycle and and exception will be thrown.
- *          Next, add the vertice found in the previous step to the ordering, and
- *          remove it and all dependencies on it from the adjacency matrix. Start
- *          over at the first step. Repeat this process until there are no nodes
- *          left in the graph.  Once this function has been called, the caller may
- *          then call getOrdering to return the ordered vector.
+ * \details This is referred to as a topological sort. Once this function has
+ *          been called, the caller may then call getOrdering to return the
+ *          ordered vector.
  *
  * \exception h_exception If there is a cycle in the dependencies.
- * \note This function removes nodes by setting the removed flag to true instead
- *       of actually removing the vertice.
+ * \note This function does not destroy the dependecy matrix and so can be called
+ *       multiple times if for instance more dependencies are added and the order
+ *       needs updating.
  * \pre All relevant objects must have called addDependency() to add their dependencies to the matrix.
- * \todo The control flow of this function could be less confusing.
  * \sa getOrdering
  */
 void DependencyFinder::createOrdering() throw ( h_exception ) {
     // If there is an existing stored ordering, clear it.
     mOrdering.clear();
     
-    // Create a vector which marks which vertices are removed.
-    vector<bool> removed( mDependencyMatrix.size() );
+    // Create a vector which marks the objects that are cleared (not a dependent of
+    // any non-cleared objects).
+    vector<bool> cleared( mDependencyMatrix.size() );
     
-    // Search until the ordering contains all vertices in the matrix.
+    // Search until the ordering contains all objects in the matrix. Or in other words
+    // until all objects are cleared.
     while( mOrdering.size() < mDependencyMatrix.size() ){
-        unsigned int verticeToRemove = INT_MAX;
+        size_t objIndexToClear = numeric_limits<size_t>::max();
         
-        // Search for a vertex with no dependencies.
-        for( unsigned int i = 0; i < mDependencyMatrix.size(); ++i ){
-            // Only search the vertex if it has not been removed.
-            if( removed[ i ] ){
-                continue;
-            }
-            // Check for any dependencies.
-            bool depFound = false;
-            for( unsigned int j = 0; j < mDependencyMatrix.size(); ++j ){
-                // Check if there is a dependency at this location.
-                if( !removed[ j ] && mDependencyMatrix[ i ][ j ] ){
-                    // Found a dependency so break out of the loop to stop
-                    // searching this column and move onto the next.
-                    depFound = true;
-                    break;
+        // Search for an object that is not yet cleared and is not a dependent of
+        // any non-cleared object.
+        for( size_t objIndex = 0; objIndex < mDependencyMatrix.size() &&
+             objIndexToClear == numeric_limits<size_t>::max(); ++objIndex )
+        {
+            // Only search the object if it has not already been cleared.
+            if( !cleared[ objIndex ] ){
+                // Check for any dependencies.
+                bool depFound = false;
+                for( size_t depIndex = 0; depIndex < mDependencyMatrix.size() && !depFound; ++depIndex )
+                {
+                    // Check if there is a dependency at this location by and object that has
+                    // not already been cleared.
+                    if( !cleared[ depIndex ] && mDependencyMatrix[ objIndex ][ depIndex ] ){
+                        // Found a dependency on the current object so we can stop searching
+                        // and move on to the next object.
+                        depFound = true;
+                    }
                 }
-            }
-            // If we did not find a dependency, set the index to remove and
-            // break the loop so the object can be removed. Otherwise continue
-            // searching.
-            if( !depFound ){
-                verticeToRemove = i;
-                break;
+                // If we did not find a dependency on the current object so then we can now
+                // clear it then move on.
+                if( !depFound ){
+                    objIndexToClear = objIndex;
+                }
             }
         }
         
-        // Check if we found a vertex to remove.
-        if( verticeToRemove == INT_MAX ){
-            // Since there was no vertex with zero dependencies, this graph has
+        // Make sure we found an object to clear.
+        if( objIndexToClear == numeric_limits<size_t>::max() ){
+            // Since there was no object with no dependencies, this graph has
             // a cycle.
             H_THROW( "Could not sort dependencies; there is a cycle in the graph." );
         }
         else {
-            // Add the vertex found to the ordering and remove it from the
-            // matrix.
-            mOrdering.push_back( getNameFromIndex( verticeToRemove ) );
-            removed[ verticeToRemove ] = true;
+            // Add the object found to the ordering and set it as cleared.
+            mOrdering.push_back( getNameFromIndex( objIndexToClear ) );
+            cleared[ objIndexToClear ] = true;
         }
     }
     

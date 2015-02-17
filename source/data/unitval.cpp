@@ -41,7 +41,7 @@ string unitval::unitsName( const unit_types u ) {
 			break;
 		case U_DU_O3: return "DU O3";
             break;
-		case U_TG_NOX: return "Tg NOX";
+		case U_TG_N: return "Tg N";
             break;
 		case U_TG_CO: return "Tg CO";
             break;
@@ -49,13 +49,17 @@ string unitval::unitsName( const unit_types u ) {
             break;
 		case U_TG_NMVOC: return "Tg NMVOC";
             break;
-        case U_MOL_YR: return "mol/yr";
+        case U_TG_PPBV: return "Tg/ppbv";
+            break;
+       case U_MOL_YR: return "mol/yr";
             break;
         case U_PPTV: return "pptv";
             break;
         case U_DEGC: return "degC";
             break;
         case U_K: return "K";
+            break;
+        case U_1_K: return "1_K";
             break;
         case U_CM: return "cm";
             break;
@@ -65,7 +69,7 @@ string unitval::unitsName( const unit_types u ) {
             break;
         case U_GG: return "Gg";
             break;
-        case U_KG: return "kg";
+        case U_TG: return "Tg";
             break;
         case U_MOL: return "mol";
             break;
@@ -98,6 +102,8 @@ string unitval::unitsName( const unit_types u ) {
         case U_MOL_KG_ATM: return "mol/kg/atm";
             break;
         case U_DOBSON: return "dobson";
+            break;
+        case U_YRS: return "Years";
             break;
             
         default: H_THROW( "Unhandled unit!" );

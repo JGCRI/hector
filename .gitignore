@@ -27,10 +27,50 @@
 *.app
 source/hector
 
-# Hector outputs
+# Hector logs
 logs/*.*
-output/*.*
+
+# OS-specific files
+.DS_Store
+.Trashes
+*.swp
+
+# Xcode build directories, schemes, and interface state
+*.lock
+*.xccheckout
+*~.nib
+build/
+DerivedData/
+xcodeuserstate
+xcuserdata
 
 # Project files
 project_files/*.*
+project_files/visual_studio/
+libs/
+
+# Output
+output/*.csv
+output/*.ini
+output/comparison_data
+output/output
+output/*.png
+output/*.pdf
+output/*.csv
+output/rcp85
+output/rcp45
+output/figures.R
+output/logs/figures.R.txt
+output/op_ch.R
+output/rcp45_rcp85/011.ocean.ph_ll.csv
+output/rcp45_rcp85/011.ocean.ph_ll.pdf
+output/rcp45_rcp85/012.ocean.ph_ll.csv
+output/rcp45_rcp85/012.ocean.ph_ll.pdf
+
+# R
+.Rhistory
+R/batchrunner/*.pdf
+R/batchrunner/*.csv
+.Rapp.history
+
 *.kdev4

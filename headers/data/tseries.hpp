@@ -40,8 +40,8 @@ public:
     T_data get( double ) const throw( h_exception );
     bool exists( double ) const;
     
-    double first() const;
-    double last() const;
+    double firstdate() const;
+    double lastdate() const;
     
     int size() const;
     
@@ -206,9 +206,14 @@ bool tseries<T_data>::exists( double t ) const {
  *
  *  Returns data associated with time t.
  *  If no value exists, behavior is defined by 'interp_allowed'.
+ *
+ *  If there is only a single value in the time series, then treat it
+ *  as a constant (i.e, return the single value that we have).
  */
 template <class T_data>
 T_data tseries<T_data>::get( double t ) const throw( h_exception ) {
+    if(mapdata.size() == 1)
+        return mapdata.begin()->second;
     typename std::map<double,T_data>::const_iterator itr = mapdata.find( t );
     if( itr != mapdata.end() )
         return (*itr).second;
@@ -256,7 +261,7 @@ void tseries<T_data>::allowInterp( bool eia ) {
  */
 template<class T_data>
 void tseries<T_data>::allowPartialInterp( bool eia ) {
-    set_interp( last(), eia, DEFAULT );
+    set_interp( lastdate(), eia, DEFAULT );
 }
 
 //-----------------------------------------------------------------------
@@ -265,7 +270,7 @@ void tseries<T_data>::allowPartialInterp( bool eia ) {
  *  Return index of first element in series.
  */
 template <class T_data>
-double tseries<T_data>::first() const {
+double tseries<T_data>::firstdate() const {
     H_ASSERT( !mapdata.empty(), "no mapdata" );
     return (*mapdata.begin()).first;
 }
@@ -276,7 +281,7 @@ double tseries<T_data>::first() const {
  *  Return index of last element in series.
  */
 template <class T_data>
-double tseries<T_data>::last() const {
+double tseries<T_data>::lastdate() const {
     H_ASSERT( !mapdata.empty(), "no mapdata" );
     return (*mapdata.rbegin()).first;
 }
@@ -288,7 +293,7 @@ double tseries<T_data>::last() const {
  */
 template <class T_data>
 int tseries<T_data>::size() const {
-    return mapdata.size();
+    return int( mapdata.size() );
 }
 
 }

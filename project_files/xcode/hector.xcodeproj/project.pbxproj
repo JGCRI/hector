@@ -1,0 +1,790 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		B53C186D16C98E010084BD6E /* libgtest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B53C186C16C98E010084BD6E /* libgtest.a */; };
+		B54987AA16C981060000A223 /* gtest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B54987A916C981060000A223 /* gtest.framework */; };
+		B58059451A72D26800022360 /* oh_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B58059441A72D26800022360 /* oh_component.cpp */; };
+		B5BD15C7189B3ED20020C554 /* bc_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15A4189B3ED10020C554 /* bc_component.cpp */; };
+		B5BD15C8189B3ED20020C554 /* bc_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15A4189B3ED10020C554 /* bc_component.cpp */; };
+		B5BD15C9189B3ED20020C554 /* ch4_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15A5189B3ED10020C554 /* ch4_component.cpp */; };
+		B5BD15CA189B3ED20020C554 /* ch4_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15A5189B3ED10020C554 /* ch4_component.cpp */; };
+		B5BD15CB189B3ED20020C554 /* dummy_model_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15A6189B3ED10020C554 /* dummy_model_component.cpp */; };
+		B5BD15CC189B3ED20020C554 /* dummy_model_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15A6189B3ED10020C554 /* dummy_model_component.cpp */; };
+		B5BD15CD189B3ED20020C554 /* forcing_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15A7189B3ED10020C554 /* forcing_component.cpp */; };
+		B5BD15CE189B3ED20020C554 /* forcing_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15A7189B3ED10020C554 /* forcing_component.cpp */; };
+		B5BD15CF189B3ED20020C554 /* halocarbon_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15A8189B3ED10020C554 /* halocarbon_component.cpp */; };
+		B5BD15D0189B3ED20020C554 /* halocarbon_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15A8189B3ED10020C554 /* halocarbon_component.cpp */; };
+		B5BD15D1189B3ED20020C554 /* n2o_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15A9189B3ED10020C554 /* n2o_component.cpp */; };
+		B5BD15D2189B3ED20020C554 /* n2o_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15A9189B3ED10020C554 /* n2o_component.cpp */; };
+		B5BD15D3189B3ED20020C554 /* o3_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15AA189B3ED10020C554 /* o3_component.cpp */; };
+		B5BD15D4189B3ED20020C554 /* o3_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15AA189B3ED10020C554 /* o3_component.cpp */; };
+		B5BD15D5189B3ED20020C554 /* oc_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15AB189B3ED10020C554 /* oc_component.cpp */; };
+		B5BD15D6189B3ED20020C554 /* oc_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15AB189B3ED10020C554 /* oc_component.cpp */; };
+		B5BD15D7189B3ED20020C554 /* ocean_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15AC189B3ED10020C554 /* ocean_component.cpp */; };
+		B5BD15D8189B3ED20020C554 /* ocean_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15AC189B3ED10020C554 /* ocean_component.cpp */; };
+		B5BD15D9189B3ED20020C554 /* onelineocean_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15AD189B3ED10020C554 /* onelineocean_component.cpp */; };
+		B5BD15DA189B3ED20020C554 /* onelineocean_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15AD189B3ED10020C554 /* onelineocean_component.cpp */; };
+		B5BD15DB189B3ED20020C554 /* slr_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15AE189B3ED10020C554 /* slr_component.cpp */; };
+		B5BD15DC189B3ED20020C554 /* slr_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15AE189B3ED10020C554 /* slr_component.cpp */; };
+		B5BD15DD189B3ED20020C554 /* so2_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15AF189B3ED10020C554 /* so2_component.cpp */; };
+		B5BD15DE189B3ED20020C554 /* so2_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15AF189B3ED10020C554 /* so2_component.cpp */; };
+		B5BD15DF189B3ED20020C554 /* temperature_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15B0189B3ED10020C554 /* temperature_component.cpp */; };
+		B5BD15E0189B3ED20020C554 /* temperature_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15B0189B3ED10020C554 /* temperature_component.cpp */; };
+		B5BD15E1189B3ED20020C554 /* h_interpolator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15B2189B3ED10020C554 /* h_interpolator.cpp */; };
+		B5BD15E2189B3ED20020C554 /* h_interpolator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15B2189B3ED10020C554 /* h_interpolator.cpp */; };
+		B5BD15E3189B3ED20020C554 /* spline_forsythe.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15B3189B3ED10020C554 /* spline_forsythe.cpp */; };
+		B5BD15E4189B3ED20020C554 /* spline_forsythe.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15B3189B3ED10020C554 /* spline_forsythe.cpp */; };
+		B5BD15E5189B3ED20020C554 /* unitval.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15B4189B3ED10020C554 /* unitval.cpp */; };
+		B5BD15E6189B3ED20020C554 /* unitval.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15B4189B3ED10020C554 /* unitval.cpp */; };
+		B5BD15E7189B3ED20020C554 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15B5189B3ED10020C554 /* main.cpp */; };
+		B5BD15E8189B3ED20020C554 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15B5189B3ED10020C554 /* main.cpp */; };
+		B5BD15EB189B3ED20020C554 /* csv_output_visitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15B8189B3ED10020C554 /* csv_output_visitor.cpp */; };
+		B5BD15EC189B3ED20020C554 /* csv_output_visitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15B8189B3ED10020C554 /* csv_output_visitor.cpp */; };
+		B5BD15ED189B3ED20020C554 /* csv_outputstream_visitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15B9189B3ED10020C554 /* csv_outputstream_visitor.cpp */; };
+		B5BD15EE189B3ED20020C554 /* csv_outputstream_visitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15B9189B3ED10020C554 /* csv_outputstream_visitor.cpp */; };
+		B5BD15EF189B3ED20020C554 /* ini_restart_visitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15BA189B3ED10020C554 /* ini_restart_visitor.cpp */; };
+		B5BD15F0189B3ED20020C554 /* ini_restart_visitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15BA189B3ED10020C554 /* ini_restart_visitor.cpp */; };
+		B5BD1606189B41340020C554 /* csv_table_reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15F6189B41340020C554 /* csv_table_reader.cpp */; };
+		B5BD1607189B41340020C554 /* csv_table_reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15F6189B41340020C554 /* csv_table_reader.cpp */; };
+		B5BD1608189B41340020C554 /* h_reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15F7189B41340020C554 /* h_reader.cpp */; };
+		B5BD1609189B41340020C554 /* h_reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15F7189B41340020C554 /* h_reader.cpp */; };
+		B5BD160A189B41340020C554 /* ini_to_core_reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15F8189B41340020C554 /* ini_to_core_reader.cpp */; };
+		B5BD160B189B41340020C554 /* ini_to_core_reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15F8189B41340020C554 /* ini_to_core_reader.cpp */; };
+		B5BD1612189B41340020C554 /* ini.c in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15FE189B41340020C554 /* ini.c */; };
+		B5BD1613189B41340020C554 /* ini.c in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15FE189B41340020C554 /* ini.c */; };
+		B5BD1616189B41340020C554 /* INIReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD1600189B41340020C554 /* INIReader.cpp */; };
+		B5BD1617189B41340020C554 /* INIReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD1600189B41340020C554 /* INIReader.cpp */; };
+		B5BD1624189B41940020C554 /* carbon-cycle-solver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD161F189B41940020C554 /* carbon-cycle-solver.cpp */; };
+		B5BD1625189B41940020C554 /* carbon-cycle-solver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD161F189B41940020C554 /* carbon-cycle-solver.cpp */; };
+		B5BD1626189B41940020C554 /* core.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD1620189B41940020C554 /* core.cpp */; };
+		B5BD1627189B41940020C554 /* core.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD1620189B41940020C554 /* core.cpp */; };
+		B5BD1628189B41940020C554 /* dependency_finder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD1621189B41940020C554 /* dependency_finder.cpp */; };
+		B5BD1629189B41940020C554 /* dependency_finder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD1621189B41940020C554 /* dependency_finder.cpp */; };
+		B5BD162A189B41940020C554 /* logger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD1622189B41940020C554 /* logger.cpp */; };
+		B5BD162B189B41940020C554 /* logger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD1622189B41940020C554 /* logger.cpp */; };
+		B5BD1635189B42EB0020C554 /* carbon-cycle-model.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD162F189B42EB0020C554 /* carbon-cycle-model.cpp */; };
+		B5BD1636189B42EB0020C554 /* carbon-cycle-model.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD162F189B42EB0020C554 /* carbon-cycle-model.cpp */; };
+		B5BD1639189B42EB0020C554 /* ocean_csys.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD1631189B42EB0020C554 /* ocean_csys.cpp */; };
+		B5BD163A189B42EB0020C554 /* ocean_csys.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD1631189B42EB0020C554 /* ocean_csys.cpp */; };
+		B5BD163B189B42EB0020C554 /* oceanbox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD1632189B42EB0020C554 /* oceanbox.cpp */; };
+		B5BD163C189B42EB0020C554 /* oceanbox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD1632189B42EB0020C554 /* oceanbox.cpp */; };
+		B5BD163F189B42EB0020C554 /* simpleNbox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD1634189B42EB0020C554 /* simpleNbox.cpp */; };
+		B5BD1640189B42EB0020C554 /* simpleNbox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD1634189B42EB0020C554 /* simpleNbox.cpp */; };
+		B5DEC3131A6033BB00584342 /* oh_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5DEC3121A6033BB00584342 /* oh_component.cpp */; };
+		B5DEC3141A6033BB00584342 /* oh_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5DEC3121A6033BB00584342 /* oh_component.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		8DD76F6C0486A84900D96B5E /* hector */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = hector; sourceTree = BUILT_PRODUCTS_DIR; };
+		B53C186C16C98E010084BD6E /* libgtest.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgtest.a; path = "../../../../../../../../../../Library/Developer/Xcode/DerivedData/gtest-cumlpidgkhribbdlzgavdlnkcwyy/Build/Products/Debug/libgtest.a"; sourceTree = "<group>"; };
+		B54987A916C981060000A223 /* gtest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = gtest.framework; path = "../../../../../../../../../../Library/Developer/Xcode/DerivedData/gtest-cumlpidgkhribbdlzgavdlnkcwyy/Build/Products/Debug/gtest.framework"; sourceTree = "<group>"; };
+		B58059441A72D26800022360 /* oh_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = oh_component.cpp; sourceTree = "<group>"; };
+		B58059461A72D27600022360 /* oh_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = oh_component.hpp; sourceTree = "<group>"; };
+		B5BD1531189B3EB00020C554 /* bc_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = bc_component.hpp; sourceTree = "<group>"; };
+		B5BD1532189B3EB00020C554 /* ch4_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ch4_component.hpp; sourceTree = "<group>"; };
+		B5BD1533189B3EB00020C554 /* component_data.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = component_data.hpp; sourceTree = "<group>"; };
+		B5BD1534189B3EB00020C554 /* component_names.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = component_names.hpp; sourceTree = "<group>"; };
+		B5BD1535189B3EB00020C554 /* dummy_model_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = dummy_model_component.hpp; sourceTree = "<group>"; };
+		B5BD1536189B3EB00020C554 /* forcing_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = forcing_component.hpp; sourceTree = "<group>"; };
+		B5BD1537189B3EB00020C554 /* halocarbon_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = halocarbon_component.hpp; sourceTree = "<group>"; };
+		B5BD1538189B3EB00020C554 /* imodel_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = imodel_component.hpp; sourceTree = "<group>"; };
+		B5BD1539189B3EB00020C554 /* n2o_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = n2o_component.hpp; sourceTree = "<group>"; };
+		B5BD153A189B3EB00020C554 /* o3_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = o3_component.hpp; sourceTree = "<group>"; };
+		B5BD153B189B3EB00020C554 /* oc_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = oc_component.hpp; sourceTree = "<group>"; };
+		B5BD153C189B3EB00020C554 /* ocean_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ocean_component.hpp; sourceTree = "<group>"; };
+		B5BD153D189B3EB00020C554 /* onelineocean_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = onelineocean_component.hpp; sourceTree = "<group>"; };
+		B5BD153E189B3EB00020C554 /* slr_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = slr_component.hpp; sourceTree = "<group>"; };
+		B5BD153F189B3EB00020C554 /* so2_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = so2_component.hpp; sourceTree = "<group>"; };
+		B5BD1540189B3EB00020C554 /* temperature_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = temperature_component.hpp; sourceTree = "<group>"; };
+		B5BD1542189B3EB00020C554 /* carbon-cycle-solver.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = "carbon-cycle-solver.hpp"; sourceTree = "<group>"; };
+		B5BD1543189B3EB00020C554 /* core.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = core.hpp; sourceTree = "<group>"; };
+		B5BD1544189B3EB00020C554 /* dependency_finder.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = dependency_finder.hpp; sourceTree = "<group>"; };
+		B5BD1545189B3EB00020C554 /* ivisitable.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ivisitable.hpp; sourceTree = "<group>"; };
+		B5BD1546189B3EB00020C554 /* logger.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = logger.hpp; sourceTree = "<group>"; };
+		B5BD1548189B3EB00020C554 /* h_interpolator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = h_interpolator.hpp; sourceTree = "<group>"; };
+		B5BD1549189B3EB00020C554 /* message_data.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = message_data.hpp; sourceTree = "<group>"; };
+		B5BD154A189B3EB00020C554 /* tseries.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = tseries.hpp; sourceTree = "<group>"; };
+		B5BD154B189B3EB00020C554 /* unitval.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = unitval.hpp; sourceTree = "<group>"; };
+		B5BD154C189B3EB00020C554 /* h_exception.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = h_exception.hpp; sourceTree = "<group>"; };
+		B5BD154D189B3EB00020C554 /* h_util.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = h_util.hpp; sourceTree = "<group>"; };
+		B5BD154F189B3EB00020C554 /* csv_table_reader.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = csv_table_reader.hpp; sourceTree = "<group>"; };
+		B5BD1550189B3EB00020C554 /* h_reader.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = h_reader.hpp; sourceTree = "<group>"; };
+		B5BD1551189B3EB00020C554 /* ini_to_core_reader.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ini_to_core_reader.hpp; sourceTree = "<group>"; };
+		B5BD1553189B3EB00020C554 /* ini.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ini.h; sourceTree = "<group>"; };
+		B5BD1554189B3EB00020C554 /* INIReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = INIReader.h; sourceTree = "<group>"; };
+		B5BD1556189B3EB00020C554 /* carbon-cycle-model.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = "carbon-cycle-model.hpp"; sourceTree = "<group>"; };
+		B5BD1557189B3EB00020C554 /* ocean_csys.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ocean_csys.hpp; sourceTree = "<group>"; };
+		B5BD1558189B3EB00020C554 /* oceanbox.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = oceanbox.hpp; sourceTree = "<group>"; };
+		B5BD1559189B3EB00020C554 /* simpleNbox.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = simpleNbox.hpp; sourceTree = "<group>"; };
+		B5BD155B189B3EB00020C554 /* avisitor.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = avisitor.hpp; sourceTree = "<group>"; };
+		B5BD155C189B3EB00020C554 /* csv_output_visitor.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = csv_output_visitor.hpp; sourceTree = "<group>"; };
+		B5BD155D189B3EB00020C554 /* csv_outputstream_visitor.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = csv_outputstream_visitor.hpp; sourceTree = "<group>"; };
+		B5BD155E189B3EB00020C554 /* ini_restart_visitor.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ini_restart_visitor.hpp; sourceTree = "<group>"; };
+		B5BD15A4189B3ED10020C554 /* bc_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = bc_component.cpp; sourceTree = "<group>"; };
+		B5BD15A5189B3ED10020C554 /* ch4_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ch4_component.cpp; sourceTree = "<group>"; };
+		B5BD15A6189B3ED10020C554 /* dummy_model_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = dummy_model_component.cpp; sourceTree = "<group>"; };
+		B5BD15A7189B3ED10020C554 /* forcing_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = forcing_component.cpp; sourceTree = "<group>"; };
+		B5BD15A8189B3ED10020C554 /* halocarbon_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = halocarbon_component.cpp; sourceTree = "<group>"; };
+		B5BD15A9189B3ED10020C554 /* n2o_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = n2o_component.cpp; sourceTree = "<group>"; };
+		B5BD15AA189B3ED10020C554 /* o3_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = o3_component.cpp; sourceTree = "<group>"; };
+		B5BD15AB189B3ED10020C554 /* oc_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = oc_component.cpp; sourceTree = "<group>"; };
+		B5BD15AC189B3ED10020C554 /* ocean_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ocean_component.cpp; sourceTree = "<group>"; };
+		B5BD15AD189B3ED10020C554 /* onelineocean_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = onelineocean_component.cpp; sourceTree = "<group>"; };
+		B5BD15AE189B3ED10020C554 /* slr_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = slr_component.cpp; sourceTree = "<group>"; };
+		B5BD15AF189B3ED10020C554 /* so2_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = so2_component.cpp; sourceTree = "<group>"; };
+		B5BD15B0189B3ED10020C554 /* temperature_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = temperature_component.cpp; sourceTree = "<group>"; };
+		B5BD15B2189B3ED10020C554 /* h_interpolator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = h_interpolator.cpp; sourceTree = "<group>"; };
+		B5BD15B3189B3ED10020C554 /* spline_forsythe.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = spline_forsythe.cpp; sourceTree = "<group>"; };
+		B5BD15B4189B3ED10020C554 /* unitval.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = unitval.cpp; sourceTree = "<group>"; };
+		B5BD15B5189B3ED10020C554 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		B5BD15B8189B3ED10020C554 /* csv_output_visitor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = csv_output_visitor.cpp; sourceTree = "<group>"; };
+		B5BD15B9189B3ED10020C554 /* csv_outputstream_visitor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = csv_outputstream_visitor.cpp; sourceTree = "<group>"; };
+		B5BD15BA189B3ED10020C554 /* ini_restart_visitor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ini_restart_visitor.cpp; sourceTree = "<group>"; };
+		B5BD15F6189B41340020C554 /* csv_table_reader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = csv_table_reader.cpp; sourceTree = "<group>"; };
+		B5BD15F7189B41340020C554 /* h_reader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = h_reader.cpp; sourceTree = "<group>"; };
+		B5BD15F8189B41340020C554 /* ini_to_core_reader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ini_to_core_reader.cpp; sourceTree = "<group>"; };
+		B5BD15FE189B41340020C554 /* ini.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ini.c; sourceTree = "<group>"; };
+		B5BD1600189B41340020C554 /* INIReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = INIReader.cpp; sourceTree = "<group>"; };
+		B5BD161F189B41940020C554 /* carbon-cycle-solver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "carbon-cycle-solver.cpp"; sourceTree = "<group>"; };
+		B5BD1620189B41940020C554 /* core.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core.cpp; sourceTree = "<group>"; };
+		B5BD1621189B41940020C554 /* dependency_finder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = dependency_finder.cpp; sourceTree = "<group>"; };
+		B5BD1622189B41940020C554 /* logger.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = logger.cpp; sourceTree = "<group>"; };
+		B5BD162F189B42EB0020C554 /* carbon-cycle-model.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "carbon-cycle-model.cpp"; sourceTree = "<group>"; };
+		B5BD1631189B42EB0020C554 /* ocean_csys.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ocean_csys.cpp; sourceTree = "<group>"; };
+		B5BD1632189B42EB0020C554 /* oceanbox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = oceanbox.cpp; sourceTree = "<group>"; };
+		B5BD1634189B42EB0020C554 /* simpleNbox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = simpleNbox.cpp; sourceTree = "<group>"; };
+		B5DEC3121A6033BB00584342 /* oh_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = oh_component.cpp; sourceTree = "<group>"; };
+		B5DEC3151A6033C900584342 /* oh_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = oh_component.hpp; sourceTree = "<group>"; };
+		CD6968B81243CAE500DFC9CF /* style.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = style.txt; sourceTree = "<group>"; };
+		CD706AC2124BA91A00C0C6D5 /* hector-unit-tests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "hector-unit-tests"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8DD76F660486A84900D96B5E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CD706AC0124BA91A00C0C6D5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B54987AA16C981060000A223 /* gtest.framework in Frameworks */,
+				B53C186D16C98E010084BD6E /* libgtest.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		08FB7794FE84155DC02AAC07 /* hector */ = {
+			isa = PBXGroup;
+			children = (
+				B53C186C16C98E010084BD6E /* libgtest.a */,
+				B54987A916C981060000A223 /* gtest.framework */,
+				CD6968B21243CAE500DFC9CF /* documentation */,
+				CD6968B91243CAE500DFC9CF /* headers */,
+				CD6968BF1243CAE500DFC9CF /* source */,
+				1AB674ADFE9D54B511CA2CBB /* Products */,
+			);
+			name = hector;
+			sourceTree = "<group>";
+		};
+		1AB674ADFE9D54B511CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8DD76F6C0486A84900D96B5E /* hector */,
+				CD706AC2124BA91A00C0C6D5 /* hector-unit-tests */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B5BD1530189B3EB00020C554 /* components */ = {
+			isa = PBXGroup;
+			children = (
+				B5DEC3151A6033C900584342 /* oh_component.hpp */,
+				B5BD1531189B3EB00020C554 /* bc_component.hpp */,
+				B5BD1532189B3EB00020C554 /* ch4_component.hpp */,
+				B5BD1533189B3EB00020C554 /* component_data.hpp */,
+				B5BD1534189B3EB00020C554 /* component_names.hpp */,
+				B5BD1535189B3EB00020C554 /* dummy_model_component.hpp */,
+				B5BD1536189B3EB00020C554 /* forcing_component.hpp */,
+				B5BD1537189B3EB00020C554 /* halocarbon_component.hpp */,
+				B5BD1538189B3EB00020C554 /* imodel_component.hpp */,
+				B5BD1539189B3EB00020C554 /* n2o_component.hpp */,
+				B5BD153A189B3EB00020C554 /* o3_component.hpp */,
+				B5BD153B189B3EB00020C554 /* oc_component.hpp */,
+				B5BD153C189B3EB00020C554 /* ocean_component.hpp */,
+				B5BD153D189B3EB00020C554 /* onelineocean_component.hpp */,
+				B5BD153E189B3EB00020C554 /* slr_component.hpp */,
+				B5BD153F189B3EB00020C554 /* so2_component.hpp */,
+				B5BD1540189B3EB00020C554 /* temperature_component.hpp */,
+			);
+			path = components;
+			sourceTree = "<group>";
+		};
+		B5BD1541189B3EB00020C554 /* core */ = {
+			isa = PBXGroup;
+			children = (
+				B5BD1542189B3EB00020C554 /* carbon-cycle-solver.hpp */,
+				B5BD1543189B3EB00020C554 /* core.hpp */,
+				B5BD1544189B3EB00020C554 /* dependency_finder.hpp */,
+				B5BD1545189B3EB00020C554 /* ivisitable.hpp */,
+				B5BD1546189B3EB00020C554 /* logger.hpp */,
+			);
+			path = core;
+			sourceTree = "<group>";
+		};
+		B5BD1547189B3EB00020C554 /* data */ = {
+			isa = PBXGroup;
+			children = (
+				B5BD1548189B3EB00020C554 /* h_interpolator.hpp */,
+				B5BD1549189B3EB00020C554 /* message_data.hpp */,
+				B5BD154A189B3EB00020C554 /* tseries.hpp */,
+				B5BD154B189B3EB00020C554 /* unitval.hpp */,
+			);
+			path = data;
+			sourceTree = "<group>";
+		};
+		B5BD154E189B3EB00020C554 /* input */ = {
+			isa = PBXGroup;
+			children = (
+				B5BD154F189B3EB00020C554 /* csv_table_reader.hpp */,
+				B5BD1550189B3EB00020C554 /* h_reader.hpp */,
+				B5BD1551189B3EB00020C554 /* ini_to_core_reader.hpp */,
+				B5BD1552189B3EB00020C554 /* inih */,
+			);
+			path = input;
+			sourceTree = "<group>";
+		};
+		B5BD1552189B3EB00020C554 /* inih */ = {
+			isa = PBXGroup;
+			children = (
+				B5BD1553189B3EB00020C554 /* ini.h */,
+				B5BD1554189B3EB00020C554 /* INIReader.h */,
+			);
+			path = inih;
+			sourceTree = "<group>";
+		};
+		B5BD1555189B3EB00020C554 /* models */ = {
+			isa = PBXGroup;
+			children = (
+				B5BD1556189B3EB00020C554 /* carbon-cycle-model.hpp */,
+				B5BD1557189B3EB00020C554 /* ocean_csys.hpp */,
+				B5BD1558189B3EB00020C554 /* oceanbox.hpp */,
+				B5BD1559189B3EB00020C554 /* simpleNbox.hpp */,
+			);
+			path = models;
+			sourceTree = "<group>";
+		};
+		B5BD155A189B3EB00020C554 /* visitors */ = {
+			isa = PBXGroup;
+			children = (
+				B5BD155B189B3EB00020C554 /* avisitor.hpp */,
+				B5BD155C189B3EB00020C554 /* csv_output_visitor.hpp */,
+				B5BD155D189B3EB00020C554 /* csv_outputstream_visitor.hpp */,
+				B5BD155E189B3EB00020C554 /* ini_restart_visitor.hpp */,
+			);
+			path = visitors;
+			sourceTree = "<group>";
+		};
+		B5BD15A3189B3ED10020C554 /* components */ = {
+			isa = PBXGroup;
+			children = (
+				B5DEC3121A6033BB00584342 /* oh_component.cpp */,
+				B5BD15A4189B3ED10020C554 /* bc_component.cpp */,
+				B5BD15A5189B3ED10020C554 /* ch4_component.cpp */,
+				B5BD15A6189B3ED10020C554 /* dummy_model_component.cpp */,
+				B5BD15A7189B3ED10020C554 /* forcing_component.cpp */,
+				B5BD15A8189B3ED10020C554 /* halocarbon_component.cpp */,
+				B5BD15A9189B3ED10020C554 /* n2o_component.cpp */,
+				B5BD15AA189B3ED10020C554 /* o3_component.cpp */,
+				B5BD15AB189B3ED10020C554 /* oc_component.cpp */,
+				B5BD15AC189B3ED10020C554 /* ocean_component.cpp */,
+				B5BD15AD189B3ED10020C554 /* onelineocean_component.cpp */,
+				B5BD15AE189B3ED10020C554 /* slr_component.cpp */,
+				B5BD15AF189B3ED10020C554 /* so2_component.cpp */,
+				B5BD15B0189B3ED10020C554 /* temperature_component.cpp */,
+			);
+			path = components;
+			sourceTree = "<group>";
+		};
+		B5BD15B1189B3ED10020C554 /* data */ = {
+			isa = PBXGroup;
+			children = (
+				B5BD15B2189B3ED10020C554 /* h_interpolator.cpp */,
+				B5BD15B3189B3ED10020C554 /* spline_forsythe.cpp */,
+				B5BD15B4189B3ED10020C554 /* unitval.cpp */,
+			);
+			path = data;
+			sourceTree = "<group>";
+		};
+		B5BD15B7189B3ED10020C554 /* visitors */ = {
+			isa = PBXGroup;
+			children = (
+				B5BD15B8189B3ED10020C554 /* csv_output_visitor.cpp */,
+				B5BD15B9189B3ED10020C554 /* csv_outputstream_visitor.cpp */,
+				B5BD15BA189B3ED10020C554 /* ini_restart_visitor.cpp */,
+			);
+			path = visitors;
+			sourceTree = "<group>";
+		};
+		B5BD15F5189B41340020C554 /* input */ = {
+			isa = PBXGroup;
+			children = (
+				B5BD15F6189B41340020C554 /* csv_table_reader.cpp */,
+				B5BD15F7189B41340020C554 /* h_reader.cpp */,
+				B5BD15F8189B41340020C554 /* ini_to_core_reader.cpp */,
+				B5BD15F9189B41340020C554 /* inih */,
+			);
+			path = input;
+			sourceTree = "<group>";
+		};
+		B5BD15F9189B41340020C554 /* inih */ = {
+			isa = PBXGroup;
+			children = (
+				B5BD15FE189B41340020C554 /* ini.c */,
+				B5BD1600189B41340020C554 /* INIReader.cpp */,
+			);
+			path = inih;
+			sourceTree = "<group>";
+		};
+		B5BD161E189B41940020C554 /* core */ = {
+			isa = PBXGroup;
+			children = (
+				B5BD161F189B41940020C554 /* carbon-cycle-solver.cpp */,
+				B5BD1620189B41940020C554 /* core.cpp */,
+				B5BD1621189B41940020C554 /* dependency_finder.cpp */,
+				B5BD1622189B41940020C554 /* logger.cpp */,
+			);
+			path = core;
+			sourceTree = "<group>";
+		};
+		B5BD162E189B42EB0020C554 /* models */ = {
+			isa = PBXGroup;
+			children = (
+				B5BD162F189B42EB0020C554 /* carbon-cycle-model.cpp */,
+				B5BD1631189B42EB0020C554 /* ocean_csys.cpp */,
+				B5BD1632189B42EB0020C554 /* oceanbox.cpp */,
+				B5BD1634189B42EB0020C554 /* simpleNbox.cpp */,
+			);
+			path = models;
+			sourceTree = "<group>";
+		};
+		CD6968B21243CAE500DFC9CF /* documentation */ = {
+			isa = PBXGroup;
+			children = (
+				CD6968B81243CAE500DFC9CF /* style.txt */,
+			);
+			name = documentation;
+			path = ../../documentation;
+			sourceTree = SOURCE_ROOT;
+		};
+		CD6968B91243CAE500DFC9CF /* headers */ = {
+			isa = PBXGroup;
+			children = (
+				B5BD1530189B3EB00020C554 /* components */,
+				B5BD1541189B3EB00020C554 /* core */,
+				B5BD1547189B3EB00020C554 /* data */,
+				B5BD154C189B3EB00020C554 /* h_exception.hpp */,
+				B5BD154D189B3EB00020C554 /* h_util.hpp */,
+				B5BD154E189B3EB00020C554 /* input */,
+				B5BD1555189B3EB00020C554 /* models */,
+				B5BD155A189B3EB00020C554 /* visitors */,
+			);
+			name = headers;
+			path = ../../headers;
+			sourceTree = SOURCE_ROOT;
+		};
+		CD6968BF1243CAE500DFC9CF /* source */ = {
+			isa = PBXGroup;
+			children = (
+				B5BD15A3189B3ED10020C554 /* components */,
+				B5BD161E189B41940020C554 /* core */,
+				B5BD15B1189B3ED10020C554 /* data */,
+				B5BD15B5189B3ED10020C554 /* main.cpp */,
+				B5BD15F5189B41340020C554 /* input */,
+				B5BD162E189B42EB0020C554 /* models */,
+				B5BD15B7189B3ED10020C554 /* visitors */,
+			);
+			name = source;
+			path = ../../source;
+			sourceTree = SOURCE_ROOT;
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8DD76F620486A84900D96B5E /* hector */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1DEB923108733DC60010E9CD /* Build configuration list for PBXNativeTarget "hector" */;
+			buildPhases = (
+				8DD76F640486A84900D96B5E /* Sources */,
+				8DD76F660486A84900D96B5E /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = hector;
+			productInstallPath = "$(HOME)/bin";
+			productName = hector;
+			productReference = 8DD76F6C0486A84900D96B5E /* hector */;
+			productType = "com.apple.product-type.tool";
+		};
+		CD706AC1124BA91A00C0C6D5 /* hector-unit-tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CD706AD2124BA92300C0C6D5 /* Build configuration list for PBXNativeTarget "hector-unit-tests" */;
+			buildPhases = (
+				CD706ABF124BA91A00C0C6D5 /* Sources */,
+				CD706AC0124BA91A00C0C6D5 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "hector-unit-tests";
+			productName = "hector-unit-tests";
+			productReference = CD706AC2124BA91A00C0C6D5 /* hector-unit-tests */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		08FB7793FE84155DC02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0510;
+			};
+			buildConfigurationList = 1DEB923508733DC60010E9CD /* Build configuration list for PBXProject "hector" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
+			mainGroup = 08FB7794FE84155DC02AAC07 /* hector */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8DD76F620486A84900D96B5E /* hector */,
+				CD706AC1124BA91A00C0C6D5 /* hector-unit-tests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8DD76F640486A84900D96B5E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B5BD1624189B41940020C554 /* carbon-cycle-solver.cpp in Sources */,
+				B5BD15EB189B3ED20020C554 /* csv_output_visitor.cpp in Sources */,
+				B5BD1626189B41940020C554 /* core.cpp in Sources */,
+				B5BD15EF189B3ED20020C554 /* ini_restart_visitor.cpp in Sources */,
+				B5BD1628189B41940020C554 /* dependency_finder.cpp in Sources */,
+				B5BD15CF189B3ED20020C554 /* halocarbon_component.cpp in Sources */,
+				B5BD1639189B42EB0020C554 /* ocean_csys.cpp in Sources */,
+				B5BD1616189B41340020C554 /* INIReader.cpp in Sources */,
+				B5BD15DF189B3ED20020C554 /* temperature_component.cpp in Sources */,
+				B5BD15D9189B3ED20020C554 /* onelineocean_component.cpp in Sources */,
+				B5BD15DB189B3ED20020C554 /* slr_component.cpp in Sources */,
+				B5BD15CD189B3ED20020C554 /* forcing_component.cpp in Sources */,
+				B5BD160A189B41340020C554 /* ini_to_core_reader.cpp in Sources */,
+				B5BD162A189B41940020C554 /* logger.cpp in Sources */,
+				B5BD1612189B41340020C554 /* ini.c in Sources */,
+				B5BD15E7189B3ED20020C554 /* main.cpp in Sources */,
+				B5BD15C7189B3ED20020C554 /* bc_component.cpp in Sources */,
+				B5BD163B189B42EB0020C554 /* oceanbox.cpp in Sources */,
+				B5BD15E3189B3ED20020C554 /* spline_forsythe.cpp in Sources */,
+				B5BD15D3189B3ED20020C554 /* o3_component.cpp in Sources */,
+				B5BD15E1189B3ED20020C554 /* h_interpolator.cpp in Sources */,
+				B5BD15ED189B3ED20020C554 /* csv_outputstream_visitor.cpp in Sources */,
+				B5BD15D1189B3ED20020C554 /* n2o_component.cpp in Sources */,
+				B5BD15D5189B3ED20020C554 /* oc_component.cpp in Sources */,
+				B5BD15DD189B3ED20020C554 /* so2_component.cpp in Sources */,
+				B5BD1635189B42EB0020C554 /* carbon-cycle-model.cpp in Sources */,
+				B5BD15CB189B3ED20020C554 /* dummy_model_component.cpp in Sources */,
+				B5BD15D7189B3ED20020C554 /* ocean_component.cpp in Sources */,
+				B5BD15C9189B3ED20020C554 /* ch4_component.cpp in Sources */,
+				B5BD1608189B41340020C554 /* h_reader.cpp in Sources */,
+				B5BD163F189B42EB0020C554 /* simpleNbox.cpp in Sources */,
+				B5BD15E5189B3ED20020C554 /* unitval.cpp in Sources */,
+				B5DEC3131A6033BB00584342 /* oh_component.cpp in Sources */,
+				B5BD1606189B41340020C554 /* csv_table_reader.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CD706ABF124BA91A00C0C6D5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B5BD1625189B41940020C554 /* carbon-cycle-solver.cpp in Sources */,
+				B5BD15EC189B3ED20020C554 /* csv_output_visitor.cpp in Sources */,
+				B5BD1627189B41940020C554 /* core.cpp in Sources */,
+				B5BD15F0189B3ED20020C554 /* ini_restart_visitor.cpp in Sources */,
+				B5BD1629189B41940020C554 /* dependency_finder.cpp in Sources */,
+				B5BD15D0189B3ED20020C554 /* halocarbon_component.cpp in Sources */,
+				B5BD163A189B42EB0020C554 /* ocean_csys.cpp in Sources */,
+				B5BD1617189B41340020C554 /* INIReader.cpp in Sources */,
+				B5BD15E0189B3ED20020C554 /* temperature_component.cpp in Sources */,
+				B5BD15DA189B3ED20020C554 /* onelineocean_component.cpp in Sources */,
+				B5BD15DC189B3ED20020C554 /* slr_component.cpp in Sources */,
+				B5BD15CE189B3ED20020C554 /* forcing_component.cpp in Sources */,
+				B5BD160B189B41340020C554 /* ini_to_core_reader.cpp in Sources */,
+				B5BD162B189B41940020C554 /* logger.cpp in Sources */,
+				B5BD1613189B41340020C554 /* ini.c in Sources */,
+				B5BD15E8189B3ED20020C554 /* main.cpp in Sources */,
+				B5BD15C8189B3ED20020C554 /* bc_component.cpp in Sources */,
+				B5BD163C189B42EB0020C554 /* oceanbox.cpp in Sources */,
+				B5BD15E4189B3ED20020C554 /* spline_forsythe.cpp in Sources */,
+				B5BD15D4189B3ED20020C554 /* o3_component.cpp in Sources */,
+				B5BD15E2189B3ED20020C554 /* h_interpolator.cpp in Sources */,
+				B5BD15EE189B3ED20020C554 /* csv_outputstream_visitor.cpp in Sources */,
+				B5BD15D2189B3ED20020C554 /* n2o_component.cpp in Sources */,
+				B5BD15D6189B3ED20020C554 /* oc_component.cpp in Sources */,
+				B5BD15DE189B3ED20020C554 /* so2_component.cpp in Sources */,
+				B5BD1636189B42EB0020C554 /* carbon-cycle-model.cpp in Sources */,
+				B5BD15CC189B3ED20020C554 /* dummy_model_component.cpp in Sources */,
+				B5BD15D8189B3ED20020C554 /* ocean_component.cpp in Sources */,
+				B5BD15CA189B3ED20020C554 /* ch4_component.cpp in Sources */,
+				B5BD1609189B41340020C554 /* h_reader.cpp in Sources */,
+				B5BD1640189B42EB0020C554 /* simpleNbox.cpp in Sources */,
+				B5BD15E6189B3ED20020C554 /* unitval.cpp in Sources */,
+				B5DEC3141A6033BB00584342 /* oh_component.cpp in Sources */,
+				B5BD1607189B41340020C554 /* csv_table_reader.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		1DEB923208733DC60010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LIBRARY = "libc++";
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_VERSION = "";
+				HEADER_SEARCH_PATHS = (
+					/usr/local/include/,
+					/usr/local/lib/boost_1_52_0/,
+				);
+				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
+				OTHER_LDFLAGS = (
+					"-lgsl",
+					"-lgslcblas",
+					"-lm",
+				);
+				PRODUCT_NAME = hector;
+				SDKROOT = macosx10.8;
+			};
+			name = Debug;
+		};
+		1DEB923308733DC60010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LIBRARY = "libc++";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_VERSION = "";
+				HEADER_SEARCH_PATHS = (
+					/usr/local/include/,
+					/usr/local/lib/boost_1_52_0/,
+				);
+				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
+				OTHER_LDFLAGS = (
+					"-lgsl",
+					"-lgslcblas",
+					"-lm",
+				);
+				PRODUCT_NAME = hector;
+				SDKROOT = macosx10.8;
+			};
+			name = Release;
+		};
+		1DEB923608733DC60010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_VERSION = "";
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					/usr/local/include/,
+					/usr/local/lib/boost_1_52_0,
+				);
+				LD_OPENMP_FLAGS = "";
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"-gsl",
+					"-lgslcblas",
+					"-lm",
+				);
+				SDKROOT = macosx;
+				USER_HEADER_SEARCH_PATHS = ../../headers;
+				VALID_ARCHS = "i386 x86_64";
+			};
+			name = Debug;
+		};
+		1DEB923708733DC60010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_VERSION = "";
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					/usr/local/include/,
+					/usr/local/lib/boost_1_52_0,
+				);
+				LD_OPENMP_FLAGS = "";
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"-gsl",
+					"-lgslcblas",
+					"-lm",
+				);
+				SDKROOT = macosx;
+				USER_HEADER_SEARCH_PATHS = ../../headers;
+				VALID_ARCHS = "i386 x86_64";
+			};
+			name = Release;
+		};
+		CD706AC4124BA91A00C0C6D5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../../../../../../../../../Library/Developer/Xcode/DerivedData/gtest-cumlpidgkhribbdlzgavdlnkcwyy/Build/Products/Debug\"",
+				);
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				GCC_VERSION = "";
+				HEADER_SEARCH_PATHS = (
+					/usr/local/include/,
+					/usr/local/lib/boost_1_52_0,
+					"../../libs/gtest-1.6.0/include/",
+				);
+				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../../../../../../../../../Library/Developer/Xcode/DerivedData/gtest-cumlpidgkhribbdlzgavdlnkcwyy/Build/Products/Debug\"",
+				);
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"-lgslcblas",
+					"-lm",
+					"-lgsl",
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PRODUCT_NAME = "hector-unit-tests";
+				USER_HEADER_SEARCH_PATHS = ../../headers;
+			};
+			name = Debug;
+		};
+		CD706AC5124BA91A00C0C6D5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "compiler-default";
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../../../../../../../../../Library/Developer/Xcode/DerivedData/gtest-cumlpidgkhribbdlzgavdlnkcwyy/Build/Products/Debug\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = NO;
+				GCC_PREFIX_HEADER = "";
+				GCC_VERSION = "";
+				HEADER_SEARCH_PATHS = (
+					/usr/local/include/,
+					/usr/local/lib/boost_1_52_0,
+					"../../libs/gtest-1.6.0/include/",
+				);
+				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../../../../../../../../../Library/Developer/Xcode/DerivedData/gtest-cumlpidgkhribbdlzgavdlnkcwyy/Build/Products/Debug\"",
+				);
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"-lgslcblas",
+					"-lm",
+					"-lgsl",
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PRODUCT_NAME = "hector-unit-tests";
+				USER_HEADER_SEARCH_PATHS = ../../headers;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1DEB923108733DC60010E9CD /* Build configuration list for PBXNativeTarget "hector" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB923208733DC60010E9CD /* Debug */,
+				1DEB923308733DC60010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1DEB923508733DC60010E9CD /* Build configuration list for PBXProject "hector" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB923608733DC60010E9CD /* Debug */,
+				1DEB923708733DC60010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CD706AD2124BA92300C0C6D5 /* Build configuration list for PBXNativeTarget "hector-unit-tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CD706AC4124BA91A00C0C6D5 /* Debug */,
+				CD706AC5124BA91A00C0C6D5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 08FB7793FE84155DC02AAC07 /* Project object */;
+}

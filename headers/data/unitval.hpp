@@ -57,18 +57,22 @@ enum unit_types {
                     U_MOL_YR,
 					U_TG_CO,
 					U_TG_CH4,
+                    U_TG_N2O,
 				    U_TG_NMVOC,
 					U_DU_O3,
-					U_TG_NOX,
+					U_TG_N,             // NOX emissions given in TG-N/yr
+
+                    U_TG_PPBV,          // Conversion for CH4 and N2O emission to concentrations
     
                     U_DEGC,             // Temperature
                     U_K,				// Temperature
+                    U_1_K,               // Inverse Temperature
    
                     U_CM,               // Length-related
                     U_CM_YR,            
     
                     U_G,
-                    U_KG,               // Mass-related
+                    U_TG,               // Mass-related
                     U_GG,				// Giga-grams
                     U_MOL,
                     U_GMOL,
@@ -92,7 +96,9 @@ enum unit_types {
 					U_J_KG_C,              // specific heat capacity
 
                     U_DOBSON,               // Dobson units (ozone)
-    
+                    
+                    U_YRS,                  // Years
+
                     U_UNDEFINED             // Undefined units,
                                             // Warning: all units should be defined
                                             // before U_UNDEFINED
@@ -115,10 +121,17 @@ public:
     
     double value( unit_types ) const throw( h_exception );
     unit_types units() const { return valUnits; };
-    std::string unitsName() { return unitsName( valUnits ); };
+    std::string unitsName() const { return unitsName( valUnits ); };
 
     static unitval parse_unitval( const std::string&, const unit_types& ) throw( h_exception );
     static unitval parse_unitval( const std::string&, const std::string&, const unit_types& ) throw( h_exception );
+
+    /*! Allow us to assign a unitval to a double. 
+     *  \note    Do not use this in Hector.  It is intended for other
+     *           codes that use libhector and don't want to carry
+     *           around units.
+     */
+    operator double() const {return val;}
     
     friend unitval operator+ ( const unitval&, const unitval& );
     friend unitval operator- ( const unitval&, const unitval& );
@@ -128,7 +141,7 @@ public:
     friend unitval operator/ ( const unitval&, const double );
     friend unitval operator/ ( const double, const unitval& );
     friend double operator/ ( const unitval&, const unitval&  );
-    friend std::ostream& operator<<( std::ostream &out, unitval &x );
+    friend std::ostream& operator<<( std::ostream &out, const unitval &x );
 
 };
 
@@ -152,7 +165,6 @@ unitval::unitval() {
  */
 inline
 unitval::unitval( double v, unit_types u ) {
-    unitval();
     val=v;
     valUnits=u;
 }
@@ -280,7 +292,7 @@ double operator/ ( const unitval& lhs, const unitval& rhs ) {
  *  Print a unitval.
  */
 inline
-std::ostream& operator<<( std::ostream &out, unitval &x ) {
+std::ostream& operator<<( std::ostream &out, const unitval &x ) {
     out << x.value( x.units() ) << " " << x.unitsName();
     return out;
 }

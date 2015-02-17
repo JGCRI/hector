@@ -36,6 +36,17 @@
 #define D_RF_T_ALBEDO           D_RF_PREFIX "talbedo"
 #define D_FTOT_CONSTRAIN        D_RF_PREFIX "tot_constrain"
 #define D_RF_BASEYEAR           "baseyear"
+#define D_RF_CO2                D_RF_PREFIX "CO2"
+#define D_RF_N2O                D_RF_PREFIX "N2O"
+#define D_RF_H2O                D_RF_PREFIX "H2O"
+#define D_RF_O3                 D_RF_PREFIX "O3"
+#define D_RF_BC                 D_RF_PREFIX "BC"
+#define D_RF_OC                 D_RF_PREFIX "OC"
+#define D_RF_SO2d               D_RF_PREFIX "SO2d"
+#define D_RF_SO2i               D_RF_PREFIX "SO2i"
+#define D_RF_SO2                D_RF_PREFIX "SO2"
+#define D_RF_VOL                D_RF_PREFIX "vol" // forcing from volcanic so2
+#define D_RF_halocarbons        D_RF_PREFIX "halocarbons"
 
 // halocarbon components
 #define D_RF_CF4                D_RF_PREFIX CF4_COMPONENT_BASE
@@ -102,22 +113,40 @@
 #define D_HC_CALCDATE           "calcDate"
 
 // methane component
-#define D_ATMOSPHERIC_CH4       "Ma"
+#define D_ATMOSPHERIC_CH4       "CH4"
 #define D_PREINDUSTRIAL_CH4     "M0"
 #define D_RF_CH4                "FCH4"
-#define D_EMISSIONS_CH4 "CH4_emissions"
+#define D_EMISSIONS_CH4         "CH4_emissions"
+#define D_NATURAL_CH4           "CH4N"
+#define D_CONVERSION_CH4        "UC_CH4"
+#define D_LIFETIME_SOIL         "Tsoil"
+#define D_LIFETIME_STRAT        "Tstrat"
 
 // n2o component
-#define D_ATMOSPHERIC_N2O       "Na"
+#define D_ATMOSPHERIC_N2O       "N2O"
 #define D_PREINDUSTRIAL_N2O     "N0"
-#define D_EMISSIONS_N2O "N2O_emissions"
+#define D_EMISSIONS_N2O         "N2O_emissions"
+#define D_NAT_EMISSIONS_N2O     "N2ON_emissions"
+#define D_CONVERSION_N2O        "UC_N2O"
+#define D_INITIAL_LIFETIME_N2O   "TN2O0"
+#define D_LIFETIME_N2O          "TAU_N2O"
+
+// oh component
+#define D_LIFETIME_OH           "TAU_OH"
+#define D_INITIAL_LIFETIME_OH   "TOH0"
+#define D_COEFFICENT_NOX        "CNOX"
+#define D_COEFFICENT_CH4        "CCH4"
+#define D_COEFFICENT_NMVOC      "CNMVOC"
+#define D_COEFFICENT_CO         "CCO"
+
 
 //o3 component
-#define D_ATMOSPHERIC_O3	   "O3"
-#define D_ATMOSPHERIC_CO      "CO"
-#define D_ATMOSPHERIC_NOX      "NOX"
-#define D_ATMOSPHERIC_NMVOC    "NMVOC"
+#define D_PREINDUSTRIAL_O3	      "PO3"
+#define D_ATMOSPHERIC_O3	      "O3"
 #define D_ATMOSPHERIC_EM_CH4      "CH4"
+#define D_EMISSIONS_NOX           "NOX_emissions"
+#define D_EMISSIONS_CO            "CO_emissions"
+#define D_EMISSIONS_NMVOC         "NMVOC_emissions"
 //Do not redefine Ma though it is used for o3 component
 //#define D_EMISSIONS_O3 "O3_concentration"
 
@@ -135,7 +164,6 @@
 #define D_CIRC_T50_HIGH         "circ_T50_high"
 #define D_CIRC_T50_LOW          "circ_T50_low"
 #define D_HL_DO                 "HL_DO_Cflux"
-#define D_HEAT_FLUX             "heatflux"
 #define D_PH_HL                 "pH_HL"
 #define D_PH_LL                 "ph_LL"
 #define D_ATM_OCEAN_FLUX_HL     "atm_ocean_flux_HL"
@@ -156,8 +184,15 @@
 #define D_TEMP_HL               "Temp_HL"
 #define D_TEMP_LL               "Temp_LL"
 #define D_SPINUP_CHEM           "spinup_chem"
-#define D_HEAT_UPTAKE_EFF       "k"
-#define D_SPECIFIC_HEAT			"cp"
+
+#define D_HEAT_FLUX             "heatflux"
+#define D_HEAT_UPTAKE_EFF       "kappa"
+#define D_MAX_HEAT_UPTAKE_EFF   "k_max"
+#define D_KAPPA50_TEMP          "t_mid"
+#define D_MIN_HEAT_UPTAKE_EFF   "k_min"
+#define D_SLOPE_HEAT_UPTAKE_EFF  "slope"
+//#define D_SPECIFIC_HEAT			"cp"
+
 #define D_CO3_LL				"CO3_LL"
 #define D_CO3_HL				"CO3_HL"
 #define D_ATM_OCEAN_CONSTRAIN   "atm_ocean_constrain"
@@ -201,8 +236,8 @@
 #define D_SLR_NO_ICE            "slr_no_ice"
 
 // so2 component
-#define D_ATMOSPHERIC_SO2       "SN"
-#define D_PREINDUSTRIAL_SO2     "S0"
+#define D_NATURAL_SO2       "SN"
+#define D_2000_SO2     "S0"
 #define D_EMISSIONS_SO2         "SO2_emissions"
 #define D_VOLCANIC_SO2          "SV"
 
@@ -211,7 +246,10 @@
 #define D_GLOBAL_TEMP           "Tgav"
 #define D_GLOBAL_TEMPEQ         "Tgaveq"
 #define D_TGAV_CONSTRAIN        "tgav_constrain"
-
+#define D_SO2D_B                "so2d_b"
+#define D_SO2I_B                "so2i_b"
+#define D_OC_B                  "oc_b"
+#define D_BC_B                  "bc_b"
 // ------------------- messages being passed between components -------------------------
 
 #define M_GETDATA               "getData"

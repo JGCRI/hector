@@ -125,16 +125,16 @@ void slrComponent::compute_slr( const double date ) {
 	// First need to compute dTdt, the first derivative of the temperature curve
 	double dTdt_double = 0.0, dTdt_err = 0.0;
 	if( tgav.size() > 2 ) {
-		for( int i=tgav.first(); i<=tgav.last(); i++ ) {
+		for( int i=tgav.firstdate(); i<=tgav.lastdate(); i++ ) {
 			tgav_vals.set( i, tgav.get( i ).value( U_DEGC ) );
 		}
 		tgav_vals.allowInterp( true );		// deriv needs a continuous function
 		gsl_function F;
 		F.function = &f_gsl;
 		F.params = 0;
-		if( date==tgav.first() )
+		if( date==tgav.firstdate() )
 			gsl_deriv_forward( &F, date, 1e-8, &dTdt_double, &dTdt_err );
-		else if( date==tgav.last() )
+		else if( date==tgav.lastdate() )
 			gsl_deriv_backward( &F, date, 1e-8, &dTdt_double, &dTdt_err );
 		else
 			gsl_deriv_central( &F, date, 1e-8, &dTdt_double, &dTdt_err );
@@ -211,7 +211,7 @@ void slrComponent::run( const double runToDate ) throw ( h_exception ) {
         " (" << refperiod_low << "-" << refperiod_high << ")" << std::endl;
         
 		// Now we can compute and store data up to this point
-		for( int i=tgav.first(); i<=refperiod_high; i++ )
+		for( int i=tgav.firstdate(); i<=refperiod_high; i++ )
 			compute_slr( i );
 	}
     

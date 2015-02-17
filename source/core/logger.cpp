@@ -7,8 +7,14 @@
  */
 
 #include <time.h>
-
 #include "core/logger.hpp"
+#include "h_util.hpp"
+
+#if defined (__unix__) || defined (__MACH__)
+#include <unistd.h>
+#include <sys/stat.h>
+#include <sys/types.h> 
+#endif
 
 namespace Hector {
 
@@ -89,9 +95,9 @@ streamsize Logger::LoggerStreamBuf::xsputn( const char* s, streamsize n ) {
 //------------------------------------------------------------------------------
 /*! \brief Create an uninitialized logger.
  */
-Logger::Logger()
-:isInitialized( false ),
+Logger::Logger() :
 minLogLevel( WARNING ),
+isInitialized( false ),
 loggerStream( 0 )
 {
 }
@@ -124,18 +130,22 @@ void Logger::open( const string& logName, const bool echoToScreen,
                   LogLevel minLogLevel ) throw ( h_exception )
 {
     H_ASSERT( !isInitialized, "This log has already been initialized." );
+
+    chk_logdir(LOG_DIRECTORY);
     
-	const string fqName = LOG_DIRECTORY + logName + LOG_EXTENSION;	// fully-qualified name
+    const string fqName = LOG_DIRECTORY + logName + LOG_EXTENSION;	// fully-qualified name
 	
     this->minLogLevel = minLogLevel;
     
-    // TODO: does the logger or the ostream manage this memory?
-    // FIXME:  currently nobody does.  The memory is leaked.
     LoggerStreamBuf* buff = new LoggerStreamBuf( echoToScreen );
-    buff->open( fqName.c_str(), ios::out );
+    if( !buff->open( fqName.c_str(), ios::out ) )
+        H_THROW("Unable to open log file " + fqName);
     
     loggerStream.rdbuf( buff );
     isInitialized = true;
+
+    // ensure that the log header is always printed.
+    printLogHeader( max( minLogLevel, NOTICE ) );
 }
 
 //------------------------------------------------------------------------------
@@ -220,10 +230,8 @@ const string& Logger::logLevelToStr( const LogLevel logLevel ) {
 const char* Logger::getDateTimeStamp() {
     time_t rawtime;
     struct tm* timeinfo;
-    // TODO: I think visual studio will complain about the use of these
     time( &rawtime );
     timeinfo = localtime( &rawtime );
-    // TODO: come up with our own formatted time output
     char* ret = asctime( timeinfo );
     // remove the newline at the end of the string
     int i = 0;
@@ -237,4 +245,53 @@ const char* Logger::getDateTimeStamp() {
     return ret;
 }
 
+#if defined (__unix__) || defined (__MACH__)
+int Logger::chk_logdir(std::string dir)
+{
+    // clip trailing /, if any.  
+    int len = dir.size(); 
+    if(dir[len-1] == '/')
+        dir[len-1] = '\0';    // ok to modify because dir is a copy
+
+    const char *cdir = dir.c_str(); 
+    if(access(cdir, F_OK)) {    // NB: access and mkdir return 0 on success.
+        // directory doesn't exist.  Attempt to create it
+        if(mkdir(cdir, 0755)) {
+            // failed.  Throw an error
+            H_THROW("Log directory " + dir + " does not exist and can't be created.");
+        }
+        else 
+            return 1; 
+    }
+    
+    struct stat statbuf;
+
+    stat(cdir, &statbuf);
+
+    if(!S_ISDIR(statbuf.st_mode))
+        H_THROW("Log directory " + dir + " exists but is not a directory.");
+
+    if(access(cdir, W_OK))
+        H_THROW("Log directory " + dir + " lacks write permission.");
+
+    return 1;
 }
+#else  // Windows version of this function is a no-op.
+int Logger::chk_logdir(std::string dir)
+{
+    return 1;
+}
+#endif
+
+//------------------------------------------------------------------------------
+/*! \brief Print a standard header at the top of all logs that indicates the model version.
+ *  \param writeLevel The priority level to print the header.
+ */
+void Logger::printLogHeader( const LogLevel writeLevel ) {
+    H_ASSERT( isInitialized, "Logger must be initialized" );
+
+    H_LOG( (*this), writeLevel ) << MODEL_NAME << " version " << MODEL_VERSION << endl;
+}
+
+}
+

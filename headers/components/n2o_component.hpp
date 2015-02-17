@@ -52,9 +52,13 @@ private:
     virtual unitval getData( const std::string& varName,
                             const double date ) throw ( h_exception );
     
-    unitval N0;    //!< preindustrial nitrous oxide
-    //! Concentration time series
-	tseries<unitval> Na;
+    unitval N0;    //! preindustrial N2O
+    unitval UC_N2O;  //! conversion from emissions to concentration
+	tseries<unitval> N2O_emissions; //! anthropogenic emissions time series
+    tseries<unitval> N2ON_emissions; //! natural emissions time series
+    tseries<unitval> N2O; //! N2O concentrations
+    tseries<unitval> TAU_N2O; 
+    unitval TN2O0;  //! inital N2O lifetime (tau)
     
     //! logger
     Logger logger;

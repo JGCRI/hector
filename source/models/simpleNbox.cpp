@@ -559,7 +559,7 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     lastsum = sum;
 
     // If user has supplied Ca values, adjust atmospheric C to match
-    if( !core->inSpinup() && Ca_constrain.size() && t <= Ca_constrain.last() ) {
+    if( !core->inSpinup() && Ca_constrain.size() && t <= Ca_constrain.lastdate() ) {
         
         H_LOG( logger, Logger::WARNING ) << "** Constraining atmospheric CO2 to user-supplied value" << std::endl;
         
@@ -802,31 +802,29 @@ void SimpleNbox::slowparameval( double t, const double c[] )
 
             tempfertd[ itd->first ] = pow( q10_rh, ( Tgav_biome / 10.0 ) ); // detritus warms with air
             
-            /*
-            // Let's start with the simplest thing: a running mean of previous air temperatures
-            // This means that soil temperatures will peak later, and lower, than the air
-             static int Tgav_N = 0;
-            Tgav_sum[ itd->first ] += Tgav;
-            Tgav_N++;
-            const double Tgav_rm = Tgav_sum[ itd->first ] / Tgav_N;
-            */
         
-            // Slightly more complicated: use mean temperature of a window (size Q10_TEMPN) of
-            // temperatures, lagged by Q10_TEMPLAG years. This reflects the slow warming of soils
-            // relative to the atmosphere
-            #define Q10_TEMPLAG 125 //75//65         // TODO: put lag in input files 150, 25
-            #define Q10_TEMPN 25//35 
+            // Soil warm very slowly relative to the atmosphere
+            // We use a mean temperature of a window (size Q10_TEMPN) of temperatures to scale Q10
+            #define Q10_TEMPLAG 0 //125         // TODO: put lag in input files 150, 25
+            #define Q10_TEMPN 200 //25
             double Tgav_rm = 0.0;       /* window mean of Tgav */
             if( t > core->getStartDate() + Q10_TEMPLAG ) {
-                for( int i=t-Q10_TEMPLAG; i<t-Q10_TEMPLAG+Q10_TEMPN; i++ ) {
-//                    printf( "Fetching temp for %i = %f\n", i, Tgav_record.get( i ) );
+                for( int i=t-Q10_TEMPLAG-Q10_TEMPN; i<t-Q10_TEMPLAG; i++ ) {
+ //                   printf( "Fetching temp for %i = %f\n", i, Tgav_record.get( i ) );
                     Tgav_rm += Tgav_record.get( i ) * wf;
                 }
                 Tgav_rm /= Q10_TEMPN;
             }
             
             tempferts[ itd->first ] = pow( q10_rh, ( Tgav_rm / 10.0 ) );
-
+            
+            // The soil Q10 effect is 'sticky' and can only decline very slowly
+            static double last_tempferts = 0.0;
+            if(tempferts[ itd->first ] < last_tempferts * 1.0) {
+                tempferts[ itd->first ] = last_tempferts * 1.0;
+            }
+            last_tempferts = tempferts[ itd->first ];
+            
             H_LOG( logger,Logger::DEBUG ) << itd->first << " Tgav=" << Tgav << ", Tgav_biome=" << Tgav_biome << ", tempfertd=" << tempfertd[ itd->first ]
                 << ", tempferts=" << tempferts[ itd->first ] << std::endl;
         }

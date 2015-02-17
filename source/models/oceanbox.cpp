@@ -94,7 +94,7 @@ unitval oceanbox::compute_tabsC( const unitval Tgav ) const {
  *  \details                How do we identify is the box is oscillating? Count how many
  *  sign flips there are in the deltas (C(t)-C(t-1)) of a certain magnitude.
  */
-bool oceanbox::oscillating( const int lookback, const double maxamp, const int maxflips ) const {
+bool oceanbox::oscillating( const unsigned lookback, const double maxamp, const int maxflips ) const {
     
 #define sgn( x ) ( x > 0 ) - ( x < 0 )
     
@@ -104,7 +104,7 @@ bool oceanbox::oscillating( const int lookback, const double maxamp, const int m
     double minC = currentC, maxC = currentC;
     double lastdelta = currentC - carbonHistory[ 0 ];
     int flipcount = 0;
-    for ( int i=0; i<lookback-1; i++ )  {
+    for ( unsigned i=0; i<lookback-1; i++ )  {
         double delta = carbonHistory[ i ]-carbonHistory[ i+1 ];
         flipcount += ( sgn( lastdelta ) != sgn( delta ) );
         lastdelta = delta;
@@ -124,7 +124,7 @@ double oceanbox::vectorHistoryMean( std::vector<double> v, int lookback ) const 
     H_ASSERT( lookback > 0, "lookback must be >0" );
     H_ASSERT( v.size() > 0, "vector size must be >0" );
 
-    lookback = min<int>( v.size(), lookback );
+    lookback = min<int>( int( v.size() ), lookback );
 
     double sum = 0.0;
     for ( int j=0; j<lookback; j++ )  {
@@ -151,7 +151,7 @@ void oceanbox::make_connection( oceanbox* ob, const double k, const int ws ) { /
 	OB_LOG( logger, Logger::NOTICE) << "Adding connection " << Name << " to " << ob->Name << ", k=" << k << endl;
     
 	// If a connection to this box already exists, replace it
-	for( int i=0; i<connection_list.size(); i++ ) {
+	for( unsigned i=0; i<connection_list.size(); i++ ) {
 		if( connection_list[ i ]==ob ) {
 			connection_k[ i ] = k;
 			connection_window[ i ] = ws;
@@ -197,7 +197,7 @@ void oceanbox::log_state() {
         unitval dic = mychemistry.convertToDIC( carbon );
 		OB_LOG( logger, Logger::DEBUG) << "   Surface DIC = " << dic << endl;
     }
-	for( int i=0; i<connection_list.size(); i++ ) {
+	for( unsigned i=0; i<connection_list.size(); i++ ) {
 		OB_LOG( logger, Logger::DEBUG) << "   Connection #" << i << " to " << connection_list[ i ]->Name << ", k=" << connection_k[ i ] << ", window=" << connection_window[ i ] << endl;
 	}
 }
@@ -261,7 +261,7 @@ void oceanbox::compute_fluxes( const unitval current_Ca, const double yf, const 
         
         // 'Preflight' the outbound fluxes, i.e. get estimate of their total
         unitval closs_total( 0.0, U_PGC );
-        for( int i=0; i < connection_window.size(); i++ ){
+        for( unsigned i=0; i < connection_window.size(); i++ ){
             closs_total = closs_total + compute_connection_flux( i, yf );
         } // for i
 
@@ -277,7 +277,7 @@ void oceanbox::compute_fluxes( const unitval current_Ca, const double yf, const 
         }
                 
         closs_total.set( 0.0, U_PGC );
-        for( int i=0; i < connection_window.size(); i++ ){
+        for( unsigned i=0; i < connection_window.size(); i++ ){
 
             unitval closs = compute_connection_flux( i, yf ) * unstable_box_flux_adjust;
 
@@ -335,7 +335,7 @@ void oceanbox::update_state() {
  */
 void oceanbox::new_year( const unitval Tgav ) {
     
-    for( int i=0; i < connection_window.size(); i++ ){
+    for( unsigned i=0; i < connection_window.size(); i++ ){
         annual_box_fluxes[ connection_list[ i ] ] = unitval( 0.0, U_PGC_YR );
     }
     atmosphere_flux.set( 0.0, U_PGC );
@@ -436,7 +436,7 @@ void oceanbox::chem_equilibrate() {
 	OB_LOG( logger, Logger::DEBUG) << setw( w ) << "Alk" << setw( w ) << "FPgC"
         << setw( w ) << "f_target" << setw( w ) << "diff" << endl;
 	double min_diff = 1e6;
-	double min_point;
+	double min_point = ( alk_min + alk_max ) / 2.0;
 	for( double alk1=alk_min; alk1 <= alk_max; alk1 += (alk_max-alk_min)/20 ) {
 		double diff = fmin( alk1, &f_target );
 		if( diff < min_diff ) {
