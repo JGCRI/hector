@@ -5,7 +5,7 @@ This is the repository for **Hector**, an open source, object-oriented, simple g
 
 ![](https://github.com/JGCRI/hector/wiki/rcp85.png)
 
-The Hector primary source of model documentation is the Github [wiki](https://github.com/JGCRI/hector/wiki). The code is also well documented with [Doxygen](http://doxygen.org)-style comments.
+The primary source of Hector model documentation is the Github [wiki](https://github.com/JGCRI/hector/wiki). The code is also well documented with [Doxygen](http://doxygen.org)-style comments.
 
 The Hector model description paper is [here](http://www.geosci-model-dev-discuss.net/7/7075/2014/gmdd-7-7075-2014.html).
 
