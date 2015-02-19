@@ -54,7 +54,7 @@ public:
                             const double date ) throw ( h_exception );   
      //! emissions time series
     tseries<unitval> CH4_emissions;
-    tseries<unitval> CH4;  //CH4 concentrations
+    tseries<unitval> CH4;  // CH4 concentrations
     unitval M0;     // preindustrial methane
     unitval UC_CH4;  // conversion factor between emissions and concentration
     unitval CH4N;   // natural emissions

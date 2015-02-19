@@ -209,7 +209,7 @@ namespace Hector {
             }
             
             // ---------- N2O and CH4 ----------
-            // currently using concentrations.  Equations from Joos et al., 2001
+            // Equations from Joos et al., 2001
             if( core->checkCapability( D_ATMOSPHERIC_CH4 ) && core->checkCapability( D_ATMOSPHERIC_N2O ) ) {
                 
 #define f(M,N) 0.47 * log( 1 + 2.01 * 1e-5 * pow( M * N, 0.75 ) + 5.31 * 1e-15 * M * pow( M * N, 1.52 ) )
@@ -225,7 +225,7 @@ namespace Hector {
                 forcings[D_RF_N2O].set( fn2o, U_W_M2 );
                 
                 // ---------- Stratospheric H2O from CH4 oxidation ----------
-                //from Tanaka et al, 2007, but using Joos et al., 2001 value of 0.05
+                // From Tanaka et al, 2007, but using Joos et al., 2001 value of 0.05
                 const double fh2o = 0.05 * ( 0.036 * ( sqrt( Ma ) - sqrt( M0 ) ) );
                 forcings[D_RF_H2O].set( fh2o, U_W_M2 );
             }
@@ -300,23 +300,22 @@ namespace Hector {
                 unitval S0 = core->sendMessage( M_GETDATA, D_2000_SO2 );
                 unitval SN = core->sendMessage( M_GETDATA, D_NATURAL_SO2 );
                 
-                // equations taken from Joos et al., 2001
+                // Includes only direct forcings from Forster et al 2007 (IPCC)
+                // Equations from Joos et al., 2001
                 H_ASSERT( S0.value( U_TG ) >0, "S0 is 0" );
                 unitval emission = core->sendMessage( M_GETDATA, D_EMISSIONS_SO2, message_data( runToDate ) );
-                double fso2d = -0.35 * emission/S0; //-0.35
+                double fso2d = -0.35 * emission/S0;
                 forcings[D_RF_SO2d].set( fso2d, U_W_M2 );
-                // includes only direct forcings from Forster etal 2007 (IPCC)
                 
-                // indirect aerosol effect via changes in cloud properties
+                // Indirect aerosol effect via changes in cloud properties
                 const double a = -0.6 * ( log( ( SN.value( U_TG ) + emission.value( U_TG ) ) / SN.value( U_TG ) ) ); // -.6
                 const double b =  pow ( log ( ( SN.value( U_TG ) + S0.value( U_TG ) ) / SN.value( U_TG ) ), -1 );
                 double fso2i = a * b;
                 forcings[D_RF_SO2i].set( fso2i, U_W_M2 );
-                //includes only indirect forcing
             }
             
             if( core->checkCapability( D_VOLCANIC_SO2 ) ) {
-                // volcanic forcings
+                // Volcanic forcings
                 forcings[D_RF_VOL] = core->sendMessage( M_GETDATA, D_VOLCANIC_SO2, message_data( runToDate ) );
             }
             

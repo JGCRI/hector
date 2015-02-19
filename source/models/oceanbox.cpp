@@ -41,8 +41,7 @@ oceanbox::oceanbox() {
 }
 
 //------------------------------------------------------------------------------
-/*! \brief setC
- * sets the amount of carbon in this box
+/*! \brief sets the amount of carbon in this box
  */
 void oceanbox::set_carbon( const unitval C) {
 	carbon = C;
@@ -311,7 +310,6 @@ unitval oceanbox::calc_revelle() {
     
     // Revelle Factor can be calculated multiple ways.  
     // Based on changing atmospheric conditions as well approximated via DIC and CO3
-    // return unitval ( ( deltapco2 / Ca ) / (deltadic / mychemistry.convertToDIC( carbon ) ) , U_UNITLESS);
      return unitval ( mychemistry.convertToDIC( carbon ) / mychemistry.CO3, U_UNITLESS ); 
     // under high CO2, the HL box numbers are potentially unrealistic. 
 }
@@ -339,12 +337,11 @@ void oceanbox::new_year( const unitval Tgav ) {
         annual_box_fluxes[ connection_list[ i ] ] = unitval( 0.0, U_PGC_YR );
     }
     atmosphere_flux.set( 0.0, U_PGC );
-//    annual_atmosphere_flux.set( 0.0, U_PGC );
     Tbox = compute_tabsC( Tgav );
 
-// save for Revelle Calc
-   pco2_lastyear = Ca;
-   dic_lastyear = mychemistry.convertToDIC( carbon );
+    // save for Revelle Calc
+    pco2_lastyear = Ca;
+    dic_lastyear = mychemistry.convertToDIC( carbon );
 }
 
 //------------------------------------------------------------------------------
@@ -485,9 +482,6 @@ void oceanbox::chem_equilibrate() {
 	gsl_min_fminimizer_free( s );
     
 	H_ASSERT( status==GSL_SUCCESS, "Could not find a minimum for equilibration" );
-    
-	// sensitivity of the input paramaters for csys
-	//sens_parameters();
 }
 
 }
