@@ -310,7 +310,8 @@ void Core::run() throw ( h_exception ) {
         if( checkCapability( it->second ) ) {
             depFinder.addDependency( it->first, getComponentByCapability( it->second )->getComponentName() );
         } else {
-            H_LOG( glog, Logger::WARNING) << "Capability " << it->second << " not found but requested by " << it->first << endl;
+            H_LOG( glog, Logger::SEVERE) << "Capability " << it->second << " not found but requested by " << it->first << endl;
+            H_LOG( glog, Logger::WARNING) << "The model will almost certainly not run successfully!" << endl;
         }
     }
     
