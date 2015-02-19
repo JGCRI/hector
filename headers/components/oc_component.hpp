@@ -21,9 +21,7 @@ namespace Hector {
  *  This doesn't do much yet.
  */
 class OrganicCarbonComponent : public IModelComponent {
-    
-    friend class INIRestartVisitor; //!< To allow creation of a restart file.
-    
+        
 public:
     OrganicCarbonComponent();
     ~OrganicCarbonComponent();

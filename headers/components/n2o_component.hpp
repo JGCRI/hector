@@ -21,7 +21,6 @@ namespace Hector {
  *  This doesn't do much yet.
  */
 class N2OComponent : public IModelComponent {
-    friend class INIRestartVisitor; //!< To allow creation of a restart file.
     
 public:
     N2OComponent();

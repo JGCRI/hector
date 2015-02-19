@@ -22,7 +22,6 @@ namespace Hector {
  *  This doesn't do much yet.
  */
 class CH4Component : public IModelComponent {
-    friend class INIRestartVisitor; // To allow creation of a restart file.
     
 public:
     CH4Component();

@@ -22,8 +22,6 @@ namespace Hector {
  */
 class BlackCarbonComponent : public IModelComponent {
     
-    friend class INIRestartVisitor; //!< To allow creation of a restart file.
-    
 public:
     BlackCarbonComponent();
     ~BlackCarbonComponent();

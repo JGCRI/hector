@@ -22,7 +22,6 @@ namespace Hector {
  *  science.
  */
 class DummyModelComponent : public IModelComponent {
-    friend class INIRestartVisitor; //!< To allow creation of a restart file.
     
 public:
     DummyModelComponent();

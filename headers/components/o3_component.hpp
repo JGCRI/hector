@@ -20,9 +20,7 @@ namespace Hector {
  *  This doesn't do much yet.
  */
 class OzoneComponent : public IModelComponent {
-    
-    friend class INIRestartVisitor; //!< To allow creation of a restart file.
-    
+        
 public:
     OzoneComponent();
     ~OzoneComponent();

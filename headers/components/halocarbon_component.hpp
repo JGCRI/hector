@@ -23,7 +23,6 @@ namespace Hector {
  *
  */
 class HalocarbonComponent : public IModelComponent {
-    friend class INIRestartVisitor; // To allow creation of a restart file.
     friend class CSVOutputStreamVisitor;
     
 public:

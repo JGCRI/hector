@@ -14,7 +14,6 @@
 #include "h_util.hpp"
 #include "input/h_reader.hpp"
 #include "input/ini_to_core_reader.hpp"
-#include "visitors/ini_restart_visitor.hpp"
 #include "visitors/csv_output_visitor.hpp"
 #include "visitors/csv_outputstream_visitor.hpp"
 
@@ -60,8 +59,6 @@ int main (int argc, char * const argv[]) {
         
         // Create visitors
         H_LOG( glog, Logger::NOTICE ) << "Adding visitors to the core." << endl;
-        INIRestartVisitor restartVisitor( string( OUTPUT_DIRECTORY ) + "restart.ini", core.getEndDate() );
-        core.addVisitor( &restartVisitor );
         CSVOutputVisitor csvOutputVisitor( string( OUTPUT_DIRECTORY ) + "output.csv"  );
         core.addVisitor( &csvOutputVisitor );
         filebuf csvoutputStreamFile;
