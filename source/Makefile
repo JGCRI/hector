@@ -38,7 +38,7 @@ GSLLIB  = $(GSL_LIB)
 # remove warning flags on Evergreen too:  old version of g++
 CXXFLAGS = -g  $(INCLUDES) $(OPTFLAGS) $(CXXEXTRA) $(CXXPROF) -MMD
 else
-GSLINC	= $(GSLROOT)/include/gsl
+GSLINC	= $(GSLROOT)/include
 GSLLIB	= $(GSLROOT)/lib
 endif
 
