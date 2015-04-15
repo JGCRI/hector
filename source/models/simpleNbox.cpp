@@ -108,8 +108,11 @@ void SimpleNbox::setData( const std::string &varName,
         biome = splitvec[ 0 ];
         varNameParsed = splitvec[ 1 ];
     }
-    
-    H_LOG( logger, Logger::DEBUG ) << "Setting " << biome << "." << varNameParsed << "[" << data.date << "]=" << data.value_str << std::endl;
+
+    if (data.isVal)
+        H_LOG( logger, Logger::DEBUG ) << "Setting " << biome << "." << varNameParsed << "[" << data.date << "]=" << data.value_unitval << std::endl;
+    else
+        H_LOG( logger, Logger::DEBUG ) << "Setting " << biome << "." << varNameParsed << "[" << data.date << "]=" << data.value_str << std::endl;
     try {
         // Initial pools
         if( varNameParsed == D_ATMOSPHERIC_C ) {
