@@ -54,7 +54,11 @@ void OzoneComponent::init( Core* coreptr ) {
     
 	// Inform core what data we can provide
     core->registerCapability(  D_ATMOSPHERIC_O3, getComponentName() );
-    //core->registerCapability(  D_PREINDUSTRIAL_O3, getComponentName() );
+    // Register the emissions we accept (note that OH component also
+    // accepts these.  That's ok
+    core->registerInput(D_EMISSIONS_CO, getComponentName());
+    core->registerInput(D_EMISSIONS_NMVOC, getComponentName());
+    core->registerInput(D_EMISSIONS_NOX, getComponentName()); 
 }
 
 //------------------------------------------------------------------------------
@@ -90,16 +94,16 @@ void OzoneComponent::setData( const string& varName,
     try {
         if (  varName == D_PREINDUSTRIAL_O3 ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            PO3 = unitval::parse_unitval( data.value_str, data.units_str, U_DU_O3 );
+            PO3 = data.getUnitval(U_DU_O3);
         } else if( varName == D_EMISSIONS_NOX ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            NOX_emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG_N ) );
+            NOX_emissions.set( data.date, data.getUnitval(U_TG_N));
         } else if( varName == D_EMISSIONS_CO ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-           CO_emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG_CO ) );
+            CO_emissions.set( data.date, data.getUnitval(U_TG_CO));
         } else if( varName == D_EMISSIONS_NMVOC ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            NMVOC_emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG_NMVOC ) );
+            NMVOC_emissions.set( data.date, data.getUnitval(U_TG_NMVOC));
         } else {
             H_THROW( "Unknown variable name while parsing " + getComponentName() + ": "
                     + varName );

@@ -44,6 +44,11 @@ struct message_data {
     // create a message data to pass unitval and date
     message_data(double d, const unitval &val) : date(d), value_unitval(val),
                                                  isVal(true) {}
+
+    // retrieve message data as a unitval, even if it contains a string
+    unitval getUnitval(const unit_types& unit_expected) const {
+        if(isVal) return value_unitval; else return unitval::parse_unitval(value_str, units_str, unit_expected);
+    }
     //! (optional) a date for which this value is for.
     double date;
     
