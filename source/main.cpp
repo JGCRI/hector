@@ -127,18 +127,18 @@ int main (int argc, char * const argv[]) {
         
         H_LOG( glog, Logger::NOTICE ) << "Hector wrapper end" << endl;
         glog.close();
-	}
-	catch( h_exception e ) {
-		cerr << "* Program exception: " << e.msg << "\n* Function " << e.func << ", file "
-        << e.file << ", line " << e.linenum << endl;
-	}
-	catch( std::exception &e ) {
-		cerr << "Standard exception: " << e.what() << endl;
-	}
-    catch( ... ) {
-        cerr << "Other exception! " << endl;
     }
-
+    catch( h_exception e ) {
+      cerr << "* Program exception: " << e.msg << "\n* Function " << e.func << ", file "
+           << e.file << ", line " << e.linenum << endl;
+    }
+    catch( std::exception &e ) {
+      cerr << "Standard exception: " << e.what() << endl;
+    }
+    catch( ... ) {
+      cerr << "Other exception! " << endl;
+    }
+    
     return 0;
 } 
 
@@ -167,7 +167,7 @@ void read_and_set_co2(double tstrt, double tend, Core &core, istream &sim_gcam_e
             core.sendMessage(M_SETDATA, D_LUC_EMISSIONS,
                              message_data(t, unitval(luc, U_PGC_YR)));
             core.sendMessage(M_SETDATA, D_EMISSIONS_SO2,
-                             message_data(t, unitval(so2, U_TG)));
+                             message_data(t, unitval(so2, U_GG_S)));
             core.sendMessage(M_SETDATA, D_EMISSIONS_BC,
                              message_data(t, unitval(bc, U_TG)));
             core.sendMessage(M_SETDATA, D_EMISSIONS_OC,

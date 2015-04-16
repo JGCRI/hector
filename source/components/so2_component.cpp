@@ -93,15 +93,15 @@ void SulfurComponent::setData( const string& varName,
             if(data.isVal)
                 SO2_emissions.set(data.date, data.value_unitval);
             else
-                SO2_emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG ) );
+                SO2_emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_GG_S ) );
         }
 		else if( varName ==  D_2000_SO2  ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            S0 = unitval::parse_unitval( data.value_str, data.units_str, U_TG );
+            S0 = unitval::parse_unitval( data.value_str, data.units_str, U_GG_S );
         }
 		else if( varName ==  D_NATURAL_SO2  ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            SN = unitval::parse_unitval( data.value_str, data.units_str, U_TG );
+            SN = unitval::parse_unitval( data.value_str, data.units_str, U_GG_S );
         }
 		else if( varName ==  D_VOLCANIC_SO2  ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
