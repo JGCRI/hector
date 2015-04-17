@@ -22,7 +22,6 @@ namespace Hector {
  *  A component that computes mean global temperature from radiative forcing
  */
 class TemperatureComponent : public IModelComponent {
-    friend class INIRestartVisitor; //!< To allow creation of a restart file.
     
 public:
     TemperatureComponent();

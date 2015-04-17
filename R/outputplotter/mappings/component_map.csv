@@ -1,0 +1,15 @@
+# Component name map,,,
+# Maps from component names in the Hector output to our backend tag (which is stable,,,
+# This can also be used to map old ctags to new ones,,,
+# Fields:,,,
+#    component: the name as it appears in the outputstream, or in a comparison data set,,
+#    ctag: the tag name, which is how data will be matched and will appear in the output,,
+# Note: nothing (fields, tags, etc.) is case-sensitive,
+#,,,
+component,ctag,old_ctags,Notes
+slr,slr,"old_slr1,old_slr2",Sea level rise
+simpleNbox,carbon_cycle,"simple5box, simple6box",Carbon cycle
+ocean,ocean,,
+temperature,temperature,,
+Forcing,forcing,forcing,
+ozone,ozone,,

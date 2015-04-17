@@ -32,7 +32,6 @@ class HalocarbonComponent;
  *
  */
 class ForcingComponent : public IModelComponent {
-    friend class INIRestartVisitor; //!< To allow creation of a restart file.
     
 public:
 	

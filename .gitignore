@@ -56,22 +56,7 @@ libs/
 *.kdev4
 
 # Output
-output/*.csv
-output/*.ini
-output/comparison_data
 output/output
-output/*.png
-output/*.pdf
-output/*.csv
-output/rcp85
-output/rcp45
-output/figures.R
-output/logs/figures.R.txt
-output/op_ch.R
-output/rcp45_rcp85/011.ocean.ph_ll.csv
-output/rcp45_rcp85/011.ocean.ph_ll.pdf
-output/rcp45_rcp85/012.ocean.ph_ll.csv
-output/rcp45_rcp85/012.ocean.ph_ll.pdf
 
 # R
 .Rhistory

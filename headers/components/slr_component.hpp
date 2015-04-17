@@ -25,7 +25,6 @@ namespace Hector {
  *  Vermeer, M. and S. Rahmstorf (2009) in PNAS.
  */
 class slrComponent : public IModelComponent {
-    friend class INIRestartVisitor; //!< To allow creation of a restart file.
     
 public:
     slrComponent();

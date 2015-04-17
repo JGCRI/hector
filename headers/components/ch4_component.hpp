@@ -22,7 +22,6 @@ namespace Hector {
  *  This doesn't do much yet.
  */
 class CH4Component : public IModelComponent {
-    friend class INIRestartVisitor; // To allow creation of a restart file.
     
 public:
     CH4Component();
@@ -54,7 +53,7 @@ public:
                             const double date ) throw ( h_exception );   
      //! emissions time series
     tseries<unitval> CH4_emissions;
-    tseries<unitval> CH4;  //CH4 concentrations
+    tseries<unitval> CH4;  // CH4 concentrations
     unitval M0;     // preindustrial methane
     unitval UC_CH4;  // conversion factor between emissions and concentration
     unitval CH4N;   // natural emissions

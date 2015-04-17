@@ -20,7 +20,6 @@ namespace Hector {
  */
 
 class OneLineOceanComponent : public IModelComponent {
-    friend class INIRestartVisitor; //!< To allow creation of a restart file.
     
 public:
     OneLineOceanComponent();

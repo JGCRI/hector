@@ -23,7 +23,6 @@ namespace Hector {
  *  This doesn't do much yet.
  */
 class OHComponent : public IModelComponent {
-    friend class INIRestartVisitor; // To allow creation of a restart file.
     
 public:
     OHComponent();

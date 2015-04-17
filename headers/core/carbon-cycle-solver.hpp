@@ -40,7 +40,6 @@ namespace Hector {
  *
  */
 class CarbonCycleSolver : public IModelComponent {
-    friend class INIRestartVisitor; // creates restart file
     
 public:
     CarbonCycleSolver();

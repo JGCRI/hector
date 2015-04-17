@@ -31,7 +31,6 @@ namespace Hector {
  *  between layers and latitudinal regions, etc.
  */
 class OceanComponent : public CarbonCycleModel {
-    friend class INIRestartVisitor; //!< To allow creation of a restart file.
     
 public:
     OceanComponent();
