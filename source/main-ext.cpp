@@ -17,7 +17,6 @@
 #include "h_util.hpp"
 #include "input/h_reader.hpp"
 #include "input/ini_to_core_reader.hpp"
-#include "visitors/ini_restart_visitor.hpp"
 #include "visitors/csv_output_visitor.hpp"
 #include "visitors/csv_outputstream_visitor.hpp"
 
@@ -70,9 +69,6 @@ int main (int argc, char * const argv[]) {
         
         // Create visitors
         H_LOG( glog, Logger::NOTICE ) << "Adding visitors to the core." << endl;
-        INIRestartVisitor restartVisitor( string( OUTPUT_DIRECTORY ) + "restart.ini", core.getEndDate() );
-        core.addVisitor( &restartVisitor );
-
         CSVOutputVisitor csvOutputVisitor( string( OUTPUT_DIRECTORY ) + "output.csv"  );
         core.addVisitor( &csvOutputVisitor );
 
@@ -93,7 +89,7 @@ int main (int argc, char * const argv[]) {
 
         // variables for reading CO2 emissions to pass into the core as it's running.
         double tlast = core.getStartDate();
-        ifstream sim_gcam_emiss("input/emissions/RCP45_emissions.csv");
+        ifstream sim_gcam_emiss("input/emissions/RCP6_emissions.csv");
         init_emiss_strm(sim_gcam_emiss);
         
         for(double t=core.getStartDate()+5.0; t<=core.getEndDate(); t+=5.0) {

@@ -26,6 +26,7 @@
 *.out
 *.app
 source/hector
+source/hector-ext
 
 # Hector logs
 logs/*.*
@@ -57,6 +58,7 @@ libs/
 
 # Output
 output/output
+output/*.csv
 
 # R
 .Rhistory
