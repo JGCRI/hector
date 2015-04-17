@@ -8,6 +8,7 @@
 
 #include <stdlib.h>
 #include <iostream>
+#include <fstream>
 #include "boost/algorithm/string.hpp"
 
 #include "core/core.hpp"
@@ -71,19 +72,17 @@ int main (int argc, char * const argv[]) {
         H_LOG( glog, Logger::NOTICE ) << "Adding visitors to the core." << endl;
         INIRestartVisitor restartVisitor( string( OUTPUT_DIRECTORY ) + "restart.ini", core.getEndDate() );
         core.addVisitor( &restartVisitor );
+
         CSVOutputVisitor csvOutputVisitor( string( OUTPUT_DIRECTORY ) + "output.csv"  );
         core.addVisitor( &csvOutputVisitor );
-        filebuf csvoutputStreamFile;
-        
-        // Open the stream output file, which has an optional run name (specified in the INI file) in it
-        string rn = core.getRun_name();
-        if( rn == "" )
-            csvoutputStreamFile.open( string( string( OUTPUT_DIRECTORY ) + "outputstream.csv" ).c_str(), ios::out );
+
+        std::string outfilename;
+        std::string runname = core.getRun_name();
+        if(runname == "")
+            outfilename = string(OUTPUT_DIRECTORY)+"outputstream.csv";
         else
-            csvoutputStreamFile.open( string( string( OUTPUT_DIRECTORY ) + "outputstream_" + rn + ".csv" ).c_str(), ios::out );
-        
-        
-        ostream outputStream( &csvoutputStreamFile );
+            outfilename = string(OUTPUT_DIRECTORY)+"outputstream_"+runname+".csv";
+        ofstream outputStream(outfilename.c_str()); 
         CSVOutputStreamVisitor csvOutputStreamVisitor( outputStream );
         core.addVisitor( &csvOutputStreamVisitor );
 
