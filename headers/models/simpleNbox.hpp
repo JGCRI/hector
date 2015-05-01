@@ -138,6 +138,9 @@ private:
     
     CarbonCycleModel *omodel;           //!< pointer to the ocean model in use
 
+    // persistent workspace
+    double m_last_tempferts;
+
 };
 
 }

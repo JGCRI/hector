@@ -19,7 +19,7 @@ using namespace std;
 //------------------------------------------------------------------------------
 /*! \brief Constructor
  */
-TemperatureComponent::TemperatureComponent() {
+TemperatureComponent::TemperatureComponent() : internal_Ftot(0.0), last_Ftot(0.0) {
 }
 
 //------------------------------------------------------------------------------
@@ -30,7 +30,8 @@ TemperatureComponent::~TemperatureComponent() {
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-string TemperatureComponent::getComponentName() const {
+string TemperatureComponent::getComponentName() const 
+{
     const string name = TEMPERATURE_COMPONENT_NAME;
     
     return name;
@@ -142,8 +143,6 @@ void TemperatureComponent::run( const double runToDate ) throw ( h_exception ) {
         // will rise in parallel with the value reported by ForcingComponent.
     
         // If we never had any temperature constraint, `internal_Ftot` will match `Ftot`.
-        static double internal_Ftot = 0.0; // W/m2
-        static double last_Ftot = 0.0;
         
         // If the user has supplied temperature data, use that (except if past its end)
         if( tgav_constrain.size() && runToDate <= tgav_constrain.lastdate() ) {

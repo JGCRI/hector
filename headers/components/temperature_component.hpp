@@ -70,6 +70,10 @@ private:
     
     //! logger
     Logger logger;
+
+    //! persistent working space
+    double internal_Ftot;       // W/m2
+    double last_Ftot;           // W/m2
 };
 
 }

@@ -8,6 +8,7 @@
 
 #include <boost/lexical_cast.hpp>
 #include <cmath>
+#include <limits>
 
 #include "components/ocean_component.hpp"
 #include "core/core.hpp"
@@ -67,6 +68,8 @@ void OceanComponent::init( Core* coreptr ) {
         k_min.set( 0.0, U_W_M2_K );   // default
         slope.set( -3.0, U_1_K );      // default
         
+        m_min_k_so_far = std::numeric_limits<double>::max();
+
 	lastflux_annualized.set( 0.0, U_PGC );
         
     // Register the data we can provide
@@ -391,11 +394,10 @@ void OceanComponent::run( const double runToDate ) throw ( h_exception ) {
             
             // Second assumption: there's a 'ratchet' effect, such that once k starts to decline,
             // it's not allowed to come back up. (This would not be true at longer timescales.)
-            static double min_k_so_far = k_max.value( U_W_M2_K );
-            if( k > min_k_so_far ) {
-                k = min_k_so_far;
+            if( k > m_min_k_so_far ) {
+                k = m_min_k_so_far;
             }
-            min_k_so_far = k;
+            m_min_k_so_far = k;
             
             heatflux.set( k * (tgaveq.value( U_DEGC )), U_W_M2 );
             kappa.set( k, U_W_M2_K );

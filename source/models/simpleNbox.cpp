@@ -19,7 +19,7 @@ namespace Hector {
 //------------------------------------------------------------------------------
 /*! \brief constructor
  */
-SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ) {
+SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), m_last_tempferts(0.0) {
     anthroEmissions.allowInterp( true );
     anthroEmissions.name = "anthroEmissions";
     lucEmissions.allowInterp( true );
@@ -553,7 +553,7 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     }
 
     const double diff = fabs( sum - lastsum );
-    H_LOG( logger,Logger::SEVERE ) << "lastsum = " << lastsum << ", sum = " << sum << ", diff = " << diff << std::endl;
+    H_LOG( logger,Logger::DEBUG ) << "lastsum = " << lastsum << ", sum = " << sum << ", diff = " << diff << std::endl;
     if( lastsum && diff > MB_EPSILON ) {
         H_LOG( logger,Logger::SEVERE ) << "Mass not conserved in " << getComponentName() << std::endl;
         H_LOG( logger,Logger::SEVERE ) << "lastsum = " << lastsum << ", sum = " << sum << ", diff = " << diff << std::endl;
@@ -822,11 +822,10 @@ void SimpleNbox::slowparameval( double t, const double c[] )
             tempferts[ itd->first ] = pow( q10_rh, ( Tgav_rm / 10.0 ) );
             
             // The soil Q10 effect is 'sticky' and can only decline very slowly
-            static double last_tempferts = 0.0;
-            if(tempferts[ itd->first ] < last_tempferts * 1.0) {
-                tempferts[ itd->first ] = last_tempferts * 1.0;
+            if(tempferts[ itd->first ] < m_last_tempferts * 1.0) {
+                tempferts[ itd->first ] = m_last_tempferts * 1.0;
             }
-            last_tempferts = tempferts[ itd->first ];
+            m_last_tempferts = tempferts[ itd->first ];
             
             H_LOG( logger,Logger::DEBUG ) << itd->first << " Tgav=" << Tgav << ", Tgav_biome=" << Tgav_biome << ", tempfertd=" << tempfertd[ itd->first ]
                 << ", tempferts=" << tempferts[ itd->first ] << std::endl;

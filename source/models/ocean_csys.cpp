@@ -37,7 +37,7 @@ if( log != NULL ) H_LOG( (*log), level )
 //------------------------------------------------------------------------------
 /*! \brief constructor
  */
-oceancsys::oceancsys() {
+oceancsys::oceancsys() : ncoeffs(6), m_a(ncoeffs) {
 	logger = NULL;
 	S = alk = As = Ks = 0.0;
 }
@@ -190,16 +190,14 @@ void oceancsys::ocean_csys_run( unitval tbox, unitval carbon )
 	const double p1 = tmp + ( Kw_val * Kb_val * K1_val + Kw_val * K1_val * K2_val );
 	const double p0 = Kw_val * Kb_val * K1_val * K2_val;
     
-	const int ncoeffs = 6;
-	static double *a = new double[ ncoeffs ];
-	a[ 0 ] = p0;
-	a[ 1 ] = p1;
-	a[ 2 ] = p2;
-	a[ 3 ] = p3;
-	a[ 4 ] = p4;
-	a[ 5 ] = p5;
+	m_a[ 0 ] = p0;
+	m_a[ 1 ] = p1;
+	m_a[ 2 ] = p2;
+	m_a[ 3 ] = p3;
+	m_a[ 4 ] = p4;
+	m_a[ 5 ] = p5;
     
-	const double h      = find_largest_root( ncoeffs, a );
+	const double h      = find_largest_root( ncoeffs, &m_a[0] );
     
 	const double co2st      = dic/( 1.0 + K1_val / h + K1_val * K2_val / h / h ); // co2st = CO2*
 	const double hco3   = dic/( 1.0 + h / K1_val + K2_val / h );
