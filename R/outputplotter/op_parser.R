@@ -24,8 +24,8 @@ VALUE_FIELD			<- "value"
 VARIABLE_FIELD		<- "variable"
 YEAR_FIELD			<- "year"
 
-CMAPFILE 			<- "mappings/component_map.csv"
-VMAPFILE 			<- "mappings/variable_map.csv"
+CMAPFILE 			<- "/hector/R/outputplotter/mappings/component_map.csv"
+VMAPFILE 			<- "/hector/R/outputplotter/mappings/variable_map.csv"
 CTAG_FIELD			<- "ctag"
 OLD_CTAG_FIELD		<- "old_ctags"
 VTAG_FIELD			<- "vtag"
@@ -100,12 +100,12 @@ read_compdata_file <- function( f, fieldnames ) {
 	stopifnot( is.character( f ) )
 	stopifnot( is.vector( fieldnames ) )
 
-	printlog( f )
-	if( !file.exists( paste0( COMPARISON_DATA, f ) ) ) {
+	printlog( f, COMPARISON_DATA )
+	if( !file.exists( file.path( COMPARISON_DATA, f ) ) ) {
 		printlog_warn( "file not found" )
 		return( NULL )
 	}
-	d <- read.csv( paste0( COMPARISON_DATA, f ), comment.char="#", na.strings="NA", stringsAsFactors=F )
+	d <- read.csv( file.path( COMPARISON_DATA, f ), comment.char="#", na.strings="NA", stringsAsFactors=F )
 	names( d ) <- tolower( names( d ) )
 	if( CTAG_FIELD %in% names( d ) )
 		d[ , CTAG_FIELD ] <- tolower( d[ , CTAG_FIELD ] )
