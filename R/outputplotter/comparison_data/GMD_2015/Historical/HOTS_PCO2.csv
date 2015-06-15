@@ -1,0 +1,33 @@
+#HOT_surface_CO2.txt pCO2 (insitu),,,,,,,
+#Hawaii Ocean Time-series surface CO2 system data product,,,,,,,
+#Created 5 October 2009 by J.E. Dore,,,,,,,
+#Last updated 19 May 2013 by J.E. Dore,,,,,,,
+"#See HOT_surface_CO2_readme.pdf for explanatory material, metadata, and notes (http://hahana.soest.hawaii.edu/hot/products/products.html)",,,,,,,
+#When using this data product please cite as adapted from: Dore J.E. etal  2009.  Physical and biogeochemical modulation of ocean acidification in the central North Pacific.  Proc Natl Acad Sci USA 106:12235-12240.,,,,,,,
+#Please direct questions or comments regarding this data product to John Dore: jdore@montana.edu,,,,,,,
+,,,,,,,
+Year,value,ctag,vtag,units,type,scenario,model
+1988,330.75,ocean,pco2_ll,uatm,Observed,historical,HOTS
+1989,331.56,ocean,pco2_ll,uatm,Observed,historical,HOTS
+1990,323.0222222,ocean,pco2_ll,uatm,Observed,historical,HOTS
+1991,329.36,ocean,pco2_ll,uatm,Observed,historical,HOTS
+1992,332.7727273,ocean,pco2_ll,uatm,Observed,historical,HOTS
+1993,331.7833333,ocean,pco2_ll,uatm,Observed,historical,HOTS
+1994,333.5222222,ocean,pco2_ll,uatm,Observed,historical,HOTS
+1995,334.9444444,ocean,pco2_ll,uatm,Observed,historical,HOTS
+1996,341.8,ocean,pco2_ll,uatm,Observed,historical,HOTS
+1997,340.25,ocean,pco2_ll,uatm,Observed,historical,HOTS
+1998,347.8333333,ocean,pco2_ll,uatm,Observed,historical,HOTS
+1999,347.67,ocean,pco2_ll,uatm,Observed,historical,HOTS
+2000,354.4181818,ocean,pco2_ll,uatm,Observed,historical,HOTS
+2001,353.725,ocean,pco2_ll,uatm,Observed,historical,HOTS
+2002,351.72,ocean,pco2_ll,uatm,Observed,historical,HOTS
+2003,347.7181818,ocean,pco2_ll,uatm,Observed,historical,HOTS
+2004,348.825,ocean,pco2_ll,uatm,Observed,historical,HOTS
+2005,357.93,ocean,pco2_ll,uatm,Observed,historical,HOTS
+2006,353.9166667,ocean,pco2_ll,uatm,Observed,historical,HOTS
+2007,363.9444444,ocean,pco2_ll,uatm,Observed,historical,HOTS
+2008,362.25,ocean,pco2_ll,uatm,Observed,historical,HOTS
+2009,368.16,ocean,pco2_ll,uatm,Observed,historical,HOTS
+2010,365.4222222,ocean,pco2_ll,uatm,Observed,historical,HOTS
+2011,363.64,ocean,pco2_ll,uatm,Observed,historical,HOTS
