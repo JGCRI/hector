@@ -51,6 +51,9 @@ void SulfurComponent::init( Core* coreptr ) {
     core->registerCapability( D_2000_SO2, getComponentName() );
     core->registerCapability( D_EMISSIONS_SO2, getComponentName() );
 	core->registerCapability( D_VOLCANIC_SO2, getComponentName() );
+    // accept anthro emissions and volcanic emissions as inputs
+    core->registerInput(D_EMISSIONS_SO2, getComponentName());
+    core->registerInput(D_VOLCANIC_SO2, getComponentName());
 }
 
 //------------------------------------------------------------------------------
@@ -68,6 +71,7 @@ unitval SulfurComponent::sendMessage( const std::string& message,
         //TODO: call setData below
         //TODO: change core so that parsing is routed through sendMessage
         //TODO: make setData private
+        setData(datum, info);
         
     } else {                        //! We don't handle any other messages
         H_THROW( "Caller sent unknown message: "+message );
@@ -86,15 +90,18 @@ void SulfurComponent::setData( const string& varName,
     try {
         if( varName ==  D_EMISSIONS_SO2 ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            SO2_emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG ) );
+            if(data.isVal)
+                SO2_emissions.set(data.date, data.value_unitval);
+            else
+                SO2_emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_GG_S ) );
         }
 		else if( varName ==  D_2000_SO2  ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            S0 = unitval::parse_unitval( data.value_str, data.units_str, U_TG );
+            S0 = unitval::parse_unitval( data.value_str, data.units_str, U_GG_S );
         }
 		else if( varName ==  D_NATURAL_SO2  ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            SN = unitval::parse_unitval( data.value_str, data.units_str, U_TG );
+            SN = unitval::parse_unitval( data.value_str, data.units_str, U_GG_S );
         }
 		else if( varName ==  D_VOLCANIC_SO2  ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );

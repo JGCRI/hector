@@ -25,7 +25,6 @@ CH4Component::CH4Component() {
     CH4_emissions.name = CH4_COMPONENT_NAME; 
     CH4.allowInterp( true );
     CH4.name = D_ATMOSPHERIC_CH4;
-	    
 }
 
 //------------------------------------------------------------------------------
@@ -52,8 +51,9 @@ void CH4Component::init( Core* coreptr ) {
     // Inform core what data we can provide
     core->registerCapability( D_ATMOSPHERIC_CH4, getComponentName() );
     core->registerCapability( D_PREINDUSTRIAL_CH4, getComponentName() );
-
     core->registerDependency( D_LIFETIME_OH, getComponentName() ); 
+    // input data that we can accept
+    core->registerInput(D_EMISSIONS_CH4, getComponentName());
 }
 
 //------------------------------------------------------------------------------
@@ -68,6 +68,7 @@ unitval CH4Component::sendMessage( const std::string& message,
         return getData( datum, info.date );
         
     } else if( message==M_SETDATA ) {   //! Caller is requesting to set data
+        setData(datum, info);
         //TODO: call setData below
         //TODO: change core so that parsing is routed through sendMessage
         //TODO: make setData private
@@ -90,9 +91,12 @@ void CH4Component::setData( const string& varName,
             M0 = unitval::parse_unitval( data.value_str, data.units_str, U_PPBV_CH4 );
          } else if( varName == D_EMISSIONS_CH4 ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
+             if(data.isVal)
+                 CH4_emissions.set(data.date, data.value_unitval);
+             else
             CH4_emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG_CH4 ) );
         } else if( varName == D_LIFETIME_SOIL ) {
-            H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
+            H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
             Tsoil = unitval::parse_unitval( data.value_str, data.units_str, U_YRS );
          } else if( varName == D_LIFETIME_STRAT ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
@@ -131,11 +135,13 @@ void CH4Component::run( const double runToDate ) throw ( h_exception ) {
     // modified from Wigley et al, 2002
    const double current_ch4em = CH4_emissions.get( runToDate ).value( U_TG_CH4 ); 
    const double current_toh = core->sendMessage( M_GETDATA, D_LIFETIME_OH, runToDate ).value( U_YRS );
-      
+    H_LOG( logger, Logger::DEBUG ) << "Year " << runToDate << " current_toh = " << current_toh << std::endl;
+   
+
    const double ch4n =  CH4N.value( U_TG_CH4 );
    const double emisTocon = ( current_ch4em + ch4n ) / UC_CH4.value( U_TG_PPBV ); 
    double previous_ch4 = M0.value( U_PPBV_CH4 ); 
-  
+     
     H_LOG( logger, Logger::DEBUG ) << "Year " << runToDate << " previous CH4 = " << previous_ch4 << std::endl;
     
     if (runToDate!=oldDate)
@@ -146,7 +152,7 @@ void CH4Component::run( const double runToDate ) throw ( h_exception ) {
    const double soil_sink = previous_ch4/Tsoil.value( U_YRS );   
    const double strat_sink = previous_ch4/Tstrat.value( U_YRS ); 
    const double oh_sink = previous_ch4/ current_toh;
-             
+       
   const double dCH4 = emisTocon - soil_sink - strat_sink - oh_sink; //change in CH4 concentration to be added to previous_ch4
   H_LOG( logger, Logger::DEBUG ) << "Year " << runToDate << " dCH4 = " << dCH4 << std::endl;
 

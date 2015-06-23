@@ -54,6 +54,9 @@ void HalocarbonComponent::init( Core* coreptr ) {
     
     //! \remark Inform core that we can provide forcing data
     core->registerCapability( D_RF_PREFIX+myGasName, getComponentName() );
+    // inform core that we can accept emissions for this gas
+    core->registerInput(myGasName+EMISSIONS_EXTENSION, getComponentName());
+    
 }
 
 //------------------------------------------------------------------------------
@@ -68,13 +71,7 @@ unitval HalocarbonComponent::sendMessage( const std::string& message,
         return getData( datum, info.date );
         
     } else if( message==M_SETDATA ) {   //! Caller is requesting to set data
-        //TODO: what if caller has supplied a unitval?
-        // Case 1:
-        // Case 2:
-        // Case 3: unitval
-        
         setData( datum, info );
-        //TODO: call setData below
         //TODO: change core so that parsing is routed through sendMessage
         //TODO: make setData private
         
@@ -95,7 +92,7 @@ void HalocarbonComponent::setData( const string& varName,
     H_LOG( logger, Logger::DEBUG ) << "Setting " << varName << "[" << data.date << "]=" << data.value_str << std::endl;
     
     try {
-        const string emiss_var_name = myGasName + "_" + string( H_STRINGIFY_VAR( emissions ) );
+        const string emiss_var_name = myGasName + EMISSIONS_EXTENSION;
         
         if( varName == D_HC_TAU ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
@@ -108,7 +105,10 @@ void HalocarbonComponent::setData( const string& varName,
             molarMass = lexical_cast<double>( data.value_str );
         } else if( varName == emiss_var_name ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_GG ) );
+            if(data.isVal)
+                emissions.set(data.date, data.value_unitval);
+            else
+                emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_GG ) );
         } else if( varName == D_PREINDUSTRIAL_HC ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
             H0 = unitval::parse_unitval( data.value_str, data.units_str, U_PPTV );

@@ -19,7 +19,7 @@ namespace Hector {
 //------------------------------------------------------------------------------
 /*! \brief constructor
  */
-SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ) {
+SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), m_last_tempferts(0.0) {
     anthroEmissions.allowInterp( true );
     anthroEmissions.name = "anthroEmissions";
     lucEmissions.allowInterp( true );
@@ -60,6 +60,10 @@ void SimpleNbox::init( Core* coreptr ) {
     
     // Register our dependencies
     core->registerDependency( D_OCEAN_CFLUX, getComponentName() );
+
+    // Register the inputs we can receive from outside
+    core->registerInput(D_ANTHRO_EMISSIONS, getComponentName());
+    core->registerInput(D_LUC_EMISSIONS, getComponentName());
 }
 
 //------------------------------------------------------------------------------
@@ -74,7 +78,8 @@ unitval SimpleNbox::sendMessage( const std::string& message,
         return getData( datum, info.date );
         
     } else if( message==M_SETDATA ) {   //! Caller is requesting to set data
-        //TODO: call setData below
+
+        setData(datum, info);
         //TODO: change core so that parsing is routed through sendMessage
         //TODO: make setData private
         
@@ -103,8 +108,11 @@ void SimpleNbox::setData( const std::string &varName,
         biome = splitvec[ 0 ];
         varNameParsed = splitvec[ 1 ];
     }
-    
-    H_LOG( logger, Logger::DEBUG ) << "Setting " << biome << "." << varNameParsed << "[" << data.date << "]=" << data.value_str << std::endl;
+
+    if (data.isVal)
+        H_LOG( logger, Logger::DEBUG ) << "Setting " << biome << "." << varNameParsed << "[" << data.date << "]=" << data.value_unitval << std::endl;
+    else
+        H_LOG( logger, Logger::DEBUG ) << "Setting " << biome << "." << varNameParsed << "[" << data.date << "]=" << data.value_str << std::endl;
     try {
         // Initial pools
         if( varNameParsed == D_ATMOSPHERIC_C ) {
@@ -166,17 +174,25 @@ void SimpleNbox::setData( const std::string &varName,
             npp_flux0[ biome ] = unitval::parse_unitval( data.value_str, data.units_str, U_PGC_YR );
         }
         
-        // Anthropogenic contributions--time series
+        // Anthropogenic contributions--time series.  There are two
+        // message versions for each of these: one for string data
+        // read from an input file, and another for actual values
+        // passed from another part of the program.
         else if( varNameParsed == D_ANTHRO_EMISSIONS ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
             H_ASSERT( biome == SNBOX_DEFAULT_BIOME, "anthro emissions must be global" );
-            anthroEmissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_PGC_YR ) );
-        }
+            if(data.isVal)
+                anthroEmissions.set(data.date, data.value_unitval);
+            else
+                anthroEmissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_PGC_YR ) );
+        } 
         else if( varNameParsed == D_LUC_EMISSIONS ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            lucEmissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_PGC_YR ) );
-        }
-        
+            if(data.isVal)
+                lucEmissions.set(data.date, data.value_unitval);
+            else
+                lucEmissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_PGC_YR ) );
+        } 
         // Atmospheric CO2 record to constrain model to (optional)
         else if( varNameParsed == D_CA_CONSTRAIN ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
@@ -537,7 +553,7 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     }
 
     const double diff = fabs( sum - lastsum );
-    H_LOG( logger,Logger::SEVERE ) << "lastsum = " << lastsum << ", sum = " << sum << ", diff = " << diff << std::endl;
+    H_LOG( logger,Logger::DEBUG ) << "lastsum = " << lastsum << ", sum = " << sum << ", diff = " << diff << std::endl;
     if( lastsum && diff > MB_EPSILON ) {
         H_LOG( logger,Logger::SEVERE ) << "Mass not conserved in " << getComponentName() << std::endl;
         H_LOG( logger,Logger::SEVERE ) << "lastsum = " << lastsum << ", sum = " << sum << ", diff = " << diff << std::endl;
@@ -806,11 +822,10 @@ void SimpleNbox::slowparameval( double t, const double c[] )
             tempferts[ itd->first ] = pow( q10_rh, ( Tgav_rm / 10.0 ) );
             
             // The soil Q10 effect is 'sticky' and can only decline very slowly
-            static double last_tempferts = 0.0;
-            if(tempferts[ itd->first ] < last_tempferts * 1.0) {
-                tempferts[ itd->first ] = last_tempferts * 1.0;
+            if(tempferts[ itd->first ] < m_last_tempferts * 1.0) {
+                tempferts[ itd->first ] = m_last_tempferts * 1.0;
             }
-            last_tempferts = tempferts[ itd->first ];
+            m_last_tempferts = tempferts[ itd->first ];
             
             H_LOG( logger,Logger::DEBUG ) << itd->first << " Tgav=" << Tgav << ", Tgav_biome=" << Tgav_biome << ", tempfertd=" << tempfertd[ itd->first ]
                 << ", tempferts=" << tempferts[ itd->first ] << std::endl;

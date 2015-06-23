@@ -115,6 +115,7 @@ private:
     double max_timestep;                //!< Current maximum timestep allowed. This can change
     int reduced_timestep_timeout;       //!< Timer that keeps track of how long we've had a reduced timestep
     int timesteps;                      //!< Number of timesteps taken in current year
+    double m_min_k_so_far;              //!< Smallest kappa value seen in this run.
     
     //! logger
     Logger logger;

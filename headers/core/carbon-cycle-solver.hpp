@@ -119,6 +119,12 @@ private:
     
     //! Logger for solver
     Logger logger;
+
+    //! Internal working space
+    std::vector<double> c_original;
+    std::vector<double> c_old;
+    std::vector<double> c_new;
+    std::vector<double> dcdt;
 };
 
 }

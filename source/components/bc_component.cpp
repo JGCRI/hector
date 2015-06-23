@@ -46,6 +46,8 @@ void BlackCarbonComponent::init( Core* coreptr ) {
     
 	// Inform core what data we can provide
     core->registerCapability( D_EMISSIONS_BC, getComponentName() );
+    // Inform core what data we can accept
+    core->registerInput(D_EMISSIONS_BC, getComponentName());
 }
 
 //------------------------------------------------------------------------------
@@ -60,9 +62,9 @@ unitval BlackCarbonComponent::sendMessage( const std::string& message,
         return getData( datum, info.date );
         
     } else if( message==M_SETDATA ) {   //! Caller is requesting to set data
-        //TODO: call setData below
         //TODO: change core so that parsing is routed through sendMessage
         //TODO: make setData private
+        setData(datum, info);
         
     } else {                        //! We don't handle any other messages
         H_THROW( "Caller sent unknown message: "+message );
@@ -81,7 +83,10 @@ void BlackCarbonComponent::setData( const string& varName,
     try {
         if( varName ==  D_EMISSIONS_BC  ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            BC_emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG ) );
+            if(data.isVal)
+                BC_emissions.set(data.date, data.value_unitval);
+            else
+            	BC_emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG ) );
         } else {
             H_THROW( "Unknown variable name while parsing " + getComponentName() + ": "
                     + varName );

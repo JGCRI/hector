@@ -23,7 +23,12 @@
 #define OCEAN_COMPONENT_NAME "ocean"
 #define ONELINEOCEAN_COMPONENT_NAME "onelineocean"
 
+/***
+ * The name of a HC component is X_COMPONENT_BASE + HALOCARBON_EXTENSION
+ * The name of a HC emissions var is X_COMPONENT_BASE + EMISSIONS_EXTENSION
+ ***/
 #define HALOCARBON_EXTENSION "_halocarbon"
+#define EMISSIONS_EXTENSION  "_emissions"
 #define CF4_COMPONENT_BASE "CF4"
 #define C2F6_COMPONENT_BASE "C2F6"
 #define HFC23_COMPONENT_BASE "HFC23"

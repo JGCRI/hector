@@ -66,7 +66,7 @@ CarbonCycleSolver::~CarbonCycleSolver()
 //------------------------------------------------------------------------------
 // documentation is inherited
 void CarbonCycleSolver::init( Core* coreptr ) {
-    logger.open( getComponentName(), false, Logger::DEBUG );
+    logger.open( getComponentName(), false, Logger::NOTICE );
     H_LOG( logger, Logger::DEBUG ) << getComponentName() << " initialized." << std::endl;
     
     core = coreptr;
@@ -334,25 +334,24 @@ void CarbonCycleSolver::run( const double tnew ) throw ( h_exception )
  */
 bool CarbonCycleSolver::run_spinup( const int step ) throw( h_exception )
 {
-    static double *c_original;
-    static double *c_old;
-    static double *c_new;
-    static double *dcdt;
     
     if( !in_spinup ) {  // first time
         in_spinup = true;
         t = step-1;
-        c_original   = new double[ nc ];
-        c_old        = new double[ nc ];
-        c_new        = new double[ nc ];
-        dcdt         = new double[ nc ];
+        c_original.resize(nc);
+        c_old.resize(nc);
+        c_new.resize(nc);
+        dcdt.resize(nc);
+        // initialize to zero
+        for(int i=0; i<nc; ++i)
+          c_original[i] = c_old[i] = c_new[i] = dcdt[i] = 0.0;
         
-        cmodel->getCValues( t, c_original );
+        cmodel->getCValues( t, &c_original[0] );
     }
     
-    cmodel->getCValues( t, c_old );
+    cmodel->getCValues( t, &c_old[0] );
     run( step );
-    cmodel->getCValues( step, c_new );
+    cmodel->getCValues( step, &c_new[0] );
     
     int max_dcdt_pool = 0;
     double max_dcdt = 0.0;

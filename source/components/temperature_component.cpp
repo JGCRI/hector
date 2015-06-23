@@ -13,89 +13,91 @@
 #include "visitors/avisitor.hpp"
 
 namespace Hector {
+  
+using namespace std;
+
+//------------------------------------------------------------------------------
+/*! \brief Constructor
+ */
+TemperatureComponent::TemperatureComponent() : internal_Ftot(0.0), last_Ftot(0.0) {
+}
+
+//------------------------------------------------------------------------------
+/*! \brief Destructor
+ */
+TemperatureComponent::~TemperatureComponent() {
+}
+
+//------------------------------------------------------------------------------
+// documentation is inherited
+string TemperatureComponent::getComponentName() const 
+{
+    const string name = TEMPERATURE_COMPONENT_NAME;
     
-    using namespace std;
+    return name;
+}
+
+//------------------------------------------------------------------------------
+// documentation is inherited
+void TemperatureComponent::init( Core* coreptr ) {
+    logger.open( getComponentName(), false, Logger::DEBUG );
+    H_LOG( logger, Logger::DEBUG ) << "hello " << getComponentName() << std::endl;
     
-    //------------------------------------------------------------------------------
-    /*! \brief Constructor
-     */
-    TemperatureComponent::TemperatureComponent() {
-    }
+	tgaveq.set( 0.0, U_DEGC, 0.0 );
+    tgav.set( 0.0, U_DEGC, 0.0 );
+    core = coreptr;
     
-    //------------------------------------------------------------------------------
-    /*! \brief Destructor
-     */
-    TemperatureComponent::~TemperatureComponent() {
-    }
+    tgav_constrain.allowInterp( true );
+    tgav_constrain.name = D_TGAV_CONSTRAIN;
     
-    //------------------------------------------------------------------------------
-    // documentation is inherited
-    string TemperatureComponent::getComponentName() const {
-        const string name = TEMPERATURE_COMPONENT_NAME;
-        
-        return name;
-    }
-    
-    //------------------------------------------------------------------------------
-    // documentation is inherited
-    void TemperatureComponent::init( Core* coreptr ) {
-        logger.open( getComponentName(), false, Logger::DEBUG );
-        H_LOG( logger, Logger::DEBUG ) << "hello " << getComponentName() << std::endl;
-        
-        tgaveq.set( 0.0, U_DEGC, 0.0 );
-        tgav.set( 0.0, U_DEGC, 0.0 );
-        core = coreptr;
-        
-        tgav_constrain.allowInterp( true );
-        tgav_constrain.name = D_TGAV_CONSTRAIN;
-        
         FCO2_record.allowInterp( true );
         
-        // Register the data we can provide
-        core->registerCapability( D_GLOBAL_TEMP, getComponentName() );
-        core->registerCapability( D_GLOBAL_TEMPEQ, getComponentName() );
+    // Register the data we can provide
+    core->registerCapability( D_GLOBAL_TEMP, getComponentName() );
+    core->registerCapability( D_GLOBAL_TEMPEQ, getComponentName() );
+    
+    // Register our dependencies
+    core->registerDependency( D_RF_TOTAL, getComponentName() );
+}
+
+//------------------------------------------------------------------------------
+// documentation is inherited
+unitval TemperatureComponent::sendMessage( const std::string& message,
+                                          const std::string& datum,
+                                          const message_data info ) throw ( h_exception )
+{
+    unitval returnval;
+    
+    if( message==M_GETDATA ) {          //! Caller is requesting data
+        return getData( datum, info.date );
         
-        // Register our dependencies
-        core->registerDependency( D_RF_TOTAL, getComponentName() );
+    } else if( message==M_SETDATA ) {   //! Caller is requesting to set data
+        H_THROW("Temperature: sendMessage not yet implemented for message=M_SETDATA.");
+        //TODO: call setData below
+        //TODO: change core so that parsing is routed through sendMessage
+        //TODO: make setData private
+        
+    } else {                        //! We don't handle any other messages
+        H_THROW( "Caller sent unknown message: "+message );
     }
     
-    //------------------------------------------------------------------------------
-    // documentation is inherited
-    unitval TemperatureComponent::sendMessage( const std::string& message,
-                                              const std::string& datum,
-                                              const message_data info ) throw ( h_exception )
-    {
-        unitval returnval;
-        
-        if( message==M_GETDATA ) {          //! Caller is requesting data
-            return getData( datum, info.date );
-            
-        } else if( message==M_SETDATA ) {   //! Caller is requesting to set data
-            //TODO: call setData below
-            //TODO: change core so that parsing is routed through sendMessage
-            //TODO: make setData private
-            
-        } else {                        //! We don't handle any other messages
-            H_THROW( "Caller sent unknown message: "+message );
-        }
-        
-        return returnval;
-    }
+    return returnval;
+}
+
+//------------------------------------------------------------------------------
+// documentation is inherited
+void TemperatureComponent::setData( const string& varName,
+                                    const message_data& data ) throw ( h_exception )
+{
+    H_LOG( logger, Logger::DEBUG ) << "Setting " << varName << "[" << data.date << "]=" << data.value_str << std::endl;
     
-    //------------------------------------------------------------------------------
-    // documentation is inherited
-    void TemperatureComponent::setData( const string& varName,
-                                       const message_data& data ) throw ( h_exception )
-    {
-        H_LOG( logger, Logger::DEBUG ) << "Setting " << varName << "[" << data.date << "]=" << data.value_str << std::endl;
-        
-        try {
-            if( varName == D_ECS ) {
-                H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-                S = unitval::parse_unitval( data.value_str, data.units_str, U_DEGC );
-            } else if( varName == D_TGAV_CONSTRAIN ) {
-                H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-                tgav_constrain.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_DEGC ) );
+    try {
+        if( varName == D_ECS ) {
+            H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
+            S = unitval::parse_unitval( data.value_str, data.units_str, U_DEGC );
+        } else if( varName == D_TGAV_CONSTRAIN ) {
+            H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
+            tgav_constrain.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_DEGC ) );
             } else if( varName == D_SO2I_B ) {
                 H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
                 so2i_b = unitval::parse_unitval( data.value_str, data.units_str, U_UNITLESS );
@@ -108,46 +110,44 @@ namespace Hector {
         } else if( varName == D_BC_B ) {
                 H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
                 bc_b = unitval::parse_unitval( data.value_str, data.units_str, U_UNITLESS );
-            } else {
-                H_THROW( "Unknown variable name while parsing " + getComponentName() + ": "
-                        + varName );
-            }
-        } catch( h_exception& parseException ) {
-            H_RETHROW( parseException, "Could not parse var: "+varName );
+        } else {
+            H_THROW( "Unknown variable name while parsing " + getComponentName() + ": "
+                    + varName );
         }
+    } catch( h_exception& parseException ) {
+        H_RETHROW( parseException, "Could not parse var: "+varName );
     }
+}
+
+//------------------------------------------------------------------------------
+// documentation is inherited
+void TemperatureComponent::prepareToRun() throw ( h_exception ) {
     
-    //------------------------------------------------------------------------------
-    // documentation is inherited
-    void TemperatureComponent::prepareToRun() throw ( h_exception ) {
-        
-        H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
-        
-        if( tgav_constrain.size() ) {
-            Logger& glog = Logger::getGlobalLogger();
-            H_LOG( glog, Logger::WARNING ) << "Temperature will be overwritten by user-supplied values!" << std::endl;
-        }
+    H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
+    
+    if( tgav_constrain.size() ) {
+        Logger& glog = Logger::getGlobalLogger();
+        H_LOG( glog, Logger::WARNING ) << "Temperature will be overwritten by user-supplied values!" << std::endl;
     }
+}
+
+//------------------------------------------------------------------------------
+// documentation is inherited
+void TemperatureComponent::run( const double runToDate ) throw ( h_exception ) {
     
-    //------------------------------------------------------------------------------
-    // documentation is inherited
-    void TemperatureComponent::run( const double runToDate ) throw ( h_exception ) {
-        
         // We track total radiative forcing using internal variable `internal_Ftot`
         // Need to do this because if we're subject to a user constraint (being forced
         // to match a temperature record), need to track the Ftot that *would* have
         // produced the observed temperature record. This way there's a smooth
         // transition when we exit the constraint period, after which internal_Ftot
         // will rise in parallel with the value reported by ForcingComponent.
-
+    
         // If we never had any temperature constraint, `internal_Ftot` will match `Ftot`.
-        static double internal_Ftot = 0.0; // W/m2
-        static double last_Ftot = 0.0;
         
         // If the user has supplied temperature data, use that (except if past its end)
         if( tgav_constrain.size() && runToDate <= tgav_constrain.lastdate() ) {
             H_LOG( logger, Logger::NOTICE ) << "** Using user-supplied temperature" << std::endl;
-            tgav = tgav_constrain.get( runToDate );
+        tgav = tgav_constrain.get( runToDate );
             tgaveq = tgav;
 
             // Update last_Ftot and internal_Ftot for when we exit constraint
@@ -191,8 +191,8 @@ namespace Hector {
                     FCO2_lagged_mean += FCO2_record.get( i );
                 }
                 FCO2_lagged_mean /= CO2_WINDOW;
-            }
-
+    }
+    
             // Subtract off the current FCO2 computed by ForcingComponent, and use the lagged
             // window mean computed above instead
             Ftot = Ftot - FCO2_current + FCO2_lagged_mean;
@@ -211,38 +211,38 @@ namespace Hector {
         }
         
         H_LOG( logger, Logger::DEBUG ) << " internal_Ftot=" << internal_Ftot << " tgav=" << tgav << " in " << runToDate << std::endl;
+}
+
+//------------------------------------------------------------------------------
+// documentation is inherited
+unitval TemperatureComponent::getData( const std::string& varName,
+                                      const double date ) throw ( h_exception ) {
+    unitval returnval;
+    
+    H_ASSERT( date == Core::undefinedIndex(), "Only current temperatures provided" );
+    
+    if( varName == D_GLOBAL_TEMP ) {
+        returnval = tgav;
+    } else if( varName == D_GLOBAL_TEMPEQ ) {
+        returnval = tgaveq;
+    } else {
+        H_THROW( "Caller requested unknown datum: " + varName );
     }
     
-    //------------------------------------------------------------------------------
-    // documentation is inherited
-    unitval TemperatureComponent::getData( const std::string& varName,
-                                          const double date ) throw ( h_exception ) {
-        unitval returnval;
-        
-        H_ASSERT( date == Core::undefinedIndex(), "Only current temperatures provided" );
-        
-        if( varName == D_GLOBAL_TEMP ) {
-            returnval = tgav;
-        } else if( varName == D_GLOBAL_TEMPEQ ) {
-            returnval = tgaveq;
-        } else {
-            H_THROW( "Caller requested unknown datum: " + varName );
-        }
-        
-        return returnval;
-    }
-    
-    //------------------------------------------------------------------------------
-    // documentation is inherited
-    void TemperatureComponent::shutDown() {
-        H_LOG( logger, Logger::DEBUG ) << "goodbye " << getComponentName() << std::endl;
-        logger.close();
-    }
-    
-    //------------------------------------------------------------------------------
-    // documentation is inherited
-    void TemperatureComponent::accept( AVisitor* visitor ) {
-        visitor->visit( this );
-    }
-    
+    return returnval;
+}
+
+//------------------------------------------------------------------------------
+// documentation is inherited
+void TemperatureComponent::shutDown() {
+	H_LOG( logger, Logger::DEBUG ) << "goodbye " << getComponentName() << std::endl;
+    logger.close();
+}
+
+//------------------------------------------------------------------------------
+// documentation is inherited
+void TemperatureComponent::accept( AVisitor* visitor ) {
+    visitor->visit( this );
+}
+
 }

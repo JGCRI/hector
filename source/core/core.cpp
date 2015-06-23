@@ -43,9 +43,10 @@ using namespace std;
  *  \sa init()
  */
 Core::Core() :
-run_name( "" ),
-startDate( -1 ),
-endDate( -1 ),
+  run_name( "" ), 
+  startDate( -1.0 ),
+endDate( -1.0 ),
+lastDate( -1.0), 
 isInited( false ),
 do_spinup( true ),
 max_spinup( 2000 ),
@@ -202,7 +203,7 @@ void Core::setData( const string& componentName, const string& varName,
                 run_name = data.value_str;
             } else if( varName == D_START_DATE ) {
                 H_ASSERT( data.date == undefinedIndex(), "date not allowed" );
-                startDate = lexical_cast<double>( data.value_str );
+                lastDate = startDate = lexical_cast<double>( data.value_str );
             } else if( varName == D_END_DATE ) {
                 H_ASSERT( data.date == undefinedIndex(), "date not allowed" );
                 endDate = lexical_cast<double>( data.value_str );
@@ -260,19 +261,24 @@ void Core::addVisitor( AVisitor* visitor ) {
     modelVisitors.push_back( visitor );
 }
 
+
 //------------------------------------------------------------------------------
-/*! \brief Run the components for all model dates.
+/*! \brief Prepare model components to run
+ *  \details This subroutine does the last phase of the setup.  It comprises all
+ *           of the things that need to be done after parsing is complete but before
+ *           we begin the runs proper.  As such, this subroutine should be called only
+ *           once per run.  The steps performed are:
  *
- *  First all model components will be prepared to run.  The run from startDate
- *  to endDate at the defined time-steps.  Model components will be run in an
- *  internally determined order and are responsible for determining how to take
- *  a time-step.  After all model components have been solved at a given time-step
- *  all added visitors will be given an opportunity to visit the model components.
- *  Once all model dates have been run the model components will be shut down.
- *
+ *           1) Remove disabled components
+ *           2) Construct dependency graph
+ *           3) Topological sort components over dependency graph
+ *           4) Call each component's prepareToRun() subroutine
+ *           5) Run spin-up, if required
+ *  
  *  \exception h_exception An error which may occur at any stage of the process.
  */
-void Core::run() throw ( h_exception ) {
+void Core::prepareToRun(void) throw (h_exception)
+{
     
     Logger& glog = Logger::getGlobalLogger();
     
@@ -362,12 +368,59 @@ void Core::run() throw ( h_exception ) {
         in_spinup = false;
     } else {
         H_LOG( glog, Logger::WARNING) << "No model spinup was requested" << endl;
-    } // if
-    
+    } // if 
+}
+
+//------------------------------------------------------------------------------
+/*! \brief Run the components for one-year time steps through runtodate
+ *
+ *  \details This subroutine runs the model components.  The argument
+ *           runtodate determines how far to advance the model.  It's
+ *           given as a double, but since the time is advanced in
+ *           one-year time steps, it needs to be an integer value.
+ *           For backward compatibility the runtodate argument can be
+ *           omitted, in which case we run to the end date configured
+ *           for the core.  The end date still serves as a guarantee
+ *           to the components about the latest date they will be
+ *           required to run to.  Components are not required to be
+ *           valid after the end date; therefore, trying to run past
+ *           the configured end date produces a warning.  However, in
+ *           these cases the model will gamely try to press on in the
+ *           face of adversity.  Hector is nothing if not plucky.
+ *
+ *           At the end of each time step visitors will visit all the
+ *           model components, and then the next time step will run.
+ *           Once all the time steps up to the run-to date have run,
+ *           this subroutine will exit.  It can be called repeatedly
+ *           with progressively larger run-to dates to pick up each
+ *           time where it left off before.
+ *
+ *  \exception h_exception An error which may occur at any stage of the process.
+ */
+
+void Core::run(double runtodate) throw ( h_exception ) {
+    Logger& glog = Logger::getGlobalLogger();
+    if(runtodate < 0.0) {
+        // run to the configured default enddate.  This is mainly for
+        // backward compatibility.  The input run-to date will always
+        // override the enddate stored in the core object.
+        runtodate = endDate;
+    }
+    else if(runtodate < lastDate+1) {
+        H_LOG(glog, Logger::WARNING)
+            << "Requested run-to date is less than 1+lastDate.  Models not run." << endl;
+        return;
+    }
+    else if(runtodate > endDate) {
+        H_LOG(glog, Logger::WARNING)
+            << "Requested run-to date is after the configured end date.  "
+            << "Components are not guaranteed to be valid after endDate." << endl;
+    }
+
     // ------------------------------------
     // 6. Run all model dates.
-    H_LOG( glog, Logger::NOTICE) << "Running..." << endl;
-    for( double currDate = startDate + 1; currDate <= endDate; currDate += 1 ) {
+    H_LOG( glog, Logger::NOTICE) << "Running..." << endl; 
+    for(double currDate = lastDate+1.0; currDate <= runtodate; currDate += 1.0 ) {
         for( NameComponentIterator it = modelComponents.begin(); it != modelComponents.end(); ++it ) {
             ( *it ).second->run( currDate );
         }
@@ -379,7 +432,16 @@ void Core::run() throw ( h_exception ) {
             }
         }
     }
-    
+    // Record the last finished date.  We will resume here the next time run is called
+    lastDate = runtodate;
+}
+
+/*! \brief Shut down all model components 
+ *  \details After this function is called no components are valid,
+ *           and you must not call run() again.
+ */
+void Core::shutDown()
+{
     // ------------------------------------
     // 7. Tell model components we are finished.
     for( NameComponentIterator it = modelComponents.begin(); it != modelComponents.end(); ++it ) {
@@ -397,7 +459,7 @@ IModelComponent* Core::getComponentByName( const string& componentName ) const t
     CNameComponentIterator it = modelComponents.find( componentName );
     
     // throw an exception for an unknown component
-    string err = "Unknown model component '" + componentName + "' in input file";
+    string err = "Unknown model component: " + componentName;
     H_ASSERT( it != modelComponents.end(), err );
     
     return ( *it ).second;
@@ -444,6 +506,18 @@ void Core::registerCapability( const string& capabilityName, const string& compo
 }
 
 //------------------------------------------------------------------------------
+/*! \brief Register a component as accepting a certain input
+ *  \param inputName The name of the input the component can accept
+ *  \param componentName The name of the component.
+ *  \note It is permissible for more than one component to accept the same
+ *        inputs.
+ */
+void Core::registerInput( const string& inputName, const string& componentName ) {
+    H_ASSERT( !isInited, "registerInput not available after core is initialized") 
+    componentInputs.insert( pair<string, string>( inputName, componentName ) );
+} 
+
+//------------------------------------------------------------------------------
 /*! \brief Check whether a capability has been registered with the core
  *  \param capabilityName The capability of the component to register.
  *  \param componentName The name of the associated component.
@@ -467,6 +541,7 @@ void Core::registerDependency( const string& capabilityName, const string& compo
     
     componentDependencies.insert( pair<string, string>( componentName, capabilityName ) );
 }
+   
 
 //------------------------------------------------------------------------------
 /*! \brief Look up component and send message in one operation without any need
@@ -492,18 +567,57 @@ unitval Core::sendMessage( const std::string& message,
                           const std::string& datum,
                           const message_data& info ) throw ( h_exception )
 {
-    if( message==M_GETDATA )
-        H_ASSERT( isInited, "message getData not available until core is initialized" );
-    if( message==M_SETDATA )
-        H_ASSERT( !isInited, "message setData not available after core is initialized" );
-    
-    componentMapIterator it = componentCapabilities.find( datum );
-    
-    string err = "Unknown model datum: " + datum;
-    H_ASSERT( checkCapability( datum ), err );
-    return getComponentByName( ( *it ).second )->sendMessage( message, datum, info );
+    if (message == M_GETDATA) {
+        if(!isInited) {
+            H_LOG(Logger::getGlobalLogger(), Logger::SEVERE)
+                << "message getData not available until core is initialized."
+                << "\n\tmessage: " << message << "\tdatum: " << datum << endl;
+            H_THROW("Invalid sendMessage/GETDATA.  Check global log for details.");
+        }
+        else {
+            componentMapIterator it = componentCapabilities.find( datum );
+            
+            string err = "Unknown model datum: " + datum;
+            H_ASSERT( checkCapability( datum ), err );
+            return getComponentByName( ( *it ).second )->sendMessage( message, datum, info );
+        }
+    }
+    else if (message == M_SETDATA) {
+        if( isInited ) {
+            // If core initialization has been completed, then the only
+            // setdata messages allowed are ones keyed to a date that we
+            // haven't gotten to yet.
+            if(info.date == Core::undefinedIndex()) {
+                H_LOG(Logger::getGlobalLogger(), Logger::SEVERE)
+                    << "Once core is initialized, the only SETDATA messages allowed are for dates after the current model date.\n"
+                    << "\tdatum: " << datum
+                    << "\tcurrent date: " << lastDate << "\tmessage date: " << info.date
+                    << std::endl;
+                H_THROW("Invalid sendMessage/SETDATA.  Check global log for details.");
+            }
+        }
+        
+        // locate the components that take this kind of input.  If
+        // there are multiple, we send the message to all of them.
+        pair<componentMapIterator, componentMapIterator> itpr =
+            componentInputs.equal_range(datum);
+        if(itpr.first == itpr.second) {
+            H_LOG(Logger::getGlobalLogger(), Logger::SEVERE)
+                << "No such input: " << datum << "  Aborting.";
+            H_THROW("Invalid datum in sendMessage/SETDATA.");
+        }
+        for(componentMapIterator it=itpr.first; it != itpr.second; ++it)
+            getComponentByName(it->second)->sendMessage(message, datum, info);
+        
+        return info.value_unitval;
+    }
+    else {
+        H_LOG(Logger::getGlobalLogger(), Logger::SEVERE)
+            << "Unknown message: " << message << "  Aborting.";
+        H_THROW("Invalid message type in sendMessage.");
+    } 
 }
-
+    
 //------------------------------------------------------------------------------
 /*! \brief Add an additional model component to be run.
  *  \param modelComponent The model component to add.

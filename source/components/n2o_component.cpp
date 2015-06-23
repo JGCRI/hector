@@ -55,7 +55,8 @@ void N2OComponent::init( Core* coreptr ) {
     // Inform core what data we can provide
     core->registerCapability( D_ATMOSPHERIC_N2O, getComponentName() );
     core->registerCapability( D_PREINDUSTRIAL_N2O, getComponentName() );
-    
+    // register data we can accept as input
+    core->registerInput(D_EMISSIONS_N2O, getComponentName());
 }
 
 //------------------------------------------------------------------------------
@@ -70,7 +71,7 @@ unitval N2OComponent::sendMessage( const std::string& message,
         return getData( datum, info.date );
         
     } else if( message==M_SETDATA ) {   //! Caller is requesting to set data
-        //TODO: call setData below
+        setData(datum, info);
         //TODO: change core so that parsing is routed through sendMessage
         //TODO: make setData private
         
@@ -92,10 +93,16 @@ void N2OComponent::setData( const string& varName,
             N0 = unitval::parse_unitval( data.value_str, data.units_str, U_PPBV_N2O );
         } else if( varName == D_EMISSIONS_N2O ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            N2O_emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG_N2O ) );
+            if(data.isVal)
+                N2O_emissions.set(data.date, data.value_unitval);
+            else
+                N2O_emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG_N2O ) );
         } else if( varName == D_NAT_EMISSIONS_N2O ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            N2ON_emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG_N2O ) );
+            if(data.isVal)
+                N2ON_emissions.set(data.date, data.value_unitval);
+            else
+                N2ON_emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG_N2O ) );
         } else if( varName == D_CONVERSION_N2O ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
             UC_N2O = unitval::parse_unitval( data.value_str, data.units_str, U_TG_PPBV );

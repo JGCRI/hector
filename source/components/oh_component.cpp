@@ -53,7 +53,11 @@ void OHComponent::init( Core* coreptr ) {
 
      // Inform core what data we can provide
     core->registerCapability( D_LIFETIME_OH, getComponentName() );
-                    
+    // Register inputs accepted.  Note that more than one component
+    // can accept an input
+    core->registerInput(D_EMISSIONS_CO, getComponentName());
+    core->registerInput(D_EMISSIONS_NMVOC, getComponentName());
+    core->registerInput(D_EMISSIONS_NOX, getComponentName()); 
 }
 
 //------------------------------------------------------------------------------
@@ -68,10 +72,8 @@ unitval OHComponent::sendMessage( const std::string& message,
         return getData( datum, info.date );
         
     } else if( message==M_SETDATA ) {   //! Caller is requesting to set data
-        //TODO: call setData below
-        //TODO: change core so that parsing is routed through sendMessage
         //TODO: make setData private
-        
+      setData(datum, info);
     } else {                        //! We don't handle any other messages
         H_THROW( "Caller sent unknown message: "+message );
     }
@@ -88,13 +90,13 @@ void OHComponent::setData( const string& varName,
     try {
          if( varName == D_EMISSIONS_NOX ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            NOX_emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG_N ) );
+            NOX_emissions.set(data.date, data.getUnitval(U_TG_N));
          } else if( varName == D_EMISSIONS_CO ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            CO_emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG_CO ) );
+            CO_emissions.set( data.date, data.getUnitval(U_TG_CO));
          } else if( varName == D_EMISSIONS_NMVOC ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            NMVOC_emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG_NMVOC ) );
+            NMVOC_emissions.set( data.date, data.getUnitval(U_TG_NMVOC));
         } else if( varName == D_INITIAL_LIFETIME_OH ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
             TOH0 = unitval::parse_unitval( data.value_str, data.units_str, U_YRS );

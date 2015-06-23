@@ -7,6 +7,9 @@
 # make dependency files
 *.d
 
+# emacs backup files
+*~
+
 # Compiled Dynamic libraries
 *.so
 *.dylib
@@ -23,6 +26,7 @@
 *.out
 *.app
 source/hector
+source/hector-ext
 
 # Hector logs
 logs/*.*
@@ -43,11 +47,18 @@ xcuserdata
 
 # Project files
 project_files/*.*
+Release
+ipch
+Run Test Cases
+Debug
+libs
 project_files/visual_studio/
 libs/
+*.kdev4
 
 # Output
 output/output
+output/*.csv
 
 # R
 .Rhistory

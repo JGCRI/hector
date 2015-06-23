@@ -60,7 +60,8 @@ enum unit_types {
                     U_TG_N2O,
 				    U_TG_NMVOC,
 					U_DU_O3,
-					U_TG_N,             // NOX emissions given in TG-N/yr
+                    U_TG_N,             // NOX emissions given in TG-N/yr
+                    U_GG_S,             // SO2 emissions in Gg-S/yr
 
                     U_TG_PPBV,          // Conversion for CH4 and N2O emission to concentrations
     
