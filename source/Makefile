@@ -59,11 +59,11 @@ hector: libhector.a main.o
 
 ## alternate version that uses the capabilities needed for driving
 ## hector from an external source (e.g., an IAM) 
-## DO NOT BUILD THIS TARGET UNLESS YOU ARE TESTING HECTOR'S INTERNAL
-## PLUMBING.  It uses some hard-coded emissions for testing and likely
+## DO NOT BUILD THIS TARGET UNLESS YOU ARE TESTING HECTOR'S API
+## FUNCTIONALITY.  It uses some hard-coded emissions for testing and likely
 ## will not do what you want it to under all circumstances.
-# hector-ext: libhector.a main-ext.o
-# 	$(CXX) $(LDFLAGS) -o hector-ext main-ext.o -lhector -lgsl -lgslcblas -lm
+# hector-api: libhector.a main-api.o
+# 	$(CXX) $(LDFLAGS) -o hector-api main-api.o -lhector -lgsl -lgslcblas -lm
 
 ## Targets that do not literally name files
 .PHONY: subdirs $(DIRS) clean test gtest
