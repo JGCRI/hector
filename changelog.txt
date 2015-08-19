@@ -1,0 +1,12 @@
+Hector 1.1
+===========
+
+* API for linking with external models.
+
+* Documentation updates.
+
+
+Hector 1.0
+===========
+
+* First release. Corresponds to Hartin et al. (2015), http://www.geosci-model-dev.net/8/939/2015/gmd-8-939-2015.pdf.
