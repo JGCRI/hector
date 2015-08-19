@@ -3,7 +3,9 @@ Hector 1.1
 
 * API for linking with external models.
 
-* Documentation updates.
+* Backend R scripts faster and cleaner.
+
+* Minor bug fixes and documentation updates.
 
 
 Hector 1.0
