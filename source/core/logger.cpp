@@ -9,6 +9,7 @@
 #include <time.h>
 #include "core/logger.hpp"
 #include "h_util.hpp"
+#include <algorithm>
 
 #if defined (__unix__) || defined (__MACH__)
 #include <unistd.h>
