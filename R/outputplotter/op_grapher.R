@@ -10,6 +10,9 @@ WAITPLOTS 		<- FALSE
 SAVEDATA		<- TRUE
 PLOTFILETYPE	<- "pdf"
 
+library( ggplot2 )				# currently ggplot 1.0.1
+theme_set( theme_bw() )
+
 # -----------------------------------------------------------------------------
 # Moving average function
 # Based on http://stackoverflow.com/questions/743812/calculating-moving-average-in-r
