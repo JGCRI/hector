@@ -37,7 +37,8 @@ public:
 inline std::ostream & operator<<( std::ostream &os, const h_exception &he )
 {
     os << "msg:  \t" << he.msg << "\nfunc: \t" << he.func
-    << "\nfile: \t" << he.file << "\nffile:\t" << he.fullfile << "\n";
+       << "\nfile: \t" << he.file << "\nffile:\t" << he.fullfile << "\n"
+       << "\nline: \t" << he.linenum << "\n";
     return os;
 }
 
