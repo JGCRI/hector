@@ -1,5 +1,4 @@
 # General support functions for Hector's outputplotter routines
-# Ben Bond-Lamberty March 2015
 
 library(readr)  # currently 0.1.0
 

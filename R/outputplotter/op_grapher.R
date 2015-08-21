@@ -1,7 +1,6 @@
 # Make nice graphs of Hector stream output
 # This script runs as a backend to the main Hector process
 # The main graphing function
-# Ben Bond-Lamberty 2013
 
 GRAPH_NUMBER	<- 1
 DISPLAYPLOTS 	<- TRUE
@@ -195,7 +194,7 @@ op_graph <- function( d, 								# Data
 			}
 			if( SAVEDATA ) {
 				printlog( "-- saving", dname )
-				write.csv( d1, file=dname, row.names=F )
+				write.csv( d1, file=dname, row.names = FALSE )
 			}
 		}
 		# All done!	

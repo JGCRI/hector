@@ -1,7 +1,4 @@
-# Make nice graphs of Hector stream output
-# This script runs as a backend to the main Hector process
-# The parsing and prep functions (both simulated and observed/ancillary data)
-# Ben Bond-Lamberty 2013
+# File parser and tag processing routines for the Hector backend
 
 INFILESOURCE 		<- "HECTOR"
 INFILETYPE 			<- "HECTOR"
@@ -86,7 +83,7 @@ read_output_data <- function() {
   
   printlog( "Total rows:", nrow( d_sim ) )
   
-  return( d_sim )
+  d_sim
 }
 
 # -----------------------------------------------------------------------------
@@ -137,7 +134,7 @@ read_compdata_file <- function( f, fieldnames ) {
   printlog( "-- ctags:", unique( d[ , CTAG_FIELD ] ) )
   printlog( "-- vtags:", unique( d[ , VTAG_FIELD ] ) )
   
-  return( d )
+  d
 }
 
 # -----------------------------------------------------------------------------
@@ -151,7 +148,7 @@ add_compdata_file <- function( f, d_obs, fieldnames ) {
   
   d <- read_compdata_file( f, fieldnames )	
   if( !is.null( d ) ) d_obs <- dplyr::rbind_list( d_obs, d )
-  return( d_obs )
+  d_obs 
 }
 
 # -----------------------------------------------------------------------------
@@ -177,18 +174,18 @@ read_compdata <- function( fieldnames ) {
   
   # At this point, toss out any fields that we're not going to need
   printlog( "-- removing", sum( !names( d_obs ) %in% fieldnames ), "extra fields" )
-  d_obs <- d_obs[ names( d_obs ) %in% fieldnames ]	# remove extraneous fields
   
   printlog( "Finished reading comparison data sets" )
-  return( d_obs )
+  d_obs[ names( d_obs ) %in% fieldnames ]	# remove extraneous fields and return
 }
 
 # -----------------------------------------------------------------------------
 # Look for unmatched tags and print a warning
 warn_unmatched <- function( d, checkfield, printfield ) {
   unmatched <- d[ is.na( d[ , checkfield ] ), ]
-  if( nrow( unmatched ) )
+  if( nrow( unmatched ) ) {
     printlog_warn( "there are no tags for", printfield, ":", unique( unmatched[ , printfield ] ) )
+  }
 }
 
 # -----------------------------------------------------------------------------
@@ -239,7 +236,7 @@ build_tagmap <- function( fn, datafield, tagfield, oldtagfield, prefixfield=NA )
   #  print( tail( tagmap ) )
   #  print( tail( selfs ) )
   
-  return( rbind( tagmap, selfs ) )
+  rbind( tagmap, selfs )
 }
 
 # -----------------------------------------------------------------------------
@@ -273,7 +270,7 @@ calculated_tags <- function( d_sim, vmap ) {
       }
     }
   }
-  return( d_sim )
+  d_sim
 }
 
 # -----------------------------------------------------------------------------
@@ -302,12 +299,12 @@ matchdata <- function( d_sim, d_obs ) {
   if( CTAG_FIELD %in% names( d_sim ) ) {
     d_sim[ CTAG_FIELD ] <- NULL
   }
-#  print(system.time({
-#    d_sim <- merge( d_sim, cmap, by=COMPONENT_FIELD, all = TRUE )
-#  }))
-#  print(system.time({
-    d_sim <- dplyr::left_join( d_sim, cmap, by=COMPONENT_FIELD )
-#  }))
+  #  print(system.time({
+  #    d_sim <- merge( d_sim, cmap, by=COMPONENT_FIELD, all = TRUE )
+  #  }))
+  #  print(system.time({
+  d_sim <- dplyr::left_join( d_sim, cmap, by=COMPONENT_FIELD )
+  #  }))
   
   warn_unmatched( d_sim, CTAG_FIELD, COMPONENT_FIELD )
   
@@ -360,6 +357,6 @@ matchdata <- function( d_sim, d_obs ) {
   printlog( "Available vtags:", unique( d[ , VTAG_FIELD ] ) )
   printlog( "Available scenarios:", unique( d[ , SCENARIO_FIELD ] ) )
   printlog( "Year range:", range( d[ , YEAR_FIELD ], na.rm = TRUE ) )
-  return( d )
+  d
 }
 

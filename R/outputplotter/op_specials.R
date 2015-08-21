@@ -1,7 +1,6 @@
 # Make nice graphs of Hector stream output
 # This script runs as a backend to the main Hector process
 # Functions for 'special' graphs that can't be handled by op_graph()
-# Ben Bond-Lamberty 2013
 
 ipcc_forcings <- function( d, yr, fn="ipcc.pdf" ) {		# data and year
 
