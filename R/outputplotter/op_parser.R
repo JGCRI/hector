@@ -20,6 +20,7 @@ TYPE_FIELD			<- "type"
 VALUE_FIELD			<- "value"
 VARIABLE_FIELD		<- "variable"
 YEAR_FIELD			<- "year"
+UNITS_FIELD     <- "units"
 
 CMAPFILE 			<- "mappings/component_map.csv"
 VMAPFILE 			<- "mappings/variable_map.csv"
@@ -108,6 +109,9 @@ read_compdata_file <- function( f, fieldnames ) {
   if( !TYPE_FIELD %in% names( d ) )	 # if type not specified, assume "observed"
     d[ TYPE_FIELD ] <- COMPARISON_TYPE	
   d[ , TYPE_FIELD ] <- tolower( d[ , TYPE_FIELD ] )
+  if( UNITS_FIELD %in% names( d ) ) {
+    d[ , UNITS_FIELD ] <- as.character( d[ , UNITS_FIELD ] )  # force even numeric units (e.g. pH) to be character    
+  }
   
   # If the data have fields value_xxx, value_yyy, etc., then there are multiple
   # variables per row (we have to assume same type and units)
@@ -118,7 +122,7 @@ read_compdata_file <- function( f, fieldnames ) {
       printlog_warn( "   found pre-existing", VTAG_FIELD, " field; skipping file" )
       return( NULL )
     }
-    dmelt <- melt( d, measure.vars=multivarnames, variable_name=VTAG_FIELD )
+    dmelt <- melt( d, measure.vars=multivarnames, variable.name=VTAG_FIELD )
     dmelt[ VTAG_FIELD ] <- str_split_fixed( dmelt[ , VTAG_FIELD ], MULTIVALUES_PREFIX, 2 )[ , 2 ]
     d <- dmelt
   }
