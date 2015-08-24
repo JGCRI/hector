@@ -300,7 +300,7 @@ matchdata <- function( d_sim, d_obs ) {
     d_sim[ CTAG_FIELD ] <- NULL
   }
   d_sim <- dplyr::left_join( d_sim, cmap, by=COMPONENT_FIELD )
-  
+
   warn_unmatched( d_sim, CTAG_FIELD, COMPONENT_FIELD )
   
   # Comparison data is basically the same, except that we have to match the data's
