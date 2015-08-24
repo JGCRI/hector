@@ -164,7 +164,7 @@
 #define D_CIRC_T50_LOW          "circ_T50_low"
 #define D_HL_DO                 "HL_DO_Cflux"
 #define D_PH_HL                 "pH_HL"
-#define D_PH_LL                 "ph_LL"
+#define D_PH_LL                 "pH_LL"
 #define D_ATM_OCEAN_FLUX_HL     "atm_ocean_flux_HL"
 #define D_ATM_OCEAN_FLUX_LL     "atm_ocean_flux_LL"
 #define D_PCO2_HL               "PCO2_HL"
