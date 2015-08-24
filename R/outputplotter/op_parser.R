@@ -198,12 +198,10 @@ build_tagmap <- function( fn, datafield, tagfield, oldtagfield, prefixfield=NA )
   
   printlog( "Reading tag database", fn, "..." )
   tagmap <- read.csv( fn, comment.char="#", stringsAsFactors = FALSE )
-  #  print( tail( tagmap ) )
   names( tagmap ) <- tolower( names( tagmap ) )
   tagmap[ , tagfield ] <- tolower( tagmap[ , tagfield ] )
   tagmap[ , datafield ] <- tolower( tagmap[ , datafield ] )
   tagmap[ , oldtagfield ] <- tolower( tagmap[ , oldtagfield ] )
-  #  print( tail( tagmap ) )
   printlog( "--", nrow( tagmap ), "tag entries" )
   
   if( any( tagmap[ , tagfield ]=="" ) )
@@ -233,9 +231,7 @@ build_tagmap <- function( fn, datafield, tagfield, oldtagfield, prefixfield=NA )
       }
     }
   }
-  #  print( tail( tagmap ) )
-  #  print( tail( selfs ) )
-  
+
   rbind( tagmap, selfs )
 }
 
