@@ -299,12 +299,7 @@ matchdata <- function( d_sim, d_obs ) {
   if( CTAG_FIELD %in% names( d_sim ) ) {
     d_sim[ CTAG_FIELD ] <- NULL
   }
-  #  print(system.time({
-  #    d_sim <- merge( d_sim, cmap, by=COMPONENT_FIELD, all = TRUE )
-  #  }))
-  #  print(system.time({
   d_sim <- dplyr::left_join( d_sim, cmap, by=COMPONENT_FIELD )
-  #  }))
   
   warn_unmatched( d_sim, CTAG_FIELD, COMPONENT_FIELD )
   
