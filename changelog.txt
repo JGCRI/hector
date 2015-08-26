@@ -1,3 +1,10 @@
+Hector 1.1.1
+============
+
+* Fix OS X build
+* Update sample output files
+* Add GPL license
+
 Hector 1.1
 ===========
 
