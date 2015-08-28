@@ -55,7 +55,7 @@ DEPS	= $(SRCS:.cpp=.d)
 
 ## default target
 hector: libhector.a main.o
-	$(CXX) $(LDFLAGS) -o hector main.o -lhector -lgsl -lgslcblas -lm
+	$(CXX) $(LDFLAGS) -o hector main.o -lhector -lgsl -lgslcblas -lm -lboost_system -lboost_filesystem
 
 ## alternate version that uses the capabilities needed for driving
 ## hector from an external source (e.g., an IAM) 
