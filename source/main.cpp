@@ -100,16 +100,16 @@ int main (int argc, char * const argv[]) {
         H_LOG( glog, Logger::NOTICE ) << "Hector wrapper end" << endl;
         glog.close();
     }
-    // catch( h_exception e ) {
-    //     cerr << "* Program exception: " << e.msg << "\n* Function " << e.func << ", file "
-    //     << e.file << ", line " << e.linenum << endl;
-    // }
+    catch( h_exception e ) {
+        cerr << "* Program exception: " << e.msg << "\n* Function " << e.func << ", file "
+        << e.file << ", line " << e.linenum << endl;
+    }
     catch( std::exception &e ) {
         cerr << "Standard exception: " << e.what() << endl;
     }
-    // catch( ... ) {
-    //     cerr << "Other exception! " << endl;
-    // }
+    catch( ... ) {
+        cerr << "Other exception! " << endl;
+    }
 
     return 0;
 }
