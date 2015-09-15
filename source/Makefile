@@ -3,7 +3,7 @@ CXXFLAGS = -g  $(INCLUDES) $(OPTFLAGS) $(CXXEXTRA) $(CXXPROF) $(WFLAGS) -MMD
 INCLUDES = -I$(BOOSTROOT) -I$(HDRDIR) -I$(GSLINC)
 WFLAGS   = -Wall -Wno-unused-local-typedefs # Turn on warnings, turn off one particularly annoying one that infests Boost libs
 OPTFLAGS = -O3
-LDFLAGS	 = $(CXXPROF) -L$(GSLLIB) -L. -Wl,-rpath $(GSLLIB)
+LDFLAGS	 = $(CXXPROF) -L$(GSLLIB) -L$(BOOSTLIB) -L. -Wl,-rpath $(GSLLIB) -Wl,-rpath $(BOOSTLIB)
 
 export CXXFLAGS OPTFLAGS
 
@@ -19,6 +19,7 @@ endif
 ifeq ($(strip $(BOOSTROOT)),)
 BOOSTROOT	= $(HOME)/src/boost_$(BOOSTVERSION)
 endif
+BOOSTLIB = $(BOOSTROOT)/stage/lib
 
 ## Gtest root
 GTVERS	= 1.5.0
