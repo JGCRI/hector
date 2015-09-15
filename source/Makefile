@@ -19,7 +19,11 @@ endif
 ifeq ($(strip $(BOOSTROOT)),)
 BOOSTROOT	= $(HOME)/src/boost_$(BOOSTVERSION)
 endif
+ifeq ($(strip $(BOOSTLIB)),)
+## Default is the location used by the build scripts included with Boost, but
+## this can be overridden by setting BOOSTROOT explicitly in the enviornment.
 BOOSTLIB = $(BOOSTROOT)/stage/lib
+endif
 
 ## Gtest root
 GTVERS	= 1.5.0
