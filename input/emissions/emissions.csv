@@ -1,6 +1,6 @@
 ; Fossil-fuel emissions http://cdiac.ornl.gov/ftp/ndp030/CSV-FILES/global.1751_2007.csv,,
 ; LUC emissions from http://cdiac.ornl.gov/trends/landuse/houghton/1850-2005.txt,,
-date,anthroEmissions,lucEmissions
+date,ffi_emissions,luc_emissions
 1751,0.003,
 1752,0.003,
 1753,0.003,

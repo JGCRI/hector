@@ -162,17 +162,17 @@ void read_and_set_co2(double tstrt, double tend, Core &core, istream &sim_gcam_e
         boost::split(splitvec, line, boost::algorithm::is_any_of(","));
         t = atof(splitvec[0].c_str());
         if(t>=tstrt && t>2010.0) {
-            double anthro = atof(splitvec[1].c_str());
-            double luc    = atof(splitvec[2].c_str());
-            double so2    = atof(splitvec[6].c_str());
-            double bc     = atof(splitvec[10].c_str());
-            double oc     = atof(splitvec[11].c_str());
-            double cf4    = atof(splitvec[13].c_str());
-            double hcf22  = atof(splitvec[32].c_str());
+            double ffi   = atof(splitvec[1].c_str());
+            double luc   = atof(splitvec[2].c_str());
+            double so2   = atof(splitvec[6].c_str());
+            double bc    = atof(splitvec[10].c_str());
+            double oc    = atof(splitvec[11].c_str());
+            double cf4   = atof(splitvec[13].c_str());
+            double hcf22 = atof(splitvec[32].c_str());
 
             // This is how you set annual emissions into the model
-            core.sendMessage(M_SETDATA, D_ANTHRO_EMISSIONS,
-                             message_data(t, unitval(anthro, U_PGC_YR)));
+            core.sendMessage(M_SETDATA, D_FFI_EMISSIONS,
+                             message_data(t, unitval(ffi, U_PGC_YR)));
             core.sendMessage(M_SETDATA, D_LUC_EMISSIONS,
                              message_data(t, unitval(luc, U_PGC_YR)));
             core.sendMessage(M_SETDATA, D_EMISSIONS_SO2,
@@ -187,7 +187,7 @@ void read_and_set_co2(double tstrt, double tend, Core &core, istream &sim_gcam_e
                              message_data(t, unitval(hcf22, U_GG)));
 
             std::cout << "t= " << t << "\n"
-                      << "\t\tanthro= " << anthro << "\n"
+                      << "\t\tffi= " << ffi << "\n"
                       << "\t\tluc= " << luc << "\n"
                       << "\t\tSO2= " << so2 << "\n"
                       << "\t\tBC= "  << bc << "\n"
