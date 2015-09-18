@@ -25,12 +25,15 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/algorithm/string/trim.hpp>
+#include <boost/filesystem.hpp>
 
 #include "core/core.hpp"
 #include "data/message_data.hpp"
 #include "input/ini_to_core_reader.hpp"
 #include "input/inih/ini.h"
 #include "input/csv_table_reader.hpp"
+
+namespace fs = boost::filesystem;
 
 namespace Hector {
   
@@ -62,6 +65,7 @@ INIToCoreReader::~INIToCoreReader() {
  *                         data.
  */
 void INIToCoreReader::parse( const string& filename ) throw ( h_exception ) {
+    iniFilePath = filename;
     int errorCode = ini_parse( filename.c_str(), valueHandler, this );
     
     // handle c errors by turning them into exceptions which can be handled later
@@ -116,6 +120,15 @@ int INIToCoreReader::valueHandler( void* user, const char* section, const char* 
             // remove the special case identifier to figure out the actual file name
             // to process
             string csvFileName( valueStr.begin() + csvFilePrefix.size(), valueStr.end() );
+            // when not an absolute path consider the CSV filepath to be
+            // relative to the INI file
+            fs::path csvFilePath( csvFileName );
+            if ( csvFilePath.is_relative() ) {
+              fs::path iniFilePath( reader->iniFilePath );
+              fs::path fullPath( iniFilePath.parent_path() / csvFilePath );
+              csvFileName = fullPath.c_str();
+            }
+
             CSVTableReader tableReader( csvFileName );
             tableReader.process( reader->core, section, nameStr );
         } else {

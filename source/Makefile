@@ -3,7 +3,7 @@ CXXFLAGS = -g  $(INCLUDES) $(OPTFLAGS) $(CXXEXTRA) $(CXXPROF) $(WFLAGS) -MMD
 INCLUDES = -I$(BOOSTROOT) -I$(HDRDIR) -I$(GSLINC)
 WFLAGS   = -Wall -Wno-unused-local-typedefs # Turn on warnings, turn off one particularly annoying one that infests Boost libs
 OPTFLAGS = -O3
-LDFLAGS	 = $(CXXPROF) -L$(GSLLIB) -L. -Wl,-rpath $(GSLLIB)
+LDFLAGS	 = $(CXXPROF) -L$(GSLLIB) -L$(BOOSTLIB) -L. -Wl,-rpath $(GSLLIB) -Wl,-rpath $(BOOSTLIB)
 
 export CXXFLAGS OPTFLAGS
 
@@ -18,6 +18,11 @@ BOOSTVERSION	= 1_52_0
 endif
 ifeq ($(strip $(BOOSTROOT)),)
 BOOSTROOT	= $(HOME)/src/boost_$(BOOSTVERSION)
+endif
+ifeq ($(strip $(BOOSTLIB)),)
+## Default is the location used by the build scripts included with Boost, but
+## this can be overridden by setting BOOSTROOT explicitly in the enviornment.
+BOOSTLIB = $(BOOSTROOT)/stage/lib
 endif
 
 ## Gtest root
@@ -55,7 +60,7 @@ DEPS	= $(SRCS:.cpp=.d)
 
 ## default target
 hector: libhector.a main.o
-	$(CXX) $(LDFLAGS) -o hector main.o -lhector -lgsl -lgslcblas -lm
+	$(CXX) $(LDFLAGS) -o hector main.o -lhector -lgsl -lgslcblas -lm -lboost_system -lboost_filesystem
 
 ## alternate version that uses the capabilities needed for driving
 ## hector from an external source (e.g., an IAM) 
