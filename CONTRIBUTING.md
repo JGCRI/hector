@@ -18,9 +18,7 @@ But there are a few guidelines that we ask contributors to follow.
 * **Start your work on the correct branch**.
   * Active branches are based on Hector's [version numbering system](https://github.com/JGCRI/hector/wiki/VersionNumbers).
   * If your change is a PATCH, it will typically be based on the current dev branch; if MINOR, the next minor release branch; if MAJOR, the next major release branch.
-  * To quickly create a topic branch based on master; `git checkout -b
-    fix/master/my_contribution master`. Please avoid working directly on the
-    `master` branch.
+  * We will **never** accept pull requests to the `master` branch.
 * Follow Hector's [coding style](https://github.com/JGCRI/hector/wiki/StyleGuide).
 * Make commits of logical units.
 * Check for unnecessary whitespace with `git diff --check` before committing.
@@ -32,7 +30,7 @@ But there are a few guidelines that we ask contributors to follow.
 
 * Push your changes to your fork of the repository.
 * Submit a pull request to the main Hector repository.
-* Your pull request should include one of the following two statements:
+* **Your pull request should include one of the following two statements**:
    * You own the copyright on the code being contributed, and you hereby grant PNNL unlimited license to use this code in this version or any future version of Hector. You reserve all other rights to the code.
    * Somebody else owns the copyright on the code being contributed (e.g., your employer because you did it as part of your work for them); you are authorized by that owner to grant PNNL an unlimited license to use this code in this version or any future version of Hector, and you hereby do so. All other rights to the code are reserved by the copyright owner.
 * The core team looks at Pull Requests on a regular basis, and will respond as soon as possible.
