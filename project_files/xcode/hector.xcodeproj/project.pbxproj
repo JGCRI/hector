@@ -75,6 +75,38 @@
 		B5BD1640189B42EB0020C554 /* simpleNbox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD1634189B42EB0020C554 /* simpleNbox.cpp */; };
 		B5DEC3131A6033BB00584342 /* oh_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5DEC3121A6033BB00584342 /* oh_component.cpp */; };
 		B5DEC3141A6033BB00584342 /* oh_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5DEC3121A6033BB00584342 /* oh_component.cpp */; };
+		CD97CE361BFBBF5D005689AD /* oh_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5DEC3121A6033BB00584342 /* oh_component.cpp */; };
+		CD97CE371BFBBF5D005689AD /* bc_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15A4189B3ED10020C554 /* bc_component.cpp */; };
+		CD97CE381BFBBF5D005689AD /* ch4_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15A5189B3ED10020C554 /* ch4_component.cpp */; };
+		CD97CE391BFBBF5D005689AD /* dummy_model_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15A6189B3ED10020C554 /* dummy_model_component.cpp */; };
+		CD97CE3A1BFBBF5D005689AD /* forcing_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15A7189B3ED10020C554 /* forcing_component.cpp */; };
+		CD97CE3B1BFBBF5D005689AD /* halocarbon_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15A8189B3ED10020C554 /* halocarbon_component.cpp */; };
+		CD97CE3C1BFBBF5D005689AD /* n2o_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15A9189B3ED10020C554 /* n2o_component.cpp */; };
+		CD97CE3D1BFBBF5D005689AD /* o3_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15AA189B3ED10020C554 /* o3_component.cpp */; };
+		CD97CE3E1BFBBF5D005689AD /* oc_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15AB189B3ED10020C554 /* oc_component.cpp */; };
+		CD97CE3F1BFBBF5D005689AD /* ocean_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15AC189B3ED10020C554 /* ocean_component.cpp */; };
+		CD97CE401BFBBF5D005689AD /* onelineocean_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15AD189B3ED10020C554 /* onelineocean_component.cpp */; };
+		CD97CE411BFBBF5D005689AD /* slr_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15AE189B3ED10020C554 /* slr_component.cpp */; };
+		CD97CE421BFBBF5D005689AD /* so2_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15AF189B3ED10020C554 /* so2_component.cpp */; };
+		CD97CE431BFBBF5D005689AD /* temperature_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15B0189B3ED10020C554 /* temperature_component.cpp */; };
+		CD97CE441BFBBF5D005689AD /* carbon-cycle-solver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD161F189B41940020C554 /* carbon-cycle-solver.cpp */; };
+		CD97CE451BFBBF5D005689AD /* core.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD1620189B41940020C554 /* core.cpp */; };
+		CD97CE461BFBBF5D005689AD /* dependency_finder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD1621189B41940020C554 /* dependency_finder.cpp */; };
+		CD97CE471BFBBF5D005689AD /* logger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD1622189B41940020C554 /* logger.cpp */; };
+		CD97CE481BFBBF5D005689AD /* h_interpolator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15B2189B3ED10020C554 /* h_interpolator.cpp */; };
+		CD97CE491BFBBF5D005689AD /* spline_forsythe.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15B3189B3ED10020C554 /* spline_forsythe.cpp */; };
+		CD97CE4A1BFBBF5D005689AD /* unitval.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15B4189B3ED10020C554 /* unitval.cpp */; };
+		CD97CE4C1BFBBF5D005689AD /* csv_table_reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15F6189B41340020C554 /* csv_table_reader.cpp */; };
+		CD97CE4D1BFBBF5D005689AD /* h_reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15F7189B41340020C554 /* h_reader.cpp */; };
+		CD97CE4E1BFBBF5D005689AD /* ini_to_core_reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15F8189B41340020C554 /* ini_to_core_reader.cpp */; };
+		CD97CE4F1BFBBF5D005689AD /* ini.c in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15FE189B41340020C554 /* ini.c */; };
+		CD97CE501BFBBF5D005689AD /* INIReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD1600189B41340020C554 /* INIReader.cpp */; };
+		CD97CE511BFBBF5D005689AD /* carbon-cycle-model.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD162F189B42EB0020C554 /* carbon-cycle-model.cpp */; };
+		CD97CE521BFBBF5D005689AD /* ocean_csys.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD1631189B42EB0020C554 /* ocean_csys.cpp */; };
+		CD97CE531BFBBF5D005689AD /* oceanbox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD1632189B42EB0020C554 /* oceanbox.cpp */; };
+		CD97CE541BFBBF5D005689AD /* simpleNbox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD1634189B42EB0020C554 /* simpleNbox.cpp */; };
+		CD97CE551BFBBF5D005689AD /* csv_output_visitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15B8189B3ED10020C554 /* csv_output_visitor.cpp */; };
+		CD97CE561BFBBF5D005689AD /* csv_outputstream_visitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15B9189B3ED10020C554 /* csv_outputstream_visitor.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -156,6 +188,7 @@
 		B5DEC3151A6033C900584342 /* oh_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = oh_component.hpp; sourceTree = "<group>"; };
 		CD6968B81243CAE500DFC9CF /* style.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = style.txt; sourceTree = "<group>"; };
 		CD706AC2124BA91A00C0C6D5 /* hector-unit-tests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "hector-unit-tests"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CD97CE321BFBBF2E005689AD /* libhector-lib.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libhector-lib.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -172,6 +205,13 @@
 			files = (
 				B54987AA16C981060000A223 /* gtest.framework in Frameworks */,
 				B53C186D16C98E010084BD6E /* libgtest.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CD97CE2F1BFBBF2E005689AD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -196,6 +236,7 @@
 			children = (
 				8DD76F6C0486A84900D96B5E /* hector */,
 				CD706AC2124BA91A00C0C6D5 /* hector-unit-tests */,
+				CD97CE321BFBBF2E005689AD /* libhector-lib.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -412,6 +453,16 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		CD97CE301BFBBF2E005689AD /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
 		8DD76F620486A84900D96B5E /* hector */ = {
 			isa = PBXNativeTarget;
@@ -446,6 +497,23 @@
 			productReference = CD706AC2124BA91A00C0C6D5 /* hector-unit-tests */;
 			productType = "com.apple.product-type.tool";
 		};
+		CD97CE311BFBBF2E005689AD /* hector-lib */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CD97CE351BFBBF2F005689AD /* Build configuration list for PBXNativeTarget "hector-lib" */;
+			buildPhases = (
+				CD97CE2E1BFBBF2E005689AD /* Sources */,
+				CD97CE2F1BFBBF2E005689AD /* Frameworks */,
+				CD97CE301BFBBF2E005689AD /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "hector-lib";
+			productName = "hector-lib";
+			productReference = CD97CE321BFBBF2E005689AD /* libhector-lib.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -453,6 +521,11 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0510;
+				TargetAttributes = {
+					CD97CE311BFBBF2E005689AD = {
+						CreatedOnToolsVersion = 7.0.1;
+					};
+				};
 			};
 			buildConfigurationList = 1DEB923508733DC60010E9CD /* Build configuration list for PBXProject "hector" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -470,6 +543,7 @@
 			targets = (
 				8DD76F620486A84900D96B5E /* hector */,
 				CD706AC1124BA91A00C0C6D5 /* hector-unit-tests */,
+				CD97CE311BFBBF2E005689AD /* hector-lib */,
 			);
 		};
 /* End PBXProject section */
@@ -552,6 +626,45 @@
 				B5BD15E6189B3ED20020C554 /* unitval.cpp in Sources */,
 				B5DEC3141A6033BB00584342 /* oh_component.cpp in Sources */,
 				B5BD1607189B41340020C554 /* csv_table_reader.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CD97CE2E1BFBBF2E005689AD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CD97CE361BFBBF5D005689AD /* oh_component.cpp in Sources */,
+				CD97CE371BFBBF5D005689AD /* bc_component.cpp in Sources */,
+				CD97CE381BFBBF5D005689AD /* ch4_component.cpp in Sources */,
+				CD97CE391BFBBF5D005689AD /* dummy_model_component.cpp in Sources */,
+				CD97CE3A1BFBBF5D005689AD /* forcing_component.cpp in Sources */,
+				CD97CE3B1BFBBF5D005689AD /* halocarbon_component.cpp in Sources */,
+				CD97CE3C1BFBBF5D005689AD /* n2o_component.cpp in Sources */,
+				CD97CE3D1BFBBF5D005689AD /* o3_component.cpp in Sources */,
+				CD97CE3E1BFBBF5D005689AD /* oc_component.cpp in Sources */,
+				CD97CE3F1BFBBF5D005689AD /* ocean_component.cpp in Sources */,
+				CD97CE401BFBBF5D005689AD /* onelineocean_component.cpp in Sources */,
+				CD97CE411BFBBF5D005689AD /* slr_component.cpp in Sources */,
+				CD97CE421BFBBF5D005689AD /* so2_component.cpp in Sources */,
+				CD97CE431BFBBF5D005689AD /* temperature_component.cpp in Sources */,
+				CD97CE441BFBBF5D005689AD /* carbon-cycle-solver.cpp in Sources */,
+				CD97CE451BFBBF5D005689AD /* core.cpp in Sources */,
+				CD97CE461BFBBF5D005689AD /* dependency_finder.cpp in Sources */,
+				CD97CE471BFBBF5D005689AD /* logger.cpp in Sources */,
+				CD97CE481BFBBF5D005689AD /* h_interpolator.cpp in Sources */,
+				CD97CE491BFBBF5D005689AD /* spline_forsythe.cpp in Sources */,
+				CD97CE4A1BFBBF5D005689AD /* unitval.cpp in Sources */,
+				CD97CE4C1BFBBF5D005689AD /* csv_table_reader.cpp in Sources */,
+				CD97CE4D1BFBBF5D005689AD /* h_reader.cpp in Sources */,
+				CD97CE4E1BFBBF5D005689AD /* ini_to_core_reader.cpp in Sources */,
+				CD97CE4F1BFBBF5D005689AD /* ini.c in Sources */,
+				CD97CE501BFBBF5D005689AD /* INIReader.cpp in Sources */,
+				CD97CE511BFBBF5D005689AD /* carbon-cycle-model.cpp in Sources */,
+				CD97CE521BFBBF5D005689AD /* ocean_csys.cpp in Sources */,
+				CD97CE531BFBBF5D005689AD /* oceanbox.cpp in Sources */,
+				CD97CE541BFBBF5D005689AD /* simpleNbox.cpp in Sources */,
+				CD97CE551BFBBF5D005689AD /* csv_output_visitor.cpp in Sources */,
+				CD97CE561BFBBF5D005689AD /* csv_outputstream_visitor.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -733,6 +846,79 @@
 			};
 			name = Release;
 		};
+		CD97CE331BFBBF2F005689AD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				EXECUTABLE_PREFIX = lib;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		CD97CE341BFBBF2F005689AD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				EXECUTABLE_PREFIX = lib;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -762,6 +948,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		CD97CE351BFBBF2F005689AD /* Build configuration list for PBXNativeTarget "hector-lib" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CD97CE331BFBBF2F005689AD /* Debug */,
+				CD97CE341BFBBF2F005689AD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};
