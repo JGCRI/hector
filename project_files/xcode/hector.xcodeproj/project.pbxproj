@@ -569,19 +569,14 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_VERSION = "";
-				HEADER_SEARCH_PATHS = (
-					/usr/local/include/,
-					/usr/local/lib/boost_1_52_0/,
-				);
 				INSTALL_PATH = /usr/local/bin;
-				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				OTHER_LDFLAGS = (
 					"-lgsl",
 					"-lgslcblas",
 					"-lm",
 				);
 				PRODUCT_NAME = hector;
-				SDKROOT = macosx10.8;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
@@ -595,19 +590,14 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_VERSION = "";
-				HEADER_SEARCH_PATHS = (
-					/usr/local/include/,
-					/usr/local/lib/boost_1_52_0/,
-				);
 				INSTALL_PATH = /usr/local/bin;
-				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				OTHER_LDFLAGS = (
 					"-lgsl",
 					"-lgslcblas",
 					"-lm",
 				);
 				PRODUCT_NAME = hector;
-				SDKROOT = macosx10.8;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
@@ -620,11 +610,11 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					/usr/local/include/,
-					/usr/local/lib/boost_1_52_0,
+					"/Users/pralitp/model/hector-main/libs/gsl-1.16/install/include",
+					"/Users/pralitp/model/main-clean/libs/boost-lib",
 				);
 				LD_OPENMP_FLAGS = "";
-				LIBRARY_SEARCH_PATHS = /usr/local/lib;
+				LIBRARY_SEARCH_PATHS = "/Users/pralitp/model/hector-main/libs/gsl-1.16/install/lib";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-gsl",
@@ -646,11 +636,11 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					/usr/local/include/,
-					/usr/local/lib/boost_1_52_0,
+					"/Users/pralitp/model/hector-main/libs/gsl-1.16/install/include",
+					"/Users/pralitp/model/main-clean/libs/boost-lib",
 				);
 				LD_OPENMP_FLAGS = "";
-				LIBRARY_SEARCH_PATHS = /usr/local/lib;
+				LIBRARY_SEARCH_PATHS = "/Users/pralitp/model/hector-main/libs/gsl-1.16/install/lib";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-gsl",
