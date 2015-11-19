@@ -1,0 +1,278 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Header Files\components">
+      <UniqueIdentifier>{6c27cee9-dc56-480f-a174-3be9593293c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\core">
+      <UniqueIdentifier>{aed40e1e-586f-4581-b8aa-86828ec6534b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\data">
+      <UniqueIdentifier>{268ce144-ca00-43ad-8ffa-2f274b6c9a2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\input">
+      <UniqueIdentifier>{a129115b-1a01-43ba-9d67-81db6a63a782}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\models">
+      <UniqueIdentifier>{bc63737f-a612-4bf2-9779-dee9ccbc3a3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\visitors">
+      <UniqueIdentifier>{2c28f751-e82a-471b-b4d9-0ee4f97b3193}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\input\inih">
+      <UniqueIdentifier>{64fed679-b3eb-4345-a0b5-d775c170e970}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\components">
+      <UniqueIdentifier>{7a3dfb9e-f533-4c62-951c-65b9cf791f24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\core">
+      <UniqueIdentifier>{41dade43-9545-47b1-bef2-c60e35817453}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\data">
+      <UniqueIdentifier>{097325c0-cfff-46b5-b06f-974ad40a3599}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\input">
+      <UniqueIdentifier>{954698b0-6720-4558-97f3-18988b6e95ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\models">
+      <UniqueIdentifier>{e2a3685b-80f3-49bf-9f8d-80c511737afa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\visitors">
+      <UniqueIdentifier>{6504ba03-0f92-40eb-94ab-4cef8f1bf998}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\input\inih">
+      <UniqueIdentifier>{4280c8a3-3a2d-428c-b3fc-424706c978c9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\headers\components\bc_component.hpp">
+      <Filter>Header Files\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\headers\components\ch4_component.hpp">
+      <Filter>Header Files\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\headers\components\component_data.hpp">
+      <Filter>Header Files\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\headers\components\component_names.hpp">
+      <Filter>Header Files\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\headers\components\dummy_model_component.hpp">
+      <Filter>Header Files\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\headers\components\forcing_component.hpp">
+      <Filter>Header Files\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\headers\components\halocarbon_component.hpp">
+      <Filter>Header Files\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\headers\components\imodel_component.hpp">
+      <Filter>Header Files\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\headers\components\n2o_component.hpp">
+      <Filter>Header Files\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\headers\components\o3_component.hpp">
+      <Filter>Header Files\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\headers\components\oc_component.hpp">
+      <Filter>Header Files\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\headers\components\ocean_component.hpp">
+      <Filter>Header Files\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\headers\components\oh_component.hpp">
+      <Filter>Header Files\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\headers\components\onelineocean_component.hpp">
+      <Filter>Header Files\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\headers\components\slr_component.hpp">
+      <Filter>Header Files\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\headers\components\so2_component.hpp">
+      <Filter>Header Files\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\headers\components\temperature_component.hpp">
+      <Filter>Header Files\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\headers\core\carbon-cycle-solver.hpp">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\headers\core\core.hpp">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\headers\core\dependency_finder.hpp">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\headers\core\ivisitable.hpp">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\headers\core\logger.hpp">
+      <Filter>Header Files\core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\headers\data\h_interpolator.hpp">
+      <Filter>Header Files\data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\headers\data\message_data.hpp">
+      <Filter>Header Files\data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\headers\data\tseries.hpp">
+      <Filter>Header Files\data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\headers\data\unitval.hpp">
+      <Filter>Header Files\data</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\headers\input\csv_table_reader.hpp">
+      <Filter>Header Files\input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\headers\input\h_reader.hpp">
+      <Filter>Header Files\input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\headers\input\ini_to_core_reader.hpp">
+      <Filter>Header Files\input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\headers\input\inih\ini.h">
+      <Filter>Header Files\input\inih</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\headers\input\inih\INIReader.h">
+      <Filter>Header Files\input\inih</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\headers\models\carbon-cycle-model.hpp">
+      <Filter>Header Files\models</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\headers\models\ocean_csys.hpp">
+      <Filter>Header Files\models</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\headers\models\oceanbox.hpp">
+      <Filter>Header Files\models</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\headers\models\simpleNbox.hpp">
+      <Filter>Header Files\models</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\headers\visitors\avisitor.hpp">
+      <Filter>Header Files\visitors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\headers\visitors\csv_output_visitor.hpp">
+      <Filter>Header Files\visitors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\headers\visitors\csv_outputstream_visitor.hpp">
+      <Filter>Header Files\visitors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\headers\h_exception.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\headers\h_util.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\headers\hector.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\source\components\bc_component.cpp">
+      <Filter>Source Files\components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\components\ch4_component.cpp">
+      <Filter>Source Files\components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\components\dummy_model_component.cpp">
+      <Filter>Source Files\components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\components\forcing_component.cpp">
+      <Filter>Source Files\components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\components\halocarbon_component.cpp">
+      <Filter>Source Files\components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\components\n2o_component.cpp">
+      <Filter>Source Files\components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\components\o3_component.cpp">
+      <Filter>Source Files\components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\components\oc_component.cpp">
+      <Filter>Source Files\components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\components\ocean_component.cpp">
+      <Filter>Source Files\components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\components\oh_component.cpp">
+      <Filter>Source Files\components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\components\onelineocean_component.cpp">
+      <Filter>Source Files\components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\components\slr_component.cpp">
+      <Filter>Source Files\components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\components\so2_component.cpp">
+      <Filter>Source Files\components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\components\temperature_component.cpp">
+      <Filter>Source Files\components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\core\carbon-cycle-solver.cpp">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\core\core.cpp">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\core\dependency_finder.cpp">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\core\logger.cpp">
+      <Filter>Source Files\core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\data\h_interpolator.cpp">
+      <Filter>Source Files\data</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\data\spline_forsythe.cpp">
+      <Filter>Source Files\data</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\data\unitval.cpp">
+      <Filter>Source Files\data</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\input\csv_table_reader.cpp">
+      <Filter>Source Files\input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\input\h_reader.cpp">
+      <Filter>Source Files\input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\input\ini_to_core_reader.cpp">
+      <Filter>Source Files\input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\input\inih\ini.c">
+      <Filter>Source Files\input\inih</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\input\inih\INIReader.cpp">
+      <Filter>Source Files\input\inih</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\models\carbon-cycle-model.cpp">
+      <Filter>Source Files\models</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\models\ocean_csys.cpp">
+      <Filter>Source Files\models</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\models\oceanbox.cpp">
+      <Filter>Source Files\models</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\models\simpleNbox.cpp">
+      <Filter>Source Files\models</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\visitors\csv_output_visitor.cpp">
+      <Filter>Source Files\visitors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\visitors\csv_outputstream_visitor.cpp">
+      <Filter>Source Files\visitors</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
