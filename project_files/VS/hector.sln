@@ -1,0 +1,35 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 2012 for Windows Desktop
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "hector-lib", "hector-lib.vcxproj", "{88489C16-7642-48BB-B36C-C4B9507A1DE2}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "hector", "hector.vcxproj", "{1A212A99-F400-4BC1-A4A3-1767FA1843F1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Debug|x64 = Debug|x64
+		Release|Win32 = Release|Win32
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{88489C16-7642-48BB-B36C-C4B9507A1DE2}.Debug|Win32.ActiveCfg = Debug|Win32
+		{88489C16-7642-48BB-B36C-C4B9507A1DE2}.Debug|Win32.Build.0 = Debug|Win32
+		{88489C16-7642-48BB-B36C-C4B9507A1DE2}.Debug|x64.ActiveCfg = Debug|x64
+		{88489C16-7642-48BB-B36C-C4B9507A1DE2}.Debug|x64.Build.0 = Debug|x64
+		{88489C16-7642-48BB-B36C-C4B9507A1DE2}.Release|Win32.ActiveCfg = Release|Win32
+		{88489C16-7642-48BB-B36C-C4B9507A1DE2}.Release|Win32.Build.0 = Release|Win32
+		{88489C16-7642-48BB-B36C-C4B9507A1DE2}.Release|x64.ActiveCfg = Release|x64
+		{88489C16-7642-48BB-B36C-C4B9507A1DE2}.Release|x64.Build.0 = Release|x64
+		{1A212A99-F400-4BC1-A4A3-1767FA1843F1}.Debug|Win32.ActiveCfg = Debug|Win32
+		{1A212A99-F400-4BC1-A4A3-1767FA1843F1}.Debug|Win32.Build.0 = Debug|Win32
+		{1A212A99-F400-4BC1-A4A3-1767FA1843F1}.Debug|x64.ActiveCfg = Debug|x64
+		{1A212A99-F400-4BC1-A4A3-1767FA1843F1}.Debug|x64.Build.0 = Debug|x64
+		{1A212A99-F400-4BC1-A4A3-1767FA1843F1}.Release|Win32.ActiveCfg = Release|Win32
+		{1A212A99-F400-4BC1-A4A3-1767FA1843F1}.Release|Win32.Build.0 = Release|Win32
+		{1A212A99-F400-4BC1-A4A3-1767FA1843F1}.Release|x64.ActiveCfg = Release|x64
+		{1A212A99-F400-4BC1-A4A3-1767FA1843F1}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
