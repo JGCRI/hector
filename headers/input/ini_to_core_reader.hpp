@@ -51,7 +51,10 @@ class INIToCoreReader {
     private:
     //! Weak reference to a Core object that will handle parsed values
     Core* core;
-    
+
+    //! Path of the INI file
+    std::string iniFilePath;
+
     //! The exception set by value handler should an exception occur.
     //! Note that this would only be valid if valueHandler returned
     //! an error code.

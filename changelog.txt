@@ -1,3 +1,10 @@
+Hector 1.1.2
+============
+
+* Add libhector target OS X and Windows project files (it was already
+  available in the Linux build).  This library library is used when
+  you want to link Hector to an outside program.
+
 Hector 1.1.1
 ============
 
