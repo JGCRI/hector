@@ -126,7 +126,7 @@ int INIToCoreReader::valueHandler( void* user, const char* section, const char* 
             if ( csvFilePath.is_relative() ) {
               fs::path iniFilePath( reader->iniFilePath );
               fs::path fullPath( iniFilePath.parent_path() / csvFilePath );
-              csvFileName = fullPath.c_str();
+              csvFileName = fullPath.string();
             }
 
             CSVTableReader tableReader( csvFileName );
