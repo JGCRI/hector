@@ -97,7 +97,7 @@ void oceanbox::add_carbon( unitval C ) {
  *  \returns        Absolute temperature of box, C
  */
 unitval oceanbox::compute_tabsC( const unitval Tgav ) const {
-    return Tgav * warmingfactor + unitval( MEAN_GLOBAL_TEMP, U_DEGC ) + deltaT;
+    return Tgav * 0.7 * warmingfactor + unitval( MEAN_GLOBAL_TEMP, U_DEGC ) + deltaT;
 }
 
 //------------------------------------------------------------------------------
