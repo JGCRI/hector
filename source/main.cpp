@@ -103,12 +103,15 @@ int main (int argc, char * const argv[]) {
     catch( h_exception e ) {
         cerr << "* Program exception: " << e.msg << "\n* Function " << e.func << ", file "
         << e.file << ", line " << e.linenum << endl;
+        return 1;
     }
     catch( std::exception &e ) {
         cerr << "Standard exception: " << e.what() << endl;
+        return 2;
     }
     catch( ... ) {
         cerr << "Other exception! " << endl;
+        return 3;
     }
 
     return 0;
