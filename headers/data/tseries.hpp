@@ -54,6 +54,7 @@ public:
 
     void set( double, T_data );
     T_data get( double ) const throw( h_exception );
+    T_data get_deriv( double ) const throw( h_exception );
     bool exists( double ) const;
     
     double firstdate() const;
@@ -86,10 +87,10 @@ template<class T_data>
 struct interp_helper {
     // TODO: we might want to consider re-organizing this to not have to pass
     // info around, discuss with Ben
-    static T_data interp( const std::map<double, T_data>& userData, 
-                          h_interpolator& interpolator, std::string name,
-                          bool& isDirty, bool endinterp_allowed,
-                          const double index ) throw( h_exception )
+    static void error_check( const std::map<double, T_data>& userData, 
+                             h_interpolator& interpolator, std::string name,
+                             bool& isDirty, bool endinterp_allowed,
+                             const double index ) throw( h_exception )
     {
         H_ASSERT( userData.size() > 1, "time series data must have size>1" );
         
@@ -117,8 +118,24 @@ struct interp_helper {
         
         if( index < (*userData.begin()).first || index > (*userData.rbegin()).first )       // beyond-end interpolation
             H_ASSERT( endinterp_allowed, "end interpolation not allowed" );
-        
+    }
+    static T_data interp( const std::map<double, T_data>& userData, 
+                          h_interpolator& interpolator, std::string name,
+                          bool& isDirty, bool endinterp_allowed,
+                          const double index ) throw( h_exception )
+    {
+        error_check( userData, interpolator, name, isDirty, endinterp_allowed, index );
+
         return interpolator.f( index );
+    }
+    static T_data calc_deriv( const std::map<double, T_data>& userData, 
+                              h_interpolator& interpolator, std::string name,
+                              bool& isDirty, bool endinterp_allowed,
+                              const double index ) throw( h_exception )
+    {
+        error_check( userData, interpolator, name, isDirty, endinterp_allowed, index );
+
+        return interpolator.f_deriv( index );
     }
 };
 
@@ -136,10 +153,10 @@ struct interp_helper<unitval> {
     typedef unitval T_unit_type;
     // TODO: we might want to consider re-organizing this to not have to pass
     // info around, discuss with Ben
-    static T_unit_type interp( const std::map<double, T_unit_type>& userData,
-                              h_interpolator& interpolator, std::string name,
-                              bool& isDirty, bool endinterp_allowed,
-                              const double index ) throw( h_exception )
+    static void error_check( const std::map<double, T_unit_type>& userData,
+                             h_interpolator& interpolator, std::string name,
+                             bool& isDirty, bool endinterp_allowed,
+                             const double index ) throw( h_exception )
     {
         H_ASSERT( userData.size() > 1, "time series data must have size>1" );
         
@@ -166,8 +183,24 @@ struct interp_helper<unitval> {
         
         if( index < (*userData.begin()).first || index > (*userData.rbegin()).first )       // beyond-end interpolation
             H_ASSERT( endinterp_allowed, "end interpolation not allowed" );
+    }
+    static T_unit_type interp( const std::map<double, T_unit_type>& userData,
+                               h_interpolator& interpolator, std::string name,
+                               bool& isDirty, bool endinterp_allowed,
+                               const double index ) throw( h_exception )
+    {
+        error_check( userData, interpolator, name, isDirty, endinterp_allowed, index );
         
         return unitval( interpolator.f( index ), (*(userData.begin())).second.units() );
+    }
+    static T_unit_type calc_deriv( const std::map<double, T_unit_type>& userData,
+                                   h_interpolator& interpolator, std::string name,
+                                   bool& isDirty, bool endinterp_allowed,
+                                   const double index ) throw( h_exception )
+    {
+        error_check( userData, interpolator, name, isDirty, endinterp_allowed, index );
+        
+        return unitval( interpolator.f_deriv( index ), (*(userData.begin())).second.units() );
     }
 };
 
@@ -243,6 +276,31 @@ T_data tseries<T_data>::get( double t ) const throw( h_exception ) {
         H_LOG( glog, Logger::WARNING) << "Interpolation requested but not allowed (" << name << ") date: " << t << std::endl;
 
 		H_THROW( "Interpolation requested but not allowed" );
+    }
+}
+
+//-----------------------------------------------------------------------
+/*! \brief Get the derivative of the series at time t.
+ *
+ *  Note interpolation must be allowed to calculate a derivative.
+ *
+ */
+template <class T_data>
+T_data tseries<T_data>::get_deriv( double t ) const throw( h_exception ) {
+    if(mapdata.size() == 1) {
+        H_THROW( "More than one data point needed to calculate a derivative" );
+    }
+
+    if( t < lastInterpYear ) {
+        return interp_helper<T_data>::calc_deriv( mapdata, 
+                                                  const_cast<tseries*>( this )->interpolator,
+                                                  name, dirty, endinterp_allowed, t );
+    }
+	else {
+        Logger& glog = Logger::getGlobalLogger();
+        H_LOG( glog, Logger::WARNING) << "Derivative requested but not allowed (" << name << ") date: " << t << std::endl;
+
+		H_THROW( "Derivative requested but not allowed" );
     }
 }
 

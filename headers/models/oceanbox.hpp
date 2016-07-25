@@ -31,9 +31,6 @@
 #include "math.h"
 #include <stdio.h> 
 #include <algorithm>
-#include <gsl/gsl_errno.h>
-#include <gsl/gsl_math.h>
-#include <gsl/gsl_min.h>
 
 #include "core/logger.hpp"
 #include "data/unitval.hpp"

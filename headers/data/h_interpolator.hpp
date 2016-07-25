@@ -34,6 +34,7 @@ enum interpolation_methods { DEFAULT, LINEAR, SPLINE_FORSYTHE };
 // Prototypes for interpolation methods
 void spline_forsythe( int, double *, double *, double *, double *, double * );
 double seval_forsythe( int, double, double *, double *, double *, double *, double * );
+double seval_deriv_forsythe( int, double, double *, double *, double *, double *, double * );
 
 //-----------------------------------------------------------------------
 /*! \brief interpolator class header.
@@ -49,6 +50,7 @@ private:
     double *b_coef, *c_coef, *d_coef;
     
     double f_linear( double );
+    double f_deriv_linear( double );
     
     void release_data();
     void refit_data();
@@ -62,64 +64,42 @@ public:
     h_interpolator();
     ~h_interpolator();
     double f( double );
+    double f_deriv( double );
     void newdata( int, double*, double* );
     void set_method( interpolation_methods );
 };
 
 inline void h_interpolator::locate(double x, int &iprev, int &inext) const
 {
-    if(ilast>=0) {
-        iprev = ilast;
-        // search near the last-used value
-        if(xdata[iprev] <= x) {
-            inext = iprev+1;
-            if(iprev == ndata-1 || xdata[inext] >= x)
-                return;         // found it in the same interval as last time, no need to update ilast
-            else
-                inext = ndata-1; // fall through to bisection search
-        }
-        else {
-            // check the previous interval
-            inext = iprev--;
-            if(inext==0)
-                return;         // don't set ilast to iprev; since iprev<0
-            else if(xdata[iprev] <= x) {
-                ilast = iprev;  // iprev >=0 in this case
-                return;
-            }
-            else
-                iprev = 0;      // fall through to search
-        }
-    }
-
-    // no previous values, or the previous value is invalid.  set
-    // up for bisection on full array
-    // check edge cases
+    /* Test for u within the interval of definition of the interpolating function. If not,
+     return the value at an end point of the interval. */
     if(x<xdata[0]) {
       iprev = -1;
       inext = ilast = 0;
       return;
     }
-    else if(x>xdata[ndata-1]) {
+    else if(x>=xdata[ndata-1]) {
       iprev = ilast = ndata-1;
       inext = ndata;
       return;
     }
-    else {
-      iprev = 0;
-      inext = ndata-1;
-    }
     
-    // perform bisection search
-    while(inext-iprev > 1) {
-        int imid = (iprev+inext)/2;
-        if(xdata[imid] <= x)
-            iprev = imid;
-        else
-            inext = imid;
-    }
-    ilast = iprev;
+    /* Search for the data points with independent values containing the
+     argument u. */
+    if (ilast >= ndata-1 || ilast < 0) ilast = 0;
     
+    /* If u is not in the current in || ilast < 0terval, then execute a binary search. */
+    if ((x < xdata[ilast]) || (x >= xdata[ilast+1])) {
+        ilast = 0;
+        iprev = ndata + 1;
+        while (iprev > ilast + 1) {
+            inext = (int)(( ilast + iprev) / 2);
+            if (x < xdata[inext]) iprev = inext;
+            if (x >= xdata[inext]) ilast = inext;
+        }
+    }
+    iprev = ilast;
+    inext = ilast + 1;
 }
 
 }

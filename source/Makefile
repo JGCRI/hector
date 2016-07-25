@@ -1,9 +1,9 @@
 CXX	= g++
-CXXFLAGS = -g  $(INCLUDES) $(OPTFLAGS) $(CXXEXTRA) $(CXXPROF) $(WFLAGS) -MMD
-INCLUDES = -I$(BOOSTROOT) -I$(HDRDIR) -I$(GSLINC)
+CXXFLAGS = -g  -DHAVE_GSL=$(HAVE_GSL) $(INCLUDES) $(OPTFLAGS) $(CXXEXTRA) $(CXXPROF) $(WFLAGS) -MMD
+INCLUDES = -I$(BOOSTROOT) -I$(HDRDIR) $(GSLINC_FLAGS)
 WFLAGS   = -Wall -Wno-unused-local-typedefs # Turn on warnings, turn off one particularly annoying one that infests Boost libs
 OPTFLAGS = -O3
-LDFLAGS	 = $(CXXPROF) -L$(GSLLIB) -L$(BOOSTLIB) -L. -Wl,-rpath $(GSLLIB) -Wl,-rpath $(BOOSTLIB)
+LDFLAGS	 = $(CXXPROF) -L$(BOOSTLIB) -L. $(GSLLIB_FLAGS) -Wl,-rpath $(BOOSTLIB)
 
 export CXXFLAGS OPTFLAGS
 
@@ -36,6 +36,11 @@ ifeq ($(strip $(GSLROOT)),)
 GSLROOT	= /usr/local
 endif
 
+# Optionally configure hector to use GSL for ODE integration and other numerical
+# algorithms.  If not configured we fall back to boost to provide them.
+HAVE_GSL = 0
+
+ifneq ($(HAVE_GSL),0)
 ## Set the GSL include and library locations.  There is a special case for Evergreen users.
 ifeq ($(strip $(GSLROOT)),EVERGREEN)
 GSLINC  = $(GSL_INC)
@@ -45,7 +50,16 @@ CXXFLAGS = -g  $(INCLUDES) $(OPTFLAGS) $(CXXEXTRA) $(CXXPROF) -MMD
 else
 GSLINC	= $(GSLROOT)/include
 GSLLIB	= $(GSLROOT)/lib
-endif
+endif # if EVERGREEN
+GSLINC_FLAGS = -I$(GSLINC)
+GSLLIB_FLAGS = -L$(GSLLIB) -Wl,-rpath,$(GSLLIB)
+GSL_LINK_FLAGS = -lgsl -lgslcblas
+else
+# Leave the GSL flags unset for compilation/linking
+GSLINC_FLAGS=
+GSLLIB_FLAGS=
+GSL_LINK_FLAGS=
+endif # if HAVE_GSL
 
 export GTLIB GTINC GSLINC GSLLIB
 
@@ -60,7 +74,7 @@ DEPS	= $(SRCS:.cpp=.d)
 
 ## default target
 hector: libhector.a main.o
-	$(CXX) $(LDFLAGS) -o hector main.o -lhector -lgsl -lgslcblas -lm -lboost_system -lboost_filesystem
+	$(CXX) $(LDFLAGS) -o hector main.o -lhector $(GSL_LINK_FLAGS) -lm -lboost_system -lboost_filesystem
 
 ## alternate version that uses the capabilities needed for driving
 ## hector from an external source (e.g., an IAM) 

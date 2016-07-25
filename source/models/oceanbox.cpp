@@ -22,7 +22,13 @@
  *
  */
 
+#if HAVE_GSL
+#include <gsl/gsl_errno.h>
+#include <gsl/gsl_math.h>
 #include <gsl/gsl_min.h>
+#else
+#include <boost/math/tools/minima.hpp>
+#endif // HAVE_GSL
 #include <iomanip>
 
 #include "models/oceanbox.hpp"
@@ -383,6 +389,7 @@ double oceanbox::fmin( double alk, void *params ) {
 	return diff;
 }
 
+#if HAVE_GSL
 //------------------------------------------------------------------------------
 /*! \brief Non-member wrapper for minimization function
  */
@@ -393,6 +400,26 @@ double fmin_wrapper( double alk, void *params )
 {
 	return object_which_will_handle_signal->fmin( alk, params );
 }
+#else
+
+//------------------------------------------------------------------------------
+/*! \brief Functor wrapper for minimization function
+ */
+struct FMinWrapper {
+    FMinWrapper(oceanbox* instance, const double f_targetIn):
+        object_which_will_handle_signal(instance),
+        f_target(f_targetIn)
+    {
+    }
+    double operator()(const double alk) {
+        return object_which_will_handle_signal->fmin(alk, &f_target);
+    }
+
+    private:
+    oceanbox* object_which_will_handle_signal;
+    double f_target;
+};
+#endif // HAVE_GSL
 
 //------------------------------------------------------------------------------
 /*! \brief                  Equilibrate the chemistry model to a given flux
@@ -430,18 +457,10 @@ void oceanbox::chem_equilibrate() {
 	//      http://www.gnu.org/software/gsl/manual/html_node/Minimization-Algorithms.html
 	// to minimize abs(f-f0), where f is computed by the csys chemistry code and f0 passed in
     
-	int status, iter=0;
-	const int max_iter = 100;
-	const gsl_min_fminimizer_type *T;
-	gsl_min_fminimizer *s;
 	double alk_min = 2100e-6, alk_max = 2750e-6;
 	double alk = ( alk_min + alk_max ) / 2;
 	double f_target = preindustrial_flux.value( U_PGC_YR );
-    
-	gsl_function F;
-	F.function = &fmin_wrapper;
-	F.params = &f_target;
-	object_which_will_handle_signal = this;
+
     
 	// Find a best-guess point; the GSL algorithm seems to need it
 	OB_LOG( logger, Logger::DEBUG) << "Looking for best-guess alkalinity" << endl;
@@ -461,6 +480,17 @@ void oceanbox::chem_equilibrate() {
 	}
 	alk = min_point;        // this is our best guess
 	OB_LOG( logger, Logger::DEBUG) << "Best guess minimum is at " << alk << endl;
+    
+#if HAVE_GSL
+    gsl_function F;
+	int status, iter=0;
+	const int max_iter = 100;
+	const gsl_min_fminimizer_type *T;
+
+	gsl_min_fminimizer *s;
+	F.function = &fmin_wrapper;
+	F.params = &f_target;
+	object_which_will_handle_signal = this;
     
 	// Initialize the minimizer algorithm
 	T = gsl_min_fminimizer_brent;
@@ -498,6 +528,18 @@ void oceanbox::chem_equilibrate() {
 	gsl_min_fminimizer_free( s );
     
 	H_ASSERT( status==GSL_SUCCESS, "Could not find a minimum for equilibration" );
+#else
+
+    FMinWrapper fFunctor(this, f_target);
+    // arbitrarily solve unil 60% of the digits are correct.
+    const int digits = numeric_limits<double>::digits;
+    int get_digits = static_cast<int>(digits * 0.6);
+    std::pair<double, double> r = boost::math::tools::brent_find_minima(fFunctor, alk_min, alk_max, get_digits);
+	OB_LOG( logger, Logger::DEBUG) << setw( w ) << "Alk" << setw( w ) << "FPgC"
+        << setw( w ) << "f_target" << setw( w ) << "diff" << endl;
+    OB_LOG( logger, Logger::DEBUG) << setw( w ) << r.first << setw( w ) << atmosphere_flux
+        << setw( w ) << f_target << setw( w ) << r.second << endl;
+#endif // HAVE_GSL
 }
 
 }
