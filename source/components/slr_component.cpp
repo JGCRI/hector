@@ -22,9 +22,6 @@
  *
  */
 
-#include <gsl/gsl_math.h>
-#include <gsl/gsl_deriv.h>
-
 #include "components/slr_component.hpp"
 #include "components/temperature_component.hpp"
 #include "core/core.hpp"
@@ -124,9 +121,6 @@ void slrComponent::prepareToRun() throw ( h_exception ) {
 //------------------------------------------------------------------------------
 
 tseries<double> tgav_vals;
-double f_gsl( double x, void *params ) {
-	return tgav_vals.get( x );
-}
 
 //------------------------------------------------------------------------------
 /*! \brief compute sea-level rise
@@ -139,21 +133,13 @@ void slrComponent::compute_slr( const double date ) {
 	unitval T = tgav.get( date ) - refperiod_tgav;      // temperature relative to 1951-1980 mean
     
 	// First need to compute dTdt, the first derivative of the temperature curve
-	double dTdt_double = 0.0, dTdt_err = 0.0;
+	double dTdt_double = 0.0;
 	if( tgav.size() > 2 ) {
 		for( int i=tgav.firstdate(); i<=tgav.lastdate(); i++ ) {
 			tgav_vals.set( i, tgav.get( i ).value( U_DEGC ) );
 		}
 		tgav_vals.allowInterp( true );		// deriv needs a continuous function
-		gsl_function F;
-		F.function = &f_gsl;
-		F.params = 0;
-		if( date==tgav.firstdate() )
-			gsl_deriv_forward( &F, date, 1e-8, &dTdt_double, &dTdt_err );
-		else if( date==tgav.lastdate() )
-			gsl_deriv_backward( &F, date, 1e-8, &dTdt_double, &dTdt_err );
-		else
-			gsl_deriv_central( &F, date, 1e-8, &dTdt_double, &dTdt_err );
+        dTdt_double = tgav_vals.get_deriv( date );
 	}
 	
 	// These values and formula below are from:

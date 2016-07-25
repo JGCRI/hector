@@ -1,9 +1,9 @@
 CXX	= g++
-CXXFLAGS = -g  $(INCLUDES) $(OPTFLAGS) $(CXXEXTRA) $(CXXPROF) $(WFLAGS) -MMD
-INCLUDES = -I$(BOOSTROOT) -I$(HDRDIR) -I$(GSLINC)
+CXXFLAGS = -g $(INCLUDES) $(OPTFLAGS) $(CXXEXTRA) $(CXXPROF) $(WFLAGS) -MMD
+INCLUDES = -I$(BOOSTROOT) -I$(HDRDIR)
 WFLAGS   = -Wall -Wno-unused-local-typedefs # Turn on warnings, turn off one particularly annoying one that infests Boost libs
 OPTFLAGS = -O3
-LDFLAGS	 = $(CXXPROF) -L$(GSLLIB) -L$(BOOSTLIB) -L. -Wl,-rpath $(GSLLIB) -Wl,-rpath $(BOOSTLIB)
+LDFLAGS	 = $(CXXPROF) -L$(BOOSTLIB) -L. -Wl,-rpath $(BOOSTLIB)
 
 export CXXFLAGS OPTFLAGS
 
@@ -31,23 +31,7 @@ GTROOT	= $(HROOT)/libs/gtest-$(GTVERS)
 GTINC	= $(GTROOT)/include
 GTLIB	= $(GTROOT)/lib/.libs
 
-## Location of GSL (default is /usr/local -- can be overridden by environment)
-ifeq ($(strip $(GSLROOT)),)
-GSLROOT	= /usr/local
-endif
-
-## Set the GSL include and library locations.  There is a special case for Evergreen users.
-ifeq ($(strip $(GSLROOT)),EVERGREEN)
-GSLINC  = $(GSL_INC)
-GSLLIB  = $(GSL_LIB)
-# remove warning flags on Evergreen too:  old version of g++
-CXXFLAGS = -g  $(INCLUDES) $(OPTFLAGS) $(CXXEXTRA) $(CXXPROF) -MMD
-else
-GSLINC	= $(GSLROOT)/include
-GSLLIB	= $(GSLROOT)/lib
-endif
-
-export GTLIB GTINC GSLINC GSLLIB
+export GTLIB GTINC
 
 
 ## component subdirectories
@@ -60,7 +44,7 @@ DEPS	= $(SRCS:.cpp=.d)
 
 ## default target
 hector: libhector.a main.o
-	$(CXX) $(LDFLAGS) -o hector main.o -lhector -lgsl -lgslcblas -lm -lboost_system -lboost_filesystem
+	$(CXX) $(LDFLAGS) -o hector main.o -lhector -lm -lboost_system -lboost_filesystem
 
 ## alternate version that uses the capabilities needed for driving
 ## hector from an external source (e.g., an IAM) 

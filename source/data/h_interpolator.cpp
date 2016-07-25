@@ -137,6 +137,50 @@ double h_interpolator::f_linear( double x ) {
 }
 
 //-----------------------------------------------------------------------
+/*! \brief Return y=f'(x) using linear interpolation.
+ *
+ *  Return y=f'(x) using linear interpolation.
+ */
+double h_interpolator::f_deriv_linear( double x ) {
+    
+    int iprev, inext;
+    locate(x, iprev,inext);
+
+    
+    double returnval;
+    if( iprev < 0 ) {
+        // before the series, throw error?
+        returnval = 0;
+    }
+    else if( inext >= ndata && x > xdata[ ndata-1 ] ) {
+        // after the series, throw error?
+        returnval = 0;
+    }
+    else if( x == xdata[ iprev ] && (iprev != 0 && inext != ndata)) {
+        // Taking the derivative at the abscissas is problematic since the function
+        // is not continous here.  Instead we will average the slopes on the surrounding
+        // segments
+        // Note for abscissas at the very begining or end of the data we assume the
+        // slope of the segment it is connected to (same as the general case).
+        double slopePrev = ( ydata[ inext-1 ] - ydata[ iprev-1 ] ) / (xdata[ inext-1 ] - xdata[ iprev-1 ] );
+        double slopeNext = ( ydata[ inext ] - ydata[ iprev ] ) / (xdata[ inext ] - xdata[ iprev ] );
+        returnval = ( slopePrev + slopeNext ) / 2.0;
+    }
+    else {
+        if(inext == ndata) {
+            // Special case for the very last point. We just use the slope of the
+            // previous segment.
+            --iprev;
+            --inext;
+        } 
+        // we can just use the slope of this segment
+        returnval = ( ydata[ inext ] - ydata[ iprev ] ) / (xdata[ inext ] - xdata[ iprev ] );
+    }
+    
+    return returnval;
+}
+
+//-----------------------------------------------------------------------
 /*! \brief Return y=f(x) using current interpolation.
  *
  *  Return y=f(x) using current interpolation method.
@@ -150,6 +194,26 @@ double h_interpolator::f( double x ) {
             break;
         case SPLINE_FORSYTHE:
             return seval_forsythe( ndata, x, xdata, ydata, b_coef, c_coef, d_coef );
+            break;
+            
+        default: H_THROW( "Undefined interpolation method" );
+    }
+}
+
+//-----------------------------------------------------------------------
+/*! \brief Return y=f'(x) using current interpolation.
+ *
+ *  Return y=f'(x) using current interpolation method.
+ */
+double h_interpolator::f_deriv( double x ) {
+    
+    // Following section will be replaced by spline code
+    switch( method ) {
+        case LINEAR:
+            return f_deriv_linear( x );
+            break;
+        case SPLINE_FORSYTHE:
+            return seval_deriv_forsythe( ndata, x, xdata, ydata, b_coef, c_coef, d_coef );
             break;
             
         default: H_THROW( "Undefined interpolation method" );

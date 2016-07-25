@@ -550,7 +550,7 @@ int  OceanComponent::calcderivs( double t, const double c[], double dcdt[] ) con
 //        std::cout << "Exceeded max_timestep of " << max_timestep << " (timeout=" << reduced_timestep_timeout << ")" << std::endl;
         return CARBON_CYCLE_RETRY;
     } else {
-        return GSL_SUCCESS;
+        return ODE_SUCCESS;
     }
 }
 

@@ -686,8 +686,6 @@
 				INSTALL_PATH = /usr/local/bin;
 				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				OTHER_LDFLAGS = (
-					"-lgsl",
-					"-lgslcblas",
 					"-lm",
 					"-lboost_filesystem",
 					"-lboost_system",
@@ -711,8 +709,6 @@
 				INSTALL_PATH = /usr/local/bin;
 				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				OTHER_LDFLAGS = (
-					"-lgsl",
-					"-lgslcblas",
 					"-lm",
 					"-lboost_filesystem",
 					"-lboost_system",
@@ -737,8 +733,6 @@
 				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
-					"-gsl",
-					"-lgslcblas",
 					"-lboost_filesystem",
 					"-lm",
 					"-lboost_system",
@@ -763,8 +757,6 @@
 				LIBRARY_SEARCH_PATHS = /usr/local/lib;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
-					"-gsl",
-					"-lgslcblas",
 					"-lboost_filesystem",
 					"-lm",
 					"-lboost_system",
@@ -802,9 +794,7 @@
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
-					"-lgslcblas",
 					"-lm",
-					"-lgsl",
 					"-framework",
 					Foundation,
 					"-framework",
@@ -841,9 +831,7 @@
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
-					"-lgslcblas",
 					"-lm",
-					"-lgsl",
 					"-framework",
 					Foundation,
 					"-framework",
