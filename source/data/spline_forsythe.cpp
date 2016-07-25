@@ -180,7 +180,7 @@ double seval_forsythe( int n, double u, double *x, double *y, double *b, double 
     /* If u is not in the current interval, then execute a binary search. */
     if ((u < x[i]) || (u > x[i+1])) {
         i = 0;
-        j = n + 1;
+        j = n;
         while (j > i + 1) {
             k = (int)(( i + j) / 2);
             if (u < x[k]) j = k;
@@ -193,4 +193,53 @@ double seval_forsythe( int n, double u, double *x, double *y, double *b, double 
     return y[i] + dx * (b[i] + dx * (c[i] + dx * d[i]));
 }
 
+double seval_deriv_forsythe( int n, double u, double *x, double *y, double *b, double *c, double *d ) {
+    /* Evaluate the derivative of a cubic spline function.
+     seval_deriv = b(i) + 2*c(i)*(u-x(i)) + 3*d(i)*(u-x(i))**2
+     where  x(i) .lt. u .lt. x(i+1), using horner's rule.
+     If  u .lt. x(1) then  i = 1  is used.
+     If  u .ge. x(n) then  i = n  is used.
+     Input:
+     n = the number of data points
+     u = the abscissa at which the spline is to be evaluated
+     x,y = the arrays of data abscissas and ordinates
+     b,c,d = arrays of spline coefficients computed by spline
+     If  u  is not in the same interval as the previous call, then a binary search is
+     performed to determine the proper interval.
+     
+     The function seval() is invoked with the (x, y) pairs underlying the interpolating
+     function specified by the arguments x and y, and the spline coefficients that
+     define the function as specified by b, c, and d. The argument n is the number
+     of data points and the length of the coefficient arrays. */
+    
+    H_ASSERT( n && x && y && b && c && d, "seval_forsythe needs nonzero params" );
+    
+    static int i = 0;
+    int j, k;
+    double dx;
+    
+    /* Test for u within the interval of definition of the interpolating function. If not,
+     return the value at an end point of the interval. */
+    if (u < x[0]) { u = x[0]; }
+    if (u > x[n-1]) { u = x[n-1]; }
+    
+    /* Search for the data points with independent values containing the
+     argument u. */
+    if (i >= n-1) i = 0;
+    
+    /* If u is not in the current interval, then execute a binary search. */
+    if ((u < x[i]) || (u > x[i+1])) {
+        i = 0;
+        j = n;
+        while (j > i + 1) {
+            k = (int)(( i + j) / 2);
+            if (u < x[k]) j = k;
+            if (u >= x[k]) i = k;
+        }
+    }
+    
+    /* Evaluate the derivative of the spline function at the argument u. */
+    dx = u - x[i];
+    return b[i] + ( 2.0 * dx * c[i] ) + ( 3.0 * dx * dx * d[i] );
+}
 }

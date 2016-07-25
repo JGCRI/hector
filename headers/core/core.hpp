@@ -36,7 +36,7 @@
 namespace Hector {
   
 class unitval;
-class message_data;
+struct message_data;
 class IModelComponent;
 
 //------------------------------------------------------------------------------
