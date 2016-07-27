@@ -62,8 +62,6 @@ public:
     
     //! Return a carbon pool value. Components will know which one they want.
     double cpool( int i ) const { return c[ i ]; }
-    //! Vector of all carbon pool values
-    //const double *allcpool( void ) const { return c; }
     
     
     // IModelComponent methods
@@ -98,8 +96,6 @@ private:
     int nc;
     //! Array of carbon pools (and such other vars as need to be integrated)
     std::vector<double> c;
-    //! Temporary array for carbon pools (for 2nd order integration)
-    //double *cc;
     //! time counter
     double t;
     

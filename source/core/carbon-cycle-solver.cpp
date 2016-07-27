@@ -235,33 +235,11 @@ void CarbonCycleSolver::run( const double tnew ) throw ( h_exception )
     // solver we strip the unit values and work with raw numbers.
     cmodel->getCValues( t, &c[0] );
 
-/*
-    // Copy c to use in the midpoint evaluation
-    for( int i=0; i<nc; ++i )
-        cc[ i ] = c[ i ];
-
-    // Integrate cc to midpoint
-    double tmid = 0.5*( t+tnew );
- */
     double t0   = t;
-/*
-    // Have the model evaluate its slowly varying parameters (e.g. temperature).
-    // It will store them internally for use by calcderivs.
-    cmodel->slowparameval( tmid, cc );
-    
-    while ( t0<tmid ) {
-        int stat = gsl_odeiv_evolve_apply( evolver, controller, stepper, &odesys,
-                                          &t0, tmid, &dt, cc );
-        if( stat != GSL_SUCCESS )
-            failure( stat, t0, tmid );
-    }
-    H_ASSERT( t0 == tmid, "solver t0 != tmid" );
-*/    
     // Now integrate from the beginning of the time step using the updated
     // slow params.  Note we can discard t0 and the values in cc
     t0 = t;  // stash this in case we need to report & diagnose an error
     cmodel->slowparameval( t, &c[0] );
-//    cmodel->slowparameval( t, cc );
     int retry = 0;
     
     H_LOG( logger, Logger::DEBUG ) << "Entering ODE solver " << t << "->" << tnew << std::endl;
@@ -314,9 +292,6 @@ void CarbonCycleSolver::run( const double tnew ) throw ( h_exception )
     }
     H_ASSERT( t == tnew, "solver failure: t != tnew" );
     
-    // If we get here, we're done
-//    cmodel->stashCValues( t, c );
-        
     H_LOG( logger, Logger::NOTICE ) << "ODE solver success at t= " << t <<
     "  last dt= " << dt << std::endl;
     H_LOG( logger, Logger::DEBUG ) << "cvals\terrors\n";
