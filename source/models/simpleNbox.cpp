@@ -22,7 +22,6 @@
  *
  */
 
-#include <gsl/gsl_errno.h>
 #include <boost/lexical_cast.hpp>
 #include "boost/algorithm/string.hpp"
 
@@ -125,10 +124,12 @@ void SimpleNbox::setData( const std::string &varName,
         varNameParsed = splitvec[ 1 ];
     }
 
-    if (data.isVal)
+    if (data.isVal) {
         H_LOG( logger, Logger::DEBUG ) << "Setting " << biome << "." << varNameParsed << "[" << data.date << "]=" << data.value_unitval << std::endl;
-    else
+    }
+    else {
         H_LOG( logger, Logger::DEBUG ) << "Setting " << biome << "." << varNameParsed << "[" << data.date << "]=" << data.value_str << std::endl;
+    }
     try {
         // Initial pools
         if( varNameParsed == D_ATMOSPHERIC_C ) {
@@ -487,7 +488,7 @@ void SimpleNbox::accept( AVisitor* visitor ) {
 }
 
 //------------------------------------------------------------------------------
-/*! \brief            transfer model pools to flat array (for GSL ODE solver)
+/*! \brief            transfer model pools to flat array (for ODE solver)
  *  \param[in] t  time, double, the date from which ODE solver is starting
  *  \param[in] c  flat array of carbon pools (no units)
  */

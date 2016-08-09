@@ -25,7 +25,6 @@
  */
 
 #include <string>
-#include <gsl/gsl_odeiv2.h>
 
 #include "core/logger.hpp"
 #include "models/carbon-cycle-model.hpp"
@@ -50,7 +49,7 @@ namespace Hector {
  *
  * Therefore, we adopt a two-stage integration.  The easy/rapidly
  * varying variables we integrate using a standard integrator from
- * the GSL.  To integrate from t_i -> t_i+1 we first integrate
+ * the odeint.  To integrate from t_i -> t_i+1 we first integrate
  * to t_i+1/2.  We update A(t=t_i+1/2), then we integrate
  * t_i -> t_i+1 using the updated A values.
  *
@@ -63,8 +62,6 @@ public:
     
     //! Return a carbon pool value. Components will know which one they want.
     double cpool( int i ) const { return c[ i ]; }
-    //! Vector of all carbon pool values
-    const double *allcpool( void ) const { return c; }
     
     
     // IModelComponent methods
@@ -98,9 +95,7 @@ private:
     //! Number of variables to integrate
     int nc;
     //! Array of carbon pools (and such other vars as need to be integrated)
-    double *c;
-    //! Temporary array for carbon pools (for 2nd order integration)
-    double *cc;
+    std::vector<double> c;
     //! time counter
     double t;
     
@@ -114,16 +109,18 @@ private:
     
     unitval eps_spinup;     //! spinup epsilon (drift/tolerance), Pg C
     
-    //! Wrapper function to pass to ODE solver
-    static int odeeval( double t, const double y[], double dydt[], void *modelptr );
-    //! function def'n struct for gsl ODE solver
-    gsl_odeiv2_system odesys;
-    //! GSL stepper
-    gsl_odeiv2_step *stepper;
-    //! GSL step size controller
-    gsl_odeiv2_control *controller;
-    //! GSL ODE evolver
-    gsl_odeiv2_evolve *evolver;
+    struct bad_derivative_exception {
+        bad_derivative_exception(const int status):errorFlag(status) { }
+        int errorFlag;
+    };
+    // A functor to provide callbacks for the ODE solver. 
+    struct ODEEvalFunctor {
+        ODEEvalFunctor( CarbonCycleModel* cmodel, double* time ):modelptr(cmodel), t(time) { }
+        void operator()( const std::vector<double>& y, std::vector<double>& dydt, double t ) throw( bad_derivative_exception );
+        void operator()( const std::vector<double>& y, double t );
+        CarbonCycleModel* modelptr;
+        double* t;
+    };
     
     void failure( int stat, double t0, double tmid ) throw( h_exception );
     
