@@ -42,7 +42,7 @@ CarbonCycleSolver::~CarbonCycleSolver()
 //------------------------------------------------------------------------------
 // documentation is inherited
 void CarbonCycleSolver::init( Core* coreptr ) {
-    logger.open( getComponentName(), false, Logger::NOTICE );
+    logger.open( getComponentName(), true, Logger::NOTICE );
     H_LOG( logger, Logger::DEBUG ) << getComponentName() << " initialized." << std::endl;
     
     core = coreptr;
@@ -240,8 +240,7 @@ void CarbonCycleSolver::run( const double tnew ) throw ( h_exception )
         double t_target = tnew;
         
         while( t < t_target && retry < MAX_CARBON_MODEL_RETRIES ) {
-            H_LOG( logger, Logger::DEBUG ) << "Attempting ODE solver " << t << "->" << t_target << " (" << t0 << "->" << tnew << ")" << std::endl;
-            std::cout << "Attempting ODE solver " << t << "->" << t_target << " (" << t0 << "->" << tnew << ")" << std::endl;
+            H_LOG( logger, Logger::NOTICE ) << "Attempting ODE solver " << t << "->" << t_target << " (" << t0 << "->" << tnew << ")" << std::endl;
             
             int stat = ODE_SUCCESS;
             ODEEvalFunctor odeFunctor( cmodel, &t );
@@ -261,22 +260,19 @@ void CarbonCycleSolver::run( const double tnew ) throw ( h_exception )
                 
                 dt = t_target - t;
                 cmodel->getCValues( t, &c[0] );     // reset pools and inform model of new starting point
-                H_LOG( logger, Logger::DEBUG ) << "New target is " << t_target << std::endl;
-                std::cout << "New target is " << t_target << std::endl;
+                H_LOG( logger, Logger::NOTICE ) << "New target is " << t_target << std::endl;
             } else if( stat != ODE_SUCCESS )
                 failure( stat, t_start, t_target );
         }
         
         // We have exited GSL solver loop, but did we make it?
         if( retry < MAX_CARBON_MODEL_RETRIES ) {
-            H_LOG( logger, Logger::DEBUG ) << "Success: we have reached " << t_target << std::endl;
-            if( retry )
-                std::cout << "Success after failure: we have reached " << t_target << std::endl;
+            H_LOG( logger, Logger::NOTICE ) << "Success: we have reached " << t_target << std::endl;
 
             retry = 0;
             cmodel->stashCValues( t, &c[0] );   // update state
         } else {
-            std::cout << "Failure after failure: t is " << t << "; we have not reached " << t_target << std::endl;
+            H_LOG( logger, Logger::SEVERE ) << "Failure after failure: t is " << t << "; we have not reached " << t_target << std::endl;
             
         }
     }
