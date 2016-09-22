@@ -44,6 +44,7 @@ build/
 DerivedData/
 xcodeuserstate
 xcuserdata
+project.xcworkspace/
 
 # Project files
 project_files/*.*
