@@ -56,6 +56,8 @@ libs
 project_files/visual_studio/
 libs/
 *.kdev4
+*.sdf
+*.suo
 
 # Output
 output/output
