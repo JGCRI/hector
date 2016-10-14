@@ -12,6 +12,7 @@ before_script:
 
  - cd $BOOSTROOT
  - ./bootstrap.sh --with-libraries=filesystem 
+ - ./b2
  - cd $TRAVIS_BUILD_DIR
 
 #  - sudo apt-get update -qq
