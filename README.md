@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/bpbond/hector.svg?branch=travis-ci)](https://travis-ci.org/bpbond/hector)
+
 hector
 ======
 
