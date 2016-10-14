@@ -1,6 +1,6 @@
 CXX	= g++
 CXXFLAGS = -g $(INCLUDES) $(OPTFLAGS) $(CXXEXTRA) $(CXXPROF) $(WFLAGS) -MMD
-INCLUDES = -I$(HDRDIR)
+INCLUDES = -I$(BOOSTROOT) -I$(HDRDIR)
 WFLAGS   = -Wall -Wno-unused-local-typedefs # Turn on warnings, turn off one particularly annoying one that infests Boost libs
 OPTFLAGS = -O3
 LDFLAGS	 = $(CXXPROF) -L$(BOOSTLIB) -L. -Wl,-rpath $(BOOSTLIB)
