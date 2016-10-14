@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/bpbond/hector.svg?branch=travis-ci)](https://travis-ci.org/bpbond/hector)
+[![Build Status](https://travis-ci.org/JGCRI/hector.svg?branch=project_lib_target)](https://travis-ci.org/JGCRI/hector)
 
 hector
 ======
