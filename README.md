@@ -1,5 +1,7 @@
 [![Build Status](https://travis-ci.org/JGCRI/hector.svg?branch=project_lib_target)](https://travis-ci.org/JGCRI/hector)
  
+ Forcing a travis build
+ 
 hector
 ======
 
