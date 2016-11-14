@@ -28,6 +28,7 @@
 #include "components/ocean_component.hpp"
 #include "components/onelineocean_component.hpp"
 #include "components/o3_component.hpp"
+#include "components/temp_doeclim_component.hpp"
 #include "core/core.hpp"
 #include "core/dependency_finder.hpp"
 #include "core/logger.hpp"
@@ -115,6 +116,8 @@ void Core::init() {
 	temp = new OceanComponent();
     modelComponents[ temp->getComponentName() ] = temp;
 	temp = new OneLineOceanComponent();
+    modelComponents[ temp->getComponentName() ] = temp;
+    temp = new TempDOECLIMComponent();
     modelComponents[ temp->getComponentName() ] = temp;
     
     temp = new HalocarbonComponent( CF4_COMPONENT_BASE );

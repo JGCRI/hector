@@ -19,6 +19,7 @@
 #include "components/forcing_component.hpp"
 #include "components/halocarbon_component.hpp"
 #include "components/temperature_component.hpp"
+#include "components/temp_doeclim_component.hpp"
 #include "components/bc_component.hpp"
 #include "components/oc_component.hpp"
 #include "components/slr_component.hpp"
@@ -187,6 +188,12 @@ void CSVOutputStreamVisitor::visit( TemperatureComponent* c ) {
     STREAM_MESSAGE( csvFile, c, D_GLOBAL_TEMPEQ );
 }
 
+//------------------------------------------------------------------------------
+// documentation is inherited
+void CSVOutputStreamVisitor::visit( TempDOECLIMComponent* c ) {
+    if( !core->outputEnabled( c->getComponentName() ) ) return;
+    STREAM_MESSAGE( csvFile, c, D_GLOBAL_TEMP );
+    }
 //------------------------------------------------------------------------------
 // documentation is inherited
 void CSVOutputStreamVisitor::visit( OceanComponent* c ) {

@@ -255,6 +255,10 @@
 #define D_SO2I_B                "so2i_b"
 #define D_OC_B                  "oc_b"
 #define D_BC_B                  "bc_b"
+
+// temperature doeclim component
+#define D_DIFFUSIVITY           "alpha"
+
 // ------------------- messages being passed between components -------------------------
 
 #define M_GETDATA               "getData"
