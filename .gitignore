@@ -53,6 +53,7 @@ Run Test Cases
 Debug
 libs
 project_files/visual_studio/
+project_files/VS/*.*
 libs/
 *.kdev4
 
