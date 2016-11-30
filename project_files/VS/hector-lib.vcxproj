@@ -76,6 +76,7 @@
     <ClCompile Include="..\..\source\components\slr_component.cpp" />
     <ClCompile Include="..\..\source\components\so2_component.cpp" />
     <ClCompile Include="..\..\source\components\temperature_component.cpp" />
+    <ClCompile Include="..\..\source\components\temp_doeclim_component.cpp" />
     <ClCompile Include="..\..\source\core\carbon-cycle-solver.cpp" />
     <ClCompile Include="..\..\source\core\core.cpp" />
     <ClCompile Include="..\..\source\core\dependency_finder.cpp" />
