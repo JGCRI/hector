@@ -4,7 +4,7 @@ hector
 ======
 
 This is the repository for **Hector**, an open source, object-oriented, simple global climate carbon-cycle model. It  runs essentially instantaneously while still representing the most critical global scale earth system processes, and is one of a class of models heavily used for for emulating complex climate models and uncertainty analyses. For example, Hector's global temperature rise for the RCP 8.5 scenario, compared to observations and other model results, looks like this:
-![]https://github.com/JGCRI/CMIP5_patterns/blob/master/SRC/SCHEMATIC.pdf
+
 ![](https://github.com/JGCRI/hector/wiki/rcp85.png)
 
 The primary source of Hector model documentation is the Github [wiki](https://github.com/JGCRI/hector/wiki); please note that the wiki documents are included in the repository, but you'll need to use `git clone --recursive` to get them installed locally. The code is also well documented with [Doxygen](http://doxygen.org)-style comments. A formal model description paper ([Hartin et al. 2015](http://www.geosci-model-dev.net/8/939/2015/gmd-8-939-2015.html)) documents its science internals and performance relative to observed data, the [CMIP5](http://cmip-pcmdi.llnl.gov/cmip5/) archive, and the reduced-complexity [MAGICC](http://www.magicc.org) model.
