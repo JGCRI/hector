@@ -124,9 +124,9 @@ private:
     double heat_interior[1000];
     double forcing[1000];
     
-    //unitval tgaveq;      // equilibrium temperature without ocean heat flux
 	unitval tgav;          //!< global temperature delta, deg C
-	unitval S;          //!< climate sensitivity for 2xCO2, deg C
+    unitval tgaveq;        //!< equilibrium temp without ocean heat flux, currently set = tgav
+	unitval S;             //!< climate sensitivity for 2xCO2, deg C
     unitval alpha;         //!< ocean heat diffusivity, cm2/s
     
     

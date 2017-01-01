@@ -59,8 +59,7 @@ void TempDOECLIMComponent::invert_1d_2x2_matrix(double * x, double * y) {
     double temp_d = (x[0]*x[3] - x[1]*x[2]);
         
     if(temp_d == 0) {
-        fprintf(stderr, "Matrix inversion divide by zero. Aborting...\n");
-        exit(EXIT_FAILURE);
+        H_THROW("TempDOECLIM: Matrix inversion divide by zero.");
     }
     double temp = 1/temp_d;
     y[0] = temp * x[3];
@@ -130,7 +129,7 @@ void TempDOECLIMComponent::init( Core* coreptr ) {
 
     // Register the data we can provide
     core->registerCapability( D_GLOBAL_TEMP, getComponentName() );
-    //core->registerCapability( D_GLOBAL_TEMPEQ, getComponentName() );
+    core->registerCapability( D_GLOBAL_TEMPEQ, getComponentName() );
     
     // Register our dependencies
     core->registerDependency( D_RF_TOTAL, getComponentName() );
@@ -235,7 +234,10 @@ void TempDOECLIMComponent::prepareToRun() throw ( h_exception ) {
     
     
     // Initializing all model components that depend on the number of timesteps (ns)
-    ns = core->sendMessage( M_GETDATA, D_END_DATE ) - core->sendMessage( M_GETDATA, D_START_DATE ) + 1;
+    ns = core->getEndDate() - core->getStartDate() + 1;
+    if( ns > 1000 ){
+        H_THROW("TempDOECLIM: Number of years larger than hard-coded max (1000). Change in temp_doeclim_component.hpp")
+    }
     
     // Define and initialize intermediate parameters
     pi = 3.141592653589793;
@@ -517,8 +519,8 @@ void TempDOECLIMComponent::run( const double runToDate ) throw ( h_exception ) {
     }
 
     
-    //tgav = temp[tstep];
     tgav.set( temp[tstep], U_DEGC, 0.0 );
+    tgaveq.set( temp[tstep], U_DEGC, 0.0 );
     H_LOG( logger, Logger::DEBUG ) << " tgav=" << tgav << " in " << runToDate << std::endl;
 }
 
@@ -533,8 +535,8 @@ unitval TempDOECLIMComponent::getData( const std::string& varName,
     
     if( varName == D_GLOBAL_TEMP ) {
         returnval = tgav;
-    //} else if( varName == D_GLOBAL_TEMPEQ ) {
-    //    returnval = tgaveq;
+    } else if( varName == D_GLOBAL_TEMPEQ ) {
+        returnval = tgaveq;
     } else if( varName == D_DIFFUSIVITY ) {
         returnval = alpha;
     } else if( varName == D_ECS ) {
