@@ -91,7 +91,7 @@ void TempDOECLIMComponent::init( Core* coreptr ) {
     logger.open( getComponentName(), false, Logger::DEBUG );
     H_LOG( logger, Logger::DEBUG ) << "hello " << getComponentName() << std::endl;
     
-	//tgaveq.set( 0.0, U_DEGC, 0.0 );
+	tgaveq.set( 0.0, U_DEGC, 0.0 );
     tgav.set( 0.0, U_DEGC, 0.0 );
     core = coreptr;
     
@@ -174,7 +174,7 @@ void TempDOECLIMComponent::setData( const string& varName,
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
             S = unitval::parse_unitval( data.value_str, data.units_str, U_DEGC );
         } else if( varName == D_DIFFUSIVITY ) {
-            H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
+            H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
             alpha = unitval::parse_unitval( data.value_str, data.units_str, U_CM2_S );
         } else if( varName == D_TGAV_CONSTRAIN ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
@@ -250,7 +250,7 @@ void TempDOECLIMComponent::prepareToRun() throw ( h_exception ) {
     //double KTB2[ns];
     //double KTA3[ns];
     //double KTB3[ns];
-    
+
     //double Ker[ns];
     //double A[4];
     //double IB[4];
@@ -387,7 +387,6 @@ void TempDOECLIMComponent::prepareToRun() throw ( h_exception ) {
     //double heatflux_interior[ns];
     //double heat_mixed[ns];
     //double heat_interior[ns];
-    
 }
 
 
@@ -424,7 +423,8 @@ void TempDOECLIMComponent::run( const double runToDate ) throw ( h_exception ) {
     
     // Some needed inputs
     //double forcing = core->sendMessage( M_GETDATA, D_RF_TOTAL ).value( U_W_M2 );
-    int tstep = runToDate - core->sendMessage( M_GETDATA, D_START_DATE );
+    //int tstep = runToDate - core->sendMessage( M_GETDATA, D_START_DATE );
+    int tstep = runToDate - core->getStartDate();
     forcing[tstep] = double(core->sendMessage( M_GETDATA, D_RF_TOTAL ).value( U_W_M2 ));
     dt = 1; //Hector has a hard-coded time step of 1 year
     
