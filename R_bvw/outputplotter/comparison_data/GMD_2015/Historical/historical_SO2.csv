@@ -1,0 +1,25 @@
+# Historical SO2 record ,,,,,,
+# constructed using : Smith et al. through 1999,,,,,,
+# Klimont et al. from 2000-2011,,,,,,
+# Constant open burning emissions from 2000 - 2011,,,,,,
+Year,value,vtag,units,type,ctag,scenario
+1992,124770,SO2_emissions,Gg,observed,Forcing,historical
+1993,122657,SO2_emissions,Gg,observed,Forcing,historical
+1994,120543,SO2_emissions,Gg,observed,Forcing,historical
+1995,118311,SO2_emissions,Gg,observed,Forcing,historical
+1996,117804,SO2_emissions,Gg,observed,Forcing,historical
+1997,116703,SO2_emissions,Gg,observed,Forcing,historical
+1998,114790,SO2_emissions,Gg,observed,Forcing,historical
+1999,110752,SO2_emissions,Gg,observed,Forcing,historical
+2000,110425,SO2_emissions,Gg,observed,Forcing,historical
+2001,108731,SO2_emissions,Gg,observed,Forcing,historical
+2002,108097,SO2_emissions,Gg,observed,Forcing,historical
+2003,110944,SO2_emissions,Gg,observed,Forcing,historical
+2004,114584,SO2_emissions,Gg,observed,Forcing,historical
+2005,116005,SO2_emissions,Gg,observed,Forcing,historical
+2006,115887,SO2_emissions,Gg,observed,Forcing,historical
+2007,114739,SO2_emissions,Gg,observed,Forcing,historical
+2008,112351,SO2_emissions,Gg,observed,Forcing,historical
+2009,107799,SO2_emissions,Gg,observed,Forcing,historical
+2010,106726,SO2_emissions,Gg,observed,Forcing,historical
+2011,104701,SO2_emissions,Gg,observed,Forcing,historical

@@ -1,0 +1,25 @@
+#Hawaii Ocean Time-Series,,,,,,,
+#(2) ALOHA Station,,,,,,,
+#0 -100 m pH,,,,,,,
+Year,value,ctag,vtag,units,type,scenario,model
+1992,8.0955,ocean,ph_LL,U_PH,Observed,historical,HOTS
+1993,8.094142857,ocean,ph_LL,U_PH,Observed,historical,HOTS
+1994,8.101553191,ocean,ph_LL,U_PH,Observed,historical,HOTS
+1995,8.087835443,ocean,ph_LL,U_PH,Observed,historical,HOTS
+1996,8.0949875,ocean,ph_LL,U_PH,Observed,historical,HOTS
+1997,8.082925,ocean,ph_LL,U_PH,Observed,historical,HOTS
+1998,8.082384615,ocean,ph_LL,U_PH,Observed,historical,HOTS
+1999,NA,ocean,ph_LL,U_PH,Observed,historical,HOTS
+2000,NA,ocean,ph_LL,U_PH,Observed,historical,HOTS
+2001,NA,ocean,ph_LL,U_PH,Observed,historical,HOTS
+2002,NA,ocean,ph_LL,U_PH,Observed,historical,HOTS
+2003,8.082090909,ocean,ph_LL,U_PH,Observed,historical,HOTS
+2004,8.084511628,ocean,ph_LL,U_PH,Observed,historical,HOTS
+2005,8.084022222,ocean,ph_LL,U_PH,Observed,historical,HOTS
+2006,8.076020408,ocean,ph_LL,U_PH,Observed,historical,HOTS
+2007,8.081128205,ocean,ph_LL,U_PH,Observed,historical,HOTS
+2008,8.0736,ocean,ph_LL,U_PH,Observed,historical,HOTS
+2009,8.06565,ocean,ph_LL,U_PH,Observed,historical,HOTS
+2010,8.062725,ocean,ph_LL,U_PH,Observed,historical,HOTS
+2011,8.072088889,ocean,ph_LL,U_PH,Observed,historical,HOTS
+2012,8.061431818,ocean,ph_LL,U_PH,Observed,historical,HOTS

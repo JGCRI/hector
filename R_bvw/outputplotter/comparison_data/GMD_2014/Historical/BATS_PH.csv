@@ -1,0 +1,18 @@
+#Bermuda Atlantic Time Series,,,,,,,
+# surface values from ODV data sets,,,,,,,
+year,value,vtag,ctag,type,scenario,model,units
+1992,8.123473333,PH_LL,ocean,Observed,historical,BATS,U_PH
+1993,8.110631667,PH_LL,ocean,Observed,historical,BATS,U_PH
+1994,8.121494,PH_LL,ocean,Observed,historical,BATS,U_PH
+1995,8.111846667,PH_LL,ocean,Observed,historical,BATS,U_PH
+1996,8.105546667,PH_LL,ocean,Observed,historical,BATS,U_PH
+1997,8.107123077,PH_LL,ocean,Observed,historical,BATS,U_PH
+1998,8.08757,PH_LL,ocean,Observed,historical,BATS,U_PH
+1999,8.108839,PH_LL,ocean,Observed,historical,BATS,U_PH
+2000,8.109815,PH_LL,ocean,Observed,historical,BATS,U_PH
+2001,8.103787222,PH_LL,ocean,Observed,historical,BATS,U_PH
+2002,8.106296364,PH_LL,ocean,Observed,historical,BATS,U_PH
+2003,8.0763965,PH_LL,ocean,Observed,historical,BATS,U_PH
+2004,8.0893435,PH_LL,ocean,Observed,historical,BATS,U_PH
+2005,8.09519625,PH_LL,ocean,Observed,historical,BATS,U_PH
+2006,8.097756667,PH_LL,ocean,Observed,historical,BATS,U_PH
