@@ -51,7 +51,7 @@ string TempDOECLIMComponent::getComponentName() const {
 //------------------------------------------------------------------------------
 /*! \brief              Calculates inverse of x and stores in y
  *  \param[in] x        Assume x is setup like x = [a,b,c,d] -> x = |a, b|
- *                                                                   |c, d|
+ *                                                                  |c, d|
  *  \param[in] y        Inverted 1-d matrix
  *  \returns            void, inverse is stored in y
  */
@@ -240,7 +240,8 @@ void TempDOECLIMComponent::prepareToRun() throw ( h_exception ) {
     }
     
     // Define and initialize intermediate parameters
-    pi = 3.141592653589793;
+    //pi = 3.141592653589793;
+    //pi = M_PI;
     //double B[4] = {0.0, 0.0, 0.0, 0.0};
     //double C[4] = {0.0, 0.0, 0.0, 0.0};
     //double KT0[ns];
@@ -254,6 +255,25 @@ void TempDOECLIMComponent::prepareToRun() throw ( h_exception ) {
     //double Ker[ns];
     //double A[4];
     //double IB[4];
+    
+    KT0.resize(ns);
+    KTA1.resize(ns);
+    KTB1.resize(ns);
+    KTA2.resize(ns);
+    KTB2.resize(ns);
+    KTA3.resize(ns);
+    KTB3.resize(ns);
+    
+    Ker.resize(ns);
+    
+    temp.resize(ns);
+    temp_landair.resize(ns);
+    temp_sst.resize(ns);
+    heatflux_mixed.resize(ns);
+    heatflux_interior.resize(ns);
+    heat_mixed.resize(ns);
+    heat_interior.resize(ns);
+    forcing.resize(ns);
     
     for(int i=0; i<3; i++) {
         B[i] = 0.0;
@@ -294,22 +314,22 @@ void TempDOECLIMComponent::prepareToRun() throw ( h_exception ) {
     powtoheat = ocean_area * secs_per_Year / pow(10.0,22);
     taucfs = cas / cfs;
     taucfl = cal / cfl;
-    taudif = pow(cas,2) / pow(csw,2) * pi / keff;
+    taudif = pow(cas,2) / pow(csw,2) * M_PI / keff;
     tauksl  = (1.0 - flnd) * cas / kls;
     taukls  = flnd * cal / kls;
     
     // First order
     KT0[ns-1] = 4.0 - 2.0 * pow(2.0, 0.5);
     KTA1[ns-1] = -8.0 * exp(-taubot / double(dt)) + 4.0 * pow(2.0, 0.5) * exp(-0.5 * taubot / double(dt));
-    KTB1[ns-1] = 4.0 * pow((pi * taubot / double(dt)), 0.5) * (1.0 + erf(pow(0.5 * taubot / double(dt), 0.5)) - 2.0 * erf(pow(taubot / double(dt), 0.5)));
+    KTB1[ns-1] = 4.0 * pow((M_PI * taubot / double(dt)), 0.5) * (1.0 + erf(pow(0.5 * taubot / double(dt), 0.5)) - 2.0 * erf(pow(taubot / double(dt), 0.5)));
     
     // Second order
     KTA2[ns-1] =  8.0 * exp(-4.0 * taubot / double(dt)) - 4.0 * pow(2.0, 0.5) * exp(-2.0 * taubot / double(dt));
-    KTB2[ns-1] = -8.0 * pow((pi * taubot / double(dt)), 0.5) * (1.0 + erf(pow((2.0 * taubot / double(dt)), 0.5)) - 2.0 * erf(2.0 * pow((taubot / double(dt)), 0.5)) );
+    KTB2[ns-1] = -8.0 * pow((M_PI * taubot / double(dt)), 0.5) * (1.0 + erf(pow((2.0 * taubot / double(dt)), 0.5)) - 2.0 * erf(2.0 * pow((taubot / double(dt)), 0.5)) );
     
     // Third order
     KTA3[ns-1] = -8.0 * exp(-9.0 * taubot / double(dt)) + 4.0 * pow(2.0, 0.5) * exp(-4.5 * taubot / double(dt));
-    KTB3[ns-1] = 12.0 * pow((pi * taubot / double(dt)), 0.5) * (1.0 + erf(pow((4.5 * taubot / double(dt)), 0.5)) - 2.0 * erf(3.0 * pow((taubot / double(dt)), 0.5)) );
+    KTB3[ns-1] = 12.0 * pow((M_PI * taubot / double(dt)), 0.5) * (1.0 + erf(pow((4.5 * taubot / double(dt)), 0.5)) - 2.0 * erf(3.0 * pow((taubot / double(dt)), 0.5)) );
     
     // Calculate the kernel component vectors
     for(int i=0; i<(ns-1); i++) {
@@ -317,15 +337,15 @@ void TempDOECLIMComponent::prepareToRun() throw ( h_exception ) {
         // First order
         KT0[i] = 4.0 * pow((double(ns-i)), 0.5) - 2.0 * pow((double(ns+1-i)), 0.5) - 2.0 * pow(double(ns-1-i), 0.5);
         KTA1[i] = -8.0 * pow(double(ns-i), 0.5) * exp(-taubot / double(dt) / double(ns-i)) + 4.0 * pow(double(ns+1-i), 0.5) * exp(-taubot / double(dt) / double(ns+1-i)) + 4.0 * pow(double(ns-1-i), 0.5) * exp(-taubot/double(dt) / double(ns-1-i));
-        KTB1[i] =  4.0 * pow((pi * taubot / double(dt)), 0.5) * ( erf(pow((taubot / double(dt) / double(ns-1-i)), 0.5)) + erf(pow((taubot / double(dt) / double(ns+1-i)), 0.5)) - 2.0 * erf(pow((taubot / double(dt) / double(ns-i)), 0.5)) );
+        KTB1[i] =  4.0 * pow((M_PI * taubot / double(dt)), 0.5) * ( erf(pow((taubot / double(dt) / double(ns-1-i)), 0.5)) + erf(pow((taubot / double(dt) / double(ns+1-i)), 0.5)) - 2.0 * erf(pow((taubot / double(dt) / double(ns-i)), 0.5)) );
         
         // Second order
         KTA2[i] =  8.0 * pow(double(ns-i), 0.5) * exp(-4.0 * taubot / double(dt) / double(ns-i)) - 4.0 * pow(double(ns+1-i), 0.5) * exp(-4.0 * taubot / double(dt) / double(ns+1-i)) - 4.0 * pow(double(ns-1-i), 0.5) * exp(-4.0 * taubot / double(dt) / double(ns-1-i));
-        KTB2[i] = -8.0 * pow((pi * taubot / double(dt)), 0.5) * ( erf(2.0 * pow((taubot / double(dt) / double(ns-1-i)), 0.5)) + erf(2.0 * pow((taubot / double(dt) / double(ns+1-i)), 0.5)) - 2.0 * erf(2.0 * pow((taubot / double(dt) / double(ns-i)), 0.5)) );
+        KTB2[i] = -8.0 * pow((M_PI * taubot / double(dt)), 0.5) * ( erf(2.0 * pow((taubot / double(dt) / double(ns-1-i)), 0.5)) + erf(2.0 * pow((taubot / double(dt) / double(ns+1-i)), 0.5)) - 2.0 * erf(2.0 * pow((taubot / double(dt) / double(ns-i)), 0.5)) );
         
         // Third order
         KTA3[i] = -8.0 * pow(double(ns-i), 0.5) * exp(-9.0 * taubot / double(dt) / double(ns-i)) + 4.0 * pow(double(ns+1-i), 0.5) * exp(-9.0 * taubot / double(dt) / double(ns+1-i)) + 4.0 * pow(double(ns-1-i), 0.5) * exp(-9.0 * taubot / double(dt) / double(ns-1-i));
-        KTB3[i] = 12.0 * pow((pi * taubot / double(dt)), 0.5) * ( erf(3.0 * pow((taubot / double(dt) / double(ns-1-i)), 0.5)) + erf(3.0 * pow((taubot / double(dt) / double(ns+1-i)), 0.5)) - 2.0 * erf(3.0 * pow((taubot / double(dt) / double(ns-i)), 0.5)) );
+        KTB3[i] = 12.0 * pow((M_PI * taubot / double(dt)), 0.5) * ( erf(3.0 * pow((taubot / double(dt) / double(ns-1-i)), 0.5)) + erf(3.0 * pow((taubot / double(dt) / double(ns+1-i)), 0.5)) - 2.0 * erf(3.0 * pow((taubot / double(dt) / double(ns-i)), 0.5)) );
     }
     
     // Sum up the kernel components
@@ -453,10 +473,12 @@ void TempDOECLIMComponent::run( const double runToDate ) throw ( h_exception ) {
     heatflux_interior[tstep] = 0.0;
     
     // Assume land and ocean forcings are equal to global forcing
-    double *QL = forcing;
-    double *QO = forcing;
+    //double *QL = forcing;
+    //double *QO = forcing;
     //double QL = forcing;
     //double QO = forcing;
+    std::vector<double> QL = forcing;
+    std::vector<double> QO = forcing;
     
     if (tstep > 0) {
         

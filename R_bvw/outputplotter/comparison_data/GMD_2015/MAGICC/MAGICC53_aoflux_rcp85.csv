@@ -1,0 +1,25 @@
+#MAGICC 5.3,,,,,,,
+#3 climate sensitivity for RCP 4.5,,,,,,,
+Year,value,ctag,vtag,type,scenario,units,model
+1990,2.24,ocean,atm_ocean_flux,Simulated,rcp85,Pg C/yr,MAGICC 5.3
+1995,2.33121,ocean,atm_ocean_flux,Simulated,rcp85,Pg C/yr,MAGICC 5.3
+2000,2.47924,ocean,atm_ocean_flux,Simulated,rcp85,Pg C/yr,MAGICC 5.3
+2005,2.67979,ocean,atm_ocean_flux,Simulated,rcp85,Pg C/yr,MAGICC 5.3
+2010,2.93349,ocean,atm_ocean_flux,Simulated,rcp85,Pg C/yr,MAGICC 5.3
+2015,3.20421,ocean,atm_ocean_flux,Simulated,rcp85,Pg C/yr,MAGICC 5.3
+2020,3.57009,ocean,atm_ocean_flux,Simulated,rcp85,Pg C/yr,MAGICC 5.3
+2025,3.98049,ocean,atm_ocean_flux,Simulated,rcp85,Pg C/yr,MAGICC 5.3
+2030,4.40974,ocean,atm_ocean_flux,Simulated,rcp85,Pg C/yr,MAGICC 5.3
+2035,4.87384,ocean,atm_ocean_flux,Simulated,rcp85,Pg C/yr,MAGICC 5.3
+2040,5.34899,ocean,atm_ocean_flux,Simulated,rcp85,Pg C/yr,MAGICC 5.3
+2045,5.8163,ocean,atm_ocean_flux,Simulated,rcp85,Pg C/yr,MAGICC 5.3
+2050,6.29892,ocean,atm_ocean_flux,Simulated,rcp85,Pg C/yr,MAGICC 5.3
+2055,6.77887,ocean,atm_ocean_flux,Simulated,rcp85,Pg C/yr,MAGICC 5.3
+2060,7.2441,ocean,atm_ocean_flux,Simulated,rcp85,Pg C/yr,MAGICC 5.3
+2065,7.66882,ocean,atm_ocean_flux,Simulated,rcp85,Pg C/yr,MAGICC 5.3
+2070,8.03235,ocean,atm_ocean_flux,Simulated,rcp85,Pg C/yr,MAGICC 5.3
+2075,8.33935,ocean,atm_ocean_flux,Simulated,rcp85,Pg C/yr,MAGICC 5.3
+2080,8.5742,ocean,atm_ocean_flux,Simulated,rcp85,Pg C/yr,MAGICC 5.3
+2085,8.75353,ocean,atm_ocean_flux,Simulated,rcp85,Pg C/yr,MAGICC 5.3
+2090,8.8713,ocean,atm_ocean_flux,Simulated,rcp85,Pg C/yr,MAGICC 5.3
+2095,8.94463,ocean,atm_ocean_flux,Simulated,rcp85,Pg C/yr,MAGICC 5.3

@@ -1,0 +1,39 @@
+Look up table for post-processed CMIP5 data.  Created by BBL and CH September 2013,,,,,,,,
+compatible Hector format and unit conversion,,,,,,,,
+"Note the script skips first three lines, so table needs to start in line 4!",,,,,,,,
+variable,ctag,vtag,units,Hector_units,conversion_factor,lower_bound,upper_bound,Notes
+dissic,ocean,dic,mol m-3,umol/kg,/1030 * 1e6,1000,3000,divide by density of seawater
+dissic_HL,ocean,dic_HL,mol m-3,umol/kg,/1030 * 1e6,1000,3000,divide by density of seawater
+dissic_LL,ocean,dic_LL,mol m-3,umol/kg,/1030 * 1e6,1000,3000,divide by density of seawater
+fgco2,ocean,fgco2,kg m-2 s-1,PgC/yr,*area*1e3/1e15*60*60*24*365,-30,30,"multiple by area, seconds in 1 year, convert to Pg"
+co3,ocean,co3,mol m-3,mol/kg,/1030,,,divide by density of seawater
+co3_HL,ocean,co3_HL,mol m-3,mol/kg,/1030,,,divide by density of seawater
+co3_LL,ocean,co3_LL,mol m-3,mol/kg,/1030,,,divide by density of seawater
+spco2,ocean,pco2,Pa,uatm,/0.101325,,,divide by STP
+spco2_HL,ocean,pco2_hl,Pa,uatm,/0.101325,,,divide by STP
+spco2_LL,ocean,pco2_ll,Pa,uatm,/0.101325,,,divide by STP
+tos,ocean,temp,K,K,*1,,,
+tos_HL,ocean,temp_HL,K,K,*1,,,
+tos_LL,ocean,temp_LL,K,K,*1,,,
+sos,ocean,sos,psu,psu,*1,,,
+sos_HL,ocean,sos_HL,psu,psu,*1,,,
+sos_LL,ocean,sos_LL,psu,psu,*1,,,
+ph,ocean,ph,1,1,*1,5,10,1 for units is what the esg_data.R script pulls out as units for ph
+ph_HL,ocean,ph_HL,1,1,*1,5,10,1 for units is what the esg_data.R script pulls out as units for ph
+ph_LL,ocean,ph_LL,1,1,*1,5,10,1 for units is what the esg_data.R script pulls out as units for ph
+hfds,ocean,heatflux,W m-2,W/m2,*1,,,
+calc,ocean,calc,mol m-3,umol/kg,/1030 * 1e6,,,
+arag,ocean,arag,mol m-3,umol/kg,/1030 * 1e6,,,
+amoc,ocean,amoc,kg s-1,m3/s,/1030,,,divide by density of seawater
+omegaAr,ocean,omegaAr,unitless,unitless,*1,,,
+omegaCa,ocean,omegaCa,unitless,unitless,*1,,,
+tas,temperature,tgav,K,C,-273.15,,,convert to degrees C
+rh,carbon_cycle,rh,kg m-2 s-1,PgC/yr,*area*1e3/1e15*60*60*24*365,,,"multiple by area, seconds in 1 year, convert to Pg"
+nbp,carbon_cycle,nbp,kg m-2 s-1,PgC/yr,*area*1e3/1e15*60*60*24*365,-20,20,
+cSoil,carbon_cycle,soil_c,kg m-2,PgC,*area*1e3/1e15,,,"multiple by area, convert to Pg"
+fluc,carbon_cycle,fluc,kg m-2 s-1,,*area*1e3/1e15*60*60*24*365,,,"multiple by area, seconds in 1 year, convert to Pg"
+npp,carbon_cycle,npp,kg m-2 s-1,PgC/yr,*area*1e3/1e15*60*60*24*365,,,"multiple by area, seconds in 1 year, convert to Pg"
+atm_land_flux,carbon_cycle,nbp,kg m-2 s-1,PgC/yr,*area*1e3/1e15*60*60*24*365,,,"multiple by area, seconds in 1 year, convert to Pg"
+zosga,slr,slr,m,cm,*100,,,
+pr,atmosphere,pr,kg m-2 s-1,mm,*60*60*24*365,,,seconds in 1 year
+co2,carbon_cycle,atmos_co2,1.00E-06,ppmv CO2,*1,,,
