@@ -98,34 +98,9 @@ void TempDOECLIMComponent::init( Core* coreptr ) {
     tgav_constrain.allowInterp( true );
     tgav_constrain.name = D_TGAV_CONSTRAIN;
     
-        //FCO2_record.allowInterp( true );
-    
     // Define the doeclim parameters
     alpha.set( 0.55, U_CM2_S );  // default ocean heat diffusivity, cm2/s. value is CDICE default (varname is kappa there).
     S.set( 3.0, U_DEGC );         // default climate sensitivity, K (varname is t2co in CDICE).
-    
-    //const double dt = 1;          // years per timestep (this is hard-coded into Hector)
-
-    //const double ak = 0.31;      // slope in climate feedback - land-sea heat exchange linear relationship
-    //const double bk = 1.59;      // offset in climate feedback - land-sea heat exchange linear relationship, W/m2/K
-    //const double csw = 0.13;     // specific heat capacity of seawater W*yr/m3/K
-    //const double earth_area = 5100656 * pow(10.0, 8);
-    //const double kcon = 3155.0;  // adiative forcing for atmospheric CO2 doubling, W/m2
-    //const double q2co = 3.7;     // radiative forcing for atmospheric CO2 doubling, W/m2
-    //const double rlam = 1.43;    // factor between land clim. sens. and sea surface clim. sens. T_L2x = rlam*T_S2x
-    //const double secs_per_Year = 31556926.0;
-    //const double zbot = 4000.0;  // bottom depth of diffusive ocean, m
-    //*bsi = 1.3;                  // warming factor for marine surface air over SST (due to retreating sea ice)
-    //*cal = 0.52;                 // heat capacity of land-troposphere system, W*yr/m2/K
-    //*cas = 7.80;                 // heat capacity of mixed layer-troposphere system, W*yr/m2/K
-    //*flnd = 0.29;                // fractional land area
-    //*fso = 0.95;                 // ocean fractional area below 60m
-    //double bsi = 1.3;                  // warming factor for marine surface air over SST (due to retreating sea ice)
-    //double cal = 0.52;                 // heat capacity of land-troposphere system, W*yr/m2/K
-    //double cas = 7.80;                 // heat capacity of mixed layer-troposphere system, W*yr/m2/K
-    //double flnd = 0.29;                // fractional land area
-    //double fso = 0.95;                 // ocean fractional area below 60m
-
 
     // Register the data we can provide
     core->registerCapability( D_GLOBAL_TEMP, getComponentName() );
@@ -179,18 +154,6 @@ void TempDOECLIMComponent::setData( const string& varName,
         } else if( varName == D_TGAV_CONSTRAIN ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
             tgav_constrain.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_DEGC ) );
-        //} else if( varName == D_SO2I_B ) {
-          //  H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-        //    so2i_b = unitval::parse_unitval( data.value_str, data.units_str, U_UNITLESS );
-        //} else if( varName == D_SO2D_B ) {
-         //   H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-          //  so2d_b = unitval::parse_unitval( data.value_str, data.units_str, U_UNITLESS );
-        //} else if( varName == D_OC_B ) {
-         //   H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-          //  oc_b = unitval::parse_unitval( data.value_str, data.units_str, U_UNITLESS );
-        //} else if( varName == D_BC_B ) {
-         //   H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-          //  bc_b = unitval::parse_unitval( data.value_str, data.units_str, U_UNITLESS );
         } else {
             H_THROW( "Unknown variable name while parsing " + getComponentName() + ": "
                     + varName );
@@ -215,8 +178,7 @@ void TempDOECLIMComponent::prepareToRun() throw ( h_exception ) {
         H_LOG( glog, Logger::WARNING ) << "Temperature will be overwritten by user-supplied values!" << std::endl;
     }
     
-    //const double dt = 1;          // years per timestep (this is hard-coded into Hector)
-    dt = 1;
+    dt = 1;         // years per timestep (this is hard-coded into Hector
     ak = 0.31;      // slope in climate feedback - land-sea heat exchange linear relationship
     bk = 1.59;      // offset in climate feedback - land-sea heat exchange linear relationship, W/m2/K
     csw = 0.13;     // specific heat capacity of seawater W*yr/m3/K
@@ -235,26 +197,6 @@ void TempDOECLIMComponent::prepareToRun() throw ( h_exception ) {
     
     // Initializing all model components that depend on the number of timesteps (ns)
     ns = core->getEndDate() - core->getStartDate() + 1;
-    if( ns > 1000 ){
-        H_THROW("TempDOECLIM: Number of years larger than hard-coded max (1000). Change in temp_doeclim_component.hpp")
-    }
-    
-    // Define and initialize intermediate parameters
-    //pi = 3.141592653589793;
-    //pi = M_PI;
-    //double B[4] = {0.0, 0.0, 0.0, 0.0};
-    //double C[4] = {0.0, 0.0, 0.0, 0.0};
-    //double KT0[ns];
-    //double KTA1[ns];
-    //double KTB1[ns];
-    //double KTA2[ns];
-    //double KTB2[ns];
-    //double KTA3[ns];
-    //double KTB3[ns];
-
-    //double Ker[ns];
-    //double A[4];
-    //double IB[4];
     
     KT0.resize(ns);
     KTA1.resize(ns);
@@ -291,26 +233,14 @@ void TempDOECLIMComponent::prepareToRun() throw ( h_exception ) {
     }
     
     // Dependent Model Parameters
-    //double ocean_area = (1.0 - *flnd) * earth_area;
     ocean_area = (1.0 - flnd) * earth_area;
-    //double cnum = rlam * *flnd + *bsi * (1.0 - *flnd);
     cnum = rlam * flnd + bsi * (1.0 - flnd);
-    //double cden = rlam * *flnd - ak * (rlam - *bsi);
     cden = rlam * flnd - ak * (rlam - bsi);
-    //double cfl = *flnd * cnum / cden * q2co / K - bk * (rlam - *bsi) / cden;
     cfl = flnd * cnum / cden * q2co / S - bk * (rlam - bsi) / cden;
-    //double cfs = (rlam * *flnd - ak / (1.0 - *flnd) * (rlam - *bsi)) * cnum / cden * q2co / K + rlam * *flnd / (1.0 - *flnd) * bk * (rlam - *bsi) / cden;
     cfs = (rlam * flnd - ak / (1.0 - flnd) * (rlam - bsi)) * cnum / cden * q2co / S + rlam * flnd / (1.0 - flnd) * bk * (rlam - bsi) / cden;
-    //double kls = bk * rlam * *flnd / cden - ak * *flnd * cnum / cden * q2co / K;
     kls = bk * rlam * flnd / cden - ak * flnd * cnum / cden * q2co / S;
     keff = kcon * alpha;
     taubot = pow(zbot,2) / keff;
-    // *powtoheat = ocean_area * secs_per_Year / pow(10.0,22);
-    // *taucfs = *cas / cfs;
-    // *taucfl = *cal / cfl;
-    // *taudif = pow(*cas,2) / pow(csw,2) * pi / keff;
-    // *tauksl  = (1.0 - *flnd) * *cas / kls;
-    // *taukls  = *flnd * *cal / kls;
     powtoheat = ocean_area * secs_per_Year / pow(10.0,22);
     taucfs = cas / cfs;
     taucfl = cal / cfl;
@@ -356,10 +286,6 @@ void TempDOECLIMComponent::prepareToRun() throw ( h_exception ) {
     }
     
     // Switched on (To switch off, comment out lines below)
-    //C[0] = 1.0 / pow(*taucfl, 2.0) + 1.0 / pow(*taukls, 2.0) + 2.0 / *taucfl / *taukls + *bsi / *taukls / *tauksl;
-    //C[1] = -1 * *bsi / pow(*taukls, 2.0) - *bsi / *taucfl / *taukls - *bsi / *taucfs / *taukls - pow(*bsi, 2.0) / *taukls / *tauksl;
-    //C[2] = -1 * *bsi / pow(*tauksl, 2.0) - 1.0 / *taucfs / *tauksl - 1.0 / *taucfl / *tauksl -1.0 / *taukls / *tauksl;
-    //C[3] = 1.0 / pow(*taucfs, 2.0) + pow(*bsi, 2.0) / pow(*tauksl, 2.0) + 2.0 * *bsi / *taucfs / *tauksl + *bsi / *taukls / *tauksl;
     C[0] = 1.0 / pow(taucfl, 2.0) + 1.0 / pow(taukls, 2.0) + 2.0 / taucfl / taukls + bsi / taukls / tauksl;
     C[1] = -1 * bsi / pow(taukls, 2.0) - bsi / taucfl / taukls - bsi / taucfs / taukls - pow(bsi, 2.0) / taukls / tauksl;
     C[2] = -1 * bsi / pow(tauksl, 2.0) - 1.0 / taucfs / tauksl - 1.0 / taucfl / tauksl -1.0 / taukls / tauksl;
@@ -372,16 +298,6 @@ void TempDOECLIMComponent::prepareToRun() throw ( h_exception ) {
     // Matrices of difference equation system B*T(i+1) = Q(i) + A*T(i)
     // T = (TL,TO)
     // (Equation A.27, EK05, or Equations 2.3.24 and 2.3.27, TK07)
-    //B[0] = 1.0 + double(dt) / (2.0 * *taucfl) + double(dt) / (2.0 * *taukls);
-    //B[1] = double(-dt) / (2.0 * *taukls) * *bsi;
-    //B[2] = double(-dt) / (2.0 * *tauksl);
-    //B[3] = 1.0 + double(dt) / (2.0 * *taucfs) + double(dt) / (2.0 * *tauksl) * *bsi + 2.0 * *fso * pow((double(dt) / *taudif), 0.5);
-    
-    //A[0] = 1.0 - double(dt) / (2.0 * *taucfl) - double(dt) / (2.0 * *taukls);
-    //A[1] = double(dt) / (2.0 * *taukls) * *bsi;
-    //A[2] = double(dt) / (2.0 * *tauksl);
-    //A[3] = 1.0 - double(dt) / (2.0 * *taucfs) - double(dt) / (2.0 * *tauksl) * *bsi + Ker[ns-1] * *fso * pow((double(dt) / *taudif), 0.5);
-    
     B[0] = 1.0 + double(dt) / (2.0 * taucfl) + double(dt) / (2.0 * taukls);
     B[1] = double(-dt) / (2.0 * taukls) * bsi;
     B[2] = double(-dt) / (2.0 * tauksl);
@@ -398,15 +314,6 @@ void TempDOECLIMComponent::prepareToRun() throw ( h_exception ) {
     
     // Calculate the inverse of B
     invert_1d_2x2_matrix(B, IB);
-    
-    // Initializing the time-series that will be used in DOECLIM (because these arrays are updated as DOECLIM runs, not sure if that is OK!!!!)
-    //double temp[ns];
-    //double temp_landair[ns];
-    //double temp_sst[ns];
-    //double heatflux_mixed[ns];
-    //double heatflux_interior[ns];
-    //double heat_mixed[ns];
-    //double heat_interior[ns];
 }
 
 
@@ -414,7 +321,10 @@ void TempDOECLIMComponent::prepareToRun() throw ( h_exception ) {
 // documentation is inherited
 void TempDOECLIMComponent::run( const double runToDate ) throw ( h_exception ) {
     H_LOG( logger, Logger::DEBUG ) << "DOECLIM run " << runToDate << std::endl;
-    // *Note* Currently ignoring possibility of specified temperature. This component can't handle that ATM!
+    
+    // Commented section below is for case of user-specified temperature record.
+    // TempDOECLIM component can't handle that at the moment!
+    
     //// We track total radiative forcing using internal variable `internal_Ftot`
     //// Need to do this because if we're subject to a user constraint (being forced
     //// to match a temperature record), need to track the Ftot that *would* have
@@ -441,15 +351,11 @@ void TempDOECLIMComponent::run( const double runToDate ) throw ( h_exception ) {
     //    // internal tracking variables `internal_Ftot` (parallels Ftot, may
     //    // be identical if never had a constraint) and `last_Ftot`.
     
+    
+    
     // Some needed inputs
-    //double forcing = core->sendMessage( M_GETDATA, D_RF_TOTAL ).value( U_W_M2 );
-    //int tstep = runToDate - core->sendMessage( M_GETDATA, D_START_DATE );
     int tstep = runToDate - core->getStartDate();
     forcing[tstep] = double(core->sendMessage( M_GETDATA, D_RF_TOTAL ).value( U_W_M2 ));
-    dt = 1; //Hector has a hard-coded time step of 1 year
-    
-    //ignoring the FCO2 lag that's in the original temperature_component.cpp, diffusion should solve?
-
     
     // Initialize variables for time-stepping through the model
     double DQ1 = 0.0;
@@ -473,10 +379,6 @@ void TempDOECLIMComponent::run( const double runToDate ) throw ( h_exception ) {
     heatflux_interior[tstep] = 0.0;
     
     // Assume land and ocean forcings are equal to global forcing
-    //double *QL = forcing;
-    //double *QO = forcing;
-    //double QL = forcing;
-    //double QO = forcing;
     std::vector<double> QL = forcing;
     std::vector<double> QO = forcing;
     
