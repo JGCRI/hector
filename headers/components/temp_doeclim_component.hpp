@@ -86,15 +86,24 @@ private:
     double B[4];
     double C[4];
 
-    double KT0[1000];        // Currently hard-coded max number of time steps (max ns)... I'm sure there's a better way
-    double KTA1[1000];
-    double KTB1[1000];
-    double KTA2[1000];
-    double KTB2[1000];
-    double KTA3[1000];
-    double KTB3[1000];
+    std::vector<double> KT0;
+    std::vector<double> KTA1;
+    std::vector<double> KTB1;
+    std::vector<double> KTA2;
+    std::vector<double> KTB2;
+    std::vector<double> KTA3;
+    std::vector<double> KTB3;
     
-    double Ker[1000];
+    std::vector<double> Ker;
+    //double KT0[1000];        // Currently hard-coded max number of time steps (max ns)... I'm sure there's a better way
+    //double KTA1[1000];
+    //double KTB1[1000];
+    //double KTA2[1000];
+    //double KTB2[1000];
+    //double KTA3[1000];
+    //double KTB3[1000];
+    
+    //double Ker[1000];
     double A[4];
     double IB[4];
     
@@ -115,14 +124,22 @@ private:
     double taukls;
     
     //Time series arrays that are updated w/ each DOECLIM run, again using hard-coded max ns.
-    double temp[1000];
-    double temp_landair[1000];
-    double temp_sst[1000];
-    double heatflux_mixed[1000];
-    double heatflux_interior[1000];
-    double heat_mixed[1000];
-    double heat_interior[1000];
-    double forcing[1000];
+    std::vector<double> temp;
+    std::vector<double> temp_landair;
+    std::vector<double> temp_sst;
+    std::vector<double> heatflux_mixed;
+    std::vector<double> heatflux_interior;
+    std::vector<double> heat_mixed;
+    std::vector<double> heat_interior;
+    std::vector<double> forcing;
+    //double temp[1000];
+    //double temp_landair[1000];
+    //double temp_sst[1000];
+    //double heatflux_mixed[1000];
+    //double heatflux_interior[1000];
+    //double heat_mixed[1000];
+    //double heat_interior[1000];
+    //double forcing[1000];
     
 	unitval tgav;          //!< global temperature delta, deg C
     unitval tgaveq;        //!< equilibrium temp without ocean heat flux, currently set = tgav
