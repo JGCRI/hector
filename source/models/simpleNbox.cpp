@@ -67,8 +67,8 @@ void SimpleNbox::init( Core* coreptr ) {
     core->registerDependency( D_OCEAN_CFLUX, getComponentName() );
 
     // Register the inputs we can receive from outside
-    core->registerInput(D_ANTHRO_EMISSIONS, getComponentName());
-    core->registerInput(D_LUC_EMISSIONS, getComponentName());
+    core->registerInput( D_ANTHRO_EMISSIONS, getComponentName() );
+    core->registerInput( D_LUC_EMISSIONS, getComponentName() );
 }
 
 //------------------------------------------------------------------------------
@@ -578,9 +578,11 @@ void SimpleNbox::stashCValues( double t, const double c[] )
         H_LOG( logger,Logger::DEBUG ) << t << "- have " << Ca << " want " << Ca_constrain.get( t ).value( U_PPMV_CO2 ) << std::endl;
         H_LOG( logger,Logger::DEBUG ) << t << "- have " << atmos_c << " want " << atmos_cpool_to_match << "; residual = " << residual << std::endl;
         
+        // Transfer C from atmosphere to deep ocean and update our C and Ca variables
         H_LOG( logger,Logger::DEBUG ) << "Sending residual of " << residual << " to deep ocean" << std::endl;
-        core->sendMessage( M_DUMP_TO_DEEP_OCEAN, D_OCEAN_C, message_data( residual ) );     // update ocean pool
+        core->sendMessage( M_DUMP_TO_DEEP_OCEAN, D_OCEAN_C, message_data( residual ) );
         atmos_c = atmos_c - residual;
+        Ca.set( atmos_c.value( U_PGC ) * PGC_TO_PPMVCO2, U_PPMV_CO2 );
     } else {
         residual.set( 0.0, U_PGC );
     }

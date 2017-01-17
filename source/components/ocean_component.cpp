@@ -101,10 +101,10 @@ unitval OceanComponent::sendMessage( const std::string& message,
 {
     unitval returnval;
     
-    if( message==M_GETDATA ) {          //! Caller is requesting data
+    if( message == M_GETDATA ) {          //! Caller is requesting data
         return getData( datum, info.date );
         
-    } else if( message==M_SETDATA ) {   //! Caller is requesting to set data
+    } else if( message == M_SETDATA ) {   //! Caller is requesting to set data
         H_THROW("Ocean sendMessage not yet implemented for message=M_SETDATA.");
         //TODO: call setData below
         //TODO: change core so that parsing is routed through sendMessage
