@@ -12,6 +12,7 @@ fi
 
 HECTOR=$1
 
+
 # Run the basic RCPs
 $HECTOR input/hector_rcp26.ini
 $HECTOR input/hector_rcp45.ini
@@ -24,6 +25,11 @@ $HECTOR input/hector_rcp45_time.ini
 sed 's/endDate=2300/endDate=2250/' input/hector_rcp45.ini > input/hector_rcp45_time.ini
 $HECTOR input/hector_rcp45_time.ini
 rm input/hector_rcp45_time.ini
+
+# Turn off spinup
+sed 's/do_spinup=1/do_spinup=0/' input/hector_rcp45.ini > input/hector_rcp45_spinup.ini
+$HECTOR input/hector_rcp45_spinup.ini
+rm input/hector_rcp45_spinup.ini
 
 # Turn on the constraint settings one by one and run the model
 # CO2
