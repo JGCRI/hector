@@ -2,6 +2,7 @@
 
 # Run Hector through a bunch of tests
 # Intended for Travis-CI, but can be used locally too
+# BBL January 17, 2017
 
 if [ $# -eq 0 ]
   then
@@ -16,6 +17,13 @@ $HECTOR input/hector_rcp26.ini
 $HECTOR input/hector_rcp45.ini
 $HECTOR input/hector_rcp60.ini
 $HECTOR input/hector_rcp85.ini
+
+# Make sure the model handles year changes
+sed 's/startDate=1745/startDate=1740/' input/hector_rcp45.ini > input/hector_rcp45_time.ini
+$HECTOR input/hector_rcp45_time.ini
+sed 's/endDate=2300/endDate=2250/' input/hector_rcp45.ini > input/hector_rcp45_time.ini
+$HECTOR input/hector_rcp45_time.ini
+rm input/hector_rcp45_time.ini
 
 # Turn on the constraint settings one by one and run the model
 # CO2
