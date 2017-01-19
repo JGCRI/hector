@@ -394,7 +394,6 @@ struct FMinWrapper {
 //------------------------------------------------------------------------------
 /*! \brief                  Equilibrate the chemistry model to a given flux
  *  \param[in] Ca           Atmospheric CO2 (ppmv)
- *  \param[in] Tgav         Mean global air temperature, change from preindustrial
  *
  *  \details The global carbon cycle can be spun up with ocean chemistry either
  *  on or off. In the former case, the ocean continually equilibrates with the
@@ -404,11 +403,14 @@ struct FMinWrapper {
  *  carbon should be in the preindustrial ocean. Before chemistry is re-enabled
  *  for the main run, however, we need to adjust ocean conditions (alkalinity)
  *  such that the chemistry model will produce the specified spinup-condition
- *  fluxes. That's what this method does.
+ *  fluxes. That's what this method does. Note that we pass in current CO2 because
+ *  in case the model was NOT spun up, need to set the box's internal tracking var.
  */
-void oceanbox::chem_equilibrate() {
+void oceanbox::chem_equilibrate( const unitval current_Ca ) {
     
 	using namespace std;
+    
+    Ca = current_Ca;
     
 	H_ASSERT( active_chemistry, "chemistry not turned on" );
 	OB_LOG( logger, Logger::DEBUG) << "Equilibrating chemistry for box " << Name << endl;
@@ -430,7 +432,6 @@ void oceanbox::chem_equilibrate() {
 	double alk_min = 2100e-6, alk_max = 2750e-6;
 	double alk = ( alk_min + alk_max ) / 2;
 	double f_target = preindustrial_flux.value( U_PGC_YR );
-
     
 	// Find a best-guess point; the GSL algorithm seems to need it
 	OB_LOG( logger, Logger::DEBUG) << "Looking for best-guess alkalinity" << endl;

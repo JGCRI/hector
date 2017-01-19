@@ -33,5 +33,5 @@ before_script:
 
 script: 
  - make hector
- - ./source/hector input/hector_rcp45.ini
+ - ./test_hector.sh ./source/hector
 
