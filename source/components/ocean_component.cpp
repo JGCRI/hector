@@ -357,9 +357,9 @@ void OceanComponent::run( const double runToDate ) throw ( h_exception ) {
     // Call compute_fluxes with do_boxfluxes=false to run just chemistry
 	surfaceHL.compute_fluxes( Ca, 1.0, false );
 	surfaceLL.compute_fluxes( Ca, 1.0, false );
-        
-        calcHeatflux( runToDate );
     
+    calcHeatflux( runToDate );
+
     // Now wait for the solver to call us
 }
 
