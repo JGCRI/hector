@@ -92,7 +92,7 @@ public:
     // Ocean box chemistry
     oceancsys mychemistry;      //<! box chemistry
 	bool active_chemistry;      //<! box has active chemistry model?
-	void chem_equilibrate();    //<! equilibrate chemistry model to a given flux
+	void chem_equilibrate( const unitval current_Ca );    //<! equilibrate chemistry model to a given flux
     double fmin( double alk, void *params );
 
     unitval atmosphere_flux;
