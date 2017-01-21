@@ -100,22 +100,22 @@ void TemperatureComponent::setData( const string& varName,
     try {
         if( varName == D_ECS ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            S = unitval::parse_unitval( data.value_str, data.units_str, U_DEGC );
+            S = data.getUnitval( U_DEGC );
         } else if( varName == D_TGAV_CONSTRAIN ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            tgav_constrain.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_DEGC ) );
+            tgav_constrain.set( data.date, data.getUnitval( U_DEGC ) );
             } else if( varName == D_SO2I_B ) {
                 H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-                so2i_b = unitval::parse_unitval( data.value_str, data.units_str, U_UNITLESS );
+                so2i_b = data.getUnitval( U_UNITLESS );
            } else if( varName == D_SO2D_B ) {
                 H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-                so2d_b = unitval::parse_unitval( data.value_str, data.units_str, U_UNITLESS );
+                so2d_b = data.getUnitval( U_UNITLESS );
             } else if( varName == D_OC_B ) {
                 H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-                oc_b = unitval::parse_unitval( data.value_str, data.units_str, U_UNITLESS );
+                oc_b = data.getUnitval( U_UNITLESS );
         } else if( varName == D_BC_B ) {
                 H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-                bc_b = unitval::parse_unitval( data.value_str, data.units_str, U_UNITLESS );
+                bc_b = data.getUnitval( U_UNITLESS );
         } else {
             H_THROW( "Unknown variable name while parsing " + getComponentName() + ": "
                     + varName );

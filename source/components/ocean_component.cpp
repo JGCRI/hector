@@ -135,25 +135,25 @@ void OceanComponent::setData( const string& varName,
     try {
         if( varName == D_CARBON_HL ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            surfaceHL.set_carbon( unitval::parse_unitval( data.value_str, data.units_str, U_PGC ) );
+            surfaceHL.set_carbon( data.getUnitval( U_PGC ) );
           //} else if( varName == D_CIRC_TOPT ) {
           //  H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-          // circ_Topt = unitval::parse_unitval( data.value_str, data.units_str, U_DEGC );
+          // circ_Topt = data.getUnitval( U_DEGC );
 		//} else if( varName == D_CIRC_T50_HIGH ) {
           //  H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-           // circ_T50_high = unitval::parse_unitval( data.value_str, data.units_str, U_DEGC );
+           // circ_T50_high = data.getUnitval( U_DEGC );
 		//} else if( varName == D_CIRC_T50_LOW ) {
           //  H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            //circ_T50_low = unitval::parse_unitval( data.value_str, data.units_str, U_DEGC );
+            //circ_T50_low = data.getUnitval( U_DEGC );
 		} else if( varName == D_CARBON_LL ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            surfaceLL.set_carbon( unitval::parse_unitval( data.value_str, data.units_str, U_PGC ) );
+            surfaceLL.set_carbon( data.getUnitval( U_PGC ) );
         } else if( varName == D_CARBON_IO ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            inter.set_carbon( unitval::parse_unitval( data.value_str, data.units_str, U_PGC ) );
+            inter.set_carbon( data.getUnitval( U_PGC ) );
         } else if( varName == D_CARBON_DO ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            deep.set_carbon( unitval::parse_unitval( data.value_str, data.units_str, U_PGC ) );
+            deep.set_carbon( data.getUnitval( U_PGC ) );
         } else if( varName == D_TT ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
             tt.set( lexical_cast<double>( data.value_str ), U_M3_S );
@@ -171,7 +171,7 @@ void OceanComponent::setData( const string& varName,
             spinup_chem = lexical_cast<bool>( data.value_str );
         } else if( varName == D_ATM_OCEAN_CONSTRAIN ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            oceanflux_constrain.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_PGC_YR ) );
+            oceanflux_constrain.set( data.date, data.getUnitval( U_PGC_YR ) );
                 
                 // Heat uptake-related parameters
             } else if( varName == D_MAX_HEAT_UPTAKE_EFF ) {

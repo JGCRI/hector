@@ -153,7 +153,7 @@ void ForcingComponent::setData( const string& varName,
             baseyear = lexical_cast<double>( data.value_str );
         } else if( varName == D_FTOT_CONSTRAIN ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            Ftot_constrain.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_W_M2 ) );
+            Ftot_constrain.set(data.date, data.getUnitval(U_W_M2));
         } else {
             H_LOG( logger, Logger::DEBUG ) << "Unknown variable " << varName << std::endl;
             H_THROW( "Unknown variable name while parsing "+ getComponentName() + ": "

@@ -53,7 +53,13 @@ struct message_data {
 
     // retrieve message data as a unitval, even if it contains a string
     unitval getUnitval(const unit_types& unit_expected) const {
-        if(isVal) return value_unitval; else return unitval::parse_unitval(value_str, units_str, unit_expected);
+        if(isVal) {
+            unitval result = value_unitval;
+            result.expecting_unit(unit_expected);
+            return result;
+        } else {
+            return unitval::parse_unitval(value_str, units_str, unit_expected);
+        }
     }
     //! (optional) a date for which this value is for.
     double date;

@@ -85,7 +85,7 @@ void OneLineOceanComponent::setData( const string& varName,
     try {
         if( varName == D_OCEAN_C ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            ocean_c = unitval::parse_unitval( data.value_str, data.units_str, U_PGC );
+            ocean_c = data.getUnitval(U_PGC);
         } else {
             H_THROW( "Unknown variable name while parsing " + getComponentName() + ": "
                     + varName );

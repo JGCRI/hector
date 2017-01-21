@@ -105,19 +105,16 @@ void HalocarbonComponent::setData( const string& varName,
             tau = lexical_cast<double>( data.value_str );
         } else if( varName == D_HC_RHO ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            rho = unitval::parse_unitval( data.value_str, data.units_str, U_W_M2_PPTV );
+            rho = data.getUnitval(U_W_M2_PPTV);
         } else if( varName == D_HC_MOLARMASS ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
             molarMass = lexical_cast<double>( data.value_str );
         } else if( varName == emiss_var_name ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            if(data.isVal)
-                emissions.set(data.date, data.value_unitval);
-            else
-                emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_GG ) );
+            emissions.set(data.date, data.getUnitval(U_GG));
         } else if( varName == D_PREINDUSTRIAL_HC ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            H0 = unitval::parse_unitval( data.value_str, data.units_str, U_PPTV );
+            H0 = data.getUnitval(U_PPTV);
         } else {
             H_LOG( logger, Logger::DEBUG ) << "Unknown variable " << varName << std::endl;
             H_THROW( "Unknown variable name while parsing "+ getComponentName() + ": "

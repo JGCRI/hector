@@ -117,10 +117,10 @@ class unitval {
     double      valErr;
     unit_types  valUnits;
     
+public:
     static std::string unitsName( const unit_types );
     static unit_types parseUnitsName( const std::string& ) throw( h_exception );
         
-public:
     unitval();
     unitval( double, unit_types );
     
@@ -129,6 +129,7 @@ public:
     double value( unit_types ) const throw( h_exception );
     unit_types units() const { return valUnits; };
     std::string unitsName() const { return unitsName( valUnits ); };
+    void expecting_unit( const unit_types unit_expected) { if (valUnits == U_UNDEFINED) { valUnits = unit_expected; } };
 
     static unitval parse_unitval( const std::string&, const unit_types& ) throw( h_exception );
     static unitval parse_unitval( const std::string&, const std::string&, const unit_types& ) throw( h_exception );

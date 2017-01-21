@@ -100,7 +100,7 @@ void CarbonCycleSolver::setData( const std::string &varName,
         }
         else if( varName == D_EPS_SPINUP ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            eps_spinup = unitval::parse_unitval( data.value_str, data.units_str, U_PGC );
+            eps_spinup = data.getUnitval(U_PGC);
         }
         else {
             H_LOG( logger, Logger::SEVERE ) << "Unknown variable " << varName << std::endl;

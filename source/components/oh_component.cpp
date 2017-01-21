@@ -105,7 +105,7 @@ void OHComponent::setData( const string& varName,
             NMVOC_emissions.set( data.date, data.getUnitval(U_TG_NMVOC));
         } else if( varName == D_INITIAL_LIFETIME_OH ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
-            TOH0 = unitval::parse_unitval( data.value_str, data.units_str, U_YRS );
+            TOH0 = data.getUnitval(U_YRS);
          } else if(  varName == D_COEFFICENT_CH4 ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
             CCH4 = lexical_cast<double>( data.value_str );
