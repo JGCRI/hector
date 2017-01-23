@@ -576,7 +576,11 @@ unitval Core::sendMessage( const std::string& message,
                           const std::string& datum,
                           const message_data& info ) throw ( h_exception )
 {
-    if (message == M_GETDATA) {
+    if (message == M_GETDATA || message == M_DUMP_TO_DEEP_OCEAN) {
+        // M_GETDATA is used extensively by components to query each other re state
+        // M_DUMP_TO_DEEP_OCEAN is a special message used only to constrain the atmosphere
+        // We can treat it like a M_GETDATA message
+
         if(!isInited) {
             H_LOG(Logger::getGlobalLogger(), Logger::SEVERE)
                 << "message getData not available until core is initialized."
@@ -591,7 +595,7 @@ unitval Core::sendMessage( const std::string& message,
             return getComponentByName( ( *it ).second )->sendMessage( message, datum, info );
         }
     }
-    else if (message == M_SETDATA) {
+    else if (message == M_SETDATA ) {
         if( isInited ) {
             // If core initialization has been completed, then the only
             // setdata messages allowed are ones keyed to a date that we
