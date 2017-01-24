@@ -1,18 +1,8 @@
 /* Hector -- A Simple Climate Model
    Copyright (C) 2014-2015  Battelle Memorial Institute
 
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License, version 2 as
-   published by the Free Software Foundation.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License along
-   with this program; if not, write to the Free Software Foundation, Inc.,
-   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+   Please see the accompanying file LICENSE.md for additional licensing
+   information.
 */
 /*
  *  SimpleNbox.cpp
@@ -22,7 +12,6 @@
  *
  */
 
-#include <gsl/gsl_errno.h>
 #include <boost/lexical_cast.hpp>
 #include "boost/algorithm/string.hpp"
 
@@ -78,8 +67,8 @@ void SimpleNbox::init( Core* coreptr ) {
     core->registerDependency( D_OCEAN_CFLUX, getComponentName() );
 
     // Register the inputs we can receive from outside
-    core->registerInput(D_ANTHRO_EMISSIONS, getComponentName());
-    core->registerInput(D_LUC_EMISSIONS, getComponentName());
+    core->registerInput( D_ANTHRO_EMISSIONS, getComponentName() );
+    core->registerInput( D_LUC_EMISSIONS, getComponentName() );
 }
 
 //------------------------------------------------------------------------------
@@ -125,10 +114,12 @@ void SimpleNbox::setData( const std::string &varName,
         varNameParsed = splitvec[ 1 ];
     }
 
-    if (data.isVal)
+    if (data.isVal) {
         H_LOG( logger, Logger::DEBUG ) << "Setting " << biome << "." << varNameParsed << "[" << data.date << "]=" << data.value_unitval << std::endl;
-    else
+    }
+    else {
         H_LOG( logger, Logger::DEBUG ) << "Setting " << biome << "." << varNameParsed << "[" << data.date << "]=" << data.value_str << std::endl;
+    }
     try {
         // Initial pools
         if( varNameParsed == D_ATMOSPHERIC_C ) {
@@ -487,7 +478,7 @@ void SimpleNbox::accept( AVisitor* visitor ) {
 }
 
 //------------------------------------------------------------------------------
-/*! \brief            transfer model pools to flat array (for GSL ODE solver)
+/*! \brief            transfer model pools to flat array (for ODE solver)
  *  \param[in] t  time, double, the date from which ODE solver is starting
  *  \param[in] c  flat array of carbon pools (no units)
  */
@@ -587,9 +578,11 @@ void SimpleNbox::stashCValues( double t, const double c[] )
         H_LOG( logger,Logger::DEBUG ) << t << "- have " << Ca << " want " << Ca_constrain.get( t ).value( U_PPMV_CO2 ) << std::endl;
         H_LOG( logger,Logger::DEBUG ) << t << "- have " << atmos_c << " want " << atmos_cpool_to_match << "; residual = " << residual << std::endl;
         
+        // Transfer C from atmosphere to deep ocean and update our C and Ca variables
         H_LOG( logger,Logger::DEBUG ) << "Sending residual of " << residual << " to deep ocean" << std::endl;
-        core->sendMessage( M_DUMP_TO_DEEP_OCEAN, D_OCEAN_C, message_data( residual ) );     // update ocean pool
+        core->sendMessage( M_DUMP_TO_DEEP_OCEAN, D_OCEAN_C, message_data( residual ) );
         atmos_c = atmos_c - residual;
+        Ca.set( atmos_c.value( U_PGC ) * PGC_TO_PPMVCO2, U_PPMV_CO2 );
     } else {
         residual.set( 0.0, U_PGC );
     }
