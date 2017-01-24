@@ -11,6 +11,7 @@ compiler:
 branches:
   only:
   - master
+  - dev_doeclim
   
 before_script:
  - export BOOSTVERSION=1_62_0
