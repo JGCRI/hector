@@ -1,5 +1,5 @@
 # Build Hector on Travis CI
-# BBL October 2016
+# BBL January 2017
 # See https://travis-ci.org/bpbond/hector
 
 language: cpp
