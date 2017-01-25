@@ -15,6 +15,7 @@
 #include <boost/lexical_cast.hpp>
 #include <cmath>
 #include <limits>
+#define _USE_MATH_DEFINES
 
 #include "components/temp_doeclim_component.hpp"
 #include "core/core.hpp"
