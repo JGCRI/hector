@@ -142,9 +142,7 @@ void CSVOutputStreamVisitor::visit( SimpleNbox* c ) {
 
     // Global outputs
     STREAM_MESSAGE( csvFile, c, D_LAND_CFLUX );
-    STREAM_MESSAGE_DATE( csvFile, c, D_ANTHRO_EMISSIONS, current_date );
-    STREAM_MESSAGE_DATE( csvFile, c, D_LUC_EMISSIONS, current_date );
-    STREAM_MESSAGE( csvFile, c, D_NPP );
+	STREAM_MESSAGE( csvFile, c, D_NPP );
     STREAM_MESSAGE( csvFile, c, D_RH );
     STREAM_MESSAGE( csvFile, c, D_ATMOSPHERIC_CO2 );
     STREAM_MESSAGE( csvFile, c, D_ATMOSPHERIC_C );
@@ -175,7 +173,6 @@ void CSVOutputStreamVisitor::visit( SimpleNbox* c ) {
 void CSVOutputStreamVisitor::visit( HalocarbonComponent* c ) {
     // TODO: how to get emissions in the gas specific units?
     if( !core->outputEnabled( c->getComponentName() ) ) return;
-    STREAM_MESSAGE_DATE( csvFile, c, D_HC_EMISSION, current_date );
     STREAM_MESSAGE( csvFile, c, D_HC_CONCENTRATION );
 }
 
@@ -247,20 +244,6 @@ void CSVOutputStreamVisitor::visit( slrComponent* c ) {
         STREAM_MESSAGE_DATE( csvFile, c, D_SL_RC_NO_ICE, current_date );
         STREAM_MESSAGE_DATE( csvFile, c, D_SLR_NO_ICE, current_date );
     }
-}
-
-//------------------------------------------------------------------------------
-// documentation is inherited
-void CSVOutputStreamVisitor::visit( BlackCarbonComponent* c ) {
-    if( !core->outputEnabled( c->getComponentName() ) ) return;
-    STREAM_MESSAGE_DATE( csvFile, c, D_EMISSIONS_BC, current_date );
-}
-
-//------------------------------------------------------------------------------
-// documentation is inherited
-void CSVOutputStreamVisitor::visit( OrganicCarbonComponent* c ) {
-    if( !core->outputEnabled( c->getComponentName() ) ) return;
-    STREAM_MESSAGE_DATE( csvFile, c, D_EMISSIONS_OC, current_date );
 }
 
 //------------------------------------------------------------------------------
