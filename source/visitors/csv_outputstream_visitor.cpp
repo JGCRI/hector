@@ -142,7 +142,7 @@ void CSVOutputStreamVisitor::visit( SimpleNbox* c ) {
 
     // Global outputs
     STREAM_MESSAGE( csvFile, c, D_LAND_CFLUX );
-	STREAM_MESSAGE( csvFile, c, D_NPP );
+    STREAM_MESSAGE( csvFile, c, D_NPP );
     STREAM_MESSAGE( csvFile, c, D_RH );
     STREAM_MESSAGE( csvFile, c, D_ATMOSPHERIC_CO2 );
     STREAM_MESSAGE( csvFile, c, D_ATMOSPHERIC_C );
@@ -244,6 +244,18 @@ void CSVOutputStreamVisitor::visit( slrComponent* c ) {
         STREAM_MESSAGE_DATE( csvFile, c, D_SL_RC_NO_ICE, current_date );
         STREAM_MESSAGE_DATE( csvFile, c, D_SLR_NO_ICE, current_date );
     }
+}
+
+//------------------------------------------------------------------------------
+// documentation is inherited
+void CSVOutputStreamVisitor::visit( BlackCarbonComponent* c ) {
+    if( !core->outputEnabled( c->getComponentName() ) ) return;
+}
+
+//------------------------------------------------------------------------------
+// documentation is inherited
+void CSVOutputStreamVisitor::visit( OrganicCarbonComponent* c ) {
+    if( !core->outputEnabled( c->getComponentName() ) ) return;
 }
 
 //------------------------------------------------------------------------------
