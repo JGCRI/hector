@@ -140,6 +140,10 @@ Logger::~Logger() {
  * \param echoToScreen A flag to indicate if messages should be echoed to the
  *                     console.
  * \param minLogLevel The minimum priority which will be processed.
+ * \param echoToFile A flag to indicate if messages should be written to a log
+ *                   file. If neither echoToScreen nor echoToFile is true, the
+ *                   logger is disabled.
+ *                   (default: true)
  * \exception h_exception Exception thrown if the logger has already been
  *                        initialized.
  */
