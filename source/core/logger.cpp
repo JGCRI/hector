@@ -146,10 +146,10 @@ Logger::~Logger() {
  *                   (default: true)
  * \exception h_exception Exception thrown if the logger has already been
  *                        initialized.
+ *
  */
 void Logger::open( const string& logName, const bool echoToScreen,
-                   LogLevel minLogLevel, const bool echoToFile ) throw ( h_exception )
-{
+                   LogLevel minLogLevel, const bool echoToFile ) throw ( h_exception ) {
     H_ASSERT( !isInitialized, "This log has already been initialized." );
 
     this->minLogLevel = minLogLevel;
