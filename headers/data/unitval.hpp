@@ -129,7 +129,7 @@ public:
     double value( unit_types ) const throw( h_exception );
     unit_types units() const { return valUnits; };
     std::string unitsName() const { return unitsName( valUnits ); };
-    void expecting_unit( const unit_types unit_expected) { if (valUnits == U_UNDEFINED) { valUnits = unit_expected; } };
+    void expecting_unit( const unit_types& ) throw( h_exception );
 
     static unitval parse_unitval( const std::string&, const unit_types& ) throw( h_exception );
     static unitval parse_unitval( const std::string&, const std::string&, const unit_types& ) throw( h_exception );
