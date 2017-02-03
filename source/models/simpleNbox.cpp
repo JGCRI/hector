@@ -12,7 +12,6 @@
  *
  */
 
-#include <boost/lexical_cast.hpp>
 #include "boost/algorithm/string.hpp"
 
 #include "core/dependency_finder.hpp"
@@ -20,7 +19,9 @@
 #include "visitors/avisitor.hpp"
 
 namespace Hector {
-  
+
+using namespace boost;
+
 //------------------------------------------------------------------------------
 /*! \brief constructor
  */
@@ -100,8 +101,6 @@ unitval SimpleNbox::sendMessage( const std::string& message,
 void SimpleNbox::setData( const std::string &varName,
                           const message_data& data ) throw( h_exception )
 {
-    using namespace boost;
-    
     // Does the varName contain our parse character? If so, split it
     std::vector<std::string> splitvec;
     boost::split( splitvec, varName, is_any_of( SNBOX_PARSECHAR ) );
@@ -220,10 +219,6 @@ void SimpleNbox::setData( const std::string &varName,
             H_THROW( "Unknown variable name while parsing "+ getComponentName() + ": "
                     + varName );
         }
-    } catch( bad_lexical_cast &  castException ) {
-        H_LOG( logger, Logger::DEBUG ) << "Could not convert " << varName << std::endl;
-        H_THROW( "Could not convert var: "+varName+", value: "+data.value_str+", exception: "
-                +castException.what() );
     } catch( h_exception& parseException ) {
         H_RETHROW( parseException, "Could not parse var: "+varName );
     }

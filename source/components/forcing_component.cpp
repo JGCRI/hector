@@ -12,7 +12,6 @@
  *
  */
 
-#include <boost/lexical_cast.hpp>
 #include <boost/array.hpp>
 #include <math.h>
 
@@ -142,9 +141,6 @@ unitval ForcingComponent::sendMessage( const std::string& message,
 void ForcingComponent::setData( const string& varName,
                                 const message_data& data ) throw ( h_exception )
 {
-    
-    using namespace boost;
-    
     H_LOG( logger, Logger::DEBUG ) << "Setting " << varName << "[" << data.date << "]=" << data.value_str << std::endl;
     
     try {
@@ -159,10 +155,6 @@ void ForcingComponent::setData( const string& varName,
             H_THROW( "Unknown variable name while parsing "+ getComponentName() + ": "
                     + varName );
         }
-    } catch( bad_lexical_cast& castException ) {
-        H_LOG( logger, Logger::DEBUG ) << "Could not convert " << varName << std::endl;
-        H_THROW( "Could not convert var: "+varName+", value: " + data.value_str + ", exception: "
-                +castException.what() );
     } catch( h_exception& parseException ) {
         H_RETHROW( parseException, "Could not parse var: "+varName );
     }

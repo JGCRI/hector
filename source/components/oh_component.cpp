@@ -15,7 +15,6 @@
 
 #include <math.h>
 #include "components/oh_component.hpp"
-#include <boost/lexical_cast.hpp>
 #include "core/core.hpp"
 #include "h_util.hpp"
 #include "visitors/avisitor.hpp"
@@ -92,7 +91,6 @@ unitval OHComponent::sendMessage( const std::string& message,
 void OHComponent::setData( const string& varName,
                             const message_data& data ) throw ( h_exception )
 {
-    using namespace boost;
     try {
          if( varName == D_EMISSIONS_NOX ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );

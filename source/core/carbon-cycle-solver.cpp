@@ -16,7 +16,6 @@
 #include <math.h>
 #include <string>
 #include <boost/numeric/odeint.hpp>
-#include "boost/lexical_cast.hpp"
 
 #include "core/carbon-cycle-solver.hpp"
 #include "visitors/avisitor.hpp"
@@ -81,8 +80,6 @@ unitval CarbonCycleSolver::sendMessage( const std::string& message,
 void CarbonCycleSolver::setData( const std::string &varName,
                                  const message_data& data ) throw ( h_exception )
 {
-    using boost::lexical_cast;
-    
     H_LOG( logger, Logger::DEBUG ) << "Setting " << varName << "[" << data.date << "]=" << data.value_str << std::endl;
     
     try {
@@ -107,10 +104,6 @@ void CarbonCycleSolver::setData( const std::string &varName,
             H_THROW( "Unknown variable name while parsing "+ getComponentName() + ": "
                     + varName );
         }
-    } catch( boost::bad_lexical_cast& castException ) {
-        H_LOG( logger, Logger::SEVERE ) << "Could not convert " << varName << std::endl;
-        H_THROW( "Could not convert var: "+varName+", value: " + data.value_str + ", exception: "
-                +castException.what() );
     } catch( h_exception& parseException ) {
         H_RETHROW( parseException, "Could not parse var: "+varName );
     }

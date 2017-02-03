@@ -12,8 +12,6 @@
  *
  */
 
-#include <boost/lexical_cast.hpp>
-
 #include "components/imodel_component.hpp"
 #include "components/halocarbon_component.hpp"
 #include "components/oh_component.hpp"
@@ -200,8 +198,6 @@ void Core::init() {
 void Core::setData( const string& componentName, const string& varName,
                     const message_data& data ) throw ( h_exception )
 {
-    using namespace boost;
-    
     if( componentName == getComponentName() ) {
         try {
             if( varName == D_RUN_NAME ) {
@@ -223,9 +219,8 @@ void Core::setData( const string& componentName, const string& varName,
                 H_THROW( "Unknown variable name while parsing "+ getComponentName() + ": "
                         + varName );
             }
-        } catch( bad_lexical_cast& castException ) {
-            H_THROW( "Could not convert var: "+varName+", value: " + data.value_str + ", exception: "
-                    +castException.what() );
+        } catch( h_exception& parseException ) {
+            H_RETHROW( parseException, "Could not parse var: "+varName );
         }
     } else {    // data is not intended for us
         IModelComponent* component = getComponentByName( componentName );
