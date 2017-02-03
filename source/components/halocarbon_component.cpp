@@ -102,13 +102,13 @@ void HalocarbonComponent::setData( const string& varName,
         
         if( varName == D_HC_TAU ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            tau = lexical_cast<double>( data.value_str );
+            tau = data.getUnitval(U_UNDEFINED);
         } else if( varName == D_HC_RHO ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
             rho = data.getUnitval(U_W_M2_PPTV);
         } else if( varName == D_HC_MOLARMASS ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            molarMass = lexical_cast<double>( data.value_str );
+            molarMass = data.getUnitval(U_UNDEFINED);
         } else if( varName == emiss_var_name ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
             emissions.set(data.date, data.getUnitval(U_GG));

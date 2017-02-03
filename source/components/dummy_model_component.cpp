@@ -105,12 +105,12 @@ void DummyModelComponent::setData( const string& varName,
     try {
         if( varName == H_STRINGIFY_VAR( slope ) ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
-            slope = lexical_cast<double>( data.value_str );
+            slope = data.getUnitval(U_UNDEFINED);;
         } else if( varName == H_STRINGIFY_VAR( y ) ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
-            y = lexical_cast<double>( data.value_str );
+            y = data.getUnitval(U_UNDEFINED);;
         } else if( varName == H_STRINGIFY_VAR( c ) ) {
-            c.set( data.date, lexical_cast<double>( data.value_str ) );
+            c.set( data.date, data.getUnitval(U_UNDEFINED) );
         } else {
             H_THROW( "Unknown variable name while parsing " + getComponentName() + ": "
                     + varName );

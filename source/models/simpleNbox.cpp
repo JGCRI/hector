@@ -156,23 +156,23 @@ void SimpleNbox::setData( const std::string &varName,
         // Partitioning
         else if( varNameParsed == D_F_NPPV ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            f_nppv = lexical_cast<double>( data.value_str );
+            f_nppv = data.getUnitval(U_UNDEFINED);
         }
         else if( varNameParsed == D_F_NPPD ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            f_nppd = lexical_cast<double>( data.value_str );
+            f_nppd = data.getUnitval(U_UNDEFINED);
         }
         else if( varNameParsed == D_F_LITTERD ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            f_litterd = lexical_cast<double>( data.value_str );
+            f_litterd = data.getUnitval(U_UNDEFINED);
         }
         else if( varNameParsed == D_F_LUCV ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            f_lucv = lexical_cast<double>( data.value_str );
+            f_lucv = data.getUnitval(U_UNDEFINED);
         }
         else if( varNameParsed == D_F_LUCD ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            f_lucd = lexical_cast<double>( data.value_str );
+            f_lucd = data.getUnitval(U_UNDEFINED);
         }
         
         // Initial fluxes
@@ -204,15 +204,15 @@ void SimpleNbox::setData( const std::string &varName,
         // Fertilization
         else if( varNameParsed == D_BETA ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            beta[ biome ] = lexical_cast<double>( data.value_str );
+            beta[ biome ] = data.getUnitval(U_UNDEFINED);
         }
         else if( varNameParsed == D_WARMINGFACTOR ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            warmingfactor[ biome ] = lexical_cast<double>( data.value_str );
+            warmingfactor[ biome ] = data.getUnitval(U_UNDEFINED);
         }
         else if( varNameParsed == D_Q10_RH ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            q10_rh = lexical_cast<double>( data.value_str );
+            q10_rh = data.getUnitval(U_UNDEFINED);
         }
      
         else {

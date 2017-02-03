@@ -168,11 +168,10 @@ void OceanComponent::setData( const string& varName,
             tid.set( data.getUnitval(U_M3_S), U_M3_S) ;
 		} else if( varName == D_SPINUP_CHEM ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            spinup_chem = lexical_cast<bool>(data.value_str);
+            spinup_chem = (data.getUnitval(U_UNDEFINED) > 0);
         } else if( varName == D_ATM_OCEAN_CONSTRAIN ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
             oceanflux_constrain.set( data.date, data.getUnitval( U_PGC_YR ) );
-                
             // Heat uptake-related parameters
         } else if( varName == D_MAX_HEAT_UPTAKE_EFF ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
@@ -186,7 +185,6 @@ void OceanComponent::setData( const string& varName,
         } else if( varName == D_SLOPE_HEAT_UPTAKE_EFF ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
             slope.set( data.getUnitval(U_1_K), U_1_K );
-            
         } else {
             H_THROW( "Unknown variable name while parsing " + getComponentName() + ": "
                     + varName );

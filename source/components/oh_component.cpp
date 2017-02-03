@@ -108,16 +108,16 @@ void OHComponent::setData( const string& varName,
             TOH0 = data.getUnitval(U_YRS);
          } else if(  varName == D_COEFFICENT_CH4 ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            CCH4 = lexical_cast<double>( data.value_str );
+            CCH4 = data.getUnitval(U_UNDEFINED);
          } else if( varName == D_COEFFICENT_CO ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
-            CCO = lexical_cast<double>( data.value_str );
+            CCO = data.getUnitval(U_UNDEFINED);
          } else if( varName == D_COEFFICENT_NMVOC ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
-            CNMVOC = lexical_cast<double>( data.value_str );
+            CNMVOC = data.getUnitval(U_UNDEFINED);
          } else if( varName == D_COEFFICENT_NOX ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
-            CNOX = lexical_cast<double>( data.value_str );
+            CNOX = data.getUnitval(U_UNDEFINED);
          }	else {
             H_THROW( "Unknown variable name while parsing " + getComponentName() + ": "
                     + varName );

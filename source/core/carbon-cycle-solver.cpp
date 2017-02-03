@@ -88,15 +88,15 @@ void CarbonCycleSolver::setData( const std::string &varName,
     try {
         if( varName == D_CCS_EPS_ABS ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            eps_abs = lexical_cast<double>( data.value_str );
+            eps_abs = data.getUnitval(U_UNDEFINED);;
         }
         else if( varName == D_CCS_EPS_REL ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            eps_rel = lexical_cast<double>( data.value_str );
+            eps_rel = data.getUnitval(U_UNDEFINED);;
         }
         else if( varName == D_CCS_DT ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            dt = lexical_cast<double>( data.value_str );
+            dt = data.getUnitval(U_UNDEFINED);
         }
         else if( varName == D_EPS_SPINUP ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );

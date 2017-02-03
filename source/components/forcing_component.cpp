@@ -150,7 +150,7 @@ void ForcingComponent::setData( const string& varName,
     try {
         if( varName == D_RF_BASEYEAR ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
-            baseyear = lexical_cast<double>( data.value_str );
+            baseyear = data.getUnitval(U_UNDEFINED);
         } else if( varName == D_FTOT_CONSTRAIN ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
             Ftot_constrain.set(data.date, data.getUnitval(U_W_M2));

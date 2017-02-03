@@ -209,16 +209,16 @@ void Core::setData( const string& componentName, const string& varName,
                 run_name = data.value_str;
             } else if( varName == D_START_DATE ) {
                 H_ASSERT( data.date == undefinedIndex(), "date not allowed" );
-                lastDate = startDate = lexical_cast<double>( data.value_str );
+                lastDate = startDate = data.getUnitval(U_UNDEFINED);
             } else if( varName == D_END_DATE ) {
                 H_ASSERT( data.date == undefinedIndex(), "date not allowed" );
-                endDate = lexical_cast<double>( data.value_str );
+                endDate = data.getUnitval(U_UNDEFINED);
             } else if( varName == D_DO_SPINUP ) {
                 H_ASSERT( data.date == undefinedIndex(), "date not allowed" );
-                do_spinup = lexical_cast<bool>( data.value_str );
+                do_spinup = (data.getUnitval(U_UNDEFINED) > 0);
             } else if( varName == D_MAX_SPINUP ) {
                 H_ASSERT( data.date == undefinedIndex(), "date not allowed" );
-                max_spinup = lexical_cast<int>( data.value_str );
+                max_spinup = data.getUnitval(U_UNDEFINED);
             } else {
                 H_THROW( "Unknown variable name while parsing "+ getComponentName() + ": "
                         + varName );
@@ -232,14 +232,14 @@ void Core::setData( const string& componentName, const string& varName,
         
         if( varName == D_ENABLED ) {
             // The core intercepts "enabled=xxx" lines to mark components as disabled
-            if( !lexical_cast<bool>( data.value_str ) ) {
+            if( data.getUnitval(U_UNDEFINED) <= 0 ) {
                 Logger& glog = Logger::getGlobalLogger();
                 H_LOG( glog, Logger::WARNING ) << "Disabling " << componentName << endl;
                 disabledComponents.push_back( componentName );
             }
         } else if( varName == D_OUTPUT_ENABLED ) {
             // The core intercepts "output=xxx" lines to mark components as disabled
-            if( !lexical_cast<bool>( data.value_str ) ) {
+            if( data.getUnitval(U_UNDEFINED) <= 0 ) {
                 Logger& glog = Logger::getGlobalLogger();
                 H_LOG( glog, Logger::WARNING ) << "Disabling output for " << componentName << endl;
                 disabledOutputComponents.push_back( componentName );
