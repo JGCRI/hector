@@ -257,7 +257,10 @@
 #define D_BC_B                  "bc_b"
 
 // temperature doeclim component
-#define D_DIFFUSIVITY           "alpha"
+#define D_DIFFUSIVITY           "diff"
+#define D_AERO_SCALE            "alpha"
+#define D_FLUX_MIXED            "flux_mixed"
+#define D_FLUX_INTERIOR         "flux_interior"
 
 // ------------------- messages being passed between components -------------------------
 
