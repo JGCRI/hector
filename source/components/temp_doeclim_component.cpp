@@ -370,8 +370,8 @@ void TempDOECLIMComponent::run( const double runToDate ) throw ( h_exception ) {
     
     // Some needed inputs
     int tstep = runToDate - core->getStartDate();
-    double aero_forcing = double(core->sendMessage( M_GETDATA, D_RF_BC ).value( U_W_M2 )) + double(core->sendMessage( M_GETDATA, D_RF_OC ).value( U_W_M2 )) + double(core->sendMessage( M_GETDATA, D_RF_SO2d ).value( U_W_M2 ) + double(core->sendMessage( M_GETDATA, D_RF_SO2i ).value( U_W_M2 ));
-    forcing[tstep] = double(core->sendMessage( M_GETDATA, D_RF_TOTAL ).value( U_W_M2 ) - ( 1.0 - alpha ) * aero_forcing[tstep]
+    double aero_forcing = double(core->sendMessage( M_GETDATA, D_RF_BC ).value( U_W_M2 )) + double(core->sendMessage( M_GETDATA, D_RF_OC ).value( U_W_M2 )) + double(core->sendMessage( M_GETDATA, D_RF_SO2d ).value( U_W_M2 )) + double(core->sendMessage( M_GETDATA, D_RF_SO2i ).value( U_W_M2 ));
+    forcing[tstep] = double(core->sendMessage( M_GETDATA, D_RF_TOTAL ).value( U_W_M2 )) - ( 1.0 - alpha ) * aero_forcing;
 			    
     // Initialize variables for time-stepping through the model
     double DQ1 = 0.0;
