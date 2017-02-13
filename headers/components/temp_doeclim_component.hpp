@@ -114,7 +114,7 @@ private:
     double tauksl;
     double taukls;
     
-    //Time series arrays that are updated w/ each DOECLIM run, again using hard-coded max ns.
+    //Time series arrays that are updated with each DOECLIM time-step
     std::vector<double> temp;
     std::vector<double> temp_landair;
     std::vector<double> temp_sst;
@@ -124,11 +124,14 @@ private:
     std::vector<double> heat_interior;
     std::vector<double> forcing;
     
-	unitval tgav;          //!< global temperature delta, deg C
+    unitval tgav;          //!< global temperature delta, deg C
     unitval tgaveq;        //!< equilibrium temp without ocean heat flux, currently set = tgav
-	unitval S;             //!< climate sensitivity for 2xCO2, deg C
-    unitval alpha;         //!< ocean heat diffusivity, cm2/s
-    
+    unitval S;             //!< climate sensitivity for 2xCO2, deg C
+    unitval diff;          //!< ocean heat diffusivity, cm2/s
+    unitval alpha;	   //!< aerosol forcing factor, unitless
+    unitval flux_mixed;    //!< heat flux into mixed layer of ocean, W/m2
+    unitval flux_interior; //!< heat flux into interior layer of ocean, W/m2	    
+	    
     tseries<unitval> tgav_constrain;        //! Temperature change can be supplied (not currently)
     
     //! pointers to other components and stuff
