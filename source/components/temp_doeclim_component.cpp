@@ -92,23 +92,34 @@ void TempDOECLIMComponent::init( Core* coreptr ) {
     logger.open( getComponentName(), false, Logger::DEBUG );
     H_LOG( logger, Logger::DEBUG ) << "hello " << getComponentName() << std::endl;
     
-	tgaveq.set( 0.0, U_DEGC, 0.0 );
+    tgaveq.set( 0.0, U_DEGC, 0.0 );
     tgav.set( 0.0, U_DEGC, 0.0 );
+    flux_mixed.set( 0.0, U_W_M2, 0.0 );
+    flux_interior.set( 0.0, U_W_M2, 0.0 );
+    
     core = coreptr;
     
     tgav_constrain.allowInterp( true );
     tgav_constrain.name = D_TGAV_CONSTRAIN;
     
     // Define the doeclim parameters
-    alpha.set( 0.55, U_CM2_S );  // default ocean heat diffusivity, cm2/s. value is CDICE default (varname is kappa there).
+    diff.set( 0.55, U_CM2_S );  // default ocean heat diffusivity, cm2/s. value is CDICE default (varname is kappa there).
     S.set( 3.0, U_DEGC );         // default climate sensitivity, K (varname is t2co in CDICE).
-
+    alpha.set( 1.0, U_UNITLESS);  // default aerosol scaling, unitless (similar to alpha in CDICE).
+    
     // Register the data we can provide
     core->registerCapability( D_GLOBAL_TEMP, getComponentName() );
     core->registerCapability( D_GLOBAL_TEMPEQ, getComponentName() );
-    
+    core->registerCapability( D_FLUX_MIXED, getComponentName() );
+    core->registerCapability( D_FLUX_INTERIOR, getComponentName() );
+
     // Register our dependencies
     core->registerDependency( D_RF_TOTAL, getComponentName() );
+    core->registerDependency( D_RF_BC, getComponentName() );
+    core->registerDependency( D_RF_OC, getComponentName() );
+    core->registerDependency( D_RF_SO2d, getComponentName() );
+    core->registerDependency( D_RF_SO2i, getComponentName() );
+
 }
 
 //------------------------------------------------------------------------------
@@ -151,7 +162,10 @@ void TempDOECLIMComponent::setData( const string& varName,
             S = unitval::parse_unitval( data.value_str, data.units_str, U_DEGC );
         } else if( varName == D_DIFFUSIVITY ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
-            alpha = unitval::parse_unitval( data.value_str, data.units_str, U_CM2_S );
+            diff = unitval::parse_unitval( data.value_str, data.units_str, U_CM2_S );
+	} else if( varName == D_AERO_SCALE ) {
+            H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
+            alpha = unitval::parse_unitval( data.value_str, data.units_str, U_UNITLESS );
         } else if( varName == D_TGAV_CONSTRAIN ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
             tgav_constrain.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_DEGC ) );
@@ -356,8 +370,9 @@ void TempDOECLIMComponent::run( const double runToDate ) throw ( h_exception ) {
     
     // Some needed inputs
     int tstep = runToDate - core->getStartDate();
-    forcing[tstep] = double(core->sendMessage( M_GETDATA, D_RF_TOTAL ).value( U_W_M2 ));
-    
+    double aero_forcing = double(core->sendMessage( M_GETDATA, D_RF_BC ).value( U_W_M2 )) + double(core->sendMessage( M_GETDATA, D_RF_OC ).value( U_W_M2 )) + double(core->sendMessage( M_GETDATA, D_RF_SO2d ).value( U_W_M2 )) + double(core->sendMessage( M_GETDATA, D_RF_SO2i ).value( U_W_M2 ));
+    forcing[tstep] = double(core->sendMessage( M_GETDATA, D_RF_TOTAL ).value( U_W_M2 )) - ( 1.0 - alpha ) * aero_forcing;
+			    
     // Initialize variables for time-stepping through the model
     double DQ1 = 0.0;
     double DQ2 = 0.0;
@@ -443,7 +458,8 @@ void TempDOECLIMComponent::run( const double runToDate ) throw ( h_exception ) {
         heat_interior[0] = 0.0;
     }
 
-    
+    flux_mixed.set( heatflux_mixed[tstep], U_W_M2, 0.0 );
+    flux_interior.set( heatflux_interior[tstep], U_W_M2, 0.0 );			  
     tgav.set( temp[tstep], U_DEGC, 0.0 );
     tgaveq.set( temp[tstep], U_DEGC, 0.0 );
     H_LOG( logger, Logger::DEBUG ) << " tgav=" << tgav << " in " << runToDate << std::endl;
@@ -463,7 +479,13 @@ unitval TempDOECLIMComponent::getData( const std::string& varName,
     } else if( varName == D_GLOBAL_TEMPEQ ) {
         returnval = tgaveq;
     } else if( varName == D_DIFFUSIVITY ) {
-        returnval = alpha;
+        returnval = diff;
+    } else if( varName == D_AERO_SCALE ) {
+	returnval = alpha;
+    } else if( varName == D_FLUX_MIXED ) {
+	returnval = flux_mixed;
+    } else if( varName == D_FLUX_INTERIOR ) {
+	returnval = flux_interior;
     } else if( varName == D_ECS ) {
         returnval = S;
     } else {

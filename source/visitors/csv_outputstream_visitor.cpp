@@ -193,6 +193,8 @@ void CSVOutputStreamVisitor::visit( TemperatureComponent* c ) {
 void CSVOutputStreamVisitor::visit( TempDOECLIMComponent* c ) {
     if( !core->outputEnabled( c->getComponentName() ) ) return;
     STREAM_MESSAGE( csvFile, c, D_GLOBAL_TEMP );
+    STREAM_MESSAGE( csvFile, c, D_FLUX_MIXED );
+    STREAM_MESSAGE( csvFile, c, D_FLUX_INTERIOR );
     }
 //------------------------------------------------------------------------------
 // documentation is inherited
