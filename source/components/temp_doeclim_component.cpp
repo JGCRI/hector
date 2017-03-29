@@ -254,7 +254,7 @@ void TempDOECLIMComponent::prepareToRun() throw ( h_exception ) {
     cfl = flnd * cnum / cden * q2co / S - bk * (rlam - bsi) / cden;
     cfs = (rlam * flnd - ak / (1.0 - flnd) * (rlam - bsi)) * cnum / cden * q2co / S + rlam * flnd / (1.0 - flnd) * bk * (rlam - bsi) / cden;
     kls = bk * rlam * flnd / cden - ak * flnd * cnum / cden * q2co / S;
-    keff = kcon * alpha;
+    keff = kcon * diff;
     taubot = pow(zbot,2) / keff;
     powtoheat = ocean_area * secs_per_Year / pow(10.0,22);
     taucfs = cas / cfs;
