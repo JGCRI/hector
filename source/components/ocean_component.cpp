@@ -101,10 +101,10 @@ unitval OceanComponent::sendMessage( const std::string& message,
 {
     unitval returnval;
     
-    if( message==M_GETDATA ) {          //! Caller is requesting data
+    if( message == M_GETDATA ) {          //! Caller is requesting data
         return getData( datum, info.date );
         
-    } else if( message==M_SETDATA ) {   //! Caller is requesting to set data
+    } else if( message == M_SETDATA ) {   //! Caller is requesting to set data
         H_THROW("Ocean sendMessage not yet implemented for message=M_SETDATA.");
         //TODO: call setData below
         //TODO: change core so that parsing is routed through sendMessage
@@ -344,8 +344,8 @@ void OceanComponent::run( const double runToDate ) throw ( h_exception ) {
         H_LOG( logger, Logger::DEBUG ) << "*** Turning on chemistry models ***" << std::endl;
         surfaceHL.active_chemistry = true;
         surfaceLL.active_chemistry = true;
-        surfaceHL.chem_equilibrate();
-        surfaceLL.chem_equilibrate();
+        surfaceHL.chem_equilibrate( Ca );
+        surfaceLL.chem_equilibrate( Ca );
 
         // Warn if the user has supplied an atmosphere-ocean C flux constraint
         if( oceanflux_constrain.size() ) {
@@ -358,7 +358,7 @@ void OceanComponent::run( const double runToDate ) throw ( h_exception ) {
 	surfaceHL.compute_fluxes( Ca, 1.0, false );
 	surfaceLL.compute_fluxes( Ca, 1.0, false );
         
-        calcHeatflux( runToDate );
+    calcHeatflux( runToDate );
     
     // Now wait for the solver to call us
 }

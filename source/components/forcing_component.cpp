@@ -193,7 +193,8 @@ void ForcingComponent::prepareToRun() throw ( h_exception ) {
 void ForcingComponent::run( const double runToDate ) throw ( h_exception ) {
     
     // Calculate instantaneous radiative forcing for any & all agents
-    // As each is computed, push it into 'forcings' map for Ftot calculation
+    // As each is computed, push it into 'forcings' map for Ftot calculation.
+	// Note that forcings have to be mutually exclusive, there are no subtotals for different species.
     H_LOG( logger, Logger::DEBUG ) << "-----------------------------" << std::endl;
     forcings.clear();
     currentYear = runToDate;
@@ -280,13 +281,11 @@ void ForcingComponent::run( const double runToDate ) throw ( h_exception ) {
         };
         
         // Halocarbons can be disabled individually via the input file, so we run through all possible ones
-        forcings[ D_RF_halocarbons ].set( 0.0, U_W_M2 );
-        for (unsigned hc=0; hc<halos.size(); ++hc) {
+         for (unsigned hc=0; hc<halos.size(); ++hc) {
             if( core->checkCapability( halos[hc] ) ) {
                 // Forcing values are actually computed by the halocarbon itself
                 forcings[ halos[hc] ] = core->sendMessage( M_GETDATA, halos[hc], message_data( runToDate ) );
-                forcings[ D_RF_halocarbons ] = forcings[ D_RF_halocarbons ] + forcings[ halos[hc] ];
-            }
+                }
         }
         
         // ---------- Black carbon ----------

@@ -1,0 +1,38 @@
+# Build Hector on Travis CI
+# BBL January 2017
+# See https://travis-ci.org/bpbond/hector
+
+language: cpp
+
+compiler:
+  - clang
+  - gcc
+
+branches:
+  only:
+  - master
+  - rc1.2
+  
+before_script:
+ - export BOOSTVERSION=1_62_0
+ - export BOOSTVERDIR=1.62.0
+ - wget http://downloads.sourceforge.net/project/boost/boost/${BOOSTVERDIR}/boost_${BOOSTVERSION}.tar.bz2\?r\=\&ts\=1435589970\&use_mirror\=garr -O /tmp/boost.tar.bz2
+ - tar jxf /tmp/boost.tar.bz2
+ - mv boost_$BOOSTVERSION $PWD/boost-trunk
+ - export BOOSTROOT="$PWD/boost-trunk"
+
+ - cd $BOOSTROOT
+ - ./bootstrap.sh --with-libraries=filesystem 
+ - ./b2
+ - cd $TRAVIS_BUILD_DIR
+
+# Code above is necessary because Travis's default Boost is 1_46_0
+# which doesn't include odeint and other stuff. Otherwise, we could
+# simple use the following lines:
+#  - sudo apt-get update -qq
+#  - sudo apt-get install libboost-dev libboost-filesystem-dev libboost-system-dev
+
+script: 
+ - make hector
+ - ./test_hector.sh ./source/hector
+
