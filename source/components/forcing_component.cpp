@@ -193,7 +193,8 @@ void ForcingComponent::prepareToRun() throw ( h_exception ) {
 void ForcingComponent::run( const double runToDate ) throw ( h_exception ) {
     
     // Calculate instantaneous radiative forcing for any & all agents
-    // As each is computed, push it into 'forcings' map for Ftot calculation
+    // As each is computed, push it into 'forcings' map for Ftot calculation.
+	// Note that forcings have to be mutually exclusive, there are no subtotals for different species.
     H_LOG( logger, Logger::DEBUG ) << "-----------------------------" << std::endl;
     forcings.clear();
     currentYear = runToDate;
