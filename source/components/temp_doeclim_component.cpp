@@ -366,7 +366,23 @@ void TempDOECLIMComponent::run( const double runToDate ) throw ( h_exception ) {
     //    // internal tracking variables `internal_Ftot` (parallels Ftot, may
     //    // be identical if never had a constraint) and `last_Ftot`.
     
-    
+
+	// A few forcing agents occur disproportionately over land, and thus exert
+	// a stronger effect than their global mean RF would suggest. In the future,
+	// we want to compute RF separately for land and ocean; for now, add a 'bonus'
+	// for these forcing agents.
+
+	// NOTE: this is commented out and not used for now.
+	/*
+	const double fbc = core->sendMessage( M_GETDATA, D_RF_BC ).value( U_W_M2 );
+	Ftot += fbc * bc_b; // % extra
+	const double foc = core->sendMessage( M_GETDATA, D_RF_OC ).value( U_W_M2 );
+	Ftot += foc * oc_b; // % extra
+	const double fso2d = core->sendMessage( M_GETDATA, D_RF_SO2d ).value( U_W_M2 );
+	Ftot += fso2d * so2d_b; // % extra
+	const double fso2i = core->sendMessage( M_GETDATA, D_RF_SO2i ).value( U_W_M2 );
+	Ftot += fso2i * so2i_b; // % extra
+	*/
     
     // Some needed inputs
     int tstep = runToDate - core->getStartDate();
