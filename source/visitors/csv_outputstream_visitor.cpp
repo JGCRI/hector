@@ -18,7 +18,6 @@
 #include "components/dummy_model_component.hpp"
 #include "components/forcing_component.hpp"
 #include "components/halocarbon_component.hpp"
-#include "components/temperature_component.hpp"
 #include "components/temp_doeclim_component.hpp"
 #include "components/bc_component.hpp"
 #include "components/oc_component.hpp"
@@ -178,14 +177,6 @@ void CSVOutputStreamVisitor::visit( HalocarbonComponent* c ) {
     if( !core->outputEnabled( c->getComponentName() ) ) return;
     STREAM_MESSAGE_DATE( csvFile, c, D_HC_EMISSION, current_date );
     STREAM_MESSAGE( csvFile, c, D_HC_CONCENTRATION );
-}
-
-//------------------------------------------------------------------------------
-// documentation is inherited
-void CSVOutputStreamVisitor::visit( TemperatureComponent* c ) {
-    if( !core->outputEnabled( c->getComponentName() ) ) return;
-    STREAM_MESSAGE( csvFile, c, D_GLOBAL_TEMP );
-    STREAM_MESSAGE( csvFile, c, D_GLOBAL_TEMPEQ );
 }
 
 //------------------------------------------------------------------------------

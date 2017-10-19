@@ -13,7 +13,7 @@
  *
  */
 
-#include "components/temperature_component.hpp"
+#include "components/temp_doeclim_component.hpp"
 #include "components/ocean_component.hpp"
 #include "data/tseries.hpp"
 #include "data/unitval.hpp"
