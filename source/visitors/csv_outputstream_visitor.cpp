@@ -218,8 +218,6 @@ void CSVOutputStreamVisitor::visit( OceanComponent* c ) {
     if( !in_spinup ) {
         STREAM_MESSAGE( csvFile, c, D_REVELLE_HL );
         STREAM_MESSAGE( csvFile, c, D_REVELLE_LL );
-        STREAM_MESSAGE( csvFile, c, D_HEAT_FLUX );
-        STREAM_MESSAGE( csvFile, c, D_HEAT_UPTAKE_EFF );
     }
 }
 
