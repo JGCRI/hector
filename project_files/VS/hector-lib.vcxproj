@@ -35,7 +35,6 @@
     <ClInclude Include="..\..\headers\components\onelineocean_component.hpp" />
     <ClInclude Include="..\..\headers\components\slr_component.hpp" />
     <ClInclude Include="..\..\headers\components\so2_component.hpp" />
-    <ClInclude Include="..\..\headers\components\temperature_component.hpp" />
     <ClInclude Include="..\..\headers\core\carbon-cycle-solver.hpp" />
     <ClInclude Include="..\..\headers\core\core.hpp" />
     <ClInclude Include="..\..\headers\core\dependency_finder.hpp" />
@@ -75,7 +74,6 @@
     <ClCompile Include="..\..\source\components\onelineocean_component.cpp" />
     <ClCompile Include="..\..\source\components\slr_component.cpp" />
     <ClCompile Include="..\..\source\components\so2_component.cpp" />
-    <ClCompile Include="..\..\source\components\temperature_component.cpp" />
     <ClCompile Include="..\..\source\components\temp_doeclim_component.cpp" />
     <ClCompile Include="..\..\source\core\carbon-cycle-solver.cpp" />
     <ClCompile Include="..\..\source\core\core.cpp" />

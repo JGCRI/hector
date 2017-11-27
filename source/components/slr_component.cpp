@@ -13,7 +13,7 @@
  */
 
 #include "components/slr_component.hpp"
-#include "components/temperature_component.hpp"
+#include "components/temp_doeclim_component.hpp"
 #include "core/core.hpp"
 #include "core/dependency_finder.hpp"
 #include "h_util.hpp"

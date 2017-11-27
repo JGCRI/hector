@@ -35,7 +35,6 @@ public:
     virtual void visit( ForcingComponent* c );
     virtual void visit( SimpleNbox* c );
     virtual void visit( HalocarbonComponent* c );
-    virtual void visit( TemperatureComponent* c );
     virtual void visit( TempDOECLIMComponent* c );
     virtual void visit( BlackCarbonComponent* c );
     virtual void visit( OrganicCarbonComponent* c );
