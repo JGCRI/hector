@@ -53,7 +53,7 @@ string TempDOECLIMComponent::getComponentName() const {
 /*! \brief              Calculates inverse of x and stores in y
  *  \param[in] x        Assume x is setup like x = [a,b,c,d] -> x = |a, b|
  *                                                                  |c, d|
- *  \param[in] y        Inverted 1-d matrix
+ *  \param[out] y        Inverted 1-d matrix
  *  \returns            void, inverse is stored in y
  */
 void TempDOECLIMComponent::invert_1d_2x2_matrix(double * x, double * y) {
@@ -72,21 +72,6 @@ void TempDOECLIMComponent::invert_1d_2x2_matrix(double * x, double * y) {
 }
     
 //------------------------------------------------------------------------------
-/*! \brief              Calculates element-wise sum of matrix x and y, stores in z
- *  \param[in] x,y      Assume x,y setup like x = [a,b,c,d] -> x = |a, b|
- *                                                                 |c, d|
- *  \param[in] z        Summed 1-d matrix
- *  \returns            void, summed matrix is stored in z
- */
-void TempDOECLIMComponent::sum_1d_2x2_matrix(double * x, double * y, double * z) {
-    for(int i=0; i < 4; i++) {
-        z[i] = x[i] + y[i];
-    }
-        
-    return;
-}
-    
-//------------------------------------------------------------------------------
 // documentation is inherited
 void TempDOECLIMComponent::init( Core* coreptr ) {
     logger.open( getComponentName(), false, Logger::DEBUG );
@@ -96,6 +81,7 @@ void TempDOECLIMComponent::init( Core* coreptr ) {
     tgav.set( 0.0, U_DEGC, 0.0 );
     flux_mixed.set( 0.0, U_W_M2, 0.0 );
     flux_interior.set( 0.0, U_W_M2, 0.0 );
+    heatflux.set( 0.0, U_W_M2, 0.0 );
     
     core = coreptr;
     
@@ -103,7 +89,7 @@ void TempDOECLIMComponent::init( Core* coreptr ) {
     tgav_constrain.name = D_TGAV_CONSTRAIN;
     
     // Define the doeclim parameters
-    diff.set( 0.55, U_CM2_S );  // default ocean heat diffusivity, cm2/s. value is CDICE default (varname is kappa there).
+    diff.set( 0.55, U_CM2_S );    // default ocean heat diffusivity, cm2/s. value is CDICE default (varname is kappa there).
     S.set( 3.0, U_DEGC );         // default climate sensitivity, K (varname is t2co in CDICE).
     alpha.set( 1.0, U_UNITLESS);  // default aerosol scaling, unitless (similar to alpha in CDICE).
     
@@ -112,6 +98,7 @@ void TempDOECLIMComponent::init( Core* coreptr ) {
     core->registerCapability( D_GLOBAL_TEMPEQ, getComponentName() );
     core->registerCapability( D_FLUX_MIXED, getComponentName() );
     core->registerCapability( D_FLUX_INTERIOR, getComponentName() );
+    core->registerCapability( D_HEAT_FLUX, getComponentName() );
 
     // Register our dependencies
     core->registerDependency( D_RF_TOTAL, getComponentName() );
@@ -197,29 +184,29 @@ void TempDOECLIMComponent::prepareToRun() throw ( h_exception ) {
     ak = 0.31;      // slope in climate feedback - land-sea heat exchange linear relationship
     bk = 1.59;      // offset in climate feedback - land-sea heat exchange linear relationship, W/m2/K
     csw = 0.13;     // specific heat capacity of seawater W*yr/m3/K
-    earth_area = 5100656 * pow(10.0, 8);
+    earth_area = 5100656 * pow(10.0, 8);  // m2
     kcon = 3155.0;  // conversion from cm2/s to m2/yr
     q2co = 3.7;     // radiative forcing for atmospheric CO2 doubling, W/m2
     rlam = 1.43;    // factor between land clim. sens. and sea surface clim. sens. T_L2x = rlam*T_S2x
     secs_per_Year = 31556926.0;
     zbot = 4000.0;  // bottom depth of diffusive ocean, m
-    bsi = 1.3;                  // warming factor for marine surface air over SST (due to retreating sea ice)
-    cal = 0.52;                 // heat capacity of land-troposphere system, W*yr/m2/K
-    cas = 7.80;                 // heat capacity of mixed layer-troposphere system, W*yr/m2/K
-    flnd = 0.29;                // fractional land area
-    fso = 0.95;                 // ocean fractional area below 60m
+    bsi = 1.3;      // warming factor for marine surface air over SST (due to retreating sea ice)
+    cal = 0.52;     // heat capacity of land-troposphere system, W*yr/m2/K
+    cas = 7.80;     // heat capacity of mixed layer-troposphere system, W*yr/m2/K
+    flnd = 0.29;    // fractional land area
+    fso = 0.95;     // ocean fractional area below 60m
     
     
     // Initializing all model components that depend on the number of timesteps (ns)
     ns = core->getEndDate() - core->getStartDate() + 1;
     
-    KT0.resize(ns);
-    KTA1.resize(ns);
-    KTB1.resize(ns);
-    KTA2.resize(ns);
-    KTB2.resize(ns);
-    KTA3.resize(ns);
-    KTB3.resize(ns);
+    KT0 = std::vector<double>(ns, 0.0)
+    KTA1 = std::vector<double>(ns, 0.0)
+    KTB1 = std::vector<double>(ns, 0.0)
+    KTA2 = std::vector<double>(ns, 0.0)
+    KTB2 = std::vector<double>(ns, 0.0)
+    KTA3 = std::vector<double>(ns, 0.0)
+    KTB1 = std::vector<double>(ns, 0.0)
     
     Ker.resize(ns);
     
@@ -237,31 +224,25 @@ void TempDOECLIMComponent::prepareToRun() throw ( h_exception ) {
         C[i] = 0.0;
     }
     
-    for(int i=0; i<ns; i++) {
-        KT0[i] = 0.0;
-        KTA1[i] = 0.0;
-        KTB1[i] = 0.0;
-        KTA2[i] = 0.0;
-        KTB2[i] = 0.0;
-        KTA3[i] = 0.0;
-        KTB3[i] = 0.0;
-    }
+    // Intermediate Model Parameters
+    ocean_area = (1.0 - flnd) * earth_area;    // m2
+    cnum = rlam * flnd + bsi * (1.0 - flnd);   // factor from sea-surface climate sensitivity to global mean
+    cden = rlam * flnd - ak * (rlam - bsi);    // intermediate parameter
+    cfl = flnd * cnum / cden * q2co / S - bk * (rlam - bsi) / cden;      // land climate feedback parameter, W/m2/K
+    cfs = (rlam * flnd - ak / (1.0 - flnd) * (rlam - bsi)) * cnum / cden * q2co / S + rlam * flnd / (1.0 - flnd) * bk * (rlam - bsi) / cden;                                // sea climate feedback parameter, W/m2/K
+    kls = bk * rlam * flnd / cden - ak * flnd * cnum / cden * q2co / S;  // land-sea heat exchange coefficient, W/m2/K
+    keff = kcon * diff;                                                  // ocean heat diffusivity, m2/yr
+    taubot = pow(zbot,2) / keff;                                         // ocean bottom diffusion time scale, yr
+    powtoheat = ocean_area * secs_per_Year / pow(10.0,22);               // convert flux to total ocean heat
+    taucfs = cas / cfs;                                                  // sea climate feedback time scale, yr
+    taucfl = cal / cfl;                                                  // land climate feedback time scale, yr
+    taudif = pow(cas,2) / pow(csw,2) * M_PI / keff;                      // interior ocean heat uptake time scale, yr
+    tauksl  = (1.0 - flnd) * cas / kls;                                  // sea-land heat exchange time scale, yr
+    taukls  = flnd * cal / kls;                                          // land-sea heat exchange time scale, yr
     
-    // Dependent Model Parameters
-    ocean_area = (1.0 - flnd) * earth_area;
-    cnum = rlam * flnd + bsi * (1.0 - flnd);
-    cden = rlam * flnd - ak * (rlam - bsi);
-    cfl = flnd * cnum / cden * q2co / S - bk * (rlam - bsi) / cden;
-    cfs = (rlam * flnd - ak / (1.0 - flnd) * (rlam - bsi)) * cnum / cden * q2co / S + rlam * flnd / (1.0 - flnd) * bk * (rlam - bsi) / cden;
-    kls = bk * rlam * flnd / cden - ak * flnd * cnum / cden * q2co / S;
-    keff = kcon * diff;
-    taubot = pow(zbot,2) / keff;
-    powtoheat = ocean_area * secs_per_Year / pow(10.0,22);
-    taucfs = cas / cfs;
-    taucfl = cal / cfl;
-    taudif = pow(cas,2) / pow(csw,2) * M_PI / keff;
-    tauksl  = (1.0 - flnd) * cas / kls;
-    taukls  = flnd * cal / kls;
+    // Components of the analytical solution to the integral found in the temperature difference equation
+    // Third order bottom correction terms will be "more than sufficient" for simulations out to 2500
+    // (Equation A.25, EK05, or 2.3.23, TK07)
     
     // First order
     KT0[ns-1] = 4.0 - 2.0 * pow(2.0, 0.5);
@@ -300,7 +281,8 @@ void TempDOECLIMComponent::prepareToRun() throw ( h_exception ) {
         
     }
     
-    // Switched on (To switch off, comment out lines below)
+    // Correction terms, remove oscillation artefacts due to short-term forcings
+    // (Equation 2.3.27, TK07)
     C[0] = 1.0 / pow(taucfl, 2.0) + 1.0 / pow(taukls, 2.0) + 2.0 / taucfl / taukls + bsi / taukls / tauksl;
     C[1] = -1 * bsi / pow(taukls, 2.0) - bsi / taucfl / taukls - bsi / taucfs / taukls - pow(bsi, 2.0) / taukls / tauksl;
     C[2] = -1 * bsi / pow(tauksl, 2.0) - 1.0 / taucfs / tauksl - 1.0 / taucfl / tauksl -1.0 / taukls / tauksl;
@@ -311,8 +293,8 @@ void TempDOECLIMComponent::prepareToRun() throw ( h_exception ) {
     
     //------------------------------------------------------------------
     // Matrices of difference equation system B*T(i+1) = Q(i) + A*T(i)
-    // T = (TL,TO)
-    // (Equation A.27, EK05, or Equations 2.3.24 and 2.3.27, TK07)
+    // T = (TL,TS)
+    // (Equations 2.3.24 and 2.3.27, TK07)
     B[0] = 1.0 + double(dt) / (2.0 * taucfl) + double(dt) / (2.0 * taukls);
     B[1] = double(-dt) / (2.0 * taukls) * bsi;
     B[2] = double(-dt) / (2.0 * tauksl);
@@ -475,7 +457,8 @@ void TempDOECLIMComponent::run( const double runToDate ) throw ( h_exception ) {
     }
 
     flux_mixed.set( heatflux_mixed[tstep], U_W_M2, 0.0 );
-    flux_interior.set( heatflux_interior[tstep], U_W_M2, 0.0 );			  
+    flux_interior.set( heatflux_interior[tstep], U_W_M2, 0.0 );
+    heatflux.set( heatflux_mixed[tstep] + heatflux_interior[tstep], U_W_M2, 0.0 );
     tgav.set( temp[tstep], U_DEGC, 0.0 );
     tgaveq.set( temp[tstep], U_DEGC, 0.0 );
     H_LOG( logger, Logger::DEBUG ) << " tgav=" << tgav << " in " << runToDate << std::endl;
@@ -497,11 +480,13 @@ unitval TempDOECLIMComponent::getData( const std::string& varName,
     } else if( varName == D_DIFFUSIVITY ) {
         returnval = diff;
     } else if( varName == D_AERO_SCALE ) {
-	returnval = alpha;
+	    returnval = alpha;
     } else if( varName == D_FLUX_MIXED ) {
-	returnval = flux_mixed;
+	    returnval = flux_mixed;
     } else if( varName == D_FLUX_INTERIOR ) {
-	returnval = flux_interior;
+	    returnval = flux_interior;
+    } else if( varName == D_HEAT_FLUX) {
+        returnval = heatflux;
     } else if( varName == D_ECS ) {
         returnval = S;
     } else {
