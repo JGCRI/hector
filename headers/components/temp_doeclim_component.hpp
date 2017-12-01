@@ -27,8 +27,9 @@ namespace Hector {
 /*! \brief Temperature component.
  *
  *  A component that computes mean global temperature from radiative forcing 
- *  using Diffusion Ocean Energy balance CLImate Model (DOECLIM), (Kriegler, 2005).
- *  Adopted from C++ github implementation, cdice_doeclim (Garner et al., 2013).
+ *  using Diffusion Ocean Energy balance CLIMate model 
+ *  (DOECLIM; Kriegler, 2005; Tanaka and Kriegler, 2007).
+ *  Adopted from C++ github implementation, cdice_doeclim (Garner et al., 2016).
  */
 class TempDOECLIMComponent : public IModelComponent {
     
@@ -61,9 +62,8 @@ private:
     virtual unitval getData( const std::string& varName,
                             const double date ) throw ( h_exception );
     void invert_1d_2x2_matrix( double * x, double * y);
-    void sum_1d_2x2_matrix( double * x, double * y, double * z);
     
-    //Hard-coded DOECLIM parameters
+    // Hard-coded DOECLIM parameters
     int dt;                  // years per timestep (this is hard-coded into Hector)
     int ns;                  // number of timesteps
     double ak;               // slope in climate feedback - land-sea heat exchange linear relationship
@@ -81,40 +81,30 @@ private:
     double flnd;             // fractional land area
     double fso;              // ocean fractional area below 60m
     
-    //Intermediate DOECLIM parameters
+    // Intermediate DOECLIM parameters
+    double ocean_area;       // m2
+    double cnum;             // factor from sea-surface climate sensitivity to global mean
+    double cden;             // intermediate parameter
+    double cfl;              // land climate feedback parameter, W/m2/K
+    double cfs;              // sea climate feedback parameter, W/m2/K
+    double kls;              // land-sea heat exchange coefficient, W/m2/K
+    double keff;             // ocean heat diffusivity, m2/yr
+    double taubot;           // ocean bottom diffusion time scale, yr
+    double powtoheat;        // convert flux to total ocean heat 1E22 m2*s
+    double taucfs;           // sea climate feedback time scale, yr
+    double taucfl;           // land climate feedback time scale, yr
+    double taudif;           // interior ocean heat uptake time scale, yr
+    double tauksl;           // sea-land heat exchange time scale, yr
+    double taukls;           // land-sea heat exchange time scale, yr
+
+    // Components of the difference equation system B*T(i+1) = Q(i) + A*T(i)
     double B[4];
     double C[4];
-
-    std::vector<double> KT0;
-    std::vector<double> KTA1;
-    std::vector<double> KTB1;
-    std::vector<double> KTA2;
-    std::vector<double> KTB2;
-    std::vector<double> KTA3;
-    std::vector<double> KTB3;
-    
     std::vector<double> Ker;
-
     double A[4];
     double IB[4];
     
-    //Dependent DOECLIM parameters
-    double ocean_area;
-    double cnum;
-    double cden;
-    double cfl;
-    double cfs;
-    double kls;
-    double keff;
-    double taubot;
-    double powtoheat;
-    double taucfs;
-    double taucfl;
-    double taudif;
-    double tauksl;
-    double taukls;
-    
-    //Time series arrays that are updated with each DOECLIM time-step
+    // Time series arrays that are updated with each DOECLIM time-step
     std::vector<double> temp;
     std::vector<double> temp_landair;
     std::vector<double> temp_sst;
@@ -128,9 +118,10 @@ private:
     unitval tgaveq;        //!< equilibrium temp without ocean heat flux, currently set = tgav
     unitval S;             //!< climate sensitivity for 2xCO2, deg C
     unitval diff;          //!< ocean heat diffusivity, cm2/s
-    unitval alpha;	   //!< aerosol forcing factor, unitless
+    unitval alpha;	       //!< aerosol forcing factor, unitless
     unitval flux_mixed;    //!< heat flux into mixed layer of ocean, W/m2
-    unitval flux_interior; //!< heat flux into interior layer of ocean, W/m2	    
+    unitval flux_interior; //!< heat flux into interior layer of ocean, W/m2
+    unitval heatflux;      //!< heat flux into ocean, W/m2
 	    
     tseries<unitval> tgav_constrain;        //! Temperature change can be supplied (not currently)
     

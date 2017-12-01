@@ -255,6 +255,7 @@
 #define D_AERO_SCALE            "alpha"
 #define D_FLUX_MIXED            "flux_mixed"
 #define D_FLUX_INTERIOR         "flux_interior"
+#define D_HEAT_FLUX             "heatflux"
 
 // ------------------- messages being passed between components -------------------------
 
