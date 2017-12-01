@@ -18,7 +18,7 @@
 #include "components/dummy_model_component.hpp"
 #include "components/forcing_component.hpp"
 #include "components/halocarbon_component.hpp"
-#include "components/temp_doeclim_component.hpp"
+#include "components/temperature_component.hpp"
 #include "components/bc_component.hpp"
 #include "components/oc_component.hpp"
 #include "components/slr_component.hpp"
@@ -181,7 +181,7 @@ void CSVOutputStreamVisitor::visit( HalocarbonComponent* c ) {
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-void CSVOutputStreamVisitor::visit( TempDOECLIMComponent* c ) {
+void CSVOutputStreamVisitor::visit( TemperatureComponent* c ) {
     if( !core->outputEnabled( c->getComponentName() ) ) return;
     STREAM_MESSAGE( csvFile, c, D_GLOBAL_TEMP );
     STREAM_MESSAGE( csvFile, c, D_FLUX_MIXED );

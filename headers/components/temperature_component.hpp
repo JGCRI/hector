@@ -4,10 +4,10 @@
    Please see the accompanying file LICENSE.md for additional licensing
    information.
 */
-#ifndef TEMP_DOECLIM_COMPONENT_H
-#define TEMP_DOECLIM_COMPONENT_H
+#ifndef TEMPERATURE_COMPONENT_H
+#define TEMPERATURE_COMPONENT_H
 /*
- *  temp_doeclim_component.hpp
+ *  temperature_component.hpp
  *  hector
  *
  *  Created by BenV-W on 11/01/2016.
@@ -31,11 +31,11 @@ namespace Hector {
  *  (DOECLIM; Kriegler, 2005; Tanaka and Kriegler, 2007).
  *  Adopted from C++ github implementation, cdice_doeclim (Garner et al., 2016).
  */
-class TempDOECLIMComponent : public IModelComponent {
+class TemperatureComponent : public IModelComponent {
     
 public:
-    TempDOECLIMComponent();
-    ~TempDOECLIMComponent();
+    TemperatureComponent();
+    ~TemperatureComponent();
     
     //! IModelComponent methods
     virtual std::string getComponentName() const;
@@ -113,7 +113,16 @@ private:
     std::vector<double> heat_mixed;
     std::vector<double> heat_interior;
     std::vector<double> forcing;
-    
+
+
+	std::vector<double> KT0;
+	std::vector<double> KTA1;
+	std::vector<double> KTB1;
+	std::vector<double> KTA2;
+	std::vector<double> KTB2;
+	std::vector<double> KTA3;
+	std::vector<double> KTB3;
+	    
     unitval tgav;          //!< global temperature delta, deg C
     unitval tgaveq;        //!< equilibrium temp without ocean heat flux, currently set = tgav
     unitval S;             //!< climate sensitivity for 2xCO2, deg C
@@ -138,4 +147,4 @@ private:
 
 }
 
-#endif // TEMP_DOECLIM_COMPONENT_H
+#endif // TEMPERATURE_COMPONENT_H

@@ -27,7 +27,7 @@ class CarbonCycleSolver;
 class CH4Component;
 class OHComponent;
 class N2OComponent;
-class TempDOECLIMComponent;
+class TemperatureComponent;
 class BlackCarbonComponent;
 class OrganicCarbonComponent;
 class OceanComponent;
@@ -64,7 +64,7 @@ public:
     virtual void visit( OHComponent* c ) {}
     virtual void visit( CH4Component* c ) {}
     virtual void visit( N2OComponent* c ) {}
-    virtual void visit( TempDOECLIMComponent* c ) {}
+    virtual void visit( TemperatureComponent* c ) {}
     virtual void visit( BlackCarbonComponent* c ) {}
     virtual void visit( OrganicCarbonComponent* c ) {}
     virtual void visit( OceanComponent* c ) {}

@@ -20,7 +20,7 @@
 #include "data/unitval.hpp"
 
 // Need to forward declare the components which depend on each other
-#include "components/temp_doeclim_component.hpp"
+#include "components/temperature_component.hpp"
 
 namespace Hector {
   
