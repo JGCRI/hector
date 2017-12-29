@@ -250,7 +250,7 @@
 #define D_OC_B                  "oc_b"
 #define D_BC_B                  "bc_b"
 
-// temperature doeclim component
+// temperature component
 #define D_DIFFUSIVITY           "diff"
 #define D_AERO_SCALE            "alpha"
 #define D_FLUX_MIXED            "flux_mixed"
