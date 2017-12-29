@@ -173,6 +173,9 @@
     <ClInclude Include="..\..\headers\hector.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\headers\components\temperature_component.hpp">
+      <Filter>Header Files\components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\source\components\bc_component.cpp">
@@ -268,7 +271,7 @@
     <ClCompile Include="..\..\source\visitors\csv_outputstream_visitor.cpp">
       <Filter>Source Files\visitors</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\source\components\temp_doeclim_component.cpp">
+    <ClCompile Include="..\..\source\components\temperature_component.cpp">
       <Filter>Source Files\components</Filter>
     </ClCompile>
   </ItemGroup>
