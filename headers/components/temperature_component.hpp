@@ -29,7 +29,12 @@ namespace Hector {
  *  A component that computes mean global temperature from radiative forcing 
  *  using Diffusion Ocean Energy balance CLIMate model 
  *  (DOECLIM; Kriegler, 2005; Tanaka and Kriegler, 2007).
- *  Adopted from C++ github implementation, cdice_doeclim (Garner et al., 2016).
+ *  Adopted with permission from C++ implementation
+ *  (https://github.com/scrim-network/cdice_doeclim; Garner et al., 2016).
+ *
+ *  Kriegler, E. (2005) Imprecise probability analysis for Integrated Assessment of climate change. Ph.D. dissertation. Potsdam Universität. 256 pp. (http://opus.kobv.de/ubp/volltexte/2005/561/; DOECLIM introduced in Chapter 2 and Annexes A and B)
+ *  Tanaka, K. & Kriegler, E. (2007) Aggregated carbon cycle, atmospheric chemistry, and climate model (ACC2) – Description of the forward and inverse modes – . Reports Earth Syst. Sci. 199.
+ *  Garner, G., Reed, P. & Keller, K. (2016) Climate risk management requires explicit representation of societal trade-offs. Clim. Change 134, 713–723.
  */
 class TemperatureComponent : public IModelComponent {
     
