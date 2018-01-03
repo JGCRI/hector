@@ -7,9 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7DD2A4C51E19A6F20004BBA6 /* temp_doeclim_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7DD2A4C41E19A6F20004BBA6 /* temp_doeclim_component.cpp */; };
-		7DD2A4C81E19A72F0004BBA6 /* temp_doeclim_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7DD2A4C41E19A6F20004BBA6 /* temp_doeclim_component.cpp */; };
-		7DD2A4C91E19A7300004BBA6 /* temp_doeclim_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7DD2A4C41E19A6F20004BBA6 /* temp_doeclim_component.cpp */; };
 		B53C186D16C98E010084BD6E /* libgtest.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B53C186C16C98E010084BD6E /* libgtest.a */; };
 		B54987AA16C981060000A223 /* gtest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B54987A916C981060000A223 /* gtest.framework */; };
 		B5BD15C7189B3ED20020C554 /* bc_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B5BD15A4189B3ED10020C554 /* bc_component.cpp */; };
@@ -113,7 +110,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		7DD2A4C41E19A6F20004BBA6 /* temp_doeclim_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = temp_doeclim_component.cpp; sourceTree = "<group>"; };
 		7DD2A4C61E19A71D0004BBA6 /* temp_doeclim_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = temp_doeclim_component.hpp; sourceTree = "<group>"; };
 		8DD76F6C0486A84900D96B5E /* hector */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = hector; sourceTree = BUILT_PRODUCTS_DIR; };
 		B53C186C16C98E010084BD6E /* libgtest.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgtest.a; path = "../../../../../../../../../../Library/Developer/Xcode/DerivedData/gtest-cumlpidgkhribbdlzgavdlnkcwyy/Build/Products/Debug/libgtest.a"; sourceTree = "<group>"; };
@@ -338,7 +334,6 @@
 		B5BD15A3189B3ED10020C554 /* components */ = {
 			isa = PBXGroup;
 			children = (
-				7DD2A4C41E19A6F20004BBA6 /* temp_doeclim_component.cpp */,
 				B5DEC3121A6033BB00584342 /* oh_component.cpp */,
 				B5BD15A4189B3ED10020C554 /* bc_component.cpp */,
 				B5BD15A5189B3ED10020C554 /* ch4_component.cpp */,
@@ -571,7 +566,6 @@
 				B5BD15D9189B3ED20020C554 /* onelineocean_component.cpp in Sources */,
 				B5BD15DB189B3ED20020C554 /* slr_component.cpp in Sources */,
 				B5BD15CD189B3ED20020C554 /* forcing_component.cpp in Sources */,
-				7DD2A4C51E19A6F20004BBA6 /* temp_doeclim_component.cpp in Sources */,
 				B5BD160A189B41340020C554 /* ini_to_core_reader.cpp in Sources */,
 				B5BD162A189B41940020C554 /* logger.cpp in Sources */,
 				B5BD1612189B41340020C554 /* ini.c in Sources */,
@@ -612,7 +606,6 @@
 				B5BD15DA189B3ED20020C554 /* onelineocean_component.cpp in Sources */,
 				B5BD15DC189B3ED20020C554 /* slr_component.cpp in Sources */,
 				B5BD15CE189B3ED20020C554 /* forcing_component.cpp in Sources */,
-				7DD2A4C81E19A72F0004BBA6 /* temp_doeclim_component.cpp in Sources */,
 				B5BD160B189B41340020C554 /* ini_to_core_reader.cpp in Sources */,
 				B5BD162B189B41940020C554 /* logger.cpp in Sources */,
 				B5BD1613189B41340020C554 /* ini.c in Sources */,
@@ -646,7 +639,6 @@
 				CD97CE371BFBBF5D005689AD /* bc_component.cpp in Sources */,
 				CD97CE381BFBBF5D005689AD /* ch4_component.cpp in Sources */,
 				CD97CE391BFBBF5D005689AD /* dummy_model_component.cpp in Sources */,
-				7DD2A4C91E19A7300004BBA6 /* temp_doeclim_component.cpp in Sources */,
 				CD97CE3A1BFBBF5D005689AD /* forcing_component.cpp in Sources */,
 				CD97CE3B1BFBBF5D005689AD /* halocarbon_component.cpp in Sources */,
 				CD97CE3C1BFBBF5D005689AD /* n2o_component.cpp in Sources */,
