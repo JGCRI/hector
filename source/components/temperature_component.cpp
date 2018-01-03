@@ -180,33 +180,16 @@ void TemperatureComponent::prepareToRun() throw ( h_exception ) {
         H_LOG( glog, Logger::WARNING ) << "Temperature will be overwritten by user-supplied values!" << std::endl;
     }
     
-    dt = 1;         // years per timestep (this is hard-coded into Hector
-    ak = 0.31;      // slope in climate feedback - land-sea heat exchange linear relationship
-    bk = 1.59;      // offset in climate feedback - land-sea heat exchange linear relationship, W/m2/K
-    csw = 0.13;     // specific heat capacity of seawater W*yr/m3/K
-    earth_area = 5100656 * pow(10.0, 8);  // m2
-    kcon = 3155.0;  // conversion from cm2/s to m2/yr
-    q2co = 3.7;     // radiative forcing for atmospheric CO2 doubling, W/m2
-    rlam = 1.43;    // factor between land clim. sens. and sea surface clim. sens. T_L2x = rlam*T_S2x
-    secs_per_Year = 31556926.0;
-    zbot = 4000.0;  // bottom depth of diffusive ocean, m
-    bsi = 1.3;      // warming factor for marine surface air over SST (due to retreating sea ice)
-    cal = 0.52;     // heat capacity of land-troposphere system, W*yr/m2/K
-    cas = 7.80;     // heat capacity of mixed layer-troposphere system, W*yr/m2/K
-    flnd = 0.29;    // fractional land area
-    fso = 0.95;     // ocean fractional area below 60m
-    
-    
     // Initializing all model components that depend on the number of timesteps (ns)
     ns = core->getEndDate() - core->getStartDate() + 1;
     
-	KT0 = std::vector<double>(ns, 0.0);
-	KTA1 = std::vector<double>(ns, 0.0);
-	KTB1 = std::vector<double>(ns, 0.0);
+    KT0 = std::vector<double>(ns, 0.0);
+    KTA1 = std::vector<double>(ns, 0.0);
+    KTB1 = std::vector<double>(ns, 0.0);
     KTA2 = std::vector<double>(ns, 0.0);
-	KTB2 = std::vector<double>(ns, 0.0);
-	KTA3 = std::vector<double>(ns, 0.0);
-	KTB3 = std::vector<double>(ns, 0.0);
+    KTB2 = std::vector<double>(ns, 0.0);
+    KTA3 = std::vector<double>(ns, 0.0);
+    KTB3 = std::vector<double>(ns, 0.0);
 	    
     Ker.resize(ns);
     
@@ -224,7 +207,7 @@ void TemperatureComponent::prepareToRun() throw ( h_exception ) {
         C[i] = 0.0;
     }
     
-    // Intermediate Model Parameters
+    // DOECLIM parameters calculated from constants set in header
     ocean_area = (1.0 - flnd) * earth_area;    // m2
     cnum = rlam * flnd + bsi * (1.0 - flnd);   // factor from sea-surface climate sensitivity to global mean
     cden = rlam * flnd - ak * (rlam - bsi);    // intermediate parameter
