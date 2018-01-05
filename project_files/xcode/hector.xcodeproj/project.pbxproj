@@ -110,6 +110,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7DD2A4C61E19A71D0004BBA6 /* temp_doeclim_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = temp_doeclim_component.hpp; sourceTree = "<group>"; };
 		8DD76F6C0486A84900D96B5E /* hector */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = hector; sourceTree = BUILT_PRODUCTS_DIR; };
 		B53C186C16C98E010084BD6E /* libgtest.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgtest.a; path = "../../../../../../../../../../Library/Developer/Xcode/DerivedData/gtest-cumlpidgkhribbdlzgavdlnkcwyy/Build/Products/Debug/libgtest.a"; sourceTree = "<group>"; };
 		B54987A916C981060000A223 /* gtest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = gtest.framework; path = "../../../../../../../../../../Library/Developer/Xcode/DerivedData/gtest-cumlpidgkhribbdlzgavdlnkcwyy/Build/Products/Debug/gtest.framework"; sourceTree = "<group>"; };
@@ -244,6 +245,7 @@
 		B5BD1530189B3EB00020C554 /* components */ = {
 			isa = PBXGroup;
 			children = (
+				7DD2A4C61E19A71D0004BBA6 /* temp_doeclim_component.hpp */,
 				B5DEC3151A6033C900584342 /* oh_component.hpp */,
 				B5BD1531189B3EB00020C554 /* bc_component.hpp */,
 				B5BD1532189B3EB00020C554 /* ch4_component.hpp */,

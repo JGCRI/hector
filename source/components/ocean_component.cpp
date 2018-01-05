@@ -68,20 +68,12 @@ void OceanComponent::init( Core* coreptr ) {
     oceanflux_constrain.name = "atm_ocean_constrain";
 	
     Tgav.set( 0.0, U_DEGC );
-	heatflux.set( 0.0, U_W_M2 );
-        k_max.set( 0.8, U_W_M2_K );    // default
-        t_mid.set( 2.75, U_K );        // default
-        k_min.set( 0.0, U_W_M2_K );   // default
-        slope.set( -3.0, U_1_K );      // default
-        
-        m_min_k_so_far = std::numeric_limits<double>::max();
 
 	lastflux_annualized.set( 0.0, U_PGC );
         
     // Register the data we can provide
     core->registerCapability( D_OCEAN_CFLUX, getComponentName() );
 	core->registerCapability( D_OCEAN_C, getComponentName() );
-    core->registerCapability( D_HEAT_FLUX, getComponentName() );
     core->registerCapability( D_CARBON_HL, getComponentName() );
     core->registerCapability( D_CARBON_LL, getComponentName() );
     core->registerCapability( D_CARBON_IO, getComponentName() );
@@ -90,7 +82,7 @@ void OceanComponent::init( Core* coreptr ) {
     core->registerCapability( D_TU, getComponentName() );
     core->registerCapability( D_TWI, getComponentName() );
     core->registerCapability( D_TID, getComponentName() );
-    core->registerCapability( D_HEAT_UPTAKE_EFF, getComponentName() );
+  
 }
 
 //------------------------------------------------------------------------------
@@ -173,20 +165,6 @@ void OceanComponent::setData( const string& varName,
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
             oceanflux_constrain.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_PGC_YR ) );
                 
-                // Heat uptake-related parameters
-            } else if( varName == D_MAX_HEAT_UPTAKE_EFF ) {
-                H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-                k_max.set( lexical_cast<double>( data.value_str ), U_W_M2_K );
-            } else if( varName == D_KAPPA50_TEMP ) {
-                H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-                t_mid.set( lexical_cast<double>( data.value_str ), U_K );
-            } else if( varName == D_MIN_HEAT_UPTAKE_EFF ) {
-                H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-                k_min.set( lexical_cast<double>( data.value_str ), U_W_M2_K );
-            } else if( varName == D_SLOPE_HEAT_UPTAKE_EFF ) {
-                H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-                slope.set( lexical_cast<double>( data.value_str ), U_1_K );
-            
         } else {
             H_THROW( "Unknown variable name while parsing " + getComponentName() + ": "
                     + varName );
@@ -264,14 +242,14 @@ void OceanComponent::prepareToRun() throw ( h_exception ) {
 	
 	//inputs for surface chemistry boxes
 	//surfaceHL.mychemistry.alk = // mol/kg
-        surfaceHL.deltaT.set( -13.0, U_DEGC );  // delta T is added 288.15 to return the initial temperature value of the surface box
+    surfaceHL.deltaT.set( -13.0, U_DEGC );  // delta T is added 288.15 to return the initial temperature value of the surface box
 	surfaceHL.mychemistry.S             = 34.5; // Salinity
 	surfaceHL.mychemistry.volumeofbox   = HL_volume; //5.4e15; //m3
 	surfaceHL.mychemistry.As            = ocean_area * part_high ; // surface area m2
 	surfaceHL.mychemistry.U             = 6.7; // average wind speed m/s
 		
 	//surfaceLL.mychemistry.alk = // mol/kg
-        surfaceLL.deltaT.set( 7.0, U_DEGC );    // delta T is added to 288.15 to return the initial temperature value of the surface box
+    surfaceLL.deltaT.set( 7.0, U_DEGC );    // delta T is added to 288.15 to return the initial temperature value of the surface box
 	surfaceLL.mychemistry.S             = 34.5; // Salinity
 	surfaceLL.mychemistry.volumeofbox   = LL_volume; //3.06e16; //m3
 	surfaceLL.mychemistry.As            = ocean_area * part_low; // surface area m2
@@ -357,61 +335,10 @@ void OceanComponent::run( const double runToDate ) throw ( h_exception ) {
     // Call compute_fluxes with do_boxfluxes=false to run just chemistry
 	surfaceHL.compute_fluxes( Ca, 1.0, false );
 	surfaceLL.compute_fluxes( Ca, 1.0, false );
-        
-    calcHeatflux( runToDate );
+    
     
     // Now wait for the solver to call us
 }
-
-//------------------------------------------------------------------------------
-    /*! \brief Calculate ocean heat flux
-     */
-    void OceanComponent::calcHeatflux( const double runToDate ) {
-        // k (kappa) is the ocean heat uptake efficiency, after Raper et al. 2002
-        
-        if( in_spinup ) {
-            heatflux.set( 0.0, U_W_M2 );  // during spinup ocean is neutral
-        } else {
-            unitval tgaveq = core->sendMessage( M_GETDATA, D_GLOBAL_TEMPEQ );
-            
-            /* First assumption: the ocean's heat uptake efficiency `k` (kappa) is a function
-            // of global temperature and declines following a sigmoid model:
-            //   ^
-            //   |   ____
-            //   |       \
-            //   k        \____
-            //   |
-            //    -- Tgav -------->
-            // In this model `kmax` is the upper asymptote (maximum k heat uptake), `sl` a
-            // slope parameter (here negative -> declining), tmid is the midpoint of the
-            // transition, and `kmin` the minimum heat uptake.
-            */
-            const double t = Tgav.value( U_DEGC );
-            const double sl = slope.value( U_1_K );
-            const double tmid = t_mid.value( U_K );
-            const double kmin = k_min.value( U_W_M2_K );               // W/m2/K
-            const double kmax = k_max.value( U_W_M2_K );
-
-            double k = ( sl == 0 ?
-                        kmax :
-                        kmin + ( kmax - kmin ) / ( 1 + exp( sl * ( t - tmid ) ) ) );  // W/m2/K
-            
-            H_ASSERT( k >= kmin && k <= kmax, "kappa out of range");
-            
-            // Second assumption: there's a 'ratchet' effect, such that once k starts to decline,
-            // it's not allowed to come back up. (This would not be true at longer timescales.)
-            if( k > m_min_k_so_far ) {
-                k = m_min_k_so_far;
-            }
-            m_min_k_so_far = k;
-            
-            heatflux.set( k * (tgaveq.value( U_DEGC )), U_W_M2 );
-            kappa.set( k, U_W_M2_K );
-            
-            H_LOG( logger, Logger::DEBUG ) << "heatflux = " << heatflux << ", kappa = " << kappa << std::endl;
-        }
-    }
-    
     //------------------------------------------------------------------------------
 // documentation is inherited
 bool OceanComponent::run_spinup( const int step ) throw ( h_exception ) {
@@ -434,8 +361,6 @@ unitval OceanComponent::getData( const std::string& varName,
         returnval = totalcpool();
 	} else if( varName == D_HL_DO ) {
         returnval = surfaceHL.annual_box_fluxes[ &deep ] ;
-	} else if( varName == D_HEAT_FLUX ) {
-		returnval = heatflux;
     } else if( varName == D_PH_HL ) {
         returnval = surfaceHL.mychemistry.pH;
 	} else if( varName == D_PH_LL ) {
@@ -488,8 +413,6 @@ unitval OceanComponent::getData( const std::string& varName,
 		returnval = surfaceLL.mychemistry.CO3;
 	} else if( varName == D_CO3_HL ) {
 		returnval = surfaceHL.mychemistry.CO3;
-    } else if( varName == D_HEAT_UPTAKE_EFF ) {
-            returnval =  kappa;
     } else if( varName == D_TIMESTEPS ) {
         returnval = unitval( timesteps, U_UNITLESS );
     } else {
@@ -561,7 +484,7 @@ void OceanComponent::stashCValues( double t, const double c[] ) {
 //    << c[ 1 ] << " " << c[ 2 ] << " " << c[ 3 ] << " " << c[ 4 ] << " " << c[ 5 ] << std::endl;
 
 	// At this point the solver has converged, going from ODEstartdate to t
-    // Now we finalize calculations: circulate ocean, update carbon states, heat flux, etc.
+    // Now we finalize calculations: circulate ocean, update carbon states, etc.
     const double yearfraction = ( t - ODEstartdate );
     H_LOG( logger, Logger::NOTICE ) << "Solver has finished. Yearfraction = " << yearfraction << std::endl;
     H_ASSERT( yearfraction >= 0 && yearfraction <= 1, "yearfraction out of bounds" );
