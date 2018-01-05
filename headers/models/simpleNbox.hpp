@@ -96,7 +96,7 @@ private:
     unitval residual;               //!< residual (when constraining Ca) flux, Pg C
     
     // Carbon fluxes
-    tseries<unitval> anthroEmissions;   //!< anthropogenic emissions, Pg C/yr
+    tseries<unitval> ffiEmissions;  //!< fossil fuels and industry emissions, Pg C/yr
     tseries<unitval> lucEmissions;      //!< land use change emissions, Pg C/yr
     
     // Albedo

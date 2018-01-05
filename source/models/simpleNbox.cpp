@@ -25,8 +25,8 @@ namespace Hector {
 /*! \brief constructor
  */
 SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), m_last_tempferts(0.0) {
-    anthroEmissions.allowInterp( true );
-    anthroEmissions.name = "anthroEmissions";
+    ffiEmissions.allowInterp( true );
+    ffiEmissions.name = "ffiEmissions";
     lucEmissions.allowInterp( true );
     lucEmissions.name = "lucEmissions";
     Ftalbedo.allowInterp( true );
@@ -67,8 +67,8 @@ void SimpleNbox::init( Core* coreptr ) {
     core->registerDependency( D_OCEAN_CFLUX, getComponentName() );
 
     // Register the inputs we can receive from outside
-    core->registerInput( D_ANTHRO_EMISSIONS, getComponentName() );
-    core->registerInput( D_LUC_EMISSIONS, getComponentName() );
+    core->registerInput(D_FFI_EMISSIONS, getComponentName());
+    core->registerInput(D_LUC_EMISSIONS, getComponentName());
 }
 
 //------------------------------------------------------------------------------
@@ -181,17 +181,17 @@ void SimpleNbox::setData( const std::string &varName,
             npp_flux0[ biome ] = unitval::parse_unitval( data.value_str, data.units_str, U_PGC_YR );
         }
         
-        // Anthropogenic contributions--time series.  There are two
+        // Fossil fuels and industry contributions--time series.  There are two
         // message versions for each of these: one for string data
         // read from an input file, and another for actual values
         // passed from another part of the program.
-        else if( varNameParsed == D_ANTHRO_EMISSIONS ) {
+        else if( varNameParsed == D_FFI_EMISSIONS ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            H_ASSERT( biome == SNBOX_DEFAULT_BIOME, "anthro emissions must be global" );
+            H_ASSERT( biome == SNBOX_DEFAULT_BIOME, "fossil fuels and industry emissions must be global" );
             if(data.isVal)
-                anthroEmissions.set(data.date, data.value_unitval);
+                ffiEmissions.set(data.date, data.value_unitval);
             else
-                anthroEmissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_PGC_YR ) );
+                ffiEmissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_PGC_YR ) );
         } 
         else if( varNameParsed == D_LUC_EMISSIONS ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
@@ -443,9 +443,9 @@ unitval SimpleNbox::getData( const std::string& varName,
     } else if( varName == D_SOILC ) {
         H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for soil C" );
         returnval = sum_map( soil_c );
-    } else if( varName == D_ANTHRO_EMISSIONS ) {
-        H_ASSERT( date != Core::undefinedIndex(), "Date required for anthro emissions" );
-        returnval = anthroEmissions.get( date );
+    } else if( varName == D_FFI_EMISSIONS ) {
+        H_ASSERT( date != Core::undefinedIndex(), "Date required for ffi emissions" );
+        returnval = ffiEmissions.get( date );
     } else if( varName == D_LUC_EMISSIONS ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for luc emissions" );
         returnval = lucEmissions.get( date );
@@ -711,10 +711,10 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
         detsoil_flux = detsoil_flux + unitval( it->second.value( U_PGC ) * 0.6, U_PGC_YR );
     }
     
-    // Annual anthropogenic industrial emissions
-    unitval anthro_flux_current( 0.0, U_PGC_YR );
+    // Annual fossil fuels and industry emissions
+    unitval ffi_flux_current( 0.0, U_PGC_YR );
     if( !in_spinup ) {   // no perturbation allowed if in spinup
-        anthro_flux_current = anthroEmissions.get( t );
+        ffi_flux_current = ffiEmissions.get( t );
     }
     
     // Annual land use change emissions
@@ -733,7 +733,7 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
     
     // Compute fluxes
     dcdt[ SNBOX_ATMOS ] = // change in atmosphere pool
-        anthro_flux_current.value( U_PGC_YR )
+        ffi_flux_current.value( U_PGC_YR )
         + luc_current.value( U_PGC_YR )
         + ch4ox_current.value( U_PGC_YR )
         - atmosocean_flux.value( U_PGC_YR )
@@ -758,7 +758,7 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
     dcdt[ SNBOX_OCEAN ] = // change in ocean pool
         atmosocean_flux.value( U_PGC_YR );
     dcdt[ SNBOX_EARTH ] = // change in earth pool
-        - anthro_flux_current.value( U_PGC_YR );
+        - ffi_flux_current.value( U_PGC_YR );
 
 /*    printf( "%6.3f%8.3f%8.2f%8.2f%8.2f%8.2f%8.2f\n", t, dcdt[ SNBOX_ATMOS ],
             dcdt[ SNBOX_VEG ], dcdt[ SNBOX_DET ], dcdt[ SNBOX_SOIL ], dcdt[ SNBOX_OCEAN ], dcdt[ SNBOX_EARTH ] );

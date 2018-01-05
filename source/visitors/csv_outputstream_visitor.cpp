@@ -142,7 +142,7 @@ void CSVOutputStreamVisitor::visit( SimpleNbox* c ) {
 
     // Global outputs
     STREAM_MESSAGE( csvFile, c, D_LAND_CFLUX );
-    STREAM_MESSAGE_DATE( csvFile, c, D_ANTHRO_EMISSIONS, current_date );
+    STREAM_MESSAGE_DATE( csvFile, c, D_FFI_EMISSIONS, current_date );
     STREAM_MESSAGE_DATE( csvFile, c, D_LUC_EMISSIONS, current_date );
     STREAM_MESSAGE( csvFile, c, D_NPP );
     STREAM_MESSAGE( csvFile, c, D_RH );
