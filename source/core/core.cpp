@@ -24,10 +24,10 @@
 #include "components/so2_component.hpp"
 #include "components/forcing_component.hpp"
 #include "components/slr_component.hpp"
-#include "components/temperature_component.hpp"
 #include "components/ocean_component.hpp"
 #include "components/onelineocean_component.hpp"
 #include "components/o3_component.hpp"
+#include "components/temperature_component.hpp"
 #include "core/core.hpp"
 #include "core/dependency_finder.hpp"
 #include "core/logger.hpp"
@@ -110,11 +110,11 @@ void Core::init() {
     modelComponents[ temp->getComponentName() ] = temp;
 	temp = new slrComponent();
     modelComponents[ temp->getComponentName() ] = temp;
-	temp = new TemperatureComponent();
-    modelComponents[ temp->getComponentName() ] = temp;
 	temp = new OceanComponent();
     modelComponents[ temp->getComponentName() ] = temp;
 	temp = new OneLineOceanComponent();
+    modelComponents[ temp->getComponentName() ] = temp;
+    temp = new TemperatureComponent();
     modelComponents[ temp->getComponentName() ] = temp;
     
     temp = new HalocarbonComponent( CF4_COMPONENT_BASE );

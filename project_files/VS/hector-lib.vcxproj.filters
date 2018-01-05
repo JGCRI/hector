@@ -101,9 +101,6 @@
     <ClInclude Include="..\..\headers\components\so2_component.hpp">
       <Filter>Header Files\components</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\headers\components\temperature_component.hpp">
-      <Filter>Header Files\components</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\headers\core\carbon-cycle-solver.hpp">
       <Filter>Header Files\core</Filter>
     </ClInclude>
@@ -176,6 +173,9 @@
     <ClInclude Include="..\..\headers\hector.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\headers\components\temperature_component.hpp">
+      <Filter>Header Files\components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\source\components\bc_component.cpp">
@@ -215,9 +215,6 @@
       <Filter>Source Files\components</Filter>
     </ClCompile>
     <ClCompile Include="..\..\source\components\so2_component.cpp">
-      <Filter>Source Files\components</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\source\components\temperature_component.cpp">
       <Filter>Source Files\components</Filter>
     </ClCompile>
     <ClCompile Include="..\..\source\core\carbon-cycle-solver.cpp">
@@ -273,6 +270,9 @@
     </ClCompile>
     <ClCompile Include="..\..\source\visitors\csv_outputstream_visitor.cpp">
       <Filter>Source Files\visitors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\components\temperature_component.cpp">
+      <Filter>Source Files\components</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
