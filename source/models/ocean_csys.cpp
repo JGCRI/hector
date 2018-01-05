@@ -1,18 +1,8 @@
 /* Hector -- A Simple Climate Model
    Copyright (C) 2014-2015  Battelle Memorial Institute
 
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License, version 2 as
-   published by the Free Software Foundation.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License along
-   with this program; if not, write to the Free Software Foundation, Inc.,
-   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+   Please see the accompanying file LICENSE.md for additional licensing
+   information.
 */
 // ocean_csys_class.cpp : Defines the entry point for the console application.
 /*  Ocean Carbon Chemistry CODE File:
@@ -34,7 +24,8 @@
  */
 
 #include <math.h>
-#include <gsl/gsl_poly.h>
+#include <boost/math/tools/polynomial.hpp>
+#include <boost/math/tools/roots.hpp>
 
 #include "h_exception.hpp"
 #include "models/ocean_csys.hpp"
@@ -59,29 +50,61 @@ oceancsys::oceancsys() : ncoeffs(6), m_a(ncoeffs) {
 }
 
 //------------------------------------------------------------------------------
-/*! \brief Find the largest real root, using GSL
+/*! \brief A helper functor class used to evauluate a polynomial and it's derivative.
+ *  \details This helper class gives an interface that is callable from boost's numerical
+ *           solvers which need to evaluate a function and it's derivative.  This class
+ *           wrapps a polynomical by taking an array of coefficients in ascending order of
+ *           the degree of the term they are associated.
+ */
+class PolyDerivFunctor {
+    public:
+        PolyDerivFunctor(const double* coefs, const int degree) {
+            using namespace boost::math::tools;
+            const int size = degree + 1;
+            mPoly = polynomial<double>(coefs, degree);
+            double* derivCoef = new double[size-1];
+            for(int i = 1; i < size; ++i) {
+                derivCoef[i - 1] = coefs[i] * static_cast<double>(i);
+            }
+            mPolyDeriv = polynomial<double>(derivCoef, degree-1);
+            delete[] derivCoef;
+        }
+
+        pair<double, double> operator()(const double x) {
+            return pair<double, double>(mPoly.evaluate(x), mPolyDeriv.evaluate(x));
+        }
+
+    private:
+        //! The representation of the polynomial to calculate.
+        boost::math::tools::polynomial<double> mPoly;
+
+        //! The representation of the derivative of the polynomial to calculate.
+        boost::math::tools::polynomial<double> mPolyDeriv;
+};
+
+//------------------------------------------------------------------------------
+/*! \brief Find the largest real root, using GSL or appropriate algorithms
  *  \param ncoeff   Number of coefficients
  *  \param *a       Coefficients
  *  \return         Largest real root (H+ ion)
  */
 double find_largest_root( const int ncoeffs, double* a ) {
     
-	double z[ 100 ];		// assume this is big enough
-    
-	gsl_poly_complex_workspace* w
-    = gsl_poly_complex_workspace_alloc( ncoeffs );
-    
-	gsl_poly_complex_solve( a, ncoeffs, w, z );
-    
-	gsl_poly_complex_workspace_free( w );
-	double h = z[ 0 ];
-    
-	for ( int i = 0; i < ncoeffs - 1; i++ )
-	{
-		//cout << z[2*i] << endl;
-		if ( z[ 2*i ] > h )
-			h = z[ 2*i ]; // gsl returns both real and imaginary. we call only for the maximum (h) real root.
-	}
+    using namespace boost::math::tools;
+    const int degree = ncoeffs-1;
+    PolyDerivFunctor polyFunctor(a, degree);
+    // Use Fujiwara's method to find an upper bound for the roots of the polynomial
+    double max = pow(std::abs(a[0] / ( 2.0 * a[degree])), 1.0 / degree);
+    for(int i = 1; i < degree; ++i) {
+        max = std::max(max, pow(std::abs(a[i]/a[degree]), 1.0 / static_cast<double>(degree - i)));
+    }
+    max *= 2.0;
+    // Use Newton's method to find the largest real root starting from the Fujiwara upper bound
+    // arbitrarily solve unil 60% of the digits are correct.
+    const int digits = numeric_limits<double>::digits;
+    int get_digits = static_cast<int>(digits * 0.6);
+    double h = newton_raphson_iterate(polyFunctor, max-0.001, 0.0, max, get_digits);
+
 	return h;
 }
 

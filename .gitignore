@@ -44,6 +44,7 @@ build/
 DerivedData/
 xcodeuserstate
 xcuserdata
+project.xcworkspace/
 
 # Project files
 project_files/*.*
@@ -55,6 +56,8 @@ libs
 project_files/visual_studio/
 libs/
 *.kdev4
+*.sdf
+*.suo
 
 # Output
 output/output

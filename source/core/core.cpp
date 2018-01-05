@@ -1,18 +1,8 @@
 /* Hector -- A Simple Climate Model
    Copyright (C) 2014-2015  Battelle Memorial Institute
 
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License, version 2 as
-   published by the Free Software Foundation.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License along
-   with this program; if not, write to the Free Software Foundation, Inc.,
-   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+   Please see the accompanying file LICENSE.md for additional licensing
+   information.
 */
 /*
  *  core.cpp
@@ -583,7 +573,11 @@ unitval Core::sendMessage( const std::string& message,
                           const std::string& datum,
                           const message_data& info ) throw ( h_exception )
 {
-    if (message == M_GETDATA) {
+    if (message == M_GETDATA || message == M_DUMP_TO_DEEP_OCEAN) {
+        // M_GETDATA is used extensively by components to query each other re state
+        // M_DUMP_TO_DEEP_OCEAN is a special message used only to constrain the atmosphere
+        // We can treat it like a M_GETDATA message
+
         if(!isInited) {
             H_LOG(Logger::getGlobalLogger(), Logger::SEVERE)
                 << "message getData not available until core is initialized."
@@ -598,7 +592,7 @@ unitval Core::sendMessage( const std::string& message,
             return getComponentByName( ( *it ).second )->sendMessage( message, datum, info );
         }
     }
-    else if (message == M_SETDATA) {
+    else if (message == M_SETDATA ) {
         if( isInited ) {
             // If core initialization has been completed, then the only
             // setdata messages allowed are ones keyed to a date that we

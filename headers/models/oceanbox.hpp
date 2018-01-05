@@ -1,18 +1,8 @@
 /* Hector -- A Simple Climate Model
    Copyright (C) 2014-2015  Battelle Memorial Institute
 
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License, version 2 as
-   published by the Free Software Foundation.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License along
-   with this program; if not, write to the Free Software Foundation, Inc.,
-   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+   Please see the accompanying file LICENSE.md for additional licensing
+   information.
 */
 #ifndef OCEANBOX_HPP_
 #define OCEANBOX_HPP_
@@ -31,9 +21,6 @@
 #include "math.h"
 #include <stdio.h> 
 #include <algorithm>
-#include <gsl/gsl_errno.h>
-#include <gsl/gsl_math.h>
-#include <gsl/gsl_min.h>
 
 #include "core/logger.hpp"
 #include "data/unitval.hpp"
@@ -105,7 +92,7 @@ public:
     // Ocean box chemistry
     oceancsys mychemistry;      //<! box chemistry
 	bool active_chemistry;      //<! box has active chemistry model?
-	void chem_equilibrate();    //<! equilibrate chemistry model to a given flux
+	void chem_equilibrate( const unitval current_Ca );    //<! equilibrate chemistry model to a given flux
     double fmin( double alk, void *params );
 
     unitval atmosphere_flux;

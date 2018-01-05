@@ -1,18 +1,8 @@
 /* Hector -- A Simple Climate Model
    Copyright (C) 2014-2015  Battelle Memorial Institute
 
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License, version 2 as
-   published by the Free Software Foundation.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License along
-   with this program; if not, write to the Free Software Foundation, Inc.,
-   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+   Please see the accompanying file LICENSE.md for additional licensing
+   information.
 */
 /*
  *  forcing_component.cpp
@@ -203,7 +193,8 @@ void ForcingComponent::prepareToRun() throw ( h_exception ) {
 void ForcingComponent::run( const double runToDate ) throw ( h_exception ) {
     
     // Calculate instantaneous radiative forcing for any & all agents
-    // As each is computed, push it into 'forcings' map for Ftot calculation
+    // As each is computed, push it into 'forcings' map for Ftot calculation.
+	// Note that forcings have to be mutually exclusive, there are no subtotals for different species.
     H_LOG( logger, Logger::DEBUG ) << "-----------------------------" << std::endl;
     forcings.clear();
     currentYear = runToDate;
@@ -290,13 +281,11 @@ void ForcingComponent::run( const double runToDate ) throw ( h_exception ) {
         };
         
         // Halocarbons can be disabled individually via the input file, so we run through all possible ones
-        forcings[ D_RF_halocarbons ].set( 0.0, U_W_M2 );
-        for (unsigned hc=0; hc<halos.size(); ++hc) {
+         for (unsigned hc=0; hc<halos.size(); ++hc) {
             if( core->checkCapability( halos[hc] ) ) {
                 // Forcing values are actually computed by the halocarbon itself
                 forcings[ halos[hc] ] = core->sendMessage( M_GETDATA, halos[hc], message_data( runToDate ) );
-                forcings[ D_RF_halocarbons ] = forcings[ D_RF_halocarbons ] + forcings[ halos[hc] ];
-            }
+                }
         }
         
         // ---------- Black carbon ----------
