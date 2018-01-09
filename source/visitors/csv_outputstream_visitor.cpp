@@ -181,9 +181,9 @@ void CSVOutputStreamVisitor::visit( HalocarbonComponent* c ) {
 void CSVOutputStreamVisitor::visit( TemperatureComponent* c ) {
     if( !core->outputEnabled( c->getComponentName() ) ) return;
     STREAM_MESSAGE( csvFile, c, D_GLOBAL_TEMP );
-    STREAM_MESSAGE( csvFile, c, D_GLOBAL_TEMPEQ );
-}
-
+    STREAM_MESSAGE( csvFile, c, D_FLUX_MIXED );
+    STREAM_MESSAGE( csvFile, c, D_FLUX_INTERIOR );
+    }
 //------------------------------------------------------------------------------
 // documentation is inherited
 void CSVOutputStreamVisitor::visit( OceanComponent* c ) {
@@ -215,8 +215,6 @@ void CSVOutputStreamVisitor::visit( OceanComponent* c ) {
     if( !in_spinup ) {
         STREAM_MESSAGE( csvFile, c, D_REVELLE_HL );
         STREAM_MESSAGE( csvFile, c, D_REVELLE_LL );
-        STREAM_MESSAGE( csvFile, c, D_HEAT_FLUX );
-        STREAM_MESSAGE( csvFile, c, D_HEAT_UPTAKE_EFF );
     }
 }
 

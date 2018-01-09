@@ -73,6 +73,8 @@ string unitval::unitsName( const unit_types u ) {
         break;
     case U_CM_YR: return "cm/yr";
         break;
+    case U_CM2_S: return "cm2/s";
+        break;
     case U_G: return "g";
         break;
     case U_GG: return "Gg";
