@@ -683,7 +683,9 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_VERSION = "";
+				HEADER_SEARCH_PATHS = /usr/local/include/;
 				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = /usr/local/lib/;
 				OTHER_LDFLAGS = (
 					"-lm",
 					"-lboost_filesystem",
@@ -703,7 +705,9 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_VERSION = "";
+				HEADER_SEARCH_PATHS = /usr/local/include/;
 				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = /usr/local/lib/;
 				OTHER_LDFLAGS = (
 					"-lm",
 					"-lboost_filesystem",
