@@ -16,7 +16,6 @@
  */
 
 #include "components/imodel_component.hpp"
-#include <boost/lexical_cast.hpp>
 #include "core/logger.hpp"
 #include "data/tseries.hpp"
 #include "data/unitval.hpp"

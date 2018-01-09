@@ -12,7 +12,6 @@
  *
  */
 
-#include <boost/lexical_cast.hpp>
 #include <boost/array.hpp>
 #include <math.h>
 
@@ -142,27 +141,20 @@ unitval ForcingComponent::sendMessage( const std::string& message,
 void ForcingComponent::setData( const string& varName,
                                 const message_data& data ) throw ( h_exception )
 {
-    
-    using namespace boost;
-    
     H_LOG( logger, Logger::DEBUG ) << "Setting " << varName << "[" << data.date << "]=" << data.value_str << std::endl;
     
     try {
         if( varName == D_RF_BASEYEAR ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
-            baseyear = lexical_cast<double>( data.value_str );
+            baseyear = data.getUnitval(U_UNDEFINED);
         } else if( varName == D_FTOT_CONSTRAIN ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            Ftot_constrain.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_W_M2 ) );
+            Ftot_constrain.set(data.date, data.getUnitval(U_W_M2));
         } else {
             H_LOG( logger, Logger::DEBUG ) << "Unknown variable " << varName << std::endl;
             H_THROW( "Unknown variable name while parsing "+ getComponentName() + ": "
                     + varName );
         }
-    } catch( bad_lexical_cast& castException ) {
-        H_LOG( logger, Logger::DEBUG ) << "Could not convert " << varName << std::endl;
-        H_THROW( "Could not convert var: "+varName+", value: " + data.value_str + ", exception: "
-                +castException.what() );
     } catch( h_exception& parseException ) {
         H_RETHROW( parseException, "Could not parse var: "+varName );
     }
