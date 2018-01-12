@@ -38,7 +38,7 @@ int main (int argc, char * const argv[]) {
 	try {
         // Create the global log
         Logger& glog = Logger::getGlobalLogger();
-        glog.open( string( MODEL_NAME ), true, Logger::DEBUG );
+        glog.open( string( MODEL_NAME ), true, true, Logger::DEBUG );
         H_LOG( glog, Logger::NOTICE ) << MODEL_NAME << " wrapper start" << endl;
         
         // Parse the main configuration file

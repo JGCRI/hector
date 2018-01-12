@@ -74,7 +74,7 @@ void TemperatureComponent::invert_1d_2x2_matrix(double * x, double * y) {
 //------------------------------------------------------------------------------
 // documentation is inherited
 void TemperatureComponent::init( Core* coreptr ) {
-    logger.open( getComponentName(), false, Logger::DEBUG );
+    logger.open( getComponentName(), false, Logger::getGlobalLogger().getEchoToFile(), Logger::getGlobalLogger().getMinLogLevel() );
     H_LOG( logger, Logger::DEBUG ) << "hello " << getComponentName() << std::endl;
     
     tgaveq.set( 0.0, U_DEGC, 0.0 );

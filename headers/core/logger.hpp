@@ -99,8 +99,8 @@ public:
     Logger();
     ~Logger();
     
-    void open( const std::string& logName, const bool echoToScreen,
-              LogLevel minLogLevel, const bool echoToFile = true) throw ( h_exception );
+    void open( const std::string& logName, bool echoToScreen,
+               bool echoToFile, LogLevel minLogLevel ) throw ( h_exception );
     
     bool shouldWrite( const LogLevel writeLevel ) const;
     
@@ -110,6 +110,18 @@ public:
     void close();
     
     static Logger& getGlobalLogger();
+
+    LogLevel getMinLogLevel() const {
+        return minLogLevel;
+    }
+
+    bool getEchoToFile() const {
+        return echoToFile;
+    }
+
+    bool isEnabled() const {
+        return enabled;
+    }
 };
 
 }

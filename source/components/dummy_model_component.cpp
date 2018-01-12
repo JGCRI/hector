@@ -66,7 +66,7 @@ const tseries<double>& DummyModelComponent::getC() const {
 //------------------------------------------------------------------------------
 // documentation is inherited
 void DummyModelComponent::init( Core* core ) {
-    logger.open( getComponentName(), false, Logger::DEBUG );
+    logger.open( getComponentName(), false, Logger::getGlobalLogger().getEchoToFile(), Logger::getGlobalLogger().getMinLogLevel() );
     H_LOG( logger, Logger::DEBUG ) << "hello " << getComponentName() << std::endl;
 }
 

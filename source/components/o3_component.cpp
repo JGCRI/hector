@@ -46,7 +46,7 @@ string OzoneComponent::getComponentName() const {
 //------------------------------------------------------------------------------
 // documentation is inherited
 void OzoneComponent::init( Core* coreptr ) {
-    logger.open( getComponentName(), false, Logger::DEBUG );
+    logger.open( getComponentName(), false, Logger::getGlobalLogger().getEchoToFile(), Logger::getGlobalLogger().getMinLogLevel() );
     H_LOG( logger, Logger::DEBUG ) << "hello " << getComponentName() << std::endl;
     core = coreptr;
 
