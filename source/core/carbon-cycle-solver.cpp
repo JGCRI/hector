@@ -41,7 +41,7 @@ CarbonCycleSolver::~CarbonCycleSolver()
 //------------------------------------------------------------------------------
 // documentation is inherited
 void CarbonCycleSolver::init( Core* coreptr ) {
-    logger.open( getComponentName(), Logger::getGlobalLogger().isEnabled(), Logger::getGlobalLogger().getEchoToFile(), Logger::getGlobalLogger().getMinLogLevel() );
+    logger.open( getComponentName(), Logger::getGlobalLogger().isEnabled(), Logger::getGlobalLogger().getEchoToFile(), Logger::WARNING );
     H_LOG( logger, Logger::DEBUG ) << getComponentName() << " initialized." << std::endl;
     
     core = coreptr;
