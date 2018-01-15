@@ -187,10 +187,7 @@ void SimpleNbox::setData( const std::string &varName,
         else if( varNameParsed == D_FFI_EMISSIONS ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
             H_ASSERT( biome == SNBOX_DEFAULT_BIOME, "fossil fuels and industry emissions must be global" );
-            if(data.isVal)
-                ffiEmissions.set(data.date, data.value_unitval);
-            else
-                ffiEmissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_PGC_YR ) );
+            ffiEmissions.set( data.date, data.getUnitval( U_PGC_YR ) );
         } 
         else if( varNameParsed == D_LUC_EMISSIONS ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );

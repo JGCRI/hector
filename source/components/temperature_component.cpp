@@ -146,16 +146,16 @@ void TemperatureComponent::setData( const string& varName,
     try {
         if( varName == D_ECS ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            S = unitval::parse_unitval( data.value_str, data.units_str, U_DEGC );
+            S = data.getUnitval(U_DEGC);
         } else if( varName == D_DIFFUSIVITY ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
-            diff = unitval::parse_unitval( data.value_str, data.units_str, U_CM2_S );
+            diff = data.getUnitval(U_CM2_S);
 	} else if( varName == D_AERO_SCALE ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
-            alpha = unitval::parse_unitval( data.value_str, data.units_str, U_UNITLESS );
+            alpha = data.getUnitval(U_UNITLESS);
         } else if( varName == D_TGAV_CONSTRAIN ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            tgav_constrain.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_DEGC ) );
+            tgav_constrain.set(data.date, data.getUnitval(U_DEGC));
         } else {
             H_THROW( "Unknown variable name while parsing " + getComponentName() + ": "
                     + varName );
