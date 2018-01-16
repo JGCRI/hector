@@ -25,7 +25,7 @@
  */
 class h_exception : public std::exception {
   private:
-	const std::string extractFilename( const std::string& path ) const {
+	std::string extractFilename( const std::string& path ) const {
 		unsigned long pos = path.find_last_of( '/' );           // *nix
 		if( pos == path.npos ) pos = path.find_last_of( '\\' );	// win
 		return path.substr( ( pos == path.npos ) ? 0 : pos+1 );
@@ -41,7 +41,7 @@ class h_exception : public std::exception {
             : msg(msg_p), func(func_p), file(file_p), linenum(linenum_p) {
     }
     virtual ~h_exception() throw() {}
-    inline const std::string get_filename() const {
+    inline std::string get_filename() const {
         return extractFilename(file);
     }
     virtual const char* what() const throw() {
