@@ -91,8 +91,7 @@ int main (int argc, char * const argv[]) {
         glog.close();
     }
     catch( h_exception e ) {
-        cerr << "* Program exception: " << e.msg << "\n* Function " << e.func << ", file "
-        << e.file << ", line " << e.linenum << endl;
+        cerr << "* Program exception:\n" << e << endl;
         return 1;
     }
     catch( std::exception &e ) {

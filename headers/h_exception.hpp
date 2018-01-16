@@ -16,23 +16,38 @@
 
 #include <string>
 #include <iostream>
+#include <exception>
 
 //-----------------------------------------------------------------------
 /*! \brief Exception class.
  *
  *  Sends string (message), line, function and file up the call chain.
  */
-class h_exception /* : public std::exception */ {
-public:
-	std::string extractFilename( const std::string& path )
-	{
-		unsigned long pos = path.find_last_of( '/' );						// *nix
+class h_exception : public std::exception {
+  private:
+	std::string extractFilename( const std::string& path ) const {
+		unsigned long pos = path.find_last_of( '/' );           // *nix
 		if( pos == path.npos ) pos = path.find_last_of( '\\' );	// win
 		return path.substr( ( pos == path.npos ) ? 0 : pos+1 );
         // degrades gracefully if no separators found
 	}
-	std::string msg, func, file, fullfile;
+	std::string msg, func, file;
 	int linenum;
+
+  public:
+    h_exception() : linenum(0) {}
+    h_exception(std::string msg_p, std::string func_p,
+                std::string file_p, int linenum_p)
+            : msg(msg_p), func(func_p), file(file_p), linenum(linenum_p) {
+    }
+    virtual ~h_exception() throw() {}
+    inline std::string get_filename() const {
+        return extractFilename(file);
+    }
+    virtual const char* what() const throw() {
+        return msg.c_str();
+    }
+    friend inline std::ostream & operator<<( std::ostream &os, const h_exception &he );
 };
 
 
@@ -40,10 +55,9 @@ public:
 /*! \brief Insertion operator for h_exception objects
  *
  */
-inline std::ostream & operator<<( std::ostream &os, const h_exception &he )
-{
+inline std::ostream & operator<<( std::ostream &os, const h_exception &he ) {
     os << "msg:  \t" << he.msg << "\nfunc: \t" << he.func
-       << "\nfile: \t" << he.file << "\nffile:\t" << he.fullfile << "\n"
+       << "\nfile: \t" << he.get_filename() << "\nffile:\t" << he.file << "\n"
        << "\nline: \t" << he.linenum << "\n";
     return os;
 }
@@ -78,27 +92,13 @@ GET_3RD_ARG(__VA_ARGS__, H_ASSERT2, H_ASSERT1, )
  *
  *  Creates an h_exception object, fills in message, and throws it.
  */
-#define H_THROW(s) { \
-h_exception e; \
-e.msg = s; \
-e.func = __func__ ; \
-e.file = e.extractFilename( __FILE__ ); \
-e.fullfile = __FILE__ ; \
-e.linenum = __LINE__; \
-throw e; }
+#define H_THROW(s) throw h_exception(s, __func__, __FILE__, __LINE__);
 
 /*! \brief Macro to re-throw an exception.
  *
  *  The exception location information will be replaced and the message will be
  *  appended from the original exception.
  */
-#define H_RETHROW(oe, s) { \
-h_exception e; \
-e.msg = s + " - " +oe.msg; \
-e.func = __func__ ; \
-e.file = e.extractFilename( __FILE__ ); \
-e.fullfile = __FILE__ ; \
-e.linenum = __LINE__; \
-throw e; }
+#define H_RETHROW(oe, s) throw h_exception(std::string(s) + " - " + oe.what(), __func__, __FILE__, __LINE__);
 
 #endif
