@@ -36,8 +36,8 @@ class h_exception : public std::exception {
 
   public:
     h_exception() : linenum(0) {}
-    h_exception(const std::string& msg_p, const std::string& func_p,
-                const std::string& file_p, const int linenum_p)
+    h_exception(std::string msg_p, std::string func_p,
+                std::string file_p, int linenum_p)
             : msg(msg_p), func(func_p), file(file_p), linenum(linenum_p) {
     }
     virtual ~h_exception() throw() {}
