@@ -414,7 +414,6 @@ void TemperatureComponent::run( const double runToDate ) throw ( h_exception ) {
     flux_interior.set( heatflux_interior[tstep], U_W_M2, 0.0 );
     heatflux.set( heatflux_mixed[tstep] + fso * heatflux_interior[tstep], U_W_M2, 0.0 );
     tgav.set( temp[tstep], U_DEGC, 0.0 );
-    tgaveq.set( temp[tstep], U_DEGC, 0.0 );
     H_LOG( logger, Logger::DEBUG ) << " tgav=" << tgav << " in " << runToDate << std::endl;
 }
 
