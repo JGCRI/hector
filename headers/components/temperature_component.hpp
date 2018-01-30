@@ -81,7 +81,7 @@ private:
     const double secs_per_Year = 31556926.0;
     const double zbot = 4000.0;           // bottom depth of diffusive ocean, m
     const double bsi = 1.3;               // warming factor for marine surface air over SST (due to retreating sea ice)
-    const double cal = 1.3;               // heat capacity of land-troposphere system, W*yr/m2/K
+    const double cal = 0.52;               // heat capacity of land-troposphere system, W*yr/m2/K
     const double cas = 7.80;              // heat capacity of mixed layer-troposphere system, W*yr/m2/K
     const double flnd = 0.29;             // fractional land area
     const double fso = 0.95;              // ocean fractional area below 60m
