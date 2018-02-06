@@ -1,18 +1,8 @@
 /* Hector -- A Simple Climate Model
    Copyright (C) 2014-2015  Battelle Memorial Institute
 
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License, version 2 as
-   published by the Free Software Foundation.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License along
-   with this program; if not, write to the Free Software Foundation, Inc.,
-   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+   Please see the accompanying file LICENSE.md for additional licensing
+   information.
 */
 
 #ifndef OH_COMPONENT_H
@@ -26,7 +16,6 @@
  */
 
 #include "components/imodel_component.hpp"
-#include <boost/lexical_cast.hpp>
 #include "core/logger.hpp"
 #include "data/tseries.hpp"
 #include "data/unitval.hpp"
@@ -93,4 +82,3 @@ public:
 }
 
 #endif // OH_COMPONENT_H
-

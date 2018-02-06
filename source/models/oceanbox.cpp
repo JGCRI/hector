@@ -1,18 +1,8 @@
 /* Hector -- A Simple Climate Model
    Copyright (C) 2014-2015  Battelle Memorial Institute
 
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License, version 2 as
-   published by the Free Software Foundation.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License along
-   with this program; if not, write to the Free Software Foundation, Inc.,
-   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+   Please see the accompanying file LICENSE.md for additional licensing
+   information.
 */
 /*
  *  oceanbox.cpp
@@ -22,7 +12,7 @@
  *
  */
 
-#include <gsl/gsl_min.h>
+#include <boost/math/tools/minima.hpp>
 #include <iomanip>
 
 #include "models/oceanbox.hpp"
@@ -384,20 +374,26 @@ double oceanbox::fmin( double alk, void *params ) {
 }
 
 //------------------------------------------------------------------------------
-/*! \brief Non-member wrapper for minimization function
+/*! \brief Functor wrapper for minimization function
  */
-// Wrapper function uses a global to remember the object:
-oceanbox* object_which_will_handle_signal;
+struct FMinWrapper {
+    FMinWrapper(oceanbox* instance, const double f_targetIn):
+        object_which_will_handle_signal(instance),
+        f_target(f_targetIn)
+    {
+    }
+    double operator()(const double alk) {
+        return object_which_will_handle_signal->fmin(alk, &f_target);
+    }
 
-double fmin_wrapper( double alk, void *params )
-{
-	return object_which_will_handle_signal->fmin( alk, params );
-}
+    private:
+    oceanbox* object_which_will_handle_signal;
+    double f_target;
+};
 
 //------------------------------------------------------------------------------
 /*! \brief                  Equilibrate the chemistry model to a given flux
  *  \param[in] Ca           Atmospheric CO2 (ppmv)
- *  \param[in] Tgav         Mean global air temperature, change from preindustrial
  *
  *  \details The global carbon cycle can be spun up with ocean chemistry either
  *  on or off. In the former case, the ocean continually equilibrates with the
@@ -407,11 +403,14 @@ double fmin_wrapper( double alk, void *params )
  *  carbon should be in the preindustrial ocean. Before chemistry is re-enabled
  *  for the main run, however, we need to adjust ocean conditions (alkalinity)
  *  such that the chemistry model will produce the specified spinup-condition
- *  fluxes. That's what this method does.
+ *  fluxes. That's what this method does. Note that we pass in current CO2 because
+ *  in case the model was NOT spun up, need to set the box's internal tracking var.
  */
-void oceanbox::chem_equilibrate() {
+void oceanbox::chem_equilibrate( const unitval current_Ca ) {
     
 	using namespace std;
+    
+    Ca = current_Ca;
     
 	H_ASSERT( active_chemistry, "chemistry not turned on" );
 	OB_LOG( logger, Logger::DEBUG) << "Equilibrating chemistry for box " << Name << endl;
@@ -430,18 +429,9 @@ void oceanbox::chem_equilibrate() {
 	//      http://www.gnu.org/software/gsl/manual/html_node/Minimization-Algorithms.html
 	// to minimize abs(f-f0), where f is computed by the csys chemistry code and f0 passed in
     
-	int status, iter=0;
-	const int max_iter = 100;
-	const gsl_min_fminimizer_type *T;
-	gsl_min_fminimizer *s;
 	double alk_min = 2100e-6, alk_max = 2750e-6;
 	double alk = ( alk_min + alk_max ) / 2;
 	double f_target = preindustrial_flux.value( U_PGC_YR );
-    
-	gsl_function F;
-	F.function = &fmin_wrapper;
-	F.params = &f_target;
-	object_which_will_handle_signal = this;
     
 	// Find a best-guess point; the GSL algorithm seems to need it
 	OB_LOG( logger, Logger::DEBUG) << "Looking for best-guess alkalinity" << endl;
@@ -462,42 +452,15 @@ void oceanbox::chem_equilibrate() {
 	alk = min_point;        // this is our best guess
 	OB_LOG( logger, Logger::DEBUG) << "Best guess minimum is at " << alk << endl;
     
-	// Initialize the minimizer algorithm
-	T = gsl_min_fminimizer_brent;
-	s = gsl_min_fminimizer_alloc( T );
-	gsl_min_fminimizer_set( s, &F, alk, alk_min, alk_max );
-    double f = mychemistry.calc_annual_surface_flux( Ca ).value( U_PGC_YR );
-    
-	OB_LOG( logger, Logger::DEBUG) << "using minimization method " << gsl_min_fminimizer_name( s ) << endl;
-	OB_LOG( logger, Logger::DEBUG) << "target flux is " << f_target << endl;
-	OB_LOG( logger, Logger::DEBUG) << setw( 5 ) << "iter" << setw( w ) << "alk_min" << setw( w ) << "alk_max"
-    << setw( w ) << "alk" << setw( w ) << "f" << setw( w ) << "diff" << endl;
-	OB_LOG( logger, Logger::DEBUG) << setw( 5 ) << iter << setw( w ) << alk_min << setw( w ) << alk_max
-    << setw( w ) << alk << setw( w ) << f << setw( w ) << ( f_target-f ) << endl;
-    
-	do {
-		iter++;
-        
-		status = gsl_min_fminimizer_iterate( s );
-        
-		alk = gsl_min_fminimizer_x_minimum( s );
-		alk_min = gsl_min_fminimizer_x_lower( s );
-		alk_max = gsl_min_fminimizer_x_upper( s );
-        
-		status = gsl_min_test_interval( alk_min, alk_max, 1e-9, 0.0 );
-        
-		if( status == GSL_SUCCESS )
-			OB_LOG( logger, Logger::DEBUG) << "Converged:" << endl;
-        
-        f = mychemistry.calc_annual_surface_flux( Ca ).value( U_PGC_YR );
-		OB_LOG( logger, Logger::DEBUG) << setw( 5 ) << iter << setw( w ) << alk_min << setw( w ) << alk_max
-        << setw( w ) << alk << setw( w ) << f << setw( w ) << ( f_target-f ) << endl;
-        
-	} while ( status==GSL_CONTINUE && iter < max_iter );
-    
-	gsl_min_fminimizer_free( s );
-    
-	H_ASSERT( status==GSL_SUCCESS, "Could not find a minimum for equilibration" );
+    FMinWrapper fFunctor(this, f_target);
+    // arbitrarily solve unil 60% of the digits are correct.
+    const int digits = numeric_limits<double>::digits;
+    int get_digits = static_cast<int>(digits * 0.6);
+    std::pair<double, double> r = boost::math::tools::brent_find_minima(fFunctor, alk_min, alk_max, get_digits);
+	OB_LOG( logger, Logger::DEBUG) << setw( w ) << "Alk" << setw( w ) << "FPgC"
+        << setw( w ) << "f_target" << setw( w ) << "diff" << endl;
+    OB_LOG( logger, Logger::DEBUG) << setw( w ) << r.first << setw( w ) << atmosphere_flux
+        << setw( w ) << f_target << setw( w ) << r.second << endl;
 }
 
 }

@@ -1,18 +1,8 @@
 /* Hector -- A Simple Climate Model
    Copyright (C) 2014-2015  Battelle Memorial Institute
 
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License, version 2 as
-   published by the Free Software Foundation.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License along
-   with this program; if not, write to the Free Software Foundation, Inc.,
-   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+   Please see the accompanying file LICENSE.md for additional licensing
+   information.
 */
 /*
  *  ch4_component.cpp
@@ -104,25 +94,22 @@ void CH4Component::setData( const string& varName,
     try {
          if( varName ==  D_PREINDUSTRIAL_CH4  ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            M0 = unitval::parse_unitval( data.value_str, data.units_str, U_PPBV_CH4 );
+            M0 = data.getUnitval(U_PPBV_CH4);
          } else if( varName == D_EMISSIONS_CH4 ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-             if(data.isVal)
-                 CH4_emissions.set(data.date, data.value_unitval);
-             else
-            CH4_emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG_CH4 ) );
+            CH4_emissions.set(data.date, data.getUnitval(U_TG_CH4));
         } else if( varName == D_LIFETIME_SOIL ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            Tsoil = unitval::parse_unitval( data.value_str, data.units_str, U_YRS );
+            Tsoil = data.getUnitval(U_YRS);
          } else if( varName == D_LIFETIME_STRAT ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
-            Tstrat = unitval::parse_unitval( data.value_str, data.units_str, U_YRS );
+            Tstrat = data.getUnitval(U_YRS);
          } else if( varName == D_CONVERSION_CH4 ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
-            UC_CH4 = unitval::parse_unitval( data.value_str, data.units_str, U_TG_PPBV );
+            UC_CH4 = data.getUnitval(U_TG_PPBV);
          } else if( varName == D_NATURAL_CH4 ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
-            CH4N = unitval::parse_unitval( data.value_str, data.units_str, U_TG_CH4 );
+            CH4N = data.getUnitval(U_TG_CH4);
          }
 		else {
             H_THROW( "Unknown variable name while parsing " + getComponentName() + ": "

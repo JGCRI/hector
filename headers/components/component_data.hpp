@@ -1,18 +1,8 @@
 /* Hector -- A Simple Climate Model
    Copyright (C) 2014-2015  Battelle Memorial Institute
 
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License, version 2 as
-   published by the Free Software Foundation.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License along
-   with this program; if not, write to the Free Software Foundation, Inc.,
-   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+   Please see the accompanying file LICENSE.md for additional licensing
+   information.
 */
 #ifndef COMPONENT_DATA_H
 #define COMPONENT_DATA_H
@@ -200,12 +190,6 @@
 #define D_TEMP_LL               "Temp_LL"
 #define D_SPINUP_CHEM           "spinup_chem"
 
-#define D_HEAT_FLUX             "heatflux"
-#define D_HEAT_UPTAKE_EFF       "kappa"
-#define D_MAX_HEAT_UPTAKE_EFF   "k_max"
-#define D_KAPPA50_TEMP          "t_mid"
-#define D_MIN_HEAT_UPTAKE_EFF   "k_min"
-#define D_SLOPE_HEAT_UPTAKE_EFF  "slope"
 //#define D_SPECIFIC_HEAT			"cp"
 
 #define D_CO3_LL				"CO3_LL"
@@ -265,6 +249,14 @@
 #define D_SO2I_B                "so2i_b"
 #define D_OC_B                  "oc_b"
 #define D_BC_B                  "bc_b"
+
+// temperature component
+#define D_DIFFUSIVITY           "diff"
+#define D_AERO_SCALE            "alpha"
+#define D_FLUX_MIXED            "flux_mixed"
+#define D_FLUX_INTERIOR         "flux_interior"
+#define D_HEAT_FLUX             "heatflux"
+
 // ------------------- messages being passed between components -------------------------
 
 #define M_GETDATA               "getData"

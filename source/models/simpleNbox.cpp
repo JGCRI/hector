@@ -1,18 +1,8 @@
 /* Hector -- A Simple Climate Model
    Copyright (C) 2014-2015  Battelle Memorial Institute
 
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License, version 2 as
-   published by the Free Software Foundation.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License along
-   with this program; if not, write to the Free Software Foundation, Inc.,
-   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+   Please see the accompanying file LICENSE.md for additional licensing
+   information.
 */
 /*
  *  SimpleNbox.cpp
@@ -22,8 +12,6 @@
  *
  */
 
-#include <gsl/gsl_errno.h>
-#include <boost/lexical_cast.hpp>
 #include "boost/algorithm/string.hpp"
 
 #include "core/dependency_finder.hpp"
@@ -31,7 +19,9 @@
 #include "visitors/avisitor.hpp"
 
 namespace Hector {
-  
+
+using namespace boost;
+
 //------------------------------------------------------------------------------
 /*! \brief constructor
  */
@@ -111,8 +101,6 @@ unitval SimpleNbox::sendMessage( const std::string& message,
 void SimpleNbox::setData( const std::string &varName,
                           const message_data& data ) throw( h_exception )
 {
-    using namespace boost;
-    
     // Does the varName contain our parse character? If so, split it
     std::vector<std::string> splitvec;
     boost::split( splitvec, varName, is_any_of( SNBOX_PARSECHAR ) );
@@ -125,69 +113,71 @@ void SimpleNbox::setData( const std::string &varName,
         varNameParsed = splitvec[ 1 ];
     }
 
-    if (data.isVal)
+    if (data.isVal) {
         H_LOG( logger, Logger::DEBUG ) << "Setting " << biome << "." << varNameParsed << "[" << data.date << "]=" << data.value_unitval << std::endl;
-    else
+    }
+    else {
         H_LOG( logger, Logger::DEBUG ) << "Setting " << biome << "." << varNameParsed << "[" << data.date << "]=" << data.value_str << std::endl;
+    }
     try {
         // Initial pools
         if( varNameParsed == D_ATMOSPHERIC_C ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
             H_ASSERT( biome == SNBOX_DEFAULT_BIOME, "atmospheric C must be global" );
-            atmos_c = unitval::parse_unitval( data.value_str, data.units_str, U_PGC );
+            atmos_c = data.getUnitval(U_PGC);
             C0.set( atmos_c.value( U_PGC ) * PGC_TO_PPMVCO2, U_PPMV_CO2 );
         }
         else if( varNameParsed == D_PREINDUSTRIAL_CO2 ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
             H_ASSERT( biome == SNBOX_DEFAULT_BIOME, "preindustrial C must be global" );
-            C0 = unitval::parse_unitval( data.value_str, data.units_str, U_PPMV_CO2 );
+            C0 = data.getUnitval( U_PPMV_CO2 );
             atmos_c.set( C0.value( U_PPMV_CO2 ) / PGC_TO_PPMVCO2, U_PGC );
         }
         else if( varNameParsed == D_VEGC ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
-            veg_c[ biome ] = unitval::parse_unitval( data.value_str, data.units_str, U_PGC );
+            veg_c[ biome ] = data.getUnitval( U_PGC );
         }
         else if( varNameParsed == D_DETRITUSC ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
-            detritus_c[ biome ] = unitval::parse_unitval( data.value_str, data.units_str, U_PGC );
+            detritus_c[ biome ] = data.getUnitval( U_PGC );
         }
         else if( varNameParsed == D_SOILC ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
-            soil_c[ biome ] = unitval::parse_unitval( data.value_str, data.units_str, U_PGC );
+            soil_c[ biome ] = data.getUnitval( U_PGC );
         }
         
         // Albedo effect
         else if( varNameParsed == D_RF_T_ALBEDO ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            Ftalbedo.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_W_M2 ) );
+            Ftalbedo.set( data.date, data.getUnitval( U_W_M2 ) );
         }
         
         // Partitioning
         else if( varNameParsed == D_F_NPPV ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            f_nppv = lexical_cast<double>( data.value_str );
+            f_nppv = data.getUnitval(U_UNDEFINED);
         }
         else if( varNameParsed == D_F_NPPD ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            f_nppd = lexical_cast<double>( data.value_str );
+            f_nppd = data.getUnitval(U_UNDEFINED);
         }
         else if( varNameParsed == D_F_LITTERD ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            f_litterd = lexical_cast<double>( data.value_str );
+            f_litterd = data.getUnitval(U_UNDEFINED);
         }
         else if( varNameParsed == D_F_LUCV ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            f_lucv = lexical_cast<double>( data.value_str );
+            f_lucv = data.getUnitval(U_UNDEFINED);
         }
         else if( varNameParsed == D_F_LUCD ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            f_lucd = lexical_cast<double>( data.value_str );
+            f_lucd = data.getUnitval(U_UNDEFINED);
         }
         
         // Initial fluxes
         else if( varNameParsed == D_NPP_FLUX0 ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            npp_flux0[ biome ] = unitval::parse_unitval( data.value_str, data.units_str, U_PGC_YR );
+            npp_flux0[ biome ] = data.getUnitval( U_PGC_YR );
         }
         
         // Fossil fuels and industry contributions--time series.  There are two
@@ -197,37 +187,31 @@ void SimpleNbox::setData( const std::string &varName,
         else if( varNameParsed == D_FFI_EMISSIONS ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
             H_ASSERT( biome == SNBOX_DEFAULT_BIOME, "fossil fuels and industry emissions must be global" );
-            if(data.isVal)
-                ffiEmissions.set(data.date, data.value_unitval);
-            else
-                ffiEmissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_PGC_YR ) );
+            ffiEmissions.set( data.date, data.getUnitval( U_PGC_YR ) );
         } 
         else if( varNameParsed == D_LUC_EMISSIONS ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            if(data.isVal)
-                lucEmissions.set(data.date, data.value_unitval);
-            else
-                lucEmissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_PGC_YR ) );
+            lucEmissions.set( data.date, data.getUnitval( U_PGC_YR ) );
         } 
         // Atmospheric CO2 record to constrain model to (optional)
         else if( varNameParsed == D_CA_CONSTRAIN ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
             H_ASSERT( biome == SNBOX_DEFAULT_BIOME, "atmospheric constraint must be global" );
-            Ca_constrain.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_PPMV_CO2 ) );
+            Ca_constrain.set( data.date, data.getUnitval( U_PPMV_CO2 ) );
         }
         
         // Fertilization
         else if( varNameParsed == D_BETA ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            beta[ biome ] = lexical_cast<double>( data.value_str );
+            beta[ biome ] = data.getUnitval(U_UNDEFINED);
         }
         else if( varNameParsed == D_WARMINGFACTOR ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            warmingfactor[ biome ] = lexical_cast<double>( data.value_str );
+            warmingfactor[ biome ] = data.getUnitval(U_UNDEFINED);
         }
         else if( varNameParsed == D_Q10_RH ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            q10_rh = lexical_cast<double>( data.value_str );
+            q10_rh = data.getUnitval(U_UNDEFINED);
         }
      
         else {
@@ -235,10 +219,6 @@ void SimpleNbox::setData( const std::string &varName,
             H_THROW( "Unknown variable name while parsing "+ getComponentName() + ": "
                     + varName );
         }
-    } catch( bad_lexical_cast &  castException ) {
-        H_LOG( logger, Logger::DEBUG ) << "Could not convert " << varName << std::endl;
-        H_THROW( "Could not convert var: "+varName+", value: "+data.value_str+", exception: "
-                +castException.what() );
     } catch( h_exception& parseException ) {
         H_RETHROW( parseException, "Could not parse var: "+varName );
     }
@@ -487,7 +467,7 @@ void SimpleNbox::accept( AVisitor* visitor ) {
 }
 
 //------------------------------------------------------------------------------
-/*! \brief            transfer model pools to flat array (for GSL ODE solver)
+/*! \brief            transfer model pools to flat array (for ODE solver)
  *  \param[in] t  time, double, the date from which ODE solver is starting
  *  \param[in] c  flat array of carbon pools (no units)
  */
@@ -587,9 +567,11 @@ void SimpleNbox::stashCValues( double t, const double c[] )
         H_LOG( logger,Logger::DEBUG ) << t << "- have " << Ca << " want " << Ca_constrain.get( t ).value( U_PPMV_CO2 ) << std::endl;
         H_LOG( logger,Logger::DEBUG ) << t << "- have " << atmos_c << " want " << atmos_cpool_to_match << "; residual = " << residual << std::endl;
         
+        // Transfer C from atmosphere to deep ocean and update our C and Ca variables
         H_LOG( logger,Logger::DEBUG ) << "Sending residual of " << residual << " to deep ocean" << std::endl;
-        core->sendMessage( M_DUMP_TO_DEEP_OCEAN, D_OCEAN_C, message_data( residual ) );     // update ocean pool
+        core->sendMessage( M_DUMP_TO_DEEP_OCEAN, D_OCEAN_C, message_data( residual ) );
         atmos_c = atmos_c - residual;
+        Ca.set( atmos_c.value( U_PGC ) * PGC_TO_PPMVCO2, U_PPMV_CO2 );
     } else {
         residual.set( 0.0, U_PGC );
     }

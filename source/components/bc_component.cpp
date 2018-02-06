@@ -1,18 +1,8 @@
 /* Hector -- A Simple Climate Model
    Copyright (C) 2014-2015  Battelle Memorial Institute
 
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License, version 2 as
-   published by the Free Software Foundation.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License along
-   with this program; if not, write to the Free Software Foundation, Inc.,
-   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+   Please see the accompanying file LICENSE.md for additional licensing
+   information.
 */
 /*
  *  bc_component.cpp
@@ -99,10 +89,7 @@ void BlackCarbonComponent::setData( const string& varName,
     try {
         if( varName ==  D_EMISSIONS_BC  ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            if(data.isVal)
-                BC_emissions.set(data.date, data.value_unitval);
-            else
-            	BC_emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG ) );
+            BC_emissions.set(data.date, data.getUnitval(U_TG));
         } else {
             H_THROW( "Unknown variable name while parsing " + getComponentName() + ": "
                     + varName );

@@ -1,18 +1,8 @@
 /* Hector -- A Simple Climate Model
    Copyright (C) 2014-2015  Battelle Memorial Institute
 
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License, version 2 as
-   published by the Free Software Foundation.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License along
-   with this program; if not, write to the Free Software Foundation, Inc.,
-   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+   Please see the accompanying file LICENSE.md for additional licensing
+   information.
 */
 /*
  *  csv_outputstream_visitor.cpp
@@ -152,8 +142,6 @@ void CSVOutputStreamVisitor::visit( SimpleNbox* c ) {
 
     // Global outputs
     STREAM_MESSAGE( csvFile, c, D_LAND_CFLUX );
-    STREAM_MESSAGE_DATE( csvFile, c, D_FFI_EMISSIONS, current_date );
-    STREAM_MESSAGE_DATE( csvFile, c, D_LUC_EMISSIONS, current_date );
     STREAM_MESSAGE( csvFile, c, D_NPP );
     STREAM_MESSAGE( csvFile, c, D_RH );
     STREAM_MESSAGE( csvFile, c, D_ATMOSPHERIC_CO2 );
@@ -185,7 +173,6 @@ void CSVOutputStreamVisitor::visit( SimpleNbox* c ) {
 void CSVOutputStreamVisitor::visit( HalocarbonComponent* c ) {
     // TODO: how to get emissions in the gas specific units?
     if( !core->outputEnabled( c->getComponentName() ) ) return;
-    STREAM_MESSAGE_DATE( csvFile, c, D_HC_EMISSION, current_date );
     STREAM_MESSAGE( csvFile, c, D_HC_CONCENTRATION );
 }
 
@@ -194,9 +181,10 @@ void CSVOutputStreamVisitor::visit( HalocarbonComponent* c ) {
 void CSVOutputStreamVisitor::visit( TemperatureComponent* c ) {
     if( !core->outputEnabled( c->getComponentName() ) ) return;
     STREAM_MESSAGE( csvFile, c, D_GLOBAL_TEMP );
-    STREAM_MESSAGE( csvFile, c, D_GLOBAL_TEMPEQ );
-}
-
+    STREAM_MESSAGE( csvFile, c, D_FLUX_MIXED );
+    STREAM_MESSAGE( csvFile, c, D_FLUX_INTERIOR )
+	STREAM_MESSAGE(csvFile, c, D_HEAT_FLUX );
+    }
 //------------------------------------------------------------------------------
 // documentation is inherited
 void CSVOutputStreamVisitor::visit( OceanComponent* c ) {
@@ -228,8 +216,6 @@ void CSVOutputStreamVisitor::visit( OceanComponent* c ) {
     if( !in_spinup ) {
         STREAM_MESSAGE( csvFile, c, D_REVELLE_HL );
         STREAM_MESSAGE( csvFile, c, D_REVELLE_LL );
-        STREAM_MESSAGE( csvFile, c, D_HEAT_FLUX );
-        STREAM_MESSAGE( csvFile, c, D_HEAT_UPTAKE_EFF );
     }
 }
 
@@ -263,14 +249,12 @@ void CSVOutputStreamVisitor::visit( slrComponent* c ) {
 // documentation is inherited
 void CSVOutputStreamVisitor::visit( BlackCarbonComponent* c ) {
     if( !core->outputEnabled( c->getComponentName() ) ) return;
-    STREAM_MESSAGE_DATE( csvFile, c, D_EMISSIONS_BC, current_date );
 }
 
 //------------------------------------------------------------------------------
 // documentation is inherited
 void CSVOutputStreamVisitor::visit( OrganicCarbonComponent* c ) {
     if( !core->outputEnabled( c->getComponentName() ) ) return;
-    STREAM_MESSAGE_DATE( csvFile, c, D_EMISSIONS_OC, current_date );
 }
 
 //------------------------------------------------------------------------------

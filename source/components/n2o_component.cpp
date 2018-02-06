@@ -1,18 +1,8 @@
 /* Hector -- A Simple Climate Model
    Copyright (C) 2014-2015  Battelle Memorial Institute
 
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License, version 2 as
-   published by the Free Software Foundation.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License along
-   with this program; if not, write to the Free Software Foundation, Inc.,
-   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+   Please see the accompanying file LICENSE.md for additional licensing
+   information.
 */
 /*
  *  n2o_component.cpp
@@ -106,25 +96,19 @@ void N2OComponent::setData( const string& varName,
     try {
         if( varName == D_PREINDUSTRIAL_N2O ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            N0 = unitval::parse_unitval( data.value_str, data.units_str, U_PPBV_N2O );
+            N0 = data.getUnitval(U_PPBV_N2O);
         } else if( varName == D_EMISSIONS_N2O ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            if(data.isVal)
-                N2O_emissions.set(data.date, data.value_unitval);
-            else
-                N2O_emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG_N2O ) );
+            N2O_emissions.set(data.date, data.getUnitval(U_TG_N2O));
         } else if( varName == D_NAT_EMISSIONS_N2O ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            if(data.isVal)
-                N2ON_emissions.set(data.date, data.value_unitval);
-            else
-                N2ON_emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG_N2O ) );
+            N2ON_emissions.set(data.date, data.getUnitval(U_TG_N2O));
         } else if( varName == D_CONVERSION_N2O ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
-            UC_N2O = unitval::parse_unitval( data.value_str, data.units_str, U_TG_PPBV );
+            UC_N2O = data.getUnitval(U_TG_PPBV);
         } else if( varName == D_INITIAL_LIFETIME_N2O ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
-            TN2O0 = unitval::parse_unitval( data.value_str, data.units_str, U_YRS );
+            TN2O0 = data.getUnitval(U_YRS);
         } else {
             H_THROW( "Unknown variable name while parsing " + getComponentName() + ": "
                     + varName );

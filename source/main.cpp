@@ -1,18 +1,8 @@
 /* Hector -- A Simple Climate Model
    Copyright (C) 2014-2015  Battelle Memorial Institute
 
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License, version 2 as
-   published by the Free Software Foundation.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License along
-   with this program; if not, write to the Free Software Foundation, Inc.,
-   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+   Please see the accompanying file LICENSE.md for additional licensing
+   information.
 */
 /*
  *  main.cpp - wrapper entry point
@@ -101,14 +91,16 @@ int main (int argc, char * const argv[]) {
         glog.close();
     }
     catch( h_exception e ) {
-        cerr << "* Program exception: " << e.msg << "\n* Function " << e.func << ", file "
-        << e.file << ", line " << e.linenum << endl;
+        cerr << "* Program exception:\n" << e << endl;
+        return 1;
     }
     catch( std::exception &e ) {
         cerr << "Standard exception: " << e.what() << endl;
+        return 2;
     }
     catch( ... ) {
         cerr << "Other exception! " << endl;
+        return 3;
     }
 
     return 0;

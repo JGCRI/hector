@@ -1,18 +1,8 @@
 /* Hector -- A Simple Climate Model
    Copyright (C) 2014-2015  Battelle Memorial Institute
 
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License, version 2 as
-   published by the Free Software Foundation.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License along
-   with this program; if not, write to the Free Software Foundation, Inc.,
-   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+   Please see the accompanying file LICENSE.md for additional licensing
+   information.
 */
 #ifndef UNITVAL_H
 #define UNITVAL_H
@@ -84,6 +74,8 @@ enum unit_types {
                     U_DEGC,             // Temperature
                     U_K,				// Temperature
                     U_1_K,               // Inverse Temperature
+    
+                    U_CM2_S,             // Diffusivity
    
                     U_CM,               // Length-related
                     U_CM_YR,            
@@ -127,10 +119,10 @@ class unitval {
     double      valErr;
     unit_types  valUnits;
     
+public:
     static std::string unitsName( const unit_types );
     static unit_types parseUnitsName( const std::string& ) throw( h_exception );
         
-public:
     unitval();
     unitval( double, unit_types );
     
@@ -139,6 +131,7 @@ public:
     double value( unit_types ) const throw( h_exception );
     unit_types units() const { return valUnits; };
     std::string unitsName() const { return unitsName( valUnits ); };
+    void expecting_unit( const unit_types& ) throw( h_exception );
 
     static unitval parse_unitval( const std::string&, const unit_types& ) throw( h_exception );
     static unitval parse_unitval( const std::string&, const std::string&, const unit_types& ) throw( h_exception );

@@ -1,18 +1,8 @@
 /* Hector -- A Simple Climate Model
    Copyright (C) 2014-2015  Battelle Memorial Institute
 
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License, version 2 as
-   published by the Free Software Foundation.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License along
-   with this program; if not, write to the Free Software Foundation, Inc.,
-   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+   Please see the accompanying file LICENSE.md for additional licensing
+   information.
 */
 /*
  *  core.cpp
@@ -21,8 +11,6 @@
  *  Created by Pralit Patel on 10/29/10.
  *
  */
-
-#include <boost/lexical_cast.hpp>
 
 #include "components/imodel_component.hpp"
 #include "components/halocarbon_component.hpp"
@@ -34,10 +22,10 @@
 #include "components/so2_component.hpp"
 #include "components/forcing_component.hpp"
 #include "components/slr_component.hpp"
-#include "components/temperature_component.hpp"
 #include "components/ocean_component.hpp"
 #include "components/onelineocean_component.hpp"
 #include "components/o3_component.hpp"
+#include "components/temperature_component.hpp"
 #include "core/core.hpp"
 #include "core/dependency_finder.hpp"
 #include "core/logger.hpp"
@@ -120,11 +108,11 @@ void Core::init() {
     modelComponents[ temp->getComponentName() ] = temp;
 	temp = new slrComponent();
     modelComponents[ temp->getComponentName() ] = temp;
-	temp = new TemperatureComponent();
-    modelComponents[ temp->getComponentName() ] = temp;
 	temp = new OceanComponent();
     modelComponents[ temp->getComponentName() ] = temp;
 	temp = new OneLineOceanComponent();
+    modelComponents[ temp->getComponentName() ] = temp;
+    temp = new TemperatureComponent();
     modelComponents[ temp->getComponentName() ] = temp;
     
     temp = new HalocarbonComponent( CF4_COMPONENT_BASE );
@@ -210,8 +198,6 @@ void Core::init() {
 void Core::setData( const string& componentName, const string& varName,
                     const message_data& data ) throw ( h_exception )
 {
-    using namespace boost;
-    
     if( componentName == getComponentName() ) {
         try {
             if( varName == D_RUN_NAME ) {
@@ -219,37 +205,36 @@ void Core::setData( const string& componentName, const string& varName,
                 run_name = data.value_str;
             } else if( varName == D_START_DATE ) {
                 H_ASSERT( data.date == undefinedIndex(), "date not allowed" );
-                lastDate = startDate = lexical_cast<double>( data.value_str );
+                lastDate = startDate = data.getUnitval(U_UNDEFINED);
             } else if( varName == D_END_DATE ) {
                 H_ASSERT( data.date == undefinedIndex(), "date not allowed" );
-                endDate = lexical_cast<double>( data.value_str );
+                endDate = data.getUnitval(U_UNDEFINED);
             } else if( varName == D_DO_SPINUP ) {
                 H_ASSERT( data.date == undefinedIndex(), "date not allowed" );
-                do_spinup = lexical_cast<bool>( data.value_str );
+                do_spinup = (data.getUnitval(U_UNDEFINED) > 0);
             } else if( varName == D_MAX_SPINUP ) {
                 H_ASSERT( data.date == undefinedIndex(), "date not allowed" );
-                max_spinup = lexical_cast<int>( data.value_str );
+                max_spinup = data.getUnitval(U_UNDEFINED);
             } else {
                 H_THROW( "Unknown variable name while parsing "+ getComponentName() + ": "
                         + varName );
             }
-        } catch( bad_lexical_cast& castException ) {
-            H_THROW( "Could not convert var: "+varName+", value: " + data.value_str + ", exception: "
-                    +castException.what() );
+        } catch( h_exception& parseException ) {
+            H_RETHROW( parseException, "Could not parse var: "+varName );
         }
     } else {    // data is not intended for us
         IModelComponent* component = getComponentByName( componentName );
         
         if( varName == D_ENABLED ) {
             // The core intercepts "enabled=xxx" lines to mark components as disabled
-            if( !lexical_cast<bool>( data.value_str ) ) {
+            if( data.getUnitval(U_UNDEFINED) <= 0 ) {
                 Logger& glog = Logger::getGlobalLogger();
                 H_LOG( glog, Logger::WARNING ) << "Disabling " << componentName << endl;
                 disabledComponents.push_back( componentName );
             }
         } else if( varName == D_OUTPUT_ENABLED ) {
             // The core intercepts "output=xxx" lines to mark components as disabled
-            if( !lexical_cast<bool>( data.value_str ) ) {
+            if( data.getUnitval(U_UNDEFINED) <= 0 ) {
                 Logger& glog = Logger::getGlobalLogger();
                 H_LOG( glog, Logger::WARNING ) << "Disabling output for " << componentName << endl;
                 disabledOutputComponents.push_back( componentName );
@@ -583,7 +568,11 @@ unitval Core::sendMessage( const std::string& message,
                           const std::string& datum,
                           const message_data& info ) throw ( h_exception )
 {
-    if (message == M_GETDATA) {
+    if (message == M_GETDATA || message == M_DUMP_TO_DEEP_OCEAN) {
+        // M_GETDATA is used extensively by components to query each other re state
+        // M_DUMP_TO_DEEP_OCEAN is a special message used only to constrain the atmosphere
+        // We can treat it like a M_GETDATA message
+
         if(!isInited) {
             H_LOG(Logger::getGlobalLogger(), Logger::SEVERE)
                 << "message getData not available until core is initialized."
@@ -598,7 +587,7 @@ unitval Core::sendMessage( const std::string& message,
             return getComponentByName( ( *it ).second )->sendMessage( message, datum, info );
         }
     }
-    else if (message == M_SETDATA) {
+    else if (message == M_SETDATA ) {
         if( isInited ) {
             // If core initialization has been completed, then the only
             // setdata messages allowed are ones keyed to a date that we

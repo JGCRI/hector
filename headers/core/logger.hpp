@@ -1,18 +1,8 @@
 /* Hector -- A Simple Climate Model
    Copyright (C) 2014-2015  Battelle Memorial Institute
 
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License, version 2 as
-   published by the Free Software Foundation.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License along
-   with this program; if not, write to the Free Software Foundation, Inc.,
-   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+   Please see the accompanying file LICENSE.md for additional licensing
+   information.
 */
 #ifndef LOGGER_H
 #define LOGGER_H
@@ -63,6 +53,13 @@ private:
     
     //! Flag to indicate that this logger has been successfully opened.
     bool isInitialized;
+
+    //! Flag to indicate that this logger writes into a log file.
+    bool echoToFile;
+
+    //! Flag to indicate that this logger is enabled.
+    //! If false this logger does not log regardless of log level provided.
+    bool enabled;
     
     //! The actual output stream which will handle the logging.
     std::ostream loggerStream;
@@ -103,7 +100,7 @@ public:
     ~Logger();
     
     void open( const std::string& logName, const bool echoToScreen,
-              LogLevel minLogLevel) throw ( h_exception );
+              LogLevel minLogLevel, const bool echoToFile = true) throw ( h_exception );
     
     bool shouldWrite( const LogLevel writeLevel ) const;
     

@@ -1,18 +1,8 @@
 /* Hector -- A Simple Climate Model
    Copyright (C) 2014-2015  Battelle Memorial Institute
 
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License, version 2 as
-   published by the Free Software Foundation.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License along
-   with this program; if not, write to the Free Software Foundation, Inc.,
-   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+   Please see the accompanying file LICENSE.md for additional licensing
+   information.
 */
 /*
  *  unitval.cpp
@@ -82,6 +72,8 @@ string unitval::unitsName( const unit_types u ) {
     case U_CM: return "cm";
         break;
     case U_CM_YR: return "cm/yr";
+        break;
+    case U_CM2_S: return "cm2/s";
         break;
     case U_G: return "g";
         break;
@@ -225,6 +217,22 @@ unitval unitval::parse_unitval( const string& valueStr, const string& unitsStr,
     }
     
     return unitval( value, units );
+}
+
+//------------------------------------------------------------------------------
+/*! \brief Check if unit is correct or set it if no unit was given originally.
+ *
+ *  \param expectedUnits The expected units that the unitval should be in.
+ *  \exception h_exception An exception may be raised for the following reasons:
+ *      - The originally set units do not match the expected units.
+ */
+void unitval::expecting_unit( const unit_types& expectedUnits ) throw( h_exception ) {
+    if (valUnits == U_UNDEFINED) {
+        valUnits = expectedUnits;
+    } else {
+        H_ASSERT( valUnits == expectedUnits, "Units: "+unitsName( valUnits )
+                  +" do not match expected: "+unitsName( expectedUnits ) );
+    }
 }
 
 }

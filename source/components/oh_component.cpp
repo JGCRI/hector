@@ -1,18 +1,8 @@
 /* Hector -- A Simple Climate Model
    Copyright (C) 2014-2015  Battelle Memorial Institute
 
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License, version 2 as
-   published by the Free Software Foundation.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License along
-   with this program; if not, write to the Free Software Foundation, Inc.,
-   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+   Please see the accompanying file LICENSE.md for additional licensing
+   information.
 */
 /*
  *  oh_component.cpp
@@ -25,7 +15,6 @@
 
 #include <math.h>
 #include "components/oh_component.hpp"
-#include <boost/lexical_cast.hpp>
 #include "core/core.hpp"
 #include "h_util.hpp"
 #include "visitors/avisitor.hpp"
@@ -102,7 +91,6 @@ unitval OHComponent::sendMessage( const std::string& message,
 void OHComponent::setData( const string& varName,
                             const message_data& data ) throw ( h_exception )
 {
-    using namespace boost;
     try {
          if( varName == D_EMISSIONS_NOX ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
@@ -115,19 +103,19 @@ void OHComponent::setData( const string& varName,
             NMVOC_emissions.set( data.date, data.getUnitval(U_TG_NMVOC));
         } else if( varName == D_INITIAL_LIFETIME_OH ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
-            TOH0 = unitval::parse_unitval( data.value_str, data.units_str, U_YRS );
+            TOH0 = data.getUnitval(U_YRS);
          } else if(  varName == D_COEFFICENT_CH4 ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            CCH4 = lexical_cast<double>( data.value_str );
+            CCH4 = data.getUnitval(U_UNDEFINED);
          } else if( varName == D_COEFFICENT_CO ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
-            CCO = lexical_cast<double>( data.value_str );
+            CCO = data.getUnitval(U_UNDEFINED);
          } else if( varName == D_COEFFICENT_NMVOC ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
-            CNMVOC = lexical_cast<double>( data.value_str );
+            CNMVOC = data.getUnitval(U_UNDEFINED);
          } else if( varName == D_COEFFICENT_NOX ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
-            CNOX = lexical_cast<double>( data.value_str );
+            CNOX = data.getUnitval(U_UNDEFINED);
          }	else {
             H_THROW( "Unknown variable name while parsing " + getComponentName() + ": "
                     + varName );

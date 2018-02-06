@@ -1,18 +1,8 @@
 /* Hector -- A Simple Climate Model
    Copyright (C) 2014-2015  Battelle Memorial Institute
 
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License, version 2 as
-   published by the Free Software Foundation.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License along
-   with this program; if not, write to the Free Software Foundation, Inc.,
-   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+   Please see the accompanying file LICENSE.md for additional licensing
+   information.
 */
 /*
  *  dummy_model_component.cpp
@@ -21,8 +11,6 @@
  *  Created by Pralit Patel on 10/29/10.
  *
  */
-
-#include <boost/lexical_cast.hpp>
 
 #include "components/dummy_model_component.hpp"
 #include "core/core.hpp"
@@ -110,24 +98,21 @@ unitval DummyModelComponent::sendMessage( const std::string& message,
 void DummyModelComponent::setData( const string& varName,
                                    const message_data& data ) throw ( h_exception )
 {
-    using namespace boost;
-    
     try {
         if( varName == H_STRINGIFY_VAR( slope ) ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
-            slope = lexical_cast<double>( data.value_str );
+            slope = data.getUnitval(U_UNDEFINED);;
         } else if( varName == H_STRINGIFY_VAR( y ) ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
-            y = lexical_cast<double>( data.value_str );
+            y = data.getUnitval(U_UNDEFINED);;
         } else if( varName == H_STRINGIFY_VAR( c ) ) {
-            c.set( data.date, lexical_cast<double>( data.value_str ) );
+            c.set( data.date, data.getUnitval(U_UNDEFINED) );
         } else {
             H_THROW( "Unknown variable name while parsing " + getComponentName() + ": "
                     + varName );
         }
-    } catch( bad_lexical_cast& castException ) {
-        H_THROW( "Could not convert var: "+varName+", value: " + data.value_str + ", exception: "
-                +castException.what() );
+    } catch( h_exception& parseException ) {
+        H_RETHROW( parseException, "Could not parse var: "+varName );
     }
 }
 

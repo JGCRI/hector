@@ -1,18 +1,8 @@
 /* Hector -- A Simple Climate Model
    Copyright (C) 2014-2015  Battelle Memorial Institute
 
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License, version 2 as
-   published by the Free Software Foundation.
-
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-
-   You should have received a copy of the GNU General Public License along
-   with this program; if not, write to the Free Software Foundation, Inc.,
-   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+   Please see the accompanying file LICENSE.md for additional licensing
+   information.
 */
 /*
  *  so2_component.cpp
@@ -106,22 +96,19 @@ void SulfurComponent::setData( const string& varName,
     try {
         if( varName ==  D_EMISSIONS_SO2 ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            if(data.isVal)
-                SO2_emissions.set(data.date, data.value_unitval);
-            else
-                SO2_emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_GG_S ) );
+            SO2_emissions.set(data.date, data.getUnitval(U_GG_S));
         }
 		else if( varName ==  D_2000_SO2  ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            S0 = unitval::parse_unitval( data.value_str, data.units_str, U_GG_S );
+            S0 = data.getUnitval(U_GG_S);
         }
 		else if( varName ==  D_NATURAL_SO2  ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            SN = unitval::parse_unitval( data.value_str, data.units_str, U_GG_S );
+            SN = data.getUnitval(U_GG_S);
         }
 		else if( varName ==  D_VOLCANIC_SO2  ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            SV.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_W_M2 ) );
+            SV.set(data.date, data.getUnitval(U_W_M2));
         }
 		else {
             H_THROW( "Unknown variable name while parsing " + getComponentName() + ": "
@@ -192,4 +179,3 @@ void SulfurComponent::accept( AVisitor* visitor ) {
 }
 
 }
-
