@@ -281,7 +281,7 @@ void CSVOutputStreamVisitor::visit( CH4Component* c ) {
 //------------------------------------------------------------------------------
 // documentation is inherited
 void CSVOutputStreamVisitor::visit( N2OComponent* c ) {
-   if( !core->outputEnabled( c->getComponentName() ) && !in_spinup ) return;
+   if( !core->outputEnabled( c->getComponentName() ) ) return;
 STREAM_MESSAGE_DATE( csvFile, c, D_ATMOSPHERIC_N2O, current_date );
 }
 
