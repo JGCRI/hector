@@ -362,22 +362,37 @@ unitval ForcingComponent::getData( const std::string& varName,
     
     H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for forcing data" );
     
-    if ( forcings.find( varName ) == forcings.end() && baseyear > currentYear ) {
-        // No forcing exists. This probably means we haven't yet reached baseyear,
-        // so create an entry of 0.0 to return below.
-        forcings[ varName ].set( 0.0, U_W_M2 );
-    }
-    
     if( varName == D_RF_BASEYEAR ) {
         returnval.set( baseyear, U_UNITLESS );
+    } else if (varName == D_RF_SO2) {
+        // total SO2 forcing
+        std::map<std::string, unitval>::const_iterator forcing_SO2d = forcings.find( D_RF_SO2d );
+        std::map<std::string, unitval>::const_iterator forcing_SO2i = forcings.find( D_RF_SO2i );
+        if ( forcing_SO2d != forcings.end() ) {
+            if ( forcing_SO2i != forcings.end() ) {
+                returnval = forcing_SO2d->second + forcing_SO2i->second;
+            } else {
+                returnval = forcing_SO2d->second;
+            }
+        } else {
+            if ( forcing_SO2i != forcings.end() ) {
+                returnval = forcing_SO2i->second;
+            } else {
+                returnval.set( 0.0, U_W_M2 );
+            }
         }
-        else if (varName == D_RF_SO2) // total SO2 forcing
-            returnval = forcings[D_RF_SO2d] + forcings[D_RF_SO2i];
-        else if ( forcings.find( varName ) != forcings.end() ) {  // from the forcing map
-            returnval = forcings[ varName ]; 
+    } else {
+        std::map<std::string, unitval>::const_iterator forcing = forcings.find( varName );
+        if ( forcing != forcings.end() ) {
+            // from the forcing map
+            returnval = forcing->second;
+        } else {
+            if (currentYear < baseyear) {
+                returnval.set( 0.0, U_W_M2 );
+            } else {
+                H_THROW( "Caller is requesting unknown variable: " + varName );
+            }
         }
-        else {
-        H_THROW( "Caller is requesting unknown variable: " + varName );
     }
     
     return returnval;
