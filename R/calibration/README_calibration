@@ -21,13 +21,13 @@ hector_assimLikelihood.R       -Likelihood function for the MCMC
 obs_readData.R		       -Reads in observational constraints and
 				their details (normalization periods
 				and heteroscedastic uncertainties)
-forcing_total.R		       -Adds up the total radiative forcing for
+forcing_total.R                -Adds up the total radiative forcing for
 				forcing-constrained Hector calibrations
 compute_indices.R	       -Calculates which indices within the model
 				output and observational data vectors
 				correspond to the same times, for 
 				comparison.
-hectorwrapper.R		       -Runs Hector with input parameters and
+hectorwrapper.R                -Runs Hector with input parameters and
 				returns desired output time series.
 subparam.R		       -Replace values in a .ini file.
 
@@ -59,6 +59,10 @@ Add/modify observational constraints:
 
 Other notes:
   -No parallel: Parallel option in hector_calib_driver.R is not yet implemented
+  -Disable Hector logs: Hector's logging can slow its overall speed by a factor
+   of 2 or 3. To disable (as of 02/08/18 on the rc2.0.0 branch), on line 41
+   of source/main.cpp, change the second true to a false. Then remake the 
+   executable.
   -Time expectation: A single calibration with just climate sensitivity, ocean 
    heat diffusion, and aerosol scaling as free Hector parameters, and with ocean 
    heat and temperature observational constraints takes ~8 hours (with Hector's 
