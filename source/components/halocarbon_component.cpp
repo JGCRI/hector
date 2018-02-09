@@ -47,7 +47,7 @@ string HalocarbonComponent::getComponentName() const {
 //------------------------------------------------------------------------------
 // documentation is inherited
 void HalocarbonComponent::init( Core* coreptr ) {
-    logger.open( getComponentName(), false, Logger::DEBUG );
+    logger.open( getComponentName(), false, Logger::getGlobalLogger().getEchoToFile(), Logger::getGlobalLogger().getMinLogLevel() );
     //    concentration.name = myGasName;
     core = coreptr;
 

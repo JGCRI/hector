@@ -138,8 +138,8 @@ Logger::~Logger() {
  *                        initialized.
  *
  */
-void Logger::open( const string& logName, const bool echoToScreen,
-                   LogLevel minLogLevel, const bool echoToFile ) throw ( h_exception ) {
+void Logger::open( const string& logName, bool echoToScreen,
+                   bool echoToFile, LogLevel minLogLevel ) throw ( h_exception ) {
     H_ASSERT( !isInitialized, "This log has already been initialized." );
 
     this->minLogLevel = minLogLevel;
