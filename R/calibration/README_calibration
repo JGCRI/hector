@@ -1,0 +1,73 @@
+================================================================================
+README_calibration
+
+Original calibration folder for BRICK written by Tony Wong and Alexander Bakker
+(https://github.com/scrim-network/BRICK, DOI:10.5194/gmd-10-2741-2017)
+Modified for Hector by Ben Vega-Westhoff
+================================================================================
+
+To obtain calibrated (MCMC) model parameters for the Hector model,
+the following routines are required:
+
+hector_calib_driver.R	       -Driver script for the MCMC calibration
+hector_calib_params.R	       -Sets up the free parameters and their 
+				details (like upper/lower prior bounds). 
+hector_DEoptim.R	       -Defines a residual-minimizing metric for
+				using the differential evolution
+				optimization algorith to obtain a better
+				initial parameter choice, speeding up
+				MCMC convergence.
+hector_assimLikelihood.R       -Likelihood function for the MCMC	
+obs_readData.R		       -Reads in observational constraints and
+				their details (normalization periods
+				and heteroscedastic uncertainties)
+forcing_total.R		       -Adds up the total radiative forcing for
+				forcing-constrained Hector calibrations
+compute_indices.R	       -Calculates which indices within the model
+				output and observational data vectors
+				correspond to the same times, for 
+				comparison.
+hectorwrapper.R		       -Runs Hector with input parameters and
+				returns desired output time series.
+subparam.R		       -Replace values in a .ini file.
+
+And the following folders:
+input_templates/               -Contains .ini files that are used as
+			        templates during calibration.
+obs_constraints/	       -Contains observational constraints,
+			        both those used to run Hector and those
+			        used in its calibration (see its README)
+
+Perform default calibration:
+  $ Rscript hector_calib_driver.R -f *output.folder*
+Other calibration options: 
+  $ Rscript hector_calib_driver.R -h
+
+Add/modify free parameters of the calibration:
+  -In hector_calib_params.R, add the parameter and its details to 
+   the section with Hector uncertain parameters. Also add it to 
+   parlist.all_model.
+
+Add/modify observational constraints:
+  -In hector_calib_params.R, add corresponding offset, sigma, and rho
+   parameters. Also add those to the parlist.all_obs.
+  -Also in hector_calib_params.R, add the corresponding Hector output
+   against which we will compare the observational constraints. Then
+   add these to compare.all_obs. 
+  -In obs_constraints/, add the time series (and uncertainties)
+  -In obs_readData.R, read in the time series and add it to obs.all
+
+Other notes:
+  -No parallel: Parallel option in hector_calib_driver.R is not yet implemented
+  -Time expectation: A single calibration with just climate sensitivity, ocean 
+   heat diffusion, and aerosol scaling as free Hector parameters, and with ocean 
+   heat and temperature observational constraints takes ~8 hours (with Hector's 
+   logging disabled) on my local cluster (50k runs per chain, 2 chains).
+  -Unconverged chains: If your run doesn't converge you can retry with a longer 
+   chain or you can continue using the mcmc list that is output:
+   $ Rscript hector_calib_driver.R -f *output.folder* --continue *unconverged_mcmc_list.RData*
+  -Method: The calibration method is a robust adaptive Markov chain Monte Carlo
+   algorithm (RAM-MCMC), and is described in Vihola (2012),
+   DOI:10.1007/s11222-011-9269-5.
+  -Output: output of the calibration is a CSV file with parameter names in the first
+   row, then the calibrated parameter values (after convergence).

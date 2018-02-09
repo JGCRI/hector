@@ -1,0 +1,65 @@
+================================================================================
+README_obs
+
+Data sources for observational constraints, both those used to run Hector and
+those used in its calibration.
+================================================================================
+emissions/
+  So far, these are all copied from Hector:
+  https://github.com/JGCRI/hector/tree/master/input/emissions
+
+  RCP*_emissions.csv 
+    All originally downloaded from:
+    http://tntcat.iiasa.ac.at:8787/RcpDb/dsd?Action=htmlpage&page=download
+  emissions.csv
+    Fossil-fuel emissions from http://cdiac.ornl.gov/ftp/ndp030/CSV-FILES/global.1751_2007.csv
+    LUC emissions from http://cdiac.ornl.gov/trends/landuse/houghton/1850-2005.txt
+
+  gcam_emissions.csv
+    Standard historical emissions for GCAM, 1990-2010.  
+    Pre-1990 and Post-2010 emissions are from RCP4.5, taken from 
+    GCAM_ROOT/input/magicc/Historical\ Emissions/Default\ Emissions\ Module/Hist_to_2008_Annual.csv
+
+  hindcast_emissions.csv
+    Just left off 2006-2500 from RCP45_emissions.csv above.
+
+  volcanic_RF.csv
+    Annual mean volcanic stratospheric aerosol forcing (W/m2),
+    M. Meinshausen S. Smith et al. (2011) 
+    The RCP GHG concentrations and their extension from 1765 to 2300 
+    DOI 10.1007/s10584-011-0156-z Climatic Change
+================================================================================
+forcing/
+  forcing_rcp*.csv
+    Copied from BRICK.
+    https://github.com/scrim-network/BRICK/tree/master/data.
+    They come from the data available at http://www.pik-potsdam.de/~mmalte/rcps/
+    (accessed on: 28 July-1 Aug 2016).
+================================================================================
+ocheat/
+  gouretski_oceah_heat_3000m.txt
+    Copied from BRICK.
+    Ocean heat uptake (units of 10^22 J), from
+    Gouretski, V., and K. P. Koltermann (2007), How much is the ocean really
+    warming? Geophys. Res. Lett., 34, L01610, doi:10.1029/2006GL027834.
+    (accessed on: 15 July 2016)
+================================================================================
+temperature/
+  HadCRUT.4.4.0.0.annual_ns_avg.txt
+    Copied from BRICK.
+    HadCRUT4 lobal mean temperature anomaly data. Available at
+    http://www.metoffice.gov.uk/hadobs/hadcrut4/data/current/download.html
+    (this website also gives good explanation of what each column represents)
+    Morice, C. P., J. J. Kennedy, N. A. Rayner, and P. D. Jones (2012),
+    Quantifying uncertainties in global and regional temperature change using
+    an ensemble of observational estimates: The HadCRUT4 dataset,
+    J. Geophys. Res., 117, D08101, doi:10.1029/2011JD017187.
+    (accessed on: 15 July 2016)
+
+  HadCRUT.4.4.0.0.annual_ns_avg_realisations (directory)
+    Contains an individual ensemble member, along with its uncertainty
+    estimates, which are important for calibration of DOECLIM.
+    (the same website as above also gives good explanation of what each column represents)
+    (accessed on: 27 July 2016)
+================================================================================
+
