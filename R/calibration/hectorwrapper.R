@@ -31,9 +31,9 @@ replace_run_hector <- function( infile, replacevars, newstr ) {
     for( vn in seq_len( length(replacevars) ) ) {
         v <- names(replacevars)[vn]
         flines <- subparam( flines,
-                            section=replacevars[[v]]$section,
+                            section=replacevars[[vn]]$section,
                             parameter=v,
-                            newvalue=replacevars[[v]]$value )
+                            newvalue=replacevars[[vn]]$value )
     }
 
     # At this point we've substituted in all new parameter values
