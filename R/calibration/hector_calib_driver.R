@@ -312,7 +312,7 @@ if( parallel.mcmc ){	  #Not sure how to do this for Hector, not implemented for 
 pdf( paste0( calib.folder, "/chain1_hector.pdf" ) )
 par(mfrow=c(3,3))
 for ( pp in 1:length(parnames) ) {
-	plot( chain1[,pp], type = "l", ylab = parnames[pp], xlab = "Number of Runs", main = "")
+	plot( chain1[,pp], type = "l", ylab = params[pp], xlab = "Number of Runs", main = "")
 }
 dev.off()
 
@@ -395,7 +395,7 @@ if( !gr.mcmc ) {
 if(gr.mcmc){
     pdf( paste0( calib.folder, "/gr_stat_hector.pdf" ) )
     plot(niter.test,gr.test)
-    abline(h=1.1,lty=2)
+    abline(h=gr.max,lty=2)
     dev.off()
 }
 
@@ -496,7 +496,7 @@ dev.off()
 
 to.file = parameters.posterior
 rownames(to.file) = NULL
-colnames(to.file) = parnames
+colnames(to.file) = params
 filename = paste0( calib.folder, "/hector_calibrated_MCMC_parameters.csv")
 write.table( to.file, file = filename, sep = ",", qmethod = "double", row.names = FALSE )
 
