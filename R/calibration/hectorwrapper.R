@@ -142,7 +142,9 @@ hectorwrapper = function( par.names,
     }
 
     system( paste0( "rm ", output ) )
-    system( paste0( "rm ", paste0( output_dir, "/output.csv" ) ) ) #also created at run time
-
+    if( file.exists( paste0( output_dir, "/output.csv" ) ) ) {
+      system( paste0( "rm ", output_dir, "/output.csv" ) ) #also created at run time
+    }
+    
     return( model.output )
 }
