@@ -42,7 +42,7 @@ string OneLineOceanComponent::getComponentName() const {
 //------------------------------------------------------------------------------
 // documentation is inherited
 void OneLineOceanComponent::init( Core* coreptr ) {
-    logger.open( getComponentName(), false, Logger::DEBUG );
+    logger.open( getComponentName(), false, Logger::getGlobalLogger().getEchoToFile(), Logger::getGlobalLogger().getMinLogLevel() );
     H_LOG( logger, Logger::DEBUG ) << "hello " << getComponentName() << std::endl;
 	
     core = coreptr;
@@ -85,7 +85,7 @@ void OneLineOceanComponent::setData( const string& varName,
     try {
         if( varName == D_OCEAN_C ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            ocean_c = unitval::parse_unitval( data.value_str, data.units_str, U_PGC );
+            ocean_c = data.getUnitval(U_PGC);
         } else {
             H_THROW( "Unknown variable name while parsing " + getComponentName() + ": "
                     + varName );

@@ -12,7 +12,6 @@
  *
  */
 
-#include <boost/lexical_cast.hpp>
 #include <boost/array.hpp>
 #include <math.h>
 
@@ -50,7 +49,7 @@ string ForcingComponent::getComponentName() const {
 // documentation is inherited
 void ForcingComponent::init( Core* coreptr ) {
     
-    logger.open( getComponentName(), false, Logger::DEBUG );
+    logger.open( getComponentName(), false, Logger::getGlobalLogger().getEchoToFile(), Logger::getGlobalLogger().getMinLogLevel() );
     H_LOG( logger, Logger::DEBUG ) << "hello " << getComponentName() << std::endl;
     
     core = coreptr;
@@ -142,27 +141,20 @@ unitval ForcingComponent::sendMessage( const std::string& message,
 void ForcingComponent::setData( const string& varName,
                                 const message_data& data ) throw ( h_exception )
 {
-    
-    using namespace boost;
-    
     H_LOG( logger, Logger::DEBUG ) << "Setting " << varName << "[" << data.date << "]=" << data.value_str << std::endl;
     
     try {
         if( varName == D_RF_BASEYEAR ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
-            baseyear = lexical_cast<double>( data.value_str );
+            baseyear = data.getUnitval(U_UNDEFINED);
         } else if( varName == D_FTOT_CONSTRAIN ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            Ftot_constrain.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_W_M2 ) );
+            Ftot_constrain.set(data.date, data.getUnitval(U_W_M2));
         } else {
             H_LOG( logger, Logger::DEBUG ) << "Unknown variable " << varName << std::endl;
             H_THROW( "Unknown variable name while parsing "+ getComponentName() + ": "
                     + varName );
         }
-    } catch( bad_lexical_cast& castException ) {
-        H_LOG( logger, Logger::DEBUG ) << "Could not convert " << varName << std::endl;
-        H_THROW( "Could not convert var: "+varName+", value: " + data.value_str + ", exception: "
-                +castException.what() );
     } catch( h_exception& parseException ) {
         H_RETHROW( parseException, "Could not parse var: "+varName );
     }
@@ -370,22 +362,37 @@ unitval ForcingComponent::getData( const std::string& varName,
     
     H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for forcing data" );
     
-    if ( forcings.find( varName ) == forcings.end() && baseyear > currentYear ) {
-        // No forcing exists. This probably means we haven't yet reached baseyear,
-        // so create an entry of 0.0 to return below.
-        forcings[ varName ].set( 0.0, U_W_M2 );
-    }
-    
     if( varName == D_RF_BASEYEAR ) {
         returnval.set( baseyear, U_UNITLESS );
+    } else if (varName == D_RF_SO2) {
+        // total SO2 forcing
+        std::map<std::string, unitval>::const_iterator forcing_SO2d = forcings.find( D_RF_SO2d );
+        std::map<std::string, unitval>::const_iterator forcing_SO2i = forcings.find( D_RF_SO2i );
+        if ( forcing_SO2d != forcings.end() ) {
+            if ( forcing_SO2i != forcings.end() ) {
+                returnval = forcing_SO2d->second + forcing_SO2i->second;
+            } else {
+                returnval = forcing_SO2d->second;
+            }
+        } else {
+            if ( forcing_SO2i != forcings.end() ) {
+                returnval = forcing_SO2i->second;
+            } else {
+                returnval.set( 0.0, U_W_M2 );
+            }
         }
-        else if (varName == D_RF_SO2) // total SO2 forcing
-            returnval = forcings[D_RF_SO2d] + forcings[D_RF_SO2i];
-        else if ( forcings.find( varName ) != forcings.end() ) {  // from the forcing map
-            returnval = forcings[ varName ]; 
+    } else {
+        std::map<std::string, unitval>::const_iterator forcing = forcings.find( varName );
+        if ( forcing != forcings.end() ) {
+            // from the forcing map
+            returnval = forcing->second;
+        } else {
+            if (currentYear < baseyear) {
+                returnval.set( 0.0, U_W_M2 );
+            } else {
+                H_THROW( "Caller is requesting unknown variable: " + varName );
+            }
         }
-        else {
-        H_THROW( "Caller is requesting unknown variable: " + varName );
     }
     
     return returnval;

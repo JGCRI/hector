@@ -46,7 +46,7 @@ string BlackCarbonComponent::getComponentName() const {
 //------------------------------------------------------------------------------
 // documentation is inherited
 void BlackCarbonComponent::init( Core* coreptr ) {
-    logger.open( getComponentName(), false, Logger::DEBUG );
+    logger.open( getComponentName(), false, Logger::getGlobalLogger().getEchoToFile(), Logger::getGlobalLogger().getMinLogLevel() );
     H_LOG( logger, Logger::DEBUG ) << "hello " << getComponentName() << std::endl;
     core = coreptr;
     
@@ -89,10 +89,7 @@ void BlackCarbonComponent::setData( const string& varName,
     try {
         if( varName ==  D_EMISSIONS_BC  ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            if(data.isVal)
-                BC_emissions.set(data.date, data.value_unitval);
-            else
-            	BC_emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG ) );
+            BC_emissions.set(data.date, data.getUnitval(U_TG));
         } else {
             H_THROW( "Unknown variable name while parsing " + getComponentName() + ": "
                     + varName );

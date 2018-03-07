@@ -12,7 +12,6 @@
  *
  */
 
-#include <boost/lexical_cast.hpp>
 #include "boost/algorithm/string.hpp"
 
 #include "core/dependency_finder.hpp"
@@ -20,13 +19,15 @@
 #include "visitors/avisitor.hpp"
 
 namespace Hector {
-  
+
+using namespace boost;
+
 //------------------------------------------------------------------------------
 /*! \brief constructor
  */
 SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), m_last_tempferts(0.0) {
-    anthroEmissions.allowInterp( true );
-    anthroEmissions.name = "anthroEmissions";
+    ffiEmissions.allowInterp( true );
+    ffiEmissions.name = "ffiEmissions";
     lucEmissions.allowInterp( true );
     lucEmissions.name = "lucEmissions";
     Ftalbedo.allowInterp( true );
@@ -67,8 +68,8 @@ void SimpleNbox::init( Core* coreptr ) {
     core->registerDependency( D_OCEAN_CFLUX, getComponentName() );
 
     // Register the inputs we can receive from outside
-    core->registerInput( D_ANTHRO_EMISSIONS, getComponentName() );
-    core->registerInput( D_LUC_EMISSIONS, getComponentName() );
+    core->registerInput(D_FFI_EMISSIONS, getComponentName());
+    core->registerInput(D_LUC_EMISSIONS, getComponentName());
 }
 
 //------------------------------------------------------------------------------
@@ -100,8 +101,6 @@ unitval SimpleNbox::sendMessage( const std::string& message,
 void SimpleNbox::setData( const std::string &varName,
                           const message_data& data ) throw( h_exception )
 {
-    using namespace boost;
-    
     // Does the varName contain our parse character? If so, split it
     std::vector<std::string> splitvec;
     boost::split( splitvec, varName, is_any_of( SNBOX_PARSECHAR ) );
@@ -125,100 +124,94 @@ void SimpleNbox::setData( const std::string &varName,
         if( varNameParsed == D_ATMOSPHERIC_C ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
             H_ASSERT( biome == SNBOX_DEFAULT_BIOME, "atmospheric C must be global" );
-            atmos_c = unitval::parse_unitval( data.value_str, data.units_str, U_PGC );
+            atmos_c = data.getUnitval(U_PGC);
             C0.set( atmos_c.value( U_PGC ) * PGC_TO_PPMVCO2, U_PPMV_CO2 );
         }
         else if( varNameParsed == D_PREINDUSTRIAL_CO2 ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
             H_ASSERT( biome == SNBOX_DEFAULT_BIOME, "preindustrial C must be global" );
-            C0 = unitval::parse_unitval( data.value_str, data.units_str, U_PPMV_CO2 );
+            C0 = data.getUnitval( U_PPMV_CO2 );
             atmos_c.set( C0.value( U_PPMV_CO2 ) / PGC_TO_PPMVCO2, U_PGC );
         }
         else if( varNameParsed == D_VEGC ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
-            veg_c[ biome ] = unitval::parse_unitval( data.value_str, data.units_str, U_PGC );
+            veg_c[ biome ] = data.getUnitval( U_PGC );
         }
         else if( varNameParsed == D_DETRITUSC ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
-            detritus_c[ biome ] = unitval::parse_unitval( data.value_str, data.units_str, U_PGC );
+            detritus_c[ biome ] = data.getUnitval( U_PGC );
         }
         else if( varNameParsed == D_SOILC ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
-            soil_c[ biome ] = unitval::parse_unitval( data.value_str, data.units_str, U_PGC );
+            soil_c[ biome ] = data.getUnitval( U_PGC );
         }
         
         // Albedo effect
         else if( varNameParsed == D_RF_T_ALBEDO ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            Ftalbedo.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_W_M2 ) );
+            Ftalbedo.set( data.date, data.getUnitval( U_W_M2 ) );
         }
         
         // Partitioning
         else if( varNameParsed == D_F_NPPV ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            f_nppv = lexical_cast<double>( data.value_str );
+            f_nppv = data.getUnitval(U_UNDEFINED);
         }
         else if( varNameParsed == D_F_NPPD ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            f_nppd = lexical_cast<double>( data.value_str );
+            f_nppd = data.getUnitval(U_UNDEFINED);
         }
         else if( varNameParsed == D_F_LITTERD ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            f_litterd = lexical_cast<double>( data.value_str );
+            f_litterd = data.getUnitval(U_UNDEFINED);
         }
         else if( varNameParsed == D_F_LUCV ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            f_lucv = lexical_cast<double>( data.value_str );
+            f_lucv = data.getUnitval(U_UNDEFINED);
         }
         else if( varNameParsed == D_F_LUCD ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            f_lucd = lexical_cast<double>( data.value_str );
+            f_lucd = data.getUnitval(U_UNDEFINED);
         }
         
         // Initial fluxes
         else if( varNameParsed == D_NPP_FLUX0 ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            npp_flux0[ biome ] = unitval::parse_unitval( data.value_str, data.units_str, U_PGC_YR );
+            npp_flux0[ biome ] = data.getUnitval( U_PGC_YR );
         }
         
-        // Anthropogenic contributions--time series.  There are two
+        // Fossil fuels and industry contributions--time series.  There are two
         // message versions for each of these: one for string data
         // read from an input file, and another for actual values
         // passed from another part of the program.
-        else if( varNameParsed == D_ANTHRO_EMISSIONS ) {
+        else if( varNameParsed == D_FFI_EMISSIONS ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            H_ASSERT( biome == SNBOX_DEFAULT_BIOME, "anthro emissions must be global" );
-            if(data.isVal)
-                anthroEmissions.set(data.date, data.value_unitval);
-            else
-                anthroEmissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_PGC_YR ) );
+            H_ASSERT( biome == SNBOX_DEFAULT_BIOME, "fossil fuels and industry emissions must be global" );
+            ffiEmissions.set( data.date, data.getUnitval( U_PGC_YR ) );
         } 
         else if( varNameParsed == D_LUC_EMISSIONS ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            if(data.isVal)
-                lucEmissions.set(data.date, data.value_unitval);
-            else
-                lucEmissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_PGC_YR ) );
+            lucEmissions.set( data.date, data.getUnitval( U_PGC_YR ) );
         } 
         // Atmospheric CO2 record to constrain model to (optional)
         else if( varNameParsed == D_CA_CONSTRAIN ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
             H_ASSERT( biome == SNBOX_DEFAULT_BIOME, "atmospheric constraint must be global" );
-            Ca_constrain.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_PPMV_CO2 ) );
+            Ca_constrain.set( data.date, data.getUnitval( U_PPMV_CO2 ) );
         }
         
         // Fertilization
         else if( varNameParsed == D_BETA ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            beta[ biome ] = lexical_cast<double>( data.value_str );
+            beta[ biome ] = data.getUnitval(U_UNDEFINED);
         }
         else if( varNameParsed == D_WARMINGFACTOR ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            warmingfactor[ biome ] = lexical_cast<double>( data.value_str );
+            warmingfactor[ biome ] = data.getUnitval(U_UNDEFINED);
         }
         else if( varNameParsed == D_Q10_RH ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            q10_rh = lexical_cast<double>( data.value_str );
+            q10_rh = data.getUnitval(U_UNDEFINED);
         }
      
         else {
@@ -226,10 +219,6 @@ void SimpleNbox::setData( const std::string &varName,
             H_THROW( "Unknown variable name while parsing "+ getComponentName() + ": "
                     + varName );
         }
-    } catch( bad_lexical_cast &  castException ) {
-        H_LOG( logger, Logger::DEBUG ) << "Could not convert " << varName << std::endl;
-        H_THROW( "Could not convert var: "+varName+", value: "+data.value_str+", exception: "
-                +castException.what() );
     } catch( h_exception& parseException ) {
         H_RETHROW( parseException, "Could not parse var: "+varName );
     }
@@ -443,9 +432,9 @@ unitval SimpleNbox::getData( const std::string& varName,
     } else if( varName == D_SOILC ) {
         H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for soil C" );
         returnval = sum_map( soil_c );
-    } else if( varName == D_ANTHRO_EMISSIONS ) {
-        H_ASSERT( date != Core::undefinedIndex(), "Date required for anthro emissions" );
-        returnval = anthroEmissions.get( date );
+    } else if( varName == D_FFI_EMISSIONS ) {
+        H_ASSERT( date != Core::undefinedIndex(), "Date required for ffi emissions" );
+        returnval = ffiEmissions.get( date );
     } else if( varName == D_LUC_EMISSIONS ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for luc emissions" );
         returnval = lucEmissions.get( date );
@@ -711,10 +700,10 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
         detsoil_flux = detsoil_flux + unitval( it->second.value( U_PGC ) * 0.6, U_PGC_YR );
     }
     
-    // Annual anthropogenic industrial emissions
-    unitval anthro_flux_current( 0.0, U_PGC_YR );
+    // Annual fossil fuels and industry emissions
+    unitval ffi_flux_current( 0.0, U_PGC_YR );
     if( !in_spinup ) {   // no perturbation allowed if in spinup
-        anthro_flux_current = anthroEmissions.get( t );
+        ffi_flux_current = ffiEmissions.get( t );
     }
     
     // Annual land use change emissions
@@ -733,7 +722,7 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
     
     // Compute fluxes
     dcdt[ SNBOX_ATMOS ] = // change in atmosphere pool
-        anthro_flux_current.value( U_PGC_YR )
+        ffi_flux_current.value( U_PGC_YR )
         + luc_current.value( U_PGC_YR )
         + ch4ox_current.value( U_PGC_YR )
         - atmosocean_flux.value( U_PGC_YR )
@@ -758,7 +747,7 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
     dcdt[ SNBOX_OCEAN ] = // change in ocean pool
         atmosocean_flux.value( U_PGC_YR );
     dcdt[ SNBOX_EARTH ] = // change in earth pool
-        - anthro_flux_current.value( U_PGC_YR );
+        - ffi_flux_current.value( U_PGC_YR );
 
 /*    printf( "%6.3f%8.3f%8.2f%8.2f%8.2f%8.2f%8.2f\n", t, dcdt[ SNBOX_ATMOS ],
             dcdt[ SNBOX_VEG ], dcdt[ SNBOX_DET ], dcdt[ SNBOX_SOIL ], dcdt[ SNBOX_OCEAN ], dcdt[ SNBOX_EARTH ] );

@@ -13,7 +13,6 @@
  */
 
 #include <math.h>
-#include <boost/lexical_cast.hpp>
 
 #include "components/halocarbon_component.hpp"
 #include "core/core.hpp"
@@ -23,7 +22,6 @@
 namespace Hector {
   
 using namespace std;
-using namespace boost;
 
 //------------------------------------------------------------------------------
 /*! \brief Constructor
@@ -49,7 +47,7 @@ string HalocarbonComponent::getComponentName() const {
 //------------------------------------------------------------------------------
 // documentation is inherited
 void HalocarbonComponent::init( Core* coreptr ) {
-    logger.open( getComponentName(), false, Logger::DEBUG );
+    logger.open( getComponentName(), false, Logger::getGlobalLogger().getEchoToFile(), Logger::getGlobalLogger().getMinLogLevel() );
     //    concentration.name = myGasName;
     core = coreptr;
 
@@ -93,8 +91,6 @@ unitval HalocarbonComponent::sendMessage( const std::string& message,
 void HalocarbonComponent::setData( const string& varName,
                                    const message_data& data ) throw ( h_exception )
 {
-    using namespace boost;
-
     H_LOG( logger, Logger::DEBUG ) << "Setting " << varName << "[" << data.date << "]=" << data.value_str << std::endl;
     
     try {
@@ -102,31 +98,24 @@ void HalocarbonComponent::setData( const string& varName,
         
         if( varName == D_HC_TAU ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            tau = lexical_cast<double>( data.value_str );
+            tau = data.getUnitval(U_UNDEFINED);
         } else if( varName == D_HC_RHO ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            rho = unitval::parse_unitval( data.value_str, data.units_str, U_W_M2_PPTV );
+            rho = data.getUnitval(U_W_M2_PPTV);
         } else if( varName == D_HC_MOLARMASS ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            molarMass = lexical_cast<double>( data.value_str );
+            molarMass = data.getUnitval(U_UNDEFINED);
         } else if( varName == emiss_var_name ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            if(data.isVal)
-                emissions.set(data.date, data.value_unitval);
-            else
-                emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_GG ) );
+            emissions.set(data.date, data.getUnitval(U_GG));
         } else if( varName == D_PREINDUSTRIAL_HC ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            H0 = unitval::parse_unitval( data.value_str, data.units_str, U_PPTV );
+            H0 = data.getUnitval(U_PPTV);
         } else {
             H_LOG( logger, Logger::DEBUG ) << "Unknown variable " << varName << std::endl;
             H_THROW( "Unknown variable name while parsing "+ getComponentName() + ": "
                     + varName );
         }
-    } catch( bad_lexical_cast& castException ) {
-        H_LOG( logger, Logger::DEBUG ) << "Could not convert " << varName << std::endl;
-        H_THROW( "Could not convert var: "+varName+", value: "+data.value_str+", exception: "
-                +castException.what() );
     } catch( h_exception& parseException ) {
         H_RETHROW( parseException, "Could not parse var: "+varName );
     }

@@ -50,7 +50,7 @@ string CH4Component::getComponentName() const {
 //------------------------------------------------------------------------------
 // documentation is inherited
 void CH4Component::init( Core* coreptr ) {
-    logger.open( getComponentName(), false, Logger::DEBUG );
+    logger.open( getComponentName(), false, Logger::getGlobalLogger().getEchoToFile(), Logger::getGlobalLogger().getMinLogLevel() );
     H_LOG( logger, Logger::DEBUG ) << "hello " << getComponentName() << std::endl;
     core = coreptr;
 
@@ -94,25 +94,22 @@ void CH4Component::setData( const string& varName,
     try {
          if( varName ==  D_PREINDUSTRIAL_CH4  ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            M0 = unitval::parse_unitval( data.value_str, data.units_str, U_PPBV_CH4 );
+            M0 = data.getUnitval(U_PPBV_CH4);
          } else if( varName == D_EMISSIONS_CH4 ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-             if(data.isVal)
-                 CH4_emissions.set(data.date, data.value_unitval);
-             else
-            CH4_emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG_CH4 ) );
+            CH4_emissions.set(data.date, data.getUnitval(U_TG_CH4));
         } else if( varName == D_LIFETIME_SOIL ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            Tsoil = unitval::parse_unitval( data.value_str, data.units_str, U_YRS );
+            Tsoil = data.getUnitval(U_YRS);
          } else if( varName == D_LIFETIME_STRAT ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
-            Tstrat = unitval::parse_unitval( data.value_str, data.units_str, U_YRS );
+            Tstrat = data.getUnitval(U_YRS);
          } else if( varName == D_CONVERSION_CH4 ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
-            UC_CH4 = unitval::parse_unitval( data.value_str, data.units_str, U_TG_PPBV );
+            UC_CH4 = data.getUnitval(U_TG_PPBV);
          } else if( varName == D_NATURAL_CH4 ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
-            CH4N = unitval::parse_unitval( data.value_str, data.units_str, U_TG_CH4 );
+            CH4N = data.getUnitval(U_TG_CH4);
          }
 		else {
             H_THROW( "Unknown variable name while parsing " + getComponentName() + ": "

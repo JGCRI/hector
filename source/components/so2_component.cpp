@@ -48,7 +48,7 @@ string SulfurComponent::getComponentName() const {
 //------------------------------------------------------------------------------
 // documentation is inherited
 void SulfurComponent::init( Core* coreptr ) {
-    logger.open( getComponentName(), false, Logger::DEBUG );
+    logger.open( getComponentName(), false, Logger::getGlobalLogger().getEchoToFile(), Logger::getGlobalLogger().getMinLogLevel() );
     H_LOG( logger, Logger::DEBUG ) << "hello " << getComponentName() << std::endl;
     core = coreptr;
 
@@ -96,22 +96,19 @@ void SulfurComponent::setData( const string& varName,
     try {
         if( varName ==  D_EMISSIONS_SO2 ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            if(data.isVal)
-                SO2_emissions.set(data.date, data.value_unitval);
-            else
-                SO2_emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_GG_S ) );
+            SO2_emissions.set(data.date, data.getUnitval(U_GG_S));
         }
 		else if( varName ==  D_2000_SO2  ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            S0 = unitval::parse_unitval( data.value_str, data.units_str, U_GG_S );
+            S0 = data.getUnitval(U_GG_S);
         }
 		else if( varName ==  D_NATURAL_SO2  ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            SN = unitval::parse_unitval( data.value_str, data.units_str, U_GG_S );
+            SN = data.getUnitval(U_GG_S);
         }
 		else if( varName ==  D_VOLCANIC_SO2  ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            SV.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_W_M2 ) );
+            SV.set(data.date, data.getUnitval(U_W_M2));
         }
 		else {
             H_THROW( "Unknown variable name while parsing " + getComponentName() + ": "

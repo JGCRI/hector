@@ -12,8 +12,6 @@
  *
  */
 
-#include <boost/lexical_cast.hpp>
-
 #include "components/imodel_component.hpp"
 #include "components/halocarbon_component.hpp"
 #include "components/oh_component.hpp"
@@ -24,10 +22,10 @@
 #include "components/so2_component.hpp"
 #include "components/forcing_component.hpp"
 #include "components/slr_component.hpp"
-#include "components/temperature_component.hpp"
 #include "components/ocean_component.hpp"
 #include "components/onelineocean_component.hpp"
 #include "components/o3_component.hpp"
+#include "components/temperature_component.hpp"
 #include "core/core.hpp"
 #include "core/dependency_finder.hpp"
 #include "core/logger.hpp"
@@ -110,11 +108,11 @@ void Core::init() {
     modelComponents[ temp->getComponentName() ] = temp;
 	temp = new slrComponent();
     modelComponents[ temp->getComponentName() ] = temp;
-	temp = new TemperatureComponent();
-    modelComponents[ temp->getComponentName() ] = temp;
 	temp = new OceanComponent();
     modelComponents[ temp->getComponentName() ] = temp;
 	temp = new OneLineOceanComponent();
+    modelComponents[ temp->getComponentName() ] = temp;
+    temp = new TemperatureComponent();
     modelComponents[ temp->getComponentName() ] = temp;
     
     temp = new HalocarbonComponent( CF4_COMPONENT_BASE );
@@ -200,8 +198,6 @@ void Core::init() {
 void Core::setData( const string& componentName, const string& varName,
                     const message_data& data ) throw ( h_exception )
 {
-    using namespace boost;
-    
     if( componentName == getComponentName() ) {
         try {
             if( varName == D_RUN_NAME ) {
@@ -209,37 +205,36 @@ void Core::setData( const string& componentName, const string& varName,
                 run_name = data.value_str;
             } else if( varName == D_START_DATE ) {
                 H_ASSERT( data.date == undefinedIndex(), "date not allowed" );
-                lastDate = startDate = lexical_cast<double>( data.value_str );
+                lastDate = startDate = data.getUnitval(U_UNDEFINED);
             } else if( varName == D_END_DATE ) {
                 H_ASSERT( data.date == undefinedIndex(), "date not allowed" );
-                endDate = lexical_cast<double>( data.value_str );
+                endDate = data.getUnitval(U_UNDEFINED);
             } else if( varName == D_DO_SPINUP ) {
                 H_ASSERT( data.date == undefinedIndex(), "date not allowed" );
-                do_spinup = lexical_cast<bool>( data.value_str );
+                do_spinup = (data.getUnitval(U_UNDEFINED) > 0);
             } else if( varName == D_MAX_SPINUP ) {
                 H_ASSERT( data.date == undefinedIndex(), "date not allowed" );
-                max_spinup = lexical_cast<int>( data.value_str );
+                max_spinup = data.getUnitval(U_UNDEFINED);
             } else {
                 H_THROW( "Unknown variable name while parsing "+ getComponentName() + ": "
                         + varName );
             }
-        } catch( bad_lexical_cast& castException ) {
-            H_THROW( "Could not convert var: "+varName+", value: " + data.value_str + ", exception: "
-                    +castException.what() );
+        } catch( h_exception& parseException ) {
+            H_RETHROW( parseException, "Could not parse var: "+varName );
         }
     } else {    // data is not intended for us
         IModelComponent* component = getComponentByName( componentName );
         
         if( varName == D_ENABLED ) {
             // The core intercepts "enabled=xxx" lines to mark components as disabled
-            if( !lexical_cast<bool>( data.value_str ) ) {
+            if( data.getUnitval(U_UNDEFINED) <= 0 ) {
                 Logger& glog = Logger::getGlobalLogger();
                 H_LOG( glog, Logger::WARNING ) << "Disabling " << componentName << endl;
                 disabledComponents.push_back( componentName );
             }
         } else if( varName == D_OUTPUT_ENABLED ) {
             // The core intercepts "output=xxx" lines to mark components as disabled
-            if( !lexical_cast<bool>( data.value_str ) ) {
+            if( data.getUnitval(U_UNDEFINED) <= 0 ) {
                 Logger& glog = Logger::getGlobalLogger();
                 H_LOG( glog, Logger::WARNING ) << "Disabling output for " << componentName << endl;
                 disabledOutputComponents.push_back( componentName );
