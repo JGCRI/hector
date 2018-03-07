@@ -1,3 +1,17 @@
+Hector 2.0.0
+============
+* Incorporated 1-D diffusive ocean heat model (DOECLIM)
+* deleted the old temperature component
+* bugfix: double counting halocarbon radiative forcing
+* bugfix: re-enabled CO2 concentration constraint
+* initalized FSO2 first before FSO2i and FSO2d
+* getComponentName now public
+* h_exeptions are now a subclass of std::exception
+* component loggers are now optional
+* double values accepted in setData
+* renamed anthro emissions to ffi emisisons (fossil fuel industrial)
+
+
 Hector 1.1.2
 ============
 
