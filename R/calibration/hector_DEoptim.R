@@ -30,7 +30,7 @@ minimize_residuals_hector = function(	parameters.in, parnames.in , in.hector.in 
         df_out = data.frame(year=mod.time,Ftot_constrain=forcing.total)
         forcing.file = paste0( calib.folder,"/DEoptim_temp_RF.csv" )
         write.table(df_out,file=forcing.file, quote=FALSE,row.names=FALSE,col.names=TRUE,sep=",")
-        parvals[match("alphatemperature",paste0(parvals,sections.in))] = 1 #Forcing already scaled, no need to do it in Hector
+        parvals[match("alphatemperature",paste0(parnames.in,sections.in))] = 1 #Forcing already scaled, no need to do it in Hector
     }
     else {
         forcing.file = NULL
