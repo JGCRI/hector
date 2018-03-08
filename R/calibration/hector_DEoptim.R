@@ -22,7 +22,7 @@ minimize_residuals_hector = function(	parameters.in, parnames.in , in.hector.in 
    
     ## Scale forcing if using it as a constraint
     if(!is.null(forcing.in)){
-        alpha = parvals[match("alphatemperature",paste0(parvals,sections.in))]
+        alpha = parvals[match("alphatemperature",paste0(parnames.in,sections.in))]
         if(is.na(alpha)){ alpha = 1 } 
         forcing.total = forcing_total(  forcing  =forcing.in, alpha.doeclim =alpha      ,
                                         l.project=l.project , begyear       =mod.time[1],
