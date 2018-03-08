@@ -1,3 +1,13 @@
+Hector 2.0.0
+============
+* Incorporated 1-D diffusive ocean heat model as new temperature component (DOECLIM) (PR #206)
+* Bugfix: double counting halocarbon radiative forcing (PR #201)
+* Bugfix: re-enabled CO2 concentration constraint (PR #163)  
+* Various changes to internals to support calling Hector from external code like pyhector
+* Component loggers are now optional (PR #218)
+* Renamed anthro emissions to ffi emisisons (fossil fuel industrial) (PR #116)
+
+
 Hector 1.1.2
 ============
 

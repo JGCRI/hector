@@ -16,7 +16,6 @@
 #include <math.h>
 #include <string>
 #include <boost/numeric/odeint.hpp>
-#include "boost/lexical_cast.hpp"
 
 #include "core/carbon-cycle-solver.hpp"
 #include "visitors/avisitor.hpp"
@@ -42,7 +41,7 @@ CarbonCycleSolver::~CarbonCycleSolver()
 //------------------------------------------------------------------------------
 // documentation is inherited
 void CarbonCycleSolver::init( Core* coreptr ) {
-    logger.open( getComponentName(), true, Logger::NOTICE );
+    logger.open( getComponentName(), Logger::getGlobalLogger().isEnabled(), Logger::getGlobalLogger().getEchoToFile(), Logger::WARNING );
     H_LOG( logger, Logger::DEBUG ) << getComponentName() << " initialized." << std::endl;
     
     core = coreptr;
@@ -81,36 +80,30 @@ unitval CarbonCycleSolver::sendMessage( const std::string& message,
 void CarbonCycleSolver::setData( const std::string &varName,
                                  const message_data& data ) throw ( h_exception )
 {
-    using boost::lexical_cast;
-    
     H_LOG( logger, Logger::DEBUG ) << "Setting " << varName << "[" << data.date << "]=" << data.value_str << std::endl;
     
     try {
         if( varName == D_CCS_EPS_ABS ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            eps_abs = lexical_cast<double>( data.value_str );
+            eps_abs = data.getUnitval(U_UNDEFINED);;
         }
         else if( varName == D_CCS_EPS_REL ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            eps_rel = lexical_cast<double>( data.value_str );
+            eps_rel = data.getUnitval(U_UNDEFINED);;
         }
         else if( varName == D_CCS_DT ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            dt = lexical_cast<double>( data.value_str );
+            dt = data.getUnitval(U_UNDEFINED);
         }
         else if( varName == D_EPS_SPINUP ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            eps_spinup = unitval::parse_unitval( data.value_str, data.units_str, U_PGC );
+            eps_spinup = data.getUnitval(U_PGC);
         }
         else {
             H_LOG( logger, Logger::SEVERE ) << "Unknown variable " << varName << std::endl;
             H_THROW( "Unknown variable name while parsing "+ getComponentName() + ": "
                     + varName );
         }
-    } catch( boost::bad_lexical_cast& castException ) {
-        H_LOG( logger, Logger::SEVERE ) << "Could not convert " << varName << std::endl;
-        H_THROW( "Could not convert var: "+varName+", value: " + data.value_str + ", exception: "
-                +castException.what() );
     } catch( h_exception& parseException ) {
         H_RETHROW( parseException, "Could not parse var: "+varName );
     }

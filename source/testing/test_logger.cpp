@@ -30,9 +30,9 @@ protected:
         H_ASSERT( !fileExists( testFile1.c_str() ), "testfile1 exists" );
         H_ASSERT( !fileExists( testFile2.c_str() ), "testfile2 exists" );
 
-        loggerNoEcho.open( testFile1, false, Logger::WARNING );
+        loggerNoEcho.open( testFile1, false, true, Logger::WARNING );
         std::streambuf* tmpBuff = std::cout.rdbuf( &consoleTestBuff );
-        loggerEcho.open( testFile2, true, Logger::WARNING );
+        loggerEcho.open( testFile2, true, true, Logger::WARNING );
         
         // now that the logger has attached to our test buffer put the
         // original back into cout

@@ -46,7 +46,7 @@ string OrganicCarbonComponent::getComponentName() const {
 //------------------------------------------------------------------------------
 // documentation is inherited
 void OrganicCarbonComponent::init( Core* coreptr ) {
-    logger.open( getComponentName(), false, Logger::DEBUG );
+    logger.open( getComponentName(), false, Logger::getGlobalLogger().getEchoToFile(), Logger::getGlobalLogger().getMinLogLevel() );
     H_LOG( logger, Logger::DEBUG ) << "hello " << getComponentName() << std::endl;
   	core = coreptr;
 
@@ -91,10 +91,7 @@ void OrganicCarbonComponent::setData( const string& varName,
     try {
         if( varName ==  D_EMISSIONS_OC ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            if(data.isVal)
-                OC_emissions.set(data.date, data.value_unitval);
-            else
-            	OC_emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG ) );
+            OC_emissions.set(data.date, data.getUnitval(U_TG));
         } else {
             H_THROW( "Unknown variable name while parsing " + getComponentName() + ": "
                     + varName );

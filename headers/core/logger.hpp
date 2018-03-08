@@ -53,6 +53,13 @@ private:
     
     //! Flag to indicate that this logger has been successfully opened.
     bool isInitialized;
+
+    //! Flag to indicate that this logger writes into a log file.
+    bool echoToFile;
+
+    //! Flag to indicate that this logger is enabled.
+    //! If false this logger does not log regardless of log level provided.
+    bool enabled;
     
     //! The actual output stream which will handle the logging.
     std::ostream loggerStream;
@@ -92,8 +99,8 @@ public:
     Logger();
     ~Logger();
     
-    void open( const std::string& logName, const bool echoToScreen,
-              LogLevel minLogLevel) throw ( h_exception );
+    void open( const std::string& logName, bool echoToScreen,
+               bool echoToFile, LogLevel minLogLevel ) throw ( h_exception );
     
     bool shouldWrite( const LogLevel writeLevel ) const;
     
@@ -103,6 +110,18 @@ public:
     void close();
     
     static Logger& getGlobalLogger();
+
+    LogLevel getMinLogLevel() const {
+        return minLogLevel;
+    }
+
+    bool getEchoToFile() const {
+        return echoToFile;
+    }
+
+    bool isEnabled() const {
+        return enabled;
+    }
 };
 
 }

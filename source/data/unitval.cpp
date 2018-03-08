@@ -73,6 +73,8 @@ string unitval::unitsName( const unit_types u ) {
         break;
     case U_CM_YR: return "cm/yr";
         break;
+    case U_CM2_S: return "cm2/s";
+        break;
     case U_G: return "g";
         break;
     case U_GG: return "Gg";
@@ -215,6 +217,22 @@ unitval unitval::parse_unitval( const string& valueStr, const string& unitsStr,
     }
     
     return unitval( value, units );
+}
+
+//------------------------------------------------------------------------------
+/*! \brief Check if unit is correct or set it if no unit was given originally.
+ *
+ *  \param expectedUnits The expected units that the unitval should be in.
+ *  \exception h_exception An exception may be raised for the following reasons:
+ *      - The originally set units do not match the expected units.
+ */
+void unitval::expecting_unit( const unit_types& expectedUnits ) throw( h_exception ) {
+    if (valUnits == U_UNDEFINED) {
+        valUnits = expectedUnits;
+    } else {
+        H_ASSERT( valUnits == expectedUnits, "Units: "+unitsName( valUnits )
+                  +" do not match expected: "+unitsName( expectedUnits ) );
+    }
 }
 
 }

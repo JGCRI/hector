@@ -44,6 +44,7 @@ build/
 DerivedData/
 xcodeuserstate
 xcuserdata
+project.xcworkspace/
 
 # Project files
 project_files/*.*
@@ -53,12 +54,14 @@ Run Test Cases
 Debug
 libs
 project_files/visual_studio/
+project_files/VS/*.*
 libs/
 *.kdev4
+*.sdf
+*.suo
 
 # Output
-output/output
-output/*.csv
+output/output*
 
 # R
 .Rhistory

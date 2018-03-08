@@ -1,4 +1,6 @@
-CXX	= g++
+ifeq ($(strip $(CXX)),)
+CXX      = g++
+endif
 CXXFLAGS = -g $(INCLUDES) $(OPTFLAGS) $(CXXEXTRA) $(CXXPROF) $(WFLAGS) -MMD
 INCLUDES = -I$(BOOSTROOT) -I$(HDRDIR)
 WFLAGS   = -Wall -Wno-unused-local-typedefs # Turn on warnings, turn off one particularly annoying one that infests Boost libs

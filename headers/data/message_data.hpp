@@ -51,9 +51,29 @@ struct message_data {
     message_data(double d, const unitval &val) : date(d), value_unitval(val),
                                                  isVal(true) {}
 
-    // retrieve message data as a unitval, even if it contains a string
-    unitval getUnitval(const unit_types& unit_expected) const {
-        if(isVal) return value_unitval; else return unitval::parse_unitval(value_str, units_str, unit_expected);
+    //------------------------------------------------------------------------------
+    /*! \brief retrieve message data as a unitval, even if it contains a string.
+     *
+     *  \param expectedUnits The expected units that the unitval should be in.
+     *  \param strict  Flag indicating if units have to be given (default: false).
+     *  \exception h_exception An exception may be raised for the following reasons:
+     *      - The unitval units do not match the expected units.
+     *      - The value string could not be parsed.
+     */
+    unitval getUnitval(const unit_types& expectedUnits, const bool strict = false) const throw ( h_exception ) {
+        if(isVal) {
+            if (strict) {
+                H_ASSERT( value_unitval.units() == expectedUnits, "Units: "+value_unitval.unitsName()+" do not match expected: "+unitval::unitsName( expectedUnits ) );
+            }
+            unitval result = value_unitval; // copy to not change value_unitval of message
+            result.expecting_unit(expectedUnits);
+            return result;
+        } else {
+            if (strict && units_str.empty() && expectedUnits != U_UNDEFINED) {
+                H_THROW( "Units: '' do not match expected: "+unitval::unitsName( expectedUnits ) );
+            }
+            return unitval::parse_unitval(value_str, units_str, expectedUnits);
+        }
     }
     //! (optional) a date for which this value is for.
     double date;

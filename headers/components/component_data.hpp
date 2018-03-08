@@ -190,12 +190,6 @@
 #define D_TEMP_LL               "Temp_LL"
 #define D_SPINUP_CHEM           "spinup_chem"
 
-#define D_HEAT_FLUX             "heatflux"
-#define D_HEAT_UPTAKE_EFF       "kappa"
-#define D_MAX_HEAT_UPTAKE_EFF   "k_max"
-#define D_KAPPA50_TEMP          "t_mid"
-#define D_MIN_HEAT_UPTAKE_EFF   "k_min"
-#define D_SLOPE_HEAT_UPTAKE_EFF  "slope"
 //#define D_SPECIFIC_HEAT			"cp"
 
 #define D_CO3_LL				"CO3_LL"
@@ -215,8 +209,8 @@
 #define D_VEGC                  "veg_c"
 #define D_DETRITUSC             "detritus_c"
 #define D_SOILC                 "soil_c"
-#define D_ANTHRO_EMISSIONS      "anthroEmissions"
-#define D_LUC_EMISSIONS         "lucEmissions"
+#define D_FFI_EMISSIONS         "ffi_emissions"
+#define D_LUC_EMISSIONS         "luc_emissions"
 #define D_CO2FERT               "co2fert"
 #define D_TEMPFERTD              "detritus_tempfert"
 #define D_TEMPFERTS              "soil_tempfert"
@@ -255,6 +249,14 @@
 #define D_SO2I_B                "so2i_b"
 #define D_OC_B                  "oc_b"
 #define D_BC_B                  "bc_b"
+
+// temperature component
+#define D_DIFFUSIVITY           "diff"
+#define D_AERO_SCALE            "alpha"
+#define D_FLUX_MIXED            "flux_mixed"
+#define D_FLUX_INTERIOR         "flux_interior"
+#define D_HEAT_FLUX             "heatflux"
+
 // ------------------- messages being passed between components -------------------------
 
 #define M_GETDATA               "getData"
