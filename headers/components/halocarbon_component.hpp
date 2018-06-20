@@ -79,9 +79,6 @@ private:
     
     double molarMass;
     
-    //! The last calculated date value
-    double calcDate;
-    
     //! logger
     Logger logger;
 

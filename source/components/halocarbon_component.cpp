@@ -165,26 +165,6 @@ void HalocarbonComponent::run( const double runToDate ) throw ( h_exception ) {
     unitval rf;
     rf.set( rho.value( U_W_M2_PPTV ) * Ha.value( U_PPTV ), U_W_M2 );
     hc_forcing.set( runToDate, rf );
-    
-    /*
-     if( runToDate <= calcDate ) {
-     unitval temp;
-     temp.set( rho.value( U_W_M2_PPTV ) * concentration.get( runToDate ).value( U_PPTV ), U_W_M2 );
-     hc_forcing.set( runToDate, temp );
-     return;
-     } // just use this code to take the emissions and convert to concentrations and then get the forcing.  keep running track of what the concentration is
-     for( ; calcDate < runToDate; ++calcDate ) {
-     double currDate = calcDate + 1;
-     H_LOG( logger, Logger::DEBUG ) << "date: " << currDate << endl;
-     unitval concentrationBack = rk( calcDate, currDate );
-     H_LOG( logger, Logger::DEBUG ) << "concentration: " << concentrationBack << endl;
-     concentration.set( currDate, concentrationBack );
-     unitval forcingBack;
-     forcingBack.set( rho.value( U_W_M2_PPTV ) * concentrationBack.value( U_PPTV ), U_W_M2 );
-     H_LOG( logger, Logger::DEBUG ) << "forcing: " << forcingBack << endl;
-     hc_forcing.set( currDate, forcingBack );
-     }
-     */
 }
 
 //------------------------------------------------------------------------------
@@ -209,9 +189,6 @@ unitval HalocarbonComponent::getData( const std::string& varName,
             returnval = emissions.get( date );
         else
             returnval.set( 0.0, U_GG );
-    } else if( varName == D_HC_CALCDATE ) {
-        H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for calcdate" );
-        returnval.set( calcDate, U_UNITLESS );
     } else {
         H_THROW( "Caller is requesting unknown variable: " + varName );
     }
