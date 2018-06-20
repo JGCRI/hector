@@ -63,8 +63,6 @@ private:
     tseries<unitval> CO_emissions;
 	tseries<unitval> NMVOC_emissions;
     tseries<unitval> NOX_emissions;
-	tseries<unitval> Ma;
-
     
     //! logger
     Logger logger;

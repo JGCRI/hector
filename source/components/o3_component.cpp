@@ -53,7 +53,6 @@ void OzoneComponent::init( Core* coreptr ) {
     CO_emissions.allowInterp( true );
     NMVOC_emissions.allowInterp( true );
     NOX_emissions.allowInterp( true );//Inputs like CO and NMVOC and NOX,
-    Ma.allowInterp( true );
     O3.allowInterp(true);
 
    
