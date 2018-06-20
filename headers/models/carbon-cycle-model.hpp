@@ -59,21 +59,6 @@ public:
     
     virtual void init( Core* core );
     
-    virtual unitval sendMessage( const std::string& message,
-                                const std::string& datum,
-                                const message_data info=message_data() ) throw ( h_exception );
-    
-    virtual void setData( const std::string& varName,
-                          const message_data& data ) throw ( h_exception );
-    
-    virtual void prepareToRun() throw ( h_exception );
-    
-    virtual void run( const double runToDate ) throw ( h_exception ) = 0;
-    
-    //    virtual bool run_spinup( const int step ) throw ( h_exception );
-    
-    virtual void shutDown();
-    
     // The model interface, as seen by the solver
     
     //! Copy the values of the carbon pools into the input array,
