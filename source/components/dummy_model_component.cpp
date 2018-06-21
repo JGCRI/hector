@@ -160,6 +160,13 @@ unitval DummyModelComponent::getData( const std::string& varName,
     return returnval;
 }
 
+void DummyModelComponent::reset(double time) throw(h_exception)
+{
+    // This is a no-op for this component
+    H_LOG(logger, Logger::NOTICE)
+        << getComponentName() << " reset to time= " << time << "\n";
+}
+
 //------------------------------------------------------------------------------
 // documentation is inherited
 void DummyModelComponent::shutDown() {

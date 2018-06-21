@@ -47,6 +47,8 @@ public:
     
     virtual void run( const double runToDate ) throw ( h_exception );
     
+    virtual void reset(double time) throw(h_exception);
+
     virtual void shutDown();
     
     // IVisitable methods
@@ -61,13 +63,13 @@ private:
     unitval PO3;
     tseries<unitval> O3;
     tseries<unitval> CO_emissions;
-	tseries<unitval> NMVOC_emissions;
+    tseries<unitval> NMVOC_emissions;
     tseries<unitval> NOX_emissions;
     
     //! logger
     Logger logger;
 
-	Core *core;
+    Core *core;
     double oldDate;
 };
 

@@ -451,11 +451,18 @@ unitval SimpleNbox::getData( const std::string& varName,
     return returnval;
 }
 
+void SimpleNbox::reset(double time) throw(h_exception)
+{
+    H_THROW("SimpleNbox::reset : not yet implemented.")
+    H_LOG(logger, Logger::NOTICE)
+        << getComponentName() << " reset to time= " << time << "\n";
+}
+
 //------------------------------------------------------------------------------
 // documentation is inherited
 void SimpleNbox::shutDown()
 {
-	H_LOG( logger, Logger::DEBUG ) << "goodbye " << getComponentName() << std::endl;
+    H_LOG( logger, Logger::DEBUG ) << "goodbye " << getComponentName() << std::endl;
     logger.close();
 }
 

@@ -450,6 +450,15 @@ unitval TemperatureComponent::getData( const std::string& varName,
 }
 
 
+void TemperatureComponent::reset(double time) throw(h_exception)
+{
+    H_THROW("TemperatureComponent::reset : not yet implemented.")
+    H_LOG(logger, Logger::NOTICE)
+        << getComponentName() << " reset to time= " << time << "\n";
+}
+
+
+
 //------------------------------------------------------------------------------
 // documentation is inherited
 void TemperatureComponent::shutDown() {

@@ -52,14 +52,16 @@ public:
     
     virtual void run( const double runToDate ) throw ( h_exception );
     
+    virtual void reset(double time) throw(h_exception);
+
     virtual void shutDown();
     
     //! IVisitable methods
     virtual void accept( AVisitor* visitor );
     
-	//! Reference period. No output occurs before we reach refperiod_high
-	int refperiod_low, refperiod_high;
-	int normalize_year;
+    //! Reference period. No output occurs before we reach refperiod_high
+    int refperiod_low, refperiod_high;
+    int normalize_year;
 	
 private:
     virtual unitval getData( const std::string& varName,
@@ -67,19 +69,22 @@ private:
     
     tseries<unitval>	sl_rc;			//!< sea level rate of change, cm/yr
     tseries<unitval>	slr;			//!< sea level rise, cm
-	tseries<unitval>	sl_rc_no_ice;   //!< sea level rate of change, cm/yr, no ice
+    tseries<unitval>	sl_rc_no_ice;   //!< sea level rate of change, cm/yr, no ice
     tseries<unitval>	slr_no_ice;		//!< sea level rise, cm, no ice
     
-	unitval             refperiod_tgav;	//!< reference period mean temperature
-	tseries<unitval>    tgav;           //!< private copy of global mean temperature
-	
-	//! pointers to other components and stuff
-	Core *core;
+    unitval             refperiod_tgav;	//!< reference period mean temperature
+    tseries<unitval>    tgav;           //!< private copy of global mean temperature
     
-	void compute_slr( const double date );
-
+    //! pointers to other components and stuff
+    Core *core;
+    
+    void compute_slr( const double date );
+    
     //! logger
     Logger logger;
+
+    //! Last date run to
+    double oldDate;
 };
 
 }

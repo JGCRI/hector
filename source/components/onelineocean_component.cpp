@@ -47,8 +47,8 @@ void OneLineOceanComponent::init( Core* coreptr ) {
 	
     core = coreptr;
     
-    ocean_c.set( 38000.0, U_PGC );
-    total_cflux.set( 0.0, U_PGC_YR );
+    ocean_c.set(core->getStartDate(), unitval(38000.0, U_PGC));
+    total_cflux.set(core->getStartDate(), unitval(0.0, U_PGC_YR));
 }
 
 //------------------------------------------------------------------------------
@@ -85,7 +85,7 @@ void OneLineOceanComponent::setData( const string& varName,
     try {
         if( varName == D_OCEAN_C ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            ocean_c = data.getUnitval(U_PGC);
+            ocean_c.set(oldDate, data.getUnitval(U_PGC));
         } else {
             H_THROW( "Unknown variable name while parsing " + getComponentName() + ": "
                     + varName );
@@ -98,7 +98,8 @@ void OneLineOceanComponent::setData( const string& varName,
 //------------------------------------------------------------------------------
 // documentation is inherited
 void OneLineOceanComponent::prepareToRun() throw ( h_exception ) {
-    
+
+    oldDate = core->getStartDate();
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
 }
 
@@ -110,11 +111,17 @@ void OneLineOceanComponent::run( const double runToDate ) throw ( h_exception ) 
     unitval atmos_co2 = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_CO2 );
     
     // This equation gives ~0 flux at atmosphere 588, ocean 38000, and ~2.8 at current day
-    total_cflux.set( -( ( ocean_c.value( U_PGC ) - 37412 ) - atmos_c  ) * 0.07, U_PGC_YR );
+    total_cflux.set(runToDate,  unitval(-( ( ocean_c.get(runToDate).value( U_PGC ) - 37412 ) - atmos_c  ) * 0.07, U_PGC_YR) );
     
-    ocean_c.set( ocean_c.value( U_PGC ) + total_cflux.value( U_PGC_YR ), U_PGC );
-    
-    H_LOG( logger, Logger::DEBUG ) << runToDate << " ocean_c=" << ocean_c << " total_cflux=" << total_cflux << " atmos_c=" << atmos_c << " atmos_co2=" << atmos_co2 << std::endl;
+    ocean_c.set(runToDate, unitval(ocean_c.get(runToDate).value( U_PGC ) + total_cflux.get(runToDate).value( U_PGC_YR ), U_PGC) );
+
+    oldDate = runToDate;
+    H_LOG( logger, Logger::DEBUG ) << runToDate
+                                   << " ocean_c=" << ocean_c.get(runToDate)
+                                   << " total_cflux=" << total_cflux.get(runToDate)
+                                   << " atmos_c=" << atmos_c
+                                   << " atmos_co2=" << atmos_co2
+                                   << std::endl;
     
 }
 
@@ -125,18 +132,30 @@ unitval OneLineOceanComponent::getData( const std::string& varName,
     
     unitval returnval;
     
-    H_ASSERT( date == Core::undefinedIndex(), "Date not available for onelineocean" );
+    double getdate = date;
+    if(date == Core::undefinedIndex())
+        getdate = oldDate;
     
     if( varName == D_OCEAN_CFLUX ) {
-		returnval = total_cflux;
+        returnval = total_cflux.get(getdate);
     } else if( varName == D_OCEAN_C ) {
-        returnval = ocean_c;
+        returnval = ocean_c.get(getdate);
     } else {
         H_THROW( "Caller is requesting unknown variable: " + varName );
     }
     
     return returnval;
 }
+
+
+void OneLineOceanComponent::reset(double time) throw(h_exception)
+{
+    oldDate = time;
+    H_LOG(logger, Logger::NOTICE)
+        << getComponentName() << " reset to time= " << time << "\n";
+}
+
+
 
 //------------------------------------------------------------------------------
 // documentation is inherited

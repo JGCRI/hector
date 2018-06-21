@@ -124,7 +124,6 @@ void HalocarbonComponent::setData( const string& varName,
 //------------------------------------------------------------------------------
 // documentation is inherited
 void HalocarbonComponent::prepareToRun() throw ( h_exception ) {
-    oldDate = core->getStartDate();
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
     oldDate = core->getStartDate();
 
@@ -133,7 +132,7 @@ void HalocarbonComponent::prepareToRun() throw ( h_exception ) {
     //   H_ASSERT( concentration.size() > 0 );
     H_ASSERT( molarMass > 0, "molarMass must be >0" );
     
-    Ha = H0;
+    Ha_ts.set(oldDate,H0);
 
     
     //! \remark concentration values will not be allowed to interpolate beyond years already read in
@@ -144,8 +143,6 @@ void HalocarbonComponent::prepareToRun() throw ( h_exception ) {
 // documentation is inherited
 void HalocarbonComponent::run( const double runToDate ) throw ( h_exception ) {
 	H_ASSERT( !core->inSpinup() && runToDate-oldDate == 1, "timestep must equal 1" );
-    oldDate = runToDate;
-    
 #define AtmosphereDryAirConstant 1.8
     
     const double timestep = 1.0;
@@ -158,13 +155,18 @@ void HalocarbonComponent::run( const double runToDate ) throw ( h_exception ) {
     
     // Update the atmospheric concentration, accounting for this delta and exponential decay
     double expfac = exp(-alpha);
+    unitval Ha(Ha_ts.get(oldDate));
     Ha = Ha*expfac + concDeltaEmiss*tau * (1.0-expfac);
     H_LOG( logger, Logger::DEBUG ) << "date: " << runToDate << " concentration: "<< Ha << endl;
+    Ha_ts.set(runToDate, Ha);
 
     // Calculate radiative forcing    TODO: this should be moved to forcing component
     unitval rf;
     rf.set( rho.value( U_W_M2_PPTV ) * Ha.value( U_PPTV ), U_W_M2 );
     hc_forcing.set( runToDate, rf );
+
+    // Update time counter.
+    oldDate = runToDate; 
 }
 
 //------------------------------------------------------------------------------
@@ -173,29 +175,48 @@ unitval HalocarbonComponent::getData( const std::string& varName,
                                      const double date ) throw ( h_exception ) {
     
     unitval returnval;
+    double getdate = date;      // will be used for any variable where a date is allowed.
+    if(getdate == Core::undefinedIndex()) {
+        // If no date specified, return the last computed date
+        getdate = oldDate;
+    }
     
     if( varName == D_RF_PREFIX+myGasName ) {
-        H_ASSERT( date != Core::undefinedIndex(), "Date required for hc_forcing" );
-        returnval = hc_forcing.get( date );
-    } else if( varName == D_PREINDUSTRIAL_HC ) {
+        returnval = hc_forcing.get( getdate );
+    }
+    else if( varName == D_PREINDUSTRIAL_HC ) {
+        // use date as input, not getdate, b/c there should be no date specified.
         H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for preindustrial hc" );
         returnval = H0;
-    } else if( varName == D_HC_CONCENTRATION ) {
-        H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for hc concentration" );
-        returnval = Ha;
-    } else if( varName == D_HC_EMISSION ) {
-        H_ASSERT( date != Core::undefinedIndex(), "Date required for hc emissions" );
-        if( date >= emissions.firstdate() )
-            returnval = emissions.get( date );
+    }
+    else if( varName == D_HC_CONCENTRATION ) {
+        returnval = Ha_ts.get(getdate);
+    }
+    else if( varName == D_HC_EMISSION ) {
+        if( getdate >= emissions.firstdate() )
+            returnval = emissions.get( getdate );
         else
             returnval.set( 0.0, U_GG );
-    } else {
+    }
+    else {
         H_THROW( "Caller is requesting unknown variable: " + varName );
     }
     
     return returnval;
 }
 
+
+void HalocarbonComponent::reset(double time) throw(h_exception)
+{
+    // reset time counter and truncate outputs
+    oldDate = time;
+    hc_forcing.truncate(time);
+    Ha_ts.truncate(time);
+    H_LOG(logger, Logger::NOTICE)
+        << getComponentName() << " reset to time= " << time << "\n";
+}
+
+    
 //------------------------------------------------------------------------------
 // documentation is inherited
 void HalocarbonComponent::shutDown() {

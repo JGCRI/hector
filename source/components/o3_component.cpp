@@ -164,6 +164,15 @@ unitval OzoneComponent::getData( const std::string& varName,
     return returnval;
 }
 
+
+void OzoneComponent::reset(double time) throw(h_exception)
+{
+    O3.truncate(time);
+    oldDate = time;
+    H_LOG(logger, Logger::NOTICE)
+        << getComponentName() << " reset to time= " << time << "\n";
+}
+
 //------------------------------------------------------------------------------
 // documentation is inherited
 void OzoneComponent::shutDown() {

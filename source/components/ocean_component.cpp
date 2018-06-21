@@ -559,6 +559,15 @@ void OceanComponent::stashCValues( double t, const double c[] ) {
     
    }
 
+
+void OceanComponent::reset(double time) throw(h_exception)
+{
+    H_THROW("OceanComponent::reset : not yet implemented.")
+    H_LOG(logger, Logger::NOTICE)
+        << getComponentName() << " reset to time= " << time << "\n";
+}
+
+
 //------------------------------------------------------------------------------
 // documentation is inherited
 void OceanComponent::shutDown() {

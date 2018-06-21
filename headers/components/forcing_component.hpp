@@ -23,6 +23,7 @@
 //#include "core/o3_component.hpp"
 #include "core/logger.hpp"
 #include "data/tseries.hpp"
+#include "data/tvector.hpp"
 #include "data/unitval.hpp"
 #include "models/carbon-cycle-model.hpp"
 
@@ -38,7 +39,7 @@ class HalocarbonComponent;
  *
  */
 class ForcingComponent : public IModelComponent {
-    
+    friend class CSVOutputStreamVisitor;
 public:
 	
     ForcingComponent();
@@ -60,21 +61,26 @@ public:
     
     virtual void run( const double runToDate ) throw ( h_exception );
     
+    virtual void reset(double date) throw(h_exception);
+
     virtual void shutDown();
     
     //! IVisitable methods
     virtual void accept( AVisitor* visitor );
     
     //! A list (map) of all computed forcings, with associated iterator
-    std::map<std::string, unitval > forcings, baseyear_forcings;
+    typedef std::map<std::string, unitval > forcings_t;
     typedef std::map<std::string, unitval >::iterator forcingsIterator;
-    
-	
-    
+
 private:
     virtual unitval getData( const std::string& varName,
                             const double valueIndex ) throw ( h_exception );
-    
+
+    //! Base year forcings
+    forcings_t baseyear_forcings;
+    //! Forcings by year
+    tvector<forcings_t> forcings_ts; 
+
     double baseyear;        //! Year which forcing calculations will start
     double currentYear;     //! Tracks current year
     unitval C0;             //! Records base year atmospheric CO2
@@ -82,7 +88,6 @@ private:
     tseries<unitval> Ftot_constrain;       //! Total forcing can be supplied
     
     Core* core;             //! Core
-    double oldDate;
     Logger logger;          //! Logger
 };
 

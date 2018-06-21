@@ -17,6 +17,7 @@
 #include "components/imodel_component.hpp"
 #include "core/logger.hpp"
 #include "data/unitval.hpp"
+#include "data/tseries.hpp"
 
 namespace Hector {
   
@@ -48,6 +49,8 @@ public:
     
     virtual void run( const double runToDate ) throw ( h_exception );
     
+    virtual void reset(double time) throw(h_exception);
+
     virtual void shutDown();
     
     //! IVisitable methods
@@ -57,14 +60,17 @@ private:
     virtual unitval getData( const std::string& varName,
                             const double date ) throw ( h_exception );
     
-	unitval total_cflux;        //!< Ocean-to-atmosphere flux, PgC/yr
-    unitval ocean_c;            //!< Total C in the ocean, PgC
+    tseries<unitval> total_cflux;        //!< Ocean-to-atmosphere flux, PgC/yr
+    tseries<unitval> ocean_c;            //!< Total C in the ocean, PgC
     
     //! pointers to other components and stuff
     Core* core;
     
     //! logger
     Logger logger;
+
+    double oldDate;
+
 };
 
 }

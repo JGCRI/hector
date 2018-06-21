@@ -47,6 +47,8 @@ public:
     virtual void prepareToRun() throw ( h_exception );
     
     virtual void run( const double runToDate ) throw ( h_exception );
+
+    virtual void reset(double time) throw(h_exception);
     
     virtual void shutDown();
     

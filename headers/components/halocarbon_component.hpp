@@ -52,6 +52,8 @@ public:
     
     virtual void run( const double runToDate ) throw ( h_exception );
     
+    virtual void reset(double time) throw(h_exception);
+
     virtual void shutDown();
     
     // IVisitable methods
@@ -74,7 +76,7 @@ private:
     tseries<unitval> hc_forcing;
     
     tseries<unitval> emissions;     //! Time series of emissions, pptv
-    unitval Ha;                     //! Current (ambient) concentration, pptv
+    tseries<unitval> Ha_ts;         //! Time series of (ambient) concentration, pptv
     unitval H0;                     //! Preindustrial concentration, pptv
     
     double molarMass;

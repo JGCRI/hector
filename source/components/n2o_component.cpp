@@ -176,6 +176,16 @@ unitval N2OComponent::getData( const std::string& varName,
     return returnval;
 }
 
+void N2OComponent::reset(double time) throw(h_exception)
+{
+    // reset time counter, and truncate output time series
+    oldDate = time;
+    N2O.truncate(time);
+    TAU_N2O.truncate(time);
+    H_LOG(logger, Logger::NOTICE)
+        << getComponentName() << " reset to time= " << time << "\n";
+}
+
 //------------------------------------------------------------------------------
 // documentation is inherited
 void N2OComponent::shutDown() {

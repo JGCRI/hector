@@ -144,6 +144,15 @@ unitval CarbonCycleSolver::getData( const std::string& varName,
     return returnval;
 }
 
+void CarbonCycleSolver::reset(double time) throw(h_exception)
+{
+    H_THROW("CarbonCycleSolver::reset : not yet implemented.");
+    H_LOG(logger, Logger::NOTICE)
+        << getComponentName() << " reset to time= " << time << "\n";
+}
+
+
+
 //------------------------------------------------------------------------------
 // documentation is inherited
 void CarbonCycleSolver::shutDown()

@@ -55,17 +55,17 @@ enum unit_types {
     
                     U_PPMV_CO2,         // Atmospheric
                     U_PPBV,
-					U_PPTV,
+                    U_PPTV,
                     U_PPBV_CH4,
-					U_PPTV_CH4,
-					U_PPBV_N2O,
-					U_PPTV_N2O,
+                    U_PPTV_CH4,
+                    U_PPBV_N2O,
+                    U_PPTV_N2O,
                     U_MOL_YR,
-					U_TG_CO,
-					U_TG_CH4,
+                    U_TG_CO,
+                    U_TG_CH4,
                     U_TG_N2O,
-				    U_TG_NMVOC,
-					U_DU_O3,
+                    U_TG_NMVOC,
+                    U_DU_O3,
                     U_TG_N,             // NOX emissions given in TG-N/yr
                     U_GG_S,             // SO2 emissions in Gg-S/yr
 
@@ -85,7 +85,7 @@ enum unit_types {
                     U_GG,				// Giga-grams
                     U_MOL,
                     U_GMOL,
-					U_GT,	
+                    U_GT,	
     
                     U_PGC,              // Carbon pools and fluxes
                     U_PGC_YR,
@@ -96,13 +96,13 @@ enum unit_types {
                     
                     U_M3_S,                // sverdrop (volume transport)
                     U_PH,                  // pH
-					U_UATM,
-					U_UMOL_KG,			   // umol/kg
-					U_MOL_KG,			   // mol/kg
-					U_gC_m2_month_uatm,    //Tr variable for testing
-					U_MOL_L_ATM,		   // mol l-1 atm-1
-					U_MOL_KG_ATM,		   // mol kg-1 atm-1
-					U_J_KG_C,              // specific heat capacity
+                    U_UATM,
+                    U_UMOL_KG,			   // umol/kg
+                    U_MOL_KG,			   // mol/kg
+                    U_gC_m2_month_uatm,    //Tr variable for testing
+                    U_MOL_L_ATM,		   // mol l-1 atm-1
+                    U_MOL_KG_ATM,		   // mol kg-1 atm-1
+                    U_J_KG_C,              // specific heat capacity
 
                     U_DOBSON,               // Dobson units (ozone)
                     

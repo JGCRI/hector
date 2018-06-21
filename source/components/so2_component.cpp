@@ -56,7 +56,7 @@ void SulfurComponent::init( Core* coreptr ) {
     core->registerCapability( D_NATURAL_SO2, getComponentName() );
     core->registerCapability( D_2000_SO2, getComponentName() );
     core->registerCapability( D_EMISSIONS_SO2, getComponentName() );
-	core->registerCapability( D_VOLCANIC_SO2, getComponentName() );
+    core->registerCapability( D_VOLCANIC_SO2, getComponentName() );
     // accept anthro emissions and volcanic emissions as inputs
     core->registerInput(D_EMISSIONS_SO2, getComponentName());
     core->registerInput(D_VOLCANIC_SO2, getComponentName());
@@ -124,13 +124,13 @@ void SulfurComponent::setData( const string& varName,
 void SulfurComponent::prepareToRun() throw ( h_exception ) {
     
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
-	oldDate = core->getStartDate();
+    oldDate = core->getStartDate();
 }
 
 //------------------------------------------------------------------------------
 // documentation is inherited
 void SulfurComponent::run( const double runToDate ) throw ( h_exception ) {
-	H_ASSERT( !core->inSpinup() && runToDate-oldDate == 1, "timestep must equal 1" );
+    H_ASSERT( !core->inSpinup() && runToDate-oldDate == 1, "timestep must equal 1" );
     oldDate = runToDate;
 }
 
@@ -164,6 +164,17 @@ unitval SulfurComponent::getData( const std::string& varName,
     
     return returnval;
 }
+
+void SulfurComponent::reset(double time) throw(h_exception)
+{
+    // This component doesn't calculate anything, so all we have to do
+    // is reset the time counter.
+    oldDate = time;
+    H_LOG(logger, Logger::NOTICE)
+        << getComponentName() << " reset to time= " << time << "\n";
+}
+
+
 
 //------------------------------------------------------------------------------
 // documentation is inherited

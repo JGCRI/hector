@@ -126,9 +126,14 @@ s << linestamp() << c->getComponentName() << DELIMITER \
 void CSVOutputStreamVisitor::visit( ForcingComponent* c ) {
     if( !core->outputEnabled( c->getComponentName() ) ) return;
     streamsize oldPrecision = csvFile.precision( 4 );
+
+    if(c->currentYear < c->baseyear)
+        return;
+    
+    ForcingComponent::forcings_t  forcings = c->forcings_ts.get(c->currentYear);
     
     // Walk through the forcings map, outputting everything
-    for( ForcingComponent::forcingsIterator it = c->forcings.begin(); it != c->forcings.end(); ++it ) {
+    for( ForcingComponent::forcingsIterator it = forcings.begin(); it != forcings.end(); ++it ) {
         STREAM_UNITVAL( csvFile, c, ( *it ).first, ( *it ).second );
     }
     

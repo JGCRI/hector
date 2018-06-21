@@ -130,7 +130,7 @@ void OHComponent::setData( const string& varName,
 void OHComponent::prepareToRun() throw ( h_exception ) {
     
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
-	oldDate = core->getStartDate();
+    oldDate = core->getStartDate();
     //get intial CH4 concentration
      M0 = core->sendMessage( M_GETDATA, D_PREINDUSTRIAL_CH4 );
     TAU_OH.set( oldDate, TOH0 );
@@ -183,6 +183,15 @@ unitval OHComponent::getData( const std::string& varName,
     
     return returnval;
 }
+
+void OHComponent::reset(double time) throw(h_exception)
+{
+    oldDate = time;
+    H_LOG(logger, Logger::NOTICE)
+        << getComponentName() << " reset to time= " << time << "\n";
+}
+
+
 
 //------------------------------------------------------------------------------
 // documentation is inherited

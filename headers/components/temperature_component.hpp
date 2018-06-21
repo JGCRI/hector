@@ -58,6 +58,8 @@ public:
     
     virtual void run( const double runToDate ) throw ( h_exception );
     
+    virtual void reset(double date) throw(h_exception);
+
     virtual void shutDown();
     
     //! IVisitable methods

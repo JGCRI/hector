@@ -60,6 +60,8 @@ public:
     
     virtual bool run_spinup( const int step ) throw ( h_exception );
     
+    virtual void reset(double time) throw(h_exception);
+
     virtual void shutDown();
     
     //! IVisitable methods
