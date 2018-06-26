@@ -69,7 +69,8 @@ private:
     virtual unitval getData( const std::string& varName,
                             const double date ) throw ( h_exception );
     void invert_1d_2x2_matrix( double * x, double * y);
-    
+    void setoutputs(int tstep);
+
     // Hard-coded DOECLIM parameters
     const int dt = 1;                     // years per timestep (this is implicit in Hector)
     int ns;                               // number of timesteps
@@ -128,13 +129,15 @@ private:
     std::vector<double> heat_mixed;
     std::vector<double> heat_interior;
     std::vector<double> forcing;
-    
-	    
-    unitval tgav;          //!< global temperature delta, deg C
-    unitval tgaveq;        //!< equilibrium temp without ocean heat flux, currently set = tgav
+
+    // Model parameters
     unitval S;             //!< climate sensitivity for 2xCO2, deg C
     unitval diff;          //!< ocean heat diffusivity, cm2/s
     unitval alpha;	       //!< aerosol forcing factor, unitless
+
+    // Model outputs
+    unitval tgav;          //!< global temperature delta, deg C
+    unitval tgaveq;        //!< equilibrium temp without ocean heat flux, currently set = tgav
     unitval flux_mixed;    //!< heat flux into mixed layer of ocean, W/m2
     unitval flux_interior; //!< heat flux into interior layer of ocean, W/m2
     unitval heatflux;      //!< heat flux into ocean, W/m2
