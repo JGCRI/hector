@@ -31,7 +31,7 @@ using namespace std;
 //------------------------------------------------------------------------------
 /*! \brief Constructor
  */
-TemperatureComponent::TemperatureComponent() : internal_Ftot(0.0), last_Ftot(0.0) {
+TemperatureComponent::TemperatureComponent() {
 }
 
 //------------------------------------------------------------------------------
