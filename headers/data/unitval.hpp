@@ -203,7 +203,8 @@ void unitval::set( double v, unit_types u, double err=0.0 ) {
  */
 inline
 double unitval::value( unit_types u ) const throw( h_exception ) {
-    H_ASSERT( u==valUnits, "variable is not of this type" );
+    H_ASSERT( u==valUnits, "variable is not of this type.  Expected: " + unitsName(valUnits) +
+              "got: " + unitsName(u) );
     return( val );
 }
 
