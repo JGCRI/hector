@@ -29,6 +29,7 @@
 #include <map>
 #include <limits>
 #include <string>
+#include <cmath>
 
 #include "core/logger.hpp"
 #include "h_exception.hpp"
@@ -48,6 +49,16 @@ public:
     const T_data &get(double) const throw( h_exception );
     T_data &get(double) throw(h_exception); // allow modify-in-place
     bool exists( double ) const;
+
+    // indexing operators: the const version is just syntactic sugar
+    // for get().  The non-const version works differently.  If the
+    // requested object doesn't exist, it default constructs it,
+    // assigns the new object, and returns the reference to the newly
+    // created object.  This allows you to write tvec[t] = xx.
+    const T_data &operator[](double t) const throw(h_exception) {
+        return get(t);
+    }
+    T_data &operator[](double t);
     
     double firstdate() const;
     double lastdate() const;
@@ -55,7 +66,14 @@ public:
     int size() const;
     
     void truncate(double t, bool after=true);
-    
+private:
+    static double round(double t) {
+        // round time values to prevent minute differences in
+        // representation from resulting in a misidentificaiton.
+        // Right now we round to the nearest half-integer, but that could
+        // change in the future, if we need more time resolution.
+        return 0.5 * std::round(2.0*t);
+    }
 };
 
 
@@ -66,7 +84,7 @@ public:
  */
 template <class T_data>
 void tvector<T_data>::set(double t, const T_data &d) {
-    mapdata[t] = d;
+    mapdata[round(t)] = d;
 }
 
 //-----------------------------------------------------------------------
@@ -76,7 +94,7 @@ void tvector<T_data>::set(double t, const T_data &d) {
  */
 template <class T_data>
 bool tvector<T_data>::exists( double t ) const {
-    return ( mapdata.find( t ) != mapdata.end() );
+    return ( mapdata.find( round(t) ) != mapdata.end() );
 }
 
 //-----------------------------------------------------------------------
@@ -87,12 +105,12 @@ bool tvector<T_data>::exists( double t ) const {
  */
 template <class T_data>
 const T_data &tvector<T_data>::get( double t ) const throw( h_exception ) {
-    typename std::map<double,T_data>::const_iterator itr = mapdata.find( t );
+    typename std::map<double,T_data>::const_iterator itr = mapdata.find( round(t) );
     if( itr != mapdata.end() )
         return (*itr).second;
     else {
         Logger& glog = Logger::getGlobalLogger();
-        H_LOG( glog, Logger::SEVERE) << "No data at requested time= " << t << std::endl;
+        H_LOG( glog, Logger::SEVERE) << "No data at requested time= " << round(t) << std::endl;
         H_THROW( "tvector: invalid time requested." );
     }
 }
@@ -104,15 +122,29 @@ const T_data &tvector<T_data>::get( double t ) const throw( h_exception ) {
  */
 template <class T_data>
 T_data &tvector<T_data>::get( double t ) throw( h_exception ) {
-    typename std::map<double,T_data>::iterator itr = mapdata.find( t );
+    typename std::map<double,T_data>::iterator itr = mapdata.find( round(t) );
     if( itr != mapdata.end() )
         return itr->second;
     else {
         Logger& glog = Logger::getGlobalLogger();
-        H_LOG( glog, Logger::SEVERE) << "No data at requested time= " << t << std::endl;
+        H_LOG( glog, Logger::SEVERE) << "No data at requested time= " << round(t) << std::endl; 
         H_THROW( "tvector: invalid time requested" );
     }
 }   
+
+template <class T_data>
+T_data &tvector<T_data>::operator[](double t) {
+    try {
+        return get(t);
+    }
+    catch(h_exception &fail) {
+        // h_exception is thrown when the requested object doesn't exist.
+        T_data newdat = T_data();
+        set(t, newdat);
+        return get(t);          // won't fail b/c we just created it
+    }
+}
+
 
 //-----------------------------------------------------------------------
 /*! \brief Return index of first element in vector.
@@ -156,6 +188,7 @@ int tvector<T_data>::size() const {
 template <class T>
 void tvector<T>::truncate(double t, bool after)
 {
+    t = round(t);
     typename std::map<double, T>::iterator it1, it2;
     if(after) {
         it1 = mapdata.upper_bound(t);
