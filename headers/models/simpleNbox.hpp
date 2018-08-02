@@ -84,18 +84,67 @@ private:
     // TODO: these should probably be defined in h_util.hpp or someplace similar?
     typedef std::map<std::string, unitval> unitval_stringmap;
     typedef std::map<std::string, double> double_stringmap;
+
+    /*****************************************************************
+     * Component state
+     * All of this information will be saved at the end of each time
+     * step so that we can reset to any arbitrary past time.
+     *****************************************************************/
     
     // Carbon pools -- global
     unitval earth_c;                //!< earth pool, Pg C; for mass-balance
     unitval atmos_c;                //!< atmosphere pool, Pg C
+    unitval    Ca;                  //!< current [CO2], ppmv
     
     // Carbon pools -- biome-specific
     unitval_stringmap veg_c;        //!< vegetation pools, Pg C
     unitval_stringmap detritus_c;   //!< detritus pools, Pg C
     unitval_stringmap soil_c;       //!< soil pool, Pg C
     
-    //    unitval ocean_c;          //!< ocean pool, Pg C
     unitval residual;               //!< residual (when constraining Ca) flux, Pg C
+
+    double_stringmap tempfertd, tempferts; //!< temperature effect on respiration (unitless)
+    
+
+    /*****************************************************************
+     * Records of component state
+     * These vectors record the component state over time.  When we do
+     * a reset, we will retrieve the state at the reset time from these
+     * arrays.
+     *****************************************************************/
+    tseries<unitval> earth_c_ts;  //!< Time series of earth carbon pool
+    tseries<unitval> atmos_c_ts;  //!< Time series of atmosphere carbon pool
+    tseries<unitval> Ca_ts;       //!< Time series of atmosphere CO2 concentration
+
+    tvector<unitval_stringmap> veg_c_tv;      //!< Time series of biome-specific vegetation carbon pools
+    tvector<unitval_stringmap> detritus_c_tv; //!< Time series of biome-specific detritus carbon pools
+    tvector<unitval_stringmap> soil_c_tv;     //!< Time series of biome-specific soil carbon pools
+
+    tseries<unitval> residual_ts; //!< Time series of residual flux values
+
+    tvector<double_stringmap> tempfertd_tv, tempferts_tv; //!< Time series of temperature effect on respiration
+
+
+    /*****************************************************************
+     * Derived quantities
+     * Unlike state varaibles, these can be calculated from other
+     * information; therefore, they need not be stored over time, but
+     * they do need to be recalculated whenever we reset.
+     *****************************************************************/
+    
+    double_stringmap co2fert;           //!< CO2 fertilization effect (unitless)
+    tseries<double> Tgav_record;        //!< Record of global temperature values, for computing soil RH
+    bool in_spinup;                     //!< flag tracking spinup state
+    double tcurrent;                    //!< Current time
+    double masstot;                     //!< tracker for mass conservation
+    double tlast;                       //!< last time recorded for tempferts; used to limit decline in soil Q10 effect
+
+
+    /*****************************************************************
+     * Input data
+     * This information isn't part of the state; it's either read from
+     * an input file or pushed in by another model.
+     *****************************************************************/
     
     // Carbon fluxes
     tseries<unitval> ffiEmissions;  //!< fossil fuels and industry emissions, Pg C/yr
@@ -103,6 +152,16 @@ private:
     
     // Albedo
     tseries<unitval> Ftalbedo;   //!< terrestrial albedo forcing, W/m2
+
+    // Constraints
+    tseries<unitval> Ca_constrain;      //!< input [CO2] record to constrain model to
+    
+    /*****************************************************************
+     * Model parameters
+     * If you change any of these (in a Monte Carlo run, for example),
+     * you will at the very least need to reset to the beginning of the
+     * run.  You may need to redo the spinup.
+     *****************************************************************/
     
     // Partitioning
     double f_nppv, f_nppd;      //!< fraction NPP into vegetation and detritus
@@ -111,8 +170,19 @@ private:
     
     // Initial fluxes
     unitval_stringmap npp_flux0;       //!< preindustrial NPP
-  
-    // Functions computing sub-elements of the carbon cycle
+
+    // Atmospheric CO2, temperature, and their effects
+    unitval    C0;                      //!< preindustrial [CO2], ppmv
+    
+    double_stringmap beta,           //!< shape of CO2 response
+    //                        sigma,          //!< shape of temperature response (not yet implemented)
+        warmingfactor;  //!< regional warming relative to global (1.0=same)
+    
+    double q10_rh;                      //!< Q10 for heterotrophic respiration (unitless)
+
+    /*****************************************************************
+     * Functions computing sub-elements of the carbon cycle
+     *****************************************************************/
     unitval npp( std::string biome ) const;     //!< calculates current NPP for a biome
     unitval sum_npp() const;                    //!< calculates current NPP, global total
     unitval rh_fda( std::string biome ) const;  //!< calculates current RH from detritus for a biome
@@ -120,34 +190,15 @@ private:
     unitval rh( std::string biome ) const;      //!< calculates current RH for a biome
     unitval sum_rh() const;                     //!< calculates current RH, global total
     
-    unitval ch4ox_flux;         //!< oxidized CH4 of fossil fuel origin; +=to atmosphere
-    
-    // Atmospheric CO2, temperature, and their effects
-    unitval    Ca;                      //!< current [CO2], ppmv
-    unitval    C0;                      //!< preindustrial [CO2], ppmv
-    tseries<unitval> Ca_constrain;      //!< input [CO2] record to constrain model to
-    
-    double_stringmap    beta,           //!< shape of CO2 response
-//                        sigma,          //!< shape of temperature response
-                        warmingfactor,  //!< regional warming relative to global (1.0=same)
-                        co2fert,        //!< CO2 fertilization effect (unitless)
-                        tempfertd, tempferts;        //!< temperature effect on respiration (unitless)
-    
-    double q10_rh;                      //!< Q10 for heterotrophic respiration (unitless)
-    tseries<double> Tgav_record;        //!< Record of global temperature values, for computing soil RH
-    
-    // Private helper functions
+    /*****************************************************************
+     * Private helper functions
+     *****************************************************************/
     void sanitychecks() throw( h_exception );           //!< performs mass-balance and other checks
     unitval sum_map( unitval_stringmap pool ) const;    //!< sums a unitval map (collection of data)
     double sum_map( double_stringmap pool ) const;      //!< sums a double map (collection of data)
     void log_pools( const double t );                   //!< prints pool status to the log file
     
-    bool in_spinup;                     //!< flag tracking spinup state
-    
     CarbonCycleModel *omodel;           //!< pointer to the ocean model in use
-
-    // persistent workspace
-    double m_last_tempferts;
 
 };
 
