@@ -75,6 +75,7 @@ public:
     int  calcderivs( double t, const double c[], double dcdt[] ) const;
     void slowparameval( double t, const double c[] );
     void stashCValues( double t, const double c[] );
+    void record_state(double t);                        //!< record the state variables at the end of the time step 
     
 private:
     virtual unitval getData( const std::string& varName,
@@ -135,11 +136,10 @@ private:
     double_stringmap co2fert;           //!< CO2 fertilization effect (unitless)
     tseries<double> Tgav_record;        //!< Record of global temperature values, for computing soil RH
     bool in_spinup;                     //!< flag tracking spinup state
-    double tcurrent;                    //!< Current time
+    double tcurrent;                    //!< Current time (last completed time step)
     double masstot;                     //!< tracker for mass conservation
-    double tlast;                       //!< last time recorded for tempferts; used to limit decline in soil Q10 effect
 
-
+    
     /*****************************************************************
      * Input data
      * This information isn't part of the state; it's either read from

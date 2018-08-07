@@ -52,8 +52,6 @@ void SimpleNbox::init( Core* coreptr ) {
     tempfertd[ SNBOX_DEFAULT_BIOME ] = 1.0;
     tempferts[ SNBOX_DEFAULT_BIOME ] = 1.0;
 
-    tlast = Core::undefinedIndex();
-    
     Tgav_record.allowInterp( true );
     
     // Register the data we can provide
@@ -452,7 +450,49 @@ unitval SimpleNbox::getData( const std::string& varName,
 
 void SimpleNbox::reset(double time) throw(h_exception)
 {
-    H_THROW("SimpleNbox::reset : not yet implemented.")
+    // Reset all state variables to their values at the reset time
+    earth_c = earth_c_ts.get(time);
+    atmos_c = atmos_c_ts.get(time);
+    Ca = Ca_ts.get(time);
+
+    veg_c = veg_c_tv.get(time);
+    detritus_c = detritus_c_tv.get(time);
+    soil_c = soil_c_tv.get(time);
+
+    residual = residual_ts.get(time);
+
+    tempferts = tempferts_tv.get(time);
+    tempfertd = tempfertd_tv.get(time);
+
+    // Calculate derived quantities
+    double_stringmap::const_iterator it; // iterates over biomes
+    for(it=beta.begin(); it != beta.end(); ++it) {
+        if(in_spinup) {
+            co2fert[it->first] = 1.0; // co2fert fixed if in spinup.  Placeholder in case we decide to allow resetting into spinup
+        }
+        else {
+            co2fert[it->first] = 1.0 + beta.at(it->first) * log(Ca/C0);
+        }
+    }
+    Tgav_record.truncate(time);
+    // No need to reset masstot; it's not supposed to change anyhow. 
+    
+    // Truncate all of the state variable time series
+    earth_c_ts.truncate(time);
+    atmos_c_ts.truncate(time);
+    Ca_ts.truncate(time);
+
+    veg_c_tv.truncate(time);
+    detritus_c_tv.truncate(time);
+    soil_c_tv.truncate(time);
+
+    residual_ts.truncate(time);
+
+    tempferts_tv.truncate(time);
+    tempfertd_tv.truncate(time);
+
+    tcurrent = time;
+    
     H_LOG(logger, Logger::NOTICE)
         << getComponentName() << " reset to time= " << time << "\n";
 }
@@ -763,7 +803,7 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
 
 //------------------------------------------------------------------------------
 /*! \brief              Compute 'slowly varying' fluxes
- *  \param[in]  t       time
+ *  \param[in]  t       time (at the *beginning* of the current time step.
  *  \param[in]  c       carbon pools (no units)
  *
  *  Compute 'slowly varying' fertilization and anthropogenic fluxes.
@@ -796,14 +836,14 @@ void SimpleNbox::slowparameval( double t, const double c[] )
 
     /* set tempferts (soil) and tempfertd (detritus) for each biome */
 
-    // Need the previous time step values of tempferts.
+    // Need the previous time step values of tempferts.  Since t is
+    // the time at the beginning of the current time step (== the end
+    // of the previous time step), we can use t as the index to look
+    // up the previous value.
     double_stringmap tfs_last;  // Previous time step values of tempferts; initialized empty
-    if(tlast != Core::undefinedIndex()) {
-        tfs_last = tempferts_tv[tlast];
+    if(t != Core::undefinedIndex() && t > core->getStartDate()) {
+        tfs_last = tempferts_tv[t];
     }
-    // Set tlast to the current time so that next time step we will be
-    // comparing to the values at this time step.
-    tlast = tcurrent;
 
     // Loop over biomes.
     for( itd = tempfertd.begin(); itd != tempfertd.end(); itd++ ) {
@@ -848,7 +888,28 @@ void SimpleNbox::slowparameval( double t, const double c[] )
     } // loop over biomes
     // save the new values for use in the next time step
     // TODO:  move this to a purpose-built recording subroutine
-    tempferts_tv.set(tcurrent, tempferts);
+    //tempferts_tv.set(tcurrent, tempferts);
+    H_LOG(logger, Logger::DEBUG) << "slowparameval: would have recorded tempferts = " << tempferts[SNBOX_DEFAULT_BIOME]
+                                 << " at time= " << tcurrent << std::endl;
+}
+
+void SimpleNbox::record_state(double t)
+{
+    tcurrent = t;
+    earth_c_ts.set(t, earth_c);
+    atmos_c_ts.set(t, atmos_c);
+    Ca_ts.set(t, Ca);
+
+    veg_c_tv.set(t, veg_c);
+    detritus_c_tv.set(t, detritus_c);
+    soil_c_tv.set(t, soil_c);
+
+    residual_ts.set(t, residual);
+
+    tempfertd_tv.set(t, tempfertd);
+    tempferts_tv.set(t, tempferts);
+    H_LOG(logger, Logger::DEBUG) << "record_state: recorded tempferts = " << tempferts[SNBOX_DEFAULT_BIOME]
+                                 << " at time= " << t << std::endl;
 }
 
 }

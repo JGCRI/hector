@@ -87,6 +87,19 @@ public:
     //! Copy the C values back into the model, restore units, etc.
     virtual void stashCValues( double t, const double c[] ) = 0;
     
+    //! Record the final state at the end of a time step
+    
+    //! \details This method should copy all state variables into a
+    //! time-indexed array.  Mostly this will allow the object to
+    //! reset to a previous time, but the object may also use these
+    //! arrays to provide other components with data from the entire
+    //! history of the run.  If a carbon cycle class stores
+    //! time-indexed values in the course of its normal operation,
+    //! then there might not be any need to do this copying.  In that
+    //! case, the class can inherit the default implementation of the
+    //! method, which does nothing.
+    virtual void record_state(double t) {}
+    
 protected:
     //! Number of carbon pools in the model.
     //! \details nc must be constant over the life of the calculation.

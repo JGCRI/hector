@@ -283,6 +283,8 @@ void CarbonCycleSolver::run( const double tnew ) throw ( h_exception )
     H_LOG( logger, Logger::NOTICE ) << "ODE solver success at t= " << t <<
     "  last dt= " << dt << std::endl;
     H_LOG( logger, Logger::DEBUG ) << "cvals\terrors\n";
+
+    cmodel->record_state(tnew);
     
     H_LOG( logger, Logger::NOTICE ) << std::endl;
 }
@@ -341,6 +343,8 @@ bool CarbonCycleSolver::run_spinup( const int step ) throw( h_exception )
         t = core->getStartDate();
         H_LOG( logger, Logger::NOTICE ) << "Resetting solver time counter to t= " << t << std::endl;
     }
+
+    cmodel->record_state(double(step));
     
     return spunup;
 }
