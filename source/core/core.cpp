@@ -437,6 +437,21 @@ void Core::run(double runtodate) throw ( h_exception ) {
     lastDate = runtodate;
 }
 
+
+void Core::reset(double resetdate)
+{
+    Logger &glog(Logger::getGlobalLogger());
+    H_LOG(glog, Logger::NOTICE) << "Resetting model to t= " << resetdate << endl;
+
+    for(NameComponentIterator it = modelComponents.begin(); it != modelComponents.end(); ++it) {
+        H_LOG(glog, Logger::DEBUG) << "Resetting component: " << it->first << endl;
+        it->second->reset(resetdate);
+    }
+
+    lastDate = resetdate;
+}
+
+
 /*! \brief Shut down all model components 
  *  \details After this function is called no components are valid,
  *           and you must not call run() again.

@@ -51,6 +51,8 @@ public:
     void prepareToRun() throw ( h_exception );
     
     void run(double runtodate=-1.0) throw ( h_exception );
+
+    void reset(double resetdate);
     
     void shutDown();
     

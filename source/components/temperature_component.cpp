@@ -453,15 +453,14 @@ unitval TemperatureComponent::getData( const std::string& varName,
 
 void TemperatureComponent::reset(double time) throw(h_exception)
 {
-    H_THROW("TemperatureComponent::reset : not yet implemented.")
-    H_LOG(logger, Logger::NOTICE)
-        << getComponentName() << " reset to time= " << time << "\n";
     // We take a slightly different approach in this component's reset method than we have in other components.  The
     // temperature component doesn't have its own time counter, and it stores its history in a collection of double
     // vectors.  Therefore, all we do here is set the unitval versions of that stored data to their values from the
     // vectors.
     int tstep = time - core->getStartDate();
     setoutputs(tstep);
+    H_LOG(logger, Logger::NOTICE)
+        << getComponentName() << " reset to time= " << time << "\n";
 }
 
 

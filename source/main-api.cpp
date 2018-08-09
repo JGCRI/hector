@@ -25,6 +25,7 @@
 #include "visitors/csv_outputstream_visitor.hpp"
 
 #include "data/unitval.hpp"
+#include "data/tseries.hpp"
 #include "data/message_data.hpp"
 #include "components/component_names.hpp"
 #include "components/imodel_component.hpp"
@@ -96,6 +97,10 @@ int main (int argc, char * const argv[]) {
         ifstream sim_gcam_emiss("input/emissions/RCP6_emissions.csv");
         init_emiss_strm(sim_gcam_emiss);
 
+        tseries<unitval> tempts;
+        tseries<unitval> cats;
+        tseries<unitval> forcts;
+        
         for(double t=core.getStartDate()+5.0; t<=core.getEndDate(); t+=5.0) {
             read_and_set_co2(tlast, t, core, sim_gcam_emiss);
             core.run(t);
@@ -111,15 +116,35 @@ int main (int argc, char * const argv[]) {
                 << "temp= " << temp << "\t"
                 << "atmos. C= " << ca << "\t"
                 << "RF= " << forc << endl;
-            // logging doesn't seem to be working properly right now, so repeat
-            // the info to stdout
-            cout << "t= " << t << "\t"
-                 << "temp= " << temp << "\t"
-                 << "atmos. C= " << ca << "\t"
-                 << "RF= " << forc << endl;
 
+            // Record the values we retrieved above for future reference
+            tempts.set(t, temp);
+            cats.set(t, ca);
+            forcts.set(t, forc);
+            
             tlast = t;
         }
+
+        // Reset the model to five years after the start date and
+        // rerun.  We don't have to call read_and_set_co2 again
+        // because the emissions time series aren't affected by the
+        // reset.  We could, however, push new emissions into the
+        // model if, for example, we wanted to run a revised scenario.
+        double newt = core.getStartDate() + 5.0;
+        core.reset(newt);
+        for( ; newt<=core.getEndDate(); newt+=5.0) {
+            core.run(newt);
+            unitval temp = core.sendMessage(M_GETDATA, D_GLOBAL_TEMP);
+            unitval ca   = core.sendMessage(M_GETDATA, D_ATMOSPHERIC_CO2);
+            unitval forc = core.sendMessage(M_GETDATA, D_RF_TOTAL);
+
+            H_LOG(glog, Logger::NOTICE)
+                << "t= " << newt << ":\n"
+                << "\ttemp old= " << tempts.get(newt) << "\ttemp new= " << temp << "\tdiff= " << temp-tempts.get(newt) << "\n"
+                << "\tca old= " << cats.get(newt) << "\tca new= " << ca << "\tdiff= " << ca-cats.get(newt) << "\n"
+                << "\tforc old= " << forcts.get(newt) << "\tforc new= " << forc << "\tdiff= " << forc-forcts.get(newt) << "\n";
+        }
+        
 
         H_LOG(glog, Logger::NOTICE) << "Shutting down all components.\n";
         core.shutDown();

@@ -590,6 +590,8 @@ void OceanComponent::reset(double time) throw(h_exception)
 
 void OceanComponent::record_state(double time)
 {
+    H_LOG(logger, Logger::DEBUG) << "Recording component state at t= "
+                                 << time << endl;
     surfaceHL_tv.set(time, surfaceHL);
     surfaceLL_tv.set(time, surfaceLL);
     inter_tv.set(time, inter);
