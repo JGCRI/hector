@@ -80,7 +80,7 @@ private:
     Logger* logger;
 
     // persistent workspace
-    const int ncoeffs;
+    int ncoeffs;
     std::vector<double> m_a; 
 
 };

@@ -125,16 +125,7 @@ void OceanComponent::setData( const string& varName,
         if( varName == D_CARBON_HL ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
             surfaceHL.set_carbon( data.getUnitval( U_PGC ) );
-          //} else if( varName == D_CIRC_TOPT ) {
-          //  H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-          // circ_Topt = data.getUnitval( U_DEGC );
-		//} else if( varName == D_CIRC_T50_HIGH ) {
-          //  H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-           // circ_T50_high = data.getUnitval( U_DEGC );
-		//} else if( varName == D_CIRC_T50_LOW ) {
-          //  H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            //circ_T50_low = data.getUnitval( U_DEGC );
-		} else if( varName == D_CARBON_LL ) {
+        } else if( varName == D_CARBON_LL ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
             surfaceLL.set_carbon( data.getUnitval( U_PGC ) );
         } else if( varName == D_CARBON_IO ) {
@@ -179,7 +170,6 @@ void OceanComponent::prepareToRun() throw ( h_exception ) {
     // Set up our ocean box model. Carbon values here can be overridden by user input
     H_LOG( logger, Logger::DEBUG ) << "Setting up ocean box model" << std::endl;
     surfaceHL.initbox( unitval( 140, U_PGC ), "HL" );
-//  surfaceHL.warmingfactor = 1.5;    // HL box warm 50% faster than world
     surfaceHL.surfacebox = true;
     surfaceHL.preindustrial_flux.set( 1.000, U_PGC_YR );         // used if no spinup chemistry
 	surfaceHL.active_chemistry = spinup_chem;
@@ -447,12 +437,9 @@ int  OceanComponent::calcderivs( double t, const double c[], double dcdt[] ) con
     const double cflux = annual_totalcflux( t, Ca, cpoolscale ).value( U_PGC_YR );
     dcdt[ SNBOX_OCEAN ] = cflux;
     
-//    std::cout << t << " cflux=" << cflux << " lastflux_annualized=" << lastflux_annualized.value( U_PGC ) << " Ca=" << Ca << std::endl;
-
     // If too big a timestep--i.e., stashCvalues below has signalled a reduced step
     // that we're exceeding--signal to the solver that this won't work for us.
     if( yearfraction > max_timestep ) {
-//        std::cout << "Exceeded max_timestep of " << max_timestep << " (timeout=" << reduced_timestep_timeout << ")" << std::endl;
         return CARBON_CYCLE_RETRY;
     } else {
         return ODE_SUCCESS;
@@ -472,8 +459,6 @@ void OceanComponent::stashCValues( double t, const double c[] ) {
 
     H_LOG( logger,Logger::DEBUG ) << "Stashing at t=" << t << ", model pools at " << t << ": " << c[ 0 ] << " "
     << c[ 1 ] << " " << c[ 2 ] << " " << c[ 3 ] << " " << c[ 4 ] << " " << c[ 5 ] << std::endl;
-//    std::cout << "Stashing at t=" << t << ", model pools at " << t << ": " << c[ 0 ] << " "
-//    << c[ 1 ] << " " << c[ 2 ] << " " << c[ 3 ] << " " << c[ 4 ] << " " << c[ 5 ] << std::endl;
 
 	// At this point the solver has converged, going from ODEstartdate to t
     // Now we finalize calculations: circulate ocean, update carbon states, etc.
@@ -522,7 +507,6 @@ void OceanComponent::stashCValues( double t, const double c[] ) {
         H_LOG( logger, Logger::DEBUG ) << "OK, reduced_timestep_timeout =" << reduced_timestep_timeout << std::endl;
         if( !reduced_timestep_timeout ) {
             H_LOG( logger, Logger::DEBUG ) << "Reduced ts timeout done; raising" << std::endl;
-//            max_timestep = OCEAN_MAX_TIMESTEP;
             max_timestep = min( OCEAN_MAX_TIMESTEP, max_timestep / OCEAN_TSR_FACTOR );
             if( max_timestep < OCEAN_MAX_TIMESTEP ) {
                 reduced_timestep_timeout = OCEAN_TSR_TIMEOUT; // set timer for another raise attempt
@@ -562,11 +546,66 @@ void OceanComponent::stashCValues( double t, const double c[] ) {
 
 void OceanComponent::reset(double time) throw(h_exception)
 {
-    H_THROW("OceanComponent::reset : not yet implemented.")
+
+    // Reset state variables to their values at the reset time
+    surfaceHL = surfaceHL_tv.get(time);
+    surfaceLL = surfaceLL_tv.get(time);
+    inter = inter_tv.get(time);
+    deep = deep_tv.get(time);
+
+    Tgav = Tgav_ts.get(time);
+    Ca = Ca_ts.get(time);
+
+    annualflux_sum = annualflux_sum_ts.get(time);
+    annualflux_sumHL = annualflux_sumHL_ts.get(time);
+    annualflux_sumLL = annualflux_sumLL_ts.get(time);
+    lastflux_annualized = lastflux_annualized_ts.get(time);
+
+    max_timestep = max_timestep_ts.get(time);
+    reduced_timestep_timeout = reduced_timestep_timeout_ts.get(time);
+    timesteps = 0;
+    
+
+    // truncate all the time series beyond the reset time
+    surfaceHL_tv.truncate(time);
+    surfaceLL_tv.truncate(time);
+    inter_tv.truncate(time);
+    deep_tv.truncate(time);
+
+    Tgav_ts.truncate(time);
+    Ca_ts.truncate(time);
+
+    annualflux_sum_ts.truncate(time);
+    annualflux_sumHL_ts.truncate(time);
+    annualflux_sumLL_ts.truncate(time);
+    lastflux_annualized_ts.truncate(time);
+
+    max_timestep_ts.truncate(time);
+    reduced_timestep_timeout_ts.truncate(time);
+    
     H_LOG(logger, Logger::NOTICE)
         << getComponentName() << " reset to time= " << time << "\n";
 }
 
+
+void OceanComponent::record_state(double time)
+{
+    surfaceHL_tv.set(time, surfaceHL);
+    surfaceLL_tv.set(time, surfaceLL);
+    inter_tv.set(time, inter);
+    deep_tv.set(time, deep);
+
+    Tgav_ts.set(time, Tgav);
+    Ca_ts.set(time, Ca);
+
+    annualflux_sum_ts.set(time, annualflux_sum);
+    annualflux_sumHL_ts.set(time, annualflux_sumHL);
+    annualflux_sumLL_ts.set(time, annualflux_sumLL);
+    lastflux_annualized_ts.set(time, lastflux_annualized);
+
+    max_timestep_ts.set(time, max_timestep);
+    reduced_timestep_timeout_ts.set(time, reduced_timestep_timeout);
+}
 
 //------------------------------------------------------------------------------
 // documentation is inherited
