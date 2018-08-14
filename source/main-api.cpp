@@ -130,9 +130,8 @@ int main (int argc, char * const argv[]) {
         // because the emissions time series aren't affected by the
         // reset.  We could, however, push new emissions into the
         // model if, for example, we wanted to run a revised scenario.
-        double newt = core.getStartDate() + 5.0;
-        core.reset(newt);
-        for( ; newt<=core.getEndDate(); newt+=5.0) {
+        core.reset(0);          // reset to start and rerun spinup.
+        for(double newt = core.getStartDate()+5.0; newt<=core.getEndDate(); newt+=5.0) {
             core.run(newt);
             unitval temp = core.sendMessage(M_GETDATA, D_GLOBAL_TEMP);
             unitval ca   = core.sendMessage(M_GETDATA, D_ATMOSPHERIC_CO2);

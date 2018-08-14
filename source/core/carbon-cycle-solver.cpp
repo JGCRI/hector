@@ -148,6 +148,7 @@ void CarbonCycleSolver::reset(double time) throw(h_exception)
 {
     // Only state maintained by this component is the time counter
     t = time;
+    in_spinup = false;          // reset this in case we will be expected to rerun the spinup.
     H_LOG(logger, Logger::NOTICE)
         << getComponentName() << " reset to time= " << time << "\n";
 }
@@ -221,6 +222,9 @@ void CarbonCycleSolver::failure( int stat, double t0, double tmid ) throw( h_exc
 // documentation is inherited
 void CarbonCycleSolver::run( const double tnew ) throw ( h_exception )
 {
+    if(tnew <= t) {
+        H_LOG(logger, Logger::SEVERE) << "run(): tnew= " << tnew << "   t= " << t << std::endl;
+    }
     H_ASSERT( tnew > t, "solver tnew is not greater than t" );
     
     // Get the initial state data from the box model. c will be filled in
@@ -345,7 +349,9 @@ bool CarbonCycleSolver::run_spinup( const int step ) throw( h_exception )
         H_LOG( logger, Logger::NOTICE ) << "Resetting solver time counter to t= " << t << std::endl;
     }
 
-    cmodel->record_state(double(step));
+    // Record the state as the state at the model start time.  This
+    // will be repeatedly overwritten until the spinup is complete.
+    cmodel->record_state(core->getStartDate());
     
     return spunup;
 }

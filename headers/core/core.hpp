@@ -91,6 +91,9 @@ public:
                                         ) const throw ( h_exception );
     
 private:
+    //! Cause all components to run their spinup procedure.
+    bool run_spinup();
+
     
     //------------------------------------------------------------------------------
     //! Current run name.
