@@ -72,7 +72,7 @@ private:
         // representation from resulting in a misidentificaiton.
         // Right now we round to the nearest half-integer, but that could
         // change in the future, if we need more time resolution.
-        return 0.5 * std::round(2.0*t);
+        return 0.5 * ::round(2.0*t);
     }
 };
 
