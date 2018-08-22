@@ -25,9 +25,9 @@
 *.exe
 *.out
 *.app
-source/hector
-source/hector-ext
-source/hector-api
+src/hector
+src/hector-ext
+src/hector-api
 
 # Hector logs
 logs/*.*
