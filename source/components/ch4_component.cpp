@@ -185,6 +185,16 @@ unitval CH4Component::getData( const std::string& varName,
     return returnval;
 }
 
+void CH4Component::reset(double time) throw(h_exception)
+{
+    // reset the internal time counter and truncate concentration time
+    // series
+    oldDate = time;
+    CH4.truncate(time);
+    H_LOG(logger, Logger::NOTICE)
+        << getComponentName() << " reset to time= " << time << "\n";
+}
+
 //------------------------------------------------------------------------------
 // documentation is inherited
 void CH4Component::shutDown() {

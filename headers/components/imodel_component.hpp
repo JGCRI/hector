@@ -123,8 +123,38 @@ public:
      *  \return     A bool indicating whether the component is spun up.
      *  \exception  h_exception If an error occurred for any reason while running.
      */
-    virtual bool run_spinup( const int step ) throw ( h_exception ) { return true; };
-    
+    virtual bool run_spinup( const int step ) throw ( h_exception ) { return true; }
+
+    //------------------------------------------------------------------------------
+    /*! \brief Reset the component's state to what it was at some previous time.
+     *
+     *  Roll back all of the component's state variables to their
+     *  values at the input time.  Generally this should be an integer
+     *  year boundary, but this is not strictly required.  Behavior if
+     *  a noninteger date is input is currently unspecified.
+     *
+     *  The behavior on reset will be specific to each component.
+     *  Generally, the component will:
+     *     * reset its internal time counter to the input time
+     *     * truncate time series of output values after the input time
+     *     * _not_ truncate time series of input values
+     *  The input time series are not truncated because for runs where
+     *  the inputs (e.g. emissions) for the whole run are read in at
+     *  the beginning, it may not be possible to retrieve those inputs
+     *  once the initial setup is complete.  For reset purposes, a
+     *  time series is an "output" if it is calculated in the
+     *  component's run method; otherwise, it's an input.
+     *
+     *  The method will throw an exception if the component is unable
+     *  to perform the reset.  Examples of why this might occur
+     *  include an input date that is still in the future, or a date
+     *  that is before the beginning of the simulation.
+     *
+     *  \param date Date to which to reset component state
+     *  \exception h_exception If unable to perform the reset.
+     */
+    virtual void reset(double time) throw(h_exception) = 0;
+        
     //------------------------------------------------------------------------------
     /*! \brief We will no longer attempt to run the model; perform any cleanup.
      *

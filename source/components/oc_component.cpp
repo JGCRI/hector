@@ -134,6 +134,13 @@ unitval OrganicCarbonComponent::getData( const std::string& varName,
     return returnval;
 }
 
+void OrganicCarbonComponent::reset(double time) throw(h_exception)
+{
+    oldDate = time;
+    H_LOG(logger, Logger::NOTICE)
+        << getComponentName() << " reset to time= " << time << "\n";
+}
+
 //------------------------------------------------------------------------------
 // documentation is inherited
 void OrganicCarbonComponent::shutDown() {

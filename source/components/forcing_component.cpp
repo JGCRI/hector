@@ -55,6 +55,7 @@ void ForcingComponent::init( Core* coreptr ) {
     core = coreptr;
     
     baseyear = 0.0;
+    currentYear = 0.0;
     
     Ftot_constrain.allowInterp( true );
     Ftot_constrain.name = D_RF_TOTAL;
@@ -188,12 +189,13 @@ void ForcingComponent::run( const double runToDate ) throw ( h_exception ) {
     // As each is computed, push it into 'forcings' map for Ftot calculation.
 	// Note that forcings have to be mutually exclusive, there are no subtotals for different species.
     H_LOG( logger, Logger::DEBUG ) << "-----------------------------" << std::endl;
-    forcings.clear();
     currentYear = runToDate;
     
     if( runToDate < baseyear ) {
         H_LOG( logger, Logger::DEBUG ) << "not yet at baseyear" << std::endl;
     } else {
+        forcings_t forcings;
+        
         // ---------- CO2 ----------
         // Instantaneous radiative forcings for CO2, CH4, and N2O from http://www.esrl.noaa.gov/gmd/aggi/
         // These are in turn from IPCC (2001)
@@ -348,7 +350,9 @@ void ForcingComponent::run( const double runToDate ) throw ( h_exception ) {
         for( forcingsIterator it = forcings.begin(); it != forcings.end(); ++it ) {
             forcings[ ( *it ).first ] = ( *it ).second - baseyear_forcings[ ( *it ).first ];
         }
-        
+
+        // Store the forcings that we have calculated
+        forcings_ts.set(runToDate, forcings);
     }
 }
 
@@ -359,9 +363,27 @@ unitval ForcingComponent::getData( const std::string& varName,
     
     
     unitval returnval;
+    double getdate = date;             // This is why I hate declaring PBV args as const!
     
-    H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for forcing data" );
+    if(getdate == Core::undefinedIndex()) {
+        // If no date specified, provide the current date
+        getdate = currentYear;
+    }
+
+    if(getdate < baseyear) {
+        // Forcing component hasn't run yet, so there is no data to get.
+        returnval.set(0.0, U_W_M2);
+        return returnval;
+    }
+
+    H_LOG(logger, Logger::DEBUG) << "getData request, time= "
+                                 << getdate
+                                 << "  baseyear = "
+                                 << baseyear
+                                 << std::endl;
     
+    forcings_t forcings(forcings_ts.get(getdate));
+
     if( varName == D_RF_BASEYEAR ) {
         returnval.set( baseyear, U_UNITLESS );
     } else if (varName == D_RF_SO2) {
@@ -397,6 +419,16 @@ unitval ForcingComponent::getData( const std::string& varName,
     
     return returnval;
 }
+
+void ForcingComponent::reset(double time) throw(h_exception)
+{
+    // Set the current year to the reset year, and drop outputs after the reset year.
+    currentYear = time;
+    forcings_ts.truncate(time);
+    H_LOG(logger, Logger::NOTICE)
+        << getComponentName() << " reset to time= " << time << "\n";
+}
+
 
 //------------------------------------------------------------------------------
 // documentation is inherited

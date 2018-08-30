@@ -48,6 +48,8 @@ public:
     
     virtual void run( const double runToDate ) throw ( h_exception );
     
+    virtual void reset(double time) throw(h_exception);
+
     virtual void shutDown();
     
     //! IVisitable methods
@@ -59,10 +61,10 @@ private:
     
     unitval N0;    //! preindustrial N2O
     unitval UC_N2O;  //! conversion from emissions to concentration
-	tseries<unitval> N2O_emissions; //! anthropogenic emissions time series
+    tseries<unitval> N2O_emissions; //! anthropogenic emissions time series
     tseries<unitval> N2ON_emissions; //! natural emissions time series
     tseries<unitval> N2O; //! N2O concentrations
-    tseries<unitval> TAU_N2O; 
+    tseries<unitval> TAU_N2O;   //! N2O decay time constant (varies as a function of concentration).
     unitval TN2O0;  //! inital N2O lifetime (tau)
     
     //! logger

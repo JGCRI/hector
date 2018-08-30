@@ -53,7 +53,6 @@ void OzoneComponent::init( Core* coreptr ) {
     CO_emissions.allowInterp( true );
     NMVOC_emissions.allowInterp( true );
     NOX_emissions.allowInterp( true );//Inputs like CO and NMVOC and NOX,
-    Ma.allowInterp( true );
     O3.allowInterp(true);
 
    
@@ -163,6 +162,15 @@ unitval OzoneComponent::getData( const std::string& varName,
     }
     
     return returnval;
+}
+
+
+void OzoneComponent::reset(double time) throw(h_exception)
+{
+    O3.truncate(time);
+    oldDate = time;
+    H_LOG(logger, Logger::NOTICE)
+        << getComponentName() << " reset to time= " << time << "\n";
 }
 
 //------------------------------------------------------------------------------

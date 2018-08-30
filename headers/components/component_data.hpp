@@ -116,7 +116,6 @@
 #define D_HC_TAU                "tau"
 #define D_HC_RHO                "rho"
 #define D_HC_MOLARMASS          "molarMass"
-#define D_HC_CALCDATE           "calcDate"
 
 // methane component
 #define D_ATMOSPHERIC_CH4       "CH4"

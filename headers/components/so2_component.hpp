@@ -48,14 +48,16 @@ public:
     
     virtual void run( const double runToDate ) throw ( h_exception );
     
+    virtual void reset(double time) throw(h_exception);
+
     virtual void shutDown();
     
     // IVisitable methods
     virtual void accept( AVisitor* visitor );
     
     
-	unitval S0;    // historical value of sulfur  (YEAR?)
-	unitval SN;
+    unitval S0;    // historical value of sulfur  (YEAR?)
+    unitval SN;
 	
 private:
     virtual unitval getData( const std::string& varName,
@@ -64,12 +66,12 @@ private:
     //! Emissions time series
 	
     tseries<unitval> SO2_emissions;
-	tseries<unitval> SV;
+    tseries<unitval> SV;
     
     //! logger
     Logger logger;
 
-	Core *core;
+    Core *core;
     double oldDate;
 };
 

@@ -132,6 +132,16 @@ unitval BlackCarbonComponent::getData( const std::string& varName,
     return returnval;
 }
 
+void BlackCarbonComponent::reset(double time) throw(h_exception)
+{
+    // Set time counter to requested date; there are no outputs to
+    // reset.
+    oldDate = time;
+    H_LOG(logger, Logger::NOTICE)
+        << getComponentName() << " reset to time= " << time << "\n";
+}
+
+
 //------------------------------------------------------------------------------
 // documentation is inherited
 void BlackCarbonComponent::shutDown() {

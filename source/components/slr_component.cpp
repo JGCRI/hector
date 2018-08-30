@@ -104,8 +104,8 @@ void slrComponent::setData( const string& varName,
 void slrComponent::prepareToRun() throw ( h_exception ) {
     
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
-    
-	H_ASSERT( refperiod_high >= refperiod_low, "bad refperiod" );
+    oldDate = core->getStartDate();
+    H_ASSERT( refperiod_high >= refperiod_low, "bad refperiod" );
 }
 
 //------------------------------------------------------------------------------
@@ -120,24 +120,24 @@ tseries<double> tgav_vals;
  */
 void slrComponent::compute_slr( const double date ) {
     
-	unitval T = tgav.get( date ) - refperiod_tgav;      // temperature relative to 1951-1980 mean
+    unitval T = tgav.get( date ) - refperiod_tgav;      // temperature relative to 1951-1980 mean
     
-	// First need to compute dTdt, the first derivative of the temperature curve
-	double dTdt_double = 0.0;
-	if( tgav.size() > 2 ) {
-		for( int i=tgav.firstdate(); i<=tgav.lastdate(); i++ ) {
-			tgav_vals.set( i, tgav.get( i ).value( U_DEGC ) );
-		}
-		tgav_vals.allowInterp( true );		// deriv needs a continuous function
+    // First need to compute dTdt, the first derivative of the temperature curve
+    double dTdt_double = 0.0;
+    if( tgav.size() > 2 ) {
+        for( int i=tgav.firstdate(); i<=tgav.lastdate(); i++ ) {
+            tgav_vals.set( i, tgav.get( i ).value( U_DEGC ) );
+        }
+        tgav_vals.allowInterp( true );		// deriv needs a continuous function
         dTdt_double = tgav_vals.get_deriv( date );
-	}
-	
-	// These values and formula below are from:
-	// Vermeer, M. and S. Rahmstorf (2009). "Global sea level linked to global temperature." PNAS 106(51): 21527-21532.
-	// This incorporates both thermal expansion and ice melt
-	const double a	= 0.56;		// cm / year / K
-	const double b	= -4.9 ;	// cm / K
-	unitval T0;
+    }
+    
+    // These values and formula below are from:
+    // Vermeer, M. and S. Rahmstorf (2009). "Global sea level linked to global temperature." PNAS 106(51): 21527-21532.
+    // This incorporates both thermal expansion and ice melt
+    const double a	= 0.56;		// cm / year / K
+    const double b	= -4.9 ;	// cm / K
+    unitval T0;
     T0.set( -0.41, U_DEGC );
     
     unitval dHdt;
@@ -147,39 +147,39 @@ void slrComponent::compute_slr( const double date ) {
     unitval dH;
     dH.set( dHdt.value( U_CM_YR ), U_CM );          // integrating to 1 year
     
-	unitval slr_to_date;
+    unitval slr_to_date;
     slr_to_date.set( 0.0, U_CM );
-	if( slr.exists( date-1 ) ) {
-		slr_to_date.set( slr.get( date-1 ).value( U_CM ), U_CM );
-	}
-	slr.set( date, slr_to_date + dH );
+    if( slr.exists( date-1 ) ) {
+        slr_to_date.set( slr.get( date-1 ).value( U_CM ), U_CM );
+    }
+    slr.set( date, slr_to_date + dH );
     
-    unitval X = slr.get( date );     // TODO: why doesn't this work in the log statement below? (Pralit?)
-	H_LOG( logger, Logger::DEBUG ) << date << " T=" << T << " dTdt=" << dTdt_double << " dHdt=" << dHdt << " slr=" << X << std::endl ;
+    unitval X = slr.get( date );
+    H_LOG( logger, Logger::DEBUG ) << date << " T=" << T << " dTdt=" << dTdt_double << " dHdt=" << dHdt << " slr=" << X << std::endl ;
     
-	// These values incorporate only thermal expansion
-	const double a_no_ice	= 0.08;		// cm / year / degree C
-	const double b_no_ice	= 2.5;		// cm / degree C
-	unitval T0_no_ice;
+    // These values incorporate only thermal expansion
+    const double a_no_ice	= 0.08;		// cm / year / degree C
+    const double b_no_ice	= 2.5;		// cm / degree C
+    unitval T0_no_ice;
     T0_no_ice.set (-0.375, U_DEGC );	// K
 	
-	unitval dHdt_no_ice;
+    unitval dHdt_no_ice;
     dHdt_no_ice.set( a_no_ice * ( T-T0_no_ice ).value( U_DEGC ) + b_no_ice * dTdt_double, U_CM_YR );		// cm/yr
-	sl_rc_no_ice.set( date, dHdt_no_ice );
+    sl_rc_no_ice.set( date, dHdt_no_ice );
 	
     unitval dH_no_ice;
     dH_no_ice.set( dHdt_no_ice.value( U_CM_YR ), U_CM );          // integrating to 1 year
     
     unitval slr_no_ice_to_date;
     slr_no_ice_to_date.set( 0.0, U_CM );
-	if( slr_no_ice.exists( date-1 ) ) {
-		slr_no_ice_to_date = slr_no_ice.get( date-1 );
-	}
-	
-	slr_no_ice.set( date, slr_no_ice_to_date + dH_no_ice );
+    if( slr_no_ice.exists( date-1 ) ) {
+        slr_no_ice_to_date = slr_no_ice.get( date-1 );
+    }
     
-    unitval Y = slr_no_ice.get( date );     // TODO: why doesn't this work in the log statement below? (Pralit?)
-	H_LOG( logger, Logger::DEBUG ) << date << " T=" << T << " Dtdt=" << dTdt_double << " DHdt_no_ice=" << dHdt_no_ice << " slr_no_ice=" << Y << std::endl ;
+    slr_no_ice.set( date, slr_no_ice_to_date + dH_no_ice );
+    
+    unitval Y = slr_no_ice.get( date );
+    H_LOG( logger, Logger::DEBUG ) << date << " T=" << T << " Dtdt=" << dTdt_double << " DHdt_no_ice=" << dHdt_no_ice << " slr_no_ice=" << Y << std::endl ;
 }
 
 //------------------------------------------------------------------------------
@@ -188,27 +188,28 @@ void slrComponent::run( const double runToDate ) throw ( h_exception ) {
     
     H_LOG( logger, Logger::DEBUG ) << "SLR run " << runToDate << std::endl;
     
-	// Sea level rise is different from some of the other model outputs, because the formula used here to compute it
-	// depends on knowing a reference period temperature
+    // Sea level rise is different from some of the other model outputs, because the formula used here to compute it
+    // depends on knowing a reference period temperature
 	
-	tgav.set( runToDate, core->sendMessage( M_GETDATA, D_GLOBAL_TEMP ) );	// store global temperature
+    tgav.set( runToDate, core->sendMessage( M_GETDATA, D_GLOBAL_TEMP ) );	// store global temperature
     
-	if( runToDate==refperiod_high ) {	// then compute reference period temperature
+    if( runToDate==refperiod_high ) {	// then compute reference period temperature
         H_LOG( logger, Logger::DEBUG ) << "Computing reference temperature" << std::endl;
         double sum = 0.0;
-		for( int i=refperiod_low; i<=refperiod_high; i++ )
-			sum += tgav.get( i ).value( U_DEGC );
-		refperiod_tgav.set( sum / ( refperiod_high - refperiod_low + 1 ), U_DEGC );
-		H_LOG( logger, Logger::DEBUG ) << "Computed reference temperature " << refperiod_tgav.value( U_DEGC ) <<
-        " (" << refperiod_low << "-" << refperiod_high << ")" << std::endl;
+        for( int i=refperiod_low; i<=refperiod_high; i++ )
+            sum += tgav.get( i ).value( U_DEGC );
+        refperiod_tgav.set( sum / ( refperiod_high - refperiod_low + 1 ), U_DEGC );
+        H_LOG( logger, Logger::DEBUG ) << "Computed reference temperature " 
+                                       << refperiod_tgav.value( U_DEGC ) << " (" << refperiod_low << "-" << refperiod_high << ")" << std::endl;
         
-		// Now we can compute and store data up to this point
-		for( int i=tgav.firstdate(); i<=refperiod_high; i++ )
-			compute_slr( i );
-	}
+        // Now we can compute and store data up to this point
+        for( int i=tgav.firstdate(); i<=refperiod_high; i++ )
+            compute_slr( i );
+    }
     
-	if( runToDate > refperiod_high )
-		compute_slr( runToDate );
+    if( runToDate > refperiod_high )
+        compute_slr( runToDate );
+    oldDate = runToDate;
 }
 
 //------------------------------------------------------------------------------
@@ -235,6 +236,21 @@ unitval slrComponent::getData( const std::string& varName,
     return returnval;
 }
 
+void slrComponent::reset(double time) throw(h_exception)
+{
+    oldDate = time;
+    sl_rc.truncate(time);
+    slr.truncate(time);
+    sl_rc_no_ice.truncate(time);
+    slr_no_ice.truncate(time);
+    tgav.truncate(time);
+    
+    H_LOG(logger, Logger::NOTICE)
+        << getComponentName() << " reset to time= " << time << "\n";
+}
+
+
+    
 //------------------------------------------------------------------------------
 // documentation is inherited
 void slrComponent::shutDown() {

@@ -3,7 +3,7 @@ CXX      = g++
 endif
 CXXFLAGS = -g $(INCLUDES) $(OPTFLAGS) $(CXXEXTRA) $(CXXPROF) $(WFLAGS) -MMD
 INCLUDES = -I$(BOOSTROOT) -I$(HDRDIR)
-WFLAGS   = -Wall -Wno-unused-local-typedefs # Turn on warnings, turn off one particularly annoying one that infests Boost libs
+WFLAGS   = -Wall -Wno-unused-local-typedefs -Wno-c++11-extensions # Turn on warnings, turn off one particularly annoying one that infests Boost libs, also turn off warning about c++-11 extensions.
 OPTFLAGS = -O3
 LDFLAGS	 = $(CXXPROF) -L$(BOOSTLIB) -L. -Wl,-rpath $(BOOSTLIB)
 
@@ -16,7 +16,7 @@ export HROOT
 
 ## Boost root
 ifeq ($(strip $(BOOSTVERSION)),)
-BOOSTVERSION	= 1_52_0
+BOOSTVERSION	= 1_63_0
 endif
 ifeq ($(strip $(BOOSTROOT)),)
 BOOSTROOT	= $(HOME)/src/boost_$(BOOSTVERSION)

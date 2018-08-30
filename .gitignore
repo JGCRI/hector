@@ -27,6 +27,7 @@
 *.app
 source/hector
 source/hector-ext
+source/hector-api
 
 # Hector logs
 logs/*.*

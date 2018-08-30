@@ -344,34 +344,41 @@ void Core::prepareToRun(void) throw (h_exception)
     // 5. Spin up the model
     if( do_spinup ) {
         H_LOG( glog, Logger::NOTICE) << "Spinning up model..." << endl;
-        
-        in_spinup = true;
-        bool spunup = false;
-        int step = 0;
-        while( !spunup && ++step<max_spinup ) {
-            spunup = true;
-            for( NameComponentIterator it = modelComponents.begin(); it != modelComponents.end(); ++it )
-                spunup = spunup && ( *it ).second->run_spinup( step );
-
-            // Let visitors attempt to collect data if necessary
-            for( VisitorIterator visitorIt = modelVisitors.begin(); visitorIt != modelVisitors.end(); ++visitorIt ) {
-                if( ( *visitorIt )->shouldVisit( in_spinup, step ) ) {
-                    accept( *visitorIt );
-                }
-            } // for
-        } // while
-        
-        if( spunup ) {
-            H_LOG( glog, Logger::NOTICE) << "Model spun up after " << step << " steps" << endl;
-        } else {
-            H_LOG( glog, Logger::SEVERE) << "Model failed to spin up after " << step << " steps" << endl;
-        }
-        in_spinup = false;
+        run_spinup(); 
     } else {
         H_LOG( glog, Logger::WARNING) << "No model spinup was requested" << endl;
     } // if 
 }
 
+bool Core::run_spinup()
+{
+    in_spinup = true;
+    bool spunup = false;
+    int step = 0;
+    while( !spunup && ++step<max_spinup ) {
+        spunup = true;
+        for( NameComponentIterator it = modelComponents.begin(); it != modelComponents.end(); ++it )
+            spunup = spunup && ( *it ).second->run_spinup( step );
+        
+        // Let visitors attempt to collect data if necessary
+        for( VisitorIterator visitorIt = modelVisitors.begin(); visitorIt != modelVisitors.end(); ++visitorIt ) {
+            if( ( *visitorIt )->shouldVisit( in_spinup, step ) ) {
+                accept( *visitorIt );
+            }
+        } // for
+    } // while
+
+    Logger& glog = Logger::getGlobalLogger();
+    if( spunup ) {
+        H_LOG( glog, Logger::NOTICE) << "Model spun up after " << step << " steps" << endl;
+    } else {
+        H_LOG( glog, Logger::SEVERE) << "Model failed to spin up after " << step << " steps" << endl;
+    }
+    in_spinup = false;
+
+    return spunup;
+}
+    
 //------------------------------------------------------------------------------
 /*! \brief Run the components for one-year time steps through runtodate
  *
@@ -436,6 +443,34 @@ void Core::run(double runtodate) throw ( h_exception ) {
     // Record the last finished date.  We will resume here the next time run is called
     lastDate = runtodate;
 }
+
+
+void Core::reset(double resetdate)
+{
+    bool rerun_spinup = false;
+    Logger &glog(Logger::getGlobalLogger());
+    H_LOG(glog, Logger::NOTICE) << "Resetting model to t= " << resetdate << endl;
+    if(resetdate < getStartDate()) {
+        H_LOG(glog, Logger::NOTICE) << "Requested reset time before start date.  "
+                                    << "Resetting to start date.\n";
+        resetdate = getStartDate();
+
+        if(do_spinup) {
+            rerun_spinup = true;
+            H_LOG(glog, Logger::NOTICE) << "Rerunning spinup.\n";
+        }
+    }
+
+    for(NameComponentIterator it = modelComponents.begin(); it != modelComponents.end(); ++it) {
+        H_LOG(glog, Logger::DEBUG) << "Resetting component: " << it->first << endl;
+        it->second->reset(resetdate);
+    }
+    if(rerun_spinup)
+        run_spinup();
+
+    lastDate = resetdate;
+}
+
 
 /*! \brief Shut down all model components 
  *  \details After this function is called no components are valid,

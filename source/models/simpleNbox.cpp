@@ -25,7 +25,7 @@ using namespace boost;
 //------------------------------------------------------------------------------
 /*! \brief constructor
  */
-SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), m_last_tempferts(0.0) {
+SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ) {
     ffiEmissions.allowInterp( true );
     ffiEmissions.name = "ffiEmissions";
     lucEmissions.allowInterp( true );
@@ -49,12 +49,9 @@ void SimpleNbox::init( Core* coreptr ) {
     co2fert[ SNBOX_DEFAULT_BIOME ] = 1.0;
     warmingfactor[ SNBOX_DEFAULT_BIOME ] = 1.0;
     residual.set( 0.0, U_PGC );
-//    q10_detritus[ SNBOX_DEFAULT_BIOME ] = 2.0;
-//    q10_soil[ SNBOX_DEFAULT_BIOME ] = 2.0;
     tempfertd[ SNBOX_DEFAULT_BIOME ] = 1.0;
     tempferts[ SNBOX_DEFAULT_BIOME ] = 1.0;
-    // Tgav_sum[ SNBOX_DEFAULT_BIOME ] = 0.0;
-    
+
     Tgav_record.allowInterp( true );
     
     // Register the data we can provide
@@ -451,11 +448,60 @@ unitval SimpleNbox::getData( const std::string& varName,
     return returnval;
 }
 
+void SimpleNbox::reset(double time) throw(h_exception)
+{
+    // Reset all state variables to their values at the reset time
+    earth_c = earth_c_ts.get(time);
+    atmos_c = atmos_c_ts.get(time);
+    Ca = Ca_ts.get(time);
+
+    veg_c = veg_c_tv.get(time);
+    detritus_c = detritus_c_tv.get(time);
+    soil_c = soil_c_tv.get(time);
+
+    residual = residual_ts.get(time);
+
+    tempferts = tempferts_tv.get(time);
+    tempfertd = tempfertd_tv.get(time);
+
+    // Calculate derived quantities
+    double_stringmap::const_iterator it; // iterates over biomes
+    for(it=beta.begin(); it != beta.end(); ++it) {
+        if(in_spinup) {
+            co2fert[it->first] = 1.0; // co2fert fixed if in spinup.  Placeholder in case we decide to allow resetting into spinup
+        }
+        else {
+            co2fert[it->first] = 1.0 + beta.at(it->first) * log(Ca/C0);
+        }
+    }
+    Tgav_record.truncate(time);
+    // No need to reset masstot; it's not supposed to change anyhow. 
+    
+    // Truncate all of the state variable time series
+    earth_c_ts.truncate(time);
+    atmos_c_ts.truncate(time);
+    Ca_ts.truncate(time);
+
+    veg_c_tv.truncate(time);
+    detritus_c_tv.truncate(time);
+    soil_c_tv.truncate(time);
+
+    residual_ts.truncate(time);
+
+    tempferts_tv.truncate(time);
+    tempfertd_tv.truncate(time);
+
+    tcurrent = time;
+    
+    H_LOG(logger, Logger::NOTICE)
+        << getComponentName() << " reset to time= " << time << "\n";
+}
+
 //------------------------------------------------------------------------------
 // documentation is inherited
 void SimpleNbox::shutDown()
 {
-	H_LOG( logger, Logger::DEBUG ) << "goodbye " << getComponentName() << std::endl;
+    H_LOG( logger, Logger::DEBUG ) << "goodbye " << getComponentName() << std::endl;
     logger.close();
 }
 
@@ -757,7 +803,7 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
 
 //------------------------------------------------------------------------------
 /*! \brief              Compute 'slowly varying' fluxes
- *  \param[in]  t       time
+ *  \param[in]  t       time (at the *beginning* of the current time step.
  *  \param[in]  c       carbon pools (no units)
  *
  *  Compute 'slowly varying' fertilization and anthropogenic fluxes.
@@ -787,21 +833,33 @@ void SimpleNbox::slowparameval( double t, const double c[] )
     // The soil pool uses a lagged Tgav, i.e. we assume it takes time for heat to diffuse into soil
     const double Tgav = core->sendMessage( M_GETDATA, D_GLOBAL_TEMP ).value( U_DEGC );
     
-    // want to set tempferts (soil) and tempfertd (detritus) for each biome
-    
+
+    /* set tempferts (soil) and tempfertd (detritus) for each biome */
+
+    // Need the previous time step values of tempferts.  Since t is
+    // the time at the beginning of the current time step (== the end
+    // of the previous time step), we can use t as the index to look
+    // up the previous value.
+    double_stringmap tfs_last;  // Previous time step values of tempferts; initialized empty
+    if(t != Core::undefinedIndex() && t > core->getStartDate()) {
+        tfs_last = tempferts_tv[t];
+    }
+
+    // Loop over biomes.
     for( itd = tempfertd.begin(); itd != tempfertd.end(); itd++ ) {
+        std::string biome(itd->first);
         if( in_spinup ) {
-            tempfertd[ itd->first ] = 1.0;  // no perturbation allowed in spinup
-            tempferts[ itd->first ] = 1.0;  // no perturbation allowed in spinup
+            tempfertd[ biome ] = 1.0;  // no perturbation allowed in spinup
+            tempferts[ biome ] = 1.0;  // no perturbation allowed in spinup
         } else {
             double wf = warmingfactor.at( SNBOX_DEFAULT_BIOME );
-            if( warmingfactor.count( itd->first ) ) {
-                wf = warmingfactor[ itd->first ];   // biome-specific warming
+            if( warmingfactor.count( biome ) ) {
+                wf = warmingfactor[ biome ];   // biome-specific warming
             }
             
             const double Tgav_biome = Tgav * wf;    // biome-specific temperature
 
-            tempfertd[ itd->first ] = pow( q10_rh, ( Tgav_biome / 10.0 ) ); // detritus warms with air
+            tempfertd[ biome ] = pow( q10_rh, ( Tgav_biome / 10.0 ) ); // detritus warms with air
             
         
             // Soil warm very slowly relative to the atmosphere
@@ -811,24 +869,53 @@ void SimpleNbox::slowparameval( double t, const double c[] )
             double Tgav_rm = 0.0;       /* window mean of Tgav */
             if( t > core->getStartDate() + Q10_TEMPLAG ) {
                 for( int i=t-Q10_TEMPLAG-Q10_TEMPN; i<t-Q10_TEMPLAG; i++ ) {
- //                   printf( "Fetching temp for %i = %f\n", i, Tgav_record.get( i ) );
                     Tgav_rm += Tgav_record.get( i ) * wf;
                 }
                 Tgav_rm /= Q10_TEMPN;
             }
             
-            tempferts[ itd->first ] = pow( q10_rh, ( Tgav_rm / 10.0 ) );
+            tempferts[ biome ] = pow( q10_rh, ( Tgav_rm / 10.0 ) );
             
-            // The soil Q10 effect is 'sticky' and can only decline very slowly
-            if(tempferts[ itd->first ] < m_last_tempferts * 1.0) {
-                tempferts[ itd->first ] = m_last_tempferts * 1.0;
+            // The soil Q10 effect is 'sticky' and can only increase, not decline
+            double tempferts_last = tfs_last[biome]; // If tfs_last is empty, this will produce 0.0
+            if(tempferts[ biome ] < tempferts_last) {
+                tempferts[ biome ] = tempferts_last;
             }
-            m_last_tempferts = tempferts[ itd->first ];
             
-            H_LOG( logger,Logger::DEBUG ) << itd->first << " Tgav=" << Tgav << ", Tgav_biome=" << Tgav_biome << ", tempfertd=" << tempfertd[ itd->first ]
-                << ", tempferts=" << tempferts[ itd->first ] << std::endl;
+            H_LOG( logger,Logger::DEBUG ) << biome << " Tgav=" << Tgav << ", Tgav_biome=" << Tgav_biome << ", tempfertd=" << tempfertd[ biome ]
+                << ", tempferts=" << tempferts[ biome ] << std::endl;
         }
-    } // for itd
+    } // loop over biomes
+    // save the new values for use in the next time step
+    // TODO:  move this to a purpose-built recording subroutine
+    //tempferts_tv.set(tcurrent, tempferts);
+    H_LOG(logger, Logger::DEBUG) << "slowparameval: would have recorded tempferts = " << tempferts[SNBOX_DEFAULT_BIOME]
+                                 << " at time= " << tcurrent << std::endl;
+}
+
+void SimpleNbox::record_state(double t)
+{
+    tcurrent = t;
+    earth_c_ts.set(t, earth_c);
+    atmos_c_ts.set(t, atmos_c);
+    Ca_ts.set(t, Ca);
+
+    veg_c_tv.set(t, veg_c);
+    detritus_c_tv.set(t, detritus_c);
+    soil_c_tv.set(t, soil_c);
+
+    residual_ts.set(t, residual);
+
+    tempfertd_tv.set(t, tempfertd);
+    tempferts_tv.set(t, tempferts);
+    H_LOG(logger, Logger::DEBUG) << "record_state: recorded tempferts = " << tempferts[SNBOX_DEFAULT_BIOME]
+                                 << " at time= " << t << std::endl;
+
+    // ocean model appears to be controlled by the N-box model.  Seems
+    // like it makes swapping out for another model a nightmare, but
+    // that's where we're at.
+    omodel->record_state(t);
+    
 }
 
 }

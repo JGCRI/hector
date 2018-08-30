@@ -31,7 +31,7 @@ using namespace std;
 //------------------------------------------------------------------------------
 /*! \brief Constructor
  */
-TemperatureComponent::TemperatureComponent() : internal_Ftot(0.0), last_Ftot(0.0) {
+TemperatureComponent::TemperatureComponent() {
 }
 
 //------------------------------------------------------------------------------
@@ -317,14 +317,18 @@ void TemperatureComponent::run( const double runToDate ) throw ( h_exception ) {
     // If the user has supplied temperature data, use that (except if past its end)
     if( tgav_constrain.size() && runToDate <= tgav_constrain.lastdate() ) {
     //    H_LOG( logger, Logger::NOTICE ) << "** Using user-supplied temperature" << std::endl;
-        H_LOG( logger, Logger::NOTICE ) << "** ERROR - Temperature can't currently handle user-supplied temperature" << std::endl;
+        H_LOG( logger, Logger::SEVERE ) << "** ERROR - Temperature can't currently handle user-supplied temperature" << std::endl;
+        H_THROW("User-supplied temperature not yet implemented.")
     }
         
     // Some needed inputs
     int tstep = runToDate - core->getStartDate();
-    double aero_forcing = double(core->sendMessage( M_GETDATA, D_RF_BC ).value( U_W_M2 )) + double(core->sendMessage( M_GETDATA, D_RF_OC ).value( U_W_M2 )) + double(core->sendMessage( M_GETDATA, D_RF_SO2d ).value( U_W_M2 )) + double(core->sendMessage( M_GETDATA, D_RF_SO2i ).value( U_W_M2 ));
+    double aero_forcing =
+        double(core->sendMessage( M_GETDATA, D_RF_BC ).value( U_W_M2 )) + double(core->sendMessage( M_GETDATA, D_RF_OC).value( U_W_M2 )) + 
+        double(core->sendMessage( M_GETDATA, D_RF_SO2d ).value( U_W_M2 )) + double(core->sendMessage( M_GETDATA, D_RF_SO2i ).value( U_W_M2 ));
+
     forcing[tstep] = double(core->sendMessage( M_GETDATA, D_RF_TOTAL ).value( U_W_M2 )) - ( 1.0 - alpha ) * aero_forcing;
-			    
+    
     // Initialize variables for time-stepping through the model
     double DQ1 = 0.0;
     double DQ2 = 0.0;
@@ -410,10 +414,7 @@ void TemperatureComponent::run( const double runToDate ) throw ( h_exception ) {
         heat_interior[0] = 0.0;
     }
 
-    flux_mixed.set( heatflux_mixed[tstep], U_W_M2, 0.0 );
-    flux_interior.set( heatflux_interior[tstep], U_W_M2, 0.0 );
-    heatflux.set( heatflux_mixed[tstep] + fso * heatflux_interior[tstep], U_W_M2, 0.0 );
-    tgav.set( temp[tstep], U_DEGC, 0.0 );
+    setoutputs(tstep);
     H_LOG( logger, Logger::DEBUG ) << " tgav=" << tgav << " in " << runToDate << std::endl;
 }
 
@@ -450,6 +451,20 @@ unitval TemperatureComponent::getData( const std::string& varName,
 }
 
 
+void TemperatureComponent::reset(double time) throw(h_exception)
+{
+    // We take a slightly different approach in this component's reset method than we have in other components.  The
+    // temperature component doesn't have its own time counter, and it stores its history in a collection of double
+    // vectors.  Therefore, all we do here is set the unitval versions of that stored data to their values from the
+    // vectors.
+    int tstep = time - core->getStartDate();
+    setoutputs(tstep);
+    H_LOG(logger, Logger::NOTICE)
+        << getComponentName() << " reset to time= " << time << "\n";
+}
+
+
+
 //------------------------------------------------------------------------------
 // documentation is inherited
 void TemperatureComponent::shutDown() {
@@ -463,4 +478,15 @@ void TemperatureComponent::accept( AVisitor* visitor ) {
     visitor->visit( this );
 }
 
+
+void TemperatureComponent::setoutputs(int tstep)
+{
+    flux_mixed.set( heatflux_mixed[tstep], U_W_M2, 0.0 );
+    flux_interior.set( heatflux_interior[tstep], U_W_M2, 0.0 );
+    heatflux.set( heatflux_mixed[tstep] + fso * heatflux_interior[tstep], U_W_M2, 0.0 );
+    tgav.set(temp[tstep], U_DEGC, 0.0);
+    tgaveq.set(temp[tstep], U_DEGC, 0.0); // per comment line 140 of temperature_component.hpp
 }
+
+}
+
