@@ -12,7 +12,7 @@ export CXXFLAGS OPTFLAGS
 
 ## project root
 HROOT	= $(CURDIR)/..
-HDRDIR	= $(HROOT)/include
+HDRDIR	= $(HROOT)/inst/include
 export HROOT
 
 ## Boost root
