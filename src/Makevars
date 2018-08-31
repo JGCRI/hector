@@ -1,0 +1,4 @@
+## TODO: figure out how to get the boost library locations from the environment
+##       NB: shell environment may not be set if run from Rstudio.
+
+PKG_CPPFLAGS = -I../inst/include
