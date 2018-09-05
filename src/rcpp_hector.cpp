@@ -123,5 +123,12 @@ void run(List core, double runtodate=-1.0)
     if(!hcore) {
         Rcpp::stop("hector::run:  invalid index");
     }
-    hcore->run(runtodate);
+    try {
+        hcore->run(runtodate);
+    }
+    catch(h_exception e) {
+        std::stringstream msg;
+        msg << "Error while running hector:  " << e;
+        Rcpp::stop(msg.str());
+    }
 }
