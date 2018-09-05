@@ -1,4 +1,11 @@
-## TODO: figure out how to get the boost library locations from the environment
-##       NB: shell environment may not be set if run from Rstudio.
+## The following environment variables must be set in .Renvironment:
+##   * BOOSTROOT  : Top level of Boost library directories
+##   * BOOSTLIB   : Location of compiled boost libraries
 
-PKG_CPPFLAGS = -I../inst/include
+
+PKG_CPPFLAGS = -I../inst/include -I${BOOSTROOT}
+
+PKG_LIBS = -L${BOOSTLIB} -Wl,-rpath ${BOOSTLIB} -lboost_system -lboost_filesystem
+
+
+

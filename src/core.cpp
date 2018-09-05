@@ -440,6 +440,7 @@ void Core::run(double runtodate) throw ( h_exception ) {
             }
         }
     }
+
     // Record the last finished date.  We will resume here the next time run is called
     lastDate = runtodate;
 }
@@ -690,6 +691,49 @@ void Core::accept( AVisitor* visitor ) {
  */
 double Core::undefinedIndex() {
     return -1;
+}
+
+std::vector<Core *> Core::core_registry;
+
+/*! Create a core and add it to the registry 
+ */
+int Core::mkcore()
+{
+    core_registry.push_back(new Core);
+    return core_registry.size() - 1; 
+}
+
+/*! Get a core by index
+ *
+ * \details Return a pointer to the core corresponding to the input
+ * index.  If an invalid index is passed, return a null pointer.
+ */
+Core *Core::getcore(int idx)
+{
+    if(idx < core_registry.size() && idx >= 0) {
+        return core_registry[idx];
+    }
+    else {
+        return NULL;
+    }
+}
+
+
+/*! Shutdown a core in the global registry 
+ * \details Call the core's shutdown method, delete the core object,
+ * and set its entry in the registry to a null pointer. If an invalid
+ * index is passed, this is a no-op.
+ */
+void Core::delcore(int idx)
+{
+    Core *core = getcore(idx);
+
+    if(core) {
+        core->shutDown();
+        delete core;
+        core_registry[idx] = NULL;
+    }
+    // If core is null, it's already been shutdown, so do nothing. 
 }
 
 }

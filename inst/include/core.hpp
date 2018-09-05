@@ -89,8 +89,21 @@ public:
     
     IModelComponent* getComponentByName( const std::string& componentName
                                         ) const throw ( h_exception );
+
+    //! Manage cores in the global registry
+    static int mkcore();
+    static Core *getcore(int idx);
+    static void delcore(int idx);
     
 private:
+    //! Registry of instantiated cores 
+    //! \details This is used when you are instantiating hector cores
+    //! from a language other than C++.  Instead of trying to convert
+    //! C++ pointers to something that can be stored in the other
+    //! language's data structures, you just register the core(s) you
+    //! create in this vector and refer to them by index.
+    static std::vector<Core *> core_registry;
+        
     //! Cause all components to run their spinup procedure.
     bool run_spinup();
 
