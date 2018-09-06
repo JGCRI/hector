@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{newcore}
 \alias{newcore}
-\title{Create and initialize a new hector core}
+\title{Create and initialize a new hector instance}
 \usage{
 newcore(inifile)
 }
@@ -10,10 +10,10 @@ newcore(inifile)
 \item{infile}{(String) name of the hector input file.}
 }
 \value{
-handle for the Hector core.
+handle for the Hector instance.
 }
 \description{
-The object returned is a handle to the newly created core.  It will be required as an
-argument for all functions that operate on the core.  Creating multiple cores
+The object returned is a handle to the newly created instance.  It will be required as an
+argument for all functions that operate on the instance.  Creating multiple instances
 simultaneously is supported.
 }

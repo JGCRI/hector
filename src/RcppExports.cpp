@@ -38,11 +38,23 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
+// getdate
+double getdate(List core);
+RcppExport SEXP _hector_getdate(SEXP coreSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< List >::type core(coreSEXP);
+    rcpp_result_gen = Rcpp::wrap(getdate(core));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_hector_newcore", (DL_FUNC) &_hector_newcore, 1},
     {"_hector_shutdown", (DL_FUNC) &_hector_shutdown, 1},
     {"_hector_run", (DL_FUNC) &_hector_run, 2},
+    {"_hector_getdate", (DL_FUNC) &_hector_getdate, 1},
     {NULL, NULL, 0}
 };
 

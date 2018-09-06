@@ -76,8 +76,9 @@ public:
     
     double getStartDate() const { return startDate; };
     double getEndDate() const { return endDate; };
+    double getCurrentDate() const {return lastDate;}
     std::string getRun_name() const { return run_name; };
-	bool inSpinup() const { return in_spinup; };
+    bool inSpinup() const { return in_spinup; };
     bool outputEnabled( std::string componentName ) { return std::find( disabledOutputComponents.begin(),
                 disabledOutputComponents.end(), componentName) == disabledOutputComponents.end(); }
     void addModelComponent( IModelComponent* modelComponent ) throw ( h_exception );

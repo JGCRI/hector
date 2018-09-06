@@ -2,17 +2,23 @@
 % Please edit documentation in R/RcppExports.R
 \name{shutdown}
 \alias{shutdown}
-\title{Shutdown a hector core}
+\title{Shutdown a hector instance}
 \usage{
 shutdown(core)
 }
 \arguments{
-\item{core}{Handle to the core that is to be shut down.}
+\item{Handle}{to the Hector instance that is to be shut down.}
 }
 \value{
-The core handle, modified to show that it is no longer active.
+The Hector handle, modified to show that it is no longer active.
 }
 \description{
-Shutting down a core will free the core itself and all of the objects it created. Any attempted
-operation on the core after that will raise an error.
+Shutting down an instance will free the instance itself and all of the objects it created. Any attempted
+operation on the instance after that will raise an error.
 }
+\section{Caution}{
+
+This function should be called as \code{mycore <- shutdown(mycore)} so that the change
+from active to inactive will be recorded in the caller.
+}
+

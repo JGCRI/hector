@@ -8,14 +8,31 @@ using namespace Rcpp;
 
 // [[Rcpp::plugins("cpp11")]]
 
-//' Create and initialize a new hector core
+
+/* Non exported helper functions
+ * These are intended for use by the C++ wrappers and are not callable from R directly.
+ */
+
+// Get a pointer to a core from the R handle. 
+Hector::Core *gethcore(List core)
+{
+    int idx = core[0];
+    Hector::Core *hcore = Hector::Core::getcore(idx);
+    if(!hcore) {
+        Rcpp::stop("hector::run:  invalid index");
+    }
+    return hcore;
+}
+
+
+//' Create and initialize a new hector instance
 //'
-//' The object returned is a handle to the newly created core.  It will be required as an
-//' argument for all functions that operate on the core.  Creating multiple cores
+//' The object returned is a handle to the newly created instance.  It will be required as an
+//' argument for all functions that operate on the instance.  Creating multiple instances
 //' simultaneously is supported.
 //'
 //' @param infile (String) name of the hector input file.
-//' @return handle for the Hector core.
+//' @return handle for the Hector instance.
 //' @export
 // [[Rcpp::export]]
 List newcore(String inifile)
@@ -73,7 +90,7 @@ List newcore(String inifile)
         double strtdate = hcore->getStartDate();
         double enddate = hcore->getEndDate();
 
-        List rv= List::create(coreidx, strtdate, enddate, true);
+        List rv= List::create(coreidx, strtdate, enddate, inifile, true);
         rv.attr("class") = "hcore";
         return rv;
     }
@@ -84,13 +101,18 @@ List newcore(String inifile)
     }
 }
 
-//' Shutdown a hector core
+
+//' Shutdown a hector instance
 //'
-//' Shutting down a core will free the core itself and all of the objects it created. Any attempted
-//' operation on the core after that will raise an error.
+//' Shutting down an instance will free the instance itself and all of the objects it created. Any attempted
+//' operation on the instance after that will raise an error.
 //'
-//' @param core Handle to the core that is to be shut down.
-//' @return The core handle, modified to show that it is no longer active.
+//' @section Caution:
+//' This function should be called as \code{mycore <- shutdown(mycore)} so that the change
+//' from active to inactive will be recorded in the caller.
+//'
+//' @param Handle to the Hector instance that is to be shut down.
+//' @return The Hector handle, modified to show that it is no longer active.
 //' @export
 // [[Rcpp::export]]
 List shutdown(List core)
@@ -100,7 +122,7 @@ List shutdown(List core)
     int idx = core[0];
     Hector::Core::delcore(idx);
 
-    core[3] = false;
+    core[4] = false;
 
     return core;
 }
@@ -111,18 +133,14 @@ List shutdown(List core)
 //' Run Hector up through the specified time.  This function does not return the results
 //' of the run.  To get results, run \code{fetch}.
 //'
-//' @param core Handle to the hector core that is to be run.
+//' @param core Handle a Hector instance that is to be run.
 //' @param runtodate Date to run to.  The default is to run to the end date configured
 //' in the input file used to initialize the core.
 //' @export
 // [[Rcpp::export]]
 void run(List core, double runtodate=-1.0)
 {
-    int idx = core[0];
-    Hector::Core *hcore = Hector::Core::getcore(idx);
-    if(!hcore) {
-        Rcpp::stop("hector::run:  invalid index");
-    }
+    Hector::Core *hcore = gethcore(core);
     try {
         hcore->run(runtodate);
     }
@@ -132,3 +150,19 @@ void run(List core, double runtodate=-1.0)
         Rcpp::stop(msg.str());
     }
 }
+
+
+//' Get the current date for a Hector instance
+//'
+//' The "current date" is the last year that the Hector instance has completed.
+//'
+//' @param core Handle to a Hector instance
+//' @return The current date in the Hector instance
+//' @export
+// [[Rcpp::export]]
+double getdate(List core)
+{
+    Hector::Core *hcore = gethcore(core);
+    return hcore->getCurrentDate();
+}
+
