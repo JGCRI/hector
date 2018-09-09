@@ -49,12 +49,29 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// sendmessage
+DataFrame sendmessage(List core, String msgtype, String capability, NumericVector date, NumericVector value, String unit);
+RcppExport SEXP _hector_sendmessage(SEXP coreSEXP, SEXP msgtypeSEXP, SEXP capabilitySEXP, SEXP dateSEXP, SEXP valueSEXP, SEXP unitSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< List >::type core(coreSEXP);
+    Rcpp::traits::input_parameter< String >::type msgtype(msgtypeSEXP);
+    Rcpp::traits::input_parameter< String >::type capability(capabilitySEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type date(dateSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type value(valueSEXP);
+    Rcpp::traits::input_parameter< String >::type unit(unitSEXP);
+    rcpp_result_gen = Rcpp::wrap(sendmessage(core, msgtype, capability, date, value, unit));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_hector_newcore", (DL_FUNC) &_hector_newcore, 1},
     {"_hector_shutdown", (DL_FUNC) &_hector_shutdown, 1},
     {"_hector_run", (DL_FUNC) &_hector_run, 2},
     {"_hector_getdate", (DL_FUNC) &_hector_getdate, 1},
+    {"_hector_sendmessage", (DL_FUNC) &_hector_sendmessage, 6},
     {NULL, NULL, 0}
 };
 
