@@ -398,14 +398,20 @@ unitval SimpleNbox::getData( const std::string& varName,
     unitval returnval;
     
     if( varName == D_ATMOSPHERIC_C ) {
-        H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for atmospheric C" );
-        returnval = atmos_c;
+        if(date == Core::undefinedIndex())
+            returnval = atmos_c;
+        else
+            returnval = atmos_c_ts.get(date); 
     } else if( varName == D_ATMOSPHERIC_CO2 ) {
-        H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for atmospheric CO2" );
-        returnval = Ca;
+        if(date == Core::undefinedIndex())
+            returnval = Ca;
+        else
+            returnval = Ca_ts.get(date);
     } else if( varName == D_ATMOSPHERIC_C_RESIDUAL ) {
-        H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for atmospheric C residual" );
-        returnval = residual;
+        if(date == Core::undefinedIndex())
+            returnval = residual;
+        else
+            returnval = residual_ts.get(date);
     } else if( varName == D_PREINDUSTRIAL_CO2 ) {
         H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for preindustrial CO2" );
         returnval = C0;
@@ -418,17 +424,25 @@ unitval SimpleNbox::getData( const std::string& varName,
         returnval = Ftalbedo.get( date );
         
     } else if( varName == D_EARTHC ) {
-        H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for earth C" );
-        returnval = earth_c;
+        if(date == Core::undefinedIndex())
+            returnval = earth_c;
+        else
+            returnval = earth_c_ts.get(date);
     } else if( varName == D_VEGC ) {
-        H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for veg C" );
-        returnval = sum_map( veg_c );
+        if(date == Core::undefinedIndex())
+            returnval = sum_map( veg_c );
+        else
+            returnval = sum_map(veg_c_tv.get(date));
     } else if( varName == D_DETRITUSC ) {
-        H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for detritus C" );
-        returnval = sum_map( detritus_c );
+        if(date == Core::undefinedIndex())
+            returnval = sum_map( detritus_c );
+        else
+            returnval = sum_map(detritus_c_tv.get(date));
     } else if( varName == D_SOILC ) {
-        H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for soil C" );
-        returnval = sum_map( soil_c );
+        if(date == Core::undefinedIndex()) 
+            returnval = sum_map( soil_c );
+        else
+            returnval = sum_map(soil_c_tv.get(date));
     } else if( varName == D_FFI_EMISSIONS ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for ffi emissions" );
         returnval = ffiEmissions.get( date );
