@@ -22,9 +22,17 @@ ifeq ($(strip $(BOOSTROOT)),)
 BOOSTROOT	= $(HOME)/src/boost_$(BOOSTVERSION)
 endif
 ifeq ($(strip $(BOOSTLIB)),)
-## Default is the location used by the build scripts included with Boost, but
-## this can be overridden by setting BOOSTROOT explicitly in the enviornment.
-BOOSTLIB = $(BOOSTROOT)/stage/lib
+## BOOSTROOT can be customized in the environment by compiling as:
+##     BOOSTROOT=/path/to/boost_X_Y_Z make hector
+## For package manager installs, this could be in any of the following
+## locations (non-exhaustive list):
+## - /usr (boost libraries are in /usr/lib and headers/includes are in /usr/include)
+## - /usr/local
+## - /usr/local/Cellar/boost_<version_number> -- For MacOS HomeBrew installs
+## NOTE that if compiling BOOST from source, libraries may be
+## installed in BOOSTROOT/stage/lib, in which case you may need to
+## create a symbolic link from BOOSTROOT/lib to BOOSTROOT/stage/lib.
+BOOSTLIB = $(BOOSTROOT)/lib
 endif
 
 ## Gtest root
