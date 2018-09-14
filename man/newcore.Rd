@@ -4,9 +4,13 @@
 \alias{newcore}
 \title{Create and initialize a new hector instance}
 \usage{
-newcore(inifile)
+newcore(inifile, loglevel = 0L, suppresslogging = FALSE)
 }
 \arguments{
+\item{loglevel}{(int) minimum message level to output in logs (see \code{\link{loglevels}}).}
+
+\item{suppresslogging}{(bool) If true, suppress all logging (loglevel is ignored in this case).}
+
 \item{infile}{(String) name of the hector input file.}
 }
 \value{

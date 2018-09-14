@@ -2,6 +2,10 @@
 
 S3method(format,hcore)
 S3method(print,hcore)
+export(LL_DEBUG)
+export(LL_NOTICE)
+export(LL_SEVERE)
+export(LL_WARNING)
 export(enddate)
 export(getdate)
 export(isactive)

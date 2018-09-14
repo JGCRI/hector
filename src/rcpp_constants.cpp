@@ -17,13 +17,43 @@ using namespace Rcpp;
  * Message types
  */
 // [[Rcpp::export]]
-String MSG_GETDATA() {
+String GETDATA() {
 return M_GETDATA;
 }
 
 // [[Rcpp::export]]
-String MSG_SETDATA() {
+String SETDATA() {
 return M_SETDATA;
+}
+
+/* Logging levels */
+
+//' @describeIn loglevels Set logging at 'debug' level.
+//' @export
+// [[Rcpp::export]]
+int LL_DEBUG() {
+return (int) Hector::Logger::DEBUG;
+}
+
+//' @describeIn loglevels Set logging at 'notice' level.
+//' @export
+// [[Rcpp::export]]
+int LL_NOTICE() {
+return (int) Hector::Logger::NOTICE;
+}
+
+//' @describeIn loglevels Set logging at 'warning' level.
+//' @export
+// [[Rcpp::export]]
+int LL_WARNING() {
+return (int) Hector::Logger::WARNING;
+}
+
+//' @describeIn loglevels Set logging at 'severe' level.
+//' @export
+// [[Rcpp::export]]
+int LL_SEVERE() {
+return (int) Hector::Logger::SEVERE;
 }
 
 

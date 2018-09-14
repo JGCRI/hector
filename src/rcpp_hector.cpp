@@ -34,10 +34,12 @@ Hector::Core *gethcore(List core)
 //' simultaneously is supported.
 //'
 //' @param infile (String) name of the hector input file.
+//' @param loglevel (int) minimum message level to output in logs (see \code{\link{loglevels}}).
+//' @param suppresslogging (bool) If true, suppress all logging (loglevel is ignored in this case).
 //' @return handle for the Hector instance.
 //' @export
 // [[Rcpp::export]]
-List newcore(String inifile)
+List newcore(String inifile, int loglevel = 0, bool suppresslogging=false)
 {
     try {
         // Check that the configuration file exists. The easiest way to do
@@ -53,7 +55,7 @@ List newcore(String inifile)
 
         // Initialize the global logger
         Hector::Logger &glog = Hector::Logger::getGlobalLogger();
-        glog.open("hector.log", true, true, Hector::Logger::DEBUG);
+        glog.open("hector.log", false, !suppresslogging, (Hector::Logger::LogLevel) loglevel);
         H_LOG(glog, Hector::Logger::DEBUG) << "Hector logger initialized" << std::endl;
         
 

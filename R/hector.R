@@ -12,6 +12,15 @@ runtest <- function()
 }
 
 
+#### Documentation objects
+#' Hector logging levels
+#'
+#' These functions return constants that can be used in
+#' \code{\link{newcore}} to set the minimum logging level
+#'
+#' @name loglevels
+NULL
+
 #### Utility functions
 ### The makeup of an hcore object is
 ###   hcore[[1]] : index

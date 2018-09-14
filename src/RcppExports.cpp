@@ -5,23 +5,63 @@
 
 using namespace Rcpp;
 
-// MSG_GETDATA
-String MSG_GETDATA();
-RcppExport SEXP _hector_MSG_GETDATA() {
+// GETDATA
+String GETDATA();
+RcppExport SEXP _hector_GETDATA() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(MSG_GETDATA());
+    rcpp_result_gen = Rcpp::wrap(GETDATA());
     return rcpp_result_gen;
 END_RCPP
 }
-// MSG_SETDATA
-String MSG_SETDATA();
-RcppExport SEXP _hector_MSG_SETDATA() {
+// SETDATA
+String SETDATA();
+RcppExport SEXP _hector_SETDATA() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(MSG_SETDATA());
+    rcpp_result_gen = Rcpp::wrap(SETDATA());
+    return rcpp_result_gen;
+END_RCPP
+}
+// LL_DEBUG
+int LL_DEBUG();
+RcppExport SEXP _hector_LL_DEBUG() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(LL_DEBUG());
+    return rcpp_result_gen;
+END_RCPP
+}
+// LL_NOTICE
+int LL_NOTICE();
+RcppExport SEXP _hector_LL_NOTICE() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(LL_NOTICE());
+    return rcpp_result_gen;
+END_RCPP
+}
+// LL_WARNING
+int LL_WARNING();
+RcppExport SEXP _hector_LL_WARNING() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(LL_WARNING());
+    return rcpp_result_gen;
+END_RCPP
+}
+// LL_SEVERE
+int LL_SEVERE();
+RcppExport SEXP _hector_LL_SEVERE() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(LL_SEVERE());
     return rcpp_result_gen;
 END_RCPP
 }
@@ -1826,13 +1866,15 @@ BEGIN_RCPP
 END_RCPP
 }
 // newcore
-List newcore(String inifile);
-RcppExport SEXP _hector_newcore(SEXP inifileSEXP) {
+List newcore(String inifile, int loglevel, bool suppresslogging);
+RcppExport SEXP _hector_newcore(SEXP inifileSEXP, SEXP loglevelSEXP, SEXP suppressloggingSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< String >::type inifile(inifileSEXP);
-    rcpp_result_gen = Rcpp::wrap(newcore(inifile));
+    Rcpp::traits::input_parameter< int >::type loglevel(loglevelSEXP);
+    Rcpp::traits::input_parameter< bool >::type suppresslogging(suppressloggingSEXP);
+    rcpp_result_gen = Rcpp::wrap(newcore(inifile, loglevel, suppresslogging));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -1887,8 +1929,12 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_hector_MSG_GETDATA", (DL_FUNC) &_hector_MSG_GETDATA, 0},
-    {"_hector_MSG_SETDATA", (DL_FUNC) &_hector_MSG_SETDATA, 0},
+    {"_hector_GETDATA", (DL_FUNC) &_hector_GETDATA, 0},
+    {"_hector_SETDATA", (DL_FUNC) &_hector_SETDATA, 0},
+    {"_hector_LL_DEBUG", (DL_FUNC) &_hector_LL_DEBUG, 0},
+    {"_hector_LL_NOTICE", (DL_FUNC) &_hector_LL_NOTICE, 0},
+    {"_hector_LL_WARNING", (DL_FUNC) &_hector_LL_WARNING, 0},
+    {"_hector_LL_SEVERE", (DL_FUNC) &_hector_LL_SEVERE, 0},
     {"_hector_EMISSIONS_BC", (DL_FUNC) &_hector_EMISSIONS_BC, 0},
     {"_hector_RF_TOTAL", (DL_FUNC) &_hector_RF_TOTAL, 0},
     {"_hector_RF_T_ALBEDO", (DL_FUNC) &_hector_RF_T_ALBEDO, 0},
@@ -2069,7 +2115,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_FLUX_MIXED", (DL_FUNC) &_hector_FLUX_MIXED, 0},
     {"_hector_FLUX_INTERIOR", (DL_FUNC) &_hector_FLUX_INTERIOR, 0},
     {"_hector_HEAT_FLUX", (DL_FUNC) &_hector_HEAT_FLUX, 0},
-    {"_hector_newcore", (DL_FUNC) &_hector_newcore, 1},
+    {"_hector_newcore", (DL_FUNC) &_hector_newcore, 3},
     {"_hector_shutdown", (DL_FUNC) &_hector_shutdown, 1},
     {"_hector_run", (DL_FUNC) &_hector_run, 2},
     {"_hector_getdate", (DL_FUNC) &_hector_getdate, 1},
