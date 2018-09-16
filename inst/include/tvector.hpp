@@ -30,6 +30,7 @@
 #include <limits>
 #include <string>
 #include <cmath>
+#include <sstream>
 
 #include "logger.hpp"
 #include "h_exception.hpp"
@@ -109,9 +110,9 @@ const T_data &tvector<T_data>::get( double t ) const throw( h_exception ) {
     if( itr != mapdata.end() )
         return (*itr).second;
     else {
-        Logger& glog = Logger::getGlobalLogger();
-        H_LOG( glog, Logger::SEVERE) << "No data at requested time= " << round(t) << std::endl;
-        H_THROW( "tvector: invalid time requested." );
+        std::ostringstream errmsg;
+        errmsg << "No data at requested time= " << round(t) << "\n";
+        H_THROW(errmsg.str());
     }
 }
 
@@ -126,9 +127,9 @@ T_data &tvector<T_data>::get( double t ) throw( h_exception ) {
     if( itr != mapdata.end() )
         return itr->second;
     else {
-        Logger& glog = Logger::getGlobalLogger();
-        H_LOG( glog, Logger::SEVERE) << "No data at requested time= " << round(t) << std::endl; 
-        H_THROW( "tvector: invalid time requested" );
+        std::ostringstream errmsg;
+        errmsg << "No data at requested time= " << round(t) << "\n"; 
+        H_THROW(errmsg.str());
     }
 }   
 

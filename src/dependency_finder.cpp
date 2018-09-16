@@ -27,7 +27,7 @@ using namespace std;
 /*!
  * \brief Constructor.
  */
-DependencyFinder::DependencyFinder()
+DependencyFinder::DependencyFinder() : ordcomputed(false)
 {
 }
 
@@ -137,6 +137,7 @@ void DependencyFinder::createOrdering() throw ( h_exception ) {
     
     // Sorting finished, the internal ordering can now be fetched by
     // getOrdering.
+    ordcomputed = true;
 }
 
 /*!
@@ -148,9 +149,8 @@ void DependencyFinder::createOrdering() throw ( h_exception ) {
 const vector<string>& DependencyFinder::getOrdering() const {
     // Check if the ordering has been initialized. Print an error if it has
     // not.
-    if( mOrdering.empty() ){
-        Logger& globalLog = Logger::getGlobalLogger();
-        H_LOG( globalLog, Logger::WARNING ) << "Returning an empty object ordering." << endl;
+    if(!ordcomputed){
+        H_THROW("Component ordering has not yet been computed.");
     }
     return mOrdering;
 }

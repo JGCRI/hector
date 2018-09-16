@@ -64,7 +64,10 @@ private:
     // Need the typedef here as addTrackedItem returns a ObjectIndexMap
     // iterator.
     typedef std::map<const std::string, size_t> ObjectIndexMap;   
-    ObjectIndexMap::iterator addTrackedItem( const std::string& aItem ); 
+    ObjectIndexMap::iterator addTrackedItem( const std::string& aItem );
+
+    //! indicator for whether or not the ordering has been computed.
+    bool ordcomputed;
     
     //! Mapping of sector name to matrix index to avoid storing all names as
     //! strings within the matrix.

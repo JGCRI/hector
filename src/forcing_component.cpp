@@ -49,7 +49,7 @@ string ForcingComponent::getComponentName() const {
 // documentation is inherited
 void ForcingComponent::init( Core* coreptr ) {
     
-    logger.open( getComponentName(), false, Logger::getGlobalLogger().getEchoToFile(), Logger::getGlobalLogger().getMinLogLevel() );
+    logger.open( getComponentName(), false, coreptr->getGlobalLogger().getEchoToFile(), coreptr->getGlobalLogger().getMinLogLevel() );
     H_LOG( logger, Logger::DEBUG ) << "hello " << getComponentName() << std::endl;
     
     core = coreptr;
@@ -174,7 +174,7 @@ void ForcingComponent::prepareToRun() throw ( h_exception ) {
     H_ASSERT( baseyear > core->getStartDate(), "Base year must be >= model start date" );
     
     if( Ftot_constrain.size() ) {
-        Logger& glog = Logger::getGlobalLogger();
+        Logger& glog = core->getGlobalLogger();
         H_LOG( glog, Logger::WARNING ) << "Total forcing will be overwritten by user-supplied values!" << std::endl;
     }
     

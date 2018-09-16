@@ -48,7 +48,7 @@ string SulfurComponent::getComponentName() const {
 //------------------------------------------------------------------------------
 // documentation is inherited
 void SulfurComponent::init( Core* coreptr ) {
-    logger.open( getComponentName(), false, Logger::getGlobalLogger().getEchoToFile(), Logger::getGlobalLogger().getMinLogLevel() );
+    logger.open( getComponentName(), false, coreptr->getGlobalLogger().getEchoToFile(), coreptr->getGlobalLogger().getMinLogLevel() );
     H_LOG( logger, Logger::DEBUG ) << "hello " << getComponentName() << std::endl;
     core = coreptr;
 

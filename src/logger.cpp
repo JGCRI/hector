@@ -213,19 +213,6 @@ void Logger::close() {
     }
 }
 
-//------------------------------------------------------------------------------
-/*! \brief Get the instance of the global logger.
- *
- *  There will only be a single instance of the global logger which can be
- *  accessed from anywhere in the code without having to pass it around.
- *
- * \return A reference to the global logger.
- */
-Logger& Logger::getGlobalLogger() {
-    static Logger globalLogger;
-    
-    return globalLogger;
-}
 
 //------------------------------------------------------------------------------
 /*! \brief Convert the enum to a string so that it can be logged.

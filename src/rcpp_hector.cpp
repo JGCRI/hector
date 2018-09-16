@@ -53,14 +53,11 @@ List newcore(String inifile, int loglevel = 0, bool suppresslogging=false)
             Rcpp::stop(std::string("Input file ") + fn + std::string(" does not exist."));
         }
 
-        // Initialize the global logger
-        Hector::Logger &glog = Hector::Logger::getGlobalLogger();
-        glog.open("hector.log", false, !suppresslogging, (Hector::Logger::LogLevel) loglevel);
-        H_LOG(glog, Hector::Logger::DEBUG) << "Hector logger initialized" << std::endl;
-        
-
         // Create and initialize the core.
-        int coreidx = Hector::Core::mkcore();
+        int coreidx = Hector::Core::mkcore(!suppresslogging,
+                                           (Hector::Logger::LogLevel)loglevel,
+                                           false);
+                                           
         Hector::Core *hcore = Hector::Core::getcore(coreidx);
         hcore->init();
 

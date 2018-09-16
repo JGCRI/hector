@@ -348,7 +348,7 @@ void SimpleNbox::prepareToRun() throw( h_exception )
     
     if( Ca_constrain.size() ) {
         Ca_constrain.allowPartialInterp( true );
-        Logger& glog = Logger::getGlobalLogger();
+        Logger& glog = core->getGlobalLogger();
         H_LOG( glog, Logger::WARNING ) << "Atmospheric CO2 will be constrained to user-supplied values!" << std::endl;
     }
     

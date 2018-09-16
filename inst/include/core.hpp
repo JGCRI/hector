@@ -36,7 +36,7 @@ class IModelComponent;
  */
 class Core : public IVisitable {
 public:
-    Core();
+    Core(Logger::LogLevel loglvl = Logger::DEBUG, bool echotoscreen=true, bool echotofile=true);
     ~Core();
     
     const std::string& getComponentName() const;
@@ -55,6 +55,8 @@ public:
     void reset(double resetdate);
     
     void shutDown();
+
+    Logger &getGlobalLogger() {return glog;}
     
     IModelComponent* getComponentByCapability( const std::string& capabilityName
                                               ) const throw ( h_exception );
@@ -92,7 +94,9 @@ public:
                                         ) const throw ( h_exception );
 
     //! Manage cores in the global registry
-    static int mkcore();
+    static int mkcore(bool logtofile=false,
+                      Logger::LogLevel loglvl=Logger::NOTICE, 
+                      bool logtoscrn=false);
     static Core *getcore(int idx);
     static void delcore(int idx);
     
@@ -104,6 +108,8 @@ private:
     //! language's data structures, you just register the core(s) you
     //! create in this vector and refer to them by index.
     static std::vector<Core *> core_registry;
+
+    Logger glog;
         
     //! Cause all components to run their spinup procedure.
     bool run_spinup();

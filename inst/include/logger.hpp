@@ -109,8 +109,6 @@ public:
     
     void close();
     
-    static Logger& getGlobalLogger();
-
     LogLevel getMinLogLevel() const {
         return minLogLevel;
     }

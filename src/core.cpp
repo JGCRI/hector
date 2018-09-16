@@ -46,7 +46,7 @@ using namespace std;
  *
  *  \sa init()
  */
-Core::Core() :
+Core::Core(Logger::LogLevel loglvl, bool echotoscreen, bool echotofile) :
   run_name( "" ), 
   startDate( -1.0 ),
 endDate( -1.0 ),
@@ -56,6 +56,7 @@ do_spinup( true ),
 max_spinup( 2000 ),
 in_spinup( false )
 {
+    glog.open(string(MODEL_NAME), echotoscreen, echotofile, loglvl);
 }
 
 //------------------------------------------------------------------------------
@@ -104,13 +105,13 @@ void Core::init() {
     temp = new OzoneComponent();
     modelComponents[ temp->getComponentName() ] = temp;
 
-	temp = new ForcingComponent();
+    temp = new ForcingComponent();
     modelComponents[ temp->getComponentName() ] = temp;
-	temp = new slrComponent();
+    temp = new slrComponent();
     modelComponents[ temp->getComponentName() ] = temp;
-	temp = new OceanComponent();
+    temp = new OceanComponent();
     modelComponents[ temp->getComponentName() ] = temp;
-	temp = new OneLineOceanComponent();
+    temp = new OneLineOceanComponent();
     modelComponents[ temp->getComponentName() ] = temp;
     temp = new TemperatureComponent();
     modelComponents[ temp->getComponentName() ] = temp;
@@ -119,13 +120,13 @@ void Core::init() {
     modelComponents[ temp->getComponentName() ] = temp;
     temp = new HalocarbonComponent( C2F6_COMPONENT_BASE );
     modelComponents[ temp->getComponentName() ] = temp;
-	temp = new HalocarbonComponent( HFC23_COMPONENT_BASE );
+    temp = new HalocarbonComponent( HFC23_COMPONENT_BASE );
     modelComponents[ temp->getComponentName() ] = temp;
-	temp = new HalocarbonComponent( HFC32_COMPONENT_BASE );
+    temp = new HalocarbonComponent( HFC32_COMPONENT_BASE );
     modelComponents[ temp->getComponentName() ] = temp;
-	temp = new HalocarbonComponent( HFC4310_COMPONENT_BASE );
+    temp = new HalocarbonComponent( HFC4310_COMPONENT_BASE );
     modelComponents[ temp->getComponentName() ] = temp;
-	temp = new HalocarbonComponent( HFC125_COMPONENT_BASE );
+    temp = new HalocarbonComponent( HFC125_COMPONENT_BASE );
     modelComponents[ temp->getComponentName() ] = temp;
     temp = new HalocarbonComponent( HFC134a_COMPONENT_BASE );
     modelComponents[ temp->getComponentName() ] = temp;
@@ -135,53 +136,56 @@ void Core::init() {
     modelComponents[ temp->getComponentName() ] = temp;
     temp = new HalocarbonComponent( HFC245fa_COMPONENT_BASE );
     modelComponents[ temp->getComponentName() ] = temp;
-	temp = new HalocarbonComponent( SF6_COMPONENT_BASE );
+    temp = new HalocarbonComponent( SF6_COMPONENT_BASE );
     modelComponents[ temp->getComponentName() ] = temp;
-	temp = new HalocarbonComponent( HCF22_COMPONENT_BASE );
+    temp = new HalocarbonComponent( HCF22_COMPONENT_BASE );
     modelComponents[ temp->getComponentName() ] = temp;
-	temp = new HalocarbonComponent( CFC11_COMPONENT_BASE );
+    temp = new HalocarbonComponent( CFC11_COMPONENT_BASE );
     modelComponents[ temp->getComponentName() ] = temp;
     temp = new HalocarbonComponent( CFC12_COMPONENT_BASE );
     modelComponents[ temp->getComponentName() ] = temp;
-	temp = new HalocarbonComponent( CFC113_COMPONENT_BASE );
+    temp = new HalocarbonComponent( CFC113_COMPONENT_BASE );
     modelComponents[ temp->getComponentName() ] = temp;
-	temp = new HalocarbonComponent( CFC114_COMPONENT_BASE );
+    temp = new HalocarbonComponent( CFC114_COMPONENT_BASE );
     modelComponents[ temp->getComponentName() ] = temp;
-	temp = new HalocarbonComponent( CFC115_COMPONENT_BASE );
+    temp = new HalocarbonComponent( CFC115_COMPONENT_BASE );
     modelComponents[ temp->getComponentName() ] = temp;
-	temp = new HalocarbonComponent( CCl4_COMPONENT_BASE );
+    temp = new HalocarbonComponent( CCl4_COMPONENT_BASE );
     modelComponents[ temp->getComponentName() ] = temp;
-	temp = new HalocarbonComponent( CH3CCl3_COMPONENT_BASE );
+    temp = new HalocarbonComponent( CH3CCl3_COMPONENT_BASE );
     modelComponents[ temp->getComponentName() ] = temp;
-	temp = new HalocarbonComponent( HCF141b_COMPONENT_BASE );
+    temp = new HalocarbonComponent( HCF141b_COMPONENT_BASE );
     modelComponents[ temp->getComponentName() ] = temp;
-	temp = new HalocarbonComponent( HCF142b_COMPONENT_BASE );
+    temp = new HalocarbonComponent( HCF142b_COMPONENT_BASE );
     modelComponents[ temp->getComponentName() ] = temp;
-	temp = new HalocarbonComponent( halon1211_COMPONENT_BASE );
+    temp = new HalocarbonComponent( halon1211_COMPONENT_BASE );
     modelComponents[ temp->getComponentName() ] = temp;
-	temp = new HalocarbonComponent( halon1301_COMPONENT_BASE );
+    temp = new HalocarbonComponent( halon1301_COMPONENT_BASE );
     modelComponents[ temp->getComponentName() ] = temp;
-	temp = new HalocarbonComponent( halon2402_COMPONENT_BASE );
+    temp = new HalocarbonComponent( halon2402_COMPONENT_BASE );
     modelComponents[ temp->getComponentName() ] = temp;
-	temp = new HalocarbonComponent( CH3Cl_COMPONENT_BASE );
+    temp = new HalocarbonComponent( CH3Cl_COMPONENT_BASE );
     modelComponents[ temp->getComponentName() ] = temp;
-	temp = new HalocarbonComponent( CH3Br_COMPONENT_BASE );
+    temp = new HalocarbonComponent( CH3Br_COMPONENT_BASE );
     modelComponents[ temp->getComponentName() ] = temp;
-	
+    
     temp = new BlackCarbonComponent();
     modelComponents[ temp->getComponentName() ] = temp;
     temp = new OrganicCarbonComponent();
     modelComponents[ temp->getComponentName() ] = temp;
-	temp = new SulfurComponent();
+    temp = new SulfurComponent();
     modelComponents[ temp->getComponentName() ] = temp;
-	temp = new OzoneComponent();
+    temp = new OzoneComponent();
     modelComponents[ temp->getComponentName() ] = temp;
     
-    //    Logger& glog = Logger::getGlobalLogger();
     for( NameComponentIterator it = modelComponents.begin(); it != modelComponents.end(); ++it ) {
-        //        H_LOG( glog, Logger::DEBUG ) << "Initializing "
-        //            << ( *it ).second->getComponentName() << endl;
-        ( *it ).second->init( this );
+        try {
+            ( *it ).second->init( this );
+        }
+        catch(h_exception e) {
+            std::cerr << "error initializing component " << it->first;
+            throw;
+        }
     }
     
     // Set that the core has now been initialized.
@@ -228,14 +232,12 @@ void Core::setData( const string& componentName, const string& varName,
         if( varName == D_ENABLED ) {
             // The core intercepts "enabled=xxx" lines to mark components as disabled
             if( data.getUnitval(U_UNDEFINED) <= 0 ) {
-                Logger& glog = Logger::getGlobalLogger();
                 H_LOG( glog, Logger::WARNING ) << "Disabling " << componentName << endl;
                 disabledComponents.push_back( componentName );
             }
         } else if( varName == D_OUTPUT_ENABLED ) {
             // The core intercepts "output=xxx" lines to mark components as disabled
             if( data.getUnitval(U_UNDEFINED) <= 0 ) {
-                Logger& glog = Logger::getGlobalLogger();
                 H_LOG( glog, Logger::WARNING ) << "Disabling output for " << componentName << endl;
                 disabledOutputComponents.push_back( componentName );
             }
@@ -256,7 +258,6 @@ void Core::setData( const string& componentName, const string& varName,
  *  \note The memory for the given visitor must still be managed by the caller.
  */
 void Core::addVisitor( AVisitor* visitor ) {
-    Logger& glog = Logger::getGlobalLogger();
     H_LOG( glog, Logger::DEBUG) << "Core adding a visitor" << endl;
     
     modelVisitors.push_back( visitor );
@@ -280,8 +281,6 @@ void Core::addVisitor( AVisitor* visitor ) {
  */
 void Core::prepareToRun(void) throw (h_exception)
 {
-    
-    Logger& glog = Logger::getGlobalLogger();
     
     // ------------------------------------
     // 1. Go through the list of components that have been disabled and remove them
@@ -368,7 +367,6 @@ bool Core::run_spinup()
         } // for
     } // while
 
-    Logger& glog = Logger::getGlobalLogger();
     if( spunup ) {
         H_LOG( glog, Logger::NOTICE) << "Model spun up after " << step << " steps" << endl;
     } else {
@@ -407,7 +405,6 @@ bool Core::run_spinup()
  */
 
 void Core::run(double runtodate) throw ( h_exception ) {
-    Logger& glog = Logger::getGlobalLogger();
     if(runtodate < 0.0) {
         // run to the configured default enddate.  This is mainly for
         // backward compatibility.  The input run-to date will always
@@ -449,7 +446,6 @@ void Core::run(double runtodate) throw ( h_exception ) {
 void Core::reset(double resetdate)
 {
     bool rerun_spinup = false;
-    Logger &glog(Logger::getGlobalLogger());
     H_LOG(glog, Logger::NOTICE) << "Resetting model to t= " << resetdate << endl;
     if(resetdate < getStartDate()) {
         H_LOG(glog, Logger::NOTICE) << "Requested reset time before start date.  "
@@ -532,11 +528,7 @@ void Core::registerCapability( const string& capabilityName, const string& compo
                               )  throw ( h_exception ){
     H_ASSERT( !isInited, "registerCapability not available after core is initialized")
     
-    //    Logger& glog = Logger::getGlobalLogger();
-    //    H_LOG( glog, Logger::DEBUG ) << componentName << " is registering capability " << capabilityName << endl;
-    
     if( componentCapabilities.count( capabilityName ) ) {
-        Logger& glog = Logger::getGlobalLogger();
         H_LOG( glog, Logger::WARNING ) << componentName << " is declaring capability " << capabilityName << " previously registered" << endl;
     }
     componentCapabilities.insert( pair<string, string>( capabilityName, componentName ) );
@@ -573,9 +565,6 @@ int Core::checkCapability( const string& capabilityName ) {
 void Core::registerDependency( const string& capabilityName, const string& componentName ) {
     H_ASSERT( !isInited, "registerDependency not available after core is initialized")
     
-    //    Logger& glog = Logger::getGlobalLogger();
-    //    H_LOG( glog, Logger::DEBUG) << componentName << " is registering dependency " << capabilityName << endl;
-    
     componentDependencies.insert( pair<string, string>( componentName, capabilityName ) );
 }
    
@@ -610,7 +599,7 @@ unitval Core::sendMessage( const std::string& message,
         // We can treat it like a M_GETDATA message
 
         if(!isInited) {
-            H_LOG(Logger::getGlobalLogger(), Logger::SEVERE)
+            H_LOG(glog, Logger::SEVERE)
                 << "message getData not available until core is initialized."
                 << "\n\tmessage: " << message << "\tdatum: " << datum << endl;
             H_THROW("Invalid sendMessage/GETDATA.  Check global log for details.");
@@ -629,7 +618,7 @@ unitval Core::sendMessage( const std::string& message,
             // setdata messages allowed are ones keyed to a date that we
             // haven't gotten to yet.
             if(info.date == Core::undefinedIndex()) {
-                H_LOG(Logger::getGlobalLogger(), Logger::SEVERE)
+                H_LOG(glog, Logger::SEVERE)
                     << "Once core is initialized, the only SETDATA messages allowed are for dates after the current model date.\n"
                     << "\tdatum: " << datum
                     << "\tcurrent date: " << lastDate << "\tmessage date: " << info.date
@@ -643,7 +632,7 @@ unitval Core::sendMessage( const std::string& message,
         pair<componentMapIterator, componentMapIterator> itpr =
             componentInputs.equal_range(datum);
         if(itpr.first == itpr.second) {
-            H_LOG(Logger::getGlobalLogger(), Logger::SEVERE)
+            H_LOG(glog, Logger::SEVERE)
                 << "No such input: " << datum << "  Aborting.";
             H_THROW("Invalid datum in sendMessage/SETDATA.");
         }
@@ -653,7 +642,7 @@ unitval Core::sendMessage( const std::string& message,
         return info.value_unitval;
     }
     else {
-        H_LOG(Logger::getGlobalLogger(), Logger::SEVERE)
+        H_LOG(glog, Logger::SEVERE)
             << "Unknown message: " << message << "  Aborting.";
         H_THROW("Invalid message type in sendMessage.");
     } 
@@ -697,9 +686,9 @@ std::vector<Core *> Core::core_registry;
 
 /*! Create a core and add it to the registry 
  */
-int Core::mkcore()
+int Core::mkcore(bool logtofile, Logger::LogLevel loglvl, bool logtoscrn)
 {
-    core_registry.push_back(new Core);
+    core_registry.push_back(new Core(loglvl, logtoscrn, logtofile));
     return core_registry.size() - 1; 
 }
 

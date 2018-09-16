@@ -19,7 +19,7 @@ namespace Hector {
 //------------------------------------------------------------------------------
 // documentation is inherited
 void CarbonCycleModel::init( Core* core ) {
-    logger.open( getComponentName(), false, Logger::getGlobalLogger().getEchoToFile(), Logger::getGlobalLogger().getMinLogLevel() );
+    logger.open( getComponentName(), false, core->getGlobalLogger().getEchoToFile(), core->getGlobalLogger().getMinLogLevel() );
     H_LOG(logger, Logger::DEBUG) << getComponentName() << " initialized." << std::endl;
 }
 

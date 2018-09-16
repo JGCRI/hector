@@ -14,6 +14,8 @@
  *
  */
 
+#include <sstream>
+
 #include "logger.hpp"
 #include "h_exception.hpp"
 
@@ -182,17 +184,24 @@ unitval::unitval( double v, unit_types u ) {
 //-----------------------------------------------------------------------
 /*! \brief Set the variable's value and optionally error.
  *
- *  Set value. Caller has to provide assumed units, as a check.
+ *  Set value. Caller has to provide assumed units, as a check.  A
+ *  unit of U_UNDEFINED can be changed freely.  Attempting to change
+ *  any other unit will do so, but then immediately raise an
+ *  exception.  If the change in units was intentional, you must catch
+ *  this exception to continue normally.
  */
 inline
 void unitval::set( double v, unit_types u, double err=0.0 ) {
-    if( valUnits != U_UNDEFINED && u != valUnits ) {
-        Logger& glog = Logger::getGlobalLogger();
-        H_LOG( glog, Logger::WARNING) << "Warning: variable units have been redefined!" << std::endl;
-    }
+    unit_types old_units(valUnits);
     val = v;
-    valUnits = u;
     valErr = err;
+    valUnits = u; 
+    if( old_units != U_UNDEFINED && u != old_units ) {
+        std::ostringstream errmsg;
+        errmsg << "Variable units have been redefined.  Old unit = "
+               << old_units << "  New unit = " << u << "\n";
+        H_THROW(errmsg.str());
+    }
 }
 
 

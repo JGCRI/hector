@@ -25,13 +25,10 @@ namespace Hector {
  *  Backend is currently an INIReader.
  */
 h_reader::h_reader( std::string fname, readertype_t style, bool doparse ) {
-    Logger& glog = Logger::getGlobalLogger();
-    H_LOG( glog, Logger::DEBUG) << "h_reader created for " << fname << std::endl;
-    
-	filename = fname;
-	reader = NULL;
-	if( doparse )
-		parse();
+    filename = fname;
+    reader = NULL;
+    if( doparse )
+        parse();
 }
 
 /*! \brief Parse an INI-style file.
@@ -39,21 +36,16 @@ h_reader::h_reader( std::string fname, readertype_t style, bool doparse ) {
  *  Backend is currently an INIReader.
  */
 void h_reader::parse() throw( h_exception ) {
-    Logger& glog = Logger::getGlobalLogger();
-    H_LOG( glog, Logger::NOTICE) << "Parsing " << filename << std::endl;
     if(reader)
-      delete reader;
+        delete reader;
     
-	reader = new INIReader( filename );
-	int le = (*reader).ParseError();
-	if( le ) {
-		std::string s;
-		std::stringstream out;
-		out << le;
-		s = out.str();
-        H_LOG( glog, Logger::SEVERE) << "Parse error in file " << filename << " line " << s;
-		H_THROW( "Parse error in file " + filename + " line " + s )
-	}
+    reader = new INIReader( filename );
+    int le = (*reader).ParseError();
+    if( le ) {
+        std::stringstream out;
+        out << "Parse error in file " << filename << "  line: " << le;
+        H_THROW(out.str());
+    }
 }
 
 /*! \brief Search for and return a string.

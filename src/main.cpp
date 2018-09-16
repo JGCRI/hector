@@ -36,9 +36,9 @@ int main (int argc, char * const argv[]) {
     using namespace Hector;
     
 	try {
-        // Create the global log
-        Logger& glog = Logger::getGlobalLogger();
-        glog.open( string( MODEL_NAME ), true, true, Logger::DEBUG );
+        // Create the Hector core
+        Core core;
+        Logger& glog = core.getGlobalLogger();
         H_LOG( glog, Logger::NOTICE ) << MODEL_NAME << " wrapper start" << endl;
         
         // Parse the main configuration file
@@ -56,7 +56,6 @@ int main (int argc, char * const argv[]) {
         
         // Initialize the core and send input data to it
         H_LOG( glog, Logger::NOTICE ) << "Creating and initializing the core." << endl;
-        Core core;
         core.init();
         
         H_LOG( glog, Logger::NOTICE ) << "Setting data in the core." << endl;

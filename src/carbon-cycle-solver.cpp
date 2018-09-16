@@ -41,7 +41,7 @@ CarbonCycleSolver::~CarbonCycleSolver()
 //------------------------------------------------------------------------------
 // documentation is inherited
 void CarbonCycleSolver::init( Core* coreptr ) {
-    logger.open( getComponentName(), Logger::getGlobalLogger().isEnabled(), Logger::getGlobalLogger().getEchoToFile(), Logger::WARNING );
+    logger.open( getComponentName(), coreptr->getGlobalLogger().isEnabled(), coreptr->getGlobalLogger().getEchoToFile(), Logger::WARNING );
     H_LOG( logger, Logger::DEBUG ) << getComponentName() << " initialized." << std::endl;
     
     core = coreptr;
@@ -337,7 +337,7 @@ bool CarbonCycleSolver::run_spinup( const int step ) throw( h_exception )
     bool spunup = ( max_dcdt < eps_spinup.value( U_PGC ) );
     
     if( spunup ) {
-        Logger& glog = Logger::getGlobalLogger();
+        Logger& glog = core->getGlobalLogger();
         H_LOG( glog, Logger::NOTICE ) << "Carbon model is spun up after " << step << " steps" << std::endl;
         H_LOG( logger, Logger::NOTICE ) << "Carbon model spun up after " << step << " steps. Max residual dc/dt="
         << max_dcdt << " (pool " << max_dcdt_pool << ")" << std::endl;

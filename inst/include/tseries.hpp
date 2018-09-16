@@ -16,6 +16,7 @@
 
 #include <map>
 #include <limits>
+#include <sstream>
 
 #include "logger.hpp"
 #include "h_interpolator.hpp"
@@ -85,9 +86,6 @@ struct interp_helper {
         H_ASSERT( userData.size() > 1, "time series data must have size>1" );
         
         if( isDirty ) {       // data have changed; inform interpolator
- /*           Logger& glog = Logger::getGlobalLogger();
-            H_LOG( glog, Logger::DEBUG) <<  
-                "Informing interpolator of new data (" << name << ")" << std::endl; */
             double *x = new double[ userData.size() ];   // allocate
             double *y = new double[ userData.size() ];
             
@@ -151,8 +149,6 @@ struct interp_helper<unitval> {
         H_ASSERT( userData.size() > 1, "time series data must have size>1" );
         
         if( isDirty ) {       // data have changed; inform interpolator
- //           Logger& glog = Logger::getGlobalLogger();
- //           H_LOG( glog, Logger::DEBUG) << "Informing interpolator of new data (" << name << ")" << std::endl;
             double *x = new double[ userData.size() ];   // allocate
             double *y = new double[ userData.size() ];
             
@@ -210,9 +206,6 @@ struct interp_helper<unitval> {
  */
 template <class T_data>
 tseries<T_data>::tseries( ) {
-/*
-    Logger& glog = Logger::getGlobalLogger();
-    H_LOG( glog, Logger::DEBUG) << "Creating time series" << std::endl; */
     set_interp( std::numeric_limits<double>::min(), false, DEFAULT );         // default values
     dirty = false;
     name = "?";
@@ -262,10 +255,9 @@ T_data tseries<T_data>::get( double t ) const throw( h_exception ) {
                                               const_cast<tseries*>( this )->interpolator,
                                               name, dirty, endinterp_allowed, t );
 	else {
-        Logger& glog = Logger::getGlobalLogger();
-        H_LOG( glog, Logger::WARNING) << "Interpolation requested but not allowed (" << name << ") date: " << t << std::endl;
-
-		H_THROW( "Interpolation requested but not allowed" );
+            std::ostringstream errmsg;
+            errmsg << "Interpolation requested but not allowed (" << name << ") date: " << t << "\n";
+            H_THROW(errmsg.str());
     }
 }
 
@@ -287,10 +279,9 @@ T_data tseries<T_data>::get_deriv( double t ) const throw( h_exception ) {
                                                   name, dirty, endinterp_allowed, t );
     }
 	else {
-        Logger& glog = Logger::getGlobalLogger();
-        H_LOG( glog, Logger::WARNING) << "Derivative requested but not allowed (" << name << ") date: " << t << std::endl;
-
-		H_THROW( "Derivative requested but not allowed" );
+            std::ostringstream errmsg;
+            errmsg << "Derivative requested but not allowed (" << name << ") date: " << t << "\n"; 
+            H_THROW(errmsg.str());
     }
 }
 

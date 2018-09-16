@@ -74,7 +74,7 @@ void TemperatureComponent::invert_1d_2x2_matrix(double * x, double * y) {
 //------------------------------------------------------------------------------
 // documentation is inherited
 void TemperatureComponent::init( Core* coreptr ) {
-    logger.open( getComponentName(), false, Logger::getGlobalLogger().getEchoToFile(), Logger::getGlobalLogger().getMinLogLevel() );
+    logger.open( getComponentName(), false, coreptr->getGlobalLogger().getEchoToFile(), coreptr->getGlobalLogger().getMinLogLevel() );
     H_LOG( logger, Logger::DEBUG ) << "hello " << getComponentName() << std::endl;
     
     tgaveq.set( 0.0, U_DEGC, 0.0 );
@@ -176,7 +176,7 @@ void TemperatureComponent::prepareToRun() throw ( h_exception ) {
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
     
     if( tgav_constrain.size() ) {
-        Logger& glog = Logger::getGlobalLogger();
+        Logger& glog = core->getGlobalLogger();
         H_LOG( glog, Logger::WARNING ) << "Temperature will be overwritten by user-supplied values!" << std::endl;
     }
     
