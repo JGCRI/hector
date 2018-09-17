@@ -34,3 +34,26 @@ fetchvars <- function(core, dates, vars=NULL)
                        sendmessage(core, GETDATA(), v, dates, NA, '')
                    }))
 }
+
+
+#' Set values for a Hector variable
+#'
+#' This function selects a variable by its capability name and sets the
+#' requested values at the requested dates.  The units must also be supplied as
+#' a single string (heterogeneous units are not supported).  These are checked
+#' against the expected unit in the code, and an error is signaled if they don't
+#' match (i.e., there is no attempt to convert units).
+#'
+#' @param core Hector core object
+#' @param dates Vector of dates
+#' @param var Capability string for the variable to set
+#' @param value Value to set.  Must be either a single value or a vector the
+#' same length as dates.
+#' @param unit Unit string
+#' @export
+setvar <- function(core, dates, var, values, unit)
+{
+    sendmessage(core, SETDATA(), var, dates, values, unit)
+
+    invisible(NULL)
+}
