@@ -1,5 +1,8 @@
 #### Code for interacting with the hector messaging system
 
+
+default_fetchvars <- c(ATMOSPHERIC_CO2, RF_TOTAL, RF_CO2, GLOBAL_TEMP)
+
 #' Fetch results from a running Hector core
 #'
 #' This function will fetch results and return them as a data frame.  The core
@@ -16,7 +19,8 @@
 fetchvars <- function(core, dates, vars=NULL)
 {
     if(is.null(vars)) {
-        vars <- getOption('hector.default.fetchvars')
+        vars <- getOption('hector.default.fetchvars',
+                          default=sapply(default_fetchvars, function(f){f()}))
     }
 
     strt <- startdate(core)
