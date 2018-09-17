@@ -138,7 +138,7 @@ void BlackCarbonComponent::reset(double time) throw(h_exception)
     // reset.
     oldDate = time;
     H_LOG(logger, Logger::NOTICE)
-        << getComponentName() << " resetting to time= " << time << "\n";
+        << getComponentName() << " reset to time= " << time << "\n";
 }
 
 
