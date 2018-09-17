@@ -425,26 +425,48 @@ unitval TemperatureComponent::getData( const std::string& varName,
     
     unitval returnval;
     
-    H_ASSERT( date == Core::undefinedIndex(), "Only current temperatures provided" );
-    
-    if( varName == D_GLOBAL_TEMP ) {
-        returnval = tgav;
-    } else if( varName == D_GLOBAL_TEMPEQ ) {
-        returnval = tgaveq;
-    } else if( varName == D_DIFFUSIVITY ) {
-        returnval = diff;
-    } else if( varName == D_AERO_SCALE ) {
+    if(date == Core::undefinedIndex()) {
+        // If no date is supplied, return the current value 
+        if( varName == D_GLOBAL_TEMP ) {
+            returnval = tgav;
+        } else if( varName == D_GLOBAL_TEMPEQ ) {
+            returnval = tgaveq;
+        } else if( varName == D_DIFFUSIVITY ) {
+            returnval = diff;
+        } else if( varName == D_AERO_SCALE ) {
 	    returnval = alpha;
-    } else if( varName == D_FLUX_MIXED ) {
+        } else if( varName == D_FLUX_MIXED ) {
 	    returnval = flux_mixed;
-    } else if( varName == D_FLUX_INTERIOR ) {
+        } else if( varName == D_FLUX_INTERIOR ) {
 	    returnval = flux_interior;
-    } else if( varName == D_HEAT_FLUX) {
-        returnval = heatflux;
-    } else if( varName == D_ECS ) {
-        returnval = S;
-    } else {
-        H_THROW( "Caller is requesting unknown variable: " + varName );
+        } else if( varName == D_HEAT_FLUX) {
+            returnval = heatflux;
+        } else if( varName == D_ECS ) {
+            returnval = S;
+        } else {
+            H_THROW( "Caller is requesting unknown variable: " + varName ); 
+        }
+    }
+    else {
+        // If a date is supplied, get the needed value from the
+        // vectors.  Some values, such as model parameters, don't have
+        // time-indexed values, so asking for one of those with a date
+        // is an error.
+        H_ASSERT(date <= core->getCurrentDate(), "Date must be <= current date.");
+        int tstep = date - core->getStartDate();
+
+        if( varName == D_GLOBAL_TEMP ) {
+            returnval = unitval(temp[tstep], U_DEGC);
+        } else if( varName == D_GLOBAL_TEMPEQ ) {
+            returnval = unitval(temp[tstep], U_DEGC);
+        } else if( varName == D_FLUX_MIXED ) {
+	    returnval = unitval(heatflux_mixed[tstep], U_W_M2);
+        } else if( varName == D_FLUX_INTERIOR ) {
+	    returnval = unitval(heatflux_interior[tstep], U_W_M2);
+        } else if( varName == D_HEAT_FLUX) {
+            double value = heatflux_mixed[tstep] + fso*heatflux_interior[tstep];
+            returnval = unitval(value, U_W_M2);
+        }
     }
     
     return returnval;
