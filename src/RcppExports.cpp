@@ -1900,6 +1900,17 @@ BEGIN_RCPP
     return R_NilValue;
 END_RCPP
 }
+// reset
+void reset(List core, double date);
+RcppExport SEXP _hector_reset(SEXP coreSEXP, SEXP dateSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< List >::type core(coreSEXP);
+    Rcpp::traits::input_parameter< double >::type date(dateSEXP);
+    reset(core, date);
+    return R_NilValue;
+END_RCPP
+}
 // getdate
 double getdate(List core);
 RcppExport SEXP _hector_getdate(SEXP coreSEXP) {
@@ -2118,6 +2129,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_newcore", (DL_FUNC) &_hector_newcore, 3},
     {"_hector_shutdown", (DL_FUNC) &_hector_shutdown, 1},
     {"_hector_run", (DL_FUNC) &_hector_run, 2},
+    {"_hector_reset", (DL_FUNC) &_hector_reset, 2},
     {"_hector_getdate", (DL_FUNC) &_hector_getdate, 1},
     {"_hector_sendmessage", (DL_FUNC) &_hector_sendmessage, 6},
     {NULL, NULL, 0}

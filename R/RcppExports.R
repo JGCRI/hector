@@ -971,12 +971,29 @@ shutdown <- function(core) {
 #' Run Hector up through the specified time.  This function does not return the results
 #' of the run.  To get results, run \code{fetch}.
 #'
-#' @param core Handle a Hector instance that is to be run.
+#' @param core Handle to the Hector instance that is to be run.
 #' @param runtodate Date to run to.  The default is to run to the end date configured
 #' in the input file used to initialize the core.
 #' @export
 run <- function(core, runtodate = -1.0) {
     invisible(.Call('_hector_run', PACKAGE = 'hector', core, runtodate))
+}
+
+#' Reset a Hector instance to an earlier date
+#'
+#' Resetting the model returns it to its state at a previous time.  If the requested time
+#' is before the model start date (any value will do; conventionally zero is used), then
+#' the spinup will be rerun, and the model will be
+#' left ready to run at the start date.  (By contrast, resetting \emph{to} the start
+#' date leaves the model ready to run at the start date, but without having rerun the
+#' spinup.)
+#'
+#' @param core Handle for the Hector instance that is to be reset.
+#' @param date Date to reset to.  The default is to reset to the model start date with
+#' a rerun of the spinup.
+#' @export
+reset <- function(core, date = 0) {
+    invisible(.Call('_hector_reset', PACKAGE = 'hector', core, date))
 }
 
 #' Get the current date for a Hector instance

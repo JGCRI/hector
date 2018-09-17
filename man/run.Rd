@@ -7,7 +7,7 @@
 run(core, runtodate = -1)
 }
 \arguments{
-\item{core}{Handle a Hector instance that is to be run.}
+\item{core}{Handle to the Hector instance that is to be run.}
 
 \item{runtodate}{Date to run to.  The default is to run to the end date configured
 in the input file used to initialize the core.}
