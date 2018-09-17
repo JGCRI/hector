@@ -48,7 +48,7 @@ export GTLIB GTINC
 ## sources in the top level directory
 CXXSRCS	= $(wildcard *.cpp)
 MAINS   = main.cpp main-api.cpp
-RCPPS   = $(wildcard rcpp_*.cpp)
+RCPPS   = $(wildcard rcpp_*.cpp) RcppExports.cpp
 CXXSRCS := $(filter-out $(MAINS), $(CXXSRCS))
 CXXSRCS := $(filter-out $(RCPPS), $(CXXSRCS))
 CSRCS   = $(wildcard *.c)
