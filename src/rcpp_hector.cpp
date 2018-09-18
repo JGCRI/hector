@@ -21,7 +21,7 @@ Hector::Core *gethcore(List core)
     int idx = core[0];
     Hector::Core *hcore = Hector::Core::getcore(idx);
     if(!hcore) {
-        Rcpp::stop("hector::run:  invalid index");
+        Rcpp::stop("Invalid or inactive hcore object");
     }
     return hcore;
 }
@@ -296,7 +296,7 @@ DataFrame sendmessage(List core, String msgtype, String capability, NumericVecto
 
     // Assemble a data frame with the results: date, var, value, units
     DataFrame result =
-        DataFrame::create(Named("date")=date, Named("var")=capability,
+        DataFrame::create(Named("year")=date, Named("variable")=capability,
                           Named("value")=valueout, Named("units")=unitsout);
 
     return result;
