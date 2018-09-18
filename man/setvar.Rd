@@ -13,10 +13,10 @@ setvar(core, dates, var, values, unit)
 
 \item{var}{Capability string for the variable to set}
 
-\item{unit}{Unit string}
-
-\item{value}{Value to set.  Must be either a single value or a vector the
+\item{values}{Values to set.  Must be either a single value or a vector the
 same length as dates.}
+
+\item{unit}{Unit string}
 }
 \description{
 This function selects a variable by its capability name and sets the

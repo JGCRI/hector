@@ -11,16 +11,6 @@ runtest <- function()
     shutdown(core)
 }
 
-
-#### Documentation objects
-#' Hector logging levels
-#'
-#' These functions return constants that can be used in
-#' \code{\link{newcore}} to set the minimum logging level
-#'
-#' @name loglevels
-NULL
-
 #### Utility functions
 ### The makeup of an hcore object is
 ###   hcore[[1]] : index
@@ -28,12 +18,6 @@ NULL
 ###   hcore[[3]] : end date
 ###   hcore[[4]] : config file name
 ###   hcore[[5]] : logical: is active?
-
-#' Utility functions for Hector instances
-#'
-#' @param core Hector instance to operate on
-#' @name hectorutil
-NULL
 
 #' \strong{isactive}: Indicate whether a Hector instance is active
 #' @rdname hectorutil
@@ -69,23 +53,23 @@ enddate <- function(core)
 
 #' @rdname hectorutil
 #' @export
-format.hcore <- function(core)
+format.hcore <- function(x, ...)
 {
-    if(!isactive(core)) {
+    if(!isactive(x)) {
         'Hector core (INACTIVE)'
     }
     else {
-        cdate <- getdate(core)
+        cdate <- getdate(x)
         sprintf('Hector core\nStart date:\t%d\nEnd date:\t%d\nCurrent date:\t%d\nInput file:\t%s',
-                as.integer(core[[2]]), as.integer(core[[3]]), as.integer(cdate),
-                core[[4]])
+                as.integer(x[[2]]), as.integer(x[[3]]), as.integer(cdate),
+                x[[4]])
     }
 }
 
 #' @rdname hectorutil
 #' @export
-print.hcore <- function(core)
+print.hcore <- function(x, ...)
 {
-    cat(format(core))
+    cat(format(x, ...))
 }
 

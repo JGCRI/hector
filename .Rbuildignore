@@ -5,3 +5,17 @@
 ^.*\.o$
 ^misc$
 ^output$
+^scripts$
+^CONTRIBUTING.md$
+^LICENSE.md$
+^Makefile$
+^src/makefile.standalone$
+^changelog.txt$
+^logs$
+^project_files$
+^test_hector.sh$
+^.travis.yml$
+^.github$
+^src/hector$
+^src/.*\.txt$
+^src/.*\.a$

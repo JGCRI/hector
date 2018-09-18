@@ -33,7 +33,8 @@ Hector::Core *gethcore(List core)
 //' argument for all functions that operate on the instance.  Creating multiple instances
 //' simultaneously is supported.
 //'
-//' @param infile (String) name of the hector input file.
+//' @include aadoc.R
+//' @param inifile (String) name of the hector input file.
 //' @param loglevel (int) minimum message level to output in logs (see \code{\link{loglevels}}).
 //' @param suppresslogging (bool) If true, suppress all logging (loglevel is ignored in this case).
 //' @return handle for the Hector instance.
@@ -112,8 +113,8 @@ List newcore(String inifile, int loglevel = 0, bool suppresslogging=false)
 //' This function should be called as \code{mycore <- shutdown(mycore)} so that the change
 //' from active to inactive will be recorded in the caller.
 //'
-//' @param Handle to the Hector instance that is to be shut down.
-//' @return The Hector handle, modified to show that it is no longer active.
+//' @param core Handle to a Hector instance
+//' @return The Hector handle, modified to show that it is no longer active
 //' @export
 // [[Rcpp::export]]
 List shutdown(List core)
@@ -182,12 +183,9 @@ void reset(List core, double date=0)
 }
 
 
-//' Get the current date for a Hector instance
+//' \strong{getdate}: Get the current date for a Hector instance
 //'
-//' The "current date" is the last year that the Hector instance has completed.
-//'
-//' @param core Handle to a Hector instance
-//' @return The current date in the Hector instance
+//' @rdname hectorutil
 //' @export
 // [[Rcpp::export]]
 double getdate(List core)

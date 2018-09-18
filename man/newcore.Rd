@@ -7,11 +7,11 @@
 newcore(inifile, loglevel = 0L, suppresslogging = FALSE)
 }
 \arguments{
+\item{inifile}{(String) name of the hector input file.}
+
 \item{loglevel}{(int) minimum message level to output in logs (see \code{\link{loglevels}}).}
 
 \item{suppresslogging}{(bool) If true, suppress all logging (loglevel is ignored in this case).}
-
-\item{infile}{(String) name of the hector input file.}
 }
 \value{
 handle for the Hector instance.
