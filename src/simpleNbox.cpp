@@ -67,6 +67,9 @@ void SimpleNbox::init( Core* coreptr ) {
     // Register the inputs we can receive from outside
     core->registerInput(D_FFI_EMISSIONS, getComponentName());
     core->registerInput(D_LUC_EMISSIONS, getComponentName());
+    // Allow other code to query the inputs, if desired
+    core->registerCapability(D_FFI_EMISSIONS, getComponentName());
+    core->registerCapability(D_LUC_EMISSIONS, getComponentName());
 }
 
 //------------------------------------------------------------------------------

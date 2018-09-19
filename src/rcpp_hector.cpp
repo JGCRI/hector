@@ -62,12 +62,9 @@ List newcore(String inifile, int loglevel = 0, bool suppresslogging=false)
         Hector::Core *hcore = Hector::Core::getcore(coreidx);
         hcore->init();
 
-        Rcout << "Core initialized\n";
-
         try {
             Hector::INIToCoreReader coreParser(hcore);
             coreParser.parse(inifile);
-            Rcout << "Core parser run\n";
         }
         catch(h_exception e) {
             std::stringstream msg;
