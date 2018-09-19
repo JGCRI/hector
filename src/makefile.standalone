@@ -88,12 +88,9 @@ gtest:
 	if [ ! -f $(GTROOT)/config.status ] ; then cd $(GTROOT) && ./configure; fi
 	$(MAKE) -C $(GTROOT)
 
-clean:
-	for dir in $(DIRS); do \
-	    $(MAKE) -C $$dir clean; \
-	done
-	$(MAKE) -C testing clean
-	-rm hector *.o
+clean: 
+	-$(MAKE) -C testing clean
+	-rm hector *.o *.d
 	-rm -rf build
 
 chkvar:
