@@ -13,11 +13,26 @@ fetchvars(core, dates, vars = NULL)
 dates that are between the start date and the latest date currently run.}
 
 \item{vars}{List (or vector) of capability strings defining the variables to
-be fetched in the result.  By default, the list in the
-\code{hector.default.fetchvars} option is used.}
+be fetched in the result.}
 }
 \description{
 This function will fetch results and return them as a data frame.  The core
 must be active in order for this to work; attempting to fetch results from a
 core that has been shut down will cause an error.
+}
+\details{
+The variables to fetch should be given as a sequence of character strings
+corresponding to the capabilities declared by hector components.  These
+strings should be generated using the capability identifier functions (see
+below for a list of documentation pages for these).
+
+The list of variables to fetch if you don't specify \code{vars} is stored in
+the \code{hector.default.fetchvars} option.  If this option is also unset, then
+the default variable list is CO2 concentration, total radiative forcing, CO2
+forcing, and global mean temperature.
+}
+\seealso{
+\link{concentrations}, \link{emissions}, \link{forcings},
+\link{carboncycle}, \link{haloemiss}, \link{haloforcings}, \link{methane},
+\link{ocean}, \link{so2}, \link{temperature}, \link{parameters}
 }

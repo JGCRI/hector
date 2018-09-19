@@ -1,9 +1,9 @@
 Package: hector
-Title: What the Package Does (one line, title case)
-Version: 0.0.0.9000
+Title: Run the Hector Simple Climate Model
+Version: 0.1.0
 Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
-Depends: R (>= 3.3.3)
+Description: Provides R bindings for the Hector Simple Climate Model.
+Depends: R (>= 3.3)
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
@@ -11,6 +11,7 @@ LinkingTo: Rcpp
 Imports: Rcpp
 RoxygenNote: 6.0.1
 Suggests: testthat
+SystemRequirements: Boost C++ libraries
 Collate: 
     'aadoc.R'
     'RcppExports.R'

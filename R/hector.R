@@ -2,13 +2,23 @@
 #' @importFrom Rcpp sourceCpp
 NULL
 
-#' Run a test of basic hector functionality
-#' @keywords internal
-runtest <- function()
+#' Run a single scenario
+#'
+#' Run the scenario defined by the input file and return a data frame containing
+#' results for the default variable list.  The default variable list can be
+#' changed by setting the \code{hector.default.fetchvars} option, as described
+#' in \code{\link{fetchvars}}.
+#'
+#' @param infile INI-format file containing the scenario definition
+#' @return Data frame containing Hector output for default variables
+#' @export
+runscenario <- function(infile)
 {
-    core <- newcore('inst/input/hector_rcp45.ini')
+    core <- newcore(infile)
     run(core)
+    d <- fetchvars(core, seq(startdate(core), enddate(core)))
     shutdown(core)
+    d
 }
 
 #### Utility functions

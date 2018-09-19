@@ -1,5 +1,6 @@
 ## R system cruft
-^.*\.Rproj$ 
+^.*\.Rproj$
+^hector.Rproj$
 ^\.Rproj\.user$
 
 ## Github config, license, CI, etc.
@@ -22,4 +23,5 @@
 ^src/.*\.d$
 ^src/main.*$
 ^src/makefile.standalone$
+^src/testing$
 ^misc$

@@ -164,7 +164,7 @@ void Logger::open( const string& logName, bool echoToScreen,
     
         loggerStream.rdbuf( buff );
     } else {
-        loggerStream.rdbuf( cout.rdbuf() );
+        loggerStream.rdbuf( STDOUT_STREAM.rdbuf() );
     }
     enabled = echoToScreen || echoToFile;
 
