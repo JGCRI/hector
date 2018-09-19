@@ -183,7 +183,7 @@ void Core::init() {
             ( *it ).second->init( this );
         }
         catch(h_exception e) {
-            std::cerr << "error initializing component " << it->first;
+            H_LOG(glog, Logger::SEVERE) << "error initializing component " << it->first;
             throw;
         }
     }

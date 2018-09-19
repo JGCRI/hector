@@ -23,6 +23,14 @@
 #include <sys/types.h> 
 #endif
 
+#ifdef USE_RCPP
+// This should be defined only if compiling as an R package
+#include <Rcpp.h>
+#define STDOUT_STREAM Rcpp::Rcout
+#else
+#define STDOUT_STREAM std::cout
+#endif
+
 namespace Hector {
 
 using namespace std;
@@ -39,7 +47,7 @@ using namespace std;
 Logger::LoggerStreamBuf::LoggerStreamBuf( const bool echoToScreen )
 :filebuf()
 {
-    consoleBuf = echoToScreen ? cout.rdbuf() : 0;
+    consoleBuf = echoToScreen ? STDOUT_STREAM.rdbuf() : 0;
 }
 
 //------------------------------------------------------------------------------

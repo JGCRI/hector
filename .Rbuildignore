@@ -1,21 +1,25 @@
-^.*\.Rproj$
+## R system cruft
+^.*\.Rproj$ 
 ^\.Rproj\.user$
-^main.*\.cpp$
-^.*\.d$
-^.*\.o$
-^misc$
-^output$
-^scripts$
+
+## Github config, license, CI, etc.
 ^CONTRIBUTING.md$
 ^LICENSE.md$
-^Makefile$
-^src/makefile.standalone$
 ^changelog.txt$
-^logs$
-^project_files$
-^test_hector.sh$
 ^.travis.yml$
 ^.github$
+
+## Files supporting stand-alone hector.
+^Makefile$
+^project_files$
+^output$
+^scripts$
+^logs$
+^test_hector.sh$
 ^src/hector$
 ^src/.*\.txt$
 ^src/.*\.a$
+^src/.*\.d$
+^src/main.*$
+^src/makefile.standalone$
+^misc$

@@ -3,7 +3,7 @@
 ##   * BOOSTLIB   : Location of compiled boost libraries
 
 
-PKG_CPPFLAGS = -I../inst/include -I${BOOSTROOT}
+PKG_CPPFLAGS = -I../inst/include -I${BOOSTROOT} -DUSE_RCPP -Wno-c++11-extensions
 
 PKG_LIBS = -L${BOOSTLIB} -Wl,-rpath ${BOOSTLIB} -lboost_system -lboost_filesystem
 
