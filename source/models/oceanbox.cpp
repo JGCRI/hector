@@ -430,7 +430,6 @@ void oceanbox::chem_equilibrate( const unitval current_Ca ) {
 	// to minimize abs(f-f0), where f is computed by the csys chemistry code and f0 passed in
     
 	double alk_min = 2100e-6, alk_max = 2750e-6;
-	double alk = ( alk_min + alk_max ) / 2;
 	double f_target = preindustrial_flux.value( U_PGC_YR );
     
 	// Find a best-guess point; the GSL algorithm seems to need it
@@ -449,7 +448,7 @@ void oceanbox::chem_equilibrate( const unitval current_Ca ) {
 		OB_LOG( logger, Logger::DEBUG) << setw( w ) << alk1 << setw( w ) << atmosphere_flux
         << setw( w ) << f_target << setw( w ) << diff << endl;
 	}
-	alk = min_point;        // this is our best guess
+	double alk = min_point;        // this is our best guess
 	OB_LOG( logger, Logger::DEBUG) << "Best guess minimum is at " << alk << endl;
     
     FMinWrapper fFunctor(this, f_target);
