@@ -11,7 +11,6 @@
  *  Created by Ben on 05/19/2011.
  *
  */
-// changed back to using only concentrations
 
 #include <math.h>
 #include "components/ch4_component.hpp"
@@ -58,7 +57,7 @@ void CH4Component::init( Core* coreptr ) {
     core->registerCapability( D_ATMOSPHERIC_CH4, getComponentName() );
     core->registerCapability( D_PREINDUSTRIAL_CH4, getComponentName() );
     core->registerDependency( D_LIFETIME_OH, getComponentName() ); 
-    // input data that we can accept
+    // ...and what input data that we can accept
     core->registerInput(D_EMISSIONS_CH4, getComponentName());
 }
 
@@ -66,8 +65,7 @@ void CH4Component::init( Core* coreptr ) {
 // documentation is inherited
 unitval CH4Component::sendMessage( const std::string& message,
                                   const std::string& datum,
-                                  const message_data info ) throw ( h_exception )
-{
+                                  const message_data info ) throw ( h_exception ) {
     unitval returnval;
     
     if( message==M_GETDATA ) {          //! Caller is requesting data
@@ -89,27 +87,26 @@ unitval CH4Component::sendMessage( const std::string& message,
 //------------------------------------------------------------------------------
 // documentation is inherited
 void CH4Component::setData( const string& varName,
-                            const message_data& data ) throw ( h_exception )
-{
+                            const message_data& data ) throw ( h_exception ) {
     try {
          if( varName ==  D_PREINDUSTRIAL_CH4  ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            M0 = data.getUnitval(U_PPBV_CH4);
+            M0 = data.getUnitval( U_PPBV_CH4 );
          } else if( varName == D_EMISSIONS_CH4 ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            CH4_emissions.set(data.date, data.getUnitval(U_TG_CH4));
+            CH4_emissions.set(data.date, data.getUnitval( U_TG_CH4 ));
         } else if( varName == D_LIFETIME_SOIL ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            Tsoil = data.getUnitval(U_YRS);
+            Tsoil = data.getUnitval( U_YRS );
          } else if( varName == D_LIFETIME_STRAT ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
-            Tstrat = data.getUnitval(U_YRS);
+            Tstrat = data.getUnitval( U_YRS );
          } else if( varName == D_CONVERSION_CH4 ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
-            UC_CH4 = data.getUnitval(U_TG_PPBV);
+            UC_CH4 = data.getUnitval( U_TG_PPBV );
          } else if( varName == D_NATURAL_CH4 ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
-            CH4N = data.getUnitval(U_TG_CH4);
+            CH4N = data.getUnitval( U_TG_CH4 );
          }
 		else {
             H_THROW( "Unknown variable name while parsing " + getComponentName() + ": "
@@ -126,43 +123,40 @@ void CH4Component::prepareToRun() throw ( h_exception ) {
     
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
 	oldDate = core->getStartDate();
-    CH4.set(oldDate, M0);  // set the first year's value  
+    CH4.set( oldDate, M0 );  // set the first year's value
  }
 
 //------------------------------------------------------------------------------
 // documentation is inherited
 void CH4Component::run( const double runToDate ) throw ( h_exception ) {
 	H_ASSERT( !core->inSpinup() && runToDate-oldDate == 1, "timestep must equal 1" );
-  
      
     // modified from Wigley et al, 2002
-   const double current_ch4em = CH4_emissions.get( runToDate ).value( U_TG_CH4 ); 
-   const double current_toh = core->sendMessage( M_GETDATA, D_LIFETIME_OH, runToDate ).value( U_YRS );
+    // https://doi.org/10.1175/1520-0442(2002)015%3C2690:RFDTRG%3E2.0.CO;2
+    const double current_ch4em = CH4_emissions.get( runToDate ).value( U_TG_CH4 );
+    const double current_toh = core->sendMessage( M_GETDATA, D_LIFETIME_OH, runToDate ).value( U_YRS );
     H_LOG( logger, Logger::DEBUG ) << "Year " << runToDate << " current_toh = " << current_toh << std::endl;
    
-
-   const double ch4n =  CH4N.value( U_TG_CH4 );
-   const double emisTocon = ( current_ch4em + ch4n ) / UC_CH4.value( U_TG_PPBV ); 
-   double previous_ch4 = M0.value( U_PPBV_CH4 ); 
+    const double ch4n =  CH4N.value( U_TG_CH4 );
+    const double emisTocon = ( current_ch4em + ch4n ) / UC_CH4.value( U_TG_PPBV );
+    double previous_ch4 = M0.value( U_PPBV_CH4 );
      
     H_LOG( logger, Logger::DEBUG ) << "Year " << runToDate << " previous CH4 = " << previous_ch4 << std::endl;
     
-    if (runToDate!=oldDate)
-    {
-     previous_ch4 = CH4.get( oldDate );
+    if (runToDate!=oldDate) {
+        previous_ch4 = CH4.get( oldDate );
     }
     
-   const double soil_sink = previous_ch4/Tsoil.value( U_YRS );   
-   const double strat_sink = previous_ch4/Tstrat.value( U_YRS ); 
-   const double oh_sink = previous_ch4/ current_toh;
+    const double soil_sink = previous_ch4 / Tsoil.value( U_YRS );
+    const double strat_sink = previous_ch4 / Tstrat.value( U_YRS );
+    const double oh_sink = previous_ch4 / current_toh;
        
-  const double dCH4 = emisTocon - soil_sink - strat_sink - oh_sink; // change in CH4 concentration to be added to previous_ch4
-  H_LOG( logger, Logger::DEBUG ) << "Year " << runToDate << " dCH4 = " << dCH4 << std::endl;
+    const double dCH4 = emisTocon - soil_sink - strat_sink - oh_sink; // change in CH4 concentration to be added to previous_ch4
 
-   CH4.set( runToDate, unitval( previous_ch4 + dCH4, U_PPBV_CH4 ) );
+    CH4.set( runToDate, unitval( previous_ch4 + dCH4, U_PPBV_CH4 ) );
 
-   oldDate = runToDate;
-   H_LOG( logger, Logger::DEBUG ) << runToDate << " CH4 concentration = " << CH4.get( runToDate ) << std::endl;
+    oldDate = runToDate;
+    H_LOG( logger, Logger::DEBUG ) << runToDate << " CH4 concentration = " << CH4.get( runToDate ) << std::endl;
 }
 
 //------------------------------------------------------------------------------
@@ -185,14 +179,12 @@ unitval CH4Component::getData( const std::string& varName,
     return returnval;
 }
 
-void CH4Component::reset(double time) throw(h_exception)
-{
+void CH4Component::reset(double time) throw(h_exception) {
     // reset the internal time counter and truncate concentration time
     // series
     oldDate = time;
     CH4.truncate(time);
-    H_LOG(logger, Logger::NOTICE)
-        << getComponentName() << " reset to time= " << time << "\n";
+    H_LOG(logger, Logger::NOTICE) << getComponentName() << " reset to time= " << time << "\n";
 }
 
 //------------------------------------------------------------------------------

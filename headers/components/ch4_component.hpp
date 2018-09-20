@@ -24,8 +24,6 @@ namespace Hector {
   
 //------------------------------------------------------------------------------
 /*! \brief Methane model component.
- *
- *  This doesn't do much yet.
  */
 class CH4Component : public IModelComponent {
     
@@ -62,11 +60,11 @@ public:
      //! emissions time series
     tseries<unitval> CH4_emissions;
     tseries<unitval> CH4;  // CH4 concentrations
-    unitval M0;     // preindustrial methane
+    unitval M0;     // preindustrial methane, Tg
     unitval UC_CH4;  // conversion factor between emissions and concentration
-    unitval CH4N;   // natural emissions
-    unitval Tsoil;  // CH4 loss to soil
-    unitval Tstrat; //  CH4 loss to stratosphere
+    unitval CH4N;   // natural emissions, Tg
+    unitval Tsoil;  // CH4 loss to soil, Tg
+    unitval Tstrat; //  CH4 loss to stratosphere, Tg
 
     // logger
     Logger logger;
