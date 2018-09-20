@@ -142,13 +142,13 @@ void N2OComponent::run( const double runToDate ) throw ( h_exception ) {
 
     // Decay constant varies based on N2O concentrations
     // This is Eq. B8 in Ward and Mahowald, 2014
-    TAU_N2O.set( runToDate, unitval( TN2O0.value( U_YRS ) * ( pow( previous_n2o /N0.value( U_PPBV_N2O ), -0.05 ) ), U_UNITLESS ) );
+    TAU_N2O.set( runToDate, unitval( TN2O0.value( U_YRS ) * ( pow( previous_n2o /N0.value( U_PPBV_N2O ), -0.05 ) ), U_YRS ) );
     
     // Current emissions are the sum of natural and anthropogenic sources
     const double current_n2oem = N2O_emissions.get( runToDate ).value( U_TG_N ) + N2O_natural_emissions.get( runToDate ).value( U_TG_N );
     
     // This calculation follows Eq. B7 in Ward and Mahowald 2014
-    const double dN2O = current_n2oem / UC_N2O - previous_n2o / TAU_N2O.get( runToDate ).value( U_UNITLESS );
+    const double dN2O = current_n2oem / UC_N2O - previous_n2o / TAU_N2O.get( runToDate ).value( U_YRS );
 
     N2O.set( runToDate, unitval( previous_n2o + dN2O, U_PPBV_N2O ) );
 
