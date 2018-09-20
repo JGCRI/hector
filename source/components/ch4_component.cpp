@@ -156,13 +156,13 @@ void CH4Component::run( const double runToDate ) throw ( h_exception ) {
    const double strat_sink = previous_ch4/Tstrat.value( U_YRS ); 
    const double oh_sink = previous_ch4/ current_toh;
        
-  const double dCH4 = emisTocon - soil_sink - strat_sink - oh_sink; //change in CH4 concentration to be added to previous_ch4
+  const double dCH4 = emisTocon - soil_sink - strat_sink - oh_sink; // change in CH4 concentration to be added to previous_ch4
   H_LOG( logger, Logger::DEBUG ) << "Year " << runToDate << " dCH4 = " << dCH4 << std::endl;
 
    CH4.set( runToDate, unitval( previous_ch4 + dCH4, U_PPBV_CH4 ) );
 
    oldDate = runToDate;
-   H_LOG( logger, Logger::DEBUG ) << "Year " << runToDate << " CH4 concentraion = " << CH4.get( runToDate ) << std::endl;
+   H_LOG( logger, Logger::DEBUG ) << runToDate << " CH4 concentration = " << CH4.get( runToDate ) << std::endl;
 }
 
 //------------------------------------------------------------------------------

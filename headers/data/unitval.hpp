@@ -63,10 +63,9 @@ enum unit_types {
                     U_MOL_YR,
                     U_TG_CO,
                     U_TG_CH4,
-                    U_TG_N2O,
+                    U_TG_N,
                     U_TG_NMVOC,
                     U_DU_O3,
-                    U_TG_N,             // NOX emissions given in TG-N/yr
                     U_GG_S,             // SO2 emissions in Gg-S/yr
 
                     U_TG_PPBV,          // Conversion for CH4 and N2O emission to concentrations
@@ -175,8 +174,8 @@ unitval::unitval() {
  */
 inline
 unitval::unitval( double v, unit_types u ) {
-    val=v;
-    valUnits=u;
+    val = v;
+    valUnits = u;
 }
 
 //-----------------------------------------------------------------------
@@ -204,7 +203,7 @@ void unitval::set( double v, unit_types u, double err=0.0 ) {
 inline
 double unitval::value( unit_types u ) const throw( h_exception ) {
     H_ASSERT( u==valUnits, "variable is not of this type.  Expected: " + unitsName(valUnits) +
-              "got: " + unitsName(u) );
+             "; got: " + unitsName(u) );
     return( val );
 }
 
