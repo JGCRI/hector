@@ -72,16 +72,6 @@ List newcore(String inifile, int loglevel = 0, bool suppresslogging=false)
             Rcpp::stop(msg.str());
         }
 
-
-        // The Following three lines of code are occasionally useful for
-        // generating debugging output; however, they leak memory.
-        // Therefore, they should only be used for short tests where
-        // you need the CSV output to compare to a benchmark run.
-        // TODO:  Remove these before release.
-        // std::ofstream *output = new std::ofstream("rcpp-test-output.csv");
-        // Hector::CSVOutputStreamVisitor *csvosv = new Hector::CSVOutputStreamVisitor(*output);
-        // hcore->addVisitor(csvosv);
-
         // Run the last bit of setup
         hcore->prepareToRun();
 
@@ -116,8 +106,6 @@ List newcore(String inifile, int loglevel = 0, bool suppresslogging=false)
 // [[Rcpp::export]]
 List shutdown(List core)
 {
-    // TODO: check that the list supplied is an hcore object
-
     int idx = core[0];
     Hector::Core::delcore(idx);
 
