@@ -1,4 +1,4 @@
-# Output from hector version 2.0
+# Output from hector version 2.1.0
 year,run_name,spinup,component,variable,value,units
 1,rcp45,1,OH,TAU_OH,6.6,Years
 1,rcp45,1,CH4,CH4,653,ppbv CH4
