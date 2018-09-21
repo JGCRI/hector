@@ -79,7 +79,7 @@ List newcore(String inifile, int loglevel = 0, bool suppresslogging=false)
         double strtdate = hcore->getStartDate();
         double enddate = hcore->getEndDate();
 
-        List rv= List::create(coreidx, strtdate, enddate, inifile, true);
+        List rv= List::create(coreidx, strtdate, enddate, inifile);
         rv.attr("class") = "hcore";
         return rv;
     }
@@ -101,15 +101,13 @@ List newcore(String inifile, int loglevel = 0, bool suppresslogging=false)
 //' from active to inactive will be recorded in the caller.
 //'
 //' @param core Handle to a Hector instance
-//' @return The Hector handle, modified to show that it is no longer active
+//' @return The Hector instance handle
 //' @export
 // [[Rcpp::export]]
 List shutdown(List core)
 {
     int idx = core[0];
     Hector::Core::delcore(idx);
-
-    core[4] = false;
 
     return core;
 }
@@ -123,9 +121,10 @@ List shutdown(List core)
 //' @param core Handle to the Hector instance that is to be run.
 //' @param runtodate Date to run to.  The default is to run to the end date configured
 //' in the input file used to initialize the core.
+//' @return The Hector instance handle
 //' @export
 // [[Rcpp::export]]
-void run(List core, double runtodate=-1.0)
+List run(List core, double runtodate=-1.0)
 {
     Hector::Core *hcore = gethcore(core);
     try {
@@ -136,6 +135,8 @@ void run(List core, double runtodate=-1.0)
         msg << "Error while running hector:  " << e;
         Rcpp::stop(msg.str());
     }
+
+    return core;
 }
 
 
@@ -153,7 +154,7 @@ void run(List core, double runtodate=-1.0)
 //' a rerun of the spinup.
 //' @export
 // [[Rcpp::export]]
-void reset(List core, double date=0)
+List reset(List core, double date=0)
 {
     Hector::Core *hcore = gethcore(core);
     try {
@@ -165,6 +166,7 @@ void reset(List core, double date=0)
             << " :  " << e;
         Rcpp::stop(msg.str());
     }
+    return core;
 }
 
 
@@ -283,4 +285,14 @@ DataFrame sendmessage(List core, String msgtype, String capability, NumericVecto
                           Named("value")=valueout, Named("units")=unitsout);
 
     return result;
+}
+
+// helper for isactive()
+// [[Rcpp::export]]
+bool chk_core_valid(List core)
+{
+    int idx = core[0];
+    Hector::Core *hcore = Hector::Core::getcore(idx);
+    
+    return hcore != NULL;
 }

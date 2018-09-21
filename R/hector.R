@@ -27,18 +27,16 @@ runscenario <- function(infile)
 ###   hcore[[2]] : start date
 ###   hcore[[3]] : end date
 ###   hcore[[4]] : config file name
-###   hcore[[5]] : logical: is active?
 
 #' \strong{isactive}: Indicate whether a Hector instance is active
 #' @rdname hectorutil
 #' @export
 isactive <- function(core)
 {
-    ## This is not super robust, since it's always possible that a user will
-    ## shut down a core without recording the fact.
-    ## TODO: replace this with a function that checks the core registry, which
-    ## is always accurate.
-    core[[5]]
+    if(!inherits(core, 'hcore')) {
+        stop('Object supplied is not an hcore class instance.')
+    }
+    chk_core_valid(core)
 }
 
 #' \strong{startdate}: Report the start date for a Hector instance
@@ -46,6 +44,9 @@ isactive <- function(core)
 #' @export
 startdate <- function(core)
 {
+    if(!inherits(core, 'hcore')) {
+        stop('Object supplied is not an hcore class instance.')
+    }
     core[[2]]
 }
 
@@ -54,6 +55,9 @@ startdate <- function(core)
 #' @export
 enddate <- function(core)
 {
+    if(!inherits(core, 'hcore')) {
+        stop('Object supplied is not an hcore class instance.')
+    }
     core[[3]]
 }
 
@@ -61,7 +65,14 @@ enddate <- function(core)
 
 #### Methods for hcore objects
 
-#' @rdname hectorutil
+#' Hector instance object methods
+#'
+#' @param x Hector core object
+#' @param ... Additional arguments
+#' @name methods
+NULL
+
+#' @describeIn methods Format method
 #' @export
 format.hcore <- function(x, ...)
 {
@@ -76,7 +87,7 @@ format.hcore <- function(x, ...)
     }
 }
 
-#' @rdname hectorutil
+#' @describeIn methods Print method
 #' @export
 print.hcore <- function(x, ...)
 {

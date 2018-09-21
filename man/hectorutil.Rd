@@ -6,8 +6,6 @@
 \alias{isactive}
 \alias{startdate}
 \alias{enddate}
-\alias{format.hcore}
-\alias{print.hcore}
 \title{Utility functions for Hector instances}
 \usage{
 getdate(core)
@@ -17,10 +15,6 @@ isactive(core)
 startdate(core)
 
 enddate(core)
-
-\method{format}{hcore}(x, ...)
-
-\method{print}{hcore}(x, ...)
 }
 \arguments{
 \item{core}{Hector instance to operate on}

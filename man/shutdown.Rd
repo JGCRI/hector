@@ -10,7 +10,7 @@ shutdown(core)
 \item{core}{Handle to a Hector instance}
 }
 \value{
-The Hector handle, modified to show that it is no longer active
+The Hector instance handle
 }
 \description{
 Shutting down an instance will free the instance itself and all of the objects it created. Any attempted
