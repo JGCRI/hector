@@ -1,0 +1,158 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXFileReference section */
+		278603AD215532D5001B8255 /* testing_main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = testing_main.cpp; sourceTree = "<group>"; };
+		278603AE215532D5001B8255 /* Makefile */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
+		278603AF215532D5001B8255 /* test_tseries.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = test_tseries.cpp; sourceTree = "<group>"; };
+		278603B0215532D5001B8255 /* test_units.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = test_units.cpp; sourceTree = "<group>"; };
+		278603B1215532D5001B8255 /* test_inih.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = test_inih.cpp; sourceTree = "<group>"; };
+		278603B2215532D5001B8255 /* test_ini_to_core_reader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = test_ini_to_core_reader.cpp; sourceTree = "<group>"; };
+		278603B3215532D5001B8255 /* test_hreader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = test_hreader.cpp; sourceTree = "<group>"; };
+		278603B4215532D5001B8255 /* test_csv_file_reader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = test_csv_file_reader.cpp; sourceTree = "<group>"; };
+		278603B5215532D5001B8255 /* test_core.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = test_core.cpp; sourceTree = "<group>"; };
+		278603B6215532D5001B8255 /* test_dependency_finder.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = test_dependency_finder.cpp; sourceTree = "<group>"; };
+		278603B7215532D5001B8255 /* test_restart.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = test_restart.cpp; sourceTree = "<group>"; };
+		278603B8215532D5001B8255 /* test_logger.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = test_logger.cpp; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		278603A7215532D5001B8255 = {
+			isa = PBXGroup;
+			children = (
+				278603AD215532D5001B8255 /* testing_main.cpp */,
+				278603AE215532D5001B8255 /* Makefile */,
+				278603AF215532D5001B8255 /* test_tseries.cpp */,
+				278603B0215532D5001B8255 /* test_units.cpp */,
+				278603B1215532D5001B8255 /* test_inih.cpp */,
+				278603B2215532D5001B8255 /* test_ini_to_core_reader.cpp */,
+				278603B3215532D5001B8255 /* test_hreader.cpp */,
+				278603B4215532D5001B8255 /* test_csv_file_reader.cpp */,
+				278603B5215532D5001B8255 /* test_core.cpp */,
+				278603B6215532D5001B8255 /* test_dependency_finder.cpp */,
+				278603B7215532D5001B8255 /* test_restart.cpp */,
+				278603B8215532D5001B8255 /* test_logger.cpp */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXLegacyTarget section */
+		278603AC215532D5001B8255 /* testing */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "$(ACTION)";
+			buildConfigurationList = 278603B9215532D5001B8255 /* Build configuration list for PBXLegacyTarget "testing" */;
+			buildPhases = (
+			);
+			buildToolPath = /usr/bin/make;
+			buildWorkingDirectory = /Users/d3x290/Documents/Work/Code/hector/src/testing;
+			dependencies = (
+			);
+			name = testing;
+			passBuildSettingsInEnvironment = 1;
+			productName = testing;
+		};
+/* End PBXLegacyTarget section */
+
+/* Begin PBXProject section */
+		278603A8215532D5001B8255 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+			};
+			buildConfigurationList = 278603AB215532D5001B8255 /* Build configuration list for PBXProject "testing" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 278603A7215532D5001B8255;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				278603AC215532D5001B8255 /* testing */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin XCBuildConfiguration section */
+		278603A9215532D5001B8255 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx10.6;
+			};
+			name = Debug;
+		};
+		278603AA215532D5001B8255 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				SDKROOT = macosx10.6;
+			};
+			name = Release;
+		};
+		278603BA215532D5001B8255 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				DEBUGGING_SYMBOLS = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = testing;
+			};
+			name = Debug;
+		};
+		278603BB215532D5001B8255 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = testing;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		278603AB215532D5001B8255 /* Build configuration list for PBXProject "testing" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				278603A9215532D5001B8255 /* Debug */,
+				278603AA215532D5001B8255 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		278603B9215532D5001B8255 /* Build configuration list for PBXLegacyTarget "testing" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				278603BA215532D5001B8255 /* Debug */,
+				278603BB215532D5001B8255 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 278603A8215532D5001B8255 /* Project object */;
+}
