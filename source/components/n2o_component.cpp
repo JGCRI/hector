@@ -28,12 +28,12 @@ using namespace std;
 N2OComponent::N2OComponent() {
     N2O_emissions.allowInterp( true ); 
     N2O_emissions.name = N2O_COMPONENT_NAME; 
-    N2ON_emissions.allowInterp( true ); 
-    N2ON_emissions.name = D_NAT_EMISSIONS_N2O; 
+    N2O_natural_emissions.allowInterp( true );
+    N2O_natural_emissions.name = D_NAT_EMISSIONS_N2O;
     N2O.allowInterp( true );
     N2O.name = D_ATMOSPHERIC_N2O;
     TAU_N2O.allowInterp( true );
-    TAU_N2O.name = D_LIFETIME_N2O;
+    TAU_N2O.name = D_TAU_N2O;
   }
 
 //------------------------------------------------------------------------------
@@ -56,7 +56,7 @@ void N2OComponent::init( Core* coreptr ) {
     logger.open( getComponentName(), false, Logger::getGlobalLogger().getEchoToFile(), Logger::getGlobalLogger().getMinLogLevel() );
     H_LOG( logger, Logger::DEBUG ) << "hello " << getComponentName() << std::endl;
     core = coreptr;
-    oldDate = core->getStartDate();  //old date will start wehere we begin. 
+    oldDate = core->getStartDate();
 
     // Inform core what data we can provide
     core->registerCapability( D_ATMOSPHERIC_N2O, getComponentName() );
@@ -75,7 +75,7 @@ unitval N2OComponent::sendMessage( const std::string& message,
     
     if( message==M_GETDATA ) {          //! Caller is requesting data
         return getData( datum, info.date );
-        
+
     } else if( message==M_SETDATA ) {   //! Caller is requesting to set data
         setData(datum, info);
         //TODO: change core so that parsing is routed through sendMessage
@@ -96,19 +96,19 @@ void N2OComponent::setData( const string& varName,
     try {
         if( varName == D_PREINDUSTRIAL_N2O ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            N0 = data.getUnitval(U_PPBV_N2O);
+            N0 = data.getUnitval( U_PPBV_N2O );
         } else if( varName == D_EMISSIONS_N2O ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            N2O_emissions.set(data.date, data.getUnitval(U_TG_N2O));
+            N2O_emissions.set(data.date, data.getUnitval( U_TG_N ) );
         } else if( varName == D_NAT_EMISSIONS_N2O ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            N2ON_emissions.set(data.date, data.getUnitval(U_TG_N2O));
-        } else if( varName == D_CONVERSION_N2O ) {
+            N2O_natural_emissions.set(data.date, data.getUnitval( U_TG_N ) );
+        }  else if( varName == D_CONVERSION_N2O ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
             UC_N2O = data.getUnitval(U_TG_PPBV);
         } else if( varName == D_INITIAL_LIFETIME_N2O ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
-            TN2O0 = data.getUnitval(U_YRS);
+            TN2O0 = data.getUnitval( U_YRS );
         } else {
             H_THROW( "Unknown variable name while parsing " + getComponentName() + ": "
                     + varName );
@@ -133,27 +133,29 @@ void N2OComponent::run( const double runToDate ) throw ( h_exception ) {
     
 	H_ASSERT( !core->inSpinup() && runToDate-oldDate == 1, "timestep must equal 1" );
    
-    // modified from Ward and Mahowald, 2014
+    // Approach modified from Ward and Mahowald, 2014, 10.5194/acp-14-12701-2014
     double previous_n2o = N0.value( U_PPBV_N2O );
 
-    if (runToDate!=oldDate)
-    {
+    if (runToDate != oldDate) {
       previous_n2o = N2O.get( oldDate );
     }
 
-    //Lifetime varys based on N2O concentrations
-    TAU_N2O.set( runToDate, unitval( TN2O0.value( U_YRS ) * ( pow( previous_n2o/N0.value( U_PPBV_N2O ),-0.05 ) ), U_YRS ) ); 
+    // Decay constant varies based on N2O concentrations
+    // This is Eq. B8 in Ward and Mahowald, 2014
+    TAU_N2O.set( runToDate, unitval( TN2O0.value( U_YRS ) * ( pow( previous_n2o /N0.value( U_PPBV_N2O ), -0.05 ) ), U_YRS ) );
     
-    //varying natural emissions from preindustrial to 2000.  After 2000, we hold natural emissions constant
-       
-    const double current_n2oem = N2O_emissions.get( runToDate ).value( U_TG_N2O ) + N2ON_emissions.get( runToDate ).value( U_TG_N2O ); 
+    // Current emissions are the sum of natural and anthropogenic sources
+    const double current_n2oem = N2O_emissions.get( runToDate ).value( U_TG_N ) + N2O_natural_emissions.get( runToDate ).value( U_TG_N );
     
-    double dN2O = current_n2oem/UC_N2O - previous_n2o/TAU_N2O.get( runToDate ).value( U_YRS );
+    // This calculation follows Eq. B7 in Ward and Mahowald 2014
+    const double dN2O = current_n2oem / UC_N2O - previous_n2o / TAU_N2O.get( runToDate ).value( U_YRS );
 
-     N2O.set( runToDate, unitval( previous_n2o + dN2O, U_PPBV_N2O ) );
+    N2O.set( runToDate, unitval( previous_n2o + dN2O, U_PPBV_N2O ) );
 
     oldDate = runToDate;
-    H_LOG( logger, Logger::DEBUG ) << "Year " << runToDate << " N2O concentraion = " << N2O.get( runToDate ) << std::endl;
+    H_LOG( logger, Logger::DEBUG ) << runToDate <<
+        " N2O = " << N2O.get( runToDate ) <<
+        ", tau = " << TAU_N2O.get( runToDate ) << std::endl;
 }
 
 //------------------------------------------------------------------------------
