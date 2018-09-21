@@ -20,3 +20,8 @@ left ready to run at the start date.  (By contrast, resetting \emph{to} the star
 date leaves the model ready to run at the start date, but without having rerun the
 spinup.)
 }
+\seealso{
+Other main user interface functions: \code{\link{fetchvars}},
+  \code{\link{newcore}}, \code{\link{run}},
+  \code{\link{setvar}}, \code{\link{shutdown}}
+}

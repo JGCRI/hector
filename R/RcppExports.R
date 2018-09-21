@@ -4,12 +4,14 @@
 #' @include aadoc.R
 #' @describeIn msgtype Message type for retrieving data from a component 
 #' @export
+#' @keywords internal
 GETDATA <- function() {
     .Call('_hector_GETDATA', PACKAGE = 'hector')
 }
 
 #' @describeIn msgtype Message type for setting data in a component
 #' @export
+#' @keywords internal
 SETDATA <- function() {
     .Call('_hector_SETDATA', PACKAGE = 'hector')
 }
@@ -781,6 +783,7 @@ HEAT_FLUX <- function() {
 #' @param loglevel (int) minimum message level to output in logs (see \code{\link{loglevels}}).
 #' @param suppresslogging (bool) If true, suppress all logging (loglevel is ignored in this case).
 #' @return handle for the Hector instance.
+#' @family main user interface functions
 #' @export
 newcore <- function(inifile, loglevel = 0L, suppresslogging = FALSE) {
     .Call('_hector_newcore', PACKAGE = 'hector', inifile, loglevel, suppresslogging)
@@ -796,8 +799,9 @@ newcore <- function(inifile, loglevel = 0L, suppresslogging = FALSE) {
 #' from active to inactive will be recorded in the caller.
 #'
 #' @param core Handle to a Hector instance
-#' @return The Hector handle, modified to show that it is no longer active
+#' @return The Hector instance handle
 #' @export
+#' @family main user interface functions
 shutdown <- function(core) {
     .Call('_hector_shutdown', PACKAGE = 'hector', core)
 }
@@ -810,9 +814,11 @@ shutdown <- function(core) {
 #' @param core Handle to the Hector instance that is to be run.
 #' @param runtodate Date to run to.  The default is to run to the end date configured
 #' in the input file used to initialize the core.
+#' @return The Hector instance handle
 #' @export
+#' @family main user interface functions
 run <- function(core, runtodate = -1.0) {
-    invisible(.Call('_hector_run', PACKAGE = 'hector', core, runtodate))
+    .Call('_hector_run', PACKAGE = 'hector', core, runtodate)
 }
 
 #' Reset a Hector instance to an earlier date
@@ -827,9 +833,10 @@ run <- function(core, runtodate = -1.0) {
 #' @param core Handle for the Hector instance that is to be reset.
 #' @param date Date to reset to.  The default is to reset to the model start date with
 #' a rerun of the spinup.
+#' @family main user interface functions
 #' @export
 reset <- function(core, date = 0) {
-    invisible(.Call('_hector_reset', PACKAGE = 'hector', core, date))
+    .Call('_hector_reset', PACKAGE = 'hector', core, date)
 }
 
 #' \strong{getdate}: Get the current date for a Hector instance
@@ -874,5 +881,9 @@ getdate <- function(core) {
 #' @export
 sendmessage <- function(core, msgtype, capability, date, value, unit) {
     .Call('_hector_sendmessage', PACKAGE = 'hector', core, msgtype, capability, date, value, unit)
+}
+
+chk_core_valid <- function(core) {
+    .Call('_hector_chk_core_valid', PACKAGE = 'hector', core)
 }
 

@@ -28,6 +28,7 @@ default_fetchvars <- c(ATMOSPHERIC_CO2, RF_TOTAL, RF_CO2, GLOBAL_TEMP)
 #' dates that are between the start date and the latest date currently run.
 #' @param vars List (or vector) of capability strings defining the variables to
 #' be fetched in the result.
+#' @family main user interface functions
 #' @export
 fetchvars <- function(core, dates, vars=NULL)
 {
@@ -63,6 +64,7 @@ fetchvars <- function(core, dates, vars=NULL)
 #' @param values Values to set.  Must be either a single value or a vector the
 #' same length as dates.
 #' @param unit Unit string
+#' @family main user interface functions
 #' @export
 setvar <- function(core, dates, var, values, unit)
 {

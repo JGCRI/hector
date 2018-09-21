@@ -35,4 +35,8 @@ forcing, and global mean temperature.
 \link{concentrations}, \link{emissions}, \link{forcings},
 \link{carboncycle}, \link{haloemiss}, \link{haloforcings}, \link{methane},
 \link{ocean}, \link{so2}, \link{temperature}, \link{parameters}
+
+Other main user interface functions: \code{\link{newcore}},
+  \code{\link{reset}}, \code{\link{run}},
+  \code{\link{setvar}}, \code{\link{shutdown}}
 }

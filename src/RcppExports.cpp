@@ -1310,25 +1310,27 @@ BEGIN_RCPP
 END_RCPP
 }
 // run
-void run(List core, double runtodate);
+List run(List core, double runtodate);
 RcppExport SEXP _hector_run(SEXP coreSEXP, SEXP runtodateSEXP) {
 BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< List >::type core(coreSEXP);
     Rcpp::traits::input_parameter< double >::type runtodate(runtodateSEXP);
-    run(core, runtodate);
-    return R_NilValue;
+    rcpp_result_gen = Rcpp::wrap(run(core, runtodate));
+    return rcpp_result_gen;
 END_RCPP
 }
 // reset
-void reset(List core, double date);
+List reset(List core, double date);
 RcppExport SEXP _hector_reset(SEXP coreSEXP, SEXP dateSEXP) {
 BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< List >::type core(coreSEXP);
     Rcpp::traits::input_parameter< double >::type date(dateSEXP);
-    reset(core, date);
-    return R_NilValue;
+    rcpp_result_gen = Rcpp::wrap(reset(core, date));
+    return rcpp_result_gen;
 END_RCPP
 }
 // getdate
@@ -1355,6 +1357,17 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< NumericVector >::type value(valueSEXP);
     Rcpp::traits::input_parameter< String >::type unit(unitSEXP);
     rcpp_result_gen = Rcpp::wrap(sendmessage(core, msgtype, capability, date, value, unit));
+    return rcpp_result_gen;
+END_RCPP
+}
+// chk_core_valid
+bool chk_core_valid(List core);
+RcppExport SEXP _hector_chk_core_valid(SEXP coreSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< List >::type core(coreSEXP);
+    rcpp_result_gen = Rcpp::wrap(chk_core_valid(core));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -1494,6 +1507,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_reset", (DL_FUNC) &_hector_reset, 2},
     {"_hector_getdate", (DL_FUNC) &_hector_getdate, 1},
     {"_hector_sendmessage", (DL_FUNC) &_hector_sendmessage, 6},
+    {"_hector_chk_core_valid", (DL_FUNC) &_hector_chk_core_valid, 1},
     {NULL, NULL, 0}
 };
 

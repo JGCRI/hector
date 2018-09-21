@@ -21,3 +21,8 @@ The object returned is a handle to the newly created instance.  It will be requi
 argument for all functions that operate on the instance.  Creating multiple instances
 simultaneously is supported.
 }
+\seealso{
+Other main user interface functions: \code{\link{fetchvars}},
+  \code{\link{reset}}, \code{\link{run}},
+  \code{\link{setvar}}, \code{\link{shutdown}}
+}
