@@ -18,10 +18,6 @@ enddate(core)
 }
 \arguments{
 \item{core}{Hector instance to operate on}
-
-\item{x}{Object to print or format}
-
-\item{...}{Additional arguments for format and print generics.}
 }
 \description{
 Utility functions for Hector instances

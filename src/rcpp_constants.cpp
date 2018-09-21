@@ -19,6 +19,7 @@ using namespace Rcpp;
 //' @include aadoc.R
 //' @describeIn msgtype Message type for retrieving data from a component 
 //' @export
+//' @keywords internal
 // [[Rcpp::export]]
 String GETDATA() {
 return M_GETDATA;
@@ -26,6 +27,7 @@ return M_GETDATA;
 
 //' @describeIn msgtype Message type for setting data in a component
 //' @export
+//' @keywords internal
 // [[Rcpp::export]]
 String SETDATA() {
 return M_SETDATA;

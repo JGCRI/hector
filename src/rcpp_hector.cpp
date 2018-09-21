@@ -38,6 +38,7 @@ Hector::Core *gethcore(List core)
 //' @param loglevel (int) minimum message level to output in logs (see \code{\link{loglevels}}).
 //' @param suppresslogging (bool) If true, suppress all logging (loglevel is ignored in this case).
 //' @return handle for the Hector instance.
+//' @family main user interface functions
 //' @export
 // [[Rcpp::export]]
 List newcore(String inifile, int loglevel = 0, bool suppresslogging=false)
@@ -103,6 +104,7 @@ List newcore(String inifile, int loglevel = 0, bool suppresslogging=false)
 //' @param core Handle to a Hector instance
 //' @return The Hector instance handle
 //' @export
+//' @family main user interface functions
 // [[Rcpp::export]]
 List shutdown(List core)
 {
@@ -123,6 +125,7 @@ List shutdown(List core)
 //' in the input file used to initialize the core.
 //' @return The Hector instance handle
 //' @export
+//' @family main user interface functions
 // [[Rcpp::export]]
 List run(List core, double runtodate=-1.0)
 {
@@ -152,6 +155,7 @@ List run(List core, double runtodate=-1.0)
 //' @param core Handle for the Hector instance that is to be reset.
 //' @param date Date to reset to.  The default is to reset to the model start date with
 //' a rerun of the spinup.
+//' @family main user interface functions
 //' @export
 // [[Rcpp::export]]
 List reset(List core, double date=0)

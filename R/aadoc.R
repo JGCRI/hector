@@ -11,8 +11,6 @@ NULL
 #' Utility functions for Hector instances
 #'
 #' @param core Hector instance to operate on
-#' @param x Object to print or format
-#' @param ... Additional arguments for format and print generics.
 #' @name hectorutil
 NULL
 

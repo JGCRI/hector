@@ -29,3 +29,4 @@ these objects must be called to use them; \emph{e.g.}, \code{GETDATA()}
 instead of the more natural looking \code{GETDATA}.
 }
 
+\keyword{internal}
