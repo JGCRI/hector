@@ -131,10 +131,10 @@
 #define D_ATMOSPHERIC_N2O       "N2O"
 #define D_PREINDUSTRIAL_N2O     "N0"
 #define D_EMISSIONS_N2O         "N2O_emissions"
-#define D_NAT_EMISSIONS_N2O     "N2ON_emissions"
 #define D_CONVERSION_N2O        "UC_N2O"
-#define D_INITIAL_LIFETIME_N2O   "TN2O0"
-#define D_LIFETIME_N2O          "TAU_N2O"
+#define D_INITIAL_LIFETIME_N2O  "TN2O0"
+#define D_NAT_EMISSIONS_N2O     "N2O_natural_emissions"
+#define D_TAU_N2O               "TAU_N2O"
 
 // oh component
 #define D_LIFETIME_OH           "TAU_OH"

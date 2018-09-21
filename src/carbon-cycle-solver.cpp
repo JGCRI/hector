@@ -232,10 +232,9 @@ void CarbonCycleSolver::run( const double tnew ) throw ( h_exception )
     // solver we strip the unit values and work with raw numbers.
     cmodel->getCValues( t, &c[0] );
 
-    double t0   = t;
+    double t0   = t;  // stash this in case we need to report & diagnose an error
     // Now integrate from the beginning of the time step using the updated
     // slow params.  Note we can discard t0 and the values in cc
-    t0 = t;  // stash this in case we need to report & diagnose an error
     cmodel->slowparameval( t, &c[0] );
     int retry = 0;
     
