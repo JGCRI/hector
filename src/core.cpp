@@ -613,20 +613,6 @@ unitval Core::sendMessage( const std::string& message,
         }
     }
     else if (message == M_SETDATA ) {
-        if( isInited ) {
-            // If core initialization has been completed, then the only
-            // setdata messages allowed are ones keyed to a date that we
-            // haven't gotten to yet.
-            if(info.date == Core::undefinedIndex()) {
-                H_LOG(glog, Logger::SEVERE)
-                    << "Once core is initialized, the only SETDATA messages allowed are for dates after the current model date.\n"
-                    << "\tdatum: " << datum
-                    << "\tcurrent date: " << lastDate << "\tmessage date: " << info.date
-                    << std::endl;
-                H_THROW("Invalid sendMessage/SETDATA.  Check global log for details.");
-            }
-        }
-        
         // locate the components that take this kind of input.  If
         // there are multiple, we send the message to all of them.
         pair<componentMapIterator, componentMapIterator> itpr =
