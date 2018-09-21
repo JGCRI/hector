@@ -59,11 +59,11 @@ private:
     virtual unitval getData( const std::string& varName,
                             const double date ) throw ( h_exception );
     
-    unitval N0;    //! preindustrial N2O, ppbv
+    unitval N0;    //! preindustrial N2O, ppbv N2O
     unitval UC_N2O;  //! conversion from emissions to concentration
-    tseries<unitval> N2O_emissions; //! annual anthropogenic emissions time series, TgN
-    tseries<unitval> N2O_natural_emissions; //! annual natural emissions time series, TgN
-    tseries<unitval> N2O; //! annual N2O concentrations, ppbv
+    tseries<unitval> N2O_emissions; //! annual anthropogenic emissions time series, TgN/yr
+    tseries<unitval> N2O_natural_emissions; //! annual natural emissions time series, TgN/yr
+    tseries<unitval> N2O; //! annual N2O concentrations, ppbv N2O
     tseries<unitval> TAU_N2O;   //! N2O decay time constant (varies as a function of concentration)
     unitval TN2O0;  //! inital N2O lifetime, years
     
