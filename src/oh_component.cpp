@@ -132,9 +132,8 @@ void OHComponent::prepareToRun() throw ( h_exception ) {
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
     oldDate = core->getStartDate();
     //get intial CH4 concentration
-     M0 = core->sendMessage( M_GETDATA, D_PREINDUSTRIAL_CH4 );
-    TAU_OH.set( oldDate, TOH0 );
-    
+    M0 = core->sendMessage( M_GETDATA, D_PREINDUSTRIAL_CH4 );
+    TAU_OH.set( oldDate, TOH0 ); 
  }
 
 //------------------------------------------------------------------------------

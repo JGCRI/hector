@@ -123,7 +123,7 @@ void N2OComponent::setData( const string& varName,
 void N2OComponent::prepareToRun() throw ( h_exception ) {
     
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
-	oldDate = core->getStartDate();
+    oldDate = core->getStartDate();
     N2O.set(oldDate, N0);  // set the first year's value    
   }
 

@@ -172,15 +172,15 @@ void OceanComponent::prepareToRun() throw ( h_exception ) {
     surfaceHL.initbox( unitval( 140, U_PGC ), "HL" );
     surfaceHL.surfacebox = true;
     surfaceHL.preindustrial_flux.set( 1.000, U_PGC_YR );         // used if no spinup chemistry
-	surfaceHL.active_chemistry = spinup_chem;
+    surfaceHL.active_chemistry = spinup_chem;
     
-	surfaceLL.initbox( unitval( 770, U_PGC ),  "LL" );
+    surfaceLL.initbox( unitval( 770, U_PGC ),  "LL" );
     surfaceLL.surfacebox = true;
     surfaceLL.preindustrial_flux.set( -1.000, U_PGC_YR );        // used if no spinup chemistry
-	surfaceLL.active_chemistry = spinup_chem;
+    surfaceLL.active_chemistry = spinup_chem;
     
-	inter.initbox( unitval( 8400, U_PGC ),  "intermediate" );
-	deep.initbox( unitval( 26000, U_PGC ),  "deep" );
+    inter.initbox( unitval( 8400, U_PGC ),  "intermediate" );
+    deep.initbox( unitval( 26000, U_PGC ),  "deep" );
     
 	double time = 60*60*24*365.25;  // seconds per year
     	

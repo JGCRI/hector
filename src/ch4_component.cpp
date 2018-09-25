@@ -122,7 +122,7 @@ void CH4Component::setData( const string& varName,
 void CH4Component::prepareToRun() throw ( h_exception ) {
     
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
-	oldDate = core->getStartDate();
+    oldDate = core->getStartDate();
     CH4.set( oldDate, M0 );  // set the first year's value
  }
 

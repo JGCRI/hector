@@ -117,7 +117,7 @@ void CarbonCycleSolver::prepareToRun() throw( h_exception )
 {
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
     
-    cmodel = static_cast<CarbonCycleModel*>( core->getComponentByCapability( D_ATMOSPHERIC_C ) );
+    cmodel = dynamic_cast<CarbonCycleModel*>( core->getComponentByCapability( D_ATMOSPHERIC_C ) );
     
     // initialize the solver's internal data
     t = core->getStartDate();
@@ -125,8 +125,8 @@ void CarbonCycleSolver::prepareToRun() throw( h_exception )
     H_LOG( logger, Logger::DEBUG ) << "Carbon model in use is " << cmodel->getComponentName() << std::endl;
     H_LOG( logger, Logger::DEBUG ) << "Carbon model pools: " << nc << std::endl;
     H_ASSERT( nc > 0, "nc must be > 0" );
-    
-    c      = std::vector<double>( nc );
+    // resize the array of carbon pool values
+    c.resize(nc);
     
 }
 

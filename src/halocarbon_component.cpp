@@ -129,7 +129,6 @@ void HalocarbonComponent::prepareToRun() throw ( h_exception ) {
 
     H_ASSERT( tau != -1 && tau != 0, "tau has bad value" );
     H_ASSERT( rho.units() != U_UNDEFINED, "rho has undefined units" );
-    //   H_ASSERT( concentration.size() > 0 );
     H_ASSERT( molarMass > 0, "molarMass must be >0" );
     
     Ha_ts.set(oldDate,H0);

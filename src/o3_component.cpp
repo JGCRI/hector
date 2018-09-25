@@ -123,7 +123,7 @@ void OzoneComponent::setData( const string& varName,
 void OzoneComponent::prepareToRun() throw ( h_exception ) {
     
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
-	oldDate = core->getStartDate();
+    oldDate = core->getStartDate();
     O3.set(oldDate, PO3);  // set the first year's value 
 }
 
