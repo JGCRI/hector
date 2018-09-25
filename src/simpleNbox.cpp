@@ -67,6 +67,7 @@ void SimpleNbox::init( Core* coreptr ) {
     // Register the inputs we can receive from outside
     core->registerInput(D_FFI_EMISSIONS, getComponentName());
     core->registerInput(D_LUC_EMISSIONS, getComponentName());
+    core->registerInput(D_PREINDUSTRIAL_CO2, getComponentName());
     // Allow other code to query the inputs, if desired
     core->registerCapability(D_FFI_EMISSIONS, getComponentName());
     core->registerCapability(D_LUC_EMISSIONS, getComponentName());
@@ -122,16 +123,20 @@ void SimpleNbox::setData( const std::string &varName,
     try {
         // Initial pools
         if( varNameParsed == D_ATMOSPHERIC_C ) {
+            // Hector input files specify initial atmospheric CO2 in terms of
+            // the carbon pool, rather than the CO2 concentration.  Since we
+            // don't have a place to store the initial carbon pool, we convert
+            // it to initial concentration and store that.  It will be converted
+            // back to carbon content when the state variables are set up in
+            // prepareToRun.
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
             H_ASSERT( biome == SNBOX_DEFAULT_BIOME, "atmospheric C must be global" );
-            atmos_c = data.getUnitval(U_PGC);
-            C0.set( atmos_c.value( U_PGC ) * PGC_TO_PPMVCO2, U_PPMV_CO2 );
+            C0.set(data.getUnitval(U_PGC).value(U_PGC) * PGC_TO_PPMVCO2, U_PPMV_CO2);
         }
         else if( varNameParsed == D_PREINDUSTRIAL_CO2 ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
             H_ASSERT( biome == SNBOX_DEFAULT_BIOME, "preindustrial C must be global" );
             C0 = data.getUnitval( U_PPMV_CO2 );
-            atmos_c.set( C0.value( U_PPMV_CO2 ) / PGC_TO_PPMVCO2, U_PGC );
         }
         else if( varNameParsed == D_VEGC ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
@@ -334,20 +339,20 @@ void SimpleNbox::prepareToRun() throw( h_exception )
             H_LOG( logger, Logger::DEBUG ) << "Beta does not exist for this biome; using global value" << std::endl;
             beta[ it->first ] = beta.at( SNBOX_DEFAULT_BIOME );
         }
-        
-//        Tgav_sum[ it->first ] = 0.0;
-   }
+    }
 
     // Save a pointer to the ocean model in use
-    omodel = static_cast<CarbonCycleModel*>( core->getComponentByCapability( D_OCEAN_C ) );
+    omodel = dynamic_cast<CarbonCycleModel*>( core->getComponentByCapability( D_OCEAN_C ) );
 
     if( !Ftalbedo.size() ) {          // if no albedo data, assume constant
         unitval alb( -0.2, U_W_M2 ); // default is MAGICC value
         Ftalbedo.set( core->getStartDate(), alb );
         Ftalbedo.set( core->getEndDate(), alb );
     }
-    
-    Ca.set( C0.value( U_PPMV_CO2 ), U_PPMV_CO2 );
+
+    double c0init = C0.value(U_PPMV_CO2);
+    Ca.set(c0init, U_PPMV_CO2);
+    atmos_c.set(c0init * (1.0/PGC_TO_PPMVCO2), U_PGC);
     
     if( Ca_constrain.size() ) {
         Ca_constrain.allowPartialInterp( true );
