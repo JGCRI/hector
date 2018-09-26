@@ -72,7 +72,7 @@ void OceanComponent::init( Core* coreptr ) {
         
     // Register the data we can provide
     core->registerCapability( D_OCEAN_CFLUX, getComponentName() );
-	core->registerCapability( D_OCEAN_C, getComponentName() );
+    core->registerCapability( D_OCEAN_C, getComponentName() );
     core->registerCapability( D_CARBON_HL, getComponentName() );
     core->registerCapability( D_CARBON_LL, getComponentName() );
     core->registerCapability( D_CARBON_IO, getComponentName() );
@@ -182,60 +182,60 @@ void OceanComponent::prepareToRun() throw ( h_exception ) {
     inter.initbox( unitval( 8400, U_PGC ),  "intermediate" );
     deep.initbox( unitval( 26000, U_PGC ),  "deep" );
     
-	double time = 60*60*24*365.25;  // seconds per year
+    double time = 60*60*24*365.25;  // seconds per year
     	
-	// ocean_volume = 1.36e18 m3
-	double thick_LL = 100;
-	double thick_HL = 100;
-	double thick_inter = 1000-thick_LL;
-	double thick_deep = 3777-thick_inter-thick_LL; // 3777m - 1000m - 100m
+    // ocean_volume = 1.36e18 m3
+    double thick_LL = 100;
+    double thick_HL = 100;
+    double thick_inter = 1000-thick_LL;
+    double thick_deep = 3777-thick_inter-thick_LL; // 3777m - 1000m - 100m
     
     //	const double ocean_sarea = 5.101e14; // surface area m2
-	const double ocean_area = 3.6e14; // m2;
-	const double part_high = 0.15;
-	const double part_low = 1-part_high;
-	const double LL_volume = ocean_area * part_low * thick_LL;
-	const double HL_volume = ocean_area * part_high * thick_HL;
-	const double I_volume = ocean_area* thick_inter;
-	const double D_volume = ocean_area* thick_deep;
+    const double ocean_area = 3.6e14; // m2;
+    const double part_high = 0.15;
+    const double part_low = 1-part_high;
+    const double LL_volume = ocean_area * part_low * thick_LL;
+    const double HL_volume = ocean_area * part_high * thick_HL;
+    const double I_volume = ocean_area* thick_inter;
+    const double D_volume = ocean_area* thick_deep;
 	
     // transport * seconds / volume of box
-	// Advection --> transport of carbon from one box to the next (k values, fraction/yr )
-	double LL_HL = ( tt.value( U_M3_S ) * time ) / LL_volume;
-	double HL_DO = ( ( tt + tu).value( U_M3_S ) * time ) / HL_volume;
-	double DO_IO = ( ( tt + tu).value( U_M3_S ) * time ) / D_volume;
-	double IO_HL = ( tu.value( U_M3_S) * time )  / I_volume;
-	double IO_LL = ( tt.value( U_M3_S) * time )  / I_volume;
+    // Advection --> transport of carbon from one box to the next (k values, fraction/yr )
+    double LL_HL = ( tt.value( U_M3_S ) * time ) / LL_volume;
+    double HL_DO = ( ( tt + tu).value( U_M3_S ) * time ) / HL_volume;
+    double DO_IO = ( ( tt + tu).value( U_M3_S ) * time ) / D_volume;
+    double IO_HL = ( tu.value( U_M3_S) * time )  / I_volume;
+    double IO_LL = ( tt.value( U_M3_S) * time )  / I_volume;
     
     // Exchange parameters --> not explicitly modeling diffusion
-	double IO_LLex = ( twi.value( U_M3_S) *time ) / I_volume;
-	double LL_IOex = ( twi.value( U_M3_S) * time ) / LL_volume;
-	double DO_IOex = ( tid.value( U_M3_S) *time ) / D_volume;
-	double IO_DOex = ( tid.value( U_M3_S) * time ) / I_volume;
+    double IO_LLex = ( twi.value( U_M3_S) *time ) / I_volume;
+    double LL_IOex = ( twi.value( U_M3_S) * time ) / LL_volume;
+    double DO_IOex = ( tid.value( U_M3_S) *time ) / D_volume;
+    double IO_DOex = ( tid.value( U_M3_S) * time ) / I_volume;
     
     // make_connection( box to connect to, k value, window size (0=present only) )
-	surfaceLL.make_connection( &surfaceHL, LL_HL, 1 );
-	surfaceLL.make_connection( &inter, LL_IOex, 1 );
-	surfaceHL.make_connection( &deep, HL_DO, 1 );
-	inter.make_connection( &surfaceLL, IO_LL + IO_LLex, 1 );
-	inter.make_connection( &surfaceHL, IO_HL, 1 );
-	inter.make_connection( &deep, IO_DOex, 1 );
-	deep.make_connection( &inter, DO_IO + DO_IOex, 1 );
+    surfaceLL.make_connection( &surfaceHL, LL_HL, 1 );
+    surfaceLL.make_connection( &inter, LL_IOex, 1 );
+    surfaceHL.make_connection( &deep, HL_DO, 1 );
+    inter.make_connection( &surfaceLL, IO_LL + IO_LLex, 1 );
+    inter.make_connection( &surfaceHL, IO_HL, 1 );
+    inter.make_connection( &deep, IO_DOex, 1 );
+    deep.make_connection( &inter, DO_IO + DO_IOex, 1 );
 	
-	//inputs for surface chemistry boxes
-	//surfaceHL.mychemistry.alk = // mol/kg
+    //inputs for surface chemistry boxes
+    //surfaceHL.mychemistry.alk = // mol/kg
     surfaceHL.deltaT.set( -13.0, U_DEGC );  // delta T is added 288.15 to return the initial temperature value of the surface box
-	surfaceHL.mychemistry.S             = 34.5; // Salinity
-	surfaceHL.mychemistry.volumeofbox   = HL_volume; //5.4e15; //m3
-	surfaceHL.mychemistry.As            = ocean_area * part_high ; // surface area m2
-	surfaceHL.mychemistry.U             = 6.7; // average wind speed m/s
+    surfaceHL.mychemistry.S             = 34.5; // Salinity
+    surfaceHL.mychemistry.volumeofbox   = HL_volume; //5.4e15; //m3
+    surfaceHL.mychemistry.As            = ocean_area * part_high ; // surface area m2
+    surfaceHL.mychemistry.U             = 6.7; // average wind speed m/s
 		
-	//surfaceLL.mychemistry.alk = // mol/kg
+    //surfaceLL.mychemistry.alk = // mol/kg
     surfaceLL.deltaT.set( 7.0, U_DEGC );    // delta T is added to 288.15 to return the initial temperature value of the surface box
-	surfaceLL.mychemistry.S             = 34.5; // Salinity
-	surfaceLL.mychemistry.volumeofbox   = LL_volume; //3.06e16; //m3
-	surfaceLL.mychemistry.As            = ocean_area * part_low; // surface area m2
-	surfaceLL.mychemistry.U             = 6.7; // average wind speed m/s
+    surfaceLL.mychemistry.S             = 34.5; // Salinity
+    surfaceLL.mychemistry.volumeofbox   = LL_volume; //3.06e16; //m3
+    surfaceLL.mychemistry.As            = ocean_area * part_low; // surface area m2
+    surfaceLL.mychemistry.U             = 6.7; // average wind speed m/s
     
     // Log the state of all our boxes, so we know things are as they should be
     surfaceLL.log_state();
