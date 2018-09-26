@@ -50,7 +50,7 @@ oceancsys::oceancsys() : ncoeffs(6), m_a(ncoeffs) {
 }
 
 //------------------------------------------------------------------------------
-/*! \brief A helper functor class used to evauluate a polynomial and it's derivative.
+/*! \brief A helper functor class used to evauluate a polynomial and its derivative.
  *  \details This helper class gives an interface that is callable from boost's numerical
  *           solvers which need to evaluate a function and it's derivative.  This class
  *           wrapps a polynomical by taking an array of coefficients in ascending order of

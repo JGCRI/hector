@@ -929,7 +929,7 @@ return D_VOLCANIC_SO2;
 }
 
 /* Temperature component */
-//' @describeIn parameters Equilibrium Climate Sensitivity (\code{DegC})
+//' @describeIn parameters Equilibrium Climate Sensitivity (\code{"degC"})
 //' @export
 // [[Rcpp::export]]
 String ECS() {

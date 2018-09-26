@@ -1,4 +1,4 @@
-## test basic hector functionality
+context('Test basic hector functionality')
 
 inputdir <- system.file('input', package='hector')
 sampledir <- system.file('output', package='hector')

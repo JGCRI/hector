@@ -110,6 +110,11 @@ private:
     static std::vector<Core *> core_registry;
 
     Logger glog;
+
+    // indicator for whether setup has been completed.  See notes in the body of
+    // prepareToRun.
+    bool setup_complete;
+        
         
     //! Cause all components to run their spinup procedure.
     bool run_spinup();

@@ -32,7 +32,7 @@ behavior and are subject to uncertainty.  All of these can be set using the
 
 \item \code{BETA}: CO2 fertilization factor (\code{"(unitless)"})
 
-\item \code{ECS}: Equilibrium Climate Sensitivity (\code{DegC})
+\item \code{ECS}: Equilibrium Climate Sensitivity (\code{"degC"})
 
 \item \code{DIFFUSIVITY}: Ocean heat diffusivity (\code{"cm2/s"})
 }}

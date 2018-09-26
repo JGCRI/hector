@@ -131,12 +131,12 @@ void SimpleNbox::setData( const std::string &varName,
             // prepareToRun.
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
             H_ASSERT( biome == SNBOX_DEFAULT_BIOME, "atmospheric C must be global" );
-            C0.set(data.getUnitval(U_PGC).value(U_PGC) * PGC_TO_PPMVCO2, U_PPMV_CO2);
+            set_c0(data.getUnitval(U_PGC).value(U_PGC) * PGC_TO_PPMVCO2);
         }
         else if( varNameParsed == D_PREINDUSTRIAL_CO2 ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
             H_ASSERT( biome == SNBOX_DEFAULT_BIOME, "preindustrial C must be global" );
-            C0 = data.getUnitval( U_PPMV_CO2 );
+            set_c0(data.getUnitval(U_PPMV_CO2).value(U_PPMV_CO2));
         }
         else if( varNameParsed == D_VEGC ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
@@ -208,15 +208,15 @@ void SimpleNbox::setData( const std::string &varName,
         // Fertilization
         else if( varNameParsed == D_BETA ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            beta[ biome ] = data.getUnitval(U_UNDEFINED);
+            beta[ biome ] = data.getUnitval(U_UNITLESS);
         }
         else if( varNameParsed == D_WARMINGFACTOR ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            warmingfactor[ biome ] = data.getUnitval(U_UNDEFINED);
+            warmingfactor[ biome ] = data.getUnitval(U_UNITLESS);
         }
         else if( varNameParsed == D_Q10_RH ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            q10_rh = data.getUnitval(U_UNDEFINED);
+            q10_rh = data.getUnitval(U_UNITLESS);
         }
      
         else {
@@ -937,6 +937,22 @@ void SimpleNbox::record_state(double t)
     // that's where we're at.
     omodel->record_state(t);
     
+}
+
+// Set the preindustrial carbon value and adjust total mass to reflect the new
+// value (unless it hasn't yet been set).  Note that after doing this,
+// attempting to run without first doing a reset will cause an exception due to
+// failure to conserve mass.
+void SimpleNbox::set_c0(double newc0)
+{
+    if(masstot > 0.0) {
+        double massdiff = (newc0 - C0) * PPMVCO2_TO_PGC;
+        masstot += massdiff;
+        H_LOG(logger, Logger::DEBUG) << "massdiff= " << massdiff << "  new masstot= " << masstot
+                                     << "\n";
+    }
+    C0.set(newc0, U_PPMV_CO2);
+        
 }
 
 }

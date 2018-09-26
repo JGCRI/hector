@@ -478,6 +478,9 @@ void TemperatureComponent::reset(double time) throw(h_exception)
     // temperature component doesn't have its own time counter, and it stores its history in a collection of double
     // vectors.  Therefore, all we do here is set the unitval versions of that stored data to their values from the
     // vectors.
+    if(time < core->getStartDate()) // in this case, reset to the starting value.
+        time = core->getStartDate();
+    
     int tstep = time - core->getStartDate();
     setoutputs(tstep);
     H_LOG(logger, Logger::NOTICE)

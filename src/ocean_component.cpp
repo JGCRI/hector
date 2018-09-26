@@ -290,6 +290,7 @@ void OceanComponent::run( const double runToDate ) throw ( h_exception ) {
     timesteps = 0;
     
     // Initialize ocean box boundary conditions and inform them new year starting
+    H_LOG(logger, Logger::DEBUG) << "Starting new year: Tgav= " << Tgav << std::endl;
     surfaceHL.new_year( Tgav );
     surfaceLL.new_year( Tgav );
     inter.new_year( Tgav );
