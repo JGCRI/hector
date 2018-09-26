@@ -25,7 +25,7 @@ using namespace boost;
 //------------------------------------------------------------------------------
 /*! \brief constructor
  */
-SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ) {
+SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
     ffiEmissions.allowInterp( true );
     ffiEmissions.name = "ffiEmissions";
     lucEmissions.allowInterp( true );
@@ -610,20 +610,19 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     log_pools( t );
     
     // Each time the model pools are updated, check that mass has been conserved
-    static double lastsum = 0.0;
     double sum=0.0;
     for( int i=0; i<ncpool(); i++ ) {
         sum += c[ i ];
     }
 
-    const double diff = fabs( sum - lastsum );
-    H_LOG( logger,Logger::DEBUG ) << "lastsum = " << lastsum << ", sum = " << sum << ", diff = " << diff << std::endl;
-    if( lastsum && diff > MB_EPSILON ) {
+    const double diff = fabs( sum - masstot );
+    H_LOG( logger,Logger::DEBUG ) << "masstot = " << masstot << ", sum = " << sum << ", diff = " << diff << std::endl;
+    if(masstot > 0.0 && diff > MB_EPSILON) {
         H_LOG( logger,Logger::SEVERE ) << "Mass not conserved in " << getComponentName() << std::endl;
-        H_LOG( logger,Logger::SEVERE ) << "lastsum = " << lastsum << ", sum = " << sum << ", diff = " << diff << std::endl;
+        H_LOG( logger,Logger::SEVERE ) << "masstot = " << masstot << ", sum = " << sum << ", diff = " << diff << std::endl;
         H_THROW( "Mass not conserved! (See log.)" );
     }
-    lastsum = sum;
+    masstot = sum;
 
     // If user has supplied Ca values, adjust atmospheric C to match
     if( !core->inSpinup() && Ca_constrain.size() && t <= Ca_constrain.lastdate() ) {
