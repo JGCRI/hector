@@ -16,7 +16,7 @@ setvar(core, dates, var, values, unit)
 \item{values}{Values to set.  Must be either a single value or a vector the
 same length as dates.}
 
-\item{unit}{Unit string}
+\item{unit}{Unit string.  Can be set to NA for unitless variables.}
 }
 \description{
 This function selects a variable by its capability name and sets the

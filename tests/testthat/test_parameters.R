@@ -61,3 +61,26 @@ test_that('Lowering ECS lowers output Temperature', {
 
     shutdown(hc)
 })
+
+test_that('Raising Q10 increases CO2 concentration', {
+    hc <- newcore(file.path(inputdir, 'hector_rcp45.ini'), suppresslogging = TRUE)
+    run(hc, 2100)
+    qdates <- 2000:2100                 # limit to years where temperature
+                                        # increase is smooth.
+    dd1 <- fetchvars(hc, qdates, ATMOSPHERIC_CO2())
+
+    ## Change the preindustrial CO2
+    setvar(hc, NA, Q10_RH(), 2.5, NA)
+    reset(hc, 0.0)
+    run(hc, 2100)
+    dd2 <- fetchvars(hc, qdates, ATMOSPHERIC_CO2())
+
+    ## Check that concentration is higher across the board
+    diff <- dd2$value - dd1$value
+    expect_gt(min(diff), 0.0)
+
+    shutdown(hc)
+})
+
+
+

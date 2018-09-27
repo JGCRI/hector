@@ -67,10 +67,14 @@ void SimpleNbox::init( Core* coreptr ) {
     // Register the inputs we can receive from outside
     core->registerInput(D_FFI_EMISSIONS, getComponentName());
     core->registerInput(D_LUC_EMISSIONS, getComponentName());
-    core->registerInput(D_PREINDUSTRIAL_CO2, getComponentName());
+    core->registerInput(D_PREINDUSTRIAL_CO2, getComponentName()); 
+    core->registerInput(D_BETA, getComponentName());
+    core->registerInput(D_Q10_RH, getComponentName());
     // Allow other code to query the inputs, if desired
     core->registerCapability(D_FFI_EMISSIONS, getComponentName());
     core->registerCapability(D_LUC_EMISSIONS, getComponentName());
+    core->registerCapability(D_BETA, getComponentName());
+    core->registerCapability(D_Q10_RH, getComponentName());
 }
 
 //------------------------------------------------------------------------------
@@ -400,9 +404,9 @@ bool SimpleNbox::run_spinup( const int step ) throw ( h_exception )
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-unitval SimpleNbox::getData( const std::string& varName,
-                            const double date ) throw ( h_exception ) {
-    
+unitval SimpleNbox::getData(const std::string& varName,
+                            const double date) throw ( h_exception )
+{
     unitval returnval;
     
     if( varName == D_ATMOSPHERIC_C ) {
@@ -423,6 +427,13 @@ unitval SimpleNbox::getData( const std::string& varName,
     } else if( varName == D_PREINDUSTRIAL_CO2 ) {
         H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for preindustrial CO2" );
         returnval = C0;
+    } else if(varName == D_BETA) {
+        // For the time being, we are only supporting global beta, not biome-specific
+        H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for CO2 fertilization (beta)");
+        returnval = unitval(beta[SNBOX_DEFAULT_BIOME], U_UNITLESS);
+    } else if(varName == D_Q10_RH) {
+        H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for Q10");
+        returnval = unitval(q10_rh, U_UNITLESS);
     } else if( varName == D_LAND_CFLUX ) {
         H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for atm-land flux" );
         returnval = sum_npp() - sum_rh() - lucEmissions.get( ODEstartdate );
