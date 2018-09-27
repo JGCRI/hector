@@ -109,8 +109,10 @@ void TemperatureComponent::init( Core* coreptr ) {
 
     // Register the inputs we can receive from outside
     core->registerInput(D_ECS, getComponentName());
+    core->registerInput(D_DIFFUSIVITY, getComponentName());
     // Allow parameter values to be queried
     core->registerCapability(D_ECS, getComponentName());
+    core->registerCapability( D_DIFFUSIVITY, getComponentName() );
 
 }
 
