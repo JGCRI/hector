@@ -25,7 +25,7 @@ using namespace boost;
 //------------------------------------------------------------------------------
 /*! \brief constructor
  */
-SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ) {
+SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
     ffiEmissions.allowInterp( true );
     ffiEmissions.name = "ffiEmissions";
     lucEmissions.allowInterp( true );
@@ -67,9 +67,14 @@ void SimpleNbox::init( Core* coreptr ) {
     // Register the inputs we can receive from outside
     core->registerInput(D_FFI_EMISSIONS, getComponentName());
     core->registerInput(D_LUC_EMISSIONS, getComponentName());
+    core->registerInput(D_PREINDUSTRIAL_CO2, getComponentName()); 
+    core->registerInput(D_BETA, getComponentName());
+    core->registerInput(D_Q10_RH, getComponentName());
     // Allow other code to query the inputs, if desired
     core->registerCapability(D_FFI_EMISSIONS, getComponentName());
     core->registerCapability(D_LUC_EMISSIONS, getComponentName());
+    core->registerCapability(D_BETA, getComponentName());
+    core->registerCapability(D_Q10_RH, getComponentName());
 }
 
 //------------------------------------------------------------------------------
@@ -122,16 +127,20 @@ void SimpleNbox::setData( const std::string &varName,
     try {
         // Initial pools
         if( varNameParsed == D_ATMOSPHERIC_C ) {
+            // Hector input files specify initial atmospheric CO2 in terms of
+            // the carbon pool, rather than the CO2 concentration.  Since we
+            // don't have a place to store the initial carbon pool, we convert
+            // it to initial concentration and store that.  It will be converted
+            // back to carbon content when the state variables are set up in
+            // prepareToRun.
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
             H_ASSERT( biome == SNBOX_DEFAULT_BIOME, "atmospheric C must be global" );
-            atmos_c = data.getUnitval(U_PGC);
-            C0.set( atmos_c.value( U_PGC ) * PGC_TO_PPMVCO2, U_PPMV_CO2 );
+            set_c0(data.getUnitval(U_PGC).value(U_PGC) * PGC_TO_PPMVCO2);
         }
         else if( varNameParsed == D_PREINDUSTRIAL_CO2 ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
             H_ASSERT( biome == SNBOX_DEFAULT_BIOME, "preindustrial C must be global" );
-            C0 = data.getUnitval( U_PPMV_CO2 );
-            atmos_c.set( C0.value( U_PPMV_CO2 ) / PGC_TO_PPMVCO2, U_PGC );
+            set_c0(data.getUnitval(U_PPMV_CO2).value(U_PPMV_CO2));
         }
         else if( varNameParsed == D_VEGC ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
@@ -203,15 +212,15 @@ void SimpleNbox::setData( const std::string &varName,
         // Fertilization
         else if( varNameParsed == D_BETA ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            beta[ biome ] = data.getUnitval(U_UNDEFINED);
+            beta[ biome ] = data.getUnitval(U_UNITLESS);
         }
         else if( varNameParsed == D_WARMINGFACTOR ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            warmingfactor[ biome ] = data.getUnitval(U_UNDEFINED);
+            warmingfactor[ biome ] = data.getUnitval(U_UNITLESS);
         }
         else if( varNameParsed == D_Q10_RH ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            q10_rh = data.getUnitval(U_UNDEFINED);
+            q10_rh = data.getUnitval(U_UNITLESS);
         }
      
         else {
@@ -334,20 +343,20 @@ void SimpleNbox::prepareToRun() throw( h_exception )
             H_LOG( logger, Logger::DEBUG ) << "Beta does not exist for this biome; using global value" << std::endl;
             beta[ it->first ] = beta.at( SNBOX_DEFAULT_BIOME );
         }
-        
-//        Tgav_sum[ it->first ] = 0.0;
-   }
+    }
 
     // Save a pointer to the ocean model in use
-    omodel = static_cast<CarbonCycleModel*>( core->getComponentByCapability( D_OCEAN_C ) );
+    omodel = dynamic_cast<CarbonCycleModel*>( core->getComponentByCapability( D_OCEAN_C ) );
 
     if( !Ftalbedo.size() ) {          // if no albedo data, assume constant
         unitval alb( -0.2, U_W_M2 ); // default is MAGICC value
         Ftalbedo.set( core->getStartDate(), alb );
         Ftalbedo.set( core->getEndDate(), alb );
     }
-    
-    Ca.set( C0.value( U_PPMV_CO2 ), U_PPMV_CO2 );
+
+    double c0init = C0.value(U_PPMV_CO2);
+    Ca.set(c0init, U_PPMV_CO2);
+    atmos_c.set(c0init * PPMVCO2_TO_PGC, U_PGC);
     
     if( Ca_constrain.size() ) {
         Ca_constrain.allowPartialInterp( true );
@@ -395,9 +404,9 @@ bool SimpleNbox::run_spinup( const int step ) throw ( h_exception )
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-unitval SimpleNbox::getData( const std::string& varName,
-                            const double date ) throw ( h_exception ) {
-    
+unitval SimpleNbox::getData(const std::string& varName,
+                            const double date) throw ( h_exception )
+{
     unitval returnval;
     
     if( varName == D_ATMOSPHERIC_C ) {
@@ -418,6 +427,13 @@ unitval SimpleNbox::getData( const std::string& varName,
     } else if( varName == D_PREINDUSTRIAL_CO2 ) {
         H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for preindustrial CO2" );
         returnval = C0;
+    } else if(varName == D_BETA) {
+        // For the time being, we are only supporting global beta, not biome-specific
+        H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for CO2 fertilization (beta)");
+        returnval = unitval(beta[SNBOX_DEFAULT_BIOME], U_UNITLESS);
+    } else if(varName == D_Q10_RH) {
+        H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for Q10");
+        returnval = unitval(q10_rh, U_UNITLESS);
     } else if( varName == D_LAND_CFLUX ) {
         H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for atm-land flux" );
         returnval = sum_npp() - sum_rh() - lucEmissions.get( ODEstartdate );
@@ -605,20 +621,19 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     log_pools( t );
     
     // Each time the model pools are updated, check that mass has been conserved
-    static double lastsum = 0.0;
     double sum=0.0;
     for( int i=0; i<ncpool(); i++ ) {
         sum += c[ i ];
     }
 
-    const double diff = fabs( sum - lastsum );
-    H_LOG( logger,Logger::DEBUG ) << "lastsum = " << lastsum << ", sum = " << sum << ", diff = " << diff << std::endl;
-    if( lastsum && diff > MB_EPSILON ) {
+    const double diff = fabs( sum - masstot );
+    H_LOG( logger,Logger::DEBUG ) << "masstot = " << masstot << ", sum = " << sum << ", diff = " << diff << std::endl;
+    if(masstot > 0.0 && diff > MB_EPSILON) {
         H_LOG( logger,Logger::SEVERE ) << "Mass not conserved in " << getComponentName() << std::endl;
-        H_LOG( logger,Logger::SEVERE ) << "lastsum = " << lastsum << ", sum = " << sum << ", diff = " << diff << std::endl;
+        H_LOG( logger,Logger::SEVERE ) << "masstot = " << masstot << ", sum = " << sum << ", diff = " << diff << std::endl;
         H_THROW( "Mass not conserved! (See log.)" );
     }
-    lastsum = sum;
+    masstot = sum;
 
     // If user has supplied Ca values, adjust atmospheric C to match
     if( !core->inSpinup() && Ca_constrain.size() && t <= Ca_constrain.lastdate() ) {
@@ -933,6 +948,22 @@ void SimpleNbox::record_state(double t)
     // that's where we're at.
     omodel->record_state(t);
     
+}
+
+// Set the preindustrial carbon value and adjust total mass to reflect the new
+// value (unless it hasn't yet been set).  Note that after doing this,
+// attempting to run without first doing a reset will cause an exception due to
+// failure to conserve mass.
+void SimpleNbox::set_c0(double newc0)
+{
+    if(masstot > 0.0) {
+        double massdiff = (newc0 - C0) * PPMVCO2_TO_PGC;
+        masstot += massdiff;
+        H_LOG(logger, Logger::DEBUG) << "massdiff= " << massdiff << "  new masstot= " << masstot
+                                     << "\n";
+    }
+    C0.set(newc0, U_PPMV_CO2);
+        
 }
 
 }

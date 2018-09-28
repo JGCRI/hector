@@ -106,7 +106,7 @@ void OrganicCarbonComponent::setData( const string& varName,
 void OrganicCarbonComponent::prepareToRun() throw ( h_exception ) {
     
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
-	oldDate = core->getStartDate();
+    oldDate = core->getStartDate();
 }
 
 //------------------------------------------------------------------------------

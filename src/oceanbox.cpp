@@ -33,14 +33,11 @@ if( log != NULL ) H_LOG( (*log), level )
 /*! \brief Constructor
  */
 oceanbox::oceanbox() {
-	logger = NULL;
-	deltaT.set( 0.0, U_DEGC );
-	initbox( unitval( 0.0, U_PGC ), "?" );
-	surfacebox = false;
-	preindustrial_flux.set( 0.0, U_PGC_YR );
-	annual_box_fluxes.clear();
-	carbonHistory.clear();
-  	carbonLossHistory.clear();
+    logger = NULL;
+    deltaT.set( 0.0, U_DEGC );
+    initbox( unitval( 0.0, U_PGC ), "?" );
+    surfacebox = false;
+    preindustrial_flux.set( 0.0, U_PGC_YR );
     warmingfactor = 1.0;      // by default warms exactly as global
     Tbox = unitval( -999, U_DEGC );
     atmosphere_flux.set( 0.0, U_PGC );
@@ -59,12 +56,20 @@ void oceanbox::set_carbon( const unitval C) {
 /*! \brief initialize basic information in an oceanbox
  */
 void oceanbox::initbox( unitval C, string N ) {
-	set_carbon( C );
-	if( N != "" ) Name = N;
-	CarbonToAdd.set( 0.0, U_PGC );  // each box is separate from each other, and we keep track of carbon in each box.
-	active_chemistry = false;
+    // Reset the box to its pristine state
+    connection_list.clear();
+    connection_k.clear();
+    carbonHistory.clear(); 
+    carbonLossHistory.clear();
+    connection_window.clear();
+    annual_box_fluxes.clear();
     
-	OB_LOG( logger, Logger::NOTICE) << "hello " << N << endl;
+    set_carbon( C );
+    if( N != "" ) Name = N;
+    CarbonToAdd.set( 0.0, U_PGC );  // each box is separate from each other, and we keep track of carbon in each box.
+    active_chemistry = false;
+    
+    OB_LOG( logger, Logger::NOTICE) << "hello " << N << endl;
 }
 
 //------------------------------------------------------------------------------

@@ -41,7 +41,10 @@ CarbonCycleSolver::~CarbonCycleSolver()
 //------------------------------------------------------------------------------
 // documentation is inherited
 void CarbonCycleSolver::init( Core* coreptr ) {
-    logger.open( getComponentName(), coreptr->getGlobalLogger().isEnabled(), coreptr->getGlobalLogger().getEchoToFile(), Logger::WARNING );
+    // This component is very verbose at the debug and notice levels, so limit
+    // output to the warning level, even if the rest of the model is configured
+    // for something lower.
+    logger.open(getComponentName(), false, coreptr->getGlobalLogger().getEchoToFile(), Logger::WARNING);
     H_LOG( logger, Logger::DEBUG ) << getComponentName() << " initialized." << std::endl;
     
     core = coreptr;
@@ -117,7 +120,7 @@ void CarbonCycleSolver::prepareToRun() throw( h_exception )
 {
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
     
-    cmodel = static_cast<CarbonCycleModel*>( core->getComponentByCapability( D_ATMOSPHERIC_C ) );
+    cmodel = dynamic_cast<CarbonCycleModel*>( core->getComponentByCapability( D_ATMOSPHERIC_C ) );
     
     // initialize the solver's internal data
     t = core->getStartDate();
@@ -125,8 +128,8 @@ void CarbonCycleSolver::prepareToRun() throw( h_exception )
     H_LOG( logger, Logger::DEBUG ) << "Carbon model in use is " << cmodel->getComponentName() << std::endl;
     H_LOG( logger, Logger::DEBUG ) << "Carbon model pools: " << nc << std::endl;
     H_ASSERT( nc > 0, "nc must be > 0" );
-    
-    c      = std::vector<double>( nc );
+    // resize the array of carbon pool values
+    c.resize(nc);
     
 }
 
@@ -316,6 +319,7 @@ bool CarbonCycleSolver::run_spinup( const int step ) throw( h_exception )
           c_original[i] = c_old[i] = c_new[i] = dcdt[i] = 0.0;
         
         cmodel->getCValues( t, &c_original[0] );
+        cmodel->record_state(t);
     }
     
     cmodel->getCValues( t, &c_old[0] );

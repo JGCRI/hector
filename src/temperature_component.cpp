@@ -107,6 +107,13 @@ void TemperatureComponent::init( Core* coreptr ) {
     core->registerDependency( D_RF_SO2d, getComponentName() );
     core->registerDependency( D_RF_SO2i, getComponentName() );
 
+    // Register the inputs we can receive from outside
+    core->registerInput(D_ECS, getComponentName());
+    core->registerInput(D_DIFFUSIVITY, getComponentName());
+    // Allow parameter values to be queried
+    core->registerCapability(D_ECS, getComponentName());
+    core->registerCapability( D_DIFFUSIVITY, getComponentName() );
+
 }
 
 //------------------------------------------------------------------------------
@@ -118,15 +125,9 @@ unitval TemperatureComponent::sendMessage( const std::string& message,
     unitval returnval;
     
     if( message==M_GETDATA ) {          //! Caller is requesting data
-        return getData( datum, info.date );
-        
+        return getData( datum, info.date ); 
     } else if( message==M_SETDATA ) {   //! Caller is requesting to set data
-        H_THROW("Temperature: sendMessage not yet implemented for message=M_SETDATA.");
-        //TODO: call setData below
-        //TODO: change core so that parsing is routed through sendMessage
-        //TODO: make setData private
-
-        
+        setData(datum, info);
     } else {                        //! We don't handle any other messages
         H_THROW( "Caller sent unknown message: "+message );
     }
@@ -479,6 +480,9 @@ void TemperatureComponent::reset(double time) throw(h_exception)
     // temperature component doesn't have its own time counter, and it stores its history in a collection of double
     // vectors.  Therefore, all we do here is set the unitval versions of that stored data to their values from the
     // vectors.
+    if(time < core->getStartDate()) // in this case, reset to the starting value.
+        time = core->getStartDate();
+    
     int tstep = time - core->getStartDate();
     setoutputs(tstep);
     H_LOG(logger, Logger::NOTICE)

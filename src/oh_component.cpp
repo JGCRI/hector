@@ -132,15 +132,16 @@ void OHComponent::prepareToRun() throw ( h_exception ) {
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
     oldDate = core->getStartDate();
     //get intial CH4 concentration
-     M0 = core->sendMessage( M_GETDATA, D_PREINDUSTRIAL_CH4 );
-    TAU_OH.set( oldDate, TOH0 );
-    
+    M0 = core->sendMessage( M_GETDATA, D_PREINDUSTRIAL_CH4 );
+    TAU_OH.set( oldDate, TOH0 ); 
  }
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-void OHComponent::run( const double runToDate ) throw ( h_exception ) {
-	H_ASSERT( !core->inSpinup() && runToDate-oldDate == 1, "timestep must equal 1" );
+void OHComponent::run( const double runToDate ) throw ( h_exception )
+{
+    H_LOG(logger, Logger::DEBUG) << "olddate:  " << oldDate << " runToDate: " << runToDate << std::endl;
+    H_ASSERT( !core->inSpinup() && runToDate-oldDate == 1, "timestep must equal 1" );
 
        // modified from Tanaka et al 2007 and Wigley et al 2002.
     unitval current_nox = NOX_emissions.get( runToDate ); 

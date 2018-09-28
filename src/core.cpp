@@ -47,14 +47,15 @@ using namespace std;
  *  \sa init()
  */
 Core::Core(Logger::LogLevel loglvl, bool echotoscreen, bool echotofile) :
-  run_name( "" ), 
-  startDate( -1.0 ),
-endDate( -1.0 ),
-lastDate( -1.0), 
-isInited( false ),
-do_spinup( true ),
-max_spinup( 2000 ),
-in_spinup( false )
+    run_name( "" ), 
+    startDate( -1.0 ),
+    endDate( -1.0 ),
+    lastDate( -1.0), 
+    isInited( false ),
+    do_spinup( true ),
+    max_spinup( 2000 ),
+    setup_complete(false),
+    in_spinup( false )
 {
     glog.open(string(MODEL_NAME), echotoscreen, echotofile, loglvl);
 }
@@ -281,56 +282,66 @@ void Core::addVisitor( AVisitor* visitor ) {
  */
 void Core::prepareToRun(void) throw (h_exception)
 {
+
+    /* Most of this stuff only needs to be done once, even if we reset the
+     * model; therefore it would be a good candidate to go in init instead of
+     * here.  However, in order to remove disabled components we have to first
+     * read the input file so that we know which ones are meant to be disabled.
+     * The input file doesn't get read until after init is run, so we have to
+     * defer this setup until here and guard it so that it only gets run
+     * once. */
+    if(!setup_complete) {
+        // ------------------------------------
+        // 1. Go through the list of components that have been disabled and remove them
+        // from the capability and component lists
     
-    // ------------------------------------
-    // 1. Go through the list of components that have been disabled and remove them
-    // from the capability and component lists
-    
-    for( vector<string>::iterator it=disabledComponents.begin(); it != disabledComponents.end(); ++it ) {
-        H_LOG( glog, Logger::WARNING ) << "Disabling " << *it << endl;
-        IModelComponent * mcomp = getComponentByName( *it );
-        mcomp->shutDown();
-        delete mcomp;
-        modelComponents.erase( *it );
+        for( vector<string>::iterator it=disabledComponents.begin(); it != disabledComponents.end(); ++it ) {
+            H_LOG( glog, Logger::WARNING ) << "Disabling " << *it << endl;
+            IModelComponent * mcomp = getComponentByName( *it );
+            mcomp->shutDown();
+            delete mcomp;
+            modelComponents.erase( *it );
         
-        componentMapIterator it2 = componentCapabilities.begin();
-        while( it2 != componentCapabilities.end() ) {
-            if( it2->second==*it ) {
-                H_LOG( glog, Logger::DEBUG) << "--erasing " << it2->first << " " << it2->second << endl;
-                componentCapabilities.erase( it2++ );
+            componentMapIterator it2 = componentCapabilities.begin();
+            while( it2 != componentCapabilities.end() ) {
+                if( it2->second==*it ) {
+                    H_LOG( glog, Logger::DEBUG) << "--erasing " << it2->first << " " << it2->second << endl;
+                    componentCapabilities.erase( it2++ );
+                } else {
+                    ++it2;
+                }
+            } // while
+        } // for
+    
+        // ------------------------------------
+        // 2. At this point all components should have registered both their capabilities
+        // and dependencies. The latter are registered as dependencies on capabilities,
+        // so now we go through the componentDependencies map, find the associated
+        // component, and register the link with depFinder.
+        DependencyFinder depFinder;
+        H_LOG( glog, Logger::NOTICE ) << "Computing dependencies and re-ordering components..." << endl;
+        for( componentMapIterator it = componentDependencies.begin(); it != componentDependencies.end(); ++it ) {
+            //        H_LOG( glog, Logger::DEBUG) << it->first << " " << it->second << endl;
+            if( checkCapability( it->second ) ) {
+                depFinder.addDependency( it->first, getComponentByCapability( it->second )->getComponentName() );
             } else {
-                ++it2;
+                H_LOG( glog, Logger::SEVERE) << "Capability " << it->second << " not found but requested by " << it->first << endl;
+                H_LOG( glog, Logger::WARNING) << "The model will almost certainly not run successfully!" << endl;
             }
-        } // while
-    } // for
-    
-    // ------------------------------------
-    // 2. At this point all components should have registered both their capabilities
-    // and dependencies. The latter are registered as dependencies on capabilities,
-    // so now we go through the componentDependencies map, find the associated
-    // component, and register the link with depFinder.
-    DependencyFinder depFinder;
-    H_LOG( glog, Logger::NOTICE ) << "Computing dependencies and re-ordering components..." << endl;
-    for( componentMapIterator it = componentDependencies.begin(); it != componentDependencies.end(); ++it ) {
-        //        H_LOG( glog, Logger::DEBUG) << it->first << " " << it->second << endl;
-        if( checkCapability( it->second ) ) {
-            depFinder.addDependency( it->first, getComponentByCapability( it->second )->getComponentName() );
-        } else {
-            H_LOG( glog, Logger::SEVERE) << "Capability " << it->second << " not found but requested by " << it->first << endl;
-            H_LOG( glog, Logger::WARNING) << "The model will almost certainly not run successfully!" << endl;
         }
+    
+        // ------------------------------------
+        // 3. Now that all dependency information has been resolved and entered, create an ordering,
+        // and then re-sort the modelComponents map based on this new ordering
+        depFinder.createOrdering();
+        DependencyOrderingComparator comp( depFinder.getOrdering() );
+        modelComponents = map<string, IModelComponent*,
+                              DependencyOrderingComparator>(modelComponents.begin(), modelComponents.end(), comp );
+
     }
-    
-    // ------------------------------------
-    // 3. Now that all dependency information has been resolved and entered, create an ordering,
-    // and then re-sort the modelComponents map based on this new ordering
-    depFinder.createOrdering();
-    DependencyOrderingComparator comp( depFinder.getOrdering() );
-    modelComponents = map<string, IModelComponent*, DependencyOrderingComparator>(
-                                                                                  modelComponents.begin(),
-                                                                                  modelComponents.end(),
-                                                                                  comp );
-    
+    setup_complete = true;
+
+    /* Everything from here on down is ok to run more than once */
     // ------------------------------------
     // 4. Tell model components we are finished sending data and about to start running.
     H_LOG( glog, Logger::NOTICE) << "Preparing to run..." << endl;
@@ -343,7 +354,7 @@ void Core::prepareToRun(void) throw (h_exception)
     // 5. Spin up the model
     if( do_spinup ) {
         H_LOG( glog, Logger::NOTICE) << "Spinning up model..." << endl;
-        run_spinup(); 
+        run_spinup();
     } else {
         H_LOG( glog, Logger::WARNING) << "No model spinup was requested" << endl;
     } // if 
@@ -448,13 +459,15 @@ void Core::reset(double resetdate)
     bool rerun_spinup = false;
     H_LOG(glog, Logger::NOTICE) << "Resetting model to t= " << resetdate << endl;
     if(resetdate < getStartDate()) {
-        H_LOG(glog, Logger::NOTICE) << "Requested reset time before start date.  "
-                                    << "Resetting to start date.\n";
-        resetdate = getStartDate();
-
         if(do_spinup) {
             rerun_spinup = true;
+            resetdate = 0;      // t=0 is the first iteration of the spinup.
             H_LOG(glog, Logger::NOTICE) << "Rerunning spinup.\n";
+        }
+        else {
+            H_LOG(glog, Logger::NOTICE) << "Requested reset time before start date.  "
+                                        << "Resetting to start date.\n";
+            resetdate = getStartDate();
         }
     }
 
@@ -462,10 +475,18 @@ void Core::reset(double resetdate)
         H_LOG(glog, Logger::DEBUG) << "Resetting component: " << it->first << endl;
         it->second->reset(resetdate);
     }
-    if(rerun_spinup)
-        run_spinup();
 
-    lastDate = resetdate;
+    // The prepareToRun function reruns all of the initial setup, including the
+    // spinup.  This is necessary because we may have changed some of the model
+    // parameters, and for many components the parameters produce their effect
+    // by influencing the initial state.
+    if(rerun_spinup)
+        prepareToRun();
+
+    if(rerun_spinup)
+        lastDate = getStartDate();
+    else
+        lastDate = resetdate;
 }
 
 
@@ -613,20 +634,6 @@ unitval Core::sendMessage( const std::string& message,
         }
     }
     else if (message == M_SETDATA ) {
-        if( isInited ) {
-            // If core initialization has been completed, then the only
-            // setdata messages allowed are ones keyed to a date that we
-            // haven't gotten to yet.
-            if(info.date == Core::undefinedIndex()) {
-                H_LOG(glog, Logger::SEVERE)
-                    << "Once core is initialized, the only SETDATA messages allowed are for dates after the current model date.\n"
-                    << "\tdatum: " << datum
-                    << "\tcurrent date: " << lastDate << "\tmessage date: " << info.date
-                    << std::endl;
-                H_THROW("Invalid sendMessage/SETDATA.  Check global log for details.");
-            }
-        }
-        
         // locate the components that take this kind of input.  If
         // there are multiple, we send the message to all of them.
         pair<componentMapIterator, componentMapIterator> itpr =

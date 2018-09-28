@@ -63,11 +63,12 @@ fetchvars <- function(core, dates, vars=NULL)
 #' @param var Capability string for the variable to set
 #' @param values Values to set.  Must be either a single value or a vector the
 #' same length as dates.
-#' @param unit Unit string
+#' @param unit Unit string.  Can be set to NA for unitless variables.
 #' @family main user interface functions
 #' @export
 setvar <- function(core, dates, var, values, unit)
 {
+    unit[is.na(unit)] <- '(unitless)'
     sendmessage(core, SETDATA(), var, dates, values, unit)
 
     invisible(NULL)

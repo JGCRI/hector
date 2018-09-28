@@ -197,6 +197,7 @@ private:
     unitval sum_map( unitval_stringmap pool ) const;    //!< sums a unitval map (collection of data)
     double sum_map( double_stringmap pool ) const;      //!< sums a double map (collection of data)
     void log_pools( const double t );                   //!< prints pool status to the log file
+    void set_c0(double newc0);                          //!< set initial co2 and adjust total carbon mass
     
     CarbonCycleModel *omodel;           //!< pointer to the ocean model in use
 

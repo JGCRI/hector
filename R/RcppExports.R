@@ -730,7 +730,7 @@ VOLCANIC_SO2 <- function() {
     .Call('_hector_VOLCANIC_SO2', PACKAGE = 'hector')
 }
 
-#' @describeIn parameters Equilibrium Climate Sensitivity (\code{DegC})
+#' @describeIn parameters Equilibrium Climate Sensitivity (\code{"degC"})
 #' @export
 ECS <- function() {
     .Call('_hector_ECS', PACKAGE = 'hector')
