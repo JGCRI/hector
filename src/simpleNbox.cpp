@@ -356,7 +356,7 @@ void SimpleNbox::prepareToRun() throw( h_exception )
 
     double c0init = C0.value(U_PPMV_CO2);
     Ca.set(c0init, U_PPMV_CO2);
-    atmos_c.set(c0init * (1.0/PGC_TO_PPMVCO2), U_PGC);
+    atmos_c.set(c0init * PPMVCO2_TO_PGC, U_PGC);
     
     if( Ca_constrain.size() ) {
         Ca_constrain.allowPartialInterp( true );

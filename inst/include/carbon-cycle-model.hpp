@@ -26,7 +26,7 @@
 //  and Wigley (1993)
 // So to convert 1 Pg C to 1 ppmv CO2...
 #define PGC_TO_PPMVCO2 (1.0/2.13)
-#define PPMVCO2_TO_PGC (2.13/1.0)
+#define PPMVCO2_TO_PGC (1.0/PGC_TO_PPMVCO2)
 
 // Signal from model to the solver that, while we haven't failed,
 // need to stash C values and re-try reaching next timestep
