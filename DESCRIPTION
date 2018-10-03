@@ -7,8 +7,12 @@ Depends: R (>= 3.3)
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-LinkingTo: Rcpp
-Imports: Rcpp
+Imports:
+  Rcpp,
+  BH
+LinkingTo:
+  Rcpp,
+  BH
 RoxygenNote: 6.0.1
 Suggests: testthat
 SystemRequirements: Boost C++ libraries
