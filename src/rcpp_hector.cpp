@@ -46,7 +46,7 @@ List newcore(String inifile, int loglevel = 0, bool suppresslogging=false)
     try {
         // Check that the configuration file exists. The easiest way to do
         // this is to try to open it.
-        std::ifstream ifs(inifile);      // we'll use this to test if the file exists
+	std::ifstream ifs(inifile.get_cstring());      // we'll use this to test if the file exists
         if(ifs) {
             ifs.close();            // don't actually want to read from it
         }
