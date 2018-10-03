@@ -1,11 +1,2 @@
-## The following environment variables must be set in .Renvironment:
-##   * BOOSTROOT  : Top level of Boost library directories
-##   * BOOSTLIB   : Location of compiled boost libraries
-
-
 PKG_CPPFLAGS = -I../inst/include -DUSE_RCPP 
-
 PKG_LIBS = -Wl,-rpath -lboost_system -lboost_filesystem
-
-
-
