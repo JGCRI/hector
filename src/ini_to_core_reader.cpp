@@ -15,7 +15,7 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/algorithm/string/trim.hpp>
-#include <regex>
+#include <Rcpp.h>
 
 #include "core.hpp"
 #include "message_data.hpp"
@@ -80,6 +80,12 @@ void INIToCoreReader::parse( const string& filename ) throw ( h_exception ) {
 int INIToCoreReader::valueHandler( void* user, const char* section, const char* name,
                                   const char* value )
 {
+    // Load R functions for path management
+    Rcpp::Environment base("package:base");
+    Rcpp::Function normalizePath = base["normalizePath"];
+    Rcpp::Function dirname = base["dirname"];
+    Rcpp::Function filepath = base["file.path"];
+
     static const string csvFilePrefix = "csv:";
     INIToCoreReader* reader = (INIToCoreReader*)user;
     
@@ -108,14 +114,20 @@ int INIToCoreReader::valueHandler( void* user, const char* section, const char* 
             // remove the special case identifier to figure out the actual file name
             // to process
             string csvFileName( valueStr.begin() + csvFilePrefix.size(), valueStr.end() );
-            // when not an absolute path consider the CSV filepath to be
-            // relative to the INI file
-	    string absPathExpr("/|[A-Z]:|~");
-	    bool csvFilePath_is_relative = ! boost::starts_with(csvFileName, absPathExpr);
-            if ( csvFilePath_is_relative ) {
-	      regex parentPathExpr("(.*)/.*");
-	      string parentPathReplace("$1/" + csvFileName);
-	      csvFileName = regex_replace(reader->iniFilePath, parentPathExpr, parentPathReplace);
+	    // If the csvFileName normalizes to a real path, use that.
+            // Otherwise, assume that it is pointing to a file in the
+            // same directory as the INI file.
+            try {
+                // Second argument is "winslash". "\\" (single forward
+                // slash) is the default. Need it here to access the
+                // third argument -- mustWork -- which throws the
+                // error to be caught if the path doesn't exist
+                csvFileName = Rcpp::as<string>(normalizePath(csvFileName, "\\", true));
+            } catch (...) {
+                // Get the full path of the INI file with
+                // normalizePath. Then, get just the directory using dirname.
+                Rcpp::String parentPath = dirname(normalizePath(reader->iniFilePath));
+                csvFileName = Rcpp::as<string>(filepath(parentPath, csvFileName));
             }
 
             CSVTableReader tableReader( csvFileName );
