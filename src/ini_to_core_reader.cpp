@@ -15,15 +15,13 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/algorithm/string/trim.hpp>
-#include <boost/filesystem.hpp>
+#include <regex>
 
 #include "core.hpp"
 #include "message_data.hpp"
 #include "ini_to_core_reader.hpp"
 #include "ini.h"
 #include "csv_table_reader.hpp"
-
-namespace fs = boost::filesystem;
 
 namespace Hector {
   
@@ -112,11 +110,12 @@ int INIToCoreReader::valueHandler( void* user, const char* section, const char* 
             string csvFileName( valueStr.begin() + csvFilePrefix.size(), valueStr.end() );
             // when not an absolute path consider the CSV filepath to be
             // relative to the INI file
-            fs::path csvFilePath( csvFileName );
-            if ( csvFilePath.is_relative() ) {
-              fs::path iniFilePath( reader->iniFilePath );
-              fs::path fullPath( iniFilePath.parent_path() / csvFilePath );
-              csvFileName = fullPath.string();
+	    string absPathExpr("/|[A-Z]:|~");
+	    bool csvFilePath_is_relative = ! boost::starts_with(csvFileName, absPathExpr);
+            if ( csvFilePath_is_relative ) {
+	      regex parentPathExpr("(.*)/.*");
+	      string parentPathReplace("$1/" + csvFileName);
+	      csvFileName = regex_replace(reader->iniFilePath, parentPathExpr, parentPathReplace);
             }
 
             CSVTableReader tableReader( csvFileName );
