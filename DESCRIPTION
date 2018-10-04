@@ -7,9 +7,8 @@ Depends: R (>= 3.3)
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-LinkingTo: Rcpp
-Imports: Rcpp (>= 0.12)
-VignetteBuilder: knitr
+LinkingTo: Rcpp, BH
+Imports: Rcpp (>= 0.12), BH (>= 1.65)
 RoxygenNote: 6.0.1
 Suggests:
     testthat,
