@@ -5,11 +5,11 @@ author: Alexey Shiklomanov
 
 This vignette provides a basic introduction for running Hector with R.
 First, it shows how to do a simple Hector run with one of Hector's built-in scenarios.
-Then, it shows how to modify Hector parameters from within R and uses this functionality to perform a simple sensitivity analysis of several Hector variables to the CO$_2$ fertilization parameter $\beta$.
+Then, it shows how to modify Hector parameters from within R and uses this functionality to perform a simple sensitivity analysis of how the CO$_2$ fertilization parameter $\beta$ affects several Hector output variables.
 
 # Basic run
 
-First, load the hector package.
+First, load the `hector` package.
 
 ```{r  load-packages}
 library(hector) 
@@ -50,7 +50,7 @@ results <- fetchvars(core, 2000:2300)
 head(results) 
 ```
 
-The results are returned as a long, tidy `data.frame`.
+The results are returned as a long, [tidy](https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html) `data.frame`.
 This makes it easy to plot them using `ggplot2`.
 
 ```{r  plot }
