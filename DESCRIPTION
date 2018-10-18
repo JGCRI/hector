@@ -10,10 +10,15 @@ LazyData: true
 LinkingTo: Rcpp
 Imports: Rcpp
 RoxygenNote: 6.0.1
-Suggests: testthat
+Suggests:
+    testthat,
+    nleqslv,
+    knitr,
+    rmarkdown
 SystemRequirements: Boost C++ libraries
-Collate: 
+Collate:
     'aadoc.R'
     'RcppExports.R'
     'hector.R'
     'messages.R'
+VignetteBuilder: knitr
