@@ -4,7 +4,7 @@ author: "Robert Link"
 date: "2018-10-17"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{Example: solving for an emissions pathway}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

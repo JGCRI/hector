@@ -1,6 +1,12 @@
 ---
 title: A tour of the Hector R interface
 author: Alexey Shiklomanov
+date: "2018-10-17"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Intro to Hector}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 This vignette provides a basic introduction for running Hector with R.
