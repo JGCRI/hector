@@ -61,3 +61,5 @@ R/batchrunner/*.csv
 .Rapp.history
 .Rproj.user
 .RData
+inst/doc
+vignettes/rsconnect
