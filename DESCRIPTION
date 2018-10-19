@@ -9,14 +9,14 @@ Encoding: UTF-8
 LazyData: true
 LinkingTo: Rcpp
 Imports: Rcpp (>= 0.12)
-Suggests: knitr, ggplot2
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1
 Suggests:
     testthat,
     nleqslv,
     knitr,
-    rmarkdown
+    rmarkdown,
+    ggplot2
 SystemRequirements: Boost C++ libraries
 Collate:
     'aadoc.R'
