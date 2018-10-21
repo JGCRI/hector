@@ -110,9 +110,11 @@ void TemperatureComponent::init( Core* coreptr ) {
     // Register the inputs we can receive from outside
     core->registerInput(D_ECS, getComponentName());
     core->registerInput(D_DIFFUSIVITY, getComponentName());
+    core->registerInput(D_AERO_SCALE, getComponentName());
     // Allow parameter values to be queried
     core->registerCapability(D_ECS, getComponentName());
-    core->registerCapability( D_DIFFUSIVITY, getComponentName() );
+    core->registerCapability(D_DIFFUSIVITY, getComponentName());
+    core->registerCapability(D_AERO_SCALE, getComponentName());
 
 }
 
@@ -444,6 +446,8 @@ unitval TemperatureComponent::getData( const std::string& varName,
             returnval = heatflux;
         } else if( varName == D_ECS ) {
             returnval = S;
+        } else if(varName == D_AERO_SCALE) {
+            returnval = alpha;
         } else {
             H_THROW( "Caller is requesting unknown variable: " + varName ); 
         }

@@ -89,7 +89,7 @@ test_that('Lowering diffusivity increases temperature', {
                                         # increase is smooth.
     dd1 <- fetchvars(hc, qdates, GLOBAL_TEMP())
 
-    ## Change the preindustrial CO2
+    ## Change the diffusivity
     setvar(hc, NA, DIFFUSIVITY(), 2.0, "cm2/s")
     reset(hc, 0.0)
     run(hc, 2100)
@@ -102,5 +102,25 @@ test_that('Lowering diffusivity increases temperature', {
     shutdown(hc)
 })
 
+test_that('Lowering aerosol scaling factor increases temperature',
+      {
+    hc <- newcore(file.path(inputdir, 'hector_rcp45.ini'), suppresslogging =
+                    TRUE)
+    run(hc, 2100)
+    qdates <- 2000:2100
 
+    dd1 <- fetchvars(hc, qdates, GLOBAL_TEMP())
+
+    ## Change the aerosol scaling factor
+    setvar(hc, NA, AERO_SCALE(), 0.5, NA)
+    reset(hc, 0.0)
+    run(hc, 2100)
+    dd2 <- fetchvars(hc, qdates, GLOBAL_TEMP())
+
+    ## Check that temperatures are higher
+    diff <- dd2$value - dd1$value
+    expect_gt(min(diff), 0.0)
+
+    shutdown(hc)
+})
 

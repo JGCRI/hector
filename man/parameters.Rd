@@ -6,6 +6,7 @@
 \alias{Q10_RH}
 \alias{BETA}
 \alias{ECS}
+\alias{AERO_SCALE}
 \alias{DIFFUSIVITY}
 \title{Identifiers for model parameters}
 \usage{
@@ -16,6 +17,8 @@ Q10_RH()
 BETA()
 
 ECS()
+
+AERO_SCALE()
 
 DIFFUSIVITY()
 }
@@ -33,6 +36,8 @@ behavior and are subject to uncertainty.  All of these can be set using the
 \item \code{BETA}: CO2 fertilization factor (\code{"(unitless)"})
 
 \item \code{ECS}: Equilibrium Climate Sensitivity (\code{"degC"})
+
+\item \code{AERO_SCALE}: Aerosol scaling factor (\code{"(unitless)"})
 
 \item \code{DIFFUSIVITY}: Ocean heat diffusivity (\code{"cm2/s"})
 }}
