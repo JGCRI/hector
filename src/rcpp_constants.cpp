@@ -936,6 +936,13 @@ String ECS() {
 return D_ECS;
 }
 
+//' @describeIn parameters Aerosol scaling factor (\code{"(unitless)"})
+//' @export
+// [[Rcpp::export]]
+String AERO_SCALE() {
+  return D_AERO_SCALE;
+}
+
 //' @describeIn temperature Global mean temperature
 //' @export
 // [[Rcpp::export]]

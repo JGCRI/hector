@@ -736,6 +736,12 @@ ECS <- function() {
     .Call('_hector_ECS', PACKAGE = 'hector')
 }
 
+#' @describeIn parameters Aerosol scaling factor (\code{"(unitless)"})
+#' @export
+AERO_SCALE <- function() {
+    .Call('_hector_AERO_SCALE', PACKAGE = 'hector')
+}
+
 #' @describeIn temperature Global mean temperature
 #' @export
 GLOBAL_TEMP <- function() {

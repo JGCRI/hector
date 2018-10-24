@@ -2,6 +2,7 @@
 
 S3method(format,hcore)
 S3method(print,hcore)
+export(AERO_SCALE)
 export(ATMOSPHERIC_C)
 export(ATMOSPHERIC_CH4)
 export(ATMOSPHERIC_CO2)
