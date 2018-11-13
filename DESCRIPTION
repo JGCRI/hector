@@ -1,0 +1,26 @@
+Package: hector
+Title: Run the Hector Simple Climate Model
+Version: 0.1.0
+Authors@R: person("Robert", "Link", email = "robert.link@pnnl.gov", role = c("aut", "cre"))
+Description: Provides R bindings for the Hector Simple Climate Model.
+Depends: R (>= 3.3)
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+LinkingTo: Rcpp
+Imports: Rcpp (>= 0.12)
+VignetteBuilder: knitr
+RoxygenNote: 6.0.1
+Suggests:
+    testthat,
+    nleqslv,
+    knitr,
+    rmarkdown,
+    ggplot2
+SystemRequirements: Boost C++ libraries
+Collate:
+    'aadoc.R'
+    'RcppExports.R'
+    'hector.R'
+    'messages.R'
+VignetteBuilder: knitr

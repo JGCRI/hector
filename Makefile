@@ -1,4 +1,4 @@
 
 %: 
-	cd source && $(MAKE) $@
+	cd src && $(MAKE) -f makefile.standalone $@
 
