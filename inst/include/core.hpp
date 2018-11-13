@@ -61,7 +61,7 @@ public:
     IModelComponent* getComponentByCapability( const std::string& capabilityName
                                               ) const throw ( h_exception );
     
-    void registerCapability( const std::string& capabilityName, const std::string& componentName
+    void registerCapability(const std::string& capabilityName, const std::string& componentName, bool warndupe=true
                             )  throw ( h_exception );
     
     int checkCapability( const std::string& capabilityName );

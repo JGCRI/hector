@@ -111,11 +111,6 @@ void TemperatureComponent::init( Core* coreptr ) {
     core->registerInput(D_ECS, getComponentName());
     core->registerInput(D_DIFFUSIVITY, getComponentName());
     core->registerInput(D_AERO_SCALE, getComponentName());
-    // Allow parameter values to be queried
-    core->registerCapability(D_ECS, getComponentName());
-    core->registerCapability(D_DIFFUSIVITY, getComponentName());
-    core->registerCapability(D_AERO_SCALE, getComponentName());
-
 }
 
 //------------------------------------------------------------------------------

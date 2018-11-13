@@ -50,9 +50,7 @@ void OrganicCarbonComponent::init( Core* coreptr ) {
     H_LOG( logger, Logger::DEBUG ) << "hello " << getComponentName() << std::endl;
   	core = coreptr;
 
-    // Inform core what data we can provide
-    core->registerCapability( D_EMISSIONS_OC, getComponentName() );
-    // OC emissions are also an input
+    // Register OC emissions are also an input
     core->registerInput(D_EMISSIONS_OC, getComponentName());
 }
 
