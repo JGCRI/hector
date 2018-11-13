@@ -788,11 +788,12 @@ HEAT_FLUX <- function() {
 #' @param inifile (String) name of the hector input file.
 #' @param loglevel (int) minimum message level to output in logs (see \code{\link{loglevels}}).
 #' @param suppresslogging (bool) If true, suppress all logging (loglevel is ignored in this case).
+#' @param name (string) An optional name to identify the core.
 #' @return handle for the Hector instance.
 #' @family main user interface functions
 #' @export
-newcore <- function(inifile, loglevel = 0L, suppresslogging = FALSE) {
-    .Call('_hector_newcore', PACKAGE = 'hector', inifile, loglevel, suppresslogging)
+newcore <- function(inifile, loglevel = 0L, suppresslogging = FALSE, name = "unnamed hector core") {
+    .Call('_hector_newcore', PACKAGE = 'hector', inifile, loglevel, suppresslogging, name)
 }
 
 #' Shutdown a hector instance
