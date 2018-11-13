@@ -572,7 +572,7 @@ void Core::registerCapability(const string& capabilityName, const string& compon
 /*! \brief Register a component as accepting a certain input
  *
  *  \details Associate the input capability with a component.  We also
- *           implicitly register the capability (under the same name)
+ *           register the input as a capability (under the same name), allowing other objects to query the host component for its value(s).
  *           so that other components can read these values.
  *
  *  \param inputName The name of the input the component can accept
