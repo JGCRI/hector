@@ -548,6 +548,7 @@ IModelComponent* Core::getComponentByCapability( const string& capabilityName ) 
  *                  called from registerInput, which sometimes creates duplicates
  *                  for benign reasons.
  *  \exception h_exception If the componentName was not recognized.
+ * \note By "capability" we mean any piece of data that the component wants to expose to the model core or other components; this can be an input, an output, or an internal variable.
  */
 void Core::registerCapability(const string& capabilityName, const string& componentName, bool warndupe
                               )  throw ( h_exception ){
