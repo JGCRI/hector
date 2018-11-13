@@ -543,28 +543,47 @@ IModelComponent* Core::getComponentByCapability( const string& capabilityName ) 
 /*! \brief Register a capability as associated with a component.
  *  \param capabilityName The capability of the component to register.
  *  \param componentName The name of the associated component.
+ *  \param warndupe If true (the default) warn when a duplicate capability
+ *                  is declared.  This should only be set to false when being
+ *                  called from registerInput, which sometimes creates duplicates
+ *                  for benign reasons.
  *  \exception h_exception If the componentName was not recognized.
  */
-void Core::registerCapability( const string& capabilityName, const string& componentName
+void Core::registerCapability(const string& capabilityName, const string& componentName, bool warndupe
                               )  throw ( h_exception ){
     H_ASSERT( !isInited, "registerCapability not available after core is initialized")
-    
-    if( componentCapabilities.count( capabilityName ) ) {
+
+    // check whether the capability already exists
+    int ncap = componentCapabilities.count(capabilityName);
+    if(ncap > 0  && warndupe) {
+        // If this capability is a dupe, issue a warning, unless we
+        // have been instructed not to.
         H_LOG( glog, Logger::WARNING ) << componentName << " is declaring capability " << capabilityName << " previously registered" << endl;
     }
-    componentCapabilities.insert( pair<string, string>( capabilityName, componentName ) );
+    else if(ncap == 0) {
+        // Only add the capability if it doesn't already exist.
+        // Adding a duplicate capability has no useful effect anyhow.
+        componentCapabilities.insert( pair<string, string>( capabilityName, componentName ) );
+    }
 }
 
 //------------------------------------------------------------------------------
 /*! \brief Register a component as accepting a certain input
+ *
+ *  \details Associate the input capability with a component.  We also
+ *           implicitly register the capability (under the same name)
+ *           so that other components can read these values.
+ *
  *  \param inputName The name of the input the component can accept
  *  \param componentName The name of the component.
  *  \note It is permissible for more than one component to accept the same
- *        inputs.
+ *        inputs; however, only one of them should allow a corresponding
+ *        capability to be declared.
  */
-void Core::registerInput( const string& inputName, const string& componentName ) {
+void Core::registerInput(const string& inputName, const string& componentName) {
     H_ASSERT( !isInited, "registerInput not available after core is initialized") 
     componentInputs.insert( pair<string, string>( inputName, componentName ) );
+    registerCapability(inputName, componentName, false); 
 } 
 
 //------------------------------------------------------------------------------

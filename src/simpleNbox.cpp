@@ -70,11 +70,6 @@ void SimpleNbox::init( Core* coreptr ) {
     core->registerInput(D_PREINDUSTRIAL_CO2, getComponentName()); 
     core->registerInput(D_BETA, getComponentName());
     core->registerInput(D_Q10_RH, getComponentName());
-    // Allow other code to query the inputs, if desired
-    core->registerCapability(D_FFI_EMISSIONS, getComponentName());
-    core->registerCapability(D_LUC_EMISSIONS, getComponentName());
-    core->registerCapability(D_BETA, getComponentName());
-    core->registerCapability(D_Q10_RH, getComponentName());
 }
 
 //------------------------------------------------------------------------------

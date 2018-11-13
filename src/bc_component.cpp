@@ -50,8 +50,6 @@ void BlackCarbonComponent::init( Core* coreptr ) {
     H_LOG( logger, Logger::DEBUG ) << "hello " << getComponentName() << std::endl;
     core = coreptr;
     
-	// Inform core what data we can provide
-    core->registerCapability( D_EMISSIONS_BC, getComponentName() );
     // Inform core what data we can accept
     core->registerInput(D_EMISSIONS_BC, getComponentName());
 }

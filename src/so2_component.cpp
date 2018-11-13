@@ -55,8 +55,6 @@ void SulfurComponent::init( Core* coreptr ) {
     // Inform core what data we can provide
     core->registerCapability( D_NATURAL_SO2, getComponentName() );
     core->registerCapability( D_2000_SO2, getComponentName() );
-    core->registerCapability( D_EMISSIONS_SO2, getComponentName() );
-    core->registerCapability( D_VOLCANIC_SO2, getComponentName() );
     // accept anthro emissions and volcanic emissions as inputs
     core->registerInput(D_EMISSIONS_SO2, getComponentName());
     core->registerInput(D_VOLCANIC_SO2, getComponentName());
