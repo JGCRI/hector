@@ -195,7 +195,13 @@ NULL
 #'
 #' These identifiers correspond to settable parameters that change the model
 #' behavior and are subject to uncertainty.  All of these can be set using the
-#' \code{\link{SETDATA}} message type.
+#' \code{\link{SETDATA}} message type.  Changing any of these parameters will
+#' typically invalidate the hector core's internal state; therefore, after
+#' setting one or more of these values you should call \code{\link{reset}} before
+#' attempting to run the model again.  This will rerun the spinup and produce a
+#' new internally consistent state.  Attempting to run the model without resetting
+#' first will usually produce an error (often with a message about failing to conserve
+#' mass).
 #'
 #' @inheritSection msgtype Note
 #' @name parameters
