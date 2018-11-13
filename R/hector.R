@@ -67,6 +67,32 @@ runscenario <- function(infile)
     d
 }
 
+
+#### Hector core constructor
+#' Create and initialize a new hector instance
+#'
+#' The object returned is a handle to the newly created instance.  It will be required as an
+#' argument for all functions that operate on the instance.  Creating multiple instances
+#' simultaneously is supported.
+#'
+#' @include aadoc.R
+#' @param inifile (String) name of the hector input file.
+#' @param loglevel (int) minimum message level to output in logs (see \code{\link{loglevels}}).
+#' @param suppresslogging (bool) If true, suppress all logging (loglevel is ignored in this case).
+#' @param name (string) An optional name to identify the core.
+#' @return handle for the Hector instance.
+#' @family main user interface functions
+#' @export
+newcore <- function(inifile, loglevel=0, suppresslogging=FALSE,
+                    name="unnamed hector core")
+{
+    hcore <- newcore_impl(inifile, loglevel, suppresslogging, name)
+    class(hcore) <- c("hcore", class(hcore))
+    reg.finalizer(hcore, hector::shutdown)
+    hcore
+}
+
+
 #### Utility functions
 ### The elements of an hcore object are
 ###   hcore['coreidx'] : index

@@ -1295,9 +1295,9 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// newcore
-Environment newcore(String inifile, int loglevel, bool suppresslogging, String name);
-RcppExport SEXP _hector_newcore(SEXP inifileSEXP, SEXP loglevelSEXP, SEXP suppressloggingSEXP, SEXP nameSEXP) {
+// newcore_impl
+Environment newcore_impl(String inifile, int loglevel, bool suppresslogging, String name);
+RcppExport SEXP _hector_newcore_impl(SEXP inifileSEXP, SEXP loglevelSEXP, SEXP suppressloggingSEXP, SEXP nameSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -1305,7 +1305,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< int >::type loglevel(loglevelSEXP);
     Rcpp::traits::input_parameter< bool >::type suppresslogging(suppressloggingSEXP);
     Rcpp::traits::input_parameter< String >::type name(nameSEXP);
-    rcpp_result_gen = Rcpp::wrap(newcore(inifile, loglevel, suppresslogging, name));
+    rcpp_result_gen = Rcpp::wrap(newcore_impl(inifile, loglevel, suppresslogging, name));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -1513,7 +1513,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_FLUX_MIXED", (DL_FUNC) &_hector_FLUX_MIXED, 0},
     {"_hector_FLUX_INTERIOR", (DL_FUNC) &_hector_FLUX_INTERIOR, 0},
     {"_hector_HEAT_FLUX", (DL_FUNC) &_hector_HEAT_FLUX, 0},
-    {"_hector_newcore", (DL_FUNC) &_hector_newcore, 4},
+    {"_hector_newcore_impl", (DL_FUNC) &_hector_newcore_impl, 4},
     {"_hector_shutdown", (DL_FUNC) &_hector_shutdown, 1},
     {"_hector_run", (DL_FUNC) &_hector_run, 2},
     {"_hector_reset", (DL_FUNC) &_hector_reset, 2},

@@ -778,22 +778,8 @@ HEAT_FLUX <- function() {
     .Call('_hector_HEAT_FLUX', PACKAGE = 'hector')
 }
 
-#' Create and initialize a new hector instance
-#'
-#' The object returned is a handle to the newly created instance.  It will be required as an
-#' argument for all functions that operate on the instance.  Creating multiple instances
-#' simultaneously is supported.
-#'
-#' @include aadoc.R
-#' @param inifile (String) name of the hector input file.
-#' @param loglevel (int) minimum message level to output in logs (see \code{\link{loglevels}}).
-#' @param suppresslogging (bool) If true, suppress all logging (loglevel is ignored in this case).
-#' @param name (string) An optional name to identify the core.
-#' @return handle for the Hector instance.
-#' @family main user interface functions
-#' @export
-newcore <- function(inifile, loglevel = 0L, suppresslogging = FALSE, name = "unnamed hector core") {
-    .Call('_hector_newcore', PACKAGE = 'hector', inifile, loglevel, suppresslogging, name)
+newcore_impl <- function(inifile, loglevel, suppresslogging, name) {
+    .Call('_hector_newcore_impl', PACKAGE = 'hector', inifile, loglevel, suppresslogging, name)
 }
 
 #' Shutdown a hector instance

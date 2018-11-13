@@ -23,6 +23,28 @@ test_that('Basic hcore functionality works', {
     expect_error(fetchvars(hc), "Invalid or inactive")
 })
 
+test_that('Garbage collection shuts down hector cores', {
+    ## This test makes use of some knowledge about the structure of the hector
+    ## core objects that no user should ever assume.
+    hc <- newcore(file.path(inputdir, 'hector_rcp45.ini'), suppresslogging = TRUE, name='core1')
+    expect_true(isactive(hc))
+    coreidx1 <- hc$coreidx
+
+    hc <- newcore(file.path(inputdir, 'hector_rcp45.ini'), suppresslogging = TRUE, name='core2')
+    expect_true(isactive(hc))
+    coreidx2 <- hc$coreidx
+    expect_equal(coreidx2, 1+coreidx1)
+    gc(verbose=FALSE)
+
+    ## make a deep copy of the structure
+    oldhc <- as.environment(as.list(hc))
+    oldhc$coreidx <- coreidx1
+    class(oldhc) <- c('hcore','environment')
+    expect_false(isactive(oldhc))
+    expect_true(isactive(hc))
+    shutdown(hc)
+})
+
 
 test_that('RCP scenarios are correct', {
     for (rcp in c('26', '45', '60', '85')) {

@@ -26,23 +26,10 @@ Hector::Core *gethcore(Environment core)
     return hcore;
 }
 
-
-//' Create and initialize a new hector instance
-//'
-//' The object returned is a handle to the newly created instance.  It will be required as an
-//' argument for all functions that operate on the instance.  Creating multiple instances
-//' simultaneously is supported.
-//'
-//' @include aadoc.R
-//' @param inifile (String) name of the hector input file.
-//' @param loglevel (int) minimum message level to output in logs (see \code{\link{loglevels}}).
-//' @param suppresslogging (bool) If true, suppress all logging (loglevel is ignored in this case).
-//' @param name (string) An optional name to identify the core.
-//' @return handle for the Hector instance.
-//' @family main user interface functions
-//' @export
+// This is the C++ implementation of the core constructor.  It should only ever
+// be called from the `newcore` wrapper function.
 // [[Rcpp::export]]
-Environment newcore(String inifile, int loglevel = 0, bool suppresslogging=false, String name="unnamed hector core")
+Environment newcore_impl(String inifile, int loglevel, bool suppresslogging, String name)
 {
     try {
         // Check that the configuration file exists. The easiest way to do
@@ -88,7 +75,6 @@ Environment newcore(String inifile, int loglevel = 0, bool suppresslogging=false
         rv["inifile"] = inifile;
         rv["name"] = name;
         
-        rv.attr("class") = "hcore";
         return rv;
     }
     catch(h_exception e) {
