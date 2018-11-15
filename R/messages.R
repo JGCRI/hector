@@ -28,13 +28,19 @@ default_fetchvars <- c(ATMOSPHERIC_CO2, RF_TOTAL, RF_CO2, GLOBAL_TEMP)
 #' dates that are between the start date and the latest date currently run.
 #' @param vars List (or vector) of capability strings defining the variables to
 #' be fetched in the result.
+#' @param scenario Optional scenario name.  If not specified, the name element
+#' of the Hector core object will be used.
 #' @family main user interface functions
 #' @export
-fetchvars <- function(core, dates, vars=NULL)
+fetchvars <- function(core, dates, vars=NULL, scenario=NULL)
 {
     if(is.null(vars)) {
         vars <- getOption('hector.default.fetchvars',
                           default=sapply(default_fetchvars, function(f){f()}))
+    }
+
+    if(is.null(scenario)) {
+        scenario <- core$name
     }
 
     strt <- startdate(core)
@@ -43,10 +49,14 @@ fetchvars <- function(core, dates, vars=NULL)
     valid <- dates >= strt & dates <= end
     dates <- dates[valid]
 
-    do.call(rbind,
-            lapply(vars, function(v) {
-                       sendmessage(core, GETDATA(), v, dates, NA, '')
-                   }))
+    rslt <- do.call(rbind,
+                    lapply(vars, function(v) {
+                               sendmessage(core, GETDATA(), v, dates, NA, '')
+                           }))
+    cols <- names(rslt)
+    rslt$scenario <- scenario
+    ## reorder the columns to put the scenario name first
+    rslt[,c('scenario', cols)]
 }
 
 

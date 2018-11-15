@@ -1,6 +1,6 @@
 Package: hector
 Title: Run the Hector Simple Climate Model
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: person("Robert", "Link", email = "robert.link@pnnl.gov", role = c("aut", "cre"))
 Description: Provides R bindings for the Hector Simple Climate Model.
 Depends: R (>= 3.3)
