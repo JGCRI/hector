@@ -45,20 +45,34 @@ test_that('Garbage collection shuts down hector cores', {
     shutdown(hc)
 })
 
+test_that('Scenario column is created in output', {
+    hc <- newcore(file.path(inputdir, 'hector_rcp45.ini'), suppresslogging = TRUE, name='scenario1')
+    run(hc)
+
+    outdata1 <- fetchvars(hc, dates, testvars)
+    expect_equal(outdata1$scenario, rep('scenario1', nrow(outdata1)))
+
+    outdata2 <- fetchvars(hc, dates, testvars, 'scenario2')
+    expect_equal(outdata2$scenario, rep('scenario2', nrow(outdata2)))
+
+    shutdown(hc)
+})
 
 test_that('RCP scenarios are correct', {
     for (rcp in c('26', '45', '60', '85')) {
         infile <- sprintf('hector_rcp%s.ini', rcp)
+        scen <- sprintf('rcp%s', rcp)
         hc <- newcore(file.path(inputdir,infile), suppresslogging = TRUE)
         expect_true(inherits(hc, 'hcore'))
         run(hc)
-        outdata <- fetchvars(hc, dates, testvars)
+        outdata <- fetchvars(hc, dates, testvars, scen)
 
         ## Get the comparison data
         sampleoutfile <- sprintf('sample_outputstream_rcp%s.csv', rcp)
         sampledata <- read.csv(file.path(sampledir, sampleoutfile), comment.char = '#')
+        sampledata$scenario <- as.character(sampledata$run_name)
         samplekeep <- sampledata$variable %in% testvars & sampledata$year %in% dates
-        sampledata <- sampledata[samplekeep, c('year','variable','value', 'units')]
+        sampledata <- sampledata[samplekeep, c('scenario', 'year','variable','value', 'units')]
         sampledata <- sampledata[order(sampledata$variable, sampledata$year),]
 
         ## Ensure output data has the same row ordering

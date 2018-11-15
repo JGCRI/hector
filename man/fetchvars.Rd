@@ -4,7 +4,7 @@
 \alias{fetchvars}
 \title{Fetch results from a running Hector core}
 \usage{
-fetchvars(core, dates, vars = NULL)
+fetchvars(core, dates, vars = NULL, scenario = NULL)
 }
 \arguments{
 \item{core}{Hector core object}
@@ -14,6 +14,9 @@ dates that are between the start date and the latest date currently run.}
 
 \item{vars}{List (or vector) of capability strings defining the variables to
 be fetched in the result.}
+
+\item{scenario}{Optional scenario name.  If not specified, the name element
+of the Hector core object will be used.}
 }
 \description{
 This function will fetch results and return them as a data frame.  The core
