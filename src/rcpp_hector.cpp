@@ -16,9 +16,9 @@ using namespace Rcpp;
  */
 
 // Get a pointer to a core from the R handle. 
-Hector::Core *gethcore(List core)
+Hector::Core *gethcore(Environment core)
 {
-    int idx = core[0];
+    int idx = core["coreidx"];
     Hector::Core *hcore = Hector::Core::getcore(idx);
     if(!hcore) {
         Rcpp::stop("Invalid or inactive hcore object");
@@ -26,22 +26,10 @@ Hector::Core *gethcore(List core)
     return hcore;
 }
 
-
-//' Create and initialize a new hector instance
-//'
-//' The object returned is a handle to the newly created instance.  It will be required as an
-//' argument for all functions that operate on the instance.  Creating multiple instances
-//' simultaneously is supported.
-//'
-//' @include aadoc.R
-//' @param inifile (String) name of the hector input file.
-//' @param loglevel (int) minimum message level to output in logs (see \code{\link{loglevels}}).
-//' @param suppresslogging (bool) If true, suppress all logging (loglevel is ignored in this case).
-//' @return handle for the Hector instance.
-//' @family main user interface functions
-//' @export
+// This is the C++ implementation of the core constructor.  It should only ever
+// be called from the `newcore` wrapper function.
 // [[Rcpp::export]]
-List newcore(String inifile, int loglevel = 0, bool suppresslogging=false)
+Environment newcore_impl(String inifile, int loglevel, bool suppresslogging, String name)
 {
     try {
         // Check that the configuration file exists. The easiest way to do
@@ -80,8 +68,13 @@ List newcore(String inifile, int loglevel = 0, bool suppresslogging=false)
         double strtdate = hcore->getStartDate();
         double enddate = hcore->getEndDate();
 
-        List rv= List::create(coreidx, strtdate, enddate, inifile);
-        rv.attr("class") = "hcore";
+        Environment rv(new_env());
+        rv["coreidx"] = coreidx;
+        rv["strtdate"] = strtdate;
+        rv["enddate"] = enddate;
+        rv["inifile"] = inifile;
+        rv["name"] = name;
+        
         return rv;
     }
     catch(h_exception e) {
@@ -106,9 +99,9 @@ List newcore(String inifile, int loglevel = 0, bool suppresslogging=false)
 //' @export
 //' @family main user interface functions
 // [[Rcpp::export]]
-List shutdown(List core)
+Environment shutdown(Environment core)
 {
-    int idx = core[0];
+    int idx = core["coreidx"];
     Hector::Core::delcore(idx);
 
     return core;
@@ -127,7 +120,7 @@ List shutdown(List core)
 //' @export
 //' @family main user interface functions
 // [[Rcpp::export]]
-List run(List core, double runtodate=-1.0)
+Environment run(Environment core, double runtodate=-1.0)
 {
     Hector::Core *hcore = gethcore(core);
     try {
@@ -158,7 +151,7 @@ List run(List core, double runtodate=-1.0)
 //' @family main user interface functions
 //' @export
 // [[Rcpp::export]]
-List reset(List core, double date=0)
+Environment reset(Environment core, double date=0)
 {
     Hector::Core *hcore = gethcore(core);
     try {
@@ -179,7 +172,7 @@ List reset(List core, double date=0)
 //' @rdname hectorutil
 //' @export
 // [[Rcpp::export]]
-double getdate(List core)
+double getdate(Environment core)
 {
     Hector::Core *hcore = gethcore(core);
     return hcore->getCurrentDate();
@@ -219,7 +212,7 @@ double getdate(List core)
 //' @param unit (String) Unit for the value vector.
 //' @export
 // [[Rcpp::export]]
-DataFrame sendmessage(List core, String msgtype, String capability, NumericVector date,
+DataFrame sendmessage(Environment core, String msgtype, String capability, NumericVector date,
                       NumericVector value, String unit)
 {
     Hector::Core *hcore = gethcore(core);
@@ -293,9 +286,9 @@ DataFrame sendmessage(List core, String msgtype, String capability, NumericVecto
 
 // helper for isactive()
 // [[Rcpp::export]]
-bool chk_core_valid(List core)
+bool chk_core_valid(Environment core)
 {
-    int idx = core[0];
+    int idx = core["coreidx"];
     Hector::Core *hcore = Hector::Core::getcore(idx);
     
     return hcore != NULL;

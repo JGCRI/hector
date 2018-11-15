@@ -67,12 +67,38 @@ runscenario <- function(infile)
     d
 }
 
+
+#### Hector core constructor
+#' Create and initialize a new hector instance
+#'
+#' The object returned is a handle to the newly created instance.  It will be required as an
+#' argument for all functions that operate on the instance.  Creating multiple instances
+#' simultaneously is supported.
+#'
+#' @include aadoc.R
+#' @param inifile (String) name of the hector input file.
+#' @param loglevel (int) minimum message level to output in logs (see \code{\link{loglevels}}).
+#' @param suppresslogging (bool) If true, suppress all logging (loglevel is ignored in this case).
+#' @param name (string) An optional name to identify the core.
+#' @return handle for the Hector instance.
+#' @family main user interface functions
+#' @export
+newcore <- function(inifile, loglevel=0, suppresslogging=FALSE,
+                    name="unnamed hector core")
+{
+    hcore <- newcore_impl(inifile, loglevel, suppresslogging, name)
+    class(hcore) <- c("hcore", class(hcore))
+    reg.finalizer(hcore, hector::shutdown)
+    hcore
+}
+
+
 #### Utility functions
-### The makeup of an hcore object is
-###   hcore[[1]] : index
-###   hcore[[2]] : start date
-###   hcore[[3]] : end date
-###   hcore[[4]] : config file name
+### The elements of an hcore object are
+###   hcore['coreidx'] : index
+###   hcore['strtdate'] : start date
+###   hcore['enddate'] : end date
+###   hcore['inifile'] : config file name
 
 #' \strong{isactive}: Indicate whether a Hector instance is active
 #' @rdname hectorutil
@@ -93,7 +119,7 @@ startdate <- function(core)
     if(!inherits(core, 'hcore')) {
         stop('Object supplied is not an hcore class instance.')
     }
-    core[[2]]
+    core$strtdate
 }
 
 #' \strong{enddate}: Report the end date for a Hector instance
@@ -104,7 +130,7 @@ enddate <- function(core)
     if(!inherits(core, 'hcore')) {
         stop('Object supplied is not an hcore class instance.')
     }
-    core[[3]]
+    core$enddate
 }
 
 
@@ -128,9 +154,10 @@ format.hcore <- function(x, ...)
     }
     else {
         cdate <- getdate(x)
-        sprintf('Hector core\nStart date:\t%d\nEnd date:\t%d\nCurrent date:\t%d\nInput file:\t%s',
-                as.integer(x[[2]]), as.integer(x[[3]]), as.integer(cdate),
-                x[[4]])
+        sprintf('Hector core:\t%s\nStart date:\t%d\nEnd date:\t%d\nCurrent date:\t%d\nInput file:\t%s',
+                x$name,
+                as.integer(x$strtdate), as.integer(x$enddate), as.integer(cdate),
+                x$inifile)
     }
 }
 

@@ -1295,72 +1295,73 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// newcore
-List newcore(String inifile, int loglevel, bool suppresslogging);
-RcppExport SEXP _hector_newcore(SEXP inifileSEXP, SEXP loglevelSEXP, SEXP suppressloggingSEXP) {
+// newcore_impl
+Environment newcore_impl(String inifile, int loglevel, bool suppresslogging, String name);
+RcppExport SEXP _hector_newcore_impl(SEXP inifileSEXP, SEXP loglevelSEXP, SEXP suppressloggingSEXP, SEXP nameSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< String >::type inifile(inifileSEXP);
     Rcpp::traits::input_parameter< int >::type loglevel(loglevelSEXP);
     Rcpp::traits::input_parameter< bool >::type suppresslogging(suppressloggingSEXP);
-    rcpp_result_gen = Rcpp::wrap(newcore(inifile, loglevel, suppresslogging));
+    Rcpp::traits::input_parameter< String >::type name(nameSEXP);
+    rcpp_result_gen = Rcpp::wrap(newcore_impl(inifile, loglevel, suppresslogging, name));
     return rcpp_result_gen;
 END_RCPP
 }
 // shutdown
-List shutdown(List core);
+Environment shutdown(Environment core);
 RcppExport SEXP _hector_shutdown(SEXP coreSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< List >::type core(coreSEXP);
+    Rcpp::traits::input_parameter< Environment >::type core(coreSEXP);
     rcpp_result_gen = Rcpp::wrap(shutdown(core));
     return rcpp_result_gen;
 END_RCPP
 }
 // run
-List run(List core, double runtodate);
+Environment run(Environment core, double runtodate);
 RcppExport SEXP _hector_run(SEXP coreSEXP, SEXP runtodateSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< List >::type core(coreSEXP);
+    Rcpp::traits::input_parameter< Environment >::type core(coreSEXP);
     Rcpp::traits::input_parameter< double >::type runtodate(runtodateSEXP);
     rcpp_result_gen = Rcpp::wrap(run(core, runtodate));
     return rcpp_result_gen;
 END_RCPP
 }
 // reset
-List reset(List core, double date);
+Environment reset(Environment core, double date);
 RcppExport SEXP _hector_reset(SEXP coreSEXP, SEXP dateSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< List >::type core(coreSEXP);
+    Rcpp::traits::input_parameter< Environment >::type core(coreSEXP);
     Rcpp::traits::input_parameter< double >::type date(dateSEXP);
     rcpp_result_gen = Rcpp::wrap(reset(core, date));
     return rcpp_result_gen;
 END_RCPP
 }
 // getdate
-double getdate(List core);
+double getdate(Environment core);
 RcppExport SEXP _hector_getdate(SEXP coreSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< List >::type core(coreSEXP);
+    Rcpp::traits::input_parameter< Environment >::type core(coreSEXP);
     rcpp_result_gen = Rcpp::wrap(getdate(core));
     return rcpp_result_gen;
 END_RCPP
 }
 // sendmessage
-DataFrame sendmessage(List core, String msgtype, String capability, NumericVector date, NumericVector value, String unit);
+DataFrame sendmessage(Environment core, String msgtype, String capability, NumericVector date, NumericVector value, String unit);
 RcppExport SEXP _hector_sendmessage(SEXP coreSEXP, SEXP msgtypeSEXP, SEXP capabilitySEXP, SEXP dateSEXP, SEXP valueSEXP, SEXP unitSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< List >::type core(coreSEXP);
+    Rcpp::traits::input_parameter< Environment >::type core(coreSEXP);
     Rcpp::traits::input_parameter< String >::type msgtype(msgtypeSEXP);
     Rcpp::traits::input_parameter< String >::type capability(capabilitySEXP);
     Rcpp::traits::input_parameter< NumericVector >::type date(dateSEXP);
@@ -1371,12 +1372,12 @@ BEGIN_RCPP
 END_RCPP
 }
 // chk_core_valid
-bool chk_core_valid(List core);
+bool chk_core_valid(Environment core);
 RcppExport SEXP _hector_chk_core_valid(SEXP coreSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< List >::type core(coreSEXP);
+    Rcpp::traits::input_parameter< Environment >::type core(coreSEXP);
     rcpp_result_gen = Rcpp::wrap(chk_core_valid(core));
     return rcpp_result_gen;
 END_RCPP
@@ -1512,7 +1513,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_FLUX_MIXED", (DL_FUNC) &_hector_FLUX_MIXED, 0},
     {"_hector_FLUX_INTERIOR", (DL_FUNC) &_hector_FLUX_INTERIOR, 0},
     {"_hector_HEAT_FLUX", (DL_FUNC) &_hector_HEAT_FLUX, 0},
-    {"_hector_newcore", (DL_FUNC) &_hector_newcore, 3},
+    {"_hector_newcore_impl", (DL_FUNC) &_hector_newcore_impl, 4},
     {"_hector_shutdown", (DL_FUNC) &_hector_shutdown, 1},
     {"_hector_run", (DL_FUNC) &_hector_run, 2},
     {"_hector_reset", (DL_FUNC) &_hector_reset, 2},
