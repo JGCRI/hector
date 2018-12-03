@@ -70,7 +70,7 @@ matrix:
         - "./test_hector.sh ./source/hector"
 
 
-    - language: R 
+    - language: r
       addons: 
         apt: 
           packages: 
@@ -78,6 +78,4 @@ matrix:
             - libboost-filesystem1.55-dev
           sources: 
             - boost-latest
-      after_success: 
-        - "Rscript -e 'covr::codecov()'"
       cache: packages
