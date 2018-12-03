@@ -2,32 +2,80 @@
 # BBL January 2017
 # See https://travis-ci.org/bpbond/hector
 
-language: cpp
+--- 
+matrix: 
+  include: 
+    - language: cpp
+      compiler: clang
 
-compiler:
-  - clang
-  - gcc
+      addons: 
+        apt: 
+          packages: 
+            - libboost-system1.55-dev
+            - libboost-filesystem1.55-dev
+          sources: 
+            - boost-latest
 
-branches:
-  only:
-  - master
-  - rc1.2
+      # BOOSTROOT is set to look for header files in the default place
+      #where Ubuntu apt will install them --
+      #i.e. /usr/include/x86_64-linux-gnu. This is set because the
+      #Makefile has a `-I$(BOOSTROOT)` call.  Similarly, BOOSTLIB is
+      #set to /usr/lib/x86_64-linux-gnu, which is where Ubuntu apt
+      #installs boost by default. It has to be specified in full
+      #because otherwise, Hector's Makefile tries to construct
+      #BOOSTLIB by appending `/lib` to BOOSTROOT, which will not work
+      #here because of the `x86_64-linux-gnu` addition.
 
-addons:
-  apt:
-    sources:
-      - boost-latest
-    packages:
-      - libboost-system1.55-dev
-      - libboost-filesystem1.55-dev
-  
-# BOOSTROOT is set to look for header files in the default place where Ubuntu apt will install them -- i.e. /usr/include/x86_64-linux-gnu. This is set because the Makefile has a `-I$(BOOSTROOT)` call.
-#
-# Similarly, BOOSTLIB is set to /usr/lib/x86_64-linux-gnu, which is where Ubuntu apt installs boost by default. It has to be specified in full because otherwise, Hector's Makefile tries to construct BOOSTLIB by appending `/lib` to BOOSTROOT, which will not work here because of the `x86_64-linux-gnu` addition.
-before_script:
- - export BOOSTROOT=/usr/include/x86_64-linux-gnu/
- - export BOOSTLIB=/usr/lib/x86_64-linux-gnu/
+      before_script: 
+        - "export BOOSTROOT=/usr/include/x86_64-linux-gnu/"
+        - "export BOOSTLIB=/usr/lib/x86_64-linux-gnu/"
+      branches: 
+        only: 
+          - master
+          - rc1.2
+      script: 
+        - "make hector"
+        - "./test_hector.sh ./source/hector"
 
-script: 
- - make hector
- - ./test_hector.sh ./source/hector 
+    - language: cpp
+      compiler: gcc
+
+      addons: 
+        apt: 
+          packages: 
+            - libboost-system1.55-dev
+            - libboost-filesystem1.55-dev
+          sources: 
+            - boost-latest
+
+      # BOOSTROOT is set to look for header files in the default place
+      #where Ubuntu apt will install them --
+      #i.e. /usr/include/x86_64-linux-gnu. This is set because the
+      #Makefile has a `-I$(BOOSTROOT)` call.  Similarly, BOOSTLIB is
+      #set to /usr/lib/x86_64-linux-gnu, which is where Ubuntu apt
+      #installs boost by default. It has to be specified in full
+      #because otherwise, Hector's Makefile tries to construct
+      #BOOSTLIB by appending `/lib` to BOOSTROOT, which will not work
+      #here because of the `x86_64-linux-gnu` addition.
+
+      before_script: 
+        - "export BOOSTROOT=/usr/include/x86_64-linux-gnu/"
+        - "export BOOSTLIB=/usr/lib/x86_64-linux-gnu/"
+      branches: 
+        only: 
+          - master
+          - rc1.2
+      script: 
+        - "make hector"
+        - "./test_hector.sh ./source/hector"
+
+
+    - language: r
+      addons: 
+        apt: 
+          packages: 
+            - libboost-system1.55-dev
+            - libboost-filesystem1.55-dev
+          sources: 
+            - boost-latest
+      cache: packages
