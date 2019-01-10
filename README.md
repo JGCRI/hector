@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/JGCRI/hector.svg?branch=master)](https://travis-ci.org/JGCRI/hector)
+[![Build Status](https://travis-ci.org/JGCRI/hector.svg?branch=master)](https://travis-ci.org/JGCRI/hector) [![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/4ld4ay2gyg2s8w6w?svg=true)](https://ci.appveyor.com/project/ashiklom/hector)
 
 Hector
 ======
