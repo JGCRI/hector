@@ -23,6 +23,7 @@
 #include <Rcpp.h>
 #else
 #include <boost/filesystem.hpp>
+namespace fs = boost::filesystem;
 #endif
 
 #include "core.hpp"
@@ -30,10 +31,6 @@
 #include "ini_to_core_reader.hpp"
 #include "ini.h"
 #include "csv_table_reader.hpp"
-
-#ifndef USE_RCPP
-namespace fs = boost::filesystem;
-#endif
 
 namespace Hector {
   
