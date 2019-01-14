@@ -133,10 +133,12 @@ int INIToCoreReader::valueHandler( void* user, const char* section, const char* 
             // Otherwise, assume that it is pointing to a file in the
             // same directory as the INI file.
             try {
-                // Second argument is "winslash". "\\" (single forward
-                // slash) is the default. Need it here to access the
-                // third argument -- mustWork -- which throws the
-                // error to be caught if the path doesn't exist
+                // Second argument is "winslash", which is only used
+                // on Windows machines and is ignored for Unix-based
+                // systems. "\\" (single backward slash) is the
+                // default. Need it here to access the third argument
+                // -- mustWork -- which throws the error to be caught
+                // if the path doesn't exist
                 csvFileName = Rcpp::as<string>(normalizePath(csvFileName, "\\", true));
             } catch (...) {
                 // Get the full path of the INI file with
