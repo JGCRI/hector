@@ -46,9 +46,16 @@ test_that("RCP4.5 is read and written correctly", {
   rcp45_testfile <- file.path(tempdir, "rcp45.ini")
   write_ini(rcp45_ini, rcp45_testfile)
   expect_true(file.exists(rcp45_testfile))
+
   raw_out <- readLines(rcp45_testfile)
   expect_equal(raw_out[2], "[core]")
-  expect_equal(raw_out[33], "Ftalbedo[1750] = 0")
+  expect_equal(raw_out[33], "Ftalbedo[1750] =  0.0")
+
+  # Make sure these are not converted to scientific notation
+  expect_equal(raw_out[14], "tt = 72000000")
+  expect_equal(raw_out[15], "tu = 49000000")
+  expect_equal(raw_out[17], "tid = 200000000")
+
   rcp45_test <- read_ini(rcp45_testfile)
   expect_identical(rcp45_ini, rcp45_test)
 })

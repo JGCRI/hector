@@ -92,9 +92,11 @@ write_ini <- function(ini_list, file) {
       value <- sub_list[[key]]
       if (is.data.frame(value)) {
         string <- c(string,
-                    sprintf("%s[%d] = %s", key, value[["date"]], value[[key]]))
+                    sprintf("%s[%d] = %s", key, value[["date"]],
+                            format(value[[key]], scientific = FALSE)))
       } else {
-        string <- c(string, sprintf("%s = %s", key, value))
+        string <- c(string, sprintf("%s = %s", key,
+                                    format(value, scientific = FALSE)))
       }
     }
   }
