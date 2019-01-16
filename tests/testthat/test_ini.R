@@ -28,12 +28,20 @@ test_that("RCP4.5 is read and written correctly", {
     system.file("input", "hector_rcp45.ini", package = "hector")
   )
   expect_named(rcp45_ini, correct_names)
+  invisible(lapply(rcp45_ini, expect_named))
   expect_equal(rcp45_ini[[c("core", "run_name")]], "rcp45")
   expect_equal(rcp45_ini[[c("onelineocean", "enabled")]], 0)
+
+  # Time series should be converted to albedo
   ftalbedo <- rcp45_ini[[c("simpleNbox", "Ftalbedo")]]
   expect_s3_class(ftalbedo, "data.frame")
   expect_named(ftalbedo, c("date", "Ftalbedo"))
   expect_equal(nrow(ftalbedo), 2)
+
+  # CSV path is normalized to a full path
+  ffi_emission <- rcp45_ini[[c("simpleNbox", "ffi_emissions")]]
+  expect_match(ffi_emission, "csv:/")
+  expect_true(file.exists(gsub("csv:", "", ffi_emission)))
 
   rcp45_testfile <- file.path(tempdir, "rcp45.ini")
   write_ini(rcp45_ini, rcp45_testfile)

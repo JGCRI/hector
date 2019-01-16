@@ -4,10 +4,30 @@
 \alias{read_ini}
 \title{Read Hector INI file into list}
 \usage{
-read_ini(file)
+read_ini(file, parse_timeseries = TRUE, normalize_paths = TRUE,
+  base_dir = dirname(normalizePath(file)))
 }
 \arguments{
 \item{file}{Path to INI file}
+
+\item{parse_timeseries}{Logical. If \code{TRUE} (default), use
+\code{\link[=parse_timeseries]{parse_timeseries()}} to convert time series value names (e.g.
+\code{"Ftalbedo[1980]"}) to a \code{data.frame}. If \code{FALSE}, use the full
+string (with year included) as the key name.}
+
+\item{normalize_paths}{Logical. If \code{TRUE} (default), convert any
+relative paths in the INI file to full, normalized paths,
+following the same logic as the Hector internals (if the file
+exists relative to the working directory, use that file.
+Otherwise, look for the path in \code{base_dir}). If \code{FALSE}, leave
+the paths exactly as written.}
+
+\item{base_dir}{Path to directory to search for any relative paths,
+if \code{normalize_paths} is \code{TRUE}. Defaults to the directory in
+which the INI file is stored.}
+}
+\value{
+Nested list of the target object
 }
 \description{
 Read Hector INI file into list
@@ -18,6 +38,8 @@ rcp45_ini <- read_ini(
 )
 rcp45_ini$core$run_name
 rcp45_ini$onelineocean$enabled
+# This one will be a `data.frame`
+rcp45_ini$simpleNbox$Ftalbedo
 }
 \author{
 Alexey Shiklomanov

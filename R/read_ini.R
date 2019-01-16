@@ -5,6 +5,15 @@
 #'   [parse_timeseries()] to convert time series value names (e.g.
 #'   `"Ftalbedo[1980]"`) to a `data.frame`. If `FALSE`, use the full
 #'   string (with year included) as the key name.
+#' @param normalize_paths Logical. If `TRUE` (default), convert any
+#'   relative paths in the INI file to full, normalized paths,
+#'   following the same logic as the Hector internals (if the file
+#'   exists relative to the working directory, use that file.
+#'   Otherwise, look for the path in `base_dir`). If `FALSE`, leave
+#'   the paths exactly as written.
+#' @param base_dir Path to directory to search for any relative paths,
+#'   if `normalize_paths` is `TRUE`. Defaults to the directory in
+#'   which the INI file is stored.
 #' @return Nested list of the target object
 #' @author Alexey Shiklomanov
 #' @examples
@@ -16,7 +25,10 @@
 #' # This one will be a `data.frame`
 #' rcp45_ini$simpleNbox$Ftalbedo
 #' @export
-read_ini <- function(file, parse_timeseries = TRUE) {
+read_ini <- function(file,
+                     parse_timeseries = TRUE,
+                     normalize_paths = TRUE,
+                     base_dir = dirname(normalizePath(file))) {
   full_file <- readLines(file)
 
   # Remove comment lines, which start with `;`
@@ -44,10 +56,14 @@ read_ini <- function(file, parse_timeseries = TRUE) {
 
   # Parse time series and return
   if (parse_timeseries) {
-    lapply(value_list, parse_timeseries)
-  } else {
-    value_list
+    value_list <- lapply(value_list, parse_timeseries)
   }
+
+  if (normalize_paths) {
+    value_list <- lapply(value_list, normalize_paths, base_dir = base_dir)
+  }
+
+  value_list
 }
 
 #' Write R list to Hector INI file
@@ -87,7 +103,7 @@ write_ini <- function(ini_list, file) {
 }
 
 #' Convert a vector of strings of the form `"name=value"` to a named R
-#' list.
+#' list
 #'
 #' @param x Character vector of the form `"name=value"`
 #' @return Named list
@@ -143,4 +159,31 @@ parse_timeseries <- function(value_list) {
   )
 
   c(scalars, ts)
+}
+
+#' Apply Hector internal logic to convert relative paths to absolute paths
+#'
+#' @inheritParams parse_timeseries
+#' @param base_dir Base directory to use if files are not found
+#' @return `value_list`, with all path variables replaced with
+#'   normalized, absolute paths.
+normalize_paths <- function(value_list, base_dir = NULL) {
+  is_path <- vapply(
+    value_list,
+    function(x) is.character(x) && grepl("csv:", x),
+    logical(1)
+  )
+  paths <- lapply(
+    value_list[is_path],
+    function(x) tryCatch({
+      x <- gsub("csv:", "", x)
+      paste0("csv:", normalizePath(x, mustWork = TRUE))
+    },
+    error = function(e) {
+      if (is.null(base_dir)) stop("`base_dir` is NULL.",
+                                  "I don't know where else to look for files.")
+      paste0("csv:", normalizePath(file.path(base_dir, x), mustWork = TRUE))
+    })
+  )
+  modifyList(value_list, paths)
 }
