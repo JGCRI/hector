@@ -56,3 +56,4 @@ Other capability identifiers: \code{\link{carboncycle}},
   \code{\link{ocean}}, \code{\link{parameters}},
   \code{\link{temperature}}
 }
+\concept{capability identifiers}

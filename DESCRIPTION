@@ -23,3 +23,5 @@ Collate:
     'messages.R'
     'read_ini.R'
 VignetteBuilder: knitr
+RoxygenNote: 6.1.1
+Roxygen: list(markdown = TRUE)

@@ -29,3 +29,4 @@ Other main user interface functions: \code{\link{fetchvars}},
   \code{\link{reset}}, \code{\link{run}},
   \code{\link{setvar}}, \code{\link{shutdown}}
 }
+\concept{main user interface functions}
