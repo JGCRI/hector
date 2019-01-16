@@ -21,4 +21,5 @@ Collate:
     'RcppExports.R'
     'hector.R'
     'messages.R'
+    'read_ini.R'
 VignetteBuilder: knitr
