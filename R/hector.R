@@ -57,11 +57,12 @@ NULL
 #'
 #' @param infile INI-format file (as String or list) containing the
 #'     scenario definition. See \code{\link{newcore}}.
+#' @param ... Additional arguments to \code{\link{newcore}}
 #' @return Data frame containing Hector output for default variables
 #' @export
-runscenario <- function(infile)
+runscenario <- function(infile, ...)
 {
-    core <- newcore(infile)
+    core <- newcore(infile, ...)
     run(core)
     d <- fetchvars(core, seq(startdate(core), enddate(core)))
     shutdown(core)

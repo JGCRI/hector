@@ -73,6 +73,6 @@ test_that("Passing INI as file or list produces same results.", {
     # Make a trivial modification -- change the run name
     ini2 <- modifyList(ini, list(core = list(run_name = "rcp26_mod")))
     ini2_result <- runscenario(ini2)
-    expect_identical(ini2_result, file_out)
+    expect_identical(ini2_result, file_out, info = paste0("RCP", rcp))
   }
 })
