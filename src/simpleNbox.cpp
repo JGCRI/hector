@@ -873,7 +873,9 @@ void SimpleNbox::slowparameval( double t, const double c[] )
     }
 
     // Loop over biomes.
-    for( itd = tempfertd.begin(); itd != tempfertd.end(); itd++ ) {
+    // NOTE: This is over `beta` because tempfertd is never
+    // initialized for biomes other than the default.
+    for( itd = beta.begin(); itd != beta.end(); itd++ ) {
         std::string biome(itd->first);
         if( in_spinup ) {
             tempfertd[ biome ] = 1.0;  // no perturbation allowed in spinup
