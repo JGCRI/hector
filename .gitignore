@@ -26,6 +26,7 @@ src/hector-ext
 src/hector-api
 # Hector logs
 logs/*.*
+*.log
 # OS-specific files
 .DS_Store
 .Trashes
