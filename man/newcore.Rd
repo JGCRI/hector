@@ -8,7 +8,10 @@ newcore(inifile, loglevel = 0, suppresslogging = FALSE,
   name = "unnamed hector core")
 }
 \arguments{
-\item{inifile}{(String) name of the hector input file.}
+\item{inifile}{(String) name of the hector input file, or INI list
+such as that returned by \code{\link{read_ini}}. If passed as a
+list, the INI file is first written to a temporary file, the
+path to which is then passed to Hector.}
 
 \item{loglevel}{(int) minimum message level to output in logs (see \code{\link{loglevels}}).}
 

@@ -55,7 +55,8 @@ NULL
 #' changed by setting the \code{hector.default.fetchvars} option, as described
 #' in \code{\link{fetchvars}}.
 #'
-#' @param infile INI-format file containing the scenario definition
+#' @param infile INI-format file (as String or list) containing the
+#'     scenario definition. See \code{\link{newcore}}.
 #' @return Data frame containing Hector output for default variables
 #' @export
 runscenario <- function(infile)
@@ -76,7 +77,10 @@ runscenario <- function(infile)
 #' simultaneously is supported.
 #'
 #' @include aadoc.R
-#' @param inifile (String) name of the hector input file.
+#' @param inifile (String) name of the hector input file, or INI list
+#'     such as that returned by \code{\link{read_ini}}. If passed as a
+#'     list, the INI file is first written to a temporary file, the
+#'     path to which is then passed to Hector.
 #' @param loglevel (int) minimum message level to output in logs (see \code{\link{loglevels}}).
 #' @param suppresslogging (bool) If true, suppress all logging (loglevel is ignored in this case).
 #' @param name (string) An optional name to identify the core.
@@ -86,6 +90,11 @@ runscenario <- function(infile)
 newcore <- function(inifile, loglevel=0, suppresslogging=FALSE,
                     name="unnamed hector core")
 {
+    if (is.list(inifile)) {
+        tmp <- tempfile()
+        write_ini(inifile, tmp)
+        inifile <- tmp
+    }
     hcore <- newcore_impl(inifile, loglevel, suppresslogging, name)
     class(hcore) <- c("hcore", class(hcore))
     reg.finalizer(hcore, hector::shutdown)

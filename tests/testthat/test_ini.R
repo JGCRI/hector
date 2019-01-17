@@ -59,3 +59,20 @@ test_that("RCP4.5 is read and written correctly", {
   rcp45_test <- read_ini(rcp45_testfile)
   expect_identical(rcp45_ini, rcp45_test)
 })
+
+
+test_that("Passing INI as file or list produces same results.", {
+  for (rcp in c("26", "45", "60", "85")) {
+    ini_file <- system.file("input", sprintf("hector_rcp%s.ini", rcp),
+                            package = "hector")
+    file_out <- runscenario(ini_file)
+    ini <- read_ini(ini_file)
+    ini_result <- runscenario(ini)
+    expect_identical(file_out, ini_result, info = paste0("RCP", rcp))
+
+    # Make a trivial modification -- change the run name
+    ini2 <- modifyList(ini, list(core = list(run_name = "rcp26_mod")))
+    ini2_result <- runscenario(ini2)
+    expect_identical(ini2_result, file_out)
+  }
+})

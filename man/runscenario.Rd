@@ -8,6 +8,8 @@ runscenario(infile)
 }
 \arguments{
 \item{infile}{INI-format file containing the scenario definition}
+\item{infile}{INI-format file (as String or list) containing the
+scenario definition. See \code{\link{newcore}}.}
 }
 \value{
 Data frame containing Hector output for default variables
