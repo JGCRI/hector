@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/JGCRI/hector.svg?branch=master)](https://travis-ci.org/JGCRI/hector)
+[![Build status](https://ci.appveyor.com/api/projects/status/2jmhvq7n2ap75u1o/branch/master?svg=true)](https://ci.appveyor.com/project/rplzzz/hector/branch/master)
 
 Hector
 ======
