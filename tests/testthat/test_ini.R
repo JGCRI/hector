@@ -40,7 +40,9 @@ test_that("RCP4.5 is read and written correctly", {
 
   # CSV path is normalized to a full path
   ffi_emission <- rcp45_ini[[c("simpleNbox", "ffi_emissions")]]
-  expect_match(ffi_emission, "csv:/")
+  # Unix absolute paths start with `/`
+  # Windows absolute paths start with `C:\`
+  expect_match(ffi_emission, "csv:(/|[[:upper:]]:\\\\)")
   expect_true(file.exists(gsub("csv:", "", ffi_emission)))
 
   rcp45_testfile <- file.path(tempdir, "rcp45.ini")
