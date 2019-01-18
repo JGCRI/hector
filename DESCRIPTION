@@ -24,4 +24,6 @@ Collate:
     'RcppExports.R'
     'hector.R'
     'messages.R'
+    'units.R'
 VignetteBuilder: knitr
+RoxygenNote: 6.1.1

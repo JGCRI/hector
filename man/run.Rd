@@ -24,3 +24,4 @@ Other main user interface functions: \code{\link{fetchvars}},
   \code{\link{newcore}}, \code{\link{reset}},
   \code{\link{setvar}}, \code{\link{shutdown}}
 }
+\concept{main user interface functions}

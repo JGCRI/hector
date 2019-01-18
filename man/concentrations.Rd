@@ -47,3 +47,4 @@ Other capability identifiers: \code{\link{carboncycle}},
   \code{\link{parameters}}, \code{\link{so2}},
   \code{\link{temperature}}
 }
+\concept{capability identifiers}
