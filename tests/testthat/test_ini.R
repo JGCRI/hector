@@ -65,14 +65,14 @@ test_that("Passing INI as file or list produces same results.", {
   for (rcp in c("26", "45", "60", "85")) {
     ini_file <- system.file("input", sprintf("hector_rcp%s.ini", rcp),
                             package = "hector")
-    file_out <- runscenario(ini_file)
+    file_out <- runscenario(ini_file, suppresslogging = TRUE)
     ini <- read_ini(ini_file)
-    ini_result <- runscenario(ini)
+    ini_result <- runscenario(ini, suppresslogging = TRUE)
     expect_identical(file_out, ini_result, info = paste0("RCP", rcp))
 
     # Make a trivial modification -- change the run name
     ini2 <- modifyList(ini, list(core = list(run_name = "rcp26_mod")))
-    ini2_result <- runscenario(ini2)
+    ini2_result <- runscenario(ini2, suppresslogging = TRUE)
     expect_identical(ini2_result, file_out, info = paste0("RCP", rcp))
   }
 })
