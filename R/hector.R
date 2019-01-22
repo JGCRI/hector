@@ -93,6 +93,7 @@ newcore <- function(inifile, loglevel=0, suppresslogging=FALSE,
 {
     if (is.list(inifile)) {
         tmp <- tempfile()
+        on.exit(file.remove(tmp), add = TRUE)
         write_ini(inifile, tmp)
         inifile <- tmp
     }
