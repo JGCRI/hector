@@ -1,0 +1,19 @@
+pandoc: '2.2'
+pkgdown: 1.3.0
+pkgdown_sha: ~
+articles:
+  hector_apply: hector_apply.html
+  intro-to-hector: intro-to-hector.html
+  AddNewComponent: manual/AddNewComponent.html
+  AddNewVariable: manual/AddNewVariable.html
+  Backend: manual/Backend.html
+  BuildHector: manual/BuildHector.html
+  ComponentAPI: manual/ComponentAPI.html
+  Constraints: manual/Constraints.html
+  InputFiles: manual/InputFiles.html
+  StyleGuide: manual/StyleGuide.html
+  TimeSeries: manual/TimeSeries.html
+  Unitvals: manual/Unitvals.html
+  VersionNumbers: manual/VersionNumbers.html
+  index: manual/index.html
+
