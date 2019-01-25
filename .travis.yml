@@ -79,3 +79,12 @@ matrix:
           sources: 
             - boost-latest
       cache: packages
+
+      # Automatically deploy Hector documentation on the gh-pages
+      # branch. This is based on this guide from `pkgdown`:
+      # https://pkgdown.r-lib.org/reference/deploy_site_github.html
+      before_deploy: Rscript -e 'remotes::install_cran("pkgdown")'
+      deploy:
+        provider: script
+        script: Rscript -e 'pkgdown::deploy_site_github()'
+        skip_cleanup: true

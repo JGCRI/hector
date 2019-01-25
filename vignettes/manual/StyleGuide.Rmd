@@ -1,0 +1,32 @@
+---
+title: Style guide
+---
+
+Hector coding style:
+-----------------------
+- basic file into at top of every file (see existing examples)
+- spaces within parentheses and around math operators
+- open curly brace on same line for if, etc.; close on a line by itself
+- limit over-length (~75) lines
+- line of dashes separating functions
+- use 'const' when possible: on functions, parameters, variables
+- methods should start with assertions on inputs
+- try to use C++ STL or Boost data structures and functions
+    (instead of rolling your own)
+
+Hector unit testing:
+-----------------------
+- writing test case is part of writing code
+- every method should have at least one test if possible
+- every class/subunit should have a dedicated test group
+
+Hector documentation:
+-----------------------
+- every method should have Doxygen comment header. Required tags:
+    + `\brief`          (always)
+    + `\param[in]`      (if any)
+    + `\param[out]`     (if any)
+    + `\returns`        (if returns a value)
+    + `\exception`      (if any throws or assertions)
+- all but most trivial vars should have Doxygen comments in headers
+- comments should generally say WHY not WHAT

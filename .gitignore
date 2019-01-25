@@ -64,3 +64,9 @@ R/batchrunner/*.csv
 .RData
 inst/doc
 vignettes/rsconnect
+
+# pkgdown output
+/docs/
+
+# vignette caches
+/vignettes/*_cache

@@ -1,0 +1,35 @@
+---
+title: Welcome to the Hector wiki!
+---
+
+Science
+--------------------
+* A general summary of the science behind Hector.
+* The model's terrestrial carbon cycle.
+* The model's ocean.
+
+Model philosophy
+--------------------
+* Complexity only where warranted.
+* Open source: all code freely available.
+* Clean, modern, object-oriented code.
+* Flexible: model components, outputs, inputs can be changed.
+* Fast.
+
+Building and running Hector
+--------------------
+* How to [build Hector from source](BuildHector.html).
+* What [input files](InputFiles.html) the model requires, and what [output files](OutputFiles.html) it produces.
+* About Hector's [version numbering](VersionNumbers.html).
+* How to use the model [backend](Backend.html) written in [R](http://cran.r-project.org).
+* Running Hector subject to [constraints](Constraints.html).
+
+Programming topics
+--------------------
+* Learn how to create a new [component](AddNewComponent.html) or [variable](AddNewVariable.html) in Hector.
+* Hector internals: [unitvals](Unitvals.html), [time series](TimeSeries.html), data passing, the component API.
+* The Hector [style guide](StyleGuide.html).
+
+Publications
+--------------------
+* Manuscript describing the initial version of Hector is [online](http://www.geosci-model-dev-discuss.net/7/7075/2014/gmdd-7-7075-2014.html).
