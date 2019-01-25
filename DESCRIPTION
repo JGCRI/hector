@@ -14,7 +14,10 @@ Suggests:
     nleqslv,
     knitr,
     rmarkdown,
-    ggplot2
+    ggplot2,
+    hectortools
+Remotes:
+    jgcri/hectortools
 SystemRequirements: Boost C++ libraries
 Collate:
     'aadoc.R'
