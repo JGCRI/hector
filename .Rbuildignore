@@ -8,7 +8,9 @@
 ^LICENSE.md$
 ^changelog.txt$
 ^.travis.yml$
+^appveyor.yml$
 ^.github$
+^wiki/
 
 ## Files supporting stand-alone hector.
 ^Makefile$

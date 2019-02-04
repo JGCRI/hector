@@ -83,7 +83,7 @@ struct interp_helper {
                              bool& isDirty, bool endinterp_allowed,
                              const double index ) throw( h_exception )
     {
-        H_ASSERT( userData.size() > 1, "time series data must have size>1" );
+        H_ASSERT( userData.size() > 1, "time series data(" + name + ") must have size>1" );
         
         if( isDirty ) {       // data have changed; inform interpolator
             double *x = new double[ userData.size() ];   // allocate
@@ -105,7 +105,7 @@ struct interp_helper {
         }
         
         if( index < (*userData.begin()).first || index > (*userData.rbegin()).first )       // beyond-end interpolation
-            H_ASSERT( endinterp_allowed, "end interpolation not allowed" );
+            H_ASSERT( endinterp_allowed, "In time series '" + name + "', end interpolation not allowed" );
     }
     static T_data interp( const std::map<double, T_data>& userData, 
                           h_interpolator& interpolator, std::string name,
@@ -146,7 +146,7 @@ struct interp_helper<unitval> {
                              bool& isDirty, bool endinterp_allowed,
                              const double index ) throw( h_exception )
     {
-        H_ASSERT( userData.size() > 1, "time series data must have size>1" );
+        H_ASSERT( userData.size() > 1, "time series data (" + name + ") must have size>1" );
         
         if( isDirty ) {       // data have changed; inform interpolator
             double *x = new double[ userData.size() ];   // allocate
