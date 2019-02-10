@@ -51,7 +51,7 @@ test_that('Lowering ECS lowers output Temperature', {
     dd1 <- fetchvars(hc, tdates, GLOBAL_TEMP())
 
     setvar(hc, NA, ECS(), 2.5, 'degC')
-    reset(hc, 0.0)
+    ## make sure this still works with automatic reset.
     run(hc, 2100)
     dd2 <- fetchvars(hc, tdates, GLOBAL_TEMP())
 

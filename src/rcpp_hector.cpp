@@ -75,6 +75,7 @@ Environment newcore_impl(String inifile, int loglevel, bool suppresslogging, Str
         rv["inifile"] = inifile;
         rv["name"] = name;
         rv["clean"] = true;
+        rv["reset_date"] = 0;
         
         return rv;
     }
@@ -137,7 +138,8 @@ Environment reset(Environment core, double date=0)
         Rcpp::stop(msg.str());
     }
 
-    if(date == 0)
+    double rd = core["reset_date"];
+    if(date <= rd)
         core["clean"] = true;
     
     return core;
@@ -159,7 +161,7 @@ Environment reset(Environment core, double date=0)
 Environment run(Environment core, double runtodate=-1.0)
 {
     if(!core["clean"])
-        reset(core);
+        reset(core, core["reset_date"]);
 
     Hector::Core *hcore = gethcore(core);
     if(runtodate > 0 && runtodate < hcore->getCurrentDate()) {
