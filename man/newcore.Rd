@@ -4,7 +4,7 @@
 \alias{newcore}
 \title{Create and initialize a new hector instance}
 \usage{
-newcore(inifile, loglevel = 0, suppresslogging = FALSE,
+newcore(inifile, loglevel = 0, suppresslogging = TRUE,
   name = "unnamed hector core")
 }
 \arguments{
