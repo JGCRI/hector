@@ -43,3 +43,4 @@ Other main user interface functions: \code{\link{newcore}},
   \code{\link{reset}}, \code{\link{run}},
   \code{\link{setvar}}, \code{\link{shutdown}}
 }
+\concept{main user interface functions}

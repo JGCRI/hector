@@ -11,7 +11,6 @@
 ^appveyor.yml$
 ^.github$
 ^wiki/
-
 ## Files supporting stand-alone hector.
 ^Makefile$
 ^project_files$
@@ -27,3 +26,4 @@
 ^src/makefile.standalone$
 ^src/testing$
 ^misc$
+^data-raw$
