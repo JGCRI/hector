@@ -1320,18 +1320,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// run
-Environment run(Environment core, double runtodate);
-RcppExport SEXP _hector_run(SEXP coreSEXP, SEXP runtodateSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Environment >::type core(coreSEXP);
-    Rcpp::traits::input_parameter< double >::type runtodate(runtodateSEXP);
-    rcpp_result_gen = Rcpp::wrap(run(core, runtodate));
-    return rcpp_result_gen;
-END_RCPP
-}
 // reset
 Environment reset(Environment core, double date);
 RcppExport SEXP _hector_reset(SEXP coreSEXP, SEXP dateSEXP) {
@@ -1341,6 +1329,18 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< Environment >::type core(coreSEXP);
     Rcpp::traits::input_parameter< double >::type date(dateSEXP);
     rcpp_result_gen = Rcpp::wrap(reset(core, date));
+    return rcpp_result_gen;
+END_RCPP
+}
+// run
+Environment run(Environment core, double runtodate);
+RcppExport SEXP _hector_run(SEXP coreSEXP, SEXP runtodateSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Environment >::type core(coreSEXP);
+    Rcpp::traits::input_parameter< double >::type runtodate(runtodateSEXP);
+    rcpp_result_gen = Rcpp::wrap(run(core, runtodate));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -1515,8 +1515,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_HEAT_FLUX", (DL_FUNC) &_hector_HEAT_FLUX, 0},
     {"_hector_newcore_impl", (DL_FUNC) &_hector_newcore_impl, 4},
     {"_hector_shutdown", (DL_FUNC) &_hector_shutdown, 1},
-    {"_hector_run", (DL_FUNC) &_hector_run, 2},
     {"_hector_reset", (DL_FUNC) &_hector_reset, 2},
+    {"_hector_run", (DL_FUNC) &_hector_run, 2},
     {"_hector_getdate", (DL_FUNC) &_hector_getdate, 1},
     {"_hector_sendmessage", (DL_FUNC) &_hector_sendmessage, 6},
     {"_hector_chk_core_valid", (DL_FUNC) &_hector_chk_core_valid, 1},

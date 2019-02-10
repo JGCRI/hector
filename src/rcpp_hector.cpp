@@ -74,6 +74,7 @@ Environment newcore_impl(String inifile, int loglevel, bool suppresslogging, Str
         rv["enddate"] = enddate;
         rv["inifile"] = inifile;
         rv["name"] = name;
+        rv["clean"] = true;
         
         return rv;
     }
@@ -108,34 +109,6 @@ Environment shutdown(Environment core)
 }
 
 
-//' Run the Hector climate model
-//'
-//' Run Hector up through the specified time.  This function does not return the results
-//' of the run.  To get results, run \code{fetch}.
-//'
-//' @param core Handle to the Hector instance that is to be run.
-//' @param runtodate Date to run to.  The default is to run to the end date configured
-//' in the input file used to initialize the core.
-//' @return The Hector instance handle
-//' @export
-//' @family main user interface functions
-// [[Rcpp::export]]
-Environment run(Environment core, double runtodate=-1.0)
-{
-    Hector::Core *hcore = gethcore(core);
-    try {
-        hcore->run(runtodate);
-    }
-    catch(h_exception e) {
-        std::stringstream msg;
-        msg << "Error while running hector:  " << e;
-        Rcpp::stop(msg.str());
-    }
-
-    return core;
-}
-
-
 //' Reset a Hector instance to an earlier date
 //'
 //' Resetting the model returns it to its state at a previous time.  If the requested time
@@ -163,6 +136,48 @@ Environment reset(Environment core, double date=0)
             << " :  " << e;
         Rcpp::stop(msg.str());
     }
+
+    if(date == 0)
+        core["clean"] = true;
+    
+    return core;
+}
+
+
+//' Run the Hector climate model
+//'
+//' Run Hector up through the specified time.  This function does not return the results
+//' of the run.  To get results, run \code{fetch}.
+//'
+//' @param core Handle to the Hector instance that is to be run.
+//' @param runtodate Date to run to.  The default is to run to the end date configured
+//' in the input file used to initialize the core.
+//' @return The Hector instance handle
+//' @export
+//' @family main user interface functions
+// [[Rcpp::export]]
+Environment run(Environment core, double runtodate=-1.0)
+{
+    if(!core["clean"])
+        reset(core);
+
+    Hector::Core *hcore = gethcore(core);
+    if(runtodate > 0 && runtodate < hcore->getCurrentDate()) {
+        std::stringstream msg;
+        msg << "Requested run date " << runtodate << " is prior to the current date of "
+            << hcore->getCurrentDate() << ". Run reset() to reset to an earlier date.";
+        Rcpp::stop(msg.str());
+    }
+
+    try {
+        hcore->run(runtodate);
+    }
+    catch(h_exception e) {
+        std::stringstream msg;
+        msg << "Error while running hector:  " << e;
+        Rcpp::stop(msg.str());
+    }
+
     return core;
 }
 

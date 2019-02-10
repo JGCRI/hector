@@ -81,5 +81,9 @@ setvar <- function(core, dates, var, values, unit)
     unit[is.na(unit)] <- '(unitless)'
     sendmessage(core, SETDATA(), var, dates, values, unit)
 
+    if(any(dates <= getdate(core)) || any(is.na(dates))) {
+        core$clean <- FALSE
+    }
+
     invisible(NULL)
 }
