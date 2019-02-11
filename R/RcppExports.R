@@ -799,21 +799,6 @@ shutdown <- function(core) {
     .Call('_hector_shutdown', PACKAGE = 'hector', core)
 }
 
-#' Run the Hector climate model
-#'
-#' Run Hector up through the specified time.  This function does not return the results
-#' of the run.  To get results, run \code{fetch}.
-#'
-#' @param core Handle to the Hector instance that is to be run.
-#' @param runtodate Date to run to.  The default is to run to the end date configured
-#' in the input file used to initialize the core.
-#' @return The Hector instance handle
-#' @export
-#' @family main user interface functions
-run <- function(core, runtodate = -1.0) {
-    .Call('_hector_run', PACKAGE = 'hector', core, runtodate)
-}
-
 #' Reset a Hector instance to an earlier date
 #'
 #' Resetting the model returns it to its state at a previous time.  If the requested time
@@ -830,6 +815,21 @@ run <- function(core, runtodate = -1.0) {
 #' @export
 reset <- function(core, date = 0) {
     .Call('_hector_reset', PACKAGE = 'hector', core, date)
+}
+
+#' Run the Hector climate model
+#'
+#' Run Hector up through the specified time.  This function does not return the results
+#' of the run.  To get results, run \code{fetch}.
+#'
+#' @param core Handle to the Hector instance that is to be run.
+#' @param runtodate Date to run to.  The default is to run to the end date configured
+#' in the input file used to initialize the core.
+#' @return The Hector instance handle
+#' @export
+#' @family main user interface functions
+run <- function(core, runtodate = -1.0) {
+    .Call('_hector_run', PACKAGE = 'hector', core, runtodate)
 }
 
 #' \strong{getdate}: Get the current date for a Hector instance
