@@ -26,7 +26,7 @@
 #elif defined( __cpp_lib_filesystem )
 #include <filesystem>
 namespace fs = std:filesystem;
-#elif defined( __cpp_lib_experimental_filesystem )
+#elif defined( __cpp_lib_experimental_filesystem ) || /* fall back for older Visual Studio */ defined( _MSC_VER )
 #include <experimental/filesystem>
 namespace fs = std::experimental::filesystem;
 #else
