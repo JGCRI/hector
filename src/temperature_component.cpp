@@ -92,6 +92,7 @@ void TemperatureComponent::init( Core* coreptr ) {
     diff.set( 0.55, U_CM2_S );    // default ocean heat diffusivity, cm2/s. value is CDICE default (varname is kappa there).
     S.set( 3.0, U_DEGC );         // default climate sensitivity, K (varname is t2co in CDICE).
     alpha.set( 1.0, U_UNITLESS);  // default aerosol scaling, unitless (similar to alpha in CDICE).
+    volscl.set(1.0, U_UNITLESS);  // Default volcanic scaling, unitless (works the same way as alpha)
     
     // Register the data we can provide
     core->registerCapability( D_GLOBAL_TEMP, getComponentName() );
@@ -111,6 +112,7 @@ void TemperatureComponent::init( Core* coreptr ) {
     core->registerInput(D_ECS, getComponentName());
     core->registerInput(D_DIFFUSIVITY, getComponentName());
     core->registerInput(D_AERO_SCALE, getComponentName());
+    core->registerInput(D_VOLCANIC_SCALE, getComponentName());
 }
 
 //------------------------------------------------------------------------------
@@ -151,6 +153,9 @@ void TemperatureComponent::setData( const string& varName,
 	} else if( varName == D_AERO_SCALE ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
             alpha = data.getUnitval(U_UNITLESS);
+        } else if(varName == D_VOLCANIC_SCALE) {
+            H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
+            volscl = data.getUnitval(U_UNITLESS);
         } else if( varName == D_TGAV_CONSTRAIN ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
             tgav_constrain.set(data.date, data.getUnitval(U_DEGC));
@@ -324,8 +329,11 @@ void TemperatureComponent::run( const double runToDate ) throw ( h_exception ) {
     double aero_forcing =
         double(core->sendMessage( M_GETDATA, D_RF_BC ).value( U_W_M2 )) + double(core->sendMessage( M_GETDATA, D_RF_OC).value( U_W_M2 )) + 
         double(core->sendMessage( M_GETDATA, D_RF_SO2d ).value( U_W_M2 )) + double(core->sendMessage( M_GETDATA, D_RF_SO2i ).value( U_W_M2 ));
+    double volcanic_forcing = double(core->sendMessage(M_GETDATA, D_RF_VOL));
 
-    forcing[tstep] = double(core->sendMessage( M_GETDATA, D_RF_TOTAL ).value( U_W_M2 )) - ( 1.0 - alpha ) * aero_forcing;
+    forcing[tstep] = double(core->sendMessage(M_GETDATA, D_RF_TOTAL).value(U_W_M2))
+                      - (1.0 - alpha) * aero_forcing
+                      - (1.0 - volscl) * volcanic_forcing;
     
     // Initialize variables for time-stepping through the model
     double DQ1 = 0.0;
@@ -441,8 +449,8 @@ unitval TemperatureComponent::getData( const std::string& varName,
             returnval = heatflux;
         } else if( varName == D_ECS ) {
             returnval = S;
-        } else if(varName == D_AERO_SCALE) {
-            returnval = alpha;
+        } else if(varName == D_VOLCANIC_SCALE) {
+            returnval = volscl;
         } else {
             H_THROW( "Caller is requesting unknown variable: " + varName ); 
         }

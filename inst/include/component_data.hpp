@@ -252,6 +252,7 @@
 // temperature component
 #define D_DIFFUSIVITY           "diff"
 #define D_AERO_SCALE            "alpha"
+#define D_VOLCANIC_SCALE        "volscl"
 #define D_FLUX_MIXED            "flux_mixed"
 #define D_FLUX_INTERIOR         "flux_interior"
 #define D_HEAT_FLUX             "heatflux"
