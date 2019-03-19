@@ -1,3 +1,16 @@
+Hector 2.2.0
+============
+* Add a new parameter: VOLCANIC_SCALE.  This parameter adjusts the
+  strength of the response to volcanic forcing.  (PR #291)
+
+
+Hector 2.1.0
+============
+* Add reset() function to the API.  Calling this function resets a
+  hector core to an earlier time, rerunning the spinup if
+  appropriate.  (PR #243)
+
+
 Hector 2.0.0
 ============
 * Incorporated 1-D diffusive ocean heat model as new temperature component (DOECLIM) (PR #206)
