@@ -2,6 +2,7 @@ Hector 2.2.0
 ============
 * Add a new parameter: VOLCANIC_SCALE.  This parameter adjusts the
   strength of the response to volcanic forcing.  (PR #291)
+* Add getname function to return the name of a Hector core.
 
 
 Hector 2.1.0
