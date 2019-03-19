@@ -7,6 +7,7 @@
 \alias{BETA}
 \alias{ECS}
 \alias{AERO_SCALE}
+\alias{VOLCANIC_SCALE}
 \alias{DIFFUSIVITY}
 \title{Identifiers for model parameters}
 \usage{
@@ -19,6 +20,8 @@ BETA()
 ECS()
 
 AERO_SCALE()
+
+VOLCANIC_SCALE()
 
 DIFFUSIVITY()
 }
@@ -43,7 +46,9 @@ mass).
 
 \item \code{ECS}: Equilibrium Climate Sensitivity (\code{"degC"})
 
-\item \code{AERO_SCALE}: Aerosol scaling factor (\code{"(unitless)"})
+\item \code{AERO_SCALE}: Aerosol forcing scaling factor (\code{"(unitless)"})
+
+\item \code{VOLCANIC_SCALE}: Volcanic forcing scaling factor (\code{"(unitless)"})
 
 \item \code{DIFFUSIVITY}: Ocean heat diffusivity (\code{"cm2/s"})
 }}

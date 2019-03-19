@@ -1235,6 +1235,16 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// VOLCANIC_SCALE
+String VOLCANIC_SCALE();
+RcppExport SEXP _hector_VOLCANIC_SCALE() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(VOLCANIC_SCALE());
+    return rcpp_result_gen;
+END_RCPP
+}
 // GLOBAL_TEMP
 String GLOBAL_TEMP();
 RcppExport SEXP _hector_GLOBAL_TEMP() {
@@ -1507,6 +1517,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_VOLCANIC_SO2", (DL_FUNC) &_hector_VOLCANIC_SO2, 0},
     {"_hector_ECS", (DL_FUNC) &_hector_ECS, 0},
     {"_hector_AERO_SCALE", (DL_FUNC) &_hector_AERO_SCALE, 0},
+    {"_hector_VOLCANIC_SCALE", (DL_FUNC) &_hector_VOLCANIC_SCALE, 0},
     {"_hector_GLOBAL_TEMP", (DL_FUNC) &_hector_GLOBAL_TEMP, 0},
     {"_hector_GLOBAL_TEMPEQ", (DL_FUNC) &_hector_GLOBAL_TEMPEQ, 0},
     {"_hector_DIFFUSIVITY", (DL_FUNC) &_hector_DIFFUSIVITY, 0},

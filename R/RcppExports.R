@@ -736,10 +736,16 @@ ECS <- function() {
     .Call('_hector_ECS', PACKAGE = 'hector')
 }
 
-#' @describeIn parameters Aerosol scaling factor (\code{"(unitless)"})
+#' @describeIn parameters Aerosol forcing scaling factor (\code{"(unitless)"})
 #' @export
 AERO_SCALE <- function() {
     .Call('_hector_AERO_SCALE', PACKAGE = 'hector')
+}
+
+#' @describeIn parameters Volcanic forcing scaling factor (\code{"(unitless)"})
+#' @export
+VOLCANIC_SCALE <- function() {
+    .Call('_hector_VOLCANIC_SCALE', PACKAGE = 'hector')
 }
 
 #' @describeIn temperature Global mean temperature

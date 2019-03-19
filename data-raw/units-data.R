@@ -1,6 +1,6 @@
 library(hector)
 
-hvars <- c(ECS(), PREINDUSTRIAL_CO2(), Q10_RH(), BETA(), AERO_SCALE(), DIFFUSIVITY(),
+hvars <- c(ECS(), PREINDUSTRIAL_CO2(), Q10_RH(), BETA(), AERO_SCALE(), VOLCANIC_SCALE(), DIFFUSIVITY(),
            FFI_EMISSIONS(), LUC_EMISSIONS(),
            EMISSIONS_BC(), EMISSIONS_N2O(), EMISSIONS_NOX(), EMISSIONS_CO(),
            EMISSIONS_NMVOC(), EMISSIONS_OC(),
@@ -8,7 +8,7 @@ hvars <- c(ECS(), PREINDUSTRIAL_CO2(), Q10_RH(), BETA(), AERO_SCALE(), DIFFUSIVI
            EMISSIONS_SO2(), VOLCANIC_SO2())
 
 
-hunits <- c('degC', 'ppmv CO2', '(unitless)', '(unitless)', '(unitless)', 'cm2/s',
+hunits <- c('degC', 'ppmv CO2', '(unitless)', '(unitless)', '(unitless)', '(unitless)', 'cm2/s',
             'Pg C/yr', 'Pg C/yr',
             'Tg', 'Tg N', 'Tg N', 'Tg CO',
             'Tg NMVOC', 'Tg',

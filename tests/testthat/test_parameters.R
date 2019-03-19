@@ -102,8 +102,7 @@ test_that('Lowering diffusivity increases temperature', {
     shutdown(hc)
 })
 
-test_that('Lowering aerosol scaling factor increases temperature',
-      {
+test_that('Lowering aerosol forcing scaling factor increases temperature', {
     hc <- newcore(file.path(inputdir, 'hector_rcp45.ini'), suppresslogging =
                     TRUE)
     run(hc, 2100)
@@ -124,3 +123,20 @@ test_that('Lowering aerosol scaling factor increases temperature',
     shutdown(hc)
 })
 
+test_that('Increasing volcanic forcing scaling factor increases the effect of volcanism', {
+    ## Use the difference between 1960 temperature and 1965 temperature as a
+    ## measure of the volcanic effect.
+    hc <- newcore(file.path(inputdir, 'hector_rcp45.ini'), suppresslogging=TRUE)
+    run(hc, 1971)
+    dates <- c(1960, 1965)
+    tbase <- fetchvars(hc, dates, GLOBAL_TEMP())
+    vsibase <- tbase$value[1] - tbase$value[2]
+
+    setvar(hc, NA, VOLCANIC_SCALE(), 1.5, getunits(VOLCANIC_SCALE()))
+    reset(hc)
+    run(hc, 1971)
+    tscl <- fetchvars(hc, dates, GLOBAL_TEMP())
+    vsiscl <- tscl$value[1] - tscl$value[2]
+
+    expect_gt(vsiscl, vsibase)
+})
