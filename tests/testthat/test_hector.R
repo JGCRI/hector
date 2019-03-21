@@ -6,13 +6,14 @@ testvars <- c(ATMOSPHERIC_CO2(), RF_TOTAL(), GLOBAL_TEMP())
 dates <- 2000:2300
 
 test_that('Basic hcore functionality works', {
-    hc <- newcore(file.path(inputdir, 'hector_rcp45.ini'), suppresslogging = TRUE)
+    hc <- newcore(file.path(inputdir, 'hector_rcp45.ini'), name='RCP45', suppresslogging = TRUE)
     run(hc, 2100)
     expect_true(inherits(hc, 'hcore'))
     expect_true(isactive(hc))
     expect_equal(startdate(hc), 1745)
     expect_equal(enddate(hc), 2300)
     expect_equal(getdate(hc), 2100)
+    expect_equal(getname(hc), 'RCP45')
 
     expect_error(run(hc, 2050), "is prior to the current date")
     expect_silent(run(hc, 2100))

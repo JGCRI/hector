@@ -133,6 +133,13 @@ enddate <- function(core)
     core$enddate
 }
 
+#' \strong{getname}: Report the name for a Hector instance
+#' @rdname hectorutil
+#' @export
+getname <- function(core)
+{
+    core$name
+}
 
 
 #### Methods for hcore objects

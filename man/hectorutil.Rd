@@ -6,6 +6,7 @@
 \alias{isactive}
 \alias{startdate}
 \alias{enddate}
+\alias{getname}
 \title{Utility functions for Hector instances}
 \usage{
 getdate(core)
@@ -15,6 +16,8 @@ isactive(core)
 startdate(core)
 
 enddate(core)
+
+getname(core)
 }
 \arguments{
 \item{core}{Hector instance to operate on}
@@ -29,4 +32,6 @@ Utility functions for Hector instances
 \strong{startdate}: Report the start date for a Hector instance
 
 \strong{enddate}: Report the end date for a Hector instance
+
+\strong{getname}: Report the name for a Hector instance
 }
