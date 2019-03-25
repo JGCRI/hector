@@ -4,9 +4,12 @@
 \name{hector-package}
 \alias{hector}
 \alias{hector-package}
-\title{hector: Run the Hector Simple Climate Model}
+\title{hector: The Hector Simple Climate Model}
 \description{
-Provides R bindings for the Hector Simple Climate Model.
+Provides an R interface for the Hector Simple Climate
+    Model.  Using this interface you can set up and initialize the model,
+    change model parameters and emissions inputs, run Hector, and
+    retrieve hector outputs.
 }
 \details{
 This package allows you to run the Hector Simple Climate Model (SCM) from R
@@ -59,6 +62,13 @@ carbon-cycle model: projections and sensitivities, Biogeosciences, 13,
 }
 \author{
 \strong{Maintainer}: Robert Link \email{robert.link@pnnl.gov}
+
+Authors:
+\itemize{
+  \item Corinne Hartin \email{corinne.hartin@pnnl.gov}
+  \item Ben Bond-Lamberty \email{BondLamberty@pnnl.gov}
+  \item Pralit Patel \email{pralit.patel@pnnl.gov}
+}
 
 }
 \keyword{internal}
