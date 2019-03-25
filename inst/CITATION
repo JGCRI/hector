@@ -1,0 +1,17 @@
+bibentry('Article',
+         header =
+           'When using Hector in your research, please cite the following model documentation paper:',
+         key = 'hartin2015simple',
+         title =
+           'A simple object-oriented and open-source model for scientific and policy analyses of the global climate system--Hector v1.0',
+         author =
+           'Corinne A Hartin and Pralit Patel and Adria Schwarber and Robert Link and Ben Bond-Lamberty',
+         journal = 'Geoscientific Model Development',
+         volume = 8,
+         number = 4,
+         pages = '939--955',
+         year = 2015,
+         publisher = 'Copernicus GmbH',
+         footer =
+           'Hector development was supported by the U.S. Department of Energy, Office of Science, as part of research in Multi-Sector Dynamics, Earth and Environmental System Modeling Program. The Pacific Northwest National Laboratory is operated for DOE by Battelle Memorial Institute under contract DE-AC05-76RL01830.'
+         )
