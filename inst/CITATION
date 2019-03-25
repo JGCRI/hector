@@ -13,5 +13,5 @@ bibentry('Article',
          year = 2015,
          publisher = 'Copernicus GmbH',
          footer =
-           'Hector development was supported by  the US Department of Energy, Office of Science, Integrated Assessment Research Program. The Pacific Northwest National Laboratory is operated for DOE by Battelle Memorial Institute under contract DE-AC05-76RL01830.'
+           'Hector development was supported by the U.S. Department of Energy, Office of Science, as part of research in Multi-Sector Dynamics, Earth and Environmental System Modeling Program. The Pacific Northwest National Laboratory is operated for DOE by Battelle Memorial Institute under contract DE-AC05-76RL01830.'
          )
