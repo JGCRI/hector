@@ -706,6 +706,36 @@ BETA <- function() {
     .Call('_hector_BETA', PACKAGE = 'hector')
 }
 
+#' @describeIn parameters NPP fraction to vegetation (\code{"(unitless)"})
+#' @export
+F_NPPV <- function() {
+    .Call('_hector_F_NPPV', PACKAGE = 'hector')
+}
+
+#' @describeIn parameters NPP fraction to detritus (\code{"(unitless)"})
+#' @export
+F_NPPD <- function() {
+    .Call('_hector_F_NPPD', PACKAGE = 'hector')
+}
+
+#' @describeIn parameters Litter fraction to detritus (\code{"(unitless)"})
+#' @export
+F_LITTERD <- function() {
+    .Call('_hector_F_LITTERD', PACKAGE = 'hector')
+}
+
+#' @describeIn parameters LUC fraction to vegetation (\code{"(unitless)"})
+#' @export
+F_LUCV <- function() {
+    .Call('_hector_F_LUCV', PACKAGE = 'hector')
+}
+
+#' @describeIn parameters LUC fraction to detritus (\code{"(unitless)"})
+#' @export
+F_LUCD <- function() {
+    .Call('_hector_F_LUCD', PACKAGE = 'hector')
+}
+
 #' @rdname so2
 #' @export
 NATURAL_SO2 <- function() {
