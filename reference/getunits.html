@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Reset a Hector instance to an earlier date — reset • hector</title>
+<title>Get the hector unit strings for one or more variables — getunits • hector</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,14 +30,12 @@
 
 
 
-<meta property="og:title" content="Reset a Hector instance to an earlier date — reset" />
+<meta property="og:title" content="Get the hector unit strings for one or more variables — getunits" />
 
-<meta property="og:description" content="Resetting the model returns it to its state at a previous time.  If the requested time
-is before the model start date (any value will do; conventionally zero is used), then
-the spinup will be rerun, and the model will be
-left ready to run at the start date.  (By contrast, resetting to the start
-date leaves the model ready to run at the start date, but without having rerun the
-spinup.)" />
+<meta property="og:description" content="This function provides units only for variables that can be set in the model
+using setvar.  Variables read from the model with
+fetchvars will have a units column in the data frame they are
+returned in." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -117,43 +115,34 @@ spinup.)" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Reset a Hector instance to an earlier date</h1>
+    <h1>Get the hector unit strings for one or more variables</h1>
     
-    <div class="hidden name"><code>reset.Rd</code></div>
+    <div class="hidden name"><code>getunits.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Resetting the model returns it to its state at a previous time.  If the requested time
-is before the model start date (any value will do; conventionally zero is used), then
-the spinup will be rerun, and the model will be
-left ready to run at the start date.  (By contrast, resetting <em>to</em> the start
-date leaves the model ready to run at the start date, but without having rerun the
-spinup.)</p>
+    <p>This function provides units only for variables that can be set in the model
+using <code><a href='setvar.html'>setvar</a></code>.  Variables read from the model with
+<code><a href='fetchvars.html'>fetchvars</a></code> will have a units column in the data frame they are
+returned in.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>reset</span>(<span class='no'>core</span>, <span class='kw'>date</span> <span class='kw'>=</span> <span class='fl'>0</span>)</pre>
+    <pre class="usage"><span class='fu'>getunits</span>(<span class='no'>vars</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>core</th>
-      <td><p>Handle for the Hector instance that is to be reset.</p></td>
-    </tr>
-    <tr>
-      <th>date</th>
-      <td><p>Date to reset to.  The default is to reset to the model start date with
-a rerun of the spinup.</p></td>
+      <th>vars</th>
+      <td><p>Capability strings for variables to get units for.</p></td>
     </tr>
     </table>
     
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <div class='dont-index'><p>Other main user interface functions: <code><a href='fetchvars.html'>fetchvars</a></code>,
-  <code><a href='newcore.html'>newcore</a></code>, <code><a href='run.html'>run</a></code>,
-  <code><a href='setvar.html'>setvar</a></code>, <code><a href='shutdown.html'>shutdown</a></code></p></div>
+    <p>Character vector of unit strings. Variables not found will have <code>NA</code> entries.</p>
     
 
   </div>
@@ -162,7 +151,7 @@ a rerun of the spinup.</p></td>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#see-also">See also</a></li>
+      <li><a href="#value">Value</a></li>
           </ul>
 
   </div>

@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">hector</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.2.0</span>
       </span>
     </div>
 
@@ -106,11 +106,11 @@ Ftalbedo[1950]=-0.2</code></pre>
 <div id="list-of-model-parameters" class="section level1">
 <h1 class="hasAnchor">
 <a href="#list-of-model-parameters" class="anchor"></a>List of model parameters</h1>
-<p><em>Italicized</em> properties are optional.</p>
+<p>Properties with asterisks (<code>*</code>) are optional.</p>
 <table class="table">
 <colgroup>
-<col width="41%">
-<col width="24%">
+<col width="40%">
+<col width="26%">
 <col width="15%">
 <col width="18%">
 </colgroup>
@@ -123,50 +123,57 @@ Ftalbedo[1950]=-0.2</code></pre>
 <tbody>
 <tr class="odd">
 <td><strong>core</strong></td>
-<td>run_name</td>
+<td><code>run_name</code></td>
 <td>Text</td>
 <td></td>
 </tr>
 <tr class="even">
-<td>startDate</td>
+<td></td>
+<td><code>startDate</code></td>
 <td>Year</td>
 <td></td>
 </tr>
 <tr class="odd">
-<td>endDate</td>
+<td></td>
+<td><code>endDate</code></td>
 <td>Year</td>
 <td></td>
 </tr>
 <tr class="even">
-<td><em>do_spinup</em></td>
+<td></td>
+<td><code>do_spinup*</code></td>
 <td>0/1</td>
 <td>Defaults to 1 (TRUE)</td>
 </tr>
 <tr class="odd">
-<td><em>max_spinup</em></td>
+<td></td>
+<td><code>max_spinup*</code></td>
 <td>Numeric</td>
 <td>Defaults to 1000</td>
 </tr>
 <tr class="even">
 <td><strong>carbon-cycle-solver</strong></td>
-<td>eps_abs</td>
+<td><code>eps_abs</code></td>
 <td>Numeric</td>
 <td>Solution tolerance, Pg C; see <a href="https://www.gnu.org/software/gsl/manual/html_node/Ordinary-Differential-Equations.html#Ordinary-Differential-Equations">GSL documentation</a>
 </td>
 </tr>
 <tr class="odd">
-<td>eps_rel</td>
+<td></td>
+<td><code>eps_rel</code></td>
 <td>Numeric</td>
 <td>Solution tolerance; see <a href="https://www.gnu.org/software/gsl/manual/html_node/Ordinary-Differential-Equations.html#Ordinary-Differential-Equations">GSL documentation</a>
 </td>
 </tr>
 <tr class="even">
-<td>dt</td>
+<td></td>
+<td><code>dt</code></td>
 <td>Numeric</td>
 <td>Default timestep; see GSL documentation</td>
 </tr>
 <tr class="odd">
-<td>eps_spinup</td>
+<td></td>
+<td><code>eps_spinup</code></td>
 <td>Numeric</td>
 <td>Spinup tolerance (drift), Pg C</td>
 </tr>
@@ -190,7 +197,7 @@ Ftalbedo[1950]=-0.2</code></pre>
 
 
       <footer><div class="copyright">
-  <p>Developed by Robert Link.</p>
+  <p>Developed by Robert Link, Corinne Hartin, Ben Bond-Lamberty, Pralit Patel.</p>
 </div>
 
 <div class="pkgdown">

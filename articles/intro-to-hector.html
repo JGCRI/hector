@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">hector</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.2.0</span>
       </span>
     </div>
 
@@ -125,10 +125,10 @@
 <p>The results are returned as a long, <a href="https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html">tidy</a> <code>data.frame</code>. This makes it easy to plot them using <code>ggplot2</code>.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(ggplot2)</a>
 <a class="sourceLine" id="cb9-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(results) <span class="op">+</span></a>
-<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x =</span> year, <span class="dt">y =</span> value) <span class="op">+</span></a>
-<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span>(<span class="op">~</span>variable, <span class="dt">scales =</span> <span class="st">"free_y"</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(results) <span class="op">+</span></a>
+<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> year, <span class="dt">y =</span> value) <span class="op">+</span></a>
+<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/facet_wrap">facet_wrap</a></span>(<span class="op">~</span>variable, <span class="dt">scales =</span> <span class="st">"free_y"</span>)</a></code></pre></div>
 <p><img src="intro-to-hector_files/figure-html/plot-1.png" width="700"></p>
 </div>
 <div id="setting-parameters" class="section level1">
@@ -185,11 +185,11 @@
 <a class="sourceLine" id="cb25-2" data-line-number="2">results_<span class="dv">40</span>[[<span class="st">"beta"</span>]] &lt;-<span class="st"> </span><span class="fl">0.40</span></a>
 <a class="sourceLine" id="cb25-3" data-line-number="3">compare_results &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/cbind">rbind</a></span>(results, results_<span class="dv">40</span>)</a>
 <a class="sourceLine" id="cb25-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb25-5" data-line-number="5"><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(compare_results) <span class="op">+</span></a>
-<a class="sourceLine" id="cb25-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x =</span> year, <span class="dt">y =</span> value, <span class="dt">color =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/factor">factor</a></span>(beta)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb25-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb25-8" data-line-number="8"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span>(<span class="op">~</span>variable, <span class="dt">scales =</span> <span class="st">"free_y"</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb25-9" data-line-number="9"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/guides.html">guides</a></span>(<span class="dt">color =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/guide_legend.html">guide_legend</a></span>(<span class="dt">title =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/expression">expression</a></span>(beta)))</a></code></pre></div>
+<a class="sourceLine" id="cb25-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(compare_results) <span class="op">+</span></a>
+<a class="sourceLine" id="cb25-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> year, <span class="dt">y =</span> value, <span class="dt">color =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/factor">factor</a></span>(beta)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb25-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb25-8" data-line-number="8"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/facet_wrap">facet_wrap</a></span>(<span class="op">~</span>variable, <span class="dt">scales =</span> <span class="st">"free_y"</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb25-9" data-line-number="9"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/guides">guides</a></span>(<span class="dt">color =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/guide_legend">guide_legend</a></span>(<span class="dt">title =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/expression">expression</a></span>(beta)))</a></code></pre></div>
 <p><img src="intro-to-hector_files/figure-html/compare-co2-fert-1.png" width="700"></p>
 <p>As expected, increasing CO2 fertilization increases the strength of the terrestrial carbon sink and therefore reduces atmospheric CO2, radiative forcing, and global temperature. However, the effects only become pronounced in the latter half of the 21st Century.</p>
 </div>
@@ -228,12 +228,12 @@
 <a class="sourceLine" id="cb26-28" data-line-number="28"></a>
 <a class="sourceLine" id="cb26-29" data-line-number="29">sensitivity_beta &lt;-<span class="st"> </span><span class="kw">run_with_param_range</span>(core, <span class="kw"><a href="../reference/parameters.html">BETA</a></span>(), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq</a></span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.05</span>))</a>
 <a class="sourceLine" id="cb26-30" data-line-number="30"></a>
-<a class="sourceLine" id="cb26-31" data-line-number="31"><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(sensitivity_beta) <span class="op">+</span></a>
-<a class="sourceLine" id="cb26-32" data-line-number="32"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x =</span> year, <span class="dt">y =</span> value, <span class="dt">color =</span> parameter_value, <span class="dt">group =</span> parameter_value) <span class="op">+</span></a>
-<a class="sourceLine" id="cb26-33" data-line-number="33"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb26-34" data-line-number="34"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span>(<span class="op">~</span>variable, <span class="dt">scales =</span> <span class="st">"free_y"</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb26-35" data-line-number="35"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/guides.html">guides</a></span>(<span class="dt">color =</span> <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/guide_colourbar.html">guide_colorbar</a></span>(<span class="dt">title =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/expression">expression</a></span>(beta))) <span class="op">+</span></a>
-<a class="sourceLine" id="cb26-36" data-line-number="36"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/scale_viridis.html">scale_color_viridis_c</a></span>() </a></code></pre></div>
+<a class="sourceLine" id="cb26-31" data-line-number="31"><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/ggplot">ggplot</a></span>(sensitivity_beta) <span class="op">+</span></a>
+<a class="sourceLine" id="cb26-32" data-line-number="32"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/aes">aes</a></span>(<span class="dt">x =</span> year, <span class="dt">y =</span> value, <span class="dt">color =</span> parameter_value, <span class="dt">group =</span> parameter_value) <span class="op">+</span></a>
+<a class="sourceLine" id="cb26-33" data-line-number="33"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/geom_path">geom_line</a></span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb26-34" data-line-number="34"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/facet_wrap">facet_wrap</a></span>(<span class="op">~</span>variable, <span class="dt">scales =</span> <span class="st">"free_y"</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb26-35" data-line-number="35"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/guides">guides</a></span>(<span class="dt">color =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/guide_colourbar">guide_colorbar</a></span>(<span class="dt">title =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/expression">expression</a></span>(beta))) <span class="op">+</span></a>
+<a class="sourceLine" id="cb26-36" data-line-number="36"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/ggplot2/topics/scale_viridis">scale_color_viridis_c</a></span>() </a></code></pre></div>
 <p><img src="intro-to-hector_files/figure-html/functions-1.png" width="700"></p>
 <p>As we can see, the ability of CO<span class="math inline">\(_2\)</span> fertilization to offset carbon emissions is saturating – at high values of <span class="math inline">\(\beta\)</span>, the same increase in <span class="math inline">\(\beta\)</span> translates into a smaller decrease in atmospheric CO<span class="math inline">\(_2\)</span> and related climate effects.</p>
 </div>
@@ -255,7 +255,7 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Robert Link.</p>
+  <p>Developed by Robert Link, Corinne Hartin, Ben Bond-Lamberty, Pralit Patel.</p>
 </div>
 
 <div class="pkgdown">
