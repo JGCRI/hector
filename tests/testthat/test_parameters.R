@@ -149,7 +149,7 @@ test_that('Decreasing vegetation NPP fraction increases CO2 concentration', {
                                         # increase is smooth.
     dd1 <- fetchvars(hc, qdates, ATMOSPHERIC_CO2())
 
-    setvar(hc, NA, F_NPPV(), 0.25, NA)
+    setvar(hc, NA, F_NPPV(), 0.25, NA) # Default: 0.35
     reset(hc, 0.0)
     run(hc, 2100)
     dd2 <- fetchvars(hc, qdates, ATMOSPHERIC_CO2())
@@ -161,15 +161,15 @@ test_that('Decreasing vegetation NPP fraction increases CO2 concentration', {
     shutdown(hc)
 })
 
-test_that('Decreasing litter NPP fraction decreases CO2 concentration', {
-    # TODO: Why does this make sense?
+test_that('Decreasing detritus NPP fraction decreases CO2 concentration', {
+    # Less detritus C means more soil C, which decomposes slower
     hc <- newcore(rcp45, suppresslogging = TRUE)
     run(hc, 2100)
     qdates <- 2000:2100                 # limit to years where temperature
                                         # increase is smooth.
     dd1 <- fetchvars(hc, qdates, ATMOSPHERIC_CO2())
 
-    setvar(hc, NA, F_NPPD(), 0.5, NA)
+    setvar(hc, NA, F_NPPD(), 0.5, NA) # Default: 0.60
     reset(hc, 0.0)
     run(hc, 2100)
     dd2 <- fetchvars(hc, qdates, ATMOSPHERIC_CO2())
@@ -178,5 +178,45 @@ test_that('Decreasing litter NPP fraction decreases CO2 concentration', {
     diff <- dd2$value - dd1$value
     expect_lt(min(diff), 0.0)
 
+    shutdown(hc)
+})
+
+test_that('Decreasing litter flux to detritus decreases CO2 concentrations ', {
+    # Less detritus C means more soil C, which decomposes slower
+    hc <- newcore(rcp45, suppresslogging = TRUE)
+    run(hc, 2100)
+    qdates <- 2000:2100                 # limit to years where temperature
+                                        # increase is smooth.
+    dd1 <- fetchvars(hc, qdates, ATMOSPHERIC_CO2())
+
+    setvar(hc, NA, F_LITTERD(), 0.9, NA) # Default = 0.98
+    reset(hc, 0.0)
+    run(hc, 2100)
+    dd2 <- fetchvars(hc, qdates, ATMOSPHERIC_CO2())
+
+    ## Check that concentration is lower across the board
+    diff <- dd2$value - dd1$value
+    expect_lt(min(diff), 0.0)
+
+    shutdown(hc)
+})
+
+test_that('All "fraction" parameters can be set and retrieved', {
+    # Less detritus C means more soil C, which decomposes slower
+    hc <- newcore(rcp45, suppresslogging = TRUE)
+    fracs <- list(
+      F_NPPV = 0.4, # default 0.35
+      F_NPPD = 0.5, # default 0.60
+      F_LITTERD = 0.9, # default 0.98
+      F_LUCV = 0.2, # default 0.1
+      F_LUCD = 0.02 # default = 0.01
+    )
+    # Set names to result of calling corresponding function (e.g. `F_NPPV()`)
+    names(fracs) <- lapply(names(fracs), do.call, args = list())
+    for (i in seq_along(fracs)) {
+      setvar(hc, NA, names(fracs)[[i]], fracs[[i]], NA)
+    }
+    out <- fetchvars(hc, NA, names(fracs))
+    expect_equivalent(as.list(out$value), fracs)
     shutdown(hc)
 })
