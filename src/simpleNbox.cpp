@@ -442,25 +442,22 @@ unitval SimpleNbox::getData(const std::string& varName,
         H_ASSERT( date != Core::undefinedIndex(), "Date required for albedo forcing" );
         returnval = Ftalbedo.get( date );
 
-        // Partitioning parameters 
+        // Partitioning parameters.
+        // For now, only global values are supported.
+        // TODO Biome-specific versions of all of these
     } else if(varName == D_F_NPPV) {
-        // For the time being, we are only supporting global beta, not biome-specific
         H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for vegetation NPP fraction");
         returnval = unitval(f_nppv, U_UNITLESS);
     } else if(varName == D_F_NPPD) {
-        // For the time being, we are only supporting global beta, not biome-specific
         H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for detritus NPP fraction");
         returnval = unitval(f_nppd, U_UNITLESS);
     } else if(varName == D_F_LITTERD) {
-        // For the time being, we are only supporting global beta, not biome-specific
         H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for litter-detritus fraction");
         returnval = unitval(f_litterd, U_UNITLESS);
     } else if(varName == D_F_LUCV) {
-        // For the time being, we are only supporting global beta, not biome-specific
         H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for LUC vegetation fraction");
         returnval = unitval(f_lucv, U_UNITLESS);
     } else if(varName == D_F_LUCD) {
-        // For the time being, we are only supporting global beta, not biome-specific
         H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for LUC detritus fraction");
         returnval = unitval(f_lucd, U_UNITLESS);
         
