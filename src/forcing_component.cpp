@@ -340,7 +340,10 @@ void ForcingComponent::run( const double runToDate ) throw ( h_exception ) {
         H_LOG( logger, Logger::DEBUG ) << "forcing total is " << forcings[ D_RF_TOTAL ] << std::endl;
         
         //---------- Change to relative forcing ----------
-        // At this point, we've computed all absolute forcings. If base year, save those values
+        // Note that the code below assumes model is always consistently run from base-year forward. 
+        // Results will not be consistent if parameters are changed but base-year is not re-run.
+
+       // At this point, we've computed all absolute forcings. If base year, save those values
         if( runToDate==baseyear ) {
             H_LOG( logger, Logger::DEBUG ) << "** At base year! Storing current forcing values" << std::endl;
             baseyear_forcings = forcings;
