@@ -1175,6 +1175,56 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// F_NPPV
+String F_NPPV();
+RcppExport SEXP _hector_F_NPPV() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(F_NPPV());
+    return rcpp_result_gen;
+END_RCPP
+}
+// F_NPPD
+String F_NPPD();
+RcppExport SEXP _hector_F_NPPD() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(F_NPPD());
+    return rcpp_result_gen;
+END_RCPP
+}
+// F_LITTERD
+String F_LITTERD();
+RcppExport SEXP _hector_F_LITTERD() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(F_LITTERD());
+    return rcpp_result_gen;
+END_RCPP
+}
+// F_LUCV
+String F_LUCV();
+RcppExport SEXP _hector_F_LUCV() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(F_LUCV());
+    return rcpp_result_gen;
+END_RCPP
+}
+// F_LUCD
+String F_LUCD();
+RcppExport SEXP _hector_F_LUCD() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(F_LUCD());
+    return rcpp_result_gen;
+END_RCPP
+}
 // NATURAL_SO2
 String NATURAL_SO2();
 RcppExport SEXP _hector_NATURAL_SO2() {
@@ -1511,6 +1561,11 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_LUC_EMISSIONS", (DL_FUNC) &_hector_LUC_EMISSIONS, 0},
     {"_hector_Q10_RH", (DL_FUNC) &_hector_Q10_RH, 0},
     {"_hector_BETA", (DL_FUNC) &_hector_BETA, 0},
+    {"_hector_F_NPPV", (DL_FUNC) &_hector_F_NPPV, 0},
+    {"_hector_F_NPPD", (DL_FUNC) &_hector_F_NPPD, 0},
+    {"_hector_F_LITTERD", (DL_FUNC) &_hector_F_LITTERD, 0},
+    {"_hector_F_LUCV", (DL_FUNC) &_hector_F_LUCV, 0},
+    {"_hector_F_LUCD", (DL_FUNC) &_hector_F_LUCD, 0},
     {"_hector_NATURAL_SO2", (DL_FUNC) &_hector_NATURAL_SO2, 0},
     {"_hector_Y2000_SO2", (DL_FUNC) &_hector_Y2000_SO2, 0},
     {"_hector_EMISSIONS_SO2", (DL_FUNC) &_hector_EMISSIONS_SO2, 0},

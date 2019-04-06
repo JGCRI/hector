@@ -4,6 +4,7 @@ inputdir <- system.file('input', package='hector')
 sampledir <- system.file('output', package='hector')
 testvars <- c(ATMOSPHERIC_CO2(), RF_TOTAL(), GLOBAL_TEMP())
 dates <- 1750:2100
+rcp45 <- file.path(inputdir, "hector_rcp45.ini")
 
 test_that('Rerunning spinup produces minimal change', {
     hc <- newcore(file.path(inputdir, 'hector_rcp45.ini'), suppresslogging = TRUE)
@@ -22,7 +23,7 @@ test_that('Rerunning spinup produces minimal change', {
 })
 
 test_that('Lowering initial CO2 lowers output CO2', {
-    hc <- newcore(file.path(inputdir, 'hector_rcp45.ini'), suppresslogging = TRUE)
+    hc <- newcore(rcp45, suppresslogging = TRUE)
     run(hc, 2100)
     dd1 <- fetchvars(hc, dates, ATMOSPHERIC_CO2())
 
@@ -43,7 +44,7 @@ test_that('Lowering initial CO2 lowers output CO2', {
 
 
 test_that('Lowering ECS lowers output Temperature', {
-    hc <- newcore(file.path(inputdir, 'hector_rcp45.ini'), suppresslogging = TRUE)
+    hc <- newcore(rcp45, suppresslogging = TRUE)
     run(hc, 2100)
     ## temperature bounces around a bit in the early years; limit test to after
     ## 2000, when the signal is clear
@@ -63,7 +64,7 @@ test_that('Lowering ECS lowers output Temperature', {
 })
 
 test_that('Raising Q10 increases CO2 concentration', {
-    hc <- newcore(file.path(inputdir, 'hector_rcp45.ini'), suppresslogging = TRUE)
+    hc <- newcore(rcp45, suppresslogging = TRUE)
     run(hc, 2100)
     qdates <- 2000:2100                 # limit to years where temperature
                                         # increase is smooth.
@@ -83,7 +84,7 @@ test_that('Raising Q10 increases CO2 concentration', {
 })
 
 test_that('Lowering diffusivity increases temperature', {
-    hc <- newcore(file.path(inputdir, 'hector_rcp45.ini'), suppresslogging = TRUE)
+    hc <- newcore(rcp45, suppresslogging = TRUE)
     run(hc, 2100)
     qdates <- 2000:2100                 # limit to years where temperature
                                         # increase is smooth.
@@ -103,8 +104,7 @@ test_that('Lowering diffusivity increases temperature', {
 })
 
 test_that('Lowering aerosol forcing scaling factor increases temperature', {
-    hc <- newcore(file.path(inputdir, 'hector_rcp45.ini'), suppresslogging =
-                    TRUE)
+    hc <- newcore(rcp45, suppresslogging = TRUE)
     run(hc, 2100)
     qdates <- 2000:2100
 
@@ -126,7 +126,7 @@ test_that('Lowering aerosol forcing scaling factor increases temperature', {
 test_that('Increasing volcanic forcing scaling factor increases the effect of volcanism', {
     ## Use the difference between 1960 temperature and 1965 temperature as a
     ## measure of the volcanic effect.
-    hc <- newcore(file.path(inputdir, 'hector_rcp45.ini'), suppresslogging=TRUE)
+    hc <- newcore(rcp45, suppresslogging=TRUE)
     run(hc, 1971)
     dates <- c(1960, 1965)
     tbase <- fetchvars(hc, dates, GLOBAL_TEMP())
@@ -139,4 +139,84 @@ test_that('Increasing volcanic forcing scaling factor increases the effect of vo
     vsiscl <- tscl$value[1] - tscl$value[2]
 
     expect_gt(vsiscl, vsibase)
+})
+
+test_that('Decreasing vegetation NPP fraction increases CO2 concentration', {
+    # More NPP to vegetation means less C to soil, where it decomposes. 
+    hc <- newcore(rcp45, suppresslogging = TRUE)
+    run(hc, 2100)
+    qdates <- 2000:2100                 # limit to years where temperature
+                                        # increase is smooth.
+    dd1 <- fetchvars(hc, qdates, ATMOSPHERIC_CO2())
+
+    setvar(hc, NA, F_NPPV(), 0.25, NA) # Default: 0.35
+    reset(hc, 0.0)
+    run(hc, 2100)
+    dd2 <- fetchvars(hc, qdates, ATMOSPHERIC_CO2())
+
+    ## Check that concentration is higher across the board
+    diff <- dd2$value - dd1$value
+    expect_gt(min(diff), 0.0)
+
+    shutdown(hc)
+})
+
+test_that('Decreasing detritus NPP fraction decreases CO2 concentration', {
+    # Less detritus C means more soil C, which decomposes slower
+    hc <- newcore(rcp45, suppresslogging = TRUE)
+    run(hc, 2100)
+    qdates <- 2000:2100                 # limit to years where temperature
+                                        # increase is smooth.
+    dd1 <- fetchvars(hc, qdates, ATMOSPHERIC_CO2())
+
+    setvar(hc, NA, F_NPPD(), 0.5, NA) # Default: 0.60
+    reset(hc, 0.0)
+    run(hc, 2100)
+    dd2 <- fetchvars(hc, qdates, ATMOSPHERIC_CO2())
+
+    ## Check that concentration is lower across the board
+    diff <- dd2$value - dd1$value
+    expect_lt(min(diff), 0.0)
+
+    shutdown(hc)
+})
+
+test_that('Decreasing litter flux to detritus decreases CO2 concentrations ', {
+    # Less detritus C means more soil C, which decomposes slower
+    hc <- newcore(rcp45, suppresslogging = TRUE)
+    run(hc, 2100)
+    qdates <- 2000:2100                 # limit to years where temperature
+                                        # increase is smooth.
+    dd1 <- fetchvars(hc, qdates, ATMOSPHERIC_CO2())
+
+    setvar(hc, NA, F_LITTERD(), 0.9, NA) # Default = 0.98
+    reset(hc, 0.0)
+    run(hc, 2100)
+    dd2 <- fetchvars(hc, qdates, ATMOSPHERIC_CO2())
+
+    ## Check that concentration is lower across the board
+    diff <- dd2$value - dd1$value
+    expect_lt(min(diff), 0.0)
+
+    shutdown(hc)
+})
+
+test_that('All "fraction" parameters can be set and retrieved', {
+    # Less detritus C means more soil C, which decomposes slower
+    hc <- newcore(rcp45, suppresslogging = TRUE)
+    fracs <- list(
+      F_NPPV = 0.4, # default 0.35
+      F_NPPD = 0.5, # default 0.60
+      F_LITTERD = 0.9, # default 0.98
+      F_LUCV = 0.2, # default 0.1
+      F_LUCD = 0.02 # default = 0.01
+    )
+    # Set names to result of calling corresponding function (e.g. `F_NPPV()`)
+    names(fracs) <- lapply(names(fracs), do.call, args = list())
+    for (i in seq_along(fracs)) {
+      setvar(hc, NA, names(fracs)[[i]], fracs[[i]], NA)
+    }
+    out <- fetchvars(hc, NA, names(fracs))
+    expect_equivalent(as.list(out$value), fracs)
+    shutdown(hc)
 })
