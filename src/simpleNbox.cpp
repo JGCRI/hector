@@ -70,6 +70,11 @@ void SimpleNbox::init( Core* coreptr ) {
     core->registerInput(D_PREINDUSTRIAL_CO2, getComponentName()); 
     core->registerInput(D_BETA, getComponentName());
     core->registerInput(D_Q10_RH, getComponentName());
+    core->registerInput(D_F_NPPV, getComponentName());
+    core->registerInput(D_F_NPPD, getComponentName());
+    core->registerInput(D_F_LITTERD, getComponentName());
+    core->registerInput(D_F_LUCV, getComponentName());
+    core->registerInput(D_F_LUCD, getComponentName());
 }
 
 //------------------------------------------------------------------------------
@@ -159,23 +164,23 @@ void SimpleNbox::setData( const std::string &varName,
         // Partitioning
         else if( varNameParsed == D_F_NPPV ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            f_nppv = data.getUnitval(U_UNDEFINED);
+            f_nppv = data.getUnitval(U_UNITLESS);
         }
         else if( varNameParsed == D_F_NPPD ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            f_nppd = data.getUnitval(U_UNDEFINED);
+            f_nppd = data.getUnitval(U_UNITLESS);
         }
         else if( varNameParsed == D_F_LITTERD ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            f_litterd = data.getUnitval(U_UNDEFINED);
+            f_litterd = data.getUnitval(U_UNITLESS);
         }
         else if( varNameParsed == D_F_LUCV ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            f_lucv = data.getUnitval(U_UNDEFINED);
+            f_lucv = data.getUnitval(U_UNITLESS);
         }
         else if( varNameParsed == D_F_LUCD ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            f_lucd = data.getUnitval(U_UNDEFINED);
+            f_lucd = data.getUnitval(U_UNITLESS);
         }
         
         // Initial fluxes
@@ -436,6 +441,25 @@ unitval SimpleNbox::getData(const std::string& varName,
     } else if( varName == D_RF_T_ALBEDO ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for albedo forcing" );
         returnval = Ftalbedo.get( date );
+
+        // Partitioning parameters.
+        // For now, only global values are supported.
+        // TODO Biome-specific versions of all of these
+    } else if(varName == D_F_NPPV) {
+        H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for vegetation NPP fraction");
+        returnval = unitval(f_nppv, U_UNITLESS);
+    } else if(varName == D_F_NPPD) {
+        H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for detritus NPP fraction");
+        returnval = unitval(f_nppd, U_UNITLESS);
+    } else if(varName == D_F_LITTERD) {
+        H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for litter-detritus fraction");
+        returnval = unitval(f_litterd, U_UNITLESS);
+    } else if(varName == D_F_LUCV) {
+        H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for LUC vegetation fraction");
+        returnval = unitval(f_lucv, U_UNITLESS);
+    } else if(varName == D_F_LUCD) {
+        H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for LUC detritus fraction");
+        returnval = unitval(f_lucd, U_UNITLESS);
         
     } else if( varName == D_EARTHC ) {
         if(date == Core::undefinedIndex())
