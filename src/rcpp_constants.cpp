@@ -964,6 +964,27 @@ String GLOBAL_TEMPEQ() {
 return D_GLOBAL_TEMPEQ;
 }
 
+//' @describeIn temperature Average ocean surface temperature anomaly
+//' @export
+// [[Rcpp::export]]
+String OCEAN_SURFACE_TEMP() {
+return D_OCEAN_SURFACE_TEMP;
+}
+
+//' @describeIn temperature Average ocean air temperature anomaly
+//' @export
+// [[Rcpp::export]]
+String OCEAN_AIR_TEMP() {
+return D_OCEAN_AIR_TEMP;
+}
+
+//' @describeIn temperature Average land temperature anomaly
+//' @export
+// [[Rcpp::export]]
+String LAND_TEMP() {
+return D_LAND_TEMP;
+}
+
 
 //' @describeIn parameters Ocean heat diffusivity (\code{"cm2/s"})
 //' @export

@@ -98,7 +98,7 @@ void TemperatureComponent::init( Core* coreptr ) {
     core->registerCapability( D_GLOBAL_TEMP, getComponentName() );
     core->registerCapability( D_LAND_TEMP, getComponentName() );
     core->registerCapability( D_OCEAN_AIR_TEMP, getComponentName() );
-    core->registerCapability( D_OCEAN_SS_TEMP, getComponentName() );
+    core->registerCapability( D_OCEAN_SURFACE_TEMP, getComponentName() );
     core->registerCapability( D_GLOBAL_TEMPEQ, getComponentName() );
     core->registerCapability( D_FLUX_MIXED, getComponentName() );
     core->registerCapability( D_FLUX_INTERIOR, getComponentName() );
@@ -442,7 +442,7 @@ unitval TemperatureComponent::getData( const std::string& varName,
             returnval = tgaveq;
         } else if( varName == D_LAND_TEMP ) {
             returnval = tgav_land;
-        } else if( varName == D_OCEAN_SS_TEMP ) {
+        } else if( varName == D_OCEAN_SURFACE_TEMP ) {
             returnval = tgav_sst;
         } else if( varName == D_OCEAN_AIR_TEMP ) {
             returnval = tgav_oceanair;
@@ -476,7 +476,7 @@ unitval TemperatureComponent::getData( const std::string& varName,
             returnval = unitval(temp[tstep], U_DEGC);
         } else if( varName == D_LAND_TEMP ) {
             returnval = unitval(temp_landair[tstep], U_DEGC);
-        } else if( varName == D_OCEAN_SS_TEMP ) {
+        } else if( varName == D_OCEAN_SURFACE_TEMP ) {
             returnval = unitval(temp_sst[tstep], U_DEGC);
         } else if( varName == D_OCEAN_AIR_TEMP ) {
             returnval = bsi * unitval(temp_sst[tstep], U_DEGC);
