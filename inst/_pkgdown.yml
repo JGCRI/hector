@@ -1,0 +1,27 @@
+navbar:
+  structure:
+    left:
+      - home
+      - manual
+      - vignettes
+      - reference
+      - news
+    right: github
+  components:
+    home:
+      icon: fa-home fa-lg
+      href: index.html
+    reference:
+      text: Reference
+      href: reference/index.html
+    manual:
+      text: Manual
+      href: articles/manual/index.html
+    vignettes:
+      text: Vignettes
+      menu:
+        - text: "A tour of the Hector R interface"
+          href: articles/intro-to-hector.html
+        - text: "Example: Using Hector to solve for an emissions pathway"
+          href: articles/hector_apply.html
+    articles: ~

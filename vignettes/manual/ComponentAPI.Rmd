@@ -1,0 +1,28 @@
+---
+title: Hector component API
+---
+
+**Constructor**
+* Assigning time series names and interpolation settings.
+* Assigning default values.
+
+**init()**
+* Opening the log.
+* Storing pointer to the core (not available before then).
+* Registering dependencies (ditto).
+* Registering capabilities (ditto).
+
+**prepareToRun()**
+* Any initialization that depends on user-input data.
+* Any initialization that depends on model start date.
+
+**setData()**
+
+**getData()**
+
+**runSpinup()**
+
+**run()**
+
+**shutDown()**
+* Close the log.

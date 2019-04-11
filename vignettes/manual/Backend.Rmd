@@ -1,0 +1,34 @@
+---
+title: Hector R backend
+---
+
+A simple guide for reproducing the figures using R found with the Hartin et al., (2015) GMD study.  
+
+First
+-------
+We need 3 files that do not change:
+op.R, op_parser.R, and op_grapher.R  
+
+Second
+----------
+Make an experiment specific script that will process all of the Hector, CMIP5, and MAGICC data and save in a csv file.  
+
+For example:   
+Specify the input files and the scenarios  
+INFILES <- c("outputstream_rcp26.csv","outputstream_rcp45.csv","outputstream_rcp60.csv", "outputstream_rcp85.csv")
+
+SCENARIOS <-c("rcp26","rcp45","rcp60", "rcp85")  
+COMPARISON_DATA <- "/hector/output/comparison_data/GMD_2014/"
+
+Call op.R which will read in the model results and any supplementary data  
+source( "/hector/output/op.R" )	 # read in data, etc.   
+
+Save the dataframe (d) in a large csv file to be used in figures.R  
+write.table(d, file="hector_data.csv", row.names=F)
+
+Third  
+------
+Open figures_GMD2015.R and specify the location of the input file and the output directory at the top. 
+Save and source the file.  Figures will be generated along with correlation tables for each figure within the output directory. 
+
+

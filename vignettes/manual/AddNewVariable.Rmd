@@ -1,0 +1,44 @@
+---
+title: Adding a new variable
+---
+
+Adding a new variable to a method
+using getData to obtain the information defined in the ini file
+
+In hector.ini under the corresponding component add variable
+	Ex: SN = 42000;
+
+
+In hpp file of component add variable as tseries/unitval/double/etc. 
+
+In component_data.hpp define the variables that are being added
+	Ex: #define D_ATMOSPHERIC_SO2 "SN"
+	These names do *not* have to match internal component variables but 
+	the ini definition *has to* match what appears in quotes
+
+In the component file .cpp 
+	under init, need to register the Capability
+	core->registerCapability( D_ATMOSPHERIC_SO2, getComponentName() );
+
+In cpp file of component, under getData and setData, add the new variables in before the Error message 
+NOTE: see tseries documentation for more information on getData
+
+	(getData)
+	else if( varName == D_ATMOSPHERIC_SO2 ) {
+       
+	returnval = SN;
+        
+	(setData)
+	else if( varName ==  D_ATMOSPHERIC_SO2  ) {
+           
+	H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
+   
+        SN.set( lexical_cast<double>( value ), U_GG );
+        }
+
+
+If this variable is called in another component.
+	For example if adding in a variable within the focing component
+        Ex: unitval SN = core->getData( D_ATMOSPHERIC_SO2, runToDate);
+
+If this variable is a unitval, the new unitval needs to appear in the unitval.hpp file.

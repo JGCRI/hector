@@ -9,6 +9,10 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(cache = TRUE)
+```
+
 This vignette provides a basic introduction for running Hector with R.
 First, it shows how to do a simple Hector run with one of Hector's built-in scenarios.
 Then, it shows how to modify Hector parameters from within R and uses this functionality to perform a simple sensitivity analysis of how the CO$_2$ fertilization parameter $\beta$ affects several Hector output variables.

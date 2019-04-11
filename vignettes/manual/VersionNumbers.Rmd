@@ -1,0 +1,31 @@
+---
+title: Version numbering
+---
+
+**Not a programmer?** You still need to be aware of what version of Hector you're using, and how it relates to previous versions. ~~The version number and the Git *build number* appear in all output and log files.[not yet]~~
+
+Generally Hector follows [Semantic Versioning](http://semver.org). Briefly, this means that given a version number MAJOR.MINOR.PATCH, we increment the:
+
+- MAJOR version when we make incompatible API, input, or output format changes,
+- MINOR version when we add functionality in a backwards-compatible manner, and
+- PATCH version when we make backwards-compatible bug fixes.
+
+Note however that because Hector is a scientific model our definition of "backward compatible" **does not mean that the results won't change**, only that your previous input files, APIs, and output scripts will still work. In other words, if the version number changes, outputs may change!
+
+Example  | Version Change
+----------------------------------------- | -------------
+Internal change, not externally visible   | No change
+Bug fix, changes model results  | PATCH
+New variable in output stream   | MINOR
+New parameter, backward compatible<sup>1</sup> | MINOR
+New component, backward compatible<sup>2</sup> | MINOR
+New parameter, not backward compatible<sup>3</sup> | MAJOR
+New component, not backward compatible<sup>4</sup> | MAJOR
+Name or unit change for parameter or output<sup>5</sup> | MAJOR
+
+
+1. E.g. `x` was internal, can now be set via input, but if not present the old default value is used.
+2. E.g. a new `seaIce` component that doesn't require any inputs (assumes if not present).
+3. E.g. a new `x` that is required to run.
+4. E.g. a new `seaIce` component that requires inputs.
+5. See issue #xx about associating units with input parameters.

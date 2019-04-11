@@ -1,0 +1,55 @@
+---
+title: Unit values (`unitvals`)
+---
+
+Hector both *allows* (internally to each component, and when reading inputs) and *requires* (passing data between components, and writing outputs) values to have associated **units**. The internal unit system is simple, not providing [unit conversion](http://www.boost.org/doc/libs/1_57_0/doc/html/boost_units.html) for example, but also lightweight and easy. Our use of units is prompted primarily by safety–to avoid the "Mars Climate Orbiter" [problem](http://en.wikipedia.org/wiki/Mars_Climate_Orbiter#Cause_of_failure) of mismatched unit–as well as having easy-to-interpret outputs.
+
+The internal C++ type is called `unitval`, and its code is located in `headers/data/unitval.hpp`.
+
+Creating a variable with associated unit
+--------------
+
+Two ways to create a `unitval`:
+```
+unitval x(1, U_PGC);  # x now holds 1 petagram of carbon
+unitval y;
+y.set(2, U_CO2_PPMV);
+```
+
+Doing math
+--------------
+
+The `unitval` class supports basic mathematical operations.
+```
+# assume that y and z are already defined unitvals
+unitval x = y + z;  # y and z must have identical units or an error is thrown
+unitval x = y * 2.0;  # multiplying by a constant always works
+```
+
+Extracting a `unitval` value
+--------------
+Internally within components, we often simply want to work with numbers, extracting them from `unitval` objects. This is straightforward, but first we have to 'prove' that we know the correct units:
+
+```
+double x = y.value(U_PGC); # we assert that y's units are petagrams C
+```
+
+When is `unitval` required?
+--------------
+Using `unitvals` *within* a component is optional, but it's required when passing data *between* components. This falls into three categories:
+
+* Querying the core for data. Read more about Hector's internal [data passing](InternalDataPassing.html).
+* Responding to a query for data.
+* Output. Read more about Hector's [output visitors](OutputVisitors.html).
+
+When is `unitval` optional?
+--------------
+In input files.
+
+TODO.
+
+```
+if( varName == D_PREINDUSTRIAL_N2O ) {`
+            `H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );`
+            `N0 = unitval::parse_unitval( data.value_str, data.units_str, U_PPBV_N2O );`
+```
