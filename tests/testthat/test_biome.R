@@ -2,61 +2,56 @@ context("Running Hector with multiple biomes")
 
 test_that("Hector runs with multiple biomes.", {
 
-  skip_if_not_installed("hectortools")
-
-  quickrun <- function(ini_list, name) {
-    ini_file <- tempfile()
-    on.exit(file.remove(ini_file), add = TRUE)
-    hectortools::write_ini(ini_list, ini_file)
-    core <- newcore(ini_file, name = name, suppresslogging = TRUE)
-    invisible(run(core))
-    on.exit(shutdown(core), add = TRUE)
+  quickrun <- function(name, varlist = list()) {
+    inifile <- system.file("input", "hector_rcp45.ini", package = "hector")
+    hc <- newcore(inifile, suppresslogging = TRUE, name = name)
+    for (v in varlist) {
+      tryCatch({
+        with(v, setvar(hc, NA, variable, value, unit))
+      },
+      error = function(e) stop("Caught error with variable: ",
+                               v[["variable"]], ":\n",
+                               conditionMessage(e))
+      )
+    }
+    invisible(run(hc, 2100))
     dates <- seq(2000, 2100)
     vars <- c(
       ATMOSPHERIC_CO2(),
       RF_TOTAL(),
       GLOBAL_TEMP()
     )
-    fetchvars(core, dates, vars)
+    fetchvars(hc, dates, vars)
   }
+  rcp45_result <- quickrun("default")
 
-  rcp45_file <- system.file("input", "hector_rcp45.ini", package = "hector")
-  rcp45 <- hectortools::read_ini(rcp45_file)
-  rcp45_result <- quickrun(rcp45, "default")
-
-  # Set biome-specific variables
-  biome <- modifyList(rcp45, list(simpleNbox = list(
-    veg_c = NULL,
-    boreal.veg_c = 100,
-    tropical.veg_c = 450,
-    detritus_c = NULL,
-    boreal.detritus_c = 15,
-    tropical.detritus_c = 45,
-    soil_c = NULL,
-    boreal.soil_c = 1200,
-    tropical.soil_c = 578,
-    npp_flux0 = NULL,
-    boreal.npp_flux0 = 5.0,
-    tropical.npp_flux0 = 45.0,
-    beta = NULL,
-    boreal.beta = 0.36,
-    tropical.beta = 0.36,
-    q10_rh = NULL,
-    boreal.q10_rh = 2.0,
-    tropical.q10_rh = 2.0
-  )))
-  biome_result <- quickrun(biome, "biome")
+  biome <- list(
+    list(variable = VEGC(), value = 450, unit = "PgC"),
+    list(variable = VEGC("boreal"), value = 100, unit = "PgC"),
+    list(variable = DETRITUSC(), value = 45, unit = "PgC"),
+    list(variable = DETRITUSC("boreal"), value = 10, unit = "PgC"),
+    list(variable = SOILC(), value = 582, unit = "PgC"),
+    list(variable = SOILC("boreal"), value = 1200, unit = "PgC"),
+    list(variable = NPP_FLUX0(), value = 45, unit = "PgC Yr"),
+    list(variable = NPP_FLUX0("boreal"), value = 5, unit = "PgC Yr"),
+    list(variable = BETA(), value = 0.36, unit = "(unitless)"),
+    list(variable = BETA("boreal"), value = 0.36, unit = "(unitless)"),
+    list(variable = Q10_RH(), value = 2, unit = "(unitless)"),
+    list(variable = Q10_RH("boreal"), value = 2, unit = "(unitless)")
+  )
+  biome_result <- quickrun("biome", biome)
 
   result_diff <- rcp45_result$value - biome_result$value
   diff_summary <- tapply(result_diff, rcp45_result$variable, sum)
   expect_true(all(abs(diff_summary) > 0))
 
   # Add the warming tag
-  warm_biome <- modifyList(biome, list(simpleNbox = list(
-    boreal.warmingfactor = 2.5,
-    tropical.warmingfactor = 1.0
-  )))
-  warm_biome_result <- quickrun(warm_biome, "warm_biome")
+  warm_biome <- c(biome, list(
+    list(variable = WARMINGFACTOR(), value = 1.0, unit = "(unitless)"),
+    list(variable = WARMINGFACTOR("boreal"), value = 2.5, unit = "(unitless)")
+  ))
+
+  warm_biome_result <- quickrun("warm_biome", warm_biome)
   default_tgav <- rcp45_result[rcp45_result[["variable"]] == "Tgav",
                                "value"]
   warm_tgav <- warm_biome_result[warm_biome_result[["variable"]] == "Tgav",

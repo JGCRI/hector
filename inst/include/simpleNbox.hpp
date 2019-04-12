@@ -164,8 +164,8 @@ private:
      *****************************************************************/
     
     // Partitioning
-    double f_nppv, f_nppd;      //!< fraction NPP into vegetation and detritus
-    double f_litterd;           //!< fraction of litter to detritus
+    double_stringmap f_nppv, f_nppd;      //!< fraction NPP into vegetation and detritus
+    double_stringmap f_litterd;           //!< fraction of litter to detritus
     double f_lucv, f_lucd;      //!< fraction LUC from vegetation and detritus
     
     // Initial fluxes
@@ -178,7 +178,7 @@ private:
     //                        sigma,          //!< shape of temperature response (not yet implemented)
         warmingfactor;  //!< regional warming relative to global (1.0=same)
     
-    double q10_rh;                      //!< Q10 for heterotrophic respiration (unitless)
+    double_stringmap q10_rh;                      //!< Q10 for heterotrophic respiration (unitless)
 
     /*****************************************************************
      * Functions computing sub-elements of the carbon cycle

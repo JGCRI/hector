@@ -9,6 +9,11 @@
 #' @export
 getunits <- function(vars)
 {
+    ## Where appropriate, remove the starting tag (everything before
+    ## and including ".") from `vars`. E.g. `boreal.beta` becomes just
+    ## `beta`.
+    vars <- gsub("^([[:alnum:]]*\\.)", "", vars)
+
     ## NB the unitstable data structure is included as internal package data.
     rows <- match(vars, unitstable$variable)
     units <- unitstable$units[rows]

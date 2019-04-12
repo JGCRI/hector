@@ -233,7 +233,7 @@ DataFrame sendmessage(Environment core, String msgtype, String capability, Numer
                       NumericVector value, String unit)
 {
     Hector::Core *hcore = gethcore(core);
-    
+
     if(value.size() != date.size() && value.size() != 1) {
         Rcpp::stop("Value must have length 1 or same length as date.");
     }

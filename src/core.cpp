@@ -34,6 +34,8 @@
 #include "simpleNbox.hpp"
 #include "avisitor.hpp"
 
+#include "boost/algorithm/string.hpp"
+
 namespace Hector {
   
 using namespace std;
@@ -634,6 +636,17 @@ unitval Core::sendMessage( const std::string& message,
                           const std::string& datum,
                           const message_data& info ) throw ( h_exception )
 {
+     
+    // Split the datum if it's of the form `biome.datum` 
+    std::vector<std::string> datum_split;
+    boost::split( datum_split, datum, boost::is_any_of( SNBOX_PARSECHAR ) );
+    std::string datum_capability;
+    if( datum_split.size() == 2 ) {
+        datum_capability = datum_split[ 1 ];
+    } else {
+        datum_capability = datum_split[ 0 ];
+    }
+
     if (message == M_GETDATA || message == M_DUMP_TO_DEEP_OCEAN) {
         // M_GETDATA is used extensively by components to query each other re state
         // M_DUMP_TO_DEEP_OCEAN is a special message used only to constrain the atmosphere
@@ -646,10 +659,10 @@ unitval Core::sendMessage( const std::string& message,
             H_THROW("Invalid sendMessage/GETDATA.  Check global log for details.");
         }
         else {
-            componentMapIterator it = componentCapabilities.find( datum );
+            componentMapIterator it = componentCapabilities.find( datum_capability );
             
             string err = "Unknown model datum: " + datum;
-            H_ASSERT( checkCapability( datum ), err );
+            H_ASSERT( checkCapability( datum_capability ), err );
             return getComponentByName( ( *it ).second )->sendMessage( message, datum, info );
         }
     }
@@ -657,7 +670,7 @@ unitval Core::sendMessage( const std::string& message,
         // locate the components that take this kind of input.  If
         // there are multiple, we send the message to all of them.
         pair<componentMapIterator, componentMapIterator> itpr =
-            componentInputs.equal_range(datum);
+            componentInputs.equal_range(datum_capability);
         if(itpr.first == itpr.second) {
             H_LOG(glog, Logger::SEVERE)
                 << "No such input: " << datum << "  Aborting.";

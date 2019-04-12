@@ -60,6 +60,11 @@ void SimpleNbox::init( Core* coreptr ) {
     core->registerCapability( D_PREINDUSTRIAL_CO2, getComponentName() );
     core->registerCapability( D_RF_T_ALBEDO, getComponentName() );
     core->registerCapability( D_LAND_CFLUX, getComponentName() );
+    core->registerCapability( D_VEGC, getComponentName() );
+    core->registerCapability( D_NPP_FLUX0, getComponentName() );
+    core->registerCapability( D_DETRITUSC, getComponentName() );
+    core->registerCapability( D_SOILC, getComponentName() );
+    core->registerCapability( D_WARMINGFACTOR, getComponentName() );
     
     // Register our dependencies
     core->registerDependency( D_OCEAN_CFLUX, getComponentName() );
@@ -68,6 +73,10 @@ void SimpleNbox::init( Core* coreptr ) {
     core->registerInput(D_FFI_EMISSIONS, getComponentName());
     core->registerInput(D_LUC_EMISSIONS, getComponentName());
     core->registerInput(D_PREINDUSTRIAL_CO2, getComponentName()); 
+    core->registerInput(D_VEGC, getComponentName());
+    core->registerInput(D_DETRITUSC, getComponentName());
+    core->registerInput(D_SOILC, getComponentName());
+    core->registerInput(D_NPP_FLUX0, getComponentName());
     core->registerInput(D_BETA, getComponentName());
     core->registerInput(D_Q10_RH, getComponentName());
     core->registerInput(D_F_NPPV, getComponentName());
@@ -75,6 +84,7 @@ void SimpleNbox::init( Core* coreptr ) {
     core->registerInput(D_F_LITTERD, getComponentName());
     core->registerInput(D_F_LUCV, getComponentName());
     core->registerInput(D_F_LUCD, getComponentName());
+    core->registerInput(D_WARMINGFACTOR, getComponentName());
 }
 
 //------------------------------------------------------------------------------
@@ -145,14 +155,20 @@ void SimpleNbox::setData( const std::string &varName,
         else if( varNameParsed == D_VEGC ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
             veg_c[ biome ] = data.getUnitval( U_PGC );
+            // HACK: Set value at t=0
+            veg_c_tv.set(0, veg_c);
         }
         else if( varNameParsed == D_DETRITUSC ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
             detritus_c[ biome ] = data.getUnitval( U_PGC );
+            // HACK: Set value at t=0
+            detritus_c_tv.set(0, detritus_c);
         }
         else if( varNameParsed == D_SOILC ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
             soil_c[ biome ] = data.getUnitval( U_PGC );
+            // HACK: Set value at t=0
+            soil_c_tv.set(0, soil_c);
         }
         
         // Albedo effect
@@ -164,15 +180,15 @@ void SimpleNbox::setData( const std::string &varName,
         // Partitioning
         else if( varNameParsed == D_F_NPPV ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            f_nppv = data.getUnitval(U_UNITLESS);
+            f_nppv[ biome ] = data.getUnitval(U_UNITLESS);
         }
         else if( varNameParsed == D_F_NPPD ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            f_nppd = data.getUnitval(U_UNITLESS);
+            f_nppd[ biome ] = data.getUnitval(U_UNITLESS);
         }
         else if( varNameParsed == D_F_LITTERD ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            f_litterd = data.getUnitval(U_UNITLESS);
+            f_litterd[ biome ] = data.getUnitval(U_UNITLESS);
         }
         else if( varNameParsed == D_F_LUCV ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
@@ -220,7 +236,7 @@ void SimpleNbox::setData( const std::string &varName,
         }
         else if( varNameParsed == D_Q10_RH ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            q10_rh = data.getUnitval(U_UNITLESS);
+            q10_rh[ biome ] = data.getUnitval(U_UNITLESS);
         }
      
         else {
@@ -246,6 +262,8 @@ void SimpleNbox::sanitychecks() throw( h_exception )
     unitval_stringmap::const_iterator it;
     double_stringmap::const_iterator itd;
     
+    std::string biome;
+
     // Make a few sanity checks here, and then return.
     H_ASSERT( atmos_c.value( U_PGC ) > 0.0, "atmos_c pool <=0" );
     
@@ -257,11 +275,15 @@ void SimpleNbox::sanitychecks() throw( h_exception )
  
     for( it = soil_c.begin(); it != soil_c.end(); it++ )
         H_ASSERT( it->second.value( U_PGC ) > 0.0, "soil_c pool <=0" );
- 
-    H_ASSERT( f_nppv >= 0.0, "f_nppv <0" );
-    H_ASSERT( f_nppd >= 0.0, "f_nppd <0" );
-    H_ASSERT( f_nppv + f_nppd <= 1.0, "f_nppv + f_nppd >1" );
-    H_ASSERT( f_litterd >= 0.0 && f_litterd <= 1.0, "f_litterd <0 or >1" );
+
+    for( it = veg_c.begin(); it != veg_c.end(); it++ ) {
+        biome = it->first;
+        H_ASSERT( f_nppv[ biome ] >= 0.0, "f_nppv <0" );
+        H_ASSERT( f_nppd[ biome ] >= 0.0, "f_nppd <0" );
+        H_ASSERT( f_nppv[ biome ]+ f_nppd[ biome ] <= 1.0, "f_nppv + f_nppd >1" );
+        H_ASSERT( f_litterd[ biome ] >= 0.0 && f_litterd[ biome ] <= 1.0, "f_litterd <0 or >1" );
+    }
+
     H_ASSERT( f_lucv >= 0.0, "f_lucv <0" );
     H_ASSERT( f_lucd >= 0.0, "f_lucd <0" );
     H_ASSERT( f_lucv + f_lucd <= 1.0, "f_lucv + f_lucd >1" );
@@ -369,7 +391,10 @@ void SimpleNbox::prepareToRun() throw( h_exception )
     for( itd = beta.begin(); itd != beta.end(); itd++ ) {
         H_ASSERT( itd->second >= 0.0, "beta < 0" );
     }
-    H_ASSERT( q10_rh>0.0, "q10_rh <= 0.0" );
+
+    for ( itd = q10_rh.begin(); itd != q10_rh.end(); itd++ ) {
+        H_ASSERT( itd->second > 0.0, "q10_rh <= 0.0" );
+    }
     sanitychecks();
 }
 
@@ -408,93 +433,110 @@ unitval SimpleNbox::getData(const std::string& varName,
                             const double date) throw ( h_exception )
 {
     unitval returnval;
+
+    // Does the varName contain our parse character? If so, split it
+    std::vector<std::string> splitvec;
+    boost::split( splitvec, varName, is_any_of( SNBOX_PARSECHAR ) );
+    H_ASSERT( splitvec.size() < 3, "max of one separator allowed in variable names" );
     
-    if( varName == D_ATMOSPHERIC_C ) {
+    std::string biome = SNBOX_DEFAULT_BIOME;
+    std::string varNameParsed = varName;
+    if( splitvec.size() == 2 ) {    // i.e., in form <biome>.<varname>
+        biome = splitvec[ 0 ];
+        varNameParsed = splitvec[ 1 ];
+    }
+
+    if( varNameParsed == D_ATMOSPHERIC_C ) {
         if(date == Core::undefinedIndex())
             returnval = atmos_c;
         else
             returnval = atmos_c_ts.get(date); 
-    } else if( varName == D_ATMOSPHERIC_CO2 ) {
+    } else if( varNameParsed == D_ATMOSPHERIC_CO2 ) {
         if(date == Core::undefinedIndex())
             returnval = Ca;
         else
             returnval = Ca_ts.get(date);
-    } else if( varName == D_ATMOSPHERIC_C_RESIDUAL ) {
+    } else if( varNameParsed == D_ATMOSPHERIC_C_RESIDUAL ) {
         if(date == Core::undefinedIndex())
             returnval = residual;
         else
             returnval = residual_ts.get(date);
-    } else if( varName == D_PREINDUSTRIAL_CO2 ) {
+    } else if( varNameParsed == D_PREINDUSTRIAL_CO2 ) {
         H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for preindustrial CO2" );
         returnval = C0;
-    } else if(varName == D_BETA) {
-        // For the time being, we are only supporting global beta, not biome-specific
+    } else if(varNameParsed == D_BETA) {
         H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for CO2 fertilization (beta)");
-        returnval = unitval(beta[SNBOX_DEFAULT_BIOME], U_UNITLESS);
-    } else if(varName == D_Q10_RH) {
+        returnval = unitval(beta[biome], U_UNITLESS);
+    } else if(varNameParsed == D_Q10_RH) {
         H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for Q10");
-        returnval = unitval(q10_rh, U_UNITLESS);
-    } else if( varName == D_LAND_CFLUX ) {
+        returnval = unitval(q10_rh[biome], U_UNITLESS);
+    } else if( varNameParsed == D_LAND_CFLUX ) {
         H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for atm-land flux" );
         returnval = sum_npp() - sum_rh() - lucEmissions.get( ODEstartdate );
         
-    } else if( varName == D_RF_T_ALBEDO ) {
+    } else if( varNameParsed == D_RF_T_ALBEDO ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for albedo forcing" );
         returnval = Ftalbedo.get( date );
 
         // Partitioning parameters.
         // For now, only global values are supported.
         // TODO Biome-specific versions of all of these
-    } else if(varName == D_F_NPPV) {
+    } else if(varNameParsed == D_F_NPPV) {
         H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for vegetation NPP fraction");
-        returnval = unitval(f_nppv, U_UNITLESS);
-    } else if(varName == D_F_NPPD) {
+        returnval = unitval(f_nppv[biome], U_UNITLESS);
+    } else if(varNameParsed == D_F_NPPD) {
         H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for detritus NPP fraction");
-        returnval = unitval(f_nppd, U_UNITLESS);
-    } else if(varName == D_F_LITTERD) {
+        returnval = unitval(f_nppd[biome], U_UNITLESS);
+    } else if(varNameParsed == D_F_LITTERD) {
         H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for litter-detritus fraction");
-        returnval = unitval(f_litterd, U_UNITLESS);
-    } else if(varName == D_F_LUCV) {
+        returnval = unitval(f_litterd[biome], U_UNITLESS);
+    } else if(varNameParsed == D_F_LUCV) {
         H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for LUC vegetation fraction");
         returnval = unitval(f_lucv, U_UNITLESS);
-    } else if(varName == D_F_LUCD) {
+    } else if(varNameParsed == D_F_LUCD) {
         H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for LUC detritus fraction");
         returnval = unitval(f_lucd, U_UNITLESS);
         
-    } else if( varName == D_EARTHC ) {
+    } else if( varNameParsed == D_EARTHC ) {
         if(date == Core::undefinedIndex())
             returnval = earth_c;
         else
             returnval = earth_c_ts.get(date);
-    } else if( varName == D_VEGC ) {
+    } else if( varNameParsed == D_VEGC ) {
         if(date == Core::undefinedIndex())
-            returnval = sum_map( veg_c );
+            returnval = veg_c[ biome ] ;
         else
-            returnval = sum_map(veg_c_tv.get(date));
-    } else if( varName == D_DETRITUSC ) {
+            returnval = veg_c_tv.get(date)[ biome ];
+    } else if( varNameParsed == D_DETRITUSC ) {
         if(date == Core::undefinedIndex())
-            returnval = sum_map( detritus_c );
+            returnval = detritus_c[ biome ] ;
         else
-            returnval = sum_map(detritus_c_tv.get(date));
-    } else if( varName == D_SOILC ) {
+            returnval = detritus_c_tv.get(date)[ biome ];
+    } else if( varNameParsed == D_SOILC ) {
         if(date == Core::undefinedIndex()) 
-            returnval = sum_map( soil_c );
+            returnval = soil_c[ biome ] ;
         else
-            returnval = sum_map(soil_c_tv.get(date));
-    } else if( varName == D_FFI_EMISSIONS ) {
+            returnval = soil_c_tv.get(date)[ biome ];
+    } else if( varNameParsed == D_FFI_EMISSIONS ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for ffi emissions" );
         returnval = ffiEmissions.get( date );
-    } else if( varName == D_LUC_EMISSIONS ) {
+    } else if( varNameParsed == D_LUC_EMISSIONS ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for luc emissions" );
         returnval = lucEmissions.get( date );
-    } else if( varName == D_NPP ) {
+    } else if( varNameParsed == D_NPP ) {
         H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for npp" );
         returnval = sum_npp();
-    } else if( varName == D_RH ) {
+    } else if( varNameParsed == D_RH ) {
         H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for rh" );
         returnval = sum_rh();
+    } else if( varNameParsed == D_NPP_FLUX0 ) {
+        H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for npp_flux0" );
+        returnval = npp_flux0[ biome ];
+    } else if( varNameParsed == D_WARMINGFACTOR ) {
+        H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for npp_flux0" );
+        returnval = unitval(warmingfactor[ biome ], U_UNITLESS);
     }else {
-        H_THROW( "Caller is requesting unknown variable: " + varName );
+        H_THROW( "Caller is requesting unknown variable: " + varNameParsed );
     }
     
     return returnval;
@@ -765,10 +807,20 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
     unitval atmosocean_flux( dcdt[ SNBOX_OCEAN ], U_PGC_YR );
     
     // NPP is scaled by CO2 from preindustrial value
-    unitval npp_current = sum_npp();
-    unitval npp_fav = npp_current * f_nppv;
-    unitval npp_fad = npp_current * f_nppd;
-    unitval npp_fas = npp_current * ( 1 - f_nppv - f_nppd );
+    unitval npp_biome( 0.0, U_PGC_YR);
+    unitval npp_current( 0.0, U_PGC_YR );
+    unitval npp_fav( 0.0, U_PGC_YR );
+    unitval npp_fad( 0.0, U_PGC_YR );
+    unitval npp_fas( 0.0, U_PGC_YR );
+    std::string biome;
+    for( unitval_stringmap::const_iterator it = veg_c.begin(); it != veg_c.end(); it++ ) {
+        biome = it->first;
+        npp_biome = npp( biome );
+        npp_current = npp_current + npp_biome;
+        npp_fav = npp_fav + npp_biome * f_nppv.at( biome );
+        npp_fad = npp_fad + npp_biome * f_nppd.at( biome );
+        npp_fas = npp_fas + npp_biome * (1 - f_nppv.at( biome ) - f_nppd.at( biome ));
+    }
     
     // RH heterotrophic respiration
     unitval rh_fda_current( 0.0, U_PGC_YR );
@@ -786,9 +838,10 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
     unitval litter_fvs( 0.0, U_PGC_YR );
     for( unitval_stringmap::const_iterator it = veg_c.begin(); it != veg_c.end(); it++ ) {
         unitval v = unitval( it->second.value( U_PGC ) * 0.035, U_PGC_YR );
+        biome = it->first;
         litter_flux = litter_flux + v;
-        litter_fvd = litter_fvd + v * f_litterd;
-        litter_fvs = litter_fvs + v * ( 1 - f_litterd );
+        litter_fvd = litter_fvd + v * f_litterd.at( biome );
+        litter_fvs = litter_fvs + v * ( 1 - f_litterd.at( biome ) );
     }
     
     // Some detritus goes to soil
@@ -912,7 +965,7 @@ void SimpleNbox::slowparameval( double t, const double c[] )
             
             const double Tgav_biome = Tgav * wf;    // biome-specific temperature
 
-            tempfertd[ biome ] = pow( q10_rh, ( Tgav_biome / 10.0 ) ); // detritus warms with air
+            tempfertd[ biome ] = pow( q10_rh[ biome ], ( Tgav_biome / 10.0 ) ); // detritus warms with air
             
         
             // Soil warm very slowly relative to the atmosphere
@@ -927,7 +980,7 @@ void SimpleNbox::slowparameval( double t, const double c[] )
                 Tgav_rm /= Q10_TEMPN;
             }
             
-            tempferts[ biome ] = pow( q10_rh, ( Tgav_rm / 10.0 ) );
+            tempferts[ biome ] = pow( q10_rh[ biome ] , ( Tgav_rm / 10.0 ) );
             
             // The soil Q10 effect is 'sticky' and can only increase, not decline
             double tempferts_last = tfs_last[biome]; // If tfs_last is empty, this will produce 0.0

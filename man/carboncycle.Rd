@@ -7,6 +7,11 @@
 \alias{ATMOSPHERIC_C}
 \alias{FFI_EMISSIONS}
 \alias{LUC_EMISSIONS}
+\alias{VEGC}
+\alias{DETRITUSC}
+\alias{SOILC}
+\alias{NPP_FLUX0}
+\alias{WARMINGFACTOR}
 \title{Identifiers for variables in the Hector carbon cycle component}
 \usage{
 LAND_CFLUX()
@@ -18,11 +23,34 @@ ATMOSPHERIC_C()
 FFI_EMISSIONS()
 
 LUC_EMISSIONS()
+
+VEGC(biome = "global")
+
+DETRITUSC(biome = "global")
+
+SOILC(biome = "global")
+
+NPP_FLUX0(biome = "global")
+
+WARMINGFACTOR(biome = "global")
 }
 \description{
 These identifiers correspond to variables that can be read and/or set in the
 carbon cycle
 }
+\section{Functions}{
+\itemize{
+\item \code{VEGC}: Vegetation carbon (\code{"Pg C"})
+
+\item \code{DETRITUSC}: Detritus carbon (\code{"Pg C"})
+
+\item \code{SOILC}: Detritus carbon (\code{"Pg C"})
+
+\item \code{NPP_FLUX0}: Baseline NPP flux (\code{"Pg C"})
+
+\item \code{WARMINGFACTOR}: Biome warming multiplier
+}}
+
 \section{Output variables}{
 
 These variables can be read using the \code{\link{GETDATA}} message type:

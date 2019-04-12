@@ -205,6 +205,7 @@ NULL
 #'
 #' @inheritSection msgtype Note
 #' @name parameters
+#' @param biome Target biome of parameter. Default = `"global"`.
 #' @family capability identifiers
 NULL
 

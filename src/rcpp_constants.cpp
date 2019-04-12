@@ -858,39 +858,75 @@ String LUC_EMISSIONS() {
 return D_LUC_EMISSIONS;
 }
 
+//' @describeIn carboncycle Vegetation carbon (\code{"Pg C"})
+//' @export
+// [[Rcpp::export]]
+String VEGC(std::string biome = "global") {
+return biome + "." + D_VEGC;
+}
+
+//' @describeIn carboncycle Detritus carbon (\code{"Pg C"})
+//' @export
+// [[Rcpp::export]]
+String DETRITUSC(std::string biome = "global") {
+return biome + "." + D_DETRITUSC;
+}
+
+//' @describeIn carboncycle Detritus carbon (\code{"Pg C"})
+//' @export
+// [[Rcpp::export]]
+String SOILC(std::string biome = "global") {
+return biome + "." + D_SOILC;
+}
+
+//' @describeIn carboncycle Baseline NPP flux (\code{"Pg C"})
+//' @export
+// [[Rcpp::export]]
+String NPP_FLUX0(std::string biome = "global") {
+return biome + "." + D_NPP_FLUX0;
+}
+
+//' @describeIn carboncycle Biome warming multiplier
+//' @export
+// [[Rcpp::export]]
+String WARMINGFACTOR(std::string biome = "global") {
+return biome + "." + D_WARMINGFACTOR;
+}
+
+
 //' @describeIn parameters Heterotrophic respiration temperature sensitivity factor (\code{"(unitless)"})
 //' @export
 // [[Rcpp::export]]
-String Q10_RH() {
-return D_Q10_RH;
+String Q10_RH(std::string biome = "global") {
+return biome + "." + D_Q10_RH;
 }
 
 //' @describeIn parameters CO2 fertilization factor (\code{"(unitless)"})
 //' @export
 // [[Rcpp::export]]
-String BETA() {
-return D_BETA;
+String BETA(std::string biome = "global") {
+return biome + "." + D_BETA;
 }
 
 //' @describeIn parameters NPP fraction to vegetation (\code{"(unitless)"})
 //' @export
 // [[Rcpp::export]]
-String F_NPPV() {
-return D_F_NPPV;
+String F_NPPV(std::string biome = "global") {
+return biome + "." + D_F_NPPV;
 }
 
 //' @describeIn parameters NPP fraction to detritus (\code{"(unitless)"})
 //' @export
 // [[Rcpp::export]]
-String F_NPPD() {
-return D_F_NPPD;
+String F_NPPD(std::string biome = "global") {
+return biome + "." + D_F_NPPD;
 }
 
 //' @describeIn parameters Litter fraction to detritus (\code{"(unitless)"})
 //' @export
 // [[Rcpp::export]]
-String F_LITTERD() {
-return D_F_LITTERD;
+String F_LITTERD(std::string biome = "global") {
+return biome + "." + D_F_LITTERD;
 }
 
 //' @describeIn parameters LUC fraction to vegetation (\code{"(unitless)"})

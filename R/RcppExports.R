@@ -694,34 +694,64 @@ LUC_EMISSIONS <- function() {
     .Call('_hector_LUC_EMISSIONS', PACKAGE = 'hector')
 }
 
+#' @describeIn carboncycle Vegetation carbon (\code{"Pg C"})
+#' @export
+VEGC <- function(biome = "global") {
+    .Call('_hector_VEGC', PACKAGE = 'hector', biome)
+}
+
+#' @describeIn carboncycle Detritus carbon (\code{"Pg C"})
+#' @export
+DETRITUSC <- function(biome = "global") {
+    .Call('_hector_DETRITUSC', PACKAGE = 'hector', biome)
+}
+
+#' @describeIn carboncycle Detritus carbon (\code{"Pg C"})
+#' @export
+SOILC <- function(biome = "global") {
+    .Call('_hector_SOILC', PACKAGE = 'hector', biome)
+}
+
+#' @describeIn carboncycle Baseline NPP flux (\code{"Pg C"})
+#' @export
+NPP_FLUX0 <- function(biome = "global") {
+    .Call('_hector_NPP_FLUX0', PACKAGE = 'hector', biome)
+}
+
+#' @describeIn carboncycle Biome warming multiplier
+#' @export
+WARMINGFACTOR <- function(biome = "global") {
+    .Call('_hector_WARMINGFACTOR', PACKAGE = 'hector', biome)
+}
+
 #' @describeIn parameters Heterotrophic respiration temperature sensitivity factor (\code{"(unitless)"})
 #' @export
-Q10_RH <- function() {
-    .Call('_hector_Q10_RH', PACKAGE = 'hector')
+Q10_RH <- function(biome = "global") {
+    .Call('_hector_Q10_RH', PACKAGE = 'hector', biome)
 }
 
 #' @describeIn parameters CO2 fertilization factor (\code{"(unitless)"})
 #' @export
-BETA <- function() {
-    .Call('_hector_BETA', PACKAGE = 'hector')
+BETA <- function(biome = "global") {
+    .Call('_hector_BETA', PACKAGE = 'hector', biome)
 }
 
 #' @describeIn parameters NPP fraction to vegetation (\code{"(unitless)"})
 #' @export
-F_NPPV <- function() {
-    .Call('_hector_F_NPPV', PACKAGE = 'hector')
+F_NPPV <- function(biome = "global") {
+    .Call('_hector_F_NPPV', PACKAGE = 'hector', biome)
 }
 
 #' @describeIn parameters NPP fraction to detritus (\code{"(unitless)"})
 #' @export
-F_NPPD <- function() {
-    .Call('_hector_F_NPPD', PACKAGE = 'hector')
+F_NPPD <- function(biome = "global") {
+    .Call('_hector_F_NPPD', PACKAGE = 'hector', biome)
 }
 
 #' @describeIn parameters Litter fraction to detritus (\code{"(unitless)"})
 #' @export
-F_LITTERD <- function() {
-    .Call('_hector_F_LITTERD', PACKAGE = 'hector')
+F_LITTERD <- function(biome = "global") {
+    .Call('_hector_F_LITTERD', PACKAGE = 'hector', biome)
 }
 
 #' @describeIn parameters LUC fraction to vegetation (\code{"(unitless)"})

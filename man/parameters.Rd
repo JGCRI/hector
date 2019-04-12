@@ -18,15 +18,15 @@
 \usage{
 PREINDUSTRIAL_CO2()
 
-Q10_RH()
+Q10_RH(biome = "global")
 
-BETA()
+BETA(biome = "global")
 
-F_NPPV()
+F_NPPV(biome = "global")
 
-F_NPPD()
+F_NPPD(biome = "global")
 
-F_LITTERD()
+F_LITTERD(biome = "global")
 
 F_LUCV()
 
@@ -39,6 +39,9 @@ AERO_SCALE()
 VOLCANIC_SCALE()
 
 DIFFUSIVITY()
+}
+\arguments{
+\item{biome}{Target biome of parameter. Default = `"global"`.}
 }
 \description{
 These identifiers correspond to settable parameters that change the model
