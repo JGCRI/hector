@@ -872,6 +872,40 @@ String BETA() {
 return D_BETA;
 }
 
+//' @describeIn parameters NPP fraction to vegetation (\code{"(unitless)"})
+//' @export
+// [[Rcpp::export]]
+String F_NPPV() {
+return D_F_NPPV;
+}
+
+//' @describeIn parameters NPP fraction to detritus (\code{"(unitless)"})
+//' @export
+// [[Rcpp::export]]
+String F_NPPD() {
+return D_F_NPPD;
+}
+
+//' @describeIn parameters Litter fraction to detritus (\code{"(unitless)"})
+//' @export
+// [[Rcpp::export]]
+String F_LITTERD() {
+return D_F_LITTERD;
+}
+
+//' @describeIn parameters LUC fraction to vegetation (\code{"(unitless)"})
+//' @export
+// [[Rcpp::export]]
+String F_LUCV() {
+return D_F_LUCV;
+}
+
+//' @describeIn parameters LUC fraction to detritus (\code{"(unitless)"})
+//' @export
+// [[Rcpp::export]]
+String F_LUCD() {
+return D_F_LUCD;
+}
 
 /* SLR component */
 // // Apparently not yet implemented

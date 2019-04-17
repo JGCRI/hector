@@ -27,3 +27,7 @@
 ^src/testing$
 ^misc$
 ^data-raw$
+
+# pkgdown config and output
+^inst/_pkgdown.yml
+^docs/
