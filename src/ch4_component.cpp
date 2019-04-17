@@ -172,6 +172,9 @@ unitval CH4Component::getData( const std::string& varName,
     } else if( varName == D_PREINDUSTRIAL_CH4 ) {
         H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for preindustrial CH4" );
         returnval = M0;
+    } else if( varName == D_EMISSIONS_CH4 ) {
+        H_ASSERT(  date != Core::undefinedIndex(), "Date not allowed for CH4 emissions" );
+        returnval = CH4_emissions.get( date );
     } else {
         H_THROW( "Caller is requesting unknown variable: " + varName );
     }

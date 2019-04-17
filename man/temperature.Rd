@@ -4,6 +4,9 @@
 \alias{temperature}
 \alias{GLOBAL_TEMP}
 \alias{GLOBAL_TEMPEQ}
+\alias{OCEAN_SURFACE_TEMP}
+\alias{OCEAN_AIR_TEMP}
+\alias{LAND_TEMP}
 \alias{FLUX_MIXED}
 \alias{FLUX_INTERIOR}
 \alias{HEAT_FLUX}
@@ -12,6 +15,12 @@
 GLOBAL_TEMP()
 
 GLOBAL_TEMPEQ()
+
+OCEAN_SURFACE_TEMP()
+
+OCEAN_AIR_TEMP()
+
+LAND_TEMP()
 
 FLUX_MIXED()
 
@@ -28,6 +37,12 @@ type.
 \item \code{GLOBAL_TEMP}: Global mean temperature
 
 \item \code{GLOBAL_TEMPEQ}: Equilibrium global temperature
+
+\item \code{OCEAN_SURFACE_TEMP}: Average ocean surface temperature anomaly
+
+\item \code{OCEAN_AIR_TEMP}: Average ocean air temperature anomaly
+
+\item \code{LAND_TEMP}: Average land temperature anomaly
 
 \item \code{FLUX_MIXED}: Heat flux into the mixed layer of the ocean
 
