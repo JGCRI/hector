@@ -1,6 +1,6 @@
 Package: hector
 Title: The Hector Simple Climate Model
-Version: 2.2.0
+Version: 2.2.1
 Authors@R: c(person("Robert", "Link", email = "robert.link@pnnl.gov", role = c("aut", "cre")),
 	     person("Corinne", "Hartin", email = "corinne.hartin@pnnl.gov", role = "aut"),
 	     person("Ben", "Bond-Lamberty", email = "BondLamberty@pnnl.gov", role = "aut"),
@@ -21,6 +21,8 @@ Suggests:
     knitr,
     rmarkdown,
     ggplot2,
+    tidyr (>= 0.7),
+    dplyr (>= 0.7),
     hectortools
 Remotes:
     jgcri/hectortools
