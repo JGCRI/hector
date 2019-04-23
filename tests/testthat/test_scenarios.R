@@ -3,6 +3,8 @@ context('Verify correctness of hector scenarios')
 inputdir <- system.file('input', package='hector')
 sampledir <- system.file('output', package='hector')
 testvars <- c(ATMOSPHERIC_CO2(), RF_TOTAL(), GLOBAL_TEMP())
+tempvars <- c(GLOBAL_TEMP(), OCEAN_AIR_TEMP(), LAND_TEMP())
+fland <- 0.29        # Global land area fraction
 dates <- 2000:2300
 
 
@@ -14,6 +16,7 @@ test_that('RCP scenarios are correct', {
         expect_true(inherits(hc, 'hcore'))
         run(hc)
         outdata <- fetchvars(hc, dates, testvars, scen)
+        tempdata <- fetchvars(hc, dates, tempvars, scen)
 
         ## Get the comparison data
         sampleoutfile <- sprintf('sample_outputstream_rcp%s.csv', rcp)
@@ -29,6 +32,11 @@ test_that('RCP scenarios are correct', {
         outdata$value <- signif(outdata$value, 4)
 
         expect_equivalent(outdata, sampledata, info=sprintf("Output doesn't match for scenario rcp%s", rcp))
+
+        td <- dplyr::select(tempdata, year, variable, value) %>% tidyr::spread(variable, value)
+        tgcomp <- fland*td$Tgav_land + (1.0-fland)*td$Tgav_ocean_air
+        expect_equal(tgcomp, td$Tgav, info=sprintf("Global temperature doesn't add up for scenario rcp%s", rcp))
+
         hc <- shutdown(hc)
     }
 })

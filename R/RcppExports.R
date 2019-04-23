@@ -790,6 +790,24 @@ GLOBAL_TEMPEQ <- function() {
     .Call('_hector_GLOBAL_TEMPEQ', PACKAGE = 'hector')
 }
 
+#' @describeIn temperature Average ocean surface temperature anomaly
+#' @export
+OCEAN_SURFACE_TEMP <- function() {
+    .Call('_hector_OCEAN_SURFACE_TEMP', PACKAGE = 'hector')
+}
+
+#' @describeIn temperature Average ocean air temperature anomaly
+#' @export
+OCEAN_AIR_TEMP <- function() {
+    .Call('_hector_OCEAN_AIR_TEMP', PACKAGE = 'hector')
+}
+
+#' @describeIn temperature Average land temperature anomaly
+#' @export
+LAND_TEMP <- function() {
+    .Call('_hector_LAND_TEMP', PACKAGE = 'hector')
+}
+
 #' @describeIn parameters Ocean heat diffusivity (\code{"cm2/s"})
 #' @export
 DIFFUSIVITY <- function() {

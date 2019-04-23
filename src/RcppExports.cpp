@@ -1315,6 +1315,36 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// OCEAN_SURFACE_TEMP
+String OCEAN_SURFACE_TEMP();
+RcppExport SEXP _hector_OCEAN_SURFACE_TEMP() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(OCEAN_SURFACE_TEMP());
+    return rcpp_result_gen;
+END_RCPP
+}
+// OCEAN_AIR_TEMP
+String OCEAN_AIR_TEMP();
+RcppExport SEXP _hector_OCEAN_AIR_TEMP() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(OCEAN_AIR_TEMP());
+    return rcpp_result_gen;
+END_RCPP
+}
+// LAND_TEMP
+String LAND_TEMP();
+RcppExport SEXP _hector_LAND_TEMP() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(LAND_TEMP());
+    return rcpp_result_gen;
+END_RCPP
+}
 // DIFFUSIVITY
 String DIFFUSIVITY();
 RcppExport SEXP _hector_DIFFUSIVITY() {
@@ -1575,6 +1605,9 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_VOLCANIC_SCALE", (DL_FUNC) &_hector_VOLCANIC_SCALE, 0},
     {"_hector_GLOBAL_TEMP", (DL_FUNC) &_hector_GLOBAL_TEMP, 0},
     {"_hector_GLOBAL_TEMPEQ", (DL_FUNC) &_hector_GLOBAL_TEMPEQ, 0},
+    {"_hector_OCEAN_SURFACE_TEMP", (DL_FUNC) &_hector_OCEAN_SURFACE_TEMP, 0},
+    {"_hector_OCEAN_AIR_TEMP", (DL_FUNC) &_hector_OCEAN_AIR_TEMP, 0},
+    {"_hector_LAND_TEMP", (DL_FUNC) &_hector_LAND_TEMP, 0},
     {"_hector_DIFFUSIVITY", (DL_FUNC) &_hector_DIFFUSIVITY, 0},
     {"_hector_FLUX_MIXED", (DL_FUNC) &_hector_FLUX_MIXED, 0},
     {"_hector_FLUX_INTERIOR", (DL_FUNC) &_hector_FLUX_INTERIOR, 0},

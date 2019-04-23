@@ -1,3 +1,9 @@
+Hector 2.2.1
+============
+* Report global averages for land temperature, ocean air
+  temperature, and ocean surface temperature.
+* Fix bug that prevented CH4 emissions from being read.
+
 Hector 2.2.0
 ============
 * Add a new parameter: VOLCANIC_SCALE.  This parameter adjusts the

@@ -242,6 +242,9 @@
 // temperature component
 #define D_ECS                   "S"
 #define D_GLOBAL_TEMP           "Tgav"
+#define D_LAND_TEMP             "Tgav_land"
+#define D_OCEAN_SURFACE_TEMP    "Tgav_ocean_ST"
+#define D_OCEAN_AIR_TEMP        "Tgav_ocean_air"
 #define D_GLOBAL_TEMPEQ         "Tgaveq"
 #define D_TGAV_CONSTRAIN        "tgav_constrain"
 #define D_SO2D_B                "so2d_b"
