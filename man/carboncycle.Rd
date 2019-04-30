@@ -40,6 +40,7 @@ These variables can be read using the \code{\link{GETDATA}} message type:
 \describe{
 \item{FFI_EMISSIONS}{Fossil fuel and industrial emissions (\code{"Pg C/yr"})}
 \item{LUC_EMISSIONS}{Land use change emissions (\code{"Pg C/yr"})}
+\item{CA_CONSTRAIN}{Prescribed atmospheric carbon pool (\code{"ppmv CO2"})}
 }
 }
 

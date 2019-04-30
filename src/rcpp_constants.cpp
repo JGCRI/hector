@@ -8,7 +8,7 @@ using namespace Rcpp;
  * Functions to expose constants defined in C++ headers to R
  *
  * The only way I've been able to find to get these constants into R is to provide
- * Rcpp exported functions that return them.  
+ * Rcpp exported functions that return them.
  *********************************************************************************/
 
 // [[Rcpp::plugins("cpp11")]]
@@ -17,7 +17,7 @@ using namespace Rcpp;
  * Message types
  */
 //' @include aadoc.R
-//' @describeIn msgtype Message type for retrieving data from a component 
+//' @describeIn msgtype Message type for retrieving data from a component
 //' @export
 //' @keywords internal
 // [[Rcpp::export]]
@@ -69,7 +69,7 @@ return (int) Hector::Logger::SEVERE;
  *****************************************************************/
 
 /* BC component */
-//' @describeIn emissions Black carbon emissions (\code{"Tg"}) 
+//' @describeIn emissions Black carbon emissions (\code{"Tg"})
 //' @export
 // [[Rcpp::export]]
 String EMISSIONS_BC() {
@@ -533,7 +533,7 @@ return D_EMISSIONS_CH3Cl;
 // [[Rcpp::export]]
 String EMISSIONS_CH3BR() {
 return D_EMISSIONS_CH3Br;
-} 
+}
 
 
 /* Methane component */
@@ -870,6 +870,13 @@ return D_Q10_RH;
 // [[Rcpp::export]]
 String BETA() {
 return D_BETA;
+}
+
+//' @describeIn constrain atmospheric CO2 concentration  (\code{"(ppmv CO2)"})
+//' @export
+// [[Rcpp::export]]
+String CA_CONSTRAIN() {
+    return D_CA_CONSTRAIN;
 }
 
 //' @describeIn parameters NPP fraction to vegetation (\code{"(unitless)"})

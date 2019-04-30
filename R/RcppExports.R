@@ -2,7 +2,7 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 #' @include aadoc.R
-#' @describeIn msgtype Message type for retrieving data from a component 
+#' @describeIn msgtype Message type for retrieving data from a component
 #' @export
 #' @keywords internal
 GETDATA <- function() {
@@ -40,7 +40,7 @@ LL_SEVERE <- function() {
     .Call('_hector_LL_SEVERE', PACKAGE = 'hector')
 }
 
-#' @describeIn emissions Black carbon emissions (\code{"Tg"}) 
+#' @describeIn emissions Black carbon emissions (\code{"Tg"})
 #' @export
 EMISSIONS_BC <- function() {
     .Call('_hector_EMISSIONS_BC', PACKAGE = 'hector')
@@ -706,6 +706,12 @@ BETA <- function() {
     .Call('_hector_BETA', PACKAGE = 'hector')
 }
 
+#' @describeIn constrain atmospheric CO2 pool  (\code{"(ppmv CO2)"})
+#' @export
+CA_CONSTRAIN <- function() {
+    .Call('_hector_CA_CONSTRAIN', PACKAGE = 'hector')
+}
+
 #' @describeIn parameters NPP fraction to vegetation (\code{"(unitless)"})
 #' @export
 F_NPPV <- function() {
@@ -898,7 +904,7 @@ getdate <- function(core) {
 #'
 #' Messages are the mechanism used to get data from Hector model components and
 #' to set values within components.
-#' 
+#'
 #' A message comprises a type (e.g. GETDATA to retrieve data from a component, or SETDATA to
 #' set data in a component), a capability, which identifies the information to be operated
 #' on (e.g. Atmospheric CO2 concentration, or global total radiative forcing), and an optional

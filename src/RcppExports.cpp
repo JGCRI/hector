@@ -1175,6 +1175,16 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// CA_CONSTRAIN
+String CA_CONSTRAIN();
+RcppExport SEXP _hector_CA_CONSTRAIN() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(CA_CONSTRAIN());
+    return rcpp_result_gen;
+END_RCPP
+}
 // F_NPPV
 String F_NPPV();
 RcppExport SEXP _hector_F_NPPV() {
@@ -1591,6 +1601,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_LUC_EMISSIONS", (DL_FUNC) &_hector_LUC_EMISSIONS, 0},
     {"_hector_Q10_RH", (DL_FUNC) &_hector_Q10_RH, 0},
     {"_hector_BETA", (DL_FUNC) &_hector_BETA, 0},
+    {"_hector_CA_CONSTRAIN", (DL_FUNC) &_hector_CA_CONSTRAIN, 0},
     {"_hector_F_NPPV", (DL_FUNC) &_hector_F_NPPV, 0},
     {"_hector_F_NPPD", (DL_FUNC) &_hector_F_NPPD, 0},
     {"_hector_F_LITTERD", (DL_FUNC) &_hector_F_LITTERD, 0},
