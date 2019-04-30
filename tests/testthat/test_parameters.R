@@ -256,3 +256,19 @@ test_that('All "fraction" parameters can be set and retrieved', {
     expect_equivalent(as.list(out$value), fracs)
     shutdown(hc)
 })
+
+test_that('Atmospheric CO2 concentrations can be constrained', {
+
+    hc <- newcore(rcp45, suppresslogging = TRUE)
+    years <- 1850:2100
+    constrained_values <- rep(300, length(years))
+    setvar(hc, years, CA_CONSTRAIN(), constrained_values, getunits(CA_CONSTRAIN()))
+    reset(hc)
+    run(hc)
+    out <- fetchvars(hc, years, ATMOSPHERIC_CO2())
+    expect_equal(out$value, constrained_values)
+
+})
+
+
+

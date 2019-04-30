@@ -921,6 +921,13 @@ String WARMINGFACTOR(String biome = "") {
   return out;
 }
 
+//' @describeIn constrain atmospheric CO2 concentration  (\code{"(ppmv CO2)"})
+//' @export
+// [[Rcpp::export]]
+String CA_CONSTRAIN() {
+    return D_CA_CONSTRAIN;
+}
+
 //' @describeIn parameters NPP fraction to vegetation (\code{"(unitless)"})
 //' @inheritParams BETA
 //' @export

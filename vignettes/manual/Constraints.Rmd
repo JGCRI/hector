@@ -39,3 +39,6 @@ Ca_constrain=csv:path/to/constraint/file.csv
 then the model's atmospheric carbon pool (given in ppmv CO2) will follow this contents of this file (which should have two columns, `Date` and `Ca_constrain`). The model will extrapolate within this data as necessary, but not beyond its endpoints. If the constraint [CO2] is lower than the calculated [CO2] at that time step, any excess is moved to the deep ocean; conversely, any necessary deficit is transferred from there.
 
 Once Hector's internal date passes the last date in the constraint file, the model's atmospheric CO2 becomes *unconstrained*.
+
+Otherwise Hector's atmospheric carbon pool can be set using the `setvars` function and `CA_CONSTRAIN` variable.
+
