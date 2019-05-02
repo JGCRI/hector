@@ -208,9 +208,9 @@ test_that('Test RF output.', {
 
     # That the sum of the RF agents should equal the total climate RF.
     individual_rf %>%
-        group_by(year) %>%
-        summarise(value = sum(value)) %>%
-        ungroup ->
+        dplyr::group_by(year) %>%
+        dplyr::summarise(value = sum(value)) %>%
+        dplyr::ungroup() ->
         rf_aggregate
 
     expect_equal(rf_aggregate$value, total_rf$value)

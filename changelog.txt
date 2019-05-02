@@ -1,3 +1,19 @@
+Hector 2.2.2
+============
+* Fix bug that was causing requests for H2O forcing in the R interface
+  to return N2O forcing instead (the model internals were
+  unaffected). 
+* Fix bug that was causing API requests for halocarbon forcing to
+  return absolute forcing values, rather than values relative to the
+  base year (which is what is done for all other forcings). 
+* Add missing RF_VOL dependency to forcing component.  In practice the
+  missing dependency had no effect because the forcing component
+  already had a dependency on the SO2 component, which also provides
+  the volcanic forcing, but in the event that we ever split them up,
+  this will ensure that the dependency graph is still valid.
+  
+(All 2.2.2 changes merged in PR #303)
+
 Hector 2.2.1
 ============
 * Report global averages for land temperature, ocean air

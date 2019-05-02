@@ -565,6 +565,8 @@ void Core::registerCapability(const string& capabilityName, const string& compon
         // Only add the capability if it doesn't already exist.
         // Adding a duplicate capability has no useful effect anyhow.
         componentCapabilities.insert( pair<string, string>( capabilityName, componentName ) );
+        H_LOG(glog, Logger::DEBUG) << capabilityName << " registered to component " << componentName << "\n";
+        
     }
 }
 

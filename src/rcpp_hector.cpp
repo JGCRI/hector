@@ -296,7 +296,9 @@ DataFrame sendmessage(Environment core, String msgtype, String capability, Numer
     // Assemble a data frame with the results: date, var, value, units
     DataFrame result =
         DataFrame::create(Named("year")=date, Named("variable")=capability,
-                          Named("value")=valueout, Named("units")=unitsout);
+                          Named("value")=valueout,
+                          Named("units")=unitsout,
+                          Named("stringsAsFactors")=false);
 
     return result;
 }
