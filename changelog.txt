@@ -6,7 +6,7 @@ Hector 2.2.2
 * Fix bug that was causing API requests for halocarbon forcing to
   return absolute forcing values, rather than values relative to the
   base year (which is what is done for all other forcings). 
-* Add missing RF_VOL dependency to forcing component.  In practice the
+* Add missing RF_VOL (volcanic forcing) dependency to forcing component.  In practice the
   missing dependency had no effect because the forcing component
   already had a dependency on the SO2 component, which also provides
   the volcanic forcing, but in the event that we ever split them up,

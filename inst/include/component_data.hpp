@@ -83,7 +83,7 @@
 #define D_RF_CH3Cl              D_RF_PREFIX CH3Cl_COMPONENT_BASE
 #define D_RF_CH3Br              D_RF_PREFIX CH3Br_COMPONENT_BASE
 
-// Adjusted halocarbon forcings
+// Adjusted (i.e., relative) halocarbon forcings
 // Forcings are tracked relative to the base year forcings, but the
 // halocarbon components don't know that.  These capabilities allow
 // a caller to fetch the adjusted values from the forcing component.
