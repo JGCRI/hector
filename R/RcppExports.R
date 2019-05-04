@@ -2,7 +2,7 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 #' @include aadoc.R
-#' @describeIn msgtype Message type for retrieving data from a component 
+#' @describeIn msgtype Message type for retrieving data from a component
 #' @export
 #' @keywords internal
 GETDATA <- function() {
@@ -40,7 +40,7 @@ LL_SEVERE <- function() {
     .Call('_hector_LL_SEVERE', PACKAGE = 'hector')
 }
 
-#' @describeIn emissions Black carbon emissions (\code{"Tg"}) 
+#' @describeIn emissions Black carbon emissions (\code{"Tg"})
 #' @export
 EMISSIONS_BC <- function() {
     .Call('_hector_EMISSIONS_BC', PACKAGE = 'hector')
@@ -116,6 +116,14 @@ RF_SO2 <- function() {
 #' @export
 RF_VOL <- function() {
     .Call('_hector_RF_VOL', PACKAGE = 'hector')
+}
+
+RFADJ_PREFIX <- function() {
+    .Call('_hector_RFADJ_PREFIX', PACKAGE = 'hector')
+}
+
+RF_PREFIX <- function() {
+    .Call('_hector_RF_PREFIX', PACKAGE = 'hector')
 }
 
 #' @describeIn haloforcings Radiative forcing due to CF4

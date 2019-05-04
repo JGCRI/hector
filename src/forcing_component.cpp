@@ -23,7 +23,86 @@
 #include "avisitor.hpp"
 
 namespace Hector {
-  
+
+/* These next two arrays and the map that connects them are a
+ * workaround for the problems created by storing the halocarbon
+ * forcings in the halocarbon components.  Because the halocarbon
+ * components don't know about the base year adjustments, they can't
+ * provide the forcings relative to the base year, which is what
+ * outside callers will generally want.  Internally, however, we still
+ * need to be able to get the raw forcings from the halocarbon
+ * components, so we can't just change everything to point at the
+ * forcing component (which would return the base year adjusted value).
+ *
+ * The solution we adopted was to create a second set of capabilities
+ * to refer to the adjusted values, and we let the forcing component
+ * intercept those.  However, the forcing values themselves are stored
+ * under the names used for the unadjusted values, so we have to have
+ * a name translation table so that we can find the data that the
+ * message is asking for.  In the end, the whole process winds up
+ * being a little ugly, but it gets the job done.
+ */
+
+const char *ForcingComponent::adjusted_halo_forcings[N_HALO_FORCINGS] = {
+    D_RFADJ_CF4,
+    D_RFADJ_C2F6,
+    D_RFADJ_HFC23,
+    D_RFADJ_HFC32,
+    D_RFADJ_HFC4310,
+    D_RFADJ_HFC125,
+    D_RFADJ_HFC134a,
+    D_RFADJ_HFC143a,
+    D_RFADJ_HFC227ea,
+    D_RFADJ_HFC245fa,
+    D_RFADJ_SF6,
+    D_RFADJ_CFC11,
+    D_RFADJ_CFC12,
+    D_RFADJ_CFC113,
+    D_RFADJ_CFC114,
+    D_RFADJ_CFC115,
+    D_RFADJ_CCl4,
+    D_RFADJ_CH3CCl3,
+    D_RFADJ_HCF22,
+    D_RFADJ_HCF141b,
+    D_RFADJ_HCF142b,
+    D_RFADJ_halon1211,
+    D_RFADJ_halon1301,
+    D_RFADJ_halon2402,
+    D_RFADJ_CH3Cl,
+    D_RFADJ_CH3Br
+};
+
+const char *ForcingComponent::halo_forcing_names[N_HALO_FORCINGS] = {
+    D_RF_CF4,
+    D_RF_C2F6,
+    D_RF_HFC23,
+    D_RF_HFC32,
+    D_RF_HFC4310,
+    D_RF_HFC125,
+    D_RF_HFC134a,
+    D_RF_HFC143a,
+    D_RF_HFC227ea,
+    D_RF_HFC245fa,
+    D_RF_SF6,
+    D_RF_CFC11,
+    D_RF_CFC12,
+    D_RF_CFC113,
+    D_RF_CFC114,
+    D_RF_CFC115,
+    D_RF_CCl4,
+    D_RF_CH3CCl3,
+    D_RF_HCF22,
+    D_RF_HCF141b,
+    D_RF_HCF142b,
+    D_RF_halon1211,
+    D_RF_halon1301,
+    D_RF_halon2402,
+    D_RF_CH3Cl,
+    D_RF_CH3Br 
+};
+
+std::map<std::string, std::string> ForcingComponent::forcing_name_map;
+
 using namespace std;
 
 //------------------------------------------------------------------------------
@@ -74,6 +153,10 @@ void ForcingComponent::init( Core* coreptr ) {
     core->registerCapability( D_RF_SO2i, getComponentName());
     core->registerCapability( D_RF_SO2, getComponentName());
     core->registerCapability( D_RF_VOL, getComponentName());
+    for(int i=0; i<N_HALO_FORCINGS; ++i) {
+        core->registerCapability(adjusted_halo_forcings[i], getComponentName());
+        forcing_name_map[adjusted_halo_forcings[i]] = halo_forcing_names[i];
+    }
     
     // Register our dependencies
 
@@ -407,7 +490,15 @@ unitval ForcingComponent::getData( const std::string& varName,
             }
         }
     } else {
-        std::map<std::string, unitval>::const_iterator forcing = forcings.find( varName );
+        std::string forcing_name;
+        auto forcit = forcing_name_map.find(varName);
+        if(forcit != forcing_name_map.end()) {
+            forcing_name = forcing_name_map[varName];
+        }
+        else {
+            forcing_name = varName;
+        }
+        std::map<std::string, unitval>::const_iterator forcing = forcings.find(forcing_name);
         if ( forcing != forcings.end() ) {
             // from the forcing map
             returnval = forcing->second;

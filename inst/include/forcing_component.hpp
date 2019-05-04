@@ -89,6 +89,10 @@ private:
     
     Core* core;             //! Core
     Logger logger;          //! Logger
+
+    static const char *adjusted_halo_forcings[]; //! Capability strings for halocarbon forcings
+    static const char *halo_forcing_names[];  //! Internal names of halocarbon forcings
+    static std::map<std::string, std::string> forcing_name_map;
 };
 
 }

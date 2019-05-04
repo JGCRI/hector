@@ -76,7 +76,9 @@ NULL
 #' These identifiers specify forcing values that can be provided by hector via
 #' one of the myriad halocarbon components.  All of the values corresponding to
 #' these identifiers are read-only (\emph{i.e.}, they can only appear in
-#' \code{\link{GETDATA}} messages.)
+#' \code{\link{GETDATA}} messages.)  The forcings returned are the
+#' \emph{relative} forcings, with the base year (typically 1750) values
+#' subtracted off.
 #'
 #' @inheritSection msgtype Note
 #'

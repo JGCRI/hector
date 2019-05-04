@@ -20,7 +20,7 @@ test_that('RCP scenarios are correct', {
 
         ## Get the comparison data
         sampleoutfile <- sprintf('sample_outputstream_rcp%s.csv', rcp)
-        sampledata <- read.csv(file.path(sampledir, sampleoutfile), comment.char = '#')
+        sampledata <- read.csv(file.path(sampledir, sampleoutfile), comment.char = '#', stringsAsFactors = FALSE)
         sampledata$scenario <- as.character(sampledata$run_name)
         samplekeep <- sampledata$variable %in% testvars & sampledata$year %in% dates
         sampledata <- sampledata[samplekeep, c('scenario', 'year','variable','value', 'units')]
