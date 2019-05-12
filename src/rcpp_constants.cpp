@@ -109,7 +109,7 @@ return D_RF_N2O;
 //' @export
 // [[Rcpp::export]]
 String RF_H2O() {
-return D_RF_N2O;
+return D_RF_H2O;
 }
 
 //' @describeIn forcings Radiative forcing due to ozone
@@ -170,186 +170,201 @@ return D_RF_VOL;
 // return D_RF_halocarbons;
 // }
 
+// This is the prefix for adjusted radiative forcing.  We use it
+// internally to correct the reported names of the halocarbon
+// forcings.
+// [[Rcpp::export]]
+String RFADJ_PREFIX() {
+return D_RFADJ_PREFIX;
+}
+
+// Prefix for unadjusted forcing.  This is what we substitute for
+// the adjusted forcing prefix
+// [[Rcpp::export]]
+String RF_PREFIX() {
+return D_RF_PREFIX;
+}
+
 //' @describeIn haloforcings Radiative forcing due to CF4
 //' @export
 // [[Rcpp::export]]
 String RF_CF4() {
-return D_RF_CF4;
+return D_RFADJ_CF4;
 }
 
 //' @describeIn haloforcings Radiative forcing due to C2F6
 //' @export
 // [[Rcpp::export]]
 String RF_C2F6() {
-return D_RF_C2F6;
+return D_RFADJ_C2F6;
 }
 
 //' @describeIn haloforcings Radiative forcing due to HFC-23
 //' @export
 // [[Rcpp::export]]
 String RF_HFC23() {
-return D_RF_HFC23;
+return D_RFADJ_HFC23;
 }
 
 //' @describeIn haloforcings Radiative forcing due to HFC-32
 //' @export
 // [[Rcpp::export]]
 String RF_HFC32() {
-return D_RF_HFC32;
+return D_RFADJ_HFC32;
 }
 
 //' @describeIn haloforcings Radiative forcing due to HFC-4310
 //' @export
 // [[Rcpp::export]]
 String RF_HFC4310() {
-return D_RF_HFC4310;
+return D_RFADJ_HFC4310;
 }
 
 //' @describeIn haloforcings Radiative forcing due to HFC-125
 //' @export
 // [[Rcpp::export]]
 String RF_HFC125() {
-return D_RF_HFC125;
+return D_RFADJ_HFC125;
 }
 
 //' @describeIn haloforcings Radiative forcing due to HFC-134a
 //' @export
 // [[Rcpp::export]]
 String RF_HFC134A() {
-return D_RF_HFC134a;
+return D_RFADJ_HFC134a;
 }
 
 //' @describeIn haloforcings Radiative forcing due to HFC-143a
 //' @export
 // [[Rcpp::export]]
 String RF_HFC143A() {
-return D_RF_HFC143a;
+return D_RFADJ_HFC143a;
 }
 
 //' @describeIn haloforcings Radiative forcing due to HFC227ea
 //' @export
 // [[Rcpp::export]]
 String RF_HFC227EA() {
-return D_RF_HFC227ea;
+return D_RFADJ_HFC227ea;
 }
 
 //' @describeIn haloforcings Radiative forcing due to HFC-245fa
 //' @export
 // [[Rcpp::export]]
 String RF_HFC245FA() {
-return D_RF_HFC245fa;
+return D_RFADJ_HFC245fa;
 }
 
 //' @describeIn haloforcings Radiative forcing due to sulfur hexafluoride
 //' @export
 // [[Rcpp::export]]
 String RF_SF6() {
-return D_RF_SF6;
+return D_RFADJ_SF6;
 }
 
 //' @describeIn haloforcings Radiative forcing due to CFC-11
 //' @export
 // [[Rcpp::export]]
 String RF_CFC11() {
-return D_RF_CFC11;
+return D_RFADJ_CFC11;
 }
 
 //' @describeIn haloforcings Radiative forcing due to CFC-12
 //' @export
 // [[Rcpp::export]]
 String RF_CFC12() {
-return D_RF_CFC12;
+return D_RFADJ_CFC12;
 }
 
 //' @describeIn haloforcings Radiative forcing due to CFC-113
 //' @export
 // [[Rcpp::export]]
 String RF_CFC113() {
-return D_RF_CFC113;
+return D_RFADJ_CFC113;
 }
 
 //' @describeIn haloforcings Radiative forcing due to CFC-114
 //' @export
 // [[Rcpp::export]]
 String RF_CFC114() {
-return D_RF_CFC114;
+return D_RFADJ_CFC114;
 }
 
 //' @describeIn haloforcings Radiative forcing due to CFC-115
 //' @export
 // [[Rcpp::export]]
 String RF_CFC115() {
-return D_RF_CFC115;
+return D_RFADJ_CFC115;
 }
 
 //' @describeIn haloforcings Radiative forcing due to carbon tetrachloride
 //' @export
 // [[Rcpp::export]]
 String RF_CCL4() {
-return D_RF_CCl4;
+return D_RFADJ_CCl4;
 }
 
 //' @describeIn haloforcings Radiative forcing due to trichloroethane
 //' @export
 // [[Rcpp::export]]
 String RF_CH3CCL3() {
-return D_RF_CH3CCl3;
+return D_RFADJ_CH3CCl3;
 }
 
 //' @describeIn haloforcings Radiative forcing due to HCFC-22
 //' @export
 // [[Rcpp::export]]
 String RF_HCF22() {
-return D_RF_HCF22;
+return D_RFADJ_HCF22;
 }
 
 //' @describeIn haloforcings Radiative forcing due to HCFC-141b
 //' @export
 // [[Rcpp::export]]
 String RF_HCF141B() {
-return D_RF_HCF141b;
+return D_RFADJ_HCF141b;
 }
 
 //' @describeIn haloforcings Radiative forcing due to HCFC-142b
 //' @export
 // [[Rcpp::export]]
 String RF_HCF142B() {
-return D_RF_HCF142b;
+return D_RFADJ_HCF142b;
 }
 
 //' @describeIn haloforcings Radiative forcing due to halon-1211
 //' @export
 // [[Rcpp::export]]
 String RF_HALON1211() {
-return D_RF_halon1211;
+return D_RFADJ_halon1211;
 }
 
 //' @describeIn haloforcings Radiative forcing due to halon-1301
 //' @export
 // [[Rcpp::export]]
 String RF_HALON1301() {
-return D_RF_halon1301;
+return D_RFADJ_halon1301;
 }
 
 //' @describeIn haloforcings Radiative forcing due to halon-2402
 //' @export
 // [[Rcpp::export]]
 String RF_HALON2402() {
-return D_RF_halon2402;
+return D_RFADJ_halon2402;
 }
 
 //' @describeIn haloforcings Radiative forcing due to chloromethane
 //' @export
 // [[Rcpp::export]]
 String RF_CH3CL() {
-return D_RF_CH3Cl;
+return D_RFADJ_CH3Cl;
 }
 
 //' @describeIn haloforcings Radiative forcing due to bromomethane
 //' @export
 // [[Rcpp::export]]
 String RF_CH3BR() {
-return D_RF_CH3Br;
+return D_RFADJ_CH3Br;
 }
 
 /* halocarbon emissions */

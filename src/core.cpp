@@ -47,6 +47,7 @@ using namespace std;
  *  \sa init()
  */
 Core::Core(Logger::LogLevel loglvl, bool echotoscreen, bool echotofile) :
+    setup_complete(false),
     run_name( "" ), 
     startDate( -1.0 ),
     endDate( -1.0 ),
@@ -54,7 +55,6 @@ Core::Core(Logger::LogLevel loglvl, bool echotoscreen, bool echotofile) :
     isInited( false ),
     do_spinup( true ),
     max_spinup( 2000 ),
-    setup_complete(false),
     in_spinup( false )
 {
     glog.open(string(MODEL_NAME), echotoscreen, echotofile, loglvl);
@@ -565,6 +565,8 @@ void Core::registerCapability(const string& capabilityName, const string& compon
         // Only add the capability if it doesn't already exist.
         // Adding a duplicate capability has no useful effect anyhow.
         componentCapabilities.insert( pair<string, string>( capabilityName, componentName ) );
+        H_LOG(glog, Logger::DEBUG) << capabilityName << " registered to component " << componentName << "\n";
+        
     }
 }
 

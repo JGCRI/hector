@@ -195,6 +195,26 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// RFADJ_PREFIX
+String RFADJ_PREFIX();
+RcppExport SEXP _hector_RFADJ_PREFIX() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(RFADJ_PREFIX());
+    return rcpp_result_gen;
+END_RCPP
+}
+// RF_PREFIX
+String RF_PREFIX();
+RcppExport SEXP _hector_RF_PREFIX() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(RF_PREFIX());
+    return rcpp_result_gen;
+END_RCPP
+}
 // RF_CF4
 String RF_CF4();
 RcppExport SEXP _hector_RF_CF4() {
@@ -1503,6 +1523,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_RF_SO2I", (DL_FUNC) &_hector_RF_SO2I, 0},
     {"_hector_RF_SO2", (DL_FUNC) &_hector_RF_SO2, 0},
     {"_hector_RF_VOL", (DL_FUNC) &_hector_RF_VOL, 0},
+    {"_hector_RFADJ_PREFIX", (DL_FUNC) &_hector_RFADJ_PREFIX, 0},
+    {"_hector_RF_PREFIX", (DL_FUNC) &_hector_RF_PREFIX, 0},
     {"_hector_RF_CF4", (DL_FUNC) &_hector_RF_CF4, 0},
     {"_hector_RF_C2F6", (DL_FUNC) &_hector_RF_C2F6, 0},
     {"_hector_RF_HFC23", (DL_FUNC) &_hector_RF_HFC23, 0},

@@ -185,3 +185,35 @@ test_that("Setting past or parameter values does trigger a reset.", {
 
     shutdown(hc)
 })
+
+
+test_that('Test RF output.', {
+
+    hc <- newcore(file.path(inputdir, 'hector_rcp45.ini'), suppresslogging = TRUE)
+    run(hc, 2100)
+
+    # Extract the total cliamte RF.
+    total_rf <- fetchvars(hc, dates = 1750:2100, RF_TOTAL())
+
+    # The vector of all the individual componets that contribute to RF.
+    rf_componets <- c(RF_BC(), RF_C2F6(),  RF_CCL4(),  RF_CF4(), RF_CFC11(),  RF_CFC113(),  RF_CFC114(),  RF_CFC115(), RF_CH3BR(),  RF_CH3CCL3(),
+                      RF_CH3CL(),  RF_CH4(),  RF_CO2(),  RF_H2O(), RF_HALON1211(),  RF_CFC12(),  RF_HALON1301(), RF_HALON2402(),  RF_HCF141B(),
+                      RF_HCF142B(),  RF_HCF22(),  RF_HFC125(),  RF_HFC134A(),  RF_HFC143A(),  RF_HFC227EA(), RF_HFC23(), RF_T_ALBEDO(),
+                      RF_HFC245FA(), RF_HFC32(),  RF_HFC4310(),  RF_N2O(), RF_O3(),  RF_OC(),  RF_SF6(), RF_SO2D(),  RF_SO2I(), RF_VOL())
+    individual_rf <- fetchvars(hc, 1750:2100, rf_componets)
+
+    # The RF value should be equal to 0 in the base year (1750) for all of the RF agents.
+    values_1750 <- dplyr::filter(individual_rf, year == 1750)
+    expect_equal(values_1750$value, expected = rep(0, nrow(values_1750)), info = 'RF values in the base year must be 0')
+
+    # That the sum of the RF agents should equal the total climate RF.
+    individual_rf %>%
+        dplyr::group_by(year) %>%
+        dplyr::summarise(value = sum(value)) %>%
+        dplyr::ungroup() ->
+        rf_aggregate
+
+    expect_equal(rf_aggregate$value, total_rf$value)
+
+    shutdown(hc)
+})

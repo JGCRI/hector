@@ -1,10 +1,10 @@
 ifeq ($(strip $(CXX)),)
 CXX      = g++
 endif
-CXXFLAGS = -g $(INCLUDES) $(OPTFLAGS) $(CXXEXTRA) $(CXXPROF) $(WFLAGS) -MMD
+CXXFLAGS = -g $(INCLUDES) $(OPTFLAGS) $(CXXEXTRA) $(CXXPROF) $(WFLAGS) -MMD -std=c++11
 CFLAGS   = -g $(INCLUDES) $(OPTFLAGS) -MMD
 INCLUDES = -I$(BOOSTROOT) -I$(HDRDIR)
-WFLAGS   = -Wall -Wno-unused-local-typedefs -Wno-c++11-extensions # Turn on warnings, turn off one particularly annoying one that infests Boost libs, also turn off warning about c++-11 extensions.
+WFLAGS   = -Wall -Wno-unused-local-typedefs # Turn on warnings, turn off one particularly annoying one that infests Boost libs
 OPTFLAGS = -O3
 LDFLAGS	 = $(CXXPROF) -L$(BOOSTLIB) -L. -Wl,-rpath $(BOOSTLIB)
 

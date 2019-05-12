@@ -118,6 +118,14 @@ RF_VOL <- function() {
     .Call('_hector_RF_VOL', PACKAGE = 'hector')
 }
 
+RFADJ_PREFIX <- function() {
+    .Call('_hector_RFADJ_PREFIX', PACKAGE = 'hector')
+}
+
+RF_PREFIX <- function() {
+    .Call('_hector_RF_PREFIX', PACKAGE = 'hector')
+}
+
 #' @describeIn haloforcings Radiative forcing due to CF4
 #' @export
 RF_CF4 <- function() {
