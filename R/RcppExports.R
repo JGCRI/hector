@@ -730,7 +730,7 @@ WARMINGFACTOR <- function(biome = "") {
     .Call('_hector_WARMINGFACTOR', PACKAGE = 'hector', biome)
 }
 
-#' @describeIn constrain atmospheric CO2 concentration  (\code{"(ppmv CO2)"})
+#' @describeIn carboncycle Constrain atmospheric CO2 concentration  (\code{"(ppmv CO2)"})
 #' @export
 CA_CONSTRAIN <- function() {
     .Call('_hector_CA_CONSTRAIN', PACKAGE = 'hector')
