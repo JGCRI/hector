@@ -714,7 +714,7 @@ BETA <- function() {
     .Call('_hector_BETA', PACKAGE = 'hector')
 }
 
-#' @describeIn constrain atmospheric CO2 pool  (\code{"(ppmv CO2)"})
+#' @describeIn parameters constrain atmospheric CO2 pool  (\code{"(ppmv CO2)"})
 #' @export
 CA_CONSTRAIN <- function() {
     .Call('_hector_CA_CONSTRAIN', PACKAGE = 'hector')

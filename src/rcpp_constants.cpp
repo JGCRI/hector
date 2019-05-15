@@ -887,7 +887,7 @@ String BETA() {
 return D_BETA;
 }
 
-//' @describeIn constrain atmospheric CO2 concentration  (\code{"(ppmv CO2)"})
+//' @describeIn carboncycle Constrain atmospheric CO2 concentration  (\code{"(ppmv CO2)"})
 //' @export
 // [[Rcpp::export]]
 String CA_CONSTRAIN() {
