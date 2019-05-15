@@ -5,6 +5,7 @@
 \alias{PREINDUSTRIAL_CO2}
 \alias{Q10_RH}
 \alias{BETA}
+\alias{CA_CONSTRAIN}
 \alias{F_NPPV}
 \alias{F_NPPD}
 \alias{F_LITTERD}
@@ -21,6 +22,8 @@ PREINDUSTRIAL_CO2()
 Q10_RH()
 
 BETA()
+
+CA_CONSTRAIN()
 
 F_NPPV()
 
@@ -58,6 +61,8 @@ mass).
 \item \code{Q10_RH}: Heterotrophic respiration temperature sensitivity factor (\code{"(unitless)"})
 
 \item \code{BETA}: CO2 fertilization factor (\code{"(unitless)"})
+
+\item \code{CA_CONSTRAIN}: constrain atmospheric CO2 pool  (\code{"(ppmv CO2)"})
 
 \item \code{F_NPPV}: NPP fraction to vegetation (\code{"(unitless)"})
 
