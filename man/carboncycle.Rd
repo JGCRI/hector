@@ -7,6 +7,7 @@
 \alias{ATMOSPHERIC_C}
 \alias{FFI_EMISSIONS}
 \alias{LUC_EMISSIONS}
+\alias{CA_CONSTRAIN}
 \title{Identifiers for variables in the Hector carbon cycle component}
 \usage{
 LAND_CFLUX()
@@ -18,11 +19,18 @@ ATMOSPHERIC_C()
 FFI_EMISSIONS()
 
 LUC_EMISSIONS()
+
+CA_CONSTRAIN()
 }
 \description{
 These identifiers correspond to variables that can be read and/or set in the
 carbon cycle
 }
+\section{Functions}{
+\itemize{
+\item \code{CA_CONSTRAIN}: Constrain atmospheric CO2 concentration  (\code{"(ppmv CO2)"})
+}}
+
 \section{Output variables}{
 
 These variables can be read using the \code{\link{GETDATA}} message type:
