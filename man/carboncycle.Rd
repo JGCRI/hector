@@ -8,6 +8,7 @@
 \alias{ATMOSPHERIC_C}
 \alias{FFI_EMISSIONS}
 \alias{LUC_EMISSIONS}
+\alias{CA_CONSTRAIN}
 \alias{VEG_C}
 \alias{DETRITUS_C}
 \alias{SOIL_C}
@@ -25,6 +26,8 @@ ATMOSPHERIC_C()
 FFI_EMISSIONS()
 
 LUC_EMISSIONS()
+
+CA_CONSTRAIN()
 
 VEG_C(biome = "")
 
@@ -44,6 +47,8 @@ carbon cycle
 }
 \section{Functions}{
 \itemize{
+\item \code{CA_CONSTRAIN}: Constrain atmospheric CO2 concentration  (\code{"(ppmv CO2)"})
+
 \item \code{VEG_C}: Vegetation C pool (`"Pg C"`)
 
 \item \code{DETRITUS_C}: Vegetation detritus C pool (`"Pg C"`)
