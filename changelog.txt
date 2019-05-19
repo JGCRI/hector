@@ -1,3 +1,11 @@
+Hector 2.3.0
+============
+* Constrain atmospheric CO2 concentration to be equal to the
+  preindustrial concentration during the model spinup.  The result of
+  this is that the concentration at the beginning of the simulation
+  will be equal to the value specified in the `PREINDUSTRIAL_CO2`
+  parameter, which was not the case previously.
+
 Hector 2.2.2
 ============
 * Fix bug that was causing requests for H2O forcing in the R interface

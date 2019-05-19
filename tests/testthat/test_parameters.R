@@ -22,6 +22,22 @@ test_that('Rerunning spinup produces minimal change', {
     shutdown(hc)
 })
 
+test_that('Initial CO2 concentration equals preindustrial', {
+    hc <- newcore(rcp45, suppresslogging=TRUE)
+    run(hc, 1800)
+    initcval <- fetchvars(hc, 1745, ATMOSPHERIC_CO2())
+    preind <- fetchvars(hc, NA, PREINDUSTRIAL_CO2())
+    expect_equal(initcval$value, preind$value)
+
+    setvar(hc, NA, PREINDUSTRIAL_CO2(), 285, "ppmv CO2")
+    reset(hc)
+    run(hc, 1800)
+    initcval <- fetchvars(hc, 1745, ATMOSPHERIC_CO2())
+    preind <- fetchvars(hc, NA, PREINDUSTRIAL_CO2())
+    expect_equal(initcval$value, preind$value)
+})
+
+
 test_that('Lowering initial CO2 lowers output CO2', {
     hc <- newcore(rcp45, suppresslogging = TRUE)
     run(hc, 2100)
@@ -142,7 +158,7 @@ test_that('Increasing volcanic forcing scaling factor increases the effect of vo
 })
 
 test_that('Decreasing vegetation NPP fraction increases CO2 concentration', {
-    # More NPP to vegetation means less C to soil, where it decomposes. 
+    # More NPP to vegetation means less C to soil, where it decomposes.
     hc <- newcore(rcp45, suppresslogging = TRUE)
     run(hc, 2100)
     qdates <- 2000:2100                 # limit to years where temperature
