@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">hector</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.3.0</span>
       </span>
     </div>
 
@@ -116,12 +116,12 @@
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">results &lt;-<span class="st"> </span><span class="kw"><a href="../reference/fetchvars.html">fetchvars</a></span>(core, <span class="dv">2000</span><span class="op">:</span><span class="dv">2300</span>)</a>
 <a class="sourceLine" id="cb7-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(results) </a></code></pre></div>
 <pre><code>##              scenario year variable    value    units
-## 1 unnamed hector core 2000       Ca 362.2546 ppmv CO2
-## 2 unnamed hector core 2001       Ca 363.8910 ppmv CO2
-## 3 unnamed hector core 2002       Ca 365.5739 ppmv CO2
-## 4 unnamed hector core 2003       Ca 367.3020 ppmv CO2
-## 5 unnamed hector core 2004       Ca 369.1146 ppmv CO2
-## 6 unnamed hector core 2005       Ca 371.0644 ppmv CO2</code></pre>
+## 1 unnamed hector core 2000       Ca 353.0744 ppmv CO2
+## 2 unnamed hector core 2001       Ca 354.6760 ppmv CO2
+## 3 unnamed hector core 2002       Ca 356.3236 ppmv CO2
+## 4 unnamed hector core 2003       Ca 358.0162 ppmv CO2
+## 5 unnamed hector core 2004       Ca 359.7927 ppmv CO2
+## 6 unnamed hector core 2005       Ca 361.7058 ppmv CO2</code></pre>
 <p>The results are returned as a long, <a href="https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html">tidy</a> <code>data.frame</code>. This makes it easy to plot them using <code>ggplot2</code>.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(ggplot2)</a></code></pre></div>
 <pre><code>## Registered S3 methods overwritten by 'ggplot2':
@@ -178,12 +178,12 @@
 <div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" data-line-number="1">results_<span class="dv">40</span> &lt;-<span class="st"> </span><span class="kw"><a href="../reference/fetchvars.html">fetchvars</a></span>(core, <span class="dv">2000</span><span class="op">:</span><span class="dv">2300</span>)</a>
 <a class="sourceLine" id="cb25-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(results_<span class="dv">40</span>) </a></code></pre></div>
 <pre><code>##              scenario year variable    value    units
-## 1 unnamed hector core 2000       Ca 359.4984 ppmv CO2
-## 2 unnamed hector core 2001       Ca 361.0749 ppmv CO2
-## 3 unnamed hector core 2002       Ca 362.6972 ppmv CO2
-## 4 unnamed hector core 2003       Ca 364.3640 ppmv CO2
-## 5 unnamed hector core 2004       Ca 366.1144 ppmv CO2
-## 6 unnamed hector core 2005       Ca 368.0009 ppmv CO2</code></pre>
+## 1 unnamed hector core 2000       Ca 350.6232 ppmv CO2
+## 2 unnamed hector core 2001       Ca 352.1657 ppmv CO2
+## 3 unnamed hector core 2002       Ca 353.7535 ppmv CO2
+## 4 unnamed hector core 2003       Ca 355.3855 ppmv CO2
+## 5 unnamed hector core 2004       Ca 357.1007 ppmv CO2
+## 6 unnamed hector core 2005       Ca 358.9513 ppmv CO2</code></pre>
 <p>Let’s see how changing the CO2 fertilization affects our results.</p>
 <div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1">results[[<span class="st">"beta"</span>]] &lt;-<span class="st"> </span><span class="fl">0.36</span></a>
 <a class="sourceLine" id="cb27-2" data-line-number="2">results_<span class="dv">40</span>[[<span class="st">"beta"</span>]] &lt;-<span class="st"> </span><span class="fl">0.40</span></a>
