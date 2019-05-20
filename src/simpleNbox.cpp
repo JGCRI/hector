@@ -655,13 +655,24 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     masstot = sum;
 
     // If user has supplied Ca values, adjust atmospheric C to match
-    if( !core->inSpinup() && Ca_constrain.size() && t <= Ca_constrain.lastdate() ) {
+    if(core->inSpinup() ||
+       ( Ca_constrain.size() && t <= Ca_constrain.lastdate() )) {
+
+        unitval atmos_cpool_to_match;
+        unitval atmppmv;
+        if(core->inSpinup()) {
+            atmos_cpool_to_match.set(C0.value(U_PPMV_CO2) / PGC_TO_PPMVCO2, U_PGC);
+            atmppmv.set(C0.value(U_PPMV_CO2), U_PPMV_CO2);
+        }
+        else {
+            H_LOG( logger, Logger::WARNING ) << "** Constraining atmospheric CO2 to user-supplied value" << std::endl; 
+            atmos_cpool_to_match.set(Ca_constrain.get(t).value( U_PPMV_CO2 ) /
+                                     PGC_TO_PPMVCO2, U_PGC);
+            atmppmv.set(Ca_constrain.get(t).value(U_PPMV_CO2), U_PPMV_CO2);
+        }
         
-        H_LOG( logger, Logger::WARNING ) << "** Constraining atmospheric CO2 to user-supplied value" << std::endl;
-        
-        unitval atmos_cpool_to_match( Ca_constrain.get( t ).value( U_PPMV_CO2 ) / PGC_TO_PPMVCO2, U_PGC );
         residual = atmos_c - atmos_cpool_to_match;
-        H_LOG( logger,Logger::DEBUG ) << t << "- have " << Ca << " want " << Ca_constrain.get( t ).value( U_PPMV_CO2 ) << std::endl;
+        H_LOG( logger,Logger::DEBUG ) << t << "- have " << Ca << " want " <<  atmppmv.value( U_PPMV_CO2 ) << std::endl;
         H_LOG( logger,Logger::DEBUG ) << t << "- have " << atmos_c << " want " << atmos_cpool_to_match << "; residual = " << residual << std::endl;
         
         // Transfer C from atmosphere to deep ocean and update our C and Ca variables

@@ -1,6 +1,6 @@
 Package: hector
 Title: The Hector Simple Climate Model
-Version: 2.2.2
+Version: 2.3.0
 Authors@R: c(person("Robert", "Link", email = "robert.link@pnnl.gov", role = c("aut", "cre")),
 	     person("Corinne", "Hartin", email = "corinne.hartin@pnnl.gov", role = "aut"),
 	     person("Ben", "Bond-Lamberty", email = "BondLamberty@pnnl.gov", role = "aut"),
