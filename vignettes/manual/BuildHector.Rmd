@@ -62,6 +62,7 @@ If you're going to use `make` and not Xcode, see Linux directions below.
 * Run!
 
 Xcode Build Settings to check/change if you encounter build errors:
+
 * *Architectures-Base SDK*: OS X 10.8 [or OS X version on machine] 
 * *Build Options-Compiler for C/C++/Objective-C*: Default compiler (Apple LLVM 5.1)
 * *Search Paths-Header Search Paths*: "/usr/local/include /usr/local/lib/boost_1_52_0/" [or other header directories]
@@ -77,6 +78,7 @@ Xcode Build Settings to check/change if you encounter build errors:
 * Download and install *Boost*, following instructions above.
 * Download the [Hector zip file](https://github.com/JGCRI/hector/archive/master.zip) or check out the repository using Git.
 * TODO
+
 
 ## Linux
 
