@@ -1,5 +1,45 @@
-Installing and building - all platforms
----------------------------------
+# Installing and building - R package
+
+The easiest way to install and use Hector is as an R package.
+To install R, follow the [official instructions](https://cloud.r-project.org/) for your platform.
+Then, to install the latest released version of Hector, use the following R code:
+
+```r
+install.packages("hector")
+```
+
+This will automatically install all of Hector's dependencies as well.
+
+To install the version associated with the current `master` git branch on GitHub, use the `devtools::install_github` function.
+(Note that because this requires compiling from source, you will need to have a C compiler installed and configured.
+On **Windows**, you will also need to install [Rtools](https://cloud.r-project.org/bin/windows/Rtools/).
+On **MacOS** and **Linux**, the required tools should be included as part of a standard R installation.)
+
+```r
+# If the `devtools` isn't installed, first run:
+# install.packages("devtools")
+devtools::install_github("jgcri/hector")
+
+# You can also install from specific git tags...
+devtools::install_github("jgcri/hector@2.2.2")
+# ...branches...
+devtools::install_github("jgcri/hector@krd-perscribe_co2Con")
+# ...or commit hashes.
+devtools::install_github("jgcri/hector@16c480a")
+```
+
+Finally, to install from a local copy of the source code, you can use the following code:
+
+```r
+devtools::install("/path/to/hector")
+# For the current directory, use `"."` or run the function with no arguments.
+```
+
+...or, if you are using the [RStudio IDE](https://www.rstudio.com/products/rstudio/), use the "Install and Restart", "Clean and Rebuild", and similar tools in the "Build" tab.
+
+
+# Installing and building - standalone executable
+
 Hector relies on several libraries, all of which are freely available
 under a GPL or similar license. In order to build and run Hector, you
 will need to download and install these libraries on your system. These include:
@@ -11,8 +51,7 @@ do to set up Boost is to download and extract it. Hector requires Boost version 
 
 * *REQUIRED*: Gnu Scientific Library. A numerical library for C and C++, available at http://www.gnu.org/software/gsl/. You will need to download and follow the Boost README instructions. You will need to compile and install the GSL. To do this, unpack the GSL tar file in the location of your choice. Follow the setup instructions in the GSL README file. Briefly, they comprise three steps:  `./configure`, `make`, and `make install`. You will need to have root (superuser) privilege to perform the last step, unless you choose an install directory somewhere under your own home directory (see the GSL README for instructions on how to do this).  Hector has been tested with, and is currently using, GSL version 1.16.
 
-Installing and building - Mac OS X (Xcode)
----------------------------------
+## Mac OSX (Xcode)
 
 These directions assume a basic familiarity with Xcode and Mac OS X software installation. (If you're going to use `make` and not Xcode, see Linux directions below.)
 
@@ -34,15 +73,14 @@ Xcode Build Settings to check/change if you encounter build errors:
 * *User-Defined*: "GCC_MODEL_TUNING" defined as "G5"
 
 
-Installing and building - Windows
----------------------------------
+## Windows
+
 * Install Visual Studio, if necessary.
 * Download and install *Boost* and *GSL*, following instructions above.
 * Download the [Hector zip file](https://github.com/JGCRI/hector/archive/master.zip) or check out the repository using Git.
 * TODO
 
-Installing and building - Linux
----------------------------------
+## Linux
 The Hector makefiles look for the required libraries (above) in certain default
 locations, but those defaults can be overridden by setting the
 environment variables described below.
@@ -123,6 +161,6 @@ sure to unset `CXXPROF`, clean the build directories with `make clean`,
 and rebuild when you are ready to go back to
 production runs.
 
-Installing and building - iOS/Android
----------------------------------
+## iOS/Android
+
 Not yet. ;)
