@@ -11,10 +11,8 @@ matrix:
       addons: 
         apt: 
           packages: 
-            - libboost-system1.55-dev
-            - libboost-filesystem1.55-dev
-          sources: 
-            - boost-latest
+            - libboost-system1.58-dev
+            - libboost-filesystem1.58-dev
 
       # BOOSTROOT is set to look for header files in the default place
       #where Ubuntu apt will install them --
@@ -43,20 +41,8 @@ matrix:
       addons: 
         apt: 
           packages: 
-            - libboost-system1.55-dev
-            - libboost-filesystem1.55-dev
-          sources: 
-            - boost-latest
-
-      # BOOSTROOT is set to look for header files in the default place
-      #where Ubuntu apt will install them --
-      #i.e. /usr/include/x86_64-linux-gnu. This is set because the
-      #Makefile has a `-I$(BOOSTROOT)` call.  Similarly, BOOSTLIB is
-      #set to /usr/lib/x86_64-linux-gnu, which is where Ubuntu apt
-      #installs boost by default. It has to be specified in full
-      #because otherwise, Hector's Makefile tries to construct
-      #BOOSTLIB by appending `/lib` to BOOSTROOT, which will not work
-      #here because of the `x86_64-linux-gnu` addition.
+            - libboost-system1.58-dev
+            - libboost-filesystem1.58-dev
 
       before_script: 
         - "export BOOSTROOT=/usr/include/x86_64-linux-gnu/"
@@ -71,13 +57,6 @@ matrix:
 
 
     - language: r
-      addons: 
-        apt: 
-          packages: 
-            - libboost-system1.55-dev
-            - libboost-filesystem1.55-dev
-          sources: 
-            - boost-latest
       cache: packages
 
       # Automatically deploy Hector documentation on the gh-pages
