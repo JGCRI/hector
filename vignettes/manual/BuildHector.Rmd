@@ -2,15 +2,9 @@
 
 The easiest way to install and use Hector is as an R package.
 To install R, follow the [official instructions](https://cloud.r-project.org/) for your platform.
-Then, to install the latest released version of Hector, use the following R code:
-
-```r
-install.packages("hector")
-```
-
-This will automatically install all of Hector's dependencies as well.
 
 To install the version associated with the current `master` git branch on GitHub, use the `devtools::install_github` function.
+This will automatically install all of Hector's dependencies as well.
 (Note that because this requires compiling from source, you will need to have a C compiler installed and configured.
 On **Windows**, you will also need to install [Rtools](https://cloud.r-project.org/bin/windows/Rtools/).
 On **MacOS** and **Linux**, the required tools should be included as part of a standard R installation.)
@@ -36,6 +30,25 @@ devtools::install("/path/to/hector")
 ```
 
 ...or, if you are using the [RStudio IDE](https://www.rstudio.com/products/rstudio/), use the "Install and Restart", "Clean and Rebuild", and similar tools in the "Build" tab.
+
+Although very common and broadly useful, the `devtools` package has many R package dependencies, including some with system dependencies.
+If you do not want to install `devtools`, you can also install from a local copy by using the base-R `install.packages` function as follows:
+
+```r
+install.packages("/path/to/hector", repos = NULL)
+```
+
+...or by running the following shell command:
+
+```sh
+R CMD INSTALL /path/to/hector
+```
+
+However, note that neither of these commands will automatically install Hector's dependencies, so you will have to install them manually.
+Hector's mandatory dependencies are listed in the `DESCRIPTION` file under `Imports`, and are currently as follows:
+
+- [`Rcpp`](http://www.rcpp.org/) -- Facilitates integration of C++ code into R packages
+- [`BH`](https://cran.r-project.org/web/packages/BH/index.html) -- Boost C++ header files
 
 
 # Installing and building - standalone executable
