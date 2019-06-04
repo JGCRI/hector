@@ -1425,13 +1425,13 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// LAND_TEMP
-String LAND_TEMP();
-RcppExport SEXP _hector_LAND_TEMP() {
+// LAND_AIR_TEMP
+String LAND_AIR_TEMP();
+RcppExport SEXP _hector_LAND_AIR_TEMP() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(LAND_TEMP());
+    rcpp_result_gen = Rcpp::wrap(LAND_AIR_TEMP());
     return rcpp_result_gen;
 END_RCPP
 }
@@ -1763,7 +1763,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_GLOBAL_TEMPEQ", (DL_FUNC) &_hector_GLOBAL_TEMPEQ, 0},
     {"_hector_OCEAN_SURFACE_TEMP", (DL_FUNC) &_hector_OCEAN_SURFACE_TEMP, 0},
     {"_hector_OCEAN_AIR_TEMP", (DL_FUNC) &_hector_OCEAN_AIR_TEMP, 0},
-    {"_hector_LAND_TEMP", (DL_FUNC) &_hector_LAND_TEMP, 0},
+    {"_hector_LAND_AIR_TEMP", (DL_FUNC) &_hector_LAND_AIR_TEMP, 0},
     {"_hector_DIFFUSIVITY", (DL_FUNC) &_hector_DIFFUSIVITY, 0},
     {"_hector_FLUX_MIXED", (DL_FUNC) &_hector_FLUX_MIXED, 0},
     {"_hector_FLUX_INTERIOR", (DL_FUNC) &_hector_FLUX_INTERIOR, 0},

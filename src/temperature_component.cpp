@@ -96,7 +96,7 @@ void TemperatureComponent::init( Core* coreptr ) {
 
     // Register the data we can provide
     core->registerCapability( D_GLOBAL_TEMP, getComponentName() );
-    core->registerCapability( D_LAND_TEMP, getComponentName() );
+    core->registerCapability( D_LAND_AIR_TEMP, getComponentName() );
     core->registerCapability( D_OCEAN_AIR_TEMP, getComponentName() );
     core->registerCapability( D_OCEAN_SURFACE_TEMP, getComponentName() );
     core->registerCapability( D_GLOBAL_TEMPEQ, getComponentName() );
@@ -441,7 +441,7 @@ unitval TemperatureComponent::getData( const std::string& varName,
             returnval = tgav;
         } else if( varName == D_GLOBAL_TEMPEQ ) {
             returnval = tgaveq;
-        } else if( varName == D_LAND_TEMP ) {
+        } else if( varName == D_LAND_AIR_TEMP ) {
             returnval = tgav_land;
         } else if( varName == D_OCEAN_SURFACE_TEMP ) {
             returnval = tgav_sst;
@@ -475,7 +475,7 @@ unitval TemperatureComponent::getData( const std::string& varName,
 
         if( varName == D_GLOBAL_TEMP ) {
             returnval = unitval(temp[tstep], U_DEGC);
-        } else if( varName == D_LAND_TEMP ) {
+        } else if( varName == D_LAND_AIR_TEMP ) {
             returnval = unitval(temp_landair[tstep], U_DEGC);
         } else if( varName == D_OCEAN_SURFACE_TEMP ) {
             returnval = unitval(temp_sst[tstep], U_DEGC);

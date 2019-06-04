@@ -1128,8 +1128,8 @@ return D_OCEAN_AIR_TEMP;
 //' @describeIn temperature Average land temperature anomaly
 //' @export
 // [[Rcpp::export]]
-String LAND_TEMP() {
-return D_LAND_TEMP;
+String LAND_AIR_TEMP() {
+return D_LAND_AIR_TEMP;
 }
 
 

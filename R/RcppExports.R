@@ -860,8 +860,8 @@ OCEAN_AIR_TEMP <- function() {
 
 #' @describeIn temperature Average land temperature anomaly
 #' @export
-LAND_TEMP <- function() {
-    .Call('_hector_LAND_TEMP', PACKAGE = 'hector')
+LAND_AIR_TEMP <- function() {
+    .Call('_hector_LAND_AIR_TEMP', PACKAGE = 'hector')
 }
 
 #' @describeIn parameters Ocean heat diffusivity (\code{"cm2/s"})

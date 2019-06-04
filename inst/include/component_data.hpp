@@ -277,7 +277,7 @@
 // temperature component
 #define D_ECS                   "S"
 #define D_GLOBAL_TEMP           "Tgav"
-#define D_LAND_TEMP             "Tgav_land"
+#define D_LAND_AIR_TEMP         "Tgav_land"
 #define D_OCEAN_SURFACE_TEMP    "Tgav_ocean_ST"
 #define D_OCEAN_AIR_TEMP        "Tgav_ocean_air"
 #define D_GLOBAL_TEMPEQ         "Tgaveq"
