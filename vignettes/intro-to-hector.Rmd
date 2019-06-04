@@ -127,7 +127,10 @@ We have already stored the previous run's output in `results` above, so we can s
 reset(core)
 ```
 
-Now, the "Current Date" has been reset to 1745.
+This will effectively "rewind" the core back to either the provided `date` (defaults to 0 if missing) or the model start date (set in the INI file; default is 1745), whichever is greater.
+In addition, if the `date` argument is less than the model start date and spinup is enabled (`do_spinup = 1` in the INI file), then the core will re-do its spinup process with the current set of parameters.
+
+So, as a result of the `reset` command, the core's "Current Date" is now the model start date--1745.
 We can now perform another run with the new CO$_2$ fertilization value.
 
 ```{r  run-sim-2}
