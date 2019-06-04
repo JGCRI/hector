@@ -130,6 +130,15 @@ reset(core)
 This will effectively "rewind" the core back to either the provided `date` (defaults to 0 if missing) or the model start date (set in the INI file; default is 1745), whichever is greater.
 In addition, if the `date` argument is less than the model start date and spinup is enabled (`do_spinup = 1` in the INI file), then the core will re-do its spinup process with the current set of parameters.
 
+***
+**NOTE**
+
+Because changing Hector parameters can change the post-spinup equilibrium values of state variables, Hector will automatically run `reset(core, date = 0)` at the beginning of the next `run` call if it detects that any of its parameters have changed.
+This means that is not currently possible to change Hector _parameters_ (such as $\beta$ or preindustrial CO~2~) part-way through a run.
+However, it is still possible to change the values of certain _drivers_ and _state variables_ (such as the CO~2~ emissions) in the middle of a run.
+
+***
+
 So, as a result of the `reset` command, the core's "Current Date" is now the model start date--1745.
 We can now perform another run with the new CO$_2$ fertilization value.
 
