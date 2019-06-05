@@ -79,6 +79,12 @@ test_that("Reset produces identical results",{
 
 })
 
+test_that("Exceptions are caught", {
+    expect_error(hc <- newcore('foo'), 'does not exist')
+    hc <- newcore(file.path(inputdir, 'hector_rcp45.ini'), suppresslogging = TRUE)
+    expect_error(run(hc, 5000), 'while running')
+})
+
 test_that("Setting emissions changes results", {
     hc <- newcore(file.path(inputdir, 'hector_rcp45.ini'), suppresslogging = TRUE)
     run(hc, 2100)
