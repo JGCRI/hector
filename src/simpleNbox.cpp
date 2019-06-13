@@ -445,10 +445,11 @@ unitval SimpleNbox::getData(const std::string& varName,
     if( splitvec.size() == 2 ) {    // i.e., in form <biome>.<varname>
         biome = splitvec[ 0 ];
         varNameParsed = splitvec[ 1 ];
-    }
 
-    H_ASSERT(std::find(biome_list.begin(), biome_list.end(), biome) != biome_list.end(),
-             "Requested biome missing from biome list.");
+        std::string errmsg = "Requested biome '" + biome + "' missing from biome list. " +
+            "Hit this error while trying to retrieve variable '" + varName + "'.";
+        H_ASSERT(std::find(biome_list.begin(), biome_list.end(), biome) != biome_list.end(), errmsg);
+    }
 
     if( varNameParsed == D_ATMOSPHERIC_C ) {
         if(date == Core::undefinedIndex())
