@@ -81,4 +81,14 @@ test_that("Hector runs with multiple biomes.", {
   warm_tgav <- warm_biome_result[warm_biome_result[["variable"]] == "Tgav",
                                  "value"]
   expect_true(mean(default_tgav) < mean(warm_tgav))
+
+  # Try to add a fake biome. This should fail because other variables
+  # haven't been initialized.
+  extra_biome <- append(new_ini, c(
+    "extra.veg_c = 1.0"
+  ), after = isnbox)
+  expect_error(
+    quickrun(extra_biome, "extra_biome"),
+    "not same size"
+  )
 })
