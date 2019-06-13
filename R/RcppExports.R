@@ -840,6 +840,11 @@ HEAT_FLUX <- function() {
     .Call('_hector_HEAT_FLUX', PACKAGE = 'hector')
 }
 
+#' @describeIn msgtype Character used to separate biome from variable name 
+BIOME_SPLIT_CHAR <- function() {
+    .Call('_hector_BIOME_SPLIT_CHAR', PACKAGE = 'hector')
+}
+
 newcore_impl <- function(inifile, loglevel, suppresslogging, name) {
     .Call('_hector_newcore_impl', PACKAGE = 'hector', inifile, loglevel, suppresslogging, name)
 }
@@ -900,6 +905,11 @@ run <- function(core, runtodate = -1.0) {
 #' @export
 getdate <- function(core) {
     .Call('_hector_getdate', PACKAGE = 'hector', core)
+}
+
+#' @export
+get_biome_list <- function(core) {
+    .Call('_hector_get_biome_list', PACKAGE = 'hector', core)
 }
 
 #' Send a message to a Hector instance

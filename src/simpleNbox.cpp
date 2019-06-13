@@ -433,89 +433,105 @@ unitval SimpleNbox::getData(const std::string& varName,
                             const double date) throw ( h_exception )
 {
     unitval returnval;
+
+    std::string biome = SNBOX_DEFAULT_BIOME;
+    std::string varNameParsed = varName;
     
-    if( varName == D_ATMOSPHERIC_C ) {
+    // Does the varName contain our parse character? If so, split it
+    std::vector<std::string> splitvec;
+    boost::split( splitvec, varName, boost::is_any_of( SNBOX_PARSECHAR ) );
+    H_ASSERT( splitvec.size() < 3, "max of one separator allowed in variable names" );
+
+    if( splitvec.size() == 2 ) {    // i.e., in form <biome>.<varname>
+        biome = splitvec[ 0 ];
+        varNameParsed = splitvec[ 1 ];
+    }
+
+    H_ASSERT(std::find(biome_list.begin(), biome_list.end(), biome) != biome_list.end(),
+             "Requested biome missing from biome list.");
+
+    if( varNameParsed == D_ATMOSPHERIC_C ) {
         if(date == Core::undefinedIndex())
             returnval = atmos_c;
         else
             returnval = atmos_c_ts.get(date); 
-    } else if( varName == D_ATMOSPHERIC_CO2 ) {
+    } else if( varNameParsed == D_ATMOSPHERIC_CO2 ) {
         if(date == Core::undefinedIndex())
             returnval = Ca;
         else
             returnval = Ca_ts.get(date);
-    } else if( varName == D_ATMOSPHERIC_C_RESIDUAL ) {
+    } else if( varNameParsed == D_ATMOSPHERIC_C_RESIDUAL ) {
         if(date == Core::undefinedIndex())
             returnval = residual;
         else
             returnval = residual_ts.get(date);
-    } else if( varName == D_PREINDUSTRIAL_CO2 ) {
+    } else if( varNameParsed == D_PREINDUSTRIAL_CO2 ) {
         H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for preindustrial CO2" );
         returnval = C0;
-    } else if(varName == D_BETA) {
+    } else if(varNameParsed == D_BETA) {
         // For the time being, we are only supporting global beta, not biome-specific
         H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for CO2 fertilization (beta)");
-        returnval = unitval(beta.at(SNBOX_DEFAULT_BIOME), U_UNITLESS);
-    } else if(varName == D_Q10_RH) {
+        returnval = unitval(beta.at(biome), U_UNITLESS);
+    } else if(varNameParsed == D_Q10_RH) {
         H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for Q10");
         returnval = unitval(q10_rh, U_UNITLESS);
-    } else if( varName == D_LAND_CFLUX ) {
+    } else if( varNameParsed == D_LAND_CFLUX ) {
         H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for atm-land flux" );
         returnval = sum_npp() - sum_rh() - lucEmissions.get( ODEstartdate );
         
-    } else if( varName == D_RF_T_ALBEDO ) {
+    } else if( varNameParsed == D_RF_T_ALBEDO ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for albedo forcing" );
         returnval = Ftalbedo.get( date );
 
         // Partitioning parameters.
         // For now, only global values are supported.
         // TODO Biome-specific versions of all of these
-    } else if(varName == D_F_NPPV) {
+    } else if(varNameParsed == D_F_NPPV) {
         H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for vegetation NPP fraction");
         returnval = unitval(f_nppv, U_UNITLESS);
-    } else if(varName == D_F_NPPD) {
+    } else if(varNameParsed == D_F_NPPD) {
         H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for detritus NPP fraction");
         returnval = unitval(f_nppd, U_UNITLESS);
-    } else if(varName == D_F_LITTERD) {
+    } else if(varNameParsed == D_F_LITTERD) {
         H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for litter-detritus fraction");
         returnval = unitval(f_litterd, U_UNITLESS);
-    } else if(varName == D_F_LUCV) {
+    } else if(varNameParsed == D_F_LUCV) {
         H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for LUC vegetation fraction");
         returnval = unitval(f_lucv, U_UNITLESS);
-    } else if(varName == D_F_LUCD) {
+    } else if(varNameParsed == D_F_LUCD) {
         H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for LUC detritus fraction");
         returnval = unitval(f_lucd, U_UNITLESS);
         
-    } else if( varName == D_EARTHC ) {
+    } else if( varNameParsed == D_EARTHC ) {
         if(date == Core::undefinedIndex())
             returnval = earth_c;
         else
             returnval = earth_c_ts.get(date);
-    } else if( varName == D_VEGC ) {
+    } else if( varNameParsed == D_VEGC ) {
         if(date == Core::undefinedIndex())
             returnval = sum_map( veg_c );
         else
             returnval = sum_map(veg_c_tv.get(date));
-    } else if( varName == D_DETRITUSC ) {
+    } else if( varNameParsed == D_DETRITUSC ) {
         if(date == Core::undefinedIndex())
             returnval = sum_map( detritus_c );
         else
             returnval = sum_map(detritus_c_tv.get(date));
-    } else if( varName == D_SOILC ) {
+    } else if( varNameParsed == D_SOILC ) {
         if(date == Core::undefinedIndex()) 
             returnval = sum_map( soil_c );
         else
             returnval = sum_map(soil_c_tv.get(date));
-    } else if( varName == D_FFI_EMISSIONS ) {
+    } else if( varNameParsed == D_FFI_EMISSIONS ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for ffi emissions" );
         returnval = ffiEmissions.get( date );
-    } else if( varName == D_LUC_EMISSIONS ) {
+    } else if( varNameParsed == D_LUC_EMISSIONS ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for luc emissions" );
         returnval = lucEmissions.get( date );
-    } else if( varName == D_NPP ) {
+    } else if( varNameParsed == D_NPP ) {
         H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for npp" );
         returnval = sum_npp();
-    } else if( varName == D_RH ) {
+    } else if( varNameParsed == D_RH ) {
         H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for rh" );
         returnval = sum_rh();
     }else {

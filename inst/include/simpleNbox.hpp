@@ -47,6 +47,7 @@ public:
     
     // overrides for IModelComponent methods
     std::string getComponentName() const { return std::string( SIMPLENBOX_COMPONENT_NAME ); }
+    std::vector<std::string> getBiomeList() const { return(biome_list); }
     
     virtual void init( Core* core );
     

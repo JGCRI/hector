@@ -99,7 +99,9 @@ public:
                       bool logtoscrn=false);
     static Core *getcore(int idx);
     static void delcore(int idx);
-    
+
+    std::vector<std::string> getBiomeList() const;
+
 private:
     //! Registry of instantiated cores 
     //! \details This is used when you are instantiating hector cores

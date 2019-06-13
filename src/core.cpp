@@ -12,6 +12,8 @@
  *
  */
 
+#include "boost/algorithm/string.hpp"
+
 #include "imodel_component.hpp"
 #include "halocarbon_component.hpp"
 #include "oh_component.hpp"
@@ -636,6 +638,17 @@ unitval Core::sendMessage( const std::string& message,
                           const std::string& datum,
                           const message_data& info ) throw ( h_exception )
 {
+
+    std::vector<std::string> datum_split;
+    boost::split( datum_split, datum, boost::is_any_of( SNBOX_PARSECHAR ) );
+    H_ASSERT( datum_split.size() < 3, "max of one separator allowed in variable names" );
+    std::string datum_capability;
+    if ( datum_split.size() == 2 ) {
+        datum_capability = datum_split[ 1 ];
+    } else {
+        datum_capability = datum_split[ 0 ];
+    }
+
     if (message == M_GETDATA || message == M_DUMP_TO_DEEP_OCEAN) {
         // M_GETDATA is used extensively by components to query each other re state
         // M_DUMP_TO_DEEP_OCEAN is a special message used only to constrain the atmosphere
@@ -648,10 +661,10 @@ unitval Core::sendMessage( const std::string& message,
             H_THROW("Invalid sendMessage/GETDATA.  Check global log for details.");
         }
         else {
-            componentMapIterator it = componentCapabilities.find( datum );
+            componentMapIterator it = componentCapabilities.find( datum_capability );
             
             string err = "Unknown model datum: " + datum;
-            H_ASSERT( checkCapability( datum ), err );
+            H_ASSERT( checkCapability( datum_capability ), err );
             return getComponentByName( ( *it ).second )->sendMessage( message, datum, info );
         }
     }
@@ -659,7 +672,7 @@ unitval Core::sendMessage( const std::string& message,
         // locate the components that take this kind of input.  If
         // there are multiple, we send the message to all of them.
         pair<componentMapIterator, componentMapIterator> itpr =
-            componentInputs.equal_range(datum);
+            componentInputs.equal_range(datum_capability);
         if(itpr.first == itpr.second) {
             H_LOG(glog, Logger::SEVERE)
                 << "No such input: " << datum << "  Aborting.";
@@ -752,6 +765,17 @@ void Core::delcore(int idx)
         core_registry[idx] = NULL;
     }
     // If core is null, it's already been shutdown, so do nothing. 
+}
+
+std::vector<std::string> Core::getBiomeList() const
+{
+    IModelComponent* snbox_i = getComponentByName( SIMPLENBOX_COMPONENT_NAME );
+    SimpleNbox* snbox = dynamic_cast<SimpleNbox*>(snbox_i);
+    if (snbox) {
+        return( snbox->getBiomeList() );
+    } else {
+        H_THROW("Failed to retrieve biome list because of error in dynamic cast to `SimpleNbox`.")
+    }
 }
 
 }

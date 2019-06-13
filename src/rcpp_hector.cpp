@@ -195,6 +195,15 @@ double getdate(Environment core)
     return hcore->getCurrentDate();
 }
 
+//' @export
+// [[Rcpp::export]]
+Rcpp::StringVector get_biome_list(Environment core)
+{
+    Hector::Core *hcore = gethcore(core);
+    std::vector<std::string> biome_list = hcore->getBiomeList();
+    return Rcpp::wrap(biome_list);
+}
+
 
 //' Send a message to a Hector instance
 //'

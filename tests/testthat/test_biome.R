@@ -2,13 +2,17 @@ context("Running Hector with multiple biomes")
 
 test_that("Hector runs with multiple biomes.", {
 
-  quickrun <- function(ini_string, name, ini_file = NULL) {
+  string2core <- function(ini_string, name, ini_file = NULL) {
     if (is.null(ini_file)) {
       ini_file <- tempfile()
       on.exit(file.remove(ini_file), add = TRUE)
       writeLines(ini_string, ini_file)
     }
-    core <- newcore(ini_file, name = name, suppresslogging = TRUE)
+    newcore(ini_file, name = name, suppresslogging = TRUE)
+  }
+
+  quickrun <- function(ini_string, name, ini_file = NULL) {
+    core <- string2core(ini_string, name, ini_file)
     invisible(run(core))
     on.exit(shutdown(core), add = TRUE)
     dates <- seq(2000, 2100)
@@ -91,4 +95,17 @@ test_that("Hector runs with multiple biomes.", {
     quickrun(extra_biome, "extra_biome"),
     "not same size"
   )
+})
+
+test_that("Setting and getting biome-specific parameters", {
+  core <- newcore(system.file("input", "hector_rcp45.ini",
+                              package = "hector"),
+                  suppresslogging = TRUE)
+  b1 <- fetchvars(core, NA, "beta")
+  b2 <- fetchvars(core, NA, "global.beta")
+  expect_equal(b1$value, b2$value)
+  expect_error(fetchvars(core, NA, "fake.beta"),
+               "missing from biome list")
+  expect_error(setvar(core, NA, "permafrost.beta", 0.5, NA),
+               "Biome 'permafrost' is not in current biome list")
 })

@@ -1405,6 +1405,16 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// BIOME_SPLIT_CHAR
+String BIOME_SPLIT_CHAR();
+RcppExport SEXP _hector_BIOME_SPLIT_CHAR() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(BIOME_SPLIT_CHAR());
+    return rcpp_result_gen;
+END_RCPP
+}
 // newcore_impl
 Environment newcore_impl(String inifile, int loglevel, bool suppresslogging, String name);
 RcppExport SEXP _hector_newcore_impl(SEXP inifileSEXP, SEXP loglevelSEXP, SEXP suppressloggingSEXP, SEXP nameSEXP) {
@@ -1462,6 +1472,17 @@ BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Environment >::type core(coreSEXP);
     rcpp_result_gen = Rcpp::wrap(getdate(core));
+    return rcpp_result_gen;
+END_RCPP
+}
+// get_biome_list
+Rcpp::StringVector get_biome_list(Environment core);
+RcppExport SEXP _hector_get_biome_list(SEXP coreSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Environment >::type core(coreSEXP);
+    rcpp_result_gen = Rcpp::wrap(get_biome_list(core));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -1634,11 +1655,13 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_FLUX_MIXED", (DL_FUNC) &_hector_FLUX_MIXED, 0},
     {"_hector_FLUX_INTERIOR", (DL_FUNC) &_hector_FLUX_INTERIOR, 0},
     {"_hector_HEAT_FLUX", (DL_FUNC) &_hector_HEAT_FLUX, 0},
+    {"_hector_BIOME_SPLIT_CHAR", (DL_FUNC) &_hector_BIOME_SPLIT_CHAR, 0},
     {"_hector_newcore_impl", (DL_FUNC) &_hector_newcore_impl, 4},
     {"_hector_shutdown", (DL_FUNC) &_hector_shutdown, 1},
     {"_hector_reset", (DL_FUNC) &_hector_reset, 2},
     {"_hector_run", (DL_FUNC) &_hector_run, 2},
     {"_hector_getdate", (DL_FUNC) &_hector_getdate, 1},
+    {"_hector_get_biome_list", (DL_FUNC) &_hector_get_biome_list, 1},
     {"_hector_sendmessage", (DL_FUNC) &_hector_sendmessage, 6},
     {"_hector_chk_core_valid", (DL_FUNC) &_hector_chk_core_valid, 1},
     {NULL, NULL, 0}
