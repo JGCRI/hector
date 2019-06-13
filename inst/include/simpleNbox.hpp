@@ -91,6 +91,9 @@ private:
      * All of this information will be saved at the end of each time
      * step so that we can reset to any arbitrary past time.
      *****************************************************************/
+
+    // List of biomes
+    std::vector<std::string> biome_list;
     
     // Carbon pools -- global
     unitval earth_c;                //!< earth pool, Pg C; for mass-balance
@@ -105,7 +108,6 @@ private:
     unitval residual;               //!< residual (when constraining Ca) flux, Pg C
 
     double_stringmap tempfertd, tempferts; //!< temperature effect on respiration (unitless)
-    
 
     /*****************************************************************
      * Records of component state
