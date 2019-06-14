@@ -101,10 +101,13 @@ public:
     static void delcore(int idx);
 
     std::vector<std::string> getBiomeList() const;
+    void createBiome(const std::string& biome);
+    void deleteBiome(const std::string& biome);
+    void renameBiome(const std::string& oldname, const std::string& newname);
 
 private:
     //! Registry of instantiated cores 
-    //! \details This is used when you are instantiating hector cores
+    //! \detais is used when you are instantiating hector cores
     //! from a language other than C++.  Instead of trying to convert
     //! C++ pointers to something that can be stored in the other
     //! language's data structures, you just register the core(s) you

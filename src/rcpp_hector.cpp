@@ -195,13 +195,49 @@ double getdate(Environment core)
     return hcore->getCurrentDate();
 }
 
+//' Retrieve the current list of biomes for a Hector instance
+//'
 //' @export
 // [[Rcpp::export]]
-Rcpp::StringVector get_biome_list(Environment core)
+std::vector<std::string> get_biome_list(Environment core)
 {
     Hector::Core *hcore = gethcore(core);
     std::vector<std::string> biome_list = hcore->getBiomeList();
-    return Rcpp::wrap(biome_list);
+    return biome_list;
+}
+
+//' Create a biome
+//'
+//' @param biome (character) Name of new biome
+// [[Rcpp::export]]
+Environment c_create_biome(Environment core, std::string biome)
+{
+    Hector::Core *hcore = gethcore(core);
+    hcore->createBiome(biome);
+    return core;
+}
+
+//' Delete a biome
+//'
+//' @param biome (character) Name of biome to delete
+// [[Rcpp::export]]
+Environment c_delete_biome(Environment core, std::string biome)
+{
+    Hector::Core *hcore = gethcore(core);
+    hcore->deleteBiome(biome);
+    return core;
+}
+
+//' Create a biome
+//'
+//' @param biome (character) Name of new biome
+// [[Rcpp::export]]
+Environment c_rename_biome(Environment core, std::string oldname, std::string newname)
+{
+    Hector::Core *hcore = gethcore(core);
+    std::string old_s, new_s;
+    hcore->renameBiome(oldname, newname);
+    return core;
 }
 
 

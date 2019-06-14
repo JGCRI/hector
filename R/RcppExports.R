@@ -907,9 +907,32 @@ getdate <- function(core) {
     .Call('_hector_getdate', PACKAGE = 'hector', core)
 }
 
+#' Retrieve the current list of biomes for a Hector instance
+#'
 #' @export
 get_biome_list <- function(core) {
     .Call('_hector_get_biome_list', PACKAGE = 'hector', core)
+}
+
+#' Create a biome
+#'
+#' @param biome (character) Name of new biome
+c_create_biome <- function(core, biome) {
+    .Call('_hector_c_create_biome', PACKAGE = 'hector', core, biome)
+}
+
+#' Delete a biome
+#'
+#' @param biome (character) Name of biome to delete
+c_delete_biome <- function(core, biome) {
+    .Call('_hector_c_delete_biome', PACKAGE = 'hector', core, biome)
+}
+
+#' Create a biome
+#'
+#' @param biome (character) Name of new biome
+c_rename_biome <- function(core, oldname, newname) {
+    .Call('_hector_c_rename_biome', PACKAGE = 'hector', core, oldname, newname)
 }
 
 #' Send a message to a Hector instance

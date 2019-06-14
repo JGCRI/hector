@@ -97,7 +97,7 @@ test_that("Hector runs with multiple biomes.", {
   )
 })
 
-test_that("Setting and getting biome-specific parameters", {
+test_that("Creating new biomes via set/fetchvar is prohibited", {
   core <- newcore(system.file("input", "hector_rcp45.ini",
                               package = "hector"),
                   suppresslogging = TRUE)
@@ -105,7 +105,32 @@ test_that("Setting and getting biome-specific parameters", {
   b2 <- fetchvars(core, NA, "global.beta")
   expect_equal(b1$value, b2$value)
   expect_error(fetchvars(core, NA, "fake.beta"),
-               "missing from biome list")
+               "Requested biome missing from biome list")
   expect_error(setvar(core, NA, "permafrost.beta", 0.5, NA),
                "Biome 'permafrost' is not in current biome list")
+})
+
+test_that("Correct way to create new biomes", {
+  core <- newcore(system.file("input", "hector_rcp45.ini",
+                              package = "hector"),
+                  suppresslogging = TRUE)
+  gbeta <- fetchvars(core, NA, BETA())
+  expect_equal(get_biome_list(core), "global")
+  use_biomes(core, "permafrost")
+  expect_error(fetchvars(core, NA, BETA()), "Requested biome missing from biome list")
+  expect_equal(get_biome_list(core), "permafrost")
+  pbeta <- fetchvars(core, NA, "permafrost.beta")
+  expect_equal(pbeta[["variable"]], "permafrost.beta")
+  expect_equal(pbeta[["value"]], gbeta[["value"]])
+  invisible(reset(core))
+  invisible(run(core))
+  # This suppresses a bogus warning about the condition type of the
+  # resulting error.
+  suppressWarnings(
+    expect_error(c_create_biome(core, "permafrost"), "Biome 'permafrost' is already in `biome_list`")
+  )
+  invisible(c_create_biome(core, "empty"))
+  expect_equal(get_biome_list(core), c("permafrost", "empty"))
+  expect_equal(fetchvars(core, NA, "empty.beta")[["value"]], pbeta[["value"]])
+  invisible(run(core))
 })

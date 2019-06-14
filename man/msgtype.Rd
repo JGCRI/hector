@@ -4,11 +4,14 @@
 \alias{msgtype}
 \alias{GETDATA}
 \alias{SETDATA}
+\alias{BIOME_SPLIT_CHAR}
 \title{Message type identifiers}
 \usage{
 GETDATA()
 
 SETDATA()
+
+BIOME_SPLIT_CHAR()
 }
 \description{
 These identifiers indicate the type of a message so that the core can route
@@ -19,6 +22,8 @@ it to the correct method in the recipient.
 \item \code{GETDATA}: Message type for retrieving data from a component
 
 \item \code{SETDATA}: Message type for setting data in a component
+
+\item \code{BIOME_SPLIT_CHAR}: Character used to separate biome from variable name
 }}
 
 \section{Note}{

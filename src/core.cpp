@@ -767,6 +767,7 @@ void Core::delcore(int idx)
     // If core is null, it's already been shutdown, so do nothing. 
 }
 
+//! Retrieve the current biome list
 std::vector<std::string> Core::getBiomeList() const
 {
     IModelComponent* snbox_i = getComponentByName( SIMPLENBOX_COMPONENT_NAME );
@@ -775,6 +776,52 @@ std::vector<std::string> Core::getBiomeList() const
         return( snbox->getBiomeList() );
     } else {
         H_THROW("Failed to retrieve biome list because of error in dynamic cast to `SimpleNbox`.")
+    }
+}
+
+/*! Create a new biome 
+ * \details Add the biome to `biome_list`, set all pool values to
+ *  zero, and set all parameters to the values of the previous biome.
+ */
+void Core::createBiome(const std::string& biome)
+{
+    IModelComponent* snbox_i = getComponentByName( SIMPLENBOX_COMPONENT_NAME );
+    SimpleNbox* snbox = dynamic_cast<SimpleNbox*>(snbox_i);
+    if (snbox) {
+        return( snbox->createBiome(biome) );
+    } else {
+        H_THROW("Failed to create biome because of error in dynamic cast to `SimpleNbox`.")
+    }
+}
+
+/*! Delete a biome
+ * \details Remove the biome from `biome_list` and `erase` all
+ * associated pool and parameter values.
+ */
+void Core::deleteBiome(const std::string& biome)
+{
+    IModelComponent* snbox_i = getComponentByName( SIMPLENBOX_COMPONENT_NAME );
+    SimpleNbox* snbox = dynamic_cast<SimpleNbox*>(snbox_i);
+    if (snbox) {
+        return( snbox->deleteBiome(biome) );
+    } else {
+        H_THROW("Failed to delete biome because of error in dynamic cast to `SimpleNbox`.")
+    }
+}
+
+/*! Rename a biome
+ * \details Create a new biome called `newname` (see `createBiome`)
+ * and set all pools and parameters to the values of `oldname`. Then,
+ * delete `oldname` (see `deleteBiome`).
+ */
+void Core::renameBiome(const std::string& oldname, const std::string& newname)
+{
+    IModelComponent* snbox_i = getComponentByName( SIMPLENBOX_COMPONENT_NAME );
+    SimpleNbox* snbox = dynamic_cast<SimpleNbox*>(snbox_i);
+    if (snbox) {
+        return( snbox->renameBiome(oldname, newname) );
+    } else {
+        H_THROW("Failed to rename biome because of error in dynamic cast to `SimpleNbox`.")
     }
 }
 

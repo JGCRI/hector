@@ -77,6 +77,10 @@ public:
     void slowparameval( double t, const double c[] );
     void stashCValues( double t, const double c[] );
     void record_state(double t);                        //!< record the state variables at the end of the time step 
+
+    void createBiome(const std::string& biome);
+    void deleteBiome(const std::string& biome);
+    void renameBiome(const std::string& oldname, const std::string& newname);
     
 private:
     virtual unitval getData( const std::string& varName,

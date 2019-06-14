@@ -124,6 +124,7 @@ void SimpleNbox::setData( const std::string &varName,
         varNameParsed = splitvec[ 1 ];
         // Remove "global" from the `biome_list`
         if ( it_global != biome_list.end() ) {
+            // TODO: Replace with deleteBiome("global")
             biome_list.erase(it_global);
         }
     }
@@ -436,6 +437,8 @@ unitval SimpleNbox::getData(const std::string& varName,
 
     std::string biome = SNBOX_DEFAULT_BIOME;
     std::string varNameParsed = varName;
+    std::string biome_error = "Requested biome missing from biome list. "
+        "Hit this error while trying to retrieve variable: '" + varName + "'.";
     
     // Does the varName contain our parse character? If so, split it
     std::vector<std::string> splitvec;
@@ -446,10 +449,10 @@ unitval SimpleNbox::getData(const std::string& varName,
         biome = splitvec[ 0 ];
         varNameParsed = splitvec[ 1 ];
 
-        std::string errmsg = "Requested biome '" + biome + "' missing from biome list. " +
-            "Hit this error while trying to retrieve variable '" + varName + "'.";
-        H_ASSERT(std::find(biome_list.begin(), biome_list.end(), biome) != biome_list.end(), errmsg);
+        H_ASSERT(std::find(biome_list.begin(), biome_list.end(), biome) != biome_list.end(), biome_error);
     }
+
+    bool biome_present = std::find(biome_list.begin(), biome_list.end(), biome) != biome_list.end();
 
     if( varNameParsed == D_ATMOSPHERIC_C ) {
         if(date == Core::undefinedIndex())
@@ -472,6 +475,7 @@ unitval SimpleNbox::getData(const std::string& varName,
     } else if(varNameParsed == D_BETA) {
         // For the time being, we are only supporting global beta, not biome-specific
         H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for CO2 fertilization (beta)");
+        H_ASSERT(biome_present, biome_error);
         returnval = unitval(beta.at(biome), U_UNITLESS);
     } else if(varNameParsed == D_Q10_RH) {
         H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for Q10");
@@ -1041,6 +1045,75 @@ void SimpleNbox::set_c0(double newc0)
     }
     C0.set(newc0, U_PPMV_CO2);
         
+}
+
+// Create a new biome, and initialize it with zero C pools and fluxes
+// and the same parameters as the most recently created biome.
+void SimpleNbox::createBiome(const std::string& biome)
+{
+    // Throw an error if the biome already exists
+    std::string errmsg = "Biome '" + biome + "' is already in `biome_list`.";
+    H_ASSERT(std::find(biome_list.begin(), biome_list.end(), biome) == biome_list.end(), errmsg);
+
+    // Initialize pools to zero
+    veg_c.at( biome ) = unitval(0, U_PGC);
+    soil_c.at( biome ) = unitval(0, U_PGC);
+    detritus_c.at( biome ) = unitval(0, U_PGC);
+    npp_flux0.at( biome ) = unitval(0, U_PGC_YR);
+
+    std::string last_biome = biome_list.back();
+
+    // Set parameters to same as most recent biome
+    beta.at( biome ) = beta[ last_biome ];
+    warmingfactor.at( biome ) = warmingfactor[ last_biome ];
+    // TODO: Other parameters -- Q10
+
+    // Add to end of biome list
+    biome_list.push_back(biome);
+}
+
+// Delete a biome: Remove it from the `biome_list` and `erase` all of
+// the associated parameters.
+void SimpleNbox::deleteBiome(const std::string& biome) // Throw an error if the biome already exists
+{
+    std::string errmsg = "Biome '" + biome + "' not found in `biome_list`.";
+    std::vector<std::string>::const_iterator i_biome = std::find(biome_list.begin(), biome_list.end(), biome);
+    H_ASSERT(i_biome != biome_list.end(), errmsg);
+
+    // Erase all values associated with the biome
+    beta.erase( biome );
+    warmingfactor.erase( biome );
+    veg_c.erase( biome );
+    soil_c.erase( biome );
+    detritus_c.erase( biome );
+    npp_flux0.erase( biome );
+
+    // Remove from `biome_list`
+    biome_list.erase( i_biome );
+}
+
+// Create a new biome called `newname`, transfer all of the parameters
+// and pools from `oldname`, and delete `oldname`. Note that the new
+// biome and all of its associated values will be at the end of their
+// corresponding vectors.
+void SimpleNbox::renameBiome(const std::string& oldname, const std::string& newname)
+{
+    std::string errmsg = "Biome '" + oldname + "' not found in `biome_list`.";
+    H_ASSERT(std::find(biome_list.begin(), biome_list.end(), oldname) != biome_list.end(), errmsg);
+    errmsg = "Biome '" + newname + "' already exists in `biome_list`.";
+    H_ASSERT(std::find(biome_list.begin(), biome_list.end(), newname) == biome_list.end(), errmsg);
+
+    // Transfer all values from `oldname` to `newname`
+    createBiome(newname);
+    beta.at( newname ) = beta.at( oldname );
+    warmingfactor.at( newname ) = warmingfactor.at( oldname );
+    veg_c.at( newname ) = veg_c.at( oldname );
+    soil_c.at( newname ) = soil_c.at( oldname );
+    detritus_c.at( newname ) = detritus_c.at( oldname );
+    npp_flux0.at( newname ) = npp_flux0.at( oldname );
+
+    // Delete biome `oldname`
+    deleteBiome( oldname );
 }
 
 }

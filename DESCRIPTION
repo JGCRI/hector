@@ -27,6 +27,7 @@ SystemRequirements: Boost C++ libraries
 Collate:
     'aadoc.R'
     'RcppExports.R'
+    'biome.R'
     'hector.R'
     'messages.R'
     'units.R'
