@@ -111,6 +111,7 @@ test_that("Creating new biomes via set/fetchvar is prohibited", {
 })
 
 test_that("Correct way to create new biomes", {
+
   core <- newcore(system.file("input", "hector_rcp45.ini",
                               package = "hector"),
                   suppresslogging = TRUE)
@@ -123,6 +124,7 @@ test_that("Correct way to create new biomes", {
   expect_equal(pbeta[["variable"]], "permafrost.beta")
   expect_equal(pbeta[["value"]], gbeta[["value"]])
   invisible(reset(core))
+
   invisible(run(core))
   # This suppresses a bogus warning about the condition type of the
   # resulting error.

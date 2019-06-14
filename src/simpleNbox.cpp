@@ -1056,20 +1056,26 @@ void SimpleNbox::createBiome(const std::string& biome)
     H_ASSERT(std::find(biome_list.begin(), biome_list.end(), biome) == biome_list.end(), errmsg);
 
     // Initialize pools to zero
-    veg_c.at( biome ) = unitval(0, U_PGC);
-    soil_c.at( biome ) = unitval(0, U_PGC);
-    detritus_c.at( biome ) = unitval(0, U_PGC);
-    npp_flux0.at( biome ) = unitval(0, U_PGC_YR);
+    veg_c[ biome ] = unitval(0, U_PGC);
+    soil_c[ biome ] = unitval(0, U_PGC);
+    detritus_c[ biome ] = unitval(0, U_PGC);
+    npp_flux0[ biome ] = unitval(0, U_PGC_YR);
 
     std::string last_biome = biome_list.back();
 
     // Set parameters to same as most recent biome
-    beta.at( biome ) = beta[ last_biome ];
-    warmingfactor.at( biome ) = warmingfactor[ last_biome ];
+    beta[ biome ] = beta[ last_biome ];
+    warmingfactor[ biome ] = warmingfactor[ last_biome ];
     // TODO: Other parameters -- Q10
 
     // Add to end of biome list
     biome_list.push_back(biome);
+
+    // Set time series variables accordingly and reset the core
+    veg_c_tv.set(0, veg_c);
+    detritus_c_tv.set(0, detritus_c);
+    soil_c_tv.set(0, soil_c);
+    core->reset(0);
 }
 
 // Delete a biome: Remove it from the `biome_list` and `erase` all of
@@ -1090,6 +1096,12 @@ void SimpleNbox::deleteBiome(const std::string& biome) // Throw an error if the 
 
     // Remove from `biome_list`
     biome_list.erase( i_biome );
+
+    // Set time series variables accordingly and reset the core
+    veg_c_tv.set(0, veg_c);
+    detritus_c_tv.set(0, detritus_c);
+    soil_c_tv.set(0, soil_c);
+    core->reset(0);
 }
 
 // Create a new biome called `newname`, transfer all of the parameters
@@ -1105,12 +1117,18 @@ void SimpleNbox::renameBiome(const std::string& oldname, const std::string& newn
 
     // Transfer all values from `oldname` to `newname`
     createBiome(newname);
-    beta.at( newname ) = beta.at( oldname );
-    warmingfactor.at( newname ) = warmingfactor.at( oldname );
-    veg_c.at( newname ) = veg_c.at( oldname );
-    soil_c.at( newname ) = soil_c.at( oldname );
-    detritus_c.at( newname ) = detritus_c.at( oldname );
-    npp_flux0.at( newname ) = npp_flux0.at( oldname );
+    beta[ newname ] = beta.at( oldname );
+    warmingfactor[ newname ] = warmingfactor.at( oldname );
+    veg_c[ newname ] = veg_c.at( oldname );
+    soil_c[ newname ] = soil_c.at( oldname );
+    detritus_c[ newname ] = detritus_c.at( oldname );
+    npp_flux0[ newname ] = npp_flux0.at( oldname );
+
+    // Set time series variables accordingly and reset the core
+    veg_c_tv.set(0, veg_c);
+    detritus_c_tv.set(0, detritus_c);
+    soil_c_tv.set(0, soil_c);
+    core->reset(0);
 
     // Delete biome `oldname`
     deleteBiome( oldname );
