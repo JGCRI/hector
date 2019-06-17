@@ -48,7 +48,7 @@ When you are finished with a hector instance, you should call
 \references{
 Hartin, C. A., Patel, P., Schwarber, A., Link, R. P., and Bond-Lamberty,
 B. P.: A simple object-oriented and open-source model for scientific and
-policy analyses of the global climate system – Hector v1.0, Geosci. Model
+policy analyses of the global climate system - Hector v1.0, Geosci. Model
 Dev., 8, 939-955, \url{https://doi.org/10.5194/gmd-8-939-2015}, 2015.
 
 Hartin, C. A., Bond-Lamberty, B., Patel, P., and Mundra, A.: Ocean
