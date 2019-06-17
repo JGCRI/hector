@@ -101,12 +101,12 @@ test_that("Creating new biomes via set/fetchvar is prohibited", {
   core <- newcore(system.file("input", "hector_rcp45.ini",
                               package = "hector"),
                   suppresslogging = TRUE)
-  b1 <- fetchvars(core, NA, "beta")
-  b2 <- fetchvars(core, NA, "global.beta")
+  b1 <- fetchvars(core, NA, BETA())
+  b2 <- fetchvars(core, NA, BETA("global"))
   expect_equal(b1$value, b2$value)
-  expect_error(fetchvars(core, NA, "fake.beta"),
+  expect_error(fetchvars(core, NA, BETA("fake")),
                "Requested biome missing from biome list")
-  expect_error(setvar(core, NA, "permafrost.beta", 0.5, NA),
+  expect_error(setvar(core, NA, BETA("permafrost"), 0.5, NA),
                "Biome 'permafrost' is not in current biome list")
 })
 
@@ -125,7 +125,7 @@ test_that("Correct way to create new biomes", {
   expect_equal(get_biome_list(core), "permafrost")
   expect_error(fetchvars(core, NA, BETA()), "Requested biome missing from biome list")
   pbeta <- fetchvars(core, NA, "permafrost.beta")
-  expect_equal(pbeta[["variable"]], "permafrost.beta")
+  expect_equal(pbeta[["variable"]], BETA("permafrost"))
   expect_equal(pbeta[["value"]], gbeta[["value"]])
   expect_silent(invisible(run(core)))
   results_pf <- fetchvars(core, 2000:2100)
@@ -137,7 +137,7 @@ test_that("Correct way to create new biomes", {
   )
   invisible(c_create_biome(core, "empty"))
   expect_equal(get_biome_list(core), c("permafrost", "empty"))
-  expect_equal(fetchvars(core, NA, "empty.beta")[["value"]], pbeta[["value"]])
+  expect_equal(fetchvars(core, NA, BETA("empty"))[["value"]], pbeta[["value"]])
   expect_silent(invisible(run(core)))
   results_pfe <- fetchvars(core, 2000:2100)
   expect_equal(results_pf, results_pfe)

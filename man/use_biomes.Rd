@@ -6,6 +6,12 @@
 \usage{
 use_biomes(core, first_biome = "biome1")
 }
+\arguments{
+\item{first_biome}{(Character) Name of first biome. Default is `"biome1"`.}
+}
+\value{
+Hector core, invisibly
+}
 \description{
 Enable biomes
 }

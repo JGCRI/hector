@@ -709,9 +709,11 @@ Q10_RH <- function() {
 }
 
 #' @describeIn parameters CO2 fertilization factor (\code{"(unitless)"})
+#' @param biome Biome for which to retrieve parameter. If missing or
+#'   `""`, default to `"global"`.
 #' @export
-BETA <- function() {
-    .Call('_hector_BETA', PACKAGE = 'hector')
+BETA <- function(biome = "") {
+    .Call('_hector_BETA', PACKAGE = 'hector', biome)
 }
 
 #' @describeIn parameters NPP fraction to vegetation (\code{"(unitless)"})

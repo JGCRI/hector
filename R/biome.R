@@ -1,7 +1,7 @@
 #' Enable biomes
 #'
-#' @param first_biome
-#' @return 
+#' @param first_biome (Character) Name of first biome. Default is `"biome1"`.
+#' @return Hector core, invisibly
 #' @author Alexey Shiklomanov
 #' @export
 use_biomes <- function(core, first_biome = "biome1") {

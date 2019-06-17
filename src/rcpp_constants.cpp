@@ -882,10 +882,14 @@ return D_Q10_RH;
 }
 
 //' @describeIn parameters CO2 fertilization factor (\code{"(unitless)"})
+//' @param biome Biome for which to retrieve parameter. If missing or
+//'   `""`, default to `"global"`.
 //' @export
 // [[Rcpp::export]]
-String BETA() {
-return D_BETA;
+std::string BETA(std::string biome = "") {
+  std::string out = D_BETA;
+  if (biome != "") out = biome + "." + out;
+  return out;
 }
 
 //' @describeIn parameters NPP fraction to vegetation (\code{"(unitless)"})

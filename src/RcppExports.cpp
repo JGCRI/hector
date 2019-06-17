@@ -1186,12 +1186,13 @@ BEGIN_RCPP
 END_RCPP
 }
 // BETA
-String BETA();
-RcppExport SEXP _hector_BETA() {
+std::string BETA(std::string biome);
+RcppExport SEXP _hector_BETA(SEXP biomeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(BETA());
+    Rcpp::traits::input_parameter< std::string >::type biome(biomeSEXP);
+    rcpp_result_gen = Rcpp::wrap(BETA(biome));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -1670,7 +1671,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_FFI_EMISSIONS", (DL_FUNC) &_hector_FFI_EMISSIONS, 0},
     {"_hector_LUC_EMISSIONS", (DL_FUNC) &_hector_LUC_EMISSIONS, 0},
     {"_hector_Q10_RH", (DL_FUNC) &_hector_Q10_RH, 0},
-    {"_hector_BETA", (DL_FUNC) &_hector_BETA, 0},
+    {"_hector_BETA", (DL_FUNC) &_hector_BETA, 1},
     {"_hector_F_NPPV", (DL_FUNC) &_hector_F_NPPV, 0},
     {"_hector_F_NPPD", (DL_FUNC) &_hector_F_NPPD, 0},
     {"_hector_F_LITTERD", (DL_FUNC) &_hector_F_LITTERD, 0},

@@ -20,7 +20,7 @@ PREINDUSTRIAL_CO2()
 
 Q10_RH()
 
-BETA()
+BETA(biome = "")
 
 F_NPPV()
 
