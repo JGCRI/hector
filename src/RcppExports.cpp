@@ -1196,6 +1196,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// WARMINGFACTOR
+std::string WARMINGFACTOR(std::string biome);
+RcppExport SEXP _hector_WARMINGFACTOR(SEXP biomeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type biome(biomeSEXP);
+    rcpp_result_gen = Rcpp::wrap(WARMINGFACTOR(biome));
+    return rcpp_result_gen;
+END_RCPP
+}
 // F_NPPV
 String F_NPPV();
 RcppExport SEXP _hector_F_NPPV() {
@@ -1243,6 +1254,50 @@ BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     rcpp_result_gen = Rcpp::wrap(F_LUCD());
+    return rcpp_result_gen;
+END_RCPP
+}
+// VEG_C
+std::string VEG_C(std::string biome);
+RcppExport SEXP _hector_VEG_C(SEXP biomeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type biome(biomeSEXP);
+    rcpp_result_gen = Rcpp::wrap(VEG_C(biome));
+    return rcpp_result_gen;
+END_RCPP
+}
+// DETRITUS_C
+std::string DETRITUS_C(std::string biome);
+RcppExport SEXP _hector_DETRITUS_C(SEXP biomeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type biome(biomeSEXP);
+    rcpp_result_gen = Rcpp::wrap(DETRITUS_C(biome));
+    return rcpp_result_gen;
+END_RCPP
+}
+// SOIL_C
+std::string SOIL_C(std::string biome);
+RcppExport SEXP _hector_SOIL_C(SEXP biomeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type biome(biomeSEXP);
+    rcpp_result_gen = Rcpp::wrap(SOIL_C(biome));
+    return rcpp_result_gen;
+END_RCPP
+}
+// NPP_FLUX0
+std::string NPP_FLUX0(std::string biome);
+RcppExport SEXP _hector_NPP_FLUX0(SEXP biomeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type biome(biomeSEXP);
+    rcpp_result_gen = Rcpp::wrap(NPP_FLUX0(biome));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -1672,11 +1727,16 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_LUC_EMISSIONS", (DL_FUNC) &_hector_LUC_EMISSIONS, 0},
     {"_hector_Q10_RH", (DL_FUNC) &_hector_Q10_RH, 0},
     {"_hector_BETA", (DL_FUNC) &_hector_BETA, 1},
+    {"_hector_WARMINGFACTOR", (DL_FUNC) &_hector_WARMINGFACTOR, 1},
     {"_hector_F_NPPV", (DL_FUNC) &_hector_F_NPPV, 0},
     {"_hector_F_NPPD", (DL_FUNC) &_hector_F_NPPD, 0},
     {"_hector_F_LITTERD", (DL_FUNC) &_hector_F_LITTERD, 0},
     {"_hector_F_LUCV", (DL_FUNC) &_hector_F_LUCV, 0},
     {"_hector_F_LUCD", (DL_FUNC) &_hector_F_LUCD, 0},
+    {"_hector_VEG_C", (DL_FUNC) &_hector_VEG_C, 1},
+    {"_hector_DETRITUS_C", (DL_FUNC) &_hector_DETRITUS_C, 1},
+    {"_hector_SOIL_C", (DL_FUNC) &_hector_SOIL_C, 1},
+    {"_hector_NPP_FLUX0", (DL_FUNC) &_hector_NPP_FLUX0, 1},
     {"_hector_NATURAL_SO2", (DL_FUNC) &_hector_NATURAL_SO2, 0},
     {"_hector_Y2000_SO2", (DL_FUNC) &_hector_Y2000_SO2, 0},
     {"_hector_EMISSIONS_SO2", (DL_FUNC) &_hector_EMISSIONS_SO2, 0},

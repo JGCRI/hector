@@ -716,6 +716,13 @@ BETA <- function(biome = "") {
     .Call('_hector_BETA', PACKAGE = 'hector', biome)
 }
 
+#' @describeIn parameters Biome-specific warming factor (`(unitless)`)
+#' @inheritParams BETA
+#' @export
+WARMINGFACTOR <- function(biome = "") {
+    .Call('_hector_WARMINGFACTOR', PACKAGE = 'hector', biome)
+}
+
 #' @describeIn parameters NPP fraction to vegetation (\code{"(unitless)"})
 #' @export
 F_NPPV <- function() {
@@ -744,6 +751,35 @@ F_LUCV <- function() {
 #' @export
 F_LUCD <- function() {
     .Call('_hector_F_LUCD', PACKAGE = 'hector')
+}
+
+#' @describeIn carboncycle Vegetation C pool (`"Pg C"`)
+#' @inheritParams BETA
+#' @export
+VEG_C <- function(biome = "") {
+    .Call('_hector_VEG_C', PACKAGE = 'hector', biome)
+}
+
+#' @describeIn carboncycle Vegetation detritus C pool (`"Pg C"`)
+#' @inheritParams BETA
+#' @export
+DETRITUS_C <- function(biome = "") {
+    .Call('_hector_DETRITUS_C', PACKAGE = 'hector', biome)
+}
+
+#' @describeIn carboncycle Soil C pool (`"Pg C"`)
+#' @inheritParams BETA
+#' @export
+SOIL_C <- function(biome = "") {
+    .Call('_hector_SOIL_C', PACKAGE = 'hector', biome)
+}
+
+#' @describeIn carboncycle Initial net primary productivity (NPP)
+#'   flux (`"Pg C year^-1"`)
+#' @inheritParams BETA
+#' @export
+NPP_FLUX0 <- function(biome = "") {
+    .Call('_hector_NPP_FLUX0', PACKAGE = 'hector', biome)
 }
 
 #' @rdname so2

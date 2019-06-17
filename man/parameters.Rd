@@ -5,6 +5,7 @@
 \alias{PREINDUSTRIAL_CO2}
 \alias{Q10_RH}
 \alias{BETA}
+\alias{WARMINGFACTOR}
 \alias{F_NPPV}
 \alias{F_NPPD}
 \alias{F_LITTERD}
@@ -21,6 +22,8 @@ PREINDUSTRIAL_CO2()
 Q10_RH()
 
 BETA(biome = "")
+
+WARMINGFACTOR(biome = "")
 
 F_NPPV()
 
@@ -40,6 +43,10 @@ VOLCANIC_SCALE()
 
 DIFFUSIVITY()
 }
+\arguments{
+\item{biome}{Biome for which to retrieve parameter. If missing or
+`""`, default to `"global"`.}
+}
 \description{
 These identifiers correspond to settable parameters that change the model
 behavior and are subject to uncertainty.  All of these can be set using the
@@ -58,6 +65,8 @@ mass).
 \item \code{Q10_RH}: Heterotrophic respiration temperature sensitivity factor (\code{"(unitless)"})
 
 \item \code{BETA}: CO2 fertilization factor (\code{"(unitless)"})
+
+\item \code{WARMINGFACTOR}: Biome-specific warming factor (`(unitless)`)
 
 \item \code{F_NPPV}: NPP fraction to vegetation (\code{"(unitless)"})
 

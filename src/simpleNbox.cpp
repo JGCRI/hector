@@ -65,6 +65,10 @@ void SimpleNbox::init( Core* coreptr ) {
     core->registerCapability( D_PREINDUSTRIAL_CO2, getComponentName() );
     core->registerCapability( D_RF_T_ALBEDO, getComponentName() );
     core->registerCapability( D_LAND_CFLUX, getComponentName() );
+    core->registerCapability( D_VEGC, getComponentName() );
+    core->registerCapability( D_DETRITUSC, getComponentName() );
+    core->registerCapability( D_SOILC, getComponentName() );
+    core->registerCapability( D_NPP_FLUX0, getComponentName() );
     
     // Register our dependencies
     core->registerDependency( D_OCEAN_CFLUX, getComponentName() );
@@ -513,20 +517,44 @@ unitval SimpleNbox::getData(const std::string& varName,
         else
             returnval = earth_c_ts.get(date);
     } else if( varNameParsed == D_VEGC ) {
-        if(date == Core::undefinedIndex())
-            returnval = sum_map( veg_c );
-        else
-            returnval = sum_map(veg_c_tv.get(date));
+        if(biome == SNBOX_DEFAULT_BIOME) {
+            if(date == Core::undefinedIndex())
+                returnval = sum_map( veg_c );
+            else
+                returnval = sum_map(veg_c_tv.get(date));
+        } else {
+            H_ASSERT(biome_present, biome_error);
+            if(date == Core::undefinedIndex())
+                returnval = veg_c.at(biome) ;
+            else
+                returnval = veg_c_tv.get(date).at(biome);
+        }
     } else if( varNameParsed == D_DETRITUSC ) {
-        if(date == Core::undefinedIndex())
-            returnval = sum_map( detritus_c );
-        else
-            returnval = sum_map(detritus_c_tv.get(date));
+        if(biome == SNBOX_DEFAULT_BIOME) {
+            if(date == Core::undefinedIndex())
+                returnval = sum_map( detritus_c );
+            else
+                returnval = sum_map(detritus_c_tv.get(date));
+        } else {
+            H_ASSERT(biome_present, biome_error);
+            if(date == Core::undefinedIndex())
+                returnval = detritus_c.at(biome) ;
+            else
+                returnval = detritus_c_tv.get(date).at(biome);
+        }
     } else if( varNameParsed == D_SOILC ) {
-        if(date == Core::undefinedIndex()) 
-            returnval = sum_map( soil_c );
-        else
-            returnval = sum_map(soil_c_tv.get(date));
+        if(biome == SNBOX_DEFAULT_BIOME) {
+            if(date == Core::undefinedIndex())
+                returnval = sum_map( soil_c );
+            else
+                returnval = sum_map(soil_c_tv.get(date));
+        } else {
+            H_ASSERT(biome_present, biome_error);
+            if(date == Core::undefinedIndex())
+                returnval = soil_c.at(biome);
+            else
+                returnval = soil_c_tv.get(date).at(biome);
+        }
     } else if( varNameParsed == D_FFI_EMISSIONS ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for ffi emissions" );
         returnval = ffiEmissions.get( date );

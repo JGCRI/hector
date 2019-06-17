@@ -892,6 +892,16 @@ std::string BETA(std::string biome = "") {
   return out;
 }
 
+//' @describeIn parameters Biome-specific warming factor (`(unitless)`)
+//' @inheritParams BETA
+//' @export
+// [[Rcpp::export]]
+std::string WARMINGFACTOR(std::string biome = "") {
+  std::string out = D_WARMINGFACTOR;
+  if (biome != "") out = biome + "." + out;
+  return out;
+}
+
 //' @describeIn parameters NPP fraction to vegetation (\code{"(unitless)"})
 //' @export
 // [[Rcpp::export]]
@@ -925,6 +935,47 @@ return D_F_LUCV;
 // [[Rcpp::export]]
 String F_LUCD() {
 return D_F_LUCD;
+}
+
+//' @describeIn carboncycle Vegetation C pool (`"Pg C"`)
+//' @inheritParams BETA
+//' @export
+// [[Rcpp::export]]
+std::string VEG_C(std::string biome = "") {
+  std::string out = D_VEGC;
+  if (biome != "") out = biome + "." + out;
+  return out;
+}
+
+//' @describeIn carboncycle Vegetation detritus C pool (`"Pg C"`)
+//' @inheritParams BETA
+//' @export
+// [[Rcpp::export]]
+std::string DETRITUS_C(std::string biome = "") {
+  std::string out = D_DETRITUSC;
+  if (biome != "") out = biome + "." + out;
+  return out;
+}
+
+//' @describeIn carboncycle Soil C pool (`"Pg C"`)
+//' @inheritParams BETA
+//' @export
+// [[Rcpp::export]]
+std::string SOIL_C(std::string biome = "") {
+  std::string out = D_SOILC;
+  if (biome != "") out = biome + "." + out;
+  return out;
+}
+
+//' @describeIn carboncycle Initial net primary productivity (NPP)
+//'   flux (`"Pg C year^-1"`)
+//' @inheritParams BETA
+//' @export
+// [[Rcpp::export]]
+std::string NPP_FLUX0(std::string biome = "") {
+  std::string out = D_NPP_FLUX0;
+  if (biome != "") out = biome + "." + out;
+  return out;
 }
 
 /* SLR component */
