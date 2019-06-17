@@ -142,4 +142,6 @@ test_that("Correct way to create new biomes", {
   results_pfe <- fetchvars(core, 2000:2100)
   expect_equal(results_pf, results_pfe)
 
+  fetchvars(core, NA, "permafrost.veg_c")
+
 })
