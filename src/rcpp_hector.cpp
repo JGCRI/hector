@@ -235,7 +235,6 @@ Environment c_delete_biome(Environment core, std::string biome)
 Environment c_rename_biome(Environment core, std::string oldname, std::string newname)
 {
     Hector::Core *hcore = gethcore(core);
-    std::string old_s, new_s;
     hcore->renameBiome(oldname, newname);
     return core;
 }

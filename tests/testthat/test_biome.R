@@ -117,15 +117,19 @@ test_that("Correct way to create new biomes", {
                   suppresslogging = TRUE)
   gbeta <- fetchvars(core, NA, BETA())
   expect_equal(get_biome_list(core), "global")
+  # Make sure these low-level operations on their own don't throw an error.
+  expect_silent(invisible(c_create_biome(core, "testbiome")))
+  expect_silent(invisible(c_delete_biome(core, "testbiome")))
+  # Now, test the aggregate, user-friendly operation
   use_biomes(core, "permafrost")
-  expect_error(fetchvars(core, NA, BETA()), "Requested biome missing from biome list")
   expect_equal(get_biome_list(core), "permafrost")
+  expect_error(fetchvars(core, NA, BETA()), "Requested biome missing from biome list")
   pbeta <- fetchvars(core, NA, "permafrost.beta")
   expect_equal(pbeta[["variable"]], "permafrost.beta")
   expect_equal(pbeta[["value"]], gbeta[["value"]])
-  invisible(reset(core))
+  expect_silent(invisible(run(core)))
+  results_pf <- fetchvars(core, 2000:2100)
 
-  invisible(run(core))
   # This suppresses a bogus warning about the condition type of the
   # resulting error.
   suppressWarnings(
@@ -134,5 +138,8 @@ test_that("Correct way to create new biomes", {
   invisible(c_create_biome(core, "empty"))
   expect_equal(get_biome_list(core), c("permafrost", "empty"))
   expect_equal(fetchvars(core, NA, "empty.beta")[["value"]], pbeta[["value"]])
-  invisible(run(core))
+  expect_silent(invisible(run(core)))
+  results_pfe <- fetchvars(core, 2000:2100)
+  expect_equal(results_pf, results_pfe)
+
 })
