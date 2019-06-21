@@ -92,7 +92,6 @@ setvar <- function(core, dates, var, values, unit)
             stop("Biome '", biome, "' is not in current biome list.",
                  "Use `hector::create_biome(\"", biome, "\")` to create it.")
         }
-        var <- var_split[[2]]
     }
     sendmessage(core, SETDATA(), var, dates, values, unit)
 

@@ -6,7 +6,24 @@
 \usage{
 split_biome(core, biome, from_biome = get_biome_list(core)[[1]],
   fveg_c = 0.5, fdetritus_c = fveg_c, fsoil_c = fveg_c,
-  fnpp_flux0 = f_vegc, beta = NULL, warmingfactor = NULL)
+  fnpp_flux0 = fveg_c, ...)
+}
+\arguments{
+\item{core}{Hector core}
+
+\item{biome}{Name of new biome}
+
+\item{veg_c0}{Initial vegetation C pool (default = `0`)}
+
+\item{detritus_c0}{Initial detritus C pool (default = `0`)}
+
+\item{soil_c0}{Initial soil C pool (default = `0`)}
+
+\item{npp_flux0}{Initial net primary productivity (default = `0`)}
+
+\item{warmingfactor}{Temperature multiplier (default = `1.0`)}
+
+\item{beta}{CO2 fertilization effect (default = `0.36`)}
 }
 \description{
 Create a new biome by splitting an existing one

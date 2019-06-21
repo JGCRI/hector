@@ -145,3 +145,22 @@ test_that("Correct way to create new biomes", {
   fetchvars(core, NA, "permafrost.veg_c")
 
 })
+
+test_that("Split biomes, and modify parameters", {
+
+  core <- newcore(system.file("input", "hector_rcp45.ini",
+                              package = "hector"),
+                  suppresslogging = TRUE)
+  use_biomes(core, "default")
+  expect_equal(get_biome_list(core), "default")
+  global_veg <- fetchvars(core, NA, VEG_C("default"))[["value"]]
+
+  split_biome(core, "permafrost", fveg_c = 0.1)
+  expect_equal(get_biome_list(core), c("default", "permafrost"))
+  default_veg <- fetchvars(core, NA, VEG_C("default"))[["value"]]
+  permafrost_veg <- fetchvars(core, NA, VEG_C("permafrost"))[["value"]]
+  expect_equivalent(default_veg, 0.9 * global_veg)
+  expect_equivalent(permafrost_veg, 0.1 * global_veg)
+  expect_equivalent(default_veg + permafrost_veg, global_veg)
+
+})

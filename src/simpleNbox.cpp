@@ -77,6 +77,11 @@ void SimpleNbox::init( Core* coreptr ) {
     core->registerInput(D_FFI_EMISSIONS, getComponentName());
     core->registerInput(D_LUC_EMISSIONS, getComponentName());
     core->registerInput(D_PREINDUSTRIAL_CO2, getComponentName()); 
+    core->registerInput(D_VEGC, getComponentName());
+    core->registerInput(D_DETRITUSC, getComponentName());
+    core->registerInput(D_SOILC, getComponentName());
+    core->registerInput(D_NPP_FLUX0, getComponentName());
+    core->registerInput(D_WARMINGFACTOR, getComponentName());
     core->registerInput(D_BETA, getComponentName());
     core->registerInput(D_Q10_RH, getComponentName());
     core->registerInput(D_F_NPPV, getComponentName());
@@ -122,26 +127,25 @@ void SimpleNbox::setData( const std::string &varName,
     
     std::string biome = SNBOX_DEFAULT_BIOME;
     std::string varNameParsed = varName;
-    std::vector<std::string>::const_iterator it_global = std::find(biome_list.begin(), biome_list.end(), "global");
+    std::vector<std::string>::const_iterator it_global = std::find(biome_list.begin(), biome_list.end(), SNBOX_DEFAULT_BIOME);
     if( splitvec.size() == 2 ) {    // i.e., in form <biome>.<varname>
         biome = splitvec[ 0 ];
         varNameParsed = splitvec[ 1 ];
         // Remove "global" from the `biome_list`
         if ( it_global != biome_list.end() ) {
-            // TODO: Replace with deleteBiome("global")
-            biome_list.erase(it_global);
+            deleteBiome( SNBOX_DEFAULT_BIOME );
         }
     }
 
-    H_ASSERT( !(it_global != biome_list.end() && biome != "global"),
+    H_ASSERT( !(it_global != biome_list.end() && biome != SNBOX_DEFAULT_BIOME),
               "If one of the biomes is 'global', you cannot add other biomes." );
 
     // If the biome is not currently in the `biome_list`, and it's not
     // the "global" biome, add it to `biome_list`
-    if ( biome != "global" &&
+    if ( biome != SNBOX_DEFAULT_BIOME &&
          std::find(biome_list.begin(), biome_list.end(), biome) == biome_list.end() ) {
       H_LOG( logger, Logger::DEBUG ) << "Adding biome '" << biome << "' to `biome_list`." << std::endl;
-      biome_list.push_back(biome);
+      createBiome( biome );
     }
 
     if (data.isVal) {
@@ -476,6 +480,11 @@ unitval SimpleNbox::getData(const std::string& varName,
     } else if( varNameParsed == D_PREINDUSTRIAL_CO2 ) {
         H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for preindustrial CO2" );
         returnval = C0;
+    } else if(varNameParsed == D_WARMINGFACTOR) {
+        // For the time being, we are only supporting global beta, not biome-specific
+        H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for biome warming factor");
+        H_ASSERT(biome_present, biome_error);
+        returnval = unitval(warmingfactor.at(biome), U_UNITLESS);
     } else if(varNameParsed == D_BETA) {
         // For the time being, we are only supporting global beta, not biome-specific
         H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for CO2 fertilization (beta)");
@@ -555,6 +564,10 @@ unitval SimpleNbox::getData(const std::string& varName,
             else
                 returnval = soil_c_tv.get(date).at(biome);
         }
+    } else if( varNameParsed == D_NPP_FLUX0 ) {
+      H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for npp_flux0" );
+      H_ASSERT(biome_present, biome_error);
+      returnval = npp_flux0.at(biome);
     } else if( varNameParsed == D_FFI_EMISSIONS ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for ffi emissions" );
         returnval = ffiEmissions.get( date );
