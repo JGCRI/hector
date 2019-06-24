@@ -1101,14 +1101,9 @@ void SimpleNbox::createBiome(const std::string& biome)
     H_ASSERT(std::find(biome_list.begin(), biome_list.end(), biome) == biome_list.end(), errmsg);
 
     // We will have to reset the core to zero for this to be valid.
-    // But veg_c and friends at t=0 are different from current state
-    // (because of spinup). So first, we have to retrieve the values
-    // at t=0 and then append to them.
-    veg_c = veg_c_tv.get(0);
-    detritus_c = detritus_c_tv.get(0);
-    soil_c = soil_c_tv.get(0);
+    core->reset(0);
 
-    // Initialize pools to zero
+    // Initialize new pools to zero
     veg_c[ biome ] = unitval(0, U_PGC);
     soil_c[ biome ] = unitval(0, U_PGC);
     detritus_c[ biome ] = unitval(0, U_PGC);
@@ -1119,16 +1114,15 @@ void SimpleNbox::createBiome(const std::string& biome)
     // Set parameters to same as most recent biome
     beta[ biome ] = beta[ last_biome ];
     warmingfactor[ biome ] = warmingfactor[ last_biome ];
-    // TODO: Other parameters -- Q10
+    // TODO: Other parameters -- Q10, f_nppd, etc.
 
     // Add to end of biome list
     biome_list.push_back(biome);
 
-    // Set time series variables accordingly and reset the core
-    veg_c_tv.set(0, veg_c);
-    detritus_c_tv.set(0, detritus_c);
-    soil_c_tv.set(0, soil_c);
-    core->reset(0);
+    // Make all values consistent
+    double c[ ncpool() ];
+    getCValues(0, &c[0]);
+    stashCValues(0, &c[0]);
 }
 
 // Delete a biome: Remove it from the `biome_list` and `erase` all of
@@ -1139,13 +1133,7 @@ void SimpleNbox::deleteBiome(const std::string& biome) // Throw an error if the 
     std::vector<std::string>::const_iterator i_biome = std::find(biome_list.begin(), biome_list.end(), biome);
     H_ASSERT(i_biome != biome_list.end(), errmsg);
 
-    // We will have to reset the core to zero for this to be valid.
-    // But veg_c and friends at t=0 are different from current state
-    // (because of spinup). So first, we have to retrieve the values
-    // at t=0 and then append to them.
-    veg_c = veg_c_tv.get(0);
-    detritus_c = detritus_c_tv.get(0);
-    soil_c = soil_c_tv.get(0);
+    core->reset(0);
 
     // Erase all values associated with the biome:
     // Parameters
@@ -1163,11 +1151,10 @@ void SimpleNbox::deleteBiome(const std::string& biome) // Throw an error if the 
     // Remove from `biome_list`
     biome_list.erase( i_biome );
 
-    // Set time series variables accordingly and reset the core
-    veg_c_tv.set(0, veg_c);
-    detritus_c_tv.set(0, detritus_c);
-    soil_c_tv.set(0, soil_c);
-    core->reset(0);
+    // Make all values consistent
+    double c[ ncpool() ];
+    getCValues(0, &c[0]);
+    stashCValues(0, &c[0]);
 }
 
 // Create a new biome called `newname`, transfer all of the parameters
@@ -1183,14 +1170,6 @@ void SimpleNbox::renameBiome(const std::string& oldname, const std::string& newn
 
     createBiome(newname);
 
-    // We will have to reset the core to zero for this to be valid.
-    // But veg_c and friends at t=0 are different from current state
-    // (because of spinup). So first, we have to retrieve the values
-    // at t=0 and then append to them.
-    veg_c = veg_c_tv.get(0);
-    detritus_c = detritus_c_tv.get(0);
-    soil_c = soil_c_tv.get(0);
-
     // Transfer all C from `oldname` to `newname`
     beta[ newname ] = beta.at( oldname );
     warmingfactor[ newname ] = warmingfactor.at( oldname );
@@ -1203,11 +1182,10 @@ void SimpleNbox::renameBiome(const std::string& oldname, const std::string& newn
     npp_flux0[ newname ] = npp_flux0.at( oldname );
     npp_flux0[ oldname ] = unitval(0, U_PGC_YR);
 
-    // Set time series variables accordingly and reset the core
-    veg_c_tv.set(0, veg_c);
-    detritus_c_tv.set(0, detritus_c);
-    soil_c_tv.set(0, soil_c);
-    core->reset(0);
+    // Make all values mutually consistent 
+    double c[ ncpool() ];
+    getCValues(0, &c[0]);
+    stashCValues(0, &c[0]);
 
     // Delete biome `oldname`
     deleteBiome( oldname );
