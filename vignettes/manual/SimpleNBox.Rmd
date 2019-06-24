@@ -1,0 +1,60 @@
+---
+title: Terrestrial C cycle
+---
+
+Contents:
+
+- [Scientific basis](#simplenbox-science) behind the terrestrial C cycle
+- [Implementation details](#simplenbox-implementation)
+
+# Science {#simplenbox-science}
+
+Hector's land C sink is divided into three pools: vegetation ($C_v$), detritus ($C_d$), and soil ($C_s$).
+These sinks be global (default), or can be divided into $n$ "biomes" with unique initial pool sizes and parameters.
+The total C flux from atmosphere to land at time $t$ ($F_{L}(t)$) is the net of C sequestration by photosynthesis (net primary productivity, $NPP_i(t)$) and C release by heterotrophic respiration ($RH(t)$), summed across each biome $i$:
+
+$$ F_{L}(t) = \sum_{i=1}^{n} \left( NPP_i(t) - RH_i(t) \right) $$
+
+NPP is calculated as the product of a user-specified pre-industrial value ($NPP_0$, default is 50 PgC/year) and a CO~2~ fertilization multiplier ($f(C_{atm}, \beta)$), which in turn is a function of the current atmospheric CO~2~ concentration ($C_{atm}$), the initial ("pre-industrial") CO~2~ concentration ($C_0$), and biome-specific CO~2~ fertilization parameter $\beta_i$ (default = 0.36):
+
+$$ NPP_i(t) = NPP_{0,i} \times f(C_{atm}, \beta_i) $$
+$$ f(C_{atm}, \beta_i) = 1 + \beta_i \left( log(\frac{C_{atm}}{C_0})\right) $$
+
+Heterotrophic respiration occurs in soil ($RH_s(t)$) and detritus ($RH_d(t))$) as a function of biome-specific atmospheric temperature anomaly ($T_i$, calculated as the global atmospheric temperature anomaly scaled by a biome-specific warming factor $\delta$) and the size of the current soil and detritus C pools ($C_s$ and $C_d$, respectively).
+
+$$ T_i(t) = \delta \times T_G(t) $$
+$$ RH_s = 0.02 C_s Q_{10}^{T_{i}(t) / 10}$$
+$$ RH_d = 0.25 C_d Q_{10}^{T_{i}(t) / 10}$$
+
+Note that the fractions of soil and detritus C available to respiration are hard-coded at 0.02 and 0.25, respectively.
+
+In each biome at each time step, the vegetation pools change as follows (biome, $i$ and time, $t$ subscripts omitted for clarity):
+C gain from NPP is distributed to vegetation, detritus, and soil according to fractionation parameters $f_{nv}$, $f_{nd}$, and $f_{ns}$, respectively.
+Similarly, each pool bears a fraction of the total C loss from land-use change ($F_{LC}$), again according to fractions $f_{lv}$, $f_{ld}$, and $f_{ls}$.
+The detritus and soil pools also lose C via heterotrophic respiration ($RH_s$ and $RH_d$, respectively).
+Finally, a fixed fraction of vegetation C is transferred to detritus as litterfall ($f_{vd}$), and a fraction of both vegetation ($f_{vs}$) and detritus ($f_{ds}$) are transferred to soil via decomposition.
+
+$$ \frac{dC_v}{dt} = NPP f_{nv} - C_v (f_{vd} + f_{vs}) - F_{LC} f_{lv} $$
+$$ \frac{dC_s}{dt} = NPP f_{nd} + C_v f_{vd} - C_d f_{ds} - RH_d - F_{LC} f_{ld} $$
+$$ \frac{dC_d}{dt} = NPP f_{ns} + C_v f_{vs} + C_d f_{ds} - RH_s - F_{LC} f_{ls} $$
+
+The entire terrestrial C cycle is summarized in the following diagram:
+
+```{r terrestrial-c-diagram, echo = FALSE, fig.cap = terrestrial_c_cap}
+terrestrial_c_cap <- paste(
+  "Summary of terrestrial C cycle in Hector."
+)
+knitr::include_graphics("hector_terrestrial_c.svg")
+# Edit this diagram at:
+# https://www.lucidchart.com/invitations/accept/895610d2-ee0e-453f-a5fa-2334171e5b54
+# (Free LucidChart account required.)
+```
+
+# Implementation {#simplenbox-implementation}
+
+Code for the terrestrial C cycle lives in [`src/simpleNbox.cpp`][cpp] file (with associated headers in [`inst/include/simpleNbox.hpp`][hpp]).
+
+[cpp]: https://github.com/jgcri/hector/blob/master/src/simpleNbox.cpp
+[hpp]: https://github.com/JGCRI/hector/blob/master/inst/include/simpleNbox.hpp
+
+
