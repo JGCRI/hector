@@ -35,16 +35,15 @@ create_biome <- function(core, biome,
                          detritus_c0 = 0,
                          soil_c0 = 0,
                          npp_flux0 = 0,
-                         warmingfactor = 0,
+                         warmingfactor = 1,
                          beta = 0.36) {
   c_create_biome(core, biome)
-  setvar(core, NA, VEG_C(biome), veg_c0, "PgC")
-  setvar(core, NA, DETRITUS_C(biome), detritus_c0, "PgC")
-  setvar(core, NA, SOIL_C(biome), soil_c0, "PgC")
+  setvar(core, 0, VEG_C(biome), veg_c0, "PgC")
+  setvar(core, 0, DETRITUS_C(biome), detritus_c0, "PgC")
+  setvar(core, 0, SOIL_C(biome), soil_c0, "PgC")
   setvar(core, NA, NPP_FLUX0(biome), npp_flux0, "PgC/yr")
   setvar(core, NA, WARMINGFACTOR(biome), warmingfactor, NA)
   setvar(core, NA, BETA(biome), beta, NA)
-  reset(core, 0)
   invisible(core)
 }
 
@@ -72,14 +71,20 @@ split_biome <- function(core, biome,
                         fnpp_flux0 = fveg_c,
                         ...) {
 
-  current_data <- rbind.data.frame(
-    fetchvars(core, NA, VEG_C(from_biome)),
-    fetchvars(core, NA, DETRITUS_C(from_biome)),
-    fetchvars(core, NA, SOIL_C(from_biome)),
+  # `fetchvars` requires date to be between start and end date, so
+  # we need to call the lower-level `sendmessage` method here.
+  current_data_1 <- rbind.data.frame(
+    sendmessage(core, GETDATA(), VEG_C(from_biome), 0, NA, ""),
+    sendmessage(core, GETDATA(), DETRITUS_C(from_biome), 0, NA, ""),
+    sendmessage(core, GETDATA(), SOIL_C(from_biome), 0, NA, "")
+  )
+  
+  current_data_2 <- rbind.data.frame(
     fetchvars(core, NA, NPP_FLUX0(from_biome)),
     fetchvars(core, NA, BETA(from_biome)),
     fetchvars(core, NA, WARMINGFACTOR(from_biome))
-  )
+  )[, -1] # Drop the "scenario" column because it's not returned by `sendmessage`
+  current_data <- rbind.data.frame(current_data_1, current_data_2)
   fracs <- c("veg_c" = fveg_c,
              "detritus_c" = fdetritus_c,
              "soil_c" = fsoil_c,
@@ -99,14 +104,16 @@ split_biome <- function(core, biome,
     ...
   )
 
-  setvar(core, NA, VEG_C(from_biome),
+  setvar(core, 0, VEG_C(from_biome),
          vals[["veg_c"]] * (1 - fveg_c), "PgC")
-  setvar(core, NA, DETRITUS_C(from_biome),
+  setvar(core, 0, DETRITUS_C(from_biome),
          vals[["detritus_c"]] * (1 - fdetritus_c), "PgC")
-  setvar(core, NA, SOIL_C(from_biome),
+  setvar(core, 0, SOIL_C(from_biome),
          vals[["soil_c"]] * (1 - fsoil_c), "PgC")
   setvar(core, NA, NPP_FLUX0(from_biome),
          vals[["npp_flux0"]] * (1 - fnpp_flux0), "PgC/yr")
+
+  reset(core, 0)
 
   invisible(core)
 

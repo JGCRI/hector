@@ -173,16 +173,29 @@ void SimpleNbox::setData( const std::string &varName,
             set_c0(data.getUnitval(U_PPMV_CO2).value(U_PPMV_CO2));
         }
         else if( varNameParsed == D_VEGC ) {
-            H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
+            // Set veg_c regardless. Chances are we are doing this
+            // from the INI file.
             veg_c[ biome ] = data.getUnitval( U_PGC );
+            if (data.date != Core::undefinedIndex()) {
+                // Also set the time-series
+                record_state(data.date);
+            }
         }
         else if( varNameParsed == D_DETRITUSC ) {
-            H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
             detritus_c[ biome ] = data.getUnitval( U_PGC );
+            if (data.date != Core::undefinedIndex()) {
+                // Also set the time-series
+                // detritus_c_tv.set(data.date, detritus_c);
+                record_state(data.date);
+            }
         }
         else if( varNameParsed == D_SOILC ) {
-            H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
             soil_c[ biome ] = data.getUnitval( U_PGC );
+            if (data.date != Core::undefinedIndex()) {
+                // Also set the time-series
+                // soil_c_tv.set(data.date, soil_c);
+                record_state(data.date);
+            }
         }
         
         // Albedo effect
@@ -685,8 +698,13 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     const double yf = ( t - ODEstartdate );
     H_ASSERT( yf >= 0 && yf <= 1, "yearfraction out of bounds" );
     
-    H_LOG( logger,Logger::DEBUG ) << "Stashing at t=" << t << ", solver pools at " << t << ": " << c[ 0 ]
-    << " " << c[ 1 ] << " " << c[ 2 ] << " " << c[ 3 ] << " " << c[ 4 ] << " " << c[ 5 ] << std::endl;
+    H_LOG( logger,Logger::DEBUG ) << "Stashing at t=" << t << ", solver pools at " << t << ": " <<
+        "  atm = " << c[ 0 ] <<
+        "  veg = " << c[ 1 ] <<
+        "  det = " << c[ 2 ] <<
+        "  soil = " << c[ 3 ] <<
+        "  ocean = " << c[ 4 ] <<
+        "  earth = " << c[ 5 ] << std::endl;
 
     log_pools( t );
 
@@ -799,9 +817,9 @@ unitval SimpleNbox::npp( std::string biome ) const
 unitval SimpleNbox::sum_npp() const
 {
     unitval total( 0.0, U_PGC_YR );
-    for( unitval_stringmap::const_iterator it = veg_c.begin(); it != veg_c.end(); it++ ) {
-        total = total + npp( it->first );
-    }
+    std::vector<std::string>::const_iterator it;
+    for( it = biome_list.begin(); it != biome_list.end(); it++ ) {
+        total = total + npp( *it );}
     return total;
 }
 
@@ -842,8 +860,9 @@ unitval SimpleNbox::rh( std::string biome ) const
 unitval SimpleNbox::sum_rh() const
 {
     unitval total( 0.0, U_PGC_YR );
-    for( unitval_stringmap::const_iterator it = veg_c.begin(); it != veg_c.end(); it++ ) {
-        total = total + rh( it->first );
+    std::vector<std::string>::const_iterator it;
+    for( it = biome_list.begin(); it != biome_list.end(); it++ ) {
+        total = total + rh( *it );
     }
     return total;
 }
@@ -1092,22 +1111,95 @@ void SimpleNbox::set_c0(double newc0)
         
 }
 
+// Add a biome to a time-series map variable (e.g. veg_c_tv)
+template <class T_data>
+void SimpleNbox::add_biome_to_ts(tvector<std::map<std::string, T_data>>& ts,
+                                 const std::string& biome,
+                                 T_data init_value) {
+    // First, check if a biome of this name already exists in the data
+    if ( ts.get(ts.firstdate()).count( biome ) ) {
+        H_THROW( "Biome '" + biome + "' already exists in data." );
+    }
+    
+    // Loop over time steps, and set the variable to the provided `init_value`
+    std::map<std::string, T_data> newval;
+    for ( double i = ts.firstdate(); i < ts.lastdate(); i++ ) {
+        if (ts.exists(i)) {
+            newval = ts.get(i);
+            newval[ biome ] = init_value;
+            ts.set(i, newval);
+        }
+    }
+}
+
+// Remove a biome from a time-series map variable
+template <class T_map>
+void SimpleNbox::remove_biome_from_ts(tvector<T_map>& ts,
+                                      const std::string& biome) {
+    if ( !ts.get(ts.firstdate()).count( biome ) ) {
+        H_THROW( "Biome '" + biome + "' not found in data.");
+    }
+
+    T_map currval;
+    for ( double i = ts.firstdate(); i < ts.lastdate(); i++ ) {
+        if (ts.exists(i)) {
+            currval = ts.get(i);
+            currval.erase(biome);
+            ts.set(i, currval);
+        }
+    }
+}
+
+// Remove a biome from a time-series map variable
+template <class T_map>
+void SimpleNbox::rename_biome_in_ts(tvector<T_map>& ts,
+                                    const std::string& oldname,
+                                    const std::string& newname) {
+    if ( !ts.get(ts.firstdate()).count( oldname ) ) {
+        H_THROW( "Biome '" + oldname + "' not found in data.");
+    }
+    if ( ts.get(ts.firstdate()).count( newname ) ) {
+        H_THROW( "Biome '" + newname + "' already exists in data.");
+    }
+
+    T_map currval;
+    for ( double i = ts.firstdate(); i < ts.lastdate(); i++ ) {
+        if (ts.exists(i)) {
+            currval = ts.get(i);
+            currval[newname] = currval.at(oldname);
+            currval.erase(oldname);
+            ts.set(i, currval);
+        }
+    }
+}
+
 // Create a new biome, and initialize it with zero C pools and fluxes
 // and the same parameters as the most recently created biome.
 void SimpleNbox::createBiome(const std::string& biome)
 {
+
+    H_LOG(logger, Logger::DEBUG) << "Creating new biome '" << biome << "'." << std::endl;
+
     // Throw an error if the biome already exists
     std::string errmsg = "Biome '" + biome + "' is already in `biome_list`.";
     H_ASSERT(std::find(biome_list.begin(), biome_list.end(), biome) == biome_list.end(), errmsg);
 
-    // We will have to reset the core to zero for this to be valid.
-    core->reset(0);
-
-    // Initialize new pools to zero
+    // Initialize new pools
     veg_c[ biome ] = unitval(0, U_PGC);
-    soil_c[ biome ] = unitval(0, U_PGC);
+    add_biome_to_ts(veg_c_tv, biome, veg_c.at( biome ));
     detritus_c[ biome ] = unitval(0, U_PGC);
+    add_biome_to_ts(detritus_c_tv, biome, detritus_c.at( biome ));
+    soil_c[ biome ] = unitval(0, U_PGC);
+    add_biome_to_ts(soil_c_tv, biome, soil_c.at( biome ));
+
     npp_flux0[ biome ] = unitval(0, U_PGC_YR);
+
+    // Other defaults (these will be re-calculated later)
+    co2fert[ biome ] = 1.0;
+    tempfertd[ biome ] = 1.0;
+    add_biome_to_ts(tempfertd_tv, biome, 1.0);
+    tempferts[ biome ] = 1.0;
+    add_biome_to_ts(tempferts_tv, biome, 1.0);
 
     std::string last_biome = biome_list.back();
 
@@ -1120,41 +1212,56 @@ void SimpleNbox::createBiome(const std::string& biome)
     biome_list.push_back(biome);
 
     // Make all values consistent
-    double c[ ncpool() ];
-    getCValues(0, &c[0]);
-    stashCValues(0, &c[0]);
-}
+    // double c[ ncpool() ];
+    // getCValues(0, &c[0]);
+    // stashCValues(0, &c[0]);
+    // record_state(0);
+
+    H_LOG(logger, Logger::DEBUG) << "Finished creating biome '" << biome << "'." << std::endl;}
 
 // Delete a biome: Remove it from the `biome_list` and `erase` all of
 // the associated parameters.
 void SimpleNbox::deleteBiome(const std::string& biome) // Throw an error if the biome already exists
 {
+
+    H_LOG(logger, Logger::DEBUG) << "Deleting biome '" << biome << "'." << std::endl;
+
     std::string errmsg = "Biome '" + biome + "' not found in `biome_list`.";
     std::vector<std::string>::const_iterator i_biome = std::find(biome_list.begin(), biome_list.end(), biome);
     H_ASSERT(i_biome != biome_list.end(), errmsg);
-
-    core->reset(0);
 
     // Erase all values associated with the biome:
     // Parameters
     beta.erase( biome );
     warmingfactor.erase( biome );
+
     // C pools
     veg_c.erase( biome );
-    soil_c.erase( biome );
+    remove_biome_from_ts(veg_c_tv, biome);
     detritus_c.erase( biome );
+    remove_biome_from_ts(detritus_c_tv, biome);
+    soil_c.erase( biome );
+    remove_biome_from_ts(soil_c_tv, biome);
+
     // Others
     npp_flux0.erase( biome );
     tempfertd.erase( biome );
+    remove_biome_from_ts( tempfertd_tv, biome );
     tempferts.erase( biome );
+    remove_biome_from_ts( tempferts_tv, biome );
+    co2fert.erase( biome );
 
     // Remove from `biome_list`
     biome_list.erase( i_biome );
 
     // Make all values consistent
-    double c[ ncpool() ];
-    getCValues(0, &c[0]);
-    stashCValues(0, &c[0]);
+    // double c[ ncpool() ];
+    // getCValues(0, &c[0]);
+    // stashCValues(0, &c[0]);
+    // record_state(0);
+
+    H_LOG(logger, Logger::DEBUG) << "Finished deleting biome '" << biome << ",." << std::endl;
+
 }
 
 // Create a new biome called `newname`, transfer all of the parameters
@@ -1163,32 +1270,49 @@ void SimpleNbox::deleteBiome(const std::string& biome) // Throw an error if the 
 // corresponding vectors.
 void SimpleNbox::renameBiome(const std::string& oldname, const std::string& newname)
 {
+    H_LOG(logger, Logger::DEBUG) << "Renaming biome '" << oldname <<
+        "' to '" << newname << "'." << std::endl;
+
     std::string errmsg = "Biome '" + oldname + "' not found in `biome_list`.";
     H_ASSERT(std::find(biome_list.begin(), biome_list.end(), oldname) != biome_list.end(), errmsg);
     errmsg = "Biome '" + newname + "' already exists in `biome_list`.";
     H_ASSERT(std::find(biome_list.begin(), biome_list.end(), newname) == biome_list.end(), errmsg);
 
-    createBiome(newname);
+    beta[ newname ] = beta.at( oldname );
+    beta.erase(oldname);
+    warmingfactor[ newname ] = warmingfactor.at( oldname );
+    warmingfactor.erase( oldname );
+
+    H_LOG(logger, Logger::DEBUG) << "Transferring C from biome '" << oldname <<
+        "' to '" << newname << "'." << std::endl;
 
     // Transfer all C from `oldname` to `newname`
-    beta[ newname ] = beta.at( oldname );
-    warmingfactor[ newname ] = warmingfactor.at( oldname );
     veg_c[ newname ] = veg_c.at( oldname );
-    veg_c[ oldname ] = unitval(0, U_PGC);
-    soil_c[ newname ] = soil_c.at( oldname );
-    soil_c[ oldname ] = unitval(0, U_PGC);
+    veg_c.erase(oldname);
+    rename_biome_in_ts(veg_c_tv, oldname, newname);
     detritus_c[ newname ] = detritus_c.at( oldname );
-    detritus_c[ oldname ] = unitval(0, U_PGC);
+    detritus_c.erase(oldname);
+    rename_biome_in_ts(detritus_c_tv, oldname, newname);
+    soil_c[ newname ] = soil_c.at( oldname );
+    soil_c.erase(oldname);
+    rename_biome_in_ts(soil_c_tv, oldname, newname);
+
     npp_flux0[ newname ] = npp_flux0.at( oldname );
-    npp_flux0[ oldname ] = unitval(0, U_PGC_YR);
+    npp_flux0.erase(oldname);
 
-    // Make all values mutually consistent 
-    double c[ ncpool() ];
-    getCValues(0, &c[0]);
-    stashCValues(0, &c[0]);
+    co2fert[ newname ] = co2fert[ oldname ];
+    co2fert.erase( oldname );
 
-    // Delete biome `oldname`
-    deleteBiome( oldname );
+    tempfertd[ newname ] = tempfertd[ oldname ];
+    tempfertd.erase(oldname);
+    tempferts[ newname ] = tempferts[ oldname ];
+    tempferts.erase(oldname);
+
+    biome_list.push_back(newname);
+    biome_list.erase(std::find(biome_list.begin(), biome_list.end(), oldname));
+
+    H_LOG(logger, Logger::DEBUG) << "Done renaming biome '" << oldname <<
+        "' to '" << newname << "'." << std::endl;
 
 }
 

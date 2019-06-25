@@ -205,6 +205,13 @@ private:
     double sum_map( double_stringmap pool ) const;      //!< sums a double map (collection of data)
     void log_pools( const double t );                   //!< prints pool status to the log file
     void set_c0(double newc0);                          //!< set initial co2 and adjust total carbon mass
+
+    template <class T_data>
+    void add_biome_to_ts(tvector<std::map<std::string, T_data> >& ts, const std::string& biome, T_data init_value); 
+    template <class T_map>
+    void remove_biome_from_ts(tvector<T_map>& ts, const std::string& biome); 
+    template <class T_map>
+    void rename_biome_in_ts(tvector<T_map>& ts, const std::string& oldname, const std::string& newname); 
     
     CarbonCycleModel *omodel;           //!< pointer to the ocean model in use
 
