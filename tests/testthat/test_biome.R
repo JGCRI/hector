@@ -157,8 +157,12 @@ test_that("Split biomes, and modify parameters", {
   global_veg <- sendmessage(core, GETDATA(), VEG_C("default"), 0, NA, "")[["value"]]
   invisible(run(core))
   r_global <- fetchvars(core, 2000:2100)
-  invisible(reset(core))
+  r_global_pools <- fetchvars(core, 2000:2100, c(VEG_C("default"), DETRITUS_C("default"), SOIL_C("default")))
+  r_global_pools$biome <- gsub("^(.*)\\.(.*)", "\\1", r_global_pools$variable)
+  r_global_pools$variable <- gsub("^(.*)\\.(.*)", "\\2", r_global_pools$variable)
+  r_global_totals <- aggregate(value ~ year + variable, data = r_global_pools, sum)
 
+  invisible(reset(core))
   fsplit <- 0.1
   split_biome(core, "permafrost", fveg_c = fsplit)
   expect_equal(get_biome_list(core), c("default", "permafrost"))
@@ -170,5 +174,15 @@ test_that("Split biomes, and modify parameters", {
   invisible(run(core))
   r_biome <- fetchvars(core, 2000:2100)
   expect_equivalent(r_global, r_biome)
+
+  # Sum of biome-specific pools should exactly equal global results at
+  # each time step. This is a robust test!
+  r_biome_data <- fetchvars(core, 2000:2100, c(VEG_C("default"), VEG_C("permafrost"),
+                                               DETRITUS_C("default"), DETRITUS_C("permafrost"),
+                                               SOIL_C("default"), SOIL_C("permafrost")))
+  r_biome_data$biome <- gsub("^(.*)\\.(.*)", "\\1", r_biome_data$variable)
+  r_biome_data$variable <- gsub("^(.*)\\.(.*)", "\\2", r_biome_data$variable)
+  r_biome_totals <- aggregate(value ~ year + variable, data = r_biome_data, sum)
+  expect_equivalent(r_global_totals, r_biome_totals)
 
 })
