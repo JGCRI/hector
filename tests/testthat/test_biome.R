@@ -1,6 +1,6 @@
 context("Running Hector with multiple biomes")
 
-test_that("Hector runs with multiple biomes.", {
+test_that("Hector runs with multiple biomes created via INI file.", {
 
   string2core <- function(ini_string, name, ini_file = NULL) {
     if (is.null(ini_file)) {
