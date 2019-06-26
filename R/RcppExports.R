@@ -966,11 +966,17 @@ c_delete_biome <- function(core, biome) {
     .Call('_hector_c_delete_biome', PACKAGE = 'hector', core, biome)
 }
 
-#' Create a biome
+#' Rename an existing biome
 #'
-#' @param biome (character) Name of new biome
-c_rename_biome <- function(core, oldname, newname) {
-    .Call('_hector_c_rename_biome', PACKAGE = 'hector', core, oldname, newname)
+#' This will create a new biome called `newname`, assign it all of
+#' the C stocks and parameter values from biome `oldname`, and delete
+#' biome `oldname`.
+#'
+#' @param core Handle to the Hector instance that is to be run.
+#' @param oldname (character) Name of existing biome to be replaced
+#' @param newname (character) Name of new biome
+rename_biome <- function(core, oldname, newname) {
+    .Call('_hector_rename_biome', PACKAGE = 'hector', core, oldname, newname)
 }
 
 #' Send a message to a Hector instance

@@ -228,11 +228,17 @@ Environment c_delete_biome(Environment core, std::string biome)
     return core;
 }
 
-//' Create a biome
+//' Rename an existing biome
 //'
-//' @param biome (character) Name of new biome
+//' This will create a new biome called `newname`, assign it all of
+//' the C stocks and parameter values from biome `oldname`, and delete
+//' biome `oldname`.
+//'
+//' @param core Handle to the Hector instance that is to be run.
+//' @param oldname (character) Name of existing biome to be replaced
+//' @param newname (character) Name of new biome
 // [[Rcpp::export]]
-Environment c_rename_biome(Environment core, std::string oldname, std::string newname)
+Environment rename_biome(Environment core, std::string oldname, std::string newname)
 {
     Hector::Core *hcore = gethcore(core);
     hcore->renameBiome(oldname, newname);

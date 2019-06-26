@@ -5,7 +5,7 @@
 \title{Create new biome}
 \usage{
 create_biome(core, biome, veg_c0 = 0, detritus_c0 = 0, soil_c0 = 0,
-  npp_flux0 = 0, warmingfactor = 0, beta = 0.36)
+  npp_flux0 = 0, warmingfactor = 1, beta = 0.36)
 }
 \arguments{
 \item{core}{Hector core}

@@ -121,7 +121,7 @@ test_that("Correct way to create new biomes", {
   expect_silent(invisible(c_create_biome(core, "testbiome")))
   expect_silent(invisible(c_delete_biome(core, "testbiome")))
   # Now, test the aggregate, user-friendly operation
-  use_biomes(core, "permafrost")
+  invisible(rename_biome(core, "global", "permafrost"))
   expect_equal(get_biome_list(core), "permafrost")
   expect_error(fetchvars(core, NA, BETA()), "Requested biome missing from biome list")
   pbeta <- fetchvars(core, NA, "permafrost.beta")
@@ -152,7 +152,7 @@ test_that("Split biomes, and modify parameters", {
                               package = "hector"),
                   suppresslogging = FALSE,
                   loglevel = LL_DEBUG())
-  use_biomes(core, "default")
+  invisible(rename_biome(core, "global", "default"))
   expect_equal(get_biome_list(core), "default")
   global_veg <- sendmessage(core, GETDATA(), VEG_C("default"), 0, NA, "")[["value"]]
   invisible(run(core))

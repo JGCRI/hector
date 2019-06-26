@@ -1566,16 +1566,16 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// c_rename_biome
-Environment c_rename_biome(Environment core, std::string oldname, std::string newname);
-RcppExport SEXP _hector_c_rename_biome(SEXP coreSEXP, SEXP oldnameSEXP, SEXP newnameSEXP) {
+// rename_biome
+Environment rename_biome(Environment core, std::string oldname, std::string newname);
+RcppExport SEXP _hector_rename_biome(SEXP coreSEXP, SEXP oldnameSEXP, SEXP newnameSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Environment >::type core(coreSEXP);
     Rcpp::traits::input_parameter< std::string >::type oldname(oldnameSEXP);
     Rcpp::traits::input_parameter< std::string >::type newname(newnameSEXP);
-    rcpp_result_gen = Rcpp::wrap(c_rename_biome(core, oldname, newname));
+    rcpp_result_gen = Rcpp::wrap(rename_biome(core, oldname, newname));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -1762,7 +1762,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_get_biome_list", (DL_FUNC) &_hector_get_biome_list, 1},
     {"_hector_c_create_biome", (DL_FUNC) &_hector_c_create_biome, 2},
     {"_hector_c_delete_biome", (DL_FUNC) &_hector_c_delete_biome, 2},
-    {"_hector_c_rename_biome", (DL_FUNC) &_hector_c_rename_biome, 3},
+    {"_hector_rename_biome", (DL_FUNC) &_hector_rename_biome, 3},
     {"_hector_sendmessage", (DL_FUNC) &_hector_sendmessage, 6},
     {"_hector_chk_core_valid", (DL_FUNC) &_hector_chk_core_valid, 1},
     {NULL, NULL, 0}

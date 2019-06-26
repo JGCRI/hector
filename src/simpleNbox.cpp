@@ -1231,12 +1231,6 @@ void SimpleNbox::createBiome(const std::string& biome)
     // Add to end of biome list
     biome_list.push_back(biome);
 
-    // Make all values consistent
-    // double c[ ncpool() ];
-    // getCValues(0, &c[0]);
-    // stashCValues(0, &c[0]);
-    // record_state(0);
-
     H_LOG(logger, Logger::DEBUG) << "Finished creating biome '" << biome << "'." << std::endl;}
 
 // Delete a biome: Remove it from the `biome_list` and `erase` all of
@@ -1273,12 +1267,6 @@ void SimpleNbox::deleteBiome(const std::string& biome) // Throw an error if the 
 
     // Remove from `biome_list`
     biome_list.erase( i_biome );
-
-    // Make all values consistent
-    // double c[ ncpool() ];
-    // getCValues(0, &c[0]);
-    // stashCValues(0, &c[0]);
-    // record_state(0);
 
     H_LOG(logger, Logger::DEBUG) << "Finished deleting biome '" << biome << ",." << std::endl;
 
