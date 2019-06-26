@@ -403,12 +403,10 @@ void SimpleNbox::prepareToRun() throw( h_exception )
         H_ASSERT( detritus_c.count( biome ), "no biome data for detritus_c" );
         H_ASSERT( soil_c.count( biome ), "no biome data for soil_c" );
         H_ASSERT( npp_flux0.count( biome ), "no biome data for npp_flux0" );
+
+        H_ASSERT( beta.count( biome ), "no biome value for beta" );
+        H_ASSERT( warmingfactor.count( biome ), "no biome value for warmingfactor" );
         
-        // TODO: Should this be an error?
-        if( !beta.count( biome ) ) {
-            H_LOG( logger, Logger::DEBUG ) << "Beta does not exist for biome '" << biome << "'; using global value" << std::endl;
-            beta[ biome ] = beta.at( SNBOX_DEFAULT_BIOME );
-        }
     }
 
     // Save a pointer to the ocean model in use
