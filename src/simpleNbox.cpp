@@ -389,7 +389,12 @@ void SimpleNbox::prepareToRun() throw( h_exception )
 
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
  
-    // TODO: if any 'global' settings, there shouldn't also be regional!
+    // If any 'global' settings, there shouldn't also be regional
+    if ( (std::find( biome_list.begin(), biome_list.end(), SNBOX_DEFAULT_BIOME ) != biome_list.end()) &
+         (biome_list.size() > 1) ) {
+        H_THROW( "Cannot have both global and biome-specific data! "
+                 "Did you forget to rename the default ('global') biome?")
+    }
     
     // Everything in veg_c map should occur in soil and detritus
     H_ASSERT( biome_list.size() == veg_c.size(), "veg_c and biome_list data not same size" );
