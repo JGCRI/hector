@@ -212,6 +212,8 @@ private:
     void remove_biome_from_ts(tvector<T_map>& ts, const std::string& biome); 
     template <class T_map>
     void rename_biome_in_ts(tvector<T_map>& ts, const std::string& oldname, const std::string& newname); 
+
+    bool has_biome(const std::string& biome);
     
     CarbonCycleModel *omodel;           //!< pointer to the ocean model in use
 

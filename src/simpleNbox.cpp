@@ -135,7 +135,7 @@ void SimpleNbox::setData( const std::string &varName,
     if( splitvec.size() == 2 ) {    // i.e., in form <biome>.<varname>
         biome = splitvec[ 0 ];
         varNameParsed = splitvec[ 1 ];
-        if ( it_global != biome_list.end() ) {
+        if ( has_biome( SNBOX_DEFAULT_BIOME ) ) {
             H_LOG( logger, Logger::DEBUG ) << "Removing biome '" << SNBOX_DEFAULT_BIOME <<
                 "' because you cannot have both 'global' and biome data. " << std::endl;
             // We don't use the `deleteBiome` function here because
@@ -155,8 +155,7 @@ void SimpleNbox::setData( const std::string &varName,
 
     // If the biome is not currently in the `biome_list`, and it's not
     // the "global" biome, add it to `biome_list`
-    if ( biome != SNBOX_DEFAULT_BIOME &&
-         std::find(biome_list.begin(), biome_list.end(), biome) == biome_list.end() ) {
+    if ( biome != SNBOX_DEFAULT_BIOME && !has_biome( biome ) ) {
         H_LOG( logger, Logger::DEBUG ) << "Adding biome '" << biome << "' to `biome_list`." << std::endl;
         // We don't use `createBiome` here for the same reasons as above.
         biome_list.push_back( biome );
@@ -390,8 +389,7 @@ void SimpleNbox::prepareToRun() throw( h_exception )
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
  
     // If any 'global' settings, there shouldn't also be regional
-    if ( (std::find( biome_list.begin(), biome_list.end(), SNBOX_DEFAULT_BIOME ) != biome_list.end()) &
-         (biome_list.size() > 1) ) {
+    if ( (has_biome( SNBOX_DEFAULT_BIOME )) & (biome_list.size() > 1) ) {
         H_THROW( "Cannot have both global and biome-specific data! "
                  "Did you forget to rename the default ('global') biome?")
     }
@@ -495,10 +493,8 @@ unitval SimpleNbox::getData(const std::string& varName,
         biome = splitvec[ 0 ];
         varNameParsed = splitvec[ 1 ];
 
-        H_ASSERT(std::find(biome_list.begin(), biome_list.end(), biome) != biome_list.end(), biome_error);
+        H_ASSERT(has_biome( biome ), biome_error);
     }
-
-    bool biome_present = std::find(biome_list.begin(), biome_list.end(), biome) != biome_list.end();
 
     if( varNameParsed == D_ATMOSPHERIC_C ) {
         if(date == Core::undefinedIndex())
@@ -521,12 +517,12 @@ unitval SimpleNbox::getData(const std::string& varName,
     } else if(varNameParsed == D_WARMINGFACTOR) {
         // For the time being, we are only supporting global beta, not biome-specific
         H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for biome warming factor");
-        H_ASSERT(biome_present, biome_error);
+        H_ASSERT(has_biome( biome ), biome_error);
         returnval = unitval(warmingfactor.at(biome), U_UNITLESS);
     } else if(varNameParsed == D_BETA) {
         // For the time being, we are only supporting global beta, not biome-specific
         H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for CO2 fertilization (beta)");
-        H_ASSERT(biome_present, biome_error);
+        H_ASSERT(has_biome( biome ), biome_error);
         returnval = unitval(beta.at(biome), U_UNITLESS);
     } else if(varNameParsed == D_Q10_RH) {
         H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for Q10");
@@ -570,7 +566,7 @@ unitval SimpleNbox::getData(const std::string& varName,
             else
                 returnval = sum_map(veg_c_tv.get(date));
         } else {
-            H_ASSERT(biome_present, biome_error);
+            H_ASSERT(has_biome( biome ), biome_error);
             if(date == Core::undefinedIndex())
                 returnval = veg_c.at(biome) ;
             else
@@ -583,7 +579,7 @@ unitval SimpleNbox::getData(const std::string& varName,
             else
                 returnval = sum_map(detritus_c_tv.get(date));
         } else {
-            H_ASSERT(biome_present, biome_error);
+            H_ASSERT(has_biome( biome ), biome_error);
             if(date == Core::undefinedIndex())
                 returnval = detritus_c.at(biome) ;
             else
@@ -596,7 +592,7 @@ unitval SimpleNbox::getData(const std::string& varName,
             else
                 returnval = sum_map(soil_c_tv.get(date));
         } else {
-            H_ASSERT(biome_present, biome_error);
+            H_ASSERT(has_biome( biome ), biome_error);
             if(date == Core::undefinedIndex())
                 returnval = soil_c.at(biome);
             else
@@ -604,7 +600,7 @@ unitval SimpleNbox::getData(const std::string& varName,
         }
     } else if( varNameParsed == D_NPP_FLUX0 ) {
       H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for npp_flux0" );
-      H_ASSERT(biome_present, biome_error);
+      H_ASSERT(has_biome( biome ), biome_error);
       returnval = npp_flux0.at(biome);
     } else if( varNameParsed == D_FFI_EMISSIONS ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for ffi emissions" );
@@ -1198,6 +1194,11 @@ void SimpleNbox::rename_biome_in_ts(tvector<T_map>& ts,
     }
 }
 
+// Check if `biome` is present in biome_list
+bool SimpleNbox::has_biome(const std::string& biome) {
+    return std::find(biome_list.begin(), biome_list.end(), biome) != biome_list.end();
+}
+
 // Create a new biome, and initialize it with zero C pools and fluxes
 // and the same parameters as the most recently created biome.
 void SimpleNbox::createBiome(const std::string& biome)
@@ -1207,7 +1208,7 @@ void SimpleNbox::createBiome(const std::string& biome)
 
     // Throw an error if the biome already exists
     std::string errmsg = "Biome '" + biome + "' is already in `biome_list`.";
-    H_ASSERT(std::find(biome_list.begin(), biome_list.end(), biome) == biome_list.end(), errmsg);
+    H_ASSERT(!has_biome( biome ), errmsg);
 
     // Initialize new pools
     veg_c[ biome ] = unitval(0, U_PGC);
@@ -1247,7 +1248,7 @@ void SimpleNbox::deleteBiome(const std::string& biome) // Throw an error if the 
 
     std::string errmsg = "Biome '" + biome + "' not found in `biome_list`.";
     std::vector<std::string>::const_iterator i_biome = std::find(biome_list.begin(), biome_list.end(), biome);
-    H_ASSERT(i_biome != biome_list.end(), errmsg);
+    H_ASSERT(has_biome( biome ), errmsg);
 
     // Erase all values associated with the biome:
     // Parameters
@@ -1287,9 +1288,9 @@ void SimpleNbox::renameBiome(const std::string& oldname, const std::string& newn
         "' to '" << newname << "'." << std::endl;
 
     std::string errmsg = "Biome '" + oldname + "' not found in `biome_list`.";
-    H_ASSERT(std::find(biome_list.begin(), biome_list.end(), oldname) != biome_list.end(), errmsg);
+    H_ASSERT(has_biome( oldname ), errmsg);
     errmsg = "Biome '" + newname + "' already exists in `biome_list`.";
-    H_ASSERT(std::find(biome_list.begin(), biome_list.end(), newname) == biome_list.end(), errmsg);
+    H_ASSERT(!has_biome( newname ), errmsg);
 
     beta[ newname ] = beta.at( oldname );
     beta.erase(oldname);
