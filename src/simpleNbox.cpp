@@ -405,7 +405,11 @@ void SimpleNbox::prepareToRun() throw( h_exception )
         H_ASSERT( npp_flux0.count( biome ), "no biome data for npp_flux0" );
 
         H_ASSERT( beta.count( biome ), "no biome value for beta" );
-        H_ASSERT( warmingfactor.count( biome ), "no biome value for warmingfactor" );
+
+        if ( !warmingfactor.count( biome )) {
+            H_LOG( logger, Logger::NOTICE ) << "No warmingfactor set for biome '" << biome << "'. " <<
+                "Setting to default value = 1.0" << std::endl;
+        }
         
     }
 
