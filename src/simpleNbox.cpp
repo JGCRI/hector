@@ -124,16 +124,29 @@ void SimpleNbox::setData( const std::string &varName,
     std::vector<std::string> splitvec;
     boost::split( splitvec, varName, is_any_of( SNBOX_PARSECHAR ) );
     H_ASSERT( splitvec.size() < 3, "max of one separator allowed in variable names" );
+
+    H_LOG (logger, Logger::DEBUG ) << "Processing variable " << varName << std::endl;
     
     std::string biome = SNBOX_DEFAULT_BIOME;
     std::string varNameParsed = varName;
-    std::vector<std::string>::const_iterator it_global = std::find(biome_list.begin(), biome_list.end(), SNBOX_DEFAULT_BIOME);
+    std::vector<std::string>::const_iterator it_global;
+    it_global = std::find(biome_list.begin(), biome_list.end(), SNBOX_DEFAULT_BIOME);
+    
     if( splitvec.size() == 2 ) {    // i.e., in form <biome>.<varname>
         biome = splitvec[ 0 ];
         varNameParsed = splitvec[ 1 ];
-        // Remove "global" from the `biome_list`
         if ( it_global != biome_list.end() ) {
-            deleteBiome( SNBOX_DEFAULT_BIOME );
+            H_LOG( logger, Logger::DEBUG ) << "Removing biome '" << SNBOX_DEFAULT_BIOME <<
+                "' because you cannot have both 'global' and biome data. " << std::endl;
+            // We don't use the `deleteBiome` function here because
+            // when `setData` is used to initialize the core from the
+            // INI file, most of the time series variables that
+            // `deleteBiome` modifies have not been initialized yet.
+            // This should be relatively safe because (1) we check
+            // consistency of biome-specific variable sizes before
+            // running, and (2) the R interface will not let you use
+            // `setData` to modify the biome list.
+            biome_list.erase( it_global );
         }
     }
 
@@ -144,8 +157,9 @@ void SimpleNbox::setData( const std::string &varName,
     // the "global" biome, add it to `biome_list`
     if ( biome != SNBOX_DEFAULT_BIOME &&
          std::find(biome_list.begin(), biome_list.end(), biome) == biome_list.end() ) {
-      H_LOG( logger, Logger::DEBUG ) << "Adding biome '" << biome << "' to `biome_list`." << std::endl;
-      createBiome( biome );
+        H_LOG( logger, Logger::DEBUG ) << "Adding biome '" << biome << "' to `biome_list`." << std::endl;
+        // We don't use `createBiome` here for the same reasons as above.
+        biome_list.push_back( biome );
     }
 
     if (data.isVal) {
@@ -173,28 +187,32 @@ void SimpleNbox::setData( const std::string &varName,
             set_c0(data.getUnitval(U_PPMV_CO2).value(U_PPMV_CO2));
         }
         else if( varNameParsed == D_VEGC ) {
-            // Set veg_c regardless. Chances are we are doing this
-            // from the INI file.
+            // For `veg_c`, `detritus_c`, and `soil_c`, if date is not
+            // provided, set only the "current" model pool, without
+            // touching the time series variable. This is to
+            // accommodate the way the INI file is parsed. For
+            // interactive use, you will usually want to pass the date
+            // -- otherwise, the current value will be overridden by a
+            // `reset` (which includes code like `veg_c = veg_c_tv.get(t)`).
+            //
+            // TODO: Should we create special variables `veg_c0`,
+            // `soil_c0`, etc. that are set in the INI file and
+            // require a date for `veg_c`, `soil_c`, etc.?
             veg_c[ biome ] = data.getUnitval( U_PGC );
             if (data.date != Core::undefinedIndex()) {
-                // Also set the time-series
-                record_state(data.date);
+                veg_c_tv.set(data.date, veg_c);
             }
         }
         else if( varNameParsed == D_DETRITUSC ) {
             detritus_c[ biome ] = data.getUnitval( U_PGC );
             if (data.date != Core::undefinedIndex()) {
-                // Also set the time-series
-                // detritus_c_tv.set(data.date, detritus_c);
-                record_state(data.date);
+                detritus_c_tv.set(data.date, detritus_c);
             }
         }
         else if( varNameParsed == D_SOILC ) {
             soil_c[ biome ] = data.getUnitval( U_PGC );
             if (data.date != Core::undefinedIndex()) {
-                // Also set the time-series
-                // soil_c_tv.set(data.date, soil_c);
-                record_state(data.date);
+                soil_c_tv.set(data.date, soil_c);
             }
         }
         
