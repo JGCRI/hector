@@ -2,29 +2,37 @@
 % Please edit documentation in R/biome.R
 \name{split_biome}
 \alias{split_biome}
-\title{Create a new biome by splitting an existing one}
+\title{Create new biomes by splitting up an existing biome}
 \usage{
-split_biome(core, biome, from_biome = get_biome_list(core)[[1]],
-  fveg_c = 0.5, fdetritus_c = fveg_c, fsoil_c = fveg_c,
-  fnpp_flux0 = fveg_c, ...)
+split_biome(core, old_biome, new_biomes,
+  fveg_c = rep(1/length(new_biomes), length(new_biomes)),
+  fdetritus_c = fveg_c, fsoil_c = fveg_c, fnpp_flux0 = fveg_c, ...)
 }
 \arguments{
 \item{core}{Hector core}
 
-\item{biome}{Name of new biome}
+\item{old_biome}{Name of biome that will be split up}
 
-\item{veg_c0}{Initial vegetation C pool (default = `0`)}
+\item{new_biomes}{Names of biomes to be created}
 
-\item{detritus_c0}{Initial detritus C pool (default = `0`)}
+\item{fveg_c}{Fractions of vegetation C distributed to each biome
+in `new_biomes`. Must be the same length as `new_biomes`. Default
+is to split vegetation C evenly between all biomes.}
 
-\item{soil_c0}{Initial soil C pool (default = `0`)}
+\item{fdetritus_c}{Fractions of detritus C distributed to each
+biome. Defaults to the same value as `fveg_c`.}
 
-\item{npp_flux0}{Initial net primary productivity (default = `0`)}
+\item{fsoil_c}{Fractions of soil C distributed to each biome.
+Defaults to the same value as `fveg_c`.}
 
-\item{warmingfactor}{Temperature multiplier (default = `1.0`)}
+\item{fnpp_flux0}{Fraction of initial NPP flux distributed to each
+biome. Defaults to the same value as `fveg_c`.}
 
-\item{beta}{CO2 fertilization effect (default = `0.36`)}
+\item{...}{Additional biome-specific parameters, as set by
+[create_biome()]. Note that these are passed to [create_biome()]
+via [base::mapply()], so they can be vectorized across biomes.}
 }
 \description{
-Create a new biome by splitting an existing one
+Distributes vegetation, detritus, and soil C, and initial NPP flux
+from an existing biome across multiple new biomes.
 }

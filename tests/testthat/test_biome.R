@@ -188,19 +188,26 @@ test_that("Split biomes, and modify parameters", {
 
 })
 
-test_that("Run with more than 2 biomes", {
+test_that("More than 2 biomes", {
  
   core <- newcore(system.file("input", "hector_rcp45.ini",
                               package = "hector"),
                   suppresslogging = FALSE,
                   loglevel = LL_DEBUG())
   global_vegc <- fetchvars(core, NA, VEG_C())
+
   # Using default arguments
-  invisible(rename_biome(core, "global", "default"))
-  split_biome(core, "default", c("b1", "b2", "b3", "b4", "b5"))
+  split_biome(core, "global", c("b1", "b2", "b3", "b4", "b5"))
+  expect_equal(get_biome_list(core), c("b1", "b2", "b3", "b4", "b5"))
   invisible(run(core))
   invisible(reset(core))
   biome_vegc <- fetchvars(core, NA, c(VEG_C("b1"), VEG_C("b2"), VEG_C("b3"), VEG_C("b4"), VEG_C("b5")))
   expect_equivalent(sum(biome_vegc[["value"]]), global_vegc[["value"]])
- 
+
+  # Try merging biomes
+  merge_biomes(core, paste0("b", 1:5), "combined")
+  expect_equal(get_biome_list(core), "combined")
+  biome_vegc <- fetchvars(core, NA, VEG_C("combined"))
+  expect_equivalent(global_vegc[["value"]], biome_vegc[["value"]])
+
 })
