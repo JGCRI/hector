@@ -886,9 +886,13 @@ return D_Q10_RH;
 //'   `""`, default to `"global"`.
 //' @export
 // [[Rcpp::export]]
-std::string BETA(std::string biome = "") {
-  std::string out = D_BETA;
-  if (biome != "") out = biome + "." + out;
+String BETA(String biome = "") {
+  if (biome == "") return D_BETA;
+  // `Rcpp::String` has a `+=` method, but no `+` method, so have to use
+  // this clunky workaround.
+  String out = biome; 
+  out += ".";
+  out += D_BETA;
   return out;
 }
 
@@ -896,9 +900,11 @@ std::string BETA(std::string biome = "") {
 //' @inheritParams BETA
 //' @export
 // [[Rcpp::export]]
-std::string WARMINGFACTOR(std::string biome = "") {
-  std::string out = D_WARMINGFACTOR;
-  if (biome != "") out = biome + "." + out;
+String WARMINGFACTOR(String biome = "") {
+  if (biome == "") return D_WARMINGFACTOR;
+  String out = biome;
+  out += ".";
+  out += D_WARMINGFACTOR;
   return out;
 }
 
@@ -941,9 +947,11 @@ return D_F_LUCD;
 //' @inheritParams BETA
 //' @export
 // [[Rcpp::export]]
-std::string VEG_C(std::string biome = "") {
-  std::string out = D_VEGC;
-  if (biome != "") out = biome + "." + out;
+String VEG_C(String biome = "") {
+  if (biome == "") return D_VEGC;
+  String out = biome;
+  out += ".";
+  out += D_VEGC;
   return out;
 }
 
@@ -951,9 +959,11 @@ std::string VEG_C(std::string biome = "") {
 //' @inheritParams BETA
 //' @export
 // [[Rcpp::export]]
-std::string DETRITUS_C(std::string biome = "") {
-  std::string out = D_DETRITUSC;
-  if (biome != "") out = biome + "." + out;
+String DETRITUS_C(String biome = "") {
+  if (biome == "") return D_DETRITUSC;
+  String out = biome;
+  out += ".";
+  out += D_DETRITUSC;
   return out;
 }
 
@@ -961,9 +971,11 @@ std::string DETRITUS_C(std::string biome = "") {
 //' @inheritParams BETA
 //' @export
 // [[Rcpp::export]]
-std::string SOIL_C(std::string biome = "") {
-  std::string out = D_SOILC;
-  if (biome != "") out = biome + "." + out;
+String SOIL_C(String biome = "") {
+  if (biome == "") return D_SOILC;
+  String out = biome;
+  out += ".";
+  out += D_SOILC;
   return out;
 }
 
@@ -972,9 +984,11 @@ std::string SOIL_C(std::string biome = "") {
 //' @inheritParams BETA
 //' @export
 // [[Rcpp::export]]
-std::string NPP_FLUX0(std::string biome = "") {
-  std::string out = D_NPP_FLUX0;
-  if (biome != "") out = biome + "." + out;
+String NPP_FLUX0(String biome = "") {
+  if (biome == "") return D_NPP_FLUX0;
+  String out = biome;
+  out += ".";
+  out += D_NPP_FLUX0;
   return out;
 }
 

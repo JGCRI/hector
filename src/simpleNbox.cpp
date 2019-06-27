@@ -124,8 +124,6 @@ void SimpleNbox::setData( const std::string &varName,
     std::vector<std::string> splitvec;
     boost::split( splitvec, varName, is_any_of( SNBOX_PARSECHAR ) );
     H_ASSERT( splitvec.size() < 3, "max of one separator allowed in variable names" );
-
-    H_LOG (logger, Logger::DEBUG ) << "Processing variable " << varName << std::endl;
     
     std::string biome = SNBOX_DEFAULT_BIOME;
     std::string varNameParsed = varName;
@@ -394,7 +392,7 @@ void SimpleNbox::prepareToRun() throw( h_exception )
                  "Did you forget to rename the default ('global') biome?")
     }
     
-    // Everything in veg_c map should occur in soil and detritus
+    // Ensure consistency between biome_list and all pools and fluxes
     H_ASSERT( biome_list.size() == veg_c.size(), "veg_c and biome_list data not same size" );
     H_ASSERT( biome_list.size() == detritus_c.size(), "detritus_c and biome_list not same size" );
     H_ASSERT( biome_list.size() == soil_c.size(), "soil_c and biome_list not same size" );
@@ -402,7 +400,7 @@ void SimpleNbox::prepareToRun() throw( h_exception )
 
     for ( it = biome_list.begin(); it != biome_list.end(); it++ ) {
         biome = *it;
-        H_LOG( logger, Logger::DEBUG ) << "Checking that " << *it << " data complete" << std::endl;
+        H_LOG( logger, Logger::DEBUG ) << "Checking that data for biome '" << biome << "' is complete" << std::endl;
         H_ASSERT( detritus_c.count( biome ), "no biome data for detritus_c" );
         H_ASSERT( soil_c.count( biome ), "no biome data for soil_c" );
         H_ASSERT( npp_flux0.count( biome ), "no biome data for npp_flux0" );

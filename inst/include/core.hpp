@@ -107,7 +107,7 @@ public:
 
 private:
     //! Registry of instantiated cores 
-    //! \detais is used when you are instantiating hector cores
+    //! \details This is used when you are instantiating hector cores
     //! from a language other than C++.  Instead of trying to convert
     //! C++ pointers to something that can be stored in the other
     //! language's data structures, you just register the core(s) you

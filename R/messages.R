@@ -89,7 +89,7 @@ setvar <- function(core, dates, var, values, unit)
         biome <- var_split[[1]]
         biome_list <- get_biome_list(core)
         if (!biome %in% biome_list) {
-            stop("Biome '", biome, "' is not in current biome list.",
+            stop("Biome '", biome, "' is not in current biome list. ",
                  "Use `hector::create_biome(\"", biome, "\")` to create it.")
         }
     }

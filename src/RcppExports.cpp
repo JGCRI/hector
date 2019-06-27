@@ -1186,23 +1186,23 @@ BEGIN_RCPP
 END_RCPP
 }
 // BETA
-std::string BETA(std::string biome);
+String BETA(String biome);
 RcppExport SEXP _hector_BETA(SEXP biomeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< std::string >::type biome(biomeSEXP);
+    Rcpp::traits::input_parameter< String >::type biome(biomeSEXP);
     rcpp_result_gen = Rcpp::wrap(BETA(biome));
     return rcpp_result_gen;
 END_RCPP
 }
 // WARMINGFACTOR
-std::string WARMINGFACTOR(std::string biome);
+String WARMINGFACTOR(String biome);
 RcppExport SEXP _hector_WARMINGFACTOR(SEXP biomeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< std::string >::type biome(biomeSEXP);
+    Rcpp::traits::input_parameter< String >::type biome(biomeSEXP);
     rcpp_result_gen = Rcpp::wrap(WARMINGFACTOR(biome));
     return rcpp_result_gen;
 END_RCPP
@@ -1258,45 +1258,45 @@ BEGIN_RCPP
 END_RCPP
 }
 // VEG_C
-std::string VEG_C(std::string biome);
+String VEG_C(String biome);
 RcppExport SEXP _hector_VEG_C(SEXP biomeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< std::string >::type biome(biomeSEXP);
+    Rcpp::traits::input_parameter< String >::type biome(biomeSEXP);
     rcpp_result_gen = Rcpp::wrap(VEG_C(biome));
     return rcpp_result_gen;
 END_RCPP
 }
 // DETRITUS_C
-std::string DETRITUS_C(std::string biome);
+String DETRITUS_C(String biome);
 RcppExport SEXP _hector_DETRITUS_C(SEXP biomeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< std::string >::type biome(biomeSEXP);
+    Rcpp::traits::input_parameter< String >::type biome(biomeSEXP);
     rcpp_result_gen = Rcpp::wrap(DETRITUS_C(biome));
     return rcpp_result_gen;
 END_RCPP
 }
 // SOIL_C
-std::string SOIL_C(std::string biome);
+String SOIL_C(String biome);
 RcppExport SEXP _hector_SOIL_C(SEXP biomeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< std::string >::type biome(biomeSEXP);
+    Rcpp::traits::input_parameter< String >::type biome(biomeSEXP);
     rcpp_result_gen = Rcpp::wrap(SOIL_C(biome));
     return rcpp_result_gen;
 END_RCPP
 }
 // NPP_FLUX0
-std::string NPP_FLUX0(std::string biome);
+String NPP_FLUX0(String biome);
 RcppExport SEXP _hector_NPP_FLUX0(SEXP biomeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< std::string >::type biome(biomeSEXP);
+    Rcpp::traits::input_parameter< String >::type biome(biomeSEXP);
     rcpp_result_gen = Rcpp::wrap(NPP_FLUX0(biome));
     return rcpp_result_gen;
 END_RCPP
