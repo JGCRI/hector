@@ -136,7 +136,7 @@ merge_biomes <- function(core, old_biomes, new_biome, ...) {
       new_warmingfactor <- new_warmingfactor[[1]]
     }
   }
-  lapply(old_biomes, c_delete_biome, core = core)
+
   create_biome(
     core,
     new_biome,
@@ -147,6 +147,8 @@ merge_biomes <- function(core, old_biomes, new_biome, ...) {
     warmingfactor = new_warmingfactor,
     beta = new_beta
   )
+
+  lapply(old_biomes, c_delete_biome, core = core)
 
   reset(core, 0)
   invisible(core)

@@ -4,7 +4,7 @@ author: Alexey Shiklomanov
 date: "2019-06-27"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Intro to Hector}
+  %\VignetteIndexEntry{Running Hector with multiple biomes}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
