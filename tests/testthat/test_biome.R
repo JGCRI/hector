@@ -220,15 +220,17 @@ test_that("More than 2 biomes", {
   global_vegc <- fetchvars(core, NA, VEG_C())
 
   # Using default arguments
-  split_biome(core, "global", c("b1", "b2", "b3", "b4", "b5"))
-  expect_equal(get_biome_list(core), c("b1", "b2", "b3", "b4", "b5"))
+  biomes <- paste0("b", 1:5)
+  veg_c_biomes <- vapply(biomes, VEG_C, character(1))
+  split_biome(core, "global", biomes)
+  expect_equal(get_biome_list(core), biomes)
   invisible(run(core))
   invisible(reset(core))
-  biome_vegc <- fetchvars(core, NA, c(VEG_C("b1"), VEG_C("b2"), VEG_C("b3"), VEG_C("b4"), VEG_C("b5")))
+  biome_vegc <- fetchvars(core, NA, veg_c_biomes)
   expect_equivalent(sum(biome_vegc[["value"]]), global_vegc[["value"]])
 
   # Try merging biomes
-  merge_biomes(core, paste0("b", 1:5), "combined")
+  merge_biomes(core, biomes, "combined")
   expect_equal(get_biome_list(core), "combined")
   biome_vegc <- fetchvars(core, NA, VEG_C("combined"))
   expect_equivalent(global_vegc[["value"]], biome_vegc[["value"]])
