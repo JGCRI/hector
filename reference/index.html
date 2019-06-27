@@ -96,7 +96,12 @@
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/JGCRI/hector">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -123,7 +128,89 @@
     <tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
+          <h2 id="section-running-hector" class="hasAnchor"><a href="#section-running-hector" class="anchor"></a>Running Hector</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="newcore.html">newcore()</a></code> </p>
+        </td>
+        <td><p>Create and initialize a new hector instance</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="methods.html">format(<i>&lt;hcore&gt;</i>)</a></code> <code><a href="methods.html">print(<i>&lt;hcore&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Hector instance object methods</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="run.html">run()</a></code> </p>
+        </td>
+        <td><p>Run the Hector climate model</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="reset.html">reset()</a></code> </p>
+        </td>
+        <td><p>Reset a Hector instance to an earlier date</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="shutdown.html">shutdown()</a></code> </p>
+        </td>
+        <td><p>Shutdown a hector instance</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="runscenario.html">runscenario()</a></code> </p>
+        </td>
+        <td><p>Run a single scenario</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-setting-and-retrieving-data" class="hasAnchor"><a href="#section-setting-and-retrieving-data" class="anchor"></a>Setting and retrieving data</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="fetchvars.html">fetchvars()</a></code> </p>
+        </td>
+        <td><p>Fetch results from a running Hector core</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="setvar.html">setvar()</a></code> </p>
+        </td>
+        <td><p>Set values for a Hector variable</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="sendmessage.html">sendmessage()</a></code> </p>
+        </td>
+        <td><p>Send a message to a Hector instance</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="hectorutil.html">getdate()</a></code> <code><a href="hectorutil.html">isactive()</a></code> <code><a href="hectorutil.html">startdate()</a></code> <code><a href="hectorutil.html">enddate()</a></code> <code><a href="hectorutil.html">getname()</a></code> </p>
+        </td>
+        <td><p>Utility functions for Hector instances</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="getunits.html">getunits()</a></code> </p>
+        </td>
+        <td><p>Get the hector unit strings for one or more variables</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-variable-and-component-identifiers" class="hasAnchor"><a href="#section-variable-and-component-identifiers" class="anchor"></a>Variable and component identifiers</h2>
           <p class="section-desc"></p>
         </th>
       </tr>
@@ -148,21 +235,9 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="fetchvars.html">fetchvars()</a></code> </p>
-        </td>
-        <td><p>Fetch results from a running Hector core</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="forcings.html">RF_TOTAL()</a></code> <code><a href="forcings.html">RF_T_ALBEDO()</a></code> <code><a href="forcings.html">RF_CO2()</a></code> <code><a href="forcings.html">RF_N2O()</a></code> <code><a href="forcings.html">RF_H2O()</a></code> <code><a href="forcings.html">RF_O3()</a></code> <code><a href="forcings.html">RF_BC()</a></code> <code><a href="forcings.html">RF_OC()</a></code> <code><a href="forcings.html">RF_SO2D()</a></code> <code><a href="forcings.html">RF_SO2I()</a></code> <code><a href="forcings.html">RF_SO2()</a></code> <code><a href="forcings.html">RF_VOL()</a></code> <code><a href="forcings.html">RF_CH4()</a></code> </p>
         </td>
         <td><p>Identifiers for capabilities in the Hector forcing component</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="getunits.html">getunits()</a></code> </p>
-        </td>
-        <td><p>Get the hector unit strings for one or more variables</p></td>
       </tr><tr>
         
         <td>
@@ -178,12 +253,6 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="hectorutil.html">getdate()</a></code> <code><a href="hectorutil.html">isactive()</a></code> <code><a href="hectorutil.html">startdate()</a></code> <code><a href="hectorutil.html">enddate()</a></code> <code><a href="hectorutil.html">getname()</a></code> </p>
-        </td>
-        <td><p>Utility functions for Hector instances</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="loglevels.html">LL_DEBUG()</a></code> <code><a href="loglevels.html">LL_NOTICE()</a></code> <code><a href="loglevels.html">LL_WARNING()</a></code> <code><a href="loglevels.html">LL_SEVERE()</a></code> </p>
         </td>
         <td><p>Hector logging levels</p></td>
@@ -196,18 +265,6 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="methods.html">format(<i>&lt;hcore&gt;</i>)</a></code> <code><a href="methods.html">print(<i>&lt;hcore&gt;</i>)</a></code> </p>
-        </td>
-        <td><p>Hector instance object methods</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="newcore.html">newcore()</a></code> </p>
-        </td>
-        <td><p>Create and initialize a new hector instance</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="ocean.html">OCEAN_CFLUX()</a></code> <code><a href="ocean.html">OCEAN_C()</a></code> <code><a href="ocean.html">OCEAN_C_HL()</a></code> <code><a href="ocean.html">OCEAN_C_LL()</a></code> <code><a href="ocean.html">OCEAN_C_IO()</a></code> <code><a href="ocean.html">OCEAN_C_DO()</a></code> <code><a href="ocean.html">TT()</a></code> <code><a href="ocean.html">TU()</a></code> <code><a href="ocean.html">TWI()</a></code> <code><a href="ocean.html">TID()</a></code> <code><a href="ocean.html">PH_HL()</a></code> <code><a href="ocean.html">PH_LL()</a></code> <code><a href="ocean.html">ATM_OCEAN_FLUX_HL()</a></code> <code><a href="ocean.html">ATM_OCEAN_FLUX_LL()</a></code> <code><a href="ocean.html">PCO2_HL()</a></code> <code><a href="ocean.html">PCO2_LL()</a></code> <code><a href="ocean.html">DIC_HL()</a></code> <code><a href="ocean.html">DIC_LL()</a></code> <code><a href="ocean.html">TEMP_HL()</a></code> <code><a href="ocean.html">TEMP_LL()</a></code> <code><a href="ocean.html">CO3_LL()</a></code> <code><a href="ocean.html">CO3_HL()</a></code> </p>
         </td>
         <td><p>Identifiers for quantities in the ocean component</p></td>
@@ -217,42 +274,6 @@
           <p><code><a href="parameters.html">PREINDUSTRIAL_CO2()</a></code> <code><a href="parameters.html">Q10_RH()</a></code> <code><a href="parameters.html">BETA()</a></code> <code><a href="parameters.html">F_NPPV()</a></code> <code><a href="parameters.html">F_NPPD()</a></code> <code><a href="parameters.html">F_LITTERD()</a></code> <code><a href="parameters.html">F_LUCV()</a></code> <code><a href="parameters.html">F_LUCD()</a></code> <code><a href="parameters.html">ECS()</a></code> <code><a href="parameters.html">AERO_SCALE()</a></code> <code><a href="parameters.html">VOLCANIC_SCALE()</a></code> <code><a href="parameters.html">DIFFUSIVITY()</a></code> </p>
         </td>
         <td><p>Identifiers for model parameters</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="reset.html">reset()</a></code> </p>
-        </td>
-        <td><p>Reset a Hector instance to an earlier date</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="run.html">run()</a></code> </p>
-        </td>
-        <td><p>Run the Hector climate model</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="runscenario.html">runscenario()</a></code> </p>
-        </td>
-        <td><p>Run a single scenario</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="sendmessage.html">sendmessage()</a></code> </p>
-        </td>
-        <td><p>Send a message to a Hector instance</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="setvar.html">setvar()</a></code> </p>
-        </td>
-        <td><p>Set values for a Hector variable</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="shutdown.html">shutdown()</a></code> </p>
-        </td>
-        <td><p>Shutdown a hector instance</p></td>
       </tr><tr>
         
         <td>
@@ -273,7 +294,9 @@
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-all-functions">All functions</a></li>
+      <li><a href="#section-running-hector">Running Hector</a></li>
+      <li><a href="#section-setting-and-retrieving-data">Setting and retrieving data</a></li>
+      <li><a href="#section-variable-and-component-identifiers">Variable and component identifiers</a></li>
     </ul>
   </div>
 </div>

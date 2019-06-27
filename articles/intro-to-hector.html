@@ -64,7 +64,14 @@
   <a href="../reference/index.html">Reference</a>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="https://github.com/JGCRI/hector">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -164,7 +171,12 @@
 ## End date:    2300
 ## Current date:    1745
 ## Input file:  /home/travis/R/Library/hector/input/hector_rcp45.ini</code></pre>
-<p>Now, the “Current Date” has been reset to 1745. We can now perform another run with the new CO<span class="math inline">\(_2\)</span> fertilization value.</p>
+<p>This will effectively “rewind” the core back to either the provided <code>date</code> (defaults to 0 if missing) or the model start date (set in the INI file; default is 1745), whichever is greater. In addition, if the <code>date</code> argument is less than the model start date and spinup is enabled (<code>do_spinup = 1</code> in the INI file), then the core will re-do its spinup process with the current set of parameters.</p>
+<hr>
+<p><strong>NOTE</strong></p>
+<p>Because changing Hector parameters can change the post-spinup equilibrium values of state variables, Hector will automatically run <code><a href="../reference/reset.html">reset(core, date = 0)</a></code> at the beginning of the next <code>run</code> call if it detects that any of its parameters have changed. This means that is not currently possible to change Hector <em>parameters</em> (such as <span class="math inline">\(\beta\)</span> or preindustrial CO<sub>2</sub>) part-way through a run. However, it is still possible to change the values of certain <em>drivers</em> and <em>state variables</em> (such as the CO<sub>2</sub> emissions) in the middle of a run.</p>
+<hr>
+<p>So, as a result of the <code>reset</code> command, the core’s “Current Date” is now the model start date–1745. We can now perform another run with the new CO<span class="math inline">\(_2\)</span> fertilization value.</p>
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="kw"><a href="../reference/run.html">run</a></span>(core)</a></code></pre></div>
 <pre><code>## Hector core: unnamed hector core
 ## Start date:  1745

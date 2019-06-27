@@ -67,7 +67,14 @@
   <a href="reference/index.html">Reference</a>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="https://github.com/JGCRI/hector">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -85,15 +92,14 @@
 <a href="#hector" class="anchor"></a>Hector</h1></div>
 <p>This is the repository for <strong>Hector</strong>, an open source, object-oriented, simple global climate carbon-cycle model. It runs essentially instantaneously while still representing the most critical global scale earth system processes, and is one of a class of models heavily used for for emulating complex climate models and uncertainty analyses. For example, Hector’s global temperature rise for the RCP 8.5 scenario, compared to observations and other model results, looks like this:</p>
 <p><img src="https://github.com/JGCRI/hector/wiki/rcp85.png"></p>
-<p>The primary source of Hector model documentation is the Github <a href="https://github.com/JGCRI/hector/wiki">wiki</a>. Please note that the wiki documents are included in the repository as a git <a href="https://git-scm.com/book/en/v2/Git-Tools-Submodules">submodule</a>. To clone the repository as well as the documentation, you can use <code>git clone --recursive</code>. If you have already cloned non-recursively, you can fetch (download) the documentation by running <code>git submodule init; git submodule update</code>. The code is also well documented with <a href="http://doxygen.org">Doxygen</a>-style comments. A formal model description paper (<a href="http://www.geosci-model-dev.net/8/939/2015/gmd-8-939-2015.html">Hartin et al. 2015</a>) documents its science internals and performance relative to observed data, the <a href="http://cmip-pcmdi.llnl.gov/cmip5/">CMIP5</a> archive, and the reduced-complexity <a href="http://www.magicc.org">MAGICC</a> model.</p>
+<p>The primary link to Hector model documentation is the <a href="https://jgcri.github.io/hector/articles/manual">online manual</a>, which is included in the repository in the <code>vignettes/manual</code> directory. The code is also documented with <a href="http://doxygen.org">Doxygen</a>-style comments. A formal model description paper (<a href="http://www.geosci-model-dev.net/8/939/2015/gmd-8-939-2015.html">Hartin et al. 2015</a>) documents its science internals and performance relative to observed data, the <a href="http://cmip-pcmdi.llnl.gov/cmip5/">CMIP5</a> archive, and the reduced-complexity <a href="http://www.magicc.org">MAGICC</a> model (as of <a href="https://github.com/JGCRI/hector/tree/v1.0">version 1.0</a>). In addition, we have developed two package vignettes demonstrating the <a href="http://jgcri.github.io/hector/articles/intro-to-hector.html">basics of the Hector R interface</a> and an example application of <a href="http://jgcri.github.io/hector/articles/hector_apply.html">solving for an emissions pathway</a>.</p>
 <p>This research was supported by the U.S. Department of Energy, Office of Science, as part of research in Multi-Sector Dynamics, Earth and Environmental System Modeling Program. The Pacific Northwest National Laboratory is operated for DOE by Battelle Memorial Institute under contract DE-AC05-76RL01830.</p>
 <div id="tools-and-software-that-work-with-hector" class="section level2">
 <h2 class="hasAnchor">
 <a href="#tools-and-software-that-work-with-hector" class="anchor"></a>Tools and Software That Work with Hector</h2>
 <ul>
 <li>
-<a href="https://github.com/JGCRI/gcam-core">GCAM</a>: Hector can be used as the climate component in the GCAM integrated assessment model.<br>
-</li>
+<a href="https://github.com/JGCRI/gcam-core">GCAM</a>: Hector can be used as the climate component in the GCAM integrated assessment model.</li>
 <li>
 <a href="https://github.com/openclimatedata/pyhector">pyhector</a>: a python interface to Hector.</li>
 </ul>
