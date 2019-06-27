@@ -142,16 +142,13 @@ test_that("Correct way to create new biomes", {
   results_pfe <- fetchvars(core, 2000:2100)
   expect_equal(results_pf, results_pfe)
 
-  fetchvars(core, NA, "permafrost.veg_c")
-
 })
 
 test_that("Split biomes, and modify parameters", {
 
   core <- newcore(system.file("input", "hector_rcp45.ini",
                               package = "hector"),
-                  suppresslogging = FALSE,
-                  loglevel = LL_DEBUG())
+                  suppresslogging = TRUE)
   invisible(rename_biome(core, "global", "default"))
   expect_equal(get_biome_list(core), "default")
   global_veg <- sendmessage(core, GETDATA(), VEG_C("default"), 0, NA, "")[["value"]]
@@ -180,20 +177,46 @@ test_that("Split biomes, and modify parameters", {
   # each time step. This is a robust test!
   r_biome_data <- fetchvars(core, 2000:2100, c(VEG_C("non-pf"), VEG_C("permafrost"),
                                                DETRITUS_C("non-pf"), DETRITUS_C("permafrost"),
-                                               SOIL_C("non-pf"), SOIL_C("permafrost")))
+                                               SOIL_C("non-pf"), SOIL_C("permafrost")),
+                            scenario = "default pf")
   r_biome_data$biome <- gsub("^(.*)\\.(.*)", "\\1", r_biome_data$variable)
   r_biome_data$variable <- gsub("^(.*)\\.(.*)", "\\2", r_biome_data$variable)
   r_biome_totals <- aggregate(value ~ year + variable, data = r_biome_data, sum)
   expect_equivalent(r_global_totals, r_biome_totals)
 
+  # Ramping up the warming factor for permafrost should decrease its
+  # detritus and soil C pools (because respiration is much faster)
+  setvar(core, NA, WARMINGFACTOR("permafrost"), 3.0, NA)
+  invisible(run(core))
+  r_warm_data <- fetchvars(core, 2000:2100, c(VEG_C("non-pf"), VEG_C("permafrost"),
+                                              DETRITUS_C("non-pf"), DETRITUS_C("permafrost"),
+                                              SOIL_C("non-pf"), SOIL_C("permafrost")),
+                           scenario = "warm pf")
+  r_warm_data$biome <- gsub("^(.*)\\.(.*)", "\\1", r_warm_data$variable)
+  r_warm_data$variable <- gsub("^(.*)\\.(.*)", "\\2", r_warm_data$variable)
+  expect_lt(
+    subset(r_warm_data, biome == "permafrost" &
+                          variable == "detritus_c" &
+                          year == 2100)[["value"]],
+    subset(r_biome_data, biome == "permafrost" &
+                           variable == "detritus_c" &
+                           year == 2100)[["value"]]
+  )
+  expect_lt(
+    subset(r_warm_data, biome == "permafrost" &
+                          variable == "soil_c" &
+                          year == 2100)[["value"]],
+    subset(r_biome_data, biome == "permafrost" &
+                           variable == "soil_c" &
+                           year == 2100)[["value"]]
+  )
 })
 
 test_that("More than 2 biomes", {
- 
+
   core <- newcore(system.file("input", "hector_rcp45.ini",
                               package = "hector"),
-                  suppresslogging = FALSE,
-                  loglevel = LL_DEBUG())
+                  suppresslogging = TRUE)
   global_vegc <- fetchvars(core, NA, VEG_C())
 
   # Using default arguments
