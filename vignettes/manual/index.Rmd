@@ -1,5 +1,5 @@
 ---
-title: Welcome to the Hector wiki!
+title: Hector manual
 ---
 
 Science
@@ -19,7 +19,7 @@ Model philosophy
 Building and running Hector
 --------------------
 * How to [build Hector from source](BuildHector.html).
-* What [input files](InputFiles.html) the model requires, and what [output files](OutputFiles.html) it produces.
+* What [input files](InputFiles.html) the model requires, and what output files it produces.
 * About Hector's [version numbering](VersionNumbers.html).
 * How to use the model [backend](Backend.html) written in [R](http://cran.r-project.org).
 * Running Hector subject to [constraints](Constraints.html).

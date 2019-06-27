@@ -23,7 +23,6 @@ Suggests:
     ggplot2,
     tidyr (>= 0.7),
     dplyr (>= 0.7)
-SystemRequirements: Boost C++ libraries
 Collate:
     'aadoc.R'
     'RcppExports.R'
