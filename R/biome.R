@@ -174,9 +174,8 @@ get_biome_inits <- function(core, biome) {
                                           BETA(biome),
                                           WARMINGFACTOR(biome)))[, -1]
   current_data <- rbind.data.frame(current_data_1, current_data_2)
-  current_values <- setNames(
-    current_data[["value"]],
-    gsub(paste0(biome, "."), "", current_data[["variable"]], fixed = TRUE)
-  )
+  current_values <- current_data[["value"]]
+  names(current_values) <- gsub(paste0(biome, "."), "",
+                                current_data[["variable"]], fixed = TRUE)
   current_values
 }

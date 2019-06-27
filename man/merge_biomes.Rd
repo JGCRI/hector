@@ -16,6 +16,9 @@ merge_biomes(core, old_biomes, new_biome, ...)
 \item{...}{Additional parameters for the new biome, as set by
 [create_biome()].}
 }
+\value{
+`core`, invisibly
+}
 \description{
 Merge multiple biomes into a single biome
 }

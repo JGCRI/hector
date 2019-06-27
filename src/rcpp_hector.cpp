@@ -197,6 +197,8 @@ double getdate(Environment core)
 
 //' Retrieve the current list of biomes for a Hector instance
 //'
+//' @param core Handle to the Hector instance from which to retrieve
+//'   the biome list.
 //' @export
 // [[Rcpp::export]]
 std::vector<std::string> get_biome_list(Environment core)
@@ -208,6 +210,7 @@ std::vector<std::string> get_biome_list(Environment core)
 
 //' Create a biome
 //'
+//' @param core Handle to the Hector instance that is to be run.
 //' @param biome (character) Name of new biome
 // [[Rcpp::export]]
 Environment c_create_biome(Environment core, std::string biome)
@@ -219,6 +222,7 @@ Environment c_create_biome(Environment core, std::string biome)
 
 //' Delete a biome
 //'
+//' @param core Handle to the Hector instance that is to be run.
 //' @param biome (character) Name of biome to delete
 // [[Rcpp::export]]
 Environment c_delete_biome(Environment core, std::string biome)
@@ -237,6 +241,7 @@ Environment c_delete_biome(Environment core, std::string biome)
 //' @param core Handle to the Hector instance that is to be run.
 //' @param oldname (character) Name of existing biome to be replaced
 //' @param newname (character) Name of new biome
+//' @export
 // [[Rcpp::export]]
 Environment rename_biome(Environment core, std::string oldname, std::string newname)
 {

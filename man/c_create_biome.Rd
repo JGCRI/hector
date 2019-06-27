@@ -7,6 +7,8 @@
 c_create_biome(core, biome)
 }
 \arguments{
+\item{core}{Handle to the Hector instance that is to be run.}
+
 \item{biome}{(character) Name of new biome}
 }
 \description{

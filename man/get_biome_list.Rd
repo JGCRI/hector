@@ -6,6 +6,10 @@
 \usage{
 get_biome_list(core)
 }
+\arguments{
+\item{core}{Handle to the Hector instance from which to retrieve
+the biome list.}
+}
 \description{
 Retrieve the current list of biomes for a Hector instance
 }

@@ -947,6 +947,8 @@ getdate <- function(core) {
 
 #' Retrieve the current list of biomes for a Hector instance
 #'
+#' @param core Handle to the Hector instance from which to retrieve
+#'   the biome list.
 #' @export
 get_biome_list <- function(core) {
     .Call('_hector_get_biome_list', PACKAGE = 'hector', core)
@@ -954,6 +956,7 @@ get_biome_list <- function(core) {
 
 #' Create a biome
 #'
+#' @param core Handle to the Hector instance that is to be run.
 #' @param biome (character) Name of new biome
 c_create_biome <- function(core, biome) {
     .Call('_hector_c_create_biome', PACKAGE = 'hector', core, biome)
@@ -961,6 +964,7 @@ c_create_biome <- function(core, biome) {
 
 #' Delete a biome
 #'
+#' @param core Handle to the Hector instance that is to be run.
 #' @param biome (character) Name of biome to delete
 c_delete_biome <- function(core, biome) {
     .Call('_hector_c_delete_biome', PACKAGE = 'hector', core, biome)
@@ -975,6 +979,7 @@ c_delete_biome <- function(core, biome) {
 #' @param core Handle to the Hector instance that is to be run.
 #' @param oldname (character) Name of existing biome to be replaced
 #' @param newname (character) Name of new biome
+#' @export
 rename_biome <- function(core, oldname, newname) {
     .Call('_hector_rename_biome', PACKAGE = 'hector', core, oldname, newname)
 }
