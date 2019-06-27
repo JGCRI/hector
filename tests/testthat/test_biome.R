@@ -187,3 +187,20 @@ test_that("Split biomes, and modify parameters", {
   expect_equivalent(r_global_totals, r_biome_totals)
 
 })
+
+test_that("Run with more than 2 biomes", {
+ 
+  core <- newcore(system.file("input", "hector_rcp45.ini",
+                              package = "hector"),
+                  suppresslogging = FALSE,
+                  loglevel = LL_DEBUG())
+  global_vegc <- fetchvars(core, NA, VEG_C())
+  # Using default arguments
+  invisible(rename_biome(core, "global", "default"))
+  split_biome(core, "default", c("b1", "b2", "b3", "b4", "b5"))
+  invisible(run(core))
+  invisible(reset(core))
+  biome_vegc <- fetchvars(core, NA, c(VEG_C("b1"), VEG_C("b2"), VEG_C("b3"), VEG_C("b4"), VEG_C("b5")))
+  expect_equivalent(sum(biome_vegc[["value"]]), global_vegc[["value"]])
+ 
+})
