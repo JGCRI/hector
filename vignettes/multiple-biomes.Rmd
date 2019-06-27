@@ -9,10 +9,6 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r setup, include = FALSE}
-knitr::opts_chunk$set(cache = TRUE)
-```
-
 By default, Hector's carbon cycle model treats the entire land surface as a single, homogeneous ecosystem.
 However, it is possible to introduce some land surface heterogeneity by splitting the land surface into several different biomes with distinct parameters.
 In this vignette, we show two examples of performing multi-biome analyses with Hector.
