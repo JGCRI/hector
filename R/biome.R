@@ -61,6 +61,8 @@ split_biome <- function(core,
 
   stopifnot(
     length(old_biome) == 1,
+    old_biome %in% get_biome_list(core),
+    !any(new_biomes %in% get_biome_list(core)),
     length(fveg_c) == length(new_biomes),
     length(fdetritus_c) == length(new_biomes),
     length(fsoil_c) == length(new_biomes),
@@ -73,11 +75,13 @@ split_biome <- function(core,
 
   current_values <- get_biome_inits(core, old_biome)
 
-  # By calling this before creating biomes, we can split the `global`
-  # biome without having to rename it first (otherwise, we hit an
-  # error about using non-global biomes when a "global" biome is
-  # present).
-  c_delete_biome(core, old_biome)
+  # This allows users to split the `global` biome without having to
+  # rename it first. Otherwise, we hit an error about using non-global
+  # biomes when a "global" biome is present.
+  if (old_biome == "global") {
+    invisible(rename_biome(core, "global", "_zzz"))
+    old_biome <- "_zzz"
+  }
 
   mapply(
     create_biome,
@@ -89,6 +93,8 @@ split_biome <- function(core,
     ...,
     MoreArgs = list(core = core)
   )
+
+  c_delete_biome(core, old_biome)
 
   reset(core, 0)
   invisible(core)
