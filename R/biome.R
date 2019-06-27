@@ -45,58 +45,57 @@ create_biome <- function(core, biome,
 #' @param npp_flux0 Initial net primary productivity (default = `0`)
 #' @param warmingfactor Temperature multiplier (default = `1.0`)
 #' @param beta CO2 fertilization effect (default = `0.36`)
-split_biome <- function(core, biome,
-                        from_biome = get_biome_list(core)[[1]],
-                        fveg_c = 0.5,
+split_biome <- function(core,
+                        old_biome,
+                        new_biomes,
+                        fveg_c = rep(1 / length(new_biomes), length(new_biomes)),
                         fdetritus_c = fveg_c,
                         fsoil_c = fveg_c,
                         fnpp_flux0 = fveg_c,
                         ...) {
 
+  stopifnot(
+    length(old_biome) == 1,
+    length(fveg_c) == length(new_biomes),
+    length(fdetritus_c) == length(new_biomes),
+    length(fsoil_c) == length(new_biomes),
+    length(fnpp_flux0) == length(new_biomes),
+    sum(fveg_c) == 1, all(fveg_c > 0),
+    sum(fdetritus_c) == 1, all(fdetritus_c > 0),
+    sum(fsoil_c) == 1, all(fsoil_c > 0),
+    sum(fnpp_flux0) == 1, all(fnpp_flux0 > 0)
+  )
+
   # `fetchvars` requires date to be between start and end date, so
   # we need to call the lower-level `sendmessage` method here.
   current_data_1 <- rbind.data.frame(
-    sendmessage(core, GETDATA(), VEG_C(from_biome), 0, NA, ""),
-    sendmessage(core, GETDATA(), DETRITUS_C(from_biome), 0, NA, ""),
-    sendmessage(core, GETDATA(), SOIL_C(from_biome), 0, NA, "")
+    sendmessage(core, GETDATA(), VEG_C(old_biome), 0, NA, ""),
+    sendmessage(core, GETDATA(), DETRITUS_C(old_biome), 0, NA, ""),
+    sendmessage(core, GETDATA(), SOIL_C(old_biome), 0, NA, "")
   )
-  
-  current_data_2 <- rbind.data.frame(
-    fetchvars(core, NA, NPP_FLUX0(from_biome)),
-    fetchvars(core, NA, BETA(from_biome)),
-    fetchvars(core, NA, WARMINGFACTOR(from_biome))
-  )[, -1] # Drop the "scenario" column because it's not returned by `sendmessage`
+
+  current_data_2 <- fetchvars(core, NA, c(NPP_FLUX0(old_biome),
+                                          BETA(old_biome),
+                                          WARMINGFACTOR(old_biome)))[, -1]
   current_data <- rbind.data.frame(current_data_1, current_data_2)
-  fracs <- c("veg_c" = fveg_c,
-             "detritus_c" = fdetritus_c,
-             "soil_c" = fsoil_c,
-             "npp_flux0" = fnpp_flux0)
-  vals <- setNames(
+  current_values <- setNames(
     current_data[["value"]],
-    gsub(paste0(from_biome, "."), "", current_data[["variable"]], fixed = TRUE)
+    gsub(paste0(old_biome, "."), "", current_data[["variable"]], fixed = TRUE)
   )
 
-  create_biome(
-    core = core,
-    biome = biome,
-    veg_c0 = vals[["veg_c"]] * fveg_c,
-    detritus_c0 = vals[["detritus_c"]] * fdetritus_c,
-    soil_c0 = vals[["soil_c"]] * fsoil_c,
-    npp_flux0 = vals[["npp_flux0"]] * fnpp_flux0,
-    ...
+  mapply(
+    create_biome,
+    biome = new_biomes,
+    veg_c0 = current_values[["veg_c"]] * fveg_c,
+    detritus_c0 = current_values[["detritus_c"]] * fdetritus_c,
+    soil_c0 = current_values[["soil_c"]] * fsoil_c,
+    npp_flux0 = current_values[["npp_flux0"]] * fnpp_flux0,
+    ...,
+    MoreArgs = list(core = core)
   )
 
-  setvar(core, 0, VEG_C(from_biome),
-         vals[["veg_c"]] * (1 - fveg_c), "PgC")
-  setvar(core, 0, DETRITUS_C(from_biome),
-         vals[["detritus_c"]] * (1 - fdetritus_c), "PgC")
-  setvar(core, 0, SOIL_C(from_biome),
-         vals[["soil_c"]] * (1 - fsoil_c), "PgC")
-  setvar(core, NA, NPP_FLUX0(from_biome),
-         vals[["npp_flux0"]] * (1 - fnpp_flux0), "PgC/yr")
-
+  c_delete_biome(core, old_biome)
   reset(core, 0)
-
   invisible(core)
 
 }

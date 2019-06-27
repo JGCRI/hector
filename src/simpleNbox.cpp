@@ -412,6 +412,7 @@ void SimpleNbox::prepareToRun() throw( h_exception )
         if ( !warmingfactor.count( biome )) {
             H_LOG( logger, Logger::NOTICE ) << "No warmingfactor set for biome '" << biome << "'. " <<
                 "Setting to default value = 1.0" << std::endl;
+            warmingfactor[ biome ] = 1.0;
         }
         
     }
@@ -1157,10 +1158,9 @@ void SimpleNbox::add_biome_to_ts(tvector<std::map<std::string, T_data>>& ts,
 template <class T_map>
 void SimpleNbox::remove_biome_from_ts(tvector<T_map>& ts,
                                       const std::string& biome) {
-    if ( !ts.get(ts.firstdate()).count( biome ) ) {
-        H_THROW( "Biome '" + biome + "' not found in data.");
-    }
-
+    // We don't need to check for presence of `biome` here because the
+    // `<std::map>.erase()` method is effectively a no-op when given a
+    // non-existing key.
     T_map currval;
     for ( double i = ts.firstdate(); i < ts.lastdate(); i++ ) {
         if (ts.exists(i)) {

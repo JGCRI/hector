@@ -164,9 +164,10 @@ test_that("Split biomes, and modify parameters", {
 
   invisible(reset(core))
   fsplit <- 0.1
-  split_biome(core, "permafrost", fveg_c = fsplit)
-  expect_equal(get_biome_list(core), c("default", "permafrost"))
-  default_veg <- sendmessage(core, GETDATA(), VEG_C("default"), 0, NA, "")[["value"]]
+  split_biome(core, "default", c("non-pf", "permafrost"),
+              fveg_c = c(1 - fsplit, fsplit))
+  expect_equal(get_biome_list(core), c("non-pf", "permafrost"))
+  default_veg <- sendmessage(core, GETDATA(), VEG_C("non-pf"), 0, NA, "")[["value"]]
   permafrost_veg <- sendmessage(core, GETDATA(), VEG_C("permafrost"), 0, NA, "")[["value"]]
   expect_equivalent(default_veg, (1 - fsplit) * global_veg)
   expect_equivalent(permafrost_veg, fsplit * global_veg)
@@ -177,9 +178,9 @@ test_that("Split biomes, and modify parameters", {
 
   # Sum of biome-specific pools should exactly equal global results at
   # each time step. This is a robust test!
-  r_biome_data <- fetchvars(core, 2000:2100, c(VEG_C("default"), VEG_C("permafrost"),
-                                               DETRITUS_C("default"), DETRITUS_C("permafrost"),
-                                               SOIL_C("default"), SOIL_C("permafrost")))
+  r_biome_data <- fetchvars(core, 2000:2100, c(VEG_C("non-pf"), VEG_C("permafrost"),
+                                               DETRITUS_C("non-pf"), DETRITUS_C("permafrost"),
+                                               SOIL_C("non-pf"), SOIL_C("permafrost")))
   r_biome_data$biome <- gsub("^(.*)\\.(.*)", "\\1", r_biome_data$variable)
   r_biome_data$variable <- gsub("^(.*)\\.(.*)", "\\2", r_biome_data$variable)
   r_biome_totals <- aggregate(value ~ year + variable, data = r_biome_data, sum)
