@@ -229,10 +229,4 @@ test_that("More than 2 biomes", {
   biome_vegc <- fetchvars(core, NA, veg_c_biomes)
   expect_equivalent(sum(biome_vegc[["value"]]), global_vegc[["value"]])
 
-  # Try merging biomes
-  merge_biomes(core, biomes, "combined")
-  expect_equal(get_biome_list(core), "combined")
-  biome_vegc <- fetchvars(core, NA, VEG_C("combined"))
-  expect_equivalent(global_vegc[["value"]], biome_vegc[["value"]])
-
 })
