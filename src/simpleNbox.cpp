@@ -193,8 +193,9 @@ void SimpleNbox::setData( const std::string &varName,
             // `reset` (which includes code like `veg_c = veg_c_tv.get(t)`).
             //
             // TODO: Should we create special variables `veg_c0`,
-            // `soil_c0`, etc. that are set in the INI file and
-            // require a date for `veg_c`, `soil_c`, etc.?
+            // `soil_c0`, etc. that are set in the INI file (analogous
+            // to `npp_flux0`) and require a date for `veg_c`,
+            // `soil_c`, etc.?
             veg_c[ biome ] = data.getUnitval( U_PGC );
             if (data.date != Core::undefinedIndex()) {
                 veg_c_tv.set(data.date, veg_c);
@@ -1158,7 +1159,7 @@ void SimpleNbox::remove_biome_from_ts(tvector<T_map>& ts,
                                       const std::string& biome) {
     // We don't need to check for presence of `biome` here because the
     // `<std::map>.erase()` method is effectively a no-op when given a
-    // non-existing key.
+    // non-existent key.
     T_map currval;
     for ( double i = ts.firstdate(); i < ts.lastdate(); i++ ) {
         if (ts.exists(i)) {
