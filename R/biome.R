@@ -101,59 +101,6 @@ split_biome <- function(core,
 
 }
 
-#' Merge multiple biomes into a single biome
-#'
-#' @param core Hector core
-#' @param old_biomes Names of biomes to be merged
-#' @param new_biome Name of new merged biome
-#' @param ... Additional parameters for the new biome, as set by
-#'   [create_biome()].
-#' @return `core`, invisibly
-#' @author Alexey Shiklomanov
-#' @export
-merge_biomes <- function(core, old_biomes, new_biome, ...) {
-  dots <- list(...)
-  old_values <- lapply(old_biomes, get_biome_inits, core = core)
-  new_veg <- sum(vapply(old_values, "[[", numeric(1), "veg_c"))
-  new_detritus <- sum(vapply(old_values, "[[", numeric(1), "detritus_c"))
-  new_soil <- sum(vapply(old_values, "[[", numeric(1), "soil_c"))
-  new_npp <- sum(vapply(old_values, "[[", numeric(1), "npp_flux0"))
-  new_beta <- dots[["beta"]]
-  if (is.null(new_beta)) {
-    new_beta <- unique(vapply(old_values, "[[", numeric(1), "beta"))
-    if (length(new_beta) > 1) {
-      warning("Values of `beta` are not consistent across biomes. ",
-              "Using the value from the first biome.")
-      new_beta <- new_beta[[1]]
-    }
-  }
-  new_warmingfactor <- dots[["warmingfactor"]]
-  if (is.null(new_warmingfactor)) {
-    new_warmingfactor <- unique(vapply(old_values, "[[", numeric(1), "warmingfactor"))
-    if (length(new_beta) > 1) {
-      warning("Values of `warmingfactor` are not consistent across biomes. ",
-              "Using the value from the first biome.")
-      new_warmingfactor <- new_warmingfactor[[1]]
-    }
-  }
-
-  create_biome(
-    core,
-    new_biome,
-    veg_c0 = new_veg,
-    detritus_c0 = new_detritus,
-    soil_c0 = new_soil,
-    npp_flux0 = new_npp,
-    warmingfactor = new_warmingfactor,
-    beta = new_beta
-  )
-
-  lapply(old_biomes, c_delete_biome, core = core)
-
-  reset(core, 0)
-  invisible(core)
-}
-
 #' Retrieve the initial conditions and parameters for a given biome 
 #'
 #' Internal helper function for biome functions.
