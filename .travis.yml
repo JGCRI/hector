@@ -3,6 +3,7 @@
 # See https://travis-ci.org/bpbond/hector
 
 --- 
+dist: xenial
 matrix: 
   include: 
     - language: cpp
