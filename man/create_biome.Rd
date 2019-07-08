@@ -4,21 +4,21 @@
 \alias{create_biome}
 \title{Create new biome}
 \usage{
-create_biome(core, biome, veg_c0 = 0, detritus_c0 = 0, soil_c0 = 0,
-  npp_flux0 = 0, warmingfactor = 1, beta = 0.36)
+create_biome(core, biome, veg_c0, detritus_c0, soil_c0, npp_flux0,
+  warmingfactor = 1, beta = 0.36)
 }
 \arguments{
 \item{core}{Hector core}
 
 \item{biome}{Name of new biome}
 
-\item{veg_c0}{Initial vegetation C pool (default = `0`)}
+\item{veg_c0}{Initial vegetation C pool}
 
-\item{detritus_c0}{Initial detritus C pool (default = `0`)}
+\item{detritus_c0}{Initial detritus C pool}
 
-\item{soil_c0}{Initial soil C pool (default = `0`)}
+\item{soil_c0}{Initial soil C pool}
 
-\item{npp_flux0}{Initial net primary productivity (default = `0`)}
+\item{npp_flux0}{Initial net primary productivity}
 
 \item{warmingfactor}{Temperature multiplier (default =
 `1.0`)}

@@ -2,10 +2,10 @@
 #'
 #' @param core Hector core
 #' @param biome Name of new biome
-#' @param veg_c0 Initial vegetation C pool (default = `0`)
-#' @param detritus_c0 Initial detritus C pool (default = `0`)
-#' @param soil_c0 Initial soil C pool (default = `0`)
-#' @param npp_flux0 Initial net primary productivity (default = `0`)
+#' @param veg_c0 Initial vegetation C pool
+#' @param detritus_c0 Initial detritus C pool
+#' @param soil_c0 Initial soil C pool
+#' @param npp_flux0 Initial net primary productivity
 #' @param warmingfactor Temperature multiplier (default =
 #'   `1.0`)
 #' @param beta CO2 fertilization effect (default = `0.36`) 
@@ -13,10 +13,8 @@
 #' @author Alexey Shiklomanov
 #' @export
 create_biome <- function(core, biome,
-                         veg_c0 = 0,
-                         detritus_c0 = 0,
-                         soil_c0 = 0,
-                         npp_flux0 = 0,
+                         veg_c0, detritus_c0, soil_c0,
+                         npp_flux0,
                          warmingfactor = 1,
                          beta = 0.36) {
   c_create_biome(core, biome)
