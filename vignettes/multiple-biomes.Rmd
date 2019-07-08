@@ -25,10 +25,10 @@ library(ggplot2)
 
 # Example 1: Accelerated high-latitude warming
 
-Observational and modeling studies have found that high-latitudes, particularly in the northern hemisphere, are warming significantly faster than the global average.
+Observational and modeling studies have found that high-latitude ecosystems, particularly in the northern hemisphere, are warming significantly faster than the global average.
 In this example, we will explore the implications of this effect with Hector.
 
-First, lets run a reference case.
+First, let's run a reference case.
 
 ```{r warming-reference}
 rcp45 <- system.file("input", "hector_rcp45.ini", package = "hector")
