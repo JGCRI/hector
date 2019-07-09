@@ -105,9 +105,9 @@ test_that("Creating new biomes via set/fetchvar is prohibited", {
   b2 <- fetchvars(core, NA, BETA("global"))
   expect_equal(b1$value, b2$value)
   expect_error(fetchvars(core, NA, BETA("fake")),
-               "Requested biome missing from biome list")
+               "Biome 'fake' missing from biome list")
   expect_error(setvar(core, NA, BETA("permafrost"), 0.5, NA),
-               "Biome 'permafrost' is not in current biome list")
+               "Biome 'permafrost' missing from biome list")
 })
 
 test_that("Correct way to create new biomes", {
@@ -123,7 +123,7 @@ test_that("Correct way to create new biomes", {
   # Now, test the aggregate, user-friendly operation
   invisible(rename_biome(core, "global", "permafrost"))
   expect_equal(get_biome_list(core), "permafrost")
-  expect_error(fetchvars(core, NA, BETA()), "Requested biome missing from biome list")
+  expect_error(fetchvars(core, NA, BETA()), "Biome 'global' missing from biome list")
   pbeta <- fetchvars(core, NA, "permafrost.beta")
   expect_equal(pbeta[["variable"]], BETA("permafrost"))
   expect_equal(pbeta[["value"]], gbeta[["value"]])

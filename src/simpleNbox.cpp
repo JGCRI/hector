@@ -481,7 +481,7 @@ unitval SimpleNbox::getData(const std::string& varName,
 
     std::string biome = SNBOX_DEFAULT_BIOME;
     std::string varNameParsed = varName;
-    std::string biome_error = "Requested biome missing from biome list. "
+    std::string biome_error = "Biome '" + biome + "' missing from biome list. " +
         "Hit this error while trying to retrieve variable: '" + varName + "'.";
     
     // Does the varName contain our parse character? If so, split it
@@ -492,6 +492,9 @@ unitval SimpleNbox::getData(const std::string& varName,
     if( splitvec.size() == 2 ) {    // i.e., in form <biome>.<varname>
         biome = splitvec[ 0 ];
         varNameParsed = splitvec[ 1 ];
+        // Have to re-set this here because `biome` has changed
+        biome_error = "Biome '" + biome + "' missing from biome list. " +
+            "Hit this error while trying to retrieve variable: '" + varName + "'.";
 
         H_ASSERT(has_biome( biome ), biome_error);
     }
