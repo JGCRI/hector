@@ -1208,8 +1208,7 @@ void SimpleNbox::deleteBiome(const std::string& biome) // Throw an error if the 
 
 // Create a new biome called `newname`, transfer all of the parameters
 // and pools from `oldname`, and delete `oldname`. Note that the new
-// biome and all of its associated values will be at the end of their
-// corresponding vectors.
+// biome will be at the end of the `biome_list`.
 void SimpleNbox::renameBiome(const std::string& oldname, const std::string& newname)
 {
     H_LOG(logger, Logger::DEBUG) << "Renaming biome '" << oldname <<
