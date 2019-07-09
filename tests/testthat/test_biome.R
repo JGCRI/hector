@@ -118,8 +118,8 @@ test_that("Correct way to create new biomes", {
   gbeta <- fetchvars(core, NA, BETA())
   expect_equal(get_biome_list(core), "global")
   # Make sure these low-level operations on their own don't throw an error.
-  expect_silent(invisible(c_create_biome(core, "testbiome")))
-  expect_silent(invisible(c_delete_biome(core, "testbiome")))
+  expect_silent(invisible(create_biome_impl(core, "testbiome")))
+  expect_silent(invisible(delete_biome_impl(core, "testbiome")))
   # Now, test the aggregate, user-friendly operation
   invisible(rename_biome(core, "global", "permafrost"))
   expect_equal(get_biome_list(core), "permafrost")
@@ -133,9 +133,9 @@ test_that("Correct way to create new biomes", {
   # This suppresses a bogus warning about the condition type of the
   # resulting error.
   suppressWarnings(
-    expect_error(c_create_biome(core, "permafrost"), "Biome 'permafrost' is already in `biome_list`")
+    expect_error(create_biome_impl(core, "permafrost"), "Biome 'permafrost' is already in `biome_list`")
   )
-  invisible(c_create_biome(core, "empty"))
+  invisible(create_biome_impl(core, "empty"))
   expect_equal(get_biome_list(core), c("permafrost", "empty"))
   expect_equal(fetchvars(core, NA, BETA("empty"))[["value"]], pbeta[["value"]])
   expect_silent(invisible(run(core)))

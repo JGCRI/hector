@@ -1542,27 +1542,27 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// c_create_biome
-Environment c_create_biome(Environment core, std::string biome);
-RcppExport SEXP _hector_c_create_biome(SEXP coreSEXP, SEXP biomeSEXP) {
+// create_biome_impl
+Environment create_biome_impl(Environment core, std::string biome);
+RcppExport SEXP _hector_create_biome_impl(SEXP coreSEXP, SEXP biomeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Environment >::type core(coreSEXP);
     Rcpp::traits::input_parameter< std::string >::type biome(biomeSEXP);
-    rcpp_result_gen = Rcpp::wrap(c_create_biome(core, biome));
+    rcpp_result_gen = Rcpp::wrap(create_biome_impl(core, biome));
     return rcpp_result_gen;
 END_RCPP
 }
-// c_delete_biome
-Environment c_delete_biome(Environment core, std::string biome);
-RcppExport SEXP _hector_c_delete_biome(SEXP coreSEXP, SEXP biomeSEXP) {
+// delete_biome_impl
+Environment delete_biome_impl(Environment core, std::string biome);
+RcppExport SEXP _hector_delete_biome_impl(SEXP coreSEXP, SEXP biomeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Environment >::type core(coreSEXP);
     Rcpp::traits::input_parameter< std::string >::type biome(biomeSEXP);
-    rcpp_result_gen = Rcpp::wrap(c_delete_biome(core, biome));
+    rcpp_result_gen = Rcpp::wrap(delete_biome_impl(core, biome));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -1760,8 +1760,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_run", (DL_FUNC) &_hector_run, 2},
     {"_hector_getdate", (DL_FUNC) &_hector_getdate, 1},
     {"_hector_get_biome_list", (DL_FUNC) &_hector_get_biome_list, 1},
-    {"_hector_c_create_biome", (DL_FUNC) &_hector_c_create_biome, 2},
-    {"_hector_c_delete_biome", (DL_FUNC) &_hector_c_delete_biome, 2},
+    {"_hector_create_biome_impl", (DL_FUNC) &_hector_create_biome_impl, 2},
+    {"_hector_delete_biome_impl", (DL_FUNC) &_hector_delete_biome_impl, 2},
     {"_hector_rename_biome", (DL_FUNC) &_hector_rename_biome, 3},
     {"_hector_sendmessage", (DL_FUNC) &_hector_sendmessage, 6},
     {"_hector_chk_core_valid", (DL_FUNC) &_hector_chk_core_valid, 1},

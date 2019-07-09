@@ -213,7 +213,7 @@ std::vector<std::string> get_biome_list(Environment core)
 //' @param core Handle to the Hector instance that is to be run.
 //' @param biome (character) Name of new biome
 // [[Rcpp::export]]
-Environment c_create_biome(Environment core, std::string biome)
+Environment create_biome_impl(Environment core, std::string biome)
 {
     Hector::Core *hcore = gethcore(core);
     hcore->createBiome(biome);
@@ -225,7 +225,7 @@ Environment c_create_biome(Environment core, std::string biome)
 //' @param core Handle to the Hector instance that is to be run.
 //' @param biome (character) Name of biome to delete
 // [[Rcpp::export]]
-Environment c_delete_biome(Environment core, std::string biome)
+Environment delete_biome_impl(Environment core, std::string biome)
 {
     Hector::Core *hcore = gethcore(core);
     hcore->deleteBiome(biome);

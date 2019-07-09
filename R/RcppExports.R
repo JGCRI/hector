@@ -958,16 +958,16 @@ get_biome_list <- function(core) {
 #'
 #' @param core Handle to the Hector instance that is to be run.
 #' @param biome (character) Name of new biome
-c_create_biome <- function(core, biome) {
-    .Call('_hector_c_create_biome', PACKAGE = 'hector', core, biome)
+create_biome_impl <- function(core, biome) {
+    .Call('_hector_create_biome_impl', PACKAGE = 'hector', core, biome)
 }
 
 #' Delete a biome
 #'
 #' @param core Handle to the Hector instance that is to be run.
 #' @param biome (character) Name of biome to delete
-c_delete_biome <- function(core, biome) {
-    .Call('_hector_c_delete_biome', PACKAGE = 'hector', core, biome)
+delete_biome_impl <- function(core, biome) {
+    .Call('_hector_delete_biome_impl', PACKAGE = 'hector', core, biome)
 }
 
 #' Rename an existing biome

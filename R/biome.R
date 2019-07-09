@@ -17,7 +17,7 @@ create_biome <- function(core, biome,
                          npp_flux0,
                          warmingfactor = 1,
                          beta = 0.36) {
-  c_create_biome(core, biome)
+  create_biome_impl(core, biome)
   setvar(core, 0, VEG_C(biome), veg_c0, "PgC")
   setvar(core, 0, DETRITUS_C(biome), detritus_c0, "PgC")
   setvar(core, 0, SOIL_C(biome), soil_c0, "PgC")
@@ -92,7 +92,7 @@ split_biome <- function(core,
     MoreArgs = list(core = core)
   )
 
-  c_delete_biome(core, old_biome)
+  delete_biome_impl(core, old_biome)
 
   reset(core, 0)
   invisible(core)
