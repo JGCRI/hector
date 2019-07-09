@@ -206,16 +206,74 @@ private:
     void log_pools( const double t );                   //!< prints pool status to the log file
     void set_c0(double newc0);                          //!< set initial co2 and adjust total carbon mass
 
-    template <class T_data>
-    void add_biome_to_ts(tvector<std::map<std::string, T_data> >& ts, const std::string& biome, T_data init_value); 
-    template <class T_map>
-    void remove_biome_from_ts(tvector<T_map>& ts, const std::string& biome); 
-    template <class T_map>
-    void rename_biome_in_ts(tvector<T_map>& ts, const std::string& oldname, const std::string& newname); 
-
     bool has_biome(const std::string& biome);
     
     CarbonCycleModel *omodel;           //!< pointer to the ocean model in use
+
+    // Add a biome to a time-series map variable (e.g. veg_c_tv)
+    template <class T_data>
+    void add_biome_to_ts(tvector<std::map<std::string, T_data>>& ts,
+                         const std::string& biome,
+                         T_data init_value) {
+        // First, check if a biome of this name already exists in the data
+        if ( ts.get(ts.firstdate()).count( biome ) ) {
+            H_THROW( "Biome '" + biome + "' already exists in data." );
+        }
+    
+        // Loop over time steps, and set the variable to the provided `init_value`
+        std::map<std::string, T_data> newval;
+        for ( double i = ts.firstdate(); i < ts.lastdate(); i++ ) {
+            if (ts.exists(i)) {
+                newval = ts.get(i);
+                newval[ biome ] = init_value;
+                ts.set(i, newval);
+            }
+        }
+    }
+
+    // Remove a biome from a time-series map variable
+    template <class T_map>
+    void remove_biome_from_ts(tvector<T_map>& ts,
+                              const std::string& biome) {
+        // We don't need to check for presence of `biome` here because the
+        // `<std::map>.erase()` method is effectively a no-op when given a
+        // non-existent key.
+        T_map currval;
+        for ( double i = ts.firstdate(); i < ts.lastdate(); i++ ) {
+            if (ts.exists(i)) {
+                currval = ts.get(i);
+                currval.erase(biome);
+                ts.set(i, currval);
+            }
+        }
+    }
+
+    // Rename a biome in a time-series map variable. At each time
+    // step, this creates a new biome called `newname`, gives it all
+    // of the values of `oldname`, and then erases that time step's
+    // `oldname`.
+    template <class T_map>
+    void rename_biome_in_ts(tvector<T_map>& ts,
+                            const std::string& oldname,
+                            const std::string& newname) {
+        if ( !ts.get(ts.firstdate()).count( oldname ) ) {
+            H_THROW( "Biome '" + oldname + "' not found in data.");
+        }
+        if ( ts.get(ts.firstdate()).count( newname ) ) {
+            H_THROW( "Biome '" + newname + "' already exists in data.");
+        }
+
+        T_map currval;
+        for ( double i = ts.firstdate(); i < ts.lastdate(); i++ ) {
+            if (ts.exists(i)) {
+                currval = ts.get(i);
+                currval[newname] = currval.at(oldname);
+                currval.erase(oldname);
+                ts.set(i, currval);
+            }
+        }
+    }
+
 
 };
 
