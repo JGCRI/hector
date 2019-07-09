@@ -127,8 +127,7 @@ void SimpleNbox::setData( const std::string &varName,
     
     std::string biome = SNBOX_DEFAULT_BIOME;
     std::string varNameParsed = varName;
-    std::vector<std::string>::const_iterator it_global;
-    it_global = std::find(biome_list.begin(), biome_list.end(), SNBOX_DEFAULT_BIOME);
+    auto it_global = std::find(biome_list.begin(), biome_list.end(), SNBOX_DEFAULT_BIOME);
     
     if( splitvec.size() == 2 ) {    // i.e., in form <biome>.<varname>
         biome = splitvec[ 0 ];
@@ -306,8 +305,7 @@ void SimpleNbox::sanitychecks() throw( h_exception )
     // Make a few sanity checks here, and then return.
     H_ASSERT( atmos_c.value( U_PGC ) > 0.0, "atmos_c pool <=0" );
 
-    std::vector<std::string>::const_iterator it;
-    for ( it = biome_list.begin(); it != biome_list.end(); it++ ) {
+    for ( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
         std::string biome = *it;
         H_ASSERT( veg_c.at(biome).value( U_PGC ) >= 0.0, "veg_c pool < 0" );
         H_ASSERT( detritus_c.at(biome).value( U_PGC ) >= 0.0, "detritus_c pool < 0" );
@@ -367,10 +365,8 @@ void SimpleNbox::log_pools( const double t )
     H_LOG( logger,Logger::DEBUG ) << "---- simpleNbox pool states at t=" << t << " ----" << std::endl;
     H_LOG( logger,Logger::DEBUG ) << "Atmos = " << atmos_c << std::endl;
     H_LOG( logger,Logger::DEBUG ) << "Biome \tveg_c \t\tdetritus_c \tsoil_c" << std::endl;
-    std::vector<std::string>::const_iterator it;
-    std::string biome;
-    for ( it = biome_list.begin(); it != biome_list.end(); it++ ) {
-        biome = *it;
+    for ( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
+        std::string biome = *it;
         H_LOG( logger,Logger::DEBUG ) << biome << "\t" << veg_c[ biome ] << "\t" <<
         detritus_c[ biome ] << "\t\t" << soil_c[ biome ] << std::endl;
     }
@@ -381,9 +377,6 @@ void SimpleNbox::log_pools( const double t )
 // documentation is inherited
 void SimpleNbox::prepareToRun() throw( h_exception )
 {
-
-    std::vector<std::string>::const_iterator it;
-    std::string biome;
 
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
  
@@ -399,8 +392,8 @@ void SimpleNbox::prepareToRun() throw( h_exception )
     H_ASSERT( biome_list.size() == soil_c.size(), "soil_c and biome_list not same size" );
     H_ASSERT( biome_list.size() == npp_flux0.size(), "npp_flux0 and biome_list not same size" );
 
-    for ( it = biome_list.begin(); it != biome_list.end(); it++ ) {
-        biome = *it;
+    for ( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
+        std::string biome = *it;
         H_LOG( logger, Logger::DEBUG ) << "Checking that data for biome '" << biome << "' is complete" << std::endl;
         H_ASSERT( detritus_c.count( biome ), "no biome data for detritus_c" );
         H_ASSERT( soil_c.count( biome ), "no biome data for soil_c" );
@@ -436,7 +429,7 @@ void SimpleNbox::prepareToRun() throw( h_exception )
     }
     
     // One-time checks
-    for( it = biome_list.begin(); it != biome_list.end(); it++ ) {
+    for( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
         H_ASSERT( beta.at( *it ) >= 0.0, "beta < 0" );
     }
     H_ASSERT( q10_rh>0.0, "q10_rh <= 0.0" );
@@ -641,8 +634,7 @@ void SimpleNbox::reset(double time) throw(h_exception)
     tempfertd = tempfertd_tv.get(time);
 
     // Calculate derived quantities
-    std::vector<std::string>::const_iterator it; // iterates over biomes
-    for( it = biome_list.begin(); it != biome_list.end(); it++ ) {
+    for( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
         std::string biome = *it;
         if(in_spinup) {
             co2fert[ biome ] = 1.0; // co2fert fixed if in spinup.  Placeholder in case we decide to allow resetting into spinup
@@ -754,8 +746,7 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     H_LOG( logger,Logger::DEBUG ) << "det_delta = " << det_delta << std::endl;
     H_LOG( logger,Logger::DEBUG ) << "soil_delta = " << soil_delta << std::endl;
 
-    std::vector<std::string>::const_iterator it;
-    for( it = biome_list.begin(); it != biome_list.end(); it++ ) {
+    for( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
         std::string biome = *it;
         const double wt     = ( npp( biome ) + rh( biome ) ) / npp_rh_total;
         veg_c[ biome ]      = veg_c.at( biome ) + veg_delta * wt;
@@ -841,8 +832,7 @@ unitval SimpleNbox::npp( std::string biome ) const
 unitval SimpleNbox::sum_npp() const
 {
     unitval total( 0.0, U_PGC_YR );
-    std::vector<std::string>::const_iterator it;
-    for( it = biome_list.begin(); it != biome_list.end(); it++ ) {
+    for( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
         total = total + npp( *it );}
     return total;
 }
@@ -884,8 +874,7 @@ unitval SimpleNbox::rh( std::string biome ) const
 unitval SimpleNbox::sum_rh() const
 {
     unitval total( 0.0, U_PGC_YR );
-    std::vector<std::string>::const_iterator it;
-    for( it = biome_list.begin(); it != biome_list.end(); it++ ) {
+    for( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
         total = total + rh( *it );
     }
     return total;
@@ -917,9 +906,9 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
     // RH heterotrophic respiration
     unitval rh_fda_current( 0.0, U_PGC_YR );
     unitval rh_fsa_current( 0.0, U_PGC_YR );
-    for( unitval_stringmap::const_iterator it = veg_c.begin(); it != veg_c.end(); it++ ) {
-        rh_fda_current = rh_fda_current + rh_fda( it->first );
-        rh_fsa_current = rh_fsa_current + rh_fsa( it->first );
+    for( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
+        rh_fda_current = rh_fda_current + rh_fda( *it );
+        rh_fsa_current = rh_fsa_current + rh_fsa( *it );
     }
     unitval rh_current = rh_fda_current + rh_fsa_current;
     
@@ -1013,10 +1002,8 @@ void SimpleNbox::slowparameval( double t, const double c[] )
     Ca.set( c[ SNBOX_ATMOS ] * PGC_TO_PPMVCO2, U_PPMV_CO2 );
 
     // Compute CO2 fertilization factor globally (and for each biome specified)
-    std::vector<std::string>::const_iterator it;
-    std::string biome;
-    for( it = biome_list.begin(); it != biome_list.end(); it++ ) {
-        biome = *it;
+    for( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
+        std::string biome = *it;
         if( in_spinup ) {
             co2fert[ biome ] = 1.0;  // no perturbation allowed if in spinup
         } else {
@@ -1043,8 +1030,8 @@ void SimpleNbox::slowparameval( double t, const double c[] )
     }
 
     // Loop over biomes.
-    for( it = biome_list.begin(); it != biome_list.end(); it++ ) {
-        biome = *it;
+    for( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
+        std::string biome = *it;
         if( in_spinup ) {
             tempfertd[ biome ] = 1.0;  // no perturbation allowed in spinup
             tempferts[ biome ] = 1.0;  // no perturbation allowed in spinup
