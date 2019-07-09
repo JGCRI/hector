@@ -511,12 +511,10 @@ unitval SimpleNbox::getData(const std::string& varName,
         H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for preindustrial CO2" );
         returnval = C0;
     } else if(varNameParsed == D_WARMINGFACTOR) {
-        // For the time being, we are only supporting global beta, not biome-specific
         H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for biome warming factor");
         H_ASSERT(has_biome( biome ), biome_error);
         returnval = unitval(warmingfactor.at(biome), U_UNITLESS);
     } else if(varNameParsed == D_BETA) {
-        // For the time being, we are only supporting global beta, not biome-specific
         H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for CO2 fertilization (beta)");
         H_ASSERT(has_biome( biome ), biome_error);
         returnval = unitval(beta.at(biome), U_UNITLESS);
