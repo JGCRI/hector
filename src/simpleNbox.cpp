@@ -826,7 +826,8 @@ unitval SimpleNbox::sum_npp() const
 {
     unitval total( 0.0, U_PGC_YR );
     for( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
-        total = total + npp( *it );}
+        total += npp(*it);
+    }
     return total;
 }
 
