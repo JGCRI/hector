@@ -110,6 +110,29 @@ test_that("Creating new biomes via set/fetchvar is prohibited", {
                "Biome 'permafrost' missing from biome list")
 })
 
+test_that("Low-level biome creation functions work", {
+  core <- newcore(system.file("input", "hector_rcp45.ini",
+                              package = "hector"),
+                  suppresslogging = TRUE)
+  test_that("Biomes can be created", {
+    expect_silent(invisible(create_biome_impl(core, "testbiome")))
+    expect_equal(get_biome_list(core), c("global", "testbiome"))
+    expect_equal(fetchvars(core, NA, BETA("testbiome"))[["value"]], 0.36)
+    expect_equal(fetchvars(core, NA, VEG_C("testbiome"))[["value"]], 0)
+  })
+
+  test_that("Biomes can be deleted", {
+    expect_silent(invisible(delete_biome_impl(core, "testbiome")))
+    expect_equal(get_biome_list(core), "global")
+    expect_error(fetchvars(core, NA, BETA("testbiome")),
+                 "Biome 'testbiome' missing from biome list")
+    expect_error(fetchvars(core, NA, VEG_C("testbiome")),
+                 "Biome 'testbiome' missing from biome list")
+  })
+  # Check that running the core still works after all of this
+  expect_silent(invisible(run(core)))
+})
+
 test_that("Correct way to create new biomes", {
 
   core <- newcore(system.file("input", "hector_rcp45.ini",
@@ -117,10 +140,6 @@ test_that("Correct way to create new biomes", {
                   suppresslogging = TRUE)
   gbeta <- fetchvars(core, NA, BETA())
   expect_equal(get_biome_list(core), "global")
-  # Make sure these low-level operations on their own don't throw an error.
-  expect_silent(invisible(create_biome_impl(core, "testbiome")))
-  expect_silent(invisible(delete_biome_impl(core, "testbiome")))
-  # Now, test the aggregate, user-friendly operation
   invisible(rename_biome(core, "global", "permafrost"))
   expect_equal(get_biome_list(core), "permafrost")
   expect_error(fetchvars(core, NA, BETA()), "Biome 'global' missing from biome list")
