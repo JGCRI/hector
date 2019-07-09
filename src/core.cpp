@@ -770,10 +770,10 @@ void Core::delcore(int idx)
 //! Retrieve the current biome list
 std::vector<std::string> Core::getBiomeList() const
 {
-    IModelComponent* snbox_i = getComponentByName( SIMPLENBOX_COMPONENT_NAME );
-    SimpleNbox* snbox = dynamic_cast<SimpleNbox*>(snbox_i);
-    if (snbox) {
-        return( snbox->getBiomeList() );
+    IModelComponent* cmodel_i = getComponentByName( SIMPLENBOX_COMPONENT_NAME );
+    SimpleNbox* cmodel = dynamic_cast<SimpleNbox*>(cmodel_i);
+    if (cmodel) {
+        return( cmodel->getBiomeList() );
     } else {
         H_THROW("Failed to retrieve biome list because of error in dynamic cast to `SimpleNbox`.")
     }
@@ -785,10 +785,10 @@ std::vector<std::string> Core::getBiomeList() const
  */
 void Core::createBiome(const std::string& biome)
 {
-    IModelComponent* snbox_i = getComponentByName( SIMPLENBOX_COMPONENT_NAME );
-    SimpleNbox* snbox = dynamic_cast<SimpleNbox*>(snbox_i);
-    if (snbox) {
-        return( snbox->createBiome(biome) );
+    IModelComponent* cmodel_i = getComponentByName( SIMPLENBOX_COMPONENT_NAME);
+    CarbonCycleModel* cmodel = dynamic_cast<CarbonCycleModel*>(cmodel_i);
+    if (cmodel) {
+        return( cmodel->createBiome(biome) );
     } else {
         H_THROW("Failed to create biome because of error in dynamic cast to `SimpleNbox`.")
     }
@@ -800,10 +800,10 @@ void Core::createBiome(const std::string& biome)
  */
 void Core::deleteBiome(const std::string& biome)
 {
-    IModelComponent* snbox_i = getComponentByName( SIMPLENBOX_COMPONENT_NAME );
-    SimpleNbox* snbox = dynamic_cast<SimpleNbox*>(snbox_i);
-    if (snbox) {
-        return( snbox->deleteBiome(biome) );
+    IModelComponent* cmodel_i = getComponentByName( SIMPLENBOX_COMPONENT_NAME );
+    CarbonCycleModel* cmodel = dynamic_cast<CarbonCycleModel*>(cmodel_i);
+    if (cmodel) {
+        return( cmodel->deleteBiome(biome) );
     } else {
         H_THROW("Failed to delete biome because of error in dynamic cast to `SimpleNbox`.")
     }
@@ -816,10 +816,10 @@ void Core::deleteBiome(const std::string& biome)
  */
 void Core::renameBiome(const std::string& oldname, const std::string& newname)
 {
-    IModelComponent* snbox_i = getComponentByName( SIMPLENBOX_COMPONENT_NAME );
-    SimpleNbox* snbox = dynamic_cast<SimpleNbox*>(snbox_i);
-    if (snbox) {
-        return( snbox->renameBiome(oldname, newname) );
+    IModelComponent* cmodel_i = getComponentByName( SIMPLENBOX_COMPONENT_NAME );
+    CarbonCycleModel* cmodel = dynamic_cast<CarbonCycleModel*>(cmodel_i);
+    if (cmodel) {
+        return( cmodel->renameBiome(oldname, newname) );
     } else {
         H_THROW("Failed to rename biome because of error in dynamic cast to `SimpleNbox`.")
     }

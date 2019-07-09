@@ -99,7 +99,25 @@ public:
     //! case, the class can inherit the default implementation of the
     //! method, which does nothing.
     virtual void record_state(double t) {}
-    
+
+    // Create, delete, and rename biomes. These must be defined here
+    // because some C cycle models (e.g. the ocean C cycle component)
+    // will not have biomes, but are members of the `CarbonCycleModel`
+    // class. For more details and reference implementation, see the
+    // `SimpleNBox` model.
+    inline
+    virtual void createBiome(const std::string& biome) {
+        H_THROW("`createBiome` is not defined for this component.")
+    }
+    inline
+    virtual void deleteBiome(const std::string& biome) {
+        H_THROW("`deleteBiome` is not defined for this component.")
+    };
+    inline
+    virtual void renameBiome(const std::string& oldname, const std::string& newname){
+        H_THROW("`renameBiome` is not defined for this component.")
+    }
+
 protected:
     //! Number of carbon pools in the model.
     //! \details nc must be constant over the life of the calculation.
