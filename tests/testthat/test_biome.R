@@ -185,9 +185,13 @@ test_that("Split biomes, and modify parameters", {
   expect_equal(get_biome_list(core), c("non-pf", "permafrost"))
   default_veg <- sendmessage(core, GETDATA(), VEG_C("non-pf"), 0, NA, "")[["value"]]
   permafrost_veg <- sendmessage(core, GETDATA(), VEG_C("permafrost"), 0, NA, "")[["value"]]
-  expect_equivalent(default_veg, (1 - fsplit) * global_veg)
-  expect_equivalent(permafrost_veg, fsplit * global_veg)
-  expect_equivalent(default_veg + permafrost_veg, global_veg)
+  # Also check that trying to get global `VEG_C()` will retrieve the total
+  global_veg2 <- sendmessage(core, GETDATA(), VEG_C(), 0, NA, "")[["value"]]
+  global_veg3 <- sendmessage(core, GETDATA(), VEG_C("global"), 0, NA, "")[["value"]]
+  expect_equal(global_veg2, global_veg3)
+  expect_equivalent(default_veg, (1 - fsplit) * global_veg2)
+  expect_equivalent(permafrost_veg, fsplit * global_veg2)
+  expect_equivalent(default_veg + permafrost_veg, global_veg2)
   invisible(run(core))
   r_biome <- fetchvars(core, 2000:2100)
   expect_equivalent(r_global, r_biome)

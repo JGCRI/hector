@@ -483,8 +483,6 @@ unitval SimpleNbox::getData(const std::string& varName,
         // Have to re-set this here because `biome` has changed
         biome_error = "Biome '" + biome + "' missing from biome list. " +
             "Hit this error while trying to retrieve variable: '" + varName + "'.";
-
-        H_ASSERT(has_biome( biome ), biome_error);
     }
 
     if( varNameParsed == D_ATMOSPHERIC_C ) {
