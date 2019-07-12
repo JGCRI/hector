@@ -770,7 +770,7 @@ void Core::delcore(int idx)
 //! Retrieve the current biome list
 std::vector<std::string> Core::getBiomeList() const
 {
-    IModelComponent* cmodel_i = getComponentByName( SIMPLENBOX_COMPONENT_NAME );
+    IModelComponent* cmodel_i = getComponentByCapability( D_VEGC );
     SimpleNbox* cmodel = dynamic_cast<SimpleNbox*>(cmodel_i);
     if (cmodel) {
         return( cmodel->getBiomeList() );
@@ -785,7 +785,7 @@ std::vector<std::string> Core::getBiomeList() const
  */
 void Core::createBiome(const std::string& biome)
 {
-    IModelComponent* cmodel_i = getComponentByName( SIMPLENBOX_COMPONENT_NAME);
+    IModelComponent* cmodel_i = getComponentByCapability( D_VEGC );
     CarbonCycleModel* cmodel = dynamic_cast<CarbonCycleModel*>(cmodel_i);
     if (cmodel) {
         return( cmodel->createBiome(biome) );
@@ -800,7 +800,7 @@ void Core::createBiome(const std::string& biome)
  */
 void Core::deleteBiome(const std::string& biome)
 {
-    IModelComponent* cmodel_i = getComponentByName( SIMPLENBOX_COMPONENT_NAME );
+    IModelComponent* cmodel_i = getComponentByCapability( D_VEGC );
     CarbonCycleModel* cmodel = dynamic_cast<CarbonCycleModel*>(cmodel_i);
     if (cmodel) {
         return( cmodel->deleteBiome(biome) );
@@ -816,7 +816,7 @@ void Core::deleteBiome(const std::string& biome)
  */
 void Core::renameBiome(const std::string& oldname, const std::string& newname)
 {
-    IModelComponent* cmodel_i = getComponentByName( SIMPLENBOX_COMPONENT_NAME );
+    IModelComponent* cmodel_i = getComponentByCapability( D_VEGC );
     CarbonCycleModel* cmodel = dynamic_cast<CarbonCycleModel*>(cmodel_i);
     if (cmodel) {
         return( cmodel->renameBiome(oldname, newname) );
