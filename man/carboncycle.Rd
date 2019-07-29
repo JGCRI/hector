@@ -7,6 +7,7 @@
 \alias{ATMOSPHERIC_C}
 \alias{FFI_EMISSIONS}
 \alias{LUC_EMISSIONS}
+\alias{NPP}
 \title{Identifiers for variables in the Hector carbon cycle component}
 \usage{
 LAND_CFLUX()
@@ -18,6 +19,8 @@ ATMOSPHERIC_C()
 FFI_EMISSIONS()
 
 LUC_EMISSIONS()
+
+NPP()
 }
 \description{
 These identifiers correspond to variables that can be read and/or set in the
