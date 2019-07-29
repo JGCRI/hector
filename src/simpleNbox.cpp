@@ -485,8 +485,7 @@ unitval SimpleNbox::getData(const std::string& varName,
         H_ASSERT( date != Core::undefinedIndex(), "Date required for luc emissions" );
         returnval = lucEmissions.get( date );
     } else if( varName == D_NPP ) {
-        H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for npp" );
-        returnval = sum_npp();
+        returnval = sum_npp(date);
     } else if( varName == D_RH ) {
         H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for rh" );
         returnval = sum_rh();
@@ -520,7 +519,7 @@ void SimpleNbox::reset(double time) throw(h_exception)
             co2fert[it->first] = 1.0; // co2fert fixed if in spinup.  Placeholder in case we decide to allow resetting into spinup
         }
         else {
-            co2fert[it->first] = 1.0 + beta.at(it->first) * log(Ca/C0);
+            co2fert[it->first] = calc_co2fert(it->first);
         }
     }
     Tgav_record.truncate(time);
@@ -687,15 +686,25 @@ void SimpleNbox::stashCValues( double t, const double c[] )
 
 // A series of small functions to calculate variables that will appear in the output stream
 
+double SimpleNbox::calc_co2fert(std::string biome, double time) const
+{
+    unitval Ca_t = time == Core::undefinedIndex() ? Ca : Ca_ts.get(time);
+    return 1 + beta.at(biome) * log(Ca_t/C0);
+}
+
 //------------------------------------------------------------------------------
 /*! \brief      Compute annual net primary production
  *  \returns    current annual NPP
  */
-unitval SimpleNbox::npp( std::string biome ) const
+unitval SimpleNbox::npp(std::string biome, double time) const
 {
     unitval npp = npp_flux0.at( biome );    // 'at' throws exception if not found
-    npp = npp * co2fert.at( biome );        // that's why used here instead of []
-//    npp = npp * tempfert.at( biome );
+    if(time == Core::undefinedIndex()) {
+        npp = npp * co2fert.at( biome );        // that's why used here instead of []
+    }
+    else {
+        npp = npp * calc_co2fert(biome, time);
+    }
     return npp;
 }
 
@@ -703,11 +712,13 @@ unitval SimpleNbox::npp( std::string biome ) const
 /*! \brief      Compute global net primary production
  *  \returns    Annual NPP summed across all biomes
  */
-unitval SimpleNbox::sum_npp() const
+unitval SimpleNbox::sum_npp(double time) const
 {
     unitval total( 0.0, U_PGC_YR );
+    // veg_c is being used here just to supply a list of biomes, so it doesn't matter
+    // that it's the current value instead of the value at the requested time.
     for( unitval_stringmap::const_iterator it = veg_c.begin(); it != veg_c.end(); it++ ) {
-        total = total + npp( it->first );
+        total = total + npp(it->first, time);
     }
     return total;
 }
@@ -882,7 +893,7 @@ void SimpleNbox::slowparameval( double t, const double c[] )
         if( in_spinup ) {
             co2fert[ itd->first ] = 1.0;  // no perturbation allowed if in spinup
         } else {
-            co2fert[ itd->first ] = 1 + beta.at( itd->first ) * log( Ca/C0 );
+            co2fert[ itd->first ] = calc_co2fert(itd->first);
         }
         H_LOG( logger,Logger::DEBUG ) << "co2fert[ " << itd->first << " ] at " << Ca << " = " << co2fert[ itd->first ] << std::endl;
     }
