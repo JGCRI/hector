@@ -1135,6 +1135,16 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// NPP
+String NPP();
+RcppExport SEXP _hector_NPP() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(NPP());
+    return rcpp_result_gen;
+END_RCPP
+}
 // PREINDUSTRIAL_CO2
 String PREINDUSTRIAL_CO2();
 RcppExport SEXP _hector_PREINDUSTRIAL_CO2() {
@@ -1607,6 +1617,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_CO3_HL", (DL_FUNC) &_hector_CO3_HL, 0},
     {"_hector_LAND_CFLUX", (DL_FUNC) &_hector_LAND_CFLUX, 0},
     {"_hector_ATMOSPHERIC_CO2", (DL_FUNC) &_hector_ATMOSPHERIC_CO2, 0},
+    {"_hector_NPP", (DL_FUNC) &_hector_NPP, 0},
     {"_hector_PREINDUSTRIAL_CO2", (DL_FUNC) &_hector_PREINDUSTRIAL_CO2, 0},
     {"_hector_ATMOSPHERIC_C", (DL_FUNC) &_hector_ATMOSPHERIC_C, 0},
     {"_hector_FFI_EMISSIONS", (DL_FUNC) &_hector_FFI_EMISSIONS, 0},

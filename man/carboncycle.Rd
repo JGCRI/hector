@@ -4,6 +4,7 @@
 \alias{carboncycle}
 \alias{LAND_CFLUX}
 \alias{ATMOSPHERIC_CO2}
+\alias{NPP}
 \alias{ATMOSPHERIC_C}
 \alias{FFI_EMISSIONS}
 \alias{LUC_EMISSIONS}
@@ -12,6 +13,8 @@
 LAND_CFLUX()
 
 ATMOSPHERIC_CO2()
+
+NPP()
 
 ATMOSPHERIC_C()
 
