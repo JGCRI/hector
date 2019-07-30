@@ -217,6 +217,26 @@ test_that('Decreasing litter flux to detritus decreases CO2 concentrations ', {
     shutdown(hc)
 })
 
+test_that('Increasing CO2 fertilization factor increases NPP', {
+    # More sensitive to atmospheric CO2 more NPP
+    hc <- newcore(rcp45, suppresslogging = TRUE)
+    run(hc, 2100)
+    qdates <- 2000:2100
+    # increase is smooth.
+    dd1 <- fetchvars(hc, qdates, NPP())
+
+    setvar(hc, NA, BETA(), 0.75, NA) # Default = 0.36
+    reset(hc, 0.0)
+    run(hc, 2100)
+    dd2 <- fetchvars(hc, qdates, NPP())
+
+    ## Check that NPP is larger across the board
+    diff <- dd2$value - dd1$value
+    expect_gt(min(diff), 0.0)
+
+    shutdown(hc)
+})
+
 test_that('All "fraction" parameters can be set and retrieved', {
     # Less detritus C means more soil C, which decomposes slower
     hc <- newcore(rcp45, suppresslogging = TRUE)
