@@ -190,8 +190,9 @@ private:
     /*****************************************************************
      * Functions computing sub-elements of the carbon cycle
      *****************************************************************/
-    unitval npp( std::string biome ) const;     //!< calculates current NPP for a biome
-    unitval sum_npp() const;                    //!< calculates current NPP, global total
+    double calc_co2fert(std::string biome, double time = Core::undefinedIndex()) const; //!< calculates co2fertilization factor.
+    unitval npp(std::string biome, double time = Core::undefinedIndex()) const; //!< calculates NPP for a biome
+    unitval sum_npp(double time = Core::undefinedIndex()) const; //!< calculates NPP, global total
     unitval rh_fda( std::string biome ) const;  //!< calculates current RH from detritus for a biome
     unitval rh_fsa( std::string biome ) const;  //!< calculates current RH from soil for a biome
     unitval rh( std::string biome ) const;      //!< calculates current RH for a biome

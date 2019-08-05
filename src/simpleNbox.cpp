@@ -34,7 +34,7 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
     lucEmissions.name = "lucEmissions";
     Ftalbedo.allowInterp( true );
     Ftalbedo.name = "albedo";
-    
+
     // earth_c keeps track of how much fossil C is pulled out
     // so that we can do a mass-balance check throughout the run
     earth_c.set( 0.0, U_PGC );
@@ -44,9 +44,9 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
 // documentation is inherited
 void SimpleNbox::init( Core* coreptr ) {
     CarbonCycleModel::init( coreptr );
-    
+
     core = coreptr;
-    
+
     // Defaults
     co2fert[ SNBOX_DEFAULT_BIOME ] = 1.0;
     warmingfactor[ SNBOX_DEFAULT_BIOME ] = 1.0;
@@ -58,7 +58,7 @@ void SimpleNbox::init( Core* coreptr ) {
     biome_list.push_back( SNBOX_DEFAULT_BIOME );
 
     Tgav_record.allowInterp( true );
-    
+
     // Register the data we can provide
     core->registerCapability( D_ATMOSPHERIC_CO2, getComponentName() );
     core->registerCapability( D_ATMOSPHERIC_C, getComponentName() );
@@ -69,14 +69,15 @@ void SimpleNbox::init( Core* coreptr ) {
     core->registerCapability( D_DETRITUSC, getComponentName() );
     core->registerCapability( D_SOILC, getComponentName() );
     core->registerCapability( D_NPP_FLUX0, getComponentName() );
-    
+    core->registerCapability( D_NPP, getComponentName() );
+
     // Register our dependencies
     core->registerDependency( D_OCEAN_CFLUX, getComponentName() );
 
     // Register the inputs we can receive from outside
     core->registerInput(D_FFI_EMISSIONS, getComponentName());
     core->registerInput(D_LUC_EMISSIONS, getComponentName());
-    core->registerInput(D_PREINDUSTRIAL_CO2, getComponentName()); 
+    core->registerInput(D_PREINDUSTRIAL_CO2, getComponentName());
     core->registerInput(D_VEGC, getComponentName());
     core->registerInput(D_DETRITUSC, getComponentName());
     core->registerInput(D_SOILC, getComponentName());
@@ -98,20 +99,20 @@ unitval SimpleNbox::sendMessage( const std::string& message,
                                 const message_data info ) throw ( h_exception )
 {
     unitval returnval;
-    
+
     if( message==M_GETDATA ) {          //! Caller is requesting data
         return getData( datum, info.date );
-        
+
     } else if( message==M_SETDATA ) {   //! Caller is requesting to set data
 
         setData(datum, info);
         //TODO: change core so that parsing is routed through sendMessage
         //TODO: make setData private
-        
+
     } else {                        //! We don't handle any other messages
         H_THROW( "Caller sent unknown message: "+message );
     }
-    
+
     return returnval;
 }
 
@@ -124,11 +125,11 @@ void SimpleNbox::setData( const std::string &varName,
     std::vector<std::string> splitvec;
     boost::split( splitvec, varName, is_any_of( SNBOX_PARSECHAR ) );
     H_ASSERT( splitvec.size() < 3, "max of one separator allowed in variable names" );
-    
+
     std::string biome = SNBOX_DEFAULT_BIOME;
     std::string varNameParsed = varName;
     auto it_global = std::find(biome_list.begin(), biome_list.end(), SNBOX_DEFAULT_BIOME);
-    
+
     if( splitvec.size() == 2 ) {    // i.e., in form <biome>.<varname>
         biome = splitvec[ 0 ];
         varNameParsed = splitvec[ 1 ];
@@ -207,13 +208,13 @@ void SimpleNbox::setData( const std::string &varName,
                 soil_c_tv.set(data.date, soil_c);
             }
         }
-        
+
         // Albedo effect
         else if( varNameParsed == D_RF_T_ALBEDO ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
             Ftalbedo.set( data.date, data.getUnitval( U_W_M2 ) );
         }
-        
+
         // Partitioning
         else if( varNameParsed == D_F_NPPV ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
@@ -235,13 +236,13 @@ void SimpleNbox::setData( const std::string &varName,
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
             f_lucd = data.getUnitval(U_UNITLESS);
         }
-        
+
         // Initial fluxes
         else if( varNameParsed == D_NPP_FLUX0 ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
             npp_flux0[ biome ] = data.getUnitval( U_PGC_YR );
         }
-        
+
         // Fossil fuels and industry contributions--time series.  There are two
         // message versions for each of these: one for string data
         // read from an input file, and another for actual values
@@ -250,18 +251,18 @@ void SimpleNbox::setData( const std::string &varName,
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
             H_ASSERT( biome == SNBOX_DEFAULT_BIOME, "fossil fuels and industry emissions must be global" );
             ffiEmissions.set( data.date, data.getUnitval( U_PGC_YR ) );
-        } 
+        }
         else if( varNameParsed == D_LUC_EMISSIONS ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
             lucEmissions.set( data.date, data.getUnitval( U_PGC_YR ) );
-        } 
+        }
         // Atmospheric CO2 record to constrain model to (optional)
         else if( varNameParsed == D_CA_CONSTRAIN ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
             H_ASSERT( biome == SNBOX_DEFAULT_BIOME, "atmospheric constraint must be global" );
             Ca_constrain.set( data.date, data.getUnitval( U_PPMV_CO2 ) );
         }
-        
+
         // Fertilization
         else if( varNameParsed == D_BETA ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
@@ -275,7 +276,7 @@ void SimpleNbox::setData( const std::string &varName,
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
             q10_rh = data.getUnitval(U_UNITLESS);
         }
-     
+
         else {
             H_LOG( logger, Logger::DEBUG ) << "Unknown variable " << varName << std::endl;
             H_THROW( "Unknown variable name while parsing "+ getComponentName() + ": "
@@ -296,7 +297,7 @@ void SimpleNbox::setData( const std::string &varName,
  */
 void SimpleNbox::sanitychecks() throw( h_exception )
 {
-    
+
     // Make a few sanity checks here, and then return.
     H_ASSERT( atmos_c.value( U_PGC ) > 0.0, "atmos_c pool <=0" );
 
@@ -307,7 +308,7 @@ void SimpleNbox::sanitychecks() throw( h_exception )
         H_ASSERT( soil_c.at(biome).value( U_PGC ) >= 0.0, "soil_c pool < 0" );
         H_ASSERT( npp_flux0.at(biome).value( U_PGC_YR ) >= 0.0, "npp_flux0 < 0" );
     }
- 
+
     H_ASSERT( f_nppv >= 0.0, "f_nppv <0" );
     H_ASSERT( f_nppd >= 0.0, "f_nppd <0" );
     H_ASSERT( f_nppv + f_nppd <= 1.0, "f_nppv + f_nppd >1" );
@@ -315,7 +316,7 @@ void SimpleNbox::sanitychecks() throw( h_exception )
     H_ASSERT( f_lucv >= 0.0, "f_lucv <0" );
     H_ASSERT( f_lucd >= 0.0, "f_lucd <0" );
     H_ASSERT( f_lucv + f_lucd <= 1.0, "f_lucv + f_lucd >1" );
-    
+
     H_ASSERT( C0.value( U_PPMV_CO2 ) > 0.0, "C0 <= 0" );
     H_ASSERT( Ca.value( U_PPMV_CO2 ) > 0.0, "Ca <= 0" );
 }
@@ -374,13 +375,13 @@ void SimpleNbox::prepareToRun() throw( h_exception )
 {
 
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
- 
+
     // If any 'global' settings, there shouldn't also be regional
     if ( (has_biome( SNBOX_DEFAULT_BIOME )) & (biome_list.size() > 1) ) {
         H_THROW( "Cannot have both global and biome-specific data! "
                  "Did you forget to rename the default ('global') biome?")
     }
-    
+
     // Ensure consistency between biome_list and all pools and fluxes
     H_ASSERT( biome_list.size() == veg_c.size(), "veg_c and biome_list data not same size" );
     H_ASSERT( biome_list.size() == detritus_c.size(), "detritus_c and biome_list not same size" );
@@ -401,7 +402,7 @@ void SimpleNbox::prepareToRun() throw( h_exception )
                 "Setting to default value = 1.0" << std::endl;
             warmingfactor[ biome ] = 1.0;
         }
-        
+
     }
 
     // Save a pointer to the ocean model in use
@@ -416,13 +417,13 @@ void SimpleNbox::prepareToRun() throw( h_exception )
     double c0init = C0.value(U_PPMV_CO2);
     Ca.set(c0init, U_PPMV_CO2);
     atmos_c.set(c0init * PPMVCO2_TO_PGC, U_PGC);
-    
+
     if( Ca_constrain.size() ) {
         Ca_constrain.allowPartialInterp( true );
         Logger& glog = core->getGlobalLogger();
         H_LOG( glog, Logger::WARNING ) << "Atmospheric CO2 will be constrained to user-supplied values!" << std::endl;
     }
-    
+
     // One-time checks
     for( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
         H_ASSERT( beta.at( *it ) >= 0.0, "beta < 0" );
@@ -442,7 +443,7 @@ void SimpleNbox::run( const double runToDate ) throw ( h_exception )
 {
     in_spinup = core->inSpinup();
     sanitychecks();
-    
+
     Tgav_record.set( runToDate, core->sendMessage( M_GETDATA, D_GLOBAL_TEMP ).value( U_DEGC ) );
 }
 
@@ -471,7 +472,7 @@ unitval SimpleNbox::getData(const std::string& varName,
     std::string varNameParsed = varName;
     std::string biome_error = "Biome '" + biome + "' missing from biome list. " +
         "Hit this error while trying to retrieve variable: '" + varName + "'.";
-    
+
     // Does the varName contain our parse character? If so, split it
     std::vector<std::string> splitvec;
     boost::split( splitvec, varName, boost::is_any_of( SNBOX_PARSECHAR ) );
@@ -517,7 +518,7 @@ unitval SimpleNbox::getData(const std::string& varName,
     } else if( varNameParsed == D_LAND_CFLUX ) {
         H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for atm-land flux" );
         returnval = sum_npp() - sum_rh() - lucEmissions.get( ODEstartdate );
-        
+
     } else if( varNameParsed == D_RF_T_ALBEDO ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for albedo forcing" );
         returnval = Ftalbedo.get( date );
@@ -540,7 +541,7 @@ unitval SimpleNbox::getData(const std::string& varName,
     } else if(varNameParsed == D_F_LUCD) {
         H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for LUC detritus fraction");
         returnval = unitval(f_lucd, U_UNITLESS);
-        
+
     } else if( varNameParsed == D_EARTHC ) {
         if(date == Core::undefinedIndex())
             returnval = earth_c;
@@ -596,15 +597,16 @@ unitval SimpleNbox::getData(const std::string& varName,
         H_ASSERT( date != Core::undefinedIndex(), "Date required for luc emissions" );
         returnval = lucEmissions.get( date );
     } else if( varNameParsed == D_NPP ) {
-        H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for npp" );
-        returnval = sum_npp();
+        // `sum_npp` works whether or not `date` is defined (if undefined, it
+        // evaluates for the current date).
+        returnval = sum_npp(date);
     } else if( varNameParsed == D_RH ) {
         H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for rh" );
         returnval = sum_rh();
     }else {
         H_THROW( "Caller is requesting unknown variable: " + varName );
     }
-    
+
     return returnval;
 }
 
@@ -631,12 +633,12 @@ void SimpleNbox::reset(double time) throw(h_exception)
             co2fert[ biome ] = 1.0; // co2fert fixed if in spinup.  Placeholder in case we decide to allow resetting into spinup
         }
         else {
-            co2fert[ biome ] = 1.0 + beta.at( biome ) * log(Ca/C0);
+            co2fert[ biome ] = calc_co2fert(biome);
         }
     }
     Tgav_record.truncate(time);
-    // No need to reset masstot; it's not supposed to change anyhow. 
-    
+    // No need to reset masstot; it's not supposed to change anyhow.
+
     // Truncate all of the state variable time series
     earth_c_ts.truncate(time);
     atmos_c_ts.truncate(time);
@@ -652,7 +654,7 @@ void SimpleNbox::reset(double time) throw(h_exception)
     tempfertd_tv.truncate(time);
 
     tcurrent = time;
-    
+
     H_LOG(logger, Logger::NOTICE)
         << getComponentName() << " reset to time= " << time << "\n";
 }
@@ -685,7 +687,7 @@ void SimpleNbox::getCValues( double t, double c[] )
     c[ SNBOX_SOIL ] = sum_map( soil_c ).value( U_PGC );
     omodel->getCValues( t, c );
     c[ SNBOX_EARTH ] = earth_c.value( U_PGC );
-    
+
     ODEstartdate = t;
 }
 
@@ -704,7 +706,7 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     // Solver has gone from ODEstartdate to t
     const double yf = ( t - ODEstartdate );
     H_ASSERT( yf >= 0 && yf <= 1, "yearfraction out of bounds" );
-    
+
     H_LOG( logger,Logger::DEBUG ) << "Stashing at t=" << t << ", solver pools at " << t << ": " <<
         "  atm = " << c[ 0 ] <<
         "  veg = " << c[ 1 ] <<
@@ -716,9 +718,9 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     log_pools( t );
 
     // Store solver pools into our internal variables
-    
+
     atmos_c.set( c[ SNBOX_ATMOS ], U_PGC );
-    
+
     // The solver just knows about one vegetation box, one detritus, and one
     // soil. So we need to apportion new veg C pool (set by the solver) to
     // as many biomes as we have. This is not ideal.
@@ -747,12 +749,12 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     }
 
     log_pools( t );
-    
+
     omodel->stashCValues( t, c );   // tell ocean model to store new C values
     earth_c.set( c[ SNBOX_EARTH ], U_PGC );
 
     log_pools( t );
-    
+
     // Each time the model pools are updated, check that mass has been conserved
     double sum=0.0;
     for( int i=0; i<ncpool(); i++ ) {
@@ -779,16 +781,16 @@ void SimpleNbox::stashCValues( double t, const double c[] )
             atmppmv.set(C0.value(U_PPMV_CO2), U_PPMV_CO2);
         }
         else {
-            H_LOG( logger, Logger::WARNING ) << "** Constraining atmospheric CO2 to user-supplied value" << std::endl; 
+            H_LOG( logger, Logger::WARNING ) << "** Constraining atmospheric CO2 to user-supplied value" << std::endl;
             atmos_cpool_to_match.set(Ca_constrain.get(t).value( U_PPMV_CO2 ) /
                                      PGC_TO_PPMVCO2, U_PGC);
             atmppmv.set(Ca_constrain.get(t).value(U_PPMV_CO2), U_PPMV_CO2);
         }
-        
+
         residual = atmos_c - atmos_cpool_to_match;
         H_LOG( logger,Logger::DEBUG ) << t << "- have " << Ca << " want " <<  atmppmv.value( U_PPMV_CO2 ) << std::endl;
         H_LOG( logger,Logger::DEBUG ) << t << "- have " << atmos_c << " want " << atmos_cpool_to_match << "; residual = " << residual << std::endl;
-        
+
         // Transfer C from atmosphere to deep ocean and update our C and Ca variables
         H_LOG( logger,Logger::DEBUG ) << "Sending residual of " << residual << " to deep ocean" << std::endl;
         core->sendMessage( M_DUMP_TO_DEEP_OCEAN, D_OCEAN_C, message_data( residual ) );
@@ -797,22 +799,32 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     } else {
         residual.set( 0.0, U_PGC );
     }
-    
+
     // All good! t will be the start of the next timestep, so
     ODEstartdate = t;
 }
 
 // A series of small functions to calculate variables that will appear in the output stream
 
+double SimpleNbox::calc_co2fert(std::string biome, double time) const
+{
+    unitval Ca_t = time == Core::undefinedIndex() ? Ca : Ca_ts.get(time);
+    return 1 + beta.at(biome) * log(Ca_t/C0);
+}
+
 //------------------------------------------------------------------------------
 /*! \brief      Compute annual net primary production
  *  \returns    current annual NPP
  */
-unitval SimpleNbox::npp( std::string biome ) const
+unitval SimpleNbox::npp(std::string biome, double time) const
 {
     unitval npp = npp_flux0.at( biome );    // 'at' throws exception if not found
-    npp = npp * co2fert.at( biome );        // that's why used here instead of []
-//    npp = npp * tempfert.at( biome );
+    if(time == Core::undefinedIndex()) {
+        npp = npp * co2fert.at( biome );        // that's why used here instead of []
+    }
+    else {
+        npp = npp * calc_co2fert(biome, time);
+    }
     return npp;
 }
 
@@ -820,11 +832,11 @@ unitval SimpleNbox::npp( std::string biome ) const
 /*! \brief      Compute global net primary production
  *  \returns    Annual NPP summed across all biomes
  */
-unitval SimpleNbox::sum_npp() const
+unitval SimpleNbox::sum_npp(double time) const
 {
     unitval total( 0.0, U_PGC_YR );
     for( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
-        total = total + npp( *it );}
+        total = total + npp( *it, time );}
     return total;
 }
 
@@ -887,13 +899,13 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
     // Atmosphere-ocean flux is calculated by ocean_component
     const int omodel_err = omodel->calcderivs( t, c, dcdt );
     unitval atmosocean_flux( dcdt[ SNBOX_OCEAN ], U_PGC_YR );
-    
+
     // NPP is scaled by CO2 from preindustrial value
     unitval npp_current = sum_npp();
     unitval npp_fav = npp_current * f_nppv;
     unitval npp_fad = npp_current * f_nppd;
     unitval npp_fas = npp_current * ( 1 - f_nppv - f_nppd );
-    
+
     // RH heterotrophic respiration
     unitval rh_fda_current( 0.0, U_PGC_YR );
     unitval rh_fsa_current( 0.0, U_PGC_YR );
@@ -902,7 +914,7 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
         rh_fsa_current = rh_fsa_current + rh_fsa( *it );
     }
     unitval rh_current = rh_fda_current + rh_fsa_current;
-    
+
     // Detritus flux comes from the vegetation pool
     // TODO: these values should use the c[] pools passed in by solver!
     unitval litter_flux( 0.0, U_PGC_YR );
@@ -914,19 +926,19 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
         litter_fvd = litter_fvd + v * f_litterd;
         litter_fvs = litter_fvs + v * ( 1 - f_litterd );
     }
-    
+
     // Some detritus goes to soil
     unitval detsoil_flux( 0.0, U_PGC_YR );
     for( unitval_stringmap::const_iterator it = detritus_c.begin(); it != detritus_c.end(); it++ ) {
         detsoil_flux = detsoil_flux + unitval( it->second.value( U_PGC ) * 0.6, U_PGC_YR );
     }
-    
+
     // Annual fossil fuels and industry emissions
     unitval ffi_flux_current( 0.0, U_PGC_YR );
     if( !in_spinup ) {   // no perturbation allowed if in spinup
         ffi_flux_current = ffiEmissions.get( t );
     }
-    
+
     // Annual land use change emissions
     unitval luc_current( 0.0, U_PGC_YR );
     if( !in_spinup ) {   // no perturbation allowed if in spinup
@@ -937,10 +949,10 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
     unitval luc_fva = luc_current * f_lucv;
     unitval luc_fda = luc_current * f_lucd;
     unitval luc_fsa = luc_current * ( 1 - f_lucv - f_lucd );
-    
+
     // Oxidized methane of fossil fuel origin
     unitval ch4ox_current( 0.0, U_PGC_YR );     //TODO: implement this
-    
+
     // Compute fluxes
     dcdt[ SNBOX_ATMOS ] = // change in atmosphere pool
         ffi_flux_current.value( U_PGC_YR )
@@ -988,7 +1000,7 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
 void SimpleNbox::slowparameval( double t, const double c[] )
 {
     omodel->slowparameval( t, c );      // pass msg on to ocean model
-    
+
 	// CO2 fertilization
     Ca.set( c[ SNBOX_ATMOS ] * PGC_TO_PPMVCO2, U_PPMV_CO2 );
 
@@ -998,7 +1010,7 @@ void SimpleNbox::slowparameval( double t, const double c[] )
         if( in_spinup ) {
             co2fert[ biome ] = 1.0;  // no perturbation allowed if in spinup
         } else {
-            co2fert[ biome ] = 1 + beta.at( biome ) * log( Ca/C0 );
+            co2fert[ biome ] = calc_co2fert( biome );
         }
         H_LOG( logger,Logger::DEBUG ) << "co2fert[ " << biome << " ] at " << Ca << " = " << co2fert.at( biome ) << std::endl;
     }
@@ -1007,7 +1019,7 @@ void SimpleNbox::slowparameval( double t, const double c[] )
     // Heterotrophic respiration depends on the pool sizes (detritus and soil) and Q10 values
     // The soil pool uses a lagged Tgav, i.e. we assume it takes time for heat to diffuse into soil
     const double Tgav = core->sendMessage( M_GETDATA, D_GLOBAL_TEMP ).value( U_DEGC );
-    
+
 
     /* set tempferts (soil) and tempfertd (detritus) for each biome */
 
@@ -1035,12 +1047,12 @@ void SimpleNbox::slowparameval( double t, const double c[] )
             } else {
                 wf = 1.0;
             }
-            
+
             const double Tgav_biome = Tgav * wf;    // biome-specific temperature
 
             tempfertd[ biome ] = pow( q10_rh, ( Tgav_biome / 10.0 ) ); // detritus warms with air
-            
-        
+
+
             // Soil warm very slowly relative to the atmosphere
             // We use a mean temperature of a window (size Q10_TEMPN) of temperatures to scale Q10
             #define Q10_TEMPLAG 0 //125         // TODO: put lag in input files 150, 25
@@ -1052,15 +1064,15 @@ void SimpleNbox::slowparameval( double t, const double c[] )
                 }
                 Tgav_rm /= Q10_TEMPN;
             }
-            
+
             tempferts[ biome ] = pow( q10_rh, ( Tgav_rm / 10.0 ) );
-            
+
             // The soil Q10 effect is 'sticky' and can only increase, not decline
             double tempferts_last = tfs_last[ biome ]; // If tfs_last is empty, this will produce 0.0
             if(tempferts[ biome ] < tempferts_last) {
                 tempferts[ biome ] = tempferts_last;
             }
-            
+
             H_LOG( logger,Logger::DEBUG ) << biome << " Tgav=" << Tgav << ", Tgav_biome=" << Tgav_biome << ", tempfertd=" << tempfertd[ biome ]
                 << ", tempferts=" << tempferts[ biome ] << std::endl;
         }
@@ -1094,7 +1106,7 @@ void SimpleNbox::record_state(double t)
     // like it makes swapping out for another model a nightmare, but
     // that's where we're at.
     omodel->record_state(t);
-    
+
 }
 
 // Set the preindustrial carbon value and adjust total mass to reflect the new
@@ -1110,7 +1122,7 @@ void SimpleNbox::set_c0(double newc0)
                                      << "\n";
     }
     C0.set(newc0, U_PPMV_CO2);
-        
+
 }
 
 // Check if `biome` is present in biome_list
@@ -1249,3 +1261,4 @@ void SimpleNbox::renameBiome(const std::string& oldname, const std::string& newn
 }
 
 }
+

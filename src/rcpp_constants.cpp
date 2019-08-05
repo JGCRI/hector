@@ -846,6 +846,13 @@ String ATMOSPHERIC_CO2() {
 return D_ATMOSPHERIC_CO2;
 }
 
+//' @rdname carboncycle
+//' @export
+// [[Rcpp::export]]
+String NPP() {
+    return D_NPP;
+}
+
 //' @describeIn parameters Preindustrial CO2 concentration (\code{"ppmv CO2"})
 //' @export
 // [[Rcpp::export]]

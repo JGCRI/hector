@@ -2,7 +2,7 @@ context('Verify correctness of hector scenarios')
 
 inputdir <- system.file('input', package='hector')
 sampledir <- system.file('output', package='hector')
-testvars <- c(ATMOSPHERIC_CO2(), RF_TOTAL(), GLOBAL_TEMP())
+testvars <- c(ATMOSPHERIC_CO2(), RF_TOTAL(), GLOBAL_TEMP(), NPP())
 tempvars <- c(GLOBAL_TEMP(), OCEAN_AIR_TEMP(), LAND_TEMP())
 fland <- 0.29        # Global land area fraction
 dates <- 2000:2300
