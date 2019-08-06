@@ -60,7 +60,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">hector</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.4.0</span>
       </span>
     </div>
 
@@ -87,6 +87,9 @@
     </li>
     <li>
       <a href="../articles/hector_apply.html">Example: Using Hector to solve for an emissions pathway</a>
+    </li>
+    <li>
+      <a href="../articles/multiple-biomes.html">Example: Running Hector with multiple biomes</a>
     </li>
   </ul>
 </li>
@@ -217,7 +220,7 @@
       <tr>
         
         <td>
-          <p><code><a href="carboncycle.html">LAND_CFLUX()</a></code> <code><a href="carboncycle.html">ATMOSPHERIC_CO2()</a></code> <code><a href="carboncycle.html">NPP()</a></code> <code><a href="carboncycle.html">ATMOSPHERIC_C()</a></code> <code><a href="carboncycle.html">FFI_EMISSIONS()</a></code> <code><a href="carboncycle.html">LUC_EMISSIONS()</a></code> </p>
+          <p><code><a href="carboncycle.html">LAND_CFLUX()</a></code> <code><a href="carboncycle.html">ATMOSPHERIC_CO2()</a></code> <code><a href="carboncycle.html">NPP()</a></code> <code><a href="carboncycle.html">ATMOSPHERIC_C()</a></code> <code><a href="carboncycle.html">FFI_EMISSIONS()</a></code> <code><a href="carboncycle.html">LUC_EMISSIONS()</a></code> <code><a href="carboncycle.html">VEG_C()</a></code> <code><a href="carboncycle.html">DETRITUS_C()</a></code> <code><a href="carboncycle.html">SOIL_C()</a></code> <code><a href="carboncycle.html">NPP_FLUX0()</a></code> </p>
         </td>
         <td><p>Identifiers for variables in the Hector carbon cycle component</p></td>
       </tr><tr>
@@ -226,6 +229,24 @@
           <p><code><a href="concentrations.html">ATMOSPHERIC_N2O()</a></code> <code><a href="concentrations.html">PREINDUSTRIAL_N2O()</a></code> <code><a href="concentrations.html">PREINDUSTRIAL_O3()</a></code> <code><a href="concentrations.html">ATMOSPHERIC_O3()</a></code> </p>
         </td>
         <td><p>Identifiers for miscellaneous concentrations not elsewhere described</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="create_biome.html">create_biome()</a></code> </p>
+        </td>
+        <td><p>Create new biome</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="create_biome_impl.html">create_biome_impl()</a></code> </p>
+        </td>
+        <td><p>Create a biome</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="delete_biome_impl.html">delete_biome_impl()</a></code> </p>
+        </td>
+        <td><p>Delete a biome</p></td>
       </tr><tr>
         
         <td>
@@ -238,6 +259,18 @@
           <p><code><a href="forcings.html">RF_TOTAL()</a></code> <code><a href="forcings.html">RF_T_ALBEDO()</a></code> <code><a href="forcings.html">RF_CO2()</a></code> <code><a href="forcings.html">RF_N2O()</a></code> <code><a href="forcings.html">RF_H2O()</a></code> <code><a href="forcings.html">RF_O3()</a></code> <code><a href="forcings.html">RF_BC()</a></code> <code><a href="forcings.html">RF_OC()</a></code> <code><a href="forcings.html">RF_SO2D()</a></code> <code><a href="forcings.html">RF_SO2I()</a></code> <code><a href="forcings.html">RF_SO2()</a></code> <code><a href="forcings.html">RF_VOL()</a></code> <code><a href="forcings.html">RF_CH4()</a></code> </p>
         </td>
         <td><p>Identifiers for capabilities in the Hector forcing component</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_biome_inits.html">get_biome_inits()</a></code> </p>
+        </td>
+        <td><p>Retrieve the initial conditions and parameters for a given biome</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="get_biome_list.html">get_biome_list()</a></code> </p>
+        </td>
+        <td><p>Retrieve the current list of biomes for a Hector instance</p></td>
       </tr><tr>
         
         <td>
@@ -271,15 +304,27 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="parameters.html">PREINDUSTRIAL_CO2()</a></code> <code><a href="parameters.html">Q10_RH()</a></code> <code><a href="parameters.html">BETA()</a></code> <code><a href="parameters.html">F_NPPV()</a></code> <code><a href="parameters.html">F_NPPD()</a></code> <code><a href="parameters.html">F_LITTERD()</a></code> <code><a href="parameters.html">F_LUCV()</a></code> <code><a href="parameters.html">F_LUCD()</a></code> <code><a href="parameters.html">ECS()</a></code> <code><a href="parameters.html">AERO_SCALE()</a></code> <code><a href="parameters.html">VOLCANIC_SCALE()</a></code> <code><a href="parameters.html">DIFFUSIVITY()</a></code> </p>
+          <p><code><a href="parameters.html">PREINDUSTRIAL_CO2()</a></code> <code><a href="parameters.html">Q10_RH()</a></code> <code><a href="parameters.html">BETA()</a></code> <code><a href="parameters.html">WARMINGFACTOR()</a></code> <code><a href="parameters.html">F_NPPV()</a></code> <code><a href="parameters.html">F_NPPD()</a></code> <code><a href="parameters.html">F_LITTERD()</a></code> <code><a href="parameters.html">F_LUCV()</a></code> <code><a href="parameters.html">F_LUCD()</a></code> <code><a href="parameters.html">ECS()</a></code> <code><a href="parameters.html">AERO_SCALE()</a></code> <code><a href="parameters.html">VOLCANIC_SCALE()</a></code> <code><a href="parameters.html">DIFFUSIVITY()</a></code> </p>
         </td>
         <td><p>Identifiers for model parameters</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="rename_biome.html">rename_biome()</a></code> </p>
+        </td>
+        <td><p>Rename an existing biome</p></td>
       </tr><tr>
         
         <td>
           <p><code><a href="so2.html">NATURAL_SO2()</a></code> <code><a href="so2.html">Y2000_SO2()</a></code> <code><a href="so2.html">EMISSIONS_SO2()</a></code> <code><a href="so2.html">VOLCANIC_SO2()</a></code> </p>
         </td>
         <td><p>Identifiers for quantities in the SO2 component</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="split_biome.html">split_biome()</a></code> </p>
+        </td>
+        <td><p>Create new biomes by splitting up an existing biome</p></td>
       </tr><tr>
         
         <td>

@@ -71,7 +71,7 @@ mass)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">hector</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.4.0</span>
       </span>
     </div>
 
@@ -98,6 +98,9 @@ mass)." />
     </li>
     <li>
       <a href="../articles/hector_apply.html">Example: Using Hector to solve for an emissions pathway</a>
+    </li>
+    <li>
+      <a href="../articles/multiple-biomes.html">Example: Running Hector with multiple biomes</a>
     </li>
   </ul>
 </li>
@@ -148,7 +151,9 @@ mass).</p>
 
 <span class='fu'>Q10_RH</span>()
 
-<span class='fu'>BETA</span>()
+<span class='fu'>BETA</span>(<span class='kw'>biome</span> <span class='kw'>=</span> <span class='st'>""</span>)
+
+<span class='fu'>WARMINGFACTOR</span>(<span class='kw'>biome</span> <span class='kw'>=</span> <span class='st'>""</span>)
 
 <span class='fu'>F_NPPV</span>()
 
@@ -167,13 +172,24 @@ mass).</p>
 <span class='fu'>VOLCANIC_SCALE</span>()
 
 <span class='fu'>DIFFUSIVITY</span>()</pre>
-        
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>biome</th>
+      <td><p>Biome for which to retrieve parameter. If missing or
+`""`, default to `"global"`.</p></td>
+    </tr>
+    </table>
+    
     <h2 class="hasAnchor" id="functions"><a class="anchor" href="#functions"></a>Functions</h2>
 
     <ul>
 <li><p><code>PREINDUSTRIAL_CO2</code>: Preindustrial CO2 concentration (<code>"ppmv CO2"</code>)</p></li>
 <li><p><code>Q10_RH</code>: Heterotrophic respiration temperature sensitivity factor (<code>"(unitless)"</code>)</p></li>
 <li><p><code>BETA</code>: CO2 fertilization factor (<code>"(unitless)"</code>)</p></li>
+<li><p><code>WARMINGFACTOR</code>: Biome-specific warming factor (`(unitless)`)</p></li>
 <li><p><code>F_NPPV</code>: NPP fraction to vegetation (<code>"(unitless)"</code>)</p></li>
 <li><p><code>F_NPPD</code>: NPP fraction to detritus (<code>"(unitless)"</code>)</p></li>
 <li><p><code>F_LITTERD</code>: Litter fraction to detritus (<code>"(unitless)"</code>)</p></li>
@@ -207,6 +223,7 @@ instead of the more natural looking <code>GETDATA</code>.</p>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#functions">Functions</a></li>
 
