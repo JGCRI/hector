@@ -8,6 +8,10 @@
 \alias{ATMOSPHERIC_C}
 \alias{FFI_EMISSIONS}
 \alias{LUC_EMISSIONS}
+\alias{VEG_C}
+\alias{DETRITUS_C}
+\alias{SOIL_C}
+\alias{NPP_FLUX0}
 \title{Identifiers for variables in the Hector carbon cycle component}
 \usage{
 LAND_CFLUX()
@@ -21,11 +25,35 @@ ATMOSPHERIC_C()
 FFI_EMISSIONS()
 
 LUC_EMISSIONS()
+
+VEG_C(biome = "")
+
+DETRITUS_C(biome = "")
+
+SOIL_C(biome = "")
+
+NPP_FLUX0(biome = "")
+}
+\arguments{
+\item{biome}{Biome for which to retrieve parameter. If missing or
+`""`, default to `"global"`.}
 }
 \description{
 These identifiers correspond to variables that can be read and/or set in the
 carbon cycle
 }
+\section{Functions}{
+\itemize{
+\item \code{VEG_C}: Vegetation C pool (`"Pg C"`)
+
+\item \code{DETRITUS_C}: Vegetation detritus C pool (`"Pg C"`)
+
+\item \code{SOIL_C}: Soil C pool (`"Pg C"`)
+
+\item \code{NPP_FLUX0}: Initial net primary productivity (NPP)
+flux (`"Pg C year^-1"`)
+}}
+
 \section{Output variables}{
 
 These variables can be read using the \code{\link{GETDATA}} message type:

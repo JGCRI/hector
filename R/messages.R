@@ -82,6 +82,17 @@ fetchvars <- function(core, dates, vars=NULL, scenario=NULL)
 setvar <- function(core, dates, var, values, unit)
 {
     unit[is.na(unit)] <- '(unitless)'
+    var_split <- strsplit(var, BIOME_SPLIT_CHAR(), fixed = TRUE)[[1]]
+    if (length(var_split) > 2) {
+        stop("Invalid input variable: '", var, "'")
+    } else if (length(var_split) == 2) {
+        biome <- var_split[[1]]
+        biome_list <- get_biome_list(core)
+        if (!biome %in% biome_list) {
+            stop("Biome '", biome, "' missing from biome list. ",
+                 "Use `hector::create_biome(\"", biome, "\")` to create it.")
+        }
+    }
     sendmessage(core, SETDATA(), var, dates, values, unit)
 
     if(any(dates <= getdate(core)) || any(is.na(dates))) {

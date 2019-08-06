@@ -11,6 +11,8 @@ navbar:
           href: articles/intro-to-hector.html
         - text: "Example: Using Hector to solve for an emissions pathway"
           href: articles/hector_apply.html
+        - text: "Example: Running Hector with multiple biomes"
+          href: articles/multiple-biomes.html
     - text: Reference
       href: "reference/index.html"
   right:

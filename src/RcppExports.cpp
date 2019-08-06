@@ -1196,12 +1196,24 @@ BEGIN_RCPP
 END_RCPP
 }
 // BETA
-String BETA();
-RcppExport SEXP _hector_BETA() {
+String BETA(String biome);
+RcppExport SEXP _hector_BETA(SEXP biomeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(BETA());
+    Rcpp::traits::input_parameter< String >::type biome(biomeSEXP);
+    rcpp_result_gen = Rcpp::wrap(BETA(biome));
+    return rcpp_result_gen;
+END_RCPP
+}
+// WARMINGFACTOR
+String WARMINGFACTOR(String biome);
+RcppExport SEXP _hector_WARMINGFACTOR(SEXP biomeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< String >::type biome(biomeSEXP);
+    rcpp_result_gen = Rcpp::wrap(WARMINGFACTOR(biome));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -1252,6 +1264,50 @@ BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     rcpp_result_gen = Rcpp::wrap(F_LUCD());
+    return rcpp_result_gen;
+END_RCPP
+}
+// VEG_C
+String VEG_C(String biome);
+RcppExport SEXP _hector_VEG_C(SEXP biomeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< String >::type biome(biomeSEXP);
+    rcpp_result_gen = Rcpp::wrap(VEG_C(biome));
+    return rcpp_result_gen;
+END_RCPP
+}
+// DETRITUS_C
+String DETRITUS_C(String biome);
+RcppExport SEXP _hector_DETRITUS_C(SEXP biomeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< String >::type biome(biomeSEXP);
+    rcpp_result_gen = Rcpp::wrap(DETRITUS_C(biome));
+    return rcpp_result_gen;
+END_RCPP
+}
+// SOIL_C
+String SOIL_C(String biome);
+RcppExport SEXP _hector_SOIL_C(SEXP biomeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< String >::type biome(biomeSEXP);
+    rcpp_result_gen = Rcpp::wrap(SOIL_C(biome));
+    return rcpp_result_gen;
+END_RCPP
+}
+// NPP_FLUX0
+String NPP_FLUX0(String biome);
+RcppExport SEXP _hector_NPP_FLUX0(SEXP biomeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< String >::type biome(biomeSEXP);
+    rcpp_result_gen = Rcpp::wrap(NPP_FLUX0(biome));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -1415,6 +1471,16 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// BIOME_SPLIT_CHAR
+String BIOME_SPLIT_CHAR();
+RcppExport SEXP _hector_BIOME_SPLIT_CHAR() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(BIOME_SPLIT_CHAR());
+    return rcpp_result_gen;
+END_RCPP
+}
 // newcore_impl
 Environment newcore_impl(String inifile, int loglevel, bool suppresslogging, String name);
 RcppExport SEXP _hector_newcore_impl(SEXP inifileSEXP, SEXP loglevelSEXP, SEXP suppressloggingSEXP, SEXP nameSEXP) {
@@ -1472,6 +1538,54 @@ BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< Environment >::type core(coreSEXP);
     rcpp_result_gen = Rcpp::wrap(getdate(core));
+    return rcpp_result_gen;
+END_RCPP
+}
+// get_biome_list
+std::vector<std::string> get_biome_list(Environment core);
+RcppExport SEXP _hector_get_biome_list(SEXP coreSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Environment >::type core(coreSEXP);
+    rcpp_result_gen = Rcpp::wrap(get_biome_list(core));
+    return rcpp_result_gen;
+END_RCPP
+}
+// create_biome_impl
+Environment create_biome_impl(Environment core, std::string biome);
+RcppExport SEXP _hector_create_biome_impl(SEXP coreSEXP, SEXP biomeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Environment >::type core(coreSEXP);
+    Rcpp::traits::input_parameter< std::string >::type biome(biomeSEXP);
+    rcpp_result_gen = Rcpp::wrap(create_biome_impl(core, biome));
+    return rcpp_result_gen;
+END_RCPP
+}
+// delete_biome_impl
+Environment delete_biome_impl(Environment core, std::string biome);
+RcppExport SEXP _hector_delete_biome_impl(SEXP coreSEXP, SEXP biomeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Environment >::type core(coreSEXP);
+    Rcpp::traits::input_parameter< std::string >::type biome(biomeSEXP);
+    rcpp_result_gen = Rcpp::wrap(delete_biome_impl(core, biome));
+    return rcpp_result_gen;
+END_RCPP
+}
+// rename_biome
+Environment rename_biome(Environment core, std::string oldname, std::string newname);
+RcppExport SEXP _hector_rename_biome(SEXP coreSEXP, SEXP oldnameSEXP, SEXP newnameSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Environment >::type core(coreSEXP);
+    Rcpp::traits::input_parameter< std::string >::type oldname(oldnameSEXP);
+    Rcpp::traits::input_parameter< std::string >::type newname(newnameSEXP);
+    rcpp_result_gen = Rcpp::wrap(rename_biome(core, oldname, newname));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -1623,12 +1737,17 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_FFI_EMISSIONS", (DL_FUNC) &_hector_FFI_EMISSIONS, 0},
     {"_hector_LUC_EMISSIONS", (DL_FUNC) &_hector_LUC_EMISSIONS, 0},
     {"_hector_Q10_RH", (DL_FUNC) &_hector_Q10_RH, 0},
-    {"_hector_BETA", (DL_FUNC) &_hector_BETA, 0},
+    {"_hector_BETA", (DL_FUNC) &_hector_BETA, 1},
+    {"_hector_WARMINGFACTOR", (DL_FUNC) &_hector_WARMINGFACTOR, 1},
     {"_hector_F_NPPV", (DL_FUNC) &_hector_F_NPPV, 0},
     {"_hector_F_NPPD", (DL_FUNC) &_hector_F_NPPD, 0},
     {"_hector_F_LITTERD", (DL_FUNC) &_hector_F_LITTERD, 0},
     {"_hector_F_LUCV", (DL_FUNC) &_hector_F_LUCV, 0},
     {"_hector_F_LUCD", (DL_FUNC) &_hector_F_LUCD, 0},
+    {"_hector_VEG_C", (DL_FUNC) &_hector_VEG_C, 1},
+    {"_hector_DETRITUS_C", (DL_FUNC) &_hector_DETRITUS_C, 1},
+    {"_hector_SOIL_C", (DL_FUNC) &_hector_SOIL_C, 1},
+    {"_hector_NPP_FLUX0", (DL_FUNC) &_hector_NPP_FLUX0, 1},
     {"_hector_NATURAL_SO2", (DL_FUNC) &_hector_NATURAL_SO2, 0},
     {"_hector_Y2000_SO2", (DL_FUNC) &_hector_Y2000_SO2, 0},
     {"_hector_EMISSIONS_SO2", (DL_FUNC) &_hector_EMISSIONS_SO2, 0},
@@ -1645,11 +1764,16 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_FLUX_MIXED", (DL_FUNC) &_hector_FLUX_MIXED, 0},
     {"_hector_FLUX_INTERIOR", (DL_FUNC) &_hector_FLUX_INTERIOR, 0},
     {"_hector_HEAT_FLUX", (DL_FUNC) &_hector_HEAT_FLUX, 0},
+    {"_hector_BIOME_SPLIT_CHAR", (DL_FUNC) &_hector_BIOME_SPLIT_CHAR, 0},
     {"_hector_newcore_impl", (DL_FUNC) &_hector_newcore_impl, 4},
     {"_hector_shutdown", (DL_FUNC) &_hector_shutdown, 1},
     {"_hector_reset", (DL_FUNC) &_hector_reset, 2},
     {"_hector_run", (DL_FUNC) &_hector_run, 2},
     {"_hector_getdate", (DL_FUNC) &_hector_getdate, 1},
+    {"_hector_get_biome_list", (DL_FUNC) &_hector_get_biome_list, 1},
+    {"_hector_create_biome_impl", (DL_FUNC) &_hector_create_biome_impl, 2},
+    {"_hector_delete_biome_impl", (DL_FUNC) &_hector_delete_biome_impl, 2},
+    {"_hector_rename_biome", (DL_FUNC) &_hector_rename_biome, 3},
     {"_hector_sendmessage", (DL_FUNC) &_hector_sendmessage, 6},
     {"_hector_chk_core_valid", (DL_FUNC) &_hector_chk_core_valid, 1},
     {NULL, NULL, 0}

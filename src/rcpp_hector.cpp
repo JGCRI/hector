@@ -195,6 +195,61 @@ double getdate(Environment core)
     return hcore->getCurrentDate();
 }
 
+//' Retrieve the current list of biomes for a Hector instance
+//'
+//' @param core Handle to the Hector instance from which to retrieve
+//'   the biome list.
+//' @export
+// [[Rcpp::export]]
+std::vector<std::string> get_biome_list(Environment core)
+{
+    Hector::Core *hcore = gethcore(core);
+    std::vector<std::string> biome_list = hcore->getBiomeList();
+    return biome_list;
+}
+
+//' Create a biome
+//'
+//' @param core Handle to the Hector instance that is to be run.
+//' @param biome (character) Name of new biome
+// [[Rcpp::export]]
+Environment create_biome_impl(Environment core, std::string biome)
+{
+    Hector::Core *hcore = gethcore(core);
+    hcore->createBiome(biome);
+    return core;
+}
+
+//' Delete a biome
+//'
+//' @param core Handle to the Hector instance that is to be run.
+//' @param biome (character) Name of biome to delete
+// [[Rcpp::export]]
+Environment delete_biome_impl(Environment core, std::string biome)
+{
+    Hector::Core *hcore = gethcore(core);
+    hcore->deleteBiome(biome);
+    return core;
+}
+
+//' Rename an existing biome
+//'
+//' This will create a new biome called `newname`, assign it all of
+//' the C stocks and parameter values from biome `oldname`, and delete
+//' biome `oldname`.
+//'
+//' @param core Handle to the Hector instance that is to be run.
+//' @param oldname (character) Name of existing biome to be replaced
+//' @param newname (character) Name of new biome
+//' @export
+// [[Rcpp::export]]
+Environment rename_biome(Environment core, std::string oldname, std::string newname)
+{
+    Hector::Core *hcore = gethcore(core);
+    hcore->renameBiome(oldname, newname);
+    return core;
+}
+
 
 //' Send a message to a Hector instance
 //'

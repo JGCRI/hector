@@ -1,6 +1,7 @@
 #include <Rcpp.h>
 #include "hector.hpp"
 #include "component_data.hpp"
+#include "simpleNbox.hpp"
 
 using namespace Rcpp;
 
@@ -888,10 +889,30 @@ return D_Q10_RH;
 }
 
 //' @describeIn parameters CO2 fertilization factor (\code{"(unitless)"})
+//' @param biome Biome for which to retrieve parameter. If missing or
+//'   `""`, default to `"global"`.
 //' @export
 // [[Rcpp::export]]
-String BETA() {
-return D_BETA;
+String BETA(String biome = "") {
+  if (biome == "") return D_BETA;
+  // `Rcpp::String` has a `+=` method, but no `+` method, so have to use
+  // this clunky workaround.
+  String out = biome; 
+  out += ".";
+  out += D_BETA;
+  return out;
+}
+
+//' @describeIn parameters Biome-specific warming factor (`(unitless)`)
+//' @inheritParams BETA
+//' @export
+// [[Rcpp::export]]
+String WARMINGFACTOR(String biome = "") {
+  if (biome == "") return D_WARMINGFACTOR;
+  String out = biome;
+  out += ".";
+  out += D_WARMINGFACTOR;
+  return out;
 }
 
 //' @describeIn parameters NPP fraction to vegetation (\code{"(unitless)"})
@@ -927,6 +948,55 @@ return D_F_LUCV;
 // [[Rcpp::export]]
 String F_LUCD() {
 return D_F_LUCD;
+}
+
+//' @describeIn carboncycle Vegetation C pool (`"Pg C"`)
+//' @inheritParams BETA
+//' @export
+// [[Rcpp::export]]
+String VEG_C(String biome = "") {
+  if (biome == "") return D_VEGC;
+  String out = biome;
+  out += ".";
+  out += D_VEGC;
+  return out;
+}
+
+//' @describeIn carboncycle Vegetation detritus C pool (`"Pg C"`)
+//' @inheritParams BETA
+//' @export
+// [[Rcpp::export]]
+String DETRITUS_C(String biome = "") {
+  if (biome == "") return D_DETRITUSC;
+  String out = biome;
+  out += ".";
+  out += D_DETRITUSC;
+  return out;
+}
+
+//' @describeIn carboncycle Soil C pool (`"Pg C"`)
+//' @inheritParams BETA
+//' @export
+// [[Rcpp::export]]
+String SOIL_C(String biome = "") {
+  if (biome == "") return D_SOILC;
+  String out = biome;
+  out += ".";
+  out += D_SOILC;
+  return out;
+}
+
+//' @describeIn carboncycle Initial net primary productivity (NPP)
+//'   flux (`"Pg C year^-1"`)
+//' @inheritParams BETA
+//' @export
+// [[Rcpp::export]]
+String NPP_FLUX0(String biome = "") {
+  if (biome == "") return D_NPP_FLUX0;
+  String out = biome;
+  out += ".";
+  out += D_NPP_FLUX0;
+  return out;
 }
 
 /* SLR component */
@@ -1070,3 +1140,8 @@ String HEAT_FLUX() {
 return D_HEAT_FLUX;
 }
 
+//' @describeIn msgtype Character used to separate biome from variable name 
+// [[Rcpp::export]]
+String BIOME_SPLIT_CHAR() {
+return SNBOX_PARSECHAR;
+}

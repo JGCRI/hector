@@ -715,9 +715,18 @@ Q10_RH <- function() {
 }
 
 #' @describeIn parameters CO2 fertilization factor (\code{"(unitless)"})
+#' @param biome Biome for which to retrieve parameter. If missing or
+#'   `""`, default to `"global"`.
 #' @export
-BETA <- function() {
-    .Call('_hector_BETA', PACKAGE = 'hector')
+BETA <- function(biome = "") {
+    .Call('_hector_BETA', PACKAGE = 'hector', biome)
+}
+
+#' @describeIn parameters Biome-specific warming factor (`(unitless)`)
+#' @inheritParams BETA
+#' @export
+WARMINGFACTOR <- function(biome = "") {
+    .Call('_hector_WARMINGFACTOR', PACKAGE = 'hector', biome)
 }
 
 #' @describeIn parameters NPP fraction to vegetation (\code{"(unitless)"})
@@ -748,6 +757,35 @@ F_LUCV <- function() {
 #' @export
 F_LUCD <- function() {
     .Call('_hector_F_LUCD', PACKAGE = 'hector')
+}
+
+#' @describeIn carboncycle Vegetation C pool (`"Pg C"`)
+#' @inheritParams BETA
+#' @export
+VEG_C <- function(biome = "") {
+    .Call('_hector_VEG_C', PACKAGE = 'hector', biome)
+}
+
+#' @describeIn carboncycle Vegetation detritus C pool (`"Pg C"`)
+#' @inheritParams BETA
+#' @export
+DETRITUS_C <- function(biome = "") {
+    .Call('_hector_DETRITUS_C', PACKAGE = 'hector', biome)
+}
+
+#' @describeIn carboncycle Soil C pool (`"Pg C"`)
+#' @inheritParams BETA
+#' @export
+SOIL_C <- function(biome = "") {
+    .Call('_hector_SOIL_C', PACKAGE = 'hector', biome)
+}
+
+#' @describeIn carboncycle Initial net primary productivity (NPP)
+#'   flux (`"Pg C year^-1"`)
+#' @inheritParams BETA
+#' @export
+NPP_FLUX0 <- function(biome = "") {
+    .Call('_hector_NPP_FLUX0', PACKAGE = 'hector', biome)
 }
 
 #' @rdname so2
@@ -846,6 +884,11 @@ HEAT_FLUX <- function() {
     .Call('_hector_HEAT_FLUX', PACKAGE = 'hector')
 }
 
+#' @describeIn msgtype Character used to separate biome from variable name 
+BIOME_SPLIT_CHAR <- function() {
+    .Call('_hector_BIOME_SPLIT_CHAR', PACKAGE = 'hector')
+}
+
 newcore_impl <- function(inifile, loglevel, suppresslogging, name) {
     .Call('_hector_newcore_impl', PACKAGE = 'hector', inifile, loglevel, suppresslogging, name)
 }
@@ -906,6 +949,45 @@ run <- function(core, runtodate = -1.0) {
 #' @export
 getdate <- function(core) {
     .Call('_hector_getdate', PACKAGE = 'hector', core)
+}
+
+#' Retrieve the current list of biomes for a Hector instance
+#'
+#' @param core Handle to the Hector instance from which to retrieve
+#'   the biome list.
+#' @export
+get_biome_list <- function(core) {
+    .Call('_hector_get_biome_list', PACKAGE = 'hector', core)
+}
+
+#' Create a biome
+#'
+#' @param core Handle to the Hector instance that is to be run.
+#' @param biome (character) Name of new biome
+create_biome_impl <- function(core, biome) {
+    .Call('_hector_create_biome_impl', PACKAGE = 'hector', core, biome)
+}
+
+#' Delete a biome
+#'
+#' @param core Handle to the Hector instance that is to be run.
+#' @param biome (character) Name of biome to delete
+delete_biome_impl <- function(core, biome) {
+    .Call('_hector_delete_biome_impl', PACKAGE = 'hector', core, biome)
+}
+
+#' Rename an existing biome
+#'
+#' This will create a new biome called `newname`, assign it all of
+#' the C stocks and parameter values from biome `oldname`, and delete
+#' biome `oldname`.
+#'
+#' @param core Handle to the Hector instance that is to be run.
+#' @param oldname (character) Name of existing biome to be replaced
+#' @param newname (character) Name of new biome
+#' @export
+rename_biome <- function(core, oldname, newname) {
+    .Call('_hector_rename_biome', PACKAGE = 'hector', core, oldname, newname)
 }
 
 #' Send a message to a Hector instance
