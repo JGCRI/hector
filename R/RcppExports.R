@@ -708,18 +708,19 @@ LUC_EMISSIONS <- function() {
     .Call('_hector_LUC_EMISSIONS', PACKAGE = 'hector')
 }
 
-#' @describeIn parameters Heterotrophic respiration temperature sensitivity factor (\code{"(unitless)"})
-#' @export
-Q10_RH <- function() {
-    .Call('_hector_Q10_RH', PACKAGE = 'hector')
-}
-
 #' @describeIn parameters CO2 fertilization factor (\code{"(unitless)"})
 #' @param biome Biome for which to retrieve parameter. If missing or
 #'   `""`, default to `"global"`.
 #' @export
 BETA <- function(biome = "") {
     .Call('_hector_BETA', PACKAGE = 'hector', biome)
+}
+
+#' @describeIn parameters Heterotrophic respiration temperature sensitivity factor (\code{"(unitless)"})
+#' @inheritParams BETA
+#' @export
+Q10_RH <- function(biome = "") {
+    .Call('_hector_Q10_RH', PACKAGE = 'hector', biome)
 }
 
 #' @describeIn parameters Biome-specific warming factor (`(unitless)`)
@@ -730,21 +731,24 @@ WARMINGFACTOR <- function(biome = "") {
 }
 
 #' @describeIn parameters NPP fraction to vegetation (\code{"(unitless)"})
+#' @inheritParams BETA
 #' @export
-F_NPPV <- function() {
-    .Call('_hector_F_NPPV', PACKAGE = 'hector')
+F_NPPV <- function(biome = "") {
+    .Call('_hector_F_NPPV', PACKAGE = 'hector', biome)
 }
 
 #' @describeIn parameters NPP fraction to detritus (\code{"(unitless)"})
+#' @inheritParams BETA
 #' @export
-F_NPPD <- function() {
-    .Call('_hector_F_NPPD', PACKAGE = 'hector')
+F_NPPD <- function(biome = "") {
+    .Call('_hector_F_NPPD', PACKAGE = 'hector', biome)
 }
 
 #' @describeIn parameters Litter fraction to detritus (\code{"(unitless)"})
+#' @inheritParams BETA
 #' @export
-F_LITTERD <- function() {
-    .Call('_hector_F_LITTERD', PACKAGE = 'hector')
+F_LITTERD <- function(biome = "") {
+    .Call('_hector_F_LITTERD', PACKAGE = 'hector', biome)
 }
 
 #' @describeIn parameters LUC fraction to vegetation (\code{"(unitless)"})

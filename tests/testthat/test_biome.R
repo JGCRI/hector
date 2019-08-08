@@ -8,7 +8,7 @@ test_that("Hector runs with multiple biomes created via INI file.", {
       on.exit(file.remove(ini_file), add = TRUE)
       writeLines(ini_string, ini_file)
     }
-    newcore(ini_file, name = name, suppresslogging = TRUE)
+    newcore(ini_file, name = name, suppresslogging = FALSE)
   }
 
   quickrun <- function(ini_string, name, ini_file = NULL) {
@@ -30,7 +30,7 @@ test_that("Hector runs with multiple biomes created via INI file.", {
 
   # Remove non-biome-specific variables
   biome_vars <- c("veg_c", "detritus_c", "soil_c", "npp_flux0",
-                  "beta", "q10_rh")
+                  "beta", "q10_rh", "f_nppv", "f_nppd", "f_litterd")
   biome_rxp <- paste(biome_vars, collapse = "|")
   iremove <- grep(sprintf("^(%s) *=", biome_rxp), raw_ini)
   new_ini <- new_ini[-iremove]
@@ -50,7 +50,13 @@ test_that("Hector runs with multiple biomes created via INI file.", {
     "boreal.beta = 0.36",
     "tropical.beta = 0.36",
     "boreal.q10_rh = 2.0",
-    "tropical.q10_rh = 2.0"
+    "tropical.q10_rh = 2.0",
+    "boreal.f_nppv = 0.35",
+    "tropical.f_nppv = 0.35",
+    "boreal.f_nppd = 0.60",
+    "tropical.f_nppd = 0.60",
+    "boreal.f_litterd = 0.98",
+    "tropical.f_litterd = 0.98"
   ), after = isnbox)
 
   # Make csv paths absolute (otherwise, they search in the tempfile directory)

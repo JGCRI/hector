@@ -917,7 +917,7 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
         npp_current = npp_current + npp_biome;
         npp_fav = npp_fav + npp_biome * f_nppv.at( biome );
         npp_fad = npp_fad + npp_biome * f_nppd.at( biome );
-        npp_fas = npp_fad + npp_biome * (1 - f_nppv.at( biome ) - f_nppd.at( biome ));
+        npp_fas = npp_fas + npp_biome * (1 - f_nppv.at( biome ) - f_nppd.at( biome ));
         rh_fda_current = rh_fda_current + rh_fda( biome );
         rh_fsa_current = rh_fsa_current + rh_fsa( biome );
     }
@@ -1172,8 +1172,11 @@ void SimpleNbox::createBiome(const std::string& biome)
 
     // Set parameters to same as most recent biome
     beta[ biome ] = beta[ last_biome ];
+    q10_rh[ biome ] = q10_rh[ last_biome ];
     warmingfactor[ biome ] = warmingfactor[ last_biome ];
-    // TODO: Other parameters -- Q10, f_nppd, etc.
+    f_nppv[ biome ] = f_nppv[ last_biome ];
+    f_nppd[ biome ] = f_nppd[ last_biome ];
+    f_litterd[ biome ] = f_litterd[ last_biome ];
 
     // Add to end of biome list
     biome_list.push_back(biome);
@@ -1194,7 +1197,11 @@ void SimpleNbox::deleteBiome(const std::string& biome) // Throw an error if the 
     // Erase all values associated with the biome:
     // Parameters
     beta.erase( biome );
+    q10_rh.erase(biome);
     warmingfactor.erase( biome );
+    f_nppv.erase(biome);
+    f_nppd.erase(biome);
+    f_litterd.erase(biome);
 
     // C pools
     veg_c.erase( biome );
@@ -1234,8 +1241,16 @@ void SimpleNbox::renameBiome(const std::string& oldname, const std::string& newn
 
     beta[ newname ] = beta.at( oldname );
     beta.erase(oldname);
+    q10_rh[ newname ] = q10_rh.at( oldname );
+    q10_rh.erase(oldname);
     warmingfactor[ newname ] = warmingfactor.at( oldname );
     warmingfactor.erase( oldname );
+    f_nppv[ newname ] = f_nppv.at( oldname );
+    f_nppv.erase(oldname);
+    f_nppd[ newname ] = f_nppd.at( oldname );
+    f_nppd.erase(oldname);
+    f_litterd[ newname ] = f_litterd.at( oldname );
+    f_litterd.erase(oldname);
 
     H_LOG(logger, Logger::DEBUG) << "Transferring C from biome '" << oldname <<
         "' to '" << newname << "'." << std::endl;
