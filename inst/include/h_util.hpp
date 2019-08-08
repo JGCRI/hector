@@ -26,7 +26,7 @@
  * \brief The model version number to be included in logs and outputs.
  * \note This must be updated manually when the model version changes.
  */
-#define MODEL_VERSION "2.4.0"
+#define MODEL_VERSION "2.5.0"
 
 #define OUTPUT_DIRECTORY "output/"
 
