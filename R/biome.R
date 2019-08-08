@@ -8,7 +8,11 @@
 #' @param npp_flux0 Initial net primary productivity
 #' @param warmingfactor Temperature multiplier (default =
 #'   `1.0`)
-#' @param beta CO2 fertilization effect (default = `0.36`) 
+#' @param beta CO2 fertilization effect (default = `0.36`)
+#' @param q10_rh Q10 of heterotrophic respiration (default = `2.0`)
+#' @param f_nppv Fraction of NPP to vegetation (default = `0.35`)
+#' @param f_nppd Fraction of NPP to detritus (default = `0.60`)
+#' @param f_litterd Fraction of litter flux to detritus (default = `0.98`)
 #' @return Hector core, invisibly
 #' @author Alexey Shiklomanov
 #' @export
@@ -16,7 +20,11 @@ create_biome <- function(core, biome,
                          veg_c0, detritus_c0, soil_c0,
                          npp_flux0,
                          warmingfactor = 1,
-                         beta = 0.36) {
+                         beta = 0.36,
+                         q10_rh = 2.0,
+                         f_nppv = 0.35,
+                         f_nppd = 0.60,
+                         f_litterd = 0.98) {
   create_biome_impl(core, biome)
   setvar(core, 0, VEG_C(biome), veg_c0, "PgC")
   setvar(core, 0, DETRITUS_C(biome), detritus_c0, "PgC")
@@ -24,6 +32,10 @@ create_biome <- function(core, biome,
   setvar(core, NA, NPP_FLUX0(biome), npp_flux0, "PgC/yr")
   setvar(core, NA, WARMINGFACTOR(biome), warmingfactor, NA)
   setvar(core, NA, BETA(biome), beta, NA)
+  setvar(core, NA, Q10_RH(biome), q10_rh, NA)
+  setvar(core, NA, F_NPPV(biome), f_nppv, NA)
+  setvar(core, NA, F_NPPD(biome), f_nppd, NA)
+  setvar(core, NA, F_LITTERD(biome), f_litterd, NA)
   invisible(core)
 }
 

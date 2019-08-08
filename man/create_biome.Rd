@@ -5,7 +5,8 @@
 \title{Create new biome}
 \usage{
 create_biome(core, biome, veg_c0, detritus_c0, soil_c0, npp_flux0,
-  warmingfactor = 1, beta = 0.36)
+  warmingfactor = 1, beta = 0.36, q10_rh = 2, f_nppv = 0.35,
+  f_nppd = 0.6, f_litterd = 0.98)
 }
 \arguments{
 \item{core}{Hector core}
@@ -24,6 +25,14 @@ create_biome(core, biome, veg_c0, detritus_c0, soil_c0, npp_flux0,
 `1.0`)}
 
 \item{beta}{CO2 fertilization effect (default = `0.36`)}
+
+\item{q10_rh}{Q10 of heterotrophic respiration (default = `2.0`)}
+
+\item{f_nppv}{Fraction of NPP to vegetation (default = `0.35`)}
+
+\item{f_nppd}{Fraction of NPP to detritus (default = `0.60`)}
+
+\item{f_litterd}{Fraction of litter flux to detritus (default = `0.98`)}
 }
 \value{
 Hector core, invisibly
