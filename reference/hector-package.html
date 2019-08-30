@@ -8,11 +8,13 @@
 
 <title>hector: The Hector Simple Climate Model — hector-package • hector</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -30,13 +32,14 @@
 
 
 
-<meta property="og:title" content="hector: The Hector Simple Climate Model — hector-package" />
 
+<meta property="og:title" content="hector: The Hector Simple Climate Model — hector-package" />
 <meta property="og:description" content="Provides an R interface for the Hector Simple Climate
     Model.  Using this interface you can set up and initialize the model,
     change model parameters and emissions inputs, run Hector, and
     retrieve hector outputs." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -103,7 +106,6 @@
   <a href="../reference/index.html">Reference</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/JGCRI/hector">
@@ -129,20 +131,18 @@
     </div>
 
     <div class="ref-description">
-    
     <p>Provides an R interface for the Hector Simple Climate
     Model.  Using this interface you can set up and initialize the model,
     change model parameters and emissions inputs, run Hector, and
     retrieve hector outputs.</p>
-    
     </div>
 
-        
+
+
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>This package allows you to run the Hector Simple Climate Model (SCM) from R
 and receive the results back as R data frames.</p>
-    
     <h2 class="hasAnchor" id="getting-started"><a class="anchor" href="#getting-started"></a>Getting started</h2>
 
     
@@ -160,7 +160,6 @@ an input file as an argument, runs the scenario, and returns the results in a
 data frame.  Which variables you get out are controlled by an option setting.
 Setting this option is explained in the manual page for
 <code><a href='fetchvars.html'>fetchvars</a></code>.</p>
-    
     <h2 class="hasAnchor" id="advanced-usage"><a class="anchor" href="#advanced-usage"></a>Advanced usage</h2>
 
     
@@ -171,7 +170,6 @@ to specific dates, fetch results, set parameters or input data, rewind to an
 earlier date so you can rerun (e.g., with changed emissions or parameters).
 When you are finished with a hector instance, you should call
 <code><a href='shutdown.html'>shutdown</a></code> on it to release the resources it has allocated.</p>
-    
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Hartin, C. A., Patel, P., Schwarber, A., Link, R. P., and Bond-Lamberty,
@@ -182,28 +180,21 @@ Dev., 8, 939-955, <a href='https://doi.org/10.5194/gmd-8-939-2015'>https://doi.o
 acidification over the next three centuries using a simple global climate
 carbon-cycle model: projections and sensitivities, Biogeosciences, 13,
 4329-4342, <a href='https://doi.org/10.5194/bg-13-4329-2016'>https://doi.org/10.5194/bg-13-4329-2016</a>, 2016.</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='runscenario.html'>runscenario</a></code>, <code><a href='newcore.html'>newcore</a></code>,
 <code><a href='shutdown.html'>shutdown</a></code>, <code><a href='fetchvars.html'>fetchvars</a></code></p></div>
-    
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      
       <li><a href="#details">Details</a></li>
-
       <li><a href="#getting-started">Getting started</a></li>
-
       <li><a href="#advanced-usage">Advanced usage</a></li>
-
       <li><a href="#references">References</a></li>
-
       <li><a href="#see-also">See also</a></li>
-          </ul>
+    </ul>
 
     <h2>Author</h2>
     <p><strong>Maintainer</strong>: Robert Link <a href='mailto:robert.link@pnnl.gov'>robert.link@pnnl.gov</a></p>

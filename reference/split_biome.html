@@ -8,11 +8,13 @@
 
 <title>Create new biomes by splitting up an existing biome — split_biome • hector</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -30,11 +32,12 @@
 
 
 
-<meta property="og:title" content="Create new biomes by splitting up an existing biome — split_biome" />
 
+<meta property="og:title" content="Create new biomes by splitting up an existing biome — split_biome" />
 <meta property="og:description" content="Distributes vegetation, detritus, and soil C, and initial NPP flux
 from an existing biome across multiple new biomes." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -101,7 +104,6 @@ from an existing biome across multiple new biomes." />
   <a href="../reference/index.html">Reference</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/JGCRI/hector">
@@ -127,16 +129,14 @@ from an existing biome across multiple new biomes." />
     </div>
 
     <div class="ref-description">
-    
     <p>Distributes vegetation, detritus, and soil C, and initial NPP flux
 from an existing biome across multiple new biomes.</p>
-    
     </div>
 
     <pre class="usage"><span class='fu'>split_biome</span>(<span class='no'>core</span>, <span class='no'>old_biome</span>, <span class='no'>new_biomes</span>,
   <span class='kw'>fveg_c</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/rep'>rep</a></span>(<span class='fl'>1</span>/<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/length'>length</a></span>(<span class='no'>new_biomes</span>), <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/length'>length</a></span>(<span class='no'>new_biomes</span>)),
   <span class='kw'>fdetritus_c</span> <span class='kw'>=</span> <span class='no'>fveg_c</span>, <span class='kw'>fsoil_c</span> <span class='kw'>=</span> <span class='no'>fveg_c</span>, <span class='kw'>fnpp_flux0</span> <span class='kw'>=</span> <span class='no'>fveg_c</span>, <span class='no'>...</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -180,14 +180,14 @@ biome. Defaults to the same value as `fveg_c`.</p></td>
 via [base::mapply()], so they can be vectorized across biomes.</p></td>
     </tr>
     </table>
-    
+
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+    </ul>
 
   </div>
 </div>
