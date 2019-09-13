@@ -3,8 +3,8 @@
 \name{parameters}
 \alias{parameters}
 \alias{PREINDUSTRIAL_CO2}
-\alias{Q10_RH}
 \alias{BETA}
+\alias{Q10_RH}
 \alias{WARMINGFACTOR}
 \alias{F_NPPV}
 \alias{F_NPPD}
@@ -19,17 +19,17 @@
 \usage{
 PREINDUSTRIAL_CO2()
 
-Q10_RH()
-
 BETA(biome = "")
+
+Q10_RH(biome = "")
 
 WARMINGFACTOR(biome = "")
 
-F_NPPV()
+F_NPPV(biome = "")
 
-F_NPPD()
+F_NPPD(biome = "")
 
-F_LITTERD()
+F_LITTERD(biome = "")
 
 F_LUCV()
 
@@ -62,9 +62,9 @@ mass).
 \itemize{
 \item \code{PREINDUSTRIAL_CO2}: Preindustrial CO2 concentration (\code{"ppmv CO2"})
 
-\item \code{Q10_RH}: Heterotrophic respiration temperature sensitivity factor (\code{"(unitless)"})
-
 \item \code{BETA}: CO2 fertilization factor (\code{"(unitless)"})
+
+\item \code{Q10_RH}: Heterotrophic respiration temperature sensitivity factor (\code{"(unitless)"})
 
 \item \code{WARMINGFACTOR}: Biome-specific warming factor (`(unitless)`)
 

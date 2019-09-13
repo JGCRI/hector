@@ -218,15 +218,15 @@ void SimpleNbox::setData( const std::string &varName,
         // Partitioning
         else if( varNameParsed == D_F_NPPV ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            f_nppv = data.getUnitval(U_UNITLESS);
+            f_nppv[ biome ] = data.getUnitval(U_UNITLESS);
         }
         else if( varNameParsed == D_F_NPPD ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            f_nppd = data.getUnitval(U_UNITLESS);
+            f_nppd[ biome ] = data.getUnitval(U_UNITLESS);
         }
         else if( varNameParsed == D_F_LITTERD ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            f_litterd = data.getUnitval(U_UNITLESS);
+            f_litterd[ biome ] = data.getUnitval(U_UNITLESS);
         }
         else if( varNameParsed == D_F_LUCV ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
@@ -274,7 +274,7 @@ void SimpleNbox::setData( const std::string &varName,
         }
         else if( varNameParsed == D_Q10_RH ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            q10_rh = data.getUnitval(U_UNITLESS);
+            q10_rh[ biome ] = data.getUnitval(U_UNITLESS);
         }
 
         else {
@@ -307,12 +307,13 @@ void SimpleNbox::sanitychecks() throw( h_exception )
         H_ASSERT( detritus_c.at(biome).value( U_PGC ) >= 0.0, "detritus_c pool < 0" );
         H_ASSERT( soil_c.at(biome).value( U_PGC ) >= 0.0, "soil_c pool < 0" );
         H_ASSERT( npp_flux0.at(biome).value( U_PGC_YR ) >= 0.0, "npp_flux0 < 0" );
+
+        H_ASSERT( f_nppv.at(biome) >= 0.0, "f_nppv <0" );
+        H_ASSERT( f_nppd.at(biome) >= 0.0, "f_nppd <0" );
+        H_ASSERT( f_nppv.at(biome) + f_nppd.at(biome) <= 1.0, "f_nppv + f_nppd >1" );
+        H_ASSERT( f_litterd.at(biome) >= 0.0 && f_litterd.at(biome) <= 1.0, "f_litterd <0 or >1" );
     }
 
-    H_ASSERT( f_nppv >= 0.0, "f_nppv <0" );
-    H_ASSERT( f_nppd >= 0.0, "f_nppd <0" );
-    H_ASSERT( f_nppv + f_nppd <= 1.0, "f_nppv + f_nppd >1" );
-    H_ASSERT( f_litterd >= 0.0 && f_litterd <= 1.0, "f_litterd <0 or >1" );
     H_ASSERT( f_lucv >= 0.0, "f_lucv <0" );
     H_ASSERT( f_lucd >= 0.0, "f_lucd <0" );
     H_ASSERT( f_lucv + f_lucd <= 1.0, "f_lucv + f_lucd >1" );
@@ -427,8 +428,8 @@ void SimpleNbox::prepareToRun() throw( h_exception )
     // One-time checks
     for( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
         H_ASSERT( beta.at( *it ) >= 0.0, "beta < 0" );
+        H_ASSERT( q10_rh.at( *it )>0.0, "q10_rh <= 0.0" );
     }
-    H_ASSERT( q10_rh>0.0, "q10_rh <= 0.0" );
     sanitychecks();
 }
 
@@ -514,7 +515,7 @@ unitval SimpleNbox::getData(const std::string& varName,
         returnval = unitval(beta.at(biome), U_UNITLESS);
     } else if(varNameParsed == D_Q10_RH) {
         H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for Q10");
-        returnval = unitval(q10_rh, U_UNITLESS);
+        returnval = unitval(q10_rh.at( biome ), U_UNITLESS);
     } else if( varNameParsed == D_LAND_CFLUX ) {
         H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for atm-land flux" );
         returnval = sum_npp() - sum_rh() - lucEmissions.get( ODEstartdate );
@@ -524,17 +525,15 @@ unitval SimpleNbox::getData(const std::string& varName,
         returnval = Ftalbedo.get( date );
 
         // Partitioning parameters.
-        // For now, only global values are supported.
-        // TODO Biome-specific versions of all of these
     } else if(varNameParsed == D_F_NPPV) {
         H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for vegetation NPP fraction");
-        returnval = unitval(f_nppv, U_UNITLESS);
+        returnval = unitval(f_nppv.at( biome ), U_UNITLESS);
     } else if(varNameParsed == D_F_NPPD) {
         H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for detritus NPP fraction");
-        returnval = unitval(f_nppd, U_UNITLESS);
+        returnval = unitval(f_nppd.at( biome ), U_UNITLESS);
     } else if(varNameParsed == D_F_LITTERD) {
         H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for litter-detritus fraction");
-        returnval = unitval(f_litterd, U_UNITLESS);
+        returnval = unitval(f_litterd.at( biome ), U_UNITLESS);
     } else if(varNameParsed == D_F_LUCV) {
         H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for LUC vegetation fraction");
         returnval = unitval(f_lucv, U_UNITLESS);
@@ -900,18 +899,27 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
     const int omodel_err = omodel->calcderivs( t, c, dcdt );
     unitval atmosocean_flux( dcdt[ SNBOX_OCEAN ], U_PGC_YR );
 
-    // NPP is scaled by CO2 from preindustrial value
-    unitval npp_current = sum_npp();
-    unitval npp_fav = npp_current * f_nppv;
-    unitval npp_fad = npp_current * f_nppd;
-    unitval npp_fas = npp_current * ( 1 - f_nppv - f_nppd );
+    /// NPP: Net primary productivity
+    unitval npp_biome( 0.0, U_PGC_YR);
+    unitval npp_current( 0.0, U_PGC_YR );
+    unitval npp_fav( 0.0, U_PGC_YR );
+    unitval npp_fad( 0.0, U_PGC_YR );
+    unitval npp_fas( 0.0, U_PGC_YR );
 
-    // RH heterotrophic respiration
+    // RH: heterotrophic respiration
     unitval rh_fda_current( 0.0, U_PGC_YR );
     unitval rh_fsa_current( 0.0, U_PGC_YR );
+
     for( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
-        rh_fda_current = rh_fda_current + rh_fda( *it );
-        rh_fsa_current = rh_fsa_current + rh_fsa( *it );
+        std::string biome = *it;
+        // NPP is scaled by CO2 from preindustrial value
+        npp_biome = npp( biome );
+        npp_current = npp_current + npp_biome;
+        npp_fav = npp_fav + npp_biome * f_nppv.at( biome );
+        npp_fad = npp_fad + npp_biome * f_nppd.at( biome );
+        npp_fas = npp_fas + npp_biome * (1 - f_nppv.at( biome ) - f_nppd.at( biome ));
+        rh_fda_current = rh_fda_current + rh_fda( biome );
+        rh_fsa_current = rh_fsa_current + rh_fsa( biome );
     }
     unitval rh_current = rh_fda_current + rh_fsa_current;
 
@@ -920,17 +928,19 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
     unitval litter_flux( 0.0, U_PGC_YR );
     unitval litter_fvd( 0.0, U_PGC_YR );
     unitval litter_fvs( 0.0, U_PGC_YR );
-    for( unitval_stringmap::const_iterator it = veg_c.begin(); it != veg_c.end(); it++ ) {
-        unitval v = unitval( it->second.value( U_PGC ) * 0.035, U_PGC_YR );
+    for( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
+        std::string biome = *it;
+        unitval v = unitval( veg_c.at( biome ).value( U_PGC ) * 0.035, U_PGC_YR );
         litter_flux = litter_flux + v;
-        litter_fvd = litter_fvd + v * f_litterd;
-        litter_fvs = litter_fvs + v * ( 1 - f_litterd );
+        litter_fvd = litter_fvd + v * f_litterd.at( biome );
+        litter_fvs = litter_fvs + v * ( 1 - f_litterd.at( biome ) );
     }
 
     // Some detritus goes to soil
     unitval detsoil_flux( 0.0, U_PGC_YR );
-    for( unitval_stringmap::const_iterator it = detritus_c.begin(); it != detritus_c.end(); it++ ) {
-        detsoil_flux = detsoil_flux + unitval( it->second.value( U_PGC ) * 0.6, U_PGC_YR );
+    for( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
+        std::string biome = *it;
+        detsoil_flux = detsoil_flux + unitval( detritus_c.at( biome ).value( U_PGC ) * 0.6, U_PGC_YR );
     }
 
     // Annual fossil fuels and industry emissions
@@ -1050,7 +1060,7 @@ void SimpleNbox::slowparameval( double t, const double c[] )
 
             const double Tgav_biome = Tgav * wf;    // biome-specific temperature
 
-            tempfertd[ biome ] = pow( q10_rh, ( Tgav_biome / 10.0 ) ); // detritus warms with air
+            tempfertd[ biome ] = pow( q10_rh.at( biome ), ( Tgav_biome / 10.0 ) ); // detritus warms with air
 
 
             // Soil warm very slowly relative to the atmosphere
@@ -1065,7 +1075,7 @@ void SimpleNbox::slowparameval( double t, const double c[] )
                 Tgav_rm /= Q10_TEMPN;
             }
 
-            tempferts[ biome ] = pow( q10_rh, ( Tgav_rm / 10.0 ) );
+            tempferts[ biome ] = pow( q10_rh.at( biome ), ( Tgav_rm / 10.0 ) );
 
             // The soil Q10 effect is 'sticky' and can only increase, not decline
             double tempferts_last = tfs_last[ biome ]; // If tfs_last is empty, this will produce 0.0
@@ -1162,8 +1172,11 @@ void SimpleNbox::createBiome(const std::string& biome)
 
     // Set parameters to same as most recent biome
     beta[ biome ] = beta[ last_biome ];
+    q10_rh[ biome ] = q10_rh[ last_biome ];
     warmingfactor[ biome ] = warmingfactor[ last_biome ];
-    // TODO: Other parameters -- Q10, f_nppd, etc.
+    f_nppv[ biome ] = f_nppv[ last_biome ];
+    f_nppd[ biome ] = f_nppd[ last_biome ];
+    f_litterd[ biome ] = f_litterd[ last_biome ];
 
     // Add to end of biome list
     biome_list.push_back(biome);
@@ -1184,7 +1197,11 @@ void SimpleNbox::deleteBiome(const std::string& biome) // Throw an error if the 
     // Erase all values associated with the biome:
     // Parameters
     beta.erase( biome );
+    q10_rh.erase(biome);
     warmingfactor.erase( biome );
+    f_nppv.erase(biome);
+    f_nppd.erase(biome);
+    f_litterd.erase(biome);
 
     // C pools
     veg_c.erase( biome );
@@ -1224,8 +1241,16 @@ void SimpleNbox::renameBiome(const std::string& oldname, const std::string& newn
 
     beta[ newname ] = beta.at( oldname );
     beta.erase(oldname);
+    q10_rh[ newname ] = q10_rh.at( oldname );
+    q10_rh.erase(oldname);
     warmingfactor[ newname ] = warmingfactor.at( oldname );
     warmingfactor.erase( oldname );
+    f_nppv[ newname ] = f_nppv.at( oldname );
+    f_nppv.erase(oldname);
+    f_nppd[ newname ] = f_nppd.at( oldname );
+    f_nppd.erase(oldname);
+    f_litterd[ newname ] = f_litterd.at( oldname );
+    f_litterd.erase(oldname);
 
     H_LOG(logger, Logger::DEBUG) << "Transferring C from biome '" << oldname <<
         "' to '" << newname << "'." << std::endl;

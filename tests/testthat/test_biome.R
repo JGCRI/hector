@@ -1,5 +1,11 @@
 context("Running Hector with multiple biomes")
 
+rcp45 <- function() {
+  newcore(system.file("input", "hector_rcp45.ini",
+                      package = "hector"),
+          suppresslogging = TRUE)
+}
+
 test_that("Hector runs with multiple biomes created via INI file.", {
 
   string2core <- function(ini_string, name, ini_file = NULL) {
@@ -30,7 +36,7 @@ test_that("Hector runs with multiple biomes created via INI file.", {
 
   # Remove non-biome-specific variables
   biome_vars <- c("veg_c", "detritus_c", "soil_c", "npp_flux0",
-                  "beta", "q10_rh")
+                  "beta", "q10_rh", "f_nppv", "f_nppd", "f_litterd")
   biome_rxp <- paste(biome_vars, collapse = "|")
   iremove <- grep(sprintf("^(%s) *=", biome_rxp), raw_ini)
   new_ini <- new_ini[-iremove]
@@ -50,7 +56,13 @@ test_that("Hector runs with multiple biomes created via INI file.", {
     "boreal.beta = 0.36",
     "tropical.beta = 0.36",
     "boreal.q10_rh = 2.0",
-    "tropical.q10_rh = 2.0"
+    "tropical.q10_rh = 2.0",
+    "boreal.f_nppv = 0.35",
+    "tropical.f_nppv = 0.35",
+    "boreal.f_nppd = 0.60",
+    "tropical.f_nppd = 0.60",
+    "boreal.f_litterd = 0.98",
+    "tropical.f_litterd = 0.98"
   ), after = isnbox)
 
   # Make csv paths absolute (otherwise, they search in the tempfile directory)
@@ -98,9 +110,7 @@ test_that("Hector runs with multiple biomes created via INI file.", {
 })
 
 test_that("Creating new biomes via set/fetchvar is prohibited", {
-  core <- newcore(system.file("input", "hector_rcp45.ini",
-                              package = "hector"),
-                  suppresslogging = TRUE)
+  core <- rcp45()
   b1 <- fetchvars(core, NA, BETA())
   b2 <- fetchvars(core, NA, BETA("global"))
   expect_equal(b1$value, b2$value)
@@ -111,9 +121,7 @@ test_that("Creating new biomes via set/fetchvar is prohibited", {
 })
 
 test_that("Low-level biome creation functions work", {
-  core <- newcore(system.file("input", "hector_rcp45.ini",
-                              package = "hector"),
-                  suppresslogging = TRUE)
+  core <- rcp45()
   test_that("Biomes can be created", {
     expect_silent(invisible(create_biome_impl(core, "testbiome")))
     expect_equal(get_biome_list(core), c("global", "testbiome"))
@@ -135,9 +143,7 @@ test_that("Low-level biome creation functions work", {
 
 test_that("Correct way to create new biomes", {
 
-  core <- newcore(system.file("input", "hector_rcp45.ini",
-                              package = "hector"),
-                  suppresslogging = TRUE)
+  core <- rcp45()
   gbeta <- fetchvars(core, NA, BETA())
   expect_equal(get_biome_list(core), "global")
   invisible(rename_biome(core, "global", "permafrost"))
@@ -165,9 +171,7 @@ test_that("Correct way to create new biomes", {
 
 test_that("Split biomes, and modify parameters", {
 
-  core <- newcore(system.file("input", "hector_rcp45.ini",
-                              package = "hector"),
-                  suppresslogging = TRUE)
+  core <- rcp45()
   invisible(rename_biome(core, "global", "default"))
   expect_equal(get_biome_list(core), "default")
   global_veg <- sendmessage(core, GETDATA(), VEG_C("default"), 0, NA, "")[["value"]]
@@ -233,13 +237,38 @@ test_that("Split biomes, and modify parameters", {
                            variable == "soil_c" &
                            year == 2100)[["value"]]
   )
+
+  test_higher_co2 <- function(var_f, value) {
+    core <- rcp45()
+    orig_val <- fetchvars(core, NA, var_f())[["value"]]
+    invisible(run(core))
+    basic <- fetchvars(core, 2000:2100, ATMOSPHERIC_CO2())
+    # Create two biomes, change one of the parameters
+    invisible(split_biome(core, "global", c("a", "b")))
+    setvar(core, NA, var_f("b"), value, NA)
+    # Check that only the one parameter was changed
+    expect_equal(fetchvars(core, NA, var_f("a"))[["value"]], orig_val)
+    expect_equal(fetchvars(core, NA, var_f("b"))[["value"]], value)
+    invisible(run(core))
+    # Check that the new result had higher CO2 than original one
+    new <- fetchvars(core, 2000:2100, ATMOSPHERIC_CO2())
+    expect_true(all(basic[["value"]] < new[["value"]]))
+  }
+
+  # Higher Q10 means higher CO2
+  test_higher_co2(Q10_RH, 4)
+  # Lower f_nppv means higher CO2
+  test_higher_co2(F_NPPV, 0.2)
+  # Higher f_nppd means higher CO2 (because detritus respires faster than soil)
+  test_higher_co2(F_NPPD, 0.64)
+  # Higher f_litterd means higher CO2 (same reason)
+  test_higher_co2(F_LITTERD, 0.99)
+
 })
 
 test_that("More than 2 biomes", {
 
-  core <- newcore(system.file("input", "hector_rcp45.ini",
-                              package = "hector"),
-                  suppresslogging = TRUE)
+  core <- rcp45()
   global_vegc <- fetchvars(core, NA, VEG_C())
 
   # Using default arguments

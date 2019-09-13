@@ -881,13 +881,6 @@ String LUC_EMISSIONS() {
 return D_LUC_EMISSIONS;
 }
 
-//' @describeIn parameters Heterotrophic respiration temperature sensitivity factor (\code{"(unitless)"})
-//' @export
-// [[Rcpp::export]]
-String Q10_RH() {
-return D_Q10_RH;
-}
-
 //' @describeIn parameters CO2 fertilization factor (\code{"(unitless)"})
 //' @param biome Biome for which to retrieve parameter. If missing or
 //'   `""`, default to `"global"`.
@@ -897,11 +890,24 @@ String BETA(String biome = "") {
   if (biome == "") return D_BETA;
   // `Rcpp::String` has a `+=` method, but no `+` method, so have to use
   // this clunky workaround.
-  String out = biome; 
+  String out = biome;
   out += ".";
   out += D_BETA;
   return out;
 }
+
+//' @describeIn parameters Heterotrophic respiration temperature sensitivity factor (\code{"(unitless)"})
+//' @inheritParams BETA
+//' @export
+// [[Rcpp::export]]
+String Q10_RH(String biome = "") {
+  if (biome == "") return D_Q10_RH;
+  String out = biome;
+  out += ".";
+  out += D_Q10_RH;
+  return out;
+}
+
 
 //' @describeIn parameters Biome-specific warming factor (`(unitless)`)
 //' @inheritParams BETA
@@ -916,24 +922,39 @@ String WARMINGFACTOR(String biome = "") {
 }
 
 //' @describeIn parameters NPP fraction to vegetation (\code{"(unitless)"})
+//' @inheritParams BETA
 //' @export
 // [[Rcpp::export]]
-String F_NPPV() {
-return D_F_NPPV;
+String F_NPPV(String biome = "") {
+  if (biome == "") return D_F_NPPV;
+  String out = biome;
+  out += ".";
+  out += D_F_NPPV;
+  return out;
 }
 
 //' @describeIn parameters NPP fraction to detritus (\code{"(unitless)"})
+//' @inheritParams BETA
 //' @export
 // [[Rcpp::export]]
-String F_NPPD() {
-return D_F_NPPD;
+String F_NPPD(String biome = "") {
+  if (biome == "") return D_F_NPPD;
+  String out = biome;
+  out += ".";
+  out += D_F_NPPD;
+  return out;
 }
 
 //' @describeIn parameters Litter fraction to detritus (\code{"(unitless)"})
+//' @inheritParams BETA
 //' @export
 // [[Rcpp::export]]
-String F_LITTERD() {
-return D_F_LITTERD;
+String F_LITTERD(String biome = "") {
+  if (biome == "") return D_F_LITTERD;
+  String out = biome;
+  out += ".";
+  out += D_F_LITTERD;
+  return out;
 }
 
 //' @describeIn parameters LUC fraction to vegetation (\code{"(unitless)"})
