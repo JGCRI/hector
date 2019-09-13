@@ -69,7 +69,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">hector</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.5.0</span>
       </span>
     </div>
 
@@ -136,7 +136,8 @@
     </div>
 
     <pre class="usage"><span class='fu'>create_biome</span>(<span class='no'>core</span>, <span class='no'>biome</span>, <span class='no'>veg_c0</span>, <span class='no'>detritus_c0</span>, <span class='no'>soil_c0</span>, <span class='no'>npp_flux0</span>,
-  <span class='kw'>warmingfactor</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>beta</span> <span class='kw'>=</span> <span class='fl'>0.36</span>)</pre>
+  <span class='kw'>warmingfactor</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>beta</span> <span class='kw'>=</span> <span class='fl'>0.36</span>, <span class='kw'>q10_rh</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>f_nppv</span> <span class='kw'>=</span> <span class='fl'>0.35</span>,
+  <span class='kw'>f_nppd</span> <span class='kw'>=</span> <span class='fl'>0.6</span>, <span class='kw'>f_litterd</span> <span class='kw'>=</span> <span class='fl'>0.98</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -173,6 +174,22 @@
     <tr>
       <th>beta</th>
       <td><p>CO2 fertilization effect (default = `0.36`)</p></td>
+    </tr>
+    <tr>
+      <th>q10_rh</th>
+      <td><p>Q10 of heterotrophic respiration (default = `2.0`)</p></td>
+    </tr>
+    <tr>
+      <th>f_nppv</th>
+      <td><p>Fraction of NPP to vegetation (default = `0.35`)</p></td>
+    </tr>
+    <tr>
+      <th>f_nppd</th>
+      <td><p>Fraction of NPP to detritus (default = `0.60`)</p></td>
+    </tr>
+    <tr>
+      <th>f_litterd</th>
+      <td><p>Fraction of litter flux to detritus (default = `0.98`)</p></td>
     </tr>
     </table>
 
