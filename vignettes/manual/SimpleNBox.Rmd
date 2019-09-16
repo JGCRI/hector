@@ -69,6 +69,26 @@ The complete code for the terrestrial C cycle lives in [`src/simpleNbox.cpp`][cp
 [cpp]: https://github.com/jgcri/hector/blob/master/src/simpleNbox.cpp
 [hpp]: https://github.com/JGCRI/hector/blob/master/inst/include/simpleNbox.hpp
 
+## Setting the `c` vector (`getCValues`)
+
+This function sets the values of the `c` vector to the corresponding state variables in the C cycle model.
+The atmospheric C pool for the current time step is defined by `atmos_c`, which is always a scalar unit quantity (because CO~2~ is assumed to be well-mixed in the atmosphere).
+Vegetation, detritus, and soil pools at the current time step are stored in `veg_c`, `detritus_c`, and `soil_c`, respectively.
+These are vector quantities ("stringmaps"), with one value for each biome (the default biome name is "global"), so the value stored in the corresponding slot in `c` is the sum across all biomes.
+The ocean C pool is retrieved by a call to the current ocean model's `getCValues` function.
+(NOTE: This means that `simpleNBox` model depends on the existence of an ocean C cycle model.)
+Finally, the "Earth" C pool is stored in `earth_c`, which is also a scalar unit quantity.
+All of these variables have are in units Pg C.
+
+## Slow parameter evaluation (`slowparameval`)
+
+## C cycle derivatives (`calcderivs`)
+
+## Storing the results (`stashCValues`)
+
+## Recording the state (`record_state`)
+
+
 - `newcore()`
     - `SimpleNbox.init()`
         - Set initial values.
