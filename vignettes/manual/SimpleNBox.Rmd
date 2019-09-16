@@ -72,22 +72,50 @@ The complete code for the terrestrial C cycle lives in [`src/simpleNbox.cpp`][cp
 ## Setting the `c` vector (`getCValues`)
 
 This function sets the values of the `c` vector to the corresponding state variables in the C cycle model.
-The atmospheric C pool for the current time step is defined by `atmos_c`, which is always a scalar unit quantity (because CO~2~ is assumed to be well-mixed in the atmosphere).
-Vegetation, detritus, and soil pools at the current time step are stored in `veg_c`, `detritus_c`, and `soil_c`, respectively.
+
+- The atmospheric C pool for the current time step is defined by `atmos_c`, which is always a scalar unit quantity (because CO~2~ is assumed to be well-mixed in the atmosphere).
+
+- Vegetation, detritus, and soil pools at the current time step are stored in `veg_c`, `detritus_c`, and `soil_c`, respectively.
 These are vector quantities ("stringmaps"), with one value for each biome (the default biome name is "global"), so the value stored in the corresponding slot in `c` is the sum across all biomes.
 The ocean C pool is retrieved by a call to the current ocean model's `getCValues` function.
 (NOTE: This means that `simpleNBox` model depends on the existence of an ocean C cycle model.)
-Finally, the "Earth" C pool is stored in `earth_c`, which is also a scalar unit quantity.
+
+- Finally, the "Earth" C pool is stored in `earth_c`, which is also a scalar unit quantity.
+
 All of these variables have are in units Pg C.
 
 ## Slow parameter evaluation (`slowparameval`)
 
+- Perform the ocean C model's slow parameter evaluation (`omodel->slowparameval`)
+
+- Calculate CO~2~ fertilization effect for each biome (`co2fert[biome]`) using the function `calc_co2fert`
+    - ...unless you are in the spin-up phase, in which case assume no effect (`co2fert = 1`)
+    
+- Calculate temperature effect on respiration of detritus (`tempfertd`) and soil (`tempferts`).
+    - Note that soil warming is "sticky" -- it can only increase, not decline (even if the temperature declines between time steps)
+    - Note also that while detritus warming is based on the actual current biome temperature, the soil warming is based on a 200-year running mean
+    
+Note that these effect parameters are calculated but not yet applied.
+They will be applied to the actual NPP and RH estimates during the ODE solving loop.
+
 ## C cycle derivatives (`calcderivs`)
+
+- Calculate NPP for each biome (`npp` function)
+- Partition NPP C gain into vegetation, detritus, and soil pools according to fractions
+- Calculate RH for detritus and soil
+- Partition C losses from RH accirding to fractions
+- Calculate and partition litter flux
+- Store changes in pools in `dcdt` vector (same structure as `c`)
 
 ## Storing the results (`stashCValues`)
 
+(TODO)
+
 ## Recording the state (`record_state`)
 
+(TODO)
+
+## Old notes
 
 - `newcore()`
     - `SimpleNbox.init()`
