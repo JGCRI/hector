@@ -53,8 +53,19 @@ knitr::include_graphics("hector_terrestrial_c.svg")
 
 # Implementation {#simplenbox-implementation}
 
-Code for the terrestrial C cycle lives in [`src/simpleNbox.cpp`][cpp] file (with associated headers in [`inst/include/simpleNbox.hpp`][hpp]).
+The state of the global C cycle in Hector is defined by a length 6 vector `c`, which describes the amount of C (in Pg C) in the atmosphere (0), vegetation (1), detritus (2), soil (3), ocean (4), and "Earth" (5) at the current time step.
+At each Hector time step, `c` is solved by the `CarbonCycleSolver::run()` function (defined in [`src/carbon-cycle-solver.cpp`][solver]) in the following general steps:
 
+1. Retrieve the current estimates of various pools from variables defined by the C cycle model and assign them to the relevant parts of `c` (`getCValues`).
+2. Integrate from the beginning of the time step using updated slow parameters (`slowparameval`).
+3. Solve the ordinary differential equations associated with the C cycle model based on its time derivatives (defined in `calcderivs`).
+4. Re-calculate C cycle model internal variables based on the solved values of `c` (`stashCValues`).
+5. Record the model state (`record_state`).
+
+These steps are described in more detail below.
+The complete code for the terrestrial C cycle lives in [`src/simpleNbox.cpp`][cpp] file (with associated headers in [`inst/include/simpleNbox.hpp`][hpp]).
+
+[solver]: https://github.com/JGCRI/hector/blob/master/src/carbon-cycle-solver.cpp
 [cpp]: https://github.com/jgcri/hector/blob/master/src/simpleNbox.cpp
 [hpp]: https://github.com/JGCRI/hector/blob/master/inst/include/simpleNbox.hpp
 
