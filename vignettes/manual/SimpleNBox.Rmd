@@ -109,11 +109,72 @@ They will be applied to the actual NPP and RH estimates during the ODE solving l
 
 ## Storing the results (`stashCValues`)
 
-(TODO)
+- Reset the atmospheric CO~2~ state variable (`atmos_c`) to the current value from `c`
+- Calculate the difference between vegetation, detritus, and soil C calculated by the ODE solver (i.e. in `c`) and what was stored in the current state variables (`veg_c`, `detritus_c`, `soil_c`). Store these differences in `veg_delta`, `det_delta`, `soil_delta`.
+- Apply these additional fluxes to each biome, weighing by the biome's current gross primary productivity (`NPP + RH`). I.e.:
+    - Calculate the total GPP across all biomes (`npp_rh_total = sum_npp() + sum_rh()`)
+    - Calculate each biome's weight (`wt[biome] = (npp(biome) + rh(biome)) / npp_rh_total`)
+    - Add the corresponding difference multiplied by the weight to the biome's current pool (e.g. `veg_c[biome] = veg_c[biome] + veg_delta * wt[biome]`)
+    - NOTE: This is a workaround. In the future, Hector will use the ODE solver to separately solve all of the boxes in the multi-biome system.
+- Stash the ocean C pools using the `omodel->stashCValues` function
+- Stash the Earth C pool (`earth_c`)
+- Check for mass conservation by take the sum of `c` (total C in system) and comparing it against the sum from the previous timestep (`masstot`).
+    - NOTE: This check is skipped the first time this function is evaluated, at which point `masstot` is initialized to the calculated sum.
+- If Hector is running under atmospheric CO~2~ constraint, re-calculate the atmospheric CO~2~ pool to match the constraint and move any residual C to/from the deep ocean pool.
 
 ## Recording the state (`record_state`)
 
-(TODO)
+This just sets the time-series versions of all of the C cycle state variables (e.g. `atmos_c_ts`, `veg_c_tv`, `detritus_c_tv`, `tempfertd_tv`) to their corresponding state variables at the current time step (e.g. `atmos_c`, `veg_c`, `detritus_c`, `tempfertd`).
+
+## Setting (`setData`) and retrieving (`getData`) values {#simplenbox-setdata}
+
+The following values related to the terrestrial C cycle can be set via `setData`.
+
+
+| Description                        | Unit       | C++ macro             | R function            | C++ variable    | Needs date | Biome-specific | Set | Get |
+|------------------------------------|------------|-----------------------|-----------------------|-----------------|------------|----------------|-----|-----|
+| Initial atmospheric CO~2~ pool     | PgC        | `D_ATMOSPHERIC_C`     | `ATMOSPHERIC_C()`     | `C0`            | No         | No             | Yes | Yes |
+| Pre-industrial CO~2~ concentration | ppmv CO~2~ | `D_PREINDUSTRIAL_C02` | `PREINDUSTRIAL_CO2()` | `C0`            | No         | No             | Yes |     |
+| Vegetation C pool                  | PgC        | `D_VEGC`              |                       | `veg_c`         | No         | Yes            | Yes |     |
+| Detritus C pool                    | PgC        | `D_DETRITUSC`         |                       | `detritus_c`    | Yes        | Yes            | Yes |     |
+| Soil C pool                        | PgC        | `D_SOILC`             |                       | `soil_c`        | No         | Yes            | Yes |     |
+| Radiative forcing from albedo      | unitless   | `D_RF_T_ALBEDO`       | `RF_T_ALBEDO()`       | `Ftalbedo`      | Yes        | No             | Yes |     |
+| Frac. NPP to vegetation            | unitless   | `D_F_NPPV`            | `F_NPPV()`            | `f_nppv`        | No         | No*            | Yes |     |
+| Frac. NPP to detritus              | unitless   | `D_F_NPPD`            | `F_NPPD()`            | `f_nppd`        | No         | No*            | Yes |     |
+| Frac. veg. C to litter             | unitless   | `D_F_LITTERD`         | `F_LITTERD()`         | `f_litterd`     | No         | No*            | Yes |     |
+| Frac. LUC from vegetation          | unitless   | `D_F_LUCV`            | `F_LUCV()`            | `f_lucv`        | No         | No*            | Yes |     |
+| Frac. LUC from detritus            | unitless   | `D_F_LUCD`            | `F_LUCD()`            | `f_lucd`        | No         | No*            | Yes |     |
+| Initial NPP flux                   | PgC / year | `D_NPP_FLUX0`         |                       | `npp_flux0`     | No         | Yes            | Yes |     |
+| Fossil fuel CO~2~ emissions        | PgC / year | `D_FFI_EMISSIONS`     | `FFI_EMISSIONS()`     | `ffiEmissions`  | Yes        | No             | Yes |     |
+| LUC emissions                      | PgC / year | `D_LUC_EMISSIONS`     | `LUC_EMISSIONS()`     | `lucEmissions`  | Yes        | No             | Yes |     |
+| Atmospheric CO2 constraint         | ppmv CO~2~ | `D_CA_CONSTRAIN`      |                       | `Ca_constrain`  | Yes        | No             | Yes |     |
+| CO~2~ fertilization factor         | unitless   | `D_BETA`              | `BETA()`              | `beta`          | No         | Yes            | Yes |     |
+| Biome warming multiplier           | unitless   | `D_WARMINGFACTOR`     |                       | `warmingfactor` | No         | Yes            | Yes |     |
+| RH temperature sensitivity         | unitless   | `D_Q10_RH`            | `Q10_RH()`            | `q10_rh`        | No         | No*            | Yes |     |
+
+## Other routines
+
+- `init()` -- Initialize the C cycle model
+    - Set inital values for the default biome (`"global"`) for the following variables:
+        - `co2fert` (CO~2~ fertilization multiplier) -- 1.0
+        - `warmingfactor` (biome warming multiplier relative to global average) -- 1.0
+        - `residual` (difference between modeled atmospheric CO~2~ and constraint) -- 0
+        - `tempfertd`, `tempferts` (Q10 warming effects on detritus and soil respiration, respectively) -- 1.0
+    - Add `"global"` to the biome list
+    - Register C cycle model capabilities, dependencies, and inputs
+- `reset(time)` -- Resets the state of the C model to time `time`.
+    - Set the values of all current-time state variables (e.g. `atmos_c`, `veg_c`, `tempfertd`) to their time-series values at time `time` (e.g. `atmos_c_ts.get(time)`, `veg_c_tv.get(time)`, `tempfertd_tv.get(time)`)
+    - Re-calculate the CO~2~ fertilization effect for each biome (`co2fert`). If in spinup, force this to 1.0.
+    - "Truncate" all time series variables up to the current time; i.e. `erase` all of the values after `time`
+    - Set `tcurrent` to `time`
+- `sanitychecks()` -- Ensures the validity of the current model state. Specific checks are:
+    - All pools and fluxes (for each biome) must be greater than or equal to 0
+    - Partitioning fraction parameters (e.g. `f_nppv`, `f_litterd`) must be between 0 and 1, and must sum to 1
+- `prepareToRun()` -- Perform final checks and variable initialization before running a simulation
+    - Check that all biome-specific pools, fluxes, and parameters have data for all biomes. (The only optional biome-specific parameter is `warmingfactor`, which is set to 1.0 if missing). Also check that biome-specific CO~2~ fertilization (`beta`) and Q10 (`q10_rh`) parameters are valid.
+    - If no albedo forcing data are provided, set the value to the MAGICC default of -0.2
+    - Initialize the atmosphic CO~2~ concentration (`Ca`, ppm) and C pool (`atmos_c`, PgC) to the user-specified initial value (`C0`; converted accordingly to PgC for `atmos_c`)
+    - Run the checks in `sanitychecks()`
 
 ## Old notes
 
@@ -157,33 +218,3 @@ They will be applied to the actual NPP and RH estimates during the ODE solving l
                 - `SimpleNbox.stashCValues()` -- Transfer ODE pools back to model pools
                     - Pass values from `c` to `atmos_c`, `veg_c`, `detritus_c`, etc. Apportion to biomes according to fraction of NPP and RH in that biome.
             - Use `getCValues` to set `c_new` (as above), and take the difference
-            - `SimpleNbox.record_state()` -- Store the current C cycle state.
-                - Set time-series variables (e.g. `earth_c_ts`, `atmos_c_ts`, `veg_c_tv`, etc.) to their current values 
-                - Tell the ocean model to record its state
-- `run()`
-
-## Setting values {#simplenbox-setdata}
-
-The following values related to the terrestrial C cycle can be set via `setData`.
-
-
-| Description                        | Unit       | C++ macro             | R function            | C++ variable    | Needs date | Biome-specific | Set | Get |
-|------------------------------------|------------|-----------------------|-----------------------|-----------------|------------|----------------|-----|-----|
-| Initial atmospheric CO~2~ pool     | PgC        | `D_ATMOSPHERIC_C`     | `ATMOSPHERIC_C()`     | `C0`            | No         | No             | Yes | Yes |
-| Pre-industrial CO~2~ concentration | ppmv CO~2~ | `D_PREINDUSTRIAL_C02` | `PREINDUSTRIAL_CO2()` | `C0`            | No         | No             | Yes |     |
-| Vegetation C pool                  | PgC        | `D_VEGC`              |                       | `veg_c`         | No         | Yes            | Yes |     |
-| Detritus C pool                    | PgC        | `D_DETRITUSC`         |                       | `detritus_c`    | Yes        | Yes            | Yes |     |
-| Soil C pool                        | PgC        | `D_SOILC`             |                       | `soil_c`        | No         | Yes            | Yes |     |
-| Radiative forcing from albedo      | unitless   | `D_RF_T_ALBEDO`       | `RF_T_ALBEDO()`       | `Ftalbedo`      | Yes        | No             | Yes |     |
-| Frac. NPP to vegetation            | unitless   | `D_F_NPPV`            | `F_NPPV()`            | `f_nppv`        | No         | No*            | Yes |     |
-| Frac. NPP to detritus              | unitless   | `D_F_NPPD`            | `F_NPPD()`            | `f_nppd`        | No         | No*            | Yes |     |
-| Frac. veg. C to litter             | unitless   | `D_F_LITTERD`         | `F_LITTERD()`         | `f_litterd`     | No         | No*            | Yes |     |
-| Frac. LUC from vegetation          | unitless   | `D_F_LUCV`            | `F_LUCV()`            | `f_lucv`        | No         | No*            | Yes |     |
-| Frac. LUC from detritus            | unitless   | `D_F_LUCD`            | `F_LUCD()`            | `f_lucd`        | No         | No*            | Yes |     |
-| Initial NPP flux                   | PgC / year | `D_NPP_FLUX0`         |                       | `npp_flux0`     | No         | Yes            | Yes |     |
-| Fossil fuel CO~2~ emissions        | PgC / year | `D_FFI_EMISSIONS`     | `FFI_EMISSIONS()`     | `ffiEmissions`  | Yes        | No             | Yes |     |
-| LUC emissions                      | PgC / year | `D_LUC_EMISSIONS`     | `LUC_EMISSIONS()`     | `lucEmissions`  | Yes        | No             | Yes |     |
-| Atmospheric CO2 constraint         | ppmv CO~2~ | `D_CA_CONSTRAIN`      |                       | `Ca_constrain`  | Yes        | No             | Yes |     |
-| CO~2~ fertilization factor         | unitless   | `D_BETA`              | `BETA()`              | `beta`          | No         | Yes            | Yes |     |
-| Biome warming multiplier           | unitless   | `D_WARMINGFACTOR`     |                       | `warmingfactor` | No         | Yes            | Yes |     |
-| RH temperature sensitivity         | unitless   | `D_Q10_RH`            | `Q10_RH()`            | `q10_rh`        | No         | No*            | Yes |     |
