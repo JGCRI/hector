@@ -12,9 +12,9 @@ Contents:
 Hector's land C sink is divided into three pools: vegetation ($C_v$), detritus ($C_d$), and soil ($C_s$).
 These sinks are global by default, but they can be divided into $n$ "biomes" with unique parameters and initial pool sizes.
 
-The total C flux from atmosphere to land at time $t$ ($F_{L}(t)$) is the net of C sequestration by photosynthesis (net primary productivity, $NPP_i(t)$) and C release by heterotrophic respiration ($RH(t)$), summed across each biome $i$:
+The total C flux from atmosphere to land at time $t$ ($F_{L}(t)$) is the net of C sequestration by photosynthesis (net primary productivity, $NPP_i(t)$) and C release by heterotrophic respiration ($RH_i(t)$) and land use change ($LUC_i(t)$), summed across each biome $i$:
 
-$$ F_{L}(t) = \sum_{i=1}^{n} \left( NPP_i(t) - RH_i(t) \right) $$
+$$ F_{L}(t) = \sum_{i=1}^{n} \left( NPP_i(t) - RH_i(t) - LUC_i(t) \right) $$
 
 NPP is calculated as the product of a user-specified pre-industrial value ($NPP_0$, default is 50 PgC/year) and a CO~2~ fertilization multiplier ($f(C_{atm}, \beta)$), which in turn is a function of the current atmospheric CO~2~ concentration ($C_{atm}$), the initial ("pre-industrial") CO~2~ concentration ($C_0$), and biome-specific CO~2~ fertilization parameter $\beta_i$ (default = 0.36):
 
@@ -28,6 +28,9 @@ $$ RH_s = 0.02 C_s Q_{10}^{T_{i}(t) / 10}$$
 $$ RH_d = 0.25 C_d Q_{10}^{T_{i}(t) / 10}$$
 
 Note that the fractions of soil and detritus C available to respiration are hard-coded at 0.02 and 0.25, respectively.
+
+Fluxes associated with land use change ($LUC$) are prescribed via the `luc_emissions` variable in the INI value.
+Example time series associated with representative carbon pathways (RCP) 2.6, 4.5, 6.0, and 8.5 are included with Hector in the corresponding `inst/input/emissions/RCP**_emissions.csv` files.
 
 In each biome at each time step, the vegetation pools change as follows (biome, $i$ and time, $t$ subscripts omitted for clarity):
 C gain from NPP is distributed to vegetation, detritus, and soil according to fractionation parameters $f_{nv}$, $f_{nd}$, and $f_{ns}$, respectively.
