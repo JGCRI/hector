@@ -46,7 +46,9 @@ The entire terrestrial C cycle is summarized in the following diagram:
 
 ```{r terrestrial-c-diagram, echo = FALSE, fig.cap = terrestrial_c_cap}
 terrestrial_c_cap <- paste(
-  "Summary of terrestrial C cycle in Hector."
+  "Summary of terrestrial C cycle in Hector.",
+  'The full Hector C cycle also includes ocean and "Earth" C pools',
+  "that exchange C with the atmosphere, but these are omitted for clarity."
 )
 knitr::include_graphics("hector_terrestrial_c.svg")
 # Edit this diagram at:
