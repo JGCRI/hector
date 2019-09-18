@@ -24,10 +24,10 @@ $$ f(C_{atm}, \beta_i) = 1 + \beta_i \left( \log(\frac{C_{atm}}{C_0})\right) $$
 Heterotrophic respiration occurs in soil ($RH_s(t)$) and detritus ($RH_d(t))$) as a function of biome-specific atmospheric temperature anomaly ($T_i$, calculated as the global atmospheric temperature anomaly scaled by a biome-specific warming factor $\delta$) and the size of the current soil and detritus C pools ($C_s$ and $C_d$, respectively).
 
 $$ T_i(t) = \delta \times T_G(t) $$
-$$ RH_s = 0.02 C_s Q_{10}^{T_{i}(t) / 10}$$
-$$ RH_d = 0.25 C_d Q_{10}^{T_{i}(t) / 10}$$
+$$ RH_s = \frac{1}{50} C_s Q_{10}^{T_{i}(t) / 10}$$
+$$ RH_d = \frac{1}{4} C_d Q_{10}^{T_{i}(t) / 10}$$
 
-Note that the fractions of soil and detritus C available to respiration are hard-coded at 0.02 and 0.25, respectively.
+Note that the residence times of soil and detritus C pools---50 and 4 years, respectively---are currently hard-coded values in Hector.
 
 Fluxes associated with land use change ($LUC$) are prescribed via the `luc_emissions` variable in the INI value.
 Example time series associated with representative carbon pathways (RCP) 2.6, 4.5, 6.0, and 8.5 are included with Hector in the corresponding `inst/input/emissions/RCP**_emissions.csv` files.
