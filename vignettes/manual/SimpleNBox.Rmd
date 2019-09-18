@@ -136,26 +136,27 @@ This just sets the time-series versions of all of the C cycle state variables (e
 The following values related to the terrestrial C cycle can be set via `setData`.
 
 
-| Description                        | Unit       | C++ macro             | R function            | C++ variable    | Needs date | Biome-specific | Set | Get |
-|------------------------------------|------------|-----------------------|-----------------------|-----------------|------------|----------------|-----|-----|
-| Initial atmospheric CO~2~ pool     | PgC        | `D_ATMOSPHERIC_C`     | `ATMOSPHERIC_C()`     | `C0`            | No         | No             | Yes | Yes |
-| Pre-industrial CO~2~ concentration | ppmv CO~2~ | `D_PREINDUSTRIAL_C02` | `PREINDUSTRIAL_CO2()` | `C0`            | No         | No             | Yes |     |
-| Vegetation C pool                  | PgC        | `D_VEGC`              |                       | `veg_c`         | No         | Yes            | Yes |     |
-| Detritus C pool                    | PgC        | `D_DETRITUSC`         |                       | `detritus_c`    | Yes        | Yes            | Yes |     |
-| Soil C pool                        | PgC        | `D_SOILC`             |                       | `soil_c`        | No         | Yes            | Yes |     |
-| Radiative forcing from albedo      | unitless   | `D_RF_T_ALBEDO`       | `RF_T_ALBEDO()`       | `Ftalbedo`      | Yes        | No             | Yes |     |
-| Frac. NPP to vegetation            | unitless   | `D_F_NPPV`            | `F_NPPV()`            | `f_nppv`        | No         | No*            | Yes |     |
-| Frac. NPP to detritus              | unitless   | `D_F_NPPD`            | `F_NPPD()`            | `f_nppd`        | No         | No*            | Yes |     |
-| Frac. veg. C to litter             | unitless   | `D_F_LITTERD`         | `F_LITTERD()`         | `f_litterd`     | No         | No*            | Yes |     |
-| Frac. LUC from vegetation          | unitless   | `D_F_LUCV`            | `F_LUCV()`            | `f_lucv`        | No         | No*            | Yes |     |
-| Frac. LUC from detritus            | unitless   | `D_F_LUCD`            | `F_LUCD()`            | `f_lucd`        | No         | No*            | Yes |     |
-| Initial NPP flux                   | PgC / year | `D_NPP_FLUX0`         |                       | `npp_flux0`     | No         | Yes            | Yes |     |
-| Fossil fuel CO~2~ emissions        | PgC / year | `D_FFI_EMISSIONS`     | `FFI_EMISSIONS()`     | `ffiEmissions`  | Yes        | No             | Yes |     |
-| LUC emissions                      | PgC / year | `D_LUC_EMISSIONS`     | `LUC_EMISSIONS()`     | `lucEmissions`  | Yes        | No             | Yes |     |
-| Atmospheric CO2 constraint         | ppmv CO~2~ | `D_CA_CONSTRAIN`      |                       | `Ca_constrain`  | Yes        | No             | Yes |     |
-| CO~2~ fertilization factor         | unitless   | `D_BETA`              | `BETA()`              | `beta`          | No         | Yes            | Yes |     |
-| Biome warming multiplier           | unitless   | `D_WARMINGFACTOR`     |                       | `warmingfactor` | No         | Yes            | Yes |     |
-| RH temperature sensitivity         | unitless   | `D_Q10_RH`            | `Q10_RH()`            | `q10_rh`        | No         | No*            | Yes |     |
+| Description                        | Unit       | C++ macro                  | R function            | C++ variable    | Needs date | Biome-specific | Set | Get |
+|------------------------------------|------------|----------------------------|-----------------------|-----------------|------------|----------------|-----|-----|
+| Initial atmospheric CO~2~ pool     | PgC        | `D_ATMOSPHERIC_C`          | `ATMOSPHERIC_C()`     | `C0`            | No         | No             | Yes | Yes |
+| Pre-industrial CO~2~ concentration | ppmv CO~2~ | `D_PREINDUSTRIAL_C02`      | `PREINDUSTRIAL_CO2()` | `C0`            | No         | No             | Yes | Yes |
+| Atmospheric C constraint residual  | ppmv CO~2~ | `D_ATMOSPHERIC_C_RESIDUAL` |                       | `residual`      | No         | No             | No  | Yes |
+| Vegetation C pool                  | PgC        | `D_VEGC`                   |                       | `veg_c`         | No         | Yes            | Yes | Yes |
+| Detritus C pool                    | PgC        | `D_DETRITUSC`              |                       | `detritus_c`    | Yes        | Yes            | Yes | Yes |
+| Soil C pool                        | PgC        | `D_SOILC`                  |                       | `soil_c`        | No         | Yes            | Yes | Yes |
+| Radiative forcing from albedo      | unitless   | `D_RF_T_ALBEDO`            | `RF_T_ALBEDO()`       | `Ftalbedo`      | Yes        | No             | Yes | Yes |
+| Frac. NPP to vegetation            | unitless   | `D_F_NPPV`                 | `F_NPPV()`            | `f_nppv`        | No         | Yes            | Yes | Yes |
+| Frac. NPP to detritus              | unitless   | `D_F_NPPD`                 | `F_NPPD()`            | `f_nppd`        | No         | Yes            | Yes | Yes |
+| Frac. veg. C to litter             | unitless   | `D_F_LITTERD`              | `F_LITTERD()`         | `f_litterd`     | No         | Yes            | Yes | Yes |
+| Frac. LUC from vegetation          | unitless   | `D_F_LUCV`                 | `F_LUCV()`            | `f_lucv`        | No         | No             | Yes | Yes |
+| Frac. LUC from detritus            | unitless   | `D_F_LUCD`                 | `F_LUCD()`            | `f_lucd`        | No         | No             | Yes | Yes |
+| Initial NPP flux                   | PgC / year | `D_NPP_FLUX0`              |                       | `npp_flux0`     | No         | Yes            | Yes | Yes |
+| Fossil fuel CO~2~ emissions        | PgC / year | `D_FFI_EMISSIONS`          | `FFI_EMISSIONS()`     | `ffiEmissions`  | Yes        | No             | Yes | Yes |
+| LUC emissions                      | PgC / year | `D_LUC_EMISSIONS`          | `LUC_EMISSIONS()`     | `lucEmissions`  | Yes        | No             | Yes | Yes |
+| Atmospheric CO2 constraint         | ppmv CO~2~ | `D_CA_CONSTRAIN`           |                       | `Ca_constrain`  | Yes        | No             | Yes | No  |
+| CO~2~ fertilization factor         | unitless   | `D_BETA`                   | `BETA()`              | `beta`          | No         | Yes            | Yes | Yes |
+| Biome warming multiplier           | unitless   | `D_WARMINGFACTOR`          |                       | `warmingfactor` | No         | Yes            | Yes | Yes |
+| RH temperature sensitivity         | unitless   | `D_Q10_RH`                 | `Q10_RH()`            | `q10_rh`        | No         | Yes            | Yes | Yes |
 
 ## Other routines
 
