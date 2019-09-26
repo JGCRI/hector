@@ -1,5 +1,5 @@
 pandoc: '2.2'
-pkgdown: 1.4.0
+pkgdown: 1.4.1
 pkgdown_sha: ~
 articles:
   hector_apply: hector_apply.html
@@ -11,6 +11,7 @@ articles:
   ComponentAPI: manual/ComponentAPI.html
   Constraints: manual/Constraints.html
   InputFiles: manual/InputFiles.html
+  SimpleNBox: manual/SimpleNBox.html
   StyleGuide: manual/StyleGuide.html
   TimeSeries: manual/TimeSeries.html
   Unitvals: manual/Unitvals.html
