@@ -5,7 +5,7 @@ title: Hector manual
 Science
 --------------------
 * A general summary of the science behind Hector.
-* The model's terrestrial carbon cycle.
+* The model's [terrestrial carbon cycle](SimpleNBox.html).
 * The model's ocean.
 
 Model philosophy
