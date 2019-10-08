@@ -92,3 +92,14 @@ test_that("Concentration-forced runs work for N2O", {
     expect_true(all(newout$value >= subset(out2, year %in% 2000:2100)$value))
   })
 })
+
+test_that("Concentration-forced CO2 runs work", {
+  hc <- rcp45()
+  years <- 1850:2100
+  constrained_vals <- rep(300.0, length(years))
+  setvar(hc, years, "Ca_constrain", constrained_vals, "ppmv CO2")
+  invisible(reset(hc))
+  invisible(run(hc))
+  out <- fetchvars(hc, years, ATMOSPHERIC_CO2())
+  expect_equal(out$value, constrained_vals)
+})

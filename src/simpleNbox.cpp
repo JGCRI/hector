@@ -90,6 +90,7 @@ void SimpleNbox::init( Core* coreptr ) {
     core->registerInput(D_F_LITTERD, getComponentName());
     core->registerInput(D_F_LUCV, getComponentName());
     core->registerInput(D_F_LUCD, getComponentName());
+    core->registerInput(D_CA_CONSTRAIN, getComponentName());
 }
 
 //------------------------------------------------------------------------------
