@@ -80,7 +80,10 @@ private:
     unitval H0;                     //! Preindustrial concentration, pptv
     
     double molarMass;
-    
+
+    bool emissions_forced;
+    bool concentration_forced;
+
     //! logger
     Logger logger;
 

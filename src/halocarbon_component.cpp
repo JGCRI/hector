@@ -55,11 +55,16 @@ void HalocarbonComponent::init( Core* coreptr ) {
     emissions.name = myGasName;
     molarMass = 0.0;
     H0.set( 0.0, U_PPTV );      //! Default is no preindustrial, but user can override
+
+    emissions_forced = false;
+    concentration_forced = false;
     
     //! \remark Inform core that we can provide forcing data
     core->registerCapability( D_RF_PREFIX+myGasName, getComponentName() );
     // inform core that we can accept emissions for this gas
     core->registerInput(myGasName+EMISSIONS_EXTENSION, getComponentName());
+    // inform core that we can accept concentrations for this gas
+    core->registerInput(myGasName+CONCENTRATION_EXTENSION, getComponentName());
     
 }
 
@@ -95,6 +100,7 @@ void HalocarbonComponent::setData( const string& varName,
     
     try {
         const string emiss_var_name = myGasName + EMISSIONS_EXTENSION;
+        const string conc_var_name = myGasName + CONCENTRATION_EXTENSION;
         
         if( varName == D_HC_TAU ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
@@ -107,7 +113,20 @@ void HalocarbonComponent::setData( const string& varName,
             molarMass = data.getUnitval(U_UNDEFINED);
         } else if( varName == emiss_var_name ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
+            emissions_forced = true;
             emissions.set(data.date, data.getUnitval(U_GG));
+            if (concentration_forced) {
+                Ha_ts.truncate(Ha_ts.firstdate());
+                concentration_forced = false;
+            }
+        } else if( varName == conc_var_name ) {
+            H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
+            concentration_forced = true;
+            Ha_ts.set(data.date, data.getUnitval(U_PPTV));
+            if (emissions_forced) {
+                emissions_forced = false;
+                emissions.truncate(emissions.firstdate());
+            }
         } else if( varName == D_PREINDUSTRIAL_HC ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
             H0 = data.getUnitval(U_PPTV);
@@ -130,6 +149,7 @@ void HalocarbonComponent::prepareToRun() throw ( h_exception ) {
     H_ASSERT( tau != -1 && tau != 0, "tau has bad value" );
     H_ASSERT( rho.units() != U_UNDEFINED, "rho has undefined units" );
     H_ASSERT( molarMass > 0, "molarMass must be >0" );
+    H_ASSERT( concentration_forced != emissions_forced, "Must be either concentration or emissions forced. It cannot be both." );
     
     Ha_ts.set(oldDate,H0);
 
@@ -143,21 +163,28 @@ void HalocarbonComponent::prepareToRun() throw ( h_exception ) {
 void HalocarbonComponent::run( const double runToDate ) throw ( h_exception ) {
 	H_ASSERT( !core->inSpinup() && runToDate-oldDate == 1, "timestep must equal 1" );
 #define AtmosphereDryAirConstant 1.8
-    
-    const double timestep = 1.0;
-    const double alpha = 1 / tau;
 
-    // Compute the delta atmospheric concentration from current emissions
-    double emissMol = emissions.get( runToDate ).value( U_GG ) / molarMass * timestep; // this is in U_GMOL
-    unitval concDeltaEmiss;
-    concDeltaEmiss.set( emissMol / ( 0.1 * AtmosphereDryAirConstant ), U_PPTV );
-    
-    // Update the atmospheric concentration, accounting for this delta and exponential decay
-    double expfac = exp(-alpha);
     unitval Ha(Ha_ts.get(oldDate));
-    Ha = Ha*expfac + concDeltaEmiss*tau * (1.0-expfac);
-    H_LOG( logger, Logger::DEBUG ) << "date: " << runToDate << " concentration: "<< Ha << endl;
-    Ha_ts.set(runToDate, Ha);
+    
+    // If emissions-forced, calculate concentration from emissions and lifespan.
+    if (emissions_forced) {
+        const double timestep = 1.0;
+        const double alpha = 1 / tau;
+
+        // Compute the delta atmospheric concentration from current emissions
+        double emissMol = emissions.get( runToDate ).value( U_GG ) / molarMass * timestep; // this is in U_GMOL
+        unitval concDeltaEmiss;
+        concDeltaEmiss.set( emissMol / ( 0.1 * AtmosphereDryAirConstant ), U_PPTV );
+    
+        // Update the atmospheric concentration, accounting for this delta and exponential decay
+        double expfac = exp(-alpha);
+        Ha = Ha*expfac + concDeltaEmiss*tau * (1.0-expfac);
+        H_LOG( logger, Logger::DEBUG ) << "date: " << runToDate << " concentration: "<< Ha << endl;
+        Ha_ts.set(runToDate, Ha);
+    } else {
+        // Concentration-forced. Just grab the current value from the time series.
+        Ha = Ha_ts.get(runToDate);
+    }
 
     // Calculate radiative forcing    TODO: this should be moved to forcing component
     unitval rf;
@@ -188,6 +215,14 @@ unitval HalocarbonComponent::getData( const std::string& varName,
         H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for preindustrial hc" );
         returnval = H0;
     }
+    else if( varName == myGasName+CONCENTRATION_EXTENSION ) {
+        H_ASSERT( date != Core::undefinedIndex(), "Date required for halocarbon concentration" );
+        returnval = Ha_ts.get( getdate );
+    }
+    else if( varName == myGasName+EMISSIONS_EXTENSION ) {
+        H_ASSERT( date != Core::undefinedIndex(), "Date required for halocarbon emissions" );
+        returnval = emissions.get( getdate );
+    }
     else if( varName == D_HC_CONCENTRATION ) {
         returnval = Ha_ts.get(getdate);
     }
@@ -210,7 +245,9 @@ void HalocarbonComponent::reset(double time) throw(h_exception)
     // reset time counter and truncate outputs
     oldDate = time;
     hc_forcing.truncate(time);
-    Ha_ts.truncate(time);
+    if (emissions_forced) {
+        Ha_ts.truncate(time);
+    }
     H_LOG(logger, Logger::NOTICE)
         << getComponentName() << " reset to time= " << time << "\n";
 }
