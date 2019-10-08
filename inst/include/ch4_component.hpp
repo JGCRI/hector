@@ -66,7 +66,6 @@ public:
     unitval Tsoil;  // annual CH4 loss to soil, Tg CH4/yr
     unitval Tstrat; //  annual CH4 loss to stratosphere, Tg CH4/yr
 
-    bool concentration_forced;
     bool emissions_forced;
 
     // logger

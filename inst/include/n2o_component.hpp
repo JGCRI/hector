@@ -67,7 +67,6 @@ private:
     tseries<unitval> TAU_N2O;   //! N2O decay time constant (varies as a function of concentration)
     unitval TN2O0;  //! inital N2O lifetime, years
 
-    bool concentration_forced;
     bool emissions_forced;
     
     //! logger

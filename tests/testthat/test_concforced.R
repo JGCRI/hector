@@ -7,7 +7,7 @@ test_that("Concentration-forced runs work for halocarbons", {
   hc <- rcp45()
   invisible(run(hc))
   dates <- seq(startdate(hc), getdate(hc))
-  outvars <- c(GLOBAL_TEMP(), outvars[2])
+  outvars <- c(GLOBAL_TEMP(), "HFC23_concentration")
   out1 <- fetchvars(hc, dates, outvars)
   conc1 <- subset(out1, variable == outvars[2])
   emiss1 <- fetchvars(hc, dates, "HFC23_emissions")
@@ -16,8 +16,11 @@ test_that("Concentration-forced runs work for halocarbons", {
   invisible(run(hc))
   out2 <- fetchvars(hc, dates, outvars)
   expect_equivalent(out1$value, out2$value, tol = 1e-10)
-  emiss2 <- fetchvars(hc, dates, "HFC23_emissions")
-  expect_true(all(emiss2$value == 0))
+  expect_error(
+    fetchvars(hc, dates, "HFC23_emissions"),
+    "time series data (HFC23) must have size>1",
+    fixed = TRUE
+  )
 
   test_that("Increasing HFC23 concentrations increases global temp", {
     newhfc <- conc1$value * 1.05
@@ -43,8 +46,11 @@ test_that("Concentration-forced runs work for CH4", {
   invisible(run(hc))
   out2 <- fetchvars(hc, dates, outvars)
   expect_equivalent(out1$value, out2$value, tol = 1e-10)
-  emiss2 <- fetchvars(hc, dates, EMISSIONS_CH4())
-  expect_true(all(emiss2$value == 0))
+  expect_error(
+    fetchvars(hc, dates, EMISSIONS_CH4()),
+    "time series data (CH4) must have size>1",
+    fixed = TRUE
+  )
 
   test_that("Increasing CH4 concentrations increases global temp", {
     newhfc <- conc1$value * 1.05
@@ -70,8 +76,11 @@ test_that("Concentration-forced runs work for N2O", {
   invisible(run(hc))
   out2 <- fetchvars(hc, dates, outvars)
   expect_equivalent(out1$value, out2$value, tol = 1e-10)
-  ## emiss2 <- fetchvars(hc, dates, EMISSIONS_N2O())
-  ## expect_true(all(emiss2$value == 0))
+  expect_error(
+    fetchvars(hc, dates, EMISSIONS_N2O()),
+    "time series data (N2O) must have size>1",
+    fixed = TRUE
+  )
 
   test_that("Increasing N2O concentrations increases global temp", {
     newhfc <- conc1$value * 1.05

@@ -82,7 +82,6 @@ private:
     double molarMass;
 
     bool emissions_forced;
-    bool concentration_forced;
 
     //! logger
     Logger logger;
