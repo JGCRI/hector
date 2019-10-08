@@ -66,6 +66,7 @@ void N2OComponent::init( Core* coreptr ) {
     core->registerInput(D_EMISSIONS_N2O, getComponentName());
     core->registerInput(D_NAT_EMISSIONS_N2O, getComponentName());
     core->registerInput(D_PREINDUSTRIAL_N2O, getComponentName());
+    core->registerInput(D_ATMOSPHERIC_N2O, getComponentName());
 }
 
 //------------------------------------------------------------------------------
@@ -102,9 +103,11 @@ void N2OComponent::setData( const string& varName,
             N0 = data.getUnitval( U_PPBV_N2O );
         } else if( varName == D_EMISSIONS_N2O ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
+            emissions_forced = true;
             N2O_emissions.set(data.date, data.getUnitval( U_TG_N ) );
         } else if( varName == D_NAT_EMISSIONS_N2O ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
+            emissions_forced = true;
             N2O_natural_emissions.set(data.date, data.getUnitval( U_TG_N ) );
         }  else if( varName == D_CONVERSION_N2O ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
@@ -112,6 +115,14 @@ void N2OComponent::setData( const string& varName,
         } else if( varName == D_INITIAL_LIFETIME_N2O ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
             TN2O0 = data.getUnitval( U_YRS );
+        } else if( varName == D_ATMOSPHERIC_N2O ) {
+            H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
+            N2O.set( data.date, data.getUnitval( U_PPBV_N2O ) );
+            if (emissions_forced) {
+                emissions_forced = false;
+                N2O_emissions.truncate( N2O_emissions.firstdate() );
+                N2O_natural_emissions.truncate( N2O_natural_emissions.firstdate() );
+            }
         } else {
             H_THROW( "Unknown variable name while parsing " + getComponentName() + ": "
                     + varName );
@@ -127,33 +138,37 @@ void N2OComponent::prepareToRun() throw ( h_exception ) {
     
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
     oldDate = core->getStartDate();
-    N2O.set(oldDate, N0);  // set the first year's value    
-  }
+    if (emissions_forced) {
+        N2O.set(oldDate, N0);  // set the first year's value
+    }
+}
 
 //------------------------------------------------------------------------------
 // documentation is inherited
 void N2OComponent::run( const double runToDate ) throw ( h_exception ) {
     
 	H_ASSERT( !core->inSpinup() && runToDate-oldDate == 1, "timestep must equal 1" );
-   
-    // Approach modified from Ward and Mahowald, 2014, 10.5194/acp-14-12701-2014
-    double previous_n2o = N0.value( U_PPBV_N2O );
 
-    if (runToDate != oldDate) {
-      previous_n2o = N2O.get( oldDate );
+    if (emissions_forced) {
+        // Approach modified from Ward and Mahowald, 2014, 10.5194/acp-14-12701-2014
+        double previous_n2o = N0.value( U_PPBV_N2O );
+
+        if (runToDate != oldDate) {
+            previous_n2o = N2O.get( oldDate );
+        }
+
+        // Decay constant varies based on N2O concentrations
+        // This is Eq. B8 in Ward and Mahowald, 2014
+        TAU_N2O.set( runToDate, unitval( TN2O0.value( U_YRS ) * ( pow( previous_n2o /N0.value( U_PPBV_N2O ), -0.05 ) ), U_YRS ) );
+    
+        // Current emissions are the sum of natural and anthropogenic sources
+        const double current_n2oem = N2O_emissions.get( runToDate ).value( U_TG_N ) + N2O_natural_emissions.get( runToDate ).value( U_TG_N );
+    
+        // This calculation follows Eq. B7 in Ward and Mahowald 2014
+        const double dN2O = current_n2oem / UC_N2O - previous_n2o / TAU_N2O.get( runToDate ).value( U_YRS );
+
+        N2O.set( runToDate, unitval( previous_n2o + dN2O, U_PPBV_N2O ) );
     }
-
-    // Decay constant varies based on N2O concentrations
-    // This is Eq. B8 in Ward and Mahowald, 2014
-    TAU_N2O.set( runToDate, unitval( TN2O0.value( U_YRS ) * ( pow( previous_n2o /N0.value( U_PPBV_N2O ), -0.05 ) ), U_YRS ) );
-    
-    // Current emissions are the sum of natural and anthropogenic sources
-    const double current_n2oem = N2O_emissions.get( runToDate ).value( U_TG_N ) + N2O_natural_emissions.get( runToDate ).value( U_TG_N );
-    
-    // This calculation follows Eq. B7 in Ward and Mahowald 2014
-    const double dN2O = current_n2oem / UC_N2O - previous_n2o / TAU_N2O.get( runToDate ).value( U_YRS );
-
-    N2O.set( runToDate, unitval( previous_n2o + dN2O, U_PPBV_N2O ) );
 
     oldDate = runToDate;
     H_LOG( logger, Logger::DEBUG ) << runToDate <<
@@ -191,7 +206,9 @@ void N2OComponent::reset(double time) throw(h_exception)
 {
     // reset time counter, and truncate output time series
     oldDate = time;
-    N2O.truncate(time);
+    if (emissions_forced) {
+        N2O.truncate(time);
+    }
     TAU_N2O.truncate(time);
     H_LOG(logger, Logger::NOTICE)
         << getComponentName() << " reset to time= " << time << "\n";
