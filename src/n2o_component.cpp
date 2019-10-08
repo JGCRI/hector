@@ -120,8 +120,8 @@ void N2OComponent::setData( const string& varName,
             N2O.set( data.date, data.getUnitval( U_PPBV_N2O ) );
             if (emissions_forced) {
                 emissions_forced = false;
-                N2O_emissions.truncate( N2O_emissions.firstdate() );
-                N2O_natural_emissions.truncate( N2O_natural_emissions.firstdate() );
+                N2O_emissions.truncate(0);
+                N2O_natural_emissions.truncate(0);
             }
         } else {
             H_THROW( "Unknown variable name while parsing " + getComponentName() + ": "

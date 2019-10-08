@@ -32,7 +32,6 @@ CH4Component::CH4Component() {
     CH4.name = D_ATMOSPHERIC_CH4;
 
     emissions_forced = false;
-    concentration_forced = false;
 }
 
 //------------------------------------------------------------------------------
@@ -98,7 +97,6 @@ void CH4Component::setData( const string& varName,
             M0 = data.getUnitval( U_PPBV_CH4 );
          } else if( varName == D_EMISSIONS_CH4 ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            concentration_forced = false;
             emissions_forced = true;
             CH4_emissions.set(data.date, data.getUnitval( U_TG_CH4 ));
         } else if( varName == D_LIFETIME_SOIL ) {
@@ -115,14 +113,11 @@ void CH4Component::setData( const string& varName,
             CH4N = data.getUnitval( U_TG_CH4 );
          } else if( varName == D_ATMOSPHERIC_CH4 ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required for CH4 concentration" );
-            concentration_forced = true;
             CH4.set( data.date, data.getUnitval( U_PPBV_CH4 ) );
-            if (emissions_forced) {
-                emissions_forced = false;
-                CH4_emissions.truncate(CH4_emissions.firstdate());
-            }
+            emissions_forced = false;
+            CH4_emissions.truncate(0);
     }
-		else {
+        else {
             H_THROW( "Unknown variable name while parsing " + getComponentName() + ": "
                     + varName );
         }
@@ -136,7 +131,6 @@ void CH4Component::setData( const string& varName,
 void CH4Component::prepareToRun() throw ( h_exception ) {
     
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
-    H_ASSERT( concentration_forced != emissions_forced, "Must be either concentration or emissions forced. It cannot be both." );
     oldDate = core->getStartDate();
     CH4.set( oldDate, M0 );  // set the first year's value
  }
