@@ -1,0 +1,18 @@
+context("Concentration-forced runs")
+
+test_that("Concentration-forced runs work for halocarbons", {
+  hc <- newcore(system.file("input", "hector_rcp45.ini", package = "hector"))
+  invisible(run(hc))
+  dates <- seq(startdate(hc), getdate(hc))
+  outvars <- c(GLOBAL_TEMP(), "HFC23_concentration")
+  out1 <- fetchvars(hc, dates, outvars)
+  conc1 <- subset(out1, variable == "HFC23_concentration")
+  emiss1 <- fetchvars(hc, dates, "HFC23_emissions")
+  setvar(hc, conc1$year, "HFC23_concentration", conc1$value, conc1$units[1])
+  invisible(reset(hc))
+  invisible(run(hc))
+  out2 <- fetchvars(hc, dates, outvars)
+  expect_equivalent(out1$value, out2$value, tol = 1e-10)
+  emiss2 <- fetchvars(hc, dates, "HFC23_emissions")
+  expect_true(all(emiss2$value == 0))
+})
