@@ -103,3 +103,76 @@ test_that("Concentration-forced CO2 runs work", {
   out <- fetchvars(hc, years, ATMOSPHERIC_CO2())
   expect_equal(out$value, constrained_vals)
 })
+
+test_that("Concentration forcing through INI file works", {
+
+  ini_txt <- readLines(system.file("input", "hector_rcp45.ini",
+                                   package = "hector")) %>%
+    grep("^ *;", ., value = TRUE, invert = TRUE)
+  rxp <- "\\[([[:alnum:]]+)_halocarbon\\]"
+  halocarbs <- gsub(rxp, "\\1", grep(rxp, ini_txt, value = TRUE))
+  outvars <- c(
+    ATMOSPHERIC_CO2(),
+    ATMOSPHERIC_CH4(),
+    ATMOSPHERIC_N2O(),
+    paste0(halocarbs, "_concentration")
+  )
+  # Run Hector to figure out concentrations
+  hc <- rcp45()
+  invisible(run(hc))
+  yrs <- seq(startdate(hc), enddate(hc))
+  results <- fetchvars(hc, yrs, outvars)
+  results_sub <- results[, c("year", "variable", "value")]
+
+  wide <- reshape(
+    results_sub,
+    v.names = "value",
+    idvar = "year",
+    timevar = "variable",
+    direction = "wide"
+  )
+  names(wide) <- gsub("value\\.", "", names(wide))
+  names(wide)[names(wide) == "year"] <- "Date"
+  names(wide)[names(wide) == "Ca"] <- "Ca_constrain"
+  wide <- wide
+
+  tmp_dir <- tempfile()
+  dir.create(tmp_dir, showWarnings = FALSE)
+
+  tmpfile <- file.path(tmp_dir, "test_conc.csv")
+  write.csv(wide, tmpfile, row.names = FALSE, quote = FALSE)
+
+  ini_txt <- append(
+    ini_txt,
+    paste0("N2O=csv:", tmpfile),
+    grep("\\[N2O\\]", ini_txt)
+  )
+
+  ini_txt <- append(
+    ini_txt,
+    paste0("CH4=csv:", tmpfile),
+    grep("\\[CH4\\]", ini_txt)
+  )
+
+  for (h in halocarbs) {
+    ini_txt <- append(
+      ini_txt,
+      paste0(h, "_concentration=csv:", tmpfile),
+      grep(paste0("\\[", h, "_halocarbon", "\\]"), ini_txt)
+    )
+  }
+
+  tmprcp45_dir <- file.path(dirname(tmp_dir), "emissions")
+  dir.create(tmprcp45_dir, showWarnings = FALSE, recursive = TRUE)
+  file.copy(system.file("input", "emissions", "RCP45_emissions.csv", package = "hector"),
+            tmprcp45_dir)
+  file.copy(system.file("input", "emissions", "volcanic_RF.csv", package = "hector"),
+            tmprcp45_dir)
+  tmpini <- tempfile(fileext = ".ini")
+  writeLines(ini_txt, tmpini)
+  hc2 <- newcore(tmpini)
+  invisible(run(hc2))
+  results2 <- fetchvars(hc2, yrs, outvars)
+  expect_equivalent(results, results2)
+
+})
