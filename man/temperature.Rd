@@ -6,7 +6,7 @@
 \alias{GLOBAL_TEMPEQ}
 \alias{OCEAN_SURFACE_TEMP}
 \alias{OCEAN_AIR_TEMP}
-\alias{LAND_TEMP}
+\alias{LAND_AIR_TEMP}
 \alias{FLUX_MIXED}
 \alias{FLUX_INTERIOR}
 \alias{HEAT_FLUX}
@@ -20,7 +20,7 @@ OCEAN_SURFACE_TEMP()
 
 OCEAN_AIR_TEMP()
 
-LAND_TEMP()
+LAND_AIR_TEMP()
 
 FLUX_MIXED()
 
@@ -42,7 +42,7 @@ type.
 
 \item \code{OCEAN_AIR_TEMP}: Average ocean air temperature anomaly
 
-\item \code{LAND_TEMP}: Average land temperature anomaly
+\item \code{LAND_AIR_TEMP}: Average land temperature anomaly
 
 \item \code{FLUX_MIXED}: Heat flux into the mixed layer of the ocean
 
