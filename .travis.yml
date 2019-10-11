@@ -68,3 +68,6 @@ matrix:
         provider: script
         script: Rscript -e 'pkgdown::deploy_site_github()'
         skip_cleanup: true
+        # Don't rebuild documentation during Travis CRON jobs.
+        on:
+          condition: $TRAVIS_EVENT_TYPE != "cron"
