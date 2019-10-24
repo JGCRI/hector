@@ -170,8 +170,9 @@ void N2OComponent::run( const double runToDate ) throw ( h_exception ) {
 
     oldDate = runToDate;
     H_LOG( logger, Logger::DEBUG ) << runToDate <<
-        " N2O = " << N2O.get( runToDate ) <<
-        ", tau = " << TAU_N2O.get( runToDate ) << std::endl;
+        // HACK: TAU_N2O isn't set properly if not emissions-forced
+        " N2O = " << N2O.get( runToDate ) << std::endl;
+        // ", tau = " << (emissions_forced ? TAU_N2O.get( runToDate ) : N2O.get( runToDate )) << std::endl;
 }
 
 //------------------------------------------------------------------------------
@@ -203,8 +204,8 @@ void N2OComponent::reset(double time) throw(h_exception)
     oldDate = time;
     if (emissions_forced) {
         N2O.truncate(time);
+        TAU_N2O.truncate(time);
     }
-    TAU_N2O.truncate(time);
     H_LOG(logger, Logger::NOTICE)
         << getComponentName() << " reset to time= " << time << "\n";
 }
