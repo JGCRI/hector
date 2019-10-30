@@ -65,6 +65,7 @@ void N2OComponent::init( Core* coreptr ) {
     // register data we can accept as input
     core->registerInput(D_EMISSIONS_N2O, getComponentName());
     core->registerInput(D_ATMOSPHERIC_N2O, getComponentName());
+    core->registerInput(D_NAT_EMISSIONS_N2O, getComponentName());
 }
 
 //------------------------------------------------------------------------------
