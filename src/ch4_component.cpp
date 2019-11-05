@@ -62,6 +62,7 @@ void CH4Component::init( Core* coreptr ) {
     // ...and what input data that we can accept
     core->registerInput(D_EMISSIONS_CH4, getComponentName());
     core->registerInput(D_ATMOSPHERIC_CH4, getComponentName());
+    core->registerInput(D_PREINDUSTRIAL_CH4, getComponentName());
 }
 
 //------------------------------------------------------------------------------
