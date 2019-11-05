@@ -518,8 +518,8 @@ unitval SimpleNbox::getData(const std::string& varName,
         H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for Q10");
         returnval = unitval(q10_rh.at( biome ), U_UNITLESS);
     } else if( varNameParsed == D_LAND_CFLUX ) {
-        H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for atm-land flux" );
-        returnval = sum_npp() - sum_rh() - lucEmissions.get( ODEstartdate );
+        H_ASSERT( date != Core::undefinedIndex(), "Date required for atmosphere -> land C flux" );
+        returnval = atmosland_flux_ts.get( date );
 
     } else if( varNameParsed == D_RF_T_ALBEDO ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for albedo forcing" );
@@ -1117,6 +1117,11 @@ void SimpleNbox::record_state(double t)
     // like it makes swapping out for another model a nightmare, but
     // that's where we're at.
     omodel->record_state(t);
+
+    // Record the land C flux
+    if (!in_spinup) {
+        atmosland_flux_ts.set(t, sum_npp() - sum_rh() - lucEmissions.get( ODEstartdate ));
+    }
 
 }
 
