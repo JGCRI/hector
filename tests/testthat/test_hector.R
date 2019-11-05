@@ -229,10 +229,13 @@ test_that('Test RF output.', {
     shutdown(hc)
 })
 
-test_that("Test atmosphere -> land C flux", {
+test_that("Test atmosphere -> land and ocean C flux", {
     hc <- newcore(file.path(inputdir, 'hector_rcp45.ini'), suppresslogging = TRUE)
     run(hc, 2100)
 
-    result <- fetchvars(hc, dates = 1750:2100, LAND_CFLUX(), "Pg C year-1")
+    result <- fetchvars(hc, dates = 1750:2100,
+                        c(LAND_CFLUX(), OCEAN_CFLUX()),
+                        "Pg C year-1")
     expect_true(is.data.frame(result))
+    expect_false(all(result$value == 0))
 })
