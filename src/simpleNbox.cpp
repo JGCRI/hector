@@ -720,6 +720,11 @@ void SimpleNbox::stashCValues( double t, const double c[] )
 
     atmos_c.set( c[ SNBOX_ATMOS ], U_PGC );
 
+    // Record the land C flux
+    const unitval npp_total = sum_npp();
+    const unitval rh_total = sum_rh();
+    atmosland_flux_ts.set(t, npp_total - rh_total - lucEmissions.get( t ));
+
     // The solver just knows about one vegetation box, one detritus, and one
     // soil. So we need to apportion new veg C pool (set by the solver) to
     // as many biomes as we have. This is not ideal.
@@ -727,7 +732,7 @@ void SimpleNbox::stashCValues( double t, const double c[] )
 
     // Apportioning is done by NPP and RH
     // i.e., biomes with higher values get more of any C change
-    const unitval npp_rh_total = sum_npp() + sum_rh(); // these are both positive
+    const unitval npp_rh_total = npp_total + rh_total; // these are both positive
     const unitval newveg( c[ SNBOX_VEG ], U_PGC );
     const unitval newdet( c[ SNBOX_DET ], U_PGC );
     const unitval newsoil( c[ SNBOX_SOIL ], U_PGC );
@@ -1116,11 +1121,6 @@ void SimpleNbox::record_state(double t)
     // like it makes swapping out for another model a nightmare, but
     // that's where we're at.
     omodel->record_state(t);
-
-    // Record the land C flux
-    if (!in_spinup) {
-        atmosland_flux_ts.set(t, sum_npp() - sum_rh() - lucEmissions.get( ODEstartdate ));
-    }
 
 }
 
