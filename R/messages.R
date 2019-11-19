@@ -122,52 +122,27 @@ setvar <- function(core, dates, var, values, unit)
 #' @return rslt_tot Dataframe of variables
 #' @family main user interface functions
 #' @export
-cum_vars_input <- function(core, dates) {
-    vars_em <- c(
-        hector::EMISSIONS_BC(),
-        # hector::EMISSIONS_C2F6(),             # Caller is requesting unknown variable
-        # hector::EMISSIONS_CCL4(),             # Caller is requesting unknown variable
-        # hector::EMISSIONS_CF4(),              # Caller is requesting unknown variable
-        # hector::EMISSIONS_CFC11(),            # Caller is requesting unknown variable
-        # hector::EMISSIONS_CFC113(),           # Caller is requesting unknown variable
-        # hector::EMISSIONS_CFC114(),           # Caller is requesting unknown variable
-        # hector::EMISSIONS_CFC115(),           # Caller is requesting unknown variable
-        # hector::EMISSIONS_CFC12(),            # Caller is requesting unknown variable
-        # hector::EMISSIONS_CH3BR(),            # Caller is requesting unknown variable
-        # hector::EMISSIONS_CH3CCL3(),          # Caller is requesting unknown variable
-        # hector::EMISSIONS_CH3CL(),            # Caller is requesting unknown variable
-        hector::EMISSIONS_CH4(),
-        # hector::EMISSIONS_CO(),               # Caller is requesting unknown variable
-        # hector::EMISSIONS_HALON1211(),        # Caller is requesting unknown variable
-        # hector::EMISSIONS_HALON1301(),        # Caller is requesting unknown variable
-        # hector::EMISSIONS_HALON2402(),        # Caller is requesting unknown variable
-        # hector::EMISSIONS_HCF141B(),          # Caller is requesting unknown variable
-        # hector::EMISSIONS_HCF142B(),          # Caller is requesting unknown variable
-        # hector::EMISSIONS_HCF22(),            # Caller is requesting unknown variable
-        # hector::EMISSIONS_HFC125(),           # Caller is requesting unknown variable
-        # hector::EMISSIONS_HFC134A(),          # Caller is requesting unknown variable
-        # hector::EMISSIONS_HFC143A(),          # Caller is requesting unknown variable
-        # hector::EMISSIONS_HFC227EA(),         # Caller is requesting unknown variable
-        # hector::EMISSIONS_HFC23(),            # Caller is requesting unknown variable
-        # hector::EMISSIONS_HFC245FA(),         # Caller is requesting unknown variable
-        # hector::EMISSIONS_HFC32(),            # Caller is requesting unknown variable
-        # hector::EMISSIONS_HFC4310(),          # Caller is requesting unknown variable
-        # hector::EMISSIONS_N2O(),              # Caller is requesting unknown variable
-        # hector::EMISSIONS_NMVOC(),            # Caller is requesting unknown variable
-        # hector::EMISSIONS_NOX(),              # Caller is requesting unknown variable
-        hector::EMISSIONS_OC(),
-        # hector::EMISSIONS_SF6(),              # Caller is requesting unknown variable
-        hector::EMISSIONS_SO2()
-    )
+cum_vars_input <- function(core, dates, lib_funcs) {
 
-    vars_conc <- c(
-        hector::PREINDUSTRIAL_CH4(),          # Assertion failed: Date not allowed
-        hector::PREINDUSTRIAL_CO2(),          # Assertion failed: Date not allowed
-        hector::PREINDUSTRIAL_N2O()          # Assertion failed: Date not allowed
-        # hector::PREINDUSTRIAL_O3()            # Assertion failed: Date not allowed
-    )
+    ### Use regex to find the indices of EMISSIONS_* function names
+    func_idx <- grep("^EMISSIONS_+", lib_funcs)
 
-    ### Call sendmessage() & pass dates param
+    ### Get the variable closures and execute them to get the capabililty strings
+    var_funcs <- sapply(lib_funcs[func_idx], get)
+
+    ### Don't really know what this does exactly but it makes the sendmessage()
+    ### call work
+    vars_em <- getOption('hector.vars.emissions',
+                         default=sapply(var_funcs, function(f){f()}))
+
+    ### Repeat the above process for PREINDUSTRIAL_* functions
+    func_idx <- grep("^PREINDUSTRIAL_+", lib_funcs)
+    var_funcs <- sapply(lib_funcs[func_idx], get)
+    vars_conc <- getOption('hector.vars.preindustrial',
+                           default=sapply(var_funcs, function(f){f()}))
+
+
+    ## Call sendmessage() & pass dates param
     rslt_em <- do.call(rbind,
                        lapply(vars_em, function(v) {
                            sendmessage(core, GETDATA(), v, dates, NA, '')
@@ -181,7 +156,7 @@ cum_vars_input <- function(core, dates) {
 
     rslt_tot <- rbind(rslt_em, rslt_conc)
 
-    return(rslt_tot)
+    return(rslt_em)
 }
 
 
@@ -195,18 +170,11 @@ cum_vars_input <- function(core, dates) {
 #' @family main user interface functions
 #' @export
 cum_vars_params <- function(core) {
-    vars <- c(
-        hector::AERO_SCALE(),
-        hector::BETA(),           # Assertion failed: Date not allowed
-        hector::DIFFUSIVITY(),
-        hector::ECS(),
-        hector::F_NPPV(),         # Assertion failed: Date not allowed
-        hector::F_NPPD(),         # Assertion failed: Date not allowed
-        hector::F_LITTERD(),      # Assertion failed: Date not allowed
-        hector::F_LUCV(),         # Assertion failed: Date not allowed
-        hector::Q10_RH(),         # Assertion failed: Date not allowed
-        hector::VOLCANIC_SCALE(),
-        hector::WARMINGFACTOR()   # Assertion failed: Date not allowed
+
+    ### These variables don't follow a common naming convention (i.e., EMISSIONS_*),
+    ### so the only option is to hardcode
+    vars <- c(AERO_SCALE(), BETA(), DIFFUSIVITY(), ECS(), F_NPPV(), F_NPPD(),
+              F_LITTERD(), F_LUCV(), Q10_RH(), VOLCANIC_SCALE(), WARMINGFACTOR()
     )
 
     rslt_tot <- do.call(rbind,
@@ -228,98 +196,47 @@ cum_vars_params <- function(core) {
 #' @return rslt_tot Dataframe containing the variables
 #' @family main user interface functions
 #' @export
-cum_vars_output <- function(core, dates) {
+cum_vars_output <- function(core, dates, lib_funcs) {
 
     ### Concentration vars with date arg
-    vars_conc_d <- c(
-        # hector::ATM_OCEAN_FLUX_HL(),      # Assertion failed: Unknown model datum
-        # hector::ATM_OCEAN_FLUX_LL(),      # Assertion failed: Unknown model datum
-        hector::ATMOSPHERIC_C(),
-        hector::ATMOSPHERIC_CH4(),
-        hector::ATMOSPHERIC_CO2(),
-        hector::ATMOSPHERIC_N2O(),
-        hector::ATMOSPHERIC_O3()
-        # hector::CO3_HL(),                 # Assertion failed: Unknown model datum
-        # hector::CO3_LL(),                 # Assertion failed: Unknown model datum
-        # hector::DIC_HL(),                 # Assertion failed: Unknown model datum
-        # hector::DIC_LL(),                 # Assertion failed: Unknown model datum
-    )
+    func_idx <- grep("^ATMOSPHERIC_+", lib_funcs)
+    var_funcs <- sapply(lib_funcs[func_idx], get)
+    vars_conc_d <- getOption('hector.vars.atmospheric',
+                             default=sapply(var_funcs, function(f){f()}))
 
-    vars_conc_nd <- c(
-        hector::LAND_CFLUX(),             # Assertion failed: Date not allowed
-        # hector::NATURAL_CH4(),            # Assertion failed: Unknown model datum
-        hector::NATURAL_SO2(),            # Assertion failed: Date not allowed
-        hector::OCEAN_C(),                # Assertion failed: Date data not available
-        hector::OCEAN_C_DO(),             # Assertion failed: Date data not available
-        hector::OCEAN_C_HL(),             # Assertion failed: Date data not available
-        hector::OCEAN_C_IO(),             # Assertion failed: Date data not available
-        hector::OCEAN_C_LL(),             # Assertion failed: Date data not available
-        hector::OCEAN_CFLUX()            # Assertion failed: Date data not available
-        # hector::PCO2_HL(),                # Assertion failed: Unknown model datum
-        # hector::PCO2_LL(),                # Assertion failed: Unknown model datum
-        # hector::PH_HL(),                  # Assertion failed: Unknown model datum
-        # hector::PH_LL(),                  # Assertion failed: Unknown model datum
-    )
+
+    ### Various concenctration, temperature, & flux parameters that
+    ### DO NOT take a date arg
+    func_idx <- grep("^OCEAN_C(_\\w{2})?$|^ATM_OCEAN_+|\\w{1,5}_[HL]L$", lib_funcs)
+    var_funcs <- sapply(lib_funcs[func_idx], get)
+    vars_ocn_nd <- getOption('hector.vars.ocean',
+                             default=sapply(var_funcs, function(f){f()}))
+
+    ### NO date arg
+    func_idx <- grep("^\\w{4,5}_CFLUX$|^NATURAL_+", lib_funcs)
+    var_funcs <- sapply(lib_funcs[func_idx], get)
+    vars_cflux_nd <- getOption('hector.vars.cflux',
+                               default=sapply(var_funcs, function(f){f()}))
 
     ### Date arg OK
-    vars_temps <- c(
-        hector::GLOBAL_TEMP(),
-        hector::GLOBAL_TEMPEQ(),
-        hector::HEAT_FLUX(),
-        hector::LAND_AIR_TEMP(),
-        hector::OCEAN_AIR_TEMP(),
-        hector::OCEAN_SURFACE_TEMP()
-    )
+    func_idx <- grep("+_TEMP(\\w{2})?$|+_FLUX$", lib_funcs)
+    var_funcs <- sapply(lib_funcs[func_idx], get)
+    vars_temps_d <- getOption('hector.vars.oceantemps',
+                              default=sapply(var_funcs, function(f){f()}))
 
+    ### Create list of radiative forcing variables
     ### Date arg OK
-    vars_rf <- c(
-        hector::RF_BC(),
-        hector::RF_C2F6(),
-        hector::RF_CCL4(),
-        hector::RF_CF4(),
-        hector::RF_CFC11(),
-        hector::RF_CFC113(),
-        hector::RF_CFC114(),
-        hector::RF_CFC115(),
-        hector::RF_CFC12(),
-        hector::RF_CH3BR(),
-        hector::RF_CH3CCL3(),
-        hector::RF_CH3CL(),
-        hector::RF_CH4(),
-        hector::RF_CO2(),
-        hector::RF_H2O(),
-        hector::RF_HALON1211(),
-        hector::RF_HALON1301(),
-        hector::RF_HALON2402(),
-        hector::RF_HCF141B(),
-        hector::RF_HCF142B(),
-        hector::RF_HCF22(),
-        hector::RF_HFC125(),
-        hector::RF_HFC134A(),
-        hector::RF_HFC143A(),
-        hector::RF_HFC227EA(),
-        hector::RF_HFC23(),
-        hector::RF_HFC245FA(),
-        hector::RF_HFC32(),
-        hector::RF_HFC4310(),
-        hector::RF_N2O(),
-        hector::RF_O3(),
-        hector::RF_OC(),
-        hector::RF_SF6(),
-        hector::RF_SO2(),
-        hector::RF_SO2D(),
-        hector::RF_SO2I(),
-        hector::RF_T_ALBEDO(),
-        hector::RF_TOTAL(),
-        hector::RF_VOL()
-    )
+    func_idx <- grep("PREINDUSTRIAL_+", lib_funcs)
+    var_funcs <- sapply(lib_funcs[func_idx], get)
+    vars_rf <- getOption('hector.vars.radforcing',
+                         default=sapply(var_funcs, function(f){f()}))
 
-    ### Concat the lists of vars that can use the dates param in sendmessage() to
-    ### decrease the amount of calls made to do.call(...)
-    vars_d <- c(vars_conc_d, vars_temps, vars_temps)
+    ### Concat the lists of vars that do & do not use date arg
+    vars_d <- c(vars_conc_d, vars_temps_d)
+    vars_nd <- c(vars_ocn_nd, vars_cflux_nd)
 
     rslt_nd <- do.call(rbind,
-                       lapply(vars_conc_nd, function(v) {
+                       lapply(vars_nd, function(v) {
                            sendmessage(core, GETDATA(), v, NA, NA, '')
                        }))
 
@@ -355,22 +272,21 @@ fetchvars_all <- function(core, dates=NULL, scenario=NULL) {
         scenario <- core$name
     }
 
+    lib_funcs <- lsf.str("package:hector")
 
     strt <- startdate(core)
     end <- getdate(core)
 
     if (is.null(dates)) {
-        # Get vars for entire date range
         dates <- strt:end
     } else {
-        # Use the date range specified in 'dates' param
         valid <- dates >= strt & dates <= end
         dates <- dates[valid]
     }
 
-    vars_inpt  <- cum_vars_input(core, dates)
+    vars_inpt  <- cum_vars_input(core, dates, lib_funcs)
     vars_param <- cum_vars_params(core)
-    vars_outpt <- cum_vars_output(core, dates)
+    vars_outpt <- cum_vars_output(core, dates, lib_funcs)
 
     vars_all <- rbind(vars_inpt, vars_param, vars_outpt)
 

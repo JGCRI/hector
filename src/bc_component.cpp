@@ -18,7 +18,7 @@
 #include "avisitor.hpp"
 
 namespace Hector {
-  
+
 using namespace std;
 
 //------------------------------------------------------------------------------
@@ -39,7 +39,7 @@ BlackCarbonComponent::~BlackCarbonComponent() {
 // documentation is inherited
 string BlackCarbonComponent::getComponentName() const {
     const string name = BLACK_CARBON_COMPONENT_NAME;
-    
+
     return name;
 }
 
@@ -49,9 +49,10 @@ void BlackCarbonComponent::init( Core* coreptr ) {
     logger.open( getComponentName(), false, coreptr->getGlobalLogger().getEchoToFile(), coreptr->getGlobalLogger().getMinLogLevel() );
     H_LOG( logger, Logger::DEBUG ) << "hello " << getComponentName() << std::endl;
     core = coreptr;
-    
+
     // Inform core what data we can accept
     core->registerInput(D_EMISSIONS_BC, getComponentName());
+    core->registerCapability(D_EMISSIONS_BC, getComponentName());
 }
 
 //------------------------------------------------------------------------------
@@ -61,19 +62,19 @@ unitval BlackCarbonComponent::sendMessage( const std::string& message,
                                           const message_data info ) throw ( h_exception )
 {
     unitval returnval;
-    
+
     if( message==M_GETDATA ) {          //! Caller is requesting data
         return getData( datum, info.date );
-        
+
     } else if( message==M_SETDATA ) {   //! Caller is requesting to set data
         //TODO: change core so that parsing is routed through sendMessage
         //TODO: make setData private
         setData(datum, info);
-        
+
     } else {                        //! We don't handle any other messages
         H_THROW( "Caller sent unknown message: "+message );
     }
-    
+
     return returnval;
 }
 
@@ -83,7 +84,7 @@ void BlackCarbonComponent::setData( const string& varName,
                                     const message_data& data ) throw ( h_exception )
 {
     H_LOG( logger, Logger::DEBUG ) << "Setting " << varName << "[" << data.date << "]=" << data.value_str << std::endl;
-    
+
     try {
         if( varName ==  D_EMISSIONS_BC  ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
@@ -100,7 +101,7 @@ void BlackCarbonComponent::setData( const string& varName,
 //------------------------------------------------------------------------------
 // documentation is inherited
 void BlackCarbonComponent::prepareToRun() throw ( h_exception ) {
-    
+
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
     oldDate = core->getStartDate();
 }
@@ -116,17 +117,17 @@ void BlackCarbonComponent::run( const double runToDate ) throw ( h_exception ) {
 // documentation is inherited
 unitval BlackCarbonComponent::getData( const std::string& varName,
                                       const double date ) throw ( h_exception ) {
-    
+
     unitval returnval;
-    
+
     H_ASSERT( date != Core::undefinedIndex(), "Date required for bc_component" );
-    
+
     if( varName == D_EMISSIONS_BC ) {
         returnval = BC_emissions.get( date );
     } else {
         H_THROW( "Caller is requesting unknown variable: " + varName );
     }
-    
+
     return returnval;
 }
 
