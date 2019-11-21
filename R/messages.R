@@ -124,31 +124,31 @@ setvar <- function(core, dates, var, values, unit)
 #' @export
 cum_vars_input <- function(core, dates, lib_funcs) {
 
-    ### Use regex to find the indices of EMISSIONS_* function names
+    # Use regex to find the indices of EMISSIONS_* function names
     func_idx <- grep("^EMISSIONS_+", lib_funcs)
 
-    ### Get the variable closures and execute them to get the capabililty strings
+    # Get the variable closures and execute them to get the capabililty strings
     var_funcs <- sapply(lib_funcs[func_idx], get)
 
-    ### Don't really know what this does exactly but it makes the sendmessage()
-    ### call work
+    # Don't really know what this does exactly but it makes the sendmessage()
+    # call work
     vars_em <- getOption('hector.vars.emissions',
                          default=sapply(var_funcs, function(f){f()}))
 
-    ### Repeat the above process for PREINDUSTRIAL_* functions
+    # Repeat the above process for PREINDUSTRIAL_* functions
     func_idx <- grep("^PREINDUSTRIAL_+", lib_funcs)
     var_funcs <- sapply(lib_funcs[func_idx], get)
     vars_conc <- getOption('hector.vars.preindustrial',
                            default=sapply(var_funcs, function(f){f()}))
 
 
-    ## Call sendmessage() & pass dates param
+    # Get variables that use date arg
     rslt_em <- do.call(rbind,
                        lapply(vars_em, function(v) {
                            sendmessage(core, GETDATA(), v, dates, NA, '')
                        }))
 
-    ### Call sendmessage() without passing dates param, since doing so raises an error
+    # Get variables that DO NOT use date arg
     rslt_conc <- do.call(rbind,
                          lapply(vars_conc, function(v) {
                              sendmessage(core, GETDATA(), v, NA, NA, '')
@@ -171,12 +171,13 @@ cum_vars_input <- function(core, dates, lib_funcs) {
 #' @export
 cum_vars_params <- function(core) {
 
-    ### These variables don't follow a common naming convention (i.e., EMISSIONS_*),
-    ### so the only option is to hardcode
+    # These variables don't follow a common naming rule (i.e., EMISSIONS_*),
+    # so the best option is to hardcode
     vars <- c(AERO_SCALE(), BETA(), DIFFUSIVITY(), ECS(), F_NPPV(), F_NPPD(),
               F_LITTERD(), F_LUCV(), Q10_RH(), VOLCANIC_SCALE(), WARMINGFACTOR()
     )
 
+    # None of these variables use the date arg
     rslt_tot <- do.call(rbind,
                         lapply(vars, function(v) {
                             sendmessage(core, GETDATA(), v, NA, NA, '')
@@ -198,54 +199,55 @@ cum_vars_params <- function(core) {
 #' @export
 cum_vars_output <- function(core, dates, lib_funcs) {
 
-    ### Concentration vars with date arg
+    # Atmospheric concentrationvars. Take date arg
     func_idx <- grep("^ATMOSPHERIC_+", lib_funcs)
     var_funcs <- sapply(lib_funcs[func_idx], get)
     vars_conc_d <- getOption('hector.vars.atmospheric',
                              default=sapply(var_funcs, function(f){f()}))
 
 
-    ### Various concenctration, temperature, & flux parameters that
-    ### DO NOT take a date arg
+    # Various concenctration, temperature, & flux parameters that
+    # DO NOT take a date arg
     func_idx <- grep("^OCEAN_C(_\\w{2})?$|^ATM_OCEAN_+|\\w{1,5}_[HL]L$", lib_funcs)
     var_funcs <- sapply(lib_funcs[func_idx], get)
     vars_ocn_nd <- getOption('hector.vars.ocean',
                              default=sapply(var_funcs, function(f){f()}))
 
-    ### NO date arg
+    # Various CFLUX and Natural emission variables. DO NOT take date arg
     func_idx <- grep("^\\w{4,5}_CFLUX$|^NATURAL_+", lib_funcs)
     var_funcs <- sapply(lib_funcs[func_idx], get)
     vars_cflux_nd <- getOption('hector.vars.cflux',
                                default=sapply(var_funcs, function(f){f()}))
 
-    ### Date arg OK
+    # Temperature and flux variabels. Take date arg
     func_idx <- grep("+_TEMP(\\w{2})?$|+_FLUX$", lib_funcs)
     var_funcs <- sapply(lib_funcs[func_idx], get)
     vars_temps_d <- getOption('hector.vars.oceantemps',
                               default=sapply(var_funcs, function(f){f()}))
 
-    ### Create list of radiative forcing variables
-    ### Date arg OK
+    # Radiative forcing variables. Date arg OK
     func_idx <- grep("PREINDUSTRIAL_+", lib_funcs)
     var_funcs <- sapply(lib_funcs[func_idx], get)
     vars_rf <- getOption('hector.vars.radforcing',
                          default=sapply(var_funcs, function(f){f()}))
 
-    ### Concat the lists of vars that do & do not use date arg
+    # Concat the lists of vars that do & do not use date arg
     vars_d <- c(vars_conc_d, vars_temps_d)
     vars_nd <- c(vars_ocn_nd, vars_cflux_nd)
 
+    # Get variables that DO NOT use date arg
     rslt_nd <- do.call(rbind,
                        lapply(vars_nd, function(v) {
                            sendmessage(core, GETDATA(), v, NA, NA, '')
                        }))
 
-
+    # Get variables that use date arg
     rslt_d <- do.call(rbind,
                       lapply(vars_d, function(v) {
                           sendmessage(core, GETDATA(), v, dates, NA, '')
                       }))
 
+    # Combine the results of the sendmessage calls into one dataframe
     rslt_tot <- rbind(rslt_nd, rslt_d)
 
     return(rslt_tot)
@@ -272,6 +274,8 @@ fetchvars_all <- function(core, dates=NULL, scenario=NULL) {
         scenario <- core$name
     }
 
+    # Load the list of available functions in the hector R library.
+    # Will be passed to helper funcs to match capability strings using regex
     lib_funcs <- lsf.str("package:hector")
 
     strt <- startdate(core)
@@ -284,6 +288,7 @@ fetchvars_all <- function(core, dates=NULL, scenario=NULL) {
         dates <- dates[valid]
     }
 
+    # Get variables from the helper functions, combine results into one dataframe
     vars_inpt  <- cum_vars_input(core, dates, lib_funcs)
     vars_param <- cum_vars_params(core)
     vars_outpt <- cum_vars_output(core, dates, lib_funcs)
