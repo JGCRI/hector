@@ -156,7 +156,7 @@ cum_vars_input <- function(core, dates, lib_funcs) {
 
     rslt_tot <- rbind(rslt_em, rslt_conc)
 
-    return(rslt_em)
+    invisible(rslt_em)
 }
 
 
@@ -183,7 +183,7 @@ cum_vars_params <- function(core) {
                             sendmessage(core, GETDATA(), v, NA, NA, '')
                         }))
 
-    return(rslt_tot)
+    invisible(rslt_tot)
 }
 
 
@@ -250,7 +250,7 @@ cum_vars_output <- function(core, dates, lib_funcs) {
     # Combine the results of the sendmessage calls into one dataframe
     rslt_tot <- rbind(rslt_nd, rslt_d)
 
-    return(rslt_tot)
+    invisible(rslt_tot)
 }
 
 
@@ -262,13 +262,15 @@ cum_vars_output <- function(core, dates, lib_funcs) {
 #' concentrations), parameters (e.g., alpha, beta, ECS), and output
 #' variables (e.g., concentrations & forcings).
 #'
-#' @param core         Hector core object
-#' @param dates        Vector of dates, optional
-#' @param scenario     Scenario name, optional str
+#' @param core Hector core object
+#' @param dates ector of dates, optional
+#' @param scenario Scenario name, optional str
+#' @param write If TRUE, write the resulting dataframe to a csv file, optional bool
+#' @param outpath Absolute path of the output csv. Must be given if 'write' is true
 #' @return vars_all    Dataframe containing all Hector variables
 #' @family main user interface functions
 #' @export
-fetchvars_all <- function(core, dates=NULL, scenario=NULL) {
+fetchvars_all <- function(core, dates=NULL, scenario=NULL, write=F, outpath=NULL) {
 
     if (is.null(scenario)) {
         scenario <- core$name
@@ -295,5 +297,40 @@ fetchvars_all <- function(core, dates=NULL, scenario=NULL) {
 
     vars_all <- rbind(vars_inpt, vars_param, vars_outpt)
 
-    return(vars_all)
+    # If 'write' is TRUE, attempt to write output to .csv
+    if (write) {
+
+        # Pivot the dataframe "wide" so years run along the x axis
+        # Catch warning from reshape()
+        suppressWarnings(vars_all <- reshape(vars_all, direction="wide",
+                                     idvar=c("variable", "units"), timevar="year"))
+
+        # Clean up the column names (value.YYYY --> YYYY)
+        col_names <- colnames(vars_all)[-1:-2]
+        col_names <- sapply(col_names, function(x) sub("value.", "", x), USE.NAMES=F)
+        col_names <- col_names[-length(col_names)]
+
+        col_names <- c("variable", "units", "initial value", col_names)
+
+        # Move last column into 3rd col position
+        vars_all <- vars_all[, c(1, 2, 559, 3, 4, 5:558)]
+
+
+        # Check if the absolute path of the output csv file is valid
+        if (!is.null(outpath)) {
+            write.table(vars_all, outpath, col.names=col_names, row.names=F, sep=',')
+            cat("Output written to ", outpath, sep="")
+        } else {
+            # Write to a default location in hector library's output directory
+            base_path <- find.package("hector")
+            f_name <- "fetchvars_all.csv"
+            abs_path <- file.path(base_path, "output", f_name)
+
+            write.table(vars_all, abs_path, col.names=col_names, row.names=F, sep=',')
+
+            cat("Output written to ", abs_path, sep="")
+        }
+    }
+
+    invisible(vars_all)
 }
