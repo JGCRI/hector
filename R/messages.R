@@ -312,9 +312,13 @@ fetchvars_all <- function(core, dates=NULL, scenario=NULL, write=F, outpath=NULL
 
         col_names <- c("variable", "units", "initial value", col_names)
 
-        # Move last column into 3rd col position
-        vars_all <- vars_all[, c(1, 2, 559, 3, 4, 5:558)]
+        num_cols <- length(col_names)
 
+        # Move last column into 3rd col position
+        vars_all <- vars_all[, c(1, 2, num_cols, 4:num_cols-1)]
+
+        # Set the column names for the re-ordered dataframe
+        colnames(vars_all) <- col_names
 
         # Check if the absolute path of the output csv file is valid
         if (!is.null(outpath)) {
