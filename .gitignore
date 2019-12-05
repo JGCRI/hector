@@ -70,3 +70,10 @@ vignettes/rsconnect
 
 # vignette caches
 /vignettes/*_cache
+
+# Hidden VS directories
+.vs/
+src/.vs/
+
+# New man docs
+man/
