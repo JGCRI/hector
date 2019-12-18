@@ -31,4 +31,4 @@ halounits <- 'Gg'
 unitstable <- rbind(data.frame(variable=hvars, units=hunits),
                     data.frame(variable=haloemis, units=halounits))
 
-devtools::use_data(unitstable, internal=TRUE, overwrite=TRUE)
+usethis::use_data(unitstable, internal=TRUE, overwrite=TRUE)
