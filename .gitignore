@@ -71,6 +71,6 @@ vignettes/rsconnect
 # vignette caches
 /vignettes/*_cache
 
-# VisualStudio files
+# Hidden VS directories
 .vs/
 src/.vs/
