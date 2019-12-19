@@ -39,8 +39,9 @@ forcing, and global mean temperature.
 \link{carboncycle}, \link{haloemiss}, \link{haloforcings}, \link{methane},
 \link{ocean}, \link{so2}, \link{temperature}, \link{parameters}
 
-Other main user interface functions: \code{\link{newcore}},
-  \code{\link{reset}}, \code{\link{run}},
-  \code{\link{setvar}}, \code{\link{shutdown}}
+Other main user interface functions: \code{\link{fetchvars_all}},
+  \code{\link{newcore}}, \code{\link{reset}},
+  \code{\link{run}}, \code{\link{setvar}},
+  \code{\link{shutdown}}
 }
 \concept{main user interface functions}

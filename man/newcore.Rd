@@ -25,8 +25,9 @@ argument for all functions that operate on the instance.  Creating multiple inst
 simultaneously is supported.
 }
 \seealso{
-Other main user interface functions: \code{\link{fetchvars}},
-  \code{\link{reset}}, \code{\link{run}},
-  \code{\link{setvar}}, \code{\link{shutdown}}
+Other main user interface functions: \code{\link{fetchvars_all}},
+  \code{\link{fetchvars}}, \code{\link{reset}},
+  \code{\link{run}}, \code{\link{setvar}},
+  \code{\link{shutdown}}
 }
 \concept{main user interface functions}

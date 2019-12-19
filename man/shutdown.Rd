@@ -23,8 +23,9 @@ from active to inactive will be recorded in the caller.
 }
 
 \seealso{
-Other main user interface functions: \code{\link{fetchvars}},
-  \code{\link{newcore}}, \code{\link{reset}},
-  \code{\link{run}}, \code{\link{setvar}}
+Other main user interface functions: \code{\link{fetchvars_all}},
+  \code{\link{fetchvars}}, \code{\link{newcore}},
+  \code{\link{reset}}, \code{\link{run}},
+  \code{\link{setvar}}
 }
 \concept{main user interface functions}

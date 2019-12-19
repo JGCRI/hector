@@ -74,6 +74,3 @@ vignettes/rsconnect
 # Hidden VS directories
 .vs/
 src/.vs/
-
-# New man docs
-man/

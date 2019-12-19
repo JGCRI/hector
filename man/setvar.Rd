@@ -26,8 +26,9 @@ against the expected unit in the code, and an error is signaled if they don't
 match (i.e., there is no attempt to convert units).
 }
 \seealso{
-Other main user interface functions: \code{\link{fetchvars}},
-  \code{\link{newcore}}, \code{\link{reset}},
-  \code{\link{run}}, \code{\link{shutdown}}
+Other main user interface functions: \code{\link{fetchvars_all}},
+  \code{\link{fetchvars}}, \code{\link{newcore}},
+  \code{\link{reset}}, \code{\link{run}},
+  \code{\link{shutdown}}
 }
 \concept{main user interface functions}

@@ -120,8 +120,7 @@ setvar <- function(core, dates, var, values, unit)
 #' @param core Hector core object
 #' @param dates Vector of dates to fetch
 #' @return rslt_tot Dataframe of variables
-#' @family main user interface functions
-#' @export
+#' @family fetchvars_all helper function
 cum_vars_input <- function(core, dates, lib_funcs) {
 
     # Use regex to find the indices of EMISSIONS_* function names
@@ -142,13 +141,13 @@ cum_vars_input <- function(core, dates, lib_funcs) {
                            default=sapply(var_funcs, function(f){f()}))
 
 
-    # Get variables that use date arg
+    # Get model output for variables that use date arg
     rslt_em <- do.call(rbind,
                        lapply(vars_em, function(v) {
                            sendmessage(core, GETDATA(), v, dates, NA, '')
                        }))
 
-    # Get variables that DO NOT use date arg
+    # Get model output for variables that DO NOT use date arg
     rslt_conc <- do.call(rbind,
                          lapply(vars_conc, function(v) {
                              sendmessage(core, GETDATA(), v, NA, NA, '')
@@ -167,8 +166,7 @@ cum_vars_input <- function(core, dates, lib_funcs) {
 #'
 #' @param core Hector object
 #' @return rslt_tot Dataframe containing the parameters/variables
-#' @family main user interface functions
-#' @export
+#' @family fetchvars_all helper function
 cum_vars_params <- function(core) {
 
     # These variables don't follow a common naming rule (i.e., EMISSIONS_*),
@@ -177,7 +175,7 @@ cum_vars_params <- function(core) {
               F_LITTERD(), F_LUCV(), Q10_RH(), VOLCANIC_SCALE(), WARMINGFACTOR()
     )
 
-    # None of these variables use the date arg
+    # Get the data for the given list of variables
     rslt_tot <- do.call(rbind,
                         lapply(vars, function(v) {
                             sendmessage(core, GETDATA(), v, NA, NA, '')
@@ -195,8 +193,7 @@ cum_vars_params <- function(core) {
 #' @param core Hector core object
 #' @param dates Vector of dates
 #' @return rslt_tot Dataframe containing the variables
-#' @family main user interface functions
-#' @export
+#' @family fetchvars_all helper function
 cum_vars_output <- function(core, dates, lib_funcs) {
 
     # Atmospheric concentrationvars. Take date arg
@@ -231,7 +228,7 @@ cum_vars_output <- function(core, dates, lib_funcs) {
     vars_rf <- getOption('hector.vars.radforcing',
                          default=sapply(var_funcs, function(f){f()}))
 
-    # Concat the lists of vars that do & do not use date arg
+    # Concat the lists of vars that do & do not use date arg, respectively
     vars_d <- c(vars_conc_d, vars_temps_d)
     vars_nd <- c(vars_ocn_nd, vars_cflux_nd)
 
@@ -297,7 +294,8 @@ fetchvars_all <- function(core, dates=NULL, scenario=NULL, write=F, outpath=NULL
 
     vars_all <- rbind(vars_inpt, vars_param, vars_outpt)
 
-    # If 'write' is TRUE, attempt to write output to .csv
+    # If 'write' is TRUE, reshape the resulting data frame to a wide format
+    # and write to csv
     if (write) {
 
         # Pivot the dataframe "wide" so years run along the x axis
@@ -325,7 +323,7 @@ fetchvars_all <- function(core, dates=NULL, scenario=NULL, write=F, outpath=NULL
             write.table(vars_all, outpath, col.names=col_names, row.names=F, sep=',')
             cat("Output written to ", outpath, sep="")
         } else {
-            # Write to a default location in hector library's output directory
+            # Write to a default location in the Hector R library output directory
             base_path <- find.package("hector")
             f_name <- "fetchvars_all.csv"
             abs_path <- file.path(base_path, "output", f_name)

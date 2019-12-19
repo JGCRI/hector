@@ -20,8 +20,9 @@ Run Hector up through the specified time.  This function does not return the res
 of the run.  To get results, run \code{fetch}.
 }
 \seealso{
-Other main user interface functions: \code{\link{fetchvars}},
-  \code{\link{newcore}}, \code{\link{reset}},
-  \code{\link{setvar}}, \code{\link{shutdown}}
+Other main user interface functions: \code{\link{fetchvars_all}},
+  \code{\link{fetchvars}}, \code{\link{newcore}},
+  \code{\link{reset}}, \code{\link{setvar}},
+  \code{\link{shutdown}}
 }
 \concept{main user interface functions}

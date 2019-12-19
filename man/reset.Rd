@@ -21,8 +21,9 @@ date leaves the model ready to run at the start date, but without having rerun t
 spinup.)
 }
 \seealso{
-Other main user interface functions: \code{\link{fetchvars}},
-  \code{\link{newcore}}, \code{\link{run}},
-  \code{\link{setvar}}, \code{\link{shutdown}}
+Other main user interface functions: \code{\link{fetchvars_all}},
+  \code{\link{fetchvars}}, \code{\link{newcore}},
+  \code{\link{run}}, \code{\link{setvar}},
+  \code{\link{shutdown}}
 }
 \concept{main user interface functions}
