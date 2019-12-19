@@ -273,10 +273,6 @@ fetchvars_all <- function(core, dates=NULL, scenario=NULL, outpath=NULL) {
         scenario <- core$name
     }
 
-    # Load the list of available functions in the hector R library.
-    # Will be passed to helper funcs to match capability strings using regex
-    lib_funcs <- lsf.str("package:hector")
-
     strt <- startdate(core)
     end <- getdate(core)
 
@@ -287,13 +283,40 @@ fetchvars_all <- function(core, dates=NULL, scenario=NULL, outpath=NULL) {
         dates <- dates[valid]
     }
 
-    # Get variables from the helper functions, combine results into one dataframe
-    vars_inpt  <- cum_vars_input(core, dates, lib_funcs)
-    vars_param <- cum_vars_params(core)
-    vars_outpt <- cum_vars_output(core, dates, lib_funcs)
-
-    vars_all <- rbind(vars_inpt, vars_param, vars_outpt)
-
+    # Read the variables to retrieve from vars_all.csv
+    # The csv contains two columns: the first is the variable name,
+    # the second is an integer indicating whether or not a date parameter can be
+    # passed with the variable (0 = No, 1 = Yes)
+    vars_df <- read.csv(file = 'inst/input/vars_all.csv')
+    
+    # Variables that can use the date parameter
+    vars_date <- as.vector(var_df$var[var_df$date_param == 1])
+    vars_date <- lapply(vars_date, get)
+    
+    vars_date <- getOption('hector.vars.with_date',
+                               default=sapply(vars_date, function(f){f()}))
+    
+    # Variables that CANNOT use the date parameter
+    vars_nodate <- as.vector(var_df$var[var_df$date_param == 0])
+    vars_nodate <- lapply(vars_nodate, get)
+    
+    vars_nodate <- getOption('hector.vars.no_date',
+                               default=sapply(vars_nodate, function(f){f()}))
+    
+    # Get output for variables that do use the date param
+    rslt_d <- do.call(rbind,
+                      lapply(vars_date, function(v) {
+                            sendmessage(core, GETDATA(), v, dates, NA, '')
+                      }))
+    
+    # Get variables that DO NOT use date arg
+    rslt_nd <- do.call(rbind,
+                       lapply(vars_nodate, function(v) {
+                            sendmessage(core, GETDATA(), v, NA, NA, '')
+                       }))
+    
+    vars_all <- rbind(rslt_nd, rslt_d)
+    
     # If 'outpath' is given, reshape the resulting data frame to a wide format
     # and write csv to the specified path
     if (outpath) {
@@ -301,19 +324,19 @@ fetchvars_all <- function(core, dates=NULL, scenario=NULL, outpath=NULL) {
         # Pivot the dataframe "wide" so years run along the x axis
         # Catch warning from reshape()
         suppressWarnings(vars_all <- reshape(vars_all, direction="wide",
-                                     idvar=c("variable", "units"), timevar="year"))
+                                     idvar=c("scenario", "variable", "units"), timevar="year"))
 
         # Clean up the column names (value.YYYY --> YYYY)
-        col_names <- colnames(vars_all)[-1:-2]
+        col_names <- colnames(vars_all)[-1:-3]
         col_names <- sapply(col_names, function(x) sub("value.", "", x), USE.NAMES=F)
         col_names <- col_names[-length(col_names)]
 
-        col_names <- c("variable", "units", "initial value", col_names)
+        col_names <- c("scenario", "variable", "units", "initial_value", col_names)
 
         num_cols <- length(col_names)
 
-        # Move last column into 3rd col position
-        vars_all <- vars_all[, c(1, 2, num_cols, 4:num_cols-1)]
+        # Move last column (initial_value) into 4th col position
+        vars_all <- vars_all[, c(1, 2, 3, num_cols, 5:num_cols-1)]
 
         # Set the column names for the re-ordered dataframe
         colnames(vars_all) <- col_names
