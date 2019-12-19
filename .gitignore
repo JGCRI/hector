@@ -70,3 +70,7 @@ vignettes/rsconnect
 
 # vignette caches
 /vignettes/*_cache
+
+# VisualStudio files
+.vs/
+src/.vs/
