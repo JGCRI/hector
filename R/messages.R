@@ -260,14 +260,14 @@ cum_vars_output <- function(core, dates, lib_funcs) {
 #' variables (e.g., concentrations & forcings).
 #'
 #' @param core Hector core object
-#' @param dates ector of dates, optional
+#' @param dates Vector of dates, optional
 #' @param scenario Scenario name, optional str
-#' @param write If TRUE, write the resulting dataframe to a csv file, optional bool
-#' @param outpath Absolute path of the output csv. Must be given if 'write' is true
+#' @param outpath Absolute path of the output csv. Output will only be written to
+#' csv if it is passed
 #' @return vars_all    Dataframe containing all Hector variables
 #' @family main user interface functions
 #' @export
-fetchvars_all <- function(core, dates=NULL, scenario=NULL, write=F, outpath=NULL) {
+fetchvars_all <- function(core, dates=NULL, scenario=NULL, outpath=NULL) {
 
     if (is.null(scenario)) {
         scenario <- core$name
@@ -294,9 +294,9 @@ fetchvars_all <- function(core, dates=NULL, scenario=NULL, write=F, outpath=NULL
 
     vars_all <- rbind(vars_inpt, vars_param, vars_outpt)
 
-    # If 'write' is TRUE, reshape the resulting data frame to a wide format
-    # and write to csv
-    if (write) {
+    # If 'outpath' is given, reshape the resulting data frame to a wide format
+    # and write csv to the specified path
+    if (outpath) {
 
         # Pivot the dataframe "wide" so years run along the x axis
         # Catch warning from reshape()
@@ -318,20 +318,13 @@ fetchvars_all <- function(core, dates=NULL, scenario=NULL, write=F, outpath=NULL
         # Set the column names for the re-ordered dataframe
         colnames(vars_all) <- col_names
 
-        # Check if the absolute path of the output csv file is valid
-        if (!is.null(outpath)) {
-            write.table(vars_all, outpath, col.names=col_names, row.names=F, sep=',')
-            cat("Output written to ", outpath, sep="")
-        } else {
-            # Write to a default location in the Hector R library output directory
-            base_path <- find.package("hector")
-            f_name <- "fetchvars_all.csv"
-            abs_path <- file.path(base_path, "output", f_name)
+        # Construct output filename and absolute path
+        f_name <- "fetchvars_all.csv"
+        abs_path <- file.path(outpath, f_name)
 
-            write.table(vars_all, abs_path, col.names=col_names, row.names=F, sep=',')
+        write.table(vars_all, abs_path, col.names=col_names, row.names=F, sep=',')
 
-            cat("Output written to ", abs_path, sep="")
-        }
+        message("Output written to ", abs_path)
     }
 
     invisible(vars_all)
