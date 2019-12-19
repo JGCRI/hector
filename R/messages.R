@@ -121,7 +121,6 @@ setvar <- function(core, dates, var, values, unit)
 #' @param dates Vector of dates to fetch
 #' @return rslt_tot Dataframe of variables
 #' @family fetchvars_all helper function
-#' @export
 cum_vars_input <- function(core, dates, lib_funcs) {
 
     # Use regex to find the indices of EMISSIONS_* function names
@@ -168,7 +167,6 @@ cum_vars_input <- function(core, dates, lib_funcs) {
 #' @param core Hector object
 #' @return rslt_tot Dataframe containing the parameters/variables
 #' @family fetchvars_all helper function
-#' @export
 cum_vars_params <- function(core) {
 
     # These variables don't follow a common naming rule (i.e., EMISSIONS_*),
@@ -196,7 +194,6 @@ cum_vars_params <- function(core) {
 #' @param dates Vector of dates
 #' @return rslt_tot Dataframe containing the variables
 #' @family fetchvars_all helper function
-#' @export
 cum_vars_output <- function(core, dates, lib_funcs) {
 
     # Atmospheric concentrationvars. Take date arg
