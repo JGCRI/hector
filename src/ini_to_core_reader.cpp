@@ -17,10 +17,18 @@
 #include <boost/algorithm/string/trim.hpp>
 
 // ANS: If using the R package, use Rcpp to call R's file processing
-// functions. Otherwise (e.g. if building standalone Hector), fall
-// back to boost::filesystem (which needs to be installed).
+// functions. Otherwise (e.g. if building standalone Hector), check if
+// the std::filesystem library is available (or the experimental version),
+// and finally fall back to boost::filesystem as a last resort (which then
+// needs to be installed).
 #ifdef USE_RCPP
 #include <Rcpp.h>
+#elif defined( __cpp_lib_filesystem )
+#include <filesystem>
+namespace fs = std:filesystem;
+#elif defined( __cpp_lib_experimental_filesystem ) || /* fall back for older Visual Studio */ defined( _MSC_VER )
+#include <experimental/filesystem>
+namespace fs = std::experimental::filesystem;
 #else
 #include <boost/filesystem.hpp>
 namespace fs = boost::filesystem;
