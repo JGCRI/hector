@@ -31,4 +31,16 @@ halounits <- 'Gg'
 unitstable <- rbind(data.frame(variable=hvars, units=hunits),
                     data.frame(variable=haloemis, units=halounits))
 
-devtools::use_data(unitstable, internal=TRUE, overwrite=TRUE)
+###### Get all available hector variables (as defined by data-raw/vars_all.txt)
+vars_all <- read.table("data-raw/vars_all.txt", header=T, as.is=T)
+
+# Split the variables into two lists: Those who can handle a date parameter
+# and those who cannot
+vars_date <- vars_all[which(vars_all$date_param == 1),][,1]
+vars_nodate <- vars_all[which(vars_all$date_param == 0),][,1]
+
+# Convert the strings representing variable names to capability strings
+vars_date <- lapply(vars_date, do.call, args=list())
+vars_nodate <- lapply(vars_nodate, do.call, args=list())
+
+usethis::use_data(unitstable, vars_date, vars_nodate, internal=TRUE, overwrite=TRUE)
