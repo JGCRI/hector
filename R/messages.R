@@ -150,24 +150,25 @@ fetchvars_all <- function(core, dates=NULL, scenario=NULL, outpath=NULL) {
                       }))
     
     # Get variables that DO NOT use date arg
-    rslt_nodated <- do.call(rbind,
+    rslt_nodate <- do.call(rbind,
                        lapply(vars_nodate, function(v) {
                             sendmessage(core, GETDATA(), v, NA, NA, '')
                        }))
     
-    vars_all <- rbind(rslt_nd, rslt_d)
+    rslt <- rbind(rslt_date, rslt_nodate)
+    rslt$scenario <- scenario
     
-    # If 'outpath' is given, reshape the resulting data frame to a wide format
-    # and write csv to the specified path
-    if (outpath) {
+    if (!is.null(outpath)) {
+        
+        print(colnames(rslt))
 
         # Pivot the dataframe "wide" so years run along the x axis
         # Catch warning from reshape()
-        suppressWarnings(vars_all <- reshape(vars_all, direction="wide",
+        suppressWarnings(rslt <- reshape(rslt, direction="wide",
                                      idvar=c("scenario", "variable", "units"), timevar="year"))
 
         # Clean up the column names (value.YYYY --> YYYY)
-        col_names <- colnames(vars_all)[-1:-3]
+        col_names <- colnames(rslt)[-1:-3]
         col_names <- sapply(col_names, function(x) sub("value.", "", x), USE.NAMES=F)
         col_names <- col_names[-length(col_names)]
 
@@ -175,20 +176,20 @@ fetchvars_all <- function(core, dates=NULL, scenario=NULL, outpath=NULL) {
 
         num_cols <- length(col_names)
 
-        # Move last column (initial_value) into 4th col position
-        vars_all <- vars_all[, c(1, 2, 3, num_cols, 5:num_cols-1)]
+        # Move last column (initial_value) into 4th col position & scenario into 1st col
+        rslt <- rslt[, c(3, 1, 2, num_cols, 5:num_cols-1)]
 
         # Set the column names for the re-ordered dataframe
-        colnames(vars_all) <- col_names
+        colnames(rslt) <- col_names
 
         # Construct output filename and absolute path
         f_name <- "fetchvars_all.csv"
         abs_path <- file.path(outpath, f_name)
 
-        write.table(vars_all, abs_path, col.names=col_names, row.names=F, sep=',')
+        write.table(rslt, abs_path, col.names=col_names, row.names=F, sep=',')
 
         message("Output written to ", abs_path)
     }
 
-    invisible(vars_all)
+    invisible(rslt)
 }
