@@ -770,7 +770,6 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     masstot = sum;
 
     // If user has supplied Ca values, adjust atmospheric C to match
-<<<<<<< HEAD
     if(core->inSpinup() ||
        ( Ca_constrain.size() && t <= Ca_constrain.lastdate() )) {
 
@@ -781,16 +780,11 @@ void SimpleNbox::stashCValues( double t, const double c[] )
             atmppmv.set(C0.value(U_PPMV_CO2), U_PPMV_CO2);
         }
         else {
-            H_LOG( logger, Logger::WARNING ) << "** Constraining atmospheric CO2 to user-supplied value" << std::endl;
+            H_LOG( logger, Logger::NOTICE ) << "** Constraining atmospheric CO2 to user-supplied value" << std::endl;
             atmos_cpool_to_match.set(Ca_constrain.get(t).value( U_PPMV_CO2 ) /
                                      PGC_TO_PPMVCO2, U_PGC);
             atmppmv.set(Ca_constrain.get(t).value(U_PPMV_CO2), U_PPMV_CO2);
         }
-=======
-    if( !core->inSpinup() && Ca_constrain.size() && t <= Ca_constrain.lastdate() ) {
-
-        H_LOG( logger, Logger::NOTICE ) << "** Constraining atmospheric CO2 to user-supplied value" << std::endl;
->>>>>>> Change log level to notice
 
         residual = atmos_c - atmos_cpool_to_match;
         H_LOG( logger,Logger::DEBUG ) << t << "- have " << Ca << " want " <<  atmppmv.value( U_PPMV_CO2 ) << std::endl;
