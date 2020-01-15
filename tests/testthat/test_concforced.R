@@ -93,17 +93,6 @@ test_that("Concentration-forced runs work for N2O", {
   })
 })
 
-test_that("Concentration-forced CO2 runs work", {
-  hc <- rcp45()
-  years <- 1850:2100
-  constrained_vals <- rep(300.0, length(years))
-  setvar(hc, years, "Ca_constrain", constrained_vals, "ppmv CO2")
-  invisible(reset(hc))
-  invisible(run(hc))
-  out <- fetchvars(hc, years, ATMOSPHERIC_CO2())
-  expect_equal(out$value, constrained_vals)
-})
-
 test_that("Concentration forcing through INI file works", {
 
   ini_txt <- readLines(system.file("input", "hector_rcp45.ini",
