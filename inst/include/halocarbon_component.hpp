@@ -77,11 +77,10 @@ private:
     
     tseries<unitval> emissions;     //! Time series of emissions, pptv
     tseries<unitval> Ha_ts;         //! Time series of (ambient) concentration, pptv
+    tseries<unitval> Ha_constraint; //! Concentration constraint, pptv
     unitval H0;                     //! Preindustrial concentration, pptv
     
     double molarMass;
-
-    bool emissions_forced;
 
     //! logger
     Logger logger;

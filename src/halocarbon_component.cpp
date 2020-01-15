@@ -55,15 +55,13 @@ void HalocarbonComponent::init( Core* coreptr ) {
     emissions.name = myGasName;
     molarMass = 0.0;
     H0.set( 0.0, U_PPTV );      //! Default is no preindustrial, but user can override
-
-    emissions_forced = true;
-   
+  
     //! \remark Inform core that we can provide forcing data
     core->registerCapability( D_RF_PREFIX+myGasName, getComponentName() );
     // inform core that we can accept emissions for this gas
     core->registerInput(myGasName+EMISSIONS_EXTENSION, getComponentName());
-    // inform core that we can accept concentrations for this gas
-    core->registerInput(myGasName+CONCENTRATION_EXTENSION, getComponentName());
+    // inform core that we can accept concentration constraints for this gas
+    core->registerInput(myGasName+CONC_CONSTRAINT_EXTENSION, getComponentName());
     
 }
 
@@ -99,7 +97,7 @@ void HalocarbonComponent::setData( const string& varName,
     
     try {
         const string emiss_var_name = myGasName + EMISSIONS_EXTENSION;
-        const string conc_var_name = myGasName + CONCENTRATION_EXTENSION;
+        const string conc_var_name = myGasName + CONC_CONSTRAINT_EXTENSION;
         
         if( varName == D_HC_TAU ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
@@ -116,9 +114,7 @@ void HalocarbonComponent::setData( const string& varName,
             emissions.set(data.date, data.getUnitval(U_GG));
         } else if( varName == conc_var_name ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            Ha_ts.set(data.date, data.getUnitval(U_PPTV));
-            emissions_forced = false;
-            emissions.truncate(0);
+            Ha_constraint.set(data.date, data.getUnitval(U_PPTV));
         } else if( varName == D_PREINDUSTRIAL_HC ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
             H0 = data.getUnitval(U_PPTV);
