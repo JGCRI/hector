@@ -263,12 +263,36 @@ test_that('Atmospheric CO2 concentrations can be constrained', {
     years <- 1850:2100
     constrained_values <- rep(300, length(years))
     setvar(hc, years, CA_CONSTRAIN(), constrained_values, getunits(CA_CONSTRAIN()))
-    reset(hc)
-    run(hc)
+    invisible(run(hc))
     out <- fetchvars(hc, years, ATMOSPHERIC_CO2())
     expect_equal(out$value, constrained_values)
 
 })
 
+test_that('Atmospheric CO2 constraint affects RF and temperature', {
 
+    # Checks for the regression reoported here:
+    # https://github.com/JGCRI/hector/pull/302#issuecomment-493242815
+    hc <- newcore(rcp45, suppresslogging = TRUE)
+    all_years <- 1750:2100
+    ca_years <- 1850:2100
+    ca_low <- rep(278, length(ca_years))
+    setvar(hc, ca_years, CA_CONSTRAIN(), values, getunits(CA_CONSTRAIN()))
+    invisible(run(hc))
+    out_ca_lo <- fetchvars(hc, ca_years, CA_CONSTRAIN())
+    expect_equal(out_ca_lo$value, values)
+    out_rf_lo <- fetchvars(hc, ca_years, RF_CO2())
+    out_tgav_lo <- fetchvars(hc, ca_years, GLOBAL_TEMP())
 
+    reset(hc)
+    setvar(hc, ca_years, CA_CONSTRAIN(), values * 3, getunits(CA_CONSTRAIN()))
+    invisible(run(hc))
+    out_ca_hi <- fetchvars(hc, ca_years, CA_CONSTRAIN())
+    expect_equal(out_ca_hi$value, values * 3)
+    out_rf_hi <- fetchvars(hc, ca_years, RF_CO2())
+    out_tgav_hi <- fetchvars(hc, ca_years, GLOBAL_TEMP())
+
+    expect_true(all(out_rf_hi$value > out_rf_lo$value))
+    expect_true(all(out_tgav_hi$value > out_tgav_lo$value))
+
+})

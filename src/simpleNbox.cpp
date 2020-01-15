@@ -34,6 +34,7 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
     lucEmissions.name = "lucEmissions";
     Ftalbedo.allowInterp( true );
     Ftalbedo.name = "albedo";
+    Ca_constrain.name = "Ca_constrain";
 
     // earth_c keeps track of how much fossil C is pulled out
     // so that we can do a mass-balance check throughout the run
@@ -90,6 +91,7 @@ void SimpleNbox::init( Core* coreptr ) {
     core->registerInput(D_F_LITTERD, getComponentName());
     core->registerInput(D_F_LUCV, getComponentName());
     core->registerInput(D_F_LUCD, getComponentName());
+    core->registerInput(D_CA_CONSTRAIN, getComponentName());
 }
 
 //------------------------------------------------------------------------------
@@ -261,6 +263,11 @@ void SimpleNbox::setData( const std::string &varName,
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
             H_ASSERT( biome == SNBOX_DEFAULT_BIOME, "atmospheric constraint must be global" );
             Ca_constrain.set( data.date, data.getUnitval( U_PPMV_CO2 ) );
+            // This is necessary because the usual place where this is set --
+            // `prepareToRun` -- is not called by `run`, so a sequence like
+            // `newcore` -> `setvar` -> `run` will result in `Ca_constrain` that
+            // cannot use interpolation.
+            Ca_constrain.allowPartialInterp( true );
         }
 
         // Fertilization
@@ -595,6 +602,9 @@ unitval SimpleNbox::getData(const std::string& varName,
     } else if( varNameParsed == D_LUC_EMISSIONS ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for luc emissions" );
         returnval = lucEmissions.get( date );
+    } else if( varNameParsed == D_CA_CONSTRAIN ) {
+        H_ASSERT( date != Core::undefinedIndex(), "Date required for atmospheric CO2 constraint" );
+        returnval = Ca_constrain.get( date );
     } else if( varNameParsed == D_NPP ) {
         // `sum_npp` works whether or not `date` is defined (if undefined, it
         // evaluates for the current date).
@@ -771,7 +781,7 @@ void SimpleNbox::stashCValues( double t, const double c[] )
 
     // If user has supplied Ca values, adjust atmospheric C to match
     if(core->inSpinup() ||
-       ( Ca_constrain.size() && t <= Ca_constrain.lastdate() )) {
+       ( Ca_constrain.size() && t <= Ca_constrain.lastdate() && t >= Ca_constrain.firstdate())) {
 
         unitval atmos_cpool_to_match;
         unitval atmppmv;
