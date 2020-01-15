@@ -277,18 +277,19 @@ test_that('Atmospheric CO2 constraint affects RF and temperature', {
     all_years <- 1750:2100
     ca_years <- 1850:2100
     ca_low <- rep(278, length(ca_years))
-    setvar(hc, ca_years, CA_CONSTRAIN(), values, getunits(CA_CONSTRAIN()))
+    setvar(hc, ca_years, CA_CONSTRAIN(), ca_low, getunits(CA_CONSTRAIN()))
     invisible(run(hc))
     out_ca_lo <- fetchvars(hc, ca_years, CA_CONSTRAIN())
-    expect_equal(out_ca_lo$value, values)
+    expect_equal(out_ca_lo$value, ca_low)
     out_rf_lo <- fetchvars(hc, ca_years, RF_CO2())
     out_tgav_lo <- fetchvars(hc, ca_years, GLOBAL_TEMP())
 
+    ca_hi <- ca_low * 3
     reset(hc)
-    setvar(hc, ca_years, CA_CONSTRAIN(), values * 3, getunits(CA_CONSTRAIN()))
+    setvar(hc, ca_years, CA_CONSTRAIN(), ca_hi, getunits(CA_CONSTRAIN()))
     invisible(run(hc))
     out_ca_hi <- fetchvars(hc, ca_years, CA_CONSTRAIN())
-    expect_equal(out_ca_hi$value, values * 3)
+    expect_equal(out_ca_hi$value, ca_hi)
     out_rf_hi <- fetchvars(hc, ca_years, RF_CO2())
     out_tgav_hi <- fetchvars(hc, ca_years, GLOBAL_TEMP())
 
