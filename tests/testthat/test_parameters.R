@@ -274,7 +274,6 @@ test_that('Atmospheric CO2 constraint affects RF and temperature', {
     # Checks for the regression reoported here:
     # https://github.com/JGCRI/hector/pull/302#issuecomment-493242815
     hc <- newcore(rcp45, suppresslogging = TRUE)
-    all_years <- 1750:2100
     ca_years <- 1850:2100
     ca_low <- rep(278, length(ca_years))
     setvar(hc, ca_years, CA_CONSTRAIN(), ca_low, getunits(CA_CONSTRAIN()))
@@ -295,5 +294,49 @@ test_that('Atmospheric CO2 constraint affects RF and temperature', {
 
     expect_true(all(out_rf_hi$value > out_rf_lo$value))
     expect_true(all(out_tgav_hi$value > out_tgav_lo$value))
+
+})
+
+test_that('Discontinuous constraint works', {
+
+    hc <- newcore(rcp45, suppresslogging = TRUE)
+    all_years <- seq(startdate(hc), enddate(hc))
+    ca_years_1 <- 1850:1860
+    ca_vals_1 <- rep(278, length(ca_years_1))
+    setvar(hc, ca_years_1, CA_CONSTRAIN(), ca_vals_1, getunits(CA_CONSTRAIN()))
+    ca_years_2 <- 1870:1880
+    ca_vals_2 <- rep(298, length(ca_years_2))
+    setvar(hc, ca_years_2, CA_CONSTRAIN(), ca_vals_2, getunits(CA_CONSTRAIN()))
+    invisible(run(hc))
+
+    # Make sure we can retrieve all these values
+    out_rf <- fetchvars(hc, all_years, RF_CO2())
+    out_ca <- fetchvars(hc, all_years, ATMOSPHERIC_CO2())
+
+    # RFs and concentrations during the constraint period are constant
+    expect_equal(length(unique(out_rf[out_rf$year %in% ca_years_1, "value"])), 1)
+    expect_equal(length(unique(out_rf[out_rf$year %in% ca_years_2, "value"])), 1)
+    expect_equal(out_ca[out_ca$year %in% ca_years_1, "value"], ca_vals_1)
+    expect_equal(out_ca[out_ca$year %in% ca_years_2, "value"], ca_vals_2)
+
+    # Expect CO2 concentration and RF to increase -- i.e. they are NOT constant
+    expect_true(out_rf[out_ca$year == 2000, "value"] >
+                    out_rf[out_ca$year == 1900, "value"])
+    expect_true(out_ca[out_ca$year == 2000, "value"] >
+                    out_ca[out_ca$year == 1900, "value"])
+
+    # You should be able to retrieve constraints that were set
+    expect_equal(fetchvars(hc, min(ca_years_1), CA_CONSTRAIN())$value, ca_vals_1[1])
+    expect_equal(fetchvars(hc, max(ca_years_1), CA_CONSTRAIN())$value, ca_vals_1[1])
+    expect_equal(fetchvars(hc, min(ca_years_2), CA_CONSTRAIN())$value, ca_vals_2[1])
+    expect_equal(fetchvars(hc, max(ca_years_2), CA_CONSTRAIN())$value, ca_vals_2[1])
+
+    err <- "No CO2 constraint for selected date"
+    # You should NOT be able to retrieve constraints before...
+    expect_error(fetchvars(hc, min(ca_years_1) - 1, CA_CONSTRAIN()), err)
+    # ...between...
+    expect_error(fetchvars(hc, max(ca_years_1) + 1, CA_CONSTRAIN()), err)
+    # ...or after the user-specified values.
+    expect_error(fetchvars(hc, max(ca_years_2) + 1, CA_CONSTRAIN()), err)
 
 })

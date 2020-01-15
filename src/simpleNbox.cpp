@@ -604,6 +604,7 @@ unitval SimpleNbox::getData(const std::string& varName,
         returnval = lucEmissions.get( date );
     } else if( varNameParsed == D_CA_CONSTRAIN ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for atmospheric CO2 constraint" );
+        H_ASSERT( Ca_constrain.exists(date), "No CO2 constraint for selected date" );
         returnval = Ca_constrain.get( date );
     } else if( varNameParsed == D_NPP ) {
         // `sum_npp` works whether or not `date` is defined (if undefined, it
@@ -781,7 +782,7 @@ void SimpleNbox::stashCValues( double t, const double c[] )
 
     // If user has supplied Ca values, adjust atmospheric C to match
     if(core->inSpinup() ||
-       ( Ca_constrain.size() && t <= Ca_constrain.lastdate() && t >= Ca_constrain.firstdate())) {
+       ( Ca_constrain.size() && Ca_constrain.exists(t) )) {
 
         unitval atmos_cpool_to_match;
         unitval atmppmv;
