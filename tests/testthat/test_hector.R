@@ -230,12 +230,16 @@ test_that('Test RF output.', {
 })
 
 test_that("Test atmosphere -> land and ocean C flux", {
-    hc <- newcore(file.path(inputdir, 'hector_rcp45.ini'), suppresslogging = TRUE)
+    hc <- newcore(file.path(inputdir, 'hector_rcp45.ini'),
+                  suppresslogging = TRUE)
     run(hc, 2100)
 
-    result <- fetchvars(hc, dates = 1750:2100,
-                        c(LAND_CFLUX(), OCEAN_CFLUX()),
-                        "Pg C year-1")
-    expect_true(is.data.frame(result))
-    expect_false(all(result$value == 0))
+    yrs <- 1750:2100
+    out_land <- fetchvars(hc, dates = yrs, LAND_CFLUX(), "Pg C year-1")
+    out_ocean <- fetchvars(hc, dates = yrs, OCEAN_CFLUX(), "Pg C year-1")
+
+    # After 1960, land is consistently a C sinks
+    expect_true(all(out_land[out_land$year >= 1960, "value"] > 0))
+    # Ocean is a sink starting in pre-industrial
+    expect_true(all(out_ocean[out_ocean$year >= 1850, "value"] > 0))
 })
