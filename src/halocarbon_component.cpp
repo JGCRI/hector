@@ -58,6 +58,10 @@ void HalocarbonComponent::init( Core* coreptr ) {
   
     //! \remark Inform core that we can provide forcing data
     core->registerCapability( D_RF_PREFIX+myGasName, getComponentName() );
+    //! \remark Inform core that we can provide concentrations
+    core->registerCapability( myGasName+CONCENTRATION_EXTENSION, getComponentName() );
+    //! \remark Inform core that we can provide concentration constraints
+    core->registerCapability( myGasName+CONC_CONSTRAINT_EXTENSION, getComponentName() );
     // inform core that we can accept emissions for this gas
     core->registerInput(myGasName+EMISSIONS_EXTENSION, getComponentName());
     // inform core that we can accept concentration constraints for this gas
@@ -110,7 +114,6 @@ void HalocarbonComponent::setData( const string& varName,
             molarMass = data.getUnitval(U_UNDEFINED);
         } else if( varName == emiss_var_name ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            emissions_forced = true;
             emissions.set(data.date, data.getUnitval(U_GG));
         } else if( varName == conc_var_name ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
@@ -154,7 +157,10 @@ void HalocarbonComponent::run( const double runToDate ) throw ( h_exception ) {
     unitval Ha(Ha_ts.get(oldDate));
     
     // If emissions-forced, calculate concentration from emissions and lifespan.
-    if (emissions_forced) {
+    if ( Ha_constraint.size() && Ha_constraint.exists( runToDate ) ) {
+        // Concentration-forced. Just grab the current value from the time series.
+        Ha = Ha_constraint.get(runToDate);
+    } else {
         const double timestep = 1.0;
         const double alpha = 1 / tau;
 
@@ -166,12 +172,10 @@ void HalocarbonComponent::run( const double runToDate ) throw ( h_exception ) {
         // Update the atmospheric concentration, accounting for this delta and exponential decay
         double expfac = exp(-alpha);
         Ha = Ha*expfac + concDeltaEmiss*tau * (1.0-expfac);
-        H_LOG( logger, Logger::DEBUG ) << "date: " << runToDate << " concentration: "<< Ha << endl;
-        Ha_ts.set(runToDate, Ha);
-    } else {
-        // Concentration-forced. Just grab the current value from the time series.
-        Ha = Ha_ts.get(runToDate);
     }
+
+    H_LOG( logger, Logger::DEBUG ) << "date: " << runToDate << " concentration: "<< Ha << endl;
+    Ha_ts.set(runToDate, Ha);
 
     // Calculate radiative forcing    TODO: this should be moved to forcing component
     unitval rf;
@@ -207,17 +211,14 @@ unitval HalocarbonComponent::getData( const std::string& varName,
         returnval = Ha_ts.get( getdate );
     }
     else if( varName == myGasName+EMISSIONS_EXTENSION ) {
-        H_ASSERT( date != Core::undefinedIndex(), "Date required for halocarbon emissions" );
-        returnval = emissions.get( getdate );
-    }
-    else if( varName == D_HC_CONCENTRATION ) {
-        returnval = Ha_ts.get(getdate);
-    }
-    else if( varName == myGasName+EMISSIONS_EXTENSION ) {
-        if( getdate >= emissions.firstdate() )
+        if( emissions.exists( getdate ) )
             returnval = emissions.get( getdate );
         else
             returnval.set( 0.0, U_GG );
+    }
+    else if( varName == myGasName+CONC_CONSTRAINT_EXTENSION ) {
+        H_ASSERT( date != Core::undefinedIndex(), "Date required for halocarbon emissions" );
+        returnval = Ha_constraint.get( getdate );
     }
     else {
         H_THROW( "Caller is requesting unknown variable: " + varName );
@@ -232,9 +233,7 @@ void HalocarbonComponent::reset(double time) throw(h_exception)
     // reset time counter and truncate outputs
     oldDate = time;
     hc_forcing.truncate(time);
-    if (emissions_forced) {
-        Ha_ts.truncate(time);
-    }
+    Ha_ts.truncate(time);
     H_LOG(logger, Logger::NOTICE)
         << getComponentName() << " reset to time= " << time << "\n";
 }

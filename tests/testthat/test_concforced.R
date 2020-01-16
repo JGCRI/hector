@@ -8,24 +8,20 @@ test_that("Concentration-forced runs work for halocarbons", {
   invisible(run(hc))
   dates <- seq(startdate(hc), getdate(hc))
   outvars <- c(GLOBAL_TEMP(), "HFC23_concentration")
+  constvar <-  "HFC23_concentration_constraint"
   out1 <- fetchvars(hc, dates, outvars)
   conc1 <- subset(out1, variable == outvars[2])
   emiss1 <- fetchvars(hc, dates, "HFC23_emissions")
-  setvar(hc, conc1$year, outvars[2], conc1$value, conc1$units[1])
+  setvar(hc, conc1$year, constvar, conc1$value, conc1$units[1])
   invisible(reset(hc))
   invisible(run(hc))
   out2 <- fetchvars(hc, dates, outvars)
   expect_equivalent(out1$value, out2$value, tol = 1e-10)
-  expect_error(
-    fetchvars(hc, dates, "HFC23_emissions"),
-    "time series data (HFC23) must have size>1",
-    fixed = TRUE
-  )
 
   test_that("Increasing HFC23 concentrations increases global temp", {
     newhfc <- conc1$value * 1.05
-    setvar(hc, conc1$year, outvars[2], newhfc, conc1$units[1])
-    expect_equal(fetchvars(hc, conc1$year, outvars[2])$value, newhfc)
+    setvar(hc, conc1$year, constvar, newhfc, conc1$units[1])
+    expect_equal(fetchvars(hc, conc1$year, constvar)$value, newhfc)
     invisible(reset(hc))
     invisible(run(hc))
     newout <- fetchvars(hc, dates, outvars)
@@ -123,7 +119,9 @@ test_that("Concentration forcing through INI file works", {
   names(wide) <- gsub("value\\.", "", names(wide))
   names(wide)[names(wide) == "year"] <- "Date"
   names(wide)[names(wide) == "Ca"] <- "Ca_constrain"
-  wide <- wide
+  names(wide)[grep("_concentration$", names(wide))] <- paste0(
+    names(wide)[grep("_concentration$", names(wide))], "_constraint"
+  )
 
   tmp_dir <- tempfile()
   dir.create(tmp_dir, showWarnings = FALSE)
@@ -146,7 +144,7 @@ test_that("Concentration forcing through INI file works", {
   for (h in halocarbs) {
     ini_txt <- append(
       ini_txt,
-      paste0(h, "_concentration=csv:", tmpfile),
+      paste0(h, "_concentration_constraint=csv:", tmpfile),
       grep(paste0("\\[", h, "_halocarbon", "\\]"), ini_txt)
     )
   }
