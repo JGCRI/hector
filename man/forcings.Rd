@@ -90,7 +90,8 @@ instead of the more natural looking \code{GETDATA}.
 \link{haloforcings} for forcings from halocarbons.
 
 Other capability identifiers: \code{\link{carboncycle}},
-  \code{\link{concentrations}}, \code{\link{emissions}},
+  \code{\link{concentrations}}, \code{\link{constraints}},
+  \code{\link{emissions}}, \code{\link{haloconstrain}},
   \code{\link{haloemiss}}, \code{\link{haloforcings}},
   \code{\link{methane}}, \code{\link{ocean}},
   \code{\link{parameters}}, \code{\link{so2}},
