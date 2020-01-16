@@ -27,8 +27,14 @@ Building and running Hector
 Programming topics
 --------------------
 * Learn how to create a new [component](AddNewComponent.html) or [variable](AddNewVariable.html) in Hector.
-* Hector internals: [unitvals](Unitvals.html), [time series](TimeSeries.html), data passing, the component API.
+* Hector internals: [unitvals](Unitvals.html), [time series](TimeSeries.html), data passing, the [component API](ComponentAPI.html) .
 * The Hector [style guide](StyleGuide.html).
+* The Hector [external API](Hector-External-API.html)
+
+Other topics
+------------
+* [Units for emissions passed into Hector](Hector-Units.html)
+* [Hector message targets](Hector-Message-Targets.html)
 
 Publications
 --------------------
