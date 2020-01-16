@@ -38,4 +38,5 @@ Other topics
 
 Publications
 --------------------
-* Manuscript describing the initial version of Hector is [online](http://www.geosci-model-dev-discuss.net/7/7075/2014/gmdd-7-7075-2014.html).
+* Manuscript describing the initial version of Hector: [Hartin et al. (2015)](http://www.geosci-model-dev-discuss.net/7/7075/2014/gmdd-7-7075-2014.html).
+* Manuscript describing Hector 2.0 (with DOECLIM) and its applications for sea level rise: [Vega-Westhoff et al. (2019)](https://doi.org/10.1029/2018EF001082)
