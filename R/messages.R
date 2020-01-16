@@ -159,16 +159,15 @@ fetchvars_all <- function(core, dates=NULL, scenario=NULL, outpath=NULL) {
     rslt$scenario <- scenario
     
     if (!is.null(outpath)) {
-        
-        print(colnames(rslt))
 
         # Pivot the dataframe "wide" so years run along the x axis
         # Catch warning from reshape()
-        suppressWarnings(rslt <- reshape(rslt, direction="wide",
-                                     idvar=c("scenario", "variable", "units"), timevar="year"))
+        suppressWarnings(rslt_pretty <- reshape(rslt, direction="wide",
+                                        idvar=c("scenario", "variable", "units"),
+                                        timevar="year"))
 
         # Clean up the column names (value.YYYY --> YYYY)
-        col_names <- colnames(rslt)[-1:-3]
+        col_names <- colnames(rslt_pretty)[-1:-3]
         col_names <- sapply(col_names, function(x) sub("value.", "", x), USE.NAMES=F)
         col_names <- col_names[-length(col_names)]
 
@@ -177,16 +176,16 @@ fetchvars_all <- function(core, dates=NULL, scenario=NULL, outpath=NULL) {
         num_cols <- length(col_names)
 
         # Move last column (initial_value) into 4th col position & scenario into 1st col
-        rslt <- rslt[, c(3, 1, 2, num_cols, 5:num_cols-1)]
+        rslt_pretty <- rslt_pretty[, c(3, 1, 2, num_cols, 5:num_cols-1)]
 
         # Set the column names for the re-ordered dataframe
-        colnames(rslt) <- col_names
+        colnames(rslt_pretty) <- col_names
 
         # Construct output filename and absolute path
         f_name <- "fetchvars_all.csv"
         abs_path <- file.path(outpath, f_name)
 
-        write.table(rslt, abs_path, col.names=col_names, row.names=F, sep=',')
+        write.table(rslt_pretty, abs_path, col.names=col_names, row.names=F, sep=',')
 
         message("Output written to ", abs_path)
     }
