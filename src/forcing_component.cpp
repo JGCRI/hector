@@ -365,10 +365,12 @@ void ForcingComponent::run( const double runToDate ) throw ( h_exception ) {
                 }
         }
 
+        const double BCOC_baseyear = 1850;
+
         // ---------- Black carbon ----------
         if( core->checkCapability( D_EMISSIONS_BC ) ) {
             double fbc = 0.0743 * ( core->sendMessage( M_GETDATA, D_EMISSIONS_BC, message_data( runToDate ) ).value( U_TG ) -
-                                    core->sendMessage( M_GETDATA, D_EMISSIONS_BC, message_data( 1850 ) ).value( U_TG ) );
+                                    core->sendMessage( M_GETDATA, D_EMISSIONS_BC, message_data( BCOC_baseyear ) ).value( U_TG ) );
             forcings[D_RF_BC].set( fbc, U_W_M2 );
             // includes both indirect and direct forcings from Bond et al 2013, Journal of Geophysical Research Atmo (table C1 - Central)
         }
@@ -376,7 +378,7 @@ void ForcingComponent::run( const double runToDate ) throw ( h_exception ) {
         // ---------- Organic carbon ----------
         if( core->checkCapability( D_EMISSIONS_OC ) ) {
             double foc = -0.0128 * (core->sendMessage( M_GETDATA, D_EMISSIONS_OC, message_data( runToDate ) ).value( U_TG ) -
-                                    core->sendMessage( M_GETDATA, D_EMISSIONS_OC, message_data( 1850 ) ).value( U_TG ) );
+                                    core->sendMessage( M_GETDATA, D_EMISSIONS_OC, message_data( BCOC_baseyear ) ).value( U_TG ) );
             forcings[D_RF_OC].set( foc, U_W_M2 );
             // includes both indirect and direct forcings from Bond et al 2013, Journal of Geophysical Research Atmo (table C1 - Central).
             // The fossil fuel and biomass are weighted (-4.5) then added to the snow and clouds for a total of -12.8 (personal communication Steve Smith, PNNL)
