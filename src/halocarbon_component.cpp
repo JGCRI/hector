@@ -58,7 +58,6 @@ void HalocarbonComponent::init( Core* coreptr ) {
 
     //! \remark Inform core that we can provide forcing data
     core->registerCapability( D_RF_PREFIX+myGasName, getComponentName() );
-    core->registerCapability(myGasName+EMISSIONS_EXTENSION, getComponentName());
     // inform core that we can accept emissions for this gas
     core->registerInput(myGasName+EMISSIONS_EXTENSION, getComponentName());
 
@@ -192,7 +191,7 @@ unitval HalocarbonComponent::getData( const std::string& varName,
     else if( varName == D_HC_CONCENTRATION ) {
         returnval = Ha_ts.get(getdate);
     }
-    else if( varName == myGasName+EMISSIONS_EXTENSION ) {
+    else if( varName == D_HC_EMISSION ) {
         if( getdate >= emissions.firstdate() )
             returnval = emissions.get( getdate );
         else

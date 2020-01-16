@@ -58,9 +58,6 @@ void OHComponent::init( Core* coreptr ) {
 
      // Inform core what data we can provide
     core->registerCapability( D_LIFETIME_OH, getComponentName() );
-    core->registerCapability( D_EMISSIONS_CO, getComponentName() );
-    core->registerCapability( D_EMISSIONS_NMVOC, getComponentName() );
-    core->registerCapability( D_EMISSIONS_NOX, getComponentName() );
     // Register inputs accepted.  Note that more than one component
     // can accept an input
     core->registerInput(D_EMISSIONS_CO, getComponentName());
@@ -181,15 +178,6 @@ unitval OHComponent::getData( const std::string& varName,
     if( varName == D_LIFETIME_OH ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for OH lifetime" );
         returnval = TAU_OH.get( date );
-    } else if (varName == D_EMISSIONS_CO) {
-        H_ASSERT( date != Core::undefinedIndex(), "Date required for CO Emissions" );
-        returnval = CO_emissions.get( date );
-    } else if (varName == D_EMISSIONS_NMVOC) {
-        H_ASSERT( date != Core::undefinedIndex(), "Date required for NMVOC Emissions" );
-        returnval = NMVOC_emissions.get( date );
-    } else if (varName == D_EMISSIONS_NOX) {
-        H_ASSERT( date != Core::undefinedIndex(), "Date required for NOX Emissions" );
-        returnval = NOX_emissions.get( date );
     } else {
         H_THROW( "Caller is requesting unknown variable: " + varName );
     }

@@ -70,7 +70,3 @@ vignettes/rsconnect
 
 # vignette caches
 /vignettes/*_cache
-
-# Hidden VS directories
-.vs/
-src/.vs/
