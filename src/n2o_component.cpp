@@ -61,7 +61,6 @@ void N2OComponent::init( Core* coreptr ) {
     // Inform core what data we can provide
     core->registerCapability( D_ATMOSPHERIC_N2O, getComponentName() );
     core->registerCapability( D_PREINDUSTRIAL_N2O, getComponentName() );
-    core->registerCapability( D_EMISSIONS_N2O, getComponentName() );
     // register data we can accept as input
     core->registerInput(D_EMISSIONS_N2O, getComponentName());
 }
@@ -172,9 +171,6 @@ unitval N2OComponent::getData( const std::string& varName,
     } else if( varName == D_PREINDUSTRIAL_N2O ) {
         H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for preindustrial N2O" );
         returnval = N0;
-    } else if (varName == D_EMISSIONS_N2O) {
-        H_ASSERT( date != Core::undefinedIndex(), "Date required for N2O Emissions" );
-        returnval = N2O_emissions.get( date );
     } else {
         H_THROW( "Caller is requesting unknown variable: " + varName );
     }

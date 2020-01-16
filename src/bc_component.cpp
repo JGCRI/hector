@@ -52,7 +52,6 @@ void BlackCarbonComponent::init( Core* coreptr ) {
 
     // Inform core what data we can accept
     core->registerInput(D_EMISSIONS_BC, getComponentName());
-    core->registerCapability(D_EMISSIONS_BC, getComponentName());
 }
 
 //------------------------------------------------------------------------------

@@ -56,7 +56,6 @@ void CH4Component::init( Core* coreptr ) {
     // Inform core what data we can provide
     core->registerCapability( D_ATMOSPHERIC_CH4, getComponentName() );
     core->registerCapability( D_PREINDUSTRIAL_CH4, getComponentName() );
-    core->registerCapability( D_NATURAL_CH4, getComponentName() );
     core->registerDependency( D_LIFETIME_OH, getComponentName() );
     // ...and what input data that we can accept
     core->registerInput(D_EMISSIONS_CH4, getComponentName());
@@ -176,9 +175,6 @@ unitval CH4Component::getData( const std::string& varName,
     } else if( varName == D_EMISSIONS_CH4 ) {
         H_ASSERT(  date != Core::undefinedIndex(), "Date not allowed for CH4 emissions" );
         returnval = CH4_emissions.get( date );
-    } else if ( varName == D_NATURAL_CH4 ) {
-        H_ASSERT(  date == Core::undefinedIndex(), "Date not supported for natural CH4" );
-        returnval = CH4N;
     } else {
         H_THROW( "Caller is requesting unknown variable: " + varName );
     }

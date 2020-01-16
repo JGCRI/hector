@@ -81,18 +81,6 @@ void OceanComponent::init( Core* coreptr ) {
     core->registerCapability( D_TU, getComponentName() );
     core->registerCapability( D_TWI, getComponentName() );
     core->registerCapability( D_TID, getComponentName() );
-    core->registerCapability( D_PCO2_HL, getComponentName() );
-    core->registerCapability( D_PCO2_LL, getComponentName() );
-    core->registerCapability( D_PH_HL, getComponentName() );
-    core->registerCapability( D_PH_LL, getComponentName() );
-    core->registerCapability( D_ATM_OCEAN_FLUX_HL, getComponentName() );
-    core->registerCapability( D_ATM_OCEAN_FLUX_LL, getComponentName() );
-    core->registerCapability( D_CO3_HL, getComponentName() );
-    core->registerCapability( D_CO3_LL, getComponentName() );
-    core->registerCapability( D_DIC_HL, getComponentName() );
-    core->registerCapability( D_DIC_LL, getComponentName() );
-    core->registerCapability( D_TEMP_HL, getComponentName() );
-    core->registerCapability( D_TEMP_LL, getComponentName() );
 }
 
 //------------------------------------------------------------------------------

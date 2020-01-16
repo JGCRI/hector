@@ -59,7 +59,6 @@ void OzoneComponent::init( Core* coreptr ) {
 
 	// Inform core what data we can provide
     core->registerCapability(  D_ATMOSPHERIC_O3, getComponentName() );
-    core->registerCapability(  D_PREINDUSTRIAL_O3, getComponentName() );
     // Register the emissions we accept (note that OH component also
     // accepts these.  That's ok
     core->registerInput(D_EMISSIONS_CO, getComponentName());
@@ -158,9 +157,6 @@ unitval OzoneComponent::getData( const std::string& varName,
     if( varName == D_ATMOSPHERIC_O3 ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for O3" ); //== is a comparision
 		returnval = O3.get( date );
-    } else if ( varName == D_PREINDUSTRIAL_O3 ) {
-        H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for preindustrial O3" );
-        returnval = PO3;
     } else {
         H_THROW( "Caller is requesting unknown variable: " + varName );
     }
