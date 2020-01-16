@@ -167,6 +167,7 @@
 #define D_ATMOSPHERIC_N2O       "N2O"
 #define D_PREINDUSTRIAL_N2O     "N0"
 #define D_EMISSIONS_N2O         "N2O_emissions"
+#define D_CONSTRAINT_N2O        "N2O_constrain"
 #define D_CONVERSION_N2O        "UC_N2O"
 #define D_INITIAL_LIFETIME_N2O  "TN2O0"
 #define D_NAT_EMISSIONS_N2O     "N2O_natural_emissions"

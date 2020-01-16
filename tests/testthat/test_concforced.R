@@ -62,23 +62,18 @@ test_that("Concentration-forced runs work for N2O", {
   out1 <- fetchvars(hc, dates, outvars)
   conc1 <- subset(out1, variable == outvars[2])
   ## emiss1 <- fetchvars(hc, dates, EMISSIONS_N2O())
-  setvar(hc, conc1$year, outvars[2], conc1$value, conc1$units[1])
+  setvar(hc, conc1$year, "N2O_constrain", conc1$value, conc1$units[1])
   invisible(reset(hc))
   invisible(run(hc))
   out2 <- fetchvars(hc, dates, outvars)
   expect_equivalent(out1$value, out2$value, tol = 1e-10)
-  expect_error(
-    fetchvars(hc, dates, EMISSIONS_N2O()),
-    "time series data (N2O) must have size>1",
-    fixed = TRUE
-  )
 
   test_that("Increasing N2O concentrations increases global temp", {
     newhfc <- conc1$value * 1.05
-    setvar(hc, conc1$year, outvars[2], newhfc, conc1$units[1])
-    expect_equal(fetchvars(hc, conc1$year, outvars[2])$value, newhfc)
+    setvar(hc, conc1$year, "N2O_constrain", newhfc, conc1$units[1])
     invisible(reset(hc))
     invisible(run(hc))
+    expect_equal(fetchvars(hc, conc1$year, outvars[2])$value, newhfc)
     newout <- fetchvars(hc, 2000:2100, outvars)
     expect_true(all(newout$value >= subset(out2, year %in% 2000:2100)$value))
   })
@@ -115,6 +110,7 @@ test_that("Concentration forcing through INI file works", {
   names(wide)[names(wide) == "year"] <- "Date"
   names(wide)[names(wide) == "Ca"] <- "Ca_constrain"
   names(wide)[names(wide) == "CH4"] <- "CH4_constrain"
+  names(wide)[names(wide) == "N2O"] <- "N2O_constrain"
   names(wide)[grep("_concentration$", names(wide))] <- paste0(
     names(wide)[grep("_concentration$", names(wide))], "_constraint"
   )
@@ -127,7 +123,7 @@ test_that("Concentration forcing through INI file works", {
 
   ini_txt <- append(
     ini_txt,
-    paste0("N2O=csv:", tmpfile),
+    paste0("N2O_constrain=csv:", tmpfile),
     grep("\\[N2O\\]", ini_txt)
   )
 
