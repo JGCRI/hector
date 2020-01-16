@@ -232,29 +232,28 @@ test_that('Test RF output.', {
 
 test_that('Test fetchvars_all.', {
     year_range <- 1745:2100
-    
+
     core <- newcore(file.path(inputdir, 'hector_rcp45.ini'), suppresslogging = TRUE)
     run(core, max(year_range))
-    
+
     # Variables to check, retrieved using fetchvars_all
     test_vars <- fetchvars_all(core, dates = year_range)
-    
+
     # Use the established fetchvars function to get some variable values to compare
     # to those returned by fetchvars_all
-    vars_date <- c(EMISSIONS_BC(), EMISSIONS_CH4(), EMISSIONS_CO(), LUC_EMISSIONS(),
-                   LAND_AIR_TEMP(), ATMOSPHERIC_C(), ATMOSPHERIC_N2O(), FLUX_MIXED(),
-                   EMISSIONS_HFC143A())
-    vars_nodate <- c(ATM_OCEAN_FLUX_HL(), PH_LL(), TEMP_HL())
-    
+    vars_date <- c(EMISSIONS_BC(), EMISSIONS_CH4(), LUC_EMISSIONS(),
+                   LAND_AIR_TEMP(), ATMOSPHERIC_C(), ATMOSPHERIC_N2O(), FLUX_MIXED())
+    vars_nodate <- c(OCEAN_SURFACE_TEMP())
+
     rslt_date <- fetchvars(core, year_range, vars_date)
     rslt_nodate <- do.call(rbind,
                            lapply(vars_nodate, function(v) {
                                sendmessage(core, GETDATA(), v, NA, NA, '')
                            }))
     rslt_nodate$scenario <- rslt_date$scenario[1]
-    
+
     control_vars <- rbind(rslt_date, rslt_nodate)
-    
+
     # Compare each variable retrieved by fetchvars_all to the same variable retrieved
     # by fetchvars
     lapply(c(vars_date, vars_nodate), function(v) {
