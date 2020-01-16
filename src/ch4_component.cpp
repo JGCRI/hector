@@ -30,8 +30,6 @@ CH4Component::CH4Component() {
     CH4_emissions.name = CH4_COMPONENT_NAME; 
     CH4.allowInterp( true );
     CH4.name = D_ATMOSPHERIC_CH4;
-
-    emissions_forced = false;
 }
 
 //------------------------------------------------------------------------------
@@ -58,10 +56,11 @@ void CH4Component::init( Core* coreptr ) {
     // Inform core what data we can provide
     core->registerCapability( D_ATMOSPHERIC_CH4, getComponentName() );
     core->registerCapability( D_PREINDUSTRIAL_CH4, getComponentName() );
+    core->registerCapability( D_CONSTRAINT_CH4, getComponentName() );
     core->registerDependency( D_LIFETIME_OH, getComponentName() ); 
     // ...and what input data that we can accept
     core->registerInput(D_EMISSIONS_CH4, getComponentName());
-    core->registerInput(D_ATMOSPHERIC_CH4, getComponentName());
+    core->registerInput(D_CONSTRAINT_CH4, getComponentName());
     core->registerInput(D_PREINDUSTRIAL_CH4, getComponentName());
 }
 
@@ -98,7 +97,6 @@ void CH4Component::setData( const string& varName,
             M0 = data.getUnitval( U_PPBV_CH4 );
          } else if( varName == D_EMISSIONS_CH4 ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            emissions_forced = true;
             CH4_emissions.set(data.date, data.getUnitval( U_TG_CH4 ));
         } else if( varName == D_LIFETIME_SOIL ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
@@ -112,11 +110,9 @@ void CH4Component::setData( const string& varName,
          } else if( varName == D_NATURAL_CH4 ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
             CH4N = data.getUnitval( U_TG_CH4 );
-         } else if( varName == D_ATMOSPHERIC_CH4 ) {
-            H_ASSERT( data.date != Core::undefinedIndex(), "date required for CH4 concentration" );
-            CH4.set( data.date, data.getUnitval( U_PPBV_CH4 ) );
-            emissions_forced = false;
-            CH4_emissions.truncate(0);
+         } else if( varName == D_CONSTRAINT_CH4 ) {
+            H_ASSERT( data.date != Core::undefinedIndex(), "date required for CH4 concentration constraint" );
+            CH4_constrain.set( data.date, data.getUnitval( U_PPBV_CH4 ) );
     }
         else {
             H_THROW( "Unknown variable name while parsing " + getComponentName() + ": "
@@ -133,6 +129,10 @@ void CH4Component::prepareToRun() throw ( h_exception ) {
     
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
     oldDate = core->getStartDate();
+    if ( CH4_constrain.size() && CH4_constrain.exists( oldDate ) ) {
+        H_LOG( logger, Logger::WARNING ) << "Overwriting preindustrial CH4 value with CH4 constraint value" << std::endl;
+        M0 = CH4_constrain.get( oldDate );
+    }
     CH4.set( oldDate, M0 );  // set the first year's value
  }
 
@@ -141,7 +141,9 @@ void CH4Component::prepareToRun() throw ( h_exception ) {
 void CH4Component::run( const double runToDate ) throw ( h_exception ) {
 	H_ASSERT( !core->inSpinup() && runToDate-oldDate == 1, "timestep must equal 1" );
 
-    if (emissions_forced) {
+    if ( CH4_constrain.size() && CH4_constrain.exists( runToDate ) ) {
+        CH4.set( runToDate,  CH4_constrain.get( runToDate ) );
+    } else {
 
         // modified from Wigley et al, 2002
         // https://doi.org/10.1175/1520-0442(2002)015%3C2690:RFDTRG%3E2.0.CO;2
@@ -189,6 +191,9 @@ unitval CH4Component::getData( const std::string& varName,
     } else if( varName == D_EMISSIONS_CH4 ) {
         H_ASSERT(  date != Core::undefinedIndex(), "Date not allowed for CH4 emissions" );
         returnval = CH4_emissions.get( date );
+    } else if( varName == D_CONSTRAINT_CH4 ) {
+        H_ASSERT(  date != Core::undefinedIndex(), "Date not allowed for CH4 constraint" );
+        returnval = CH4_constrain.get( date );
     } else {
         H_THROW( "Caller is requesting unknown variable: " + varName );
     }
@@ -200,9 +205,7 @@ void CH4Component::reset(double time) throw(h_exception) {
     // reset the internal time counter and truncate concentration time
     // series
     oldDate = time;
-    if (emissions_forced) {
-        CH4.truncate(time);
-    }
+    CH4.truncate(time);
     H_LOG(logger, Logger::NOTICE) << getComponentName() << " reset to time= " << time << "\n";
 }
 

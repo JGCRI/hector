@@ -21,9 +21,9 @@ test_that("Concentration-forced runs work for halocarbons", {
   test_that("Increasing HFC23 concentrations increases global temp", {
     newhfc <- conc1$value * 1.05
     setvar(hc, conc1$year, constvar, newhfc, conc1$units[1])
-    expect_equal(fetchvars(hc, conc1$year, constvar)$value, newhfc)
     invisible(reset(hc))
     invisible(run(hc))
+    expect_equal(fetchvars(hc, conc1$year, outvars[2])$value, newhfc)
     newout <- fetchvars(hc, dates, outvars)
     expect_true(all(newout$value >= out2$value))
   })
@@ -37,24 +37,19 @@ test_that("Concentration-forced runs work for CH4", {
   out1 <- fetchvars(hc, dates, outvars)
   conc1 <- subset(out1, variable == outvars[2])
   emiss1 <- fetchvars(hc, dates, EMISSIONS_CH4())
-  setvar(hc, conc1$year, outvars[2], conc1$value, conc1$units[1])
+  setvar(hc, conc1$year, "CH4_constrain", conc1$value, conc1$units[1])
   invisible(reset(hc))
   invisible(run(hc))
   out2 <- fetchvars(hc, dates, outvars)
   expect_equivalent(out1$value, out2$value, tol = 1e-10)
-  expect_error(
-    fetchvars(hc, dates, EMISSIONS_CH4()),
-    "time series data (CH4) must have size>1",
-    fixed = TRUE
-  )
 
   test_that("Increasing CH4 concentrations increases global temp", {
     newhfc <- conc1$value * 1.05
-    setvar(hc, conc1$year, outvars[2], newhfc, conc1$units[1])
-    expect_equal(fetchvars(hc, conc1$year, outvars[2])$value, newhfc)
+    setvar(hc, conc1$year, "CH4_constrain", newhfc, conc1$units[1])
     invisible(reset(hc))
     invisible(run(hc))
     newout <- fetchvars(hc, 2000:2100, outvars)
+    expect_equal(fetchvars(hc, conc1$year, outvars[2])$value, newhfc)
     expect_true(all(newout$value >= subset(out2, year %in% 2000:2100)$value))
   })
 })
@@ -119,6 +114,7 @@ test_that("Concentration forcing through INI file works", {
   names(wide) <- gsub("value\\.", "", names(wide))
   names(wide)[names(wide) == "year"] <- "Date"
   names(wide)[names(wide) == "Ca"] <- "Ca_constrain"
+  names(wide)[names(wide) == "CH4"] <- "CH4_constrain"
   names(wide)[grep("_concentration$", names(wide))] <- paste0(
     names(wide)[grep("_concentration$", names(wide))], "_constraint"
   )
@@ -137,7 +133,7 @@ test_that("Concentration forcing through INI file works", {
 
   ini_txt <- append(
     ini_txt,
-    paste0("CH4=csv:", tmpfile),
+    paste0("CH4_constrain=csv:", tmpfile),
     grep("\\[CH4\\]", ini_txt)
   )
 

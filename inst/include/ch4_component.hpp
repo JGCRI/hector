@@ -60,13 +60,12 @@ public:
      //! emissions time series
     tseries<unitval> CH4_emissions;
     tseries<unitval> CH4;  // CH4 concentrations, ppbv CH4
+    tseries<unitval> CH4_constrain;  // CH4 concentration constraint, ppbv CH4
     unitval M0;     // preindustrial methane, ppbv CH4
     unitval UC_CH4;  // conversion factor between emissions and concentration
     unitval CH4N;   // annual natural emissions, Tg CH4/yr
     unitval Tsoil;  // annual CH4 loss to soil, Tg CH4/yr
     unitval Tstrat; //  annual CH4 loss to stratosphere, Tg CH4/yr
-
-    bool emissions_forced;
 
     // logger
     Logger logger;
