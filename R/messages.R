@@ -123,7 +123,7 @@ setvar <- function(core, dates, var, values, unit)
 #' @param dates Vector of dates, optional
 #' @param scenario Scenario name, optional str
 #' @param outpath Absolute path of the output csv. Output will only be written to
-#' csv if it is passed
+#' csv if this is given
 #' @return vars_all    Dataframe containing all Hector variables
 #' @family main user interface functions
 #' @export
