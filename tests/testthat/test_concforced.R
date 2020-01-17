@@ -110,9 +110,7 @@ test_that("Concentration forcing through INI file works", {
   names(wide)[names(wide) == "Ca"] <- CA_CONSTRAIN()
   names(wide)[names(wide) == "CH4"] <- CH4_CONSTRAIN()
   names(wide)[names(wide) == "N2O"] <- N2O_CONSTRAIN()
-  names(wide)[grep("_concentration$", names(wide))] <- paste0(
-    names(wide)[grep("_concentration$", names(wide))], "_constraint"
-  )
+  names(wide) <- gsub("_concentration$", "_constrain", names(wide))
 
   tmp_dir <- tempfile()
   dir.create(tmp_dir, showWarnings = FALSE)
@@ -135,7 +133,7 @@ test_that("Concentration forcing through INI file works", {
   for (h in halocarbs) {
     ini_txt <- append(
       ini_txt,
-      paste0(h, "_concentration_constraint=csv:", tmpfile),
+      paste0(h, "_constrain=csv:", tmpfile),
       grep(paste0("\\[", h, "_halocarbon", "\\]"), ini_txt)
     )
   }
