@@ -723,6 +723,8 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     // Record the land C flux
     const unitval npp_total = sum_npp();
     const unitval rh_total = sum_rh();
+    // TODO: If/when we implement fire, update this calculation to include it
+    // (as a negative term).
     atmosland_flux_ts.set(t, npp_total - rh_total - lucEmissions.get( t ));
 
     // The solver just knows about one vegetation box, one detritus, and one

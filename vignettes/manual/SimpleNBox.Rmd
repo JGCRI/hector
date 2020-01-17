@@ -1,5 +1,7 @@
 ---
 title: Terrestrial C cycle
+resource_files:
+    - hector_terrestrial_c.svg
 ---
 
 Contents:
@@ -12,9 +14,12 @@ Contents:
 Hector's land C sink is divided into three pools: vegetation ($C_v$), detritus ($C_d$), and soil ($C_s$).
 These sinks are global by default, but they can be divided into $n$ "biomes" with unique parameters and initial pool sizes.
 
-The total C flux from atmosphere to land at time $t$ ($F_{L}(t)$) is the net of C sequestration by photosynthesis (net primary productivity, $NPP_i(t)$) and C release by heterotrophic respiration ($RH_i(t)$) summed across each biome $i$, and global land use change ($LUC(t)$):
+The total C flux from atmosphere to land at time $t$ ($F_{L}(t)$; also known as Net Biome Production, NBP) is the net of C sequestration by photosynthesis (net primary productivity, $NPP_i(t)$) and C release by heterotrophic respiration ($RH_i(t)$) summed across each biome $i$, and global land use change ($LUC(t)$):
 
 $$ F_{L}(t) = \sum_{i=1}^{n} \left( NPP_i(t) - RH_i(t) \right) - LUC(t)  $$
+
+(Another significant component of land-atmosphere C exchange is emissions from fire.
+The current version of Hector does not include an implementation of fire emissions, but this is on the wishlist for future versions).
 
 NPP is calculated as the product of a user-specified pre-industrial value ($NPP_0$, default is 50 PgC/year) and a CO~2~ fertilization multiplier ($f(C_{atm}, \beta)$), which in turn is a function of the current atmospheric CO~2~ concentration ($C_{atm}$), the initial ("pre-industrial") CO~2~ concentration ($C_0$), and biome-specific CO~2~ fertilization parameter $\beta_i$ (default = 0.36):
 
