@@ -11,7 +11,8 @@ test_that("Concentration-forced runs work for halocarbons", {
   out1 <- fetchvars(hc, dates, outvars)
   conc1 <- subset(out1, variable == outvars[2])
   emiss1 <- fetchvars(hc, dates, EMISSIONS_HFC23())
-  setvar(hc, conc1$year, HFC23_CONSTRAIN(), conc1$value, conc1$units[1])
+  setvar(hc, conc1$year, HFC23_CONSTRAIN(), conc1$value,
+         getunits(HFC23_CONSTRAIN()))
   invisible(reset(hc))
   invisible(run(hc))
   out2 <- fetchvars(hc, dates, outvars)
@@ -19,7 +20,8 @@ test_that("Concentration-forced runs work for halocarbons", {
 
   test_that("Increasing HFC23 concentrations increases global temp", {
     newhfc <- conc1$value * 1.05
-    setvar(hc, conc1$year, HFC23_CONSTRAIN(), newhfc, conc1$units[1])
+    setvar(hc, conc1$year, HFC23_CONSTRAIN(), newhfc,
+           getunits(HFC23_CONSTRAIN()))
     invisible(reset(hc))
     invisible(run(hc))
     expect_equal(fetchvars(hc, conc1$year, outvars[2])$value, newhfc)
@@ -36,7 +38,7 @@ test_that("Concentration-forced runs work for CH4", {
   out1 <- fetchvars(hc, dates, outvars)
   conc1 <- subset(out1, variable == outvars[2])
   emiss1 <- fetchvars(hc, dates, EMISSIONS_CH4())
-  setvar(hc, conc1$year, CH4_CONSTRAIN(), conc1$value, conc1$units[1])
+  setvar(hc, conc1$year, CH4_CONSTRAIN(), conc1$value, getunits(CH4_CONSTRAIN()))
   invisible(reset(hc))
   invisible(run(hc))
   out2 <- fetchvars(hc, dates, outvars)
@@ -44,7 +46,7 @@ test_that("Concentration-forced runs work for CH4", {
 
   test_that("Increasing CH4 concentrations increases global temp", {
     newhfc <- conc1$value * 1.05
-    setvar(hc, conc1$year, "CH4_constrain", newhfc, conc1$units[1])
+    setvar(hc, conc1$year, CH4_CONSTRAIN(), newhfc, getunits(CH4_CONSTRAIN()))
     invisible(reset(hc))
     invisible(run(hc))
     newout <- fetchvars(hc, 2000:2100, outvars)
@@ -60,7 +62,7 @@ test_that("Concentration-forced runs work for N2O", {
   outvars <- c(GLOBAL_TEMP(), ATMOSPHERIC_N2O())
   out1 <- fetchvars(hc, dates, outvars)
   conc1 <- subset(out1, variable == outvars[2])
-  setvar(hc, conc1$year, N2O_CONSTRAIN(), conc1$value, conc1$units[1])
+  setvar(hc, conc1$year, N2O_CONSTRAIN(), conc1$value, getunits(N2O_CONSTRAIN()))
   invisible(reset(hc))
   invisible(run(hc))
   out2 <- fetchvars(hc, dates, outvars)
@@ -68,7 +70,7 @@ test_that("Concentration-forced runs work for N2O", {
 
   test_that("Increasing N2O concentrations increases global temp", {
     newhfc <- conc1$value * 1.05
-    setvar(hc, conc1$year, N2O_CONSTRAIN(), newhfc, conc1$units[1])
+    setvar(hc, conc1$year, N2O_CONSTRAIN(), newhfc, getunits(N2O_CONSTRAIN()))
     invisible(reset(hc))
     invisible(run(hc))
     expect_equal(fetchvars(hc, conc1$year, outvars[2])$value, newhfc)
