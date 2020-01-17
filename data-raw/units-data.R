@@ -3,7 +3,7 @@ library(hector)
 hvars <- c(ECS(), PREINDUSTRIAL_CO2(), Q10_RH(), BETA(), AERO_SCALE(), VOLCANIC_SCALE(), DIFFUSIVITY(),
            FFI_EMISSIONS(), LUC_EMISSIONS(),
            EMISSIONS_BC(), EMISSIONS_N2O(), EMISSIONS_NOX(), EMISSIONS_CO(),
-           EMISSIONS_NMVOC(), EMISSIONS_OC(),
+           EMISSIONS_NMVOC(), EMISSIONS_OC(), NAT_EMISSIONS_N2O(),
            EMISSIONS_CH4(), PREINDUSTRIAL_CH4(), NATURAL_CH4(), LIFETIME_SOIL(), LIFETIME_STRAT(),
            EMISSIONS_SO2(), VOLCANIC_SO2())
 
@@ -11,7 +11,7 @@ hvars <- c(ECS(), PREINDUSTRIAL_CO2(), Q10_RH(), BETA(), AERO_SCALE(), VOLCANIC_
 hunits <- c('degC', 'ppmv CO2', '(unitless)', '(unitless)', '(unitless)', '(unitless)', 'cm2/s',
             'Pg C/yr', 'Pg C/yr',
             'Tg', 'Tg N', 'Tg N', 'Tg CO',
-            'Tg NMVOC', 'Tg',
+            'Tg NMVOC', 'Tg', 'Tg N',
             'Tg CH4', 'ppbv CH4', 'Tg CH4', 'Years', 'Years',
             'Gg S', 'W/m2')
 
@@ -31,4 +31,4 @@ halounits <- 'Gg'
 unitstable <- rbind(data.frame(variable=hvars, units=hunits),
                     data.frame(variable=haloemis, units=halounits))
 
-devtools::use_data(unitstable, internal=TRUE, overwrite=TRUE)
+usethis::use_data(unitstable, internal=TRUE, overwrite=TRUE)

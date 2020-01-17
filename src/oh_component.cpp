@@ -178,7 +178,16 @@ unitval OHComponent::getData( const std::string& varName,
     if( varName == D_LIFETIME_OH ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for OH lifetime" ); 
         returnval = TAU_OH.get( date );
-      } else {
+    } else if ( varName == D_EMISSIONS_NOX ) {
+        H_ASSERT( date != Core::undefinedIndex(), "Date required for NOX emissions" );
+        returnval = NOX_emissions.get( date );
+    } else if ( varName == D_EMISSIONS_CO ) {
+        H_ASSERT( date != Core::undefinedIndex(), "Date required for CO emissions" );
+        returnval = CO_emissions.get( date );
+    } else if ( varName == D_EMISSIONS_NMVOC ) {
+        H_ASSERT( date != Core::undefinedIndex(), "Date required for NMVOC emissions" );
+        returnval = NMVOC_emissions.get( date );
+    } else {
         H_THROW( "Caller is requesting unknown variable: " + varName );
     }
     
