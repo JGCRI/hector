@@ -498,6 +498,12 @@ EMISSIONS_N2O <- function() {
     .Call('_hector_EMISSIONS_N2O', PACKAGE = 'hector')
 }
 
+#' @describeIn emissions Natural N2O emissions (\code{"Tg N"})
+#' @export
+NAT_EMISSIONS_N2O <- function() {
+    .Call('_hector_NAT_EMISSIONS_N2O', PACKAGE = 'hector')
+}
+
 #' @describeIn concentrations Preindustrial ozone concentration
 #' @export
 PREINDUSTRIAL_O3 <- function() {

@@ -625,6 +625,13 @@ String EMISSIONS_N2O() {
 return D_EMISSIONS_N2O;
 }
 
+//' @describeIn emissions Natural N2O emissions (\code{"Tg N"})
+//' @export
+// [[Rcpp::export]]
+String NAT_EMISSIONS_N2O() {
+return D_NAT_EMISSIONS_N2O;
+}
+
 
 
 /* O3 component */
