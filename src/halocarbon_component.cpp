@@ -117,7 +117,7 @@ void HalocarbonComponent::setData( const string& varName,
             emissions.set(data.date, data.getUnitval(U_GG));
         } else if( varName == conc_var_name ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            Ha_constraint.set(data.date, data.getUnitval(U_PPTV));
+            Ha_constrain.set(data.date, data.getUnitval(U_PPTV));
         } else if( varName == D_PREINDUSTRIAL_HC ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
             H0 = data.getUnitval(U_PPTV);
@@ -157,9 +157,9 @@ void HalocarbonComponent::run( const double runToDate ) throw ( h_exception ) {
     unitval Ha(Ha_ts.get(oldDate));
     
     // If emissions-forced, calculate concentration from emissions and lifespan.
-    if ( Ha_constraint.size() && Ha_constraint.exists( runToDate ) ) {
+    if ( Ha_constrain.size() && Ha_constrain.exists( runToDate ) ) {
         // Concentration-forced. Just grab the current value from the time series.
-        Ha = Ha_constraint.get(runToDate);
+        Ha = Ha_constrain.get(runToDate);
     } else {
         const double timestep = 1.0;
         const double alpha = 1 / tau;
@@ -218,7 +218,7 @@ unitval HalocarbonComponent::getData( const std::string& varName,
     }
     else if( varName == myGasName+CONC_CONSTRAINT_EXTENSION ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for halocarbon emissions" );
-        returnval = Ha_constraint.get( getdate );
+        returnval = Ha_constrain.get( getdate );
     }
     else {
         H_THROW( "Caller is requesting unknown variable: " + varName );
