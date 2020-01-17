@@ -4,7 +4,9 @@ title: Constraints
 
 The Hector model can be run subject to *constraints* that force the model to have certain behavior. Technically, this means that the model's components output user-provided data as opposed to their own calculations, similar to the [data mode](http://www.cesm.ucar.edu/models/cesm1.0/cesm/cesm_doc_1_0_4/x42.html) of a CESM sub-model. Currently the available constraints include:
 
-**Temperature**. If the current [input file](InputFiles.html) includes, in its `[temperature]` section, a line of form
+# Temperature
+
+If the current [input file](InputFiles.html) includes, in its `[temperature]` section, a line of form
 
 ```
 tgav_constrain=csv:path/to/constraint/file.csv
@@ -14,7 +16,9 @@ then the model's global mean temperature `Tgav` will follow this contents of thi
 
 Once Hector's internal date passes the last date in the constraint file, the model's temperature component becomes *unconstrained*, except that we do not permit it to suddenly jump to a new temperature. Instead, changes in global radiative forcing (from which temperature change is computed) are applied to the end-of-constraint temperature. For more details, see the detailed comments in the `TemperatureComponent::run` method.
 
-**Radiative forcing**. If the current [input file](InputFiles.html) includes, in its `[forcing]` section, a line of form
+# Radiative forcing
+
+If the current [input file](InputFiles.html) includes, in its `[forcing]` section, a line of form
 
 ```
 Ftot_constrain=csv:path/to/constraint/file.csv
@@ -22,7 +26,9 @@ Ftot_constrain=csv:path/to/constraint/file.csv
 
 then the model's global radiative forcing `Ftot`, that drives global temperature changes, will follow this contents of this file (which should have two columns, `Date` and `Ftot_constrain`). The model will extrapolate within this data as necessary, but not beyond its endpoints. Once Hector's internal date passes the last date in the constraint file, the model's forcing component becomes *unconstrained*.
 
-**Ocean C uptake**. If the current [input file](InputFiles.html) includes, in its `[ocean]` section, a line of form
+# Ocean C uptake
+
+If the current [input file](InputFiles.html) includes, in its `[ocean]` section, a line of form
 
 ```
 oceanflux_constrain=csv:path/to/constraint/file.csv
@@ -30,7 +36,9 @@ oceanflux_constrain=csv:path/to/constraint/file.csv
 
 then the model's ocean carbon uptake (in Pg C) will follow this contents of this file (which should have two columns, `Date` and `oceanflux_constrain`). The model will extrapolate within this data as necessary, but not beyond its endpoints. Once Hector's internal date passes the last date in the constraint file, the model's ocean uptake becomes *unconstrained*.
 
-**Atmospheric CO2**. If the current [input file](InputFiles) includes, in its `[simpleNbox]` section, a line of form
+# Atmospheric CO2
+
+If the current [input file](InputFiles) includes, in its `[simpleNbox]` section, a line of form
 
 ```
 CO2_constrain=csv:path/to/constraint/file.csv
@@ -43,7 +51,8 @@ The CO2 constraint need not span the entirety of the Hector simulation, or even 
 At any given time step, Hector will check whether or not a CO2 constraint exists at that time step and only apply the constraint if it is present.
 This means that "hybrid" runs are possible, where only some specific time ranges have CO2 constraints while others calculate the atmospheric carbon pool and CO2 concentrations according to Hector's standard [carbon cycle](SimpleNBox).
 
-**CH4, N2O, and halocarbon concentrations**.
+# CH4, N2O, and halocarbon concentrations
+
 These all work in more-or-less the same way, and are similar to the atmospheric CO2 constraint (above).
 In the [input file](InputFiles), they are triggered by a line like the following in their corresponding component section:
 
