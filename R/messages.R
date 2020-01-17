@@ -151,7 +151,7 @@ fetchvars_all <- function(core, dates=NULL, scenario=NULL, outfile=NULL)
 
         # Clean up the column names (value.YYYY --> YYYY)
         col_names <- colnames(rslt_pretty)[-1:-3]
-        col_names <- sapply(col_names, function(x) sub("value.", "", x), USE.NAMES=F)
+        col_names <- sapply(col_names, function(x) sub("value.", "", x), USE.NAMES=FALSE)
         col_names <- col_names[-length(col_names)]
 
         col_names <- c("scenario", "variable", "units", "initial_value", col_names)
