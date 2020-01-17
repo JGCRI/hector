@@ -236,6 +236,8 @@ test_that("Test atmosphere -> land and ocean C flux", {
 
     yrs <- 1750:2100
     out_land <- fetchvars(hc, dates = yrs, LAND_CFLUX(), "Pg C year-1")
+    out_nbp <- fetchvars(hc, dates = yrs, NBP(), "Pg C year-1")
+    expect_identical(out_land, out_nbp)
     out_ocean <- fetchvars(hc, dates = yrs, OCEAN_CFLUX(), "Pg C year-1")
 
     # After 1960, land is consistently a C sinks

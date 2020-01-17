@@ -3,6 +3,7 @@
 \name{carboncycle}
 \alias{carboncycle}
 \alias{LAND_CFLUX}
+\alias{NBP}
 \alias{ATMOSPHERIC_CO2}
 \alias{NPP}
 \alias{ATMOSPHERIC_C}
@@ -15,6 +16,8 @@
 \title{Identifiers for variables in the Hector carbon cycle component}
 \usage{
 LAND_CFLUX()
+
+NBP()
 
 ATMOSPHERIC_CO2()
 
