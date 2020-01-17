@@ -79,9 +79,9 @@ test_that("Concentration-forced runs work for N2O", {
 
 test_that("Concentration forcing through INI file works", {
 
-  ini_txt <- readLines(system.file("input", "hector_rcp45.ini",
-                                   package = "hector")) %>%
-    grep("^ *;", ., value = TRUE, invert = TRUE)
+  ini_txt_all <- readLines(system.file("input", "hector_rcp45.ini",
+                                       package = "hector"))
+  ini_txt <- grep("^ *;", ini_txt_all, value = TRUE, invert = TRUE)
   rxp <- "\\[([[:alnum:]]+)_halocarbon\\]"
   halocarbs <- gsub(rxp, "\\1", grep(rxp, ini_txt, value = TRUE))
   outvars <- c(
