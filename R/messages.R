@@ -122,43 +122,26 @@ setvar <- function(core, dates, var, values, unit)
 #' @param core Hector core object
 #' @param dates Vector of dates, optional
 #' @param scenario Scenario name, optional str
-#' @param outpath Absolute path of the output csv. Output will only be written to
-#' csv if this is given
+#' @param outfile Absolute path, including the name, of the output .csv file.
 #' @return vars_all    Dataframe containing all Hector variables
 #' @family main user interface functions
 #' @export
-fetchvars_all <- function(core, dates=NULL, scenario=NULL, outpath=NULL) {
+fetchvars_all <- function(core, dates=NULL, scenario=NULL, outfile=NULL)
+{
 
-    if (is.null(scenario)) {
-        scenario <- core$name
-    }
-
-    strt <- startdate(core)
-    end <- getdate(core)
-
-    if (is.null(dates)) {
-        dates <- strt:end
-    } else {
-        valid <- dates >= strt & dates <= end
-        dates <- dates[valid]
-    }
-    
     # Get output for variables that do use the date param
-    rslt_date  <- do.call(rbind,
-                      lapply(vars_date, function(v) {
-                            sendmessage(core, GETDATA(), v, dates, NA, '')
-                      }))
-    
+    rslt_date <- fetchvars(core, dates, vars_date, scenario)
+
     # Get variables that DO NOT use date arg
-    rslt_nodate <- do.call(rbind,
-                       lapply(vars_nodate, function(v) {
-                            sendmessage(core, GETDATA(), v, NA, NA, '')
-                       }))
-    
+    rslt_nodate <- fetchvars(core, NA, vars_nodate, scenario)
+
     rslt <- rbind(rslt_date, rslt_nodate)
-    rslt$scenario <- scenario
-    
-    if (!is.null(outpath)) {
+
+    if (!is.null(outfile)) {
+        # Check that outfile ends with the .csv file extension
+        if (substr(outfile, nchar(outfile)-3, nchar(outfile)) != ".csv") {
+            stop("'outfile' must end in '.csv'")
+        }
 
         # Pivot the dataframe "wide" so years run along the x axis
         # Catch warning from reshape()
@@ -176,18 +159,14 @@ fetchvars_all <- function(core, dates=NULL, scenario=NULL, outpath=NULL) {
         num_cols <- length(col_names)
 
         # Move last column (initial_value) into 4th col position & scenario into 1st col
-        rslt_pretty <- rslt_pretty[, c(3, 1, 2, num_cols, 5:num_cols-1)]
+        rslt_pretty <- rslt_pretty[, c(1, 2, 3, num_cols, 5:num_cols-1)]
 
         # Set the column names for the re-ordered dataframe
         colnames(rslt_pretty) <- col_names
 
-        # Construct output filename and absolute path
-        f_name <- "fetchvars_all.csv"
-        abs_path <- file.path(outpath, f_name)
+        write.table(rslt_pretty, outfile, col.names=col_names, row.names=FALSE, sep=',')
 
-        write.table(rslt_pretty, abs_path, col.names=col_names, row.names=F, sep=',')
-
-        message("Output written to ", abs_path)
+        message("Output written to ", outfile)
     }
 
     invisible(rslt)
