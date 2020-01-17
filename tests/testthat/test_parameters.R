@@ -331,12 +331,11 @@ test_that('Discontinuous constraint works', {
     expect_equal(fetchvars(hc, min(ca_years_2), CA_CONSTRAIN())$value, ca_vals_2[1])
     expect_equal(fetchvars(hc, max(ca_years_2), CA_CONSTRAIN())$value, ca_vals_2[1])
 
-    err <- "No CO2 constraint for selected date"
-    # You should NOT be able to retrieve constraints before...
-    expect_error(fetchvars(hc, min(ca_years_1) - 1, CA_CONSTRAIN()), err)
-    # ...between...
-    expect_error(fetchvars(hc, max(ca_years_1) + 1, CA_CONSTRAIN()), err)
-    # ...or after the user-specified values.
-    expect_error(fetchvars(hc, max(ca_years_2) + 1, CA_CONSTRAIN()), err)
+    # You should NOT be able to retrieve constraints before, between, or after
+    # user-specified values.
+    baddates <- c(min(ca_years_1) - 1, max(ca_years_1) + 1, max(ca_years_2) + 1)
+    ca_before <- fetchvars(hc, baddates, CA_CONSTRAIN())
+    expect_true(all(is.na(ca_before$value)))
+    expect_true(all(!is.nan(ca_before$value)))
 
 })

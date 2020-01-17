@@ -598,8 +598,13 @@ unitval SimpleNbox::getData(const std::string& varName,
         returnval = lucEmissions.get( date );
     } else if( varNameParsed == D_CA_CONSTRAIN ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for atmospheric CO2 constraint" );
-        H_ASSERT( Ca_constrain.exists(date), "No CO2 constraint for selected date" );
-        returnval = Ca_constrain.get( date );
+        if (Ca_constrain.exists(date)) {
+            returnval = Ca_constrain.get( date );
+        } else {
+            H_LOG( logger, Logger::WARNING ) << "No CO2 constraint for requested date " << date <<
+                ". Returning missing value." << std::endl;
+            returnval = unitval( MISSING_FLOAT, U_PPMV_CO2 );
+        }
     } else if( varNameParsed == D_NPP ) {
         // `sum_npp` works whether or not `date` is defined (if undefined, it
         // evaluates for the current date).
