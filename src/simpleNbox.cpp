@@ -263,11 +263,6 @@ void SimpleNbox::setData( const std::string &varName,
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
             H_ASSERT( biome == SNBOX_DEFAULT_BIOME, "atmospheric constraint must be global" );
             Ca_constrain.set( data.date, data.getUnitval( U_PPMV_CO2 ) );
-            // This is necessary because the usual place where this is set --
-            // `prepareToRun` -- is not called by `run`, so a sequence like
-            // `newcore` -> `setvar` -> `run` will result in `Ca_constrain` that
-            // cannot use interpolation.
-            Ca_constrain.allowPartialInterp( true );
         }
 
         // Fertilization
@@ -427,7 +422,6 @@ void SimpleNbox::prepareToRun() throw( h_exception )
     atmos_c.set(c0init * PPMVCO2_TO_PGC, U_PGC);
 
     if( Ca_constrain.size() ) {
-        Ca_constrain.allowPartialInterp( true );
         Logger& glog = core->getGlobalLogger();
         H_LOG( glog, Logger::WARNING ) << "Atmospheric CO2 will be constrained to user-supplied values!" << std::endl;
     }
