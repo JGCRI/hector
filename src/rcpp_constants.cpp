@@ -826,7 +826,7 @@ return D_NAT_EMISSIONS_N2O;
 //' @export
 // [[Rcpp::export]]
 String N2O_CONSTRAIN() {
-return D_EMISSIONS_N2O;
+return D_CONSTRAINT_N2O;
 }
 
 

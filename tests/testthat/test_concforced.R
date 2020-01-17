@@ -60,7 +60,6 @@ test_that("Concentration-forced runs work for N2O", {
   outvars <- c(GLOBAL_TEMP(), ATMOSPHERIC_N2O())
   out1 <- fetchvars(hc, dates, outvars)
   conc1 <- subset(out1, variable == outvars[2])
-  ## emiss1 <- fetchvars(hc, dates, EMISSIONS_N2O())
   setvar(hc, conc1$year, N2O_CONSTRAIN(), conc1$value, conc1$units[1])
   invisible(reset(hc))
   invisible(run(hc))
