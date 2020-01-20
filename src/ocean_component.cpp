@@ -337,7 +337,7 @@ unitval OceanComponent::getData( const std::string& varName,
     unitval returnval;
     
     if ( varName != D_OCEAN_CFLUX ) {
-        H_ASSERT( date == Core::undefinedIndex(), "Date data not available for ocean_component (except ocean C flux)" );
+        H_ASSERT( date == Core::undefinedIndex(), "Date data not available for " + varName + " in OceanComponent::getData()" );
     }
 
     if( varName == D_OCEAN_CFLUX ) {

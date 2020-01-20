@@ -240,7 +240,7 @@ test_that("Test atmosphere -> land and ocean C flux", {
     expect_identical(out_land, out_nbp)
     out_ocean <- fetchvars(hc, dates = yrs, OCEAN_CFLUX(), "Pg C year-1")
 
-    # After 1960, land is consistently a C sinks
+    # After 1960, land is consistently a C sink
     expect_true(all(out_land[out_land$year >= 1960, "value"] > 0))
     # Ocean is a sink starting in pre-industrial
     expect_true(all(out_ocean[out_ocean$year >= 1850, "value"] > 0))
