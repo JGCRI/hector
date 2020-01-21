@@ -154,15 +154,15 @@ void OHComponent::run( const double runToDate ) throw ( h_exception )
    double toh = 0.0;
    if ( previous_ch4 != M0 ) // if we are not at the first time
    {
-   const double a =  CCH4 * ( ( -1.0 * log( previous_ch4 ) ) + log( M0.value(U_PPBV_CH4) ) );
-   const double b = CNOX * ( ( -1.0 * current_nox ) + NOX_emissions.get( NOX_emissions.firstdate() ).value( U_TG_N ) );
-   const double c = CCO * ( ( -1.0 * + current_co ) + CO_emissions.get( CO_emissions.firstdate() ).value( U_TG_CO ) );
-   const double d = CNMVOC * ( (-1.0 * + current_nmvoc ) + NMVOC_emissions.get( NMVOC_emissions.firstdate() ).value( U_TG_NMVOC ) );
+   const double a =  CCH4 * ( ( 1.0 * log( previous_ch4 ) ) - log( M0.value(U_PPBV_CH4) ) );
+   const double b = CNOX * ( ( 1.0 * current_nox ) - NOX_emissions.get( NOX_emissions.firstdate() ).value( U_TG_N ) );
+   const double c = CCO * ( ( 1.0 * + current_co ) - CO_emissions.get( CO_emissions.firstdate() ).value( U_TG_CO ) );
+   const double d = CNMVOC * ( (1.0 * + current_nmvoc ) - NMVOC_emissions.get( NMVOC_emissions.firstdate() ).value( U_TG_NMVOC ) );
     toh = a + b + c + d;
     H_LOG( logger, Logger::DEBUG ) << "Year " << runToDate << " toh = " << toh << std::endl;
    }
 
-   TAU_OH.set( runToDate,  TOH0 * exp( toh ) );
+   TAU_OH.set( runToDate,  TOH0 * exp( -toh ) );
 
     oldDate = runToDate;
     H_LOG( logger, Logger::DEBUG ) << "Year " << runToDate << " OH lifetime = " << TAU_OH.get( runToDate ) << std::endl;
@@ -178,6 +178,15 @@ unitval OHComponent::getData( const std::string& varName,
     if( varName == D_LIFETIME_OH ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for OH lifetime" );
         returnval = TAU_OH.get( date );
+    } else if ( varName == D_EMISSIONS_NOX ) {
+        H_ASSERT( date != Core::undefinedIndex(), "Date required for NOX emissions" );
+        returnval = NOX_emissions.get( date );
+    } else if ( varName == D_EMISSIONS_CO ) {
+        H_ASSERT( date != Core::undefinedIndex(), "Date required for CO emissions" );
+        returnval = CO_emissions.get( date );
+    } else if ( varName == D_EMISSIONS_NMVOC ) {
+        H_ASSERT( date != Core::undefinedIndex(), "Date required for NMVOC emissions" );
+        returnval = NMVOC_emissions.get( date );
     } else {
         H_THROW( "Caller is requesting unknown variable: " + varName );
     }

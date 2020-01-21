@@ -191,7 +191,7 @@ unitval HalocarbonComponent::getData( const std::string& varName,
     else if( varName == D_HC_CONCENTRATION ) {
         returnval = Ha_ts.get(getdate);
     }
-    else if( varName == D_HC_EMISSION ) {
+    else if( varName == myGasName+EMISSIONS_EXTENSION ) {
         if( getdate >= emissions.firstdate() )
             returnval = emissions.get( getdate );
         else
