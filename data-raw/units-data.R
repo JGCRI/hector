@@ -39,8 +39,13 @@ vars_all <- read.table("data-raw/vars_all.txt", header=TRUE, as.is=TRUE)
 vars_date <- vars_all[vars_all$date_param == TRUE,][,1]
 vars_nodate <- vars_all[vars_all$date_param == FALSE,][,1]
 
-# Convert the strings representing variable names to capability strings
-vars_date <- lapply(vars_date, do.call, args=list())
-vars_nodate <- lapply(vars_nodate, do.call, args=list())
+# Convert the strings representing variable names to capability strings.
+vfuns_date <- lapply(vars_date, getFromNamespace, ns='hector')
+vfuns_nodate <- lapply(vars_nodate, getFromNamespace, ns='hector')
+
+# Throws an error if the result of each do.call call is not a character vector
+# of length 1
+vfuns_date <- lapply(vfuns_date, do.call, character(1), args=list())
+vfuns_nodate <- lapply(vfuns_nodate, do.call, character(1), args=list())
 
 usethis::use_data(unitstable, vars_date, vars_nodate, internal=TRUE, overwrite=TRUE)
