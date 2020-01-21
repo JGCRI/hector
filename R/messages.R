@@ -112,12 +112,13 @@ setvar <- function(core, dates, var, values, unit)
 }
 
 
-#' Fetch all the available Hector variables
+#' Fetch all available variables from a running Hector core
 #'
 #' This function is similar to fetchvars, except it fetches all available
 #' Hector variables, including exogenous inputs (e.g., emissions & pre-industrial
 #' concentrations), parameters (e.g., alpha, beta, ECS), and output
-#' variables (e.g., concentrations & forcings).
+#' variables (e.g., concentrations & forcings). Variables with and without
+#' timeseries capabilities are supported.
 #'
 #' @param core Hector core object
 #' @param dates Vector of dates, optional. Defines the time span to retrieve timeseries
@@ -126,6 +127,7 @@ setvar <- function(core, dates, var, values, unit)
 #' core object will be used.
 #' @return Dataframe containing all Hector variables
 #' @family main user interface functions
+#' @rdname fetchvars
 #' @export
 fetchvars_all <- function(core, dates=NULL, scenario=NULL)
 {
