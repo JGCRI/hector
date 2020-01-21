@@ -120,13 +120,14 @@ setvar <- function(core, dates, var, values, unit)
 #' variables (e.g., concentrations & forcings).
 #'
 #' @param core Hector core object
-#' @param dates Vector of dates, optional
-#' @param scenario Scenario name, optional str
-#' @param outfile Absolute path, including the name, of the output .csv file.
-#' @return vars_all    Dataframe containing all Hector variables
+#' @param dates Vector of dates, optional. Defines the time span to retrieve timeseries
+#' variables from. If not provided, the Hector core object's start and end years will be used.
+#' @param scenario Optional scenario name. If not specified, the name of the Hector
+#' core object will be used.
+#' @return Dataframe containing all Hector variables
 #' @family main user interface functions
 #' @export
-fetchvars_all <- function(core, dates=NULL, scenario=NULL, outfile=NULL)
+fetchvars_all <- function(core, dates=NULL, scenario=NULL)
 {
 
     # Get output for variables that do use the date param
@@ -136,38 +137,6 @@ fetchvars_all <- function(core, dates=NULL, scenario=NULL, outfile=NULL)
     rslt_nodate <- fetchvars(core, NA, vars_nodate, scenario)
 
     rslt <- rbind(rslt_date, rslt_nodate)
-
-    if (!is.null(outfile)) {
-        # Check that outfile ends with the .csv file extension
-        if (substr(outfile, nchar(outfile)-3, nchar(outfile)) != ".csv") {
-            stop("'outfile' must end in '.csv'")
-        }
-
-        # Pivot the dataframe "wide" so years run along the x axis
-        # Catch warning from reshape()
-        suppressWarnings(rslt_pretty <- reshape(rslt, direction="wide",
-                                        idvar=c("scenario", "variable", "units"),
-                                        timevar="year"))
-
-        # Clean up the column names (value.YYYY --> YYYY)
-        col_names <- colnames(rslt_pretty)[-1:-3]
-        col_names <- sapply(col_names, function(x) sub("value.", "", x), USE.NAMES=FALSE)
-        col_names <- col_names[-length(col_names)]
-
-        col_names <- c("scenario", "variable", "units", "initial_value", col_names)
-
-        num_cols <- length(col_names)
-
-        # Move last column (initial_value) into 4th col position & scenario into 1st col
-        rslt_pretty <- rslt_pretty[, c(1, 2, 3, num_cols, 5:num_cols-1)]
-
-        # Set the column names for the re-ordered dataframe
-        colnames(rslt_pretty) <- col_names
-
-        write.table(rslt_pretty, outfile, col.names=col_names, row.names=FALSE, sep=',')
-
-        message("Output written to ", outfile)
-    }
 
     invisible(rslt)
 }
