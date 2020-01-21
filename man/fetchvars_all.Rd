@@ -2,30 +2,28 @@
 % Please edit documentation in R/messages.R
 \name{fetchvars_all}
 \alias{fetchvars_all}
-\title{Fetch all the available Hector variables}
+\title{Fetch all available variables from a running Hector core}
 \usage{
-fetchvars_all(core, dates = NULL, scenario = NULL, write = F,
-  outpath = NULL)
+fetchvars_all(core, dates = NULL, scenario = NULL)
 }
 \arguments{
 \item{core}{Hector core object}
 
-\item{dates}{ector of dates, optional}
+\item{dates}{Vector of dates, optional. Defines the time span to retrieve timeseries
+variables from. If not provided, the Hector core object's start and end years will be used.}
 
-\item{scenario}{Scenario name, optional str}
-
-\item{write}{If TRUE, write the resulting dataframe to a csv file, optional bool}
-
-\item{outpath}{Absolute path of the output csv. Must be given if 'write' is true}
+\item{scenario}{Optional scenario name. If not specified, the name of the Hector
+core object will be used.}
 }
 \value{
-vars_all    Dataframe containing all Hector variables
+Dataframe containing all Hector variables
 }
 \description{
 This function is similar to fetchvars, except it fetches all available
 Hector variables, including exogenous inputs (e.g., emissions & pre-industrial
 concentrations), parameters (e.g., alpha, beta, ECS), and output
-variables (e.g., concentrations & forcings).
+variables (e.g., concentrations & forcings). Variables with and without
+timeseries capabilities are supported.
 }
 \seealso{
 Other main user interface functions: \code{\link{fetchvars}},

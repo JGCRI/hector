@@ -127,7 +127,6 @@ setvar <- function(core, dates, var, values, unit)
 #' core object will be used.
 #' @return Dataframe containing all Hector variables
 #' @family main user interface functions
-#' @rdname fetchvars
 #' @export
 fetchvars_all <- function(core, dates=NULL, scenario=NULL)
 {
