@@ -835,6 +835,16 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// NAT_EMISSIONS_N2O
+String NAT_EMISSIONS_N2O();
+RcppExport SEXP _hector_NAT_EMISSIONS_N2O() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(NAT_EMISSIONS_N2O());
+    return rcpp_result_gen;
+END_RCPP
+}
 // PREINDUSTRIAL_O3
 String PREINDUSTRIAL_O3();
 RcppExport SEXP _hector_PREINDUSTRIAL_O3() {
@@ -1705,6 +1715,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_ATMOSPHERIC_N2O", (DL_FUNC) &_hector_ATMOSPHERIC_N2O, 0},
     {"_hector_PREINDUSTRIAL_N2O", (DL_FUNC) &_hector_PREINDUSTRIAL_N2O, 0},
     {"_hector_EMISSIONS_N2O", (DL_FUNC) &_hector_EMISSIONS_N2O, 0},
+    {"_hector_NAT_EMISSIONS_N2O", (DL_FUNC) &_hector_NAT_EMISSIONS_N2O, 0},
     {"_hector_PREINDUSTRIAL_O3", (DL_FUNC) &_hector_PREINDUSTRIAL_O3, 0},
     {"_hector_ATMOSPHERIC_O3", (DL_FUNC) &_hector_ATMOSPHERIC_O3, 0},
     {"_hector_EMISSIONS_NOX", (DL_FUNC) &_hector_EMISSIONS_NOX, 0},
