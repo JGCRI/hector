@@ -27,9 +27,16 @@ Building and running Hector
 Programming topics
 --------------------
 * Learn how to create a new [component](AddNewComponent.html) or [variable](AddNewVariable.html) in Hector.
-* Hector internals: [unitvals](Unitvals.html), [time series](TimeSeries.html), data passing, the component API.
+* Hector internals: [unitvals](Unitvals.html), [time series](TimeSeries.html), data passing, the [component API](ComponentAPI.html) .
 * The Hector [style guide](StyleGuide.html).
+* The Hector [external API](Hector-External-API.html)
+
+Other topics
+------------
+* [Units for emissions passed into Hector](Hector-Units.html)
+* [Hector message targets](Hector-Message-Targets.html)
 
 Publications
 --------------------
-* Manuscript describing the initial version of Hector is [online](http://www.geosci-model-dev-discuss.net/7/7075/2014/gmdd-7-7075-2014.html).
+* Manuscript describing the initial version of Hector: [Hartin et al. (2015)](http://www.geosci-model-dev-discuss.net/7/7075/2014/gmdd-7-7075-2014.html).
+* Manuscript describing Hector 2.0 (with DOECLIM) and its applications for sea level rise: [Vega-Westhoff et al. (2019)](https://doi.org/10.1029/2018EF001082)
