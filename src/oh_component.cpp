@@ -20,19 +20,19 @@
 #include "avisitor.hpp"
 
 namespace Hector {
-  
+
 using namespace std;
 
 //------------------------------------------------------------------------------
 /*! \brief Constructor
  */
 OHComponent::OHComponent() {
-    NOX_emissions.allowInterp( true ); 
-    NMVOC_emissions.allowInterp( true ); 
-    CO_emissions.allowInterp( true ); 
+    NOX_emissions.allowInterp( true );
+    NMVOC_emissions.allowInterp( true );
+    CO_emissions.allowInterp( true );
     TAU_OH.allowInterp( true );
 	//TOH0.set( 0.0, U_YRS );
-        
+
 }
 
 //------------------------------------------------------------------------------
@@ -45,7 +45,7 @@ OHComponent::~OHComponent() {
 // documentation is inherited
 string OHComponent::getComponentName() const {
     const string name = OH_COMPONENT_NAME;
-    
+
     return name;
 }
 
@@ -62,7 +62,7 @@ void OHComponent::init( Core* coreptr ) {
     // can accept an input
     core->registerInput(D_EMISSIONS_CO, getComponentName());
     core->registerInput(D_EMISSIONS_NMVOC, getComponentName());
-    core->registerInput(D_EMISSIONS_NOX, getComponentName()); 
+    core->registerInput(D_EMISSIONS_NOX, getComponentName());
 }
 
 //------------------------------------------------------------------------------
@@ -72,17 +72,17 @@ unitval OHComponent::sendMessage( const std::string& message,
                                   const message_data info ) throw ( h_exception )
 {
     unitval returnval;
-    
+
     if( message==M_GETDATA ) {          //! Caller is requesting data
         return getData( datum, info.date );
-        
+
     } else if( message==M_SETDATA ) {   //! Caller is requesting to set data
         //TODO: make setData private
       setData(datum, info);
     } else {                        //! We don't handle any other messages
         H_THROW( "Caller sent unknown message: "+message );
     }
-    
+
     return returnval;
 }
 
@@ -128,12 +128,12 @@ void OHComponent::setData( const string& varName,
 //------------------------------------------------------------------------------
 // documentation is inherited
 void OHComponent::prepareToRun() throw ( h_exception ) {
-    
+
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
     oldDate = core->getStartDate();
     //get intial CH4 concentration
     M0 = core->sendMessage( M_GETDATA, D_PREINDUSTRIAL_CH4 );
-    TAU_OH.set( oldDate, TOH0 ); 
+    TAU_OH.set( oldDate, TOH0 );
  }
 
 //------------------------------------------------------------------------------
@@ -144,27 +144,27 @@ void OHComponent::run( const double runToDate ) throw ( h_exception )
     H_ASSERT( !core->inSpinup() && runToDate-oldDate == 1, "timestep must equal 1" );
 
        // modified from Tanaka et al 2007 and Wigley et al 2002.
-    unitval current_nox = NOX_emissions.get( runToDate ); 
-    unitval current_co = CO_emissions.get( runToDate ); 
-    unitval current_nmvoc = NMVOC_emissions.get( runToDate ); 
-    
+    unitval current_nox = NOX_emissions.get( runToDate );
+    unitval current_co = CO_emissions.get( runToDate );
+    unitval current_nmvoc = NMVOC_emissions.get( runToDate );
+
     //get this from CH4 component, this is last year's value
    const double previous_ch4 = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_CH4, oldDate ).value( U_PPBV_CH4 );
-       
+
    double toh = 0.0;
    if ( previous_ch4 != M0 ) // if we are not at the first time
    {
-   const double a =  CCH4 * ( ( -1.0 * log( previous_ch4 ) ) + log( M0.value(U_PPBV_CH4) ) );
-   const double b = CNOX * ( ( -1.0 * current_nox ) + NOX_emissions.get( NOX_emissions.firstdate() ).value( U_TG_N ) );
-   const double c = CCO * ( ( -1.0 * + current_co ) + CO_emissions.get( CO_emissions.firstdate() ).value( U_TG_CO ) );
-   const double d = CNMVOC * ( (-1.0 * + current_nmvoc ) + NMVOC_emissions.get( NMVOC_emissions.firstdate() ).value( U_TG_NMVOC ) );
+   const double a =  CCH4 * ( ( 1.0 * log( previous_ch4 ) ) - log( M0.value(U_PPBV_CH4) ) );
+   const double b = CNOX * ( ( 1.0 * current_nox ) - NOX_emissions.get( NOX_emissions.firstdate() ).value( U_TG_N ) );
+   const double c = CCO * ( ( 1.0 * + current_co ) - CO_emissions.get( CO_emissions.firstdate() ).value( U_TG_CO ) );
+   const double d = CNMVOC * ( (1.0 * + current_nmvoc ) - NMVOC_emissions.get( NMVOC_emissions.firstdate() ).value( U_TG_NMVOC ) );
     toh = a + b + c + d;
     H_LOG( logger, Logger::DEBUG ) << "Year " << runToDate << " toh = " << toh << std::endl;
    }
-    
-   TAU_OH.set( runToDate,  TOH0 * exp( toh ) );
 
-    oldDate = runToDate;       
+   TAU_OH.set( runToDate,  TOH0 * exp( -toh ) );
+
+    oldDate = runToDate;
     H_LOG( logger, Logger::DEBUG ) << "Year " << runToDate << " OH lifetime = " << TAU_OH.get( runToDate ) << std::endl;
 }
 
@@ -172,11 +172,11 @@ void OHComponent::run( const double runToDate ) throw ( h_exception )
 // documentation is inherited
 unitval OHComponent::getData( const std::string& varName,
                               const double date ) throw ( h_exception ) {
-    
+
     unitval returnval;
-    
+
     if( varName == D_LIFETIME_OH ) {
-        H_ASSERT( date != Core::undefinedIndex(), "Date required for OH lifetime" ); 
+        H_ASSERT( date != Core::undefinedIndex(), "Date required for OH lifetime" );
         returnval = TAU_OH.get( date );
     } else if ( varName == D_EMISSIONS_NOX ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for NOX emissions" );
@@ -190,7 +190,7 @@ unitval OHComponent::getData( const std::string& varName,
     } else {
         H_THROW( "Caller is requesting unknown variable: " + varName );
     }
-    
+
     return returnval;
 }
 
