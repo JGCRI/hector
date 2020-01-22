@@ -601,7 +601,7 @@ unitval SimpleNbox::getData(const std::string& varName,
         if (CO2_constrain.exists(date)) {
             returnval = CO2_constrain.get( date );
         } else {
-            H_LOG( logger, Logger::WARNING ) << "No CO2 constraint for requested date " << date <<
+            H_LOG( logger, Logger::DEBUG ) << "No CO2 constraint for requested date " << date <<
                 ". Returning missing value." << std::endl;
             returnval = unitval( MISSING_FLOAT, U_PPMV_CO2 );
         }
