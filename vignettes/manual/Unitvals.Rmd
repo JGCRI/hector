@@ -64,6 +64,7 @@ R (and, by extension, Rcpp) distinguish between two kinds of "placeholder" numer
 A _missing_ value (`NA_real_` in R; often abbreviated to `NA`) represents an unobserved value; for instance, if you take annual observations from 1990 to 2000 but failed to make a measurement in 1996.
 On the other hand, _not a number_ (`NaN`) represents the result of an invalid mathematical operation, such as taking the square root of a negative number.
 Both of these values propagate through any calculations in which they are involved, both in R and C++, and both can be detected and removed by R's `is.na()` function and removed by `na.omit`, `na.rm = TRUE`, and friends.
+(The R function `is.nan()` can used to check specifically for `NaN` values -- `is.nan(NaN) => TRUE`, but `is.nan(NA) => FALSE`).
 However, because they mean fundamentally different things (and suggest different errors), we try to preserve this distinction if we can.
 (For example, if some code you run returns `NA` then you would suspect that required values were not set somewhere.
 On the other hand, if the code returns `NaN`, you know that all values were set but resulted in a mathematically invalid calculation.
