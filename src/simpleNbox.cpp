@@ -34,7 +34,7 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
     lucEmissions.name = "lucEmissions";
     Ftalbedo.allowInterp( true );
     Ftalbedo.name = "albedo";
-    Ca_constrain.name = "Ca_constrain";
+    CO2_constrain.name = "CO2_constrain";
 
     // earth_c keeps track of how much fossil C is pulled out
     // so that we can do a mass-balance check throughout the run
@@ -91,7 +91,7 @@ void SimpleNbox::init( Core* coreptr ) {
     core->registerInput(D_F_LITTERD, getComponentName());
     core->registerInput(D_F_LUCV, getComponentName());
     core->registerInput(D_F_LUCD, getComponentName());
-    core->registerInput(D_CA_CONSTRAIN, getComponentName());
+    core->registerInput(D_CO2_CONSTRAIN, getComponentName());
 }
 
 //------------------------------------------------------------------------------
@@ -259,10 +259,10 @@ void SimpleNbox::setData( const std::string &varName,
             lucEmissions.set( data.date, data.getUnitval( U_PGC_YR ) );
         }
         // Atmospheric CO2 record to constrain model to (optional)
-        else if( varNameParsed == D_CA_CONSTRAIN ) {
+        else if( varNameParsed == D_CO2_CONSTRAIN ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
             H_ASSERT( biome == SNBOX_DEFAULT_BIOME, "atmospheric constraint must be global" );
-            Ca_constrain.set( data.date, data.getUnitval( U_PPMV_CO2 ) );
+            CO2_constrain.set( data.date, data.getUnitval( U_PPMV_CO2 ) );
         }
 
         // Fertilization
@@ -421,7 +421,7 @@ void SimpleNbox::prepareToRun() throw( h_exception )
     Ca.set(c0init, U_PPMV_CO2);
     atmos_c.set(c0init * PPMVCO2_TO_PGC, U_PGC);
 
-    if( Ca_constrain.size() ) {
+    if( CO2_constrain.size() ) {
         Logger& glog = core->getGlobalLogger();
         H_LOG( glog, Logger::WARNING ) << "Atmospheric CO2 will be constrained to user-supplied values!" << std::endl;
     }
@@ -596,10 +596,10 @@ unitval SimpleNbox::getData(const std::string& varName,
     } else if( varNameParsed == D_LUC_EMISSIONS ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for luc emissions" );
         returnval = lucEmissions.get( date );
-    } else if( varNameParsed == D_CA_CONSTRAIN ) {
+    } else if( varNameParsed == D_CO2_CONSTRAIN ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for atmospheric CO2 constraint" );
-        if (Ca_constrain.exists(date)) {
-            returnval = Ca_constrain.get( date );
+        if (CO2_constrain.exists(date)) {
+            returnval = CO2_constrain.get( date );
         } else {
             H_LOG( logger, Logger::WARNING ) << "No CO2 constraint for requested date " << date <<
                 ". Returning missing value." << std::endl;
@@ -781,7 +781,7 @@ void SimpleNbox::stashCValues( double t, const double c[] )
 
     // If user has supplied Ca values, adjust atmospheric C to match
     if(core->inSpinup() ||
-       ( Ca_constrain.size() && Ca_constrain.exists(t) )) {
+       ( CO2_constrain.size() && CO2_constrain.exists(t) )) {
 
         unitval atmos_cpool_to_match;
         unitval atmppmv;
@@ -791,9 +791,9 @@ void SimpleNbox::stashCValues( double t, const double c[] )
         }
         else {
             H_LOG( logger, Logger::NOTICE ) << "** Constraining atmospheric CO2 to user-supplied value" << std::endl;
-            atmos_cpool_to_match.set(Ca_constrain.get(t).value( U_PPMV_CO2 ) /
+            atmos_cpool_to_match.set(CO2_constrain.get(t).value( U_PPMV_CO2 ) /
                                      PGC_TO_PPMVCO2, U_PGC);
-            atmppmv.set(Ca_constrain.get(t).value(U_PPMV_CO2), U_PPMV_CO2);
+            atmppmv.set(CO2_constrain.get(t).value(U_PPMV_CO2), U_PPMV_CO2);
         }
 
         residual = atmos_c - atmos_cpool_to_match;

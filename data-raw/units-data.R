@@ -5,7 +5,7 @@ hvars <- c(ECS(), PREINDUSTRIAL_CO2(), Q10_RH(), BETA(), AERO_SCALE(), VOLCANIC_
            EMISSIONS_BC(), EMISSIONS_N2O(), EMISSIONS_NOX(), EMISSIONS_CO(),
            EMISSIONS_NMVOC(), EMISSIONS_OC(), NAT_EMISSIONS_N2O(),
            EMISSIONS_CH4(), PREINDUSTRIAL_CH4(), NATURAL_CH4(), LIFETIME_SOIL(), LIFETIME_STRAT(),
-           EMISSIONS_SO2(), VOLCANIC_SO2(), CA_CONSTRAIN())
+           EMISSIONS_SO2(), VOLCANIC_SO2(), CO2_CONSTRAIN())
 
 
 hunits <- c('degC', 'ppmv CO2', '(unitless)', '(unitless)', '(unitless)', '(unitless)', 'cm2/s',

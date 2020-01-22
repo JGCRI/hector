@@ -33,7 +33,7 @@ rm input/hector_rcp45_spinup.ini
 
 # Turn on the constraint settings one by one and run the model
 # CO2
-sed 's/;Ca_constrain=csv:constraints\/lawdome_co2.csv/Ca_constrain=csv:constraints\/lawdome_co2.csv/' input/hector_rcp45.ini > input/hector_rcp45_co2.ini
+sed 's/;CO2_constrain=csv:constraints\/lawdome_co2.csv/CO2_constrain=csv:constraints\/lawdome_co2.csv/' input/hector_rcp45.ini > input/hector_rcp45_co2.ini
 $HECTOR input/hector_rcp45_co2.ini
 rm input/hector_rcp45_co2.ini
 

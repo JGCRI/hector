@@ -33,11 +33,11 @@ then the model's ocean carbon uptake (in Pg C) will follow this contents of this
 **Atmospheric CO2**. If the current [input file](InputFiles) includes, in its `[simpleNbox]` section, a line of form
 
 ```
-Ca_constrain=csv:path/to/constraint/file.csv
+CO2_constrain=csv:path/to/constraint/file.csv
 ```
 
-then the model's atmospheric CO2 concentration ([CO2], given in ppmv CO2) will follow this contents of this file (which should have two columns, `Date` and `Ca_constrain`). If the constraint [CO2] is lower than the calculated [CO2] at that time step, any excess is moved to the deep ocean; conversely, any necessary deficit is transferred from there.
-Otherwise Hector's atmospheric CO2 concentration constraint can be set using the `setvars` function and `CA_CONSTRAIN` variable.
+then the model's atmospheric CO2 concentration ([CO2], given in ppmv CO2) will follow this contents of this file (which should have two columns, `Date` and `CO2_constrain`). If the constraint [CO2] is lower than the calculated [CO2] at that time step, any excess is moved to the deep ocean; conversely, any necessary deficit is transferred from there.
+Otherwise Hector's atmospheric CO2 concentration constraint can be set using the `setvars` function and `CO2_CONSTRAIN` variable.
 
 The CO2 constraint need not span the entirety of the Hector simulation, or even be continuous.
 At any given time step, Hector will check whether or not a CO2 constraint exists at that time step and only apply the constraint if it is present.

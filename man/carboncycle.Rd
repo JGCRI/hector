@@ -8,7 +8,7 @@
 \alias{ATMOSPHERIC_C}
 \alias{FFI_EMISSIONS}
 \alias{LUC_EMISSIONS}
-\alias{CA_CONSTRAIN}
+\alias{CO2_CONSTRAIN}
 \alias{VEG_C}
 \alias{DETRITUS_C}
 \alias{SOIL_C}
@@ -27,7 +27,7 @@ FFI_EMISSIONS()
 
 LUC_EMISSIONS()
 
-CA_CONSTRAIN()
+CO2_CONSTRAIN()
 
 VEG_C(biome = "")
 
@@ -47,7 +47,7 @@ carbon cycle
 }
 \section{Functions}{
 \itemize{
-\item \code{CA_CONSTRAIN}: Constrain atmospheric CO2 concentration  (\code{"(ppmv CO2)"})
+\item \code{CO2_CONSTRAIN}: Constrain atmospheric CO2 concentration  (\code{"(ppmv CO2)"})
 
 \item \code{VEG_C}: Vegetation C pool (`"Pg C"`)
 
@@ -76,7 +76,7 @@ These variables can be read using the \code{\link{GETDATA}} message type:
 \describe{
 \item{FFI_EMISSIONS}{Fossil fuel and industrial emissions (\code{"Pg C/yr"})}
 \item{LUC_EMISSIONS}{Land use change emissions (\code{"Pg C/yr"})}
-\item{CA_CONSTRAIN}{Prescribed atmospheric CO2 concentration (\code{"ppmv CO2"})}
+\item{CO2_CONSTRAIN}{Prescribed atmospheric CO2 concentration (\code{"ppmv CO2"})}
 }
 }
 
