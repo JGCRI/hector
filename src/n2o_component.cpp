@@ -197,8 +197,14 @@ unitval N2OComponent::getData( const std::string& varName,
         returnval = N2O_natural_emissions.get( date );
     } else if( varName == D_CONSTRAINT_N2O ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for N2O constraint" );
-        returnval = N2O_constrain.get( date );
-   } else {
+        if ( N2O_constrain.exists( date ) ) {
+            returnval = N2O_constrain.get( date );
+        } else {
+            H_LOG( logger, Logger::DEBUG ) << "No N2O constraint for requested date " << date <<
+                ". Returning missing value." << std::endl;
+            returnval = unitval( MISSING_FLOAT, U_PPBV_N2O );
+        }
+    } else {
         H_THROW( "Caller is requesting unknown variable: " + varName );
     }
     

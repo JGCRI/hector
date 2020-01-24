@@ -217,8 +217,14 @@ unitval HalocarbonComponent::getData( const std::string& varName,
             returnval.set( 0.0, U_GG );
     }
     else if( varName == myGasName+CONC_CONSTRAINT_EXTENSION ) {
-        H_ASSERT( date != Core::undefinedIndex(), "Date required for halocarbon emissions" );
-        returnval = Ha_constrain.get( getdate );
+        H_ASSERT( date != Core::undefinedIndex(), "Date required for halocarbon constraint" );
+        if ( Ha_constrain.exists( getdate ) ) {
+            returnval = Ha_constrain.get( getdate );
+        } else {
+            H_LOG( logger, Logger::DEBUG ) << "No CH4 constraint for requested date " << date <<
+                ". Returning missing value." << std::endl;
+            returnval.set( MISSING_FLOAT, U_PPTV );
+        }
     }
     else {
         H_THROW( "Caller is requesting unknown variable: " + varName );
