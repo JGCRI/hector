@@ -19,15 +19,15 @@
 #include "h_util.hpp"
 
 namespace Hector {
-  
+
 using namespace std;
 
 //------------------------------------------------------------------------------
 /*! \brief Constructor
  */
 N2OComponent::N2OComponent() {
-    N2O_emissions.allowInterp( true ); 
-    N2O_emissions.name = N2O_COMPONENT_NAME; 
+    N2O_emissions.allowInterp( true );
+    N2O_emissions.name = N2O_COMPONENT_NAME;
     N2O_natural_emissions.allowInterp( true );
     N2O_natural_emissions.name = D_NAT_EMISSIONS_N2O;
     N2O.allowInterp( true );
@@ -46,7 +46,7 @@ N2OComponent::~N2OComponent() {
 // documentation is inherited
 string N2OComponent::getComponentName() const {
     const string name = N2O_COMPONENT_NAME;
-    
+
     return name;
 }
 
@@ -75,7 +75,7 @@ unitval N2OComponent::sendMessage( const std::string& message,
                                   const message_data info ) throw ( h_exception )
 {
     unitval returnval;
-    
+
     if( message==M_GETDATA ) {          //! Caller is requesting data
         return getData( datum, info.date );
 
@@ -83,11 +83,11 @@ unitval N2OComponent::sendMessage( const std::string& message,
         setData(datum, info);
         //TODO: change core so that parsing is routed through sendMessage
         //TODO: make setData private
-        
+
     } else {                        //! We don't handle any other messages
         H_THROW( "Caller sent unknown message: "+message );
     }
-    
+
     return returnval;
 }
 
@@ -124,18 +124,18 @@ void N2OComponent::setData( const string& varName,
 //------------------------------------------------------------------------------
 // documentation is inherited
 void N2OComponent::prepareToRun() throw ( h_exception ) {
-    
+
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
     oldDate = core->getStartDate();
-    N2O.set(oldDate, N0);  // set the first year's value    
+    N2O.set(oldDate, N0);  // set the first year's value
   }
 
 //------------------------------------------------------------------------------
 // documentation is inherited
 void N2OComponent::run( const double runToDate ) throw ( h_exception ) {
-    
+
 	H_ASSERT( !core->inSpinup() && runToDate-oldDate == 1, "timestep must equal 1" );
-   
+
     // Approach modified from Ward and Mahowald, 2014, 10.5194/acp-14-12701-2014
     double previous_n2o = N0.value( U_PPBV_N2O );
 
@@ -146,10 +146,10 @@ void N2OComponent::run( const double runToDate ) throw ( h_exception ) {
     // Decay constant varies based on N2O concentrations
     // This is Eq. B8 in Ward and Mahowald, 2014
     TAU_N2O.set( runToDate, unitval( TN2O0.value( U_YRS ) * ( pow( previous_n2o /N0.value( U_PPBV_N2O ), -0.05 ) ), U_YRS ) );
-    
+
     // Current emissions are the sum of natural and anthropogenic sources
     const double current_n2oem = N2O_emissions.get( runToDate ).value( U_TG_N ) + N2O_natural_emissions.get( runToDate ).value( U_TG_N );
-    
+
     // This calculation follows Eq. B7 in Ward and Mahowald 2014
     const double dN2O = current_n2oem / UC_N2O - previous_n2o / TAU_N2O.get( runToDate ).value( U_YRS );
 
@@ -165,9 +165,9 @@ void N2OComponent::run( const double runToDate ) throw ( h_exception ) {
 // documentation is inherited
 unitval N2OComponent::getData( const std::string& varName,
                               const double date ) throw ( h_exception ) {
-    
+
     unitval returnval;
-   
+
     if( varName == D_ATMOSPHERIC_N2O ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for atmospheric N2O" );
         returnval = N2O.get( date );
@@ -183,7 +183,7 @@ unitval N2OComponent::getData( const std::string& varName,
    } else {
         H_THROW( "Caller is requesting unknown variable: " + varName );
     }
-    
+
     return returnval;
 }
 

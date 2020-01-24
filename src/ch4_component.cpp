@@ -19,15 +19,15 @@
 #include "avisitor.hpp"
 
 namespace Hector {
-  
+
 using namespace std;
 
 //------------------------------------------------------------------------------
 /*! \brief Constructor
  */
 CH4Component::CH4Component() {
-    CH4_emissions.allowInterp( true ); 
-    CH4_emissions.name = CH4_COMPONENT_NAME; 
+    CH4_emissions.allowInterp( true );
+    CH4_emissions.name = CH4_COMPONENT_NAME;
     CH4.allowInterp( true );
     CH4.name = D_ATMOSPHERIC_CH4;
 }
@@ -42,7 +42,7 @@ CH4Component::~CH4Component() {
 // documentation is inherited
 string CH4Component::getComponentName() const {
     const string name = CH4_COMPONENT_NAME;
-    
+
     return name;
 }
 
@@ -56,7 +56,7 @@ void CH4Component::init( Core* coreptr ) {
     // Inform core what data we can provide
     core->registerCapability( D_ATMOSPHERIC_CH4, getComponentName() );
     core->registerCapability( D_PREINDUSTRIAL_CH4, getComponentName() );
-    core->registerDependency( D_LIFETIME_OH, getComponentName() ); 
+    core->registerDependency( D_LIFETIME_OH, getComponentName() );
     // ...and what input data that we can accept
     core->registerInput(D_EMISSIONS_CH4, getComponentName());
 }
@@ -67,20 +67,20 @@ unitval CH4Component::sendMessage( const std::string& message,
                                   const std::string& datum,
                                   const message_data info ) throw ( h_exception ) {
     unitval returnval;
-    
+
     if( message==M_GETDATA ) {          //! Caller is requesting data
         return getData( datum, info.date );
-        
+
     } else if( message==M_SETDATA ) {   //! Caller is requesting to set data
         setData(datum, info);
         //TODO: call setData below
         //TODO: change core so that parsing is routed through sendMessage
         //TODO: make setData private
-        
+
     } else {                        //! We don't handle any other messages
         H_THROW( "Caller sent unknown message: "+message );
     }
-    
+
     return returnval;
 }
 
@@ -120,7 +120,7 @@ void CH4Component::setData( const string& varName,
 //------------------------------------------------------------------------------
 // documentation is inherited
 void CH4Component::prepareToRun() throw ( h_exception ) {
-    
+
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
     oldDate = core->getStartDate();
     CH4.set( oldDate, M0 );  // set the first year's value
@@ -130,27 +130,27 @@ void CH4Component::prepareToRun() throw ( h_exception ) {
 // documentation is inherited
 void CH4Component::run( const double runToDate ) throw ( h_exception ) {
 	H_ASSERT( !core->inSpinup() && runToDate-oldDate == 1, "timestep must equal 1" );
-     
+
     // modified from Wigley et al, 2002
     // https://doi.org/10.1175/1520-0442(2002)015%3C2690:RFDTRG%3E2.0.CO;2
     const double current_ch4em = CH4_emissions.get( runToDate ).value( U_TG_CH4 );
     const double current_toh = core->sendMessage( M_GETDATA, D_LIFETIME_OH, runToDate ).value( U_YRS );
     H_LOG( logger, Logger::DEBUG ) << "Year " << runToDate << " current_toh = " << current_toh << std::endl;
-   
+
     const double ch4n =  CH4N.value( U_TG_CH4 );
     const double emisTocon = ( current_ch4em + ch4n ) / UC_CH4.value( U_TG_PPBV );
     double previous_ch4 = M0.value( U_PPBV_CH4 );
-     
+
     H_LOG( logger, Logger::DEBUG ) << "Year " << runToDate << " previous CH4 = " << previous_ch4 << std::endl;
-    
+
     if (runToDate!=oldDate) {
         previous_ch4 = CH4.get( oldDate );
     }
-    
+
     const double soil_sink = previous_ch4 / Tsoil.value( U_YRS );
     const double strat_sink = previous_ch4 / Tstrat.value( U_YRS );
     const double oh_sink = previous_ch4 / current_toh;
-       
+
     const double dCH4 = emisTocon - soil_sink - strat_sink - oh_sink; // change in CH4 concentration to be added to previous_ch4
 
     CH4.set( runToDate, unitval( previous_ch4 + dCH4, U_PPBV_CH4 ) );
@@ -163,11 +163,11 @@ void CH4Component::run( const double runToDate ) throw ( h_exception ) {
 // documentation is inherited
 unitval CH4Component::getData( const std::string& varName,
                               const double date ) throw ( h_exception ) {
-    
+
     unitval returnval;
-    
+
     if( varName == D_ATMOSPHERIC_CH4 ) {
-        H_ASSERT( date != Core::undefinedIndex(), "Date required for atmospheric CH4" ); 
+        H_ASSERT( date != Core::undefinedIndex(), "Date required for atmospheric CH4" );
         returnval = CH4.get( date );
     } else if( varName == D_PREINDUSTRIAL_CH4 ) {
         H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for preindustrial CH4" );
@@ -178,7 +178,7 @@ unitval CH4Component::getData( const std::string& varName,
     } else {
         H_THROW( "Caller is requesting unknown variable: " + varName );
     }
-    
+
     return returnval;
 }
 

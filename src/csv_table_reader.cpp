@@ -23,7 +23,7 @@
 #include "csv_table_reader.hpp"
 
 namespace Hector {
-  
+
 using namespace std;
 
 //------------------------------------------------------------------------------
@@ -39,7 +39,7 @@ CSVTableReader::CSVTableReader( const string& fileName ) throw ( h_exception )
 {
     // allow exceptions from bad io operations
     tableInputStream.exceptions( ifstream::failbit | ifstream:: badbit );
-    
+
     try {
         // attempt to open the file
         tableInputStream.open( fileName.c_str() );
@@ -75,7 +75,7 @@ string CSVTableReader::csv_getline() {
     string s;
     bool semicolon = true;
     bool hash = true;
-    
+
     while( ( semicolon || hash ) && !tableInputStream.eof() && tableInputStream.peek() != -1 ) {
         getline( tableInputStream, s ); //TODO: this depends on Unix line endings
         ++lineNum;
@@ -115,12 +115,12 @@ void CSVTableReader::process( Core* core, const string& componentName,
         tableInputStream.clear();
         tableInputStream.seekg( 0, ifstream::beg );
         lineNum = 0;
-        
+
         string line;
         vector<string> row;
         string unitsLabel;
         size_t columnIndex = 0; // code for "not found", takes advantage of skipping col==0 in the loop below.
-        
+
         // read the header line and attempt to find varName. The first column is
         // not considered because that should be the index column.
         line = csv_getline();
@@ -137,7 +137,7 @@ void CSVTableReader::process( Core* core, const string& componentName,
         if( columnIndex == 0 ) {
             H_THROW( "Could not find a column for "+varName+" in "+fileName+" header="+line );
         }
-        
+
         // we are all set to process the table
         // note that getline sets the fail bit when it hits eof which is not what
         // want, a work around is to check peek
@@ -146,22 +146,22 @@ void CSVTableReader::process( Core* core, const string& componentName,
             // read the next row to process
             line = csv_getline();
             lines_read++;
-            
+
             // Ignore blank lines. A stray windows line ending which may have made
             // its way in from a mixed line ending file can be skipped as well.
             if( line.empty() || line[ 0 ] == '\r' ) {
                 continue;
             }
-            
+
             split( row, line, is_any_of( "," ) );
-            
+
             // we should have a constant number of columns
 //TODO: figure this out for VS!  H_ASSERT( columnIndex < row.size() && headerRowSize == row.size(), "varying columns in data line "+ boost::lexical_cast<std::string>( lines_read ) );
-            
+
             // remove extra white space from the table value
             trim( row[ 0 ] );
             trim( row[ columnIndex ] );
-            
+
             if( row[ 0 ] == "UNITS" ) {
                 // this row of the table is specifying units for all columns
                 // we only need to keep track of the value for the column of interest
@@ -170,7 +170,7 @@ void CSVTableReader::process( Core* core, const string& componentName,
                 // this row is a regular row of data
                 // the first column is assumed to be the index
                 double tseriesIndex = lexical_cast<double>( row[ 0 ] );
-                
+
                 // route the data to the appropriate model component
                 if( !row[ columnIndex ].empty() ) {      // ignore blanks
                     message_data data( row[ columnIndex ] );
@@ -180,7 +180,7 @@ void CSVTableReader::process( Core* core, const string& componentName,
                 }
             }
         }
-        
+
     } catch( ifstream::failure e ) {
         string errorStr = "I/O exception while processing "+fileName+" error: "+strerror(errno);
         H_THROW( errorStr );

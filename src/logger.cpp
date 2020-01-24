@@ -20,7 +20,7 @@
 #if defined (__unix__) || defined (__MACH__)
 #include <unistd.h>
 #include <sys/stat.h>
-#include <sys/types.h> 
+#include <sys/types.h>
 #endif
 
 #ifdef USE_RCPP
@@ -67,7 +67,7 @@ int Logger::LoggerStreamBuf::sync() {
     if(consoleBuf) {
         ret = consoleBuf->pubsync();
     }
-    
+
     return ret;
 }
 
@@ -82,7 +82,7 @@ int Logger::LoggerStreamBuf::overflow( int c ) {
         // to the console before it gets flushed
         consoleBuf->sputn( pbase(), pptr() - pbase() );
     }
-    
+
     return filebuf::overflow( c );
 }
 
@@ -100,7 +100,7 @@ streamsize Logger::LoggerStreamBuf::xsputn( const char* s, streamsize n ) {
         consoleBuf->sputn( pbase(), pptr() - pbase() );
         consoleBuf->sputn( s, n );
     }
-    
+
     return filebuf::xsputn( s, n );
 }
 
@@ -153,15 +153,15 @@ void Logger::open( const string& logName, bool echoToScreen,
     this->minLogLevel = minLogLevel;
     this->echoToFile = echoToFile;
 
-    if (echoToFile) { 
+    if (echoToFile) {
         chk_logdir(LOG_DIRECTORY);
-    
+
         const string fqName = LOG_DIRECTORY + logName + LOG_EXTENSION;	// fully-qualified name
-	
+
         LoggerStreamBuf* buff = new LoggerStreamBuf( echoToScreen );
         if( !buff->open( fqName.c_str(), ios::out ) )
             H_THROW("Unable to open log file " + fqName);
-    
+
         loggerStream.rdbuf( buff );
     } else {
         loggerStream.rdbuf( STDOUT_STREAM.rdbuf() );
@@ -198,7 +198,7 @@ ostream& Logger::write( const LogLevel writeLevel,
                        const string& functionInfo ) throw ( h_exception )
 {
     H_ASSERT( isInitialized, "can't write to logger until initialized" );
-    
+
     // note that we not double checking the writeLevel
     return loggerStream << getDateTimeStamp() << ':' <<logLevelToStr( writeLevel )
     << ':' << functionInfo << ": ";
@@ -234,7 +234,7 @@ const string& Logger::logLevelToStr( const LogLevel logLevel ) {
         "WARNING",
         "SEVERE"
     };
-    
+
     return logLevelStrings[ logLevel ];
 }
 
@@ -256,29 +256,29 @@ const char* Logger::getDateTimeStamp() {
     if( i > 0 ) {
         ret[ i - 1 ] = 0;
     }
-    
+
     return ret;
 }
 
 #if defined (__unix__) || defined (__MACH__)
 int Logger::chk_logdir(std::string dir)
 {
-    // clip trailing /, if any.  
-    int len = dir.size(); 
+    // clip trailing /, if any.
+    int len = dir.size();
     if(dir[len-1] == '/')
         dir[len-1] = '\0';    // ok to modify because dir is a copy
 
-    const char *cdir = dir.c_str(); 
+    const char *cdir = dir.c_str();
     if(access(cdir, F_OK)) {    // NB: access and mkdir return 0 on success.
         // directory doesn't exist.  Attempt to create it
         if(mkdir(cdir, 0755)) {
             // failed.  Throw an error
             H_THROW("Log directory " + dir + " does not exist and can't be created.");
         }
-        else 
-            return 1; 
+        else
+            return 1;
     }
-    
+
     struct stat statbuf;
 
     stat(cdir, &statbuf);

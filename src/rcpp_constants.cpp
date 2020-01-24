@@ -1168,7 +1168,7 @@ String HEAT_FLUX() {
 return D_HEAT_FLUX;
 }
 
-//' @describeIn msgtype Character used to separate biome from variable name 
+//' @describeIn msgtype Character used to separate biome from variable name
 // [[Rcpp::export]]
 String BIOME_SPLIT_CHAR() {
 return SNBOX_PARSECHAR;

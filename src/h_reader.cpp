@@ -38,7 +38,7 @@ h_reader::h_reader( std::string fname, readertype_t style, bool doparse ) {
 void h_reader::parse() throw( h_exception ) {
     if(reader)
         delete reader;
-    
+
     reader = new INIReader( filename );
     int le = (*reader).ParseError();
     if( le ) {
