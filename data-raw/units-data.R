@@ -45,7 +45,7 @@ vfuns_nodate <- lapply(vars_nodate, getFromNamespace, ns='hector')
 
 # Throws an error if the result of each do.call call is not a character vector
 # of length 1
-vfuns_date <- lapply(vfuns_date, do.call, character(1), args=list())
-vfuns_nodate <- lapply(vfuns_nodate, do.call, character(1), args=list())
+vfuns_date <- vapply(vfuns_date, do.call, character(1), args=list())
+vfuns_nodate <- vapply(vfuns_nodate, do.call, character(1), args=list())
 
 usethis::use_data(unitstable, vfuns_date, vfuns_nodate, internal=TRUE, overwrite=TRUE)
