@@ -70,16 +70,16 @@ RF_N2O <- function() {
     .Call('_hector_RF_N2O', PACKAGE = 'hector')
 }
 
-#' @describeIn forcings Radiative forcing due to water vapor
+#' @describeIn forcings Radiative forcing due to stratospheric water vapor
 #' @export
-RF_H2O <- function() {
-    .Call('_hector_RF_H2O', PACKAGE = 'hector')
+RF_StratH2O <- function() {
+    .Call('_hector_RF_StratH2O', PACKAGE = 'hector')
 }
 
-#' @describeIn forcings Radiative forcing due to ozone
+#' @describeIn forcings Radiative forcing due to tropospheric ozone
 #' @export
-RF_O3 <- function() {
-    .Call('_hector_RF_O3', PACKAGE = 'hector')
+RF_TropO3 <- function() {
+    .Call('_hector_RF_TropO3', PACKAGE = 'hector')
 }
 
 #' @describeIn forcings Radiative forcing due to black carbon

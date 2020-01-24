@@ -208,9 +208,9 @@ test_that('Test RF output.', {
 
     # The vector of all the individual componets that contribute to RF.
     rf_componets <- c(RF_BC(), RF_C2F6(),  RF_CCL4(),  RF_CF4(), RF_CFC11(),  RF_CFC113(),  RF_CFC114(),  RF_CFC115(), RF_CH3BR(),  RF_CH3CCL3(),
-                      RF_CH3CL(),  RF_CH4(),  RF_CO2(),  RF_H2O(), RF_HALON1211(),  RF_CFC12(),  RF_HALON1301(), RF_HALON2402(),  RF_HCF141B(),
+                      RF_CH3CL(),  RF_CH4(),  RF_CO2(),  RF_StratH2O(), RF_HALON1211(),  RF_CFC12(),  RF_HALON1301(), RF_HALON2402(),  RF_HCF141B(),
                       RF_HCF142B(),  RF_HCF22(),  RF_HFC125(),  RF_HFC134A(),  RF_HFC143A(),  RF_HFC227EA(), RF_HFC23(), RF_T_ALBEDO(),
-                      RF_HFC245FA(), RF_HFC32(),  RF_HFC4310(),  RF_N2O(), RF_O3(),  RF_OC(),  RF_SF6(), RF_SO2D(),  RF_SO2I(), RF_VOL())
+                      RF_HFC245FA(), RF_HFC32(),  RF_HFC4310(),  RF_N2O(), RF_TropO3(),  RF_OC(),  RF_SF6(), RF_SO2D(),  RF_SO2I(), RF_VOL())
     individual_rf <- fetchvars(hc, 1750:2100, rf_componets)
 
     # The RF value should be equal to 0 in the base year (1750) for all of the RF agents.
