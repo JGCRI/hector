@@ -48,5 +48,4 @@ vfuns_nodate <- lapply(vars_nodate, getFromNamespace, ns='hector')
 vfuns_date <- lapply(vfuns_date, do.call, character(1), args=list())
 vfuns_nodate <- lapply(vfuns_nodate, do.call, character(1), args=list())
 
-usethis::use_data(unitstable, vars_date, vars_nodate, internal=TRUE, overwrite=TRUE)
-
+usethis::use_data(unitstable, vfuns_date, vfuns_nodate, internal=TRUE, overwrite=TRUE)
