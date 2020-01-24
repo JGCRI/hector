@@ -894,7 +894,7 @@ HEAT_FLUX <- function() {
     .Call('_hector_HEAT_FLUX', PACKAGE = 'hector')
 }
 
-#' @describeIn msgtype Character used to separate biome from variable name 
+#' @describeIn msgtype Character used to separate biome from variable name
 BIOME_SPLIT_CHAR <- function() {
     .Call('_hector_BIOME_SPLIT_CHAR', PACKAGE = 'hector')
 }
@@ -1004,7 +1004,7 @@ rename_biome <- function(core, oldname, newname) {
 #'
 #' Messages are the mechanism used to get data from Hector model components and
 #' to set values within components.
-#' 
+#'
 #' A message comprises a type (e.g. GETDATA to retrieve data from a component, or SETDATA to
 #' set data in a component), a capability, which identifies the information to be operated
 #' on (e.g. Atmospheric CO2 concentration, or global total radiative forcing), and an optional

@@ -24,7 +24,7 @@
 #include "h_exception.hpp"
 
 namespace Hector {
-  
+
 /*! \brief Time series data type.
  *
  *  Currently implemented as an STL map.
@@ -35,11 +35,11 @@ class tseries {
     double lastInterpYear;
 	bool endinterp_allowed;
     mutable bool dirty;                 // does series need re-interpolating?
-    
+
     h_interpolator interpolator;
     void set_interp( double, bool, interpolation_methods );
     void fit_spline();
-    
+
 public:
     tseries();
 
@@ -47,17 +47,17 @@ public:
     T_data get( double ) const throw( h_exception );
     T_data get_deriv( double ) const throw( h_exception );
     bool exists( double ) const;
-    
+
     double firstdate() const;
     double lastdate() const;
-    
+
     int size() const;
-    
+
     void allowInterp( bool eia );
     void allowPartialInterp( bool eia );
 
     void truncate(double t, bool after=true);
-    
+
     std::string name;
 };
 
@@ -78,17 +78,17 @@ template<class T_data>
 struct interp_helper {
     // TODO: we might want to consider re-organizing this to not have to pass
     // info around, discuss with Ben
-    static void error_check( const std::map<double, T_data>& userData, 
+    static void error_check( const std::map<double, T_data>& userData,
                              h_interpolator& interpolator, std::string name,
                              bool& isDirty, bool endinterp_allowed,
                              const double index ) throw( h_exception )
     {
         H_ASSERT( userData.size() > 1, "time series data(" + name + ") must have size>1" );
-        
+
         if( isDirty ) {       // data have changed; inform interpolator
             double *x = new double[ userData.size() ];   // allocate
             double *y = new double[ userData.size() ];
-            
+
             typename std::map<double,T_data>::const_iterator itr;    // ...and fill
             int i=0;
             for ( itr=userData.begin(); itr != userData.end(); itr++ ) {
@@ -96,18 +96,18 @@ struct interp_helper {
                 y[ i ] = (*itr).second;
                 i++;
             }
-            
+
             interpolator.newdata( i, x, y );
-            
+
             delete [] x;           // spline will keep its own copy
             delete [] y;           // spline will keep its own copy
             isDirty = false;
         }
-        
+
         if( index < (*userData.begin()).first || index > (*userData.rbegin()).first )       // beyond-end interpolation
             H_ASSERT( endinterp_allowed, "In time series '" + name + "', end interpolation not allowed" );
     }
-    static T_data interp( const std::map<double, T_data>& userData, 
+    static T_data interp( const std::map<double, T_data>& userData,
                           h_interpolator& interpolator, std::string name,
                           bool& isDirty, bool endinterp_allowed,
                           const double index ) throw( h_exception )
@@ -116,7 +116,7 @@ struct interp_helper {
 
         return interpolator.f( index );
     }
-    static T_data calc_deriv( const std::map<double, T_data>& userData, 
+    static T_data calc_deriv( const std::map<double, T_data>& userData,
                               h_interpolator& interpolator, std::string name,
                               bool& isDirty, bool endinterp_allowed,
                               const double index ) throw( h_exception )
@@ -147,11 +147,11 @@ struct interp_helper<unitval> {
                              const double index ) throw( h_exception )
     {
         H_ASSERT( userData.size() > 1, "time series data (" + name + ") must have size>1" );
-        
+
         if( isDirty ) {       // data have changed; inform interpolator
             double *x = new double[ userData.size() ];   // allocate
             double *y = new double[ userData.size() ];
-            
+
             std::map<double,T_unit_type>::const_iterator itr;    // ...and fill
             int i=0;
             for ( itr=userData.begin(); itr != userData.end(); itr++ ) {
@@ -159,14 +159,14 @@ struct interp_helper<unitval> {
                 y[ i ] = (*itr).second.value( (*itr).second.units() );
                 i++;
             }
-            
+
             interpolator.newdata( i, x, y );
-            
+
             delete[] x;         // spline will keep its own copy
             delete[] y;         // spline will keep its own copy
             isDirty = false;
         }
-        
+
         if( index < (*userData.begin()).first || index > (*userData.rbegin()).first )       // beyond-end interpolation
             H_ASSERT( endinterp_allowed, "end interpolation not allowed" );
     }
@@ -176,7 +176,7 @@ struct interp_helper<unitval> {
                                const double index ) throw( h_exception )
     {
         error_check( userData, interpolator, name, isDirty, endinterp_allowed, index );
-        
+
         return unitval( interpolator.f( index ), (*(userData.begin())).second.units() );
     }
     static T_unit_type calc_deriv( const std::map<double, T_unit_type>& userData,
@@ -185,17 +185,17 @@ struct interp_helper<unitval> {
                                    const double index ) throw( h_exception )
     {
         error_check( userData, interpolator, name, isDirty, endinterp_allowed, index );
-        
+
         return unitval( interpolator.f_deriv( index ), (*(userData.begin())).second.units() );
     }
 };
 
 
 /*  "Because templates are compiled when required, this forces a restriction
-    for multi-file projects: the implementation (definition) of a template 
-    class or function must be in the same file as its declaration. That 
-    means that we cannot separate the interface in a separate header file, 
-    and that we must include both interface and implementation in any file 
+    for multi-file projects: the implementation (definition) of a template
+    class or function must be in the same file as its declaration. That
+    means that we cannot separate the interface in a separate header file,
+    and that we must include both interface and implementation in any file
     that uses the templates."   http://www.cplusplus.com/doc/tutorial/templates/
 */
 
@@ -251,7 +251,7 @@ T_data tseries<T_data>::get( double t ) const throw( h_exception ) {
     if( itr != mapdata.end() )
         return (*itr).second;
     else if( t < lastInterpYear )
-        return interp_helper<T_data>::interp( mapdata, 
+        return interp_helper<T_data>::interp( mapdata,
                                               const_cast<tseries*>( this )->interpolator,
                                               name, dirty, endinterp_allowed, t );
 	else {
@@ -274,13 +274,13 @@ T_data tseries<T_data>::get_deriv( double t ) const throw( h_exception ) {
     }
 
     if( t < lastInterpYear ) {
-        return interp_helper<T_data>::calc_deriv( mapdata, 
+        return interp_helper<T_data>::calc_deriv( mapdata,
                                                   const_cast<tseries*>( this )->interpolator,
                                                   name, dirty, endinterp_allowed, t );
     }
 	else {
             std::ostringstream errmsg;
-            errmsg << "Derivative requested but not allowed (" << name << ") date: " << t << "\n"; 
+            errmsg << "Derivative requested but not allowed (" << name << ") date: " << t << "\n";
             H_THROW(errmsg.str());
     }
 }
@@ -357,13 +357,13 @@ int tseries<T_data>::size() const {
  *  \details The default is to wipe all of the data in the time series
  *           after the input date.  By setting the optional after
  *           argument to false, you can wipe data before the input
- *           date instead. 
+ *           date instead.
  *  \note If you're going to overwrite previously read-in data, and
  *        you're not supplying input at every year, then you need to
  *        trigger this function (probably by sending a M_TRUNCATE
  *        message to the component that owns the time series) in order
  *        to ensure that you don't have bad data in the in-between
- *        years. 
+ *        years.
  *  \note I haven't actually implemented the M_TRUNCATE message yet.
  *        We'd like to be able to read in an entire time series for
  *        all gasses and then discard the ones that GCAM will be
@@ -387,8 +387,8 @@ void tseries<T>::truncate(double t, bool after)
     else {
         it1 = mapdata.begin();
         it2 = mapdata.lower_bound(t);
-    } 
-    mapdata.erase(it1,it2); 
+    }
+    mapdata.erase(it1,it2);
 }
 
 }
