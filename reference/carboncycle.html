@@ -139,6 +139,8 @@ carbon cycle</p>
 
     <pre class="usage"><span class='fu'>LAND_CFLUX</span>()
 
+<span class='fu'>NBP</span>()
+
 <span class='fu'>ATMOSPHERIC_CO2</span>()
 
 <span class='fu'>NPP</span>()
@@ -184,7 +186,12 @@ flux (`"Pg C year^-1"`)</p></li>
 <p>These variables can be read using the <code><a href='msgtype.html'>GETDATA</a></code> message type:</p><dl class='dl-horizontal'>
 <dt>ATMOSPHERIC_CO2</dt><dd><p>Atmospheric CO2 concentration</p></dd>
 <dt>ATMOSPHERIC_C</dt><dd><p>Atmospheric carbon pool</p></dd>
-<dt>LAND_CFLUX</dt><dd><p>Land carbon flux</p></dd>
+<dt>LAND_CFLUX</dt><dd><p>Annual global C flux from atmosphere into the land. A
+  positive value means a net flux from atmosphere into land (i.e. land is a
+  net carbon sink), while a negative value means a net flux from land into
+  the atmosphere (i.e. land is a net carbon source)</p></dd>
+<dt>NBP</dt><dd><p>Net biome production (synonymous with <code>LAND_CFLUX</code>). Note
+  that despite the name, this is currently a globally-averaged variable.</p></dd>
 <dt>FFI_EMISSIONS</dt><dd><p>Fossil fuel and industrial emissions</p></dd>
 <dt>LUC_EMISSIONS</dt><dd><p>Land use change emissions</p></dd>
 
