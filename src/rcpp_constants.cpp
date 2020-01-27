@@ -109,14 +109,14 @@ return D_RF_N2O;
 //' @describeIn forcings Radiative forcing due to stratospheric water vapor
 //' @export
 // [[Rcpp::export]]
-String RF_StratH2O() {
+String RF_H2O_STRAT() {
 return D_RF_H2O_STRAT;
 }
 
 //' @describeIn forcings Radiative forcing due to tropospheric ozone
 //' @export
 // [[Rcpp::export]]
-String RF_TropO3() {
+String RF_O3_TROP() {
 return D_RF_O3_TROP;
 }
 
