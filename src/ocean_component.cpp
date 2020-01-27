@@ -336,10 +336,13 @@ unitval OceanComponent::getData( const std::string& varName,
     
     unitval returnval;
     
-    H_ASSERT( date == Core::undefinedIndex(), "Date data not available for ocean_component" );
-    
+    if ( varName != D_OCEAN_CFLUX ) {
+        H_ASSERT( date == Core::undefinedIndex(), "Date data not available for " + varName + " in OceanComponent::getData()" );
+    }
+
     if( varName == D_OCEAN_CFLUX ) {
-        returnval = unitval( annualflux_sum.value( U_PGC ), U_PGC_YR );
+        H_ASSERT( date != Core::undefinedIndex(), "Date required for ocean C flux" );
+        returnval = annualflux_sum_ts.get(date);
     } else if( varName == D_OCEAN_C ) {
         returnval = totalcpool();
 	} else if( varName == D_HL_DO ) {
