@@ -110,14 +110,14 @@ return D_RF_N2O;
 //' @export
 // [[Rcpp::export]]
 String RF_StratH2O() {
-return D_RF_H2O;
+return D_RF_H2O_STRAT;
 }
 
 //' @describeIn forcings Radiative forcing due to tropospheric ozone
 //' @export
 // [[Rcpp::export]]
 String RF_TropO3() {
-return D_RF_O3;
+return D_RF_O3_TROP;
 }
 
 //' @describeIn forcings Radiative forcing due to black carbon
@@ -1168,7 +1168,7 @@ String HEAT_FLUX() {
 return D_HEAT_FLUX;
 }
 
-//' @describeIn msgtype Character used to separate biome from variable name 
+//' @describeIn msgtype Character used to separate biome from variable name
 // [[Rcpp::export]]
 String BIOME_SPLIT_CHAR() {
 return SNBOX_PARSECHAR;
