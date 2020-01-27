@@ -52,5 +52,7 @@ The CO2 constraint need not span the entirety of the Hector simulation, or even 
 At any given time step, Hector will check whether or not a CO2 constraint exists at that time step and only apply the constraint if it is present.
 This means that "hybrid" runs are possible, where only some specific time ranges have CO2 constraints while others calculate the atmospheric carbon pool and CO2 concentrations according to Hector's standard [carbon cycle](SimpleNBox).
 Note that Hector _does not perform any interpolation of constraints_ -- they are applied only in the exact years that they are provided by the user, and all other years are treated (including those immediately before or after constrained years) are treated as unconstrained.
-This means that discontinuous constraints can abruptly force Hector's climate system into state that is very inconsistent with the previous time step.
+This means that constraints can abruptly force Hector's climate system into state that is inconsistent with the previous time step.
+Concentrations for the first year of a constraint can be discontinuous compared to the previous year without a constraint.
+Concentrations after the last year of a constraint will not necessarily have a discontinuity, but the behavior of the carbon cycle may change after this point.
 It is the user's responsibility to make sure that constraints are continuous.
