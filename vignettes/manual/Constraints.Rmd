@@ -36,8 +36,17 @@ then the model's ocean carbon uptake (in Pg C) will follow this contents of this
 CO2_constrain=csv:path/to/constraint/file.csv
 ```
 
-then the model's atmospheric CO2 concentration ([CO2], given in ppmv CO2) will follow this contents of this file (which should have two columns, `Date` and `CO2_constrain`). If the constraint [CO2] is lower than the calculated [CO2] at that time step, any excess is moved to the deep ocean; conversely, any necessary deficit is transferred from there.
-Otherwise Hector's atmospheric CO2 concentration constraint can be set using the `setvars` function and `CO2_CONSTRAIN` variable.
+then the model's atmospheric CO2 concentration ([CO2], given in ppmv CO2) will follow the contents of this file (which should have two columns, `Date` and `CO2_constrain`).
+Alternatively, Hector's atmospheric CO2 concentration constraint can be set using the `setvars` function and `CO2_CONSTRAIN` variable.
+
+The CO2 constraint is applied at the _end_ of the current time step.
+The full sequence of events is as follows:
+First, the model solves the current time-step's carbon cycle conditioned on the previous time step's carbon pools, ignoring the CO2 constraint.
+Then, if a CO2 constraint is present, Hector calculates the difference between its calculated atmospheric CO2 and the prescribed CO2 constraint.
+If the target atmospheric CO2 concentration is lower than the calculated CO2, the excess carbon is transferred from the atmosphere to the deep ocean;
+conversely, if the target atmospheric CO2 concentration is greater than the calculated value, the additional carbon is transferred from the deep ocean into the atmosphere.
+Finally, Hector records the current atmospheric CO2 concentration (which is now equal to the constraint value); this is the value that is used in the next time step's evaluation of carbon-climate feedbacks (e.g. CO2 fertilization of net primary productivity, surface ocean carbonate chemistry).
+In other words, an atmospheric CO2 constraint at time $t$ does not affect carbon-climate feedbacks until $t+1$.
 
 The CO2 constraint need not span the entirety of the Hector simulation, or even be continuous.
 At any given time step, Hector will check whether or not a CO2 constraint exists at that time step and only apply the constraint if it is present.
