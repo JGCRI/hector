@@ -72,14 +72,14 @@ RF_N2O <- function() {
 
 #' @describeIn forcings Radiative forcing due to stratospheric water vapor
 #' @export
-RF_StratH2O <- function() {
-    .Call('_hector_RF_StratH2O', PACKAGE = 'hector')
+RF_H2O_STRAT <- function() {
+    .Call('_hector_RF_H2O_STRAT', PACKAGE = 'hector')
 }
 
 #' @describeIn forcings Radiative forcing due to tropospheric ozone
 #' @export
-RF_TropO3 <- function() {
-    .Call('_hector_RF_TropO3', PACKAGE = 'hector')
+RF_O3_TROP <- function() {
+    .Call('_hector_RF_O3_TROP', PACKAGE = 'hector')
 }
 
 #' @describeIn forcings Radiative forcing due to black carbon
@@ -894,7 +894,7 @@ HEAT_FLUX <- function() {
     .Call('_hector_HEAT_FLUX', PACKAGE = 'hector')
 }
 
-#' @describeIn msgtype Character used to separate biome from variable name 
+#' @describeIn msgtype Character used to separate biome from variable name
 BIOME_SPLIT_CHAR <- function() {
     .Call('_hector_BIOME_SPLIT_CHAR', PACKAGE = 'hector')
 }

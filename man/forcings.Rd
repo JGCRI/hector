@@ -6,8 +6,8 @@
 \alias{RF_T_ALBEDO}
 \alias{RF_CO2}
 \alias{RF_N2O}
-\alias{RF_StratH2O}
-\alias{RF_TropO3}
+\alias{RF_H2O_STRAT}
+\alias{RF_O3_TROP}
 \alias{RF_BC}
 \alias{RF_OC}
 \alias{RF_SO2D}
@@ -25,9 +25,9 @@ RF_CO2()
 
 RF_N2O()
 
-RF_StratH2O()
+RF_H2O_STRAT()
 
-RF_TropO3()
+RF_O3_TROP()
 
 RF_BC()
 
@@ -59,9 +59,9 @@ messages.)
 
 \item \code{RF_N2O}: Radiative forcing due to N2O
 
-\item \code{RF_StratH2O}: Radiative forcing due to stratospheric water vapor
+\item \code{RF_H2O_STRAT}: Radiative forcing due to stratospheric water vapor
 
-\item \code{RF_TropO3}: Radiative forcing due to tropospheric ozone
+\item \code{RF_O3_TROP}: Radiative forcing due to tropospheric ozone
 
 \item \code{RF_BC}: Radiative forcing due to black carbon
 

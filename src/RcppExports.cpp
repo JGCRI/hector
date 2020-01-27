@@ -115,23 +115,23 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// RF_StratH2O
-String RF_StratH2O();
-RcppExport SEXP _hector_RF_StratH2O() {
+// RF_H2O_STRAT
+String RF_H2O_STRAT();
+RcppExport SEXP _hector_RF_H2O_STRAT() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(RF_StratH2O());
+    rcpp_result_gen = Rcpp::wrap(RF_H2O_STRAT());
     return rcpp_result_gen;
 END_RCPP
 }
-// RF_TropO3
-String RF_TropO3();
-RcppExport SEXP _hector_RF_TropO3() {
+// RF_O3_TROP
+String RF_O3_TROP();
+RcppExport SEXP _hector_RF_O3_TROP() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(RF_TropO3());
+    rcpp_result_gen = Rcpp::wrap(RF_O3_TROP());
     return rcpp_result_gen;
 END_RCPP
 }
@@ -1643,8 +1643,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_RF_T_ALBEDO", (DL_FUNC) &_hector_RF_T_ALBEDO, 0},
     {"_hector_RF_CO2", (DL_FUNC) &_hector_RF_CO2, 0},
     {"_hector_RF_N2O", (DL_FUNC) &_hector_RF_N2O, 0},
-    {"_hector_RF_StratH2O", (DL_FUNC) &_hector_RF_StratH2O, 0},
-    {"_hector_RF_TropO3", (DL_FUNC) &_hector_RF_TropO3, 0},
+    {"_hector_RF_H2O_STRAT", (DL_FUNC) &_hector_RF_H2O_STRAT, 0},
+    {"_hector_RF_O3_TROP", (DL_FUNC) &_hector_RF_O3_TROP, 0},
     {"_hector_RF_BC", (DL_FUNC) &_hector_RF_BC, 0},
     {"_hector_RF_OC", (DL_FUNC) &_hector_RF_OC, 0},
     {"_hector_RF_SO2D", (DL_FUNC) &_hector_RF_SO2D, 0},
