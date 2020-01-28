@@ -1,5 +1,7 @@
 ---
 title: Terrestrial C cycle
+resource_files:
+    - hector_terrestrial_c.svg
 ---
 
 Contents:
@@ -12,7 +14,8 @@ Contents:
 Hector's land C sink is divided into three pools: vegetation ($C_v$), detritus ($C_d$), and soil ($C_s$).
 These sinks are global by default, but they can be divided into $n$ "biomes" with unique parameters and initial pool sizes.
 
-The total C flux from atmosphere to land at time $t$ ($F_{L}(t)$) is the net of C sequestration by photosynthesis (net primary productivity, $NPP_i(t)$) and C release by heterotrophic respiration ($RH_i(t)$) summed across each biome $i$, and global land use change ($LUC(t)$):
+The total C flux from atmosphere to land at time $t$ ($F_{L}(t)$; also known as Net Biome Production, NBP) is the net of C sequestration by photosynthesis (net primary productivity, $NPP_i(t)$) and C release by heterotrophic respiration ($RH_i(t)$) summed across each biome $i$, and global land use change ($LUC(t)$)
+(note that this calculation does not currently include fire, another important land C source):
 
 $$ F_{L}(t) = \sum_{i=1}^{n} \left( NPP_i(t) - RH_i(t) \right) - LUC(t)  $$
 

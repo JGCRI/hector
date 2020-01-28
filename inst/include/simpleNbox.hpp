@@ -146,6 +146,7 @@ private:
     double tcurrent;                    //!< Current time (last completed time step)
     double masstot;                     //!< tracker for mass conservation
 
+    tseries<unitval> atmosland_flux_ts;    //!< Atmosphere -> land C flux (time series)
     
     /*****************************************************************
      * Input data
