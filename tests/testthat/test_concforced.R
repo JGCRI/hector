@@ -108,7 +108,7 @@ test_that("Concentration forcing through INI file works", {
   )
   names(wide) <- gsub("value\\.", "", names(wide))
   names(wide)[names(wide) == "year"] <- "Date"
-  names(wide)[names(wide) == "Ca"] <- CA_CONSTRAIN()
+  names(wide)[names(wide) == "Ca"] <- CO2_CONSTRAIN()
   names(wide)[names(wide) == "CH4"] <- CH4_CONSTRAIN()
   names(wide)[names(wide) == "N2O"] <- N2O_CONSTRAIN()
   names(wide) <- gsub("_concentration$", "_constrain", names(wide))
