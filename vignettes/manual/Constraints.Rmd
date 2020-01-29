@@ -60,12 +60,6 @@ The CO2 constraint need not span the entirety of the Hector simulation, or even 
 At any given time step, Hector will check whether or not a CO2 constraint exists at that time step and only apply the constraint if it is present.
 This means that "hybrid" runs are possible, where only some specific time ranges have CO2 constraints while others calculate the atmospheric carbon pool and CO2 concentrations according to Hector's standard [carbon cycle](SimpleNBox).
 
-Note that Hector _does not perform any interpolation of constraints_ -- they are applied only in the exact years that they are provided by the user, and all other years are treated (including those immediately before or after constrained years) are treated as unconstrained.
-This means that constraints can abruptly force Hector's climate system into state that is inconsistent with the previous time step.
-Concentrations for the first year of a constraint can be discontinuous compared to the previous year without a constraint.
-Concentrations after the last year of a constraint will not necessarily have a discontinuity, but the behavior of the carbon cycle may change after this point.
-It is the user's responsibility to make sure that constraints are continuous.
-
 # CH4, N2O, and halocarbon concentrations
 
 These all work in more-or-less the same way, and are similar to the atmospheric CO2 constraint (above).
@@ -93,3 +87,11 @@ This means that _concentration constraints always take precedence over emissions
 Note that CH4 and N2O have special variables for their pre-industrial concentration that could conflict with the constraint.
 In Hector, _concentration constraints take precedence over pre-industrial concentrations_;
 in other words, Hector assumes that if you provide a concentration constraint for the pre-industrial timestep, that is the concentration you want, regardless of the prescribed pre-industrial value.
+
+# Discontinuous constraints
+
+Hector _does not perform any interpolation of constraints_ -- they are applied only in the exact years that they are provided by the user, and all other years are treated (including those immediately before or after constrained years) are treated as unconstrained (typically, emissions-driven).
+This means that constraints can abruptly force Hector's climate system into state that is inconsistent with the previous time step.
+Concentrations for the first year of a constraint can be discontinuous compared to the previous year without a constraint.
+Concentrations after the last year of a constraint will not necessarily have a discontinuity, but the behavior of the corresponding component and any related components may change after this point.
+It is the user's responsibility to make sure that constraints are continuous.
