@@ -132,10 +132,10 @@ fetchvars_all <- function(core, dates=NULL, scenario=NULL)
 {
 
     # Get output for variables that do use the date param
-    rslt_date <- fetchvars(core, dates, vars_date, scenario)
+    rslt_date <- fetchvars(core, dates, vfuns_date, scenario)
 
     # Get variables that DO NOT use date arg
-    rslt_nodate <- fetchvars(core, NA, vars_nodate, scenario)
+    rslt_nodate <- fetchvars(core, NA, vfuns_nodate, scenario)
 
     rslt <- rbind(rslt_date, rslt_nodate)
 

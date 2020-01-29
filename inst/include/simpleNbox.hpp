@@ -146,6 +146,7 @@ private:
     double tcurrent;                    //!< Current time (last completed time step)
     double masstot;                     //!< tracker for mass conservation
 
+    tseries<unitval> atmosland_flux_ts;    //!< Atmosphere -> land C flux (time series)
     
     /*****************************************************************
      * Input data
@@ -161,7 +162,7 @@ private:
     tseries<unitval> Ftalbedo;   //!< terrestrial albedo forcing, W/m2
 
     // Constraints
-    tseries<unitval> Ca_constrain;      //!< input [CO2] record to constrain model to
+    tseries<unitval> CO2_constrain;      //!< input [CO2] record to constrain model to
     
     /*****************************************************************
      * Model parameters

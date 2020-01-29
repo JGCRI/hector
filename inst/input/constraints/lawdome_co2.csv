@@ -1,6 +1,6 @@
 ; Historical CO2 record derived from a spline fit (75 year cutoff) of the Law Dome ,
 ; from http://cdiac.ornl.gov/ftp/trends/co2/lawdome.smoothed.yr75,
-Date,Ca_constrain
+Date,CO2_constrain
 UNITS,ppmv CO2
 1010,279.5
 1015,279.6
