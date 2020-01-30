@@ -257,7 +257,7 @@
 #define D_F_LUCV                "f_lucv"
 #define D_F_LUCD                "f_lucd"
 #define D_NPP_FLUX0             "npp_flux0"
-#define D_CA_CONSTRAIN          "Ca_constrain"
+#define D_CO2_CONSTRAIN          "CO2_constrain"
 #define D_BETA                  "beta"
 //#define D_SIGMA                 "sigma"
 #define D_WARMINGFACTOR         "warmingfactor"

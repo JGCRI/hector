@@ -742,6 +742,12 @@ WARMINGFACTOR <- function(biome = "") {
     .Call('_hector_WARMINGFACTOR', PACKAGE = 'hector', biome)
 }
 
+#' @describeIn carboncycle Constrain atmospheric CO2 concentration  (\code{"(ppmv CO2)"})
+#' @export
+CO2_CONSTRAIN <- function() {
+    .Call('_hector_CO2_CONSTRAIN', PACKAGE = 'hector')
+}
+
 #' @describeIn parameters NPP fraction to vegetation (\code{"(unitless)"})
 #' @inheritParams BETA
 #' @export
