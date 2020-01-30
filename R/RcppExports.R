@@ -236,20 +236,20 @@ RF_CH3CCL3 <- function() {
 
 #' @describeIn haloforcings Radiative forcing due to HCFC-22
 #' @export
-RF_HCF22 <- function() {
-    .Call('_hector_RF_HCF22', PACKAGE = 'hector')
+RF_HCFC22 <- function() {
+    .Call('_hector_RF_HCFC22', PACKAGE = 'hector')
 }
 
 #' @describeIn haloforcings Radiative forcing due to HCFC-141b
 #' @export
-RF_HCF141B <- function() {
-    .Call('_hector_RF_HCF141B', PACKAGE = 'hector')
+RF_HCFC141B <- function() {
+    .Call('_hector_RF_HCFC141B', PACKAGE = 'hector')
 }
 
 #' @describeIn haloforcings Radiative forcing due to HCFC-142b
 #' @export
-RF_HCF142B <- function() {
-    .Call('_hector_RF_HCF142B', PACKAGE = 'hector')
+RF_HCFC142B <- function() {
+    .Call('_hector_RF_HCFC142B', PACKAGE = 'hector')
 }
 
 #' @describeIn haloforcings Radiative forcing due to halon-1211
@@ -392,20 +392,20 @@ EMISSIONS_CH3CCL3 <- function() {
 
 #' @describeIn haloemiss Emissions for HCFC-22
 #' @export
-EMISSIONS_HCF22 <- function() {
-    .Call('_hector_EMISSIONS_HCF22', PACKAGE = 'hector')
+EMISSIONS_HCFC22 <- function() {
+    .Call('_hector_EMISSIONS_HCFC22', PACKAGE = 'hector')
 }
 
 #' @describeIn haloemiss Emissions for HCFC-141b
 #' @export
-EMISSIONS_HCF141B <- function() {
-    .Call('_hector_EMISSIONS_HCF141B', PACKAGE = 'hector')
+EMISSIONS_HCFC141B <- function() {
+    .Call('_hector_EMISSIONS_HCFC141B', PACKAGE = 'hector')
 }
 
 #' @describeIn haloemiss Emissions for HCFC-142b
 #' @export
-EMISSIONS_HCF142B <- function() {
-    .Call('_hector_EMISSIONS_HCF142B', PACKAGE = 'hector')
+EMISSIONS_HCFC142B <- function() {
+    .Call('_hector_EMISSIONS_HCFC142B', PACKAGE = 'hector')
 }
 
 #' @describeIn haloemiss Emissions for halon-1211
@@ -894,7 +894,7 @@ HEAT_FLUX <- function() {
     .Call('_hector_HEAT_FLUX', PACKAGE = 'hector')
 }
 
-#' @describeIn msgtype Character used to separate biome from variable name 
+#' @describeIn msgtype Character used to separate biome from variable name
 BIOME_SPLIT_CHAR <- function() {
     .Call('_hector_BIOME_SPLIT_CHAR', PACKAGE = 'hector')
 }

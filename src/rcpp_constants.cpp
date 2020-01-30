@@ -315,22 +315,22 @@ return D_RFADJ_CH3CCl3;
 //' @describeIn haloforcings Radiative forcing due to HCFC-22
 //' @export
 // [[Rcpp::export]]
-String RF_HCF22() {
-return D_RFADJ_HCF22;
+String RF_HCFC22() {
+return D_RFADJ_HCFC22;
 }
 
 //' @describeIn haloforcings Radiative forcing due to HCFC-141b
 //' @export
 // [[Rcpp::export]]
-String RF_HCF141B() {
-return D_RFADJ_HCF141b;
+String RF_HCFC141B() {
+return D_RFADJ_HCFC141b;
 }
 
 //' @describeIn haloforcings Radiative forcing due to HCFC-142b
 //' @export
 // [[Rcpp::export]]
-String RF_HCF142B() {
-return D_RFADJ_HCF142b;
+String RF_HCFC142B() {
+return D_RFADJ_HCFC142b;
 }
 
 //' @describeIn haloforcings Radiative forcing due to halon-1211
@@ -498,22 +498,22 @@ return D_EMISSIONS_CH3CCl3;
 //' @describeIn haloemiss Emissions for HCFC-22
 //' @export
 // [[Rcpp::export]]
-String EMISSIONS_HCF22() {
-return D_EMISSIONS_HCF22;
+String EMISSIONS_HCFC22() {
+return D_EMISSIONS_HCFC22;
 }
 
 //' @describeIn haloemiss Emissions for HCFC-141b
 //' @export
 // [[Rcpp::export]]
-String EMISSIONS_HCF141B() {
-return D_EMISSIONS_HCF141b;
+String EMISSIONS_HCFC141B() {
+return D_EMISSIONS_HCFC141b;
 }
 
 //' @describeIn haloemiss Emissions for HCFC-142b
 //' @export
 // [[Rcpp::export]]
-String EMISSIONS_HCF142B() {
-return D_EMISSIONS_HCF142b;
+String EMISSIONS_HCFC142B() {
+return D_EMISSIONS_HCFC142b;
 }
 
 //' @describeIn haloemiss Emissions for halon-1211
@@ -1168,7 +1168,7 @@ String HEAT_FLUX() {
 return D_HEAT_FLUX;
 }
 
-//' @describeIn msgtype Character used to separate biome from variable name 
+//' @describeIn msgtype Character used to separate biome from variable name
 // [[Rcpp::export]]
 String BIOME_SPLIT_CHAR() {
 return SNBOX_PARSECHAR;

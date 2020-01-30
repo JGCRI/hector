@@ -20,9 +20,9 @@
 \alias{RF_CFC115}
 \alias{RF_CCL4}
 \alias{RF_CH3CCL3}
-\alias{RF_HCF22}
-\alias{RF_HCF141B}
-\alias{RF_HCF142B}
+\alias{RF_HCFC22}
+\alias{RF_HCFC141B}
+\alias{RF_HCFC142B}
 \alias{RF_HALON1211}
 \alias{RF_HALON1301}
 \alias{RF_HALON2402}
@@ -66,11 +66,11 @@ RF_CCL4()
 
 RF_CH3CCL3()
 
-RF_HCF22()
+RF_HCFC22()
 
-RF_HCF141B()
+RF_HCFC141B()
 
-RF_HCF142B()
+RF_HCFC142B()
 
 RF_HALON1211()
 
@@ -128,11 +128,11 @@ subtracted off.
 
 \item \code{RF_CH3CCL3}: Radiative forcing due to trichloroethane
 
-\item \code{RF_HCF22}: Radiative forcing due to HCFC-22
+\item \code{RF_HCFC22}: Radiative forcing due to HCFC-22
 
-\item \code{RF_HCF141B}: Radiative forcing due to HCFC-141b
+\item \code{RF_HCFC141B}: Radiative forcing due to HCFC-141b
 
-\item \code{RF_HCF142B}: Radiative forcing due to HCFC-142b
+\item \code{RF_HCFC142B}: Radiative forcing due to HCFC-142b
 
 \item \code{RF_HALON1211}: Radiative forcing due to halon-1211
 
