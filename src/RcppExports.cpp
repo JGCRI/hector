@@ -1135,6 +1135,16 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// NBP
+String NBP();
+RcppExport SEXP _hector_NBP() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(NBP());
+    return rcpp_result_gen;
+END_RCPP
+}
 // ATMOSPHERIC_CO2
 String ATMOSPHERIC_CO2();
 RcppExport SEXP _hector_ATMOSPHERIC_CO2() {
@@ -1225,6 +1235,16 @@ BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< String >::type biome(biomeSEXP);
     rcpp_result_gen = Rcpp::wrap(WARMINGFACTOR(biome));
+    return rcpp_result_gen;
+END_RCPP
+}
+// CO2_CONSTRAIN
+String CO2_CONSTRAIN();
+RcppExport SEXP _hector_CO2_CONSTRAIN() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(CO2_CONSTRAIN());
     return rcpp_result_gen;
 END_RCPP
 }
@@ -1745,6 +1765,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_CO3_LL", (DL_FUNC) &_hector_CO3_LL, 0},
     {"_hector_CO3_HL", (DL_FUNC) &_hector_CO3_HL, 0},
     {"_hector_LAND_CFLUX", (DL_FUNC) &_hector_LAND_CFLUX, 0},
+    {"_hector_NBP", (DL_FUNC) &_hector_NBP, 0},
     {"_hector_ATMOSPHERIC_CO2", (DL_FUNC) &_hector_ATMOSPHERIC_CO2, 0},
     {"_hector_NPP", (DL_FUNC) &_hector_NPP, 0},
     {"_hector_PREINDUSTRIAL_CO2", (DL_FUNC) &_hector_PREINDUSTRIAL_CO2, 0},
@@ -1754,6 +1775,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_BETA", (DL_FUNC) &_hector_BETA, 1},
     {"_hector_Q10_RH", (DL_FUNC) &_hector_Q10_RH, 1},
     {"_hector_WARMINGFACTOR", (DL_FUNC) &_hector_WARMINGFACTOR, 1},
+    {"_hector_CO2_CONSTRAIN", (DL_FUNC) &_hector_CO2_CONSTRAIN, 0},
     {"_hector_F_NPPV", (DL_FUNC) &_hector_F_NPPV, 1},
     {"_hector_F_NPPD", (DL_FUNC) &_hector_F_NPPD, 1},
     {"_hector_F_LITTERD", (DL_FUNC) &_hector_F_LITTERD, 1},

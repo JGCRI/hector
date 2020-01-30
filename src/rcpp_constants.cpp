@@ -846,6 +846,14 @@ String LAND_CFLUX() {
 return D_LAND_CFLUX;
 }
 
+// An alias for LAND_CFLUX that may be more familiar to carbon cycle people
+//' @rdname carboncycle
+//' @export
+// [[Rcpp::export]]
+String NBP() {
+return D_LAND_CFLUX;
+}
+
 //' @rdname carboncycle
 //' @export
 // [[Rcpp::export]]
@@ -926,6 +934,13 @@ String WARMINGFACTOR(String biome = "") {
   out += ".";
   out += D_WARMINGFACTOR;
   return out;
+}
+
+//' @describeIn carboncycle Constrain atmospheric CO2 concentration  (\code{"(ppmv CO2)"})
+//' @export
+// [[Rcpp::export]]
+String CO2_CONSTRAIN() {
+    return D_CO2_CONSTRAIN;
 }
 
 //' @describeIn parameters NPP fraction to vegetation (\code{"(unitless)"})
