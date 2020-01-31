@@ -62,7 +62,7 @@ This means that "hybrid" runs are possible, where only some specific time ranges
 
 # CH4, N2O, and halocarbon concentrations
 
-These all work in more-or-less the same way, and are similar to the atmospheric CO2 constraint (above).
+These all work in more-or-less the same way, and are similar to the atmospheric CO2 constraint (above), except that there is no equivalent to the carbon pool adjustment for these gases.
 In the [input file](InputFiles), they are triggered by a line like the following in their corresponding component section:
 
 ```
