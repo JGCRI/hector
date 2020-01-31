@@ -145,8 +145,8 @@ void ForcingComponent::init( Core* coreptr ) {
     core->registerCapability( D_RF_CO2, getComponentName());
     core->registerCapability( D_RF_CH4, getComponentName());
     core->registerCapability( D_RF_N2O, getComponentName());
-    core->registerCapability( D_RF_H2O, getComponentName());
-    core->registerCapability( D_RF_O3, getComponentName());
+    core->registerCapability( D_RF_H2O_STRAT, getComponentName());
+    core->registerCapability( D_RF_O3_TROP, getComponentName());
     core->registerCapability( D_RF_BC, getComponentName());
     core->registerCapability( D_RF_OC, getComponentName());
     core->registerCapability( D_RF_SO2d, getComponentName());
@@ -313,7 +313,7 @@ void ForcingComponent::run( const double runToDate ) throw ( h_exception ) {
             // ---------- Stratospheric H2O from CH4 oxidation ----------
             // From Tanaka et al, 2007, but using Joos et al., 2001 value of 0.05
             const double fh2o = 0.05 * ( 0.036 * ( sqrt( Ma ) - sqrt( M0 ) ) );
-            forcings[D_RF_H2O].set( fh2o, U_W_M2 );
+            forcings[D_RF_H2O_STRAT].set( fh2o, U_W_M2 );
         }
         
         // ---------- Troposheric Ozone ----------
@@ -321,7 +321,7 @@ void ForcingComponent::run( const double runToDate ) throw ( h_exception ) {
             //from Tanaka et al, 2007
             const double ozone = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_O3, message_data( runToDate ) ).value( U_DU_O3 );
             const double fo3 = 0.042 * ozone;
-            forcings[D_RF_O3].set( fo3, U_W_M2 );
+            forcings[D_RF_O3_TROP].set( fo3, U_W_M2 );
         }
         
         // ---------- Halocarbons ----------
