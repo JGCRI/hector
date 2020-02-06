@@ -50,8 +50,9 @@ instead of the more natural looking \code{GETDATA}.
 
 \seealso{
 Other capability identifiers: \code{\link{carboncycle}},
-  \code{\link{concentrations}}, \code{\link{emissions}},
-  \code{\link{forcings}}, \code{\link{haloemiss}},
+  \code{\link{concentrations}}, \code{\link{constraints}},
+  \code{\link{emissions}}, \code{\link{forcings}},
+  \code{\link{haloconstrain}}, \code{\link{haloemiss}},
   \code{\link{haloforcings}}, \code{\link{methane}},
   \code{\link{ocean}}, \code{\link{parameters}},
   \code{\link{temperature}}

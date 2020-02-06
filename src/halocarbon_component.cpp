@@ -55,11 +55,17 @@ void HalocarbonComponent::init( Core* coreptr ) {
     emissions.name = myGasName;
     molarMass = 0.0;
     H0.set( 0.0, U_PPTV );      //! Default is no preindustrial, but user can override
-    
+  
     //! \remark Inform core that we can provide forcing data
     core->registerCapability( D_RF_PREFIX+myGasName, getComponentName() );
+    //! \remark Inform core that we can provide concentrations
+    core->registerCapability( myGasName+CONCENTRATION_EXTENSION, getComponentName() );
+    //! \remark Inform core that we can provide concentration constraints
+    core->registerCapability( myGasName+CONC_CONSTRAINT_EXTENSION, getComponentName() );
     // inform core that we can accept emissions for this gas
     core->registerInput(myGasName+EMISSIONS_EXTENSION, getComponentName());
+    // inform core that we can accept concentration constraints for this gas
+    core->registerInput(myGasName+CONC_CONSTRAINT_EXTENSION, getComponentName());
     
 }
 
@@ -95,6 +101,7 @@ void HalocarbonComponent::setData( const string& varName,
     
     try {
         const string emiss_var_name = myGasName + EMISSIONS_EXTENSION;
+        const string conc_var_name = myGasName + CONC_CONSTRAINT_EXTENSION;
         
         if( varName == D_HC_TAU ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
@@ -108,6 +115,9 @@ void HalocarbonComponent::setData( const string& varName,
         } else if( varName == emiss_var_name ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
             emissions.set(data.date, data.getUnitval(U_GG));
+        } else if( varName == conc_var_name ) {
+            H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
+            Ha_constrain.set(data.date, data.getUnitval(U_PPTV));
         } else if( varName == D_PREINDUSTRIAL_HC ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
             H0 = data.getUnitval(U_PPTV);
@@ -130,7 +140,7 @@ void HalocarbonComponent::prepareToRun() throw ( h_exception ) {
     H_ASSERT( tau != -1 && tau != 0, "tau has bad value" );
     H_ASSERT( rho.units() != U_UNDEFINED, "rho has undefined units" );
     H_ASSERT( molarMass > 0, "molarMass must be >0" );
-    
+   
     Ha_ts.set(oldDate,H0);
 
     
@@ -143,19 +153,27 @@ void HalocarbonComponent::prepareToRun() throw ( h_exception ) {
 void HalocarbonComponent::run( const double runToDate ) throw ( h_exception ) {
 	H_ASSERT( !core->inSpinup() && runToDate-oldDate == 1, "timestep must equal 1" );
 #define AtmosphereDryAirConstant 1.8
-    
-    const double timestep = 1.0;
-    const double alpha = 1 / tau;
 
-    // Compute the delta atmospheric concentration from current emissions
-    double emissMol = emissions.get( runToDate ).value( U_GG ) / molarMass * timestep; // this is in U_GMOL
-    unitval concDeltaEmiss;
-    concDeltaEmiss.set( emissMol / ( 0.1 * AtmosphereDryAirConstant ), U_PPTV );
-    
-    // Update the atmospheric concentration, accounting for this delta and exponential decay
-    double expfac = exp(-alpha);
     unitval Ha(Ha_ts.get(oldDate));
-    Ha = Ha*expfac + concDeltaEmiss*tau * (1.0-expfac);
+    
+    // If emissions-forced, calculate concentration from emissions and lifespan.
+    if ( Ha_constrain.size() && Ha_constrain.exists( runToDate ) ) {
+        // Concentration-forced. Just grab the current value from the time series.
+        Ha = Ha_constrain.get(runToDate);
+    } else {
+        const double timestep = 1.0;
+        const double alpha = 1 / tau;
+
+        // Compute the delta atmospheric concentration from current emissions
+        double emissMol = emissions.get( runToDate ).value( U_GG ) / molarMass * timestep; // this is in U_GMOL
+        unitval concDeltaEmiss;
+        concDeltaEmiss.set( emissMol / ( 0.1 * AtmosphereDryAirConstant ), U_PPTV );
+    
+        // Update the atmospheric concentration, accounting for this delta and exponential decay
+        double expfac = exp(-alpha);
+        Ha = Ha*expfac + concDeltaEmiss*tau * (1.0-expfac);
+    }
+
     H_LOG( logger, Logger::DEBUG ) << "date: " << runToDate << " concentration: "<< Ha << endl;
     Ha_ts.set(runToDate, Ha);
 
@@ -188,14 +206,25 @@ unitval HalocarbonComponent::getData( const std::string& varName,
         H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for preindustrial hc" );
         returnval = H0;
     }
-    else if( varName == D_HC_CONCENTRATION ) {
-        returnval = Ha_ts.get(getdate);
+    else if( varName == myGasName+CONCENTRATION_EXTENSION ) {
+        H_ASSERT( date != Core::undefinedIndex(), "Date required for halocarbon concentration" );
+        returnval = Ha_ts.get( getdate );
     }
     else if( varName == myGasName+EMISSIONS_EXTENSION ) {
-        if( getdate >= emissions.firstdate() )
+        if( emissions.exists( getdate ) )
             returnval = emissions.get( getdate );
         else
             returnval.set( 0.0, U_GG );
+    }
+    else if( varName == myGasName+CONC_CONSTRAINT_EXTENSION ) {
+        H_ASSERT( date != Core::undefinedIndex(), "Date required for halocarbon constraint" );
+        if ( Ha_constrain.exists( getdate ) ) {
+            returnval = Ha_constrain.get( getdate );
+        } else {
+            H_LOG( logger, Logger::DEBUG ) << "No CH4 constraint for requested date " << date <<
+                ". Returning missing value." << std::endl;
+            returnval.set( MISSING_FLOAT, U_PPTV );
+        }
     }
     else {
         H_THROW( "Caller is requesting unknown variable: " + varName );
