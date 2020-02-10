@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Identifiers for quantities in the SO2 component — so2 • hector</title>
+<title>Identifiers for concentration constraints — constraints • hector</title>
 
 
 <!-- jquery -->
@@ -35,9 +35,8 @@
 
 
 
-<meta property="og:title" content="Identifiers for quantities in the SO2 component — so2" />
-<meta property="og:description" content="These identifiers correspond to variables that can be read and/or set in the
-SO2 component" />
+<meta property="og:title" content="Identifiers for concentration constraints — constraints" />
+<meta property="og:description" content="These identifiers correspond to concentration constraints." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -127,47 +126,27 @@ SO2 component" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Identifiers for quantities in the SO2 component</h1>
+    <h1>Identifiers for concentration constraints</h1>
     
-    <div class="hidden name"><code>so2.Rd</code></div>
+    <div class="hidden name"><code>constraints.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>These identifiers correspond to variables that can be read and/or set in the
-SO2 component</p>
+    <p>These identifiers correspond to concentration constraints.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>NATURAL_SO2</span>()
+    <pre class="usage"><span class='fu'>CH4_CONSTRAIN</span>()
 
-<span class='fu'>Y2000_SO2</span>()
-
-<span class='fu'>EMISSIONS_SO2</span>()
-
-<span class='fu'>VOLCANIC_SO2</span>()</pre>
+<span class='fu'>N2O_CONSTRAIN</span>()</pre>
 
 
-    <h2 class="hasAnchor" id="output-variables"><a class="anchor" href="#output-variables"></a>Output variables</h2>
+    <h2 class="hasAnchor" id="functions"><a class="anchor" href="#functions"></a>Functions</h2>
 
     
-
-<p>These variables can be read using the <code><a href='msgtype.html'>GETDATA</a></code> message type.</p><dl class='dl-horizontal'>
-<dt>NATURAL_SO2</dt><dd><p>Natural SO2 emissions</p></dd>
-<dt>Y2000_SO2</dt><dd><p>Year 2000 SO2 emissions</p></dd>
-<dt>EMISIONS_SO2</dt><dd><p>Anthropogenic SO2 emissions</p></dd>
-<dt>VOLCANIC_SO2</dt><dd><p>Forcing due to volcanic SO2 emissions</p></dd>
-
-</dl>
-
-    <h2 class="hasAnchor" id="input-variables"><a class="anchor" href="#input-variables"></a>Input variables</h2>
-
-    
-
-<p>These variables can be set using the <code><a href='msgtype.html'>SETDATA</a></code> message type.</p><dl class='dl-horizontal'>
-<dt>EMISSIONS_SO2</dt><dd><p>Anthropogenic SO2 emissions (<code>"Gg S"</code>)</p></dd>
-<dt>VOLCANIC_SO2</dt><dd><p>Forcing due to volcanic SO2 emissions (<code>"W/m2"</code>)</p></dd>
-
-</dl>
-
+<ul>
+<li><p><code>CH4_CONSTRAIN</code>: CH4 concentration constraint <code>"ppbv CH4"</code></p></li>
+<li><p><code>N2O_CONSTRAIN</code>: N2O concentration constraint (<code>"pbbv N2O"</code>)</p></li>
+</ul>
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
     
@@ -179,19 +158,18 @@ instead of the more natural looking <code>GETDATA</code>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other capability identifiers: <code><a href='carboncycle.html'>carboncycle</a></code>,
-  <code><a href='concentrations.html'>concentrations</a></code>, <code><a href='constraints.html'>constraints</a></code>,
-  <code><a href='emissions.html'>emissions</a></code>, <code><a href='forcings.html'>forcings</a></code>,
-  <code><a href='haloconstrain.html'>haloconstrain</a></code>, <code><a href='haloemiss.html'>haloemiss</a></code>,
-  <code><a href='haloforcings.html'>haloforcings</a></code>, <code><a href='methane.html'>methane</a></code>,
-  <code><a href='ocean.html'>ocean</a></code>, <code><a href='parameters.html'>parameters</a></code>,
+  <code><a href='concentrations.html'>concentrations</a></code>, <code><a href='emissions.html'>emissions</a></code>,
+  <code><a href='forcings.html'>forcings</a></code>, <code><a href='haloconstrain.html'>haloconstrain</a></code>,
+  <code><a href='haloemiss.html'>haloemiss</a></code>, <code><a href='haloforcings.html'>haloforcings</a></code>,
+  <code><a href='methane.html'>methane</a></code>, <code><a href='ocean.html'>ocean</a></code>,
+  <code><a href='parameters.html'>parameters</a></code>, <code><a href='so2.html'>so2</a></code>,
   <code><a href='temperature.html'>temperature</a></code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#output-variables">Output variables</a></li>
-      <li><a href="#input-variables">Input variables</a></li>
+      <li><a href="#functions">Functions</a></li>
       <li><a href="#note">Note</a></li>
       <li><a href="#see-also">See also</a></li>
     </ul>
