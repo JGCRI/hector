@@ -551,6 +551,189 @@ String EMISSIONS_CH3BR() {
 return D_EMISSIONS_CH3Br;
 }
 
+/* halocarbon constraints */
+//' @describeIn haloconstrain Concentration constraint for CF4
+//' @export
+// [[Rcpp::export]]
+String CF4_CONSTRAIN() {
+return D_CONSTRAINT_CF4;
+}
+
+//' @describeIn haloconstrain Concentration constraint for C2F6
+//' @export
+// [[Rcpp::export]]
+String C2F6_CONSTRAIN() {
+return D_CONSTRAINT_C2F6;
+}
+
+//' @describeIn haloconstrain Concentration constraint for HFC-23
+//' @export
+// [[Rcpp::export]]
+String HFC23_CONSTRAIN() {
+return D_CONSTRAINT_HFC23;
+}
+
+//' @describeIn haloconstrain Concentration constraint for HFC-32
+//' @export
+// [[Rcpp::export]]
+String HFC32_CONSTRAIN() {
+return D_CONSTRAINT_HFC32;
+}
+
+//' @describeIn haloconstrain Concentration constraint for HFC-4310
+//' @export
+// [[Rcpp::export]]
+String HFC4310_CONSTRAIN() {
+return D_CONSTRAINT_HFC4310;
+}
+
+//' @describeIn haloconstrain Concentration constraint for HFC-125
+//' @export
+// [[Rcpp::export]]
+String HFC125_CONSTRAIN() {
+return D_CONSTRAINT_HFC125;
+}
+
+//' @describeIn haloconstrain Concentration constraint for HFC-134a
+//' @export
+// [[Rcpp::export]]
+String HFC134A_CONSTRAIN() {
+return D_CONSTRAINT_HFC134a;
+}
+
+//' @describeIn haloconstrain Concentration constraint for HFC-143a
+//' @export
+// [[Rcpp::export]]
+String HFC143A_CONSTRAIN() {
+return D_CONSTRAINT_HFC143a;
+}
+
+//' @describeIn haloconstrain Concentration constraint for HFC-227ea
+//' @export
+// [[Rcpp::export]]
+String HFC227EA_CONSTRAIN() {
+return D_CONSTRAINT_HFC227ea;
+}
+
+//' @describeIn haloconstrain Concentration constraint for HFC-254fa
+//' @export
+// [[Rcpp::export]]
+String HFC245FA_CONSTRAIN() {
+return D_CONSTRAINT_HFC245fa;
+}
+
+//' @describeIn haloconstrain Concentration constraint for sulfur hexafluoride
+//' @export
+// [[Rcpp::export]]
+String SF6_CONSTRAIN() {
+return D_CONSTRAINT_SF6;
+}
+
+//' @describeIn haloconstrain Concentration constraint for CFC-11
+//' @export
+// [[Rcpp::export]]
+String CFC11_CONSTRAIN() {
+return D_CONSTRAINT_CFC11;
+}
+
+//' @describeIn haloconstrain Concentration constraint for CFC-12
+//' @export
+// [[Rcpp::export]]
+String CFC12_CONSTRAIN() {
+return D_CONSTRAINT_CFC12;
+}
+
+//' @describeIn haloconstrain Concentration constraint for CFC-113
+//' @export
+// [[Rcpp::export]]
+String CFC113_CONSTRAIN() {
+return D_CONSTRAINT_CFC113;
+}
+
+//' @describeIn haloconstrain Concentration constraint for CFC-114
+//' @export
+// [[Rcpp::export]]
+String CFC114_CONSTRAIN() {
+return D_CONSTRAINT_CFC114;
+}
+
+//' @describeIn haloconstrain Concentration constraint for CFC-115
+//' @export
+// [[Rcpp::export]]
+String CFC115_CONSTRAIN() {
+return D_CONSTRAINT_CFC115;
+}
+
+//' @describeIn haloconstrain Concentration constraint for carbon tetrachloride
+//' @export
+// [[Rcpp::export]]
+String CCL4_CONSTRAIN() {
+return D_CONSTRAINT_CCl4;
+}
+
+//' @describeIn haloconstrain Concentration constraint for trichloroethane
+//' @export
+// [[Rcpp::export]]
+String CH3CCL3_CONSTRAIN() {
+return D_CONSTRAINT_CH3CCl3;
+}
+
+//' @describeIn haloconstrain Concentration constraint for HCFC-22
+//' @export
+// [[Rcpp::export]]
+String HCF22_CONSTRAIN() {
+return D_CONSTRAINT_HCF22;
+}
+
+//' @describeIn haloconstrain Concentration constraint for HCFC-141b
+//' @export
+// [[Rcpp::export]]
+String HCF141B_CONSTRAIN() {
+return D_CONSTRAINT_HCF141b;
+}
+
+//' @describeIn haloconstrain Concentration constraint for HCFC-142b
+//' @export
+// [[Rcpp::export]]
+String HCF142B_CONSTRAIN() {
+return D_CONSTRAINT_HCF142b;
+}
+
+//' @describeIn haloconstrain Concentration constraint for halon-1211
+//' @export
+// [[Rcpp::export]]
+String HALON1211_CONSTRAIN() {
+return D_CONSTRAINT_halon1211;
+}
+
+//' @describeIn haloconstrain Concentration constraint for halon-1301
+//' @export
+// [[Rcpp::export]]
+String HALON1301_CONSTRAIN() {
+return D_CONSTRAINT_halon1301;
+}
+
+//' @describeIn haloconstrain Concentration constraint for halon-2402
+//' @export
+// [[Rcpp::export]]
+String HALON2402_CONSTRAIN() {
+return D_CONSTRAINT_halon2402;
+}
+
+//' @describeIn haloconstrain Concentration constraint for chloromethane
+//' @export
+// [[Rcpp::export]]
+String CH3CL_CONSTRAIN() {
+return D_CONSTRAINT_CH3Cl;
+}
+
+//' @describeIn haloconstrain Concentration constraint for bromomethane
+//' @export
+// [[Rcpp::export]]
+String CH3BR_CONSTRAIN() {
+return D_CONSTRAINT_CH3Br;
+}
+
 
 /* Methane component */
 //' @rdname methane
@@ -558,6 +741,13 @@ return D_EMISSIONS_CH3Br;
 // [[Rcpp::export]]
 String ATMOSPHERIC_CH4() {
 return D_ATMOSPHERIC_CH4;
+}
+
+//' @describeIn constraints CH4 concentration constraint \code{"ppbv CH4"}
+//' @export
+// [[Rcpp::export]]
+String CH4_CONSTRAIN() {
+return D_CONSTRAINT_CH4;
 }
 
 
@@ -630,6 +820,13 @@ return D_EMISSIONS_N2O;
 // [[Rcpp::export]]
 String NAT_EMISSIONS_N2O() {
 return D_NAT_EMISSIONS_N2O;
+}
+
+//' @describeIn constraints N2O concentration constraint (\code{"pbbv N2O"})
+//' @export
+// [[Rcpp::export]]
+String N2O_CONSTRAIN() {
+return D_CONSTRAINT_N2O;
 }
 
 
