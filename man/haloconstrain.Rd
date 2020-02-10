@@ -20,9 +20,9 @@
 \alias{CFC115_CONSTRAIN}
 \alias{CCL4_CONSTRAIN}
 \alias{CH3CCL3_CONSTRAIN}
-\alias{HCF22_CONSTRAIN}
-\alias{HCF141B_CONSTRAIN}
-\alias{HCF142B_CONSTRAIN}
+\alias{HCFC22_CONSTRAIN}
+\alias{HCFC141B_CONSTRAIN}
+\alias{HCFC142B_CONSTRAIN}
 \alias{HALON1211_CONSTRAIN}
 \alias{HALON1301_CONSTRAIN}
 \alias{HALON2402_CONSTRAIN}
@@ -66,11 +66,11 @@ CCL4_CONSTRAIN()
 
 CH3CCL3_CONSTRAIN()
 
-HCF22_CONSTRAIN()
+HCFC22_CONSTRAIN()
 
-HCF141B_CONSTRAIN()
+HCFC141B_CONSTRAIN()
 
-HCF142B_CONSTRAIN()
+HCFC142B_CONSTRAIN()
 
 HALON1211_CONSTRAIN()
 
@@ -125,11 +125,11 @@ all cases, the expected input units are volumetric parts per trillion
 
 \item \code{CH3CCL3_CONSTRAIN}: Concentration constraint for trichloroethane
 
-\item \code{HCF22_CONSTRAIN}: Concentration constraint for HCFC-22
+\item \code{HCFC22_CONSTRAIN}: Concentration constraint for HCFC-22
 
-\item \code{HCF141B_CONSTRAIN}: Concentration constraint for HCFC-141b
+\item \code{HCFC141B_CONSTRAIN}: Concentration constraint for HCFC-141b
 
-\item \code{HCF142B_CONSTRAIN}: Concentration constraint for HCFC-142b
+\item \code{HCFC142B_CONSTRAIN}: Concentration constraint for HCFC-142b
 
 \item \code{HALON1211_CONSTRAIN}: Concentration constraint for halon-1211
 

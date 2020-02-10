@@ -915,33 +915,33 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// HCF22_CONSTRAIN
-String HCF22_CONSTRAIN();
-RcppExport SEXP _hector_HCF22_CONSTRAIN() {
+// HCFC22_CONSTRAIN
+String HCFC22_CONSTRAIN();
+RcppExport SEXP _hector_HCFC22_CONSTRAIN() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(HCF22_CONSTRAIN());
+    rcpp_result_gen = Rcpp::wrap(HCFC22_CONSTRAIN());
     return rcpp_result_gen;
 END_RCPP
 }
-// HCF141B_CONSTRAIN
-String HCF141B_CONSTRAIN();
-RcppExport SEXP _hector_HCF141B_CONSTRAIN() {
+// HCFC141B_CONSTRAIN
+String HCFC141B_CONSTRAIN();
+RcppExport SEXP _hector_HCFC141B_CONSTRAIN() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(HCF141B_CONSTRAIN());
+    rcpp_result_gen = Rcpp::wrap(HCFC141B_CONSTRAIN());
     return rcpp_result_gen;
 END_RCPP
 }
-// HCF142B_CONSTRAIN
-String HCF142B_CONSTRAIN();
-RcppExport SEXP _hector_HCF142B_CONSTRAIN() {
+// HCFC142B_CONSTRAIN
+String HCFC142B_CONSTRAIN();
+RcppExport SEXP _hector_HCFC142B_CONSTRAIN() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(HCF142B_CONSTRAIN());
+    rcpp_result_gen = Rcpp::wrap(HCFC142B_CONSTRAIN());
     return rcpp_result_gen;
 END_RCPP
 }
@@ -2023,9 +2023,9 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_CFC115_CONSTRAIN", (DL_FUNC) &_hector_CFC115_CONSTRAIN, 0},
     {"_hector_CCL4_CONSTRAIN", (DL_FUNC) &_hector_CCL4_CONSTRAIN, 0},
     {"_hector_CH3CCL3_CONSTRAIN", (DL_FUNC) &_hector_CH3CCL3_CONSTRAIN, 0},
-    {"_hector_HCF22_CONSTRAIN", (DL_FUNC) &_hector_HCF22_CONSTRAIN, 0},
-    {"_hector_HCF141B_CONSTRAIN", (DL_FUNC) &_hector_HCF141B_CONSTRAIN, 0},
-    {"_hector_HCF142B_CONSTRAIN", (DL_FUNC) &_hector_HCF142B_CONSTRAIN, 0},
+    {"_hector_HCFC22_CONSTRAIN", (DL_FUNC) &_hector_HCFC22_CONSTRAIN, 0},
+    {"_hector_HCFC141B_CONSTRAIN", (DL_FUNC) &_hector_HCFC141B_CONSTRAIN, 0},
+    {"_hector_HCFC142B_CONSTRAIN", (DL_FUNC) &_hector_HCFC142B_CONSTRAIN, 0},
     {"_hector_HALON1211_CONSTRAIN", (DL_FUNC) &_hector_HALON1211_CONSTRAIN, 0},
     {"_hector_HALON1301_CONSTRAIN", (DL_FUNC) &_hector_HALON1301_CONSTRAIN, 0},
     {"_hector_HALON2402_CONSTRAIN", (DL_FUNC) &_hector_HALON2402_CONSTRAIN, 0},

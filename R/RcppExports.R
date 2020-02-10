@@ -548,20 +548,20 @@ CH3CCL3_CONSTRAIN <- function() {
 
 #' @describeIn haloconstrain Concentration constraint for HCFC-22
 #' @export
-HCF22_CONSTRAIN <- function() {
-    .Call('_hector_HCF22_CONSTRAIN', PACKAGE = 'hector')
+HCFC22_CONSTRAIN <- function() {
+    .Call('_hector_HCFC22_CONSTRAIN', PACKAGE = 'hector')
 }
 
 #' @describeIn haloconstrain Concentration constraint for HCFC-141b
 #' @export
-HCF141B_CONSTRAIN <- function() {
-    .Call('_hector_HCF141B_CONSTRAIN', PACKAGE = 'hector')
+HCFC141B_CONSTRAIN <- function() {
+    .Call('_hector_HCFC141B_CONSTRAIN', PACKAGE = 'hector')
 }
 
 #' @describeIn haloconstrain Concentration constraint for HCFC-142b
 #' @export
-HCF142B_CONSTRAIN <- function() {
-    .Call('_hector_HCF142B_CONSTRAIN', PACKAGE = 'hector')
+HCFC142B_CONSTRAIN <- function() {
+    .Call('_hector_HCFC142B_CONSTRAIN', PACKAGE = 'hector')
 }
 
 #' @describeIn haloconstrain Concentration constraint for halon-1211

@@ -681,22 +681,22 @@ return D_CONSTRAINT_CH3CCl3;
 //' @describeIn haloconstrain Concentration constraint for HCFC-22
 //' @export
 // [[Rcpp::export]]
-String HCF22_CONSTRAIN() {
-return D_CONSTRAINT_HCF22;
+String HCFC22_CONSTRAIN() {
+return D_CONSTRAINT_HCFC22;
 }
 
 //' @describeIn haloconstrain Concentration constraint for HCFC-141b
 //' @export
 // [[Rcpp::export]]
-String HCF141B_CONSTRAIN() {
-return D_CONSTRAINT_HCF141b;
+String HCFC141B_CONSTRAIN() {
+return D_CONSTRAINT_HCFC141b;
 }
 
 //' @describeIn haloconstrain Concentration constraint for HCFC-142b
 //' @export
 // [[Rcpp::export]]
-String HCF142B_CONSTRAIN() {
-return D_CONSTRAINT_HCF142b;
+String HCFC142B_CONSTRAIN() {
+return D_CONSTRAINT_HCFC142b;
 }
 
 //' @describeIn haloconstrain Concentration constraint for halon-1211
