@@ -395,33 +395,33 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// RF_HCF22
-String RF_HCF22();
-RcppExport SEXP _hector_RF_HCF22() {
+// RF_HCFC22
+String RF_HCFC22();
+RcppExport SEXP _hector_RF_HCFC22() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(RF_HCF22());
+    rcpp_result_gen = Rcpp::wrap(RF_HCFC22());
     return rcpp_result_gen;
 END_RCPP
 }
-// RF_HCF141B
-String RF_HCF141B();
-RcppExport SEXP _hector_RF_HCF141B() {
+// RF_HCFC141B
+String RF_HCFC141B();
+RcppExport SEXP _hector_RF_HCFC141B() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(RF_HCF141B());
+    rcpp_result_gen = Rcpp::wrap(RF_HCFC141B());
     return rcpp_result_gen;
 END_RCPP
 }
-// RF_HCF142B
-String RF_HCF142B();
-RcppExport SEXP _hector_RF_HCF142B() {
+// RF_HCFC142B
+String RF_HCFC142B();
+RcppExport SEXP _hector_RF_HCFC142B() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(RF_HCF142B());
+    rcpp_result_gen = Rcpp::wrap(RF_HCFC142B());
     return rcpp_result_gen;
 END_RCPP
 }
@@ -655,33 +655,33 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// EMISSIONS_HCF22
-String EMISSIONS_HCF22();
-RcppExport SEXP _hector_EMISSIONS_HCF22() {
+// EMISSIONS_HCFC22
+String EMISSIONS_HCFC22();
+RcppExport SEXP _hector_EMISSIONS_HCFC22() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(EMISSIONS_HCF22());
+    rcpp_result_gen = Rcpp::wrap(EMISSIONS_HCFC22());
     return rcpp_result_gen;
 END_RCPP
 }
-// EMISSIONS_HCF141B
-String EMISSIONS_HCF141B();
-RcppExport SEXP _hector_EMISSIONS_HCF141B() {
+// EMISSIONS_HCFC141B
+String EMISSIONS_HCFC141B();
+RcppExport SEXP _hector_EMISSIONS_HCFC141B() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(EMISSIONS_HCF141B());
+    rcpp_result_gen = Rcpp::wrap(EMISSIONS_HCFC141B());
     return rcpp_result_gen;
 END_RCPP
 }
-// EMISSIONS_HCF142B
-String EMISSIONS_HCF142B();
-RcppExport SEXP _hector_EMISSIONS_HCF142B() {
+// EMISSIONS_HCFC142B
+String EMISSIONS_HCFC142B();
+RcppExport SEXP _hector_EMISSIONS_HCFC142B() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(EMISSIONS_HCF142B());
+    rcpp_result_gen = Rcpp::wrap(EMISSIONS_HCFC142B());
     return rcpp_result_gen;
 END_RCPP
 }
@@ -915,33 +915,33 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// HCF22_CONSTRAIN
-String HCF22_CONSTRAIN();
-RcppExport SEXP _hector_HCF22_CONSTRAIN() {
+// HCFC22_CONSTRAIN
+String HCFC22_CONSTRAIN();
+RcppExport SEXP _hector_HCFC22_CONSTRAIN() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(HCF22_CONSTRAIN());
+    rcpp_result_gen = Rcpp::wrap(HCFC22_CONSTRAIN());
     return rcpp_result_gen;
 END_RCPP
 }
-// HCF141B_CONSTRAIN
-String HCF141B_CONSTRAIN();
-RcppExport SEXP _hector_HCF141B_CONSTRAIN() {
+// HCFC141B_CONSTRAIN
+String HCFC141B_CONSTRAIN();
+RcppExport SEXP _hector_HCFC141B_CONSTRAIN() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(HCF141B_CONSTRAIN());
+    rcpp_result_gen = Rcpp::wrap(HCFC141B_CONSTRAIN());
     return rcpp_result_gen;
 END_RCPP
 }
-// HCF142B_CONSTRAIN
-String HCF142B_CONSTRAIN();
-RcppExport SEXP _hector_HCF142B_CONSTRAIN() {
+// HCFC142B_CONSTRAIN
+String HCFC142B_CONSTRAIN();
+RcppExport SEXP _hector_HCFC142B_CONSTRAIN() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(HCF142B_CONSTRAIN());
+    rcpp_result_gen = Rcpp::wrap(HCFC142B_CONSTRAIN());
     return rcpp_result_gen;
 END_RCPP
 }
@@ -1971,9 +1971,9 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_RF_CFC115", (DL_FUNC) &_hector_RF_CFC115, 0},
     {"_hector_RF_CCL4", (DL_FUNC) &_hector_RF_CCL4, 0},
     {"_hector_RF_CH3CCL3", (DL_FUNC) &_hector_RF_CH3CCL3, 0},
-    {"_hector_RF_HCF22", (DL_FUNC) &_hector_RF_HCF22, 0},
-    {"_hector_RF_HCF141B", (DL_FUNC) &_hector_RF_HCF141B, 0},
-    {"_hector_RF_HCF142B", (DL_FUNC) &_hector_RF_HCF142B, 0},
+    {"_hector_RF_HCFC22", (DL_FUNC) &_hector_RF_HCFC22, 0},
+    {"_hector_RF_HCFC141B", (DL_FUNC) &_hector_RF_HCFC141B, 0},
+    {"_hector_RF_HCFC142B", (DL_FUNC) &_hector_RF_HCFC142B, 0},
     {"_hector_RF_HALON1211", (DL_FUNC) &_hector_RF_HALON1211, 0},
     {"_hector_RF_HALON1301", (DL_FUNC) &_hector_RF_HALON1301, 0},
     {"_hector_RF_HALON2402", (DL_FUNC) &_hector_RF_HALON2402, 0},
@@ -1997,9 +1997,9 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_EMISSIONS_CFC115", (DL_FUNC) &_hector_EMISSIONS_CFC115, 0},
     {"_hector_EMISSIONS_CCL4", (DL_FUNC) &_hector_EMISSIONS_CCL4, 0},
     {"_hector_EMISSIONS_CH3CCL3", (DL_FUNC) &_hector_EMISSIONS_CH3CCL3, 0},
-    {"_hector_EMISSIONS_HCF22", (DL_FUNC) &_hector_EMISSIONS_HCF22, 0},
-    {"_hector_EMISSIONS_HCF141B", (DL_FUNC) &_hector_EMISSIONS_HCF141B, 0},
-    {"_hector_EMISSIONS_HCF142B", (DL_FUNC) &_hector_EMISSIONS_HCF142B, 0},
+    {"_hector_EMISSIONS_HCFC22", (DL_FUNC) &_hector_EMISSIONS_HCFC22, 0},
+    {"_hector_EMISSIONS_HCFC141B", (DL_FUNC) &_hector_EMISSIONS_HCFC141B, 0},
+    {"_hector_EMISSIONS_HCFC142B", (DL_FUNC) &_hector_EMISSIONS_HCFC142B, 0},
     {"_hector_EMISSIONS_HALON1211", (DL_FUNC) &_hector_EMISSIONS_HALON1211, 0},
     {"_hector_EMISSIONS_HALON1301", (DL_FUNC) &_hector_EMISSIONS_HALON1301, 0},
     {"_hector_EMISSIONS_HALON2402", (DL_FUNC) &_hector_EMISSIONS_HALON2402, 0},
@@ -2023,9 +2023,9 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_CFC115_CONSTRAIN", (DL_FUNC) &_hector_CFC115_CONSTRAIN, 0},
     {"_hector_CCL4_CONSTRAIN", (DL_FUNC) &_hector_CCL4_CONSTRAIN, 0},
     {"_hector_CH3CCL3_CONSTRAIN", (DL_FUNC) &_hector_CH3CCL3_CONSTRAIN, 0},
-    {"_hector_HCF22_CONSTRAIN", (DL_FUNC) &_hector_HCF22_CONSTRAIN, 0},
-    {"_hector_HCF141B_CONSTRAIN", (DL_FUNC) &_hector_HCF141B_CONSTRAIN, 0},
-    {"_hector_HCF142B_CONSTRAIN", (DL_FUNC) &_hector_HCF142B_CONSTRAIN, 0},
+    {"_hector_HCFC22_CONSTRAIN", (DL_FUNC) &_hector_HCFC22_CONSTRAIN, 0},
+    {"_hector_HCFC141B_CONSTRAIN", (DL_FUNC) &_hector_HCFC141B_CONSTRAIN, 0},
+    {"_hector_HCFC142B_CONSTRAIN", (DL_FUNC) &_hector_HCFC142B_CONSTRAIN, 0},
     {"_hector_HALON1211_CONSTRAIN", (DL_FUNC) &_hector_HALON1211_CONSTRAIN, 0},
     {"_hector_HALON1301_CONSTRAIN", (DL_FUNC) &_hector_HALON1301_CONSTRAIN, 0},
     {"_hector_HALON2402_CONSTRAIN", (DL_FUNC) &_hector_HALON2402_CONSTRAIN, 0},

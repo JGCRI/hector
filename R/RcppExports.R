@@ -236,20 +236,20 @@ RF_CH3CCL3 <- function() {
 
 #' @describeIn haloforcings Radiative forcing due to HCFC-22
 #' @export
-RF_HCF22 <- function() {
-    .Call('_hector_RF_HCF22', PACKAGE = 'hector')
+RF_HCFC22 <- function() {
+    .Call('_hector_RF_HCFC22', PACKAGE = 'hector')
 }
 
 #' @describeIn haloforcings Radiative forcing due to HCFC-141b
 #' @export
-RF_HCF141B <- function() {
-    .Call('_hector_RF_HCF141B', PACKAGE = 'hector')
+RF_HCFC141B <- function() {
+    .Call('_hector_RF_HCFC141B', PACKAGE = 'hector')
 }
 
 #' @describeIn haloforcings Radiative forcing due to HCFC-142b
 #' @export
-RF_HCF142B <- function() {
-    .Call('_hector_RF_HCF142B', PACKAGE = 'hector')
+RF_HCFC142B <- function() {
+    .Call('_hector_RF_HCFC142B', PACKAGE = 'hector')
 }
 
 #' @describeIn haloforcings Radiative forcing due to halon-1211
@@ -392,20 +392,20 @@ EMISSIONS_CH3CCL3 <- function() {
 
 #' @describeIn haloemiss Emissions for HCFC-22
 #' @export
-EMISSIONS_HCF22 <- function() {
-    .Call('_hector_EMISSIONS_HCF22', PACKAGE = 'hector')
+EMISSIONS_HCFC22 <- function() {
+    .Call('_hector_EMISSIONS_HCFC22', PACKAGE = 'hector')
 }
 
 #' @describeIn haloemiss Emissions for HCFC-141b
 #' @export
-EMISSIONS_HCF141B <- function() {
-    .Call('_hector_EMISSIONS_HCF141B', PACKAGE = 'hector')
+EMISSIONS_HCFC141B <- function() {
+    .Call('_hector_EMISSIONS_HCFC141B', PACKAGE = 'hector')
 }
 
 #' @describeIn haloemiss Emissions for HCFC-142b
 #' @export
-EMISSIONS_HCF142B <- function() {
-    .Call('_hector_EMISSIONS_HCF142B', PACKAGE = 'hector')
+EMISSIONS_HCFC142B <- function() {
+    .Call('_hector_EMISSIONS_HCFC142B', PACKAGE = 'hector')
 }
 
 #' @describeIn haloemiss Emissions for halon-1211
@@ -548,20 +548,20 @@ CH3CCL3_CONSTRAIN <- function() {
 
 #' @describeIn haloconstrain Concentration constraint for HCFC-22
 #' @export
-HCF22_CONSTRAIN <- function() {
-    .Call('_hector_HCF22_CONSTRAIN', PACKAGE = 'hector')
+HCFC22_CONSTRAIN <- function() {
+    .Call('_hector_HCFC22_CONSTRAIN', PACKAGE = 'hector')
 }
 
 #' @describeIn haloconstrain Concentration constraint for HCFC-141b
 #' @export
-HCF141B_CONSTRAIN <- function() {
-    .Call('_hector_HCF141B_CONSTRAIN', PACKAGE = 'hector')
+HCFC141B_CONSTRAIN <- function() {
+    .Call('_hector_HCFC141B_CONSTRAIN', PACKAGE = 'hector')
 }
 
 #' @describeIn haloconstrain Concentration constraint for HCFC-142b
 #' @export
-HCF142B_CONSTRAIN <- function() {
-    .Call('_hector_HCF142B_CONSTRAIN', PACKAGE = 'hector')
+HCFC142B_CONSTRAIN <- function() {
+    .Call('_hector_HCFC142B_CONSTRAIN', PACKAGE = 'hector')
 }
 
 #' @describeIn haloconstrain Concentration constraint for halon-1211
@@ -1184,7 +1184,7 @@ rename_biome <- function(core, oldname, newname) {
 #'
 #' Messages are the mechanism used to get data from Hector model components and
 #' to set values within components.
-#' 
+#'
 #' A message comprises a type (e.g. GETDATA to retrieve data from a component, or SETDATA to
 #' set data in a component), a capability, which identifies the information to be operated
 #' on (e.g. Atmospheric CO2 concentration, or global total radiative forcing), and an optional

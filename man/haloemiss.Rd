@@ -20,9 +20,9 @@
 \alias{EMISSIONS_CFC115}
 \alias{EMISSIONS_CCL4}
 \alias{EMISSIONS_CH3CCL3}
-\alias{EMISSIONS_HCF22}
-\alias{EMISSIONS_HCF141B}
-\alias{EMISSIONS_HCF142B}
+\alias{EMISSIONS_HCFC22}
+\alias{EMISSIONS_HCFC141B}
+\alias{EMISSIONS_HCFC142B}
 \alias{EMISSIONS_HALON1211}
 \alias{EMISSIONS_HALON1301}
 \alias{EMISSIONS_HALON2402}
@@ -66,11 +66,11 @@ EMISSIONS_CCL4()
 
 EMISSIONS_CH3CCL3()
 
-EMISSIONS_HCF22()
+EMISSIONS_HCFC22()
 
-EMISSIONS_HCF141B()
+EMISSIONS_HCFC141B()
 
-EMISSIONS_HCF142B()
+EMISSIONS_HCFC142B()
 
 EMISSIONS_HALON1211()
 
@@ -126,11 +126,11 @@ messages.  In all cases, the expected input units are gigagrams
 
 \item \code{EMISSIONS_CH3CCL3}: Emissions for trichloroethane
 
-\item \code{EMISSIONS_HCF22}: Emissions for HCFC-22
+\item \code{EMISSIONS_HCFC22}: Emissions for HCFC-22
 
-\item \code{EMISSIONS_HCF141B}: Emissions for HCFC-141b
+\item \code{EMISSIONS_HCFC141B}: Emissions for HCFC-141b
 
-\item \code{EMISSIONS_HCF142B}: Emissions for HCFC-142b
+\item \code{EMISSIONS_HCFC142B}: Emissions for HCFC-142b
 
 \item \code{EMISSIONS_HALON1211}: Emissions for halon-1211
 
