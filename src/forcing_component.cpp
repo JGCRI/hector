@@ -62,9 +62,9 @@ const char *ForcingComponent::adjusted_halo_forcings[N_HALO_FORCINGS] = {
     D_RFADJ_CFC115,
     D_RFADJ_CCl4,
     D_RFADJ_CH3CCl3,
-    D_RFADJ_HCF22,
-    D_RFADJ_HCF141b,
-    D_RFADJ_HCF142b,
+    D_RFADJ_HCFC22,
+    D_RFADJ_HCFC141b,
+    D_RFADJ_HCFC142b,
     D_RFADJ_halon1211,
     D_RFADJ_halon1301,
     D_RFADJ_halon2402,
@@ -91,9 +91,9 @@ const char *ForcingComponent::halo_forcing_names[N_HALO_FORCINGS] = {
     D_RF_CFC115,
     D_RF_CCl4,
     D_RF_CH3CCl3,
-    D_RF_HCF22,
-    D_RF_HCF141b,
-    D_RF_HCF142b,
+    D_RF_HCFC22,
+    D_RF_HCFC141b,
+    D_RF_HCFC142b,
     D_RF_halon1211,
     D_RF_halon1301,
     D_RF_halon2402,
@@ -186,9 +186,9 @@ void ForcingComponent::init( Core* coreptr ) {
     core->registerDependency( D_RF_CFC115, getComponentName() );
     core->registerDependency( D_RF_CCl4, getComponentName() );
     core->registerDependency( D_RF_CH3CCl3, getComponentName() );
-    core->registerDependency( D_RF_HCF22, getComponentName() );
-    core->registerDependency( D_RF_HCF141b, getComponentName() );
-    core->registerDependency( D_RF_HCF142b, getComponentName() );
+    core->registerDependency( D_RF_HCFC22, getComponentName() );
+    core->registerDependency( D_RF_HCFC141b, getComponentName() );
+    core->registerDependency( D_RF_HCFC142b, getComponentName() );
     core->registerDependency( D_RF_halon1211, getComponentName() );
     core->registerDependency( D_RF_halon1301, getComponentName() );
     core->registerDependency( D_RF_halon2402, getComponentName() );
@@ -346,9 +346,9 @@ void ForcingComponent::run( const double runToDate ) throw ( h_exception ) {
                 D_RF_CFC115,
                 D_RF_CCl4,
                 D_RF_CH3CCl3,
-                D_RF_HCF22,
-                D_RF_HCF141b,
-                D_RF_HCF142b,
+                D_RF_HCFC22,
+                D_RF_HCFC141b,
+                D_RF_HCFC142b,
                 D_RF_halon1211,
                 D_RF_halon1301,
                 D_RF_halon2402,

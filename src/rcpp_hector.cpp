@@ -15,7 +15,7 @@ using namespace Rcpp;
  * These are intended for use by the C++ wrappers and are not callable from R directly.
  */
 
-// Get a pointer to a core from the R handle. 
+// Get a pointer to a core from the R handle.
 Hector::Core *gethcore(Environment core)
 {
     int idx = core["coreidx"];
@@ -47,7 +47,7 @@ Environment newcore_impl(String inifile, int loglevel, bool suppresslogging, Str
         int coreidx = Hector::Core::mkcore(!suppresslogging,
                                            (Hector::Logger::LogLevel)loglevel,
                                            false);
-                                           
+
         Hector::Core *hcore = Hector::Core::getcore(coreidx);
         hcore->init();
 
@@ -76,7 +76,7 @@ Environment newcore_impl(String inifile, int loglevel, bool suppresslogging, Str
         rv["name"] = name;
         rv["clean"] = true;
         rv["reset_date"] = 0;
-        
+
         return rv;
     }
     catch(h_exception e) {
@@ -141,7 +141,7 @@ Environment reset(Environment core, double date=0)
     double rd = core["reset_date"];
     if(date <= rd)
         core["clean"] = true;
-    
+
     return core;
 }
 
@@ -255,7 +255,7 @@ Environment rename_biome(Environment core, std::string oldname, std::string newn
 //'
 //' Messages are the mechanism used to get data from Hector model components and
 //' to set values within components.
-//' 
+//'
 //' A message comprises a type (e.g. GETDATA to retrieve data from a component, or SETDATA to
 //' set data in a component), a capability, which identifies the information to be operated
 //' on (e.g. Atmospheric CO2 concentration, or global total radiative forcing), and an optional
@@ -288,7 +288,7 @@ DataFrame sendmessage(Environment core, String msgtype, String capability, Numer
                       NumericVector value, String unit)
 {
     Hector::Core *hcore = gethcore(core);
-    
+
     if(value.size() != date.size() && value.size() != 1) {
         Rcpp::stop("Value must have length 1 or same length as date.");
     }
@@ -321,23 +321,23 @@ DataFrame sendmessage(Environment core, String msgtype, String capability, Numer
                 ival = 0;
             else
                 ival = i;
-            
+
             double tempval;
             if(NumericVector::is_na(value[ival]))
                 tempval = 0;
             else
                 tempval = value[ival];
-            
+
             double tempdate;
             if(NumericVector::is_na(date[i]))
                 tempdate = Hector::Core::undefinedIndex();
             else
                 tempdate = date[i];
-            
+
             Hector::message_data info(tempdate, Hector::unitval(tempval, utype));
-            
+
             Hector::unitval rtn = hcore->sendMessage(msgstr, capstr, info);
-            
+
             unitsout[i] = rtn.unitsName();
             valueout[i] = rtn.value(rtn.units());
         }
@@ -364,6 +364,6 @@ bool chk_core_valid(Environment core)
 {
     int idx = core["coreidx"];
     Hector::Core *hcore = Hector::Core::getcore(idx);
-    
+
     return hcore != NULL;
 }

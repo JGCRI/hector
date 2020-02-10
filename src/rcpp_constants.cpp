@@ -315,22 +315,22 @@ return D_RFADJ_CH3CCl3;
 //' @describeIn haloforcings Radiative forcing due to HCFC-22
 //' @export
 // [[Rcpp::export]]
-String RF_HCF22() {
-return D_RFADJ_HCF22;
+String RF_HCFC22() {
+return D_RFADJ_HCFC22;
 }
 
 //' @describeIn haloforcings Radiative forcing due to HCFC-141b
 //' @export
 // [[Rcpp::export]]
-String RF_HCF141B() {
-return D_RFADJ_HCF141b;
+String RF_HCFC141B() {
+return D_RFADJ_HCFC141b;
 }
 
 //' @describeIn haloforcings Radiative forcing due to HCFC-142b
 //' @export
 // [[Rcpp::export]]
-String RF_HCF142B() {
-return D_RFADJ_HCF142b;
+String RF_HCFC142B() {
+return D_RFADJ_HCFC142b;
 }
 
 //' @describeIn haloforcings Radiative forcing due to halon-1211
@@ -498,22 +498,22 @@ return D_EMISSIONS_CH3CCl3;
 //' @describeIn haloemiss Emissions for HCFC-22
 //' @export
 // [[Rcpp::export]]
-String EMISSIONS_HCF22() {
-return D_EMISSIONS_HCF22;
+String EMISSIONS_HCFC22() {
+return D_EMISSIONS_HCFC22;
 }
 
 //' @describeIn haloemiss Emissions for HCFC-141b
 //' @export
 // [[Rcpp::export]]
-String EMISSIONS_HCF141B() {
-return D_EMISSIONS_HCF141b;
+String EMISSIONS_HCFC141B() {
+return D_EMISSIONS_HCFC141b;
 }
 
 //' @describeIn haloemiss Emissions for HCFC-142b
 //' @export
 // [[Rcpp::export]]
-String EMISSIONS_HCF142B() {
-return D_EMISSIONS_HCF142b;
+String EMISSIONS_HCFC142B() {
+return D_EMISSIONS_HCFC142b;
 }
 
 //' @describeIn haloemiss Emissions for halon-1211
@@ -681,22 +681,22 @@ return D_CONSTRAINT_CH3CCl3;
 //' @describeIn haloconstrain Concentration constraint for HCFC-22
 //' @export
 // [[Rcpp::export]]
-String HCF22_CONSTRAIN() {
-return D_CONSTRAINT_HCF22;
+String HCFC22_CONSTRAIN() {
+return D_CONSTRAINT_HCFC22;
 }
 
 //' @describeIn haloconstrain Concentration constraint for HCFC-141b
 //' @export
 // [[Rcpp::export]]
-String HCF141B_CONSTRAIN() {
-return D_CONSTRAINT_HCF141b;
+String HCFC141B_CONSTRAIN() {
+return D_CONSTRAINT_HCFC141b;
 }
 
 //' @describeIn haloconstrain Concentration constraint for HCFC-142b
 //' @export
 // [[Rcpp::export]]
-String HCF142B_CONSTRAIN() {
-return D_CONSTRAINT_HCF142b;
+String HCFC142B_CONSTRAIN() {
+return D_CONSTRAINT_HCFC142b;
 }
 
 //' @describeIn haloconstrain Concentration constraint for halon-1211
