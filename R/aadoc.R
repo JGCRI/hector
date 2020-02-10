@@ -107,6 +107,27 @@ NULL
 #' @family capability identifiers
 NULL
 
+#' Identifiers for halocarbon concentration constraints
+#'
+#' These identifiers correspond to concentration constraints for halocarbons. In
+#' all cases, the expected input units are volumetric parts per trillion
+#' (\code{"ppvt"}).
+#'
+#' @inheritSection msgtype Note
+#'
+#' @name haloconstrain
+#' @family capability identifiers
+NULL
+
+#' Identifiers for concentration constraints
+#'
+#' These identifiers correspond to concentration constraints.
+#'
+#' @inheritSection msgtype Note
+#'
+#' @name constraints
+#' @family capability identifiers
+NULL
 
 #' Identifiers for quantities in the methane component
 #'

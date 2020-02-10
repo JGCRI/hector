@@ -36,6 +36,8 @@
  ***/
 #define HALOCARBON_EXTENSION "_halocarbon"
 #define EMISSIONS_EXTENSION  "_emissions"
+#define CONCENTRATION_EXTENSION  "_concentration"
+#define CONC_CONSTRAINT_EXTENSION  "_constrain"
 #define CF4_COMPONENT_BASE "CF4"
 #define C2F6_COMPONENT_BASE "C2F6"
 #define HFC23_COMPONENT_BASE "HFC23"
