@@ -59,6 +59,8 @@ void CH4Component::init( Core* coreptr ) {
     core->registerDependency( D_LIFETIME_OH, getComponentName() );
     // ...and what input data that we can accept
     core->registerInput(D_EMISSIONS_CH4, getComponentName());
+    core->registerInput(D_CONSTRAINT_CH4, getComponentName());
+    core->registerInput(D_PREINDUSTRIAL_CH4, getComponentName());
 }
 
 //------------------------------------------------------------------------------
@@ -107,8 +109,11 @@ void CH4Component::setData( const string& varName,
          } else if( varName == D_NATURAL_CH4 ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
             CH4N = data.getUnitval( U_TG_CH4 );
-         }
-		else {
+         } else if( varName == D_CONSTRAINT_CH4 ) {
+            H_ASSERT( data.date != Core::undefinedIndex(), "date required for CH4 concentration constraint" );
+            CH4_constrain.set( data.date, data.getUnitval( U_PPBV_CH4 ) );
+    }
+        else {
             H_THROW( "Unknown variable name while parsing " + getComponentName() + ": "
                     + varName );
         }
@@ -123,6 +128,10 @@ void CH4Component::prepareToRun() throw ( h_exception ) {
 
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
     oldDate = core->getStartDate();
+    if ( CH4_constrain.size() && CH4_constrain.exists( oldDate ) ) {
+        H_LOG( logger, Logger::WARNING ) << "Overwriting preindustrial CH4 value with CH4 constraint value" << std::endl;
+        M0 = CH4_constrain.get( oldDate );
+    }
     CH4.set( oldDate, M0 );  // set the first year's value
  }
 
@@ -131,29 +140,35 @@ void CH4Component::prepareToRun() throw ( h_exception ) {
 void CH4Component::run( const double runToDate ) throw ( h_exception ) {
 	H_ASSERT( !core->inSpinup() && runToDate-oldDate == 1, "timestep must equal 1" );
 
-    // modified from Wigley et al, 2002
-    // https://doi.org/10.1175/1520-0442(2002)015%3C2690:RFDTRG%3E2.0.CO;2
-    const double current_ch4em = CH4_emissions.get( runToDate ).value( U_TG_CH4 );
-    const double current_toh = core->sendMessage( M_GETDATA, D_LIFETIME_OH, runToDate ).value( U_YRS );
-    H_LOG( logger, Logger::DEBUG ) << "Year " << runToDate << " current_toh = " << current_toh << std::endl;
+    if ( CH4_constrain.size() && CH4_constrain.exists( runToDate ) ) {
+        CH4.set( runToDate,  CH4_constrain.get( runToDate ) );
+    } else {
 
-    const double ch4n =  CH4N.value( U_TG_CH4 );
-    const double emisTocon = ( current_ch4em + ch4n ) / UC_CH4.value( U_TG_PPBV );
-    double previous_ch4 = M0.value( U_PPBV_CH4 );
+        // modified from Wigley et al, 2002
+        // https://doi.org/10.1175/1520-0442(2002)015%3C2690:RFDTRG%3E2.0.CO;2
+        const double current_ch4em = CH4_emissions.get( runToDate ).value( U_TG_CH4 );
+        const double current_toh = core->sendMessage( M_GETDATA, D_LIFETIME_OH, runToDate ).value( U_YRS );
+        H_LOG( logger, Logger::DEBUG ) << "Year " << runToDate << " current_toh = " << current_toh << std::endl;
 
-    H_LOG( logger, Logger::DEBUG ) << "Year " << runToDate << " previous CH4 = " << previous_ch4 << std::endl;
+        const double ch4n =  CH4N.value( U_TG_CH4 );
+        const double emisTocon = ( current_ch4em + ch4n ) / UC_CH4.value( U_TG_PPBV );
+        double previous_ch4 = M0.value( U_PPBV_CH4 );
 
-    if (runToDate!=oldDate) {
-        previous_ch4 = CH4.get( oldDate );
+        H_LOG( logger, Logger::DEBUG ) << "Year " << runToDate << " previous CH4 = " << previous_ch4 << std::endl;
+
+        if (runToDate!=oldDate) {
+            previous_ch4 = CH4.get( oldDate );
+        }
+
+        const double soil_sink = previous_ch4 / Tsoil.value( U_YRS );
+        const double strat_sink = previous_ch4 / Tstrat.value( U_YRS );
+        const double oh_sink = previous_ch4 / current_toh;
+
+        const double dCH4 = emisTocon - soil_sink - strat_sink - oh_sink; // change in CH4 concentration to be added to previous_ch4
+
+        CH4.set( runToDate, unitval( previous_ch4 + dCH4, U_PPBV_CH4 ) );
+
     }
-
-    const double soil_sink = previous_ch4 / Tsoil.value( U_YRS );
-    const double strat_sink = previous_ch4 / Tstrat.value( U_YRS );
-    const double oh_sink = previous_ch4 / current_toh;
-
-    const double dCH4 = emisTocon - soil_sink - strat_sink - oh_sink; // change in CH4 concentration to be added to previous_ch4
-
-    CH4.set( runToDate, unitval( previous_ch4 + dCH4, U_PPBV_CH4 ) );
 
     oldDate = runToDate;
     H_LOG( logger, Logger::DEBUG ) << runToDate << " CH4 concentration = " << CH4.get( runToDate ) << std::endl;
@@ -175,6 +190,15 @@ unitval CH4Component::getData( const std::string& varName,
     } else if( varName == D_EMISSIONS_CH4 ) {
         H_ASSERT(  date != Core::undefinedIndex(), "Date not allowed for CH4 emissions" );
         returnval = CH4_emissions.get( date );
+    } else if( varName == D_CONSTRAINT_CH4 ) {
+        H_ASSERT(  date != Core::undefinedIndex(), "Date not allowed for CH4 constraint" );
+        if ( CH4_constrain.exists( date ) ) {
+            returnval = CH4_constrain.get( date );
+        } else {
+            H_LOG( logger, Logger::DEBUG ) << "No CH4 constraint for requested date " << date <<
+                ". Returning missing value." << std::endl;
+            returnval = unitval( MISSING_FLOAT, U_PPBV_CH4 );
+        }
     } else {
         H_THROW( "Caller is requesting unknown variable: " + varName );
     }

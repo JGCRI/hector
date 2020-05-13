@@ -60,7 +60,7 @@ test_that('Atmospheric CO2 constraint works', {
     co2const <- co2const[co2const$Date >= min(dates) & co2const$Date <=
                            max(dates),]
 
-    constvals <- signif(co2const$Ca_constrain, 5)
+    constvals <- signif(co2const$CO2_constrain, 5)
 
     rcp45co2 <- fetchvars(hc45, dates, ATMOSPHERIC_CO2())
     rcp45co2vals <- signif(rcp45co2$value, 5)

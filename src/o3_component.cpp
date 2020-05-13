@@ -157,7 +157,7 @@ unitval OzoneComponent::getData( const std::string& varName,
     if( varName == D_ATMOSPHERIC_O3 ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for O3" ); //== is a comparision
 		returnval = O3.get( date );
-    }  else {
+    } else {
         H_THROW( "Caller is requesting unknown variable: " + varName );
     }
 

@@ -70,16 +70,16 @@ RF_N2O <- function() {
     .Call('_hector_RF_N2O', PACKAGE = 'hector')
 }
 
-#' @describeIn forcings Radiative forcing due to water vapor
+#' @describeIn forcings Radiative forcing due to stratospheric water vapor
 #' @export
-RF_H2O <- function() {
-    .Call('_hector_RF_H2O', PACKAGE = 'hector')
+RF_H2O_STRAT <- function() {
+    .Call('_hector_RF_H2O_STRAT', PACKAGE = 'hector')
 }
 
-#' @describeIn forcings Radiative forcing due to ozone
+#' @describeIn forcings Radiative forcing due to tropospheric ozone
 #' @export
-RF_O3 <- function() {
-    .Call('_hector_RF_O3', PACKAGE = 'hector')
+RF_O3_TROP <- function() {
+    .Call('_hector_RF_O3_TROP', PACKAGE = 'hector')
 }
 
 #' @describeIn forcings Radiative forcing due to black carbon
@@ -236,20 +236,20 @@ RF_CH3CCL3 <- function() {
 
 #' @describeIn haloforcings Radiative forcing due to HCFC-22
 #' @export
-RF_HCF22 <- function() {
-    .Call('_hector_RF_HCF22', PACKAGE = 'hector')
+RF_HCFC22 <- function() {
+    .Call('_hector_RF_HCFC22', PACKAGE = 'hector')
 }
 
 #' @describeIn haloforcings Radiative forcing due to HCFC-141b
 #' @export
-RF_HCF141B <- function() {
-    .Call('_hector_RF_HCF141B', PACKAGE = 'hector')
+RF_HCFC141B <- function() {
+    .Call('_hector_RF_HCFC141B', PACKAGE = 'hector')
 }
 
 #' @describeIn haloforcings Radiative forcing due to HCFC-142b
 #' @export
-RF_HCF142B <- function() {
-    .Call('_hector_RF_HCF142B', PACKAGE = 'hector')
+RF_HCFC142B <- function() {
+    .Call('_hector_RF_HCFC142B', PACKAGE = 'hector')
 }
 
 #' @describeIn haloforcings Radiative forcing due to halon-1211
@@ -392,20 +392,20 @@ EMISSIONS_CH3CCL3 <- function() {
 
 #' @describeIn haloemiss Emissions for HCFC-22
 #' @export
-EMISSIONS_HCF22 <- function() {
-    .Call('_hector_EMISSIONS_HCF22', PACKAGE = 'hector')
+EMISSIONS_HCFC22 <- function() {
+    .Call('_hector_EMISSIONS_HCFC22', PACKAGE = 'hector')
 }
 
 #' @describeIn haloemiss Emissions for HCFC-141b
 #' @export
-EMISSIONS_HCF141B <- function() {
-    .Call('_hector_EMISSIONS_HCF141B', PACKAGE = 'hector')
+EMISSIONS_HCFC141B <- function() {
+    .Call('_hector_EMISSIONS_HCFC141B', PACKAGE = 'hector')
 }
 
 #' @describeIn haloemiss Emissions for HCFC-142b
 #' @export
-EMISSIONS_HCF142B <- function() {
-    .Call('_hector_EMISSIONS_HCF142B', PACKAGE = 'hector')
+EMISSIONS_HCFC142B <- function() {
+    .Call('_hector_EMISSIONS_HCFC142B', PACKAGE = 'hector')
 }
 
 #' @describeIn haloemiss Emissions for halon-1211
@@ -438,10 +438,172 @@ EMISSIONS_CH3BR <- function() {
     .Call('_hector_EMISSIONS_CH3BR', PACKAGE = 'hector')
 }
 
+#' @describeIn haloconstrain Concentration constraint for CF4
+#' @export
+CF4_CONSTRAIN <- function() {
+    .Call('_hector_CF4_CONSTRAIN', PACKAGE = 'hector')
+}
+
+#' @describeIn haloconstrain Concentration constraint for C2F6
+#' @export
+C2F6_CONSTRAIN <- function() {
+    .Call('_hector_C2F6_CONSTRAIN', PACKAGE = 'hector')
+}
+
+#' @describeIn haloconstrain Concentration constraint for HFC-23
+#' @export
+HFC23_CONSTRAIN <- function() {
+    .Call('_hector_HFC23_CONSTRAIN', PACKAGE = 'hector')
+}
+
+#' @describeIn haloconstrain Concentration constraint for HFC-32
+#' @export
+HFC32_CONSTRAIN <- function() {
+    .Call('_hector_HFC32_CONSTRAIN', PACKAGE = 'hector')
+}
+
+#' @describeIn haloconstrain Concentration constraint for HFC-4310
+#' @export
+HFC4310_CONSTRAIN <- function() {
+    .Call('_hector_HFC4310_CONSTRAIN', PACKAGE = 'hector')
+}
+
+#' @describeIn haloconstrain Concentration constraint for HFC-125
+#' @export
+HFC125_CONSTRAIN <- function() {
+    .Call('_hector_HFC125_CONSTRAIN', PACKAGE = 'hector')
+}
+
+#' @describeIn haloconstrain Concentration constraint for HFC-134a
+#' @export
+HFC134A_CONSTRAIN <- function() {
+    .Call('_hector_HFC134A_CONSTRAIN', PACKAGE = 'hector')
+}
+
+#' @describeIn haloconstrain Concentration constraint for HFC-143a
+#' @export
+HFC143A_CONSTRAIN <- function() {
+    .Call('_hector_HFC143A_CONSTRAIN', PACKAGE = 'hector')
+}
+
+#' @describeIn haloconstrain Concentration constraint for HFC-227ea
+#' @export
+HFC227EA_CONSTRAIN <- function() {
+    .Call('_hector_HFC227EA_CONSTRAIN', PACKAGE = 'hector')
+}
+
+#' @describeIn haloconstrain Concentration constraint for HFC-254fa
+#' @export
+HFC245FA_CONSTRAIN <- function() {
+    .Call('_hector_HFC245FA_CONSTRAIN', PACKAGE = 'hector')
+}
+
+#' @describeIn haloconstrain Concentration constraint for sulfur hexafluoride
+#' @export
+SF6_CONSTRAIN <- function() {
+    .Call('_hector_SF6_CONSTRAIN', PACKAGE = 'hector')
+}
+
+#' @describeIn haloconstrain Concentration constraint for CFC-11
+#' @export
+CFC11_CONSTRAIN <- function() {
+    .Call('_hector_CFC11_CONSTRAIN', PACKAGE = 'hector')
+}
+
+#' @describeIn haloconstrain Concentration constraint for CFC-12
+#' @export
+CFC12_CONSTRAIN <- function() {
+    .Call('_hector_CFC12_CONSTRAIN', PACKAGE = 'hector')
+}
+
+#' @describeIn haloconstrain Concentration constraint for CFC-113
+#' @export
+CFC113_CONSTRAIN <- function() {
+    .Call('_hector_CFC113_CONSTRAIN', PACKAGE = 'hector')
+}
+
+#' @describeIn haloconstrain Concentration constraint for CFC-114
+#' @export
+CFC114_CONSTRAIN <- function() {
+    .Call('_hector_CFC114_CONSTRAIN', PACKAGE = 'hector')
+}
+
+#' @describeIn haloconstrain Concentration constraint for CFC-115
+#' @export
+CFC115_CONSTRAIN <- function() {
+    .Call('_hector_CFC115_CONSTRAIN', PACKAGE = 'hector')
+}
+
+#' @describeIn haloconstrain Concentration constraint for carbon tetrachloride
+#' @export
+CCL4_CONSTRAIN <- function() {
+    .Call('_hector_CCL4_CONSTRAIN', PACKAGE = 'hector')
+}
+
+#' @describeIn haloconstrain Concentration constraint for trichloroethane
+#' @export
+CH3CCL3_CONSTRAIN <- function() {
+    .Call('_hector_CH3CCL3_CONSTRAIN', PACKAGE = 'hector')
+}
+
+#' @describeIn haloconstrain Concentration constraint for HCFC-22
+#' @export
+HCFC22_CONSTRAIN <- function() {
+    .Call('_hector_HCFC22_CONSTRAIN', PACKAGE = 'hector')
+}
+
+#' @describeIn haloconstrain Concentration constraint for HCFC-141b
+#' @export
+HCFC141B_CONSTRAIN <- function() {
+    .Call('_hector_HCFC141B_CONSTRAIN', PACKAGE = 'hector')
+}
+
+#' @describeIn haloconstrain Concentration constraint for HCFC-142b
+#' @export
+HCFC142B_CONSTRAIN <- function() {
+    .Call('_hector_HCFC142B_CONSTRAIN', PACKAGE = 'hector')
+}
+
+#' @describeIn haloconstrain Concentration constraint for halon-1211
+#' @export
+HALON1211_CONSTRAIN <- function() {
+    .Call('_hector_HALON1211_CONSTRAIN', PACKAGE = 'hector')
+}
+
+#' @describeIn haloconstrain Concentration constraint for halon-1301
+#' @export
+HALON1301_CONSTRAIN <- function() {
+    .Call('_hector_HALON1301_CONSTRAIN', PACKAGE = 'hector')
+}
+
+#' @describeIn haloconstrain Concentration constraint for halon-2402
+#' @export
+HALON2402_CONSTRAIN <- function() {
+    .Call('_hector_HALON2402_CONSTRAIN', PACKAGE = 'hector')
+}
+
+#' @describeIn haloconstrain Concentration constraint for chloromethane
+#' @export
+CH3CL_CONSTRAIN <- function() {
+    .Call('_hector_CH3CL_CONSTRAIN', PACKAGE = 'hector')
+}
+
+#' @describeIn haloconstrain Concentration constraint for bromomethane
+#' @export
+CH3BR_CONSTRAIN <- function() {
+    .Call('_hector_CH3BR_CONSTRAIN', PACKAGE = 'hector')
+}
+
 #' @rdname methane
 #' @export
 ATMOSPHERIC_CH4 <- function() {
     .Call('_hector_ATMOSPHERIC_CH4', PACKAGE = 'hector')
+}
+
+#' @describeIn constraints CH4 concentration constraint \code{"ppbv CH4"}
+#' @export
+CH4_CONSTRAIN <- function() {
+    .Call('_hector_CH4_CONSTRAIN', PACKAGE = 'hector')
 }
 
 #' @rdname methane
@@ -502,6 +664,12 @@ EMISSIONS_N2O <- function() {
 #' @export
 NAT_EMISSIONS_N2O <- function() {
     .Call('_hector_NAT_EMISSIONS_N2O', PACKAGE = 'hector')
+}
+
+#' @describeIn constraints N2O concentration constraint (\code{"pbbv N2O"})
+#' @export
+N2O_CONSTRAIN <- function() {
+    .Call('_hector_N2O_CONSTRAIN', PACKAGE = 'hector')
 }
 
 #' @describeIn concentrations Preindustrial ozone concentration
@@ -680,6 +848,12 @@ LAND_CFLUX <- function() {
 
 #' @rdname carboncycle
 #' @export
+NBP <- function() {
+    .Call('_hector_NBP', PACKAGE = 'hector')
+}
+
+#' @rdname carboncycle
+#' @export
 ATMOSPHERIC_CO2 <- function() {
     .Call('_hector_ATMOSPHERIC_CO2', PACKAGE = 'hector')
 }
@@ -734,6 +908,12 @@ Q10_RH <- function(biome = "") {
 #' @export
 WARMINGFACTOR <- function(biome = "") {
     .Call('_hector_WARMINGFACTOR', PACKAGE = 'hector', biome)
+}
+
+#' @describeIn carboncycle Constrain atmospheric CO2 concentration  (\code{"(ppmv CO2)"})
+#' @export
+CO2_CONSTRAIN <- function() {
+    .Call('_hector_CO2_CONSTRAIN', PACKAGE = 'hector')
 }
 
 #' @describeIn parameters NPP fraction to vegetation (\code{"(unitless)"})

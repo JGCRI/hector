@@ -115,23 +115,23 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// RF_H2O
-String RF_H2O();
-RcppExport SEXP _hector_RF_H2O() {
+// RF_H2O_STRAT
+String RF_H2O_STRAT();
+RcppExport SEXP _hector_RF_H2O_STRAT() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(RF_H2O());
+    rcpp_result_gen = Rcpp::wrap(RF_H2O_STRAT());
     return rcpp_result_gen;
 END_RCPP
 }
-// RF_O3
-String RF_O3();
-RcppExport SEXP _hector_RF_O3() {
+// RF_O3_TROP
+String RF_O3_TROP();
+RcppExport SEXP _hector_RF_O3_TROP() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(RF_O3());
+    rcpp_result_gen = Rcpp::wrap(RF_O3_TROP());
     return rcpp_result_gen;
 END_RCPP
 }
@@ -395,33 +395,33 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// RF_HCF22
-String RF_HCF22();
-RcppExport SEXP _hector_RF_HCF22() {
+// RF_HCFC22
+String RF_HCFC22();
+RcppExport SEXP _hector_RF_HCFC22() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(RF_HCF22());
+    rcpp_result_gen = Rcpp::wrap(RF_HCFC22());
     return rcpp_result_gen;
 END_RCPP
 }
-// RF_HCF141B
-String RF_HCF141B();
-RcppExport SEXP _hector_RF_HCF141B() {
+// RF_HCFC141B
+String RF_HCFC141B();
+RcppExport SEXP _hector_RF_HCFC141B() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(RF_HCF141B());
+    rcpp_result_gen = Rcpp::wrap(RF_HCFC141B());
     return rcpp_result_gen;
 END_RCPP
 }
-// RF_HCF142B
-String RF_HCF142B();
-RcppExport SEXP _hector_RF_HCF142B() {
+// RF_HCFC142B
+String RF_HCFC142B();
+RcppExport SEXP _hector_RF_HCFC142B() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(RF_HCF142B());
+    rcpp_result_gen = Rcpp::wrap(RF_HCFC142B());
     return rcpp_result_gen;
 END_RCPP
 }
@@ -655,33 +655,33 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// EMISSIONS_HCF22
-String EMISSIONS_HCF22();
-RcppExport SEXP _hector_EMISSIONS_HCF22() {
+// EMISSIONS_HCFC22
+String EMISSIONS_HCFC22();
+RcppExport SEXP _hector_EMISSIONS_HCFC22() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(EMISSIONS_HCF22());
+    rcpp_result_gen = Rcpp::wrap(EMISSIONS_HCFC22());
     return rcpp_result_gen;
 END_RCPP
 }
-// EMISSIONS_HCF141B
-String EMISSIONS_HCF141B();
-RcppExport SEXP _hector_EMISSIONS_HCF141B() {
+// EMISSIONS_HCFC141B
+String EMISSIONS_HCFC141B();
+RcppExport SEXP _hector_EMISSIONS_HCFC141B() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(EMISSIONS_HCF141B());
+    rcpp_result_gen = Rcpp::wrap(EMISSIONS_HCFC141B());
     return rcpp_result_gen;
 END_RCPP
 }
-// EMISSIONS_HCF142B
-String EMISSIONS_HCF142B();
-RcppExport SEXP _hector_EMISSIONS_HCF142B() {
+// EMISSIONS_HCFC142B
+String EMISSIONS_HCFC142B();
+RcppExport SEXP _hector_EMISSIONS_HCFC142B() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(EMISSIONS_HCF142B());
+    rcpp_result_gen = Rcpp::wrap(EMISSIONS_HCFC142B());
     return rcpp_result_gen;
 END_RCPP
 }
@@ -735,6 +735,266 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// CF4_CONSTRAIN
+String CF4_CONSTRAIN();
+RcppExport SEXP _hector_CF4_CONSTRAIN() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(CF4_CONSTRAIN());
+    return rcpp_result_gen;
+END_RCPP
+}
+// C2F6_CONSTRAIN
+String C2F6_CONSTRAIN();
+RcppExport SEXP _hector_C2F6_CONSTRAIN() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(C2F6_CONSTRAIN());
+    return rcpp_result_gen;
+END_RCPP
+}
+// HFC23_CONSTRAIN
+String HFC23_CONSTRAIN();
+RcppExport SEXP _hector_HFC23_CONSTRAIN() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(HFC23_CONSTRAIN());
+    return rcpp_result_gen;
+END_RCPP
+}
+// HFC32_CONSTRAIN
+String HFC32_CONSTRAIN();
+RcppExport SEXP _hector_HFC32_CONSTRAIN() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(HFC32_CONSTRAIN());
+    return rcpp_result_gen;
+END_RCPP
+}
+// HFC4310_CONSTRAIN
+String HFC4310_CONSTRAIN();
+RcppExport SEXP _hector_HFC4310_CONSTRAIN() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(HFC4310_CONSTRAIN());
+    return rcpp_result_gen;
+END_RCPP
+}
+// HFC125_CONSTRAIN
+String HFC125_CONSTRAIN();
+RcppExport SEXP _hector_HFC125_CONSTRAIN() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(HFC125_CONSTRAIN());
+    return rcpp_result_gen;
+END_RCPP
+}
+// HFC134A_CONSTRAIN
+String HFC134A_CONSTRAIN();
+RcppExport SEXP _hector_HFC134A_CONSTRAIN() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(HFC134A_CONSTRAIN());
+    return rcpp_result_gen;
+END_RCPP
+}
+// HFC143A_CONSTRAIN
+String HFC143A_CONSTRAIN();
+RcppExport SEXP _hector_HFC143A_CONSTRAIN() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(HFC143A_CONSTRAIN());
+    return rcpp_result_gen;
+END_RCPP
+}
+// HFC227EA_CONSTRAIN
+String HFC227EA_CONSTRAIN();
+RcppExport SEXP _hector_HFC227EA_CONSTRAIN() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(HFC227EA_CONSTRAIN());
+    return rcpp_result_gen;
+END_RCPP
+}
+// HFC245FA_CONSTRAIN
+String HFC245FA_CONSTRAIN();
+RcppExport SEXP _hector_HFC245FA_CONSTRAIN() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(HFC245FA_CONSTRAIN());
+    return rcpp_result_gen;
+END_RCPP
+}
+// SF6_CONSTRAIN
+String SF6_CONSTRAIN();
+RcppExport SEXP _hector_SF6_CONSTRAIN() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(SF6_CONSTRAIN());
+    return rcpp_result_gen;
+END_RCPP
+}
+// CFC11_CONSTRAIN
+String CFC11_CONSTRAIN();
+RcppExport SEXP _hector_CFC11_CONSTRAIN() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(CFC11_CONSTRAIN());
+    return rcpp_result_gen;
+END_RCPP
+}
+// CFC12_CONSTRAIN
+String CFC12_CONSTRAIN();
+RcppExport SEXP _hector_CFC12_CONSTRAIN() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(CFC12_CONSTRAIN());
+    return rcpp_result_gen;
+END_RCPP
+}
+// CFC113_CONSTRAIN
+String CFC113_CONSTRAIN();
+RcppExport SEXP _hector_CFC113_CONSTRAIN() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(CFC113_CONSTRAIN());
+    return rcpp_result_gen;
+END_RCPP
+}
+// CFC114_CONSTRAIN
+String CFC114_CONSTRAIN();
+RcppExport SEXP _hector_CFC114_CONSTRAIN() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(CFC114_CONSTRAIN());
+    return rcpp_result_gen;
+END_RCPP
+}
+// CFC115_CONSTRAIN
+String CFC115_CONSTRAIN();
+RcppExport SEXP _hector_CFC115_CONSTRAIN() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(CFC115_CONSTRAIN());
+    return rcpp_result_gen;
+END_RCPP
+}
+// CCL4_CONSTRAIN
+String CCL4_CONSTRAIN();
+RcppExport SEXP _hector_CCL4_CONSTRAIN() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(CCL4_CONSTRAIN());
+    return rcpp_result_gen;
+END_RCPP
+}
+// CH3CCL3_CONSTRAIN
+String CH3CCL3_CONSTRAIN();
+RcppExport SEXP _hector_CH3CCL3_CONSTRAIN() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(CH3CCL3_CONSTRAIN());
+    return rcpp_result_gen;
+END_RCPP
+}
+// HCFC22_CONSTRAIN
+String HCFC22_CONSTRAIN();
+RcppExport SEXP _hector_HCFC22_CONSTRAIN() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(HCFC22_CONSTRAIN());
+    return rcpp_result_gen;
+END_RCPP
+}
+// HCFC141B_CONSTRAIN
+String HCFC141B_CONSTRAIN();
+RcppExport SEXP _hector_HCFC141B_CONSTRAIN() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(HCFC141B_CONSTRAIN());
+    return rcpp_result_gen;
+END_RCPP
+}
+// HCFC142B_CONSTRAIN
+String HCFC142B_CONSTRAIN();
+RcppExport SEXP _hector_HCFC142B_CONSTRAIN() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(HCFC142B_CONSTRAIN());
+    return rcpp_result_gen;
+END_RCPP
+}
+// HALON1211_CONSTRAIN
+String HALON1211_CONSTRAIN();
+RcppExport SEXP _hector_HALON1211_CONSTRAIN() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(HALON1211_CONSTRAIN());
+    return rcpp_result_gen;
+END_RCPP
+}
+// HALON1301_CONSTRAIN
+String HALON1301_CONSTRAIN();
+RcppExport SEXP _hector_HALON1301_CONSTRAIN() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(HALON1301_CONSTRAIN());
+    return rcpp_result_gen;
+END_RCPP
+}
+// HALON2402_CONSTRAIN
+String HALON2402_CONSTRAIN();
+RcppExport SEXP _hector_HALON2402_CONSTRAIN() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(HALON2402_CONSTRAIN());
+    return rcpp_result_gen;
+END_RCPP
+}
+// CH3CL_CONSTRAIN
+String CH3CL_CONSTRAIN();
+RcppExport SEXP _hector_CH3CL_CONSTRAIN() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(CH3CL_CONSTRAIN());
+    return rcpp_result_gen;
+END_RCPP
+}
+// CH3BR_CONSTRAIN
+String CH3BR_CONSTRAIN();
+RcppExport SEXP _hector_CH3BR_CONSTRAIN() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(CH3BR_CONSTRAIN());
+    return rcpp_result_gen;
+END_RCPP
+}
 // ATMOSPHERIC_CH4
 String ATMOSPHERIC_CH4();
 RcppExport SEXP _hector_ATMOSPHERIC_CH4() {
@@ -742,6 +1002,16 @@ BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     rcpp_result_gen = Rcpp::wrap(ATMOSPHERIC_CH4());
+    return rcpp_result_gen;
+END_RCPP
+}
+// CH4_CONSTRAIN
+String CH4_CONSTRAIN();
+RcppExport SEXP _hector_CH4_CONSTRAIN() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(CH4_CONSTRAIN());
     return rcpp_result_gen;
 END_RCPP
 }
@@ -842,6 +1112,16 @@ BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     rcpp_result_gen = Rcpp::wrap(NAT_EMISSIONS_N2O());
+    return rcpp_result_gen;
+END_RCPP
+}
+// N2O_CONSTRAIN
+String N2O_CONSTRAIN();
+RcppExport SEXP _hector_N2O_CONSTRAIN() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(N2O_CONSTRAIN());
     return rcpp_result_gen;
 END_RCPP
 }
@@ -1135,6 +1415,16 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// NBP
+String NBP();
+RcppExport SEXP _hector_NBP() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(NBP());
+    return rcpp_result_gen;
+END_RCPP
+}
 // ATMOSPHERIC_CO2
 String ATMOSPHERIC_CO2();
 RcppExport SEXP _hector_ATMOSPHERIC_CO2() {
@@ -1225,6 +1515,16 @@ BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< String >::type biome(biomeSEXP);
     rcpp_result_gen = Rcpp::wrap(WARMINGFACTOR(biome));
+    return rcpp_result_gen;
+END_RCPP
+}
+// CO2_CONSTRAIN
+String CO2_CONSTRAIN();
+RcppExport SEXP _hector_CO2_CONSTRAIN() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(CO2_CONSTRAIN());
     return rcpp_result_gen;
 END_RCPP
 }
@@ -1643,8 +1943,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_RF_T_ALBEDO", (DL_FUNC) &_hector_RF_T_ALBEDO, 0},
     {"_hector_RF_CO2", (DL_FUNC) &_hector_RF_CO2, 0},
     {"_hector_RF_N2O", (DL_FUNC) &_hector_RF_N2O, 0},
-    {"_hector_RF_H2O", (DL_FUNC) &_hector_RF_H2O, 0},
-    {"_hector_RF_O3", (DL_FUNC) &_hector_RF_O3, 0},
+    {"_hector_RF_H2O_STRAT", (DL_FUNC) &_hector_RF_H2O_STRAT, 0},
+    {"_hector_RF_O3_TROP", (DL_FUNC) &_hector_RF_O3_TROP, 0},
     {"_hector_RF_BC", (DL_FUNC) &_hector_RF_BC, 0},
     {"_hector_RF_OC", (DL_FUNC) &_hector_RF_OC, 0},
     {"_hector_RF_SO2D", (DL_FUNC) &_hector_RF_SO2D, 0},
@@ -1671,9 +1971,9 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_RF_CFC115", (DL_FUNC) &_hector_RF_CFC115, 0},
     {"_hector_RF_CCL4", (DL_FUNC) &_hector_RF_CCL4, 0},
     {"_hector_RF_CH3CCL3", (DL_FUNC) &_hector_RF_CH3CCL3, 0},
-    {"_hector_RF_HCF22", (DL_FUNC) &_hector_RF_HCF22, 0},
-    {"_hector_RF_HCF141B", (DL_FUNC) &_hector_RF_HCF141B, 0},
-    {"_hector_RF_HCF142B", (DL_FUNC) &_hector_RF_HCF142B, 0},
+    {"_hector_RF_HCFC22", (DL_FUNC) &_hector_RF_HCFC22, 0},
+    {"_hector_RF_HCFC141B", (DL_FUNC) &_hector_RF_HCFC141B, 0},
+    {"_hector_RF_HCFC142B", (DL_FUNC) &_hector_RF_HCFC142B, 0},
     {"_hector_RF_HALON1211", (DL_FUNC) &_hector_RF_HALON1211, 0},
     {"_hector_RF_HALON1301", (DL_FUNC) &_hector_RF_HALON1301, 0},
     {"_hector_RF_HALON2402", (DL_FUNC) &_hector_RF_HALON2402, 0},
@@ -1697,15 +1997,42 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_EMISSIONS_CFC115", (DL_FUNC) &_hector_EMISSIONS_CFC115, 0},
     {"_hector_EMISSIONS_CCL4", (DL_FUNC) &_hector_EMISSIONS_CCL4, 0},
     {"_hector_EMISSIONS_CH3CCL3", (DL_FUNC) &_hector_EMISSIONS_CH3CCL3, 0},
-    {"_hector_EMISSIONS_HCF22", (DL_FUNC) &_hector_EMISSIONS_HCF22, 0},
-    {"_hector_EMISSIONS_HCF141B", (DL_FUNC) &_hector_EMISSIONS_HCF141B, 0},
-    {"_hector_EMISSIONS_HCF142B", (DL_FUNC) &_hector_EMISSIONS_HCF142B, 0},
+    {"_hector_EMISSIONS_HCFC22", (DL_FUNC) &_hector_EMISSIONS_HCFC22, 0},
+    {"_hector_EMISSIONS_HCFC141B", (DL_FUNC) &_hector_EMISSIONS_HCFC141B, 0},
+    {"_hector_EMISSIONS_HCFC142B", (DL_FUNC) &_hector_EMISSIONS_HCFC142B, 0},
     {"_hector_EMISSIONS_HALON1211", (DL_FUNC) &_hector_EMISSIONS_HALON1211, 0},
     {"_hector_EMISSIONS_HALON1301", (DL_FUNC) &_hector_EMISSIONS_HALON1301, 0},
     {"_hector_EMISSIONS_HALON2402", (DL_FUNC) &_hector_EMISSIONS_HALON2402, 0},
     {"_hector_EMISSIONS_CH3CL", (DL_FUNC) &_hector_EMISSIONS_CH3CL, 0},
     {"_hector_EMISSIONS_CH3BR", (DL_FUNC) &_hector_EMISSIONS_CH3BR, 0},
+    {"_hector_CF4_CONSTRAIN", (DL_FUNC) &_hector_CF4_CONSTRAIN, 0},
+    {"_hector_C2F6_CONSTRAIN", (DL_FUNC) &_hector_C2F6_CONSTRAIN, 0},
+    {"_hector_HFC23_CONSTRAIN", (DL_FUNC) &_hector_HFC23_CONSTRAIN, 0},
+    {"_hector_HFC32_CONSTRAIN", (DL_FUNC) &_hector_HFC32_CONSTRAIN, 0},
+    {"_hector_HFC4310_CONSTRAIN", (DL_FUNC) &_hector_HFC4310_CONSTRAIN, 0},
+    {"_hector_HFC125_CONSTRAIN", (DL_FUNC) &_hector_HFC125_CONSTRAIN, 0},
+    {"_hector_HFC134A_CONSTRAIN", (DL_FUNC) &_hector_HFC134A_CONSTRAIN, 0},
+    {"_hector_HFC143A_CONSTRAIN", (DL_FUNC) &_hector_HFC143A_CONSTRAIN, 0},
+    {"_hector_HFC227EA_CONSTRAIN", (DL_FUNC) &_hector_HFC227EA_CONSTRAIN, 0},
+    {"_hector_HFC245FA_CONSTRAIN", (DL_FUNC) &_hector_HFC245FA_CONSTRAIN, 0},
+    {"_hector_SF6_CONSTRAIN", (DL_FUNC) &_hector_SF6_CONSTRAIN, 0},
+    {"_hector_CFC11_CONSTRAIN", (DL_FUNC) &_hector_CFC11_CONSTRAIN, 0},
+    {"_hector_CFC12_CONSTRAIN", (DL_FUNC) &_hector_CFC12_CONSTRAIN, 0},
+    {"_hector_CFC113_CONSTRAIN", (DL_FUNC) &_hector_CFC113_CONSTRAIN, 0},
+    {"_hector_CFC114_CONSTRAIN", (DL_FUNC) &_hector_CFC114_CONSTRAIN, 0},
+    {"_hector_CFC115_CONSTRAIN", (DL_FUNC) &_hector_CFC115_CONSTRAIN, 0},
+    {"_hector_CCL4_CONSTRAIN", (DL_FUNC) &_hector_CCL4_CONSTRAIN, 0},
+    {"_hector_CH3CCL3_CONSTRAIN", (DL_FUNC) &_hector_CH3CCL3_CONSTRAIN, 0},
+    {"_hector_HCFC22_CONSTRAIN", (DL_FUNC) &_hector_HCFC22_CONSTRAIN, 0},
+    {"_hector_HCFC141B_CONSTRAIN", (DL_FUNC) &_hector_HCFC141B_CONSTRAIN, 0},
+    {"_hector_HCFC142B_CONSTRAIN", (DL_FUNC) &_hector_HCFC142B_CONSTRAIN, 0},
+    {"_hector_HALON1211_CONSTRAIN", (DL_FUNC) &_hector_HALON1211_CONSTRAIN, 0},
+    {"_hector_HALON1301_CONSTRAIN", (DL_FUNC) &_hector_HALON1301_CONSTRAIN, 0},
+    {"_hector_HALON2402_CONSTRAIN", (DL_FUNC) &_hector_HALON2402_CONSTRAIN, 0},
+    {"_hector_CH3CL_CONSTRAIN", (DL_FUNC) &_hector_CH3CL_CONSTRAIN, 0},
+    {"_hector_CH3BR_CONSTRAIN", (DL_FUNC) &_hector_CH3BR_CONSTRAIN, 0},
     {"_hector_ATMOSPHERIC_CH4", (DL_FUNC) &_hector_ATMOSPHERIC_CH4, 0},
+    {"_hector_CH4_CONSTRAIN", (DL_FUNC) &_hector_CH4_CONSTRAIN, 0},
     {"_hector_PREINDUSTRIAL_CH4", (DL_FUNC) &_hector_PREINDUSTRIAL_CH4, 0},
     {"_hector_RF_CH4", (DL_FUNC) &_hector_RF_CH4, 0},
     {"_hector_EMISSIONS_CH4", (DL_FUNC) &_hector_EMISSIONS_CH4, 0},
@@ -1716,6 +2043,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_PREINDUSTRIAL_N2O", (DL_FUNC) &_hector_PREINDUSTRIAL_N2O, 0},
     {"_hector_EMISSIONS_N2O", (DL_FUNC) &_hector_EMISSIONS_N2O, 0},
     {"_hector_NAT_EMISSIONS_N2O", (DL_FUNC) &_hector_NAT_EMISSIONS_N2O, 0},
+    {"_hector_N2O_CONSTRAIN", (DL_FUNC) &_hector_N2O_CONSTRAIN, 0},
     {"_hector_PREINDUSTRIAL_O3", (DL_FUNC) &_hector_PREINDUSTRIAL_O3, 0},
     {"_hector_ATMOSPHERIC_O3", (DL_FUNC) &_hector_ATMOSPHERIC_O3, 0},
     {"_hector_EMISSIONS_NOX", (DL_FUNC) &_hector_EMISSIONS_NOX, 0},
@@ -1745,6 +2073,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_CO3_LL", (DL_FUNC) &_hector_CO3_LL, 0},
     {"_hector_CO3_HL", (DL_FUNC) &_hector_CO3_HL, 0},
     {"_hector_LAND_CFLUX", (DL_FUNC) &_hector_LAND_CFLUX, 0},
+    {"_hector_NBP", (DL_FUNC) &_hector_NBP, 0},
     {"_hector_ATMOSPHERIC_CO2", (DL_FUNC) &_hector_ATMOSPHERIC_CO2, 0},
     {"_hector_NPP", (DL_FUNC) &_hector_NPP, 0},
     {"_hector_PREINDUSTRIAL_CO2", (DL_FUNC) &_hector_PREINDUSTRIAL_CO2, 0},
@@ -1754,6 +2083,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_BETA", (DL_FUNC) &_hector_BETA, 1},
     {"_hector_Q10_RH", (DL_FUNC) &_hector_Q10_RH, 1},
     {"_hector_WARMINGFACTOR", (DL_FUNC) &_hector_WARMINGFACTOR, 1},
+    {"_hector_CO2_CONSTRAIN", (DL_FUNC) &_hector_CO2_CONSTRAIN, 0},
     {"_hector_F_NPPV", (DL_FUNC) &_hector_F_NPPV, 1},
     {"_hector_F_NPPD", (DL_FUNC) &_hector_F_NPPD, 1},
     {"_hector_F_LITTERD", (DL_FUNC) &_hector_F_LITTERD, 1},

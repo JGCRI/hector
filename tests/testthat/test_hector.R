@@ -208,9 +208,10 @@ test_that('Test RF output.', {
 
     # The vector of all the individual componets that contribute to RF.
     rf_componets <- c(RF_BC(), RF_C2F6(),  RF_CCL4(),  RF_CF4(), RF_CFC11(),  RF_CFC113(),  RF_CFC114(),  RF_CFC115(), RF_CH3BR(),  RF_CH3CCL3(),
-                      RF_CH3CL(),  RF_CH4(),  RF_CO2(),  RF_H2O(), RF_HALON1211(),  RF_CFC12(),  RF_HALON1301(), RF_HALON2402(),  RF_HCF141B(),
-                      RF_HCF142B(),  RF_HCF22(),  RF_HFC125(),  RF_HFC134A(),  RF_HFC143A(),  RF_HFC227EA(), RF_HFC23(), RF_T_ALBEDO(),
-                      RF_HFC245FA(), RF_HFC32(),  RF_HFC4310(),  RF_N2O(), RF_O3(),  RF_OC(),  RF_SF6(), RF_SO2D(),  RF_SO2I(), RF_VOL())
+                      RF_CH3CL(),  RF_CH4(),  RF_CO2(),  RF_H2O_STRAT(), RF_HALON1211(),  RF_CFC12(),  RF_HALON1301(), RF_HALON2402(),  RF_HCFC141B(),
+                      RF_HCFC142B(),  RF_HCFC22(),  RF_HFC125(),  RF_HFC134A(),  RF_HFC143A(),  RF_HFC227EA(), RF_HFC23(), RF_T_ALBEDO(),
+                      RF_HFC245FA(), RF_HFC32(),  RF_HFC4310(),  RF_N2O(), RF_O3_TROP(),  RF_OC(),  RF_SF6(), RF_SO2D(),  RF_SO2I(), RF_VOL())
+
     individual_rf <- fetchvars(hc, 1750:2100, rf_componets)
 
     # The RF value should be equal to 0 in the base year (1750) for all of the RF agents.
@@ -227,4 +228,21 @@ test_that('Test RF output.', {
     expect_equal(rf_aggregate$value, total_rf$value)
 
     shutdown(hc)
+})
+
+test_that("Test atmosphere -> land and ocean C flux", {
+    hc <- newcore(file.path(inputdir, 'hector_rcp45.ini'),
+                  suppresslogging = TRUE)
+    run(hc, 2100)
+
+    yrs <- 1750:2100
+    out_land <- fetchvars(hc, dates = yrs, LAND_CFLUX(), "Pg C year-1")
+    out_nbp <- fetchvars(hc, dates = yrs, NBP(), "Pg C year-1")
+    expect_identical(out_land, out_nbp)
+    out_ocean <- fetchvars(hc, dates = yrs, OCEAN_CFLUX(), "Pg C year-1")
+
+    # After 1960, land is consistently a C sink
+    expect_true(all(out_land[out_land$year >= 1960, "value"] > 0))
+    # Ocean is a sink starting in pre-industrial
+    expect_true(all(out_ocean[out_ocean$year >= 1850, "value"] > 0))
 })

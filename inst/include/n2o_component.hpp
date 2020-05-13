@@ -64,6 +64,7 @@ private:
     tseries<unitval> N2O_emissions; //! annual anthropogenic emissions time series, TgN/yr
     tseries<unitval> N2O_natural_emissions; //! annual natural emissions time series, TgN/yr
     tseries<unitval> N2O; //! annual N2O concentrations, ppbv N2O
+    tseries<unitval> N2O_constrain; //! N2O concentration constraint time series, ppbv N2O
     tseries<unitval> TAU_N2O;   //! N2O decay time constant (varies as a function of concentration)
     unitval TN2O0;  //! inital N2O lifetime, years
 

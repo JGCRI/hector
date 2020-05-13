@@ -141,7 +141,7 @@ void Core::init() {
     modelComponents[ temp->getComponentName() ] = temp;
     temp = new HalocarbonComponent( SF6_COMPONENT_BASE );
     modelComponents[ temp->getComponentName() ] = temp;
-    temp = new HalocarbonComponent( HCF22_COMPONENT_BASE );
+    temp = new HalocarbonComponent( HCFC22_COMPONENT_BASE );
     modelComponents[ temp->getComponentName() ] = temp;
     temp = new HalocarbonComponent( CFC11_COMPONENT_BASE );
     modelComponents[ temp->getComponentName() ] = temp;
@@ -157,9 +157,9 @@ void Core::init() {
     modelComponents[ temp->getComponentName() ] = temp;
     temp = new HalocarbonComponent( CH3CCl3_COMPONENT_BASE );
     modelComponents[ temp->getComponentName() ] = temp;
-    temp = new HalocarbonComponent( HCF141b_COMPONENT_BASE );
+    temp = new HalocarbonComponent( HCFC141b_COMPONENT_BASE );
     modelComponents[ temp->getComponentName() ] = temp;
-    temp = new HalocarbonComponent( HCF142b_COMPONENT_BASE );
+    temp = new HalocarbonComponent( HCFC142b_COMPONENT_BASE );
     modelComponents[ temp->getComponentName() ] = temp;
     temp = new HalocarbonComponent( halon1211_COMPONENT_BASE );
     modelComponents[ temp->getComponentName() ] = temp;

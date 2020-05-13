@@ -145,8 +145,8 @@ private:
     bool in_spinup;                     //!< flag tracking spinup state
     double tcurrent;                    //!< Current time (last completed time step)
     double masstot;                     //!< tracker for mass conservation
-
-
+    tseries<unitval> atmosland_flux_ts;    //!< Atmosphere -> land C flux (time series)
+    
     /*****************************************************************
      * Input data
      * This information isn't part of the state; it's either read from

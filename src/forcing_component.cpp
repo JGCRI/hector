@@ -62,9 +62,9 @@ const char *ForcingComponent::adjusted_halo_forcings[N_HALO_FORCINGS] = {
     D_RFADJ_CFC115,
     D_RFADJ_CCl4,
     D_RFADJ_CH3CCl3,
-    D_RFADJ_HCF22,
-    D_RFADJ_HCF141b,
-    D_RFADJ_HCF142b,
+    D_RFADJ_HCFC22,
+    D_RFADJ_HCFC141b,
+    D_RFADJ_HCFC142b,
     D_RFADJ_halon1211,
     D_RFADJ_halon1301,
     D_RFADJ_halon2402,
@@ -91,9 +91,9 @@ const char *ForcingComponent::halo_forcing_names[N_HALO_FORCINGS] = {
     D_RF_CFC115,
     D_RF_CCl4,
     D_RF_CH3CCl3,
-    D_RF_HCF22,
-    D_RF_HCF141b,
-    D_RF_HCF142b,
+    D_RF_HCFC22,
+    D_RF_HCFC141b,
+    D_RF_HCFC142b,
     D_RF_halon1211,
     D_RF_halon1301,
     D_RF_halon2402,
@@ -145,8 +145,8 @@ void ForcingComponent::init( Core* coreptr ) {
     core->registerCapability( D_RF_CO2, getComponentName());
     core->registerCapability( D_RF_CH4, getComponentName());
     core->registerCapability( D_RF_N2O, getComponentName());
-    core->registerCapability( D_RF_H2O, getComponentName());
-    core->registerCapability( D_RF_O3, getComponentName());
+    core->registerCapability( D_RF_H2O_STRAT, getComponentName());
+    core->registerCapability( D_RF_O3_TROP, getComponentName());
     core->registerCapability( D_RF_BC, getComponentName());
     core->registerCapability( D_RF_OC, getComponentName());
     core->registerCapability( D_RF_SO2d, getComponentName());
@@ -186,9 +186,9 @@ void ForcingComponent::init( Core* coreptr ) {
     core->registerDependency( D_RF_CFC115, getComponentName() );
     core->registerDependency( D_RF_CCl4, getComponentName() );
     core->registerDependency( D_RF_CH3CCl3, getComponentName() );
-    core->registerDependency( D_RF_HCF22, getComponentName() );
-    core->registerDependency( D_RF_HCF141b, getComponentName() );
-    core->registerDependency( D_RF_HCF142b, getComponentName() );
+    core->registerDependency( D_RF_HCFC22, getComponentName() );
+    core->registerDependency( D_RF_HCFC141b, getComponentName() );
+    core->registerDependency( D_RF_HCFC142b, getComponentName() );
     core->registerDependency( D_RF_halon1211, getComponentName() );
     core->registerDependency( D_RF_halon1301, getComponentName() );
     core->registerDependency( D_RF_halon2402, getComponentName() );
@@ -313,7 +313,7 @@ void ForcingComponent::run( const double runToDate ) throw ( h_exception ) {
             // ---------- Stratospheric H2O from CH4 oxidation ----------
             // From Tanaka et al, 2007, but using Joos et al., 2001 value of 0.05
             const double fh2o = 0.05 * ( 0.036 * ( sqrt( Ma ) - sqrt( M0 ) ) );
-            forcings[D_RF_H2O].set( fh2o, U_W_M2 );
+            forcings[D_RF_H2O_STRAT].set( fh2o, U_W_M2 );
         }
 
         // ---------- Troposheric Ozone ----------
@@ -321,7 +321,7 @@ void ForcingComponent::run( const double runToDate ) throw ( h_exception ) {
             //from Tanaka et al, 2007
             const double ozone = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_O3, message_data( runToDate ) ).value( U_DU_O3 );
             const double fo3 = 0.042 * ozone;
-            forcings[D_RF_O3].set( fo3, U_W_M2 );
+            forcings[D_RF_O3_TROP].set( fo3, U_W_M2 );
         }
 
         // ---------- Halocarbons ----------
@@ -346,9 +346,9 @@ void ForcingComponent::run( const double runToDate ) throw ( h_exception ) {
                 D_RF_CFC115,
                 D_RF_CCl4,
                 D_RF_CH3CCl3,
-                D_RF_HCF22,
-                D_RF_HCF141b,
-                D_RF_HCF142b,
+                D_RF_HCFC22,
+                D_RF_HCFC141b,
+                D_RF_HCFC142b,
                 D_RF_halon1211,
                 D_RF_halon1301,
                 D_RF_halon2402,

@@ -19,6 +19,19 @@
 #include "logger.hpp"
 #include "h_exception.hpp"
 
+// What to use for missing values? If Rcpp is available, use R's more precise
+// NA, which is a true missing value. Otherwise, fall back on std::NAN
+// ("not-a-number"), which is conceptually different (the result of an illegal
+// math operation, like the square root of a negative number) but tends to have
+// the same practical effect on calculations (in fact, R's NA is a special case
+// of NaN).
+#ifdef USE_RCPP
+#include <Rcpp.h>
+#define MISSING_FLOAT NA_REAL
+#else
+#define MISSING_FLOAT NAN
+#endif
+
 namespace Hector {
 
 /*! \brief A simple value-and-units capability.
