@@ -161,7 +161,7 @@ private:
     tseries<unitval> Ftalbedo;   //!< terrestrial albedo forcing, W/m2
 
     // Constraints
-    tseries<unitval> Ca_constrain;      //!< input [CO2] record to constrain model to
+    tseries<unitval> CO2_constrain;      //!< input [CO2] record to constrain model to
 
     /*****************************************************************
      * Model parameters
