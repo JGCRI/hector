@@ -111,7 +111,7 @@ split_biome <- function(core,
 
 }
 
-#' Retrieve the initial conditions and parameters for a given biome 
+#' Retrieve the initial conditions and parameters for a given biome
 #'
 #' Internal helper function for biome functions.
 #'

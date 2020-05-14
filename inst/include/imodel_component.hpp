@@ -22,7 +22,7 @@
 #include "h_exception.hpp"
 
 namespace Hector {
-  
+
 class Core;
 class DependencyFinder;
 
@@ -34,21 +34,21 @@ class DependencyFinder;
 class IModelComponent : public IVisitable {
 public:
     inline virtual ~IModelComponent();
-    
+
     //------------------------------------------------------------------------------
     /*! \brief A name which suitably describes this component.
      *
      * \return A string name for the model component.
      */
     virtual std::string getComponentName() const = 0;
-    
+
     //------------------------------------------------------------------------------
     /*! \brief Perform and initializations necessary before setting data.
      *
      *  This would most frequently be used to initialize data structures.
      */
     virtual void init( Core* core ) = 0;
-    
+
     //------------------------------------------------------------------------------
     /*! \brief Handles a message to the component.
      *
@@ -63,11 +63,11 @@ public:
     virtual unitval sendMessage( const std::string& message,
                                 const std::string& datum,
                                 const message_data info=message_data() ) throw ( h_exception ) = 0;
-    
+
     //------------------------------------------------------------------------------
     /*! \brief Sets the variable specified by varName with the given data.
      *
-     *  The model component will be responsible for parsing data.  Chiefly the 
+     *  The model component will be responsible for parsing data.  Chiefly the
      *  value_str field should be converted to the appropriate data type.  The date
      *  field may be set if varName is part of a time series otherwise the model
      *  component will expect the date field to be equal to Core::undefinedIndex().
@@ -84,7 +84,7 @@ public:
      */
     virtual void setData( const std::string& varName,
                           const message_data& data ) throw ( h_exception ) = 0;
-    
+
     //------------------------------------------------------------------------------
     /*! \brief A notification that all data are set and the component should prepare to run.
      *
@@ -97,7 +97,7 @@ public:
      *  \exception h_exception If there was any inconsistencies with input data.
      */
     virtual void prepareToRun() throw ( h_exception ) = 0;
-    
+
     //------------------------------------------------------------------------------
     /*! \brief Run the component up to the given date.
      *
@@ -111,7 +111,7 @@ public:
      *  \exception h_exception If an error occurred for any reason while running.
      */
     virtual void run( const double runToDate ) throw ( h_exception ) = 0;
-    
+
     //------------------------------------------------------------------------------
     /*! \brief Run the component in spinup mode.
      *
@@ -154,14 +154,14 @@ public:
      *  \exception h_exception If unable to perform the reset.
      */
     virtual void reset(double time) throw(h_exception) = 0;
-        
+
     //------------------------------------------------------------------------------
     /*! \brief We will no longer attempt to run the model; perform any cleanup.
      *
      *  Note that reporting will be handled by a visitor.
      */
     virtual void shutDown() = 0;
-    
+
 private:
     //------------------------------------------------------------------------------
     /*! \brief Gets the variable specified with by varName with the given value.

@@ -33,7 +33,7 @@ namespace fs = boost::filesystem;
 #include "csv_table_reader.hpp"
 
 namespace Hector {
-  
+
 using namespace std;
 
 //------------------------------------------------------------------------------
@@ -64,7 +64,7 @@ INIToCoreReader::~INIToCoreReader() {
 void INIToCoreReader::parse( const string& filename ) throw ( h_exception ) {
     iniFilePath = filename;
     int errorCode = ini_parse( filename.c_str(), valueHandler, this );
-    
+
     // handle c errors by turning them into exceptions which can be handled later
     if( errorCode == -1 ) {
         H_THROW( "Could not open " + filename );
@@ -99,7 +99,7 @@ int INIToCoreReader::valueHandler( void* user, const char* section, const char* 
 
     static const string csvFilePrefix = "csv:";
     INIToCoreReader* reader = (INIToCoreReader*)user;
-    
+
     H_ASSERT( reader->core, "core pointer is null!" );
     string nameStr = name;
     string valueStr = value;
@@ -108,11 +108,11 @@ int INIToCoreReader::valueHandler( void* user, const char* section, const char* 
         if( startBracket != nameStr.end() ) {
             // the variableName[2000] = 5.0 case
             StringIter endBracket = find( nameStr.begin(), nameStr.end(), ']' );
-            
+
             // the parseTSeriesIndex method will do error checking on if the brackets
             // were found and make sense
             double valueIndex = parseTSeriesIndex( startBracket, endBracket, nameStr.end() );
-            
+
             // substring the first part of name before the open bracket which is the
             // actual variable name the core knows about
             nameStr = string( static_cast<StringIter>( nameStr.begin() ), startBracket );
@@ -121,7 +121,7 @@ int INIToCoreReader::valueHandler( void* user, const char* section, const char* 
             reader->core->setData( section, nameStr, data );
         } else if( boost::starts_with( valueStr, csvFilePrefix ) ) {
             // the variableName = csv:input/table.csv case
-            
+
             // remove the special case identifier to figure out the actual file name
             // to process
             string csvFileName( valueStr.begin() + csvFilePrefix.size(), valueStr.end() );
@@ -150,7 +150,7 @@ int INIToCoreReader::valueHandler( void* user, const char* section, const char* 
             // ANS:: Algorithm for standalone Hector. Same logic -- if
             // the given path (absolute or relative) points to a file
             // that exists, use that. Otherwise, assume that the path
-            // is relative to the INI file's directory. 
+            // is relative to the INI file's directory.
             fs::path csvFilePath( csvFileName );
             if ( !fs::exists(csvFilePath) ) {
               fs::path iniFilePath( reader->iniFilePath );
@@ -178,7 +178,7 @@ int INIToCoreReader::valueHandler( void* user, const char* section, const char* 
         reader->valueHandlerException = e;
         return 0;               // Error code for ini_parse
     }
-    
+
     return 1;
 }
 
@@ -204,9 +204,9 @@ double INIToCoreReader::parseTSeriesIndex( const StringIter startBracket,
     H_ASSERT( startBracket != strEnd, "index formatting issue" );
     H_ASSERT( endBracket != strEnd, "index formatting issue" );
     H_ASSERT( startBracket < endBracket, "index formatting issue" );
-    
+
     using namespace boost;
-    
+
     // substring out the string in between the brackets
     string dateIndexStr( startBracket + 1, endBracket );
     try {

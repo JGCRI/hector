@@ -36,7 +36,7 @@
 #include "h_exception.hpp"
 
 namespace Hector {
-  
+
 /*! \brief Time vector data type.
  *
  *  Currently implemented as an STL map.
@@ -60,12 +60,12 @@ public:
         return get(t);
     }
     T_data &operator[](double t);
-    
+
     double firstdate() const;
     double lastdate() const;
-    
+
     int size() const;
-    
+
     void truncate(double t, bool after=true);
 private:
     static double round(double t) {
@@ -128,10 +128,10 @@ T_data &tvector<T_data>::get( double t ) throw( h_exception ) {
         return itr->second;
     else {
         std::ostringstream errmsg;
-        errmsg << "No data at requested time= " << round(t) << "\n"; 
+        errmsg << "No data at requested time= " << round(t) << "\n";
         H_THROW(errmsg.str());
     }
-}   
+}
 
 template <class T_data>
 T_data &tvector<T_data>::operator[](double t) {
@@ -184,7 +184,7 @@ int tvector<T_data>::size() const {
  *  \details The default is to wipe all of the data in the time vector
  *           after the input date.  By setting the optional after
  *           argument to false, you can wipe data before the input
- *           date instead. 
+ *           date instead.
  */
 template <class T>
 void tvector<T>::truncate(double t, bool after)
@@ -198,8 +198,8 @@ void tvector<T>::truncate(double t, bool after)
     else {
         it1 = mapdata.begin();
         it2 = mapdata.lower_bound(t);
-    } 
-    mapdata.erase(it1,it2); 
+    }
+    mapdata.erase(it1,it2);
 }
 
 }

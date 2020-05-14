@@ -33,14 +33,14 @@
 #endif
 
 namespace Hector {
-  
+
 /*! \brief A simple value-and-units capability.
  *
  *  What was wrong with using the Boost Units (BU) package?
  *
  *  BU is really cool, in an academic c.s. kind of way. But its
  *  capabilities come at a large cost: one more library to download,
- *  increased complexity, impenetrable error messages, stringent compiler 
+ *  increased complexity, impenetrable error messages, stringent compiler
  *  requirements, verbose code, and high overhead. (Yes, I know, zero
  *  run-time overhead. But the development overhead is high.)
  *
@@ -51,8 +51,8 @@ namespace Hector {
  *
  *  A political metaphor: BU is a 'nanny state' approach (complex, cumbersome,
  *  and discouraging new development) while this file is a 'free market'
- *  approach (it provides some basic capabilities, but our fundamental 
- *  assumption is that model components will be responsible and check 
+ *  approach (it provides some basic capabilities, but our fundamental
+ *  assumption is that model components will be responsible and check
  *  themselves and their inputs). Anyway to summarize:
  *
  *                          Boost Units     This file
@@ -67,7 +67,7 @@ namespace Hector {
 
 enum unit_types {
                     U_UNITLESS,         // No units
-    
+
                     U_PPMV_CO2,         // Atmospheric
                     U_PPBV,
                     U_PPTV,
@@ -84,30 +84,30 @@ enum unit_types {
                     U_GG_S,             // SO2 emissions in Gg-S/yr
 
                     U_TG_PPBV,          // Conversion for CH4 and N2O emission to concentrations
-    
+
                     U_DEGC,             // Temperature
                     U_K,				// Temperature
                     U_1_K,               // Inverse Temperature
-    
+
                     U_CM2_S,             // Diffusivity
-   
+
                     U_CM,               // Length-related
-                    U_CM_YR,            
-    
+                    U_CM_YR,
+
                     U_G,
                     U_TG,               // Mass-related
                     U_GG,				// Giga-grams
                     U_MOL,
                     U_GMOL,
-                    U_GT,	
-    
+                    U_GT,
+
                     U_PGC,              // Carbon pools and fluxes
                     U_PGC_YR,
-    
+
                     U_W_M2,               // Forcing
                     U_W_M2_PPTV,          // Forcing efficiency
                     U_W_M2_K,             // ocean heat uptake efficiency
-                    
+
                     U_M3_S,                // sverdrop (volume transport)
                     U_PH,                  // pH
                     U_UATM,
@@ -119,7 +119,7 @@ enum unit_types {
                     U_J_KG_C,              // specific heat capacity
 
                     U_DOBSON,               // Dobson units (ozone)
-                    
+
                     U_YRS,                  // Years
 
                     U_UNDEFINED             // Undefined units,
@@ -128,20 +128,20 @@ enum unit_types {
                 };
 
 class unitval {
-    
+
     double      val;
     double      valErr;
     unit_types  valUnits;
-    
+
 public:
     static std::string unitsName( const unit_types );
     static unit_types parseUnitsName( const std::string& ) throw( h_exception );
-        
+
     unitval();
     unitval( double, unit_types );
-    
+
     void set( double, unit_types, double );
-    
+
     double value( unit_types ) const throw( h_exception );
     unit_types units() const { return valUnits; };
     std::string unitsName() const { return unitsName( valUnits ); };
@@ -150,13 +150,13 @@ public:
     static unitval parse_unitval( const std::string&, const unit_types& ) throw( h_exception );
     static unitval parse_unitval( const std::string&, const std::string&, const unit_types& ) throw( h_exception );
 
-    /*! Allow us to assign a unitval to a double. 
+    /*! Allow us to assign a unitval to a double.
      *  \note    Do not use this in Hector.  It is intended for other
      *           codes that use libhector and don't want to carry
      *           around units.
      */
     operator double() const {return val;}
-    
+
     friend unitval operator+ ( const unitval&, const unitval& );
     friend unitval operator- ( const unitval&, const unitval& );
     friend unitval operator- ( const unitval& );
@@ -207,7 +207,7 @@ void unitval::set( double v, unit_types u, double err=0.0 ) {
     unit_types old_units(valUnits);
     val = v;
     valErr = err;
-    valUnits = u; 
+    valUnits = u;
     if( old_units != U_UNDEFINED && u != old_units ) {
         std::ostringstream errmsg;
         errmsg << "Variable units have been redefined.  Old unit = "

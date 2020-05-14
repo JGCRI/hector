@@ -30,7 +30,7 @@
                                         //!< absolute diff between successive annual fluxes (Pg C)
 
 namespace Hector {
-  
+
 //------------------------------------------------------------------------------
 /*! \brief Ocean model component.
  *
@@ -38,33 +38,33 @@ namespace Hector {
  *  between layers and latitudinal regions, etc.
  */
 class OceanComponent : public CarbonCycleModel {
-    
+
 public:
     OceanComponent();
     ~OceanComponent();
-    
+
     //! IModelComponent methods
     virtual std::string getComponentName() const;
-    
+
     virtual void init( Core* core );
-    
+
     virtual unitval sendMessage( const std::string& message,
                                 const std::string& datum,
                                 const message_data info=message_data() ) throw ( h_exception );
-    
+
     virtual void setData( const std::string& varName,
                           const message_data& data ) throw ( h_exception );
-    
+
     virtual void prepareToRun() throw ( h_exception );
-    
+
     virtual void run( const double runToDate ) throw ( h_exception );
-    
+
     virtual bool run_spinup( const int step ) throw ( h_exception );
-    
+
     virtual void reset(double time) throw(h_exception);
 
     virtual void shutDown();
-    
+
     //! IVisitable methods
     virtual void accept( AVisitor* visitor );
 
@@ -112,14 +112,14 @@ private:
     unitval tu;          //!< m3/s high latitude overturning
     unitval twi;         //!< m3/s warm-intermediate exchange
     unitval tid;         //!< m3/s intermediate-deep exchange
-    
-    
+
+
     /*****************************************************************
      * Input data
      *****************************************************************/
     bool spinup_chem;       //!< run chemistry during spinup?
     tseries<unitval> oceanflux_constrain;      //!< atmosphere->ocean C flux data to constrain to
-    
+
 
     /*****************************************************************
      * Private helper functions
@@ -161,7 +161,7 @@ private:
     // timestep control
     tseries<double> max_timestep_ts;
     tseries<int> reduced_timestep_timeout_ts;
-    
+
     //! logger
     Logger logger;
 };

@@ -52,7 +52,7 @@ RCPPS   = $(wildcard rcpp_*.cpp) RcppExports.cpp
 CXXSRCS := $(filter-out $(MAINS), $(CXXSRCS))
 CXXSRCS := $(filter-out $(RCPPS), $(CXXSRCS))
 CSRCS   = $(wildcard *.c)
-OBJS	= $(CXXSRCS:.cpp=.o) $(CSRCS:.c=.o) 
+OBJS	= $(CXXSRCS:.cpp=.o) $(CSRCS:.c=.o)
 DEPS	= $(CXXSRCS:.cpp=.d) $(CSRCS:.c=.d)
 
 ## default target
@@ -60,7 +60,7 @@ hector: libhector.a main.o
 	$(CXX) $(LDFLAGS) -o hector main.o -lhector -lm -lboost_system -lboost_filesystem
 
 ## alternate version that uses the capabilities needed for driving
-## hector from an external source (e.g., an IAM) 
+## hector from an external source (e.g., an IAM)
 ## DO NOT BUILD THIS TARGET UNLESS YOU ARE TESTING HECTOR'S API
 ## FUNCTIONALITY.  It uses some hard-coded emissions for testing and likely
 ## will not do what you want it to under all circumstances.
@@ -88,7 +88,7 @@ gtest:
 	if [ ! -f $(GTROOT)/config.status ] ; then cd $(GTROOT) && ./configure; fi
 	$(MAKE) -C $(GTROOT)
 
-clean: 
+clean:
 	-$(MAKE) -C testing clean
 	-rm hector *.o *.d
 	-rm -rf build

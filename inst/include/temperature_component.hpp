@@ -22,12 +22,12 @@
 
 
 namespace Hector {
-  
+
 //------------------------------------------------------------------------------
 /*! \brief Temperature component.
  *
- *  A component that computes mean global temperature from radiative forcing 
- *  using Diffusion Ocean Energy balance CLIMate model 
+ *  A component that computes mean global temperature from radiative forcing
+ *  using Diffusion Ocean Energy balance CLIMate model
  *  (DOECLIM; Kriegler, 2005; Tanaka and Kriegler, 2007).
  *  Adopted with permission from C++ implementation
  *  (https://github.com/scrim-network/cdice_doeclim; Garner et al., 2016).
@@ -37,34 +37,34 @@ namespace Hector {
  *  Garner, G., Reed, P. & Keller, K. (2016) Climate risk management requires explicit representation of societal trade-offs. Clim. Change 134, 713–723.
  */
 class TemperatureComponent : public IModelComponent {
-    
+
 public:
     TemperatureComponent();
     ~TemperatureComponent();
-    
+
     //! IModelComponent methods
     virtual std::string getComponentName() const;
-    
+
     virtual void init( Core* core );
-    
+
     virtual unitval sendMessage( const std::string& message,
                                 const std::string& datum,
                                 const message_data info=message_data() ) throw ( h_exception );
-    
+
     virtual void setData( const std::string& varName,
                           const message_data& data ) throw ( h_exception );
-    
+
     virtual void prepareToRun() throw ( h_exception );
-    
+
     virtual void run( const double runToDate ) throw ( h_exception );
-    
+
     virtual void reset(double date) throw(h_exception);
 
     virtual void shutDown();
-    
+
     //! IVisitable methods
     virtual void accept( AVisitor* visitor );
-    
+
 private:
     virtual unitval getData( const std::string& varName,
                             const double date ) throw ( h_exception );
@@ -88,7 +88,7 @@ private:
     const double cas = 7.80;              // heat capacity of mixed layer-troposphere system, W*yr/m2/K
     const double flnd = 0.29;             // fractional land area
     const double fso = 0.95;              // ocean fractional area below 60m
-    
+
     // DOECLIM parameters calculated from constants above
     double ocean_area;       // m2
     double cnum;             // factor from sea-surface climate sensitivity to global mean
@@ -112,14 +112,14 @@ private:
     std::vector<double> KTB2;
     std::vector<double> KTA3;
     std::vector<double> KTB3;
-    
+
     // Components of the difference equation system B*T(i+1) = Q(i) + A*T(i)
     double B[4];
     double C[4];
     std::vector<double> Ker;
     double A[4];
     double IB[4];
-    
+
     // Time series arrays that are updated with each DOECLIM time-step
     std::vector<double> temp;
     std::vector<double> temp_landair;
@@ -145,12 +145,12 @@ private:
     unitval flux_mixed;    //!< heat flux into mixed layer of ocean, W/m2
     unitval flux_interior; //!< heat flux into interior layer of ocean, W/m2
     unitval heatflux;      //!< heat flux into ocean, W/m2
-	    
+
     tseries<unitval> tgav_constrain;        //! Temperature change can be supplied (not currently)
-    
+
     //! pointers to other components and stuff
     Core*             core;
-    
+
     //! logger
     Logger logger;
 };

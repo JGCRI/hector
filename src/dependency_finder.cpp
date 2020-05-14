@@ -21,7 +21,7 @@
 #include "logger.hpp"
 
 namespace Hector {
-  
+
 using namespace std;
 
 /*!
@@ -47,18 +47,18 @@ bool DependencyFinder::addDependency( const string& aObjectName,
         // Update the object location iterator after the item is added.
         objectLocation = addTrackedItem( aObjectName );
     }
-    
+
     // Check if the dependency is already in the mapping.
     ObjectIndexMap::iterator dependencyLocation = mObjectIndices.find( aDependency );
     if( dependencyLocation == mObjectIndices.end() ){
         // Update the dependency location iterator after the item is added.
         dependencyLocation = addTrackedItem( aDependency );
     }
-    
+
     // The matrix is now set up correctly, add the dependency.
     H_ASSERT( mDependencyMatrix.size() > objectLocation->second, "addDependency failure" );
     H_ASSERT( mDependencyMatrix[ objectLocation->second ].size() > dependencyLocation->second, "addDependency failure" );
-    
+
     // Check if the dependency already exists.
     if( mDependencyMatrix[ objectLocation->second ][ dependencyLocation->second ] ){
         return false;
@@ -85,16 +85,16 @@ bool DependencyFinder::addDependency( const string& aObjectName,
 void DependencyFinder::createOrdering() throw ( h_exception ) {
     // If there is an existing stored ordering, clear it.
     mOrdering.clear();
-    
+
     // Create a vector which marks the objects that are cleared (not a dependent of
     // any non-cleared objects).
     vector<bool> cleared( mDependencyMatrix.size() );
-    
+
     // Search until the ordering contains all objects in the matrix. Or in other words
     // until all objects are cleared.
     while( mOrdering.size() < mDependencyMatrix.size() ){
         size_t objIndexToClear = numeric_limits<size_t>::max();
-        
+
         // Search for an object that is not yet cleared and is not a dependent of
         // any non-cleared object.
         for( size_t objIndex = 0; objIndex < mDependencyMatrix.size() &&
@@ -121,7 +121,7 @@ void DependencyFinder::createOrdering() throw ( h_exception ) {
                 }
             }
         }
-        
+
         // Make sure we found an object to clear.
         if( objIndexToClear == numeric_limits<size_t>::max() ){
             // Since there was no object with no dependencies, this graph has
@@ -134,7 +134,7 @@ void DependencyFinder::createOrdering() throw ( h_exception ) {
             cleared[ objIndexToClear ] = true;
         }
     }
-    
+
     // Sorting finished, the internal ordering can now be fetched by
     // getOrdering.
     ordcomputed = true;
@@ -176,23 +176,23 @@ void DependencyFinder::removeDependency( const size_t aObject, const size_t aDep
 DependencyFinder::ObjectIndexMap::iterator DependencyFinder::addTrackedItem( const string& aItem ){
     // Add the item to the mapping of item name to index within the matrix.
     const size_t newLocation = mDependencyMatrix.size();
-    
+
     // Make pair creates a name value pair to insert into the matrix.
     pair<ObjectIndexMap::iterator, bool> newPositionPair = mObjectIndices.insert( make_pair( aItem, newLocation ) );
-    
+
     // Check the precondition that the item does not already exist.
     H_ASSERT( newPositionPair.second, "addTrackedItem failure" );
-    
+
     // Now add the item to the dependency matrix. Loop through the matrix and
     // add a new position on the end of each row.
     for( unsigned int row = 0; row < mDependencyMatrix.size(); ++row ){
         mDependencyMatrix[ row ].push_back( false );
     }
-    
+
     // Add a new row to the matrix for the item. Default to not having any
     // dependencies.
     mDependencyMatrix.push_back( vector<bool>( newLocation + 1, false ) );
-    
+
     // Return an iterator to the position within the index map.
     return newPositionPair.first;
 }

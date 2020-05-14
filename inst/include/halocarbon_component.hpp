@@ -20,7 +20,7 @@
 #include "imodel_component.hpp"
 
 namespace Hector {
-  
+
 //------------------------------------------------------------------------------
 /*! \brief Model component for a halocarbon.
  *
@@ -30,56 +30,56 @@ namespace Hector {
  */
 class HalocarbonComponent : public IModelComponent {
     friend class CSVOutputStreamVisitor;
-    
+
 public:
     HalocarbonComponent( std::string g );
     virtual ~HalocarbonComponent();
-    
-    
+
+
     // IModelComponent methods
     virtual std::string getComponentName() const;
-    
+
     virtual void init( Core* core );
-    
+
     virtual unitval sendMessage( const std::string& message,
                                 const std::string& datum,
                                 const message_data info=message_data() ) throw ( h_exception );
-    
+
     virtual void setData( const std::string& varName,
                           const message_data& data ) throw ( h_exception );
-    
+
     virtual void prepareToRun() throw ( h_exception );
-    
+
     virtual void run( const double runToDate ) throw ( h_exception );
-    
+
     virtual void reset(double time) throw(h_exception);
 
     virtual void shutDown();
-    
+
     // IVisitable methods
     virtual void accept( AVisitor* visitor );
-    
+
 private:
     virtual unitval getData( const std::string& varName,
                             const double valueIndex ) throw ( h_exception );
-    
+
     //! Who are we?
     std::string myGasName;
-    
+
     //! Rate coefficient of loss [relates to year?]
     double tau;
-    
+
     //! Radiative forcing efficiency [W/m^2/pptv]
     unitval rho;
-    
+
     //! Forcing [W/m^2]
     tseries<unitval> hc_forcing;
-    
+
     tseries<unitval> emissions;     //! Time series of emissions, pptv
     tseries<unitval> Ha_ts;         //! Time series of (ambient) concentration, pptv
     tseries<unitval> Ha_constrain; //! Concentration constraint, pptv
     unitval H0;                     //! Preindustrial concentration, pptv
-    
+
     double molarMass;
 
     //! logger

@@ -33,55 +33,55 @@ namespace Hector {
 
 /*! \brief The simple global carbon model, not including the ocean
  *
- *  SimpleNbox tracks atmosphere (1 pool), land (3 pools), ocean (1 pool from its p.o.v.), 
+ *  SimpleNbox tracks atmosphere (1 pool), land (3 pools), ocean (1 pool from its p.o.v.),
  *  and earth (1 pool). The ocean component handles ocean processes; SimpleNbox just
  *  tracks the total ocean C.
  */
 class SimpleNbox : public CarbonCycleModel {
     friend class CSVOutputVisitor;
     friend class CSVOutputStreamVisitor;
-    
+
 public:
     SimpleNbox();
     ~SimpleNbox() {}
-    
+
     // overrides for IModelComponent methods
     std::string getComponentName() const { return std::string( SIMPLENBOX_COMPONENT_NAME ); }
     std::vector<std::string> getBiomeList() const { return(biome_list); }
-    
+
     virtual void init( Core* core );
-    
+
     virtual unitval sendMessage( const std::string& message,
                                 const std::string& datum,
                                 const message_data info=message_data() ) throw ( h_exception );
-    
+
     virtual void setData( const std::string& varName,
                           const message_data& data ) throw ( h_exception );
-    
+
     virtual void prepareToRun() throw ( h_exception );
-    
+
     virtual void run( const double runToDate ) throw ( h_exception );
-    
+
     virtual bool run_spinup( const int step ) throw ( h_exception );
-    
-    virtual void reset(double date) throw(h_exception); 
+
+    virtual void reset(double date) throw(h_exception);
 
     virtual void shutDown();
-    
+
     // IVisitable methods
     virtual void accept( AVisitor* visitor );
-    
+
     // Carbon cycle model interface
     void getCValues( double t, double c[]);
     int  calcderivs( double t, const double c[], double dcdt[] ) const;
     void slowparameval( double t, const double c[] );
     void stashCValues( double t, const double c[] );
-    void record_state(double t);                        //!< record the state variables at the end of the time step 
+    void record_state(double t);                        //!< record the state variables at the end of the time step
 
     void createBiome(const std::string& biome);
     void deleteBiome(const std::string& biome);
     void renameBiome(const std::string& oldname, const std::string& newname);
-    
+
 private:
     virtual unitval getData( const std::string& varName,
                             const double date ) throw ( h_exception );
@@ -99,17 +99,17 @@ private:
 
     // List of biomes
     std::vector<std::string> biome_list;
-    
+
     // Carbon pools -- global
     unitval earth_c;                //!< earth pool, Pg C; for mass-balance
     unitval atmos_c;                //!< atmosphere pool, Pg C
     unitval    Ca;                  //!< current [CO2], ppmv
-    
+
     // Carbon pools -- biome-specific
     unitval_stringmap veg_c;        //!< vegetation pools, Pg C
     unitval_stringmap detritus_c;   //!< detritus pools, Pg C
     unitval_stringmap soil_c;       //!< soil pool, Pg C
-    
+
     unitval residual;               //!< residual (when constraining Ca) flux, Pg C
 
     double_stringmap tempfertd, tempferts; //!< temperature effect on respiration (unitless)
@@ -139,13 +139,12 @@ private:
      * information; therefore, they need not be stored over time, but
      * they do need to be recalculated whenever we reset.
      *****************************************************************/
-    
+
     double_stringmap co2fert;           //!< CO2 fertilization effect (unitless)
     tseries<double> Tgav_record;        //!< Record of global temperature values, for computing soil RH
     bool in_spinup;                     //!< flag tracking spinup state
     double tcurrent;                    //!< Current time (last completed time step)
     double masstot;                     //!< tracker for mass conservation
-
     tseries<unitval> atmosland_flux_ts;    //!< Atmosphere -> land C flux (time series)
     
     /*****************************************************************
@@ -153,40 +152,40 @@ private:
      * This information isn't part of the state; it's either read from
      * an input file or pushed in by another model.
      *****************************************************************/
-    
+
     // Carbon fluxes
     tseries<unitval> ffiEmissions;  //!< fossil fuels and industry emissions, Pg C/yr
     tseries<unitval> lucEmissions;      //!< land use change emissions, Pg C/yr
-    
+
     // Albedo
     tseries<unitval> Ftalbedo;   //!< terrestrial albedo forcing, W/m2
 
     // Constraints
     tseries<unitval> CO2_constrain;      //!< input [CO2] record to constrain model to
-    
+
     /*****************************************************************
      * Model parameters
      * If you change any of these (in a Monte Carlo run, for example),
      * you will at the very least need to reset to the beginning of the
      * run.  You may need to redo the spinup.
      *****************************************************************/
-    
+
     // Partitioning
     double_stringmap f_nppv, f_nppd;      //!< fraction NPP into vegetation and detritus
     double_stringmap f_litterd;           //!< fraction of litter to detritus
 
     double f_lucv, f_lucd;      //!< fraction LUC from vegetation and detritus
-    
+
     // Initial fluxes
     unitval_stringmap npp_flux0;       //!< preindustrial NPP
 
     // Atmospheric CO2, temperature, and their effects
     unitval    C0;                      //!< preindustrial [CO2], ppmv
-    
+
     double_stringmap beta,           //!< shape of CO2 response
     //                        sigma,          //!< shape of temperature response (not yet implemented)
         warmingfactor;  //!< regional warming relative to global (1.0=same)
-    
+
     double_stringmap q10_rh;            //!< Q10 for heterotrophic respiration (unitless)
 
     /*****************************************************************
@@ -199,7 +198,7 @@ private:
     unitval rh_fsa( std::string biome ) const;  //!< calculates current RH from soil for a biome
     unitval rh( std::string biome ) const;      //!< calculates current RH for a biome
     unitval sum_rh() const;                     //!< calculates current RH, global total
-    
+
     /*****************************************************************
      * Private helper functions
      *****************************************************************/
@@ -210,7 +209,7 @@ private:
     void set_c0(double newc0);                          //!< set initial co2 and adjust total carbon mass
 
     bool has_biome(const std::string& biome);
-    
+
     CarbonCycleModel *omodel;           //!< pointer to the ocean model in use
 
     // Add a biome to a time-series map variable (e.g. veg_c_tv)
@@ -222,7 +221,7 @@ private:
         if ( ts.get(ts.firstdate()).count( biome ) ) {
             H_THROW( "Biome '" + biome + "' already exists in data." );
         }
-    
+
         // Loop over time steps, and set the variable to the provided `init_value`
         std::map<std::string, T_data> newval;
         for ( double i = ts.firstdate(); i < ts.lastdate(); i++ ) {

@@ -42,20 +42,20 @@ class CSVTableReader {
 public:
     CSVTableReader( const std::string& fileName ) throw ( h_exception );
     ~CSVTableReader();
-    
+
     void process( Core* core, const std::string& componentName,
                   const std::string& varName ) throw ( h_exception );
-    
+
 private:
     //! The file name to read data from.  Kept around for error reporting.
     const std::string fileName;
-    
+
     //! Input stream to read data from.
     std::ifstream tableInputStream;
-    
+
     //! Current line (that has just been read)
     int lineNum;
-    
+
     // Helper function to find next non-commented line
     std::string csv_getline();
 

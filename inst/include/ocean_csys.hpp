@@ -19,38 +19,38 @@
 #include "unitval.hpp"
 
 namespace Hector {
-  
+
 class oceancsys
 {
     /*! /brief  Ocean Carbon Chemistry
      *
-     *  Implements ocean carbon chemistry in surface boxes. 
+     *  Implements ocean carbon chemistry in surface boxes.
      *  Based on the book by Zeebe and Wolf-Gladrow (2001) CO2 in seawater: equilibrium, kintetics, isotopes. 346 p Amsterdam: Elsevier
      *  http://www.soest.hawaii.edu/oceanography/faculty/zeebe_files/CO2_System_in_Seawater/csys.html
      *  Inputs: ALK, DIC, Temp
      *  Outputs: pH, Ca/Ar saturations, pCO2 (ocean), surface flux of carbon
      */
-	
+
 public:
 	oceancsys();
 
 	//ocean component will have to provide these values
 	double S;       //<! salinity
 	double As;      //<! area of box m2
-	double Ks;      //<!gas transfer velocity m/yr 
+	double Ks;      //<!gas transfer velocity m/yr
 	double volumeofbox;
 	unitval OmegaCa;
 	unitval OmegaAr;
 	double U;       //<! average wind speed over each surface box
 	double H;
-	    
+
 	//<! output variables
 	unitval TCO2o;  //<! total CO2 (umol/kg)
 	unitval HCO3;   //<! bicarbonate (umol/kg)
 	unitval CO3;    //<! carbonate (umol/kg)
 	unitval PCO2o;  //<! pCO2 of ocean waters
 	unitval pH;     //<! ocean pH
-    
+
 	unitval convertToDIC( const unitval carbon );
 	void ocean_csys_run( unitval tbox, unitval carbon );
     unitval calc_annual_surface_flux( const unitval& Ca, const double cpoolscale=1.0 ) const;
@@ -59,7 +59,7 @@ public:
 
     void set_alk( double a ) { alk=a; };
     double get_alk() const { return alk; };
-    
+
 private:
     double calc_monthly_surface_flux( const unitval& Ca, const double cpoolscale=1.0 ) const;
 
@@ -73,7 +73,7 @@ private:
 	unitval Sc;     //<! Schmidt Number from Wanninkhof 1992 (unitless)
 	unitval Kspa;   //<! equilibrium relationship of aragonite in seawater (mol kg-1)
     unitval Kspc;   //<! equilibrium relationship of calcite in seawater (mol kg-1)
-    
+
     double alk;     //<! alkilinity (umol/kg)
 
     // logger
@@ -81,11 +81,11 @@ private:
 
     // persistent workspace
     int ncoeffs;
-    std::vector<double> m_a; 
+    std::vector<double> m_a;
 
 };
 
 }
 
 #endif
-  
+

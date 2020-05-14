@@ -18,7 +18,7 @@
 #include "avisitor.hpp"
 
 namespace Hector {
-  
+
 using namespace std;
 
 //------------------------------------------------------------------------------
@@ -41,7 +41,7 @@ SulfurComponent::~SulfurComponent() {
 // documentation is inherited
 string SulfurComponent::getComponentName() const {
     const string name = SULFUR_COMPONENT_NAME;
-    
+
     return name;
 }
 
@@ -67,20 +67,20 @@ unitval SulfurComponent::sendMessage( const std::string& message,
                                      const message_data info ) throw ( h_exception )
 {
     unitval returnval;
-    
+
     if( message==M_GETDATA ) {          //! Caller is requesting data
         return getData( datum, info.date );
-        
+
     } else if( message==M_SETDATA ) {   //! Caller is requesting to set data
         //TODO: call setData below
         //TODO: change core so that parsing is routed through sendMessage
         //TODO: make setData private
         setData(datum, info);
-        
+
     } else {                        //! We don't handle any other messages
         H_THROW( "Caller sent unknown message: "+message );
     }
-    
+
     return returnval;
 }
 
@@ -90,7 +90,7 @@ void SulfurComponent::setData( const string& varName,
                                const message_data& data ) throw ( h_exception )
 {
     H_LOG( logger, Logger::DEBUG ) << "Setting " << varName << "[" << data.date << "]=" << data.value_str << std::endl;
-    
+
     try {
         if( varName ==  D_EMISSIONS_SO2 ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
@@ -120,7 +120,7 @@ void SulfurComponent::setData( const string& varName,
 //------------------------------------------------------------------------------
 // documentation is inherited
 void SulfurComponent::prepareToRun() throw ( h_exception ) {
-    
+
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
     oldDate = core->getStartDate();
 }
@@ -136,9 +136,9 @@ void SulfurComponent::run( const double runToDate ) throw ( h_exception ) {
 // documentation is inherited
 unitval SulfurComponent::getData( const std::string& varName,
                                  const double date ) throw ( h_exception ) {
-    
+
     unitval returnval;
-    
+
     if( varName == D_EMISSIONS_SO2 ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for SO2 emissions" );
         returnval = SO2_emissions.get( date );
@@ -159,7 +159,7 @@ unitval SulfurComponent::getData( const std::string& varName,
 	else {
         H_THROW( "Caller is requesting unknown variable: " + varName );
     }
-    
+
     return returnval;
 }
 

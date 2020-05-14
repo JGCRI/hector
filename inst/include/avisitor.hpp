@@ -15,7 +15,7 @@
  */
 
 namespace Hector {
-  
+
 // Forward declare all visitable subclasses.
 class Core;
 class DummyModelComponent;
@@ -42,7 +42,7 @@ class OzoneComponent;
 class AVisitor {
 public:
     inline virtual ~AVisitor();
-    
+
     //------------------------------------------------------------------------------
     /*! \brief Determine if the visitor needs to collect data at the given model
      *         date.
@@ -50,7 +50,7 @@ public:
      *  \return True if the visitor wants to visit at date.
      */
     virtual bool shouldVisit( const bool in_spinup, const double date ) = 0;
-    
+
     //------------------------------------------------------------------------------
     // Add a visit for all visitable subclasses here.
     // TODO: should we create a .cpp for these?
