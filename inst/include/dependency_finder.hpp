@@ -27,7 +27,7 @@
 
 namespace Hector {
 
-/*! 
+/*!
 * \brief This class calculates an ordering of named objects through a scheduling
 *        algorithm based on supplied dependencies.
 * \details This class can order any type of object that has a name represented by
@@ -60,15 +60,15 @@ public:
 private:
     void removeDependency( const size_t aObject, const size_t aDependency );
     const std::string& getNameFromIndex( const size_t aIndex ) const;
-    
+
     // Need the typedef here as addTrackedItem returns a ObjectIndexMap
     // iterator.
-    typedef std::map<const std::string, size_t> ObjectIndexMap;   
+    typedef std::map<const std::string, size_t> ObjectIndexMap;
     ObjectIndexMap::iterator addTrackedItem( const std::string& aItem );
 
     //! indicator for whether or not the ordering has been computed.
     bool ordcomputed;
-    
+
     //! Mapping of sector name to matrix index to avoid storing all names as
     //! strings within the matrix.
     ObjectIndexMap mObjectIndices;
@@ -76,7 +76,7 @@ private:
     //! A square matrix where each cell contains whether the column sector
     //! depends on the row sector.
     std::vector<std::vector<bool> > mDependencyMatrix;
-    
+
     //! The correctly ordered list of sectors.
     std::vector<std::string> mOrdering;
 };

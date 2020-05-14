@@ -21,16 +21,16 @@
 #define DELIMITER ","
 
 namespace Hector {
-  
+
 /*! \brief A visitor which will report all results at each model period.
  */
 class CSVOutputStreamVisitor : public AVisitor {
 public:
     CSVOutputStreamVisitor( std::ostream& outputStream, const bool printHeader = true );
     ~CSVOutputStreamVisitor();
-    
+
     virtual bool shouldVisit( const bool in_spinup, const double date );
-    
+
     virtual void visit( Core* c );
     virtual void visit( ForcingComponent* c );
     virtual void visit( SimpleNbox* c );
@@ -48,22 +48,22 @@ public:
 private:
     //! The file output stream in which the csv output will be written to.
     std::ostream& csvFile;
-    
+
     // Data retained while the visitor is operating
     double current_date;
-    
+
     // Spin up Flag
     bool in_spinup;
-        
+
     //! Current model date, stored as a string for output
     std::string datestring;
-    
+
     //! Current model mode, stored as a string for output
     std::string spinupstring;
-    
+
     //! Name of current run
     std::string run_name;
-    
+
     //! Helper function: prints beginning of each output line
     std::string linestamp() ;
 

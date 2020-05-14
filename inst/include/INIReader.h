@@ -12,7 +12,7 @@
 #include <string>
 
 namespace Hector {
-  
+
 // Read an INI file into easy-to-access name/value pairs. (Note that I've gone
 // for simplicity here rather than speed, but it should be pretty decent.)
 class INIReader
@@ -25,7 +25,7 @@ public:
     // Return the result of ini_parse(), i.e., 0 on success, line number of
     // first error on parse error, or -1 on file open error.
     int ParseError();
-	
+
     // Get a string value from INI file, returning default_value if not found.
     std::string Get(std::string section, std::string name,
                     std::string default_value);

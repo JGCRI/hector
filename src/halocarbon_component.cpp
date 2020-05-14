@@ -64,6 +64,7 @@ void HalocarbonComponent::init( Core* coreptr ) {
     core->registerCapability( myGasName+CONC_CONSTRAINT_EXTENSION, getComponentName() );
     // inform core that we can accept emissions for this gas
     core->registerInput(myGasName+EMISSIONS_EXTENSION, getComponentName());
+
     // inform core that we can accept concentration constraints for this gas
     core->registerInput(myGasName+CONC_CONSTRAINT_EXTENSION, getComponentName()); 
 }

@@ -17,7 +17,7 @@
 #include "csv_output_visitor.hpp"
 
 namespace Hector {
-  
+
 using namespace std;
 
 //------------------------------------------------------------------------------
@@ -47,7 +47,7 @@ CSVOutputVisitor::~CSVOutputVisitor() {
 bool CSVOutputVisitor::shouldVisit( const bool in_spinup, const double date ) {
 
     currDate = date;
-    
+
     // CSV output doesn't occur in spinup
     return !in_spinup;
 }

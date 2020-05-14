@@ -15,7 +15,7 @@
  */
 
 namespace Hector {
-  
+
 class AVisitor;
 
 //------------------------------------------------------------------------------
@@ -26,7 +26,7 @@ class AVisitor;
 class IVisitable {
 public:
     inline virtual ~IVisitable();
-    
+
     /*! \brief Accept a visitor to visitor your class.
      *
      *  This allows a subclass use the double dispatch design pattern to allow

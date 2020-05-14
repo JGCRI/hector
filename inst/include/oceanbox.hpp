@@ -19,7 +19,7 @@
 #include <string>
 #include <map>
 #include "math.h"
-#include <stdio.h> 
+#include <stdio.h>
 #include <algorithm>
 
 #include "logger.hpp"
@@ -47,24 +47,24 @@ private:
 	std::vector<int> connection_window;      //<! a vector of connection windows to average over
 
     double vectorHistoryMean( std::vector<double> v, int lookback ) const;
-    
+
     unitval compute_connection_flux( int i, double yf ) const;
-    
+
 	std::string Name;
-    
+
 	void sens_parameters();
-    
+
     unitval Ca;             //<! Atmospheric CO2, ppm
     unitval Tbox;           //<! box absolute temperature, degC
     unitval pco2_lastyear;  //
     unitval dic_lastyear;   //
     unitval compute_tabsC( const unitval Tgav ) const;
-    
+
 public:
 	oceanbox (); // constructor
-    
+
 	std::map <oceanbox*, unitval> annual_box_fluxes;   //<! Map of our fluxes to other boxes
-	
+
 	void initbox( unitval C, std::string N="" );
     void make_connection( oceanbox* ob, const double k, const int window );
 	void compute_fluxes( const unitval current_Ca, const double yf, const bool do_circ=true );
@@ -75,18 +75,18 @@ public:
 	void set_carbon( const unitval C );
 	unitval get_carbon() const { return carbon; };
 	void add_carbon( unitval C );
-    
+
     bool oscillating( const unsigned lookback, const double maxamp, const int maxflips ) const;
-    
+
     // Functions to get internal box data
     unitval get_Tbox() const { return Tbox; };
-    
+
     unitval calc_revelle();
 
 	unitval deltaT;     //<! difference between box temperature and global temperature
     unitval preindustrial_flux;
     bool surfacebox;
-   
+
     double warmingfactor;        //!< regional warming relative to global (1.0=same)
 
     // Ocean box chemistry
@@ -96,7 +96,7 @@ public:
     double fmin( double alk, void *params );
 
     unitval atmosphere_flux;
-    
+
 	// logger
     Logger* logger;
 };

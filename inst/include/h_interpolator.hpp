@@ -38,10 +38,10 @@ private:
     int ndata;
     double *xdata, *ydata;
     double *b_coef, *c_coef, *d_coef;
-    
+
     double f_linear( double );
     double f_deriv_linear( double );
-    
+
     void release_data();
     void refit_data();
 
@@ -49,7 +49,7 @@ private:
     mutable int ilast;
 
     void locate(double x, int &iprev, int &inext) const;
-    
+
 public:
     h_interpolator();
     ~h_interpolator();
@@ -73,11 +73,11 @@ inline void h_interpolator::locate(double x, int &iprev, int &inext) const
       inext = ndata;
       return;
     }
-    
+
     /* Search for the data points with independent values containing the
      argument u. */
     if (ilast >= ndata-1 || ilast < 0) ilast = 0;
-    
+
     /* If u is not in the current in || ilast < 0terval, then execute a binary search. */
     if ((x < xdata[ilast]) || (x >= xdata[ilast+1])) {
         ilast = 0;

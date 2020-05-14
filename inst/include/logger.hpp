@@ -23,7 +23,7 @@
 #define LOG_EXTENSION ".log"
 
 namespace Hector {
-  
+
 //------------------------------------------------------------------------------
 /*! \brief Logger class
  *
@@ -41,16 +41,16 @@ public:
         WARNING,
         SEVERE
     };
-    
+
 private:
     // Make the copy constructs private and undefined to disallow multiple
     // instances of the same log file.
     Logger( const Logger& );
     Logger& operator=( const Logger& );
-    
+
     //! The minimum log level which will be processed.
     LogLevel minLogLevel;
-    
+
     //! Flag to indicate that this logger has been successfully opened.
     bool isInitialized;
 
@@ -60,18 +60,18 @@ private:
     //! Flag to indicate that this logger is enabled.
     //! If false this logger does not log regardless of log level provided.
     bool enabled;
-    
+
     //! The actual output stream which will handle the logging.
     std::ostream loggerStream;
-    
+
     static const std::string& logLevelToStr( const LogLevel logLevel );
-    
+
     static const char* getDateTimeStamp();
 
     static int chk_logdir(std::string dir);
 
     void printLogHeader( const LogLevel logLevel );
-    
+
     /*! \brief A customized file stream buffer to enable echoing to a console.
      *
      *  This subclass will override the virtual protected methods necessary for
@@ -85,30 +85,30 @@ private:
     public:
         LoggerStreamBuf( const bool echoToScreen );
         virtual ~LoggerStreamBuf();
-        
+
     protected:
         // std::streambuf methods
         virtual int sync();
-        
+
         virtual int overflow( int c = EOF );
-        
+
         virtual std::streamsize xsputn( const char* s, std::streamsize n );
     };
-    
+
 public:
     Logger();
     ~Logger();
-    
+
     void open( const std::string& logName, bool echoToScreen,
                bool echoToFile, LogLevel minLogLevel ) throw ( h_exception );
-    
+
     bool shouldWrite( const LogLevel writeLevel ) const;
-    
+
     std::ostream& write( const LogLevel writeLevel,
                         const std::string& functionInfo ) throw ( h_exception );
-    
+
     void close();
-    
+
     LogLevel getMinLogLevel() const {
         return minLogLevel;
     }

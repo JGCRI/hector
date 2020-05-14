@@ -492,7 +492,7 @@ unitval SimpleNbox::getData(const std::string& varName,
         if(date == Core::undefinedIndex())
             returnval = atmos_c;
         else
-            returnval = atmos_c_ts.get(date); 
+            returnval = atmos_c_ts.get(date);
     } else if( varNameParsed == D_ATMOSPHERIC_CO2 ) {
         if(date == Core::undefinedIndex())
             returnval = Ca;
