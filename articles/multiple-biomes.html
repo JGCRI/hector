@@ -6,19 +6,19 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Running Hector with multiple biomes • hector</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="Running Hector with multiple biomes">
-<meta property="og:description" content="">
-<meta name="twitter:card" content="summary">
+<meta property="og:description" content="hector">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
-<body>
+<body data-spy="scroll" data-target="#toc">
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -88,7 +88,7 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>Running Hector with multiple biomes</h1>
+      <h1 data-toc-skip>Running Hector with multiple biomes</h1>
                         <h4 class="author">Alexey Shiklomanov</h4>
             
             <h4 class="date">2019-06-27</h4>
@@ -103,36 +103,36 @@
 <p>By default, Hector’s carbon cycle model treats the entire land surface as a single, homogeneous ecosystem. However, it is possible to introduce some land surface heterogeneity by splitting the land surface into several different biomes with distinct parameters. In this vignette, we show two examples of performing multi-biome analyses with Hector.</p>
 <p>This vignette assumes some familiarity with the Hector model and its R interface. For help on the former, consult the <a href="manual/index.html">Hector manual</a>, and on the latter, see the <a href="intro-to-hector.html">introductory vignette</a>.</p>
 <p>Before we begin, let’s load the R package we will need: the <code>hector</code> package to interact with Hector, and the <code>ggplot2</code> package for plotting.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(hector)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(ggplot2)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">hector</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">ggplot2</span>)</pre></body></html></div>
 <div id="example-1-accelerated-high-latitude-warming" class="section level1">
 <h1 class="hasAnchor">
 <a href="#example-1-accelerated-high-latitude-warming" class="anchor"></a>Example 1: Accelerated high-latitude warming</h1>
 <p>Observational and modeling studies have found that high-latitude ecosystems, particularly in the northern hemisphere, are warming significantly faster than the global average. In this example, we will explore the implications of this effect with Hector.</p>
 <p>First, let’s run a reference case.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">rcp45 &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"input"</span>, <span class="st">"hector_rcp45.ini"</span>, <span class="dt">package =</span> <span class="st">"hector"</span>)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">core &lt;-<span class="st"> </span><span class="kw"><a href="../reference/newcore.html">newcore</a></span>(rcp45, <span class="dt">suppresslogging =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span>(<span class="kw"><a href="../reference/run.html">run</a></span>(core, <span class="dv">2100</span>))</a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">result_vars &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw"><a href="../reference/carboncycle.html">ATMOSPHERIC_CO2</a></span>(), <span class="kw"><a href="../reference/forcings.html">RF_TOTAL</a></span>(), <span class="kw"><a href="../reference/temperature.html">GLOBAL_TEMP</a></span>(),</a>
-<a class="sourceLine" id="cb2-5" data-line-number="5">                 <span class="kw"><a href="../reference/carboncycle.html">VEG_C</a></span>(), <span class="kw"><a href="../reference/carboncycle.html">SOIL_C</a></span>(), <span class="kw"><a href="../reference/carboncycle.html">DETRITUS_C</a></span>())</a>
-<a class="sourceLine" id="cb2-6" data-line-number="6">reference_results &lt;-<span class="st"> </span><span class="kw"><a href="../reference/fetchvars.html">fetchvars</a></span>(core, <span class="dv">2000</span><span class="op">:</span><span class="dv">2100</span>, result_vars, <span class="dt">scenario =</span> <span class="st">"reference"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="no">rcp45</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"input"</span>, <span class="st">"hector_rcp45.ini"</span>, <span class="kw">package</span> <span class="kw">=</span> <span class="st">"hector"</span>)
+<span class="no">core</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/newcore.html">newcore</a></span>(<span class="no">rcp45</span>, <span class="kw">suppresslogging</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span>(<span class="fu"><a href="../reference/run.html">run</a></span>(<span class="no">core</span>, <span class="fl">2100</span>))
+<span class="no">result_vars</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fu"><a href="../reference/carboncycle.html">ATMOSPHERIC_CO2</a></span>(), <span class="fu"><a href="../reference/forcings.html">RF_TOTAL</a></span>(), <span class="fu"><a href="../reference/temperature.html">GLOBAL_TEMP</a></span>(),
+                 <span class="fu"><a href="../reference/carboncycle.html">VEG_C</a></span>(), <span class="fu"><a href="../reference/carboncycle.html">SOIL_C</a></span>(), <span class="fu"><a href="../reference/carboncycle.html">DETRITUS_C</a></span>())
+<span class="no">reference_results</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/fetchvars.html">fetchvars</a></span>(<span class="no">core</span>, <span class="fl">2000</span>:<span class="fl">2100</span>, <span class="no">result_vars</span>, <span class="kw">scenario</span> <span class="kw">=</span> <span class="st">"reference"</span>)</pre></body></html></div>
 <p>Now, let’s redo the run, but accounting for accelerated high-latitude warming. To do this, we will use the <code><a href="../reference/split_biome.html">split_biome()</a></code> function, which takes an existing Hector biome and splits it up into an arbitrary number of new biomes, partitioning the C pools and initializing parameters accordingly. For the purposes of this example, let’s assume that high latitudes have ~10% of the world’s vegetation and detritus carbon and ~40% of world’s soil carbon, and that high-latitudes are warming 2.5x faster than the global average.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span>(<span class="kw"><a href="../reference/reset.html">reset</a></span>(core))</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw"><a href="../reference/split_biome.html">split_biome</a></span>(core, <span class="st">"global"</span>, <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"low-latitude"</span>, <span class="st">"high-latitude"</span>),</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">            <span class="dt">fveg_c =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.9</span>, <span class="fl">0.1</span>),</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4">            <span class="dt">fdetritus_c =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.9</span>, <span class="fl">0.1</span>),</a>
-<a class="sourceLine" id="cb3-5" data-line-number="5">            <span class="dt">fsoil_c =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.6</span>, <span class="fl">0.4</span>),</a>
-<a class="sourceLine" id="cb3-6" data-line-number="6">            <span class="dt">warmingfactor =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">1</span>, <span class="fl">2.5</span>))</a>
-<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="kw"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span>(<span class="kw"><a href="../reference/run.html">run</a></span>(core, <span class="dv">2100</span>))</a>
-<a class="sourceLine" id="cb3-8" data-line-number="8">warming_results &lt;-<span class="st"> </span><span class="kw"><a href="../reference/fetchvars.html">fetchvars</a></span>(core, <span class="dv">2000</span><span class="op">:</span><span class="dv">2100</span>, result_vars, <span class="dt">scenario =</span> <span class="st">"warming"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span>(<span class="fu"><a href="../reference/reset.html">reset</a></span>(<span class="no">core</span>))
+<span class="fu"><a href="../reference/split_biome.html">split_biome</a></span>(<span class="no">core</span>, <span class="st">"global"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"low-latitude"</span>, <span class="st">"high-latitude"</span>),
+            <span class="kw">fveg_c</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.9</span>, <span class="fl">0.1</span>),
+            <span class="kw">fdetritus_c</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.9</span>, <span class="fl">0.1</span>),
+            <span class="kw">fsoil_c</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.6</span>, <span class="fl">0.4</span>),
+            <span class="kw">warmingfactor</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">2.5</span>))
+<span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span>(<span class="fu"><a href="../reference/run.html">run</a></span>(<span class="no">core</span>, <span class="fl">2100</span>))
+<span class="no">warming_results</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/fetchvars.html">fetchvars</a></span>(<span class="no">core</span>, <span class="fl">2000</span>:<span class="fl">2100</span>, <span class="no">result_vars</span>, <span class="kw">scenario</span> <span class="kw">=</span> <span class="st">"warming"</span>)</pre></body></html></div>
 <p>Now, let’s plot the results.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">plot_data &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span>(reference_results, warming_results)</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">plot_data<span class="op">$</span>variable &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/factor.html">factor</a></span>(plot_data<span class="op">$</span>variable, result_vars)</a>
-<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(plot_data) <span class="op">+</span></a>
-<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x =</span> year, <span class="dt">y =</span> value, <span class="dt">color =</span> scenario) <span class="op">+</span></a>
-<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/vars.html">vars</a></span>(variable), <span class="dt">scales =</span> <span class="st">"free_y"</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span>()</a></code></pre></div>
+<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="no">plot_data</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span>(<span class="no">reference_results</span>, <span class="no">warming_results</span>)
+<span class="no">plot_data</span>$<span class="no">variable</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span>(<span class="no">plot_data</span>$<span class="no">variable</span>, <span class="no">result_vars</span>)
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="no">plot_data</span>) +
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="kw">x</span> <span class="kw">=</span> <span class="no">year</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="no">value</span>, <span class="kw">color</span> <span class="kw">=</span> <span class="no">scenario</span>) +
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>() +
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span>(<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html">vars</a></span>(<span class="no">variable</span>), <span class="kw">scales</span> <span class="kw">=</span> <span class="st">"free_y"</span>) +
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span>()</pre></body></html></div>
 <div class="figure">
 <img src="multiple-biomes_files/figure-html/warming-plot-1.png" alt="Hector results with vs. without accelerated high-latitude warming." width="700"><p class="caption">
 Hector results with vs. without accelerated high-latitude warming.
@@ -140,12 +140,12 @@ Hector results with vs. without accelerated high-latitude warming.
 </div>
 <p>The results show that accelerated high-latitude warming induces a positive global feedback in Hector: The warmer high-latitudes respire carbon from soil and detritus at a faster rate, which leads to higher CO<sub>2</sub> concentrations and further warming.</p>
 <p>We can look at these results in more detail by examining the biome-specific pools and fluxes via the optional <code>biome</code> argument to Hector’s identifier functions (e.g. <code><a href="../reference/carboncycle.html">VEG_C()</a></code>).</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">warming_details &lt;-<span class="st"> </span><span class="kw"><a href="../reference/fetchvars.html">fetchvars</a></span>(core, <span class="dv">2000</span><span class="op">:</span><span class="dv">2100</span>,</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2">                             <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw"><a href="../reference/carboncycle.html">VEG_C</a></span>(<span class="st">"low-latitude"</span>), <span class="kw"><a href="../reference/carboncycle.html">VEG_C</a></span>(<span class="st">"high-latitude"</span>),</a>
-<a class="sourceLine" id="cb5-3" data-line-number="3">                               <span class="kw"><a href="../reference/carboncycle.html">DETRITUS_C</a></span>(<span class="st">"low-latitude"</span>), <span class="kw"><a href="../reference/carboncycle.html">DETRITUS_C</a></span>(<span class="st">"high-latitude"</span>),</a>
-<a class="sourceLine" id="cb5-4" data-line-number="4">                               <span class="kw"><a href="../reference/carboncycle.html">SOIL_C</a></span>(<span class="st">"low-latitude"</span>), <span class="kw"><a href="../reference/carboncycle.html">SOIL_C</a></span>(<span class="st">"high-latitude"</span>)),</a>
-<a class="sourceLine" id="cb5-5" data-line-number="5">                             <span class="dt">scenario =</span> <span class="st">"warming"</span>)</a>
-<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(warming_details)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="no">warming_details</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/fetchvars.html">fetchvars</a></span>(<span class="no">core</span>, <span class="fl">2000</span>:<span class="fl">2100</span>,
+                             <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fu"><a href="../reference/carboncycle.html">VEG_C</a></span>(<span class="st">"low-latitude"</span>), <span class="fu"><a href="../reference/carboncycle.html">VEG_C</a></span>(<span class="st">"high-latitude"</span>),
+                               <span class="fu"><a href="../reference/carboncycle.html">DETRITUS_C</a></span>(<span class="st">"low-latitude"</span>), <span class="fu"><a href="../reference/carboncycle.html">DETRITUS_C</a></span>(<span class="st">"high-latitude"</span>),
+                               <span class="fu"><a href="../reference/carboncycle.html">SOIL_C</a></span>(<span class="st">"low-latitude"</span>), <span class="fu"><a href="../reference/carboncycle.html">SOIL_C</a></span>(<span class="st">"high-latitude"</span>)),
+                             <span class="kw">scenario</span> <span class="kw">=</span> <span class="st">"warming"</span>)
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">warming_details</span>)</pre></body></html></div>
 <pre><code>##   scenario year           variable    value units
 ## 1  warming 2000 low-latitude.veg_c 474.8797  Pg C
 ## 2  warming 2001 low-latitude.veg_c 475.3750  Pg C
@@ -154,15 +154,15 @@ Hector results with vs. without accelerated high-latitude warming.
 ## 5  warming 2004 low-latitude.veg_c 476.8836  Pg C
 ## 6  warming 2005 low-latitude.veg_c 477.4029  Pg C</code></pre>
 <p>For plotting, let’s split up the <code>variable</code> column into its components – <code>biome</code> and <code>variable</code>.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">variable_split &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/strsplit.html">strsplit</a></span>(warming_details<span class="op">$</span>variable, <span class="st">"."</span>, <span class="dt">fixed =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2">warming_details<span class="op">$</span>biome &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/factor.html">factor</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/lapply.html">vapply</a></span>(variable_split, <span class="st">"[["</span>, <span class="kw"><a href="https://rdrr.io/r/base/character.html">character</a></span>(<span class="dv">1</span>), <span class="dv">1</span>),</a>
-<a class="sourceLine" id="cb7-3" data-line-number="3">                                <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"low-latitude"</span>, <span class="st">"high-latitude"</span>))</a>
-<a class="sourceLine" id="cb7-4" data-line-number="4">warming_details<span class="op">$</span>variable &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/lapply.html">vapply</a></span>(variable_split, <span class="st">"[["</span>, <span class="kw"><a href="https://rdrr.io/r/base/character.html">character</a></span>(<span class="dv">1</span>), <span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(warming_details) <span class="op">+</span></a>
-<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x =</span> year, <span class="dt">y =</span> value, <span class="dt">color =</span> biome) <span class="op">+</span></a>
-<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/vars.html">vars</a></span>(variable), <span class="dt">scales =</span> <span class="st">"free_y"</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb7-9" data-line-number="9"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span>()</a></code></pre></div>
+<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="no">variable_split</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/strsplit.html">strsplit</a></span>(<span class="no">warming_details</span>$<span class="no">variable</span>, <span class="st">"."</span>, <span class="kw">fixed</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
+<span class="no">warming_details</span>$<span class="no">biome</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/lapply.html">vapply</a></span>(<span class="no">variable_split</span>, <span class="st">"[["</span>, <span class="fu"><a href="https://rdrr.io/r/base/character.html">character</a></span>(<span class="fl">1</span>), <span class="fl">1</span>),
+                                <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"low-latitude"</span>, <span class="st">"high-latitude"</span>))
+<span class="no">warming_details</span>$<span class="no">variable</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">vapply</a></span>(<span class="no">variable_split</span>, <span class="st">"[["</span>, <span class="fu"><a href="https://rdrr.io/r/base/character.html">character</a></span>(<span class="fl">1</span>), <span class="fl">2</span>)
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="no">warming_details</span>) +
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="kw">x</span> <span class="kw">=</span> <span class="no">year</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="no">value</span>, <span class="kw">color</span> <span class="kw">=</span> <span class="no">biome</span>) +
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>() +
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span>(<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html">vars</a></span>(<span class="no">variable</span>), <span class="kw">scales</span> <span class="kw">=</span> <span class="st">"free_y"</span>) +
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span>()</pre></body></html></div>
 <p><img src="multiple-biomes_files/figure-html/warming-details-plot-1.png" width="700"></p>
 </div>
 <div id="example-2-c3-and-c4-plants" class="section level1">
@@ -170,47 +170,41 @@ Hector results with vs. without accelerated high-latitude warming.
 <a href="#example-2-c3-and-c4-plants" class="anchor"></a>Example 2: C3 and C4 plants</h1>
 <p>We can conduct a similar experiment to the one above by looking at the differential impact of CO<sub>2</sub> fertilization on C3 and C4 plants. Specifically, C4 plants possess a special mechanism for concentrating CO<sub>2</sub> inside their leaves, thereby reducing their sensitivity to changes in atmospheric CO<sub>2</sub>. Although this makes C4 plants more efficient (particularly in hot and dry environments), this also means that they should have a reduced CO<sub>2</sub> fertilization effect compared to C3 plants.</p>
 <p>In Hector, the CO<sub>2</sub> fertilization effect is controlled by the parameter <span class="math inline">\(\beta\)</span> (<code><a href="../reference/parameters.html">BETA()</a></code>). In this example, we will create two “biomes”, corresponding to C3 and C4 plants, each with different <code><a href="../reference/parameters.html">BETA()</a></code> values, and will compare model outputs from this special case against a reference case (which we can recycle from the <code>reference_results</code> object in the previous example). For the purposes of this example, we will assume that ~10% of the world’s terrestrial carbon is associated with C4 plants, and that the CO<sub>2</sub> fertilization effect for C4 plans is half as strong as that of C3 plants.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">core &lt;-<span class="st"> </span><span class="kw"><a href="../reference/newcore.html">newcore</a></span>(rcp45, <span class="dt">suppresslogging =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="kw"><a href="../reference/split_biome.html">split_biome</a></span>(core, <span class="st">"global"</span>, <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"C3"</span>, <span class="st">"C4"</span>),</a>
-<a class="sourceLine" id="cb8-3" data-line-number="3">            <span class="dt">fveg_c =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.9</span>, <span class="fl">0.1</span>),</a>
-<a class="sourceLine" id="cb8-4" data-line-number="4">            <span class="dt">beta =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.36</span>, <span class="fl">0.18</span>))</a>
-<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="kw"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span>(<span class="kw"><a href="../reference/run.html">run</a></span>(core, <span class="dv">2100</span>))</a>
-<a class="sourceLine" id="cb8-6" data-line-number="6">c4_results &lt;-<span class="st"> </span><span class="kw"><a href="../reference/fetchvars.html">fetchvars</a></span>(core, <span class="dv">2000</span><span class="op">:</span><span class="dv">2100</span>, result_vars, <span class="dt">scenario =</span> <span class="st">"c3 vs c4"</span>)</a>
-<a class="sourceLine" id="cb8-7" data-line-number="7">c4_results_biome &lt;-<span class="st"> </span><span class="kw"><a href="../reference/fetchvars.html">fetchvars</a></span>(core, <span class="dv">2000</span><span class="op">:</span><span class="dv">2100</span>,</a>
-<a class="sourceLine" id="cb8-8" data-line-number="8">                              <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw"><a href="../reference/carboncycle.html">VEG_C</a></span>(<span class="st">"C3"</span>), <span class="kw"><a href="../reference/carboncycle.html">VEG_C</a></span>(<span class="st">"C4"</span>),</a>
-<a class="sourceLine" id="cb8-9" data-line-number="9">                                <span class="kw"><a href="../reference/carboncycle.html">DETRITUS_C</a></span>(<span class="st">"C3"</span>), <span class="kw"><a href="../reference/carboncycle.html">DETRITUS_C</a></span>(<span class="st">"C4"</span>),</a>
-<a class="sourceLine" id="cb8-10" data-line-number="10">                                <span class="kw"><a href="../reference/carboncycle.html">SOIL_C</a></span>(<span class="st">"C3"</span>), <span class="kw"><a href="../reference/carboncycle.html">SOIL_C</a></span>(<span class="st">"C4"</span>)),</a>
-<a class="sourceLine" id="cb8-11" data-line-number="11">                              <span class="dt">scenario =</span> <span class="st">"c3 vs c4"</span>)</a>
-<a class="sourceLine" id="cb8-12" data-line-number="12">variable_split &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/strsplit.html">strsplit</a></span>(c4_results_biome<span class="op">$</span>variable, <span class="st">"."</span>, <span class="dt">fixed =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb8-13" data-line-number="13">c4_results_biome<span class="op">$</span>biome &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/lapply.html">vapply</a></span>(variable_split, <span class="st">"[["</span>, <span class="kw"><a href="https://rdrr.io/r/base/character.html">character</a></span>(<span class="dv">1</span>), <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb8-14" data-line-number="14">c4_results_biome<span class="op">$</span>variable &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/lapply.html">vapply</a></span>(variable_split, <span class="st">"[["</span>, <span class="kw"><a href="https://rdrr.io/r/base/character.html">character</a></span>(<span class="dv">1</span>), <span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb8-15" data-line-number="15"></a>
-<a class="sourceLine" id="cb8-16" data-line-number="16">c4_results<span class="op">$</span>biome &lt;-<span class="st"> "global"</span></a>
-<a class="sourceLine" id="cb8-17" data-line-number="17">reference_results<span class="op">$</span>biome &lt;-<span class="st"> "global"</span></a>
-<a class="sourceLine" id="cb8-18" data-line-number="18"></a>
-<a class="sourceLine" id="cb8-19" data-line-number="19">plot_data &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span>(reference_results, c4_results, c4_results_biome)</a>
-<a class="sourceLine" id="cb8-20" data-line-number="20">plot_data<span class="op">$</span>variable &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/factor.html">factor</a></span>(plot_data<span class="op">$</span>variable, result_vars)</a>
-<a class="sourceLine" id="cb8-21" data-line-number="21"><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(plot_data) <span class="op">+</span></a>
-<a class="sourceLine" id="cb8-22" data-line-number="22"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">x =</span> year, <span class="dt">y =</span> value, <span class="dt">linetype =</span> scenario, <span class="dt">color =</span> biome) <span class="op">+</span></a>
-<a class="sourceLine" id="cb8-23" data-line-number="23"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb8-24" data-line-number="24"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/vars.html">vars</a></span>(variable), <span class="dt">scales =</span> <span class="st">"free_y"</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb8-25" data-line-number="25"><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span>()</a></code></pre></div>
+<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="no">core</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/newcore.html">newcore</a></span>(<span class="no">rcp45</span>, <span class="kw">suppresslogging</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
+<span class="fu"><a href="../reference/split_biome.html">split_biome</a></span>(<span class="no">core</span>, <span class="st">"global"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"C3"</span>, <span class="st">"C4"</span>),
+            <span class="kw">fveg_c</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.9</span>, <span class="fl">0.1</span>),
+            <span class="kw">beta</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.36</span>, <span class="fl">0.18</span>))
+<span class="fu"><a href="https://rdrr.io/r/base/invisible.html">invisible</a></span>(<span class="fu"><a href="../reference/run.html">run</a></span>(<span class="no">core</span>, <span class="fl">2100</span>))
+<span class="no">c4_results</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/fetchvars.html">fetchvars</a></span>(<span class="no">core</span>, <span class="fl">2000</span>:<span class="fl">2100</span>, <span class="no">result_vars</span>, <span class="kw">scenario</span> <span class="kw">=</span> <span class="st">"c3 vs c4"</span>)
+<span class="no">c4_results_biome</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/fetchvars.html">fetchvars</a></span>(<span class="no">core</span>, <span class="fl">2000</span>:<span class="fl">2100</span>,
+                              <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fu"><a href="../reference/carboncycle.html">VEG_C</a></span>(<span class="st">"C3"</span>), <span class="fu"><a href="../reference/carboncycle.html">VEG_C</a></span>(<span class="st">"C4"</span>),
+                                <span class="fu"><a href="../reference/carboncycle.html">DETRITUS_C</a></span>(<span class="st">"C3"</span>), <span class="fu"><a href="../reference/carboncycle.html">DETRITUS_C</a></span>(<span class="st">"C4"</span>),
+                                <span class="fu"><a href="../reference/carboncycle.html">SOIL_C</a></span>(<span class="st">"C3"</span>), <span class="fu"><a href="../reference/carboncycle.html">SOIL_C</a></span>(<span class="st">"C4"</span>)),
+                              <span class="kw">scenario</span> <span class="kw">=</span> <span class="st">"c3 vs c4"</span>)
+<span class="no">variable_split</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/strsplit.html">strsplit</a></span>(<span class="no">c4_results_biome</span>$<span class="no">variable</span>, <span class="st">"."</span>, <span class="kw">fixed</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
+<span class="no">c4_results_biome</span>$<span class="no">biome</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">vapply</a></span>(<span class="no">variable_split</span>, <span class="st">"[["</span>, <span class="fu"><a href="https://rdrr.io/r/base/character.html">character</a></span>(<span class="fl">1</span>), <span class="fl">1</span>)
+<span class="no">c4_results_biome</span>$<span class="no">variable</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">vapply</a></span>(<span class="no">variable_split</span>, <span class="st">"[["</span>, <span class="fu"><a href="https://rdrr.io/r/base/character.html">character</a></span>(<span class="fl">1</span>), <span class="fl">2</span>)
+
+<span class="no">c4_results</span>$<span class="no">biome</span> <span class="kw">&lt;-</span> <span class="st">"global"</span>
+<span class="no">reference_results</span>$<span class="no">biome</span> <span class="kw">&lt;-</span> <span class="st">"global"</span>
+
+<span class="no">plot_data</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">rbind</a></span>(<span class="no">reference_results</span>, <span class="no">c4_results</span>, <span class="no">c4_results_biome</span>)
+<span class="no">plot_data</span>$<span class="no">variable</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span>(<span class="no">plot_data</span>$<span class="no">variable</span>, <span class="no">result_vars</span>)
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="no">plot_data</span>) +
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="kw">x</span> <span class="kw">=</span> <span class="no">year</span>, <span class="kw">y</span> <span class="kw">=</span> <span class="no">value</span>, <span class="kw">linetype</span> <span class="kw">=</span> <span class="no">scenario</span>, <span class="kw">color</span> <span class="kw">=</span> <span class="no">biome</span>) +
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>() +
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span>(<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/vars.html">vars</a></span>(<span class="no">variable</span>), <span class="kw">scales</span> <span class="kw">=</span> <span class="st">"free_y"</span>) +
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span>()</pre></body></html></div>
 <p><img src="multiple-biomes_files/figure-html/fert-c4-1.png" width="700"></p>
 <p>Similarly to accounting for high-latitude warming, accounting for the reduced CO<sub>2</sub> fertilization effect on C4 plants results in a slightly warmer and CO<sub>2</sub>-rich atmosphere.</p>
 </div>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-        <div id="tocnav">
-      <h2 class="hasAnchor">
-<a href="#tocnav" class="anchor"></a>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-<li><a href="#example-1-accelerated-high-latitude-warming">Example 1: Accelerated high-latitude warming</a></li>
-      <li><a href="#example-2-c3-and-c4-plants">Example 2: C3 and C4 plants</a></li>
-      </ul>
+        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
+    </nav>
 </div>
-      </div>
 
 </div>
 
@@ -221,7 +215,7 @@ Hector results with vs. without accelerated high-latitude warming.
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

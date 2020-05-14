@@ -1,5 +1,5 @@
 pandoc: '2.2'
-pkgdown: 1.4.1
+pkgdown: 1.5.1
 pkgdown_sha: ~
 articles:
   hector_apply: hector_apply.html
@@ -18,4 +18,5 @@ articles:
   VersionNumbers: manual/VersionNumbers.html
   index: manual/index.html
   multiple-biomes: multiple-biomes.html
+last_built: 2020-05-14T01:05Z
 
