@@ -3,10 +3,14 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 47;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		272ED2BA24767F92000D9BB5 /* libboost_filesystem.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 272ED2B924767F92000D9BB5 /* libboost_filesystem.dylib */; };
+		272ED2BB24767F92000D9BB5 /* libboost_filesystem.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 272ED2B924767F92000D9BB5 /* libboost_filesystem.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		272ED2BE24767F9E000D9BB5 /* libboost_system.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 272ED2BD24767F9E000D9BB5 /* libboost_system.dylib */; };
+		272ED2BF24767F9E000D9BB5 /* libboost_system.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 272ED2BD24767F9E000D9BB5 /* libboost_system.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		2786037D215532AE001B8255 /* ch4_component.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27860353215532AB001B8255 /* ch4_component.hpp */; };
 		2786037E215532AE001B8255 /* forcing_component.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27860354215532AB001B8255 /* forcing_component.hpp */; };
 		2786037F215532AE001B8255 /* INIReader.h in Headers */ = {isa = PBXBuildFile; fileRef = 27860355215532AB001B8255 /* INIReader.h */; };
@@ -119,7 +123,25 @@
 		B54987AA16C981060000A223 /* gtest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B54987A916C981060000A223 /* gtest.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		272ED2BC24767F92000D9BB5 /* Embed Libraries */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				272ED2BB24767F92000D9BB5 /* libboost_filesystem.dylib in Embed Libraries */,
+				272ED2BF24767F9E000D9BB5 /* libboost_system.dylib in Embed Libraries */,
+			);
+			name = "Embed Libraries";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		272ED2B824767F81000D9BB5 /* libboost_filesystem.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_filesystem.a; path = ../../../../../../../../../usr/local/boost_1_73_0/stage/lib/libboost_filesystem.a; sourceTree = "<group>"; };
+		272ED2B924767F92000D9BB5 /* libboost_filesystem.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libboost_filesystem.dylib; path = ../../../../../../../../../usr/local/boost_1_73_0/stage/lib/libboost_filesystem.dylib; sourceTree = "<group>"; };
+		272ED2BD24767F9E000D9BB5 /* libboost_system.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libboost_system.dylib; path = ../../../../../../../../../usr/local/boost_1_73_0/stage/lib/libboost_system.dylib; sourceTree = "<group>"; };
 		27860353215532AB001B8255 /* ch4_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ch4_component.hpp; path = ../inst/include/ch4_component.hpp; sourceTree = "<group>"; };
 		27860354215532AB001B8255 /* forcing_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = forcing_component.hpp; path = ../inst/include/forcing_component.hpp; sourceTree = "<group>"; };
 		27860355215532AB001B8255 /* INIReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INIReader.h; path = ../inst/include/INIReader.h; sourceTree = "<group>"; };
@@ -210,6 +232,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				272ED2BA24767F92000D9BB5 /* libboost_filesystem.dylib in Frameworks */,
+				272ED2BE24767F9E000D9BB5 /* libboost_system.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -242,6 +266,7 @@
 				CD6968B91243CAE500DFC9CF /* headers */,
 				CD6968BF1243CAE500DFC9CF /* source */,
 				1AB674ADFE9D54B511CA2CBB /* Products */,
+				272ED2B724767F81000D9BB5 /* Frameworks */,
 			);
 			name = hector;
 			sourceTree = "<group>";
@@ -254,6 +279,16 @@
 				CD97CE321BFBBF2E005689AD /* libhector-lib.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		272ED2B724767F81000D9BB5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				272ED2BD24767F9E000D9BB5 /* libboost_system.dylib */,
+				272ED2B924767F92000D9BB5 /* libboost_filesystem.dylib */,
+				272ED2B824767F81000D9BB5 /* libboost_filesystem.a */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		CD6968B91243CAE500DFC9CF /* headers */ = {
@@ -409,6 +444,7 @@
 			buildPhases = (
 				8DD76F640486A84900D96B5E /* Sources */,
 				8DD76F660486A84900D96B5E /* Frameworks */,
+				272ED2BC24767F92000D9BB5 /* Embed Libraries */,
 			);
 			buildRules = (
 			);
@@ -459,7 +495,7 @@
 		08FB7793FE84155DC02AAC07 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0940;
+				LastUpgradeCheck = 1130;
 				TargetAttributes = {
 					CD97CE311BFBBF2E005689AD = {
 						CreatedOnToolsVersion = 7.0.1;
@@ -467,14 +503,15 @@
 				};
 			};
 			buildConfigurationList = 1DEB923508733DC60010E9CD /* Build configuration list for PBXProject "hector" */;
-			compatibilityVersion = "Xcode 6.3";
-			developmentRegion = English;
+			compatibilityVersion = "Xcode 11.0";
+			developmentRegion = en;
 			hasScannedForEncodings = 1;
 			knownRegions = (
-				English,
-				Japanese,
-				French,
-				German,
+				Base,
+				en,
+				ja,
+				fr,
+				de,
 			);
 			mainGroup = 08FB7794FE84155DC02AAC07 /* hector */;
 			projectDirPath = "";
@@ -583,15 +620,17 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_IDENTITY = "-";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_VERSION = "";
-				HEADER_SEARCH_PATHS = /usr/local/include/;
+				HEADER_SEARCH_PATHS = /usr/local/boost_1_73_0/;
 				INSTALL_PATH = /usr/local/bin;
-				LIBRARY_SEARCH_PATHS = /usr/local/lib/;
+				LIBRARY_SEARCH_PATHS = /usr/local/boost_1_73_0/stage/lib;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				OTHER_LDFLAGS = (
 					"-lm",
 					"-lboost_filesystem",
@@ -607,14 +646,16 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_IDENTITY = "-";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_VERSION = "";
-				HEADER_SEARCH_PATHS = /usr/local/include/;
+				HEADER_SEARCH_PATHS = /usr/local/boost_1_73_0/;
 				INSTALL_PATH = /usr/local/bin;
-				LIBRARY_SEARCH_PATHS = /usr/local/lib/;
+				LIBRARY_SEARCH_PATHS = /usr/local/boost_1_73_0/stage/lib;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				OTHER_LDFLAGS = (
 					"-lm",
 					"-lboost_filesystem",
@@ -660,9 +701,9 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "../../../../../../../libs/boost-lib";
+				HEADER_SEARCH_PATHS = "";
 				LD_OPENMP_FLAGS = "";
-				LIBRARY_SEARCH_PATHS = "../../../../../../../libs/boost-lib/stage/lib";
+				LIBRARY_SEARCH_PATHS = "";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-lboost_filesystem",
@@ -709,9 +750,9 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "../../../../../../../libs/boost-lib";
+				HEADER_SEARCH_PATHS = "";
 				LD_OPENMP_FLAGS = "";
-				LIBRARY_SEARCH_PATHS = "../../../../../../../libs/boost-lib/stage/lib";
+				LIBRARY_SEARCH_PATHS = "";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-lboost_filesystem",
@@ -729,6 +770,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_IDENTITY = "-";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -767,6 +809,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_IDENTITY = "-";
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
