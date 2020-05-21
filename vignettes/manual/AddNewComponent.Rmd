@@ -1,0 +1,90 @@
+---
+title: Adding a new component
+---
+Here are the steps to create a new component `X`.
+
+Step one:
+-----------
+
+Add two new files:  
+* headers/core/X.hpp
+* source/core/X.cpp
+
+It is best to copy and modify the corresponding files from an already constructed component.
+
+Step two (within X.hpp):  
+-----------
+Under `private` list the variables that are used in the component and their corresponding type. E.g. 
+* `tseries<unitval> x` to create a [time series](TSeries.html).
+* `unitval x` to declare a [value with associated units](Unitvals.html).
+* `double x` 
+
+Step three (within X.cpp):
+---------
+Make sure that you `#include X.hpp`.
+
+_In the constructor_  
+If the variable is a tseries, add all of the variables allowing for interpolation and their corresponding names
+	
+	XComponent::XComponent() {
+	    X_emissions.allowInterp( true ); 
+	    X_emissions.name = X_COMPONENT_NAME; 
+
+_In X::init_  
+Inform the core what data the component can provide (*registerCapability*) and what data the component depends on (*registerDependency*)
+
+	core->registerCapability( D_ATMOSPHERIC_X, getComponentName() );
+	core->registerDependency( D_LIFETIME_X, getComponentName() );
+
+_In X::setData_  
+Set the data that are used as inputs within this component, typically coming from the ini file.  [[For examples of tseries vs. unitvals in setData|AddTSeries]].
+
+_In X::prepareToRun_
+TODO: describe
+
+_In X::run_
+The run method contains the equations and code used in this component.  Here is where you would want a log statement, written out to the component's log.
+
+`H_LOG( logger, Logger::DEBUG ) << "Year " << runToDate << " X concentration = " << X.get( runToDate ) << std::endl;`
+
+TODO: mention spinup flag return.
+
+
+_In X::getData_  
+These are data that the component can provide to another component, or the data that is being generated within the component. [[For examples of tseries vs. unitvals in getData|AddTSeries]].
+
+_In X::shutDown_  
+TODO: describe
+
+Step four (Outside of X.cpp and X.hpp):
+----------------------------------------
+
+_In avistor.hpp_   
+       Add class XComponent under the declarations of subclasses  
+       Add `virtual void visit( XComponent*c ) {}`
+
+_In core.cpp_  
+	`#include "components/xcomponent.hpp"  `  
+       Under init add:  
+		`temp =  new XComponent();`  
+       `modelComponents[ temp-->getComponentName() ] = temp;`
+
+_In component_names.hpp_  
+	Under component names:   
+        `#define X_COMPONENT_NAME “x”`
+	
+_In component_data.hpp_     
+	define the variables within the component  
+	`#define D_ATMOSPHERIC_X      "X"`
+
+_In csv_outputstream_visitor.cpp_  
+	`#include 'components/xcomponent.hpp' ` 
+         
+	void CSVOutputStreamVisitor::visit( XComponent* c ) {
+   	if( !core->outputEnabled( c->getComponentName() ) && !in_spinup ) return;
+	STREAM_MESSAGE_DATE( csvFile, c, D_X_COMPONENT, current_date );
+	}
+
+_In csv_outputsream_visitor.hpp_  
+	under public  
+	`virtual void visit( XComponent* c);`

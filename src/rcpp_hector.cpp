@@ -15,10 +15,10 @@ using namespace Rcpp;
  * These are intended for use by the C++ wrappers and are not callable from R directly.
  */
 
-// Get a pointer to a core from the R handle. 
-Hector::Core *gethcore(List core)
+// Get a pointer to a core from the R handle.
+Hector::Core *gethcore(Environment core)
 {
-    int idx = core[0];
+    int idx = core["coreidx"];
     Hector::Core *hcore = Hector::Core::getcore(idx);
     if(!hcore) {
         Rcpp::stop("Invalid or inactive hcore object");
@@ -26,26 +26,15 @@ Hector::Core *gethcore(List core)
     return hcore;
 }
 
-
-//' Create and initialize a new hector instance
-//'
-//' The object returned is a handle to the newly created instance.  It will be required as an
-//' argument for all functions that operate on the instance.  Creating multiple instances
-//' simultaneously is supported.
-//'
-//' @include aadoc.R
-//' @param inifile (String) name of the hector input file.
-//' @param loglevel (int) minimum message level to output in logs (see \code{\link{loglevels}}).
-//' @param suppresslogging (bool) If true, suppress all logging (loglevel is ignored in this case).
-//' @return handle for the Hector instance.
-//' @export
+// This is the C++ implementation of the core constructor.  It should only ever
+// be called from the `newcore` wrapper function.
 // [[Rcpp::export]]
-List newcore(String inifile, int loglevel = 0, bool suppresslogging=false)
+Environment newcore_impl(String inifile, int loglevel, bool suppresslogging, String name)
 {
     try {
         // Check that the configuration file exists. The easiest way to do
         // this is to try to open it.
-        std::ifstream ifs(inifile);      // we'll use this to test if the file exists
+	std::ifstream ifs(inifile.get_cstring());      // we'll use this to test if the file exists
         if(ifs) {
             ifs.close();            // don't actually want to read from it
         }
@@ -58,7 +47,7 @@ List newcore(String inifile, int loglevel = 0, bool suppresslogging=false)
         int coreidx = Hector::Core::mkcore(!suppresslogging,
                                            (Hector::Logger::LogLevel)loglevel,
                                            false);
-                                           
+
         Hector::Core *hcore = Hector::Core::getcore(coreidx);
         hcore->init();
 
@@ -72,16 +61,6 @@ List newcore(String inifile, int loglevel = 0, bool suppresslogging=false)
             Rcpp::stop(msg.str());
         }
 
-
-        // The Following three lines of code are occasionally useful for
-        // generating debugging output; however, they leak memory.
-        // Therefore, they should only be used for short tests where
-        // you need the CSV output to compare to a benchmark run.
-        // TODO:  Remove these before release.
-        // std::ofstream *output = new std::ofstream("rcpp-test-output.csv");
-        // Hector::CSVOutputStreamVisitor *csvosv = new Hector::CSVOutputStreamVisitor(*output);
-        // hcore->addVisitor(csvosv);
-
         // Run the last bit of setup
         hcore->prepareToRun();
 
@@ -89,8 +68,15 @@ List newcore(String inifile, int loglevel = 0, bool suppresslogging=false)
         double strtdate = hcore->getStartDate();
         double enddate = hcore->getEndDate();
 
-        List rv= List::create(coreidx, strtdate, enddate, inifile, true);
-        rv.attr("class") = "hcore";
+        Environment rv(new_env());
+        rv["coreidx"] = coreidx;
+        rv["strtdate"] = strtdate;
+        rv["enddate"] = enddate;
+        rv["inifile"] = inifile;
+        rv["name"] = name;
+        rv["clean"] = true;
+        rv["reset_date"] = 0;
+
         return rv;
     }
     catch(h_exception e) {
@@ -111,43 +97,16 @@ List newcore(String inifile, int loglevel = 0, bool suppresslogging=false)
 //' from active to inactive will be recorded in the caller.
 //'
 //' @param core Handle to a Hector instance
-//' @return The Hector handle, modified to show that it is no longer active
+//' @return The Hector instance handle
 //' @export
+//' @family main user interface functions
 // [[Rcpp::export]]
-List shutdown(List core)
+Environment shutdown(Environment core)
 {
-    // TODO: check that the list supplied is an hcore object
-
-    int idx = core[0];
+    int idx = core["coreidx"];
     Hector::Core::delcore(idx);
 
-    core[4] = false;
-
     return core;
-}
-
-
-//' Run the Hector climate model
-//'
-//' Run Hector up through the specified time.  This function does not return the results
-//' of the run.  To get results, run \code{fetch}.
-//'
-//' @param core Handle to the Hector instance that is to be run.
-//' @param runtodate Date to run to.  The default is to run to the end date configured
-//' in the input file used to initialize the core.
-//' @export
-// [[Rcpp::export]]
-void run(List core, double runtodate=-1.0)
-{
-    Hector::Core *hcore = gethcore(core);
-    try {
-        hcore->run(runtodate);
-    }
-    catch(h_exception e) {
-        std::stringstream msg;
-        msg << "Error while running hector:  " << e;
-        Rcpp::stop(msg.str());
-    }
 }
 
 
@@ -163,9 +122,10 @@ void run(List core, double runtodate=-1.0)
 //' @param core Handle for the Hector instance that is to be reset.
 //' @param date Date to reset to.  The default is to reset to the model start date with
 //' a rerun of the spinup.
+//' @family main user interface functions
 //' @export
 // [[Rcpp::export]]
-void reset(List core, double date=0)
+Environment reset(Environment core, double date=0)
 {
     Hector::Core *hcore = gethcore(core);
     try {
@@ -177,6 +137,50 @@ void reset(List core, double date=0)
             << " :  " << e;
         Rcpp::stop(msg.str());
     }
+
+    double rd = core["reset_date"];
+    if(date <= rd)
+        core["clean"] = true;
+
+    return core;
+}
+
+
+//' Run the Hector climate model
+//'
+//' Run Hector up through the specified time.  This function does not return the results
+//' of the run.  To get results, run \code{fetch}.
+//'
+//' @param core Handle to the Hector instance that is to be run.
+//' @param runtodate Date to run to.  The default is to run to the end date configured
+//' in the input file used to initialize the core.
+//' @return The Hector instance handle
+//' @export
+//' @family main user interface functions
+// [[Rcpp::export]]
+Environment run(Environment core, double runtodate=-1.0)
+{
+    if(!core["clean"])
+        reset(core, core["reset_date"]);
+
+    Hector::Core *hcore = gethcore(core);
+    if(runtodate > 0 && runtodate < hcore->getCurrentDate()) {
+        std::stringstream msg;
+        msg << "Requested run date " << runtodate << " is prior to the current date of "
+            << hcore->getCurrentDate() << ". Run reset() to reset to an earlier date.";
+        Rcpp::stop(msg.str());
+    }
+
+    try {
+        hcore->run(runtodate);
+    }
+    catch(h_exception e) {
+        std::stringstream msg;
+        msg << "Error while running hector:  " << e;
+        Rcpp::stop(msg.str());
+    }
+
+    return core;
 }
 
 
@@ -185,10 +189,65 @@ void reset(List core, double date=0)
 //' @rdname hectorutil
 //' @export
 // [[Rcpp::export]]
-double getdate(List core)
+double getdate(Environment core)
 {
     Hector::Core *hcore = gethcore(core);
     return hcore->getCurrentDate();
+}
+
+//' Retrieve the current list of biomes for a Hector instance
+//'
+//' @param core Handle to the Hector instance from which to retrieve
+//'   the biome list.
+//' @export
+// [[Rcpp::export]]
+std::vector<std::string> get_biome_list(Environment core)
+{
+    Hector::Core *hcore = gethcore(core);
+    std::vector<std::string> biome_list = hcore->getBiomeList();
+    return biome_list;
+}
+
+//' Create a biome
+//'
+//' @param core Handle to the Hector instance that is to be run.
+//' @param biome (character) Name of new biome
+// [[Rcpp::export]]
+Environment create_biome_impl(Environment core, std::string biome)
+{
+    Hector::Core *hcore = gethcore(core);
+    hcore->createBiome(biome);
+    return core;
+}
+
+//' Delete a biome
+//'
+//' @param core Handle to the Hector instance that is to be run.
+//' @param biome (character) Name of biome to delete
+// [[Rcpp::export]]
+Environment delete_biome_impl(Environment core, std::string biome)
+{
+    Hector::Core *hcore = gethcore(core);
+    hcore->deleteBiome(biome);
+    return core;
+}
+
+//' Rename an existing biome
+//'
+//' This will create a new biome called `newname`, assign it all of
+//' the C stocks and parameter values from biome `oldname`, and delete
+//' biome `oldname`.
+//'
+//' @param core Handle to the Hector instance that is to be run.
+//' @param oldname (character) Name of existing biome to be replaced
+//' @param newname (character) Name of new biome
+//' @export
+// [[Rcpp::export]]
+Environment rename_biome(Environment core, std::string oldname, std::string newname)
+{
+    Hector::Core *hcore = gethcore(core);
+    hcore->renameBiome(oldname, newname);
+    return core;
 }
 
 
@@ -196,7 +255,7 @@ double getdate(List core)
 //'
 //' Messages are the mechanism used to get data from Hector model components and
 //' to set values within components.
-//' 
+//'
 //' A message comprises a type (e.g. GETDATA to retrieve data from a component, or SETDATA to
 //' set data in a component), a capability, which identifies the information to be operated
 //' on (e.g. Atmospheric CO2 concentration, or global total radiative forcing), and an optional
@@ -225,11 +284,11 @@ double getdate(List core)
 //' @param unit (String) Unit for the value vector.
 //' @export
 // [[Rcpp::export]]
-DataFrame sendmessage(List core, String msgtype, String capability, NumericVector date,
+DataFrame sendmessage(Environment core, String msgtype, String capability, NumericVector date,
                       NumericVector value, String unit)
 {
     Hector::Core *hcore = gethcore(core);
-    
+
     if(value.size() != date.size() && value.size() != 1) {
         Rcpp::stop("Value must have length 1 or same length as date.");
     }
@@ -262,23 +321,23 @@ DataFrame sendmessage(List core, String msgtype, String capability, NumericVecto
                 ival = 0;
             else
                 ival = i;
-            
+
             double tempval;
             if(NumericVector::is_na(value[ival]))
                 tempval = 0;
             else
                 tempval = value[ival];
-            
+
             double tempdate;
             if(NumericVector::is_na(date[i]))
                 tempdate = Hector::Core::undefinedIndex();
             else
                 tempdate = date[i];
-            
+
             Hector::message_data info(tempdate, Hector::unitval(tempval, utype));
-            
+
             Hector::unitval rtn = hcore->sendMessage(msgstr, capstr, info);
-            
+
             unitsout[i] = rtn.unitsName();
             valueout[i] = rtn.value(rtn.units());
         }
@@ -292,7 +351,19 @@ DataFrame sendmessage(List core, String msgtype, String capability, NumericVecto
     // Assemble a data frame with the results: date, var, value, units
     DataFrame result =
         DataFrame::create(Named("year")=date, Named("variable")=capability,
-                          Named("value")=valueout, Named("units")=unitsout);
+                          Named("value")=valueout,
+                          Named("units")=unitsout,
+                          Named("stringsAsFactors")=false);
 
     return result;
+}
+
+// helper for isactive()
+// [[Rcpp::export]]
+bool chk_core_valid(Environment core)
+{
+    int idx = core["coreidx"];
+    Hector::Core *hcore = Hector::Core::getcore(idx);
+
+    return hcore != NULL;
 }

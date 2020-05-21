@@ -1,0 +1,212 @@
+---
+title: A tour of the Hector R interface
+author: Alexey Shiklomanov
+date: "2018-10-17"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Intro to Hector}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+This vignette provides a basic introduction for running Hector with R.
+First, it shows how to do a simple Hector run with one of Hector's built-in scenarios.
+Then, it shows how to modify Hector parameters from within R and uses this functionality to perform a simple sensitivity analysis of how the CO$_2$ fertilization parameter $\beta$ affects several Hector output variables.
+
+# Basic run
+
+First, load the `hector` package.
+
+```{r  load-packages}
+library(hector) 
+```
+
+Hector is configured via an INI file, which defines run metadata, inputs (e.g. emissions scenarios), and parameters.
+For details on this file, see [InputFiles](https://github.com/JGCRI/hector/wiki/InputFiles) on the Hector GitHub Wiki.
+
+These files ship with the Hector R package, in the `input` subdirectory, which allows them to be accessed via `system.file`.
+Below, we get the path of the input file corresponding to the scenario RCP 4.5.
+
+```{r  ini-file }
+ini_file <- system.file("input/hector_rcp45.ini", package = "hector") 
+```
+
+Next, we initialize a Hector instance, or "core", using this configuration.
+This core is a self-contained object that contains information about all of Hector's inputs and outputs.
+The core is initialized via the `newcore` function:
+
+```{r  init-core}
+core <- newcore(ini_file)
+core 
+```
+
+Now that we have configured a Hector core, we can run it with the `run` function.
+
+```{r  run-core }
+run(core) 
+```
+
+Notice that this itself returns no output.
+Instead, the output is stored inside the core object.
+To retrieve it, we use the `fetchvars` function.
+Below, we also specify that we want to retrieve results for the years 2000 to 2300.
+
+```{r  get-results }
+results <- fetchvars(core, 2000:2300)
+head(results) 
+```
+
+The results are returned as a long, [tidy](https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html) `data.frame`.
+This makes it easy to plot them using `ggplot2`.
+
+```{r  plot }
+library(ggplot2)
+
+ggplot(results) +
+  aes(x = year, y = value) +
+  geom_line() +
+  facet_wrap(~variable, scales = "free_y")
+```
+
+# Setting parameters
+
+The Hector R interface interacts with parameters and variables in the same way.
+Therefore, the variables can be set and checked via `setvar` and `fetchvars`, respectively.
+
+First, let's get the current value of $\beta$ (beta), the CO$_2$ fertilization factor.
+Because variables and parameter names have to be retrieved from the Hector core, they are stored as R functions (e.g. `BETA()`).
+However, these functions simply return a string corresponding to the variable name.
+
+```{r variable-example}
+BETA()
+```
+
+Just as we did to load results, we use `fetchvars` to query parameter values.
+
+```{r  get-beta}
+beta <- fetchvars(core, NA, BETA())
+beta 
+```
+
+The result of `fetchvars` is always a `data.frame` with the same columns, even when returning a parameter value.
+Note also the use of `NA` in the second argument (`dates`).
+
+The current value is set to 0.36 (note that it is a unitless quantity, hence the `(unitless)` unit).
+Let's bump it up a little to 0.40.
+
+```{r set-beta }
+setvar(core, NA, BETA(), 0.40, "(unitless)") 
+```
+
+Similarly to `run`, this returns no output.
+Rather, the change is stored inside the Hector "core" object.
+We can confirm that our change took effect with another call to `fetchvars`.
+
+```{r check-set-beta}
+fetchvars(core, NA, BETA()) 
+```
+
+Now, let's run the simulation again with a higher value for CO2 fertilization.
+But, before we do, let's look once again at the Hector `core` object.
+
+```{r core-inspect}
+core
+```
+
+Notice that `Current date` is set to 2300.
+This is because we have already run this core to its end date.
+The ability to stop and resume Hector runs with the same configuration, possibly with adjusting values of certain variables while stopped, is an essential part of the model's functionality.
+But, it's not something we're interested in here.
+We have already stored the previous run's output in `results` above, so we can safely reset the core here.
+
+```{r reset-core}
+reset(core)
+```
+
+This will effectively "rewind" the core back to either the provided `date` (defaults to 0 if missing) or the model start date (set in the INI file; default is 1745), whichever is greater.
+In addition, if the `date` argument is less than the model start date and spinup is enabled (`do_spinup = 1` in the INI file), then the core will re-do its spinup process with the current set of parameters.
+
+***
+**NOTE**
+
+Because changing Hector parameters can change the post-spinup equilibrium values of state variables, Hector will automatically run `reset(core, date = 0)` at the beginning of the next `run` call if it detects that any of its parameters have changed.
+This means that is not currently possible to change Hector _parameters_ (such as $\beta$ or preindustrial CO~2~) part-way through a run.
+However, it is still possible to change the values of certain _drivers_ and _state variables_ (such as the CO~2~ emissions) in the middle of a run.
+
+***
+
+So, as a result of the `reset` command, the core's "Current Date" is now the model start date--1745.
+We can now perform another run with the new CO$_2$ fertilization value.
+
+```{r  run-sim-2}
+run(core)
+results_40 <- fetchvars(core, 2000:2300)
+head(results_40) 
+```
+
+Let's see how changing the CO2 fertilization affects our results.
+
+```{r  compare-co2-fert }
+results[["beta"]] <- 0.36
+results_40[["beta"]] <- 0.40
+compare_results <- rbind(results, results_40)
+
+ggplot(compare_results) +
+  aes(x = year, y = value, color = factor(beta)) +
+  geom_line() +
+  facet_wrap(~variable, scales = "free_y") +
+  guides(color = guide_legend(title = expression(beta)))
+```
+
+As expected, increasing CO2 fertilization increases the strength of the terrestrial carbon sink and therefore reduces atmospheric CO2, radiative forcing, and global temperature.
+However, the effects only become pronounced in the latter half of the 21st Century.
+
+
+# Sensitivity analysis
+
+Hector runs fairly quickly, which makes it easy to run lots of simulations under slightly different configurations.
+One application of this is to explore the sensitivity of Hector to variability in its parameters.
+
+The basic procedure for this is the same as in the previous section.
+However, to save typing (and, in general, to be good programmers!), let's create some functions.
+
+```{r  functions }
+#' Run Hector with a parameter set to a particular value, and return results 
+#'
+#' @param core Hector core to use for execution
+#' @param parameter Hector parameter name, as a function call (e.g.
+#'   `BETA()`)
+#' @param value Parameter value
+#' @param dates Sequence of years for running simulation (default = #'
+#'   `2000:2300`)
+#' @param ini_file Hector parameter file (default = RCP 4.5 file)
+#' @return Results, as data.frame, with additional `parameter_value`
+#'   column
+run_with_param <- function(core, parameter, value) {
+  old_value <- fetchvars(core, NA, parameter)
+  unit <- as.character(old_value[["units"]])
+  setvar(core, NA, parameter, value, unit)
+  reset(core)
+  run(core)
+  result <- fetchvars(core, 2000:2300)
+  result[["parameter_value"]] <- value
+  result
+}
+
+#' Run Hector with a range of parameter values
+run_with_param_range <- function(core, parameter, values) {
+  mapped <- Map(function(x) run_with_param(core, parameter, x), values)
+  Reduce(rbind, mapped)
+}
+
+sensitivity_beta <- run_with_param_range(core, BETA(), seq(0, 1, 0.05))
+
+ggplot(sensitivity_beta) +
+  aes(x = year, y = value, color = parameter_value, group = parameter_value) +
+  geom_line() +
+  facet_wrap(~variable, scales = "free_y") +
+  guides(color = guide_colorbar(title = expression(beta))) +
+  scale_color_viridis_c() 
+```
+
+As we can see, the ability of CO$_2$ fertilization to offset carbon emissions is saturating -- at high values of $\beta$, the same increase in $\beta$ translates into a smaller decrease in atmospheric CO$_2$ and related climate effects.

@@ -8,8 +8,9 @@
 ^LICENSE.md$
 ^changelog.txt$
 ^.travis.yml$
+^appveyor.yml$
 ^.github$
-
+^wiki/
 ## Files supporting stand-alone hector.
 ^Makefile$
 ^project_files$
@@ -25,3 +26,9 @@
 ^src/makefile.standalone$
 ^src/testing$
 ^misc$
+^data-raw$
+^analysis$
+
+# pkgdown config and output
+^inst/_pkgdown.yml
+^docs/

@@ -12,6 +12,8 @@
  *
  */
 
+#include "boost/algorithm/string.hpp"
+
 #include "imodel_component.hpp"
 #include "halocarbon_component.hpp"
 #include "oh_component.hpp"
@@ -35,7 +37,7 @@
 #include "avisitor.hpp"
 
 namespace Hector {
-  
+
 using namespace std;
 
 //------------------------------------------------------------------------------
@@ -47,14 +49,15 @@ using namespace std;
  *  \sa init()
  */
 Core::Core(Logger::LogLevel loglvl, bool echotoscreen, bool echotofile) :
-  run_name( "" ), 
-  startDate( -1.0 ),
-endDate( -1.0 ),
-lastDate( -1.0), 
-isInited( false ),
-do_spinup( true ),
-max_spinup( 2000 ),
-in_spinup( false )
+    setup_complete(false),
+    run_name( "" ),
+    startDate( -1.0 ),
+    endDate( -1.0 ),
+    lastDate( -1.0),
+    isInited( false ),
+    do_spinup( true ),
+    max_spinup( 2000 ),
+    in_spinup( false )
 {
     glog.open(string(MODEL_NAME), echotoscreen, echotofile, loglvl);
 }
@@ -86,15 +89,15 @@ const string& Core::getComponentName() const {
  */
 void Core::init() {
     H_ASSERT( !isInited, "core has already been initialized" );
-    
+
     // TODO: maybe some model component factory?
     IModelComponent *temp;
-	
+
     temp = new SimpleNbox();
     modelComponents[ temp->getComponentName() ] = temp;
     temp = new CarbonCycleSolver();
     modelComponents[ temp->getComponentName() ] = temp;
-    
+
     temp = new OHComponent();
     modelComponents[ temp->getComponentName() ] = temp;
     temp = new CH4Component();
@@ -115,7 +118,7 @@ void Core::init() {
     modelComponents[ temp->getComponentName() ] = temp;
     temp = new TemperatureComponent();
     modelComponents[ temp->getComponentName() ] = temp;
-    
+
     temp = new HalocarbonComponent( CF4_COMPONENT_BASE );
     modelComponents[ temp->getComponentName() ] = temp;
     temp = new HalocarbonComponent( C2F6_COMPONENT_BASE );
@@ -138,7 +141,7 @@ void Core::init() {
     modelComponents[ temp->getComponentName() ] = temp;
     temp = new HalocarbonComponent( SF6_COMPONENT_BASE );
     modelComponents[ temp->getComponentName() ] = temp;
-    temp = new HalocarbonComponent( HCF22_COMPONENT_BASE );
+    temp = new HalocarbonComponent( HCFC22_COMPONENT_BASE );
     modelComponents[ temp->getComponentName() ] = temp;
     temp = new HalocarbonComponent( CFC11_COMPONENT_BASE );
     modelComponents[ temp->getComponentName() ] = temp;
@@ -154,9 +157,9 @@ void Core::init() {
     modelComponents[ temp->getComponentName() ] = temp;
     temp = new HalocarbonComponent( CH3CCl3_COMPONENT_BASE );
     modelComponents[ temp->getComponentName() ] = temp;
-    temp = new HalocarbonComponent( HCF141b_COMPONENT_BASE );
+    temp = new HalocarbonComponent( HCFC141b_COMPONENT_BASE );
     modelComponents[ temp->getComponentName() ] = temp;
-    temp = new HalocarbonComponent( HCF142b_COMPONENT_BASE );
+    temp = new HalocarbonComponent( HCFC142b_COMPONENT_BASE );
     modelComponents[ temp->getComponentName() ] = temp;
     temp = new HalocarbonComponent( halon1211_COMPONENT_BASE );
     modelComponents[ temp->getComponentName() ] = temp;
@@ -168,7 +171,7 @@ void Core::init() {
     modelComponents[ temp->getComponentName() ] = temp;
     temp = new HalocarbonComponent( CH3Br_COMPONENT_BASE );
     modelComponents[ temp->getComponentName() ] = temp;
-    
+
     temp = new BlackCarbonComponent();
     modelComponents[ temp->getComponentName() ] = temp;
     temp = new OrganicCarbonComponent();
@@ -177,7 +180,7 @@ void Core::init() {
     modelComponents[ temp->getComponentName() ] = temp;
     temp = new OzoneComponent();
     modelComponents[ temp->getComponentName() ] = temp;
-    
+
     for( NameComponentIterator it = modelComponents.begin(); it != modelComponents.end(); ++it ) {
         try {
             ( *it ).second->init( this );
@@ -187,7 +190,7 @@ void Core::init() {
             throw;
         }
     }
-    
+
     // Set that the core has now been initialized.
     isInited = true;
 }
@@ -228,7 +231,7 @@ void Core::setData( const string& componentName, const string& varName,
         }
     } else {    // data is not intended for us
         IModelComponent* component = getComponentByName( componentName );
-        
+
         if( varName == D_ENABLED ) {
             // The core intercepts "enabled=xxx" lines to mark components as disabled
             if( data.getUnitval(U_UNDEFINED) <= 0 ) {
@@ -259,7 +262,7 @@ void Core::setData( const string& componentName, const string& varName,
  */
 void Core::addVisitor( AVisitor* visitor ) {
     H_LOG( glog, Logger::DEBUG) << "Core adding a visitor" << endl;
-    
+
     modelVisitors.push_back( visitor );
 }
 
@@ -276,61 +279,71 @@ void Core::addVisitor( AVisitor* visitor ) {
  *           3) Topological sort components over dependency graph
  *           4) Call each component's prepareToRun() subroutine
  *           5) Run spin-up, if required
- *  
+ *
  *  \exception h_exception An error which may occur at any stage of the process.
  */
 void Core::prepareToRun(void) throw (h_exception)
 {
-    
-    // ------------------------------------
-    // 1. Go through the list of components that have been disabled and remove them
-    // from the capability and component lists
-    
-    for( vector<string>::iterator it=disabledComponents.begin(); it != disabledComponents.end(); ++it ) {
-        H_LOG( glog, Logger::WARNING ) << "Disabling " << *it << endl;
-        IModelComponent * mcomp = getComponentByName( *it );
-        mcomp->shutDown();
-        delete mcomp;
-        modelComponents.erase( *it );
-        
-        componentMapIterator it2 = componentCapabilities.begin();
-        while( it2 != componentCapabilities.end() ) {
-            if( it2->second==*it ) {
-                H_LOG( glog, Logger::DEBUG) << "--erasing " << it2->first << " " << it2->second << endl;
-                componentCapabilities.erase( it2++ );
+
+    /* Most of this stuff only needs to be done once, even if we reset the
+     * model; therefore it would be a good candidate to go in init instead of
+     * here.  However, in order to remove disabled components we have to first
+     * read the input file so that we know which ones are meant to be disabled.
+     * The input file doesn't get read until after init is run, so we have to
+     * defer this setup until here and guard it so that it only gets run
+     * once. */
+    if(!setup_complete) {
+        // ------------------------------------
+        // 1. Go through the list of components that have been disabled and remove them
+        // from the capability and component lists
+
+        for( vector<string>::iterator it=disabledComponents.begin(); it != disabledComponents.end(); ++it ) {
+            H_LOG( glog, Logger::WARNING ) << "Disabling " << *it << endl;
+            IModelComponent * mcomp = getComponentByName( *it );
+            mcomp->shutDown();
+            delete mcomp;
+            modelComponents.erase( *it );
+
+            componentMapIterator it2 = componentCapabilities.begin();
+            while( it2 != componentCapabilities.end() ) {
+                if( it2->second==*it ) {
+                    H_LOG( glog, Logger::DEBUG) << "--erasing " << it2->first << " " << it2->second << endl;
+                    componentCapabilities.erase( it2++ );
+                } else {
+                    ++it2;
+                }
+            } // while
+        } // for
+
+        // ------------------------------------
+        // 2. At this point all components should have registered both their capabilities
+        // and dependencies. The latter are registered as dependencies on capabilities,
+        // so now we go through the componentDependencies map, find the associated
+        // component, and register the link with depFinder.
+        DependencyFinder depFinder;
+        H_LOG( glog, Logger::NOTICE ) << "Computing dependencies and re-ordering components..." << endl;
+        for( componentMapIterator it = componentDependencies.begin(); it != componentDependencies.end(); ++it ) {
+            //        H_LOG( glog, Logger::DEBUG) << it->first << " " << it->second << endl;
+            if( checkCapability( it->second ) ) {
+                depFinder.addDependency( it->first, getComponentByCapability( it->second )->getComponentName() );
             } else {
-                ++it2;
+                H_LOG( glog, Logger::SEVERE) << "Capability " << it->second << " not found but requested by " << it->first << endl;
+                H_LOG( glog, Logger::WARNING) << "The model will almost certainly not run successfully!" << endl;
             }
-        } // while
-    } // for
-    
-    // ------------------------------------
-    // 2. At this point all components should have registered both their capabilities
-    // and dependencies. The latter are registered as dependencies on capabilities,
-    // so now we go through the componentDependencies map, find the associated
-    // component, and register the link with depFinder.
-    DependencyFinder depFinder;
-    H_LOG( glog, Logger::NOTICE ) << "Computing dependencies and re-ordering components..." << endl;
-    for( componentMapIterator it = componentDependencies.begin(); it != componentDependencies.end(); ++it ) {
-        //        H_LOG( glog, Logger::DEBUG) << it->first << " " << it->second << endl;
-        if( checkCapability( it->second ) ) {
-            depFinder.addDependency( it->first, getComponentByCapability( it->second )->getComponentName() );
-        } else {
-            H_LOG( glog, Logger::SEVERE) << "Capability " << it->second << " not found but requested by " << it->first << endl;
-            H_LOG( glog, Logger::WARNING) << "The model will almost certainly not run successfully!" << endl;
         }
+
+        // ------------------------------------
+        // 3. Now that all dependency information has been resolved and entered, create an ordering,
+        // and then re-sort the modelComponents map based on this new ordering
+        depFinder.createOrdering();
+        DependencyOrderingComparator comp( depFinder.getOrdering() );
+        modelComponents = map<string, IModelComponent*,
+                              DependencyOrderingComparator>(modelComponents.begin(), modelComponents.end(), comp );
+
     }
-    
-    // ------------------------------------
-    // 3. Now that all dependency information has been resolved and entered, create an ordering,
-    // and then re-sort the modelComponents map based on this new ordering
-    depFinder.createOrdering();
-    DependencyOrderingComparator comp( depFinder.getOrdering() );
-    modelComponents = map<string, IModelComponent*, DependencyOrderingComparator>(
-                                                                                  modelComponents.begin(),
-                                                                                  modelComponents.end(),
-                                                                                  comp );
-    
+    setup_complete = true;
+
+    /* Everything from here on down is ok to run more than once */
     // ------------------------------------
     // 4. Tell model components we are finished sending data and about to start running.
     H_LOG( glog, Logger::NOTICE) << "Preparing to run..." << endl;
@@ -338,15 +351,15 @@ void Core::prepareToRun(void) throw (h_exception)
         //       H_LOG( glog, Logger::DEBUG) << "Preparing " << (*it).second->getComponentName() << " to run" << endl;
         ( *it ).second->prepareToRun();
     }
-    
+
     // ------------------------------------
     // 5. Spin up the model
     if( do_spinup ) {
         H_LOG( glog, Logger::NOTICE) << "Spinning up model..." << endl;
-        run_spinup(); 
+        run_spinup();
     } else {
         H_LOG( glog, Logger::WARNING) << "No model spinup was requested" << endl;
-    } // if 
+    } // if
 }
 
 bool Core::run_spinup()
@@ -358,7 +371,7 @@ bool Core::run_spinup()
         spunup = true;
         for( NameComponentIterator it = modelComponents.begin(); it != modelComponents.end(); ++it )
             spunup = spunup && ( *it ).second->run_spinup( step );
-        
+
         // Let visitors attempt to collect data if necessary
         for( VisitorIterator visitorIt = modelVisitors.begin(); visitorIt != modelVisitors.end(); ++visitorIt ) {
             if( ( *visitorIt )->shouldVisit( in_spinup, step ) ) {
@@ -376,7 +389,7 @@ bool Core::run_spinup()
 
     return spunup;
 }
-    
+
 //------------------------------------------------------------------------------
 /*! \brief Run the components for one-year time steps through runtodate
  *
@@ -424,12 +437,12 @@ void Core::run(double runtodate) throw ( h_exception ) {
 
     // ------------------------------------
     // 6. Run all model dates.
-    H_LOG( glog, Logger::NOTICE) << "Running..." << endl; 
+    H_LOG( glog, Logger::NOTICE) << "Running..." << endl;
     for(double currDate = lastDate+1.0; currDate <= runtodate; currDate += 1.0 ) {
         for( NameComponentIterator it = modelComponents.begin(); it != modelComponents.end(); ++it ) {
             ( *it ).second->run( currDate );
         }
-        
+
         // Let visitors attempt to collect data if necessary
         for( VisitorIterator visitorIt = modelVisitors.begin(); visitorIt != modelVisitors.end(); ++visitorIt ) {
             if( ( *visitorIt )->shouldVisit( in_spinup, currDate ) ) {
@@ -448,13 +461,15 @@ void Core::reset(double resetdate)
     bool rerun_spinup = false;
     H_LOG(glog, Logger::NOTICE) << "Resetting model to t= " << resetdate << endl;
     if(resetdate < getStartDate()) {
-        H_LOG(glog, Logger::NOTICE) << "Requested reset time before start date.  "
-                                    << "Resetting to start date.\n";
-        resetdate = getStartDate();
-
         if(do_spinup) {
             rerun_spinup = true;
+            resetdate = 0;      // t=0 is the first iteration of the spinup.
             H_LOG(glog, Logger::NOTICE) << "Rerunning spinup.\n";
+        }
+        else {
+            H_LOG(glog, Logger::NOTICE) << "Requested reset time before start date.  "
+                                        << "Resetting to start date.\n";
+            resetdate = getStartDate();
         }
     }
 
@@ -462,14 +477,22 @@ void Core::reset(double resetdate)
         H_LOG(glog, Logger::DEBUG) << "Resetting component: " << it->first << endl;
         it->second->reset(resetdate);
     }
-    if(rerun_spinup)
-        run_spinup();
 
-    lastDate = resetdate;
+    // The prepareToRun function reruns all of the initial setup, including the
+    // spinup.  This is necessary because we may have changed some of the model
+    // parameters, and for many components the parameters produce their effect
+    // by influencing the initial state.
+    if(rerun_spinup)
+        prepareToRun();
+
+    if(rerun_spinup)
+        lastDate = getStartDate();
+    else
+        lastDate = resetdate;
 }
 
 
-/*! \brief Shut down all model components 
+/*! \brief Shut down all model components
  *  \details After this function is called no components are valid,
  *           and you must not call run() again.
  */
@@ -490,11 +513,11 @@ void Core::shutDown()
 IModelComponent* Core::getComponentByName( const string& componentName ) const throw ( h_exception )
 {
     CNameComponentIterator it = modelComponents.find( componentName );
-    
+
     // throw an exception for an unknown component
     string err = "Unknown model component: " + componentName;
     H_ASSERT( it != modelComponents.end(), err );
-    
+
     return ( *it ).second;
 }
 
@@ -506,15 +529,15 @@ IModelComponent* Core::getComponentByName( const string& componentName ) const t
 IModelComponent* Core::getComponentByCapability( const string& capabilityName ) const throw ( h_exception )
 {
     H_ASSERT( isInited, "getComponentByCapability not available until core is initialized")
-    
+
     multimap<string,string>::const_iterator it = componentCapabilities.find( capabilityName );
-    
+
     // Note that even if multiple components registered a capability, this will return only the first
-    
+
     // throw an exception for an unknown capability
     string err = "Unknown model capability: " + capabilityName;
     H_ASSERT( componentCapabilities.count( capabilityName ), err );
-    
+
     return getComponentByName( ( *it ).second );
 }
 
@@ -522,29 +545,51 @@ IModelComponent* Core::getComponentByCapability( const string& capabilityName ) 
 /*! \brief Register a capability as associated with a component.
  *  \param capabilityName The capability of the component to register.
  *  \param componentName The name of the associated component.
+ *  \param warndupe If true (the default) warn when a duplicate capability
+ *                  is declared.  This should only be set to false when being
+ *                  called from registerInput, which sometimes creates duplicates
+ *                  for benign reasons.
  *  \exception h_exception If the componentName was not recognized.
+ * \note By "capability" we mean any piece of data that the component wants to expose to the model core or other components; this can be an input, an output, or an internal variable.
  */
-void Core::registerCapability( const string& capabilityName, const string& componentName
+void Core::registerCapability(const string& capabilityName, const string& componentName, bool warndupe
                               )  throw ( h_exception ){
     H_ASSERT( !isInited, "registerCapability not available after core is initialized")
-    
-    if( componentCapabilities.count( capabilityName ) ) {
+
+    // check whether the capability already exists
+    int ncap = componentCapabilities.count(capabilityName);
+    if(ncap > 0  && warndupe) {
+        // If this capability is a dupe, issue a warning, unless we
+        // have been instructed not to.
         H_LOG( glog, Logger::WARNING ) << componentName << " is declaring capability " << capabilityName << " previously registered" << endl;
     }
-    componentCapabilities.insert( pair<string, string>( capabilityName, componentName ) );
+    else if(ncap == 0) {
+        // Only add the capability if it doesn't already exist.
+        // Adding a duplicate capability has no useful effect anyhow.
+        componentCapabilities.insert( pair<string, string>( capabilityName, componentName ) );
+        H_LOG(glog, Logger::DEBUG) << capabilityName << " registered to component " << componentName << "\n";
+
+    }
 }
 
 //------------------------------------------------------------------------------
 /*! \brief Register a component as accepting a certain input
+ *
+ *  \details Associate the input capability with a component.  We also
+ *           register the input as a capability (under the same name), allowing other objects to query the host component for its value(s).
+ *           so that other components can read these values.
+ *
  *  \param inputName The name of the input the component can accept
  *  \param componentName The name of the component.
  *  \note It is permissible for more than one component to accept the same
- *        inputs.
+ *        inputs; however, only one of them should allow a corresponding
+ *        capability to be declared.
  */
-void Core::registerInput( const string& inputName, const string& componentName ) {
-    H_ASSERT( !isInited, "registerInput not available after core is initialized") 
+void Core::registerInput(const string& inputName, const string& componentName) {
+    H_ASSERT( !isInited, "registerInput not available after core is initialized")
     componentInputs.insert( pair<string, string>( inputName, componentName ) );
-} 
+    registerCapability(inputName, componentName, false);
+}
 
 //------------------------------------------------------------------------------
 /*! \brief Check whether a capability has been registered with the core
@@ -553,7 +598,7 @@ void Core::registerInput( const string& inputName, const string& componentName )
  *  \returns int Count of the components registered to provide this.
  */
 int Core::checkCapability( const string& capabilityName ) {
-    
+
     return( int( componentCapabilities.count( capabilityName ) ) );
 }
 
@@ -564,10 +609,10 @@ int Core::checkCapability( const string& capabilityName ) {
  */
 void Core::registerDependency( const string& capabilityName, const string& componentName ) {
     H_ASSERT( !isInited, "registerDependency not available after core is initialized")
-    
+
     componentDependencies.insert( pair<string, string>( componentName, capabilityName ) );
 }
-   
+
 
 //------------------------------------------------------------------------------
 /*! \brief Look up component and send message in one operation without any need
@@ -593,6 +638,17 @@ unitval Core::sendMessage( const std::string& message,
                           const std::string& datum,
                           const message_data& info ) throw ( h_exception )
 {
+
+    std::vector<std::string> datum_split;
+    boost::split( datum_split, datum, boost::is_any_of( SNBOX_PARSECHAR ) );
+    H_ASSERT( datum_split.size() < 3, "max of one separator allowed in variable names" );
+    std::string datum_capability;
+    if ( datum_split.size() == 2 ) {
+        datum_capability = datum_split[ 1 ];
+    } else {
+        datum_capability = datum_split[ 0 ];
+    }
+
     if (message == M_GETDATA || message == M_DUMP_TO_DEEP_OCEAN) {
         // M_GETDATA is used extensively by components to query each other re state
         // M_DUMP_TO_DEEP_OCEAN is a special message used only to constrain the atmosphere
@@ -605,32 +661,18 @@ unitval Core::sendMessage( const std::string& message,
             H_THROW("Invalid sendMessage/GETDATA.  Check global log for details.");
         }
         else {
-            componentMapIterator it = componentCapabilities.find( datum );
-            
+            componentMapIterator it = componentCapabilities.find( datum_capability );
+
             string err = "Unknown model datum: " + datum;
-            H_ASSERT( checkCapability( datum ), err );
+            H_ASSERT( checkCapability( datum_capability ), err );
             return getComponentByName( ( *it ).second )->sendMessage( message, datum, info );
         }
     }
     else if (message == M_SETDATA ) {
-        if( isInited ) {
-            // If core initialization has been completed, then the only
-            // setdata messages allowed are ones keyed to a date that we
-            // haven't gotten to yet.
-            if(info.date == Core::undefinedIndex()) {
-                H_LOG(glog, Logger::SEVERE)
-                    << "Once core is initialized, the only SETDATA messages allowed are for dates after the current model date.\n"
-                    << "\tdatum: " << datum
-                    << "\tcurrent date: " << lastDate << "\tmessage date: " << info.date
-                    << std::endl;
-                H_THROW("Invalid sendMessage/SETDATA.  Check global log for details.");
-            }
-        }
-        
         // locate the components that take this kind of input.  If
         // there are multiple, we send the message to all of them.
         pair<componentMapIterator, componentMapIterator> itpr =
-            componentInputs.equal_range(datum);
+            componentInputs.equal_range(datum_capability);
         if(itpr.first == itpr.second) {
             H_LOG(glog, Logger::SEVERE)
                 << "No such input: " << datum << "  Aborting.";
@@ -638,16 +680,16 @@ unitval Core::sendMessage( const std::string& message,
         }
         for(componentMapIterator it=itpr.first; it != itpr.second; ++it)
             getComponentByName(it->second)->sendMessage(message, datum, info);
-        
+
         return info.value_unitval;
     }
     else {
         H_LOG(glog, Logger::SEVERE)
             << "Unknown message: " << message << "  Aborting.";
         H_THROW("Invalid message type in sendMessage.");
-    } 
+    }
 }
-    
+
 //------------------------------------------------------------------------------
 /*! \brief Add an additional model component to be run.
  *  \param modelComponent The model component to add.
@@ -657,7 +699,7 @@ unitval Core::sendMessage( const std::string& message,
  */
 void Core::addModelComponent( IModelComponent* modelComponent ) throw ( h_exception ) {
     H_ASSERT( !isInited, "Model components can only be added before initialization." );
-    
+
     modelComponents[ modelComponent->getComponentName() ] = modelComponent;
 }
 
@@ -665,7 +707,7 @@ void Core::addModelComponent( IModelComponent* modelComponent ) throw ( h_except
 // documentation is inherited
 void Core::accept( AVisitor* visitor ) {
     visitor->visit( this );
-    
+
     // forward the accept to the contained model components
     for( NameComponentIterator it = modelComponents.begin(); it != modelComponents.end(); ++it ) {
         ( *it ).second->accept( visitor );
@@ -684,12 +726,12 @@ double Core::undefinedIndex() {
 
 std::vector<Core *> Core::core_registry;
 
-/*! Create a core and add it to the registry 
+/*! Create a core and add it to the registry
  */
 int Core::mkcore(bool logtofile, Logger::LogLevel loglvl, bool logtoscrn)
 {
     core_registry.push_back(new Core(loglvl, logtoscrn, logtofile));
-    return core_registry.size() - 1; 
+    return core_registry.size() - 1;
 }
 
 /*! Get a core by index
@@ -708,7 +750,7 @@ Core *Core::getcore(int idx)
 }
 
 
-/*! Shutdown a core in the global registry 
+/*! Shutdown a core in the global registry
  * \details Call the core's shutdown method, delete the core object,
  * and set its entry in the registry to a null pointer. If an invalid
  * index is passed, this is a no-op.
@@ -722,7 +764,65 @@ void Core::delcore(int idx)
         delete core;
         core_registry[idx] = NULL;
     }
-    // If core is null, it's already been shutdown, so do nothing. 
+    // If core is null, it's already been shutdown, so do nothing.
+}
+
+//! Retrieve the current biome list
+std::vector<std::string> Core::getBiomeList() const
+{
+    IModelComponent* cmodel_i = getComponentByCapability( D_VEGC );
+    SimpleNbox* cmodel = dynamic_cast<SimpleNbox*>(cmodel_i);
+    if (cmodel) {
+        return( cmodel->getBiomeList() );
+    } else {
+        H_THROW("Failed to retrieve biome list because of error in dynamic cast to `SimpleNbox`.")
+    }
+}
+
+/*! Create a new biome
+ * \details Add the biome to `biome_list`, set all pool values to
+ *  zero, and set all parameters to the values of the previous biome.
+ */
+void Core::createBiome(const std::string& biome)
+{
+    IModelComponent* cmodel_i = getComponentByCapability( D_VEGC );
+    CarbonCycleModel* cmodel = dynamic_cast<CarbonCycleModel*>(cmodel_i);
+    if (cmodel) {
+        return( cmodel->createBiome(biome) );
+    } else {
+        H_THROW("Failed to create biome because of error in dynamic cast to `SimpleNbox`.")
+    }
+}
+
+/*! Delete a biome
+ * \details Remove the biome from `biome_list` and `erase` all
+ * associated pool and parameter values.
+ */
+void Core::deleteBiome(const std::string& biome)
+{
+    IModelComponent* cmodel_i = getComponentByCapability( D_VEGC );
+    CarbonCycleModel* cmodel = dynamic_cast<CarbonCycleModel*>(cmodel_i);
+    if (cmodel) {
+        return( cmodel->deleteBiome(biome) );
+    } else {
+        H_THROW("Failed to delete biome because of error in dynamic cast to `SimpleNbox`.")
+    }
+}
+
+/*! Rename a biome
+ * \details Create a new biome called `newname` (see `createBiome`)
+ * and set all pools and parameters to the values of `oldname`. Then,
+ * delete `oldname` (see `deleteBiome`).
+ */
+void Core::renameBiome(const std::string& oldname, const std::string& newname)
+{
+    IModelComponent* cmodel_i = getComponentByCapability( D_VEGC );
+    CarbonCycleModel* cmodel = dynamic_cast<CarbonCycleModel*>(cmodel_i);
+    if (cmodel) {
+        return( cmodel->renameBiome(oldname, newname) );
+    } else {
+        H_THROW("Failed to rename biome because of error in dynamic cast to `SimpleNbox`.")
+    }
 }
 
 }

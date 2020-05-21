@@ -10,7 +10,7 @@ shutdown(core)
 \item{core}{Handle to a Hector instance}
 }
 \value{
-The Hector handle, modified to show that it is no longer active
+The Hector instance handle
 }
 \description{
 Shutting down an instance will free the instance itself and all of the objects it created. Any attempted
@@ -22,3 +22,9 @@ This function should be called as \code{mycore <- shutdown(mycore)} so that the 
 from active to inactive will be recorded in the caller.
 }
 
+\seealso{
+Other main user interface functions: \code{\link{fetchvars}},
+  \code{\link{newcore}}, \code{\link{reset}},
+  \code{\link{run}}, \code{\link{setvar}}
+}
+\concept{main user interface functions}

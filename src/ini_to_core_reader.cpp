@@ -15,7 +15,16 @@
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/algorithm/string/trim.hpp>
+
+// ANS: If using the R package, use Rcpp to call R's file processing
+// functions. Otherwise (e.g. if building standalone Hector), fall
+// back to boost::filesystem (which needs to be installed).
+#ifdef USE_RCPP
+#include <Rcpp.h>
+#else
 #include <boost/filesystem.hpp>
+namespace fs = boost::filesystem;
+#endif
 
 #include "core.hpp"
 #include "message_data.hpp"
@@ -23,10 +32,8 @@
 #include "ini.h"
 #include "csv_table_reader.hpp"
 
-namespace fs = boost::filesystem;
-
 namespace Hector {
-  
+
 using namespace std;
 
 //------------------------------------------------------------------------------
@@ -57,7 +64,7 @@ INIToCoreReader::~INIToCoreReader() {
 void INIToCoreReader::parse( const string& filename ) throw ( h_exception ) {
     iniFilePath = filename;
     int errorCode = ini_parse( filename.c_str(), valueHandler, this );
-    
+
     // handle c errors by turning them into exceptions which can be handled later
     if( errorCode == -1 ) {
         H_THROW( "Could not open " + filename );
@@ -82,9 +89,17 @@ void INIToCoreReader::parse( const string& filename ) throw ( h_exception ) {
 int INIToCoreReader::valueHandler( void* user, const char* section, const char* name,
                                   const char* value )
 {
+    #ifdef USE_RCPP
+    // Load R functions for path management
+    Rcpp::Environment base("package:base");
+    Rcpp::Function normalizePath = base["normalizePath"];
+    Rcpp::Function dirname = base["dirname"];
+    Rcpp::Function filepath = base["file.path"];
+    #endif
+
     static const string csvFilePrefix = "csv:";
     INIToCoreReader* reader = (INIToCoreReader*)user;
-    
+
     H_ASSERT( reader->core, "core pointer is null!" );
     string nameStr = name;
     string valueStr = value;
@@ -93,11 +108,11 @@ int INIToCoreReader::valueHandler( void* user, const char* section, const char* 
         if( startBracket != nameStr.end() ) {
             // the variableName[2000] = 5.0 case
             StringIter endBracket = find( nameStr.begin(), nameStr.end(), ']' );
-            
+
             // the parseTSeriesIndex method will do error checking on if the brackets
             // were found and make sense
             double valueIndex = parseTSeriesIndex( startBracket, endBracket, nameStr.end() );
-            
+
             // substring the first part of name before the open bracket which is the
             // actual variable name the core knows about
             nameStr = string( static_cast<StringIter>( nameStr.begin() ), startBracket );
@@ -106,18 +121,43 @@ int INIToCoreReader::valueHandler( void* user, const char* section, const char* 
             reader->core->setData( section, nameStr, data );
         } else if( boost::starts_with( valueStr, csvFilePrefix ) ) {
             // the variableName = csv:input/table.csv case
-            
+
             // remove the special case identifier to figure out the actual file name
             // to process
             string csvFileName( valueStr.begin() + csvFilePrefix.size(), valueStr.end() );
-            // when not an absolute path consider the CSV filepath to be
-            // relative to the INI file
+            #ifdef USE_RCPP
+            // ANS: This is the algorithm used if Hector is compiled
+	    // as an R package.
+            //
+	    // If the csvFileName normalizes to a real path, use that.
+            // Otherwise, assume that it is pointing to a file in the
+            // same directory as the INI file.
+            try {
+                // Second argument is "winslash", which is only used
+                // on Windows machines and is ignored for Unix-based
+                // systems. "\\" (single backward slash) is the
+                // default. Need it here to access the third argument
+                // -- mustWork -- which throws the error to be caught
+                // if the path doesn't exist
+                csvFileName = Rcpp::as<string>(normalizePath(csvFileName, "\\", true));
+            } catch (...) {
+                // Get the full path of the INI file with
+                // normalizePath. Then, get just the directory using dirname.
+                Rcpp::String parentPath = dirname(normalizePath(reader->iniFilePath));
+                csvFileName = Rcpp::as<string>(filepath(parentPath, csvFileName));
+            }
+            #else
+            // ANS:: Algorithm for standalone Hector. Same logic -- if
+            // the given path (absolute or relative) points to a file
+            // that exists, use that. Otherwise, assume that the path
+            // is relative to the INI file's directory.
             fs::path csvFilePath( csvFileName );
-            if ( csvFilePath.is_relative() ) {
+            if ( !fs::exists(csvFilePath) ) {
               fs::path iniFilePath( reader->iniFilePath );
               fs::path fullPath( iniFilePath.parent_path() / csvFilePath );
               csvFileName = fullPath.string();
             }
+            #endif
 
             CSVTableReader tableReader( csvFileName );
             tableReader.process( reader->core, section, nameStr );
@@ -138,7 +178,7 @@ int INIToCoreReader::valueHandler( void* user, const char* section, const char* 
         reader->valueHandlerException = e;
         return 0;               // Error code for ini_parse
     }
-    
+
     return 1;
 }
 
@@ -164,9 +204,9 @@ double INIToCoreReader::parseTSeriesIndex( const StringIter startBracket,
     H_ASSERT( startBracket != strEnd, "index formatting issue" );
     H_ASSERT( endBracket != strEnd, "index formatting issue" );
     H_ASSERT( startBracket < endBracket, "index formatting issue" );
-    
+
     using namespace boost;
-    
+
     // substring out the string in between the brackets
     string dateIndexStr( startBracket + 1, endBracket );
     try {

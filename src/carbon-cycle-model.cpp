@@ -15,7 +15,7 @@
 #include "carbon-cycle-model.hpp"
 
 namespace Hector {
-  
+
 //------------------------------------------------------------------------------
 // documentation is inherited
 void CarbonCycleModel::init( Core* core ) {

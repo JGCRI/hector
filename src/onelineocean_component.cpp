@@ -18,7 +18,7 @@
 #include "avisitor.hpp"
 
 namespace Hector {
-  
+
 using namespace std;
 
 //------------------------------------------------------------------------------
@@ -35,7 +35,7 @@ OneLineOceanComponent::~OneLineOceanComponent() {
 // documentation is inherited
 string OneLineOceanComponent::getComponentName() const {
     const string name = ONELINEOCEAN_COMPONENT_NAME;
-    
+
     return name;
 }
 
@@ -44,9 +44,9 @@ string OneLineOceanComponent::getComponentName() const {
 void OneLineOceanComponent::init( Core* coreptr ) {
     logger.open( getComponentName(), false, coreptr->getGlobalLogger().getEchoToFile(), coreptr->getGlobalLogger().getMinLogLevel() );
     H_LOG( logger, Logger::DEBUG ) << "hello " << getComponentName() << std::endl;
-	
+
     core = coreptr;
-    
+
     ocean_c.set(core->getStartDate(), unitval(38000.0, U_PGC));
     total_cflux.set(core->getStartDate(), unitval(0.0, U_PGC_YR));
 }
@@ -58,20 +58,20 @@ unitval OneLineOceanComponent::sendMessage( const std::string& message,
                                            const message_data info ) throw ( h_exception )
 {
     unitval returnval;
-    
+
     if( message==M_GETDATA ) {          //! Caller is requesting data
         return getData( datum, info.date );
-        
+
     } else if( message==M_SETDATA ) {   //! Caller is requesting to set data
         H_THROW("OneLineOcean sendMessage not yet implemented for message=M_SETDATA.");
         //TODO: call setData below
         //TODO: change core so that parsing is routed through sendMessage
         //TODO: make setData private
-        
+
     } else {                        //! We don't handle any other messages
         H_THROW( "Caller sent unknown message: "+message );
     }
-    
+
     return returnval;
 }
 
@@ -81,7 +81,7 @@ void OneLineOceanComponent::setData( const string& varName,
                                      const message_data& data ) throw ( h_exception )
 {
     H_LOG( logger, Logger::DEBUG ) << "Setting " << varName << "[" << data.date << "]=" << data.value_str << std::endl;
-    
+
     try {
         if( varName == D_OCEAN_C ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
@@ -106,13 +106,13 @@ void OneLineOceanComponent::prepareToRun() throw ( h_exception ) {
 //------------------------------------------------------------------------------
 // documentation is inherited
 void OneLineOceanComponent::run( const double runToDate ) throw ( h_exception ) {
-    
+
     double atmos_c = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_C ).value( U_PGC );
     unitval atmos_co2 = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_CO2 );
-    
+
     // This equation gives ~0 flux at atmosphere 588, ocean 38000, and ~2.8 at current day
     total_cflux.set(runToDate,  unitval(-( ( ocean_c.get(runToDate).value( U_PGC ) - 37412 ) - atmos_c  ) * 0.07, U_PGC_YR) );
-    
+
     ocean_c.set(runToDate, unitval(ocean_c.get(runToDate).value( U_PGC ) + total_cflux.get(runToDate).value( U_PGC_YR ), U_PGC) );
 
     oldDate = runToDate;
@@ -122,20 +122,20 @@ void OneLineOceanComponent::run( const double runToDate ) throw ( h_exception ) 
                                    << " atmos_c=" << atmos_c
                                    << " atmos_co2=" << atmos_co2
                                    << std::endl;
-    
+
 }
 
 //------------------------------------------------------------------------------
 // documentation is inherited
 unitval OneLineOceanComponent::getData( const std::string& varName,
                                        const double date ) throw ( h_exception ) {
-    
+
     unitval returnval;
-    
+
     double getdate = date;
     if(date == Core::undefinedIndex())
         getdate = oldDate;
-    
+
     if( varName == D_OCEAN_CFLUX ) {
         returnval = total_cflux.get(getdate);
     } else if( varName == D_OCEAN_C ) {
@@ -143,7 +143,7 @@ unitval OneLineOceanComponent::getData( const std::string& varName,
     } else {
         H_THROW( "Caller is requesting unknown variable: " + varName );
     }
-    
+
     return returnval;
 }
 

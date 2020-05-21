@@ -1,0 +1,53 @@
+---
+title: Hector input files
+---
+
+# General information
+
+When Hector is invoked from the command line, it takes a [single](https://github.com/JGCRI/hector/issues/69) parameter: the name of the primary input file to read. This file, typically stored in the `input/` directory, contains configuration and parameter data controlling the model's run, output, and behavior.
+
+The primary input file is a text [INI-style](http://en.wikipedia.org/wiki/INI_file) file with *sections*, *properties*, and *values*. For example, the beginning of the RCP 4.5 [file](https://github.com/JGCRI/hector/blob/master/input/hector_rcp45.ini) included in the repository looks like this:
+
+```
+; Config file for hector model: RCP45
+;------------------------------------------------------------------------
+[core]
+run_name=rcp45
+```
+
+Here, comments start with a semicolon (`;`); *section names* (`core`) are enclosed in square brackets; and a *property* (`run_name`) is assigned a *value* (`rcp45`). Properties are guaranteed to be unique within a particular section, and all sections match one-to-one with a model [component](ComponentAPI.html).
+
+There are two Hector-specific wrinkles to the INI property-value assignment scheme. First, some properties have a time index that's required when assigning:
+
+```
+Ftalbedo[1750]=0.0
+Ftalbedo[1950]=-0.2
+```
+
+More commonly, such [time series](TimeSeries.html) are assigned by reading data in from a comma-separated value text file:
+
+```
+lucEmissions=csv:input/emissions/RCP45_emissions.csv 
+```
+
+In this case, the `input/emissions/RCP45_emissions.csv` file is parsed and the data in column `lucEmissions` are assigned to the model variable, with a required `Date` column providing the time index.
+
+# List of model parameters
+
+Properties with asterisks (`*`) are optional.
+
+
+| Section (component)      | Property         | Units     | Notes                                                      |
+| ------------------------ | ---------------- | --------- | -----------                                                |
+| **core**                 | `run_name`       | Text      |                                                            |
+|                          | `startDate`      | Year      |                                                            |
+|                          | `endDate`        | Year      |                                                            |
+|                          | `do_spinup*`     | 0/1       | Defaults to 1 (TRUE)                                       |
+|                          | `max_spinup*`    | Numeric   | Defaults to 1000                                           |
+| **carbon-cycle-solver**  | `eps_abs`        | Numeric   | Solution tolerance, Pg C; see [GSL documentation][gsl-ode] |
+|                          | `eps_rel`        | Numeric   | Solution tolerance; see [GSL documentation][gsl-ode]       |
+|                          | `dt`             | Numeric   | Default timestep; see GSL documentation                    |
+|                          | `eps_spinup`     | Numeric   | Spinup tolerance (drift), Pg C                             |
+
+[gsl-ode]: https://www.gnu.org/software/gsl/manual/html_node/Ordinary-Differential-Equations.html#Ordinary-Differential-Equations
+

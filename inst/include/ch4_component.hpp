@@ -21,45 +21,46 @@
 #include "unitval.hpp"
 
 namespace Hector {
-  
+
 //------------------------------------------------------------------------------
 /*! \brief Methane model component.
  */
 class CH4Component : public IModelComponent {
-    
+
 public:
     CH4Component();
     ~CH4Component();
-    
+
     // IModelComponent methods
     virtual std::string getComponentName() const;
-    
+
     virtual void init( Core* core );
-    
+
     virtual unitval sendMessage( const std::string& message,
                                 const std::string& datum,
                                 const message_data info=message_data() ) throw ( h_exception );
-    
+
     virtual void setData( const std::string& varName,
                           const message_data& data ) throw ( h_exception );
-    
+
     virtual void prepareToRun() throw ( h_exception );
-    
+
     virtual void run( const double runToDate ) throw ( h_exception );
-    
+
     virtual void reset(double time) throw(h_exception);
 
     virtual void shutDown();
-    
+
     // IVisitable methods
     virtual void accept( AVisitor* visitor );
-    
+
 	private:
     virtual unitval getData( const std::string& varName,
-                            const double date ) throw ( h_exception );   
+                            const double date ) throw ( h_exception );
      //! emissions time series
     tseries<unitval> CH4_emissions;
     tseries<unitval> CH4;  // CH4 concentrations, ppbv CH4
+    tseries<unitval> CH4_constrain;  // CH4 concentration constraint, ppbv CH4
     unitval M0;     // preindustrial methane, ppbv CH4
     unitval UC_CH4;  // conversion factor between emissions and concentration
     unitval CH4N;   // annual natural emissions, Tg CH4/yr

@@ -1,19 +1,34 @@
 Package: hector
-Title: Run the Hector Simple Climate Model
-Version: 0.1.0
-Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
-Description: Provides R bindings for the Hector Simple Climate Model.
+Title: The Hector Simple Climate Model
+Version: 2.5.0
+Authors@R: c(person("Robert", "Link", email = "robert.link@pnnl.gov", role = c("aut", "cre")),
+	     person("Corinne", "Hartin", email = "corinne.hartin@pnnl.gov", role = "aut"),
+	     person("Ben", "Bond-Lamberty", email = "BondLamberty@pnnl.gov", role = "aut"),
+	     person("Pralit", "Patel", email = "pralit.patel@pnnl.gov", role = "aut"))
+Description: Provides an R interface for the Hector Simple Climate
+    Model.  Using this interface you can set up and initialize the model,
+    change model parameters and emissions inputs, run Hector, and
+    retrieve hector outputs.
 Depends: R (>= 3.3)
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-LinkingTo: Rcpp
-Imports: Rcpp
-RoxygenNote: 6.0.1
-Suggests: testthat
-SystemRequirements: Boost C++ libraries
-Collate: 
+LinkingTo: Rcpp, BH
+Imports: Rcpp (>= 0.12), BH (>= 1.69)
+Suggests:
+    testthat,
+    nleqslv,
+    knitr,
+    rmarkdown,
+    ggplot2,
+    tidyr (>= 0.7),
+    dplyr (>= 0.7)
+Collate:
     'aadoc.R'
     'RcppExports.R'
+    'biome.R'
     'hector.R'
     'messages.R'
+    'units.R'
+VignetteBuilder: knitr
+RoxygenNote: 6.1.1

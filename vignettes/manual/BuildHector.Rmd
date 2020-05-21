@@ -1,0 +1,161 @@
+# Installing and building - R package
+
+The easiest way to install and use Hector is as an R package.
+To install R, follow the [official instructions](https://cloud.r-project.org/) for your platform.
+
+To install the version associated with the current `master` git branch on GitHub, use the `devtools::install_github` function.
+This will automatically install all of Hector's dependencies as well.
+(Note that because this requires compiling from source, you will need to have a C compiler installed and configured.
+On **Windows**, you will also need to install [Rtools](https://cloud.r-project.org/bin/windows/Rtools/).
+On **MacOS** and **Linux**, the required tools should be included as part of a standard R installation.)
+
+```r
+# If the `devtools` isn't installed, first run:
+# install.packages("devtools")
+devtools::install_github("jgcri/hector")
+
+# You can also install from specific git tags...
+devtools::install_github("jgcri/hector@2.2.2")
+# ...branches...
+devtools::install_github("jgcri/hector@krd-perscribe_co2Con")
+# ...or commit hashes.
+devtools::install_github("jgcri/hector@16c480a")
+```
+
+Finally, to install from a local copy of the source code, you can use the following code:
+
+```r
+devtools::install("/path/to/hector")
+# For the current directory, use `"."` or run the function with no arguments.
+```
+
+...or, if you are using the [RStudio IDE](https://www.rstudio.com/products/rstudio/), use the "Install and Restart", "Clean and Rebuild", and similar tools in the "Build" tab.
+
+Although very common and broadly useful, the `devtools` package has many R package dependencies, including some with system dependencies.
+If you do not want to install `devtools`, you can also install from a local copy by using the base-R `install.packages` function as follows:
+
+```r
+install.packages("/path/to/hector", repos = NULL)
+```
+
+...or by running the following shell command:
+
+```sh
+R CMD INSTALL /path/to/hector
+```
+
+However, note that neither of these commands will automatically install Hector's dependencies, so you will have to install them manually.
+Hector's mandatory dependencies are listed in the `DESCRIPTION` file under `Imports`, and are currently as follows:
+
+- [`Rcpp`](http://www.rcpp.org/) -- Facilitates integration of C++ code into R packages
+- [`BH`](https://cran.r-project.org/web/packages/BH/index.html) -- Boost C++ header files
+
+
+# Installing and building - standalone executable
+
+Hector can also be compiled as a standalone executable.
+Unlike the R package, this method of installation does not automatically pull in dependencies, so you will have to install them manually.
+Fortunately, Hector's only external dependency--Boost--is freely available under a GPL license.
+
+**Boost** is a free, peer-reviewed portable C++ source library, available at http://www.boost.org/.
+Hector primarily uses Boost "header-only" libraries, which do not need to be compiled independently and only need to be extracted and included with the Hector source.
+However, Hector currently _does_ depend on two Boost libraries--`system` and `filesystem`--that require compilation.
+
+## Mac OSX (Xcode)
+
+These directions assume a basic familiarity with Xcode and Mac OS X software installation.
+If you're going to use `make` and not Xcode, see Linux directions below.
+
+* Install [Xcode](https://developer.apple.com/xcode/downloads/) if necessary. Hector has been built and tested with Mac OS 10.8.5 ~~and 10.10 (Yosemite)~~. The project files are for Xcode 5.1.1.
+* Download and install Boost, following instructions above.
+* Download the [Hector zip file](https://github.com/JGCRI/hector/archive/master.zip) or check out the repository using Git.
+* From Xcode, open the project file in `project_files/Xcode/hector.cxodeproj`.
+* Build the project. See below if you encounter errors.
+* Change the current Scheme settings (Scheme->Edit Scheme) and add a command-line argument (*Arguments* tab, e.g. "input/hector_rcp45.ini").
+* Run!
+
+Xcode Build Settings to check/change if you encounter build errors:
+
+* *Architectures-Base SDK*: OS X 10.8 [or OS X version on machine] 
+* *Build Options-Compiler for C/C++/Objective-C*: Default compiler (Apple LLVM 5.1)
+* *Search Paths-Header Search Paths*: "/usr/local/include /usr/local/lib/boost_1_52_0/" [or other header directories]
+* *Search Paths-Library Search Paths*: "/usr/local/lib/" [or other library directories]
+* *LLVM-Language-C++-C++ Standard Library*: libc++ (LLVM C++ standard library with C++11 support)
+* *Linking-Other Linker Flags*: "-lgsl -lgslcblas -lm"
+* *User-Defined*: "GCC_MODEL_TUNING" defined as "G5"
+
+
+## Windows
+
+* Install Visual Studio, if necessary.
+* Download and install *Boost*, following instructions above.
+* Download the [Hector zip file](https://github.com/JGCRI/hector/archive/master.zip) or check out the repository using Git.
+* TODO
+
+
+## Linux
+
+The Hector makefiles look for Boost libraries and headers in certain default
+locations, but those defaults can be overridden by setting the
+following environment variables:
+
+* `BOOSTROOT` (default `$(HOME)/src/boost_$(BOOSTVERSION)`).
+This variable should contain the full name of the directory created
+when you unpacked Boost. If you unpacked Boost in `$(HOME)/src`, then
+all you need to do is set the `BOOSTVERSION` variable (*q.v.* below) and leave this variable
+at its default value. If you unpacked Boost somewhere else, or if you changed the name
+of the directory that was created when you unpacked it, then you will
+need to set this variable explicitly. 
+
+* `BOOSTVERSION` (default: `1_52_0`). This variable should contain the
+version number of the version of Boost that you installed.  The
+version number will appear in the name of the tar file you
+downloaded. The `BOOSTVERSION` variable is used in the default value of `BOOSTROOT` to determine the default installation
+directory. If you override the default value of `BOOSTROOT` you can ignore this variable.
+
+**Shared Library Search Path**
+
+Compiled Boost libraries used by Hector will be
+compiled into shared libraries that must be loaded at run time. It is
+best if these libraries are in directories that are part of your
+system's shared library search path. On many systems `/usr/local` is
+already in that path. If you install the libraries somewhere else,
+you may need to add the installation directories to the list given in
+`/etc/ld.so.conf`. Whether or not you install the GSL libraries in the default location, when you compile and install them 
+you may need to refresh the library cache by running
+`ldconfig` (which generally requires root privilege), or by rebooting your system 
+(which does not).
+
+If you are unable to add your library installation directory to the
+library search path, you will need to add the installation directory
+to the environment variable `LD_LIBRARY_PATH`.  Try not to use this approach if you 
+can help it because it can cause some conflicts with other software on your system.
+Instead, ask your system administrator if `ldconfig` is right for you.
+
+**Building Hector**
+
+Once the necessary libraries are installed, change to the top-level
+Hector directory and type `make hector`. The hector executable will
+be built in the `source/` subdirectory. If you ever need to rebuild,
+you can type `make clean` to clear away the executable and all of the
+intermediate files.
+
+There are two additional environment variables that you can use to
+fine-tune the build process. The `CXXEXTRA` variable is passed to the
+C++ compiler. You can use this variable to pass extra options to the
+compiler without changing the Makefile. In particular, specifying
+optimization options in `CXXEXTRA` such as -O or -O0 will override the
+default value of -O3.
+
+The `CXXPROF` variable is passed both to the compiler and the linker.
+It is intended to turn on performance profiling, which must be
+specified at both the compile and link stages of the build, so it
+generally should be either unset (for normal operation) or set to -pg
+(for profiling). Profiling slows the code down dramatically, so if you use it, be
+sure to unset `CXXPROF`, clean the build directories with `make clean`, 
+and rebuild when you are ready to go back to
+production runs.
+
+## iOS/Android
+
+Not yet. ;)

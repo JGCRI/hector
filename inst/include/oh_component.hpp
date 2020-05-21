@@ -21,51 +21,51 @@
 #include "unitval.hpp"
 
 namespace Hector {
-  
+
 //------------------------------------------------------------------------------
 /*! \brief Methane model component.
  *
  *  This doesn't do much yet.
  */
 class OHComponent : public IModelComponent {
-    
+
 public:
     OHComponent();
     ~OHComponent();
-    
+
     // IModelComponent methods
     virtual std::string getComponentName() const;
-    
+
     virtual void init( Core* core );
-    
+
     virtual unitval sendMessage( const std::string& message,
                                 const std::string& datum,
                                 const message_data info=message_data() ) throw ( h_exception );
-    
+
     virtual void setData( const std::string& varName,
                           const message_data& data ) throw ( h_exception );
-    
+
     virtual void prepareToRun() throw ( h_exception );
-    
+
     virtual void run( const double runToDate ) throw ( h_exception );
-    
+
     virtual void reset(double date) throw(h_exception);
 
     virtual void shutDown();
-    
+
     // IVisitable methods
     virtual void accept( AVisitor* visitor );
-    
-	
+
+
    private:
     virtual unitval getData( const std::string& varName,
-                            const double date ) throw ( h_exception );   
+                            const double date ) throw ( h_exception );
      //! emissions time series
     tseries<unitval> CO_emissions;
     tseries<unitval> NOX_emissions;
     tseries<unitval> NMVOC_emissions;
-    tseries<unitval> TAU_OH; 
-    
+    tseries<unitval> TAU_OH;
+
     unitval M0;  //initial CH4 concentration
     unitval TOH0;   // preindustrial OH lifetime
 

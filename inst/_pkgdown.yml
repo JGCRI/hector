@@ -1,0 +1,44 @@
+navbar:
+  type: default
+  left:
+    - icon: fa-home fa-lg
+      href: "index.html"
+    - text: Manual
+      href: "articles/manual/index.html"
+    - text: Vignettes
+      menu:
+        - text: "A tour of the Hector R interface"
+          href: articles/intro-to-hector.html
+        - text: "Example: Using Hector to solve for an emissions pathway"
+          href: articles/hector_apply.html
+        - text: "Example: Running Hector with multiple biomes"
+          href: articles/multiple-biomes.html
+    - text: Reference
+      href: "reference/index.html"
+  right:
+    - icon: fa-github fa-lg
+      href: "https://github.com/JGCRI/hector"
+
+reference:
+  - title: Running Hector
+    contents:
+      - newcore
+      - methods
+      - run
+      - reset
+      - shutdown
+      - runscenario
+  - title: Setting and retrieving data
+    contents:
+      - fetchvars
+      - setvar
+      - sendmessage
+      - isactive
+      - getdate
+      - startdate
+      - enddate
+      - getname
+      - getunits
+  - title: Variable and component identifiers
+    contents:
+      - matches("[_A-Z]+")

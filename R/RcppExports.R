@@ -2,14 +2,16 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 #' @include aadoc.R
-#' @describeIn msgtype Message type for retrieving data from a component 
+#' @describeIn msgtype Message type for retrieving data from a component
 #' @export
+#' @keywords internal
 GETDATA <- function() {
     .Call('_hector_GETDATA', PACKAGE = 'hector')
 }
 
 #' @describeIn msgtype Message type for setting data in a component
 #' @export
+#' @keywords internal
 SETDATA <- function() {
     .Call('_hector_SETDATA', PACKAGE = 'hector')
 }
@@ -38,7 +40,7 @@ LL_SEVERE <- function() {
     .Call('_hector_LL_SEVERE', PACKAGE = 'hector')
 }
 
-#' @describeIn emissions Black carbon emissions (\code{"Tg"}) 
+#' @describeIn emissions Black carbon emissions (\code{"Tg"})
 #' @export
 EMISSIONS_BC <- function() {
     .Call('_hector_EMISSIONS_BC', PACKAGE = 'hector')
@@ -68,16 +70,16 @@ RF_N2O <- function() {
     .Call('_hector_RF_N2O', PACKAGE = 'hector')
 }
 
-#' @describeIn forcings Radiative forcing due to water vapor
+#' @describeIn forcings Radiative forcing due to stratospheric water vapor
 #' @export
-RF_H2O <- function() {
-    .Call('_hector_RF_H2O', PACKAGE = 'hector')
+RF_H2O_STRAT <- function() {
+    .Call('_hector_RF_H2O_STRAT', PACKAGE = 'hector')
 }
 
-#' @describeIn forcings Radiative forcing due to ozone
+#' @describeIn forcings Radiative forcing due to tropospheric ozone
 #' @export
-RF_O3 <- function() {
-    .Call('_hector_RF_O3', PACKAGE = 'hector')
+RF_O3_TROP <- function() {
+    .Call('_hector_RF_O3_TROP', PACKAGE = 'hector')
 }
 
 #' @describeIn forcings Radiative forcing due to black carbon
@@ -114,6 +116,14 @@ RF_SO2 <- function() {
 #' @export
 RF_VOL <- function() {
     .Call('_hector_RF_VOL', PACKAGE = 'hector')
+}
+
+RFADJ_PREFIX <- function() {
+    .Call('_hector_RFADJ_PREFIX', PACKAGE = 'hector')
+}
+
+RF_PREFIX <- function() {
+    .Call('_hector_RF_PREFIX', PACKAGE = 'hector')
 }
 
 #' @describeIn haloforcings Radiative forcing due to CF4
@@ -226,20 +236,20 @@ RF_CH3CCL3 <- function() {
 
 #' @describeIn haloforcings Radiative forcing due to HCFC-22
 #' @export
-RF_HCF22 <- function() {
-    .Call('_hector_RF_HCF22', PACKAGE = 'hector')
+RF_HCFC22 <- function() {
+    .Call('_hector_RF_HCFC22', PACKAGE = 'hector')
 }
 
 #' @describeIn haloforcings Radiative forcing due to HCFC-141b
 #' @export
-RF_HCF141B <- function() {
-    .Call('_hector_RF_HCF141B', PACKAGE = 'hector')
+RF_HCFC141B <- function() {
+    .Call('_hector_RF_HCFC141B', PACKAGE = 'hector')
 }
 
 #' @describeIn haloforcings Radiative forcing due to HCFC-142b
 #' @export
-RF_HCF142B <- function() {
-    .Call('_hector_RF_HCF142B', PACKAGE = 'hector')
+RF_HCFC142B <- function() {
+    .Call('_hector_RF_HCFC142B', PACKAGE = 'hector')
 }
 
 #' @describeIn haloforcings Radiative forcing due to halon-1211
@@ -382,20 +392,20 @@ EMISSIONS_CH3CCL3 <- function() {
 
 #' @describeIn haloemiss Emissions for HCFC-22
 #' @export
-EMISSIONS_HCF22 <- function() {
-    .Call('_hector_EMISSIONS_HCF22', PACKAGE = 'hector')
+EMISSIONS_HCFC22 <- function() {
+    .Call('_hector_EMISSIONS_HCFC22', PACKAGE = 'hector')
 }
 
 #' @describeIn haloemiss Emissions for HCFC-141b
 #' @export
-EMISSIONS_HCF141B <- function() {
-    .Call('_hector_EMISSIONS_HCF141B', PACKAGE = 'hector')
+EMISSIONS_HCFC141B <- function() {
+    .Call('_hector_EMISSIONS_HCFC141B', PACKAGE = 'hector')
 }
 
 #' @describeIn haloemiss Emissions for HCFC-142b
 #' @export
-EMISSIONS_HCF142B <- function() {
-    .Call('_hector_EMISSIONS_HCF142B', PACKAGE = 'hector')
+EMISSIONS_HCFC142B <- function() {
+    .Call('_hector_EMISSIONS_HCFC142B', PACKAGE = 'hector')
 }
 
 #' @describeIn haloemiss Emissions for halon-1211
@@ -428,10 +438,172 @@ EMISSIONS_CH3BR <- function() {
     .Call('_hector_EMISSIONS_CH3BR', PACKAGE = 'hector')
 }
 
+#' @describeIn haloconstrain Concentration constraint for CF4
+#' @export
+CF4_CONSTRAIN <- function() {
+    .Call('_hector_CF4_CONSTRAIN', PACKAGE = 'hector')
+}
+
+#' @describeIn haloconstrain Concentration constraint for C2F6
+#' @export
+C2F6_CONSTRAIN <- function() {
+    .Call('_hector_C2F6_CONSTRAIN', PACKAGE = 'hector')
+}
+
+#' @describeIn haloconstrain Concentration constraint for HFC-23
+#' @export
+HFC23_CONSTRAIN <- function() {
+    .Call('_hector_HFC23_CONSTRAIN', PACKAGE = 'hector')
+}
+
+#' @describeIn haloconstrain Concentration constraint for HFC-32
+#' @export
+HFC32_CONSTRAIN <- function() {
+    .Call('_hector_HFC32_CONSTRAIN', PACKAGE = 'hector')
+}
+
+#' @describeIn haloconstrain Concentration constraint for HFC-4310
+#' @export
+HFC4310_CONSTRAIN <- function() {
+    .Call('_hector_HFC4310_CONSTRAIN', PACKAGE = 'hector')
+}
+
+#' @describeIn haloconstrain Concentration constraint for HFC-125
+#' @export
+HFC125_CONSTRAIN <- function() {
+    .Call('_hector_HFC125_CONSTRAIN', PACKAGE = 'hector')
+}
+
+#' @describeIn haloconstrain Concentration constraint for HFC-134a
+#' @export
+HFC134A_CONSTRAIN <- function() {
+    .Call('_hector_HFC134A_CONSTRAIN', PACKAGE = 'hector')
+}
+
+#' @describeIn haloconstrain Concentration constraint for HFC-143a
+#' @export
+HFC143A_CONSTRAIN <- function() {
+    .Call('_hector_HFC143A_CONSTRAIN', PACKAGE = 'hector')
+}
+
+#' @describeIn haloconstrain Concentration constraint for HFC-227ea
+#' @export
+HFC227EA_CONSTRAIN <- function() {
+    .Call('_hector_HFC227EA_CONSTRAIN', PACKAGE = 'hector')
+}
+
+#' @describeIn haloconstrain Concentration constraint for HFC-254fa
+#' @export
+HFC245FA_CONSTRAIN <- function() {
+    .Call('_hector_HFC245FA_CONSTRAIN', PACKAGE = 'hector')
+}
+
+#' @describeIn haloconstrain Concentration constraint for sulfur hexafluoride
+#' @export
+SF6_CONSTRAIN <- function() {
+    .Call('_hector_SF6_CONSTRAIN', PACKAGE = 'hector')
+}
+
+#' @describeIn haloconstrain Concentration constraint for CFC-11
+#' @export
+CFC11_CONSTRAIN <- function() {
+    .Call('_hector_CFC11_CONSTRAIN', PACKAGE = 'hector')
+}
+
+#' @describeIn haloconstrain Concentration constraint for CFC-12
+#' @export
+CFC12_CONSTRAIN <- function() {
+    .Call('_hector_CFC12_CONSTRAIN', PACKAGE = 'hector')
+}
+
+#' @describeIn haloconstrain Concentration constraint for CFC-113
+#' @export
+CFC113_CONSTRAIN <- function() {
+    .Call('_hector_CFC113_CONSTRAIN', PACKAGE = 'hector')
+}
+
+#' @describeIn haloconstrain Concentration constraint for CFC-114
+#' @export
+CFC114_CONSTRAIN <- function() {
+    .Call('_hector_CFC114_CONSTRAIN', PACKAGE = 'hector')
+}
+
+#' @describeIn haloconstrain Concentration constraint for CFC-115
+#' @export
+CFC115_CONSTRAIN <- function() {
+    .Call('_hector_CFC115_CONSTRAIN', PACKAGE = 'hector')
+}
+
+#' @describeIn haloconstrain Concentration constraint for carbon tetrachloride
+#' @export
+CCL4_CONSTRAIN <- function() {
+    .Call('_hector_CCL4_CONSTRAIN', PACKAGE = 'hector')
+}
+
+#' @describeIn haloconstrain Concentration constraint for trichloroethane
+#' @export
+CH3CCL3_CONSTRAIN <- function() {
+    .Call('_hector_CH3CCL3_CONSTRAIN', PACKAGE = 'hector')
+}
+
+#' @describeIn haloconstrain Concentration constraint for HCFC-22
+#' @export
+HCFC22_CONSTRAIN <- function() {
+    .Call('_hector_HCFC22_CONSTRAIN', PACKAGE = 'hector')
+}
+
+#' @describeIn haloconstrain Concentration constraint for HCFC-141b
+#' @export
+HCFC141B_CONSTRAIN <- function() {
+    .Call('_hector_HCFC141B_CONSTRAIN', PACKAGE = 'hector')
+}
+
+#' @describeIn haloconstrain Concentration constraint for HCFC-142b
+#' @export
+HCFC142B_CONSTRAIN <- function() {
+    .Call('_hector_HCFC142B_CONSTRAIN', PACKAGE = 'hector')
+}
+
+#' @describeIn haloconstrain Concentration constraint for halon-1211
+#' @export
+HALON1211_CONSTRAIN <- function() {
+    .Call('_hector_HALON1211_CONSTRAIN', PACKAGE = 'hector')
+}
+
+#' @describeIn haloconstrain Concentration constraint for halon-1301
+#' @export
+HALON1301_CONSTRAIN <- function() {
+    .Call('_hector_HALON1301_CONSTRAIN', PACKAGE = 'hector')
+}
+
+#' @describeIn haloconstrain Concentration constraint for halon-2402
+#' @export
+HALON2402_CONSTRAIN <- function() {
+    .Call('_hector_HALON2402_CONSTRAIN', PACKAGE = 'hector')
+}
+
+#' @describeIn haloconstrain Concentration constraint for chloromethane
+#' @export
+CH3CL_CONSTRAIN <- function() {
+    .Call('_hector_CH3CL_CONSTRAIN', PACKAGE = 'hector')
+}
+
+#' @describeIn haloconstrain Concentration constraint for bromomethane
+#' @export
+CH3BR_CONSTRAIN <- function() {
+    .Call('_hector_CH3BR_CONSTRAIN', PACKAGE = 'hector')
+}
+
 #' @rdname methane
 #' @export
 ATMOSPHERIC_CH4 <- function() {
     .Call('_hector_ATMOSPHERIC_CH4', PACKAGE = 'hector')
+}
+
+#' @describeIn constraints CH4 concentration constraint \code{"ppbv CH4"}
+#' @export
+CH4_CONSTRAIN <- function() {
+    .Call('_hector_CH4_CONSTRAIN', PACKAGE = 'hector')
 }
 
 #' @rdname methane
@@ -486,6 +658,18 @@ PREINDUSTRIAL_N2O <- function() {
 #' @export
 EMISSIONS_N2O <- function() {
     .Call('_hector_EMISSIONS_N2O', PACKAGE = 'hector')
+}
+
+#' @describeIn emissions Natural N2O emissions (\code{"Tg N"})
+#' @export
+NAT_EMISSIONS_N2O <- function() {
+    .Call('_hector_NAT_EMISSIONS_N2O', PACKAGE = 'hector')
+}
+
+#' @describeIn constraints N2O concentration constraint (\code{"pbbv N2O"})
+#' @export
+N2O_CONSTRAIN <- function() {
+    .Call('_hector_N2O_CONSTRAIN', PACKAGE = 'hector')
 }
 
 #' @describeIn concentrations Preindustrial ozone concentration
@@ -664,8 +848,20 @@ LAND_CFLUX <- function() {
 
 #' @rdname carboncycle
 #' @export
+NBP <- function() {
+    .Call('_hector_NBP', PACKAGE = 'hector')
+}
+
+#' @rdname carboncycle
+#' @export
 ATMOSPHERIC_CO2 <- function() {
     .Call('_hector_ATMOSPHERIC_CO2', PACKAGE = 'hector')
+}
+
+#' @rdname carboncycle
+#' @export
+NPP <- function() {
+    .Call('_hector_NPP', PACKAGE = 'hector')
 }
 
 #' @describeIn parameters Preindustrial CO2 concentration (\code{"ppmv CO2"})
@@ -692,16 +888,94 @@ LUC_EMISSIONS <- function() {
     .Call('_hector_LUC_EMISSIONS', PACKAGE = 'hector')
 }
 
-#' @describeIn parameters Heterotrophic respiration temperature sensitivity factor (\code{"(unitless)"})
+#' @describeIn parameters CO2 fertilization factor (\code{"(unitless)"})
+#' @param biome Biome for which to retrieve parameter. If missing or
+#'   `""`, default to `"global"`.
 #' @export
-Q10_RH <- function() {
-    .Call('_hector_Q10_RH', PACKAGE = 'hector')
+BETA <- function(biome = "") {
+    .Call('_hector_BETA', PACKAGE = 'hector', biome)
 }
 
-#' @describeIn parameters CO2 fertilization factor (\code{"(unitless)"})
+#' @describeIn parameters Heterotrophic respiration temperature sensitivity factor (\code{"(unitless)"})
+#' @inheritParams BETA
 #' @export
-BETA <- function() {
-    .Call('_hector_BETA', PACKAGE = 'hector')
+Q10_RH <- function(biome = "") {
+    .Call('_hector_Q10_RH', PACKAGE = 'hector', biome)
+}
+
+#' @describeIn parameters Biome-specific warming factor (`(unitless)`)
+#' @inheritParams BETA
+#' @export
+WARMINGFACTOR <- function(biome = "") {
+    .Call('_hector_WARMINGFACTOR', PACKAGE = 'hector', biome)
+}
+
+#' @describeIn carboncycle Constrain atmospheric CO2 concentration  (\code{"(ppmv CO2)"})
+#' @export
+CO2_CONSTRAIN <- function() {
+    .Call('_hector_CO2_CONSTRAIN', PACKAGE = 'hector')
+}
+
+#' @describeIn parameters NPP fraction to vegetation (\code{"(unitless)"})
+#' @inheritParams BETA
+#' @export
+F_NPPV <- function(biome = "") {
+    .Call('_hector_F_NPPV', PACKAGE = 'hector', biome)
+}
+
+#' @describeIn parameters NPP fraction to detritus (\code{"(unitless)"})
+#' @inheritParams BETA
+#' @export
+F_NPPD <- function(biome = "") {
+    .Call('_hector_F_NPPD', PACKAGE = 'hector', biome)
+}
+
+#' @describeIn parameters Litter fraction to detritus (\code{"(unitless)"})
+#' @inheritParams BETA
+#' @export
+F_LITTERD <- function(biome = "") {
+    .Call('_hector_F_LITTERD', PACKAGE = 'hector', biome)
+}
+
+#' @describeIn parameters LUC fraction to vegetation (\code{"(unitless)"})
+#' @export
+F_LUCV <- function() {
+    .Call('_hector_F_LUCV', PACKAGE = 'hector')
+}
+
+#' @describeIn parameters LUC fraction to detritus (\code{"(unitless)"})
+#' @export
+F_LUCD <- function() {
+    .Call('_hector_F_LUCD', PACKAGE = 'hector')
+}
+
+#' @describeIn carboncycle Vegetation C pool (`"Pg C"`)
+#' @inheritParams BETA
+#' @export
+VEG_C <- function(biome = "") {
+    .Call('_hector_VEG_C', PACKAGE = 'hector', biome)
+}
+
+#' @describeIn carboncycle Vegetation detritus C pool (`"Pg C"`)
+#' @inheritParams BETA
+#' @export
+DETRITUS_C <- function(biome = "") {
+    .Call('_hector_DETRITUS_C', PACKAGE = 'hector', biome)
+}
+
+#' @describeIn carboncycle Soil C pool (`"Pg C"`)
+#' @inheritParams BETA
+#' @export
+SOIL_C <- function(biome = "") {
+    .Call('_hector_SOIL_C', PACKAGE = 'hector', biome)
+}
+
+#' @describeIn carboncycle Initial net primary productivity (NPP)
+#'   flux (`"Pg C year^-1"`)
+#' @inheritParams BETA
+#' @export
+NPP_FLUX0 <- function(biome = "") {
+    .Call('_hector_NPP_FLUX0', PACKAGE = 'hector', biome)
 }
 
 #' @rdname so2
@@ -728,10 +1002,22 @@ VOLCANIC_SO2 <- function() {
     .Call('_hector_VOLCANIC_SO2', PACKAGE = 'hector')
 }
 
-#' @describeIn parameters Equilibrium Climate Sensitivity (\code{DegC})
+#' @describeIn parameters Equilibrium Climate Sensitivity (\code{"degC"})
 #' @export
 ECS <- function() {
     .Call('_hector_ECS', PACKAGE = 'hector')
+}
+
+#' @describeIn parameters Aerosol forcing scaling factor (\code{"(unitless)"})
+#' @export
+AERO_SCALE <- function() {
+    .Call('_hector_AERO_SCALE', PACKAGE = 'hector')
+}
+
+#' @describeIn parameters Volcanic forcing scaling factor (\code{"(unitless)"})
+#' @export
+VOLCANIC_SCALE <- function() {
+    .Call('_hector_VOLCANIC_SCALE', PACKAGE = 'hector')
 }
 
 #' @describeIn temperature Global mean temperature
@@ -744,6 +1030,24 @@ GLOBAL_TEMP <- function() {
 #' @export
 GLOBAL_TEMPEQ <- function() {
     .Call('_hector_GLOBAL_TEMPEQ', PACKAGE = 'hector')
+}
+
+#' @describeIn temperature Average ocean surface temperature anomaly
+#' @export
+OCEAN_SURFACE_TEMP <- function() {
+    .Call('_hector_OCEAN_SURFACE_TEMP', PACKAGE = 'hector')
+}
+
+#' @describeIn temperature Average ocean air temperature anomaly
+#' @export
+OCEAN_AIR_TEMP <- function() {
+    .Call('_hector_OCEAN_AIR_TEMP', PACKAGE = 'hector')
+}
+
+#' @describeIn temperature Average land temperature anomaly
+#' @export
+LAND_AIR_TEMP <- function() {
+    .Call('_hector_LAND_AIR_TEMP', PACKAGE = 'hector')
 }
 
 #' @describeIn parameters Ocean heat diffusivity (\code{"cm2/s"})
@@ -770,20 +1074,13 @@ HEAT_FLUX <- function() {
     .Call('_hector_HEAT_FLUX', PACKAGE = 'hector')
 }
 
-#' Create and initialize a new hector instance
-#'
-#' The object returned is a handle to the newly created instance.  It will be required as an
-#' argument for all functions that operate on the instance.  Creating multiple instances
-#' simultaneously is supported.
-#'
-#' @include aadoc.R
-#' @param inifile (String) name of the hector input file.
-#' @param loglevel (int) minimum message level to output in logs (see \code{\link{loglevels}}).
-#' @param suppresslogging (bool) If true, suppress all logging (loglevel is ignored in this case).
-#' @return handle for the Hector instance.
-#' @export
-newcore <- function(inifile, loglevel = 0L, suppresslogging = FALSE) {
-    .Call('_hector_newcore', PACKAGE = 'hector', inifile, loglevel, suppresslogging)
+#' @describeIn msgtype Character used to separate biome from variable name
+BIOME_SPLIT_CHAR <- function() {
+    .Call('_hector_BIOME_SPLIT_CHAR', PACKAGE = 'hector')
+}
+
+newcore_impl <- function(inifile, loglevel, suppresslogging, name) {
+    .Call('_hector_newcore_impl', PACKAGE = 'hector', inifile, loglevel, suppresslogging, name)
 }
 
 #' Shutdown a hector instance
@@ -796,23 +1093,11 @@ newcore <- function(inifile, loglevel = 0L, suppresslogging = FALSE) {
 #' from active to inactive will be recorded in the caller.
 #'
 #' @param core Handle to a Hector instance
-#' @return The Hector handle, modified to show that it is no longer active
+#' @return The Hector instance handle
 #' @export
+#' @family main user interface functions
 shutdown <- function(core) {
     .Call('_hector_shutdown', PACKAGE = 'hector', core)
-}
-
-#' Run the Hector climate model
-#'
-#' Run Hector up through the specified time.  This function does not return the results
-#' of the run.  To get results, run \code{fetch}.
-#'
-#' @param core Handle to the Hector instance that is to be run.
-#' @param runtodate Date to run to.  The default is to run to the end date configured
-#' in the input file used to initialize the core.
-#' @export
-run <- function(core, runtodate = -1.0) {
-    invisible(.Call('_hector_run', PACKAGE = 'hector', core, runtodate))
 }
 
 #' Reset a Hector instance to an earlier date
@@ -827,9 +1112,25 @@ run <- function(core, runtodate = -1.0) {
 #' @param core Handle for the Hector instance that is to be reset.
 #' @param date Date to reset to.  The default is to reset to the model start date with
 #' a rerun of the spinup.
+#' @family main user interface functions
 #' @export
 reset <- function(core, date = 0) {
-    invisible(.Call('_hector_reset', PACKAGE = 'hector', core, date))
+    .Call('_hector_reset', PACKAGE = 'hector', core, date)
+}
+
+#' Run the Hector climate model
+#'
+#' Run Hector up through the specified time.  This function does not return the results
+#' of the run.  To get results, run \code{fetch}.
+#'
+#' @param core Handle to the Hector instance that is to be run.
+#' @param runtodate Date to run to.  The default is to run to the end date configured
+#' in the input file used to initialize the core.
+#' @return The Hector instance handle
+#' @export
+#' @family main user interface functions
+run <- function(core, runtodate = -1.0) {
+    .Call('_hector_run', PACKAGE = 'hector', core, runtodate)
 }
 
 #' \strong{getdate}: Get the current date for a Hector instance
@@ -840,11 +1141,50 @@ getdate <- function(core) {
     .Call('_hector_getdate', PACKAGE = 'hector', core)
 }
 
+#' Retrieve the current list of biomes for a Hector instance
+#'
+#' @param core Handle to the Hector instance from which to retrieve
+#'   the biome list.
+#' @export
+get_biome_list <- function(core) {
+    .Call('_hector_get_biome_list', PACKAGE = 'hector', core)
+}
+
+#' Create a biome
+#'
+#' @param core Handle to the Hector instance that is to be run.
+#' @param biome (character) Name of new biome
+create_biome_impl <- function(core, biome) {
+    .Call('_hector_create_biome_impl', PACKAGE = 'hector', core, biome)
+}
+
+#' Delete a biome
+#'
+#' @param core Handle to the Hector instance that is to be run.
+#' @param biome (character) Name of biome to delete
+delete_biome_impl <- function(core, biome) {
+    .Call('_hector_delete_biome_impl', PACKAGE = 'hector', core, biome)
+}
+
+#' Rename an existing biome
+#'
+#' This will create a new biome called `newname`, assign it all of
+#' the C stocks and parameter values from biome `oldname`, and delete
+#' biome `oldname`.
+#'
+#' @param core Handle to the Hector instance that is to be run.
+#' @param oldname (character) Name of existing biome to be replaced
+#' @param newname (character) Name of new biome
+#' @export
+rename_biome <- function(core, oldname, newname) {
+    .Call('_hector_rename_biome', PACKAGE = 'hector', core, oldname, newname)
+}
+
 #' Send a message to a Hector instance
 #'
 #' Messages are the mechanism used to get data from Hector model components and
 #' to set values within components.
-#' 
+#'
 #' A message comprises a type (e.g. GETDATA to retrieve data from a component, or SETDATA to
 #' set data in a component), a capability, which identifies the information to be operated
 #' on (e.g. Atmospheric CO2 concentration, or global total radiative forcing), and an optional
@@ -874,5 +1214,9 @@ getdate <- function(core) {
 #' @export
 sendmessage <- function(core, msgtype, capability, date, value, unit) {
     .Call('_hector_sendmessage', PACKAGE = 'hector', core, msgtype, capability, date, value, unit)
+}
+
+chk_core_valid <- function(core) {
+    .Call('_hector_chk_core_valid', PACKAGE = 'hector', core)
 }
 

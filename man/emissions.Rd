@@ -4,6 +4,7 @@
 \alias{emissions}
 \alias{EMISSIONS_BC}
 \alias{EMISSIONS_N2O}
+\alias{NAT_EMISSIONS_N2O}
 \alias{EMISSIONS_NOX}
 \alias{EMISSIONS_CO}
 \alias{EMISSIONS_NMVOC}
@@ -13,6 +14,8 @@
 EMISSIONS_BC()
 
 EMISSIONS_N2O()
+
+NAT_EMISSIONS_N2O()
 
 EMISSIONS_NOX()
 
@@ -31,6 +34,8 @@ type.
 \item \code{EMISSIONS_BC}: Black carbon emissions (\code{"Tg"})
 
 \item \code{EMISSIONS_N2O}: N2O emissions (\code{"Tg N"})
+
+\item \code{NAT_EMISSIONS_N2O}: Natural N2O emissions (\code{"Tg N"})
 
 \item \code{EMISSIONS_NOX}: Emissions for NOx compounds (\code{"Tg N"})
 
@@ -51,9 +56,11 @@ instead of the more natural looking \code{GETDATA}.
 
 \seealso{
 Other capability identifiers: \code{\link{carboncycle}},
-  \code{\link{concentrations}}, \code{\link{forcings}},
+  \code{\link{concentrations}}, \code{\link{constraints}},
+  \code{\link{forcings}}, \code{\link{haloconstrain}},
   \code{\link{haloemiss}}, \code{\link{haloforcings}},
   \code{\link{methane}}, \code{\link{ocean}},
   \code{\link{parameters}}, \code{\link{so2}},
   \code{\link{temperature}}
 }
+\concept{capability identifiers}

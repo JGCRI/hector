@@ -27,47 +27,47 @@ namespace Hector {
  *  This doesn't do much yet.
  */
 class SulfurComponent : public IModelComponent {
-        
+
 public:
     SulfurComponent();
     ~SulfurComponent();
-    
+
     // IModelComponent methods
     virtual std::string getComponentName() const;
-    
+
     virtual void init( Core* core );
-    
+
     virtual unitval sendMessage( const std::string& message,
                                 const std::string& datum,
                                 const message_data info=message_data() ) throw ( h_exception );
-    
+
     virtual void setData( const std::string& varName,
                           const message_data& data ) throw ( h_exception );
-    
+
     virtual void prepareToRun() throw ( h_exception );
-    
+
     virtual void run( const double runToDate ) throw ( h_exception );
-    
+
     virtual void reset(double time) throw(h_exception);
 
     virtual void shutDown();
-    
+
     // IVisitable methods
     virtual void accept( AVisitor* visitor );
-    
-    
+
+
     unitval S0;    // historical value of sulfur  (YEAR?)
     unitval SN;
-	
+
 private:
     virtual unitval getData( const std::string& varName,
                             const double date ) throw ( h_exception );
-    
+
     //! Emissions time series
-	
+
     tseries<unitval> SO2_emissions;
     tseries<unitval> SV;
-    
+
     //! logger
     Logger logger;
 

@@ -19,7 +19,7 @@
 
 
 namespace Hector {
-  
+
 //-----------------------------------------------------------------------
 /*! \brief Constructor for spline class.
  *
@@ -64,7 +64,7 @@ void h_interpolator::release_data() {
  *  Refit spline, or whatever, to existing data.
  */
 void h_interpolator::refit_data() {
-    
+
     switch( method ) {
         case LINEAR: /* nothing to do */
             break;
@@ -84,7 +84,7 @@ void h_interpolator::refit_data() {
 void h_interpolator::newdata( int n, double* x, double* y ) {
     H_ASSERT( n, "interpolator newdata n=0" );
     release_data();
-    
+
     ndata = n;
     xdata = new double[ ndata ];
     ydata = new double[ ndata ];
@@ -95,11 +95,11 @@ void h_interpolator::newdata( int n, double* x, double* y ) {
         xdata[ i ] = x[ i ];
         ydata[ i ] = y[ i ];
     }
-    
+
     //TODO: sort points!
 	// Not necessary here, as tseries guarantees in-order
     // but if anything else uses interpolator, need to do this!
-    
+
     refit_data();
 }
 
@@ -109,11 +109,11 @@ void h_interpolator::newdata( int n, double* x, double* y ) {
  *  Return y=f(x) using linear interpolation.
  */
 double h_interpolator::f_linear( double x ) {
-    
+
     int iprev, inext;
     locate(x, iprev,inext);
 
-    
+
     double returnval;
     if( iprev < 0 )
         returnval = ydata[ 0 ];
@@ -122,7 +122,7 @@ double h_interpolator::f_linear( double x ) {
     else	// the actual linear interpolation
         returnval = ydata[ iprev ] + (x - xdata[ iprev ] ) *
             ( ydata[ inext ] - ydata[ iprev ] ) / ( xdata[ inext ] - xdata[ iprev ] );
-    
+
     return returnval;
 }
 
@@ -132,11 +132,11 @@ double h_interpolator::f_linear( double x ) {
  *  Return y=f'(x) using linear interpolation.
  */
 double h_interpolator::f_deriv_linear( double x ) {
-    
+
     int iprev, inext;
     locate(x, iprev,inext);
 
-    
+
     double returnval;
     if( iprev < 0 ) {
         // before the series, throw error?
@@ -162,11 +162,11 @@ double h_interpolator::f_deriv_linear( double x ) {
             // previous segment.
             --iprev;
             --inext;
-        } 
+        }
         // we can just use the slope of this segment
         returnval = ( ydata[ inext ] - ydata[ iprev ] ) / (xdata[ inext ] - xdata[ iprev ] );
     }
-    
+
     return returnval;
 }
 
@@ -176,7 +176,7 @@ double h_interpolator::f_deriv_linear( double x ) {
  *  Return y=f(x) using current interpolation method.
  */
 double h_interpolator::f( double x ) {
-    
+
     // Following section will be replaced by spline code
     switch( method ) {
         case LINEAR:
@@ -185,7 +185,7 @@ double h_interpolator::f( double x ) {
         case SPLINE_FORSYTHE:
             return seval_forsythe( ndata, x, xdata, ydata, b_coef, c_coef, d_coef );
             break;
-            
+
         default: H_THROW( "Undefined interpolation method" );
     }
 }
@@ -196,7 +196,7 @@ double h_interpolator::f( double x ) {
  *  Return y=f'(x) using current interpolation method.
  */
 double h_interpolator::f_deriv( double x ) {
-    
+
     // Following section will be replaced by spline code
     switch( method ) {
         case LINEAR:
@@ -205,7 +205,7 @@ double h_interpolator::f_deriv( double x ) {
         case SPLINE_FORSYTHE:
             return seval_deriv_forsythe( ndata, x, xdata, ydata, b_coef, c_coef, d_coef );
             break;
-            
+
         default: H_THROW( "Undefined interpolation method" );
     }
 }

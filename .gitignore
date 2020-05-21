@@ -26,6 +26,7 @@ src/hector-ext
 src/hector-api
 # Hector logs
 logs/*.*
+*.log
 # OS-specific files
 .DS_Store
 .Trashes
@@ -61,3 +62,11 @@ R/batchrunner/*.csv
 .Rapp.history
 .Rproj.user
 .RData
+inst/doc
+vignettes/rsconnect
+
+# pkgdown output
+/docs/
+
+# vignette caches
+/vignettes/*_cache

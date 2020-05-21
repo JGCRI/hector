@@ -20,7 +20,7 @@
 #include "avisitor.hpp"
 
 namespace Hector {
-  
+
 using namespace std;
 
 //------------------------------------------------------------------------------
@@ -55,12 +55,18 @@ void HalocarbonComponent::init( Core* coreptr ) {
     emissions.name = myGasName;
     molarMass = 0.0;
     H0.set( 0.0, U_PPTV );      //! Default is no preindustrial, but user can override
-    
+
     //! \remark Inform core that we can provide forcing data
     core->registerCapability( D_RF_PREFIX+myGasName, getComponentName() );
+    //! \remark Inform core that we can provide concentrations
+    core->registerCapability( myGasName+CONCENTRATION_EXTENSION, getComponentName() );
+    //! \remark Inform core that we can provide concentration constraints
+    core->registerCapability( myGasName+CONC_CONSTRAINT_EXTENSION, getComponentName() );
     // inform core that we can accept emissions for this gas
     core->registerInput(myGasName+EMISSIONS_EXTENSION, getComponentName());
-    
+
+    // inform core that we can accept concentration constraints for this gas
+    core->registerInput(myGasName+CONC_CONSTRAINT_EXTENSION, getComponentName()); 
 }
 
 //------------------------------------------------------------------------------
@@ -70,19 +76,19 @@ unitval HalocarbonComponent::sendMessage( const std::string& message,
                                          const message_data info ) throw ( h_exception )
 {
     unitval returnval;
-    
+
     if( message==M_GETDATA ) {          //! Caller is requesting data
         return getData( datum, info.date );
-        
+
     } else if( message==M_SETDATA ) {   //! Caller is requesting to set data
         setData( datum, info );
         //TODO: change core so that parsing is routed through sendMessage
         //TODO: make setData private
-        
+
     } else {                        //! We don't handle any other messages
         H_THROW( "Caller sent unknown message: "+message );
     }
-    
+
     return returnval;
 }
 
@@ -92,10 +98,11 @@ void HalocarbonComponent::setData( const string& varName,
                                    const message_data& data ) throw ( h_exception )
 {
     H_LOG( logger, Logger::DEBUG ) << "Setting " << varName << "[" << data.date << "]=" << data.value_str << std::endl;
-    
+
     try {
         const string emiss_var_name = myGasName + EMISSIONS_EXTENSION;
-        
+        const string conc_var_name = myGasName + CONC_CONSTRAINT_EXTENSION;
+
         if( varName == D_HC_TAU ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
             tau = data.getUnitval(U_UNDEFINED);
@@ -108,6 +115,9 @@ void HalocarbonComponent::setData( const string& varName,
         } else if( varName == emiss_var_name ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
             emissions.set(data.date, data.getUnitval(U_GG));
+        } else if( varName == conc_var_name ) {
+            H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
+            Ha_constrain.set(data.date, data.getUnitval(U_PPTV));
         } else if( varName == D_PREINDUSTRIAL_HC ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
             H0 = data.getUnitval(U_PPTV);
@@ -129,12 +139,11 @@ void HalocarbonComponent::prepareToRun() throw ( h_exception ) {
 
     H_ASSERT( tau != -1 && tau != 0, "tau has bad value" );
     H_ASSERT( rho.units() != U_UNDEFINED, "rho has undefined units" );
-    //   H_ASSERT( concentration.size() > 0 );
     H_ASSERT( molarMass > 0, "molarMass must be >0" );
-    
+
     Ha_ts.set(oldDate,H0);
 
-    
+
     //! \remark concentration values will not be allowed to interpolate beyond years already read in
     //    concentration.allowPartialInterp( true );
 }
@@ -143,20 +152,28 @@ void HalocarbonComponent::prepareToRun() throw ( h_exception ) {
 // documentation is inherited
 void HalocarbonComponent::run( const double runToDate ) throw ( h_exception ) {
 	H_ASSERT( !core->inSpinup() && runToDate-oldDate == 1, "timestep must equal 1" );
-#define AtmosphereDryAirConstant 1.8
-    
-    const double timestep = 1.0;
-    const double alpha = 1 / tau;
+    #define AtmosphereDryAirConstant 1.8
 
-    // Compute the delta atmospheric concentration from current emissions
-    double emissMol = emissions.get( runToDate ).value( U_GG ) / molarMass * timestep; // this is in U_GMOL
-    unitval concDeltaEmiss;
-    concDeltaEmiss.set( emissMol / ( 0.1 * AtmosphereDryAirConstant ), U_PPTV );
-    
-    // Update the atmospheric concentration, accounting for this delta and exponential decay
-    double expfac = exp(-alpha);
     unitval Ha(Ha_ts.get(oldDate));
-    Ha = Ha*expfac + concDeltaEmiss*tau * (1.0-expfac);
+    
+    // If emissions-forced, calculate concentration from emissions and lifespan.
+    if ( Ha_constrain.size() && Ha_constrain.exists( runToDate ) ) {
+        // Concentration-forced. Just grab the current value from the time series.
+        Ha = Ha_constrain.get(runToDate);
+    } else {
+        const double timestep = 1.0;
+        const double alpha = 1 / tau;
+
+        // Compute the delta atmospheric concentration from current emissions
+        double emissMol = emissions.get( runToDate ).value( U_GG ) / molarMass * timestep; // this is in U_GMOL
+        unitval concDeltaEmiss;
+        concDeltaEmiss.set( emissMol / ( 0.1 * AtmosphereDryAirConstant ), U_PPTV );
+    
+        // Update the atmospheric concentration, accounting for this delta and exponential decay
+        double expfac = exp(-alpha);
+        Ha = Ha*expfac + concDeltaEmiss*tau * (1.0-expfac);
+    }
+
     H_LOG( logger, Logger::DEBUG ) << "date: " << runToDate << " concentration: "<< Ha << endl;
     Ha_ts.set(runToDate, Ha);
 
@@ -166,21 +183,21 @@ void HalocarbonComponent::run( const double runToDate ) throw ( h_exception ) {
     hc_forcing.set( runToDate, rf );
 
     // Update time counter.
-    oldDate = runToDate; 
+    oldDate = runToDate;
 }
 
 //------------------------------------------------------------------------------
 // documentation is inherited
 unitval HalocarbonComponent::getData( const std::string& varName,
                                      const double date ) throw ( h_exception ) {
-    
+
     unitval returnval;
     double getdate = date;      // will be used for any variable where a date is allowed.
     if(getdate == Core::undefinedIndex()) {
         // If no date specified, return the last computed date
         getdate = oldDate;
     }
-    
+
     if( varName == D_RF_PREFIX+myGasName ) {
         returnval = hc_forcing.get( getdate );
     }
@@ -189,19 +206,30 @@ unitval HalocarbonComponent::getData( const std::string& varName,
         H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for preindustrial hc" );
         returnval = H0;
     }
-    else if( varName == D_HC_CONCENTRATION ) {
-        returnval = Ha_ts.get(getdate);
+    else if( varName == myGasName+CONCENTRATION_EXTENSION ) {
+        H_ASSERT( date != Core::undefinedIndex(), "Date required for halocarbon concentration" );
+        returnval = Ha_ts.get( getdate );
     }
-    else if( varName == D_HC_EMISSION ) {
-        if( getdate >= emissions.firstdate() )
+    else if( varName == myGasName+EMISSIONS_EXTENSION ) {
+        if( emissions.exists( getdate ) )
             returnval = emissions.get( getdate );
         else
             returnval.set( 0.0, U_GG );
     }
+    else if( varName == myGasName+CONC_CONSTRAINT_EXTENSION ) {
+        H_ASSERT( date != Core::undefinedIndex(), "Date required for halocarbon constraint" );
+        if ( Ha_constrain.exists( getdate ) ) {
+            returnval = Ha_constrain.get( getdate );
+        } else {
+            H_LOG( logger, Logger::DEBUG ) << "No CH4 constraint for requested date " << date <<
+                ". Returning missing value." << std::endl;
+            returnval.set( MISSING_FLOAT, U_PPTV );
+        }
+    }
     else {
         H_THROW( "Caller is requesting unknown variable: " + varName );
     }
-    
+
     return returnval;
 }
 
@@ -216,7 +244,7 @@ void HalocarbonComponent::reset(double time) throw(h_exception)
         << getComponentName() << " reset to time= " << time << "\n";
 }
 
-    
+
 //------------------------------------------------------------------------------
 // documentation is inherited
 void HalocarbonComponent::shutDown() {
@@ -245,16 +273,16 @@ void HalocarbonComponent::accept( AVisitor* visitor ) {
  unitval HalocarbonComponent::getChangeInConcentration( unitval currConcentration, double currDate ) const
  {
  #define AtmosphereDryAirConstant 1.8
- 
+
  const double timestep = 1.0;
  const double alpha = 1 / tau;
- 
+
  unitval cumulativeEmissMol;
  cumulativeEmissMol.set( emissions.get( currDate ).value( U_GG ) / molarMass * timestep, U_GMOL );
- 
+
  unitval concFromEmiss;
  concFromEmiss.set( cumulativeEmissMol.value( U_GMOL ) / ( 0.1 * AtmosphereDryAirConstant ), U_PPTV );
- 
+
  return currConcentration * -alpha + concFromEmiss;
  }
  */

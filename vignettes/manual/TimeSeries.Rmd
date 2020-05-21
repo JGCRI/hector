@@ -1,0 +1,46 @@
+---
+title: Time series (`tseries`) variables
+---
+
+Steps to creating a tseries variable within Hector.  
+
+tseries - the basic time series data type  
+
+
+Step One (X.hpp):
+------------
+ * `tseries<unitval> X`  
+
+Step Two (X.cpp):
+---------  
+_In X::init or X::conctructor:_  
+
+	Allow for interpolation  
+	`X.allowInterp(true); ` 
+
+_In X::setData:_ 
+
+`if( varName == D_EMISSIONS_N2O ) {`
+            `H_ASSERT( data.date != Core::undefinedIndex(), "date required" );`
+            `N2O_emissions.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_TG_N2O ) );`
+        
+_In X::getData:_  
+
+`if( varName == D_ATMOSPHERIC_X ) {`
+        `H_ASSERT( date != Core::undefinedIndex(), "Date required for atmospheric X" );`
+        `returnval = X.get( date );`
+
+If setting a new variable, see [AddNewVariable](AddNewVariable.html)
+
+_In X::run:_  
+
+set the variable to a tseries in this order - (runToDate, unitval)  
+   `X.set( runToDate, unitval( previous_x + dx, U_GG_X ) );`  
+
+in order to print to the log file:   
+` H_LOG( logger, Logger::DEBUG ) << "Year " << runToDate << " X concentraion = " << X.get( runToDate ) << std::endl;`
+
+Step three
+----------
+If another component calls this new tseries variable:  
+`X = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_X, message_data( runToDate ) ).value( U_X);`

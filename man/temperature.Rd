@@ -4,6 +4,9 @@
 \alias{temperature}
 \alias{GLOBAL_TEMP}
 \alias{GLOBAL_TEMPEQ}
+\alias{OCEAN_SURFACE_TEMP}
+\alias{OCEAN_AIR_TEMP}
+\alias{LAND_AIR_TEMP}
 \alias{FLUX_MIXED}
 \alias{FLUX_INTERIOR}
 \alias{HEAT_FLUX}
@@ -12,6 +15,12 @@
 GLOBAL_TEMP()
 
 GLOBAL_TEMPEQ()
+
+OCEAN_SURFACE_TEMP()
+
+OCEAN_AIR_TEMP()
+
+LAND_AIR_TEMP()
 
 FLUX_MIXED()
 
@@ -28,6 +37,12 @@ type.
 \item \code{GLOBAL_TEMP}: Global mean temperature
 
 \item \code{GLOBAL_TEMPEQ}: Equilibrium global temperature
+
+\item \code{OCEAN_SURFACE_TEMP}: Average ocean surface temperature anomaly
+
+\item \code{OCEAN_AIR_TEMP}: Average ocean air temperature anomaly
+
+\item \code{LAND_AIR_TEMP}: Average land temperature anomaly
 
 \item \code{FLUX_MIXED}: Heat flux into the mixed layer of the ocean
 
@@ -46,9 +61,11 @@ instead of the more natural looking \code{GETDATA}.
 
 \seealso{
 Other capability identifiers: \code{\link{carboncycle}},
-  \code{\link{concentrations}}, \code{\link{emissions}},
-  \code{\link{forcings}}, \code{\link{haloemiss}},
+  \code{\link{concentrations}}, \code{\link{constraints}},
+  \code{\link{emissions}}, \code{\link{forcings}},
+  \code{\link{haloconstrain}}, \code{\link{haloemiss}},
   \code{\link{haloforcings}}, \code{\link{methane}},
   \code{\link{ocean}}, \code{\link{parameters}},
   \code{\link{so2}}
 }
+\concept{capability identifiers}

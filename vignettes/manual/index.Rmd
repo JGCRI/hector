@@ -1,0 +1,42 @@
+---
+title: Hector manual
+---
+
+Science
+--------------------
+* A general summary of the science behind Hector.
+* The model's [terrestrial carbon cycle](SimpleNBox.html).
+* The model's ocean.
+
+Model philosophy
+--------------------
+* Complexity only where warranted.
+* Open source: all code freely available.
+* Clean, modern, object-oriented code.
+* Flexible: model components, outputs, inputs can be changed.
+* Fast.
+
+Building and running Hector
+--------------------
+* How to [build Hector from source](BuildHector.html).
+* What [input files](InputFiles.html) the model requires, and what output files it produces.
+* About Hector's [version numbering](VersionNumbers.html).
+* How to use the model [backend](Backend.html) written in [R](http://cran.r-project.org).
+* Running Hector subject to [constraints](Constraints.html).
+
+Programming topics
+--------------------
+* Learn how to create a new [component](AddNewComponent.html) or [variable](AddNewVariable.html) in Hector.
+* Hector internals: [unitvals](Unitvals.html), [time series](TimeSeries.html), data passing, the [component API](ComponentAPI.html) .
+* The Hector [style guide](StyleGuide.html).
+* The Hector [external API](Hector-External-API.html)
+
+Other topics
+------------
+* [Units for emissions passed into Hector](Hector-Units.html)
+* [Hector message targets](Hector-Message-Targets.html)
+
+Publications
+--------------------
+* Manuscript describing the initial version of Hector: [Hartin et al. (2015)](http://www.geosci-model-dev-discuss.net/7/7075/2014/gmdd-7-7075-2014.html).
+* Manuscript describing Hector 2.0 (with DOECLIM) and its applications for sea level rise: [Vega-Westhoff et al. (2019)](https://doi.org/10.1029/2018EF001082)

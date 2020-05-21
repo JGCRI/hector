@@ -11,8 +11,6 @@ NULL
 #' Utility functions for Hector instances
 #'
 #' @param core Hector instance to operate on
-#' @param x Object to print or format
-#' @param ... Additional arguments for format and print generics.
 #' @name hectorutil
 NULL
 
@@ -57,7 +55,12 @@ NULL
 #' \describe{
 #' \item{ATMOSPHERIC_CO2}{Atmospheric CO2 concentration}
 #' \item{ATMOSPHERIC_C}{Atmospheric carbon pool}
-#' \item{LAND_CFLUX}{Land carbon flux}
+#' \item{LAND_CFLUX}{Annual global C flux from atmosphere into the land. A
+#'   positive value means a net flux from atmosphere into land (i.e. land is a
+#'   net carbon sink), while a negative value means a net flux from land into
+#'   the atmosphere (i.e. land is a net carbon source)}
+#' \item{NBP}{Net biome production (synonymous with \code{LAND_CFLUX}). Note
+#'   that despite the name, this is currently a globally-averaged variable.}
 #' \item{FFI_EMISSIONS}{Fossil fuel and industrial emissions}
 #' \item{LUC_EMISSIONS}{Land use change emissions}
 #' }
@@ -65,6 +68,7 @@ NULL
 #' \describe{
 #' \item{FFI_EMISSIONS}{Fossil fuel and industrial emissions (\code{"Pg C/yr"})}
 #' \item{LUC_EMISSIONS}{Land use change emissions (\code{"Pg C/yr"})}
+#' \item{CO2_CONSTRAIN}{Prescribed atmospheric CO2 concentration (\code{"ppmv CO2"})}
 #' }
 #' @inheritSection msgtype Note
 #' @name carboncycle
@@ -78,7 +82,9 @@ NULL
 #' These identifiers specify forcing values that can be provided by hector via
 #' one of the myriad halocarbon components.  All of the values corresponding to
 #' these identifiers are read-only (\emph{i.e.}, they can only appear in
-#' \code{\link{GETDATA}} messages.)
+#' \code{\link{GETDATA}} messages.)  The forcings returned are the
+#' \emph{relative} forcings, with the base year (typically 1750) values
+#' subtracted off.
 #'
 #' @inheritSection msgtype Note
 #'
@@ -101,6 +107,27 @@ NULL
 #' @family capability identifiers
 NULL
 
+#' Identifiers for halocarbon concentration constraints
+#'
+#' These identifiers correspond to concentration constraints for halocarbons. In
+#' all cases, the expected input units are volumetric parts per trillion
+#' (\code{"ppvt"}).
+#'
+#' @inheritSection msgtype Note
+#'
+#' @name haloconstrain
+#' @family capability identifiers
+NULL
+
+#' Identifiers for concentration constraints
+#'
+#' These identifiers correspond to concentration constraints.
+#'
+#' @inheritSection msgtype Note
+#'
+#' @name constraints
+#' @family capability identifiers
+NULL
 
 #' Identifiers for quantities in the methane component
 #'
@@ -197,7 +224,13 @@ NULL
 #'
 #' These identifiers correspond to settable parameters that change the model
 #' behavior and are subject to uncertainty.  All of these can be set using the
-#' \code{\link{SETDATA}} message type.
+#' \code{\link{SETDATA}} message type.  Changing any of these parameters will
+#' typically invalidate the hector core's internal state; therefore, after
+#' setting one or more of these values you should call \code{\link{reset}} before
+#' attempting to run the model again.  This will rerun the spinup and produce a
+#' new internally consistent state.  Attempting to run the model without resetting
+#' first will usually produce an error (often with a message about failing to conserve
+#' mass).
 #'
 #' @inheritSection msgtype Note
 #' @name parameters

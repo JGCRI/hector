@@ -16,7 +16,7 @@ setvar(core, dates, var, values, unit)
 \item{values}{Values to set.  Must be either a single value or a vector the
 same length as dates.}
 
-\item{unit}{Unit string}
+\item{unit}{Unit string.  Can be set to NA for unitless variables.}
 }
 \description{
 This function selects a variable by its capability name and sets the
@@ -25,3 +25,9 @@ a single string (heterogeneous units are not supported).  These are checked
 against the expected unit in the code, and an error is signaled if they don't
 match (i.e., there is no attempt to convert units).
 }
+\seealso{
+Other main user interface functions: \code{\link{fetchvars}},
+  \code{\link{newcore}}, \code{\link{reset}},
+  \code{\link{run}}, \code{\link{shutdown}}
+}
+\concept{main user interface functions}
