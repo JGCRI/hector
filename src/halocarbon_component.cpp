@@ -216,6 +216,9 @@ unitval HalocarbonComponent::getData( const std::string& varName,
         else
             returnval.set( 0.0, U_GG );
     }
+    else if( varName == D_HC_CONCENTRATION ) {
+            returnval = Ha_ts.get(getdate);
+    }
     else if( varName == myGasName+CONC_CONSTRAINT_EXTENSION ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for halocarbon constraint" );
         if ( Ha_constrain.exists( getdate ) ) {
