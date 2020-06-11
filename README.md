@@ -19,5 +19,6 @@ This research was supported by the U.S. Department of Energy, Office of Science,
   the climate component in the GCAM integrated assessment model.
 * [pyhector](https://github.com/openclimatedata/pyhector): a python
   interface to Hector.
+* [HectorUI](https://jgcri.shinyapps.io/HectorUI/): run Hector in a web interface! 
   
   
