@@ -54,7 +54,7 @@ matrix:
           - rc1.2
       script:
         - "make hector"
-        - "./test_hector.sh ./source/hector"
+        - "./test_hector.sh ./src/hector"
 
 
     - language: r
