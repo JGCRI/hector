@@ -2,16 +2,16 @@
 # BBL January 2017
 # See https://travis-ci.org/bpbond/hector
 
---- 
+---
 dist: xenial
-matrix: 
-  include: 
+matrix:
+  include:
     - language: cpp
       compiler: clang
 
-      addons: 
-        apt: 
-          packages: 
+      addons:
+        apt:
+          packages:
             - libboost-system-dev
             - libboost-filesystem-dev
 
@@ -25,34 +25,34 @@ matrix:
       #BOOSTLIB by appending `/lib` to BOOSTROOT, which will not work
       #here because of the `x86_64-linux-gnu` addition.
 
-      before_script: 
+      before_script:
         - "export BOOSTROOT=/usr/include/x86_64-linux-gnu/"
         - "export BOOSTLIB=/usr/lib/x86_64-linux-gnu/"
-      branches: 
-        only: 
+      branches:
+        only:
           - master
           - rc1.2
-      script: 
+      script:
         - "make hector"
-        - "./test_hector.sh ./source/hector"
+        - "./test_hector.sh ./src/hector"
 
     - language: cpp
       compiler: gcc
 
-      addons: 
-        apt: 
-          packages: 
+      addons:
+        apt:
+          packages:
             - libboost-system-dev
             - libboost-filesystem-dev
 
-      before_script: 
+      before_script:
         - "export BOOSTROOT=/usr/include/x86_64-linux-gnu/"
         - "export BOOSTLIB=/usr/lib/x86_64-linux-gnu/"
-      branches: 
-        only: 
+      branches:
+        only:
           - master
           - rc1.2
-      script: 
+      script:
         - "make hector"
         - "./test_hector.sh ./source/hector"
 
