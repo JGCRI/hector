@@ -22,6 +22,11 @@ test_that('Basic hcore functionality works', {
     hc <- shutdown(hc)
     expect_false(isactive(hc))
 
+    ## Turn logging ON for one test and confirm it runs (see #372 and #381)
+    hc_log <- newcore(file.path(inputdir, 'hector_rcp45.ini'), name='RCP45', suppresslogging = FALSE)
+    run(hc_log, 2100)
+    shutdown(hc_log)
+
     ## Check that errors on shutdown cores get caught
     expect_error(getdate(hc), "Invalid or inactive")
     expect_error(run(hc), "Invalid or inactive")
