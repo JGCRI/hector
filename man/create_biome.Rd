@@ -4,9 +4,20 @@
 \alias{create_biome}
 \title{Create new biome}
 \usage{
-create_biome(core, biome, veg_c0, detritus_c0, soil_c0, npp_flux0,
-  warmingfactor = 1, beta = 0.36, q10_rh = 2, f_nppv = 0.35,
-  f_nppd = 0.6, f_litterd = 0.98)
+create_biome(
+  core,
+  biome,
+  veg_c0,
+  detritus_c0,
+  soil_c0,
+  npp_flux0,
+  warmingfactor = 1,
+  beta = 0.36,
+  q10_rh = 2,
+  f_nppv = 0.35,
+  f_nppd = 0.6,
+  f_litterd = 0.98
+)
 }
 \arguments{
 \item{core}{Hector core}

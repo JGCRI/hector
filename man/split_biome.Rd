@@ -4,9 +4,16 @@
 \alias{split_biome}
 \title{Create new biomes by splitting up an existing biome}
 \usage{
-split_biome(core, old_biome, new_biomes,
+split_biome(
+  core,
+  old_biome,
+  new_biomes,
   fveg_c = rep(1/length(new_biomes), length(new_biomes)),
-  fdetritus_c = fveg_c, fsoil_c = fveg_c, fnpp_flux0 = fveg_c, ...)
+  fdetritus_c = fveg_c,
+  fsoil_c = fveg_c,
+  fnpp_flux0 = fveg_c,
+  ...
+)
 }
 \arguments{
 \item{core}{Hector core}

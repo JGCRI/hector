@@ -4,8 +4,12 @@
 \alias{newcore}
 \title{Create and initialize a new hector instance}
 \usage{
-newcore(inifile, loglevel = 0, suppresslogging = TRUE,
-  name = "unnamed hector core")
+newcore(
+  inifile,
+  loglevel = 0,
+  suppresslogging = TRUE,
+  name = "unnamed hector core"
+)
 }
 \arguments{
 \item{inifile}{(String) name of the hector input file.}
@@ -25,8 +29,11 @@ argument for all functions that operate on the instance.  Creating multiple inst
 simultaneously is supported.
 }
 \seealso{
-Other main user interface functions: \code{\link{fetchvars}},
-  \code{\link{reset}}, \code{\link{run}},
-  \code{\link{setvar}}, \code{\link{shutdown}}
+Other main user interface functions: 
+\code{\link{fetchvars}()},
+\code{\link{reset}()},
+\code{\link{run}()},
+\code{\link{setvar}()},
+\code{\link{shutdown}()}
 }
 \concept{main user interface functions}
