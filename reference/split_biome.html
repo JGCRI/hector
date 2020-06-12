@@ -140,9 +140,16 @@ from an existing biome across multiple new biomes." />
 from an existing biome across multiple new biomes.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>split_biome</span>(<span class='no'>core</span>, <span class='no'>old_biome</span>, <span class='no'>new_biomes</span>,
+    <pre class="usage"><span class='fu'>split_biome</span>(
+  <span class='no'>core</span>,
+  <span class='no'>old_biome</span>,
+  <span class='no'>new_biomes</span>,
   <span class='kw'>fveg_c</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>1</span>/<span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>new_biomes</span>), <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>new_biomes</span>)),
-  <span class='kw'>fdetritus_c</span> <span class='kw'>=</span> <span class='no'>fveg_c</span>, <span class='kw'>fsoil_c</span> <span class='kw'>=</span> <span class='no'>fveg_c</span>, <span class='kw'>fnpp_flux0</span> <span class='kw'>=</span> <span class='no'>fveg_c</span>, <span class='no'>...</span>)</pre>
+  <span class='kw'>fdetritus_c</span> <span class='kw'>=</span> <span class='no'>fveg_c</span>,
+  <span class='kw'>fsoil_c</span> <span class='kw'>=</span> <span class='no'>fveg_c</span>,
+  <span class='kw'>fnpp_flux0</span> <span class='kw'>=</span> <span class='no'>fveg_c</span>,
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
