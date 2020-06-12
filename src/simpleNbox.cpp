@@ -518,9 +518,10 @@ unitval SimpleNbox::getData(const std::string& varName,
         H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for Q10");
         returnval = unitval(q10_rh.at( biome ), U_UNITLESS);
     } else if( varNameParsed == D_LAND_CFLUX ) {
-        H_ASSERT( date != Core::undefinedIndex(), "Date required for atmosphere -> land C flux" );
-        returnval = atmosland_flux_ts.get( date );
-
+        if(date == Core::undefinedIndex())
+            returnval = atmosland_flux;
+        else
+            returnval = atmosland_flux_ts.get( date );
     } else if( varNameParsed == D_RF_T_ALBEDO ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for albedo forcing" );
         returnval = Ftalbedo.get( date );
@@ -735,7 +736,8 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     const unitval rh_total = sum_rh();
     // TODO: If/when we implement fire, update this calculation to include it
     // (as a negative term).
-    atmosland_flux_ts.set(t, npp_total - rh_total - lucEmissions.get( t ));
+    atmosland_flux = npp_total - rh_total - lucEmissions.get( t );
+    atmosland_flux_ts.set(t, atmosland_flux);
 
     // The solver just knows about one vegetation box, one detritus, and one
     // soil. So we need to apportion new veg C pool (set by the solver) to

@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		273144782492773700C95E7C /* libboost_system.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 273144762492773700C95E7C /* libboost_system.dylib */; };
+		273144792492773700C95E7C /* libboost_system.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 273144762492773700C95E7C /* libboost_system.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		2731447A2492773700C95E7C /* libboost_filesystem.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 273144772492773700C95E7C /* libboost_filesystem.dylib */; };
+		2731447B2492773700C95E7C /* libboost_filesystem.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 273144772492773700C95E7C /* libboost_filesystem.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		2786037D215532AE001B8255 /* ch4_component.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27860353215532AB001B8255 /* ch4_component.hpp */; };
 		2786037E215532AE001B8255 /* forcing_component.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27860354215532AB001B8255 /* forcing_component.hpp */; };
 		2786037F215532AE001B8255 /* INIReader.h in Headers */ = {isa = PBXBuildFile; fileRef = 27860355215532AB001B8255 /* INIReader.h */; };
@@ -119,7 +123,25 @@
 		B54987AA16C981060000A223 /* gtest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B54987A916C981060000A223 /* gtest.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		2731447C2492773700C95E7C /* Embed Libraries */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				273144792492773700C95E7C /* libboost_system.dylib in Embed Libraries */,
+				2731447B2492773700C95E7C /* libboost_filesystem.dylib in Embed Libraries */,
+			);
+			name = "Embed Libraries";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		273144752492772B00C95E7C /* libboost_filesystem.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_filesystem.a; path = ../../../../../../../../../usr/local/boost_1_73_0/stage/lib/libboost_filesystem.a; sourceTree = "<group>"; };
+		273144762492773700C95E7C /* libboost_system.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libboost_system.dylib; path = ../../../../../../../../../usr/local/boost_1_73_0/stage/lib/libboost_system.dylib; sourceTree = "<group>"; };
+		273144772492773700C95E7C /* libboost_filesystem.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libboost_filesystem.dylib; path = ../../../../../../../../../usr/local/boost_1_73_0/stage/lib/libboost_filesystem.dylib; sourceTree = "<group>"; };
 		27860353215532AB001B8255 /* ch4_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ch4_component.hpp; path = ../inst/include/ch4_component.hpp; sourceTree = "<group>"; };
 		27860354215532AB001B8255 /* forcing_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = forcing_component.hpp; path = ../inst/include/forcing_component.hpp; sourceTree = "<group>"; };
 		27860355215532AB001B8255 /* INIReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INIReader.h; path = ../inst/include/INIReader.h; sourceTree = "<group>"; };
@@ -210,6 +232,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				273144782492773700C95E7C /* libboost_system.dylib in Frameworks */,
+				2731447A2492773700C95E7C /* libboost_filesystem.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -242,6 +266,7 @@
 				CD6968B91243CAE500DFC9CF /* headers */,
 				CD6968BF1243CAE500DFC9CF /* source */,
 				1AB674ADFE9D54B511CA2CBB /* Products */,
+				273144742492772B00C95E7C /* Frameworks */,
 			);
 			name = hector;
 			sourceTree = "<group>";
@@ -254,6 +279,16 @@
 				CD97CE321BFBBF2E005689AD /* libhector-lib.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		273144742492772B00C95E7C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				273144772492773700C95E7C /* libboost_filesystem.dylib */,
+				273144762492773700C95E7C /* libboost_system.dylib */,
+				273144752492772B00C95E7C /* libboost_filesystem.a */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		CD6968B91243CAE500DFC9CF /* headers */ = {
@@ -409,6 +444,7 @@
 			buildPhases = (
 				8DD76F640486A84900D96B5E /* Sources */,
 				8DD76F660486A84900D96B5E /* Frameworks */,
+				2731447C2492773700C95E7C /* Embed Libraries */,
 			);
 			buildRules = (
 			);
@@ -589,9 +625,13 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_VERSION = "";
-				HEADER_SEARCH_PATHS = /usr/local/include/;
+				HEADER_SEARCH_PATHS = /usr/local/boost_1_73_0/;
 				INSTALL_PATH = /usr/local/bin;
-				LIBRARY_SEARCH_PATHS = /usr/local/lib/;
+				LIBRARY_SEARCH_PATHS = (
+					/usr/local/boost_1_73_0/stage/lib/,
+					/usr/local/boost_1_73_0/stage/lib,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				OTHER_LDFLAGS = (
 					"-lm",
 					"-lboost_filesystem",
@@ -612,9 +652,13 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_VERSION = "";
-				HEADER_SEARCH_PATHS = /usr/local/include/;
+				HEADER_SEARCH_PATHS = /usr/local/boost_1_73_0/;
 				INSTALL_PATH = /usr/local/bin;
-				LIBRARY_SEARCH_PATHS = /usr/local/lib/;
+				LIBRARY_SEARCH_PATHS = (
+					/usr/local/boost_1_73_0/stage/lib/,
+					/usr/local/boost_1_73_0/stage/lib,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				OTHER_LDFLAGS = (
 					"-lm",
 					"-lboost_filesystem",
@@ -660,9 +704,9 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "../../../../../../../libs/boost-lib";
+				HEADER_SEARCH_PATHS = "${BOOSTROOT}";
 				LD_OPENMP_FLAGS = "";
-				LIBRARY_SEARCH_PATHS = "../../../../../../../libs/boost-lib/stage/lib";
+				LIBRARY_SEARCH_PATHS = "${BOOSTLIB}";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-lboost_filesystem",
@@ -709,9 +753,9 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "../../../../../../../libs/boost-lib";
+				HEADER_SEARCH_PATHS = "${BOOSTROOT}";
 				LD_OPENMP_FLAGS = "";
-				LIBRARY_SEARCH_PATHS = "../../../../../../../libs/boost-lib/stage/lib";
+				LIBRARY_SEARCH_PATHS = "${BOOSTLIB}";
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-lboost_filesystem",

@@ -1,12 +1,12 @@
 context('Test basic hector functionality')
 
-inputdir <- system.file('input', package='hector')
-sampledir <- system.file('output', package='hector')
+inputdir <- system.file('input', package = 'hector')
+sampledir <- system.file('output', package = 'hector')
 testvars <- c(ATMOSPHERIC_CO2(), RF_TOTAL(), GLOBAL_TEMP())
 dates <- 2000:2300
 
 test_that('Basic hcore functionality works', {
-    hc <- newcore(file.path(inputdir, 'hector_rcp45.ini'), name='RCP45', suppresslogging = TRUE)
+    hc <- newcore(file.path(inputdir, "hector_rcp45.ini"), name = "RCP45", suppresslogging = TRUE)
     run(hc, 2100)
     expect_true(inherits(hc, 'hcore'))
     expect_true(isactive(hc))
@@ -21,6 +21,12 @@ test_that('Basic hcore functionality works', {
 
     hc <- shutdown(hc)
     expect_false(isactive(hc))
+
+    ## Turn logging ON for one test and confirm it runs (see GitHub issues #372 and #381)
+    hc_log <- newcore(file.path(inputdir, "hector_rcp45.ini"), name = "RCP45", suppresslogging = FALSE)
+    run(hc_log, 2100)
+    shutdown(hc_log)
+    expect_true(dir.exists("logs"))
 
     ## Check that errors on shutdown cores get caught
     expect_error(getdate(hc), "Invalid or inactive")
@@ -51,7 +57,7 @@ test_that('Garbage collection shuts down hector cores', {
 })
 
 test_that('Scenario column is created in output', {
-    hc <- newcore(file.path(inputdir, 'hector_rcp45.ini'), suppresslogging = TRUE, name='scenario1')
+    hc <- newcore(file.path(inputdir, 'hector_rcp45.ini'), suppresslogging = TRUE, name = 'scenario1')
     run(hc)
 
     outdata1 <- fetchvars(hc, dates, testvars)
