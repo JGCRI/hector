@@ -52,9 +52,12 @@ void SimpleNbox::init( Core* coreptr ) {
     // Defaults
     co2fert[ SNBOX_DEFAULT_BIOME ] = 1.0;
     warmingfactor[ SNBOX_DEFAULT_BIOME ] = 1.0;
-    residual.set( 0.0, U_PGC );
     tempfertd[ SNBOX_DEFAULT_BIOME ] = 1.0;
     tempferts[ SNBOX_DEFAULT_BIOME ] = 1.0;
+    
+    // Constraint residuals
+    Ca_residual.set( 0.0, U_PGC );
+    NBP_residual.set( 0.0, U_PGC );
 
     // Initialize the `biome_list` with just "global"
     biome_list.push_back( SNBOX_DEFAULT_BIOME );
@@ -270,7 +273,7 @@ void SimpleNbox::setData( const std::string &varName,
         else if( varNameParsed == D_NBP_CONSTRAIN ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
             H_ASSERT( biome == SNBOX_DEFAULT_BIOME, "land-atmosphere constraint must be global" );
-            NBP_constrain.set( data.date, data.getUnitval( U_PGC ) );
+            NBP_constrain.set( data.date, data.getUnitval( U_PGC_YR ) );
         }
         // Fertilization
         else if( varNameParsed == D_BETA ) {
@@ -511,9 +514,14 @@ unitval SimpleNbox::getData(const std::string& varName,
             returnval = Ca_ts.get(date);
     } else if( varNameParsed == D_ATMOSPHERIC_C_RESIDUAL ) {
         if(date == Core::undefinedIndex())
-            returnval = residual;
+            returnval = Ca_residual;
         else
-            returnval = residual_ts.get(date);
+            returnval = Ca_residual_ts.get(date);
+    } else if( varNameParsed == D_NBP_RESIDUAL ) {
+        if(date == Core::undefinedIndex())
+            returnval = NBP_residual;
+        else
+            returnval = NBP_residual_ts.get(date);
     } else if( varNameParsed == D_PREINDUSTRIAL_CO2 ) {
         H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for preindustrial CO2" );
         returnval = C0;
@@ -618,11 +626,11 @@ unitval SimpleNbox::getData(const std::string& varName,
             returnval = unitval( MISSING_FLOAT, U_PPMV_CO2 );
         }
    } else if( varNameParsed == D_NBP_CONSTRAIN ) {
-        H_ASSERT( date != Core::undefinedIndex(), "Date required for land-atmosphere C constraint" );
+        H_ASSERT( date != Core::undefinedIndex(), "Date required for NBP constraint" );
         if (NBP_constrain.exists(date)) {
             returnval = NBP_constrain.get( date );
         } else {
-            H_LOG( logger, Logger::DEBUG ) << "No land-atmosphere C constraint for requested date " << date <<
+            H_LOG( logger, Logger::DEBUG ) << "No NBP constraint for requested date " << date <<
                 ". Returning missing value." << std::endl;
             returnval = unitval( MISSING_FLOAT, U_PGC );
         }
@@ -651,7 +659,8 @@ void SimpleNbox::reset(double time) throw(h_exception)
     detritus_c = detritus_c_tv.get(time);
     soil_c = soil_c_tv.get(time);
 
-    residual = residual_ts.get(time);
+    Ca_residual = Ca_residual_ts.get(time);
+    NBP_residual = NBP_residual_ts.get(time);
 
     tempferts = tempferts_tv.get(time);
     tempfertd = tempfertd_tv.get(time);
@@ -678,7 +687,8 @@ void SimpleNbox::reset(double time) throw(h_exception)
     detritus_c_tv.truncate(time);
     soil_c_tv.truncate(time);
 
-    residual_ts.truncate(time);
+    Ca_residual_ts.truncate(time);
+    NBP_residual_ts.truncate(time);
 
     tempferts_tv.truncate(time);
     tempfertd_tv.truncate(time);
@@ -751,12 +761,31 @@ void SimpleNbox::stashCValues( double t, const double c[] )
 
     atmos_c.set( c[ SNBOX_ATMOS ], U_PGC );
 
-    // Record the land C flux
+    // Calculate the land C flux
     const unitval npp_total = sum_npp();
     const unitval rh_total = sum_rh();
     // TODO: If/when we implement fire, update this calculation to include it
     // (as a negative term).
+    
     atmosland_flux = npp_total - rh_total - lucEmissions.get( t );
+    NBP_residual.set( 0.0, U_PGC );
+
+    // If user has supplied NBP (atmosland_flux) values, adjust to match
+    if(!core->inSpinup() && NBP_constrain.size() && NBP_constrain.exists(t) ) {
+
+        unitval nbp_to_match = NBP_constrain.get(t);
+        H_LOG( logger, Logger::NOTICE ) << "** Constraining NBP to user-supplied value" << std::endl;
+
+        H_LOG( logger,Logger::DEBUG ) << t << "- have " << atmosland_flux << " want " <<  nbp_to_match << std::endl;
+        unitval diff = atmosland_flux - nbp_to_match;
+        NBP_residual.set( diff.value( U_PGC_YR ), U_PGC );
+        
+        // Transfer any residual to deep ocean and update atmosland_flux
+        H_LOG( logger,Logger::DEBUG ) << "Sending residual of " << NBP_residual << " to deep ocean" << std::endl;
+        core->sendMessage( M_DUMP_TO_DEEP_OCEAN, D_OCEAN_C, message_data( NBP_residual ) );
+        atmosland_flux = nbp_to_match;
+    }
+    
     atmosland_flux_ts.set(t, atmosland_flux);
 
     // The solver just knows about one vegetation box, one detritus, and one
@@ -825,17 +854,17 @@ void SimpleNbox::stashCValues( double t, const double c[] )
             atmppmv.set(CO2_constrain.get(t).value(U_PPMV_CO2), U_PPMV_CO2);
         }
 
-        residual = atmos_c - atmos_cpool_to_match;
+        Ca_residual = atmos_c - atmos_cpool_to_match;
         H_LOG( logger,Logger::DEBUG ) << t << "- have " << Ca << " want " <<  atmppmv.value( U_PPMV_CO2 ) << std::endl;
-        H_LOG( logger,Logger::DEBUG ) << t << "- have " << atmos_c << " want " << atmos_cpool_to_match << "; residual = " << residual << std::endl;
+        H_LOG( logger,Logger::DEBUG ) << t << "- have " << atmos_c << " want " << atmos_cpool_to_match << "; residual = " << Ca_residual << std::endl;
 
         // Transfer C from atmosphere to deep ocean and update our C and Ca variables
-        H_LOG( logger,Logger::DEBUG ) << "Sending residual of " << residual << " to deep ocean" << std::endl;
-        core->sendMessage( M_DUMP_TO_DEEP_OCEAN, D_OCEAN_C, message_data( residual ) );
-        atmos_c = atmos_c - residual;
+        H_LOG( logger,Logger::DEBUG ) << "Sending residual of " << Ca_residual << " to deep ocean" << std::endl;
+        core->sendMessage( M_DUMP_TO_DEEP_OCEAN, D_OCEAN_C, message_data( Ca_residual ) );
+        atmos_c = atmos_c - Ca_residual;
         Ca.set( atmos_c.value( U_PGC ) * PGC_TO_PPMVCO2, U_PPMV_CO2 );
     } else {
-        residual.set( 0.0, U_PGC );
+        Ca_residual.set( 0.0, U_PGC );
     }
 
     // All good! t will be the start of the next timestep, so
@@ -1144,7 +1173,8 @@ void SimpleNbox::record_state(double t)
     detritus_c_tv.set(t, detritus_c);
     soil_c_tv.set(t, soil_c);
 
-    residual_ts.set(t, residual);
+    Ca_residual_ts.set(t, Ca_residual);
+    NBP_residual_ts.set(t, NBP_residual);
 
     tempfertd_tv.set(t, tempfertd);
     tempferts_tv.set(t, tempferts);

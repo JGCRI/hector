@@ -269,6 +269,7 @@
 #define D_PREINDUSTRIAL_CO2     "C0"
 #define D_ATMOSPHERIC_C         "atmos_c"
 #define D_ATMOSPHERIC_C_RESIDUAL "atmos_c_residual"
+#define D_NBP_RESIDUAL          "nbp_residual"
 #define D_EARTHC                "earth_c"
 #define D_VEGC                  "veg_c"
 #define D_DETRITUSC             "detritus_c"
