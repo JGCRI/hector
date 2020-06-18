@@ -221,19 +221,20 @@ test_that('Test RF output.', {
     individual_rf <- fetchvars(hc, 1750:2100, rf_componets)
 
     # The RF value should be equal to 0 in the base year (1750) for all of the RF agents.
-    values_1750 <- dplyr::filter(individual_rf, year == 1750)
+    values_1750 <- individual_rf[individual_rf$year == 1750, ]
     expect_equal(values_1750$value, expected = rep(0, nrow(values_1750)), info = 'RF values in the base year must be 0')
 
     # That the sum of the RF agents should equal the total climate RF.
-    individual_rf %>%
-        dplyr::group_by(year) %>%
-        dplyr::summarise(value = sum(value)) %>%
-        dplyr::ungroup() ->
+    split(individual_rf, individual_rf$year) %>%
+        lapply(function(input){
+            sum(input[['value']])
+        }) %>%
+        unlist(use.names = FALSE) ->
         rf_aggregate
 
-    expect_equal(rf_aggregate$value, total_rf$value)
+    expect_equal(object = rf_aggregate, expected = total_rf$value, tolerance = 1e-3)
 
-    shutdown(hc)
+
 })
 
 test_that("Test atmosphere -> land and ocean C flux", {
