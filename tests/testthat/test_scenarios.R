@@ -33,9 +33,12 @@ test_that('RCP scenarios are correct', {
 
         expect_equivalent(outdata, sampledata, info=sprintf("Output doesn't match for scenario rcp%s", rcp))
 
-        td <- dplyr::select(tempdata, year, variable, value) %>% tidyr::spread(variable, value)
-        tgcomp <- fland*td$Tgav_land + (1.0-fland)*td$Tgav_ocean_air
-        expect_equal(tgcomp, td$Tgav, info=sprintf("Global temperature doesn't add up for scenario rcp%s", rcp))
+        Tgav_land <- tempdata[tempdata$variable == 'Tgav_land', ]$value
+        Tgav_ocean_air <- tempdata[tempdata$variable == 'Tgav_ocean_air', ]$value
+        Tgav <- tempdata[tempdata$variable == 'Tgav', ]$value
+
+        tgcomp <- fland*Tgav_land + (1.0-fland)*Tgav_ocean_air
+        expect_equal(tgcomp, Tgav, info=sprintf("Global temperature doesn't add up for scenario rcp%s", rcp))
 
         hc <- shutdown(hc)
     }
