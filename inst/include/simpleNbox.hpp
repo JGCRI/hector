@@ -163,6 +163,7 @@ private:
 
     // Constraints
     tseries<unitval> CO2_constrain;      //!< input [CO2] record to constrain model to
+    tseries<unitval> NBP_constrain;      //!< input NBP (net biome production, i.e. land-atmosphere exchange) to constrain model to
 
     /*****************************************************************
      * Model parameters

@@ -35,6 +35,7 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
     Ftalbedo.allowInterp( true );
     Ftalbedo.name = "albedo";
     CO2_constrain.name = "CO2_constrain";
+    NBP_constrain.name = "NBP_constrain";
 
     // earth_c keeps track of how much fossil C is pulled out
     // so that we can do a mass-balance check throughout the run
@@ -92,6 +93,7 @@ void SimpleNbox::init( Core* coreptr ) {
     core->registerInput(D_F_LUCV, getComponentName());
     core->registerInput(D_F_LUCD, getComponentName());
     core->registerInput(D_CO2_CONSTRAIN, getComponentName());
+    core->registerInput(D_NBP_CONSTRAIN, getComponentName());
 }
 
 //------------------------------------------------------------------------------
@@ -264,7 +266,12 @@ void SimpleNbox::setData( const std::string &varName,
             H_ASSERT( biome == SNBOX_DEFAULT_BIOME, "atmospheric constraint must be global" );
             CO2_constrain.set( data.date, data.getUnitval( U_PPMV_CO2 ) );
         }
-
+        // Land-atmosphere change to constrain model to (optional)
+        else if( varNameParsed == D_NBP_CONSTRAIN ) {
+            H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
+            H_ASSERT( biome == SNBOX_DEFAULT_BIOME, "land-atmosphere constraint must be global" );
+            NBP_constrain.set( data.date, data.getUnitval( U_PGC ) );
+        }
         // Fertilization
         else if( varNameParsed == D_BETA ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
@@ -424,6 +431,10 @@ void SimpleNbox::prepareToRun() throw( h_exception )
     if( CO2_constrain.size() ) {
         Logger& glog = core->getGlobalLogger();
         H_LOG( glog, Logger::WARNING ) << "Atmospheric CO2 will be constrained to user-supplied values!" << std::endl;
+    }
+    if( NBP_constrain.size() ) {
+        Logger& glog = core->getGlobalLogger();
+        H_LOG( glog, Logger::WARNING ) << "Land-atmosphere C exchange will be constrained to user-supplied values!" << std::endl;
     }
 
     // One-time checks
@@ -606,7 +617,16 @@ unitval SimpleNbox::getData(const std::string& varName,
                 ". Returning missing value." << std::endl;
             returnval = unitval( MISSING_FLOAT, U_PPMV_CO2 );
         }
-    } else if( varNameParsed == D_NPP ) {
+   } else if( varNameParsed == D_NBP_CONSTRAIN ) {
+        H_ASSERT( date != Core::undefinedIndex(), "Date required for land-atmosphere C constraint" );
+        if (NBP_constrain.exists(date)) {
+            returnval = NBP_constrain.get( date );
+        } else {
+            H_LOG( logger, Logger::DEBUG ) << "No land-atmosphere C constraint for requested date " << date <<
+                ". Returning missing value." << std::endl;
+            returnval = unitval( MISSING_FLOAT, U_PGC );
+        }
+   } else if( varNameParsed == D_NPP ) {
         // `sum_npp` works whether or not `date` is defined (if undefined, it
         // evaluates for the current date).
         returnval = sum_npp(date);
