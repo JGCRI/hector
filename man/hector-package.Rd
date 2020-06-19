@@ -7,9 +7,9 @@
 \title{hector: The Hector Simple Climate Model}
 \description{
 Provides an R interface for the Hector Simple Climate
-    Model.  Using this interface you can set up and initialize the model,
+    Model. Using this interface you can set up and initialize the model,
     change model parameters and emissions inputs, run Hector, and
-    retrieve hector outputs.
+    retrieve model outputs.
 }
 \details{
 This package allows you to run the Hector Simple Climate Model (SCM) from R
@@ -61,13 +61,18 @@ carbon-cycle model: projections and sensitivities, Biogeosciences, 13,
 \code{\link{shutdown}}, \code{\link{fetchvars}}
 }
 \author{
-\strong{Maintainer}: Robert Link \email{robert.link@pnnl.gov}
+\strong{Maintainer}: Kalyn Dorheim \email{kalyn.dorheim@pnnl.gov} (\href{https://orcid.org/0000-0001-8093-8397}{ORCID})
 
 Authors:
 \itemize{
-  \item Corinne Hartin \email{corinne.hartin@pnnl.gov}
-  \item Ben Bond-Lamberty \email{BondLamberty@pnnl.gov}
-  \item Pralit Patel \email{pralit.patel@pnnl.gov}
+  \item Robert Link \email{robert.link@pnnl.gov} (\href{https://orcid.org/0000-0002-7071-248X}{ORCID})
+}
+
+Other contributors:
+\itemize{
+  \item Corinne Hartin \email{hartin.corinne@epa.gov} (\href{https://orcid.org/0000-0003-1834-6539}{ORCID}) [contributor]
+  \item Ben Bond-Lamberty \email{bondlamberty@pnnl.gov} (\href{https://orcid.org/0000-0001-9525-4633}{ORCID}) [contributor]
+  \item Pralit Patel \email{pralit.patel@pnnl.gov} (\href{https://orcid.org/0000-0003-3992-1061}{ORCID}) [contributor]
 }
 
 }
