@@ -916,6 +916,12 @@ CO2_CONSTRAIN <- function() {
     .Call('_hector_CO2_CONSTRAIN', PACKAGE = 'hector')
 }
 
+#' @describeIn carboncycle Constrain net biome production (land-atmosphere flux) (\code{"(PgC/yr)"})
+#' @export
+NBP_CONSTRAIN <- function() {
+    .Call('_hector_NBP_CONSTRAIN', PACKAGE = 'hector')
+}
+
 #' @describeIn parameters NPP fraction to vegetation (\code{"(unitless)"})
 #' @inheritParams BETA
 #' @export
