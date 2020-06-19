@@ -9,7 +9,8 @@
 Provides an R interface for the Hector Simple Climate
     Model. Using this interface you can set up and initialize the model,
     change model parameters and emissions inputs, run Hector, and
-    retrieve model outputs.
+    retrieve model outputs. Note that the package authors are not
+    identical to the C++ model authors.
 }
 \details{
 This package allows you to run the Hector Simple Climate Model (SCM) from R
@@ -73,6 +74,7 @@ Other contributors:
   \item Corinne Hartin \email{hartin.corinne@epa.gov} (\href{https://orcid.org/0000-0003-1834-6539}{ORCID}) [contributor]
   \item Ben Bond-Lamberty \email{bondlamberty@pnnl.gov} (\href{https://orcid.org/0000-0001-9525-4633}{ORCID}) [contributor]
   \item Pralit Patel \email{pralit.patel@pnnl.gov} (\href{https://orcid.org/0000-0003-3992-1061}{ORCID}) [contributor]
+  \item Alexey Shiklomanov \email{alexey.shiklomanov@nasa.gov} (\href{https://orcid.org/0000-0003-4022-5979}{ORCID}) [contributor]
 }
 
 }

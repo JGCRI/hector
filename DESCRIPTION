@@ -20,7 +20,11 @@ Authors@R: c(person("Robert", "Link",
 	     person("Pralit", "Patel", 
 	        email = "pralit.patel@pnnl.gov", 
 	        role = "ctb",
-	        comment = c(ORCID = "0000-0003-3992-1061")))
+	        comment = c(ORCID = "0000-0003-3992-1061")),
+	     person("Alexey", "Shiklomanov",
+	        email = "alexey.shiklomanov@nasa.gov",
+	        role = "ctb",
+	        comment = c(ORCID = "0000-0003-4022-5979")))
 Description: Provides an R interface for the Hector Simple Climate
     Model. Using this interface you can set up and initialize the model,
     change model parameters and emissions inputs, run Hector, and
