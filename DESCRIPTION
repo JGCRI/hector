@@ -1,14 +1,35 @@
 Package: hector
 Title: The Hector Simple Climate Model
 Version: 2.5.0
-Authors@R: c(person("Robert", "Link", email = "robert.link@pnnl.gov", role = c("aut", "cre")),
-	     person("Corinne", "Hartin", email = "corinne.hartin@pnnl.gov", role = "aut"),
-	     person("Ben", "Bond-Lamberty", email = "BondLamberty@pnnl.gov", role = "aut"),
-	     person("Pralit", "Patel", email = "pralit.patel@pnnl.gov", role = "aut"))
+Authors@R: c(person("Robert", "Link", 
+            email = "robert.link@pnnl.gov", 
+            role = "aut",
+            comment = c(ORCID = "0000-0002-7071-248X")),
+	     person("Corinne", "Hartin", 
+	        email = "hartin.corinne@epa.gov", 
+	        role = "ctb",
+	        comment = c(ORCID = "0000-0003-1834-6539")),
+	     person("Ben", "Bond-Lamberty", 
+	        email = "bondlamberty@pnnl.gov", 
+	        role = "ctb", 
+	        comment = c(ORCID = "0000-0001-9525-4633")),
+	     person("Kalyn", "Dorheim", 
+	        email = "kalyn.dorheim@pnnl.gov",
+	        role = "cre",
+	        comment = c(ORCID = "0000-0001-8093-8397")),
+	     person("Pralit", "Patel", 
+	        email = "pralit.patel@pnnl.gov", 
+	        role = "ctb",
+	        comment = c(ORCID = "0000-0003-3992-1061")),
+	     person("Alexey", "Shiklomanov",
+	        email = "alexey.shiklomanov@nasa.gov",
+	        role = "ctb",
+	        comment = c(ORCID = "0000-0003-4022-5979")))
 Description: Provides an R interface for the Hector Simple Climate
-    Model.  Using this interface you can set up and initialize the model,
+    Model. Using this interface you can set up and initialize the model,
     change model parameters and emissions inputs, run Hector, and
-    retrieve hector outputs.
+    retrieve model outputs. Note that the package authors are not
+    identical to the C++ model authors.
 Depends: R (>= 3.3)
 License: GPL-3
 Encoding: UTF-8
