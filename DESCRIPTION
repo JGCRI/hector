@@ -21,8 +21,7 @@ Suggests:
     knitr,
     rmarkdown,
     ggplot2,
-    tidyr (>= 0.7),
-    dplyr (>= 0.7)
+    magrittr (>= 1.5)
 Collate:
     'aadoc.R'
     'RcppExports.R'

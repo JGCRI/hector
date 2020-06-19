@@ -56,7 +56,7 @@ results <- fetchvars(core, 2000:2300)
 head(results) 
 ```
 
-The results are returned as a long, [tidy](https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html) `data.frame`.
+The results are returned as a long `data.frame`.
 This makes it easy to plot them using `ggplot2`.
 
 ```{r  plot }
