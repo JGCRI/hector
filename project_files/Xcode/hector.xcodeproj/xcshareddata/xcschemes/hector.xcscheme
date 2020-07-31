@@ -54,7 +54,19 @@
       <CommandLineArguments>
          <CommandLineArgument
             argument = "input/hector_rcp45.ini"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "input/hector_rcp26.ini"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "input/hector_rcp85.ini"
             isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "input/hector_rcp60.ini"
+            isEnabled = "NO">
          </CommandLineArgument>
       </CommandLineArguments>
    </LaunchAction>

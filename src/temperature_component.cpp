@@ -93,6 +93,7 @@ void TemperatureComponent::init( Core* coreptr ) {
     S.set( 3.0, U_DEGC );         // default climate sensitivity, K (varname is t2co in CDICE).
     alpha.set( 1.0, U_UNITLESS);  // default aerosol scaling, unitless (similar to alpha in CDICE).
     volscl.set(1.0, U_UNITLESS);  // Default volcanic scaling, unitless (works the same way as alpha)
+    lo_warming_ratio.set(1.59, U_UNITLESS);
 
     // Register the data we can provide
     core->registerCapability( D_GLOBAL_TEMP, getComponentName() );
@@ -113,10 +114,12 @@ void TemperatureComponent::init( Core* coreptr ) {
     core->registerDependency( D_RF_VOL, getComponentName() );
 
     // Register the inputs we can receive from outside
-    core->registerInput(D_ECS, getComponentName());
-    core->registerInput(D_DIFFUSIVITY, getComponentName());
-    core->registerInput(D_AERO_SCALE, getComponentName());
-    core->registerInput(D_VOLCANIC_SCALE, getComponentName());
+    core->registerInput( D_ECS, getComponentName() );
+    core->registerInput( D_DIFFUSIVITY, getComponentName() );
+    core->registerInput( D_AERO_SCALE, getComponentName() );
+    core->registerInput( D_VOLCANIC_SCALE, getComponentName() );
+    core->registerInput( D_LO_WARMING_RATIO, getComponentName() );
+
 }
 
 //------------------------------------------------------------------------------
@@ -154,15 +157,18 @@ void TemperatureComponent::setData( const string& varName,
         } else if( varName == D_DIFFUSIVITY ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
             diff = data.getUnitval(U_CM2_S);
-	} else if( varName == D_AERO_SCALE ) {
+        } else if( varName == D_AERO_SCALE ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
             alpha = data.getUnitval(U_UNITLESS);
-        } else if(varName == D_VOLCANIC_SCALE) {
+        } else if( varName == D_VOLCANIC_SCALE ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
             volscl = data.getUnitval(U_UNITLESS);
         } else if( varName == D_TGAV_CONSTRAIN ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
             tgav_constrain.set(data.date, data.getUnitval(U_DEGC));
+        } else if( varName == D_LO_WARMING_RATIO ) {
+            H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
+            lo_warming_ratio = data.getUnitval(U_UNITLESS);
         } else {
             H_THROW( "Unknown variable name while parsing " + getComponentName() + ": "
                     + varName );
@@ -214,6 +220,7 @@ void TemperatureComponent::prepareToRun() throw ( h_exception ) {
         C[i] = 0.0;
     }
 
+    bk = lo_warming_ratio;  // set bk to value of land-ocean warming ratio from ini file
     // DOECLIM parameters calculated from constants set in header
     ocean_area = (1.0 - flnd) * earth_area;    // m2
     cnum = rlam * flnd + bsi * (1.0 - flnd);   // factor from sea-surface climate sensitivity to global mean
@@ -450,17 +457,19 @@ unitval TemperatureComponent::getData( const std::string& varName,
         } else if( varName == D_DIFFUSIVITY ) {
             returnval = diff;
         } else if( varName == D_AERO_SCALE ) {
-	    returnval = alpha;
+            returnval = alpha;
         } else if( varName == D_FLUX_MIXED ) {
-	    returnval = flux_mixed;
+            returnval = flux_mixed;
         } else if( varName == D_FLUX_INTERIOR ) {
-	    returnval = flux_interior;
+            returnval = flux_interior;
         } else if( varName == D_HEAT_FLUX) {
             returnval = heatflux;
         } else if( varName == D_ECS ) {
             returnval = S;
         } else if(varName == D_VOLCANIC_SCALE) {
             returnval = volscl;
+        } else if(varName == D_LO_WARMING_RATIO) {
+            returnval = lo_warming_ratio;
         } else {
             H_THROW( "Caller is requesting unknown variable: " + varName );
         }

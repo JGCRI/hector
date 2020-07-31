@@ -75,7 +75,7 @@ private:
     const int dt = 1;                     // years per timestep (this is implicit in Hector)
     int ns;                               // number of timesteps
     const double ak = 0.31;               // slope in climate feedback - land-sea heat exchange linear relationship
-    const double bk = 1.59;               // offset in climate feedback - land-sea heat exchange linear relationship, W/m2/K
+    // const double bk = 1.59;               // offset in climate feedback - land-sea heat exchange linear relationship, W/m2/K
     const double csw = 0.13;              // specific heat capacity of seawater W*yr/m3/K
     const double earth_area = 5100656E8;  // m2
     const double kcon = 3155.0;           // conversion from cm2/s to m2/yr
@@ -104,6 +104,7 @@ private:
     double taudif;           // interior ocean heat uptake time scale, yr
     double tauksl;           // sea-land heat exchange time scale, yr
     double taukls;           // land-sea heat exchange time scale, yr
+    double bk;              // set to input for land-ocean warming ratio (offset in climate feedback - land-sea heat exchange linear relationship, W/m2/K ?)
 
     std::vector<double> KT0;
     std::vector<double> KTA1;
@@ -135,6 +136,7 @@ private:
     unitval diff;          //!< ocean heat diffusivity, cm2/s
     unitval alpha;	       //!< aerosol forcing factor, unitless
     unitval volscl;        //!< volcanic forcing scaling factor, unitless
+    unitval lo_warming_ratio;  //!< land-ocean warming ratio, unitless
 
     // Model outputs
     unitval tgav;          //!< global average surface air temperature anomaly, deg C

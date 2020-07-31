@@ -324,6 +324,7 @@
 #define D_FLUX_MIXED            "flux_mixed"
 #define D_FLUX_INTERIOR         "flux_interior"
 #define D_HEAT_FLUX             "heatflux"
+#define D_LO_WARMING_RATIO      "lo_warming_ratio"
 
 // ------------------- messages being passed between components -------------------------
 
