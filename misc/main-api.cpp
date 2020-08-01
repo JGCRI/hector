@@ -100,6 +100,7 @@ int main (int argc, char * const argv[]) {
         tseries<unitval> tempts;
         tseries<unitval> cats;
         tseries<unitval> forcts;
+        tseries<unitval> oceanAirTempts;
         
         for(double t=core.getStartDate()+5.0; t<=core.getEndDate(); t+=5.0) {
             read_and_set_co2(tlast, t, core, sim_gcam_emiss);
@@ -111,6 +112,8 @@ int main (int argc, char * const argv[]) {
             unitval temp = core.sendMessage(M_GETDATA, D_GLOBAL_TEMP);
             unitval ca   = core.sendMessage(M_GETDATA, D_ATMOSPHERIC_CO2);
             unitval forc = core.sendMessage(M_GETDATA, D_RF_TOTAL);
+
+
             H_LOG(glog, Logger::NOTICE)
                 << "t= " << t << "\t"
                 << "temp= " << temp << "\t"

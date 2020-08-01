@@ -79,9 +79,13 @@ void TemperatureComponent::init( Core* coreptr ) {
 
     tgaveq.set( 0.0, U_DEGC, 0.0 );
     tgav.set( 0.0, U_DEGC, 0.0 );
+    tgav_land.set(0.0, U_DEGC, 0.0);
+    tgav_oceanair.set(0.0, U_DEGC, 0.0);
+    tgav_sst.set(0.0, U_DEGC, 0.0);
     flux_mixed.set( 0.0, U_W_M2, 0.0 );
     flux_interior.set( 0.0, U_W_M2, 0.0 );
     heatflux.set( 0.0, U_W_M2, 0.0 );
+    
 
     core = coreptr;
 
@@ -92,8 +96,8 @@ void TemperatureComponent::init( Core* coreptr ) {
     diff.set( 0.55, U_CM2_S );    // default ocean heat diffusivity, cm2/s. value is CDICE default (varname is kappa there).
     S.set( 3.0, U_DEGC );         // default climate sensitivity, K (varname is t2co in CDICE).
     alpha.set( 1.0, U_UNITLESS);  // default aerosol scaling, unitless (similar to alpha in CDICE).
-    volscl.set(1.0, U_UNITLESS);  // Default volcanic scaling, unitless (works the same way as alpha)
-    lo_warming_ratio.set(1.59, U_UNITLESS);
+    volscl.set(1.0, U_UNITLESS);  // default volcanic scaling, unitless (works the same way as alpha)
+    lo_warming_ratio.set(1.59, U_UNITLESS);  // default land-ocean warming ratio, unitless
 
     // Register the data we can provide
     core->registerCapability( D_GLOBAL_TEMP, getComponentName() );
@@ -221,6 +225,7 @@ void TemperatureComponent::prepareToRun() throw ( h_exception ) {
     }
 
     bk = lo_warming_ratio;  // set bk to value of land-ocean warming ratio from ini file
+
     // DOECLIM parameters calculated from constants set in header
     ocean_area = (1.0 - flnd) * earth_area;    // m2
     cnum = rlam * flnd + bsi * (1.0 - flnd);   // factor from sea-surface climate sensitivity to global mean
@@ -550,6 +555,10 @@ void TemperatureComponent::setoutputs(int tstep)
     tgav_sst.set(temp_sst[tstep], U_DEGC, 0.0);
     temp_oceanair = bsi * temp_sst[tstep];
     tgav_oceanair.set(temp_oceanair, U_DEGC, 0.0);
+
+    H_LOG( logger, Logger::DEBUG) << "Ocean Air: " << tgav_oceanair << std::endl;
+    H_LOG( logger, Logger::DEBUG) << "Land Air: " << tgav_land << std::endl;
+    H_LOG( logger, Logger::DEBUG) << "Global: " << tgav << std::endl;
 }
 
 }

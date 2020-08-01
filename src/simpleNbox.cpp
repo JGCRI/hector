@@ -446,7 +446,7 @@ void SimpleNbox::run( const double runToDate ) throw ( h_exception )
     in_spinup = core->inSpinup();
     sanitychecks();
 
-    Tgav_record.set( runToDate, core->sendMessage( M_GETDATA, D_GLOBAL_TEMP ).value( U_DEGC ) );
+    Tgav_record.set( runToDate, core->sendMessage( M_GETDATA, D_LAND_AIR_TEMP ).value( U_DEGC ) );
 }
 
 //------------------------------------------------------------------------------
@@ -1047,7 +1047,7 @@ void SimpleNbox::slowparameval( double t, const double c[] )
     // Compute temperature factor globally (and for each biome specified)
     // Heterotrophic respiration depends on the pool sizes (detritus and soil) and Q10 values
     // The soil pool uses a lagged Tgav, i.e. we assume it takes time for heat to diffuse into soil
-    const double Tgav = core->sendMessage( M_GETDATA, D_GLOBAL_TEMP ).value( U_DEGC );
+    const double Tgav = core->sendMessage( M_GETDATA, D_LAND_AIR_TEMP ).value( U_DEGC );
 
 
     /* set tempferts (soil) and tempfertd (detritus) for each biome */

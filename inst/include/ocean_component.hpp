@@ -94,6 +94,8 @@ private:
 
     // Atmosphere conditions
     unitval Tgav;           //!< Global temperature anomaly, degC
+    unitval Tocean;
+    unitval Tland;
     unitval Ca;             //!< Atmospheric CO2, ppm
 
     // Atmosphere-ocean flux

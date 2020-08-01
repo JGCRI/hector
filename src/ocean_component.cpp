@@ -15,6 +15,9 @@
 #include <cmath>
 #include <limits>
 
+// sky added
+#include <typeinfo>
+
 #include "ocean_component.hpp"
 #include "core.hpp"
 #include "h_util.hpp"
@@ -281,7 +284,11 @@ unitval OceanComponent::annual_totalcflux( const double date, const unitval& Ca,
 void OceanComponent::run( const double runToDate ) throw ( h_exception ) {
 
     Ca = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_CO2 );
-    Tgav = core->sendMessage( M_GETDATA, D_GLOBAL_TEMP );
+
+    Tocean = core->sendMessage( M_GETDATA, D_OCEAN_AIR_TEMP );
+    Tland = core->sendMessage( M_GETDATA, D_LAND_AIR_TEMP );
+    Tgav = core->sendMessage( M_GETDATA, D_GLOBAL_TEMP);
+
     in_spinup = core->inSpinup();
 	annualflux_sum.set( 0.0, U_PGC );
 	annualflux_sumHL.set( 0.0, U_PGC );
@@ -289,7 +296,9 @@ void OceanComponent::run( const double runToDate ) throw ( h_exception ) {
     timesteps = 0;
 
     // Initialize ocean box boundary conditions and inform them new year starting
+    H_LOG(logger, Logger::DEBUG) << "Year: " << runToDate << std::endl;
     H_LOG(logger, Logger::DEBUG) << "Starting new year: Tgav= " << Tgav << std::endl;
+
     surfaceHL.new_year( Tgav );
     surfaceLL.new_year( Tgav );
     inter.new_year( Tgav );
