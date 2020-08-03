@@ -70,6 +70,8 @@ void OceanComponent::init( Core* coreptr ) {
     oceanflux_constrain.name = "atm_ocean_constrain";
 
     Tgav.set( 0.0, U_DEGC );
+    Tocean.set( 0.0, U_DEGC );
+    Tland.set( 0.0, U_DEGC );
 
 	lastflux_annualized.set( 0.0, U_PGC );
 
@@ -285,7 +287,7 @@ void OceanComponent::run( const double runToDate ) throw ( h_exception ) {
 
     Ca = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_CO2 );
 
-    Tocean = core->sendMessage( M_GETDATA, D_OCEAN_AIR_TEMP );
+    Tocean = core->sendMessage( M_GETDATA, D_OCEAN_AIR_TEMP );  // if want to switch back change all Tocean to Tgav
     Tland = core->sendMessage( M_GETDATA, D_LAND_AIR_TEMP );
     Tgav = core->sendMessage( M_GETDATA, D_GLOBAL_TEMP);
 
@@ -298,11 +300,12 @@ void OceanComponent::run( const double runToDate ) throw ( h_exception ) {
     // Initialize ocean box boundary conditions and inform them new year starting
     H_LOG(logger, Logger::DEBUG) << "Year: " << runToDate << std::endl;
     H_LOG(logger, Logger::DEBUG) << "Starting new year: Tgav= " << Tgav << std::endl;
+    H_LOG(logger, Logger::DEBUG) << "Starting new year: Tocean= " << Tocean << std::endl;
 
-    surfaceHL.new_year( Tgav );
-    surfaceLL.new_year( Tgav );
-    inter.new_year( Tgav );
-    deep.new_year( Tgav );
+    surfaceHL.new_year( Tocean );
+    surfaceLL.new_year( Tocean);
+    inter.new_year( Tocean );
+    deep.new_year( Tocean );
 
     H_LOG( logger, Logger::DEBUG ) << "----------------------------------------------------" << std::endl;
     H_LOG( logger, Logger::DEBUG ) << "runToDate=" << runToDate << ", spinup=" << in_spinup << std::endl;
@@ -569,7 +572,7 @@ void OceanComponent::reset(double time) throw(h_exception)
     inter = inter_tv.get(time);
     deep = deep_tv.get(time);
 
-    Tgav = Tgav_ts.get(time);
+    Tocean = Tocean_ts.get(time);
     Ca = Ca_ts.get(time);
 
     annualflux_sum = annualflux_sum_ts.get(time);
@@ -588,7 +591,7 @@ void OceanComponent::reset(double time) throw(h_exception)
     inter_tv.truncate(time);
     deep_tv.truncate(time);
 
-    Tgav_ts.truncate(time);
+    Tocean_ts.truncate(time);
     Ca_ts.truncate(time);
 
     annualflux_sum_ts.truncate(time);
@@ -613,7 +616,7 @@ void OceanComponent::record_state(double time)
     inter_tv.set(time, inter);
     deep_tv.set(time, deep);
 
-    Tgav_ts.set(time, Tgav);
+    Tocean_ts.set(time, Tocean);
     Ca_ts.set(time, Ca);
 
     annualflux_sum_ts.set(time, annualflux_sum);

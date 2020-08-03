@@ -58,7 +58,7 @@ void SimpleNbox::init( Core* coreptr ) {
     // Initialize the `biome_list` with just "global"
     biome_list.push_back( SNBOX_DEFAULT_BIOME );
 
-    Tgav_record.allowInterp( true );
+    Tland_record.allowInterp(true);  // to switch back to depending on global temp replace all Tland with Tgav
 
     // Register the data we can provide
     core->registerCapability( D_ATMOSPHERIC_CO2, getComponentName() );
@@ -446,7 +446,7 @@ void SimpleNbox::run( const double runToDate ) throw ( h_exception )
     in_spinup = core->inSpinup();
     sanitychecks();
 
-    Tgav_record.set( runToDate, core->sendMessage( M_GETDATA, D_GLOBAL_TEMP).value( U_DEGC ) );
+    Tland_record.set( runToDate, core->sendMessage( M_GETDATA, D_LAND_AIR_TEMP).value( U_DEGC ) );
 }
 
 //------------------------------------------------------------------------------
@@ -646,7 +646,7 @@ void SimpleNbox::reset(double time) throw(h_exception)
             co2fert[ biome ] = calc_co2fert(biome);
         }
     }
-    Tgav_record.truncate(time);
+    Tland_record.truncate(time);
     // No need to reset masstot; it's not supposed to change anyhow.
 
     // Truncate all of the state variable time series
@@ -1046,8 +1046,8 @@ void SimpleNbox::slowparameval( double t, const double c[] )
 
     // Compute temperature factor globally (and for each biome specified)
     // Heterotrophic respiration depends on the pool sizes (detritus and soil) and Q10 values
-    // The soil pool uses a lagged Tgav, i.e. we assume it takes time for heat to diffuse into soil
-    const double Tgav = core->sendMessage( M_GETDATA, D_GLOBAL_TEMP ).value( U_DEGC );
+    // The soil pool uses a lagged Tland, i.e. we assume it takes time for heat to diffuse into soil
+    const double Tland = core->sendMessage( M_GETDATA, D_LAND_AIR_TEMP ).value( U_DEGC );
 
 
     /* set tempferts (soil) and tempfertd (detritus) for each biome */
@@ -1077,24 +1077,24 @@ void SimpleNbox::slowparameval( double t, const double c[] )
                 wf = 1.0;
             }
 
-            const double Tgav_biome = Tgav * wf;    // biome-specific temperature
+            const double Tland_biome = Tland * wf;    // biome-specific temperature
 
-            tempfertd[ biome ] = pow( q10_rh.at( biome ), ( Tgav_biome / 10.0 ) ); // detritus warms with air
+            tempfertd[ biome ] = pow( q10_rh.at( biome ), ( Tland_biome / 10.0 ) ); // detritus warms with air
 
 
             // Soil warm very slowly relative to the atmosphere
             // We use a mean temperature of a window (size Q10_TEMPN) of temperatures to scale Q10
             #define Q10_TEMPLAG 0 //125         // TODO: put lag in input files 150, 25
             #define Q10_TEMPN 200 //25
-            double Tgav_rm = 0.0;       /* window mean of Tgav */
+            double Tland_rm = 0.0;       /* window mean of Tland */
             if( t > core->getStartDate() + Q10_TEMPLAG ) {
                 for( int i=t-Q10_TEMPLAG-Q10_TEMPN; i<t-Q10_TEMPLAG; i++ ) {
-                    Tgav_rm += Tgav_record.get( i ) * wf;
+                    Tland_rm += Tland_record.get( i ) * wf;
                 }
-                Tgav_rm /= Q10_TEMPN;
+                Tland_rm /= Q10_TEMPN;
             }
 
-            tempferts[ biome ] = pow( q10_rh.at( biome ), ( Tgav_rm / 10.0 ) );
+            tempferts[ biome ] = pow( q10_rh.at( biome ), ( Tland_rm / 10.0 ) );
 
             // The soil Q10 effect is 'sticky' and can only increase, not decline
             double tempferts_last = tfs_last[ biome ]; // If tfs_last is empty, this will produce 0.0
@@ -1102,7 +1102,7 @@ void SimpleNbox::slowparameval( double t, const double c[] )
                 tempferts[ biome ] = tempferts_last;
             }
 
-            H_LOG( logger,Logger::DEBUG ) << biome << " Tgav=" << Tgav << ", Tgav_biome=" << Tgav_biome << ", tempfertd=" << tempfertd[ biome ]
+            H_LOG( logger,Logger::DEBUG ) << biome << " Tland=" << Tland << ", Tland_biome=" << Tland_biome << ", tempfertd=" << tempfertd[ biome ]
                 << ", tempferts=" << tempferts[ biome ] << std::endl;
         }
     } // loop over biomes

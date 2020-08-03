@@ -223,8 +223,9 @@ void TemperatureComponent::prepareToRun() throw ( h_exception ) {
         B[i] = 0.0;
         C[i] = 0.0;
     }
-
+   
     rlam = lo_warming_ratio;  // set bk to value of land-ocean warming ratio from ini file
+    
 
     // DOECLIM parameters calculated from constants set in header
     ocean_area = (1.0 - flnd) * earth_area;    // m2
