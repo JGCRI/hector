@@ -97,7 +97,7 @@ void TemperatureComponent::init( Core* coreptr ) {
     S.set( 3.0, U_DEGC );         // default climate sensitivity, K (varname is t2co in CDICE).
     alpha.set( 1.0, U_UNITLESS);  // default aerosol scaling, unitless (similar to alpha in CDICE).
     volscl.set(1.0, U_UNITLESS);  // default volcanic scaling, unitless (works the same way as alpha)
-    lo_warming_ratio.set(1.59, U_UNITLESS);  // default land-ocean warming ratio, unitless
+    lo_warming_ratio.set(1.591, U_UNITLESS);  // default land-ocean warming ratio, unitless
 
     // Register the data we can provide
     core->registerCapability( D_GLOBAL_TEMP, getComponentName() );
@@ -224,7 +224,7 @@ void TemperatureComponent::prepareToRun() throw ( h_exception ) {
         C[i] = 0.0;
     }
 
-    bk = lo_warming_ratio;  // set bk to value of land-ocean warming ratio from ini file
+    rlam = lo_warming_ratio;  // set bk to value of land-ocean warming ratio from ini file
 
     // DOECLIM parameters calculated from constants set in header
     ocean_area = (1.0 - flnd) * earth_area;    // m2

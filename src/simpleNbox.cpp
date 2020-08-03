@@ -446,7 +446,7 @@ void SimpleNbox::run( const double runToDate ) throw ( h_exception )
     in_spinup = core->inSpinup();
     sanitychecks();
 
-    Tgav_land_air_record.set( runToDate, core->sendMessage( M_GETDATA, D_LAND_AIR_TEMP ).value( U_DEGC ) );
+    Tgav_record.set( runToDate, core->sendMessage( M_GETDATA, D_GLOBAL_TEMP).value( U_DEGC ) );
 }
 
 //------------------------------------------------------------------------------
@@ -646,7 +646,7 @@ void SimpleNbox::reset(double time) throw(h_exception)
             co2fert[ biome ] = calc_co2fert(biome);
         }
     }
-    Tgav_land_air_record.truncate(time);
+    Tgav_record.truncate(time);
     // No need to reset masstot; it's not supposed to change anyhow.
 
     // Truncate all of the state variable time series
@@ -1047,7 +1047,7 @@ void SimpleNbox::slowparameval( double t, const double c[] )
     // Compute temperature factor globally (and for each biome specified)
     // Heterotrophic respiration depends on the pool sizes (detritus and soil) and Q10 values
     // The soil pool uses a lagged Tgav, i.e. we assume it takes time for heat to diffuse into soil
-    const double Tgav_land_air = core->sendMessage( M_GETDATA, D_LAND_AIR_TEMP ).value( U_DEGC );
+    const double Tgav = core->sendMessage( M_GETDATA, D_GLOBAL_TEMP ).value( U_DEGC );
 
 
     /* set tempferts (soil) and tempfertd (detritus) for each biome */
@@ -1077,7 +1077,7 @@ void SimpleNbox::slowparameval( double t, const double c[] )
                 wf = 1.0;
             }
 
-            const double Tgav_biome = Tgav_land_air * wf;    // biome-specific temperature
+            const double Tgav_biome = Tgav * wf;    // biome-specific temperature
 
             tempfertd[ biome ] = pow( q10_rh.at( biome ), ( Tgav_biome / 10.0 ) ); // detritus warms with air
 
@@ -1089,7 +1089,7 @@ void SimpleNbox::slowparameval( double t, const double c[] )
             double Tgav_rm = 0.0;       /* window mean of Tgav */
             if( t > core->getStartDate() + Q10_TEMPLAG ) {
                 for( int i=t-Q10_TEMPLAG-Q10_TEMPN; i<t-Q10_TEMPLAG; i++ ) {
-                    Tgav_rm += Tgav_land_air_record.get( i ) * wf;
+                    Tgav_rm += Tgav_record.get( i ) * wf;
                 }
                 Tgav_rm /= Q10_TEMPN;
             }
@@ -1102,7 +1102,7 @@ void SimpleNbox::slowparameval( double t, const double c[] )
                 tempferts[ biome ] = tempferts_last;
             }
 
-            H_LOG( logger,Logger::DEBUG ) << biome << " Tgav_land_air=" << Tgav_land_air << ", Tgav_biome=" << Tgav_biome << ", tempfertd=" << tempfertd[ biome ]
+            H_LOG( logger,Logger::DEBUG ) << biome << " Tgav=" << Tgav << ", Tgav_biome=" << Tgav_biome << ", tempfertd=" << tempfertd[ biome ]
                 << ", tempferts=" << tempferts[ biome ] << std::endl;
         }
     } // loop over biomes

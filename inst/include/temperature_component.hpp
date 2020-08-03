@@ -75,12 +75,12 @@ private:
     const int dt = 1;                     // years per timestep (this is implicit in Hector)
     int ns;                               // number of timesteps
     const double ak = 0.31;               // slope in climate feedback - land-sea heat exchange linear relationship
-    // const double bk = 1.59;               // offset in climate feedback - land-sea heat exchange linear relationship, W/m2/K
+    const double bk = 1.59;               // offset in climate feedback - land-sea heat exchange linear relationship, W/m2/K
     const double csw = 0.13;              // specific heat capacity of seawater W*yr/m3/K
     const double earth_area = 5100656E8;  // m2
     const double kcon = 3155.0;           // conversion from cm2/s to m2/yr
     const double q2co = 3.7;              // radiative forcing for atmospheric CO2 doubling, W/m2
-    const double rlam = 1.43;             // factor between land clim. sens. and sea surface clim. sens. T_L2x = rlam*T_S2x
+    //const double rlam = 1.43;             // factor between land clim. sens. and sea surface clim. sens. T_L2x = rlam*T_S2x
     const double secs_per_Year = 31556926.0;
     const double zbot = 4000.0;           // bottom depth of diffusive ocean, m
     const double bsi = 1.3;               // warming factor for marine surface air over SST (due to retreating sea ice)
@@ -104,8 +104,8 @@ private:
     double taudif;           // interior ocean heat uptake time scale, yr
     double tauksl;           // sea-land heat exchange time scale, yr
     double taukls;           // land-sea heat exchange time scale, yr
-    double bk;              // set to input for land-ocean warming ratio (offset in climate feedback - land-sea heat exchange linear relationship, W/m2/K ?)
-
+    double rlam;             // factor between land clim. sens. and sea surface clim. sens. T_L2x = rlam*T_S2x (set equal to lo_warming_ratio)
+    
     std::vector<double> KT0;
     std::vector<double> KTA1;
     std::vector<double> KTB1;
