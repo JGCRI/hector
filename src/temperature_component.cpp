@@ -92,12 +92,14 @@ void TemperatureComponent::init( Core* coreptr ) {
     tgav_constrain.allowInterp( true );
     tgav_constrain.name = D_TGAV_CONSTRAIN;
 
+
     // Define the doeclim parameters
     diff.set( 0.55, U_CM2_S );    // default ocean heat diffusivity, cm2/s. value is CDICE default (varname is kappa there).
     S.set( 3.0, U_DEGC );         // default climate sensitivity, K (varname is t2co in CDICE).
     alpha.set( 1.0, U_UNITLESS);  // default aerosol scaling, unitless (similar to alpha in CDICE).
     volscl.set(1.0, U_UNITLESS);  // default volcanic scaling, unitless (works the same way as alpha)
-    lo_warming_ratio.set(1.591, U_UNITLESS);  // default land-ocean warming ratio, unitless
+
+    lo_warming_ratio.set(0.0, U_UNITLESS);  // default value for land-ocean warming ratio - represents that there was no input from the user since this is a nonsense value for a warming ratio
 
     // Register the data we can provide
     core->registerCapability( D_GLOBAL_TEMP, getComponentName() );
@@ -197,6 +199,14 @@ void TemperatureComponent::prepareToRun() throw ( h_exception ) {
         H_LOG( glog, Logger::WARNING ) << "Temperature will be overwritten by user-supplied values!" << std::endl;
     }
 
+    if( lo_warming_ratio != 0.0) {
+        Logger& glog = core->getGlobalLogger();
+        H_LOG( glog, Logger::NOTICE ) << "User supplied land-ocean warming ratio will be used to override air over land and air over ocean temperatures! User set land-ocean warming ratio: " << lo_warming_ratio << std::endl;
+    } else{
+        Logger& glog = core->getGlobalLogger();
+        H_LOG( glog, Logger::NOTICE ) << "User did not supply land-ocean warming ratio and thus it is an emergent property." << std::endl;
+    }
+
     // Initializing all model components that depend on the number of timesteps (ns)
     ns = core->getEndDate() - core->getStartDate() + 1;
 
@@ -223,8 +233,6 @@ void TemperatureComponent::prepareToRun() throw ( h_exception ) {
         B[i] = 0.0;
         C[i] = 0.0;
     }
-   
-    rlam = lo_warming_ratio;  // set bk to value of land-ocean warming ratio from ini file
     
 
     // DOECLIM parameters calculated from constants set in header
@@ -545,17 +553,30 @@ void TemperatureComponent::accept( AVisitor* visitor ) {
 
 void TemperatureComponent::setoutputs(int tstep)
 {
-    double temp_oceanair;
-
     flux_mixed.set( heatflux_mixed[tstep], U_W_M2, 0.0 );
     flux_interior.set( heatflux_interior[tstep], U_W_M2, 0.0 );
     heatflux.set( heatflux_mixed[tstep] + fso * heatflux_interior[tstep], U_W_M2, 0.0 );
     tgav.set(temp[tstep], U_DEGC, 0.0);
     tgaveq.set(temp[tstep], U_DEGC, 0.0); // per comment line 140 of temperature_component.hpp
-    tgav_land.set(temp_landair[tstep], U_DEGC, 0.0);
-    tgav_sst.set(temp_sst[tstep], U_DEGC, 0.0);
-    temp_oceanair = bsi * temp_sst[tstep];
-    tgav_oceanair.set(temp_oceanair, U_DEGC, 0.0);
+
+    if ( lo_warming_ratio != 0.0 ) {  // if user provided land-ocean warming ratio override land, ocean, and ocean air warming to conform
+        double temp_oceanair_constrain;
+        double temp_landair_constrain;
+        double temp_sst_constrain;
+        temp_oceanair_constrain = temp[tstep] / ((lo_warming_ratio * flnd) + (1-flnd));  // calculations using tgav weighted average and ratio (land warming/ocean warming = lo_warming_ratio)
+        temp_landair_constrain = temp_oceanair_constrain * lo_warming_ratio;
+        temp_sst_constrain = temp_oceanair_constrain / bsi;
+        
+        tgav_land.set(temp_landair_constrain, U_DEGC, 0.0);
+        tgav_oceanair.set(temp_oceanair_constrain, U_DEGC, 0.0);
+        tgav_sst.set(temp_sst_constrain, U_DEGC, 0.0);
+    } else {
+        double temp_oceanair;
+        tgav_land.set(temp_landair[tstep], U_DEGC, 0.0);
+        tgav_sst.set(temp_sst[tstep], U_DEGC, 0.0);
+        temp_oceanair = bsi * temp_sst[tstep];
+        tgav_oceanair.set(temp_oceanair, U_DEGC, 0.0);
+    }
 
     H_LOG( logger, Logger::DEBUG) << "Ocean Air: " << tgav_oceanair << std::endl;
     H_LOG( logger, Logger::DEBUG) << "Land Air: " << tgav_land << std::endl;
