@@ -159,18 +159,18 @@ test_that('Increasing volcanic forcing scaling factor increases the effect of vo
 
 test_that('A larger land-ocean warming constant will increase overall warming', {
     ## Run core with land-ocean warming ratio of 1 and ratio of 2 as a measure of global warming
-    hc<-newcore(rcp45, supresslogging=TRUE)
-    setvar(hc, NA, LO_WARMING_RATIO, 1.0, getunits(LO_WARMING_RATIO()))
+    hc<-newcore(rcp45, suppresslogging=TRUE)
+    setvar(hc, NA, LO_WARMING_RATIO(), 1.0, getunits(LO_WARMING_RATIO()))
     run(hc, 2300)
     date = 2300
     warm1<-fetchvars(hc, date, GLOBAL_TEMP())
 
-    setvar(hc, NA, LO_WARMING_RATIO, 2.0, getunits(LO_WARMING_RATIO()))
+    setvar(hc, NA, LO_WARMING_RATIO(), 2.0, getunits(LO_WARMING_RATIO()))
     reset(hc)
     run(hc, 2300)
     warm2<-fetchvars(hc, date, GLOBAL_TEMP())
 
-    expect_gt(warm2, warm1)
+    expect_gt(warm2$value, warm1$value)
 })
 
 test_that('Decreasing vegetation NPP fraction increases CO2 concentration', {

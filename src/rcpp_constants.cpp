@@ -1316,7 +1316,7 @@ String VOLCANIC_SCALE() {
 return D_VOLCANIC_SCALE;
 }
 
-//' @describeIn parameters Land-Ocean Warming Constant (\code{"(unitless)"})
+//' @describeIn parameters Land-Ocean Warming Ratio (\code{"(unitless)"})
 //' @export
 // [[Rcpp::export]]
 String LO_WARMING_RATIO(){
