@@ -1320,7 +1320,7 @@ return D_VOLCANIC_SCALE;
 //' @export
 // [[Rcpp::export]]
 String LO_WARMING_RATIO(){
-    return D_LO_WARMING_RATIO
+return D_LO_WARMING_RATIO;
 }
 
 //' @describeIn temperature Global mean temperature

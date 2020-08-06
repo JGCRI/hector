@@ -1020,6 +1020,12 @@ VOLCANIC_SCALE <- function() {
     .Call('_hector_VOLCANIC_SCALE', PACKAGE = 'hector')
 }
 
+#' @describeIn parameters Land-Ocean Warming Constant (\code{"(unitless)"})
+#' @export
+LO_WARMING_RATIO <- function() {
+    .Call('_hector_LO_WARMING_RATIO', PACKAGE = 'hector')
+}
+
 #' @describeIn temperature Global mean temperature
 #' @export
 GLOBAL_TEMP <- function() {
