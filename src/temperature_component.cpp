@@ -565,6 +565,7 @@ void TemperatureComponent::setoutputs(int tstep)
         double temp_sst_constrain;
         temp_oceanair_constrain = temp[tstep] / ((lo_warming_ratio * flnd) + (1-flnd));  // calculations using tgav weighted average and ratio (land warming/ocean warming = lo_warming_ratio)
         temp_landair_constrain = temp_oceanair_constrain * lo_warming_ratio;
+
         temp_sst_constrain = temp_oceanair_constrain / bsi;
         
         tgav_land.set(temp_landair_constrain, U_DEGC, 0.0);
@@ -578,9 +579,10 @@ void TemperatureComponent::setoutputs(int tstep)
         tgav_oceanair.set(temp_oceanair, U_DEGC, 0.0);
     }
 
-    H_LOG( logger, Logger::DEBUG) << "Ocean Air: " << tgav_oceanair << std::endl;
-    H_LOG( logger, Logger::DEBUG) << "Land Air: " << tgav_land << std::endl;
+    H_LOG( logger, Logger::DEBUG) << "Land-ocean warming ratio: " << tgav_land/tgav_oceanair << std::endl;
     H_LOG( logger, Logger::DEBUG) << "Global: " << tgav << std::endl;
+    H_LOG( logger, Logger::DEBUG) << "Land Temp: " << tgav << std::endl;
+    H_LOG( logger, Logger::DEBUG) << "Ocean Temp: " << tgav << std::endl;
 }
 
 }

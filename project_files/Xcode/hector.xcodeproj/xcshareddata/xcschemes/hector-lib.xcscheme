@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "8DD76F620486A84900D96B5E"
-               BuildableName = "hector"
-               BlueprintName = "hector"
+               BlueprintIdentifier = "CD97CE311BFBBF2E005689AD"
+               BuildableName = "libhector-lib.a"
+               BlueprintName = "hector-lib"
                ReferencedContainer = "container:hector.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -35,40 +35,11 @@
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
-      useCustomWorkingDirectory = "YES"
-      customWorkingDirectory = "/Users/skylargering/hector/inst"
+      useCustomWorkingDirectory = "NO"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "8DD76F620486A84900D96B5E"
-            BuildableName = "hector"
-            BlueprintName = "hector"
-            ReferencedContainer = "container:hector.xcodeproj">
-         </BuildableReference>
-      </BuildableProductRunnable>
-      <CommandLineArguments>
-         <CommandLineArgument
-            argument = "input/hector_rcp45.ini"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "input/hector_rcp26.ini"
-            isEnabled = "YES">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "input/hector_rcp85.ini"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "input/hector_rcp60.ini"
-            isEnabled = "NO">
-         </CommandLineArgument>
-      </CommandLineArguments>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -76,16 +47,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "8DD76F620486A84900D96B5E"
-            BuildableName = "hector"
-            BlueprintName = "hector"
+            BlueprintIdentifier = "CD97CE311BFBBF2E005689AD"
+            BuildableName = "libhector-lib.a"
+            BlueprintName = "hector-lib"
             ReferencedContainer = "container:hector.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
