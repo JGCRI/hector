@@ -98,7 +98,6 @@ void TemperatureComponent::init( Core* coreptr ) {
     S.set( 3.0, U_DEGC );         // default climate sensitivity, K (varname is t2co in CDICE).
     alpha.set( 1.0, U_UNITLESS);  // default aerosol scaling, unitless (similar to alpha in CDICE).
     volscl.set(1.0, U_UNITLESS);  // default volcanic scaling, unitless (works the same way as alpha)
-
     lo_warming_ratio.set(0.0, U_UNITLESS);  // default value for land-ocean warming ratio - represents that there was no input from the user since this is a nonsense value for a warming ratio
 
     // Register the data we can provide
@@ -174,6 +173,9 @@ void TemperatureComponent::setData( const string& varName,
             tgav_constrain.set(data.date, data.getUnitval(U_DEGC));
         } else if( varName == D_LO_WARMING_RATIO ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
+            if(data.getUnitval(U_UNITLESS) == 0.0){
+                H_THROW( "0.0 is not a valid input for land-ocean warming ratio.");
+            }
             lo_warming_ratio = data.getUnitval(U_UNITLESS);
         } else {
             H_THROW( "Unknown variable name while parsing " + getComponentName() + ": "
@@ -462,11 +464,11 @@ unitval TemperatureComponent::getData( const std::string& varName,
             returnval = tgav;
         } else if( varName == D_GLOBAL_TEMPEQ ) {
             returnval = tgaveq;
-        } else if( varName == D_LAND_AIR_TEMP ) {
+        } else if( varName == D_LAND_AIR_TEMP ) {  // if land-ocean warming ratio is set, returns overwritten value
             returnval = tgav_land;
-        } else if( varName == D_OCEAN_SURFACE_TEMP ) {
+        } else if( varName == D_OCEAN_SURFACE_TEMP ) {  // if land-ocean warming ratio is set, returns overwritten value
             returnval = tgav_sst;
-        } else if( varName == D_OCEAN_AIR_TEMP ) {
+        } else if( varName == D_OCEAN_AIR_TEMP ) {  // if land-ocean warming ratio is set, returns overwritten value
             returnval = tgav_oceanair;
         } else if( varName == D_DIFFUSIVITY ) {
             returnval = diff;
@@ -499,11 +501,11 @@ unitval TemperatureComponent::getData( const std::string& varName,
         if( varName == D_GLOBAL_TEMP ) {
             returnval = unitval(temp[tstep], U_DEGC);
         } else if( varName == D_LAND_AIR_TEMP ) {
-            returnval = unitval(temp_landair[tstep], U_DEGC);
+            returnval = unitval(temp_landair[tstep], U_DEGC);  // if land-ocean warming ratio is set, does NOT return overwritten value - see Issue on github
         } else if( varName == D_OCEAN_SURFACE_TEMP ) {
-            returnval = unitval(temp_sst[tstep], U_DEGC);
+            returnval = unitval(temp_sst[tstep], U_DEGC);  // if land-ocean warming ratio is set, does NOT return overwritten value - see Issue on github
         } else if( varName == D_OCEAN_AIR_TEMP ) {
-            returnval = bsi * unitval(temp_sst[tstep], U_DEGC);
+            returnval = bsi * unitval(temp_sst[tstep], U_DEGC);  // if land-ocean warming ratio is set, does NOT return overwritten value - see Issue on github
         } else if( varName == D_GLOBAL_TEMPEQ ) {
             returnval = unitval(temp[tstep], U_DEGC);
         } else if( varName == D_FLUX_MIXED ) {
@@ -559,11 +561,12 @@ void TemperatureComponent::setoutputs(int tstep)
     tgav.set(temp[tstep], U_DEGC, 0.0);
     tgaveq.set(temp[tstep], U_DEGC, 0.0); // per comment line 140 of temperature_component.hpp
 
-    if ( lo_warming_ratio != 0.0 ) {  // if user provided land-ocean warming ratio override land, ocean, and ocean air warming to conform
+    if ( lo_warming_ratio != 0.0 ) {  // if user provided land-ocean warming ratio override land, ocean, and ocean air warming
         double temp_oceanair_constrain;
         double temp_landair_constrain;
         double temp_sst_constrain;
-        temp_oceanair_constrain = temp[tstep] / ((lo_warming_ratio * flnd) + (1-flnd));  // calculations using tgav weighted average and ratio (land warming/ocean warming = lo_warming_ratio)
+        // calculations using tgav weighted average and ratio (land warming/ocean warming = lo_warming_ratio)
+        temp_oceanair_constrain = temp[tstep] / ((lo_warming_ratio * flnd) + (1-flnd));
         temp_landair_constrain = temp_oceanair_constrain * lo_warming_ratio;
         temp_sst_constrain = temp_oceanair_constrain / bsi;
 
@@ -575,6 +578,8 @@ void TemperatureComponent::setoutputs(int tstep)
         // See issue in Hector repo
         // temp_landair[tstep] = temp_landair_constrain;
         // temp_sst[tstep] = temp_sst_constrain;
+        // If this was fixed, the 'else' could be removed and and the code in the else  could always run
+        // and the three 'set' lines in the if block could also be removed
     } else{
         double temp_oceanair;
         tgav_land.set(temp_landair[tstep], U_DEGC, 0.0);

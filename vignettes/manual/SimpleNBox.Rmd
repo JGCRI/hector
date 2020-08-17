@@ -24,7 +24,7 @@ NPP is calculated as the product of a user-specified pre-industrial value ($NPP_
 $$ NPP_i(t) = NPP_{0,i} \times f(C_{atm}, \beta_i) $$
 $$ f(C_{atm}, \beta_i) = 1 + \beta_i \left( \log(\frac{C_{atm}}{C_0})\right) $$
 
-Heterotrophic respiration occurs in soil ($RH_s(t)$) and detritus ($RH_d(t))$) as a function of biome-specific atmospheric temperature anomaly ($T_i$, calculated as the global atmospheric temperature anomaly scaled by a biome-specific warming factor $\delta$) and the size of the current soil and detritus C pools ($C_s$ and $C_d$, respectively).
+Heterotrophic respiration occurs in soil ($RH_s(t)$) and detritus ($RH_d(t))$) as a function of biome-specific atmospheric temperature anomaly ($T_i$, calculated as the land atmospheric temperature anomaly scaled by a biome-specific warming factor $\delta$) and the size of the current soil and detritus C pools ($C_s$ and $C_d$, respectively).
 
 $$ T_i(t) = \delta \, T_G(t) $$
 $$ RH_s = \frac{1}{50} C_s Q_{10}^{T_{i}(t) / 10}$$

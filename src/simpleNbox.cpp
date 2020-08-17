@@ -58,7 +58,7 @@ void SimpleNbox::init( Core* coreptr ) {
     // Initialize the `biome_list` with just "global"
     biome_list.push_back( SNBOX_DEFAULT_BIOME );
 
-    Tland_record.allowInterp(true);  // to switch back to depending on global temp replace all Tland with Tgav
+    Tland_record.allowInterp(true);
 
     // Register the data we can provide
     core->registerCapability( D_ATMOSPHERIC_CO2, getComponentName() );

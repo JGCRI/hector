@@ -135,7 +135,7 @@ private:
     unitval diff;          //!< ocean heat diffusivity, cm2/s
     unitval alpha;	       //!< aerosol forcing factor, unitless
     unitval volscl;        //!< volcanic forcing scaling factor, unitless
-    unitval lo_warming_ratio;  //!< land-ocean warming ratio, unitless - input as a constraint to track a ESM
+    unitval lo_warming_ratio;  //!< land-ocean warming ratio, unitless - optional input to track a ESM Skylar Gering 2020
 
     // Model outputs
     unitval tgav;          //!< global average surface air temperature anomaly, deg C
