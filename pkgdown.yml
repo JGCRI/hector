@@ -1,22 +1,6 @@
 pandoc: '2.2'
-pkgdown: 1.5.1
+pkgdown: 1.6.0
 pkgdown_sha: ~
-articles:
-  hector_apply: hector_apply.html
-  intro-to-hector: intro-to-hector.html
-  AddNewComponent: manual/AddNewComponent.html
-  AddNewVariable: manual/AddNewVariable.html
-  Backend: manual/Backend.html
-  BuildHector: manual/BuildHector.html
-  ComponentAPI: manual/ComponentAPI.html
-  Constraints: manual/Constraints.html
-  InputFiles: manual/InputFiles.html
-  SimpleNBox: manual/SimpleNBox.html
-  StyleGuide: manual/StyleGuide.html
-  TimeSeries: manual/TimeSeries.html
-  Unitvals: manual/Unitvals.html
-  VersionNumbers: manual/VersionNumbers.html
-  index: manual/index.html
-  multiple-biomes: multiple-biomes.html
-last_built: 2020-06-19T14:07Z
+articles: []
+last_built: 2020-09-09T20:17Z
 
