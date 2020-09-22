@@ -84,20 +84,26 @@ void TemperatureComponent::init( Core* coreptr ) {
 
     tgaveq.set( 0.0, U_DEGC, 0.0 );
     tgav.set( 0.0, U_DEGC, 0.0 );
+    tgav_land.set(0.0, U_DEGC, 0.0);
+    tgav_oceanair.set(0.0, U_DEGC, 0.0);
+    tgav_sst.set(0.0, U_DEGC, 0.0);
     flux_mixed.set( 0.0, U_W_M2, 0.0 );
     flux_interior.set( 0.0, U_W_M2, 0.0 );
     heatflux.set( 0.0, U_W_M2, 0.0 );
+    
 
     core = coreptr;
 
     tgav_constrain.allowInterp( true );
     tgav_constrain.name = D_TGAV_CONSTRAIN;
 
+
     // Define the doeclim parameters
     diff.set( 0.55, U_CM2_S );    // default ocean heat diffusivity, cm2/s. value is CDICE default (varname is kappa there).
     S.set( 3.0, U_DEGC );         // default climate sensitivity, K (varname is t2co in CDICE).
     alpha.set( 1.0, U_UNITLESS);  // default aerosol scaling, unitless (similar to alpha in CDICE).
-    volscl.set(1.0, U_UNITLESS);  // Default volcanic scaling, unitless (works the same way as alpha)
+    volscl.set(1.0, U_UNITLESS);  // default volcanic scaling, unitless (works the same way as alpha)
+    lo_warming_ratio.set(0.0, U_UNITLESS);  // default value for land-ocean warming ratio - represents that there was no input from the user since this is a nonsense value for a warming ratio
 
     // Register the data we can provide
     core->registerCapability( D_GLOBAL_TEMP, getComponentName() );
@@ -118,10 +124,12 @@ void TemperatureComponent::init( Core* coreptr ) {
     core->registerDependency( D_RF_VOL, getComponentName() );
 
     // Register the inputs we can receive from outside
-    core->registerInput(D_ECS, getComponentName());
-    core->registerInput(D_DIFFUSIVITY, getComponentName());
-    core->registerInput(D_AERO_SCALE, getComponentName());
-    core->registerInput(D_VOLCANIC_SCALE, getComponentName());
+    core->registerInput( D_ECS, getComponentName() );
+    core->registerInput( D_DIFFUSIVITY, getComponentName() );
+    core->registerInput( D_AERO_SCALE, getComponentName() );
+    core->registerInput( D_VOLCANIC_SCALE, getComponentName() );
+    core->registerInput( D_LO_WARMING_RATIO, getComponentName() );
+
 }
 
 //------------------------------------------------------------------------------
@@ -159,15 +167,21 @@ void TemperatureComponent::setData( const string& varName,
         } else if( varName == D_DIFFUSIVITY ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
             diff = data.getUnitval(U_CM2_S);
-	} else if( varName == D_AERO_SCALE ) {
+        } else if( varName == D_AERO_SCALE ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
             alpha = data.getUnitval(U_UNITLESS);
-        } else if(varName == D_VOLCANIC_SCALE) {
+        } else if( varName == D_VOLCANIC_SCALE ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
             volscl = data.getUnitval(U_UNITLESS);
         } else if( varName == D_TGAV_CONSTRAIN ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
             tgav_constrain.set(data.date, data.getUnitval(U_DEGC));
+        } else if( varName == D_LO_WARMING_RATIO ) {
+            H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
+            if(data.getUnitval(U_UNITLESS) == 0.0){
+                H_THROW( "0.0 is not a valid input for land-ocean warming ratio.");
+            }
+            lo_warming_ratio = data.getUnitval(U_UNITLESS);
         } else {
             H_THROW( "Unknown variable name while parsing " + getComponentName() + ": "
                     + varName );
@@ -190,6 +204,14 @@ void TemperatureComponent::prepareToRun() throw ( h_exception ) {
     if( tgav_constrain.size() ) {
         Logger& glog = core->getGlobalLogger();
         H_LOG( glog, Logger::WARNING ) << "Temperature will be overwritten by user-supplied values!" << std::endl;
+    }
+
+    if( lo_warming_ratio != 0.0) {
+        Logger& glog = core->getGlobalLogger();
+        H_LOG( glog, Logger::NOTICE ) << "User supplied land-ocean warming ratio will be used to override air over land and air over ocean temperatures! User set land-ocean warming ratio: " << lo_warming_ratio << std::endl;
+    } else{
+        Logger& glog = core->getGlobalLogger();
+        H_LOG( glog, Logger::NOTICE ) << "User did not supply land-ocean warming ratio and thus it is an emergent property." << std::endl;
     }
 
     // Initializing all model components that depend on the number of timesteps (ns)
@@ -218,6 +240,7 @@ void TemperatureComponent::prepareToRun() throw ( h_exception ) {
         B[i] = 0.0;
         C[i] = 0.0;
     }
+    
 
     // DOECLIM parameters calculated from constants set in header
     ocean_area = (1.0 - flnd) * earth_area;    // m2
@@ -446,26 +469,28 @@ unitval TemperatureComponent::getData( const std::string& varName,
             returnval = tgav;
         } else if( varName == D_GLOBAL_TEMPEQ ) {
             returnval = tgaveq;
-        } else if( varName == D_LAND_AIR_TEMP ) {
+        } else if( varName == D_LAND_AIR_TEMP ) {  // if land-ocean warming ratio is set, returns overwritten value
             returnval = tgav_land;
-        } else if( varName == D_OCEAN_SURFACE_TEMP ) {
+        } else if( varName == D_OCEAN_SURFACE_TEMP ) {  // if land-ocean warming ratio is set, returns overwritten value
             returnval = tgav_sst;
-        } else if( varName == D_OCEAN_AIR_TEMP ) {
+        } else if( varName == D_OCEAN_AIR_TEMP ) {  // if land-ocean warming ratio is set, returns overwritten value
             returnval = tgav_oceanair;
         } else if( varName == D_DIFFUSIVITY ) {
             returnval = diff;
         } else if( varName == D_AERO_SCALE ) {
-	    returnval = alpha;
+            returnval = alpha;
         } else if( varName == D_FLUX_MIXED ) {
-	    returnval = flux_mixed;
+            returnval = flux_mixed;
         } else if( varName == D_FLUX_INTERIOR ) {
-	    returnval = flux_interior;
+            returnval = flux_interior;
         } else if( varName == D_HEAT_FLUX) {
             returnval = heatflux;
         } else if( varName == D_ECS ) {
             returnval = S;
         } else if(varName == D_VOLCANIC_SCALE) {
             returnval = volscl;
+        } else if(varName == D_LO_WARMING_RATIO) {
+            returnval = lo_warming_ratio;
         } else {
             H_THROW( "Caller is requesting unknown variable: " + varName );
         }
@@ -481,11 +506,11 @@ unitval TemperatureComponent::getData( const std::string& varName,
         if( varName == D_GLOBAL_TEMP ) {
             returnval = unitval(temp[tstep], U_DEGC);
         } else if( varName == D_LAND_AIR_TEMP ) {
-            returnval = unitval(temp_landair[tstep], U_DEGC);
+            returnval = unitval(temp_landair[tstep], U_DEGC);  // if land-ocean warming ratio is set, does NOT return overwritten value - see Issue on github
         } else if( varName == D_OCEAN_SURFACE_TEMP ) {
-            returnval = unitval(temp_sst[tstep], U_DEGC);
+            returnval = unitval(temp_sst[tstep], U_DEGC);  // if land-ocean warming ratio is set, does NOT return overwritten value - see Issue on github
         } else if( varName == D_OCEAN_AIR_TEMP ) {
-            returnval = bsi * unitval(temp_sst[tstep], U_DEGC);
+            returnval = bsi * unitval(temp_sst[tstep], U_DEGC);  // if land-ocean warming ratio is set, does NOT return overwritten value - see Issue on github
         } else if( varName == D_GLOBAL_TEMPEQ ) {
             returnval = unitval(temp[tstep], U_DEGC);
         } else if( varName == D_FLUX_MIXED ) {
@@ -535,17 +560,45 @@ void TemperatureComponent::accept( AVisitor* visitor ) {
 
 void TemperatureComponent::setoutputs(int tstep)
 {
-    double temp_oceanair;
-
     flux_mixed.set( heatflux_mixed[tstep], U_W_M2, 0.0 );
     flux_interior.set( heatflux_interior[tstep], U_W_M2, 0.0 );
     heatflux.set( heatflux_mixed[tstep] + fso * heatflux_interior[tstep], U_W_M2, 0.0 );
     tgav.set(temp[tstep], U_DEGC, 0.0);
     tgaveq.set(temp[tstep], U_DEGC, 0.0); // per comment line 140 of temperature_component.hpp
-    tgav_land.set(temp_landair[tstep], U_DEGC, 0.0);
-    tgav_sst.set(temp_sst[tstep], U_DEGC, 0.0);
-    temp_oceanair = bsi * temp_sst[tstep];
-    tgav_oceanair.set(temp_oceanair, U_DEGC, 0.0);
+
+    if ( lo_warming_ratio != 0.0 ) {  // if user provided land-ocean warming ratio override land, ocean, and ocean air warming
+        double temp_oceanair_constrain;
+        double temp_landair_constrain;
+        double temp_sst_constrain;
+        // calculations using tgav weighted average and ratio (land warming/ocean warming = lo_warming_ratio)
+        temp_oceanair_constrain = temp[tstep] / ((lo_warming_ratio * flnd) + (1-flnd));
+        temp_landair_constrain = temp_oceanair_constrain * lo_warming_ratio;
+        temp_sst_constrain = temp_oceanair_constrain / bsi;
+
+        tgav_land.set(temp_landair_constrain, U_DEGC, 0.0);
+        tgav_sst.set(temp_sst_constrain, U_DEGC, 0.0);
+        tgav_oceanair.set(temp_oceanair_constrain, U_DEGC, 0.0);
+        // It seems like the following two vectors should be overridden as they are used in tgav calculations
+        // however, it causes increased land-ocean warming ratio to cause decreased global temp and carbon cycling
+        // See issue in Hector repo
+        // temp_landair[tstep] = temp_landair_constrain;
+        // temp_sst[tstep] = temp_sst_constrain;
+        // If this was fixed, the 'else' could be removed and and the code in the else  could always run
+        // and the three 'set' lines in the if block could also be removed
+    } else{
+        double temp_oceanair;
+        tgav_land.set(temp_landair[tstep], U_DEGC, 0.0);
+        tgav_sst.set(temp_sst[tstep], U_DEGC, 0.0);
+        temp_oceanair = bsi * temp_sst[tstep];
+        tgav_oceanair.set(temp_oceanair, U_DEGC, 0.0);
+    }
+    
+
+
+    H_LOG( logger, Logger::DEBUG) << "Land-ocean warming ratio: " << tgav_land/tgav_oceanair << std::endl;
+    H_LOG( logger, Logger::DEBUG) << "Global: " << tgav << std::endl;
+    H_LOG( logger, Logger::DEBUG) << "Land Temp: " << tgav_land << std::endl;
+    H_LOG( logger, Logger::DEBUG) << "Ocean Temp: " << tgav_oceanair << std::endl;
 }
 
 }

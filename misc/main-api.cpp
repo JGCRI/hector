@@ -111,6 +111,7 @@ int main (int argc, char * const argv[]) {
             unitval temp = core.sendMessage(M_GETDATA, D_GLOBAL_TEMP);
             unitval ca   = core.sendMessage(M_GETDATA, D_ATMOSPHERIC_CO2);
             unitval forc = core.sendMessage(M_GETDATA, D_RF_TOTAL);
+            
             H_LOG(glog, Logger::NOTICE)
                 << "t= " << t << "\t"
                 << "temp= " << temp << "\t"

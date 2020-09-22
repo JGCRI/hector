@@ -16,6 +16,8 @@ then the model's global mean temperature `Tgav` will follow this contents of thi
 
 Once Hector's internal date passes the last date in the constraint file, the model's temperature component becomes *unconstrained*, except that we do not permit it to suddenly jump to a new temperature. Instead, changes in global radiative forcing (from which temperature change is computed) are applied to the end-of-constraint temperature. For more details, see the detailed comments in the `TemperatureComponent::run` method.
 
+Also in the temperature section of the input files, there is an optional parameter `lo_warming_ratio`, which represents the land-ocean warming ratio. If this value is provided the land, ocean surface, and ocean air temperatures will be overwritten using the calculated or provided global temperature so that the ratio of land warming to ocean air warming is equal to the constant provided for all time steps.
+
 # Radiative forcing
 
 If the current [input file](InputFiles.html) includes, in its `[forcing]` section, a line of form

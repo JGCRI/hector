@@ -104,7 +104,7 @@ private:
     double taudif;           // interior ocean heat uptake time scale, yr
     double tauksl;           // sea-land heat exchange time scale, yr
     double taukls;           // land-sea heat exchange time scale, yr
-
+    
     std::vector<double> KT0;
     std::vector<double> KTA1;
     std::vector<double> KTB1;
@@ -135,6 +135,7 @@ private:
     unitval diff;          //!< ocean heat diffusivity, cm2/s
     unitval alpha;	       //!< aerosol forcing factor, unitless
     unitval volscl;        //!< volcanic forcing scaling factor, unitless
+    unitval lo_warming_ratio;  //!< land-ocean warming ratio, unitless - optional input to track a ESM Skylar Gering 2020
 
     // Model outputs
     unitval tgav;          //!< global average surface air temperature anomaly, deg C

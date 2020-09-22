@@ -93,7 +93,7 @@ private:
     oceanbox deep;      //!< deep box 3000m
 
     // Atmosphere conditions
-    unitval Tgav;           //!< Global temperature anomaly, degC
+    unitval Tocean;         //!< Ocean air temperature anomaly, degC
     unitval Ca;             //!< Atmospheric CO2, ppm
 
     // Atmosphere-ocean flux
@@ -149,7 +149,8 @@ private:
     tvector<oceanbox> deep_tv;
 
     // Ocean conditions over time
-    tseries<unitval> Tgav_ts;
+    tseries<unitval> Tocean_ts;
+    
     tseries<unitval> Ca_ts;
 
     // Atmosphere-ocean flux

@@ -4,7 +4,7 @@
 # variables missing).
 devtools::load_all()
 
-hvars <- c(ECS(), PREINDUSTRIAL_CO2(), Q10_RH(), BETA(), AERO_SCALE(), VOLCANIC_SCALE(), DIFFUSIVITY(),
+hvars <- c(ECS(), PREINDUSTRIAL_CO2(), Q10_RH(), BETA(), AERO_SCALE(), VOLCANIC_SCALE(), LO_WARMING_RATIO(), DIFFUSIVITY(),
            FFI_EMISSIONS(), LUC_EMISSIONS(),
            EMISSIONS_BC(), EMISSIONS_N2O(), EMISSIONS_NOX(), EMISSIONS_CO(),
            EMISSIONS_NMVOC(), EMISSIONS_OC(), NAT_EMISSIONS_N2O(),
@@ -13,7 +13,7 @@ hvars <- c(ECS(), PREINDUSTRIAL_CO2(), Q10_RH(), BETA(), AERO_SCALE(), VOLCANIC_
            CH4_CONSTRAIN(), N2O_CONSTRAIN())
 
 
-hunits <- c('degC', 'ppmv CO2', '(unitless)', '(unitless)', '(unitless)', '(unitless)', 'cm2/s',
+hunits <- c('degC', 'ppmv CO2', '(unitless)', '(unitless)', '(unitless)', '(unitless)', '(unitless)', 'cm2/s',
             'Pg C/yr', 'Pg C/yr',
             'Tg', 'Tg N', 'Tg N', 'Tg CO',
             'Tg NMVOC', 'Tg', 'Tg N',
