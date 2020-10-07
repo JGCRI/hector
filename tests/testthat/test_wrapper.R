@@ -1,9 +1,28 @@
-context('Test basic hector functionality')
+context('Test basic R wrapper functionality')
 
 inputdir <- system.file('input', package = 'hector')
-sampledir <- system.file('output', package = 'hector')
 testvars <- c(ATMOSPHERIC_CO2(), RF_TOTAL(), GLOBAL_TEMP())
 dates <- 2000:2300
+
+
+test_that('Rerunning spinup produces minimal change', {
+
+    # First Hector core run
+    hc <- newcore(file.path(inputdir, "hector_rcp45.ini"), name = "RCP45", suppresslogging = TRUE)
+    run(hc, 2100)
+    dd1 <- fetchvars(hc, dates, testvars)
+
+    # Reset to a time before the start date and re run.
+    reset(hc, 0.0)
+    run(hc, 2100)
+    dd2 <- fetchvars(hc, dates, testvars)
+
+    diff <- abs((dd2$value - dd1$value) / (dd1$value + 1.0e-6))
+    expect_lt(max(diff), 1.0e-6)
+
+    shutdown(hc)
+})
+
 
 test_that('Basic hcore functionality works', {
     hc <- newcore(file.path(inputdir, "hector_rcp45.ini"), name = "RCP45", suppresslogging = TRUE)
@@ -21,19 +40,27 @@ test_that('Basic hcore functionality works', {
 
     hc <- shutdown(hc)
     expect_false(isactive(hc))
+})
+
+
+test_that('Write out logs', {
 
     ## Turn logging ON for one test and confirm it runs (see GitHub issues #372 and #381)
     hc_log <- newcore(file.path(inputdir, "hector_rcp45.ini"), name = "RCP45", suppresslogging = FALSE)
     run(hc_log, 2100)
     shutdown(hc_log)
-    expect_true(dir.exists("logs"))
+    expect_true(dir.exists("logs")) # Check to see that the directory has been made
+    expect_equal(length(list.files("logs", pattern = '.log')), 41) # Check to see that individual log files were written out.
+    system('rm -r logs') # Remove the logs directory/files.
 
     ## Check that errors on shutdown cores get caught
-    expect_error(getdate(hc), "Invalid or inactive")
-    expect_error(run(hc), "Invalid or inactive")
-    expect_error(fetchvars(hc), "Invalid or inactive")
+    expect_error(getdate(hc_log), "Invalid or inactive")
+    expect_error(run(hc_log), "Invalid or inactive")
+    expect_error(fetchvars(hc_log), "Invalid or inactive")
 })
 
+## Make sure that that when the Hector core is shut down
+## everything is tidied up.
 test_that('Garbage collection shuts down hector cores', {
     ## This test makes use of some knowledge about the structure of the hector
     ## core objects that no user should ever assume.
@@ -56,6 +83,8 @@ test_that('Garbage collection shuts down hector cores', {
     shutdown(hc)
 })
 
+## Ensure the scenario name can change in the output
+## when the core is set up different names.
 test_that('Scenario column is created in output', {
     hc <- newcore(file.path(inputdir, 'hector_rcp45.ini'), suppresslogging = TRUE, name = 'scenario1')
     run(hc)
@@ -69,7 +98,8 @@ test_that('Scenario column is created in output', {
     shutdown(hc)
 })
 
-
+# As a deterministic model Hector should produce the same output each time it is run.
+# Run Hector multiple times and check output.
 test_that("Reset produces identical results",{
     hc <- newcore(file.path(inputdir, 'hector_rcp45.ini'), suppresslogging = TRUE)
     run(hc)
@@ -94,29 +124,6 @@ test_that("Exceptions are caught", {
     setvar(hc, NA, BETA(), 0.5, NA)
     expect_silent(reset(hc))
     expect_silent(run(hc, 2100))
-})
-
-test_that("Setting emissions changes results", {
-    hc <- newcore(file.path(inputdir, 'hector_rcp45.ini'), suppresslogging = TRUE)
-    run(hc, 2100)
-
-    outdata1a <- fetchvars(hc, 2000:2089, c(ATMOSPHERIC_CO2(), RF_TOTAL()))
-    outdata1b <- fetchvars(hc, 2091:2100, c(ATMOSPHERIC_CO2(), RF_TOTAL()))
-    reset(hc, 2000)
-
-    ## crank up the emissions dramatically in 2090
-    setvar(hc, 2090, FFI_EMISSIONS(), 10.0, "Pg C/yr")
-    run(hc, 2100)
-    outdata2a <- fetchvars(hc, 2000:2089, c(ATMOSPHERIC_CO2(), RF_TOTAL()))
-    outdata2b <- fetchvars(hc, 2091:2100, c(ATMOSPHERIC_CO2(), RF_TOTAL()))
-
-    ## Prior to the change results should be the same
-    expect_equal(outdata1a, outdata2a)
-
-    ## After the change, concentration and forcing should be higher than they were in the original run
-    expect_true(all(outdata2b$value > outdata1b$value))
-
-    hc <- shutdown(hc)
 })
 
 
@@ -201,55 +208,4 @@ test_that("Setting past or parameter values does trigger a reset.", {
 
 
     shutdown(hc)
-})
-
-
-test_that('Test RF output.', {
-
-    hc <- newcore(file.path(inputdir, 'hector_rcp45.ini'), suppresslogging = TRUE)
-    run(hc, 2100)
-
-    # Extract the total cliamte RF.
-    total_rf <- fetchvars(hc, dates = 1750:2100, RF_TOTAL())
-
-    # The vector of all the individual componets that contribute to RF.
-    rf_componets <- c(RF_BC(), RF_C2F6(),  RF_CCL4(),  RF_CF4(), RF_CFC11(),  RF_CFC113(),  RF_CFC114(),  RF_CFC115(), RF_CH3BR(),  RF_CH3CCL3(),
-                      RF_CH3CL(),  RF_CH4(),  RF_CO2(),  RF_H2O_STRAT(), RF_HALON1211(),  RF_CFC12(),  RF_HALON1301(), RF_HALON2402(),  RF_HCFC141B(),
-                      RF_HCFC142B(),  RF_HCFC22(),  RF_HFC125(),  RF_HFC134A(),  RF_HFC143A(),  RF_HFC227EA(), RF_HFC23(), RF_T_ALBEDO(),
-                      RF_HFC245FA(), RF_HFC32(),  RF_HFC4310(),  RF_N2O(), RF_O3_TROP(),  RF_OC(),  RF_SF6(), RF_SO2D(),  RF_SO2I(), RF_VOL())
-
-    individual_rf <- fetchvars(hc, 1750:2100, rf_componets)
-
-    # The RF value should be equal to 0 in the base year (1750) for all of the RF agents.
-    values_1750 <- individual_rf[individual_rf$year == 1750, ]
-    expect_equal(values_1750$value, expected = rep(0, nrow(values_1750)), info = 'RF values in the base year must be 0')
-
-    # That the sum of the RF agents should equal the total climate RF.
-    split(individual_rf, individual_rf$year) %>%
-        lapply(function(input){
-            sum(input[['value']])
-        }) %>%
-        unlist(use.names = FALSE) ->
-        rf_aggregate
-
-    expect_equal(object = rf_aggregate, expected = total_rf$value, tolerance = 1e-3)
-
-
-})
-
-test_that("Test atmosphere -> land and ocean C flux", {
-    hc <- newcore(file.path(inputdir, 'hector_rcp45.ini'),
-                  suppresslogging = TRUE)
-    run(hc, 2100)
-
-    yrs <- 1750:2100
-    out_land <- fetchvars(hc, dates = yrs, LAND_CFLUX(), "Pg C year-1")
-    out_nbp <- fetchvars(hc, dates = yrs, NBP(), "Pg C year-1")
-    expect_identical(out_land, out_nbp)
-    out_ocean <- fetchvars(hc, dates = yrs, OCEAN_CFLUX(), "Pg C year-1")
-
-    # After 1960, land is consistently a C sink
-    expect_true(all(out_land[out_land$year >= 1960, "value"] > 0))
-    # Ocean is a sink starting in pre-industrial
-    expect_true(all(out_ocean[out_ocean$year >= 1850, "value"] > 0))
 })
