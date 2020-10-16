@@ -1,7 +1,6 @@
-
 ---
-name: Devlopment
- about: Create an issue to document a Hector PR
+name: Development
+about: Create an issue for a  Hector PR
 
 ---
 
