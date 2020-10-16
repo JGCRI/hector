@@ -19,5 +19,9 @@ This research was supported by the U.S. Department of Energy, Office of Science,
 * [pyhector](https://github.com/openclimatedata/pyhector): a python
   interface to Hector.
 * [HectorUI](https://jgcri.shinyapps.io/HectorUI/): run Hector in a web interface! 
-  
+
+
+ ##  Contributing to Hector
+ 
+ The Hector team welcomes and values community contributions to Hector but please see [Contribution Guide](KRD-UPDATE) 
   
