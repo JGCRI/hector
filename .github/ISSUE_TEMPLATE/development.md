@@ -1,7 +1,7 @@
 
 ---
-name: PR Proposal
-about: Create an issue to document a Hector PR
+name: Devlopment
+ about: Create an issue to document a Hector PR
 
 ---
 
@@ -22,4 +22,4 @@ The Hector team uses [semantic versioning](https://semver.org/), please let us k
 - [ ] [Roxygen](https://roxygen2.r-lib.org/) where applicable but also thorough and coherent inline documentation 
 - [ ] [Unit tests](https://r-pkgs.org/tests.html) when applicable
 - [ ] Complies with the [Hector code style guide](https://jgcri.github.io/hector/articles/manual/StyleGuide.html)
-- [ ] The PR will have to pass continuous-integration travis and github actions tests
+- [ ] The PR passes automated testing suite
