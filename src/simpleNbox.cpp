@@ -747,14 +747,6 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     const double yf = ( t - ODEstartdate );
     H_ASSERT( yf >= 0 && yf <= 1, "yearfraction out of bounds" );
 
-    H_LOG( logger,Logger::DEBUG ) << "Stashing at t=" << t << ", solver pools at " << t << ": " <<
-        "  atm = " << c[ 0 ] <<
-        "  veg = " << c[ 1 ] <<
-        "  det = " << c[ 2 ] <<
-        "  soil = " << c[ 3 ] <<
-        "  ocean = " << c[ 4 ] <<
-        "  earth = " << c[ 5 ] << std::endl;
-
     log_pools( t );
 
     // Store solver pools into our internal variables
@@ -764,28 +756,15 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     // Calculate the land C flux
     const unitval npp_total = sum_npp();
     const unitval rh_total = sum_rh();
-    // TODO: If/when we implement fire, update this calculation to include it
-    // (as a negative term).
+    const unitval npp_rh_total = npp_total + rh_total; // these are both positive
+
+    if(!core->inSpinup() && NBP_constrain.size() && NBP_constrain.exists(t) ) {
+        H_LOG( logger, Logger::NOTICE ) << "** Constrained NBP (and thus NPP and RH) to user-supplied value" << std::endl;
+        std::cout << t << " New atmos = " << atmos_c << std::endl;  // BENTEMP
+    }
     
     atmosland_flux = npp_total - rh_total - lucEmissions.get( t );
     NBP_residual.set( 0.0, U_PGC );
-
-    // If user has supplied NBP (atmosland_flux) values, adjust to match
-    if(!core->inSpinup() && NBP_constrain.size() && NBP_constrain.exists(t) ) {
-
-        unitval nbp_to_match = NBP_constrain.get(t);
-        H_LOG( logger, Logger::NOTICE ) << "** Constraining NBP to user-supplied value" << std::endl;
-
-        H_LOG( logger,Logger::DEBUG ) << t << "- have " << atmosland_flux << " want " <<  nbp_to_match << std::endl;
-        unitval diff = atmosland_flux - nbp_to_match;
-        NBP_residual.set( diff.value( U_PGC_YR ), U_PGC );
-        
-        // Transfer any residual to deep ocean and update atmosland_flux
-        H_LOG( logger,Logger::DEBUG ) << "Sending residual of " << NBP_residual << " to deep ocean" << std::endl;
-        core->sendMessage( M_DUMP_TO_DEEP_OCEAN, D_OCEAN_C, message_data( NBP_residual ) );
-        atmosland_flux = nbp_to_match;
-    }
-    
     atmosland_flux_ts.set(t, atmosland_flux);
 
     // The solver just knows about one vegetation box, one detritus, and one
@@ -795,13 +774,12 @@ void SimpleNbox::stashCValues( double t, const double c[] )
 
     // Apportioning is done by NPP and RH
     // i.e., biomes with higher values get more of any C change
-    const unitval npp_rh_total = npp_total + rh_total; // these are both positive
     const unitval newveg( c[ SNBOX_VEG ], U_PGC );
     const unitval newdet( c[ SNBOX_DET ], U_PGC );
     const unitval newsoil( c[ SNBOX_SOIL ], U_PGC );
-    unitval veg_delta = newveg - sum_map( veg_c );  // TODO: make const
-    unitval det_delta = newdet - sum_map( detritus_c );  // TODO: make const
-    unitval soil_delta = newsoil - sum_map( soil_c );  // TODO: make const
+    const unitval veg_delta = newveg - sum_map( veg_c );
+    const unitval det_delta = newdet - sum_map( detritus_c );
+    const unitval soil_delta = newsoil - sum_map( soil_c );
     H_LOG( logger,Logger::DEBUG ) << "veg_delta = " << veg_delta << std::endl;
     H_LOG( logger,Logger::DEBUG ) << "det_delta = " << det_delta << std::endl;
     H_LOG( logger,Logger::DEBUG ) << "soil_delta = " << soil_delta << std::endl;
@@ -1031,6 +1009,39 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
     // Oxidized methane of fossil fuel origin
     unitval ch4ox_current( 0.0, U_PGC_YR );     //TODO: implement this
 
+    // If user has supplied NBP (atmosland_flux) values, adjust to match
+    if(!core->inSpinup() && NBP_constrain.size() && NBP_constrain.exists(t) ) {
+        // Compute how different we are from the user-specified constraint
+        unitval nbp = npp_current - rh_current - luc_current;
+        const unitval diff = NBP_constrain.get(t) - nbp;
+        // We're going to adjust NPP and RH in proportion to their magnitudes
+        const double npp_frac = abs(npp_current) / (abs(npp_current) + abs(rh_current));
+        
+        // Adjust total NPP and total RH and their sub-components (but not LUC, which is an input)
+        // so that the net total of all three fluxes will match the NBP constraint
+        unitval npp_current_old = npp_current;
+        npp_current = npp_current + diff * npp_frac;
+        const double npp_ratio = npp_current / npp_current_old;
+        npp_fav = npp_fav * npp_ratio;
+        npp_fad = npp_fad * npp_ratio;
+        npp_fas = npp_fas * npp_ratio;
+
+        unitval rh_current_old = rh_current;
+        rh_current = rh_current - diff * (1 - npp_frac);
+        const double rh_ratio = rh_current / rh_current_old;
+        rh_fda_current = rh_fda_current * rh_ratio;
+        rh_fsa_current = rh_fsa_current * rh_ratio;
+        
+        // BENTEMP
+        double new_atmos =  atmos_c.value( U_PGC ) +  ffi_flux_current.value( U_PGC_YR )
+              + luc_current.value( U_PGC_YR )
+              + ch4ox_current.value( U_PGC_YR )
+              - atmosocean_flux.value( U_PGC_YR )
+              - npp_current.value( U_PGC_YR )
+              + rh_current.value( U_PGC_YR );
+        std::cout << t << " " << atmos_c << " " << c[0] << " NPP adjust " << npp_current_old << " to " << npp_current << " new atmos will be = " << new_atmos << std::endl;
+    }
+    
     // Compute fluxes
     dcdt[ SNBOX_ATMOS ] = // change in atmosphere pool
         ffi_flux_current.value( U_PGC_YR )
