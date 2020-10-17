@@ -758,12 +758,12 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     const unitval rh_total = sum_rh();
     const unitval npp_rh_total = npp_total + rh_total; // these are both positive
 
+    atmosland_flux = npp_total - rh_total - lucEmissions.get( t );
     if(!core->inSpinup() && NBP_constrain.size() && NBP_constrain.exists(t) ) {
         H_LOG( logger, Logger::NOTICE ) << "** Constrained NBP (and thus NPP and RH) to user-supplied value" << std::endl;
-        std::cout << t << " New atmos = " << atmos_c << std::endl;  // BENTEMP
+        std::cout << t << " atmosland_flux = " << atmosland_flux << " constraint = " << NBP_constrain.get(t) << " New atmos = " << atmos_c << std::endl;  // BENTEMP
     }
     
-    atmosland_flux = npp_total - rh_total - lucEmissions.get( t );
     NBP_residual.set( 0.0, U_PGC );
     atmosland_flux_ts.set(t, atmosland_flux);
 
@@ -938,8 +938,6 @@ unitval SimpleNbox::sum_rh() const
 int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
 {
     // Solver is attempting to go from ODEstartdate to t
-//    const double yearfraction = ( t - ODEstartdate );
-//    H_ASSERT( yearfraction >= 0 && yearfraction <= 1, "yearfraction out of bounds" );
 
     // Atmosphere-ocean flux is calculated by ocean_component
     const int omodel_err = omodel->calcderivs( t, c, dcdt );
