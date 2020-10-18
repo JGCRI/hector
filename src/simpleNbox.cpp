@@ -761,7 +761,8 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     atmosland_flux = npp_total - rh_total - lucEmissions.get( t );
     if(!core->inSpinup() && NBP_constrain.size() && NBP_constrain.exists(t) ) {
         H_LOG( logger, Logger::NOTICE ) << "** Constrained NBP (and thus NPP and RH) to user-supplied value" << std::endl;
-        std::cout << t << " atmosland_flux = " << atmosland_flux << " constraint = " << NBP_constrain.get(t) << " New atmos = " << atmos_c << std::endl;  // BENTEMP
+        // BENTEMP
+//        std::cout << t << " atmosland_flux = " << atmosland_flux << " constraint = " << NBP_constrain.get(t) << " New atmos = " << atmos_c << std::endl;  // BENTEMP
     }
     
     NBP_residual.set( 0.0, U_PGC );
@@ -1007,17 +1008,12 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
     // Oxidized methane of fossil fuel origin
     unitval ch4ox_current( 0.0, U_PGC_YR );     //TODO: implement this
 
-    // Really the following should be divided by (t - currentYear) but assume that's always 1
-    const double year_fraction = (t - ODEstartdate);
-    
-    if(t > 2013) {
- //       std::cout << ODEstartdate << "->" << t << " " << npp_current << std::endl;
-    }
     // If user has supplied NBP (atmosland_flux) values, adjust to match
-    if(!core->inSpinup() && NBP_constrain.size() && NBP_constrain.exists(t) ) {
+    const int rounded_t = round(t);
+    if(!core->inSpinup() && NBP_constrain.size() && NBP_constrain.exists(rounded_t) ) {
         // Compute how different we are from the user-specified constraint
         unitval nbp = npp_current - rh_current - luc_current;
-        const unitval diff = NBP_constrain.get(t) - nbp;
+        const unitval diff = NBP_constrain.get(rounded_t) - nbp;
         // We're going to adjust NPP and RH in proportion to their magnitudes
         const double npp_frac = abs(npp_current) / (abs(npp_current) + abs(rh_current));
         
@@ -1037,13 +1033,20 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
         rh_fsa_current = rh_fsa_current * rh_ratio;
         
         // BENTEMP
-        double new_atmos =  atmos_c.value( U_PGC ) +  (ffi_flux_current.value( U_PGC_YR )
-              + luc_current.value( U_PGC_YR )
-              + ch4ox_current.value( U_PGC_YR )
-              - atmosocean_flux.value( U_PGC_YR )
-              - npp_current.value( U_PGC_YR )
-              + rh_current.value( U_PGC_YR )) * year_fraction;
+        double dcdt_old =  ffi_flux_current.value( U_PGC_YR )
+            + luc_current.value( U_PGC_YR )
+            + ch4ox_current.value( U_PGC_YR )
+            - atmosocean_flux.value( U_PGC_YR )
+            - npp_current_old.value( U_PGC_YR )
+            + rh_current_old.value( U_PGC_YR );
+        double dcdt =  ffi_flux_current.value( U_PGC_YR )
+            + luc_current.value( U_PGC_YR )
+            + ch4ox_current.value( U_PGC_YR )
+            - atmosocean_flux.value( U_PGC_YR )
+            - npp_current.value( U_PGC_YR )
+            + rh_current.value( U_PGC_YR );
  //       std::cout << atmos_c << " " << c[0] << " NPP adjust " << npp_current_old << " to " << npp_current << " new atmos will be = " << new_atmos << std::endl;
+  //      std::cout << ODEstartdate << "," << t << "," << c[0] << "," << dcdt_old << "," << dcdt << std::endl;
     }
     
     // Compute fluxes
@@ -1054,9 +1057,8 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
         - atmosocean_flux.value( U_PGC_YR )
         - npp_current.value( U_PGC_YR )
         + rh_current.value( U_PGC_YR );
-    if(t > 2013) {
-        std::cout << ODEstartdate << "," << t << "," << c[0] << "," << dcdt[0] << std::endl;
-    }
+    // BENTEMP
+ //   std::cout << ODEstartdate << "," << t << "," << c[0] << "," << dcdt[ SNBOX_ATMOS ] << std::endl;
     dcdt[ SNBOX_VEG ] = // change in vegetation pool
         npp_fav.value( U_PGC_YR )
         - litter_flux.value( U_PGC_YR )
