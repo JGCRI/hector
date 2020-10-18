@@ -1007,6 +1007,12 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
     // Oxidized methane of fossil fuel origin
     unitval ch4ox_current( 0.0, U_PGC_YR );     //TODO: implement this
 
+    // Really the following should be divided by (t - currentYear) but assume that's always 1
+    const double year_fraction = (t - ODEstartdate);
+    
+    if(t > 2013) {
+ //       std::cout << ODEstartdate << "->" << t << " " << npp_current << std::endl;
+    }
     // If user has supplied NBP (atmosland_flux) values, adjust to match
     if(!core->inSpinup() && NBP_constrain.size() && NBP_constrain.exists(t) ) {
         // Compute how different we are from the user-specified constraint
@@ -1031,13 +1037,13 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
         rh_fsa_current = rh_fsa_current * rh_ratio;
         
         // BENTEMP
-        double new_atmos =  atmos_c.value( U_PGC ) +  ffi_flux_current.value( U_PGC_YR )
+        double new_atmos =  atmos_c.value( U_PGC ) +  (ffi_flux_current.value( U_PGC_YR )
               + luc_current.value( U_PGC_YR )
               + ch4ox_current.value( U_PGC_YR )
               - atmosocean_flux.value( U_PGC_YR )
               - npp_current.value( U_PGC_YR )
-              + rh_current.value( U_PGC_YR );
-        std::cout << t << " " << atmos_c << " " << c[0] << " NPP adjust " << npp_current_old << " to " << npp_current << " new atmos will be = " << new_atmos << std::endl;
+              + rh_current.value( U_PGC_YR )) * year_fraction;
+ //       std::cout << atmos_c << " " << c[0] << " NPP adjust " << npp_current_old << " to " << npp_current << " new atmos will be = " << new_atmos << std::endl;
     }
     
     // Compute fluxes
@@ -1048,6 +1054,9 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
         - atmosocean_flux.value( U_PGC_YR )
         - npp_current.value( U_PGC_YR )
         + rh_current.value( U_PGC_YR );
+    if(t > 2013) {
+        std::cout << ODEstartdate << "," << t << "," << c[0] << "," << dcdt[0] << std::endl;
+    }
     dcdt[ SNBOX_VEG ] = // change in vegetation pool
         npp_fav.value( U_PGC_YR )
         - litter_flux.value( U_PGC_YR )
