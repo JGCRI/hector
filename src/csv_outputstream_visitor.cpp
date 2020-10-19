@@ -152,7 +152,6 @@ void CSVOutputStreamVisitor::visit( SimpleNbox* c ) {
     STREAM_MESSAGE( csvFile, c, D_ATMOSPHERIC_CO2 );
     STREAM_MESSAGE( csvFile, c, D_ATMOSPHERIC_C );
     STREAM_MESSAGE( csvFile, c, D_ATMOSPHERIC_C_RESIDUAL );
-    STREAM_MESSAGE( csvFile, c, D_NBP_RESIDUAL );
     STREAM_MESSAGE( csvFile, c, D_VEGC );
     STREAM_MESSAGE( csvFile, c, D_DETRITUSC );
     STREAM_MESSAGE( csvFile, c, D_SOILC );

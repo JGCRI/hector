@@ -57,7 +57,6 @@ void SimpleNbox::init( Core* coreptr ) {
     
     // Constraint residuals
     Ca_residual.set( 0.0, U_PGC );
-    NBP_residual.set( 0.0, U_PGC );
 
     // Initialize the `biome_list` with just "global"
     biome_list.push_back( SNBOX_DEFAULT_BIOME );
@@ -517,11 +516,6 @@ unitval SimpleNbox::getData(const std::string& varName,
             returnval = Ca_residual;
         else
             returnval = Ca_residual_ts.get(date);
-    } else if( varNameParsed == D_NBP_RESIDUAL ) {
-        if(date == Core::undefinedIndex())
-            returnval = NBP_residual;
-        else
-            returnval = NBP_residual_ts.get(date);
     } else if( varNameParsed == D_PREINDUSTRIAL_CO2 ) {
         H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for preindustrial CO2" );
         returnval = C0;
@@ -660,7 +654,6 @@ void SimpleNbox::reset(double time) throw(h_exception)
     soil_c = soil_c_tv.get(time);
 
     Ca_residual = Ca_residual_ts.get(time);
-    NBP_residual = NBP_residual_ts.get(time);
 
     tempferts = tempferts_tv.get(time);
     tempfertd = tempfertd_tv.get(time);
@@ -688,7 +681,6 @@ void SimpleNbox::reset(double time) throw(h_exception)
     soil_c_tv.truncate(time);
 
     Ca_residual_ts.truncate(time);
-    NBP_residual_ts.truncate(time);
 
     tempferts_tv.truncate(time);
     tempfertd_tv.truncate(time);
@@ -754,18 +746,36 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     atmos_c.set( c[ SNBOX_ATMOS ], U_PGC );
 
     // Calculate the land C flux
-    const unitval npp_total = sum_npp();
-    const unitval rh_total = sum_rh();
-    const unitval npp_rh_total = npp_total + rh_total; // these are both positive
+    
+    /*
+    dcdt[ SNBOX_ATMOS ] = // change in atmosphere pool
+        ffi_flux_current.value( U_PGC_YR )
+        + luc_current.value( U_PGC_YR )
+        + ch4ox_current.value( U_PGC_YR )
+        - atmosocean_flux.value( U_PGC_YR )
+        - npp_current.value( U_PGC_YR )
+        + rh_current.value( U_PGC_YR );   ...so...
+     
+     npp - rh - luc = -dcdt + ffi + ch4ox - atmosocean
+    */
 
-    atmosland_flux = npp_total - rh_total - lucEmissions.get( t );
+    static double old_atmos = c[ SNBOX_ATMOS ];
+    const double atmos = c[ SNBOX_ATMOS ];
+    const double delta_atmos = atmos - old_atmos;
+    old_atmos = atmos;
+    const double ffi = ffiEmissions.get( ODEstartdate ).value( U_PGC_YR );
+    static double old_ocean = c[ SNBOX_OCEAN ];
+    const double ocean = c[ SNBOX_OCEAN ];
+    const double delta_ocean = ocean - old_ocean;
+    old_ocean = ocean;
+
+    atmosland_flux = unitval( -delta_atmos + ffi - delta_ocean, U_PGC_YR );
+
     if(!core->inSpinup() && NBP_constrain.size() && NBP_constrain.exists(t) ) {
         H_LOG( logger, Logger::NOTICE ) << "** Constrained NBP (and thus NPP and RH) to user-supplied value" << std::endl;
-        // BENTEMP
-//        std::cout << t << " atmosland_flux = " << atmosland_flux << " constraint = " << NBP_constrain.get(t) << " New atmos = " << atmos_c << std::endl;  // BENTEMP
+        std::cout << t << " atmosland_flux = " << atmosland_flux << " constraint = " << NBP_constrain.get(t) << " New atmos = " << atmos_c << std::endl;  // BENTEMP
     }
     
-    NBP_residual.set( 0.0, U_PGC );
     atmosland_flux_ts.set(t, atmosland_flux);
 
     // The solver just knows about one vegetation box, one detritus, and one
@@ -785,6 +795,7 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     H_LOG( logger,Logger::DEBUG ) << "det_delta = " << det_delta << std::endl;
     H_LOG( logger,Logger::DEBUG ) << "soil_delta = " << soil_delta << std::endl;
 
+    const unitval npp_rh_total = sum_npp() + sum_rh(); // these are both positive
     for( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
         std::string biome = *it;
         const double wt     = ( npp( biome ) + rh( biome ) ) / npp_rh_total;
@@ -1010,7 +1021,7 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
 
     // If user has supplied NBP (atmosland_flux) values, adjust to match
     const int rounded_t = round(t);
-    if(!core->inSpinup() && NBP_constrain.size() && NBP_constrain.exists(rounded_t) ) {
+    if(!in_spinup && NBP_constrain.size() && NBP_constrain.exists(rounded_t) ) {
         // Compute how different we are from the user-specified constraint
         unitval nbp = npp_current - rh_current - luc_current;
         const unitval diff = NBP_constrain.get(rounded_t) - nbp;
@@ -1033,6 +1044,7 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
         rh_fsa_current = rh_fsa_current * rh_ratio;
         
         // BENTEMP
+        /*
         double dcdt_old =  ffi_flux_current.value( U_PGC_YR )
             + luc_current.value( U_PGC_YR )
             + ch4ox_current.value( U_PGC_YR )
@@ -1045,8 +1057,9 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
             - atmosocean_flux.value( U_PGC_YR )
             - npp_current.value( U_PGC_YR )
             + rh_current.value( U_PGC_YR );
- //       std::cout << atmos_c << " " << c[0] << " NPP adjust " << npp_current_old << " to " << npp_current << " new atmos will be = " << new_atmos << std::endl;
-  //      std::cout << ODEstartdate << "," << t << "," << c[0] << "," << dcdt_old << "," << dcdt << std::endl;
+
+        std::cout << ODEstartdate << "," << t << "," << c[0] << "," << dcdt_old << "," << dcdt << std::endl;
+         */
     }
     
     // Compute fluxes
@@ -1058,7 +1071,7 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
         - npp_current.value( U_PGC_YR )
         + rh_current.value( U_PGC_YR );
     // BENTEMP
- //   std::cout << ODEstartdate << "," << t << "," << c[0] << "," << dcdt[ SNBOX_ATMOS ] << std::endl;
+//    std::cout << ODEstartdate << "," << t << "," << c[0] << "," << dcdt[ SNBOX_ATMOS ] << std::endl;
     dcdt[ SNBOX_VEG ] = // change in vegetation pool
         npp_fav.value( U_PGC_YR )
         - litter_flux.value( U_PGC_YR )
@@ -1080,9 +1093,6 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
     dcdt[ SNBOX_EARTH ] = // change in earth pool
         - ffi_flux_current.value( U_PGC_YR );
 
-/*    printf( "%6.3f%8.3f%8.2f%8.2f%8.2f%8.2f%8.2f\n", t, dcdt[ SNBOX_ATMOS ],
-            dcdt[ SNBOX_VEG ], dcdt[ SNBOX_DET ], dcdt[ SNBOX_SOIL ], dcdt[ SNBOX_OCEAN ], dcdt[ SNBOX_EARTH ] );
-*/
     return omodel_err;
 }
 
@@ -1194,7 +1204,6 @@ void SimpleNbox::record_state(double t)
     soil_c_tv.set(t, soil_c);
 
     Ca_residual_ts.set(t, Ca_residual);
-    NBP_residual_ts.set(t, NBP_residual);
 
     tempfertd_tv.set(t, tempfertd);
     tempferts_tv.set(t, tempferts);

@@ -111,7 +111,6 @@ private:
     unitval_stringmap soil_c;       //!< soil pool, Pg C
 
     unitval Ca_residual;               //!< residual (when constraining Ca) flux, Pg C
-    unitval NBP_residual;               //!< residual (when constraining Ca) flux, Pg C
 
     double_stringmap tempfertd, tempferts; //!< temperature effect on respiration (unitless)
 
@@ -130,7 +129,6 @@ private:
     tvector<unitval_stringmap> soil_c_tv;     //!< Time series of biome-specific soil carbon pools
 
     tseries<unitval> Ca_residual_ts; //!< Time series of Ca residual flux values
-    tseries<unitval> NBP_residual_ts; //!< Time series of NBP residual flux values
 
     tvector<double_stringmap> tempfertd_tv, tempferts_tv; //!< Time series of temperature effect on respiration
 
