@@ -183,7 +183,7 @@ test_that('Atmospheric CO2 concentrations can be constrained', {
 })
 
 # Instead of using the R wrapper to set up the concetnration driven runs
-# maninpuate the ini file. This tests to make sure the underly C++
+# manipulate the underlying ini file. This tests to make sure the underly C++
 # code works.
 test_that("Concentration driven runs via INI file works", {
 
@@ -208,7 +208,7 @@ test_that("Concentration driven runs via INI file works", {
     yrs <- seq(startdate(hc), enddate(hc))
     results <- fetchvars(hc, yrs, outvars)
 
-    # Format data the data frame concentrations into a format that can be used as as Hector input.
+    # Format the data the data frame concentrations into a format that can be used as Hector input.
     results_sub <- results[, c("year", "variable", "value")]
     wide <- reshape(results_sub, v.names = "value", idvar = "year",  timevar = "variable", direction = "wide" )
     names(wide) <- gsub("value\\.", "", names(wide))
@@ -220,11 +220,12 @@ test_that("Concentration driven runs via INI file works", {
 
     # Save the concentration table, note that this must be written out
     # so that the ini can read it in.
-    tmp_dir <- tempfile(); dir.create(tmp_dir, showWarnings = FALSE)
+    tmp_dir <- tempfile()
+    dir.create(tmp_dir, showWarnings = FALSE)
     tmpfile <- file.path(tmp_dir, "test_conc.csv")
     write.csv(wide, tmpfile, row.names = FALSE, quote = FALSE)
 
-    # Add lines of text to the ini that that create the different
+    # Add lines of text to the ini that create the different
     # concentration constraints. The constraints will use the
     # concentration time series stored in the data files.
     ini_txt <- append(ini_txt,

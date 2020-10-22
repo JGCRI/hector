@@ -1,21 +1,22 @@
-## This script generates the comparison data that is used in the old new tests (a bit by bit)
-## comparison. Whenever there is devlopment that should change Hector's output this script
-## should to generate new comparison data.
-## Since this script will only while developing the package devtools::load_all() and
-## file paths that are relative to the hector project instead of built package.
+## This script generates the comparison data used in "test-old_new" unit testing.
+## The objective of the test is to do a bit for bit comparison, to make sure that "
+## patch" and "minor" Hector PRs do not impact Hector results. However, when there
+##is an expected "major" Hector development there may be an expected change in Hector behavior.
+##If/when this is case use this script to generate new comparison data.
 
-# Load the Hector package
+# Since this script will only be run occasionally while actively developing Hector, use
+# devtools::load_all() instead of loading the built Hector package.
 devtools::load_all()
 
 # Create the output directory.
 out_dir <- here::here('tests', 'testthat', 'compdata')
 dir.create(out_dir, showWarnings = FALSE)
 
-# Determine the version of Hector that will generate the comparison data.
+# Determine the version of Hector and the git commit, that generates the comparison data.
 # This will be saved to help keep track of the last time the comparison data
 # was actually updated.
-session_info   <- sessionInfo(package = 'hector')
-hector_version <- session_info$otherPkgs$hector$Version
+hector_version <- packageVersion('hector')
+hector_commit  <- system("git rev-parse --short HEAD", intern = TRUE)
 
 
 vars_to_save  <- c(ATMOSPHERIC_CO2(), GLOBAL_TEMP(), RF_TOTAL(), RF_CO2(), HEAT_FLUX())
@@ -31,6 +32,7 @@ hc  <- newcore(ini)
 run(hc, 2300)
 hector_rcp45_constrained <- fetchvars(hc, scenario = basename(ini), dates = dates_to_save, vars = vars_to_save)
 hector_rcp45_constrained$version <- hector_version  # Add the Hector version.
+hector_rcp45_constrained$commit  <-  hector_commit
 
 # Second run.
 ini <- here::here('inst', 'input', 'hector_rcp45.ini')
@@ -38,7 +40,7 @@ hc  <- newcore(ini)
 run(hc, 2300)
 hector_rcp45 <- fetchvars(hc, scenario = basename(ini), dates = dates_to_save, vars = vars_to_save)
 hector_rcp45$version <- hector_version  # Add the Hector version.
-
+hector_rcp45$commit  <- hector_commit
 
 # Save the comparison data for the unit tests.
 comp_data <- rbind(hector_rcp45_constrained, hector_rcp45)

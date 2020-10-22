@@ -1,8 +1,9 @@
 context('Old new tests')
-# Verify that hector output for the canonical rcps matches output from older version. This "bit for bit"
-# comparison of the output it intended to help preserve Hector data during minor devlopment.
-# For behavior changing devlopment the comparison data will need to be updated with
-# data-raw/generate-comp-data.R
+# Verify that hector output for the canonical rcps matches the output from the
+# master branch. This "bit for bit" comparison of the output is intended to help
+# guarantee that Hector's outputs don't change during "minor" and "patch" development.
+# When "major" development is expected to impact Hector output, the comparison data will
+# need to be updated by running data-raw/generate-comp-data.R
 
 test_that("Hector output passes old new test", {
 
@@ -13,6 +14,7 @@ test_that("Hector output passes old new test", {
     # Read in the comparison data and extract the information to save.
     comp_data <- read.csv(list.files('compdata', '.csv',  full.names = TRUE), stringsAsFactors = FALSE)
     vars <- unique(comp_data$variable)
+
     time <- unique(comp_data$year)
     scenarios <- unique(comp_data$scenario)
 
