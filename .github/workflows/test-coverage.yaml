@@ -39,6 +39,5 @@ jobs:
         shell: Rscript {0}
 
       - name: Test coverage
-        run:|
-          Rscript -e 'remotes::install_github("r-lib/covr@gh-actions")'  covr::codecov()
-          Rscript -e 'covr::codecov(token = "${{secrets.CODECOV_TOKEN}}")'
+        run: covr::codecov()
+        shell: Rscript {0}
