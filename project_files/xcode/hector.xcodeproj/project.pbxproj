@@ -11,6 +11,48 @@
 		273144792492773700C95E7C /* libboost_system.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 273144762492773700C95E7C /* libboost_system.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		2731447A2492773700C95E7C /* libboost_filesystem.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 273144772492773700C95E7C /* libboost_filesystem.dylib */; };
 		2731447B2492773700C95E7C /* libboost_filesystem.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 273144772492773700C95E7C /* libboost_filesystem.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		27822DFB249BE4C200F7293E /* avisitor.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27860373215532AD001B8255 /* avisitor.hpp */; };
+		27822DFC249BE4C200F7293E /* bc_component.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27860375215532AD001B8255 /* bc_component.hpp */; };
+		27822DFD249BE4C200F7293E /* carbon-cycle-model.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2786035C215532AB001B8255 /* carbon-cycle-model.hpp */; };
+		27822DFE249BE4C200F7293E /* carbon-cycle-solver.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2786036E215532AC001B8255 /* carbon-cycle-solver.hpp */; };
+		27822DFF249BE4C200F7293E /* ch4_component.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27860353215532AB001B8255 /* ch4_component.hpp */; };
+		27822E00249BE4C200F7293E /* component_data.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27860369215532AC001B8255 /* component_data.hpp */; };
+		27822E01249BE4C200F7293E /* component_names.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27860378215532AD001B8255 /* component_names.hpp */; };
+		27822E02249BE4C200F7293E /* core.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2786037C215532AD001B8255 /* core.hpp */; };
+		27822E03249BE4C200F7293E /* csv_output_visitor.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27860371215532AD001B8255 /* csv_output_visitor.hpp */; };
+		27822E04249BE4C200F7293E /* csv_outputstream_visitor.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27860372215532AD001B8255 /* csv_outputstream_visitor.hpp */; };
+		27822E05249BE4C200F7293E /* csv_table_reader.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27860358215532AB001B8255 /* csv_table_reader.hpp */; };
+		27822E06249BE4C200F7293E /* dependency_finder.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27860376215532AD001B8255 /* dependency_finder.hpp */; };
+		27822E07249BE4C200F7293E /* dummy_model_component.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27860362215532AC001B8255 /* dummy_model_component.hpp */; };
+		27822E08249BE4C200F7293E /* forcing_component.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27860354215532AB001B8255 /* forcing_component.hpp */; };
+		27822E09249BE4C200F7293E /* h_exception.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2786036B215532AC001B8255 /* h_exception.hpp */; };
+		27822E0A249BE4C200F7293E /* h_interpolator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2786036A215532AC001B8255 /* h_interpolator.hpp */; };
+		27822E0B249BE4C200F7293E /* h_reader.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2786036F215532AD001B8255 /* h_reader.hpp */; };
+		27822E0C249BE4C200F7293E /* h_util.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2786035E215532AC001B8255 /* h_util.hpp */; };
+		27822E0D249BE4C200F7293E /* halocarbon_component.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2786035D215532AC001B8255 /* halocarbon_component.hpp */; };
+		27822E0E249BE4C200F7293E /* hector.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27860357215532AB001B8255 /* hector.hpp */; };
+		27822E0F249BE4C200F7293E /* imodel_component.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27860370215532AD001B8255 /* imodel_component.hpp */; };
+		27822E10249BE4C200F7293E /* ini_to_core_reader.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27860361215532AC001B8255 /* ini_to_core_reader.hpp */; };
+		27822E11249BE4C200F7293E /* ini.h in Headers */ = {isa = PBXBuildFile; fileRef = 27860365215532AC001B8255 /* ini.h */; };
+		27822E12249BE4C200F7293E /* INIReader.h in Headers */ = {isa = PBXBuildFile; fileRef = 27860355215532AB001B8255 /* INIReader.h */; };
+		27822E13249BE4C200F7293E /* ivisitable.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27860374215532AD001B8255 /* ivisitable.hpp */; };
+		27822E14249BE4C200F7293E /* logger.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27860364215532AC001B8255 /* logger.hpp */; };
+		27822E15249BE4C200F7293E /* message_data.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27860360215532AC001B8255 /* message_data.hpp */; };
+		27822E16249BE4C200F7293E /* n2o_component.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27860359215532AB001B8255 /* n2o_component.hpp */; };
+		27822E17249BE4C200F7293E /* o3_component.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2786035F215532AC001B8255 /* o3_component.hpp */; };
+		27822E18249BE4C200F7293E /* oc_component.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2786036D215532AC001B8255 /* oc_component.hpp */; };
+		27822E19249BE4C200F7293E /* ocean_component.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27860377215532AD001B8255 /* ocean_component.hpp */; };
+		27822E1A249BE4C200F7293E /* ocean_csys.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27860379215532AD001B8255 /* ocean_csys.hpp */; };
+		27822E1B249BE4C200F7293E /* oceanbox.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2786037A215532AD001B8255 /* oceanbox.hpp */; };
+		27822E1C249BE4C200F7293E /* oh_component.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2786035A215532AB001B8255 /* oh_component.hpp */; };
+		27822E1D249BE4C200F7293E /* onelineocean_component.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2786037B215532AD001B8255 /* onelineocean_component.hpp */; };
+		27822E1E249BE4C200F7293E /* simpleNbox.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27860366215532AC001B8255 /* simpleNbox.hpp */; };
+		27822E1F249BE4C200F7293E /* slr_component.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2786036C215532AC001B8255 /* slr_component.hpp */; };
+		27822E20249BE4C200F7293E /* so2_component.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27860363215532AC001B8255 /* so2_component.hpp */; };
+		27822E21249BE4C200F7293E /* temperature_component.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27860367215532AC001B8255 /* temperature_component.hpp */; };
+		27822E22249BE4C200F7293E /* tseries.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27860368215532AC001B8255 /* tseries.hpp */; };
+		27822E23249BE4C200F7293E /* tvector.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2786035B215532AB001B8255 /* tvector.hpp */; };
+		27822E24249BE4C200F7293E /* unitval.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27860356215532AB001B8255 /* unitval.hpp */; };
 		2786037D215532AE001B8255 /* ch4_component.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27860353215532AB001B8255 /* ch4_component.hpp */; };
 		2786037E215532AE001B8255 /* forcing_component.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27860354215532AB001B8255 /* forcing_component.hpp */; };
 		2786037F215532AE001B8255 /* INIReader.h in Headers */ = {isa = PBXBuildFile; fileRef = 27860355215532AB001B8255 /* INIReader.h */; };
@@ -386,6 +428,55 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		27822DFA249BE4AD00F7293E /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				27822DFB249BE4C200F7293E /* avisitor.hpp in Headers */,
+				27822DFC249BE4C200F7293E /* bc_component.hpp in Headers */,
+				27822DFD249BE4C200F7293E /* carbon-cycle-model.hpp in Headers */,
+				27822DFE249BE4C200F7293E /* carbon-cycle-solver.hpp in Headers */,
+				27822DFF249BE4C200F7293E /* ch4_component.hpp in Headers */,
+				27822E00249BE4C200F7293E /* component_data.hpp in Headers */,
+				27822E01249BE4C200F7293E /* component_names.hpp in Headers */,
+				27822E02249BE4C200F7293E /* core.hpp in Headers */,
+				27822E03249BE4C200F7293E /* csv_output_visitor.hpp in Headers */,
+				27822E04249BE4C200F7293E /* csv_outputstream_visitor.hpp in Headers */,
+				27822E05249BE4C200F7293E /* csv_table_reader.hpp in Headers */,
+				27822E06249BE4C200F7293E /* dependency_finder.hpp in Headers */,
+				27822E07249BE4C200F7293E /* dummy_model_component.hpp in Headers */,
+				27822E08249BE4C200F7293E /* forcing_component.hpp in Headers */,
+				27822E09249BE4C200F7293E /* h_exception.hpp in Headers */,
+				27822E0A249BE4C200F7293E /* h_interpolator.hpp in Headers */,
+				27822E0B249BE4C200F7293E /* h_reader.hpp in Headers */,
+				27822E0C249BE4C200F7293E /* h_util.hpp in Headers */,
+				27822E0D249BE4C200F7293E /* halocarbon_component.hpp in Headers */,
+				27822E0E249BE4C200F7293E /* hector.hpp in Headers */,
+				27822E0F249BE4C200F7293E /* imodel_component.hpp in Headers */,
+				27822E10249BE4C200F7293E /* ini_to_core_reader.hpp in Headers */,
+				27822E11249BE4C200F7293E /* ini.h in Headers */,
+				27822E12249BE4C200F7293E /* INIReader.h in Headers */,
+				27822E13249BE4C200F7293E /* ivisitable.hpp in Headers */,
+				27822E14249BE4C200F7293E /* logger.hpp in Headers */,
+				27822E15249BE4C200F7293E /* message_data.hpp in Headers */,
+				27822E16249BE4C200F7293E /* n2o_component.hpp in Headers */,
+				27822E17249BE4C200F7293E /* o3_component.hpp in Headers */,
+				27822E18249BE4C200F7293E /* oc_component.hpp in Headers */,
+				27822E19249BE4C200F7293E /* ocean_component.hpp in Headers */,
+				27822E1A249BE4C200F7293E /* ocean_csys.hpp in Headers */,
+				27822E1B249BE4C200F7293E /* oceanbox.hpp in Headers */,
+				27822E1C249BE4C200F7293E /* oh_component.hpp in Headers */,
+				27822E1D249BE4C200F7293E /* onelineocean_component.hpp in Headers */,
+				27822E1E249BE4C200F7293E /* simpleNbox.hpp in Headers */,
+				27822E1F249BE4C200F7293E /* slr_component.hpp in Headers */,
+				27822E20249BE4C200F7293E /* so2_component.hpp in Headers */,
+				27822E21249BE4C200F7293E /* temperature_component.hpp in Headers */,
+				27822E22249BE4C200F7293E /* tseries.hpp in Headers */,
+				27822E23249BE4C200F7293E /* tvector.hpp in Headers */,
+				27822E24249BE4C200F7293E /* unitval.hpp in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CD97CE301BFBBF2E005689AD /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -442,6 +533,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1DEB923108733DC60010E9CD /* Build configuration list for PBXNativeTarget "hector" */;
 			buildPhases = (
+				27822DFA249BE4AD00F7293E /* Headers */,
 				8DD76F640486A84900D96B5E /* Sources */,
 				8DD76F660486A84900D96B5E /* Frameworks */,
 				2731447C2492773700C95E7C /* Embed Libraries */,

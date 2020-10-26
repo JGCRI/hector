@@ -269,9 +269,21 @@ test_that('Atmospheric CO2 concentrations can be constrained', {
 
 })
 
+test_that('Land-atmosphere C flux can be constrained', {
+
+  hc <- newcore(rcp45, suppresslogging = TRUE)
+  years <- 1850:2100
+  constrained_values <- rep(1, length(years))
+  setvar(hc, years, NBP_CONSTRAIN(), constrained_values, getunits(NBP_CONSTRAIN()))
+  invisible(run(hc))
+  out <- fetchvars(hc, years, NBP())
+  expect_equal(out$value, constrained_values)
+
+})
+
 test_that('Atmospheric CO2 constraint affects RF and temperature', {
 
-    # Checks for the regression reoported here:
+    # Checks for the regression reported here:
     # https://github.com/JGCRI/hector/pull/302#issuecomment-493242815
     hc <- newcore(rcp45, suppresslogging = TRUE)
     ca_years <- 1850:2100
