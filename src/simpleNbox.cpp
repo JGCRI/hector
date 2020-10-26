@@ -744,6 +744,10 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     // Store solver pools into our internal variables
 
     atmos_c.set( c[ SNBOX_ATMOS ], U_PGC );
+    // The following are not const because NBP constraint may need to adjust them
+    unitval newveg( c[ SNBOX_VEG ], U_PGC );
+    unitval newdet( c[ SNBOX_DET ], U_PGC );
+    unitval newsoil( c[ SNBOX_SOIL ], U_PGC );
 
     // Calculate the land C flux
     
@@ -756,26 +760,38 @@ void SimpleNbox::stashCValues( double t, const double c[] )
         - npp_current.value( U_PGC_YR )
         + rh_current.value( U_PGC_YR );   ...so...
      
-     npp - rh - luc = -dcdt + ffi + ch4ox - atmosocean
+     nbp = npp - rh = -dcdt + ffi + ch4ox - atmosocean - luc
     */
 
     static double old_atmos = c[ SNBOX_ATMOS ];
     const double atmos = c[ SNBOX_ATMOS ];
     const double delta_atmos = atmos - old_atmos;
-    old_atmos = atmos;
     const double ffi = ffiEmissions.get( ODEstartdate ).value( U_PGC_YR );
     static double old_ocean = c[ SNBOX_OCEAN ];
     const double ocean = c[ SNBOX_OCEAN ];
     const double delta_ocean = ocean - old_ocean;
     old_ocean = ocean;
-
-    atmosland_flux = unitval( -delta_atmos + ffi - delta_ocean, U_PGC_YR );
+    const double luc = lucEmissions.get(t);
+    
+    atmosland_flux = unitval( -delta_atmos + ffi - delta_ocean - luc, U_PGC_YR );
 
     if(!core->inSpinup() && NBP_constrain.size() && NBP_constrain.exists(t) ) {
-        H_LOG( logger, Logger::NOTICE ) << "** Constrained NBP (and thus NPP and RH) to user-supplied value" << std::endl;
-        std::cout << t << " atmosland_flux = " << atmosland_flux << " constraint = " << NBP_constrain.get(t) << " New atmos = " << atmos_c << std::endl;  // BENTEMP
+        // The solver may not give us exactly what we need for NBP; make final adjustment here
+        const unitval diff = unitval(NBP_constrain.get(t).value( U_PGC_YR ) - atmosland_flux.value( U_PGC_YR ), U_PGC );
+        
+        atmos_c.set( c[ SNBOX_ATMOS ] - diff.value( U_PGC ), U_PGC );
+        const double total_land = c[ SNBOX_DET ] + c[ SNBOX_VEG ] + c[ SNBOX_SOIL ];
+        newdet = newdet + diff * c[ SNBOX_DET ] / total_land;
+        newveg = newveg + diff * c[ SNBOX_VEG ] / total_land;
+        newsoil = newsoil + diff * c[ SNBOX_SOIL ] / total_land;
+
+        atmosland_flux = unitval( -(atmos_c.value( U_PGC ) - old_atmos) + ffi - delta_ocean - luc, U_PGC_YR );
+
+        H_LOG( logger, Logger::NOTICE ) << "** NBP constraint " << NBP_constrain.get(t) <<
+            " requested; final value was " << atmosland_flux << " with final adjustment of " << diff << std::endl;
     }
-    
+    old_atmos = atmos;
+
     atmosland_flux_ts.set(t, atmosland_flux);
 
     // The solver just knows about one vegetation box, one detritus, and one
@@ -785,9 +801,6 @@ void SimpleNbox::stashCValues( double t, const double c[] )
 
     // Apportioning is done by NPP and RH
     // i.e., biomes with higher values get more of any C change
-    const unitval newveg( c[ SNBOX_VEG ], U_PGC );
-    const unitval newdet( c[ SNBOX_DET ], U_PGC );
-    const unitval newsoil( c[ SNBOX_SOIL ], U_PGC );
     const unitval veg_delta = newveg - sum_map( veg_c );
     const unitval det_delta = newdet - sum_map( detritus_c );
     const unitval soil_delta = newsoil - sum_map( soil_c );
@@ -1025,20 +1038,20 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
         // Compute how different we are from the user-specified constraint
         unitval nbp = npp_current - rh_current - luc_current;
         const unitval diff = NBP_constrain.get(rounded_t) - nbp;
-        // We're going to adjust NPP and RH in proportion to their magnitudes
-        const double npp_frac = abs(npp_current) / (abs(npp_current) + abs(rh_current));
+        //std::cout << ODEstartdate << " nbp=" << nbp << " diff=" << diff << std::endl;
         
-        // Adjust total NPP and total RH and their sub-components (but not LUC, which is an input)
+        // Adjust total NPP and total RH equally (but not LUC, which is an input)
         // so that the net total of all three fluxes will match the NBP constraint
         unitval npp_current_old = npp_current;
-        npp_current = npp_current + diff * npp_frac;
+        npp_current = npp_current + diff / 2.0;
+        // ...also need to adjust their sub-components
         const double npp_ratio = npp_current / npp_current_old;
         npp_fav = npp_fav * npp_ratio;
         npp_fad = npp_fad * npp_ratio;
         npp_fas = npp_fas * npp_ratio;
 
         unitval rh_current_old = rh_current;
-        rh_current = rh_current - diff * (1 - npp_frac);
+        rh_current = rh_current - diff / 2.0;
         const double rh_ratio = rh_current / rh_current_old;
         rh_fda_current = rh_fda_current * rh_ratio;
         rh_fsa_current = rh_fsa_current * rh_ratio;
@@ -1058,7 +1071,7 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
             - npp_current.value( U_PGC_YR )
             + rh_current.value( U_PGC_YR );
 
-        std::cout << ODEstartdate << "," << t << "," << c[0] << "," << dcdt_old << "," << dcdt << std::endl;
+        std::cout << ODEstartdate << "," << t << " dcdt_old=" << dcdt_old << " dcdt_new=" << dcdt << " to=" << c[0]+dcdt << std::endl;
          */
     }
     
@@ -1071,7 +1084,7 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
         - npp_current.value( U_PGC_YR )
         + rh_current.value( U_PGC_YR );
     // BENTEMP
-//    std::cout << ODEstartdate << "," << t << "," << c[0] << "," << dcdt[ SNBOX_ATMOS ] << std::endl;
+    //std::cout << ODEstartdate << "," << t << "," << c[0] << "," << dcdt[ SNBOX_ATMOS ] << std::endl;
     dcdt[ SNBOX_VEG ] = // change in vegetation pool
         npp_fav.value( U_PGC_YR )
         - litter_flux.value( U_PGC_YR )
