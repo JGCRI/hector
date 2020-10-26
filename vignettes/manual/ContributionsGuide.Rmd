@@ -1,0 +1,27 @@
+---
+title: Contribution Guide
+---
+
+The Hector team welcomes and values community contributions to Hector, but there are a few things important to know. 
+
+All contributions must pass through a pull request (PR) process before being merged into the master branch of Hector. Please note that opening a PR does **not** guarantee your work will be merged; we assess potential model changes for fit with Hector’s long-term strategic plan, compatibility, conformance to the model’s code style, and other factors.
+
+We encourage all contributors to read and comply with the following guidelines:
+
+* Before embarking on your work open a [development](link) GitHub issue to provide a brief description of your change or development, including justification and timeline. This allows us to provide feedback, and helps us plan and prepare for your PR;
+* We use [GitHub's pull request feature](https://docs.github.com/en/free-pro-team@latest/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request) to merge new developments into Hector. We will not merge changes made directly to the master branch, please make your changes to a [branch](https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging);
+* Use [Roxygen](https://roxygen2.r-lib.org/) where applicable (e.g., adding or changing functions, adding data sets) but also add thorough and coherent inline documentation; 
+* Add [unit tests](https://r-pkgs.org/tests.html) if applicable, when adding or changing functions;
+* Comply with the [Hector code style guide](https://jgcri.github.io/hector/articles/manual/StyleGuide.html); and 
+* The PR will need to be able to pass a suite of automated tests. 
+
+Hector adheres to the [semantic versioning](https://semver.org/) ideology. This being said, since not all model development will be equal in scope or magnitude, not all PR reviews will be equal. The types of Hector PR we expect include: 
+
+* "Patch changes" that make no impact on Hector functionality, such as documentation fixes, or removing dead code are the easiest to assess and merge.
+* "Minor changes" that don’t change the model’s behavior in any fundamental way, and don’t change its inputs, may require unit tests and some more review.
+* "Major changes"  that change the model’s input or output structure, or induce major behavioral shifts, are considered _breaking changes_. These are subject to the most stringent reviews, will require scientific justification of the development and evidence that the changes have the intended consequences. These PRs will almost always be merged into a development branch, not master until a new version of the Hector is ready for release. 
+
+
+Thank you for your interest in contributing to Hector and we look forward to working with you! However, we maintain the right to refuse to merge PRs that do not comply with these guidelines, that do not meet contribution standards. 
+
+

@@ -15,10 +15,13 @@ This research was supported by the U.S. Department of Energy, Office of Science,
 
 ## Tools and Software That Work with Hector
 
-* [GCAM](https://github.com/JGCRI/gcam-core): Hector can be used as
-  the climate component in the GCAM integrated assessment model.
+* [GCAM](https://github.com/JGCRI/gcam-core): Hector can be used as the climate component in [GCAM](http://jgcri.github.io/gcam-doc/).
 * [pyhector](https://github.com/openclimatedata/pyhector): a python
   interface to Hector.
 * [HectorUI](https://jgcri.shinyapps.io/HectorUI/): run Hector in a web interface! 
-  
+
+
+ ##  Contributing to Hector
+ 
+ The Hector team welcomes and values community contributions to Hector but please see [Contribution Guide](KRD-UPDATE) 
   

@@ -15,7 +15,12 @@
 #include <boost/lexical_cast.hpp>
 #include <cmath>
 #include <limits>
-#define _USE_MATH_DEFINES
+
+// The MinGW C++ compiler doesn't seem to pull in the cmath constants? (see #384)
+// As a workaround, we define M_PI here if needed
+#ifndef M_PI
+#define M_PI       3.14159265358979323846
+#endif
 
 #include "temperature_component.hpp"
 #include "core.hpp"
