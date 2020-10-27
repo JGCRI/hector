@@ -17,6 +17,7 @@ test_that('Rerunning spinup produces minimal change', {
     run(hc, 2100)
     dd2 <- fetchvars(hc, dates, testvars)
 
+    # 1.0e-6 is a small number selected to make sure that re-running the spin-up, only produces a minimal change.
     diff <- abs((dd2$value - dd1$value) / (dd1$value + 1.0e-6))
     expect_lt(max(diff), 1.0e-6)
 

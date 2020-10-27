@@ -29,7 +29,7 @@ dates_to_save <- 1750:2300
 # The first scenario to run is the constrained RCP 4.5
 ini <- here::here('inst', 'input', 'hector_rcp45_constrained.ini')
 hc  <- newcore(ini)
-run(hc, 2300)
+run(hc, max(dates_to_save))
 hector_rcp45_constrained <- fetchvars(hc, scenario = basename(ini), dates = dates_to_save, vars = vars_to_save)
 hector_rcp45_constrained$version <- hector_version  # Add the Hector version.
 hector_rcp45_constrained$commit  <-  hector_commit
@@ -37,7 +37,7 @@ hector_rcp45_constrained$commit  <-  hector_commit
 # Second run.
 ini <- here::here('inst', 'input', 'hector_rcp45.ini')
 hc  <- newcore(ini)
-run(hc, 2300)
+run(hc, max(dates_to_save))
 hector_rcp45 <- fetchvars(hc, scenario = basename(ini), dates = dates_to_save, vars = vars_to_save)
 hector_rcp45$version <- hector_version  # Add the Hector version.
 hector_rcp45$commit  <- hector_commit

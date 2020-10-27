@@ -5,6 +5,11 @@ inputdir  <- system.file('input', package='hector')
 sampledir <- system.file('output', package='hector')
 rcp45     <- file.path(inputdir, "hector_rcp45.ini")
 
+# Our defined allowable error, when comparing two values we expect to be
+# equal differences less than this are assumed to be related to round off error.
+# When the differences between the two values are larger than the threshold, they are significant.
+error_threshold <- 1e-8
+
 test_that('Checking RF values', {
 
     # Define the comparison dates
@@ -12,7 +17,7 @@ test_that('Checking RF values', {
 
     # Set and run Hector
     hc <- newcore(rcp45)
-    run(hc)
+    run(hc, max(t_dates))
 
 
     # Make sure that total SO2 RF is the sum the direct and indirect SO2 RF.
@@ -20,7 +25,7 @@ test_that('Checking RF values', {
     so2_id_rf  <- fetchvars(hc, dates  = t_dates,  vars  = c(RF_SO2D(), RF_SO2I()))
     sum_so2_id <- aggregate(value ~ scenario + year + units, data = so2_id_rf, FUN = 'sum')
 
-    expect_equal(so2_rf$value, sum_so2_id$value, tolerance = 1e-8)
+    expect_equal(so2_rf$value, sum_so2_id$value, tolerance = error_threshold)
 
 
     # Now check to make sure that  the total radiative forcing is equal to the sum of the
@@ -42,7 +47,7 @@ test_that('Checking RF values', {
     sum_individuals <- aggregate(value ~ scenario + year + units, data = individual_rf,
                                  FUN = 'sum')
 
-    expect_equal(total_rf$value, sum_individuals$value, tolerance = 1e-8)
+    expect_equal(total_rf$value, sum_individuals$value, tolerance = error_threshold)
 
 
 })
