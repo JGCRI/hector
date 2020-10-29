@@ -12,7 +12,7 @@ test_that("Hector output passes old new test", {
     error_threshold <- 1e-10
 
     # Read in the comparison data and extract the information to save.
-    comp_data <- read.csv('./hector_comp.csv', stringsAsFactors = FALSE)
+    comp_data <- read.csv('compdata/hector_comp.csv', stringsAsFactors = FALSE)
     vars <- unique(comp_data$variable)
 
     time <- unique(comp_data$year)
