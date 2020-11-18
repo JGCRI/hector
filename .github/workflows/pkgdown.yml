@@ -7,7 +7,6 @@ name: Pkgdown
 jobs:
   pkgdown:
     runs-on: macOS-latest
-  env:
     steps:
       - uses: actions/checkout@master
       - uses: r-lib/actions/setup-r@master
@@ -16,7 +15,7 @@ jobs:
         run: |
           Rscript -e 'install.packages("remotes")' \
                   -e 'remotes::install_deps(dependencies = TRUE)' \
-                  -e 'remotes::install_github("r-lib/pkgdown")'
+                  -e 'remotes::install_github("r-lib/pkgdown@v1.6.0")'
       - name: Install package
         run: R CMD INSTALL .
       - name: Deploy package
@@ -24,4 +23,3 @@ jobs:
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
           Rscript -e 'pkgdown::deploy_to_branch(new_process = FALSE)'
-
