@@ -64,11 +64,11 @@ matrix:
       # branch. This is based on this guide from `pkgdown`:
       # https://pkgdown.r-lib.org/reference/deploy_site_github.html
       # Import a stable version of the pkgdown.
-      before_deploy: Rscript -e 'remotes::install_github("r-lib/pkgdown@v1.6.0")'
-      deploy:
-        provider: script
-        script: Rscript -e 'pkgdown::deploy_site_github()'
-        skip_cleanup: true
-        # Don't rebuild documentation during Travis CRON jobs.
+#      before_deploy: Rscript -e 'remotes::install_github("r-lib/pkgdown@v1.6.0")'
+#      deploy:
+#        provider: script
+#        script: Rscript -e 'pkgdown::deploy_site_github()'
+#        skip_cleanup: true
+#        # Don't rebuild documentation during Travis CRON jobs.
         on:
           condition: $TRAVIS_EVENT_TYPE != "cron"
