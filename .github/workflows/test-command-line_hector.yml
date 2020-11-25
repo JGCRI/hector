@@ -1,15 +1,11 @@
 name: test command line hector 
 on: [push]
-jobs:
-  build_hector:
-    runs-on: macos-10.15
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
-        run: |
-            brew install boost
-            BOOSTROOT=/usr/local/Cellar/boost/1.74.0/include
-            BOOSTLIB=/usr/local/Cellar/boost/1.74.0/lib
-            make hector
-            sh ./test_hector.sh ./src/hector
-        shell: bash
+runs-on: macos-10.15
+job_id: build-on-mac
+  run: |
+    brew install boost
+    BOOSTROOT=/usr/local/Cellar/boost/1.74.0/include
+    BOOSTLIB=/usr/local/Cellar/boost/1.74.0/lib
+    make hector
+    sh ./test_hector.sh ./src/hector
+  shell: bash
