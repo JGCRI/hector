@@ -1,5 +1,5 @@
 name: test command line hector
-on: [push]
+on: push
     runs-on: macos-latest
     steps:
       - run: brew install boost 
