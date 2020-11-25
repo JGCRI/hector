@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-        - name: Compile
-      		run: |
-        	sudo apt install libboost-filesystem-dev libboost-system-dev
-		make hector
+        - name: Build Hector
+      		run: sudo apt install libboost-filesystem-dev libboost-system-dev
+		run: which c++
+		run: make hector
