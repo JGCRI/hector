@@ -7,12 +7,8 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
       - run: brew install boost
-      - run: ls /usr/local/Cellar
-      - run: echo $BOOSTLIB
-      - run: ls $BOOSTLIB
-      - run: echo $BOOSTROOT
-      - run: ls $BOOSTROOT
       - run: make hector
+      - run: sh ./test_hector.sh ./src/hector
         env:
           BOOSTROOT: /usr/local/Cellar/boost/1.74.0/include
           BOOSTLIB: /usr/local/Cellar/boost/1.74.0/lib
