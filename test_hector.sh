@@ -22,11 +22,32 @@ if [ ! -d $INPUT ]; then
     exit 1
 fi
 
+# Part of this test makes sure that output streams are written out
+# as csv files, clean out the output directory for this.
+OUTDIR=./output
+rm -r $OUTDIR
+mkdir $OUTDIR
+
 # Run the basic RCPs
 $HECTOR $INPUT/hector_rcp26.ini
 $HECTOR $INPUT/hector_rcp45.ini
 $HECTOR $INPUT/hector_rcp60.ini
 $HECTOR $INPUT/hector_rcp85.ini
+
+# Check to make sure that the output files are written to the OUTPUT direcotry.
+# When we run the four RCPS there should be an output stream for each files and a
+# a outputoutput.csv that is overwritten with each Hector run for a total of 5 files
+# all the rcps are run.
+files=$(ls $OUTDIR/*.csv | wc -l)
+
+if [ $files = 5 ]; then
+    echo "All 5 output csv files found"
+fi
+if [ $files != 5 ]; then
+    echo "Incorrect number of output csv files"
+    echo "Files found: ${files}"
+    exit 1
+fi
 
 # Make sure the model handles year changes
 sed 's/startDate=1745/startDate=1740/' $INPUT/hector_rcp45.ini > $INPUT/hector_rcp45_time.ini
