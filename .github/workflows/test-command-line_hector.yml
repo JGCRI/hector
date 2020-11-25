@@ -1,11 +1,14 @@
-name: learn-github-actions
+name: test command line hector
 on: [push]
 jobs:
-  check-bats-version:
+  jobs:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
-      - run: npm install -g bats
-      - run: bats -v
+    - uses: actions/checkout@v2
+    # install dependencies
+    - name: boost
+      run: sudo apt-get update && sudo apt-get install -yq libboost1.65-dev
+      run: make hector
+
 
