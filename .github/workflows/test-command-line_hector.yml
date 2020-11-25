@@ -8,3 +8,15 @@ jobs:
       - uses: actions/setup-node@v1
       - run: brew install boost
       - run: ls /usr/local/Cellar
+      - run: echo $BOOSTLIB
+      - run: ls $BOOSTLIB
+      - run: echo $BOOSTROOT
+      - run: ls $BOOSTROOT
+      - run: make hector
+        env:
+          BOOST: /usr/local/Cellar/boost/
+          BOOSTVERSION: `ls $BOOST`
+          BOOSTROOT: `$BOOST/$BOOSTVERSION/include`
+          BOOSTLIB: `$BOOST/$BOOSTVERSION/lib`
+          
+          
