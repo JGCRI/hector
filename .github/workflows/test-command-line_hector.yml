@@ -6,10 +6,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
-      - run: brew install boost
-      - run: BOOSTROOT=/usr/local/Cellar/boost/1.74.0/include
-      - run: BOOSTLIB=/usr/local/Cellar/boost/1.74.0/lib
-      - run: make hector
-      - run: sh ./test_hector.sh ./src/hector
-          
-          
+        run: |
+            brew install boost
+            BOOSTROOT=/usr/local/Cellar/boost/1.74.0/include
+            BOOSTLIB=/usr/local/Cellar/boost/1.74.0/lib
+            make hector
+            sh ./test_hector.sh ./src/hector
+        shell: bash
