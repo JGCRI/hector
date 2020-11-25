@@ -14,9 +14,7 @@ jobs:
       - run: ls $BOOSTROOT
       - run: make hector
         env:
-          BOOST: /usr/local/Cellar/boost/
-          BOOSTVERSION: `ls $BOOST`
-          BOOSTROOT: `$BOOST/$BOOSTVERSION/include`
-          BOOSTLIB: `$BOOST/$BOOSTVERSION/lib`
+          BOOSTROOT: /usr/local/Cellar/boost/1.74.0/include
+          BOOSTLIB: /usr/local/Cellar/boost/1.74.0/lib
           
           
