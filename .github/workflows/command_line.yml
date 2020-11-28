@@ -1,0 +1,58 @@
+name: Command Line Hector
+# This workflow builds Hector on different platforms and runs Hector. 
+
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+
+  # Build on platform 1 
+  ubuntu:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: build and run 
+        run: | 
+          # Install boost libraries 
+          sudo apt install libboost-filesystem-dev libboost-system-dev'
+          
+          # Figure out which version of boost was installed.
+          ver=`awk '/define.*BOOST_LIB_VERSION/ {print $3}' /usr/include/boost/version.hpp`
+          echo Boost version $ver
+
+          # Build the Hector executable 
+          BOOSTLIB=/usr/local/lib   BOOSTVERSION=$ver   BOOSTROOT=/usr/include/boost make hector
+         
+          # Run a Hector ini  
+          ./src/hector ./inst/input/hector_rcp45.ini
+          echo Hector run on ubuntu complete 
+          
+  # Build and test Hector on platform 2        
+  macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: build and run 
+        run: | 
+          brew install boost
+          ver=`ls /usr/local/Cellar/boost/`
+          echo Boost version $ver
+          
+          # Dowload Hector, this is not needed for the actual one
+          git clone https://github.com/JGCRI/hector.git
+          cd ./hector
+          
+          # Build the Hector executable, provide the links to boost libs
+          BOOST=/usr/local/Cellar/boost 
+          BOOSTLIB=$BOOST/$ver/lib BOOSTROOT=$BOOST/$ver/include/boost make hector
+          
+          # Run the Hector test script
+          bash ./test_hector.sh ./src/hector
+      
