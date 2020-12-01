@@ -5,9 +5,9 @@ name: Command Line Hector
 # Controls when the action will run. 
 on:
   push:
-    branches: [ main ]
+    branches: master
   pull_request:
-    branches: [ main ]
+    branches: master
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
