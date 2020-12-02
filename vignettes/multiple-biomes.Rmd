@@ -9,6 +9,15 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+```{r setup, include=FALSE}
+# TODO figure out how to avoid this hack
+# see https://www.r-bloggers.com/2020/04/setting-the-graphics-device-in-a-rmarkdown-document/
+ragg_png = function(..., res = 192) {
+  ragg::agg_png(..., res = res, units = "in")
+}
+knitr::opts_chunk$set(dev = "ragg_png", fig.ext = "png", echo = TRUE)
+```
+
 By default, Hector's carbon cycle model treats the entire land surface as a single, homogeneous ecosystem.
 However, it is possible to introduce some land surface heterogeneity by splitting the land surface into several different biomes with distinct parameters.
 In this vignette, we show two examples of performing multi-biome analyses with Hector.
