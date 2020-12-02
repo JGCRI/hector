@@ -42,7 +42,8 @@ Suggests:
     knitr,
     rmarkdown,
     ggplot2,
-    magrittr (>= 1.5)
+    magrittr (>= 1.5), 
+    ragg
 Collate:
     'aadoc.R'
     'RcppExports.R'
