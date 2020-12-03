@@ -1,8 +1,6 @@
 on:
-  push:
-    branches:
-      - master
-      - github_actions
+  push
+  
   pull_request:
     branches:
       - master
@@ -23,23 +21,20 @@ jobs:
           - {os: macOS-latest, r: 'release'}
           - {os: macOS-latest, r: '4.0'}
           - {os: macOS-latest, r: '3.6'}
-          - {os: macOS-latest, r: '3.5'}
-          - {os: macOS-latest, r: '3.4'}
-          - {os: macOS-latest, r: '3.3'}
 
           # for windows stable versions
-          #[GOOD]- {os: windows-latest, r: 'release'}
-          #[GOOD]- {os: windows-latest, r: '4.0'}
-          #[GOOD]- {os: windows-latest, r: '3.6'}
-          #[GOOD]- {os: windows-latest, r: '3.5'}
-          #[GOOD]- {os: windows-latest, r: '3.4'}
-          #[GOOD]- {os: windows-latest, r: '3.3'}
+          - {os: windows-latest, r: 'release'}
+          - {os: windows-latest, r: '4.0'}
+          - {os: windows-latest, r: '3.6'}
+          - {os: windows-latest, r: '3.5'}
+          - {os: windows-latest, r: '3.4'}
+          - {os: windows-latest, r: '3.3'}
 
           # latest stable version of R for ubuntu-16.04 is 3.5; ubuntu-latest is migrating to 20.04 by the end of 2020
-          - {os: ubuntu-latest, r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
-          - {os: ubuntu-latest, r: '3.5', rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
-          - {os: ubuntu-latest, r: '3.4', rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
-          - {os: ubuntu-latest, r: '3.3', rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
+          - {os: ubuntu-16.04, r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
+          - {os: ubuntu-16.04, r: '3.5', rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
+          - {os: ubuntu-16.04, r: '3.4', rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
+          - {os: ubuntu-16.04, r: '3.3', rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
 
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
@@ -60,6 +55,14 @@ jobs:
           saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
           writeLines(sprintf("R-%i.%i", getRversion()$major, getRversion()$minor), ".github/R-version")
         shell: Rscript {0}
+
+      - name: Cache R packages
+        if: runner.os != 'Windows'
+        uses: actions/cache@v1
+        with:
+          path: ${{ env.R_LIBS_USER }}
+          key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-${{ hashFiles('.github/depends.Rds') }}
+          restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-
 
       - name: Install system dependencies
         if: runner.os == 'Linux'
