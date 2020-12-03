@@ -146,7 +146,7 @@ jobs:
 
           remotes::install_cran("devtools")
 
-          devtools::install_github("isoverse/isoreader")
+          devtools::install_github("jgcri/hector")
 
         shell: Rscript {0}
 
@@ -166,7 +166,7 @@ jobs:
 
           # run RMD check 
 
-          rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran"), error_on = "error", check_dir = "check")
+          rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran", "--no-vignettes"), error_on = "error", check_dir = "check")
 
         shell: Rscript {0}
 
