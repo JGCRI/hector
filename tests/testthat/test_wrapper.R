@@ -44,21 +44,21 @@ test_that('Basic hcore functionality works', {
 })
 
 
-test_that('Write out logs', {
-
-    ## Turn logging ON for one test and confirm it runs (see GitHub issues #372 and #381)
-    hc_log <- newcore(file.path(inputdir, "hector_rcp45.ini"), name = "RCP45", suppresslogging = FALSE)
-    run(hc_log, 2100)
-    shutdown(hc_log)
-    expect_true(dir.exists("logs")) # Check to see that the directory has been made
-    expect_equal(length(list.files("logs", pattern = '.log')), 41) # Check to see that individual log files were written out.
-    system('rm -r logs') # Remove the logs directory/files.
-
-    ## Check that errors on shutdown cores get caught
-    expect_error(getdate(hc_log), "Invalid or inactive")
-    expect_error(run(hc_log), "Invalid or inactive")
-    expect_error(fetchvars(hc_log), "Invalid or inactive")
-})
+# test_that('Write out logs', {
+#
+#     ## Turn logging ON for one test and confirm it runs (see GitHub issues #372 and #381)
+#     hc_log <- newcore(file.path(inputdir, "hector_rcp45.ini"), name = "RCP45", suppresslogging = FALSE)
+#     run(hc_log, 2100)
+#     shutdown(hc_log)
+#     expect_true(dir.exists("logs")) # Check to see that the directory has been made
+#     expect_equal(length(list.files("logs", pattern = '.log')), 41) # Check to see that individual log files were written out.
+#     system('rm -r logs') # Remove the logs directory/files.
+#
+#     ## Check that errors on shutdown cores get caught
+#     expect_error(getdate(hc_log), "Invalid or inactive")
+#     expect_error(run(hc_log), "Invalid or inactive")
+#     expect_error(fetchvars(hc_log), "Invalid or inactive")
+# })
 
 ## Make sure that that when the Hector core is shut down
 ## everything is tidied up.
