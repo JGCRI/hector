@@ -32,8 +32,8 @@ jobs:
           echo Boost version $ver
           
 	  # Build the Hector executable 	
-	  BOOSTLIB=/usr/local/lib BOOSTVERSION=$ver BOOSTROOT=/usr/include/boost make hector 
-	  #bash ./test_hector.sh ./src/hector
+	  #BOOSTLIB=/usr/local/lib BOOSTVERSION=$ver BOOSTROOT=/usr/include/boost make hector 
+	  ##bash ./test_hector.sh ./src/hector
           
   macos:
     runs-on: macos-latest
