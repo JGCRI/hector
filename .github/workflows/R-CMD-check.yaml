@@ -19,14 +19,27 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          #- {os: macOS-latest,   r: 'release'}
+          # for latest stable version of R for MacOSX
+          - {os: macOS-latest,   r: 'release'}
+          - {os: macOS-latest,   r: '4.0'}
+          - {os: macOS-latest,   r: '3.6'}
+          - {os: macOS-latest,   r: '3.5'}
+          - {os: macOS-latest,   r: '3.4'}
+          - {os: macOS-latest,   r: '3.3'}
+
+          # for windows stable versions
           - {os: windows-latest, r: 'release'}
-          #- {os: windows-latest, r: '3.6'}
-          #[GOOD]- {os: ubuntu-16.04,   r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
-          #- {os: ubuntu-16.04,   r: 'oldrel',  rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
-          #- {os: ubuntu-16.04,   r: '3.5',     rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
-          #- {os: ubuntu-16.04,   r: '3.4',     rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
-          #- {os: ubuntu-16.04,   r: '3.3',     rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
+          - {os: windows-latest,   r: '4.0'}
+          - {os: windows-latest,   r: '3.6'}
+          - {os: windows-latest,   r: '3.5'}
+          - {os: windows-latest,   r: '3.4'}
+          - {os: windows-latest,   r: '3.3'}
+
+          # latest stable version of R for ubuntu is 3.5; add release to check for new stable version
+          - {os: ubuntu-16.04,   r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
+          - {os: ubuntu-16.04,   r: '3.5',     rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
+          - {os: ubuntu-16.04,   r: '3.4',     rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
+          - {os: ubuntu-16.04,   r: '3.3',     rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
 
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
