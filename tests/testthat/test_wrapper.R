@@ -57,7 +57,6 @@ test_that('Write out logs', {
 
     print(run_dir)
     print(log_dir)
-
     print(list.files(run_dir, recursive = TRUE))
 
     expect_true(dir.exists(log_dir)) # Check to see that the directory has been made
