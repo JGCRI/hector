@@ -51,24 +51,17 @@ test_that('Write out logs', {
     run(hc_log, 2100)
     shutdown(hc_log)
 
-    sys_dir_location <- system.file('input', package = 'hector')
-    print(sys_dir_location)
+    # find the log dir path
+    run_dir <- dirname(inputdir)
+    log_dir < file.path(run_dir, 'tests', 'testthat', 'logs')
 
-    lfile_dir_location <- file.path(dirname(here::here()), 'logs')
-    print(lfile_dir_location)
-    print(dir.exists(lfile_dir_location))
+    print(run_dir)
+    print(log_dir)
 
-    print(list.files(dirname(here::here()), recursive = TRUE))
+    print(list.files(run_dir, recursive = TRUE))
 
-    sfile_dir_location <- file.path(dirname(sys_dir_location), 'logs')
-    print(sfile_dir_location)
-    print(dir.exists(sfile_dir_location))
-
-    print(list.files(dirname(sys_dir_location), recursive = TRUE))
-
-
-    expect_true(dir.exists(sfile_dir_location)) # Check to see that the directory has been made
-    expect_equal(length(list.files("logs", pattern = '.log')), 41) # Check to see that individual log files were written out.
+    expect_true(dir.exists(log_dir)) # Check to see that the directory has been made
+    expect_equal(length(list.files(log_dir, pattern = '.log')), 41) # Check to see that individual log files were written out.
 
     ## Check that errors on shutdown cores get caught
     expect_error(getdate(hc_log), "Invalid or inactive")
