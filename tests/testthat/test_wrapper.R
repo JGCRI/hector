@@ -52,7 +52,11 @@ test_that('Write out logs', {
     shutdown(hc_log)
 
     log_dir_location <- here::here("logs") # get location of the logs dir
-    expect_true(dir.exists(log_dir_location)) # Check to see that the directory has been made
+    print(log_dir_location)
+
+    sys_dir_location <- system.file('logs', package = 'hector')
+
+    expect_true(dir.exists(sys_dir_location)) # Check to see that the directory has been made
     expect_equal(length(list.files("logs", pattern = '.log')), 41) # Check to see that individual log files were written out.
 
     ## Check that errors on shutdown cores get caught
@@ -61,7 +65,7 @@ test_that('Write out logs', {
     expect_error(fetchvars(hc_log), "Invalid or inactive")
 })
 
-## Make sure that that when the Hector core is shut down
+## Make sure that that when the Hector core is shut downsys
 ## everything is tidied up.
 test_that('Garbage collection shuts down hector cores', {
     ## This test makes use of some knowledge about the structure of the hector
