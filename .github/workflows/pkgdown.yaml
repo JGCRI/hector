@@ -3,7 +3,7 @@ on:
     branches:
       - main
       - master
-      - github-actions
+      - github_actions
 
 name: pkgdown
 
