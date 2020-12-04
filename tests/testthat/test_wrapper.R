@@ -55,6 +55,15 @@ test_that('Write out logs', {
     print(log_dir_location)
 
     sys_dir_location <- system.file('logs', package = 'hector')
+    print(sys_dir_location)
+
+    lfile_dir_location <- file.path(dirname(log_dir_location), 'logs')
+    print(lfile_dir_location)
+    print(dir.exists(lfile_dir_location))
+
+    sfile_dir_location <- file.path(dirname(sys_dir_location), 'logs')
+    print(sfile_dir_location)
+    print(dir.exists(sfile_dir_location))
 
     expect_true(dir.exists(sys_dir_location)) # Check to see that the directory has been made
     expect_equal(length(list.files("logs", pattern = '.log')), 41) # Check to see that individual log files were written out.
