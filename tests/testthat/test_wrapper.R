@@ -58,9 +58,14 @@ test_that('Write out logs', {
     print(lfile_dir_location)
     print(dir.exists(lfile_dir_location))
 
+    print(list.files(dirname(here::here()), recursive = TRUE))
+
     sfile_dir_location <- file.path(dirname(sys_dir_location), 'logs')
     print(sfile_dir_location)
     print(dir.exists(sfile_dir_location))
+
+    print(list.files(dirname(sys_dir_location), recursive = TRUE))
+
 
     expect_true(dir.exists(sfile_dir_location)) # Check to see that the directory has been made
     expect_equal(length(list.files("logs", pattern = '.log')), 41) # Check to see that individual log files were written out.
@@ -70,6 +75,8 @@ test_that('Write out logs', {
     expect_error(run(hc_log), "Invalid or inactive")
     expect_error(fetchvars(hc_log), "Invalid or inactive")
 })
+
+list.files(here::here(), recursive = TRUE)
 
 ## Make sure that that when the Hector core is shut downsys
 ## everything is tidied up.
