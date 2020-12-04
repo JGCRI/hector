@@ -53,7 +53,7 @@ test_that('Write out logs', {
 
     # find the log dir path
     run_dir <- dirname(inputdir)
-    log_dir < file.path(run_dir, 'tests', 'testthat', 'logs')
+    log_dir <- file.path(run_dir, 'tests', 'testthat', 'logs')
 
     print(run_dir)
     print(log_dir)
