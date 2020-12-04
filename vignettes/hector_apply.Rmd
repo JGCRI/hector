@@ -85,11 +85,12 @@ max(abs(slv$fvec))
 The convergence looks ok, so let's plot the results:
 
 ```{r plt}
-df <- data.frame(year = 2000:2100,
-           value = slv[['x']])
-ggplot(data = df, aes(year, value)) +
-    geom_point() +
-    labs(y = "Emissions (Tg CH4)", x = 'year')
+ df <- data.frame(year = 2000:2100,
+            value = slv[['x']])
+
+ ggplot2::ggplot(data = df, aes(year, value)) +
+     geom_point() +
+     labs(y = "Emissions (Tg CH4)", x = 'year')
 ```
 
 The concentration target of 1820 ppbv CH4 that we specified in 2000 is a bit of a jump from what was in the 
