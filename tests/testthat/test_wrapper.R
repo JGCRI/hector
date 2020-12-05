@@ -53,11 +53,7 @@ test_that('Write out logs', {
 
     # find the log dir path
     run_dir <- dirname(here::here())
-    log_dir <- file.path(run_dir, 'tests', 'testthat', 'logs')
-
-    print(run_dir)
-    print(log_dir)
-    print(list.files(run_dir, recursive = TRUE))
+    log_dir <- file.path(run_dir, 'hector', 'check', 'hector.Rcheck', 'tests', 'testthat', 'logs')
 
     expect_true(dir.exists(log_dir)) # Check to see that the directory has been made
     expect_equal(length(list.files(log_dir, pattern = '.log')), 41) # Check to see that individual log files were written out.
