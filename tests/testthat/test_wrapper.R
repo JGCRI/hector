@@ -52,7 +52,7 @@ test_that('Write out logs', {
     shutdown(hc_log)
 
     # find the log dir path
-    run_dir <- dirname(inputdir)
+    run_dir <- dirname(here::here())
     log_dir <- file.path(run_dir, 'tests', 'testthat', 'logs')
 
     print(run_dir)
@@ -68,7 +68,6 @@ test_that('Write out logs', {
     expect_error(fetchvars(hc_log), "Invalid or inactive")
 })
 
-list.files(here::here(), recursive = TRUE)
 
 ## Make sure that that when the Hector core is shut downsys
 ## everything is tidied up.
