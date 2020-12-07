@@ -52,7 +52,7 @@ test_that('Write out logs', {
     shutdown(hc_log)
 
     # file path to the current directory where the package is stored
-    run_dir <- dirname
+    run_dir <- dirname(here::here())
 
     # check for Unix file system otherwise assume Windows
     if (.Platform$OS.type == 'unix') {
