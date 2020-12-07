@@ -51,17 +51,23 @@ test_that('Write out logs', {
     run(hc_log, 2100)
     shutdown(hc_log)
 
-    # find the log dir path
-    run_dir <- dirname(here::here())
-    print(run_dir)
-    print(list.files(run_dir, recursive = TRUE))
+    # file path to the current directory where the package is stored
+    run_dir <- dirname
 
-    log_dir <- file.path(run_dir, 'hector', 'check', 'hector.Rcheck', 'tests', 'testthat', 'logs')
+    # check for Unix file system otherwise assume Windows
+    if (.Platform$OS.type == 'unix') {
+        log_dir <- file.path(run_dir, 'hector', 'check', 'hector.Rcheck', 'tests', 'testthat', 'logs')
+    } else {
+        log_dir <- file.path(run_dir, 'hector', 'check', 'hector.Rcheck', 'tests_x64', 'testthat', 'logs')
+    }
 
-    expect_true(dir.exists(log_dir)) # Check to see that the directory has been made
-    expect_equal(length(list.files(log_dir, pattern = '.log')), 41) # Check to see that individual log files were written out.
+    # look for the existence of the `logs` directory for Unix and Windows file systems
+    expect_true(dir.exists(log_dir))
 
-    ## Check that errors on shutdown cores get caught
+    # Check to see that individual log files were written out
+    expect_equal(length(list.files(log_dir, pattern = '.log')), 41)
+
+    # Check that errors on shutdown cores get caught
     expect_error(getdate(hc_log), "Invalid or inactive")
     expect_error(run(hc_log), "Invalid or inactive")
     expect_error(fetchvars(hc_log), "Invalid or inactive")
