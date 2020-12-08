@@ -3,53 +3,35 @@ on: [push, pull_request]
 name: build
 
 jobs:
-
   test-coverage:
-
-    runs-on: ${{ matrix.config.os }}
-
-    strategy:
-      matrix:
-        config:
-          - {os: macOS-latest, r: '4.0'}
-
-    env:
-      R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
-
+    runs-on: macOS-latest
     steps:
       - uses: actions/checkout@v2
 
       - uses: r-lib/actions/setup-r@master
-        with:
-          r-version: ${{ matrix.r }}
 
       - uses: r-lib/actions/setup-pandoc@master
-      - uses: r-lib/actions/setup-tinytex@master
 
       - name: Query dependencies
         run: |
           install.packages('remotes')
           saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
-          writeLines(sprintf("R-%i.%i", getRversion()$major, getRversion()$minor), ".github/R-version")
         shell: Rscript {0}
 
-      - name: Install XQuartz on MacOS
-        if: runner.os == 'macOS'
-        run: brew cask install xquartz
+      - name: Cache R packages
+        uses: actions/cache@v1
+        with:
+          path: ${{ env.R_LIBS_USER }}
+          key: macOS-r-3.6-${{ hashFiles('.github/depends.Rds') }}
+          restore-keys: macOS-r-3.6-
 
       - name: Install dependencies
         run: |
+          install.packages(c("remotes", "gglot2", "rapp", "here", "covr", "ragg", "rmarkdown", "knitr", "nleqslv", "testthat", "magrittr"))
           remotes::install_deps(dependencies = TRUE)
-          remotes::install_cran("rcmdcheck")
-        shell: Rscript {0}
-
-      - name: Check
-        env:
-          _R_CHECK_CRAN_INCOMING_: false
-        run: rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran"), error_on = "error", check_dir = "check")
+          remotes::install_cran("covr")
         shell: Rscript {0}
 
       - name: Test coverage
-        run: |
-          Rscript -e 'remotes::install_github("r-lib/covr@gh-actions")'
-          Rscript -e 'covr::codecov(token = "${{secrets.CODECOV_TOKEN}}")'
+        run: covr::codecov()
+        shell: Rscript {0}
