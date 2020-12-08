@@ -1,9 +1,5 @@
-[![Build Status](https://travis-ci.org/JGCRI/hector.svg?branch=master)](https://travis-ci.org/JGCRI/hector)
-[![Build status](https://ci.appveyor.com/api/projects/status/2jmhvq7n2ap75u1o/branch/master?svg=true)](https://ci.appveyor.com/project/rplzzz/hector/branch/master)
-![test-coverage](https://github.com/JGCRI/hector/workflows/test-coverage/badge.svg) 
-[![codecov](https://codecov.io/gh/JGCRI/hector/branch/master/graph/badge.svg?token=EGM0lXDxRv)](https://codecov.io/gh/JGCRI/hector)
-
-
+![R-CMD](https://github.com/crvernon/hector/workflows/R-CMD/badge.svg) ![build](https://github.com/crvernon/hector/workflows/build/badge.svg)
+[![codecov](https://codecov.io/gh/crvernon/hector/branch/master/graph/badge.svg?token=N9LNIS3RP8)](https://codecov.io/gh/crvernon/hector)
 
 Hector
 ======
