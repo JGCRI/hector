@@ -58,9 +58,7 @@ test_that('Write out logs', {
     if (.Platform$OS.type == 'unix') {
         log_dir <- file.path(run_dir, 'hector', 'check', 'hector.Rcheck', 'tests', 'testthat', 'logs')
     } else {
-        print(.Platform$OS.type)
-        print(list.files(run_dir, recursive = TRUE))
-        log_dir <- file.path(run_dir, 'hector', 'check', 'hector.Rcheck', 'tests_x64', 'testthat', 'logs')
+        log_dir <- file.path(run_dir, 'hector', 'check', 'hector.Rcheck', 'tests_i386', 'testthat', 'logs')
     }
 
     # look for the existence of the `logs` directory for Unix and Windows file systems
