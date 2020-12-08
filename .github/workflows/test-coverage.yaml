@@ -11,7 +11,10 @@ jobs:
     strategy:
       matrix:
         config:
-          - {os: ubuntu-16.04, r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
+          - {os: macOS-latest, r: '4.0'}
+
+    env:
+      R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
 
     steps:
       - uses: actions/checkout@v2
@@ -23,14 +26,28 @@ jobs:
       - uses: r-lib/actions/setup-pandoc@master
       - uses: r-lib/actions/setup-tinytex@master
 
+      - name: Query dependencies
+        run: |
+          install.packages('remotes')
+          saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
+          writeLines(sprintf("R-%i.%i", getRversion()$major, getRversion()$minor), ".github/R-version")
+        shell: Rscript {0}
+
+      - name: Install XQuartz on MacOS
+        if: runner.os == 'macOS'
+        run: brew cask install xquartz
+
       - name: Install dependencies
-        env:
-          R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
-          RSPM: ${{ matrix.config.rspm }}
-        run: Rscript -e "install.packages(c('remotes', 'rcmdcheck', 'covr', 'ggplot2', 'rapp', 'here', 'ragg', 'rmarkdown', 'knitr', 'nleqslv', 'testthat', 'magrittr'))" -e "remotes::install_deps(dependencies = TRUE)"
+        run: |
+          remotes::install_deps(dependencies = TRUE)
+          remotes::install_cran("rcmdcheck")
+        shell: Rscript {0}
 
       - name: Check
-        run: Rscript -e "rcmdcheck::rcmdcheck(error_on = 'error')"
+        env:
+          _R_CHECK_CRAN_INCOMING_: false
+        run: rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran"), error_on = "error", check_dir = "check")
+        shell: Rscript {0}
 
       - name: Test coverage
         run: |
