@@ -1,5 +1,4 @@
-![R-CMD](https://github.com/crvernon/hector/workflows/R-CMD/badge.svg) ![build](https://github.com/crvernon/hector/workflows/build/badge.svg)
-[![codecov](https://codecov.io/gh/crvernon/hector/branch/master/graph/badge.svg?token=N9LNIS3RP8)](https://codecov.io/gh/crvernon/hector)
+![R-CMD](https://github.com/JGCRI/hector/workflows/R-CMD/badge.svg) 
 
 Hector
 ======
