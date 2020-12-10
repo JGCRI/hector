@@ -43,7 +43,6 @@ test_that('Basic hcore functionality works', {
     expect_false(isactive(hc))
 })
 
-print(dir.exists('/logs'))
 test_that('Write out logs', {
 
     ## Turn logging ON for one test and confirm it runs (see GitHub issues #372 and #381)
@@ -53,7 +52,6 @@ test_that('Write out logs', {
 
     # file path to the current directory where the package is stored
     run_dir <- dirname(here::here())
-    print(run_dir)
 
     # check for running tests locally; otherwise switch to CI paths
     local_dir <- file.path(run_dir, 'hector', 'tests', 'testthat', 'logs')
@@ -68,9 +66,6 @@ test_that('Write out logs', {
             log_dir <- file.path(run_dir, 'hector', 'check', 'hector.Rcheck', 'tests_i386', 'testthat', 'logs')
         }
     }
-
-    print(log_dir)
-    print(list.files(run_dir, recursive = TRUE))
 
     # look for the existence of the `logs` directory for Unix and Windows file systems
     expect_true(dir.exists(log_dir))
