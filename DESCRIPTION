@@ -43,7 +43,8 @@ Suggests:
     rmarkdown,
     ggplot2,
     magrittr (>= 1.5), 
-    ragg
+    ragg,
+    here
 Collate:
     'aadoc.R'
     'RcppExports.R'
@@ -52,4 +53,4 @@ Collate:
     'messages.R'
     'units.R'
 VignetteBuilder: knitr
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.1
