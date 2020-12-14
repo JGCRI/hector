@@ -1,17 +1,24 @@
 ---
-title: "Example: using Hector to solve for an emissions pathway"
+title: "Example: solving for an emissions pathway"
 author: "Robert Link"
 date: "2018-10-17"
 output: rmarkdown::html_vignette
 vignette: >
+  %\VignetteEncoding{UTF-8}
   %\VignetteIndexEntry{Example: solving for an emissions pathway}
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+editor_options: 
+  chunk_output_type: console
 ---
 
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+# TODO figure out how to avoid this hack
+# see https://www.r-bloggers.com/2020/04/setting-the-graphics-device-in-a-rmarkdown-document/
+ragg_png = function(..., res = 192) {
+  ragg::agg_png(..., res = res, units = "in")
+}
+knitr::opts_chunk$set(dev = "ragg_png", fig.ext = "png", echo = TRUE)
 ```
 
 ## Introduction
@@ -33,6 +40,7 @@ set up an interface to Hector.  Since all of our calculations are going to invol
 and beyond, we will run up through 1999.
 
 ```{r hector.init}
+library('ggplot2')
 library('hector')
 hector_inifile <- file.path(system.file('input', package='hector'), 'hector_rcp60.ini')
 hcore <- newcore(hector_inifile, suppresslogging=TRUE)
@@ -77,7 +85,12 @@ max(abs(slv$fvec))
 The convergence looks ok, so let's plot the results:
 
 ```{r plt}
-plot(2000:2100, slv$x, ylab="Emissions (Tg CH4)", xlab="year") 
+ df <- data.frame(year = 2000:2100,
+            value = slv[['x']])
+
+ ggplot2::ggplot(data = df, aes(year, value)) +
+     geom_point() +
+     labs(y = "Emissions (Tg CH4)", x = 'year')
 ```
 
 The concentration target of 1820 ppbv CH4 that we specified in 2000 is a bit of a jump from what was in the 

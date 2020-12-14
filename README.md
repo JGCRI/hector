@@ -1,9 +1,7 @@
-[![Build Status](https://travis-ci.org/JGCRI/hector.svg?branch=master)](https://travis-ci.org/JGCRI/hector)
-[![Build status](https://ci.appveyor.com/api/projects/status/2jmhvq7n2ap75u1o/branch/master?svg=true)](https://ci.appveyor.com/project/rplzzz/hector/branch/master)
-![test-coverage](https://github.com/JGCRI/hector/workflows/test-coverage/badge.svg) 
+![R-CMD](https://github.com/JGCRI/hector/workflows/R-CMD/badge.svg)
+![Command Line Hector](https://github.com/JGCRI/hector/workflows/Command%20Line%20Hector/badge.svg)
+![test-coverage](https://github.com/JGCRI/hector/workflows/test-coverage/badge.svg)
 [![codecov](https://codecov.io/gh/JGCRI/hector/branch/master/graph/badge.svg?token=EGM0lXDxRv)](https://codecov.io/gh/JGCRI/hector)
-
-
 
 Hector
 ======
@@ -22,10 +20,9 @@ This research was supported by the U.S. Department of Energy, Office of Science,
 * [GCAM](https://github.com/JGCRI/gcam-core): Hector can be used as the climate component in [GCAM](http://jgcri.github.io/gcam-doc/).
 * [pyhector](https://github.com/openclimatedata/pyhector): a python
   interface to Hector.
-* [HectorUI](https://jgcri.shinyapps.io/HectorUI/): run Hector in a web interface! 
+* [HectorUI](https://jgcri.shinyapps.io/HectorUI/): run Hector in a web interface!
 
 
  ##  Contributing to Hector
- 
- The Hector team welcomes and values community contributions to Hector but please see [Contribution Guide](KRD-UPDATE) 
-  
+
+ The Hector team welcomes and values community contributions to Hector but please see [Contribution Guide](KRD-UPDATE)

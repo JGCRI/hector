@@ -68,7 +68,7 @@ private:
 
     static const char* getDateTimeStamp();
 
-    static int chk_logdir(std::string dir);
+    static void chk_logdir(std::string dir);
 
     void printLogHeader( const LogLevel logLevel );
 

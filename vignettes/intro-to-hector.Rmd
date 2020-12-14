@@ -4,10 +4,21 @@ author: Alexey Shiklomanov
 date: "2018-10-17"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Intro to Hector}
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{A tour of the Hector R interface}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
 ---
+
+```{r setup, include=FALSE}
+# TODO figure out how to avoid this hack
+# see https://www.r-bloggers.com/2020/04/setting-the-graphics-device-in-a-rmarkdown-document/
+ragg_png = function(..., res = 192) {
+  ragg::agg_png(..., res = res, units = "in")
+}
+knitr::opts_chunk$set(dev = "ragg_png", fig.ext = "png", echo = TRUE)
+```
 
 This vignette provides a basic introduction for running Hector with R.
 First, it shows how to do a simple Hector run with one of Hector's built-in scenarios.

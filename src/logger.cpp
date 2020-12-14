@@ -17,10 +17,14 @@
 #include "h_util.hpp"
 #include <algorithm>
 
-#if defined (__unix__) || defined (__MACH__)
-#include <unistd.h>
-#include <sys/stat.h>
-#include <sys/types.h>
+// If using the R package, use Rcpp to call R's file processing
+// functions. Otherwise (e.g. if building standalone Hector), fall
+// back to boost::filesystem (which needs to be installed).
+#ifdef USE_RCPP
+#include <Rcpp.h>
+#else
+#include <boost/filesystem.hpp>
+namespace fs = boost::filesystem;
 #endif
 
 #ifdef USE_RCPP
@@ -260,43 +264,43 @@ const char* Logger::getDateTimeStamp() {
     return ret;
 }
 
-#if defined (__unix__) || defined (__MACH__)
-int Logger::chk_logdir(std::string dir)
+/*!
+ * \brief Checks if the given directory exists. If not it attempts to create
+ *        it and if it was unable to do that it will raise an exception.
+ * \param dir The directory to check/create.
+ */
+void Logger::chk_logdir(std::string dir)
 {
-    // clip trailing /, if any.
-    int len = dir.size();
-    if(dir[len-1] == '/')
-        dir[len-1] = '\0';    // ok to modify because dir is a copy
-
-    const char *cdir = dir.c_str();
-    if(access(cdir, F_OK)) {    // NB: access and mkdir return 0 on success.
-        // directory doesn't exist.  Attempt to create it
-        if(mkdir(cdir, 0755)) {
-            // failed.  Throw an error
-            H_THROW("Log directory " + dir + " does not exist and can't be created.");
+#ifdef USE_RCPP
+    // Load R functions for path management
+    Rcpp::Environment base("package:base");
+    Rcpp::Environment utils("package:utils");
+    Rcpp::Function dirCreate = base["dir.create"];
+    Rcpp::Function file_test = utils["file_test"];
+    // use file_test -d to see if dir exists and is a directory
+    if(!Rcpp::as<bool>(file_test("-d", dir))) {
+        // either does not exist or is a file
+        // we can try to create it and if it still fails it must
+        // have been a file or a permissions error
+        if(!Rcpp::as<bool>(dirCreate(dir))) {
+            // no luck, throw exception
+            H_THROW("Directory "+dir+" does not exist and could not create it.");
         }
-        else
-            return 1;
     }
-
-    struct stat statbuf;
-
-    stat(cdir, &statbuf);
-
-    if(!S_ISDIR(statbuf.st_mode))
-        H_THROW("Log directory " + dir + " exists but is not a directory.");
-
-    if(access(cdir, W_OK))
-        H_THROW("Log directory " + dir + " lacks write permission.");
-
-    return 1;
-}
-#else  // Windows version of this function is a no-op.
-int Logger::chk_logdir(std::string dir)
-{
-    return 1;
-}
+#else
+    fs::path fs_dir(dir);
+    // first check to see if dir exists and is a directory
+    if(!fs::is_directory(fs_dir)) {
+        // either does not exist or is a file
+        // we can try to create it and if it still fails it must
+        // have been a file or a permissions error
+        boost::system::error_code status;
+        if(!fs::create_directory(fs_dir, status)) {
+            H_THROW("Directory "+dir+" does not exist and could not create it.");
+        }
+    }
 #endif
+}
 
 //------------------------------------------------------------------------------
 /*! \brief Print a standard header at the top of all logs that indicates the model version.
