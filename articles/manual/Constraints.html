@@ -39,7 +39,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -71,7 +71,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/JGCRI/hector">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -85,7 +85,7 @@
 
       
 
-      </header><div class="row">
+      </header><script src="Constraints_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Constraints</h1>
@@ -136,12 +136,11 @@
 <p>These all work in more-or-less the same way, and are similar to the atmospheric CO2 constraint (above), except that there is no equivalent to the carbon pool adjustment for these gases. In the <a href="InputFiles">input file</a>, they are triggered by a line like the following in their corresponding component section:</p>
 <pre><code>CH4_constrain=csv:path/to/file.csv</code></pre>
 <p>As with other CSV inputs, the <code>/path/to/file.csv</code> above must have columns <code>Date</code> and <code>CH4_constrain</code>. Alternatively, constraints can be set from the R interface:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="co"># library(hector)</span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># library(hector)</span>
 <span class="co"># core &lt;- newcore("/path/to/input/file.ini")</span>
-<span class="fu"><a href="../../reference/setvar.html">setvar</a></span>(<span class="kw">core</span>, <span class="fl">1900</span><span class="op">:</span><span class="fl">2000</span>, <span class="fu"><a href="../../reference/constraints.html">CH4_CONSTRAIN</a></span>(), <span class="fl">750</span>, <span class="fu"><a href="../../reference/getunits.html">getunits</a></span>(<span class="fu"><a href="../../reference/constraints.html">CH4_CONSTRAIN</a></span>()))
-</pre></div>
-<p>Constraints are applied as follows: At any given time step, Hector will check if the constraint has a value for that time step (e.g. <code>CH4_constrain.exists(t)</code>). If the constraint exists, Hector will skip all atmospheric chemistry calculates and set the corresponding atmospheric concentration value to the constraint value (e.g. <code>CH4.set(t, CH4_constrain.get(t)</code>). If the constraint does not exist, Hector will proceed with its standard atmospheric chemistry routines for calculating the atmospheric concentration based on emissions and concentrations of other relevant species. This means that <em>concentration constraints always take precedence over emissions</em>; in other words, if a particular time step has both emissions and a concentration constraint, the emissions are ignored.</p>
+<span class="fu"><a href="../../reference/setvar.html">setvar</a></span><span class="op">(</span><span class="va">core</span>, <span class="fl">1900</span><span class="op">:</span><span class="fl">2000</span>, <span class="fu"><a href="../../reference/constraints.html">CH4_CONSTRAIN</a></span><span class="op">(</span><span class="op">)</span>, <span class="fl">750</span>, <span class="fu"><a href="../../reference/getunits.html">getunits</a></span><span class="op">(</span><span class="fu"><a href="../../reference/constraints.html">CH4_CONSTRAIN</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<p>Constraints are applied as follows: At any given time step, Hector will check if the constraint has a value for that time step (e.g. <code>CH4_constrain.exists(t)</code>). If the constraint exists, Hector will skip all atmospheric chemistry calculates and set the corresponding atmospheric concentration value to the constraint value (e.g. <code>CH4.set(t, CH4_constrain.get(t)</code>). If the constraint does not exist, Hector will proceed with its standard atmospheric chemistry routines for calculating the atmospheric concentration based on emissions and concentrations of other relevant species. This means that <em>concentration constraints always take precedence over emissions</em>; in other words, if a particular time step has both emissions and a concentration constraint, the emissions are ignored.</p>
 <p>Note that CH4 and N2O have special variables for their pre-industrial concentration that could conflict with the constraint. In Hector, <em>concentration constraints take precedence over pre-industrial concentrations</em>; in other words, Hector assumes that if you provide a concentration constraint for the pre-industrial timestep, that is the concentration you want, regardless of the prescribed pre-industrial value.</p>
 </div>
 <div id="discontinuous-constraints" class="section level1">
@@ -166,7 +165,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -5,13 +5,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Example: using Hector to solve for an emissions pathway • hector</title>
+<title>Example: solving for an emissions pathway • hector</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Example: using Hector to solve for an emissions pathway">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Example: solving for an emissions pathway">
 <meta property="og:description" content="hector">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -39,7 +39,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -71,7 +71,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/JGCRI/hector">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fas fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -85,10 +85,10 @@
 
       
 
-      </header><div class="row">
+      </header><script src="hector_apply_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Example: using Hector to solve for an emissions pathway</h1>
+      <h1 data-toc-skip>Example: solving for an emissions pathway</h1>
                         <h4 class="author">Robert Link</h4>
             
             <h4 class="date">2018-10-17</h4>
@@ -110,57 +110,57 @@
 <h2 class="hasAnchor">
 <a href="#setup" class="anchor"></a>Setup</h2>
 <p>The <code>nleqslv</code> package requires us to supply a function that takes a vector of inputs (i.e., emissions by year) and produces a vector of outputs that are the discrepancies between the Hector output and the target concentrations. In order to create such a function we will need to set up an interface to Hector. Since all of our calculations are going to involve years 2000 and beyond, we will run up through 1999.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">'hector'</span>)
-<span class="kw">hector_inifile</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">'input'</span>, package=<span class="st">'hector'</span>), <span class="st">'hector_rcp60.ini'</span>)
-<span class="kw">hcore</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/newcore.html">newcore</a></span>(<span class="kw">hector_inifile</span>, suppresslogging=<span class="fl">TRUE</span>)
-<span class="fu"><a href="../reference/run.html">run</a></span>(<span class="kw">hcore</span>, <span class="fl">1999</span>)
-</pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="http://ggplot2.tidyverse.org">'ggplot2'</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st">'hector'</span><span class="op">)</span>
+<span class="va">hector_inifile</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span><span class="op">(</span><span class="st">'input'</span>, package<span class="op">=</span><span class="st">'hector'</span><span class="op">)</span>, <span class="st">'hector_rcp60.ini'</span><span class="op">)</span>
+<span class="va">hcore</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/newcore.html">newcore</a></span><span class="op">(</span><span class="va">hector_inifile</span>, suppresslogging<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span>
+<span class="fu"><a href="../reference/run.html">run</a></span><span class="op">(</span><span class="va">hcore</span>, <span class="fl">1999</span><span class="op">)</span></code></pre></div>
 <pre><code>## Hector core: unnamed hector core
 ## Start date:  1745
 ## End date:    2300
 ## Current date:    1999
-## Input file:  /home/travis/R/Library/hector/input/hector_rcp60.ini</code></pre>
+## Input file:  /Users/runner/work/_temp/Library/hector/input/hector_rcp60.ini</code></pre>
 <p>Our target function will take a vector of emission values as input and return a vector of discrepancies between the hector outputs and the target output. We’ll make the target concentration value 1820 ppbv CH4 (a bit higher than the year 2000 value in the baseline scenario).</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="kw">f</span> <span class="op">&lt;-</span> <span class="fu">function</span>(<span class="kw">emiss</span>)
-{
-    <span class="fu"><a href="../reference/setvar.html">setvar</a></span>(<span class="kw">hcore</span>, <span class="fl">2000</span><span class="op">:</span><span class="fl">2100</span>, <span class="fu"><a href="../reference/methane.html">EMISSIONS_CH4</a></span>(), <span class="kw">emiss</span>, <span class="st">"Tg CH4"</span>)
-    <span class="fu"><a href="../reference/reset.html">reset</a></span>(<span class="kw">hcore</span>, <span class="fl">1999</span>)
-    <span class="fu"><a href="../reference/run.html">run</a></span>(<span class="kw">hcore</span>, <span class="fl">2100</span>)
-    <span class="kw">hout</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetchvars.html">fetchvars</a></span>(<span class="kw">hcore</span>, <span class="fl">2000</span><span class="op">:</span><span class="fl">2100</span>, <span class="fu"><a href="../reference/methane.html">ATMOSPHERIC_CH4</a></span>())
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">emiss</span><span class="op">)</span>
+<span class="op">{</span>
+    <span class="fu"><a href="../reference/setvar.html">setvar</a></span><span class="op">(</span><span class="va">hcore</span>, <span class="fl">2000</span><span class="op">:</span><span class="fl">2100</span>, <span class="fu"><a href="../reference/methane.html">EMISSIONS_CH4</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">emiss</span>, <span class="st">"Tg CH4"</span><span class="op">)</span>
+    <span class="fu"><a href="../reference/reset.html">reset</a></span><span class="op">(</span><span class="va">hcore</span>, <span class="fl">1999</span><span class="op">)</span>
+    <span class="fu"><a href="../reference/run.html">run</a></span><span class="op">(</span><span class="va">hcore</span>, <span class="fl">2100</span><span class="op">)</span>
+    <span class="va">hout</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetchvars.html">fetchvars</a></span><span class="op">(</span><span class="va">hcore</span>, <span class="fl">2000</span><span class="op">:</span><span class="fl">2100</span>, <span class="fu"><a href="../reference/methane.html">ATMOSPHERIC_CH4</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
     <span class="co">## return the difference between the target of 1850 (constant) and the actual</span>
-    <span class="kw">hout</span><span class="op">$</span><span class="kw">value</span> <span class="op">-</span> <span class="fl">1820</span>
-}
-</pre></div>
+    <span class="va">hout</span><span class="op">$</span><span class="va">value</span> <span class="op">-</span> <span class="fl">1820</span>
+<span class="op">}</span></code></pre></div>
 </div>
 <div id="solve-for-the-target-emissions" class="section level2">
 <h2 class="hasAnchor">
 <a href="#solve-for-the-target-emissions" class="anchor"></a>Solve for the target emissions</h2>
 <p>To solve for the target emissions we just pass the target function to <code>nleqslv</code>. We also need an initial guess for the emissions. It doesn’t really matter what the guess is, so long as it isn’t something so large that it will cause the model to fail outright. We will use a constant 300 Tg CH4 as the initial guess.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="kw">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="fl">300.0</span>, times=<span class="fl">101</span>)  <span class="co"># 2000:2001 includes both endpoints</span>
-<span class="kw">slv</span> <span class="op">&lt;-</span> <span class="kw">nleqslv</span>::<span class="fu"><a href="https://rdrr.io/pkg/nleqslv/man/nleqslv.html">nleqslv</a></span>(<span class="kw">x</span>, <span class="kw">f</span>, method=<span class="st">"Broyden"</span>)
-</pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">300.0</span>, times<span class="op">=</span><span class="fl">101</span><span class="op">)</span>  <span class="co"># 2000:2001 includes both endpoints</span>
+<span class="va">slv</span> <span class="op">&lt;-</span> <span class="fu">nleqslv</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/nleqslv/man/nleqslv.html">nleqslv</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">f</span>, method<span class="op">=</span><span class="st">"Broyden"</span><span class="op">)</span></code></pre></div>
 <p>We should check to see that the algorithm really converged. The discrepancy values from the last iteration are stored in the <code>fvec</code> entry.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span>(<span class="kw">slv</span><span class="op">$</span><span class="kw">fvec</span>))
-</pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span><span class="op">(</span><span class="va">slv</span><span class="op">$</span><span class="va">fvec</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 4.381491e-09</code></pre>
 </div>
 <div id="results" class="section level2">
 <h2 class="hasAnchor">
 <a href="#results" class="anchor"></a>Results</h2>
 <p>The convergence looks ok, so let’s plot the results:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="fl">2000</span><span class="op">:</span><span class="fl">2100</span>, <span class="kw">slv</span><span class="op">$</span><span class="kw">x</span>, ylab=<span class="st">"Emissions (Tg CH4)"</span>, xlab=<span class="st">"year"</span>) 
-</pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"> <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>year <span class="op">=</span> <span class="fl">2000</span><span class="op">:</span><span class="fl">2100</span>,
+            value <span class="op">=</span> <span class="va">slv</span><span class="op">[[</span><span class="st">'x'</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>
+
+ <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">df</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">value</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+     <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+     <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="st">"Emissions (Tg CH4)"</span>, x <span class="op">=</span> <span class="st">'year'</span><span class="op">)</span></code></pre></div>
 <p><img src="hector_apply_files/figure-html/plt-1.png" width="700"></p>
 <p>The concentration target of 1820 ppbv CH4 that we specified in 2000 is a bit of a jump from what was in the scenario we based our run on (the original was about 1811 ppbv), so we have a small spike in emissions in 2000. After that the emissions settle down into something smoother.</p>
 <p>Once we’re done with our Hector instance, we need to make sure to shut it down, so that the memory it is using will be freed.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="fu"><a href="../reference/shutdown.html">shutdown</a></span>(<span class="kw">hcore</span>)
-</pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/shutdown.html">shutdown</a></span><span class="op">(</span><span class="va">hcore</span><span class="op">)</span></code></pre></div>
 <pre><code>## Hector core (INACTIVE)</code></pre>
 </div>
 <div id="conclusion" class="section level2">
@@ -185,7 +185,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
