@@ -1,4 +1,6 @@
-![R-CMD](https://github.com/JGCRI/hector/workflows/R-CMD/badge.svg) 
+![R-CMD](https://github.com/JGCRI/hector/workflows/R-CMD/badge.svg)
+![Command Line Hector](https://github.com/JGCRI/hector/workflows/Command%20Line%20Hector/badge.svg)
+![test-coverage](https://github.com/JGCRI/hector/workflows/test-coverage/badge.svg)
 
 Hector
 ======
