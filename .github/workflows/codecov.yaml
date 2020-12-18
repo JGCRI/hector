@@ -1,6 +1,6 @@
 on: [push, pull_request]
 
-name: build
+name: coverage
 
 jobs:
 
@@ -43,11 +43,11 @@ jobs:
           remotes::install_cran("rcmdcheck")
         shell: Rscript {0}
 
-      - name: Check
-        env:
-          _R_CHECK_CRAN_INCOMING_: false
-        run: rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran"), error_on = "error", check_dir = "check")
-        shell: Rscript {0}
+     # - name: Check
+     #   env:
+     #     _R_CHECK_CRAN_INCOMING_: false
+     #   run: rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran"), error_on = "error", check_dir = "check")
+     #   shell: Rscript {0}
 
       - name: Test coverage
         run: |
