@@ -1,0 +1,56 @@
+# This is a basic workflow to help you get started with Actions
+# based on https://github.com/JGCRI/hector/new/master?filename=.github%2Fworkflows%2Fmain.yml&workflow_template=blank
+
+name: Command Line Hector
+
+# Controls when the action will run.
+on:
+  push:
+    branches:
+      - master
+      - github_actions
+  pull_request:
+    branches: master
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  # This workflow contains two jobs, one that builds hector on ubuntu and the second
+  # builds and tests Hector on macos. The purpose of this work for is to make sure that Hector
+  # can be built from the command line.
+  ubuntu:
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      - name: build and run
+        run: |
+          sudo apt install libboost-filesystem-dev libboost-system-dev
+
+          ver=`awk '/define.*BOOST_LIB_VERSION/ {print $3}' /usr/include/boost/version.hpp`
+          echo Boost version $ver
+          BOOSTLIB=/usr/local/lib BOOSTVERSION=$ver BOOSTROOT=/usr/include/boost make hector
+          bash ./test_hector.sh ./src/hector
+
+  macos:
+    runs-on: macos-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      - name: build and run test
+        run: |
+          brew install boost
+          ver=`ls /usr/local/Cellar/boost/`
+          echo Boost version $ver
+
+          # Build the Hector executable, provide the links to boost libs
+          BOOST=/usr/local/Cellar/boost
+          BOOSTLIB=$BOOST/$ver/lib BOOSTROOT=$BOOST/$ver/include/boost make hector
+
+          # Run the Hector test script
+          bash ./test_hector.sh ./src/hector
