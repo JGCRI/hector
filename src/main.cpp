@@ -74,6 +74,7 @@ int main (int argc, char * const argv[]) {
             csvoutputStreamFile.open( string( string( OUTPUT_DIRECTORY ) + "outputstream.csv" ).c_str(), ios::out );
         else
             csvoutputStreamFile.open( string( string( OUTPUT_DIRECTORY ) + "outputstream_" + rn + ".csv" ).c_str(), ios::out );
+            
 
 
         ostream outputStream( &csvoutputStreamFile );

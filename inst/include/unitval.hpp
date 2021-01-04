@@ -128,7 +128,7 @@ enum unit_types {
                 };
 
 class unitval {
-
+    
     double      val;
     double      valErr;
     unit_types  valUnits;
