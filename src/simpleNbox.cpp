@@ -36,9 +36,12 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
     Ftalbedo.name = "albedo";
     CO2_constrain.name = "CO2_constrain";
 
-    // earth_c keeps track of how much fossil C is pulled out
-    // so that we can do a mass-balance check throughout the run
-    earth_c.set( 0.0, U_PGC );
+    // Recall that earth_c keeps track of how much fossil C is pulled out
+    // so that we can do a mass-balance check throughout the run -> set in hpp
+    earth_c.set( 0.0, U_PGC, "earth_c");
+    earth_c.setTracking(true);
+    atmos_c.setTracking(true);
+    
 }
 
 //------------------------------------------------------------------------------
@@ -301,7 +304,7 @@ void SimpleNbox::sanitychecks() throw( h_exception )
 {
 
     // Make a few sanity checks here, and then return.
-    H_ASSERT( atmos_c.value( U_PGC ) > 0.0, "atmos_c pool <=0" );
+    H_ASSERT( atmos_c.get_total().value( U_PGC ) > 0.0, "atmos_c pool <=0" );
 
     for ( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
         std::string biome = *it;
@@ -419,7 +422,8 @@ void SimpleNbox::prepareToRun() throw( h_exception )
 
     double c0init = C0.value(U_PPMV_CO2);
     Ca.set(c0init, U_PPMV_CO2);
-    atmos_c.set(c0init * PPMVCO2_TO_PGC, U_PGC);
+    atmos_c.set(c0init * PPMVCO2_TO_PGC, U_PGC, "atmos_c");
+    cout<<atmos_c<<endl;
 
     if( CO2_constrain.size() ) {
         Logger& glog = core->getGlobalLogger();
@@ -490,7 +494,7 @@ unitval SimpleNbox::getData(const std::string& varName,
 
     if( varNameParsed == D_ATMOSPHERIC_C ) {
         if(date == Core::undefinedIndex())
-            returnval = atmos_c;
+            returnval = atmos_c.get_total();
         else
             returnval = atmos_c_ts.get(date);
     } else if( varNameParsed == D_ATMOSPHERIC_CO2 ) {
@@ -545,7 +549,7 @@ unitval SimpleNbox::getData(const std::string& varName,
 
     } else if( varNameParsed == D_EARTHC ) {
         if(date == Core::undefinedIndex())
-            returnval = earth_c;
+            returnval = earth_c.get_total();
         else
             returnval = earth_c_ts.get(date);
     } else if( varNameParsed == D_VEGC ) {
@@ -623,8 +627,10 @@ unitval SimpleNbox::getData(const std::string& varName,
 void SimpleNbox::reset(double time) throw(h_exception)
 {
     // Reset all state variables to their values at the reset time
-    earth_c = earth_c_ts.get(time);
-    atmos_c = atmos_c_ts.get(time);
+    earth_c.set(earth_c_ts.get(time));
+
+    atmos_c.set(atmos_c_ts.get(time));
+
     Ca = Ca_ts.get(time);
 
     veg_c = veg_c_tv.get(time);
@@ -691,12 +697,12 @@ void SimpleNbox::accept( AVisitor* visitor ) {
  */
 void SimpleNbox::getCValues( double t, double c[] )
 {
-    c[ SNBOX_ATMOS ] = atmos_c.value( U_PGC );
+    c[ SNBOX_ATMOS ] = atmos_c.get_total().value( U_PGC );
     c[ SNBOX_VEG ] = sum_map( veg_c ).value( U_PGC );
     c[ SNBOX_DET ] = sum_map( detritus_c ).value( U_PGC );
     c[ SNBOX_SOIL ] = sum_map( soil_c ).value( U_PGC );
     omodel->getCValues( t, c );
-    c[ SNBOX_EARTH ] = earth_c.value( U_PGC );
+    c[ SNBOX_EARTH ] = earth_c.get_total().value( U_PGC );
 
     ODEstartdate = t;
 }
@@ -704,7 +710,7 @@ void SimpleNbox::getCValues( double t, double c[] )
 //------------------------------------------------------------------------------
 /*! \brief                  Transfer new model pools from ODE solver array back to model pools
  *  \param[in] t            Time, double, the ending date of the solver
- *  \param[in] double       Flat array of carbon pools (no units)
+ *  \param[in] c            Flat array of carbon pools (no units)
  *  \exception h_exception  If ocean model diverges from our pool tracking all ocean C
  *  \exception h_exception  If mass is not conserved
  *
@@ -729,7 +735,7 @@ void SimpleNbox::stashCValues( double t, const double c[] )
 
     // Store solver pools into our internal variables
 
-    atmos_c.set( c[ SNBOX_ATMOS ], U_PGC );
+    atmos_c.set( c[ SNBOX_ATMOS ], U_PGC, "atmos_c");
 
     // Record the land C flux
     const unitval npp_total = sum_npp();
@@ -769,7 +775,7 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     log_pools( t );
 
     omodel->stashCValues( t, c );   // tell ocean model to store new C values
-    earth_c.set( c[ SNBOX_EARTH ], U_PGC );
+    earth_c.set(unitval(c[ SNBOX_EARTH ], U_PGC));
 
     log_pools( t );
 
@@ -805,7 +811,7 @@ void SimpleNbox::stashCValues( double t, const double c[] )
             atmppmv.set(CO2_constrain.get(t).value(U_PPMV_CO2), U_PPMV_CO2);
         }
 
-        residual = atmos_c - atmos_cpool_to_match;
+        residual = atmos_c.get_total() - atmos_cpool_to_match;
         H_LOG( logger,Logger::DEBUG ) << t << "- have " << Ca << " want " <<  atmppmv.value( U_PPMV_CO2 ) << std::endl;
         H_LOG( logger,Logger::DEBUG ) << t << "- have " << atmos_c << " want " << atmos_cpool_to_match << "; residual = " << residual << std::endl;
 
@@ -813,7 +819,8 @@ void SimpleNbox::stashCValues( double t, const double c[] )
         H_LOG( logger,Logger::DEBUG ) << "Sending residual of " << residual << " to deep ocean" << std::endl;
         core->sendMessage( M_DUMP_TO_DEEP_OCEAN, D_OCEAN_C, message_data( residual ) );
         atmos_c = atmos_c - residual;
-        Ca.set( atmos_c.value( U_PGC ) * PGC_TO_PPMVCO2, U_PPMV_CO2 );
+        Ca.set( atmos_c.get_total().value( U_PGC ) * PGC_TO_PPMVCO2, U_PPMV_CO2 );
+
     } else {
         residual.set( 0.0, U_PGC );
     }
@@ -1116,8 +1123,8 @@ void SimpleNbox::slowparameval( double t, const double c[] )
 void SimpleNbox::record_state(double t)
 {
     tcurrent = t;
-    earth_c_ts.set(t, earth_c);
-    atmos_c_ts.set(t, atmos_c);
+    earth_c_ts.set(t, earth_c.get_total());
+    atmos_c_ts.set(t, atmos_c.get_total());
     Ca_ts.set(t, Ca);
 
     veg_c_tv.set(t, veg_c);

@@ -18,6 +18,7 @@
 #include "tseries.hpp"
 #include "unitval.hpp"
 #include "carbon-cycle-model.hpp"
+#include "TrackedVal.hpp"
 
 #define SNBOX_ATMOS 0
 #define SNBOX_VEG 1
@@ -101,8 +102,8 @@ private:
     std::vector<std::string> biome_list;
 
     // Carbon pools -- global
-    unitval earth_c;                //!< earth pool, Pg C; for mass-balance
-    unitval atmos_c;                //!< atmosphere pool, Pg C
+    TrackedVal earth_c;
+    TrackedVal atmos_c;                //!< atmosphere pool, Pg C
     unitval    Ca;                  //!< current [CO2], ppmv
 
     // Carbon pools -- biome-specific
