@@ -48,6 +48,9 @@ public:
     bool isTracking() const;
     void setTracking(bool do_track);
 
+    // make flux for pool addition
+    TrackedVal fluxFromPool(const Hector::unitval fluxVal) const;
+
     // pretty printing
     friend ostream& operator<<(ostream &out, TrackedVal &ct);
 

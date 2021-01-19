@@ -128,27 +128,33 @@ TrackedVal TrackedVal::operator+(const Hector::unitval flux){
     Hector::unitval new_total = total + flux;
     unordered_map<string, double> new_origins;
 
-    if(track){
-        string not_tracked("not tracked");
-        unordered_map<string, Hector::unitval> new_pools;
-        if(ctmap.find(not_tracked) == ctmap.end()){
-            new_pools[not_tracked] = flux;
+    if( track ){
+        if(flux < 0){
+            new_origins = this->ctmap;
         }
-        for (auto itr = ctmap.begin(); itr != ctmap.end(); itr++) {
-            if(itr->first == not_tracked){
-                new_pools[itr->first] = itr->second*total + flux;
+        else{
+            string not_tracked("not tracked");
+            unordered_map<string, Hector::unitval> new_pools;
+            if(ctmap.find(not_tracked) == ctmap.end()){
+                new_pools[not_tracked] = flux;
             }
-            else{
-                new_pools[itr->first] = itr->second*total;
+            for (auto itr = ctmap.begin(); itr != ctmap.end(); itr++) {
+                if(itr->first == not_tracked){
+                    new_pools[itr->first] = itr->second*total + flux;
+                }
+                else{
+                    new_pools[itr->first] = itr->second*total;
+                }
+            }
+            for (auto itr = new_pools.begin(); itr != new_pools.end(); itr++) {
+                if(new_total) {
+                    new_origins[itr->first] = itr->second / new_total;
+                } else {  // uh oh, new total is zero
+                    new_origins[itr->first] = 1 / new_pools.size();
+                }
             }
         }
-        for (auto itr = new_pools.begin(); itr != new_pools.end(); itr++) {
-            if(new_total) {
-                new_origins[itr->first] = itr->second / new_total;
-            } else {  // uh oh, new total is zero
-                new_origins[itr->first] = 1 / new_pools.size();
-            }
-        }
+        
     }
     TrackedVal added_flux(new_total, new_origins, track);
     return added_flux;
@@ -203,6 +209,11 @@ bool TrackedVal::identical(TrackedVal x) const {
     }
 
     return same;
+}
+
+TrackedVal TrackedVal::fluxFromPool(Hector::unitval fluxVal) const{
+    TrackedVal flux(fluxVal, ctmap, track);
+    return flux;
 }
 
 // Printing

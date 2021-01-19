@@ -734,8 +734,31 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     log_pools( t );
 
     // Store solver pools into our internal variables
+    unitval ffi_flux_val( 0.0, U_PGC );
+    if( !in_spinup ) {   // no perturbation allowed if in spinup
+        double ffi_val = ffiEmissions.get( t ).value(U_PGC_YR);
+        ffi_flux_val.set(ffi_val, U_PGC);
 
-    atmos_c.set( c[ SNBOX_ATMOS ], U_PGC, "atmos_c");
+    }
+    TrackedVal ffi_to_atmos= earth_c.fluxFromPool(ffi_flux_val);
+    earth_c = earth_c - ffi_flux_val;
+    atmos_c = atmos_c + ffi_to_atmos;
+
+
+    if(earth_c.get_total().value(U_PGC) != c[SNBOX_EARTH]){
+        unitval untracked_flux = earth_c.get_total() - unitval(c[SNBOX_EARTH], U_PGC);
+        // cout<<untracked_flux<<endl; this is actually quite large in places
+        earth_c = earth_c - untracked_flux;
+    }
+
+    if(atmos_c.get_total().value(U_PGC) != c[SNBOX_ATMOS]){
+        unitval untracked_flux =  unitval(c[SNBOX_ATMOS], U_PGC) - atmos_c.get_total();
+        if(untracked_flux > 0){
+            //cout<<untracked_flux<<endl;
+        }
+        atmos_c = atmos_c + untracked_flux;
+    }
+    cout<<atmos_c<<endl;
 
     // Record the land C flux
     const unitval npp_total = sum_npp();
@@ -775,7 +798,6 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     log_pools( t );
 
     omodel->stashCValues( t, c );   // tell ocean model to store new C values
-    earth_c.set(unitval(c[ SNBOX_EARTH ], U_PGC));
 
     log_pools( t );
 

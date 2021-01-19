@@ -16,9 +16,10 @@
 #include "temperature_component.hpp"
 #include "ocean_component.hpp"
 #include "tseries.hpp"
+#include "TrackedVal.hpp"
 #include "unitval.hpp"
 #include "carbon-cycle-model.hpp"
-#include "TrackedVal.hpp"
+//#include "TrackedVal.hpp"
 
 #define SNBOX_ATMOS 0
 #define SNBOX_VEG 1
