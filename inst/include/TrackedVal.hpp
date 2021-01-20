@@ -1,5 +1,5 @@
-#ifndef TrackedVal_HPP
-#define TrackedVal_HPP
+#ifndef trackedval_HPP
+#define trackedval_HPP
 #include <sstream>
 #include <unordered_map> 
 #include "unitval.hpp"
@@ -8,32 +8,27 @@
 using namespace std;
 
   /**
-   * \brief TrackedVal Class: class to track origin of carbon (or whatever) in various carbon pools in simple climate model Hector
+   * \brief trackedval Class: class to track origin of carbon (or whatever) in various carbon pools in simple climate model Hector
    * Designed so that it can be dropped in place of a unitval in the Hector C++ code base
    */
 
-class TrackedVal {
+class trackedval {
 
 public:
     // public constructor (see private one below)
-    TrackedVal();
-    TrackedVal(Hector::unitval total, string pool);
-    
-    // assignment operator
-    TrackedVal& operator=(TrackedVal other);
+    trackedval();
+    trackedval(Hector::unitval total, string pool);
     
     // math operations
-    TrackedVal operator+(const TrackedVal& flux);
-    TrackedVal operator-(const Hector::unitval flux);
-    TrackedVal operator*(const double d);  // note corresponding non-member function declared below
-    TrackedVal operator/(const double d);
-    bool operator==(const TrackedVal& rhs);
-    bool operator!=(const TrackedVal& rhs);
+    trackedval operator+(const trackedval& flux);
+    trackedval operator-(const Hector::unitval flux);
+    trackedval operator*(const double d);  // note corresponding non-member function declared below
+    trackedval operator/(const double d);
+    bool operator==(const trackedval& rhs);
+    bool operator!=(const trackedval& rhs);
 
-    // TEMPORARY UNTIL ALL POOLS ARE CONVERTED
-    TrackedVal operator+(const Hector::unitval flux);
 
-    bool identical(TrackedVal x) const;  // I don't know if this is needed or not
+    bool identical(trackedval x) const;  // I don't know if this is needed or not
 
     // accessor functions
     vector<string> get_sources() const;
@@ -49,10 +44,13 @@ public:
     void setTracking(bool do_track);
 
     // make flux for pool addition
-    TrackedVal fluxFromPool(const Hector::unitval fluxVal) const;
+    trackedval flux_from_pool(const Hector::unitval fluxVal) const;
+
+    // adjust pool size to match output from ODE solver
+    trackedval adjust_pool(const Hector::unitval solvedSize);
 
     // pretty printing
-    friend ostream& operator<<(ostream &out, TrackedVal &ct);
+    friend ostream& operator<<(ostream &out, trackedval &ct);
 
 
 private:
@@ -64,10 +62,11 @@ private:
     bool track;
     
     // internal constructor with explicit source pool map
-    TrackedVal(Hector::unitval total, unordered_map<string, double> pool_map, bool do_track);
+    trackedval(Hector::unitval total, unordered_map<string, double> pool_map, bool do_track);
 };
 
 // Non-member function for multiplication with double as first argument
-TrackedVal operator*(double d, const TrackedVal& ct);
+trackedval operator*(double d, const trackedval& ct);
+
 
 #endif

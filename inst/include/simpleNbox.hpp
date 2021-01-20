@@ -16,10 +16,10 @@
 #include "temperature_component.hpp"
 #include "ocean_component.hpp"
 #include "tseries.hpp"
-#include "TrackedVal.hpp"
+#include "trackedval.hpp"
 #include "unitval.hpp"
 #include "carbon-cycle-model.hpp"
-//#include "TrackedVal.hpp"
+//#include "trackedval.hpp"
 
 #define SNBOX_ATMOS 0
 #define SNBOX_VEG 1
@@ -103,8 +103,8 @@ private:
     std::vector<std::string> biome_list;
 
     // Carbon pools -- global
-    TrackedVal earth_c;
-    TrackedVal atmos_c;                //!< atmosphere pool, Pg C
+    trackedval earth_c;
+    trackedval atmos_c;                //!< atmosphere pool, Pg C
     unitval    Ca;                  //!< current [CO2], ppmv
 
     // Carbon pools -- biome-specific

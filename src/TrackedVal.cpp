@@ -1,25 +1,25 @@
 
 #include <sstream>
 #include <unordered_map>
-#include "TrackedVal.hpp"
+#include "trackedval.hpp"
 #include "unitval.hpp"
 
 using namespace std;
 
 // Public constructors
-TrackedVal::TrackedVal(){
+trackedval::trackedval(){
     track = false;
     Hector::unitval total_val(0, Hector::U_UNITLESS);
 }
 
-TrackedVal::TrackedVal(Hector::unitval total, string pool){
+trackedval::trackedval(Hector::unitval total, string pool){
     track = false;
     this->total = total;
     ctmap[pool] = 1;
 }
 
 // Private constructor with explicit source pool map
-TrackedVal::TrackedVal(Hector::unitval total, unordered_map<string, double> pool_map, bool do_track){
+trackedval::trackedval(Hector::unitval total, unordered_map<string, double> pool_map, bool do_track){
     track = do_track;
     this->total = total;
     ctmap = pool_map;
@@ -33,22 +33,16 @@ TrackedVal::TrackedVal(Hector::unitval total, unordered_map<string, double> pool
     H_ASSERT(frac - 1.0 < 1e-6, "pool_map must sum to ~1.0")
 }
 
-TrackedVal& TrackedVal::operator=(TrackedVal other){
-    this->total = other.total;
-    this->ctmap = other.ctmap;
-    return *this;
-}
-
-bool TrackedVal::isTracking() const {
+bool trackedval::isTracking() const {
     return track;
 }
 
-void TrackedVal::setTracking(bool do_track){
+void trackedval::setTracking(bool do_track){
     track = do_track;
 }
 
 // Accessor: return a string vector of the current sources
-std::vector<std::string> TrackedVal::get_sources() const {
+std::vector<std::string> trackedval::get_sources() const {
     H_ASSERT(track, "get_sources() requires tracking to be on");
     std::vector<std::string> sources;
     for (auto itr = ctmap.begin(); itr != ctmap.end(); itr++) {
@@ -58,12 +52,12 @@ std::vector<std::string> TrackedVal::get_sources() const {
 }
 
 // Accessor: return total amount
-Hector::unitval TrackedVal::get_total() const {
+Hector::unitval trackedval::get_total() const {
     return total;
 }
 
 // Accessor: return the fraction corresponding to a specific source
-double TrackedVal::get_fraction(string source) const {
+double trackedval::get_fraction(string source) const {
     H_ASSERT(track, "get_fraction() requires tracking to be on");
     double val = 0.0;  // 0.0 is returned if not in our map
     auto x = ctmap.find(source);
@@ -74,18 +68,19 @@ double TrackedVal::get_fraction(string source) const {
 }
 
 // Setter: set the total value and units; the map only has the pool named below with frac 1
-void TrackedVal::set( double val, Hector::unit_types units, string pool){
+void trackedval::set( double val, Hector::unit_types units, string pool){
     Hector::unitval total_val(val, units);
     this->total = total_val;
     ctmap[pool] = 1;
 }
 
-void TrackedVal::set(Hector::unitval val){
+// Setter: use to set pool total - use sparingly because doesn't change map
+void trackedval::set(Hector::unitval val){
     this->total = val;
 }
 
 // Addition: the complicated one
-TrackedVal TrackedVal::operator+(const TrackedVal& flux){
+trackedval trackedval::operator+(const trackedval& flux){
     Hector::unitval new_total = total + flux.total;
     unordered_map<string, double> new_origins;
     
@@ -119,81 +114,44 @@ TrackedVal TrackedVal::operator+(const TrackedVal& flux){
         H_ASSERT(!flux.isTracking(), "tracking mismatch")
     }
     
-    TrackedVal added_flux(new_total, new_origins, track);
-    return added_flux;
-}
-
-// TEMPORARY: needed until all pools are converted in TrackedVal objects
-TrackedVal TrackedVal::operator+(const Hector::unitval flux){
-    Hector::unitval new_total = total + flux;
-    unordered_map<string, double> new_origins;
-
-    if( track ){
-        if(flux < 0){
-            new_origins = this->ctmap;
-        }
-        else{
-            string not_tracked("not tracked");
-            unordered_map<string, Hector::unitval> new_pools;
-            if(ctmap.find(not_tracked) == ctmap.end()){
-                new_pools[not_tracked] = flux;
-            }
-            for (auto itr = ctmap.begin(); itr != ctmap.end(); itr++) {
-                if(itr->first == not_tracked){
-                    new_pools[itr->first] = itr->second*total + flux;
-                }
-                else{
-                    new_pools[itr->first] = itr->second*total;
-                }
-            }
-            for (auto itr = new_pools.begin(); itr != new_pools.end(); itr++) {
-                if(new_total) {
-                    new_origins[itr->first] = itr->second / new_total;
-                } else {  // uh oh, new total is zero
-                    new_origins[itr->first] = 1 / new_pools.size();
-                }
-            }
-        }
-        
-    }
-    TrackedVal added_flux(new_total, new_origins, track);
+    trackedval added_flux(new_total, new_origins, track);
     return added_flux;
 }
 
 
 // Because we track a total and source fractions, subtraction is trivial
-TrackedVal TrackedVal::operator-(const Hector::unitval flux){
-    TrackedVal sub_ct(total - flux, ctmap, track);
+trackedval trackedval::operator-(const Hector::unitval flux){
+    trackedval sub_ct(total - flux, ctmap, track);
     return sub_ct;
 }
 
 // Multiplication member function (when this object is lhs, and double rhs)
-TrackedVal TrackedVal::operator*(const double d){
-    TrackedVal ct(total * d, ctmap, track);
+trackedval trackedval::operator*(const double d){
+    trackedval ct(total * d, ctmap, track);
     return ct;
 }
 // ...nonmember function for when object is rhs; just flip and call member function
-TrackedVal operator*(double d, const TrackedVal& ct){
-    TrackedVal x = ct; // need to make non-const
+trackedval operator*(double d, const trackedval& ct){
+    trackedval x = ct; // need to make non-const
     return x * d;
 }
 
 // Division
-TrackedVal TrackedVal::operator/(const double d){
-    TrackedVal ct(total / d, ctmap, track);
+trackedval trackedval::operator/(const double d){
+    trackedval ct(total / d, ctmap, track);
     return ct;
 }
 
 // Equality: same total only
-bool TrackedVal::operator==(const TrackedVal& rhs){
+bool trackedval::operator==(const trackedval& rhs){
     return total == rhs.get_total();
 }
-bool TrackedVal::operator!=(const TrackedVal& rhs){
+bool trackedval::operator!=(const trackedval& rhs){
     return total != rhs.get_total();
 }
 
 // Identicality: same total, same tracking, same sources, same fractions
-bool TrackedVal::identical(TrackedVal x) const {
+bool trackedval::identical(trackedval x) const {
     bool same = total == x.get_total();
     
     same = same && x.isTracking() == track;
@@ -211,13 +169,35 @@ bool TrackedVal::identical(TrackedVal x) const {
     return same;
 }
 
-TrackedVal TrackedVal::fluxFromPool(Hector::unitval fluxVal) const{
-    TrackedVal flux(fluxVal, ctmap, track);
+// Creates a flux from a pool so the flux can be added to other pools
+trackedval trackedval::flux_from_pool(Hector::unitval fluxVal) const{
+    trackedval flux(fluxVal, ctmap, track);
     return flux;
 }
 
+// Adjusts pool size to match that output by the ODE solver
+trackedval trackedval::adjust_pool(const Hector::unitval solvedSize){
+    trackedval adjusted(total, ctmap, track);
+    Hector::unitval untracked = solvedSize - total;
+    if(track) {
+        if(untracked > 0){
+            trackedval flux(untracked, "not tracked");
+            flux.setTracking(true);
+            adjusted = adjusted + flux;
+        }
+        else{
+            untracked = -untracked; // need positive val to subtract
+            adjusted = adjusted - untracked;
+        }
+    }
+    else{
+        adjusted.set(solvedSize);
+    }
+    return adjusted;
+}
+
 // Printing
-ostream& operator<<(ostream &out, TrackedVal &ct ){
+ostream& operator<<(ostream &out, trackedval &ct ){
     out << ct.total;
     if(ct.isTracking()) {
         out << endl;

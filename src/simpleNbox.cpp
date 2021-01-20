@@ -41,7 +41,6 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
     earth_c.set( 0.0, U_PGC, "earth_c");
     earth_c.setTracking(true);
     atmos_c.setTracking(true);
-    
 }
 
 //------------------------------------------------------------------------------
@@ -423,7 +422,6 @@ void SimpleNbox::prepareToRun() throw( h_exception )
     double c0init = C0.value(U_PPMV_CO2);
     Ca.set(c0init, U_PPMV_CO2);
     atmos_c.set(c0init * PPMVCO2_TO_PGC, U_PGC, "atmos_c");
-    cout<<atmos_c<<endl;
 
     if( CO2_constrain.size() ) {
         Logger& glog = core->getGlobalLogger();
@@ -738,27 +736,12 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     if( !in_spinup ) {   // no perturbation allowed if in spinup
         double ffi_val = ffiEmissions.get( t ).value(U_PGC_YR);
         ffi_flux_val.set(ffi_val, U_PGC);
-
     }
-    TrackedVal ffi_to_atmos= earth_c.fluxFromPool(ffi_flux_val);
-    earth_c = earth_c - ffi_flux_val;
+
+    earth_c.set(unitval(c[SNBOX_EARTH], U_PGC)); // pool is negative and has no fluxes into the pool - setting is simpler
+    trackedval ffi_to_atmos= earth_c.flux_from_pool(ffi_flux_val);
     atmos_c = atmos_c + ffi_to_atmos;
-
-
-    if(earth_c.get_total().value(U_PGC) != c[SNBOX_EARTH]){
-        unitval untracked_flux = earth_c.get_total() - unitval(c[SNBOX_EARTH], U_PGC);
-        // cout<<untracked_flux<<endl; this is actually quite large in places
-        earth_c = earth_c - untracked_flux;
-    }
-
-    if(atmos_c.get_total().value(U_PGC) != c[SNBOX_ATMOS]){
-        unitval untracked_flux =  unitval(c[SNBOX_ATMOS], U_PGC) - atmos_c.get_total();
-        if(untracked_flux > 0){
-            //cout<<untracked_flux<<endl;
-        }
-        atmos_c = atmos_c + untracked_flux;
-    }
-    cout<<atmos_c<<endl;
+    atmos_c = atmos_c.adjust_pool(unitval(c[SNBOX_ATMOS], U_PGC));
 
     // Record the land C flux
     const unitval npp_total = sum_npp();
