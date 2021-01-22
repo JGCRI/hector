@@ -22,6 +22,7 @@
 #include "ini_to_core_reader.hpp"
 #include "csv_output_visitor.hpp"
 #include "csv_outputstream_visitor.hpp"
+#include "csv_trackedpool_visitor.hpp"
 
 #include "unitval.hpp"
 
@@ -67,19 +68,25 @@ int main (int argc, char * const argv[]) {
         CSVOutputVisitor csvOutputVisitor( string( OUTPUT_DIRECTORY ) + "output.csv"  );
         core.addVisitor( &csvOutputVisitor );
         filebuf csvoutputStreamFile;
+        filebuf csvtrackedPoolFile;
 
         // Open the stream output file, which has an optional run name (specified in the INI file) in it
         string rn = core.getRun_name();
-        if( rn == "" )
+        if( rn == "" ) {
             csvoutputStreamFile.open( string( string( OUTPUT_DIRECTORY ) + "outputstream.csv" ).c_str(), ios::out );
-        else
+            csvtrackedPoolFile.open( string( string( OUTPUT_DIRECTORY ) + "trackedpool.csv" ).c_str(), ios::out );
+        } else {
             csvoutputStreamFile.open( string( string( OUTPUT_DIRECTORY ) + "outputstream_" + rn + ".csv" ).c_str(), ios::out );
-            
-
+            csvtrackedPoolFile.open( string( string( OUTPUT_DIRECTORY ) + "trackedpool_" + rn + ".csv" ).c_str(), ios::out );
+        }
 
         ostream outputStream( &csvoutputStreamFile );
         CSVOutputStreamVisitor csvOutputStreamVisitor( outputStream );
         core.addVisitor( &csvOutputStreamVisitor );
+
+        ostream poolStream( &csvtrackedPoolFile );
+        CSVTrackedPoolVisitor csvTrackedPoolVisitor( poolStream );
+        core.addVisitor( &csvTrackedPoolVisitor );
 
         H_LOG(glog, Logger::NOTICE) << "Calling prepareToRun()\n";
         core.prepareToRun();

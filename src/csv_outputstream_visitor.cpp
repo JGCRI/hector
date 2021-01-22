@@ -28,6 +28,7 @@
 #include "n2o_component.hpp"
 #include "core.hpp"
 #include "unitval.hpp"
+#include "trackedval.hpp"
 #include "h_util.hpp"
 #include "simpleNbox.hpp"
 #include "csv_outputstream_visitor.hpp"
@@ -115,6 +116,17 @@ s << linestamp() << c->getComponentName() << DELIMITER \
 // Takes s (stream), c (component), xname (variable name), date
 #define STREAM_MESSAGE_DATE( s, c, xname, date ) { \
 unitval x = c->sendMessage( M_GETDATA, xname, message_data( date ) ); \
+s << linestamp() << c->getComponentName() << DELIMITER \
+<< xname << DELIMITER << x.value( x.units() ) << DELIMITER \
+<< x.unitsName() << std::endl; \
+}
+
+// Macro to send a variable with associated trackedval units to some output stream
+// This uses new sendMessage interface in imodel_component
+// Takes s (stream), c (component), xname (variable name), date
+#define STREAM_POOL_MESSAGE( s, c, xname ) { \
+trackedval pool = c->sendMessage( M_GETDATA, xname ); \
+unitval x = pool.get_total(); \
 s << linestamp() << c->getComponentName() << DELIMITER \
 << xname << DELIMITER << x.value( x.units() ) << DELIMITER \
 << x.unitsName() << std::endl; \

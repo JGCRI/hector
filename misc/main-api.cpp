@@ -23,6 +23,7 @@
 #include "ini_to_core_reader.hpp"
 #include "csv_output_visitor.hpp"
 #include "csv_outputstream_visitor.hpp"
+#include "csv_trackedpool_visitor.hpp"
 
 #include "unitval.hpp"
 #include "tseries.hpp"
