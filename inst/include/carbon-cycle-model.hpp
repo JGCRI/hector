@@ -1,4 +1,4 @@
-/* Hector -- A Simple Climate Model
+ /* Hector -- A Simple Climate Model
    Copyright (C) 2014-2015  Battelle Memorial Institute
 
    Please see the accompanying file LICENSE.md for additional licensing

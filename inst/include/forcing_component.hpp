@@ -15,17 +15,8 @@
  */
 
 #include "imodel_component.hpp"
-#include "ch4_component.hpp"
-#include "n2o_component.hpp"
-#include "bc_component.hpp"
-#include "oc_component.hpp"
-#include "so2_component.hpp"
-//#include "core/o3_component.hpp"
-#include "logger.hpp"
 #include "tseries.hpp"
 #include "tvector.hpp"
-#include "unitval.hpp"
-#include "carbon-cycle-model.hpp"
 
 namespace Hector {
 
