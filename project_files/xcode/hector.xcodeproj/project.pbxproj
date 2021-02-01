@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		273144782492773700C95E7C /* libboost_system.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 273144762492773700C95E7C /* libboost_system.dylib */; };
-		273144792492773700C95E7C /* libboost_system.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 273144762492773700C95E7C /* libboost_system.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		273144782492773700C95E7C /* libboost_system.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 273144762492773700C95E7C /* libboost_system.dylib */; settings = {ATTRIBUTES = (Required, ); }; };
+		273144792492773700C95E7C /* libboost_system.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 273144762492773700C95E7C /* libboost_system.dylib */; };
 		2731447A2492773700C95E7C /* libboost_filesystem.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 273144772492773700C95E7C /* libboost_filesystem.dylib */; };
-		2731447B2492773700C95E7C /* libboost_filesystem.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 273144772492773700C95E7C /* libboost_filesystem.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		2731447B2492773700C95E7C /* libboost_filesystem.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 273144772492773700C95E7C /* libboost_filesystem.dylib */; };
 		2786037D215532AE001B8255 /* ch4_component.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27860353215532AB001B8255 /* ch4_component.hpp */; };
 		2786037E215532AE001B8255 /* forcing_component.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27860354215532AB001B8255 /* forcing_component.hpp */; };
 		2786037F215532AE001B8255 /* INIReader.h in Headers */ = {isa = PBXBuildFile; fileRef = 27860355215532AB001B8255 /* INIReader.h */; };
@@ -105,7 +105,6 @@
 		27860417215532D8001B8255 /* so2_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 278603D7215532D7001B8255 /* so2_component.cpp */; };
 		27860418215532D8001B8255 /* temperature_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 278603D8215532D7001B8255 /* temperature_component.cpp */; };
 		27860419215532D8001B8255 /* temperature_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 278603D8215532D7001B8255 /* temperature_component.cpp */; };
-		2786041A215532D8001B8255 /* csv_output_visitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 278603D9215532D7001B8255 /* csv_output_visitor.cpp */; };
 		2786041B215532D8001B8255 /* csv_output_visitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 278603D9215532D7001B8255 /* csv_output_visitor.cpp */; };
 		2786041E215532D8001B8255 /* simpleNbox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 278603DB215532D7001B8255 /* simpleNbox.cpp */; };
 		2786041F215532D8001B8255 /* simpleNbox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 278603DB215532D7001B8255 /* simpleNbox.cpp */; };
@@ -126,15 +125,15 @@
 /* Begin PBXCopyFilesBuildPhase section */
 		2731447C2492773700C95E7C /* Embed Libraries */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
+			buildActionMask = 8;
+			dstPath = usr/local/Cellar/boost/1.72.0_3/lib;
+			dstSubfolderSpec = 16;
 			files = (
 				273144792492773700C95E7C /* libboost_system.dylib in Embed Libraries */,
 				2731447B2492773700C95E7C /* libboost_filesystem.dylib in Embed Libraries */,
 			);
 			name = "Embed Libraries";
-			runOnlyForDeploymentPostprocessing = 0;
+			runOnlyForDeploymentPostprocessing = 1;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
@@ -221,6 +220,8 @@
 		2786042D21553313001B8255 /* wiki */ = {isa = PBXFileReference; lastKnownFileType = folder; name = wiki; path = ../../wiki; sourceTree = "<group>"; };
 		2786042E21553333001B8255 /* input */ = {isa = PBXFileReference; lastKnownFileType = folder; name = input; path = ../../inst/input; sourceTree = "<group>"; };
 		8DD76F6C0486A84900D96B5E /* hector */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = hector; sourceTree = BUILT_PRODUCTS_DIR; };
+		953723FA257881E00095822F /* src */ = {isa = PBXFileReference; lastKnownFileType = folder; name = src; path = ../../src; sourceTree = "<group>"; };
+		953723FB257881E00095822F /* inst */ = {isa = PBXFileReference; lastKnownFileType = folder; name = inst; path = ../../inst; sourceTree = "<group>"; };
 		B53C186C16C98E010084BD6E /* libgtest.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libgtest.a; path = "../../../../../../../../../../Library/Developer/Xcode/DerivedData/gtest-cumlpidgkhribbdlzgavdlnkcwyy/Build/Products/Debug/libgtest.a"; sourceTree = "<group>"; };
 		B54987A916C981060000A223 /* gtest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = gtest.framework; path = "../../../../../../../../../../Library/Developer/Xcode/DerivedData/gtest-cumlpidgkhribbdlzgavdlnkcwyy/Build/Products/Debug/gtest.framework"; sourceTree = "<group>"; };
 		CD706AC2124BA91A00C0C6D5 /* hector-unit-tests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "hector-unit-tests"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -259,6 +260,8 @@
 		08FB7794FE84155DC02AAC07 /* hector */ = {
 			isa = PBXGroup;
 			children = (
+				953723FB257881E00095822F /* inst */,
+				953723FA257881E00095822F /* src */,
 				B53C186C16C98E010084BD6E /* libgtest.a */,
 				B54987A916C981060000A223 /* gtest.framework */,
 				2786042E21553333001B8255 /* input */,
@@ -550,7 +553,6 @@
 				278603EC215532D8001B8255 /* forcing_component.cpp in Sources */,
 				27860408215532D8001B8255 /* oh_component.cpp in Sources */,
 				278603EE215532D8001B8255 /* carbon-cycle-model.cpp in Sources */,
-				2786041A215532D8001B8255 /* csv_output_visitor.cpp in Sources */,
 				27860422215532D8001B8255 /* ini.c in Sources */,
 				2786040C215532D8001B8255 /* carbon-cycle-solver.cpp in Sources */,
 				27860416215532D8001B8255 /* so2_component.cpp in Sources */,
@@ -625,10 +627,10 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_VERSION = "";
-				HEADER_SEARCH_PATHS = /usr/local/boost_1_73_0/;
-				INSTALL_PATH = /usr/local/bin;
+				HEADER_SEARCH_PATHS = /usr/local/Cellar/boost/1.72.0_3/include;
+				INSTALL_PATH = /usr/local/Cellar;
 				LIBRARY_SEARCH_PATHS = (
-					/usr/local/boost_1_73_0/stage/lib/,
+					/usr/local/Cellar/boost/1.72.0_3/lib,
 					/usr/local/boost_1_73_0/stage/lib,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
@@ -652,10 +654,10 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_VERSION = "";
-				HEADER_SEARCH_PATHS = /usr/local/boost_1_73_0/;
-				INSTALL_PATH = /usr/local/bin;
+				HEADER_SEARCH_PATHS = /usr/local/Cellar/boost/1.72.0_3/include;
+				INSTALL_PATH = /usr/local/Cellar;
 				LIBRARY_SEARCH_PATHS = (
-					/usr/local/boost_1_73_0/stage/lib/,
+					/usr/local/Cellar/boost/1.72.0_3/lib,
 					/usr/local/boost_1_73_0/stage/lib,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
@@ -708,6 +710,7 @@
 				LD_OPENMP_FLAGS = "";
 				LIBRARY_SEARCH_PATHS = "${BOOSTLIB}";
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
 					"-lboost_filesystem",
 					"-lm",
@@ -757,6 +760,7 @@
 				LD_OPENMP_FLAGS = "";
 				LIBRARY_SEARCH_PATHS = "${BOOSTLIB}";
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = (
 					"-lboost_filesystem",
 					"-lm",
