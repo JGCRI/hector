@@ -75,7 +75,7 @@ following environment variables:
 This variable should contain the full name of the directory created
 when you unpacked Boost. If you unpacked Boost in `$(HOME)/src`, then
 all you need to do is set the `BOOSTVERSION` variable (*q.v.* below) and leave this variable
-at its default value. If you unpacked Boost somewhere else (if you used [Homebrew](https://brew.sh/) is used to install Boost), or if you changed the name
+at its default value. If you unpacked Boost somewhere else (if you used [Homebrew](https://brew.sh/) to install Boost), or if you changed the name
 of the directory that was created when you unpacked it, then you will
 need to set this variable explicitly. 
 
@@ -149,7 +149,7 @@ These directions assume a basic familiarity with Xcode and Mac OS X software ins
 * Change the current Scheme settings (Scheme->Edit Scheme) and add a command-line argument (*Arguments* tab, e.g. "input/hector_rcp45.ini").
 * Run!
 
-Xcode Build Settings to check/change if you encounter build errors:
+Xcode Build Settings to check if you encounter build errors, they should match the version installed on your machine:
 
 * *Architectures-Base SDK*: OS X 10.8 [or OS X version on machine] 
 * *Build Options-Compiler for C/C++/Objective-C*: Default compiler (Apple LLVM 5.1)
@@ -158,6 +158,11 @@ Xcode Build Settings to check/change if you encounter build errors:
 * *LLVM-Language-C++-C++ Standard Library*: libc++ (LLVM C++ standard library with C++11 support)
 * *Linking-Other Linker Flags*: "-lgsl -lgslcblas -lm"
 * *User-Defined*: "GCC_MODEL_TUNING" defined as "G5"
+
+Xcode Resources 
+
+* [Xcode Schemes](https://developer.apple.com/library/archive/documentation/ToolsLanguages/Conceptual/Xcode_Overview/ManagingSchemes.html)
+* [Xcode Debugging](https://developer.apple.com/library/archive/documentation/DeveloperTools/Conceptual/debugging_with_xcode/chapters/debugging_tools.html)
 
 
 ## Visual Studio Code (Mac OSX & Windows)
