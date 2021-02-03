@@ -32,34 +32,38 @@ default_fetchvars <- c(ATMOSPHERIC_CO2, RF_TOTAL, RF_CO2, GLOBAL_TEMP)
 #' of the Hector core object will be used.
 #' @family main user interface functions
 #' @export
-fetchvars <- function(core, dates, vars=NULL, scenario=NULL)
-{
-    if(is.null(vars)) {
-        vars <- getOption('hector.default.fetchvars',
-                          default=sapply(default_fetchvars, function(f){f()}))
-    }
+fetchvars <- function(core, dates, vars = NULL, scenario = NULL) {
+  if (is.null(vars)) {
+    vars <- getOption("hector.default.fetchvars",
+      default = sapply(default_fetchvars, function(f) {
+        f()
+      })
+    )
+  }
 
-    if(is.null(scenario)) {
-        scenario <- core$name
-    }
+  if (is.null(scenario)) {
+    scenario <- core$name
+  }
 
-    strt <- startdate(core)
-    end <- getdate(core)
+  strt <- startdate(core)
+  end <- getdate(core)
 
-    valid <- dates >= strt & dates <= end
-    dates <- dates[valid]
+  valid <- dates >= strt & dates <= end
+  dates <- dates[valid]
 
-    rslt <- do.call(rbind,
-                    lapply(vars, function(v) {
-                               sendmessage(core, GETDATA(), v, dates, NA, '')
-                           }))
-    ## Fix the variable name for the adjusted halocarbon forcings so that they are
-    ## consistent with other forcings.
-    rslt$variable <- sub(paste0('^',RFADJ_PREFIX()), RF_PREFIX(), rslt$variable)
-    cols <- names(rslt)
-    rslt$scenario <- scenario
-    ## reorder the columns to put the scenario name first
-    rslt[,c('scenario', cols)]
+  rslt <- do.call(
+    rbind,
+    lapply(vars, function(v) {
+      sendmessage(core, GETDATA(), v, dates, NA, "")
+    })
+  )
+  ## Fix the variable name for the adjusted halocarbon forcings so that they are
+  ## consistent with other forcings.
+  rslt$variable <- sub(paste0("^", RFADJ_PREFIX()), RF_PREFIX(), rslt$variable)
+  cols <- names(rslt)
+  rslt$scenario <- scenario
+  ## reorder the columns to put the scenario name first
+  rslt[, c("scenario", cols)]
 }
 
 
@@ -79,34 +83,37 @@ fetchvars <- function(core, dates, vars=NULL, scenario=NULL)
 #' @param unit Unit string.  Can be set to NA for unitless variables.
 #' @family main user interface functions
 #' @export
-setvar <- function(core, dates, var, values, unit)
-{
-    unit[is.na(unit)] <- '(unitless)'
-    var_split <- strsplit(var, BIOME_SPLIT_CHAR(), fixed = TRUE)[[1]]
-    if (length(var_split) > 2) {
-        stop("Invalid input variable: '", var, "'")
-    } else if (length(var_split) == 2) {
-        biome <- var_split[[1]]
-        biome_list <- get_biome_list(core)
-        if (!biome %in% biome_list) {
-            stop("Biome '", biome, "' missing from biome list. ",
-                 "Use `hector::create_biome(\"", biome, "\")` to create it.")
-        }
+setvar <- function(core, dates, var, values, unit) {
+  unit[is.na(unit)] <- "(unitless)"
+  var_split <- strsplit(var, BIOME_SPLIT_CHAR(), fixed = TRUE)[[1]]
+  if (length(var_split) > 2) {
+    stop("Invalid input variable: '", var, "'")
+  } else if (length(var_split) == 2) {
+    biome <- var_split[[1]]
+    biome_list <- get_biome_list(core)
+    if (!biome %in% biome_list) {
+      stop(
+        "Biome '", biome, "' missing from biome list. ",
+        "Use `hector::create_biome(\"", biome, "\")` to create it."
+      )
     }
-    sendmessage(core, SETDATA(), var, dates, values, unit)
+  }
+  sendmessage(core, SETDATA(), var, dates, values, unit)
 
-    if(any(dates <= getdate(core)) || any(is.na(dates))) {
-        rdate <- min(dates) -1
-        if(is.na(rdate))
-            rdate <- 0
-
-        if(core$clean)
-            core$reset_date <- rdate
-        else
-            core$reset_date <- min(rdate, core$reset_date)
-
-        core$clean <- FALSE
+  if (any(dates <= getdate(core)) || any(is.na(dates))) {
+    rdate <- min(dates) - 1
+    if (is.na(rdate)) {
+      rdate <- 0
     }
 
-    invisible(NULL)
+    if (core$clean) {
+      core$reset_date <- rdate
+    } else {
+      core$reset_date <- min(rdate, core$reset_date)
+    }
+
+    core$clean <- FALSE
+  }
+
+  invisible(NULL)
 }
