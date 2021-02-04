@@ -33,3 +33,6 @@
 ^inst/_pkgdown.yml
 ^docs/
 ^\.github$
+
+# lintr config
+.lintr
