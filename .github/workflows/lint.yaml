@@ -45,5 +45,7 @@ jobs:
         run: R CMD INSTALL .
 
       - name: Lint
-        run: lintr::lint_package()
+        run: lintr::lint_package(linters = with_defaults(object_name_linter = NULL, \
+                                                         line_length_linter = line_length_linter(100)), \
+                                                         exclusions = list("R/RcppExports.R"))
         shell: Rscript {0}
