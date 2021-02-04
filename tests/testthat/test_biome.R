@@ -174,7 +174,8 @@ test_that("Correct way to create new biomes", {
   # This suppresses a bogus warning about the condition type of the
   # resulting error.
   suppressWarnings(
-    expect_error(create_biome_impl(core, "permafrost"), "Biome 'permafrost' is already in `biome_list`")
+    expect_error(create_biome_impl(core, "permafrost"),
+                 "Biome 'permafrost' is already in `biome_list`")
   )
   invisible(create_biome_impl(core, "empty"))
   expect_equal(get_biome_list(core), c("permafrost", "empty"))
@@ -191,7 +192,9 @@ test_that("Split biomes, and modify parameters", {
   global_veg <- sendmessage(core, GETDATA(), VEG_C("default"), 0, NA, "")[["value"]]
   invisible(run(core))
   r_global <- fetchvars(core, 2000:2100)
-  r_global_pools <- fetchvars(core, 2000:2100, c(VEG_C("default"), DETRITUS_C("default"), SOIL_C("default")))
+  r_global_pools <- fetchvars(core, 2000:2100, c(VEG_C("default"),
+                                                 DETRITUS_C("default"),
+                                                 SOIL_C("default")))
   r_global_pools$biome <- gsub("^(.*)\\.(.*)", "\\1", r_global_pools$variable)
   r_global_pools$variable <- gsub("^(.*)\\.(.*)", "\\2", r_global_pools$variable)
   r_global_totals <- aggregate(value ~ year + variable, data = r_global_pools, sum)

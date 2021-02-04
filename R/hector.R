@@ -93,10 +93,10 @@ newcore <- function(inifile, loglevel = 0, suppresslogging = TRUE,
 
 #### Utility functions
 ### The elements of an hcore object are
-###   hcore['coreidx'] : index
-###   hcore['strtdate'] : start date
-###   hcore['enddate'] : end date
-###   hcore['inifile'] : config file name
+###   coreidx : index
+###   strtdate : start date
+###   enddate : end date
+###   inifile : config file name
 
 #' \strong{isactive}: Indicate whether a Hector instance is active
 #' @rdname hectorutil

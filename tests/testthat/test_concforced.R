@@ -29,7 +29,10 @@ test_that("Concentration-forced runs work for halocarbons", {
   emissOut_HFCemiss <- subset(emissOut, variable == EMISSIONS_HFC23())
 
   # Set up and run Hector with constrained HFC concentrations.
-  setvar(hc, emissOut_HFCconc$year, HFC23_CONSTRAIN(), emissOut_HFCconc$value, getunits(HFC23_CONSTRAIN()))
+  setvar(hc,
+         emissOut_HFCconc$year, HFC23_CONSTRAIN(),
+         emissOut_HFCconc$value,
+         getunits(HFC23_CONSTRAIN()))
   invisible(reset(hc))
   invisible(run(hc))
   conOut <- fetchvars(hc, dates, outvars)
@@ -71,7 +74,11 @@ test_that("Concentration-forced runs work for CH4", {
   emissOut_CH4emiss <- subset(emissOut, variable == EMISSIONS_CH4())
 
   # Set up and run Hector with constrained CH4 concentrations.
-  setvar(hc, emissOut_CH4conc$year, CH4_CONSTRAIN(), emissOut_CH4conc$value, getunits(CH4_CONSTRAIN()))
+  setvar(hc,
+         emissOut_CH4conc$year,
+         CH4_CONSTRAIN(),
+         emissOut_CH4conc$value,
+         getunits(CH4_CONSTRAIN()))
   invisible(reset(hc))
   invisible(run(hc))
   conOut <- fetchvars(hc, dates, outvars)
@@ -114,7 +121,11 @@ test_that("Concentration-forced runs work for N2O", {
   emissOut_N2Oemiss <- subset(emissOut, variable == EMISSIONS_N2O())
 
   # Set up and run Hector with constrained N2O concentrations.
-  setvar(hc, emissOut_N2Oconc$year, N2O_CONSTRAIN(), emissOut_N2Oconc$value, getunits(N2O_CONSTRAIN()))
+  setvar(hc,
+         emissOut_N2Oconc$year,
+         N2O_CONSTRAIN(),
+         emissOut_N2Oconc$value,
+         getunits(N2O_CONSTRAIN()))
   invisible(reset(hc))
   invisible(run(hc))
   conOut <- fetchvars(hc, dates, outvars)
@@ -210,7 +221,8 @@ test_that("Concentration driven runs via INI file works", {
 
   # Format the data the data frame concentrations into a format that can be used as Hector input.
   results_sub <- results[, c("year", "variable", "value")]
-  wide <- reshape(results_sub, v.names = "value", idvar = "year", timevar = "variable", direction = "wide")
+  wide <- reshape(results_sub, v.names = "value", idvar = "year",
+                  timevar = "variable", direction = "wide")
   names(wide) <- gsub("value\\.", "", names(wide))
   names(wide)[names(wide) == "year"] <- "Date"
   names(wide)[names(wide) == "Ca"] <- CO2_CONSTRAIN()
@@ -253,8 +265,10 @@ test_that("Concentration driven runs via INI file works", {
   # the concentration constraints csv file. This is required by the Hector core.
   tmprcp45_dir <- file.path(dirname(tmp_dir), "emissions")
   dir.create(tmprcp45_dir, showWarnings = FALSE, recursive = TRUE)
-  file.copy(system.file("input", "emissions", "RCP45_emissions.csv", package = "hector"), tmprcp45_dir)
-  file.copy(system.file("input", "emissions", "volcanic_RF.csv", package = "hector"), tmprcp45_dir)
+  file.copy(system.file("input", "emissions", "RCP45_emissions.csv",
+                        package = "hector"), tmprcp45_dir)
+  file.copy(system.file("input", "emissions", "volcanic_RF.csv",
+                        package = "hector"), tmprcp45_dir)
 
   # Write out the new ini file.
   tmpini <- tempfile(fileext = ".ini")

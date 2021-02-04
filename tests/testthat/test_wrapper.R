@@ -17,7 +17,8 @@ test_that("Rerunning spinup produces minimal change", {
   run(hc, 2100)
   dd2 <- fetchvars(hc, dates, testvars)
 
-  # 1.0e-6 is a small number selected to make sure that re-running the spin-up, only produces a minimal change.
+  # 1.0e-6 is a small number selected to make sure that re-running the spin-up
+  # only produces a minimal change.
   diff <- abs((dd2$value - dd1$value) / (dd1$value + 1.0e-6))
   expect_lt(max(diff), 1.0e-6)
 
@@ -46,7 +47,9 @@ test_that("Basic hcore functionality works", {
 test_that("Write out logs", {
 
   ## Turn logging ON for one test and confirm it runs (see GitHub issues #372 and #381)
-  hc_log <- newcore(file.path(inputdir, "hector_rcp45.ini"), name = "RCP45", suppresslogging = FALSE)
+  hc_log <- newcore(file.path(inputdir, "hector_rcp45.ini"),
+                    name = "RCP45",
+                    suppresslogging = FALSE)
   run(hc_log, 2100)
   shutdown(hc_log)
 
@@ -61,9 +64,11 @@ test_that("Write out logs", {
 
     # check for Unix file system otherwise assume Windows
     if (.Platform$OS.type == "unix") {
-      log_dir <- file.path(run_dir, "hector", "check", "hector.Rcheck", "tests", "testthat", "logs")
+      log_dir <- file.path(run_dir, "hector", "check", "hector.Rcheck",
+                           "tests", "testthat", "logs")
     } else {
-      log_dir <- file.path(run_dir, "hector", "check", "hector.Rcheck", "tests_i386", "testthat", "logs")
+      log_dir <- file.path(run_dir, "hector", "check", "hector.Rcheck",
+                           "tests_i386", "testthat", "logs")
     }
   }
 
@@ -225,7 +230,6 @@ test_that("Setting past or parameter values does trigger a reset.", {
   setvar(hc, 1800, FFI_EMISSIONS(), 0.0, "Pg C/yr") # shouldn't change the
   # reset date
   expect_equal(hc$reset_date, 0)
-
 
   shutdown(hc)
 })
