@@ -7,6 +7,7 @@
 #' @name loglevels
 NULL
 
+# This is a comment line that's too long, over 100 characters, and should cause the GA Lintr check to fail.
 
 #' Utility functions for Hector instances
 #'
