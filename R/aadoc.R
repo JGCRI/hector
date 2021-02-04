@@ -7,7 +7,7 @@
 #' @name loglevels
 NULL
 
-
+# this is a long line this is a long line this is a long line this is a long line this is a long line this is a long line
 #' Utility functions for Hector instances
 #'
 #' @param core Hector instance to operate on
