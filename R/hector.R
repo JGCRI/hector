@@ -90,6 +90,7 @@ newcore <- function(inifile, loglevel = 0, suppresslogging = TRUE,
   hcore
 }
 
+# this is a comment that is going to be longer than 100 characters, so that we can see what the fail message on GitHub is like.
 
 #### Utility functions
 ### The elements of an hcore object are
