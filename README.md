@@ -2,6 +2,7 @@
 ![Command Line Hector](https://github.com/JGCRI/hector/workflows/Command%20Line%20Hector/badge.svg)
 ![test-coverage](https://github.com/JGCRI/hector/workflows/test-coverage/badge.svg)
 [![codecov](https://codecov.io/gh/JGCRI/hector/branch/master/graph/badge.svg?token=EGM0lXDxRv)](https://codecov.io/gh/JGCRI/hector)
+![lint](https://github.com/JGCRI/hector/workflows/lint/badge.svg)
 
 Hector
 ======
