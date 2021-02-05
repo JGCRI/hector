@@ -68,7 +68,7 @@ void slrComponent::init( Core* coreptr ) {
 // documentation is inherited
 unitval slrComponent::sendMessage( const std::string& message,
                                   const std::string& datum,
-                                  const message_data info ) throw ( h_exception )
+                                  const message_data info )
 {
     unitval returnval;
 
@@ -91,7 +91,7 @@ unitval slrComponent::sendMessage( const std::string& message,
 //------------------------------------------------------------------------------
 // documentation is inherited
 void slrComponent::setData( const string& varName,
-                            const message_data& data ) throw ( h_exception )
+                            const message_data& data )
 {
     H_LOG( logger, Logger::DEBUG ) << "Setting " << varName << "[" << data.date << "]=" << data.value_str << std::endl;
 
@@ -101,7 +101,7 @@ void slrComponent::setData( const string& varName,
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-void slrComponent::prepareToRun() throw ( h_exception ) {
+void slrComponent::prepareToRun() {
 
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
     oldDate = core->getStartDate();
@@ -184,7 +184,7 @@ void slrComponent::compute_slr( const double date ) {
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-void slrComponent::run( const double runToDate ) throw ( h_exception ) {
+void slrComponent::run( const double runToDate ) {
 
     H_LOG( logger, Logger::DEBUG ) << "SLR run " << runToDate << std::endl;
 
@@ -215,7 +215,7 @@ void slrComponent::run( const double runToDate ) throw ( h_exception ) {
 //------------------------------------------------------------------------------
 // documentation is inherited
 unitval slrComponent::getData( const std::string& varName,
-                              const double date ) throw ( h_exception ) {
+                              const double date ) {
 
     unitval returnval;
 
@@ -236,7 +236,7 @@ unitval slrComponent::getData( const std::string& varName,
     return returnval;
 }
 
-void slrComponent::reset(double time) throw(h_exception)
+void slrComponent::reset(double time)
 {
     oldDate = time;
     sl_rc.truncate(time);

@@ -40,11 +40,11 @@ class h_exception : public std::exception {
                 std::string file_p, int linenum_p)
             : msg(msg_p), func(func_p), file(file_p), linenum(linenum_p) {
     }
-    virtual ~h_exception() throw() {}
+    virtual ~h_exception() {}
     inline std::string get_filename() const {
         return extractFilename(file);
     }
-    virtual const char* what() const throw() {
+    virtual const char* what() const {
         return msg.c_str();
     }
     friend inline std::ostream & operator<<( std::ostream &os, const h_exception &he );

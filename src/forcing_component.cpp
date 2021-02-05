@@ -195,7 +195,7 @@ void ForcingComponent::init( Core* coreptr ) {
 // documentation is inherited
 unitval ForcingComponent::sendMessage( const std::string& message,
                                       const std::string& datum,
-                                      const message_data info ) throw ( h_exception )
+                                      const message_data info )
 {
     unitval returnval;
 
@@ -217,7 +217,7 @@ unitval ForcingComponent::sendMessage( const std::string& message,
 //------------------------------------------------------------------------------
 // documentation is inherited
 void ForcingComponent::setData( const string& varName,
-                                const message_data& data ) throw ( h_exception )
+                                const message_data& data )
 {
     H_LOG( logger, Logger::DEBUG ) << "Setting " << varName << "[" << data.date << "]=" << data.value_str << std::endl;
 
@@ -240,7 +240,7 @@ void ForcingComponent::setData( const string& varName,
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-void ForcingComponent::prepareToRun() throw ( h_exception ) {
+void ForcingComponent::prepareToRun() {
 
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
 
@@ -260,7 +260,7 @@ void ForcingComponent::prepareToRun() throw ( h_exception ) {
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-void ForcingComponent::run( const double runToDate ) throw ( h_exception ) {
+void ForcingComponent::run( const double runToDate ) {
 
     // Calculate instantaneous radiative forcing for any & all agents
     // As each is computed, push it into 'forcings' map for Ftot calculation.
@@ -439,7 +439,7 @@ void ForcingComponent::run( const double runToDate ) throw ( h_exception ) {
 //------------------------------------------------------------------------------
 // documentation is inherited
 unitval ForcingComponent::getData( const std::string& varName,
-                                  const double date ) throw ( h_exception ) {
+                                  const double date ) {
 
 
     unitval returnval;
@@ -508,7 +508,7 @@ unitval ForcingComponent::getData( const std::string& varName,
     return returnval;
 }
 
-void ForcingComponent::reset(double time) throw(h_exception)
+void ForcingComponent::reset(double time)
 {
     // Set the current year to the reset year, and drop outputs after the reset year.
     currentYear = time;

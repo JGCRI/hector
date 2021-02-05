@@ -116,7 +116,7 @@ void CarbonCycleSolver::setData( const std::string &varName,
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-void CarbonCycleSolver::prepareToRun() throw( h_exception )
+void CarbonCycleSolver::prepareToRun()
 {
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
 
@@ -211,7 +211,7 @@ void CarbonCycleSolver::ODEEvalFunctor::operator()( const std::vector<double>& y
  *  \param[in] tmid     middle of time step
  *  \exception          will always happen; gsl solver has failed
  */
-void CarbonCycleSolver::failure( int stat, double t0, double tmid ) throw( h_exception ) {
+void CarbonCycleSolver::failure( int stat, double t0, double tmid ) {
     H_LOG( logger, Logger::SEVERE ) << "gsl_ode_evolve_apply failed at t= " <<
     t0 << "  tinit= " << t << "  tmid = " << tmid << "  last dt= " <<
     dt << "\nError code: " << stat << "\ncvals:\n";
@@ -304,7 +304,7 @@ void CarbonCycleSolver::run( const double tnew ) throw ( h_exception )
  *  carbon pools, at the end of the preindustrial period before the main run.
  *  To reach this point, run the carbon model until all dc/dt are ~0.
  */
-bool CarbonCycleSolver::run_spinup( const int step ) throw( h_exception )
+bool CarbonCycleSolver::run_spinup( const int step )
 {
 
     if( !in_spinup ) {  // first time

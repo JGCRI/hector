@@ -203,7 +203,7 @@ void Core::init() {
  *  \exception h_exception If either the componentName or varName was not recognized.
  */
 void Core::setData( const string& componentName, const string& varName,
-                    const message_data& data ) throw ( h_exception )
+                    const message_data& data )
 {
     if( componentName == getComponentName() ) {
         try {
@@ -282,7 +282,7 @@ void Core::addVisitor( AVisitor* visitor ) {
  *
  *  \exception h_exception An error which may occur at any stage of the process.
  */
-void Core::prepareToRun(void) throw (h_exception)
+void Core::prepareToRun(void)
 {
 
     /* Most of this stuff only needs to be done once, even if we reset the
@@ -417,7 +417,7 @@ bool Core::run_spinup()
  *  \exception h_exception An error which may occur at any stage of the process.
  */
 
-void Core::run(double runtodate) throw ( h_exception ) {
+void Core::run(double runtodate) {
     if(runtodate < 0.0) {
         // run to the configured default enddate.  This is mainly for
         // backward compatibility.  The input run-to date will always
@@ -510,7 +510,7 @@ void Core::shutDown()
  *  \param componentName The name of the component to retrieve.
  *  \exception h_exception If the componentName was not recognized.
  */
-IModelComponent* Core::getComponentByName( const string& componentName ) const throw ( h_exception )
+IModelComponent* Core::getComponentByName( const string& componentName ) const
 {
     CNameComponentIterator it = modelComponents.find( componentName );
 
@@ -526,7 +526,7 @@ IModelComponent* Core::getComponentByName( const string& componentName ) const t
  *  \param componentName The capability of the component to retrieve.
  *  \exception h_exception If the capabilityName was not recognized.
  */
-IModelComponent* Core::getComponentByCapability( const string& capabilityName ) const throw ( h_exception )
+IModelComponent* Core::getComponentByCapability( const string& capabilityName ) const
 {
     H_ASSERT( isInited, "getComponentByCapability not available until core is initialized")
 
@@ -552,8 +552,7 @@ IModelComponent* Core::getComponentByCapability( const string& capabilityName ) 
  *  \exception h_exception If the componentName was not recognized.
  * \note By "capability" we mean any piece of data that the component wants to expose to the model core or other components; this can be an input, an output, or an internal variable.
  */
-void Core::registerCapability(const string& capabilityName, const string& componentName, bool warndupe
-                              )  throw ( h_exception ){
+void Core::registerCapability(const string& capabilityName, const string& componentName, bool warndupe ) {
     H_ASSERT( !isInited, "registerCapability not available after core is initialized")
 
     // check whether the capability already exists
@@ -622,7 +621,7 @@ void Core::registerDependency( const string& capabilityName, const string& compo
  *  \exception h_exception If the componentName was not recognized.
  */
 unitval Core::sendMessage( const std::string& message,
-                          const std::string& datum ) throw ( h_exception )
+                          const std::string& datum )
 {
     return sendMessage( message, datum, message_data() );
 }
@@ -636,7 +635,7 @@ unitval Core::sendMessage( const std::string& message,
  */
 unitval Core::sendMessage( const std::string& message,
                           const std::string& datum,
-                          const message_data& info ) throw ( h_exception )
+                          const message_data& info )
 {
 
     std::vector<std::string> datum_split;
@@ -697,7 +696,7 @@ unitval Core::sendMessage( const std::string& message,
  *                         may not be added.
  *  \note The core assumes ownership of memory associated with all components.
  */
-void Core::addModelComponent( IModelComponent* modelComponent ) throw ( h_exception ) {
+void Core::addModelComponent( IModelComponent* modelComponent ) {
     H_ASSERT( !isInited, "Model components can only be added before initialization." );
 
     modelComponents[ modelComponent->getComponentName() ] = modelComponent;

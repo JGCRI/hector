@@ -58,7 +58,7 @@ void BlackCarbonComponent::init( Core* coreptr ) {
 // documentation is inherited
 unitval BlackCarbonComponent::sendMessage( const std::string& message,
                                           const std::string& datum,
-                                          const message_data info ) throw ( h_exception )
+                                          const message_data info )
 {
     unitval returnval;
 
@@ -80,7 +80,7 @@ unitval BlackCarbonComponent::sendMessage( const std::string& message,
 //------------------------------------------------------------------------------
 // documentation is inherited
 void BlackCarbonComponent::setData( const string& varName,
-                                    const message_data& data ) throw ( h_exception )
+                                    const message_data& data )
 {
     H_LOG( logger, Logger::DEBUG ) << "Setting " << varName << "[" << data.date << "]=" << data.value_str << std::endl;
 
@@ -99,7 +99,7 @@ void BlackCarbonComponent::setData( const string& varName,
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-void BlackCarbonComponent::prepareToRun() throw ( h_exception ) {
+void BlackCarbonComponent::prepareToRun() {
 
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
     oldDate = core->getStartDate();
@@ -107,7 +107,7 @@ void BlackCarbonComponent::prepareToRun() throw ( h_exception ) {
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-void BlackCarbonComponent::run( const double runToDate ) throw ( h_exception ) {
+void BlackCarbonComponent::run( const double runToDate ) {
     H_ASSERT( !core->inSpinup() && runToDate-oldDate == 1, "timestep must equal 1" );
     oldDate = runToDate;
 }
@@ -115,7 +115,7 @@ void BlackCarbonComponent::run( const double runToDate ) throw ( h_exception ) {
 //------------------------------------------------------------------------------
 // documentation is inherited
 unitval BlackCarbonComponent::getData( const std::string& varName,
-                                      const double date ) throw ( h_exception ) {
+                                      const double date ) {
 
     unitval returnval;
 
@@ -130,7 +130,7 @@ unitval BlackCarbonComponent::getData( const std::string& varName,
     return returnval;
 }
 
-void BlackCarbonComponent::reset(double time) throw(h_exception)
+void BlackCarbonComponent::reset(double time)
 {
     // Set time counter to requested date; there are no outputs to
     // reset.

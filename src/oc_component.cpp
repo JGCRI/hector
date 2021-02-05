@@ -59,7 +59,7 @@ void OrganicCarbonComponent::init( Core* coreptr ) {
 // documentation is inherited
 unitval OrganicCarbonComponent::sendMessage( const std::string& message,
                                             const std::string& datum,
-                                            const message_data info ) throw ( h_exception )
+                                            const message_data info )
 {
     unitval returnval;
 
@@ -82,7 +82,7 @@ unitval OrganicCarbonComponent::sendMessage( const std::string& message,
 //------------------------------------------------------------------------------
 // documentation is inherited
 void OrganicCarbonComponent::setData( const string& varName,
-                                      const message_data& data ) throw ( h_exception )
+                                      const message_data& data )
 {
     H_LOG( logger, Logger::DEBUG ) << "Setting " << varName << "[" << data.date << "]=" << data.value_str << std::endl;
 
@@ -101,7 +101,7 @@ void OrganicCarbonComponent::setData( const string& varName,
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-void OrganicCarbonComponent::prepareToRun() throw ( h_exception ) {
+void OrganicCarbonComponent::prepareToRun() {
 
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
     oldDate = core->getStartDate();
@@ -109,7 +109,7 @@ void OrganicCarbonComponent::prepareToRun() throw ( h_exception ) {
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-void OrganicCarbonComponent::run( const double runToDate ) throw ( h_exception ) {
+void OrganicCarbonComponent::run( const double runToDate ) {
 	H_ASSERT( !core->inSpinup() && runToDate-oldDate == 1, "timestep must equal 1" );
     oldDate = runToDate;
 }
@@ -117,7 +117,7 @@ void OrganicCarbonComponent::run( const double runToDate ) throw ( h_exception )
 //------------------------------------------------------------------------------
 // documentation is inherited
 unitval OrganicCarbonComponent::getData( const std::string& varName,
-                                        const double date ) throw ( h_exception ) {
+                                        const double date ) {
 
     unitval returnval;
 
@@ -132,7 +132,7 @@ unitval OrganicCarbonComponent::getData( const std::string& varName,
     return returnval;
 }
 
-void OrganicCarbonComponent::reset(double time) throw(h_exception)
+void OrganicCarbonComponent::reset(double time)
 {
     oldDate = time;
     H_LOG(logger, Logger::NOTICE)

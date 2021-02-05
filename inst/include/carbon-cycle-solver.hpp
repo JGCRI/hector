@@ -114,7 +114,7 @@ private:
         double* t;
     };
     
-    void failure( int stat, double t0, double tmid ) throw( h_exception );
+    void failure( int stat, double t0, double tmid );
     
     bool in_spinup;
     

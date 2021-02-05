@@ -38,16 +38,16 @@ public:
 
     virtual unitval sendMessage( const std::string& message,
                                 const std::string& datum,
-                                const message_data info=message_data() ) throw ( h_exception );
+                                const message_data info=message_data() );
 
     virtual void setData( const std::string& varName,
-                          const message_data& data ) throw ( h_exception );
+                          const message_data& data );
 
-    virtual void prepareToRun() throw ( h_exception );
+    virtual void prepareToRun();
 
-    virtual void run( const double runToDate ) throw ( h_exception );
+    virtual void run( const double runToDate );
 
-    virtual void reset(double time) throw(h_exception);
+    virtual void reset(double time);
 
     virtual void shutDown();
 
@@ -57,7 +57,7 @@ public:
 
 private:
     virtual unitval getData( const std::string& varName,
-                            const double date ) throw ( h_exception );
+                            const double date );
 
     //! Current ozone concentration, relative to preindustrial, Dobson units
     unitval PO3;

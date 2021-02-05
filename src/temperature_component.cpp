@@ -128,7 +128,7 @@ void TemperatureComponent::init( Core* coreptr ) {
 // documentation is inherited
 unitval TemperatureComponent::sendMessage( const std::string& message,
                                     const std::string& datum,
-                                    const message_data info ) throw ( h_exception )
+                                    const message_data info )
 {
     unitval returnval;
 
@@ -146,7 +146,7 @@ unitval TemperatureComponent::sendMessage( const std::string& message,
 //------------------------------------------------------------------------------
 // documentation is inherited
 void TemperatureComponent::setData( const string& varName,
-                              const message_data& data ) throw ( h_exception )
+                              const message_data& data )
 {
     using namespace boost;
 
@@ -183,7 +183,7 @@ void TemperatureComponent::setData( const string& varName,
 //------------------------------------------------------------------------------
 // documentation is inherited
 // TO DO: should we put these in the ini file instead?
-void TemperatureComponent::prepareToRun() throw ( h_exception ) {
+void TemperatureComponent::prepareToRun() {
 
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
 
@@ -311,7 +311,7 @@ void TemperatureComponent::prepareToRun() throw ( h_exception ) {
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-void TemperatureComponent::run( const double runToDate ) throw ( h_exception ) {
+void TemperatureComponent::run( const double runToDate ) {
     H_LOG( logger, Logger::DEBUG ) << "temperature run " << runToDate << std::endl;
 
     // Commented section below is for case of user-specified temperature record.
@@ -436,7 +436,7 @@ void TemperatureComponent::run( const double runToDate ) throw ( h_exception ) {
 //------------------------------------------------------------------------------
 // documentation is inherited
 unitval TemperatureComponent::getData( const std::string& varName,
-                                const double date ) throw ( h_exception ) {
+                                const double date ) {
 
     unitval returnval;
 
@@ -502,7 +502,7 @@ unitval TemperatureComponent::getData( const std::string& varName,
 }
 
 
-void TemperatureComponent::reset(double time) throw(h_exception)
+void TemperatureComponent::reset(double time)
 {
     // We take a slightly different approach in this component's reset method than we have in other components.  The
     // temperature component doesn't have its own time counter, and it stores its history in a collection of double

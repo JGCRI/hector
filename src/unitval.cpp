@@ -126,7 +126,7 @@ string unitval::unitsName( const unit_types u ) {
  *  Uses names consistent with unitsName to translate between strings and
  *  unit_types.
  */
-unit_types unitval::parseUnitsName( const string& unitsStr ) throw( h_exception ) {
+unit_types unitval::parseUnitsName( const string& unitsStr ) {
     // Iterate over all the enumerated units and check if its unitsName() matches
     // the given units string.
     /*!
@@ -157,7 +157,7 @@ unit_types unitval::parseUnitsName( const string& unitsStr ) throw( h_exception 
  *      - The units string (if set) does not match the expected units.
  */
 unitval unitval::parse_unitval( const string& unitvalStr,
-                               const unit_types& expectedUnits ) throw( h_exception )
+                               const unit_types& expectedUnits )
 {
     // we are assuming that should units exist they will be in the format of:
     // [value],[units]
@@ -188,7 +188,7 @@ unitval unitval::parse_unitval( const string& unitvalStr,
  *      - The units string (if set) does not match the expected units.
  */
 unitval unitval::parse_unitval( const string& valueStr, const string& unitsStr,
-                               const unit_types& expectedUnits ) throw( h_exception )
+                               const unit_types& expectedUnits )
 {
     // Double check if a user really provided a single unitval string in which
     // case it should be re-parsed before converting.
@@ -226,7 +226,7 @@ unitval unitval::parse_unitval( const string& valueStr, const string& unitsStr,
  *  \exception h_exception An exception may be raised for the following reasons:
  *      - The originally set units do not match the expected units.
  */
-void unitval::expecting_unit( const unit_types& expectedUnits ) throw( h_exception ) {
+void unitval::expecting_unit( const unit_types& expectedUnits ) {
     if (valUnits == U_UNDEFINED) {
         valUnits = expectedUnits;
     } else {
