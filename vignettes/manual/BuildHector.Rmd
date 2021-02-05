@@ -153,7 +153,7 @@ Xcode Build Settings to check if you encounter build errors, they should match t
 
 * *Architectures-Base SDK*: OS X 10.8 [or OS X version on machine] 
 * *Build Options-Compiler for C/C++/Objective-C*: Default compiler (Apple LLVM 5.1)
-* *Search Paths-Header Search Paths*: "/usr/local/include /usr/local/lib/boost_1_52_0/" [or other header directories]
+* *Search Paths-Header Search Paths*: "/usr/local/include /usr/local/lib/boost_1_52_0/" [or other header directories, this is important for homebrew users]
 * *Search Paths-Library Search Paths*: "/usr/local/lib/" [or other library directories]
 * *LLVM-Language-C++-C++ Standard Library*: libc++ (LLVM C++ standard library with C++11 support)
 * *Linking-Other Linker Flags*: "-lgsl -lgslcblas -lm"
