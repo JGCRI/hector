@@ -58,13 +58,12 @@ NULL
 #' @param infile INI-format file containing the scenario definition
 #' @return Data frame containing Hector output for default variables
 #' @export
-runscenario <- function(infile)
-{
-    core <- newcore(infile)
-    run(core)
-    d <- fetchvars(core, seq(startdate(core), enddate(core)))
-    shutdown(core)
-    d
+runscenario <- function(infile) {
+  core <- newcore(infile)
+  run(core)
+  d <- fetchvars(core, seq(startdate(core), enddate(core)))
+  shutdown(core)
+  d
 }
 
 
@@ -83,62 +82,57 @@ runscenario <- function(infile)
 #' @return handle for the Hector instance.
 #' @family main user interface functions
 #' @export
-newcore <- function(inifile, loglevel=0, suppresslogging=TRUE,
-                    name="unnamed hector core")
-{
-    hcore <- newcore_impl(inifile, loglevel, suppresslogging, name)
-    class(hcore) <- c("hcore", class(hcore))
-    reg.finalizer(hcore, hector::shutdown)
-    hcore
+newcore <- function(inifile, loglevel = 0, suppresslogging = TRUE,
+                    name = "unnamed hector core") {
+  hcore <- newcore_impl(inifile, loglevel, suppresslogging, name)
+  class(hcore) <- c("hcore", class(hcore))
+  reg.finalizer(hcore, hector::shutdown)
+  hcore
 }
 
 
 #### Utility functions
 ### The elements of an hcore object are
-###   hcore['coreidx'] : index
-###   hcore['strtdate'] : start date
-###   hcore['enddate'] : end date
-###   hcore['inifile'] : config file name
+###   coreidx : index
+###   strtdate : start date
+###   enddate : end date
+###   inifile : config file name
 
 #' \strong{isactive}: Indicate whether a Hector instance is active
 #' @rdname hectorutil
 #' @export
-isactive <- function(core)
-{
-    if(!inherits(core, 'hcore')) {
-        stop('Object supplied is not an hcore class instance.')
-    }
-    chk_core_valid(core)
+isactive <- function(core) {
+  if (!inherits(core, "hcore")) {
+    stop("Object supplied is not an hcore class instance.")
+  }
+  chk_core_valid(core)
 }
 
 #' \strong{startdate}: Report the start date for a Hector instance
 #' @rdname hectorutil
 #' @export
-startdate <- function(core)
-{
-    if(!inherits(core, 'hcore')) {
-        stop('Object supplied is not an hcore class instance.')
-    }
-    core$strtdate
+startdate <- function(core) {
+  if (!inherits(core, "hcore")) {
+    stop("Object supplied is not an hcore class instance.")
+  }
+  core$strtdate
 }
 
 #' \strong{enddate}: Report the end date for a Hector instance
 #' @rdname hectorutil
 #' @export
-enddate <- function(core)
-{
-    if(!inherits(core, 'hcore')) {
-        stop('Object supplied is not an hcore class instance.')
-    }
-    core$enddate
+enddate <- function(core) {
+  if (!inherits(core, "hcore")) {
+    stop("Object supplied is not an hcore class instance.")
+  }
+  core$enddate
 }
 
 #' \strong{getname}: Report the name for a Hector instance
 #' @rdname hectorutil
 #' @export
-getname <- function(core)
-{
-    core$name
+getname <- function(core) {
+  core$name
 }
 
 
@@ -154,25 +148,24 @@ NULL
 #' @describeIn methods Format method
 #' @inheritParams methods
 #' @export
-format.hcore <- function(x, ...)
-{
-    if(!isactive(x)) {
-        'Hector core (INACTIVE)'
-    }
-    else {
-        cdate <- getdate(x)
-        sprintf('Hector core:\t%s\nStart date:\t%d\nEnd date:\t%d\nCurrent date:\t%d\nInput file:\t%s',
-                x$name,
-                as.integer(x$strtdate), as.integer(x$enddate), as.integer(cdate),
-                x$inifile)
-    }
+format.hcore <- function(x, ...) {
+  if (!isactive(x)) {
+    "Hector core (INACTIVE)"
+  }
+  else {
+    cdate <- getdate(x)
+    sprintf(
+      "Hector core:\t%s\nStart date:\t%d\nEnd date:\t%d\nCurrent date:\t%d\nInput file:\t%s",
+      x$name,
+      as.integer(x$strtdate), as.integer(x$enddate), as.integer(cdate),
+      x$inifile
+    )
+  }
 }
 
 #' @describeIn methods Print method
 #' @inheritParams methods
 #' @export
-print.hcore <- function(x, ...)
-{
-    cat(format(x, ...))
+print.hcore <- function(x, ...) {
+  cat(format(x, ...))
 }
-

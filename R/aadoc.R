@@ -7,13 +7,11 @@
 #' @name loglevels
 NULL
 
-
 #' Utility functions for Hector instances
 #'
 #' @param core Hector instance to operate on
 #' @name hectorutil
 NULL
-
 
 #' Message type identifiers
 #'
@@ -29,7 +27,6 @@ NULL
 #' @name msgtype
 NULL
 
-
 #' Identifiers for capabilities in the Hector forcing component
 #'
 #' These identifiers specify forcing values that can be provided by hector via
@@ -43,7 +40,6 @@ NULL
 #' @seealso \link{haloforcings} for forcings from halocarbons.
 #' @family capability identifiers
 NULL
-
 
 #' Identifiers for variables in the Hector carbon cycle component
 #'
@@ -92,7 +88,6 @@ NULL
 #' @seealso \link{forcings} for forcings from other sources.
 #' @family capability identifiers
 NULL
-
 
 #' Identifiers for halocarbon emissions
 #'
