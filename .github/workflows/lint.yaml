@@ -45,5 +45,8 @@ jobs:
         run: R CMD INSTALL .
 
       - name: Lint
-        run: stopifnot(length(lintr::lint_package()) == 0)   # nb configuration options are in the .lintr file
-        shell: Rscript --verbose {0}
+        run:
+          out <- lintr::lint_package() # nb configuration options are in the .lintr file
+          print(out)
+          if (length(out)) stop("lints found")
+        shell: Rscript {0}
