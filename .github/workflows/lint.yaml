@@ -46,7 +46,8 @@ jobs:
 
       - name: Lint
         run:
-          out <- lintr::lint_package() # nb configuration options are in the .lintr file
+          # lintr configuration settings are in the .lintr file
+          out <- lintr::lint_package()
           print(out)
           if (length(out)) stop("lints found")
         shell: Rscript {0}
