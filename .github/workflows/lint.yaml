@@ -45,7 +45,7 @@ jobs:
         run: R CMD INSTALL .
 
       - name: Lint
-        run:
+        run: |
           # lintr configuration settings are in the .lintr file
           out <- lintr::lint_package()
           print(out)
