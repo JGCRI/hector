@@ -48,6 +48,6 @@ jobs:
         run: |
           # lintr configuration settings are in the .lintr file
           out <- lintr::lint_package()
-          print(out)
+          invisible(lapply(out, print))
           if (length(out)) stop("lints found")
         shell: Rscript {0}
