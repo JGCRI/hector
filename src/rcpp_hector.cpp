@@ -35,11 +35,11 @@ Environment newcore_impl(String inifile, int loglevel, bool suppresslogging, Str
         // Check that the configuration file exists. The easiest way to do
         // this is to try to open it.
 	std::ifstream ifs(inifile.get_cstring());      // we'll use this to test if the file exists
+        std::string fn = inifile;
         if(ifs) {
             ifs.close();            // don't actually want to read from it
         }
         else {
-            std::string fn = inifile;
             Rcpp::stop(std::string("Input file ") + fn + std::string(" does not exist."));
         }
 
@@ -57,7 +57,7 @@ Environment newcore_impl(String inifile, int loglevel, bool suppresslogging, Str
         }
         catch(h_exception e) {
             std::stringstream msg;
-            msg << "While parsing hector input file: " << e;
+            msg << "While parsing hector input file " << fn << ": " << e;
             Rcpp::stop(msg.str());
         }
 

@@ -475,21 +475,30 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
         if(totflux >= 0.0) {
             ffi_flux_current.set(totflux, U_PGC_YR);
         } else {
-            ccs_flux_current.set(totflux, U_PGC_YR);
+            ccs_flux_current.set(-totflux, U_PGC_YR);
         }
     }
 
     // Annual land use change emissions
-    // Note that LUC are EMISSIONS, i.e. always zero or positive
-    fluxpool luc_current( 0.0, U_PGC_YR );
+    fluxpool luc_emission_current( 0.0, U_PGC_YR );
+    fluxpool luc_uptake_current( 0.0, U_PGC_YR );
     if( !in_spinup ) {   // no perturbation allowed if in spinup
-        luc_current.set(lucEmissions.get( t ).value(U_PGC_YR), U_PGC_YR);
+        double totflux = lucEmissions.get( t ).value(U_PGC_YR);
+        if(totflux >= 0.0) {
+            luc_emission_current.set(totflux, U_PGC_YR);
+        } else {
+            luc_uptake_current.set(-totflux, U_PGC_YR);
+        }
     }
 
-    // Land-use change contribution come from veg, detritus, and soil
-    fluxpool luc_fva = luc_current * f_lucv;
-    fluxpool luc_fda = luc_current * f_lucd;
-    fluxpool luc_fsa = luc_current * ( 1 - f_lucv - f_lucd );
+    // Land-use change emissions come from veg, detritus, and soil
+    fluxpool luc_fva = luc_emission_current * f_lucv;
+    fluxpool luc_fda = luc_emission_current * f_lucd;
+    fluxpool luc_fsa = luc_emission_current * ( 1 - f_lucv - f_lucd );
+    // ...treat uptake the same way
+    fluxpool luc_fav = luc_uptake_current * f_lucv;
+    fluxpool luc_fad = luc_uptake_current * f_lucd;
+    fluxpool luc_fas = luc_uptake_current * ( 1 - f_lucv - f_lucd );
 
     // Oxidized methane of fossil fuel origin
     fluxpool ch4ox_current( 0.0, U_PGC_YR );     //TODO: implement this
@@ -498,7 +507,8 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
     dcdt[ SNBOX_ATMOS ] = // change in atmosphere pool
         ffi_flux_current.value( U_PGC_YR )
         - ccs_flux_current.value( U_PGC_YR )
-        + luc_current.value( U_PGC_YR )
+        + luc_emission_current.value( U_PGC_YR )
+        - luc_uptake_current.value( U_PGC_YR )
         + ch4ox_current.value( U_PGC_YR )
         - ocean_uptake.value( U_PGC_YR )
         + ocean_release.value( U_PGC_YR )
@@ -507,19 +517,22 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
     dcdt[ SNBOX_VEG ] = // change in vegetation pool
         npp_fav.value( U_PGC_YR )
         - litter_flux.value( U_PGC_YR )
-        - luc_fva.value( U_PGC_YR );
+        - luc_fva.value( U_PGC_YR )
+        + luc_fav.value( U_PGC_YR );
     dcdt[ SNBOX_DET ] = // change in detritus pool
         npp_fad.value( U_PGC_YR )
         + litter_fvd.value( U_PGC_YR )
         - detsoil_flux.value( U_PGC_YR )
         - rh_fda_current.value( U_PGC_YR )
-        - luc_fda.value( U_PGC_YR );
+        - luc_fda.value( U_PGC_YR )
+        + luc_fad.value( U_PGC_YR );
     dcdt[ SNBOX_SOIL ] = // change in soil pool
         npp_fas.value( U_PGC_YR )
         + litter_fvs.value( U_PGC_YR )
         + detsoil_flux.value( U_PGC_YR )
         - rh_fsa_current.value( U_PGC_YR )
-        - luc_fsa.value( U_PGC_YR );
+        - luc_fsa.value( U_PGC_YR )
+        + luc_fas.value( U_PGC_YR );
     dcdt[ SNBOX_OCEAN ] = // change in ocean pool
         ocean_uptake.value( U_PGC_YR )
         - ocean_release.value( U_PGC_YR );

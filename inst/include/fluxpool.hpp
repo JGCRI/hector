@@ -53,7 +53,7 @@ fluxpool::fluxpool( double v, unit_types u ) {
 inline
 void fluxpool::set( double v, unit_types u, double err = 0.0 ) {
     if(v < 0) {
-         std::cout << "uh oh";
+ //        std::cout << "uh oh";
      }
     H_ASSERT(v >= 0, "Flux and pool values may not be negative");
     unitval::set(v, u, err);

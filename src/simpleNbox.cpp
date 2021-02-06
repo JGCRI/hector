@@ -276,10 +276,7 @@ void SimpleNbox::setData( const std::string &varName,
             npp_flux0[ biome ] = fluxpool(data.getUnitval( U_PGC_YR ).value( U_PGC_YR ), U_PGC_YR);
         }
 
-        // Fossil fuels and industry contributions--time series.  There are two
-        // message versions for each of these: one for string data
-        // read from an input file, and another for actual values
-        // passed from another part of the program.
+        // Fossil fuels and industry contributions time series
         else if( varNameParsed == D_FFI_EMISSIONS ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
             H_ASSERT( biome == SNBOX_DEFAULT_BIOME, "fossil fuels and industry emissions must be global" );
@@ -287,8 +284,7 @@ void SimpleNbox::setData( const std::string &varName,
         }
         else if( varNameParsed == D_LUC_EMISSIONS ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            unitval luc = data.getUnitval( U_PGC_YR );
-            lucEmissions.set( data.date, fluxpool( luc.value( U_PGC_YR ), U_PGC_YR ) );
+            lucEmissions.set( data.date, data.getUnitval( U_PGC_YR ) );
         }
         // Atmospheric CO2 record to constrain model to (optional)
         else if( varNameParsed == D_CO2_CONSTRAIN ) {

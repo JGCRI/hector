@@ -156,8 +156,8 @@ private:
      *****************************************************************/
 
     // Carbon fluxes
-    tseries<unitval> ffiEmissions;  //!< fossil fuels and industry emissions, Pg C/yr
-    tseries<fluxpool> lucEmissions;      //!< land use change emissions, Pg C/yr
+    tseries<unitval> ffiEmissions;      //!< fossil fuels and industry emissions, Pg C/yr
+    tseries<unitval> lucEmissions;      //!< land use change emissions, Pg C/yr
 
     // Albedo
     tseries<unitval> Ftalbedo;   //!< terrestrial albedo forcing, W/m2
