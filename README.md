@@ -19,7 +19,7 @@ This research was supported by the U.S. Department of Energy, Office of Science,
 ## Tools and Software That Work with Hector
 
 * [GCAM](https://github.com/JGCRI/gcam-core): Hector can be used as the climate component in [GCAM](http://jgcri.github.io/gcam-doc/).
-* [pyhector](https://github.com/openclimatedata/pyhector): a python
+* [pyhector](https://github.com/openclimatedata/pyhector): a Python
   interface to Hector.
 * [HectorUI](https://jgcri.shinyapps.io/HectorUI/): run Hector in a web interface!
 
