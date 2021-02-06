@@ -43,19 +43,14 @@ public:
  */
 inline
 fluxpool::fluxpool( double v, unit_types u ) {
-    if(v < 0) {
-        std::cout << "uh oh";
-    }
-    H_ASSERT(v >= 0, "Flux and pool values may not be negative");
-    val = v;
-    valUnits = u;
+    set(v, u, 0.0);
 }
 
 //-----------------------------------------------------------------------
 /*! \brief Check that the value is >=0 before passing control to unitval
  */
 inline
-void fluxpool::set( double v, unit_types u, double err=0.0 ) {
+void fluxpool::set( double v, unit_types u, double err = 0.0 ) {
     if(v < 0) {
          std::cout << "uh oh";
      }
