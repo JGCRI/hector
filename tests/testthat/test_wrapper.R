@@ -50,25 +50,9 @@ test_that('Write out logs', {
     run(hc_log, 2100)
     shutdown(hc_log)
 
-    # file path to the current directory where the package is stored
-    run_dir <- dirname(here::here())
-    cat("run_dir = ", run_dir, "\n")
-
-    # check for running tests locally; otherwise switch to CI paths
-    if (Sys.getenv("CI") != "true") {
-        log_dir <- file.path(run_dir, 'hector', 'tests', 'testthat', 'logs')
-    } else {
-
-        # check for Unix file system otherwise assume Windows
-        if (.Platform$OS.type == 'unix') {
-            log_dir <- file.path(run_dir, 'tests', 'testthat', 'logs')
-        } else {
-            log_dir <- file.path(run_dir, 'hector', 'check', 'hector.Rcheck', 'tests_i386', 'testthat', 'logs')
-        }
-    }
-
     # look for the existence of the `logs` directory for Unix and Windows file systems
-    expect_true(dir.exists(log_dir), info = paste("run_dir is ", run_dir))
+    log_dir <- file.path(getwd(), "logs")
+    expect_true(dir.exists(log_dir))
 
     # Check to see that individual log files were written out
     expect_equal(length(list.files(log_dir, pattern = '.log')), 41)
