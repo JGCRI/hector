@@ -470,18 +470,19 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
     }
 
     // Annual land use change emissions
-    unitval luc_current( 0.0, U_PGC_YR );
+    // Note that LUC are EMISSIONS, i.e. always zero or positive
+    fluxpool luc_current( 0.0, U_PGC_YR );
     if( !in_spinup ) {   // no perturbation allowed if in spinup
-        luc_current = lucEmissions.get( t );
+        luc_current.set(lucEmissions.get( t ).value(U_PGC_YR), U_PGC_YR);
     }
 
-    // Land-use change contribution can come from veg, detritus, and soil
-    unitval luc_fva = luc_current * f_lucv;
-    unitval luc_fda = luc_current * f_lucd;
-    unitval luc_fsa = luc_current * ( 1 - f_lucv - f_lucd );
+    // Land-use change contribution come from veg, detritus, and soil
+    fluxpool luc_fva = luc_current * f_lucv;
+    fluxpool luc_fda = luc_current * f_lucd;
+    fluxpool luc_fsa = luc_current * ( 1 - f_lucv - f_lucd );
 
     // Oxidized methane of fossil fuel origin
-    unitval ch4ox_current( 0.0, U_PGC_YR );     //TODO: implement this
+    fluxpool ch4ox_current( 0.0, U_PGC_YR );     //TODO: implement this
 
     // Compute fluxes
     dcdt[ SNBOX_ATMOS ] = // change in atmosphere pool
@@ -551,7 +552,6 @@ void SimpleNbox::slowparameval( double t, const double c[] )
     // Heterotrophic respiration depends on the pool sizes (detritus and soil) and Q10 values
     // The soil pool uses a lagged Tgav, i.e. we assume it takes time for heat to diffuse into soil
     const double Tgav = core->sendMessage( M_GETDATA, D_GLOBAL_TEMP ).value( U_DEGC );
-
 
     /* set tempferts (soil) and tempfertd (detritus) for each biome */
 
