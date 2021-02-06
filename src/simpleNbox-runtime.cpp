@@ -409,7 +409,14 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
 
     // Atmosphere-ocean flux is calculated by ocean_component
     const int omodel_err = omodel->calcderivs( t, c, dcdt );
-    unitval atmosocean_flux( dcdt[ SNBOX_OCEAN ], U_PGC_YR );
+    const double ao_exchange = dcdt[ SNBOX_OCEAN ];
+    fluxpool ocean_uptake(0.0, U_PGC_YR);
+    fluxpool ocean_release(0.0, U_PGC_YR);
+    if(ao_exchange >= 0.0) {
+        ocean_uptake.set(ao_exchange, U_PGC_YR);
+    } else {
+        ocean_release.set(-ao_exchange, U_PGC_YR);
+    }
 
     /// NPP: Net primary productivity
     unitval npp_biome( 0.0, U_PGC_YR);
@@ -490,7 +497,8 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
         - ccs_flux_current.value( U_PGC_YR )
         + luc_current.value( U_PGC_YR )
         + ch4ox_current.value( U_PGC_YR )
-        - atmosocean_flux.value( U_PGC_YR )
+        - ocean_uptake.value( U_PGC_YR )
+        + ocean_release.value( U_PGC_YR )
         - npp_current.value( U_PGC_YR )
         + rh_current.value( U_PGC_YR );
     dcdt[ SNBOX_VEG ] = // change in vegetation pool
@@ -510,7 +518,8 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
         - rh_fsa_current.value( U_PGC_YR )
         - luc_fsa.value( U_PGC_YR );
     dcdt[ SNBOX_OCEAN ] = // change in ocean pool
-        atmosocean_flux.value( U_PGC_YR );
+        ocean_uptake.value( U_PGC_YR )
+        - ocean_release.value( U_PGC_YR );
     dcdt[ SNBOX_EARTH ] = // change in earth pool
         - ffi_flux_current.value( U_PGC_YR )
         + ccs_flux_current.value( U_PGC_YR );
