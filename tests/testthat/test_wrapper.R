@@ -52,16 +52,16 @@ test_that('Write out logs', {
 
     # file path to the current directory where the package is stored
     run_dir <- dirname(here::here())
+    cat("run_dir = ", run_dir, "\n")
 
     # check for running tests locally; otherwise switch to CI paths
-    local_dir <- file.path(run_dir, 'hector', 'tests', 'testthat', 'logs')
-    if (dir.exists(local_dir)) {
-        log_dir <- local_dir
+    if (Sys.getenv("CI") != "true") {
+        log_dir <- file.path(run_dir, 'hector', 'tests', 'testthat', 'logs')
     } else {
 
         # check for Unix file system otherwise assume Windows
         if (.Platform$OS.type == 'unix') {
-            log_dir <- file.path(run_dir, 'hector', 'check', 'hector.Rcheck', 'tests', 'testthat', 'logs')
+            log_dir <- file.path(run_dir, 'tests', 'testthat', 'logs')
         } else {
             log_dir <- file.path(run_dir, 'hector', 'check', 'hector.Rcheck', 'tests_i386', 'testthat', 'logs')
         }
