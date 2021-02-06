@@ -448,9 +448,9 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
 
     // Detritus flux comes from the vegetation pool
     // TODO: these values should use the c[] pools passed in by solver!
-    unitval litter_flux( 0.0, U_PGC_YR );
-    unitval litter_fvd( 0.0, U_PGC_YR );
-    unitval litter_fvs( 0.0, U_PGC_YR );
+    fluxpool litter_flux( 0.0, U_PGC_YR );
+    fluxpool litter_fvd( 0.0, U_PGC_YR );
+    fluxpool litter_fvs( 0.0, U_PGC_YR );
     for( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
         std::string biome = *it;
         unitval v = unitval( veg_c.at( biome ).value( U_PGC ) * 0.035, U_PGC_YR );
@@ -460,10 +460,10 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
     }
 
     // Some detritus goes to soil
-    unitval detsoil_flux( 0.0, U_PGC_YR );
+    fluxpool detsoil_flux( 0.0, U_PGC_YR );
     for( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
         std::string biome = *it;
-        detsoil_flux = detsoil_flux + unitval( detritus_c.at( biome ).value( U_PGC ) * 0.6, U_PGC_YR );
+        detsoil_flux = detsoil_flux + fluxpool( detritus_c.at( biome ).value( U_PGC ) * 0.6, U_PGC_YR );
     }
 
     // Annual fossil fuels and industry emissions and atmosphere CO2 capture (CCS or whatever)
