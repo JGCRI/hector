@@ -17,6 +17,7 @@
 #include "ocean_component.hpp"
 #include "tseries.hpp"
 #include "unitval.hpp"
+#include "fluxpool.hpp"
 #include "carbon-cycle-model.hpp"
 
 #define SNBOX_ATMOS 0

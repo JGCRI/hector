@@ -39,6 +39,29 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
     // earth_c keeps track of how much fossil C is pulled out
     // so that we can do a mass-balance check throughout the run
     earth_c.set( 0.0, U_PGC );
+    
+    // Test code - move to unit test later TODO
+    
+    fluxpool x1;
+    x1.set(1.0, U_PGC);
+    fluxpool x2;
+    x2.set(2.0, U_PGC);
+
+    // Things that should NOT throw an exception
+    fluxpool test = x2 - x1;
+    test = x1 + x2;
+    test = x1 * 2.0;
+    test = x1 / 2.0;
+    
+    // Things that SHOULD throw an exception
+    int thrown = 0;
+    try { test.set(-1.0, U_PGC ); } catch ( h_exception e ) { thrown++; }
+    try { test = x1 - x2; } catch ( h_exception e ) { thrown++; }
+    try { test = x1 * -1.0; } catch ( h_exception e ) { thrown++; }
+    try { test = -1.0 * x1; } catch ( h_exception e ) { thrown++; }
+    try { test = x1 / -1.0; } catch ( h_exception e ) { thrown++; }
+
+    H_ASSERT(thrown == 5, "Something didn't throw!")
 }
 
 //------------------------------------------------------------------------------
