@@ -38,10 +38,12 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
 
     // earth_c keeps track of how much fossil C is pulled out
     // so that we can do a mass-balance check throughout the run
-    earth_c.set( 0.0, U_PGC );
+    // 2020-02-05 With the introduction of non-negative 'fluxpool' class
+    // we can't start earth_c at zero. Value of 4000 is from
+    // http://globecarboncycle.unh.edu/CarbonCycleBackground.pdf
+    earth_c.set( 4000, U_PGC );
     
-    // Test code - move to unit test later TODO
-    
+    // fluxpool test code - move to unit test later BBL-TODO
     fluxpool x1;
     x1.set(1.0, U_PGC);
     fluxpool x2;
@@ -646,7 +648,8 @@ unitval SimpleNbox::getData(const std::string& varName,
 void SimpleNbox::reset(double time) throw(h_exception)
 {
     // Reset all state variables to their values at the reset time
-    earth_c = earth_c_ts.get(time);
+    // BBL-TODO we are leaving the time series as unitvals for now
+    earth_c.set(earth_c_ts.get(time).value( U_PGC ), U_PGC);
     atmos_c = atmos_c_ts.get(time);
     Ca = Ca_ts.get(time);
 

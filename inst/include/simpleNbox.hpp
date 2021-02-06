@@ -102,7 +102,7 @@ private:
     std::vector<std::string> biome_list;
 
     // Carbon pools -- global
-    unitval earth_c;                //!< earth pool, Pg C; for mass-balance
+    fluxpool earth_c;               //!< earth pool, Pg C; for mass-balance
     unitval atmos_c;                //!< atmosphere pool, Pg C
     unitval    Ca;                  //!< current [CO2], ppmv
 
