@@ -7,14 +7,15 @@
 #' @param vars Capability strings for variables to get units for.
 #' @return Character vector of unit strings. Variables not found will have \code{NA} entries.
 #' @export
-getunits <- function(vars)
-{
-    ## NB the unitstable data structure is included as internal package data.
-    rows <- match(vars, unitstable$variable)
-    units <- unitstable$units[rows]
-    if(any(is.na(units))) {
-        warning('Units entries for the following variables not found: ',
-                paste(vars[is.na(units)], collapse=', '))
-    }
-    as.character(units)
+getunits <- function(vars) {
+  ## NB the unitstable data structure is included as internal package data.
+  rows <- match(vars, unitstable$variable)
+  units <- unitstable$units[rows]
+  if (any(is.na(units))) {
+    warning(
+      "Units entries for the following variables not found: ",
+      paste(vars[is.na(units)], collapse = ", ")
+    )
+  }
+  as.character(units)
 }
