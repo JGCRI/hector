@@ -103,8 +103,8 @@ private:
 
     // Carbon pools -- global
     fluxpool earth_c;               //!< earth pool, Pg C; for mass-balance
-    unitval atmos_c;                //!< atmosphere pool, Pg C
-    unitval    Ca;                  //!< current [CO2], ppmv
+    fluxpool atmos_c;                //!< atmosphere pool, Pg C
+    fluxpool    Ca;                  //!< current [CO2], ppmv
 
     // Carbon pools -- biome-specific
     unitval_stringmap veg_c;        //!< vegetation pools, Pg C

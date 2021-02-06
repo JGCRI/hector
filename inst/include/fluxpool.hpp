@@ -29,9 +29,11 @@ public:
     void set( double, unit_types, double );
 
     friend fluxpool operator+ ( const fluxpool&, const fluxpool& );
+    friend fluxpool operator+ ( const fluxpool&, const unitval& );
     friend fluxpool operator* ( const fluxpool&, const double );
     friend fluxpool operator* ( const double, const fluxpool& );
     friend fluxpool operator- ( const fluxpool&, const fluxpool& );
+    friend fluxpool operator- ( const fluxpool&, const unitval& );
     friend fluxpool operator/ ( const fluxpool&, const double );
 };
 
@@ -41,6 +43,9 @@ public:
  */
 inline
 fluxpool::fluxpool( double v, unit_types u ) {
+    if(v < 0) {
+        std::cout << "uh oh";
+    }
     H_ASSERT(v >= 0, "Flux and pool values may not be negative");
     val = v;
     valUnits = u;
@@ -51,6 +56,9 @@ fluxpool::fluxpool( double v, unit_types u ) {
  */
 inline
 void fluxpool::set( double v, unit_types u, double err=0.0 ) {
+    if(v < 0) {
+         std::cout << "uh oh";
+     }
     H_ASSERT(v >= 0, "Flux and pool values may not be negative");
     unitval::set(v, u, err);
 }
@@ -66,12 +74,34 @@ fluxpool operator+ ( const fluxpool& lhs, const fluxpool& rhs ) {
 }
 
 //-----------------------------------------------------------------------
+/*! \brief Operator overload: addition.
+    BBL-TODO this is probably temporary
+        You can add a unitval to a fluxpool, resulting in a fluxpool
+ */
+inline
+fluxpool operator+ ( const fluxpool& lhs, const unitval& rhs ) {
+    H_ASSERT( lhs.valUnits == rhs.units(), "units mismatch" );
+    return fluxpool( lhs.val + rhs.value( lhs.valUnits ), lhs.valUnits );
+}
+
+//-----------------------------------------------------------------------
 /*! \brief Operator overload: subtraction.
  */
 inline
 fluxpool operator- ( const fluxpool& lhs, const fluxpool& rhs ) {
     H_ASSERT( lhs.valUnits == rhs.valUnits, "units mismatch" );
     return fluxpool( lhs.val - rhs.val, lhs.valUnits );
+}
+
+//-----------------------------------------------------------------------
+/*! \brief Operator overload: subtraction.
+    BBL-TODO this is probably temporary
+        You can subtract a unitval from a fluxpool, resulting in a fluxpool
+ */
+inline
+fluxpool operator- ( const fluxpool& lhs, const unitval& rhs ) {
+    H_ASSERT( lhs.valUnits == rhs.units(), "units mismatch" );
+    return fluxpool( lhs.val - rhs.value( lhs.valUnits ), lhs.valUnits );
 }
 
 //-----------------------------------------------------------------------

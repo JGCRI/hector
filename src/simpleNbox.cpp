@@ -649,9 +649,9 @@ void SimpleNbox::reset(double time) throw(h_exception)
 {
     // Reset all state variables to their values at the reset time
     // BBL-TODO we are leaving the time series as unitvals for now
-    earth_c.set(earth_c_ts.get(time).value( U_PGC ), U_PGC);
-    atmos_c = atmos_c_ts.get(time);
-    Ca = Ca_ts.get(time);
+    earth_c.set( earth_c_ts.get(time).value( U_PGC ), U_PGC );
+    atmos_c.set( atmos_c_ts.get(time).value( U_PGC ), U_PGC );
+    Ca.set( Ca_ts.get(time).value( U_PPMV_CO2 ), U_PPMV_CO2 );
 
     veg_c = veg_c_tv.get(time);
     detritus_c = detritus_c_tv.get(time);
@@ -818,7 +818,7 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     if(core->inSpinup() ||
        ( CO2_constrain.size() && CO2_constrain.exists(t) )) {
 
-        unitval atmos_cpool_to_match;
+        fluxpool atmos_cpool_to_match;
         unitval atmppmv;
         if(core->inSpinup()) {
             atmos_cpool_to_match.set(C0.value(U_PPMV_CO2) / PGC_TO_PPMVCO2, U_PGC);
@@ -831,7 +831,9 @@ void SimpleNbox::stashCValues( double t, const double c[] )
             atmppmv.set(CO2_constrain.get(t).value(U_PPMV_CO2), U_PPMV_CO2);
         }
 
-        residual = atmos_c - atmos_cpool_to_match;
+        // residual is a unitval, but calculated by subtracting two fluxpools, so extract value. Ugly
+        residual.set(atmos_c.value(U_PGC) - atmos_cpool_to_match.value(U_PGC), U_PGC);
+        
         H_LOG( logger,Logger::DEBUG ) << t << "- have " << Ca << " want " <<  atmppmv.value( U_PPMV_CO2 ) << std::endl;
         H_LOG( logger,Logger::DEBUG ) << t << "- have " << atmos_c << " want " << atmos_cpool_to_match << "; residual = " << residual << std::endl;
 
@@ -852,7 +854,12 @@ void SimpleNbox::stashCValues( double t, const double c[] )
 
 double SimpleNbox::calc_co2fert(std::string biome, double time) const
 {
-    unitval Ca_t = time == Core::undefinedIndex() ? Ca : Ca_ts.get(time);
+    unitval Ca_t;
+    if(time == Core::undefinedIndex()) {
+        Ca_t = Ca;
+    } else {
+        Ca_t = Ca_ts.get(time);
+    }
     return 1 + beta.at(biome) * log(Ca_t/C0);
 }
 
