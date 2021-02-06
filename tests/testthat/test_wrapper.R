@@ -68,7 +68,7 @@ test_that('Write out logs', {
     }
 
     # look for the existence of the `logs` directory for Unix and Windows file systems
-    expect_true(dir.exists(log_dir))
+    expect_true(dir.exists(log_dir), info = paste("run_dir is ", run_dir))
 
     # Check to see that individual log files were written out
     expect_equal(length(list.files(log_dir, pattern = '.log')), 41)
