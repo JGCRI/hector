@@ -44,11 +44,9 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
     earth_c.set( 4000, U_PGC );
     
     // fluxpool test code - move to unit test later BBL-TODO
-    fluxpool x1;
-    x1.set(1.0, U_PGC);
-    fluxpool x2;
-    x2.set(2.0, U_PGC);
-
+    fluxpool x1(1.0, U_PGC);
+    fluxpool x2(2.0, U_PGC);
+    
     // Things that should NOT throw an exception
     fluxpool test = x2 - x1;
     test = x1 + x2;

@@ -455,10 +455,18 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
         detsoil_flux = detsoil_flux + unitval( detritus_c.at( biome ).value( U_PGC ) * 0.6, U_PGC_YR );
     }
 
-    // Annual fossil fuels and industry emissions
-    unitval ffi_flux_current( 0.0, U_PGC_YR );
+    // Annual fossil fuels and industry emissions and atmosphere CO2 capture (CCS or whatever)
+    fluxpool ffi_flux_current( 0.0, U_PGC_YR );
+    fluxpool ccs_flux_current( 0.0, U_PGC_YR );
+    
+    // BBL-TODO will want to split input data streams into FFI and CCS
     if( !in_spinup ) {   // no perturbation allowed if in spinup
-        ffi_flux_current = ffiEmissions.get( t );
+        double totflux = ffiEmissions.get( t ).value(U_PGC_YR);
+        if(totflux >= 0.0) {
+            ffi_flux_current.set(totflux, U_PGC_YR);
+        } else {
+            ccs_flux_current.set(totflux, U_PGC_YR);
+        }
     }
 
     // Annual land use change emissions
@@ -478,6 +486,7 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
     // Compute fluxes
     dcdt[ SNBOX_ATMOS ] = // change in atmosphere pool
         ffi_flux_current.value( U_PGC_YR )
+        - ccs_flux_current.value( U_PGC_YR )
         + luc_current.value( U_PGC_YR )
         + ch4ox_current.value( U_PGC_YR )
         - atmosocean_flux.value( U_PGC_YR )
@@ -502,7 +511,8 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
     dcdt[ SNBOX_OCEAN ] = // change in ocean pool
         atmosocean_flux.value( U_PGC_YR );
     dcdt[ SNBOX_EARTH ] = // change in earth pool
-        - ffi_flux_current.value( U_PGC_YR );
+        - ffi_flux_current.value( U_PGC_YR )
+        + ccs_flux_current.value( U_PGC_YR );
 
 /*    printf( "%6.3f%8.3f%8.2f%8.2f%8.2f%8.2f%8.2f\n", t, dcdt[ SNBOX_ATMOS ],
             dcdt[ SNBOX_VEG ], dcdt[ SNBOX_DET ], dcdt[ SNBOX_SOIL ], dcdt[ SNBOX_OCEAN ], dcdt[ SNBOX_EARTH ] );
