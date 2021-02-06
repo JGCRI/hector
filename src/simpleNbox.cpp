@@ -59,6 +59,7 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
     
     // Things that SHOULD throw an exception
     int thrown = 0;
+    try { fluxpool(-1.0, U_PGC ); } catch ( h_exception e ) { thrown++; }
     try { test.set(-1.0, U_PGC ); } catch ( h_exception e ) { thrown++; }
     try { test = x1 - x2; } catch ( h_exception e ) { thrown++; }
     try { test = x1 - y2; } catch ( h_exception e ) { thrown++; }
@@ -66,7 +67,7 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
     try { test = -1.0 * x1; } catch ( h_exception e ) { thrown++; }
     try { test = x1 / -1.0; } catch ( h_exception e ) { thrown++; }
 
-    H_ASSERT(thrown == 6, "Something didn't throw!")
+    H_ASSERT(thrown == 7, "Something didn't throw!")
 }
 
 //------------------------------------------------------------------------------

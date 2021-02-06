@@ -71,7 +71,6 @@ fluxpool operator+ ( const fluxpool& lhs, const fluxpool& rhs ) {
 
 //-----------------------------------------------------------------------
 /*! \brief Operator overload: addition.
-    BBL-TODO this is probably temporary
         You can add a unitval to a fluxpool, resulting in a fluxpool
  */
 inline
@@ -91,7 +90,6 @@ fluxpool operator- ( const fluxpool& lhs, const fluxpool& rhs ) {
 
 //-----------------------------------------------------------------------
 /*! \brief Operator overload: subtraction.
-    BBL-TODO this is probably temporary
         You can subtract a unitval from a fluxpool, resulting in a fluxpool
  */
 inline
@@ -107,10 +105,6 @@ inline
 fluxpool operator* ( const fluxpool& lhs, const double rhs ) {
     return fluxpool( lhs.val * rhs, lhs.valUnits );
 }
-
-//-----------------------------------------------------------------------
-/*! \brief Operator overload: constant multiplication.
- */
 inline
 fluxpool operator* ( const double lhs, const fluxpool& rhs ) {
     return fluxpool( lhs * rhs.val, rhs.valUnits );
