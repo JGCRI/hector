@@ -121,9 +121,9 @@ private:
      * a reset, we will retrieve the state at the reset time from these
      * arrays.
      *****************************************************************/
-    tseries<unitval> earth_c_ts;  //!< Time series of earth carbon pool
-    tseries<unitval> atmos_c_ts;  //!< Time series of atmosphere carbon pool
-    tseries<unitval> Ca_ts;       //!< Time series of atmosphere CO2 concentration
+    tseries<fluxpool> earth_c_ts;  //!< Time series of earth carbon pool
+    tseries<fluxpool> atmos_c_ts;  //!< Time series of atmosphere carbon pool
+    tseries<fluxpool> Ca_ts;       //!< Time series of atmosphere CO2 concentration
 
     tvector<fluxpool_stringmap> veg_c_tv;      //!< Time series of biome-specific vegetation carbon pools
     tvector<fluxpool_stringmap> detritus_c_tv; //!< Time series of biome-specific detritus carbon pools
@@ -157,13 +157,13 @@ private:
 
     // Carbon fluxes
     tseries<unitval> ffiEmissions;  //!< fossil fuels and industry emissions, Pg C/yr
-    tseries<unitval> lucEmissions;      //!< land use change emissions, Pg C/yr
+    tseries<fluxpool> lucEmissions;      //!< land use change emissions, Pg C/yr
 
     // Albedo
     tseries<unitval> Ftalbedo;   //!< terrestrial albedo forcing, W/m2
 
     // Constraints
-    tseries<unitval> CO2_constrain;      //!< input [CO2] record to constrain model to
+    tseries<fluxpool> CO2_constrain;      //!< input [CO2] record to constrain model to
 
     /*****************************************************************
      * Model parameters

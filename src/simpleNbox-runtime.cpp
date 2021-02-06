@@ -282,7 +282,7 @@ void SimpleNbox::stashCValues( double t, const double c[] )
        ( CO2_constrain.size() && CO2_constrain.exists(t) )) {
 
         fluxpool atmos_cpool_to_match;
-        unitval atmppmv;
+        fluxpool atmppmv;
         if(core->inSpinup()) {
             atmos_cpool_to_match.set(C0.value(U_PPMV_CO2) / PGC_TO_PPMVCO2, U_PGC);
             atmppmv.set(C0.value(U_PPMV_CO2), U_PPMV_CO2);
@@ -294,7 +294,7 @@ void SimpleNbox::stashCValues( double t, const double c[] )
             atmppmv.set(CO2_constrain.get(t).value(U_PPMV_CO2), U_PPMV_CO2);
         }
 
-        // residual is a unitval, but calculated by subtracting two fluxpools, so extract value. Ugly
+        // Ugly: residual is a unitval, but calculated by subtracting two fluxpools, so extract value
         residual.set(atmos_c.value(U_PGC) - atmos_cpool_to_match.value(U_PGC), U_PGC);
         
         H_LOG( logger,Logger::DEBUG ) << t << "- have " << Ca << " want " <<  atmppmv.value( U_PPMV_CO2 ) << std::endl;
@@ -332,7 +332,6 @@ double SimpleNbox::calc_co2fert(std::string biome, double time) const
  */
 fluxpool SimpleNbox::npp(std::string biome, double time) const
 {
-    // BBL-TODO need to change npp_flux0 to a fluxpool map
     fluxpool npp(npp_flux0.at( biome ).value(U_PGC_YR), U_PGC_YR);    // 'at' throws exception if not found
     if(time == Core::undefinedIndex()) {
         npp = npp * co2fert.at( biome );        // that's why used here instead of []
@@ -453,7 +452,7 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
     fluxpool litter_fvs( 0.0, U_PGC_YR );
     for( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
         std::string biome = *it;
-        unitval v = unitval( veg_c.at( biome ).value( U_PGC ) * 0.035, U_PGC_YR );
+        fluxpool v = fluxpool( veg_c.at( biome ).value( U_PGC ) * 0.035, U_PGC_YR );
         litter_flux = litter_flux + v;
         litter_fvd = litter_fvd + v * f_litterd.at( biome );
         litter_fvs = litter_fvs + v * ( 1 - f_litterd.at( biome ) );

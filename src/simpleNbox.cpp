@@ -46,22 +46,27 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
     // fluxpool test code - move to unit test later BBL-TODO
     fluxpool x1(1.0, U_PGC);
     fluxpool x2(2.0, U_PGC);
-    
+    unitval y1(1.0, U_PGC);
+    unitval y2(2.0, U_PGC);
+
     // Things that should NOT throw an exception
     fluxpool test = x2 - x1;
     test = x1 + x2;
     test = x1 * 2.0;
     test = x1 / 2.0;
+    test = x1 - y1;
+    test = x1 + y2;
     
     // Things that SHOULD throw an exception
     int thrown = 0;
     try { test.set(-1.0, U_PGC ); } catch ( h_exception e ) { thrown++; }
     try { test = x1 - x2; } catch ( h_exception e ) { thrown++; }
+    try { test = x1 - y2; } catch ( h_exception e ) { thrown++; }
     try { test = x1 * -1.0; } catch ( h_exception e ) { thrown++; }
     try { test = -1.0 * x1; } catch ( h_exception e ) { thrown++; }
     try { test = x1 / -1.0; } catch ( h_exception e ) { thrown++; }
 
-    H_ASSERT(thrown == 5, "Something didn't throw!")
+    H_ASSERT(thrown == 6, "Something didn't throw!")
 }
 
 //------------------------------------------------------------------------------
@@ -281,13 +286,15 @@ void SimpleNbox::setData( const std::string &varName,
         }
         else if( varNameParsed == D_LUC_EMISSIONS ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            lucEmissions.set( data.date, data.getUnitval( U_PGC_YR ) );
+            unitval luc = data.getUnitval( U_PGC_YR );
+            lucEmissions.set( data.date, fluxpool( luc.value( U_PGC_YR ), U_PGC_YR ) );
         }
         // Atmospheric CO2 record to constrain model to (optional)
         else if( varNameParsed == D_CO2_CONSTRAIN ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
             H_ASSERT( biome == SNBOX_DEFAULT_BIOME, "atmospheric constraint must be global" );
-            CO2_constrain.set( data.date, data.getUnitval( U_PPMV_CO2 ) );
+            unitval co2c = data.getUnitval( U_PPMV_CO2 );
+            CO2_constrain.set( data.date, fluxpool( co2c.value( U_PPMV_CO2 ), U_PPMV_CO2 ) );
         }
 
         // Fertilization
@@ -498,13 +505,13 @@ unitval SimpleNbox::getData(const std::string& varName,
         H_THROW( "Caller is requesting unknown variable: " + varName );
     }
 
-    return returnval;
+    // returnval might be a unitval or a fluxpool; need to return only the former
+    return static_cast<unitval>(returnval);
 }
 
 void SimpleNbox::reset(double time) throw(h_exception)
 {
     // Reset all state variables to their values at the reset time
-    // BBL-TODO we are leaving the time series as unitvals for now
     earth_c.set( earth_c_ts.get(time).value( U_PGC ), U_PGC );
     atmos_c.set( atmos_c_ts.get(time).value( U_PGC ), U_PGC );
     Ca.set( Ca_ts.get(time).value( U_PPMV_CO2 ), U_PPMV_CO2 );
