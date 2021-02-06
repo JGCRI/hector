@@ -216,19 +216,21 @@ void SimpleNbox::setData( const std::string &varName,
             // interactive use, you will usually want to pass the date
             // -- otherwise, the current value will be overridden by a
             // `reset` (which includes code like `veg_c = veg_c_tv.get(t)`).
-            veg_c[ biome ] = data.getUnitval( U_PGC );
+            
+            // Data are coming in as unitvals, but change to fluxpools
+            veg_c[ biome ] = fluxpool(data.getUnitval( U_PGC ).value(U_PGC), U_PGC);
             if (data.date != Core::undefinedIndex()) {
                 veg_c_tv.set(data.date, veg_c);
             }
         }
         else if( varNameParsed == D_DETRITUSC ) {
-            detritus_c[ biome ] = data.getUnitval( U_PGC );
+            detritus_c[ biome ] = fluxpool(data.getUnitval( U_PGC ).value(U_PGC), U_PGC);
             if (data.date != Core::undefinedIndex()) {
                 detritus_c_tv.set(data.date, detritus_c);
             }
         }
         else if( varNameParsed == D_SOILC ) {
-            soil_c[ biome ] = data.getUnitval( U_PGC );
+            soil_c[ biome ] = fluxpool(data.getUnitval( U_PGC ).value(U_PGC), U_PGC);
             if (data.date != Core::undefinedIndex()) {
                 soil_c_tv.set(data.date, soil_c);
             }
@@ -265,7 +267,7 @@ void SimpleNbox::setData( const std::string &varName,
         // Initial fluxes
         else if( varNameParsed == D_NPP_FLUX0 ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            npp_flux0[ biome ] = data.getUnitval( U_PGC_YR );
+            npp_flux0[ biome ] = fluxpool(data.getUnitval( U_PGC_YR ).value( U_PGC_YR ), U_PGC_YR);
         }
 
         // Fossil fuels and industry contributions--time series.  There are two
@@ -318,11 +320,11 @@ void SimpleNbox::setData( const std::string &varName,
  *  \returns    Sum of the unitvals in the map
  *  \exception  If the map is empty
  */
-unitval SimpleNbox::sum_map( unitval_stringmap pool ) const
+fluxpool SimpleNbox::sum_map( fluxpool_stringmap pool ) const
 {
     H_ASSERT( pool.size(), "can't sum an empty map" );
-    unitval sum( 0.0, pool.begin()->second.units() );
-    for( unitval_stringmap::const_iterator it = pool.begin(); it != pool.end(); it++ )
+    fluxpool sum( 0.0, pool.begin()->second.units() );
+    for( fluxpool_stringmap::const_iterator it = pool.begin(); it != pool.end(); it++ )
         sum = sum + it->second;
     return sum;
 }
@@ -622,14 +624,14 @@ void SimpleNbox::createBiome(const std::string& biome)
     H_ASSERT(!has_biome( biome ), errmsg);
 
     // Initialize new pools
-    veg_c[ biome ] = unitval(0, U_PGC);
+    veg_c[ biome ] = fluxpool(0, U_PGC);
     add_biome_to_ts(veg_c_tv, biome, veg_c.at( biome ));
-    detritus_c[ biome ] = unitval(0, U_PGC);
+    detritus_c[ biome ] = fluxpool(0, U_PGC);
     add_biome_to_ts(detritus_c_tv, biome, detritus_c.at( biome ));
-    soil_c[ biome ] = unitval(0, U_PGC);
+    soil_c[ biome ] = fluxpool(0, U_PGC);
     add_biome_to_ts(soil_c_tv, biome, soil_c.at( biome ));
 
-    npp_flux0[ biome ] = unitval(0, U_PGC_YR);
+    npp_flux0[ biome ] = fluxpool(0, U_PGC_YR);
 
     // Other defaults (these will be re-calculated later)
     co2fert[ biome ] = 1.0;

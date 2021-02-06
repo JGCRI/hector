@@ -89,7 +89,7 @@ private:
 
     // typedefs for two map types, to make things easier
     // TODO: these should probably be defined in h_util.hpp or someplace similar?
-    typedef std::map<std::string, unitval> unitval_stringmap;
+    typedef std::map<std::string, fluxpool> fluxpool_stringmap;
     typedef std::map<std::string, double> double_stringmap;
 
     /*****************************************************************
@@ -107,9 +107,9 @@ private:
     fluxpool    Ca;                  //!< current [CO2], ppmv
 
     // Carbon pools -- biome-specific
-    unitval_stringmap veg_c;        //!< vegetation pools, Pg C
-    unitval_stringmap detritus_c;   //!< detritus pools, Pg C
-    unitval_stringmap soil_c;       //!< soil pool, Pg C
+    fluxpool_stringmap veg_c;        //!< vegetation pools, Pg C
+    fluxpool_stringmap detritus_c;   //!< detritus pools, Pg C
+    fluxpool_stringmap soil_c;       //!< soil pool, Pg C
 
     unitval residual;               //!< residual (when constraining Ca) flux, Pg C
 
@@ -125,9 +125,9 @@ private:
     tseries<unitval> atmos_c_ts;  //!< Time series of atmosphere carbon pool
     tseries<unitval> Ca_ts;       //!< Time series of atmosphere CO2 concentration
 
-    tvector<unitval_stringmap> veg_c_tv;      //!< Time series of biome-specific vegetation carbon pools
-    tvector<unitval_stringmap> detritus_c_tv; //!< Time series of biome-specific detritus carbon pools
-    tvector<unitval_stringmap> soil_c_tv;     //!< Time series of biome-specific soil carbon pools
+    tvector<fluxpool_stringmap> veg_c_tv;      //!< Time series of biome-specific vegetation carbon pools
+    tvector<fluxpool_stringmap> detritus_c_tv; //!< Time series of biome-specific detritus carbon pools
+    tvector<fluxpool_stringmap> soil_c_tv;     //!< Time series of biome-specific soil carbon pools
 
     tseries<unitval> residual_ts; //!< Time series of residual flux values
 
@@ -179,7 +179,7 @@ private:
     double f_lucv, f_lucd;      //!< fraction LUC from vegetation and detritus
 
     // Initial fluxes
-    unitval_stringmap npp_flux0;       //!< preindustrial NPP
+    fluxpool_stringmap npp_flux0;       //!< preindustrial NPP
 
     // Atmospheric CO2, temperature, and their effects
     unitval    C0;                      //!< preindustrial [CO2], ppmv
@@ -205,7 +205,7 @@ private:
      * Private helper functions
      *****************************************************************/
     void sanitychecks() throw( h_exception );           //!< performs mass-balance and other checks
-    unitval sum_map( unitval_stringmap pool ) const;    //!< sums a unitval map (collection of data)
+    fluxpool sum_map( fluxpool_stringmap pool ) const;    //!< sums a fluxpool map (collection of data)
     double sum_map( double_stringmap pool ) const;      //!< sums a double map (collection of data)
     void log_pools( const double t );                   //!< prints pool status to the log file
     void set_c0(double newc0);                          //!< set initial co2 and adjust total carbon mass
