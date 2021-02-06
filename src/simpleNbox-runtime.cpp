@@ -218,11 +218,14 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     atmos_c.set( c[ SNBOX_ATMOS ], U_PGC );
 
     // Record the land C flux
-    const unitval npp_total = sum_npp();
-    const unitval rh_total = sum_rh();
+    const fluxpool npp_total = sum_npp();
+    const fluxpool rh_total = sum_rh();
     // TODO: If/when we implement fire, update this calculation to include it
     // (as a negative term).
-    atmosland_flux = npp_total - rh_total - lucEmissions.get( t );
+    // BBL-TODO this is really "exchange" not a flux
+    // pull these values into doubles as we're constructing a unitval exchange from positive-only fluxpools
+    const double alf = npp_total.value(U_PGC_YR) - rh_total.value(U_PGC_YR) - lucEmissions.get( t ).value(U_PGC_YR);
+    atmosland_flux.set(alf, U_PGC_YR);
     atmosland_flux_ts.set(t, atmosland_flux);
 
     // The solver just knows about one vegetation box, one detritus, and one
@@ -232,7 +235,7 @@ void SimpleNbox::stashCValues( double t, const double c[] )
 
     // Apportioning is done by NPP and RH
     // i.e., biomes with higher values get more of any C change
-    const unitval npp_rh_total = npp_total + rh_total; // these are both positive
+    fluxpool npp_rh_total = npp_total + rh_total; // these are both positive
     const unitval newveg( c[ SNBOX_VEG ], U_PGC );
     const unitval newdet( c[ SNBOX_DET ], U_PGC );
     const unitval newsoil( c[ SNBOX_SOIL ], U_PGC );
@@ -327,9 +330,10 @@ double SimpleNbox::calc_co2fert(std::string biome, double time) const
 /*! \brief      Compute annual net primary production
  *  \returns    current annual NPP
  */
-unitval SimpleNbox::npp(std::string biome, double time) const
+fluxpool SimpleNbox::npp(std::string biome, double time) const
 {
-    unitval npp = npp_flux0.at( biome );    // 'at' throws exception if not found
+    // BBL-TODO need to change npp_flux0 to a fluxpool map
+    fluxpool npp(npp_flux0.at( biome ).value(U_PGC_YR), U_PGC_YR);    // 'at' throws exception if not found
     if(time == Core::undefinedIndex()) {
         npp = npp * co2fert.at( biome );        // that's why used here instead of []
     }
@@ -343,9 +347,9 @@ unitval SimpleNbox::npp(std::string biome, double time) const
 /*! \brief      Compute global net primary production
  *  \returns    Annual NPP summed across all biomes
  */
-unitval SimpleNbox::sum_npp(double time) const
+fluxpool SimpleNbox::sum_npp(double time) const
 {
-    unitval total( 0.0, U_PGC_YR );
+    fluxpool total( 0.0, U_PGC_YR );
     for( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
         total = total + npp( *it, time );}
     return total;
@@ -355,9 +359,9 @@ unitval SimpleNbox::sum_npp(double time) const
 /*! \brief      Compute detritus component of annual heterotrophic respiration
  *  \returns    current detritus component of annual heterotrophic respiration
  */
-unitval SimpleNbox::rh_fda( std::string biome ) const
+fluxpool SimpleNbox::rh_fda( std::string biome ) const
 {
-    unitval dflux( detritus_c.at( biome ).value( U_PGC ) * 0.25, U_PGC_YR );
+    fluxpool dflux( detritus_c.at( biome ).value( U_PGC ) * 0.25, U_PGC_YR );
     return dflux * tempfertd.at( biome );
 }
 
@@ -365,9 +369,9 @@ unitval SimpleNbox::rh_fda( std::string biome ) const
 /*! \brief      Compute soil component of annual heterotrophic respiration
  *  \returns    current soil component of annual heterotrophic respiration
  */
-unitval SimpleNbox::rh_fsa( std::string biome ) const
+fluxpool SimpleNbox::rh_fsa( std::string biome ) const
 {
-    unitval soilflux( soil_c.at( biome ).value( U_PGC ) * 0.02, U_PGC_YR );
+    fluxpool soilflux( soil_c.at( biome ).value( U_PGC ) * 0.02, U_PGC_YR );
     return soilflux * tempferts.at( biome );
 }
 
@@ -375,7 +379,7 @@ unitval SimpleNbox::rh_fsa( std::string biome ) const
 /*! \brief      Compute total annual heterotrophic respiration
  *  \returns    current annual heterotrophic respiration
  */
-unitval SimpleNbox::rh( std::string biome ) const
+fluxpool SimpleNbox::rh( std::string biome ) const
 {
     // Heterotrophic respiration is the sum of fluxes from detritus and soil
     return rh_fda( biome ) + rh_fsa( biome );
@@ -385,9 +389,9 @@ unitval SimpleNbox::rh( std::string biome ) const
 /*! \brief      Compute global heterotrophic respiration
  *  \returns    Annual RH summed across all biomes
  */
-unitval SimpleNbox::sum_rh() const
+fluxpool SimpleNbox::sum_rh() const
 {
-    unitval total( 0.0, U_PGC_YR );
+    fluxpool total( 0.0, U_PGC_YR );
     for( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
         total = total + rh( *it );
     }
@@ -419,15 +423,15 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
     }
 
     /// NPP: Net primary productivity
-    unitval npp_biome( 0.0, U_PGC_YR);
-    unitval npp_current( 0.0, U_PGC_YR );
-    unitval npp_fav( 0.0, U_PGC_YR );
-    unitval npp_fad( 0.0, U_PGC_YR );
-    unitval npp_fas( 0.0, U_PGC_YR );
+    fluxpool npp_biome( 0.0, U_PGC_YR);
+    fluxpool npp_current( 0.0, U_PGC_YR );
+    fluxpool npp_fav( 0.0, U_PGC_YR );
+    fluxpool npp_fad( 0.0, U_PGC_YR );
+    fluxpool npp_fas( 0.0, U_PGC_YR );
 
     // RH: heterotrophic respiration
-    unitval rh_fda_current( 0.0, U_PGC_YR );
-    unitval rh_fsa_current( 0.0, U_PGC_YR );
+    fluxpool rh_fda_current( 0.0, U_PGC_YR );
+    fluxpool rh_fsa_current( 0.0, U_PGC_YR );
 
     for( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
         std::string biome = *it;
@@ -440,7 +444,7 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
         rh_fda_current = rh_fda_current + rh_fda( biome );
         rh_fsa_current = rh_fsa_current + rh_fsa( biome );
     }
-    unitval rh_current = rh_fda_current + rh_fsa_current;
+    fluxpool rh_current = rh_fda_current + rh_fsa_current;
 
     // Detritus flux comes from the vegetation pool
     // TODO: these values should use the c[] pools passed in by solver!
@@ -573,7 +577,7 @@ void SimpleNbox::slowparameval( double t, const double c[] )
         tfs_last = tempferts_tv[t];
     }
 
-    // Loop over biomes.
+    // Loop over biomes
     for( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
         std::string biome = *it;
         if( in_spinup ) {
@@ -618,9 +622,7 @@ void SimpleNbox::slowparameval( double t, const double c[] )
                 << ", tempferts=" << tempferts[ biome ] << std::endl;
         }
     } // loop over biomes
-    // save the new values for use in the next time step
-    // TODO:  move this to a purpose-built recording subroutine
-    //tempferts_tv.set(tcurrent, tempferts);
+
     H_LOG(logger, Logger::DEBUG) << "slowparameval: would have recorded tempferts = " << tempferts[SNBOX_DEFAULT_BIOME]
                                  << " at time= " << tcurrent << std::endl;
 }

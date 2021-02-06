@@ -35,6 +35,7 @@ public:
     friend fluxpool operator- ( const fluxpool&, const fluxpool& );
     friend fluxpool operator- ( const fluxpool&, const unitval& );
     friend fluxpool operator/ ( const fluxpool&, const double );
+    friend double operator/ ( const fluxpool&, const fluxpool&  );
 };
 
 
@@ -121,6 +122,15 @@ fluxpool operator* ( const double lhs, const fluxpool& rhs ) {
 inline
 fluxpool operator/ ( const fluxpool& lhs, const double rhs ) {
     return fluxpool( lhs.val / rhs, lhs.valUnits );
+}
+
+//-----------------------------------------------------------------------
+/*! \brief Operator overload: division.
+ */
+inline
+double operator/ ( const fluxpool& lhs, const fluxpool& rhs ) {
+    H_ASSERT( lhs.valUnits == rhs.valUnits, "units mismatch" );
+    return lhs.val / rhs.val;
 }
 
 }
