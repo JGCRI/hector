@@ -47,8 +47,8 @@ test_that("Basic hcore functionality works", {
 test_that("Write out logs", {
 
   ## Turn logging ON for one test and confirm it runs (see GitHub issues #372 and #381)
-  hc_log <- newcore(file.path(inputdir, "hector_rcp45.ini"), 
-                    name = "RCP45", 
+  hc_log <- newcore(file.path(inputdir, "hector_rcp45.ini"),
+                    name = "RCP45",
                     suppresslogging = FALSE)
   run(hc_log, 2100)
   shutdown(hc_log)
