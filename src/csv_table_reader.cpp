@@ -13,7 +13,13 @@
  */
 
 #include <vector>
+
+// some boost headers generate warnings under clang; not our problem, ignore
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Weverything"
 #include <boost/lexical_cast.hpp>
+#pragma clang diagnostic pop
+
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/trim.hpp>
 #include <errno.h>
