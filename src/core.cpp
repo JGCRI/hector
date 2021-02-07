@@ -557,7 +557,7 @@ void Core::registerCapability(const string& capabilityName, const string& compon
     H_ASSERT( !isInited, "registerCapability not available after core is initialized")
 
     // check whether the capability already exists
-    int ncap = componentCapabilities.count(capabilityName);
+    int ncap = (int)componentCapabilities.count(capabilityName);
     if(ncap > 0  && warndupe) {
         // If this capability is a dupe, issue a warning, unless we
         // have been instructed not to.
@@ -568,7 +568,6 @@ void Core::registerCapability(const string& capabilityName, const string& compon
         // Adding a duplicate capability has no useful effect anyhow.
         componentCapabilities.insert( pair<string, string>( capabilityName, componentName ) );
         H_LOG(glog, Logger::DEBUG) << capabilityName << " registered to component " << componentName << "\n";
-
     }
 }
 
@@ -731,7 +730,7 @@ std::vector<Core *> Core::core_registry;
 int Core::mkcore(bool logtofile, Logger::LogLevel loglvl, bool logtoscrn)
 {
     core_registry.push_back(new Core(loglvl, logtoscrn, logtofile));
-    return core_registry.size() - 1;
+    return (int)core_registry.size() - 1;
 }
 
 /*! Get a core by index
