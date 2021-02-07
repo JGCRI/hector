@@ -608,7 +608,6 @@ void SimpleNbox::set_c0(double newc0)
                                      << "\n";
     }
     C0.set(newc0, U_PPMV_CO2);
-
 }
 
 // Check if `biome` is present in biome_list

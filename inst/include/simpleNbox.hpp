@@ -182,18 +182,16 @@ private:
     fluxpool_stringmap npp_flux0;       //!< preindustrial NPP
 
     // Atmospheric CO2, temperature, and their effects
-    unitval    C0;                      //!< preindustrial [CO2], ppmv
+    fluxpool    C0;                      //!< preindustrial [CO2], ppmv
 
-    double_stringmap beta,           //!< shape of CO2 response
-    //                        sigma,          //!< shape of temperature response (not yet implemented)
-        warmingfactor;  //!< regional warming relative to global (1.0=same)
-
-    double_stringmap q10_rh;            //!< Q10 for heterotrophic respiration (unitless)
+    double_stringmap beta;           //!< shape of CO2 response
+    double_stringmap warmingfactor;  //!< regional warming relative to global (1.0=same)
+    double_stringmap q10_rh;         //!< Q10 for heterotrophic respiration (1.0=no response, unitless)
 
     /*****************************************************************
      * Functions computing sub-elements of the carbon cycle
      *****************************************************************/
-    double calc_co2fert(std::string biome, double time = Core::undefinedIndex()) const; //!< calculates co2fertilization factor.
+    double calc_co2fert(std::string biome, double time = Core::undefinedIndex()) const; //!< calculates co2 fertilization factor.
     fluxpool npp(std::string biome, double time = Core::undefinedIndex()) const; //!< calculates NPP for a biome
     fluxpool sum_npp(double time = Core::undefinedIndex()) const; //!< calculates NPP, global total
     fluxpool rh_fda( std::string biome ) const;  //!< calculates current RH from detritus for a biome

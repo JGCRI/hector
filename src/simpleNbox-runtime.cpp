@@ -7,7 +7,8 @@
 /*
  *  simpleNbox-runtime.cpp
  *  The old simpleNbox.cpp file was getting very long; this file now holds the functions
- *  focusing on the model runtime: prepareToRun() and run(), solver-related funcs, etc.
+ *  focusing on the model runtime: prepareToRun() and run(), solver-related funcs such
+ *  as calcDerivs() and StashCValues(), etc.
  *  hector
  *
  *  Created by Ben on 2020-02-06.
@@ -36,17 +37,11 @@ using namespace boost;
  */
 void SimpleNbox::sanitychecks() throw( h_exception )
 {
-
-    // Make a few sanity checks here, and then return.
-    H_ASSERT( atmos_c.value( U_PGC ) > 0.0, "atmos_c pool <=0" );
-
+    // A few sanity checks
+    // Note that with the addition of the fluxpool class (which guarantees
+    // non-negative numbers) many of these checks went away
     for ( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
         std::string biome = *it;
-        H_ASSERT( veg_c.at(biome).value( U_PGC ) >= 0.0, "veg_c pool < 0" );
-        H_ASSERT( detritus_c.at(biome).value( U_PGC ) >= 0.0, "detritus_c pool < 0" );
-        H_ASSERT( soil_c.at(biome).value( U_PGC ) >= 0.0, "soil_c pool < 0" );
-        H_ASSERT( npp_flux0.at(biome).value( U_PGC_YR ) >= 0.0, "npp_flux0 < 0" );
-
         H_ASSERT( f_nppv.at(biome) >= 0.0, "f_nppv <0" );
         H_ASSERT( f_nppd.at(biome) >= 0.0, "f_nppd <0" );
         H_ASSERT( f_nppv.at(biome) + f_nppd.at(biome) <= 1.0, "f_nppv + f_nppd >1" );
@@ -56,9 +51,6 @@ void SimpleNbox::sanitychecks() throw( h_exception )
     H_ASSERT( f_lucv >= 0.0, "f_lucv <0" );
     H_ASSERT( f_lucd >= 0.0, "f_lucd <0" );
     H_ASSERT( f_lucv + f_lucd <= 1.0, "f_lucv + f_lucd >1" );
-
-    H_ASSERT( C0.value( U_PPMV_CO2 ) > 0.0, "C0 <= 0" );
-    H_ASSERT( Ca.value( U_PPMV_CO2 ) > 0.0, "Ca <= 0" );
 }
 
 //------------------------------------------------------------------------------
@@ -83,7 +75,6 @@ void SimpleNbox::log_pools( const double t )
 // documentation is inherited
 void SimpleNbox::prepareToRun() throw( h_exception )
 {
-
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
 
     // If any 'global' settings, there shouldn't also be regional
@@ -112,7 +103,6 @@ void SimpleNbox::prepareToRun() throw( h_exception )
                 "Setting to default value = 1.0" << std::endl;
             warmingfactor[ biome ] = 1.0;
         }
-
     }
 
     // Save a pointer to the ocean model in use
@@ -204,12 +194,12 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     H_ASSERT( yf >= 0 && yf <= 1, "yearfraction out of bounds" );
 
     H_LOG( logger,Logger::DEBUG ) << "Stashing at t=" << t << ", solver pools at " << t << ": " <<
-        "  atm = " << c[ 0 ] <<
-        "  veg = " << c[ 1 ] <<
-        "  det = " << c[ 2 ] <<
-        "  soil = " << c[ 3 ] <<
-        "  ocean = " << c[ 4 ] <<
-        "  earth = " << c[ 5 ] << std::endl;
+        "  atm = " << c[ SNBOX_ATMOS ] <<
+        "  veg = " << c[ SNBOX_VEG ] <<
+        "  det = " << c[ SNBOX_DET ] <<
+        "  soil = " << c[ SNBOX_SOIL ] <<
+        "  ocean = " << c[ SNBOX_OCEAN ] <<
+        "  earth = " << c[ SNBOX_EARTH ] << std::endl;
 
     log_pools( t );
 
@@ -239,9 +229,9 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     const unitval newveg( c[ SNBOX_VEG ], U_PGC );
     const unitval newdet( c[ SNBOX_DET ], U_PGC );
     const unitval newsoil( c[ SNBOX_SOIL ], U_PGC );
-    unitval veg_delta = newveg - sum_map( veg_c );  // TODO: make const
-    unitval det_delta = newdet - sum_map( detritus_c );  // TODO: make const
-    unitval soil_delta = newsoil - sum_map( soil_c );  // TODO: make const
+    const unitval veg_delta = newveg - sum_map( veg_c );
+    const unitval det_delta = newdet - sum_map( detritus_c );
+    const unitval soil_delta = newsoil - sum_map( soil_c );
     H_LOG( logger,Logger::DEBUG ) << "veg_delta = " << veg_delta << std::endl;
     H_LOG( logger,Logger::DEBUG ) << "det_delta = " << det_delta << std::endl;
     H_LOG( logger,Logger::DEBUG ) << "soil_delta = " << soil_delta << std::endl;
@@ -254,8 +244,6 @@ void SimpleNbox::stashCValues( double t, const double c[] )
         soil_c[ biome ]     = soil_c.at( biome ) + soil_delta * wt;
         H_LOG( logger,Logger::DEBUG ) << "Biome " << biome << " weight = " << wt << std::endl;
     }
-
-    log_pools( t );
 
     omodel->stashCValues( t, c );   // tell ocean model to store new C values
     earth_c.set( c[ SNBOX_EARTH ], U_PGC );
@@ -407,8 +395,6 @@ fluxpool SimpleNbox::sum_rh() const
 int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
 {
     // Solver is attempting to go from ODEstartdate to t
-//    const double yearfraction = ( t - ODEstartdate );
-//    H_ASSERT( yearfraction >= 0 && yearfraction <= 1, "yearfraction out of bounds" );
 
     // Atmosphere-ocean flux is calculated by ocean_component
     const int omodel_err = omodel->calcderivs( t, c, dcdt );
@@ -421,7 +407,7 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
         ocean_release.set(-ao_exchange, U_PGC_YR);
     }
 
-    /// NPP: Net primary productivity
+    // NPP: Net primary productivity
     fluxpool npp_biome( 0.0, U_PGC_YR);
     fluxpool npp_current( 0.0, U_PGC_YR );
     fluxpool npp_fav( 0.0, U_PGC_YR );
@@ -630,13 +616,14 @@ void SimpleNbox::slowparameval( double t, const double c[] )
                 tempferts[ biome ] = tempferts_last;
             }
 
-            H_LOG( logger,Logger::DEBUG ) << biome << " Tgav=" << Tgav << ", Tgav_biome=" << Tgav_biome << ", tempfertd=" << tempfertd[ biome ]
-                << ", tempferts=" << tempferts[ biome ] << std::endl;
+            H_LOG( logger,Logger::DEBUG ) << biome << " Tgav=" << Tgav << ", Tgav_biome=" <<
+                Tgav_biome << ", tempfertd=" << tempfertd[ biome ] << ", tempferts=" <<
+                tempferts[ biome ] << std::endl;
         }
     } // loop over biomes
 
-    H_LOG(logger, Logger::DEBUG) << "slowparameval: would have recorded tempferts = " << tempferts[SNBOX_DEFAULT_BIOME]
-                                 << " at time= " << tcurrent << std::endl;
+    H_LOG(logger, Logger::DEBUG) << "slowparameval: would have recorded tempferts = " <<
+        tempferts[SNBOX_DEFAULT_BIOME] << " at time= " << tcurrent << std::endl;
 }
 
 }
