@@ -120,6 +120,28 @@ unitval SimpleNbox::sendMessage( const std::string& message,
     return returnval;
 }
 
+trackedval SimpleNbox::sendPoolMessage( const std::string& message,
+                                const std::string& datum,
+                                const message_data info ) throw ( h_exception )
+{
+    trackedval returnval;
+
+    if( message==M_GETDATA ) {          //! Caller is requesting data
+        return getPoolData( datum, info.date );
+
+    } else if( message==M_SETDATA ) {   //! Caller is requesting to set data
+
+        setData(datum, info);
+        //TODO: change core so that parsing is routed through sendMessage
+        //TODO: make setData private
+
+    } else {                        //! We don't handle any other messages
+        H_THROW( "Caller sent unknown message: "+message );
+    }
+
+    return returnval;
+}
+
 //------------------------------------------------------------------------------
 // documentation is inherited
 void SimpleNbox::setData( const std::string &varName,
@@ -434,6 +456,110 @@ void SimpleNbox::prepareToRun() throw( h_exception )
         H_ASSERT( q10_rh.at( *it )>0.0, "q10_rh <= 0.0" );
     }
     sanitychecks();
+
+
+    // TEMP TESTS FOR trackedval for ease of development
+     Hector::unitval c1(1, Hector::U_PGC);
+    trackedval x(c1, "x");
+    trackedval y(c1, "y");
+    
+    // addtion without tracking
+    trackedval z = x + y;
+    Hector::unitval c2 = c1 + c1;
+    H_ASSERT(z.get_total() == c2, "untracked total not right");
+    
+    // tracking mismatch
+    x.setTracking(true);
+    ASSERT_NOTHROW(x + y, "addition didn't throw mismatch exception")
+    x.setTracking(false);
+    y.setTracking(true);
+    ASSERT_NOTHROW(x + y, "addition didn't throw mismatch exception")
+
+    // addition with tracking
+    x.setTracking(true);
+    y.setTracking(true);
+    z = x + y;
+    H_ASSERT(z.get_total() == c2, "tracked total not right");
+    H_ASSERT(z.get_fraction("x") == 0.5, "x fraction not right");
+    H_ASSERT(z.get_fraction("y") == 0.5, "x fraction not right");
+    
+    z = z + x;
+    H_ASSERT(z.get_total() == c1 + c2, "tracked total not right");
+    double xfrac = z.get_fraction("x");
+    double yfrac = z.get_fraction("y");
+    H_ASSERT(xfrac == yfrac * 2, "x/y fractions not right");
+    
+    // add 0
+    Hector::unitval c0(0, Hector::U_PGC);
+    trackedval zero(c0, "zero");
+    zero.setTracking(true);
+    trackedval x2 = x + zero;
+    H_ASSERT(x == x2, "adding zero doesn't work");
+    H_ASSERT(x2.get_fraction("x") == 1, "x2 fraction not right");
+    
+    // add 0 and 0
+    trackedval zerozero = zero + zero;
+    H_ASSERT(zerozero == zero, "adding zeros doesn't work");
+
+    //adding negatives with tracking
+    Hector::unitval neg_c1(-1, Hector::U_PGC);
+    trackedval neg(neg_c1, "neg");
+    neg.setTracking(true);
+    trackedval s = z + neg;
+    H_ASSERT(s.get_total() == z.get_total() + neg_c1, "addition doesn't work with negatives");
+    H_ASSERT(s.get_fraction("x") == z.get_fraction("x"), "addition with negatives does map wrong");
+    H_ASSERT(s.get_fraction("y") == z.get_fraction("y"), "addition with negatives does map wrong");
+    H_ASSERT(s.get_fraction("neg") == z.get_fraction("neg"), "addition with negatives does map wrong");
+
+    // SUBTRACTION TESTS
+    y = x - c1;
+    H_ASSERT(y.get_total() == 0, "unitval subtraction doesn't work");
+    x2 = x - c0;
+    H_ASSERT(x.get_total() == x2.get_total(), "unitval 0 subtraction doesn't work");
+
+    // can't subtract a negative number
+    ASSERT_NOTHROW(y - neg_c1, "subtraction didn't throw exception for subtraction of negatives");
+
+    // TEST for adjust_pools_by_flux
+    unitval c10(10, U_PGC);
+    trackedval v(c10, "v");
+    trackedval t(c10, "t");
+    v.setTracking(true);
+    t.setTracking(true);
+
+    unitval c5(5, U_PGC);
+    unitval neg_c5(-5, U_PGC);
+
+    // flux of size 0
+    s.adjust_pools_by_flux(t, c0);
+    H_ASSERT(v.get_total() == 10, "adjusting pools doesn't work with 0 flux");
+    H_ASSERT(t.get_total() == 10, "adjusting pools doesn't work with 0 flux");
+    H_ASSERT(v.get_fraction("v") == 1, "adjusting pools doesn't work with 0 flux");
+    H_ASSERT(v.get_fraction("t") == 0, "adjusting pools doesn't work with 0 flux");
+    
+    // positive flux
+    t.adjust_pools_by_flux(v, c5);
+    H_ASSERT(v.get_total() == 15, "adjusting pools doesn't work with + flux");
+    H_ASSERT(t.get_total() == 5, "adjusting pools doesn't work with + flux");
+    H_ASSERT(v.get_fraction("v") == (c10/(c5+c10)), "adjusting pools (frac) doesn't work with + flux");
+    H_ASSERT(v.get_fraction("t") == c5/(c5+c10), "adjusting pools (frac) doesn't work with + flux");
+    H_ASSERT(t.get_fraction("t") == 1, "adjusting pools (frac) doesn't work with + flux");
+
+    trackedval u(c5, "u");
+    u.setTracking(true);
+    // negative flux
+    t.adjust_pools_by_flux(u, neg_c5);
+    H_ASSERT(u.get_total() == c0, "adjusting pools doesn't work with - flux");
+    H_ASSERT(t.get_total() == 10, "adjusting pools doesn't work with - flux");
+    H_ASSERT(u.get_fraction("u") == 1, "adjusting pools (frac) doesn't work with - flux");
+    H_ASSERT(t.get_fraction("t") == (c5/c10), "adjusting pools (frac) doesn't work with - flux");
+    H_ASSERT(t.get_fraction("u") == (c5/c10), "adjusting pools (frac) doesn't work with - flux");
+
+    // error if used with negative pool
+    trackedval neg_pool(neg_c5, "neg");
+    ASSERT_NOTHROW(t.adjust_pools_by_flux(neg_pool, c0), "error isn't thrown in adjust_pools_by_flux for neg pool");
+    ASSERT_NOTHROW(neg_pool.adjust_pools_by_flux(t, c0), "error isn't thrown in adjust_pools_by_flux for neg pool");
+
 }
 
 //------------------------------------------------------------------------------
@@ -622,6 +748,28 @@ unitval SimpleNbox::getData(const std::string& varName,
     return returnval;
 }
 
+trackedval SimpleNbox::getPoolData(const std::string& varName,
+                            const double date) throw ( h_exception )
+{
+    trackedval returnval;
+    if( varName == D_ATMOSPHERIC_C ) {
+        if(date == Core::undefinedIndex())
+            returnval = atmos_c;
+        else
+            returnval = trackedval(atmos_c_ts.get(date), "atmos");
+    } else if( varName == D_EARTHC ) {
+        if(date == Core::undefinedIndex())
+            returnval = earth_c;
+        else
+            returnval = trackedval(earth_c_ts.get(date), "earth_c");
+    } else {
+        H_THROW( "Caller is requesting untracked or unknown pool: " + varName );
+    }
+
+    return returnval;
+
+}
+
 void SimpleNbox::reset(double time) throw(h_exception)
 {
     // Reset all state variables to their values at the reset time
@@ -738,10 +886,12 @@ void SimpleNbox::stashCValues( double t, const double c[] )
         ffi_flux_val.set(ffi_val, U_PGC);
     }
 
-    earth_c.set(unitval(c[SNBOX_EARTH], U_PGC)); // pool is negative and has no fluxes into the pool - setting is simpler
     trackedval ffi_to_atmos= earth_c.flux_from_pool(ffi_flux_val);
     atmos_c = atmos_c + ffi_to_atmos;
-    atmos_c = atmos_c.adjust_pool(unitval(c[SNBOX_ATMOS], U_PGC));
+    atmos_c = atmos_c.adjust_pool_to_val(unitval(c[SNBOX_ATMOS], U_PGC)); // adjusts pool to output from calcderivs
+
+    earth_c.set(unitval(c[SNBOX_EARTH], U_PGC)); // pool is negative and has no fluxes into the pool - setting is simpler
+    
 
     // Record the land C flux
     const unitval npp_total = sum_npp();
@@ -823,7 +973,7 @@ void SimpleNbox::stashCValues( double t, const double c[] )
         // Transfer C from atmosphere to deep ocean and update our C and Ca variables
         H_LOG( logger,Logger::DEBUG ) << "Sending residual of " << residual << " to deep ocean" << std::endl;
         core->sendMessage( M_DUMP_TO_DEEP_OCEAN, D_OCEAN_C, message_data( residual ) );
-        atmos_c = atmos_c - residual;
+        atmos_c = atmos_c.adjust_pool_to_val(unitval(atmos_cpool_to_match, U_PGC));
         Ca.set( atmos_c.get_total().value( U_PGC ) * PGC_TO_PPMVCO2, U_PPMV_CO2 );
 
     } else {

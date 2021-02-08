@@ -34,11 +34,11 @@ CSVTrackedPoolVisitor::CSVTrackedPoolVisitor( ostream& outputStream, const bool 
 {
     if( printHeader ) {
         // Print model version header
-        csvFile << "# Output from " << MODEL_NAME << " version " << MODEL_VERSION << endl;
+        //csvFile << "# Output from " << MODEL_NAME << " version " << MODEL_VERSION << endl;
 
         // Print table header
         csvFile << "year" << DELIMITER << "run_name" << DELIMITER << "spinup" << DELIMITER
-             << "pool_name" << DELIMITER << "pool_values" << endl;
+             << "pool_name" << DELIMITER << "pool_value" << DELIMITER << "pool_units" << DELIMITER << "atmos_c" << DELIMITER << "earth_c" << DELIMITER << "not_tracked" <<endl;
     }
     run_name = "";
     current_date = 0;
@@ -82,15 +82,15 @@ void CSVTrackedPoolVisitor::visit( Core* c ) {
 // Macro to send a variable with associated unitval units to some output stream
 // Takes s (stream), c (component), xname (variable name), x (output variable)
 #define STREAM_POOL( s, c, xname, x ) { \
-s << linestamp() << DELIMITER << xname << DELIMITER << x << std::endl; \
+s << linestamp() << DELIMITER << xname << DELIMITER << x.get_total().value(U_PGC) << DELIMITER << x.get_total().unitsName() << DELIMITER << x.get_fraction("atmos_c") << DELIMITER << x.get_fraction("earth_c") << DELIMITER << x.get_fraction("not tracked") << std::endl; \
 }
 
 // Macro to send a variable with associated unitval units to some output stream
 // This uses new sendMessage interface in imodel_component
 // Takes s (stream), c (component), xname (variable name), date
 #define STREAM_MESSAGE( s, c, xname ) { \
-unitval x = c->sendMessage( M_GETDATA, xname ); \
-s << linestamp() << xname << DELIMITER << x << std::endl; \
+trackedval x = c->sendPoolMessage( M_GETDATA, xname ); \
+s << linestamp() << xname << DELIMITER <<  x.get_total().value(U_PGC) << DELIMITER << x.get_total().unitsName() << DELIMITER << x.get_fraction("atmos_c") << DELIMITER << x.get_fraction("earth_c") << DELIMITER << x.get_fraction("not tracked") << std::endl; \
 }
 //------------------------------------------------------------------------------
 // documentation is inherited

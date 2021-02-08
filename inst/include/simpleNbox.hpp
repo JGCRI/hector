@@ -58,6 +58,10 @@ public:
                                 const std::string& datum,
                                 const message_data info=message_data() ) throw ( h_exception );
 
+    virtual trackedval sendPoolMessage( const std::string& message,
+                                const std::string& datum,
+                                const message_data info=message_data() ) throw ( h_exception );
+
     virtual void setData( const std::string& varName,
                           const message_data& data ) throw ( h_exception );
 
@@ -87,6 +91,9 @@ public:
 
 private:
     virtual unitval getData( const std::string& varName,
+                            const double date ) throw ( h_exception );
+                            
+    virtual trackedval getPoolData( const std::string& varName,
                             const double date ) throw ( h_exception );
 
     // typedefs for two map types, to make things easier

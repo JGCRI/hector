@@ -101,4 +101,13 @@ GET_3RD_ARG(__VA_ARGS__, H_ASSERT2, H_ASSERT1, )
  */
 #define H_RETHROW(oe, s) throw h_exception(std::string(s) + " - " + oe.what(), __func__, __FILE__, __LINE__);
 
+/*! \brief Macro to test that exceptions are thrown when they are supposed to be.
+ */
+#define ASSERT_NOTHROW(zzz,msg){\
+bool thrown=false; \
+try{zzz;} \
+catch (h_exception e) {thrown=true;} \
+H_ASSERT(thrown, msg); \
+}
+
 #endif

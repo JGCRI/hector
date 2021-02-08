@@ -47,7 +47,10 @@ public:
     trackedval flux_from_pool(const Hector::unitval fluxVal) const;
 
     // adjust pool size to match output from ODE solver
-    trackedval adjust_pool(const Hector::unitval solvedSize);
+    trackedval adjust_pool_to_val(const Hector::unitval solvedSize);
+
+    // Add and subtract fluxes as needed
+    void adjust_pools_by_flux(trackedval& fluxTo, Hector::unitval fluxSize);
 
     // pretty printing
     friend ostream& operator<<(ostream &out, trackedval &ct);
