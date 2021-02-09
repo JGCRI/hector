@@ -11,6 +11,8 @@
 ^appveyor.yml$
 ^.github$
 ^wiki/
+^_pkgdown.yml$
+
 ## Files supporting stand-alone hector.
 ^Makefile$
 ^project_files$
@@ -28,7 +30,12 @@
 ^misc$
 ^data-raw$
 ^analysis$
+^.vscode$
 
 # pkgdown config and output
-^inst/_pkgdown.yml
+_pkgdown.yml
 ^docs/
+^\.github$
+
+# lintr config
+.lintr

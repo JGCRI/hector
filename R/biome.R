@@ -68,7 +68,6 @@ split_biome <- function(core,
                         fsoil_c = fveg_c,
                         fnpp_flux0 = fveg_c,
                         ...) {
-
   stopifnot(
     length(old_biome) == 1,
     old_biome %in% get_biome_list(core),
@@ -108,7 +107,6 @@ split_biome <- function(core,
 
   reset(core, 0)
   invisible(core)
-
 }
 
 #' Retrieve the initial conditions and parameters for a given biome
@@ -127,12 +125,16 @@ get_biome_inits <- function(core, biome) {
     sendmessage(core, GETDATA(), DETRITUS_C(biome), 0, NA, ""),
     sendmessage(core, GETDATA(), SOIL_C(biome), 0, NA, "")
   )
-  current_data_2 <- fetchvars(core, NA, c(NPP_FLUX0(biome),
-                                          BETA(biome),
-                                          WARMINGFACTOR(biome)))[, -1]
+  current_data_2 <- fetchvars(core, NA, c(
+    NPP_FLUX0(biome),
+    BETA(biome),
+    WARMINGFACTOR(biome)
+  ))[, -1]
   current_data <- rbind.data.frame(current_data_1, current_data_2)
   current_values <- current_data[["value"]]
   names(current_values) <- gsub(paste0(biome, "."), "",
-                                current_data[["variable"]], fixed = TRUE)
+    current_data[["variable"]],
+    fixed = TRUE
+  )
   current_values
 }

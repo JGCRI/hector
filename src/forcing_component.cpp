@@ -12,7 +12,12 @@
  *
  */
 
+// some boost headers generate warnings under clang; not our problem, ignore
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Weverything"
 #include <boost/array.hpp>
+#pragma clang diagnostic pop
+
 #include "forcing_component.hpp"
 #include "avisitor.hpp"
 

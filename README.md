@@ -2,6 +2,7 @@
 ![Command Line Hector](https://github.com/JGCRI/hector/workflows/Command%20Line%20Hector/badge.svg)
 ![test-coverage](https://github.com/JGCRI/hector/workflows/test-coverage/badge.svg)
 [![codecov](https://codecov.io/gh/JGCRI/hector/branch/master/graph/badge.svg?token=EGM0lXDxRv)](https://codecov.io/gh/JGCRI/hector)
+![lint](https://github.com/JGCRI/hector/workflows/lint/badge.svg)
 
 Hector
 ======
@@ -18,10 +19,9 @@ This research was supported by the U.S. Department of Energy, Office of Science,
 ## Tools and Software That Work with Hector
 
 * [GCAM](https://github.com/JGCRI/gcam-core): Hector can be used as the climate component in [GCAM](http://jgcri.github.io/gcam-doc/).
-* [pyhector](https://github.com/openclimatedata/pyhector): a python
+* [pyhector](https://github.com/openclimatedata/pyhector): a Python
   interface to Hector.
 * [HectorUI](https://jgcri.shinyapps.io/HectorUI/): run Hector in a web interface!
-
 
  ##  Contributing to Hector
 
