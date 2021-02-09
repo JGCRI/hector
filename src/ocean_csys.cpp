@@ -24,7 +24,13 @@
  */
 
 #include <math.h>
+
+// some boost headers generate warnings under clang; not our problem, ignore
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Weverything"
 #include <boost/math/tools/polynomial.hpp>
+#pragma clang diagnostic pop
+
 #include <boost/math/tools/roots.hpp>
 
 #include "h_exception.hpp"

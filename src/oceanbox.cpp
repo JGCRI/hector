@@ -275,7 +275,7 @@ void oceanbox::compute_fluxes( const unitval current_Ca, const double yf, const 
             closs_total = closs_total + compute_connection_flux( i, yf );
         } // for i
 
-        if( 0 /* osc */ ) {
+        if( /* DISABLES CODE */ (0) /* osc */ ) {
             const double mean_past_loss = vectorHistoryMean( carbonLossHistory, 10 );
             unstable_box_flux_adjust = mean_past_loss / closs_total.value( U_PGC );
             
