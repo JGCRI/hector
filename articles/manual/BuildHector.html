@@ -98,11 +98,17 @@
 
     
     
-<div id="installing-and-building---r-package" class="section level1">
+<div id="installing-and-building-hector" class="section level1">
 <h1 class="hasAnchor">
-<a href="#installing-and-building---r-package" class="anchor"></a>Installing and building - R package</h1>
-<p>The easiest way to install and use Hector is as an R package. To install R, follow the <a href="https://cloud.r-project.org/">official instructions</a> for your platform.</p>
-<p>To install the version associated with the current <code>master</code> git branch on GitHub, use the <code>devtools::install_github</code> function. This will automatically install all of Hector’s dependencies as well. (Note that because this requires compiling from source, you will need to have a C compiler installed and configured. On <strong>Windows</strong>, you will also need to install <a href="https://cloud.r-project.org/bin/windows/Rtools/">Rtools</a>. On <strong>MacOS</strong> and <strong>Linux</strong>, the required tools should be included as part of a standard R installation.)</p>
+<a href="#installing-and-building-hector" class="anchor"></a>Installing and building Hector</h1>
+<p>There are lots of ways to use Hector, as a stand alone executable, through the UI, and as an R package. Here we provide installation and building instructions for the R Hector package and the executable.</p>
+</div>
+<div id="r-hector" class="section level1">
+<h1 class="hasAnchor">
+<a href="#r-hector" class="anchor"></a>R Hector</h1>
+<p>To install R, follow the <a href="https://cloud.r-project.org/">official instructions</a> for your platform.</p>
+<p>To install the version associated with the current <code>master</code> git branch on GitHub, use the <code>devtools::install_github</code> function. This will automatically install all of Hector’s dependencies as well. (Note that because this requires compiling from source, you will need to have a C compiler installed and configured.</p>
+<p>On <strong>Windows</strong>, you will also need to install <a href="https://cloud.r-project.org/bin/windows/Rtools/">Rtools</a>. On <strong>MacOS</strong> and <strong>Linux</strong>, the required tools should be included as part of a standard R installation.)</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># If the `devtools` isn't installed, first run:</span>
 <span class="co"># install.packages("devtools")</span>
@@ -132,17 +138,38 @@
 <a href="https://cran.r-project.org/web/packages/BH/index.html"><code>BH</code></a> – Boost C++ header files</li>
 </ul>
 </div>
-<div id="installing-and-building---standalone-executable" class="section level1">
+<div id="standalone-executable" class="section level1">
 <h1 class="hasAnchor">
-<a href="#installing-and-building---standalone-executable" class="anchor"></a>Installing and building - standalone executable</h1>
+<a href="#standalone-executable" class="anchor"></a>Standalone Executable</h1>
 <p>Hector can also be compiled as a standalone executable. Unlike the R package, this method of installation does not automatically pull in dependencies, so you will have to install them manually. Fortunately, Hector’s only external dependency–Boost–is freely available under a GPL license.</p>
 <p><strong>Boost</strong> is a free, peer-reviewed portable C++ source library, available at <a href="http://www.boost.org/" class="uri">http://www.boost.org/</a>. Hector primarily uses Boost “header-only” libraries, which do not need to be compiled independently and only need to be extracted and included with the Hector source. However, Hector currently <em>does</em> depend on two Boost libraries–<code>system</code> and <code>filesystem</code>–that require compilation.</p>
-<div id="mac-osx-xcode" class="section level2">
+<div id="command-line-linux-mac-osx" class="section level2">
 <h2 class="hasAnchor">
-<a href="#mac-osx-xcode" class="anchor"></a>Mac OSX (Xcode)</h2>
-<p>These directions assume a basic familiarity with Xcode and Mac OS X software installation. If you’re going to use <code>make</code> and not Xcode, see Linux directions below.</p>
+<a href="#command-line-linux-mac-osx" class="anchor"></a>Command Line (Linux &amp; Mac OSX)</h2>
+<p>The Hector makefiles look for Boost libraries and headers in certain default locations, but those defaults can be overridden by setting the following environment variables:</p>
 <ul>
-<li>Install <a href="https://developer.apple.com/xcode/downloads/">Xcode</a> if necessary. Hector has been built and tested with Mac OS 10.8.5 <del>and 10.10 (Yosemite)</del>. The project files are for Xcode 5.1.1.</li>
+<li><p><code>BOOSTROOT</code> (default <code>$(HOME)/src/boost_$(BOOSTVERSION)</code>). This variable should contain the full name of the directory created when you unpacked Boost. If you unpacked Boost in <code>$(HOME)/src</code>, then all you need to do is set the <code>BOOSTVERSION</code> variable (<em>q.v.</em> below) and leave this variable at its default value. If you unpacked Boost somewhere else (if you used <a href="https://brew.sh/">Homebrew</a> to install Boost), or if you changed the name of the directory that was created when you unpacked it, then you will need to set this variable explicitly.</p></li>
+<li><p><code>BOOSTVERSION</code> (default: <code>1_52_0</code>). This variable should contain the version number of the version of Boost that you installed. The version number will appear in the name of the tar file you downloaded. The <code>BOOSTVERSION</code> variable is used in the default value of <code>BOOSTROOT</code> to determine the default installation directory. If you override the default value of <code>BOOSTROOT</code> you can ignore this variable.</p></li>
+</ul>
+<p><strong>Shared Library Search Path</strong></p>
+<p>Compiled Boost libraries used by Hector will be compiled into shared libraries that must be loaded at run time. It is best if these libraries are in directories that are part of your system’s shared library search path. On many systems <code>/usr/local</code> is already in that path. If you install the libraries somewhere else, you may need to add the installation directories to the list given in <code>/etc/ld.so.conf</code>. Whether or not you install the GSL libraries in the default location, when you compile and install them you may need to refresh the library cache by running <code>ldconfig</code> (which generally requires root privilege), or by rebooting your system (which does not).</p>
+<p>If you are unable to add your library installation directory to the library search path, you will need to add the installation directory to the environment variable <code>LD_LIBRARY_PATH</code>. Try not to use this approach if you can help it because it can cause some conflicts with other software on your system. Instead, ask your system administrator if <code>ldconfig</code> is right for you.</p>
+<div id="build-run-hector" class="section level3">
+<h3 class="hasAnchor">
+<a href="#build-run-hector" class="anchor"></a>Build &amp; Run Hector</h3>
+<p>Once the necessary libraries are installed, change to the top-level Hector directory and type <code>make hector</code>. The hector executable will be built in the <code>source/</code> subdirectory. If you ever need to rebuild, you can type <code>make clean</code> to clear away the executable and all of the intermediate files.</p>
+<p>There are two additional environment variables that you can use to fine-tune the build process. The <code>CXXEXTRA</code> variable is passed to the C++ compiler. You can use this variable to pass extra options to the compiler without changing the Makefile. In particular, specifying optimization options in <code>CXXEXTRA</code> such as -O or -O0 will override the default value of -O3.</p>
+<p>The <code>CXXPROF</code> variable is passed both to the compiler and the linker. It is intended to turn on performance profiling, which must be specified at both the compile and link stages of the build, so it generally should be either unset (for normal operation) or set to -pg (for profiling). Profiling slows the code down dramatically, so if you use it, be sure to unset <code>CXXPROF</code>, clean the build directories with <code>make clean</code>, and rebuild when you are ready to go back to production runs.</p>
+<p>Run Hector from the terminal with the command line.</p>
+<pre><code>./src/hector ./inst/input/name-of-ini.ini</code></pre>
+</div>
+</div>
+<div id="xcode-mac-osx" class="section level2">
+<h2 class="hasAnchor">
+<a href="#xcode-mac-osx" class="anchor"></a>Xcode (Mac OSX)</h2>
+<p>These directions assume a basic familiarity with Xcode and Mac OS X software installation.</p>
+<ul>
+<li>Install <a href="https://developer.apple.com/xcode/downloads/">Xcode</a> if necessary. Hector has been built and tested with Mac OS &gt;= 10.8.5. The project files are for Xcode 11.3.1.</li>
 <li>Download and install Boost, following instructions above.</li>
 <li>Download the <a href="https://github.com/JGCRI/hector/archive/master.zip">Hector zip file</a> or check out the repository using Git.</li>
 <li>From Xcode, open the project file in <code>project_files/Xcode/hector.cxodeproj</code>.</li>
@@ -150,14 +177,14 @@
 <li>Change the current Scheme settings (Scheme-&gt;Edit Scheme) and add a command-line argument (<em>Arguments</em> tab, e.g. “input/hector_rcp45.ini”).</li>
 <li>Run!</li>
 </ul>
-<p>Xcode Build Settings to check/change if you encounter build errors:</p>
+<p>Xcode Build Settings to check if you encounter build errors, they should match the version installed on your machine:</p>
 <ul>
 <li>
 <em>Architectures-Base SDK</em>: OS X 10.8 [or OS X version on machine]</li>
 <li>
 <em>Build Options-Compiler for C/C++/Objective-C</em>: Default compiler (Apple LLVM 5.1)</li>
 <li>
-<em>Search Paths-Header Search Paths</em>: “/usr/local/include /usr/local/lib/boost_1_52_0/” [or other header directories]</li>
+<em>Search Paths-Header Search Paths</em>: “/usr/local/include /usr/local/lib/boost_1_52_0/” [or other header directories, this is important for homebrew users]</li>
 <li>
 <em>Search Paths-Library Search Paths</em>: “/usr/local/lib/” [or other library directories]</li>
 <li>
@@ -167,37 +194,27 @@
 <li>
 <em>User-Defined</em>: “GCC_MODEL_TUNING” defined as “G5”</li>
 </ul>
-</div>
-<div id="windows" class="section level2">
-<h2 class="hasAnchor">
-<a href="#windows" class="anchor"></a>Windows</h2>
+<p>Xcode Resources</p>
 <ul>
-<li>Install Visual Studio, if necessary.</li>
+<li><a href="https://developer.apple.com/library/archive/documentation/ToolsLanguages/Conceptual/Xcode_Overview/ManagingSchemes.html">Xcode Schemes</a></li>
+<li><a href="https://developer.apple.com/library/archive/documentation/DeveloperTools/Conceptual/debugging_with_xcode/chapters/debugging_tools.html">Xcode Debugging</a></li>
+</ul>
+</div>
+<div id="visual-studio-code-mac-osx-windows" class="section level2">
+<h2 class="hasAnchor">
+<a href="#visual-studio-code-mac-osx-windows" class="anchor"></a>Visual Studio Code (Mac OSX &amp; Windows)</h2>
+<ul>
+<li>Install <a href="https://code.visualstudio.com/download">Visual Studio Code</a>, if necessary.</li>
 <li>Download and install <em>Boost</em>, following instructions above.</li>
 <li>Download the <a href="https://github.com/JGCRI/hector/archive/master.zip">Hector zip file</a> or check out the repository using Git.</li>
-<li>TODO</li>
+<li>Open Hector in the visual studio code IDE, build Hector with Terminal –&gt; Run Build Task or with a <code>make hector</code> call in VSC terminal window.</li>
+<li>Run –&gt; Start Debugging or Run Without Debugging or with <code>./src/hector ./inst/input/name-of-ini.ini</code> in the VSC terminal window.</li>
 </ul>
 </div>
-<div id="linux" class="section level2">
+<div id="visual-studio" class="section level2">
 <h2 class="hasAnchor">
-<a href="#linux" class="anchor"></a>Linux</h2>
-<p>The Hector makefiles look for Boost libraries and headers in certain default locations, but those defaults can be overridden by setting the following environment variables:</p>
-<ul>
-<li><p><code>BOOSTROOT</code> (default <code>$(HOME)/src/boost_$(BOOSTVERSION)</code>). This variable should contain the full name of the directory created when you unpacked Boost. If you unpacked Boost in <code>$(HOME)/src</code>, then all you need to do is set the <code>BOOSTVERSION</code> variable (<em>q.v.</em> below) and leave this variable at its default value. If you unpacked Boost somewhere else, or if you changed the name of the directory that was created when you unpacked it, then you will need to set this variable explicitly.</p></li>
-<li><p><code>BOOSTVERSION</code> (default: <code>1_52_0</code>). This variable should contain the version number of the version of Boost that you installed. The version number will appear in the name of the tar file you downloaded. The <code>BOOSTVERSION</code> variable is used in the default value of <code>BOOSTROOT</code> to determine the default installation directory. If you override the default value of <code>BOOSTROOT</code> you can ignore this variable.</p></li>
-</ul>
-<p><strong>Shared Library Search Path</strong></p>
-<p>Compiled Boost libraries used by Hector will be compiled into shared libraries that must be loaded at run time. It is best if these libraries are in directories that are part of your system’s shared library search path. On many systems <code>/usr/local</code> is already in that path. If you install the libraries somewhere else, you may need to add the installation directories to the list given in <code>/etc/ld.so.conf</code>. Whether or not you install the GSL libraries in the default location, when you compile and install them you may need to refresh the library cache by running <code>ldconfig</code> (which generally requires root privilege), or by rebooting your system (which does not).</p>
-<p>If you are unable to add your library installation directory to the library search path, you will need to add the installation directory to the environment variable <code>LD_LIBRARY_PATH</code>. Try not to use this approach if you can help it because it can cause some conflicts with other software on your system. Instead, ask your system administrator if <code>ldconfig</code> is right for you.</p>
-<p><strong>Building Hector</strong></p>
-<p>Once the necessary libraries are installed, change to the top-level Hector directory and type <code>make hector</code>. The hector executable will be built in the <code>source/</code> subdirectory. If you ever need to rebuild, you can type <code>make clean</code> to clear away the executable and all of the intermediate files.</p>
-<p>There are two additional environment variables that you can use to fine-tune the build process. The <code>CXXEXTRA</code> variable is passed to the C++ compiler. You can use this variable to pass extra options to the compiler without changing the Makefile. In particular, specifying optimization options in <code>CXXEXTRA</code> such as -O or -O0 will override the default value of -O3.</p>
-<p>The <code>CXXPROF</code> variable is passed both to the compiler and the linker. It is intended to turn on performance profiling, which must be specified at both the compile and link stages of the build, so it generally should be either unset (for normal operation) or set to -pg (for profiling). Profiling slows the code down dramatically, so if you use it, be sure to unset <code>CXXPROF</code>, clean the build directories with <code>make clean</code>, and rebuild when you are ready to go back to production runs.</p>
-</div>
-<div id="iosandroid" class="section level2">
-<h2 class="hasAnchor">
-<a href="#iosandroid" class="anchor"></a>iOS/Android</h2>
-<p>Not yet. ;)</p>
+<a href="#visual-studio" class="anchor"></a>Visual Studio</h2>
+<p>VS sln is not supported at this time see <a href="https://github.com/JGCRI/hector/issues/415">VS Hector github issue</a> for more details.</p>
 </div>
 </div>
   </div>
