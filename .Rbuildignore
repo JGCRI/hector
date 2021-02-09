@@ -30,7 +30,7 @@
 ^analysis$
 
 # pkgdown config and output
-^inst/_pkgdown.yml
+_pkgdown.yml
 ^docs/
 ^\.github$
 
