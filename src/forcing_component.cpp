@@ -13,13 +13,7 @@
  */
 
 #include <boost/array.hpp>
-#include <math.h>
-
 #include "forcing_component.hpp"
-#include "halocarbon_component.hpp"
-#include "core.hpp"
-#include "dependency_finder.hpp"
-#include "h_util.hpp"
 #include "avisitor.hpp"
 
 namespace Hector {

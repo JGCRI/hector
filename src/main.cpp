@@ -20,7 +20,6 @@
 #include "h_util.hpp"
 #include "h_reader.hpp"
 #include "ini_to_core_reader.hpp"
-#include "csv_output_visitor.hpp"
 #include "csv_outputstream_visitor.hpp"
 
 #include "unitval.hpp"
@@ -64,8 +63,6 @@ int main (int argc, char * const argv[]) {
 
         // Create visitors
         H_LOG( glog, Logger::NOTICE ) << "Adding visitors to the core." << endl;
-        CSVOutputVisitor csvOutputVisitor( string( OUTPUT_DIRECTORY ) + "output.csv"  );
-        core.addVisitor( &csvOutputVisitor );
         filebuf csvoutputStreamFile;
 
         // Open the stream output file, which has an optional run name (specified in the INI file) in it
