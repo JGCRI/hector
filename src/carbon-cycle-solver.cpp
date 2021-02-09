@@ -15,7 +15,12 @@
 
 #include <math.h>
 #include <string>
+
+// some boost headers generate warnings under clang; not our problem, ignore
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Weverything"
 #include <boost/numeric/odeint.hpp>
+#pragma clang diagnostic pop
 
 #include "carbon-cycle-solver.hpp"
 #include "avisitor.hpp"
