@@ -42,6 +42,7 @@ public:
     double get_fraction(string source) const;
     bool tracking;
     string name;
+    fluxpool flux_from_unitval(unitval) const;
 
     // math operators
     friend fluxpool operator+ ( const fluxpool&, const fluxpool& );
@@ -59,7 +60,7 @@ public:
 //    friend ostream& operator<<(ostream &out, fluxpool &ct);
 
 private:
-    fluxpool(unitval, unit_types, unordered_map<string, double>, string);
+    fluxpool(unitval, unordered_map<string, double>, string);
 
     unordered_map<string, double> ctmap;
 };
@@ -90,8 +91,8 @@ fluxpool::fluxpool( double v, unit_types u, bool track = false, string pool_name
 /*! \brief Private constructor with explicit source pool map
  */
 inline
-fluxpool::fluxpool(unitval v, unit_types u, unordered_map<string, double> pool_map, string pool_name) {
-    unitval::set(v, u, 0.0);
+fluxpool::fluxpool(unitval v, unordered_map<string, double> pool_map, string pool_name) {
+    unitval::set(v.value(v.units()), v.units(), 0.0);
     tracking = true;
     ctmap = pool_map;
     name = pool_name;
@@ -147,9 +148,18 @@ double fluxpool::get_fraction(string source) const {
     return val;
 }
 
+//-----------------------------------------------------------------------
+/*! \brief Given a unitval, return a fluxpool with that total and our source pool map.
+                        This is needed when dealing with LUC and other input (i.e. unitval) fluxes
+ */
+inline
+fluxpool fluxpool::flux_from_unitval(unitval f) const {
+    return fluxpool(f, ctmap, name);
+}
+
 
 //-----------------------------------------------------------------------
-/*! \brief Operator overload: addition.
+/*! \brief Operator overload: addition
  */
 inline
 fluxpool operator+ ( const fluxpool& lhs, const fluxpool& rhs ) {
@@ -191,11 +201,11 @@ fluxpool operator+ ( const fluxpool& lhs, const fluxpool& rhs ) {
       }
     }
 
-    return fluxpool(new_total, lhs.units(), new_origins, lhs.name);
+    return fluxpool(new_total, new_origins, lhs.name);
 }
 
 //-----------------------------------------------------------------------
-/*! \brief Operator overload: addition.
+/*! \brief Operator overload: addition
         You can add a unitval to a fluxpool, resulting in a fluxpool
  */
 inline
@@ -206,7 +216,7 @@ fluxpool operator+ ( const fluxpool& lhs, const unitval& rhs ) {
 }
 
 //-----------------------------------------------------------------------
-/*! \brief Operator overload: subtraction.
+/*! \brief Operator overload: subtraction
  */
 inline
 fluxpool operator- ( const fluxpool& lhs, const fluxpool& rhs ) {
@@ -216,7 +226,7 @@ fluxpool operator- ( const fluxpool& lhs, const fluxpool& rhs ) {
 }
 
 //-----------------------------------------------------------------------
-/*! \brief Operator overload: subtraction.
+/*! \brief Operator overload: subtraction
         You can subtract a unitval from a fluxpool, resulting in a fluxpool
  */
 inline
@@ -226,7 +236,7 @@ fluxpool operator- ( const fluxpool& lhs, const unitval& rhs ) {
 }
 
 //-----------------------------------------------------------------------
-/*! \brief Operator overload: constant multiplication.
+/*! \brief Operator overload: constant multiplication
  */
 inline
 fluxpool operator* ( const fluxpool& lhs, const double rhs ) {
@@ -238,7 +248,7 @@ fluxpool operator* ( const double lhs, const fluxpool& rhs ) {
 }
 
 //-----------------------------------------------------------------------
-/*! \brief Operator overload: constant division.
+/*! \brief Operator overload: constant division
  */
 inline
 fluxpool operator/ ( const fluxpool& lhs, const double rhs ) {
@@ -246,7 +256,7 @@ fluxpool operator/ ( const fluxpool& lhs, const double rhs ) {
 }
 
 //-----------------------------------------------------------------------
-/*! \brief Operator overload: division.
+/*! \brief Operator overload: division
  */
 inline
 double operator/ ( const fluxpool& lhs, const fluxpool& rhs ) {
@@ -256,7 +266,7 @@ double operator/ ( const fluxpool& lhs, const fluxpool& rhs ) {
 }
 
 //-----------------------------------------------------------------------
-/*! \brief Equality and inequality: same total only.
+/*! \brief Equality and inequality: same total only
  */
 inline
 bool operator== ( const fluxpool& lhs, const fluxpool& rhs ) {

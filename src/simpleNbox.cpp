@@ -130,8 +130,14 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
     source = dest.get_sources();
     H_ASSERT(source.size() == 3, "dest source wasn't size 3");
 
+    // Test 3: start with a unitval flux and construct fluxpool (neeeded e.g. for LUC)
     
-    H_THROW("stop");
+    unitval uflux(1.0, U_PGC);
+    flux = src1.flux_from_unitval(uflux);
+    H_ASSERT(uflux.value(U_PGC) == flux.value(U_PGC), "flux and uflux values and/or units don't match");
+    vector<string> s1 = src1.get_sources(), s2 = flux.get_sources();
+    H_ASSERT(s1.size() == s2.size(), "flux and flux source maps not same size");
+    H_ASSERT(std::equal(s1.begin(), s1.end(), s2.begin()), "flux and uflux values source maps don't match");
     
 }
 
