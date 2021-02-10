@@ -67,7 +67,40 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
     try { test = -1.0 * x1; } catch ( h_exception e ) { thrown++; }
     try { test = x1 / -1.0; } catch ( h_exception e ) { thrown++; }
 
-    H_ASSERT(thrown == 7, "Something didn't throw!")
+    H_ASSERT(thrown == 7, "1-something didn't throw!")
+    
+    // Tracking test code
+    // Non-tracked objects shouldn't give back tracking info
+    fluxpool x(1.0, U_PGC);
+    H_ASSERT(x.tracking == false, "default fluxpool shouldn't track");
+    thrown = 0;
+    try { x.get_sources(); } catch ( h_exception e ) { thrown++; }
+    try { x.get_fraction(""); } catch ( h_exception e ) { thrown++; }
+    H_ASSERT(thrown == 2, "2-something didn't throw");
+    
+    fluxpool y(1.0, U_PGC, true, "y");
+    H_ASSERT(y.get_fraction("x") == 0.0, "get_fraction wasn't 0");
+    H_ASSERT(y.get_fraction("y") == 1.0, "get_fraction wasn't 1");
+    vector<string> source = y.get_sources();
+    H_ASSERT(source.size() == 1, "source wasn't size 1");
+    H_ASSERT(source.at(0) == "y", "source wasn't y");
+
+    fluxpool z(0.0, U_PGC, true, "z");
+    fluxpool flux = y * 0.4;
+    z = z + flux;
+    
+    H_ASSERT(y.get_fraction("y") == 1.0, "get_fraction wasn't 1");
+    source = y.get_sources();
+    H_ASSERT(source.size() == 1, "source wasn't size 1");
+    H_ASSERT(source.at(0) == "y", "source wasn't y");
+    /*
+    H_ASSERT(z.get_fraction("z") == 0.6, "get_fraction wasn't 0.6");
+    H_ASSERT(z.get_fraction("y") == 1.0, "get_fraction wasn't 0.4");
+    source = z.get_sources();
+    H_ASSERT(source.size() == 2, "source wasn't size 2");
+    
+    H_THROW("stop");
+     */
 }
 
 //------------------------------------------------------------------------------

@@ -11,6 +11,8 @@
 		273144792492773700C95E7C /* libboost_system.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 273144762492773700C95E7C /* libboost_system.dylib */; };
 		2731447A2492773700C95E7C /* libboost_filesystem.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 273144772492773700C95E7C /* libboost_filesystem.dylib */; };
 		2731447B2492773700C95E7C /* libboost_filesystem.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 273144772492773700C95E7C /* libboost_filesystem.dylib */; };
+		2745EAF825CDFDA300A4A798 /* fluxpool.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2745EAF725CDFDA300A4A798 /* fluxpool.hpp */; };
+		2761294125D027F80054240D /* simpleNbox-runtime.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2733D55125CEE74400C09B36 /* simpleNbox-runtime.cpp */; };
 		2786037D215532AE001B8255 /* ch4_component.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27860353215532AB001B8255 /* ch4_component.hpp */; };
 		2786037E215532AE001B8255 /* forcing_component.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27860354215532AB001B8255 /* forcing_component.hpp */; };
 		2786037F215532AE001B8255 /* INIReader.h in Headers */ = {isa = PBXBuildFile; fileRef = 27860355215532AB001B8255 /* INIReader.h */; };
@@ -105,7 +107,6 @@
 		27860417215532D8001B8255 /* so2_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 278603D7215532D7001B8255 /* so2_component.cpp */; };
 		27860418215532D8001B8255 /* temperature_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 278603D8215532D7001B8255 /* temperature_component.cpp */; };
 		27860419215532D8001B8255 /* temperature_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 278603D8215532D7001B8255 /* temperature_component.cpp */; };
-		2786041B215532D8001B8255 /* csv_output_visitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 278603D9215532D7001B8255 /* csv_output_visitor.cpp */; };
 		2786041E215532D8001B8255 /* simpleNbox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 278603DB215532D7001B8255 /* simpleNbox.cpp */; };
 		2786041F215532D8001B8255 /* simpleNbox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 278603DB215532D7001B8255 /* simpleNbox.cpp */; };
 		27860420215532D8001B8255 /* h_interpolator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 278603DD215532D7001B8255 /* h_interpolator.cpp */; };
@@ -141,6 +142,8 @@
 		273144752492772B00C95E7C /* libboost_filesystem.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_filesystem.a; path = ../../../../../../../../../usr/local/boost_1_73_0/stage/lib/libboost_filesystem.a; sourceTree = "<group>"; };
 		273144762492773700C95E7C /* libboost_system.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libboost_system.dylib; path = ../../../../../../../../../usr/local/boost_1_73_0/stage/lib/libboost_system.dylib; sourceTree = "<group>"; };
 		273144772492773700C95E7C /* libboost_filesystem.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libboost_filesystem.dylib; path = ../../../../../../../../../usr/local/boost_1_73_0/stage/lib/libboost_filesystem.dylib; sourceTree = "<group>"; };
+		2733D55125CEE74400C09B36 /* simpleNbox-runtime.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "simpleNbox-runtime.cpp"; path = "../src/simpleNbox-runtime.cpp"; sourceTree = "<group>"; };
+		2745EAF725CDFDA300A4A798 /* fluxpool.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = fluxpool.hpp; path = ../inst/include/fluxpool.hpp; sourceTree = "<group>"; };
 		27860353215532AB001B8255 /* ch4_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ch4_component.hpp; path = ../inst/include/ch4_component.hpp; sourceTree = "<group>"; };
 		27860354215532AB001B8255 /* forcing_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = forcing_component.hpp; path = ../inst/include/forcing_component.hpp; sourceTree = "<group>"; };
 		27860355215532AB001B8255 /* INIReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INIReader.h; path = ../inst/include/INIReader.h; sourceTree = "<group>"; };
@@ -209,7 +212,6 @@
 		278603D6215532D7001B8255 /* oceanbox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = oceanbox.cpp; path = ../src/oceanbox.cpp; sourceTree = "<group>"; };
 		278603D7215532D7001B8255 /* so2_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = so2_component.cpp; path = ../src/so2_component.cpp; sourceTree = "<group>"; };
 		278603D8215532D7001B8255 /* temperature_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = temperature_component.cpp; path = ../src/temperature_component.cpp; sourceTree = "<group>"; };
-		278603D9215532D7001B8255 /* csv_output_visitor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = csv_output_visitor.cpp; path = ../src/csv_output_visitor.cpp; sourceTree = "<group>"; };
 		278603DB215532D7001B8255 /* simpleNbox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = simpleNbox.cpp; path = ../src/simpleNbox.cpp; sourceTree = "<group>"; };
 		278603DD215532D7001B8255 /* h_interpolator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = h_interpolator.cpp; path = ../src/h_interpolator.cpp; sourceTree = "<group>"; };
 		278603DE215532D7001B8255 /* ini.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ini.c; path = ../src/ini.c; sourceTree = "<group>"; };
@@ -339,6 +341,7 @@
 				27860368215532AC001B8255 /* tseries.hpp */,
 				2786035B215532AB001B8255 /* tvector.hpp */,
 				27860356215532AB001B8255 /* unitval.hpp */,
+				2745EAF725CDFDA300A4A798 /* fluxpool.hpp */,
 			);
 			name = headers;
 			path = ../../headers;
@@ -352,7 +355,6 @@
 				278603D1215532D6001B8255 /* carbon-cycle-solver.cpp */,
 				278603E2215532D7001B8255 /* ch4_component.cpp */,
 				278603C2215532D6001B8255 /* core.cpp */,
-				278603D9215532D7001B8255 /* csv_output_visitor.cpp */,
 				278603D4215532D6001B8255 /* csv_outputstream_visitor.cpp */,
 				278603C8215532D6001B8255 /* csv_table_reader.cpp */,
 				278603CB215532D6001B8255 /* dependency_finder.cpp */,
@@ -375,6 +377,7 @@
 				278603CF215532D6001B8255 /* oh_component.cpp */,
 				278603C7215532D6001B8255 /* onelineocean_component.cpp */,
 				278603DB215532D7001B8255 /* simpleNbox.cpp */,
+				2733D55125CEE74400C09B36 /* simpleNbox-runtime.cpp */,
 				278603C9215532D6001B8255 /* slr_component.cpp */,
 				278603D7215532D7001B8255 /* so2_component.cpp */,
 				278603E0215532D7001B8255 /* spline_forsythe.cpp */,
@@ -427,6 +430,7 @@
 				27860396215532AE001B8255 /* slr_component.hpp in Headers */,
 				27860392215532AE001B8255 /* tseries.hpp in Headers */,
 				27860385215532AE001B8255 /* tvector.hpp in Headers */,
+				2745EAF825CDFDA300A4A798 /* fluxpool.hpp in Headers */,
 				27860386215532AE001B8255 /* carbon-cycle-model.hpp in Headers */,
 				2786038C215532AE001B8255 /* dummy_model_component.hpp in Headers */,
 				27860393215532AE001B8255 /* component_data.hpp in Headers */,
@@ -539,6 +543,7 @@
 				278603E6215532D8001B8255 /* bc_component.cpp in Sources */,
 				27860412215532D8001B8255 /* csv_outputstream_visitor.cpp in Sources */,
 				2786041E215532D8001B8255 /* simpleNbox.cpp in Sources */,
+				2761294125D027F80054240D /* simpleNbox-runtime.cpp in Sources */,
 				278603E4215532D8001B8255 /* n2o_component.cpp in Sources */,
 				27860404215532D8001B8255 /* main.cpp in Sources */,
 				278603F4215532D8001B8255 /* logger.cpp in Sources */,
@@ -599,7 +604,6 @@
 				278603ED215532D8001B8255 /* forcing_component.cpp in Sources */,
 				27860409215532D8001B8255 /* oh_component.cpp in Sources */,
 				278603EF215532D8001B8255 /* carbon-cycle-model.cpp in Sources */,
-				2786041B215532D8001B8255 /* csv_output_visitor.cpp in Sources */,
 				27860423215532D8001B8255 /* ini.c in Sources */,
 				2786040D215532D8001B8255 /* carbon-cycle-solver.cpp in Sources */,
 				27860417215532D8001B8255 /* so2_component.cpp in Sources */,
@@ -627,7 +631,7 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_VERSION = "";
-				HEADER_SEARCH_PATHS = /usr/local/Cellar/boost/1.72.0_3/include;
+				HEADER_SEARCH_PATHS = /usr/local/boost_1_73_0/;
 				INSTALL_PATH = /usr/local/Cellar;
 				LIBRARY_SEARCH_PATHS = (
 					/usr/local/Cellar/boost/1.72.0_3/lib,
@@ -654,7 +658,7 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_OPTIMIZATION_LEVEL = 3;
 				GCC_VERSION = "";
-				HEADER_SEARCH_PATHS = /usr/local/Cellar/boost/1.72.0_3/include;
+				HEADER_SEARCH_PATHS = /usr/local/boost_1_73_0/;
 				INSTALL_PATH = /usr/local/Cellar;
 				LIBRARY_SEARCH_PATHS = (
 					/usr/local/Cellar/boost/1.72.0_3/lib,
@@ -706,7 +710,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "${BOOSTROOT}";
+				HEADER_SEARCH_PATHS = (
+					"${BOOSTROOT}",
+					/usr/local/boost_1_73_0/,
+				);
 				LD_OPENMP_FLAGS = "";
 				LIBRARY_SEARCH_PATHS = "${BOOSTLIB}";
 				ONLY_ACTIVE_ARCH = YES;
@@ -756,7 +763,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "${BOOSTROOT}";
+				HEADER_SEARCH_PATHS = (
+					"${BOOSTROOT}",
+					/usr/local/boost_1_73_0/,
+				);
 				LD_OPENMP_FLAGS = "";
 				LIBRARY_SEARCH_PATHS = "${BOOSTLIB}";
 				ONLY_ACTIVE_ARCH = YES;
