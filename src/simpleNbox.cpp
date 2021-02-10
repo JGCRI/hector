@@ -85,22 +85,23 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
     H_ASSERT(source.size() == 1, "source wasn't size 1");
     H_ASSERT(source.at(0) == "y", "source wasn't y");
 
-    fluxpool z(0.0, U_PGC, true, "z");
+    fluxpool z(0.4, U_PGC, true, "z");
     fluxpool flux = y * 0.4;
+    y = y - flux;
     z = z + flux;
     
     H_ASSERT(y.get_fraction("y") == 1.0, "get_fraction wasn't 1");
     source = y.get_sources();
     H_ASSERT(source.size() == 1, "source wasn't size 1");
     H_ASSERT(source.at(0) == "y", "source wasn't y");
-    /*
-    H_ASSERT(z.get_fraction("z") == 0.6, "get_fraction wasn't 0.6");
-    H_ASSERT(z.get_fraction("y") == 1.0, "get_fraction wasn't 0.4");
+    
+    H_ASSERT(z.get_fraction("z") == 0.5, "get_fraction wasn't 0.5 for z");
+    H_ASSERT(z.get_fraction("y") == 0.5, "get_fraction wasn't 0.5 for y");
     source = z.get_sources();
     H_ASSERT(source.size() == 2, "source wasn't size 2");
     
     H_THROW("stop");
-     */
+     
 }
 
 //------------------------------------------------------------------------------
