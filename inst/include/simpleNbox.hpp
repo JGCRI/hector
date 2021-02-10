@@ -41,6 +41,7 @@ namespace Hector {
 class SimpleNbox : public CarbonCycleModel {
     friend class CSVOutputVisitor;
     friend class CSVOutputStreamVisitor;
+    friend class CSVFluxPoolVisitor;
 
 public:
     SimpleNbox();
