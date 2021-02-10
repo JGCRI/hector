@@ -180,10 +180,25 @@ fluxpool operator+ ( const fluxpool& lhs, const fluxpool& rhs ) {
     vector<string> lhs_src = lhs.get_sources(),
                    rhs_src = rhs.get_sources(),
                    both_sources;
-    
-    std::set_union(std::begin( lhs_src ), std::end( lhs_src ),
-                                  std::rbegin( rhs_src ), std::rend( rhs_src ),
-                                  std::back_inserter( both_sources ) );
+    // I was using set_union, which works in Xcode but but for some reason Rcpp builds are
+    // erroring on the required std::rbegin and std::rend usage.
+    /*
+        std::set_union(begin( lhs_src ), end( lhs_src ),
+                       rbegin( rhs_src ), rend( rhs_src ),
+                       back_inserter( both_sources ) );
+      */
+    // So, go with hand-built solution:
+
+    for (auto &s: lhs_src) {
+        if(find(both_sources.begin(), both_sources.end(), s) == both_sources.end()) {
+            both_sources.push_back(s);
+        }
+    }
+    for (auto &s: rhs_src) {
+        if(find(both_sources.begin(), both_sources.end(), s) == both_sources.end()) {
+            both_sources.push_back(s);
+        }
+    }
     
     // Walk through the sources and compute the combined absolute value
     // Note get_fraction() return 0 if source not found, which is what we want
