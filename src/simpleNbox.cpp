@@ -24,6 +24,15 @@ namespace Hector {
 
 using namespace boost;
 
+// test helper function
+void identity_tests(bool trk) {
+    string trks = trk ? "true" : "false";
+    fluxpool a(1.0, U_UNITLESS, trk);
+    H_ASSERT(a == a, "a not equal to itself for " + trks);
+    H_ASSERT(a / a == 1.0, "a divided by itself not 1 for " + trks);
+    H_ASSERT(a - a == fluxpool(0, U_UNITLESS, trk), "a minus itself not 0 for " + trks);
+}
+
 //------------------------------------------------------------------------------
 /*! \brief constructor
  */
@@ -56,6 +65,8 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
     test = x1 / 2.0;
     test = x1 - y1;
     test = x1 + y2;
+
+    identity_tests(false);
     
     // Things that SHOULD throw an exception
     int thrown = 0;
@@ -66,10 +77,14 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
     try { test = x1 * -1.0; } catch ( h_exception e ) { thrown++; }
     try { test = -1.0 * x1; } catch ( h_exception e ) { thrown++; }
     try { test = x1 / -1.0; } catch ( h_exception e ) { thrown++; }
+    try { if(x1 == fluxpool(1.0, U_UNITLESS)) {}; } catch ( h_exception e ) { thrown++; }
 
-    H_ASSERT(thrown == 7, "1-something didn't throw!")
+    H_ASSERT(thrown == 8, "1-something didn't throw!")
     
     // Tracking test code
+    
+    identity_tests(true);
+
     // Non-tracked objects shouldn't give back tracking info
     fluxpool x(1.0, U_PGC);
     H_ASSERT(x.tracking == false, "default fluxpool shouldn't track");
@@ -79,30 +94,47 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
     H_ASSERT(thrown == 2, "2-something didn't throw");
     
     fluxpool y(1.0, U_PGC, true, "y");
-    H_ASSERT(y.get_fraction("x") == 0.0, "get_fraction wasn't 0");
+    H_ASSERT(y.get_fraction("blah blah") == 0.0, "get_fraction wasn't 0");
     H_ASSERT(y.get_fraction("y") == 1.0, "get_fraction wasn't 1");
     vector<string> source = y.get_sources();
     H_ASSERT(source.size() == 1, "source wasn't size 1");
     H_ASSERT(source.at(0) == "y", "source wasn't y");
 
-    fluxpool z(0.4, U_PGC, true, "z");
-    fluxpool flux = y * 0.4;
-    y = y - flux;
-    z = z + flux;
+    // An actual tracking test
+    // Test 1: one source, one destination
+    fluxpool    src1(10, U_PGC, true, "src1"),
+                dest(0.0, U_PGC, true, "dest");
     
-    H_ASSERT(y.get_fraction("y") == 1.0, "get_fraction wasn't 1");
-    source = y.get_sources();
-    H_ASSERT(source.size() == 1, "source wasn't size 1");
-    H_ASSERT(source.at(0) == "y", "source wasn't y");
+    fluxpool flux = src1 * 0.4;
+    dest = dest + flux;
+    src1 = src1 - flux;
+
+    std::cout << "src1 is " << src1 << std::endl;
+    std::cout << "flux is " << flux << std::endl;
+    std::cout << "dest is " << dest << std::endl;
     
-    H_ASSERT(z.get_fraction("z") == 0.5, "get_fraction wasn't 0.5 for z");
-    H_ASSERT(z.get_fraction("y") == 0.5, "get_fraction wasn't 0.5 for y");
-    source = z.get_sources();
-    H_ASSERT(source.size() == 2, "source wasn't size 2");
+    H_ASSERT(dest.get_fraction("src1") == 1.0, "dest fraction src1 wasn't 1");
+    source = dest.get_sources();
+    H_ASSERT(source.size() == 2, "dest source wasn't size 2");
+    H_ASSERT(find(source.begin(), source.end(), "src1") != source.end(), "src wasn't in dest sources");
+
+    // Test 2: two sources, one destination
+    
+    fluxpool src2(10, U_PGC, true, "src2");
+    flux = src2 * 0.6;
+    dest = dest + flux;
+    src2 = src2 - flux;
+    
+    H_ASSERT(dest.get_fraction("src1") == 0.4, "get_fraction wasn't 0.5 for src1");
+    H_ASSERT(dest.get_fraction("src2") == 0.6, "get_fraction wasn't 0.5 for src2");
+    source = dest.get_sources();
+    H_ASSERT(source.size() == 3, "dest source wasn't size 3");
+
     
     H_THROW("stop");
-     
+    
 }
+
 
 //------------------------------------------------------------------------------
 // documentation is inherited

@@ -52,14 +52,14 @@ public:
     friend fluxpool operator- ( const fluxpool&, const unitval& );
     friend fluxpool operator/ ( const fluxpool&, const double );
     friend double operator/ ( const fluxpool&, const fluxpool&  );
-    bool operator==(const fluxpool& rhs);
-    bool operator!=(const fluxpool& rhs);
-    
+    friend bool operator== ( const fluxpool&, const fluxpool& );
+    friend bool operator!= ( const fluxpool&, const fluxpool& );
+
     // pretty-printing
 //    friend ostream& operator<<(ostream &out, fluxpool &ct);
 
 private:
-    fluxpool(unitval, unordered_map<string, double>, string);
+    fluxpool(unitval, unit_types, unordered_map<string, double>, string);
 
     unordered_map<string, double> ctmap;
 };
@@ -90,12 +90,14 @@ fluxpool::fluxpool( double v, unit_types u, bool track = false, string pool_name
 /*! \brief Private constructor with explicit source pool map
  */
 inline
-fluxpool::fluxpool(unitval total, unordered_map<string, double> pool_map, string pool_name) {
+fluxpool::fluxpool(unitval v, unit_types u, unordered_map<string, double> pool_map, string pool_name) {
+    unitval::set(v, u, 0.0);
     tracking = true;
-    this->val = total;
     ctmap = pool_map;
     name = pool_name;
     
+    H_ASSERT(v >= 0, "Flux and pool values may not be negative in " + name);
+
      // check pool_map data
     double frac = 0.0;
     for (auto itr = ctmap.begin(); itr != ctmap.end(); itr++) {
@@ -151,11 +153,11 @@ double fluxpool::get_fraction(string source) const {
  */
 inline
 fluxpool operator+ ( const fluxpool& lhs, const fluxpool& rhs ) {
-    H_ASSERT( lhs.valUnits == rhs.units(), "units mismatch: " + lhs.name + " and " + rhs.name );
+    H_ASSERT( lhs.units() == rhs.units(), "units mismatch: " + lhs.name + " and " + rhs.name );
     H_ASSERT( lhs.tracking == rhs.tracking, "tracking mismatch: " + lhs.name + " and " + rhs.name )
     
     if (!lhs.tracking) {
-        return fluxpool( lhs.val + rhs.val, lhs.valUnits, false, lhs.name );
+        return fluxpool( lhs.val + rhs.val, lhs.units(), false, lhs.name );
     }
     
     // This is the complicated case
@@ -189,7 +191,7 @@ fluxpool operator+ ( const fluxpool& lhs, const fluxpool& rhs ) {
       }
     }
 
-    return fluxpool(new_total, new_origins, lhs.name);
+    return fluxpool(new_total, lhs.units(), new_origins, lhs.name);
 }
 
 //-----------------------------------------------------------------------
@@ -251,6 +253,20 @@ double operator/ ( const fluxpool& lhs, const fluxpool& rhs ) {
     H_ASSERT( lhs.valUnits == rhs.units(), "units mismatch: " + lhs.name + " and " + rhs.name );
     H_ASSERT( lhs.tracking == rhs.tracking, "tracking mismatch: " + lhs.name + " and " + rhs.name )
     return lhs.val / rhs.val;
+}
+
+//-----------------------------------------------------------------------
+/*! \brief Equality and inequality: same total only.
+ */
+inline
+bool operator== ( const fluxpool& lhs, const fluxpool& rhs ) {
+    H_ASSERT( lhs.valUnits == rhs.units(), "units mismatch: " + lhs.name + " and " + rhs.name );
+    return lhs.val == rhs.val;
+}
+inline
+bool operator!= ( const fluxpool& lhs, const fluxpool& rhs ) {
+    H_ASSERT( lhs.valUnits == rhs.units(), "units mismatch: " + lhs.name + " and " + rhs.name );
+    return lhs.val != rhs.val;
 }
 
 }
