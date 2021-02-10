@@ -56,12 +56,12 @@ public:
     friend bool operator== ( const fluxpool&, const fluxpool& );
     friend bool operator!= ( const fluxpool&, const fluxpool& );
 
-    // pretty-printing
-//    friend ostream& operator<<(ostream &out, fluxpool &ct);
+    friend ostream& operator<<(ostream&, fluxpool&);
 
 private:
+    // private constructor used only when adding
     fluxpool(unitval, unordered_map<string, double>, string);
-
+    // tracking information is held in a map <source name, fraction of total>
     unordered_map<string, double> ctmap;
 };
 
@@ -277,6 +277,22 @@ inline
 bool operator!= ( const fluxpool& lhs, const fluxpool& rhs ) {
     H_ASSERT( lhs.valUnits == rhs.units(), "units mismatch: " + lhs.name + " and " + rhs.name );
     return lhs.val != rhs.val;
+}
+
+//-----------------------------------------------------------------------
+/*! \brief Printing, including tracking information if available
+ */
+inline
+ostream& operator<<(ostream &out, fluxpool &rhs ) {
+    out << rhs.value( rhs.units() ) << " " << rhs.unitsName();
+    if(rhs.tracking) {
+        out << endl;
+        std::vector<std::string> sources = rhs.get_sources();
+        for (int i = 0; i < sources.size(); i++) {
+            out << "\t" << sources[i] << ": " << rhs.get_fraction(sources[i]) << endl;
+        }
+    }
+    return out;
 }
 
 }
