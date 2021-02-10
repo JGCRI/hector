@@ -246,7 +246,7 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     }
 
     omodel->stashCValues( t, c );   // tell ocean model to store new C values
-    earth_c.set( c[ SNBOX_EARTH ], U_PGC );
+    earth_c.set( c[ SNBOX_EARTH ], U_PGC, earth_c.tracking, earth_c.name );
 
     log_pools( t );
 

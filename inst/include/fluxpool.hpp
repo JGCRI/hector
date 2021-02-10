@@ -36,7 +36,7 @@ class fluxpool: public unitval {
 public:
     fluxpool();
     fluxpool( double, unit_types, bool, string  );
-    void set( double, unit_types );
+    void set( double, unit_types, bool, string );
     
     // tracking-specific functions
     vector<string> get_sources() const;
@@ -83,9 +83,7 @@ fluxpool::fluxpool() {
  */
 inline
 fluxpool::fluxpool( double v, unit_types u, bool track = false, string pool_name = "?" ) {
-    name = pool_name;
-    tracking = track;
-    set(v, u);
+    set(v, u, track, pool_name);
 }
 
 //-----------------------------------------------------------------------
@@ -113,11 +111,13 @@ fluxpool::fluxpool(unitval v, unordered_map<string, double> pool_map, string poo
 /*! \brief Check that the value is >=0 before passing control to unitval
  */
 inline
-void fluxpool::set( double v, unit_types u ) {
+void fluxpool::set( double v, unit_types u, bool track = false, string pool_name = "?" ) {
     if(v < 0) {
  //        std::cout << "uh oh";
      }
     H_ASSERT(v >= 0, "Flux and pool values may not be negative in " + name);
+    name = pool_name;
+    tracking = track;
     ctmap[name] = 1.0;
     unitval::set(v, u, 0.0);
 }

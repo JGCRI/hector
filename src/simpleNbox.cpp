@@ -50,7 +50,7 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
     // 2020-02-05 With the introduction of non-negative 'fluxpool' class
     // we can't start earth_c at zero. Value of 4000 is from
     // http://globecarboncycle.unh.edu/CarbonCycleBackground.pdf
-    earth_c.set( 4000, U_PGC );
+    earth_c.set( 4000, U_PGC, true, "earth_c" );
     
     // fluxpool test code - move to unit test later BBL-TODO
     fluxpool x1(1.0, U_PGC);
