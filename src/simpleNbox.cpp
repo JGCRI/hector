@@ -115,9 +115,9 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
     dest = dest + flux;
     src1 = src1 - flux;
 
-    std::cout << "src1 is " << src1 << std::endl;
-    std::cout << "flux is " << flux << std::endl;
-    std::cout << "dest is " << dest << std::endl;
+//    std::cout << "src1 is " << src1 << std::endl;
+//    std::cout << "flux is " << flux << std::endl;
+//    std::cout << "dest is " << dest << std::endl;
     
     H_ASSERT(dest.get_fraction("src1") == 1.0, "dest fraction src1 wasn't 1");
     source = dest.get_sources();
@@ -147,9 +147,9 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
  
     // Test 4: adjusting a total
     
-    cout << "\nTEST4\n" << dest << endl;
+//    cout << "\nTEST4\n" << dest << endl;
     dest.adjust_pool_to_val(dest.value(U_PGC) * 1.1);
-    cout << dest << endl;
+//    cout << dest << endl;
     H_ASSERT(dest.get_fraction("untracked") - 1.0/11.0 < 1e-6, "untracked not correct");
 
  //   H_THROW("stop");
@@ -595,9 +595,9 @@ unitval SimpleNbox::getData(const std::string& varName,
 void SimpleNbox::reset(double time) throw(h_exception)
 {
     // Reset all state variables to their values at the reset time
-    earth_c.set( earth_c_ts.get(time).value( U_PGC ), U_PGC );
-    atmos_c.set( atmos_c_ts.get(time).value( U_PGC ), U_PGC );
-    Ca.set( Ca_ts.get(time).value( U_PPMV_CO2 ), U_PPMV_CO2 );
+    earth_c = earth_c_ts.get(time);
+    atmos_c = atmos_c_ts.get(time);
+    Ca = Ca_ts.get(time);
 
     veg_c = veg_c_tv.get(time);
     detritus_c = detritus_c_tv.get(time);
