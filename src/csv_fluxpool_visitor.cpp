@@ -66,11 +66,11 @@ void CSVFluxPoolVisitor::visit( Core* c ) {
  */
 void CSVFluxPoolVisitor::print_pool(fluxpool x) {
     if(x.tracking) {
-        csvFile << datestring << DELIMITER << x.name << DELIMITER << x.value(U_PGC) << DELIMITER << x.unitsName();
-        
         vector<string> sources = x.get_sources();
         for (auto &s: sources) {
-            csvFile << DELIMITER << s << DELIMITER << x.get_fraction(s);
+            csvFile << datestring << DELIMITER <<
+                x.name << DELIMITER << x.value(U_PGC) << DELIMITER << x.unitsName() << DELIMITER <<
+                s << DELIMITER << x.get_fraction(s) << endl;
         }
         csvFile << endl;
     }
