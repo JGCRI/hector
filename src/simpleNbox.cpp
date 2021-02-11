@@ -45,6 +45,9 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
     Ftalbedo.name = "albedo";
     CO2_constrain.name = "CO2_constrain";
 
+    // The actual atmos_c value will be filled in later by setData
+    atmos_c.set(0.0, U_PGC, true, "atmos_c");
+    
     // earth_c keeps track of how much fossil C is pulled out
     // so that we can do a mass-balance check throughout the run
     // 2020-02-05 With the introduction of non-negative 'fluxpool' class
@@ -52,7 +55,10 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
     // http://globecarboncycle.unh.edu/CarbonCycleBackground.pdf
     earth_c.set( 4000, U_PGC, true, "earth_c" );
     
+    // -----------------------------------------
     // fluxpool test code - move to unit test later BBL-TODO
+    // -----------------------------------------
+    
     fluxpool x1(1.0, U_PGC);
     fluxpool x2(2.0, U_PGC);
     unitval y1(1.0, U_PGC);
@@ -138,7 +144,15 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
     vector<string> s1 = src1.get_sources(), s2 = flux.get_sources();
     H_ASSERT(s1.size() == s2.size(), "flux and flux source maps not same size");
     H_ASSERT(std::equal(s1.begin(), s1.end(), s2.begin()), "flux and uflux values source maps don't match");
+ 
+    // Test 4: adjusting a total
     
+    cout << "\nTEST4\n" << dest << endl;
+    dest.adjust_pool_to_val(dest.value(U_PGC) * 1.1);
+    cout << dest << endl;
+    H_ASSERT(dest.get_fraction("untracked") - 1.0/11.0 < 1e-6, "untracked not correct");
+
+ //   H_THROW("stop");
 }
 
 
@@ -679,7 +693,7 @@ void SimpleNbox::set_c0(double newc0)
         H_LOG(logger, Logger::DEBUG) << "massdiff= " << massdiff << "  new masstot= " << masstot
                                      << "\n";
     }
-    C0.set(newc0, U_PPMV_CO2);
+    C0.set(newc0, U_PPMV_CO2, C0.tracking, C0.name);
 }
 
 // Check if `biome` is present in biome_list

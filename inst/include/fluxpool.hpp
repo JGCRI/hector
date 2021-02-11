@@ -44,6 +44,8 @@ public:
     bool tracking;
     string name;
     fluxpool flux_from_unitval(unitval) const;
+    fluxpool flux_from_fluxpool(fluxpool) const;
+    void adjust_pool_to_val(const double, const bool);
 
     // math operators
     friend fluxpool operator+ ( const fluxpool&, const fluxpool& );
@@ -155,9 +157,36 @@ double fluxpool::get_fraction(string source) const {
  */
 inline
 fluxpool fluxpool::flux_from_unitval(unitval f) const {
+    // BBL-TODO seems like we need an assert here
     return fluxpool(f, ctmap, name);
 }
 
+inline
+fluxpool fluxpool::flux_from_fluxpool(fluxpool f) const {
+    f.ctmap = ctmap;
+    f.tracking = tracking;
+
+    // We're asking for a pool so we adopt the source's units
+    f.valUnits = valUnits;
+
+    return f;
+}
+
+//-----------------------------------------------------------------------
+/*! \brief Adjusts pool size to match that output by the ODE solver
+                        Cheater function; hopefully we don't in final version
+ */
+inline
+void fluxpool::adjust_pool_to_val(const double solvedSize, const bool allow_untracked = true) {
+    const double diff = solvedSize - val;  // reducing numeric precision errors
+
+    if(diff > 0 && allow_untracked) {  // record difference as due to untracked source
+        fluxpool flux(diff, this->valUnits, true, "untracked");
+        fluxpool adjusted = *this + flux;
+        this->ctmap = adjusted.ctmap;
+    }
+    this->val = solvedSize;
+}
 
 //-----------------------------------------------------------------------
 /*! \brief Operator overload: addition
@@ -171,7 +200,7 @@ fluxpool operator+ ( const fluxpool& lhs, const fluxpool& rhs ) {
         return fluxpool( lhs.val + rhs.val, lhs.units(), false, lhs.name );
     }
     
-    // This is the complicated case
+    // This is the complicated case, and the heart of the tracking capability
 
     // Compute the overall new total (a unitval)
     Hector::unitval new_total(lhs.val + rhs.val, lhs.units());
@@ -187,8 +216,8 @@ fluxpool operator+ ( const fluxpool& lhs, const fluxpool& rhs ) {
                        rbegin( rhs_src ), rend( rhs_src ),
                        back_inserter( both_sources ) );
       */
-    // So, go with hand-built solution:
-
+    // So, go with hand-built solution: look through lhs and then rhs sources
+    // If a source isn't in our "both_sources" vector, add it
     for (auto &s: lhs_src) {
         if(find(both_sources.begin(), both_sources.end(), s) == both_sources.end()) {
             both_sources.push_back(s);
@@ -236,9 +265,14 @@ fluxpool operator+ ( const fluxpool& lhs, const unitval& rhs ) {
  */
 inline
 fluxpool operator- ( const fluxpool& lhs, const fluxpool& rhs ) {
+    if(lhs.units() != rhs.units()) {
+        cout << "uh oh";
+    }
     H_ASSERT( lhs.valUnits == rhs.units(), "units mismatch: " + rhs.name );
     H_ASSERT( lhs.tracking == rhs.tracking, "tracking mismatch: " + lhs.name + " and " + rhs.name )
-    return fluxpool( lhs.val - rhs.val, lhs.valUnits, lhs.tracking, lhs.name );
+    fluxpool diff( lhs.val - rhs.val, lhs.valUnits, lhs.tracking, lhs.name );
+    diff.ctmap = lhs.ctmap;
+    return diff;
 }
 
 //-----------------------------------------------------------------------

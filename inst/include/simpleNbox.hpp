@@ -199,6 +199,8 @@ private:
     fluxpool rh_fsa( std::string biome ) const;  //!< calculates current RH from soil for a biome
     fluxpool rh( std::string biome ) const;      //!< calculates current RH for a biome
     fluxpool sum_rh() const;                     //!< calculates current RH, global total
+    fluxpool ffi(double t, bool in_spinup) const;
+    fluxpool ccs(double t, bool in_spinup) const;
 
     /*****************************************************************
      * Private helper functions

@@ -116,7 +116,7 @@ void SimpleNbox::prepareToRun() throw( h_exception )
 
     double c0init = C0.value(U_PPMV_CO2);
     Ca.set(c0init, U_PPMV_CO2);
-    atmos_c.set(c0init * PPMVCO2_TO_PGC, U_PGC);
+    atmos_c.set(c0init * PPMVCO2_TO_PGC, U_PGC, atmos_c.tracking, atmos_c.name);
 
     if( CO2_constrain.size() ) {
         Logger& glog = core->getGlobalLogger();
@@ -205,7 +205,41 @@ void SimpleNbox::stashCValues( double t, const double c[] )
 
     // Store solver pools into our internal variables
 
-    atmos_c.set( c[ SNBOX_ATMOS ], U_PGC );
+    // earth - atmosphere fluxes
+    
+    // get the earth emissions (ffi) and uptake (ccs)
+    // note these come back as UNTRACKED fluxpools
+    // We immediately adjust them for the year fraction (as the solver
+    // may call stashCValues multiple times within a given year)
+    fluxpool ffi_untracked = ffi(t, in_spinup) * yf;  // function also used by calcDerivs()
+    fluxpool ccs_untracked = ccs(t, in_spinup) * yf;  // function also used by calcDerivs()
+    
+    // now construct the TRACKED versions
+    // because earth_c is tracked, ffi and ccs automatically become tracked as well
+    // the double subtraction is a bit weird, but the end result should be a tracked
+    // fluxpool with the value of the untracked version and tracking information of
+    // the source pool
+    fluxpool ffi = earth_c.flux_from_fluxpool(ffi_untracked);
+    fluxpool ccs = atmos_c.flux_from_fluxpool(ccs_untracked);
+    // ...and update the main pools
+//    cout << "\n" << t << "-------------\nAbout to add ffi/ccs \n" <<
+//        "atmos_c:" << atmos_c << "earth_c: " << earth_c << endl;
+//    cout << "ffi is " << ffi << endl;
+//    cout << "ccs is " << ccs << endl;
+    
+    earth_c = (earth_c - ffi) + ccs;
+//    cout << "About to adjust earth_c " << earth_c << endl;
+//    cout << "Solver value is " << c[SNBOX_EARTH] << endl;
+    
+    earth_c.adjust_pool_to_val(c[SNBOX_EARTH], false); // adjusts pool to output from calcderivs
+//    cout << "Done earth_c" << earth_c << endl;
+
+
+    atmos_c = (atmos_c + ffi) - ccs;
+//    cout << "About to adjust atmos_c " << atmos_c << endl;
+//    cout << "Solver value is " << c[SNBOX_ATMOS] << endl;
+    atmos_c.adjust_pool_to_val(c[SNBOX_ATMOS]); // adjusts pool to output from calcderivs
+//     cout << "Done atmos_c " << atmos_c << endl;
 
     // Record the land C flux
     const fluxpool npp_total = sum_npp();
@@ -246,7 +280,6 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     }
 
     omodel->stashCValues( t, c );   // tell ocean model to store new C values
-    earth_c.set( c[ SNBOX_EARTH ], U_PGC, earth_c.tracking, earth_c.name );
 
     log_pools( t );
 
@@ -386,6 +419,36 @@ fluxpool SimpleNbox::sum_rh() const
 }
 
 //------------------------------------------------------------------------------
+/*! \brief      Compute fossil fuel industrial (FFI) emissions (when input emissions > 0)
+ *  \returns    FFI flux from earth to atmosphere
+ */
+fluxpool SimpleNbox::ffi(double t, bool in_spinup) const
+{
+    if( !in_spinup ) {   // no perturbation allowed if in spinup
+        double totflux = ffiEmissions.get( t ).value(U_PGC_YR);
+        if(totflux >= 0.0) {
+            return fluxpool(totflux, U_PGC_YR);
+        }
+    }
+    return fluxpool(0.0, U_PGC_YR);
+}
+
+//------------------------------------------------------------------------------
+/*! \brief      Compute carbon capture storage (CCS) flux (when input emissions < 0)
+ *  \returns    CCS flux from atmosphere to earth
+ */
+fluxpool SimpleNbox::ccs(double t, bool in_spinup) const
+{
+    if( !in_spinup ) {   // no perturbation allowed if in spinup
+        double totflux = ffiEmissions.get( t ).value(U_PGC_YR);
+        if(totflux < 0.0) {
+            return fluxpool(-totflux, U_PGC_YR);
+        }
+    }
+    return fluxpool(0.0, U_PGC_YR);
+}
+
+//------------------------------------------------------------------------------
 /*! \brief              Compute model fluxes for a time step
  *  \param[in]  t       time
  *  \param[in]  c       carbon pools (no units)
@@ -452,19 +515,9 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
     }
 
     // Annual fossil fuels and industry emissions and atmosphere CO2 capture (CCS or whatever)
-    fluxpool ffi_flux_current( 0.0, U_PGC_YR );
-    fluxpool ccs_flux_current( 0.0, U_PGC_YR );
+    fluxpool ffi_flux_current = ffi(t, in_spinup);
+    fluxpool ccs_flux_current = ccs(t, in_spinup);
     
-    // BBL-TODO will want to split input data streams into FFI and CCS
-    if( !in_spinup ) {   // no perturbation allowed if in spinup
-        double totflux = ffiEmissions.get( t ).value(U_PGC_YR);
-        if(totflux >= 0.0) {
-            ffi_flux_current.set(totflux, U_PGC_YR);
-        } else {
-            ccs_flux_current.set(-totflux, U_PGC_YR);
-        }
-    }
-
     // Annual land use change emissions
     fluxpool luc_emission_current( 0.0, U_PGC_YR );
     fluxpool luc_uptake_current( 0.0, U_PGC_YR );
@@ -545,7 +598,7 @@ void SimpleNbox::slowparameval( double t, const double c[] )
 {
     omodel->slowparameval( t, c );      // pass msg on to ocean model
 
-	// CO2 fertilization
+    // CO2 fertilization
     Ca.set( c[ SNBOX_ATMOS ] * PGC_TO_PPMVCO2, U_PPMV_CO2 );
 
     // Compute CO2 fertilization factor globally (and for each biome specified)
@@ -627,3 +680,4 @@ void SimpleNbox::slowparameval( double t, const double c[] )
 }
 
 }
+
