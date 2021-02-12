@@ -151,7 +151,7 @@ Logger::~Logger() {
  *
  */
 void Logger::open( const string& logName, bool echoToScreen,
-                   bool echoToFile, LogLevel minLogLevel ) throw ( h_exception ) {
+                   bool echoToFile, LogLevel minLogLevel ) {
     H_ASSERT( !isInitialized, "This log has already been initialized." );
 
     this->minLogLevel = minLogLevel;
@@ -199,7 +199,7 @@ bool Logger::shouldWrite( const LogLevel writeLevel ) const {
  *  \exception h_exception If this logger has not been initialized.
  */
 ostream& Logger::write( const LogLevel writeLevel,
-                       const string& functionInfo ) throw ( h_exception )
+                       const string& functionInfo )
 {
     H_ASSERT( isInitialized, "can't write to logger until initialized" );
 

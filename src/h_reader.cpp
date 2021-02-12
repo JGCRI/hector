@@ -35,7 +35,7 @@ h_reader::h_reader( std::string fname, readertype_t style, bool doparse ) {
  *
  *  Backend is currently an INIReader.
  */
-void h_reader::parse() throw( h_exception ) {
+void h_reader::parse() {
     if(reader)
         delete reader;
 

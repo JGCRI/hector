@@ -35,7 +35,7 @@ using namespace boost;
  *  For example, the main carbon pools (except earth) should always be positive;
  *  partitioning coefficients should not exceed 1; etc.
  */
-void SimpleNbox::sanitychecks() throw( h_exception )
+void SimpleNbox::sanitychecks()
 {
     // A few sanity checks
     // Note that with the addition of the fluxpool class (which guarantees
@@ -73,7 +73,7 @@ void SimpleNbox::log_pools( const double t )
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-void SimpleNbox::prepareToRun() throw( h_exception )
+void SimpleNbox::prepareToRun()
 {
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
 
@@ -138,7 +138,7 @@ void SimpleNbox::prepareToRun() throw( h_exception )
  *  This run method doesn't do much, because it's the carbon-cycle-solver
  *  run that does all the work.
  */
-void SimpleNbox::run( const double runToDate ) throw ( h_exception )
+void SimpleNbox::run( const double runToDate )
 {
     in_spinup = core->inSpinup();
     sanitychecks();
@@ -153,7 +153,7 @@ void SimpleNbox::run( const double runToDate ) throw ( h_exception )
  *  This run_spinup method doesn't do much, because it's the carbon-cycle-solver
  *  run that does all the work.
  */
-bool SimpleNbox::run_spinup( const int step ) throw ( h_exception )
+bool SimpleNbox::run_spinup( const int step )
 {
     sanitychecks();
     in_spinup = true;

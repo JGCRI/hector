@@ -62,7 +62,7 @@ public:
      */
     virtual unitval sendMessage( const std::string& message,
                                 const std::string& datum,
-                                const message_data info=message_data() ) throw ( h_exception ) = 0;
+                                const message_data info=message_data() ) = 0;
 
     //------------------------------------------------------------------------------
     /*! \brief Sets the variable specified by varName with the given data.
@@ -83,7 +83,7 @@ public:
      *                         value to the appropriate type.
      */
     virtual void setData( const std::string& varName,
-                          const message_data& data ) throw ( h_exception ) = 0;
+                          const message_data& data ) = 0;
 
     //------------------------------------------------------------------------------
     /*! \brief A notification that all data are set and the component should prepare to run.
@@ -96,7 +96,7 @@ public:
      *              additional information from it.
      *  \exception h_exception If there was any inconsistencies with input data.
      */
-    virtual void prepareToRun() throw ( h_exception ) = 0;
+    virtual void prepareToRun() = 0;
 
     //------------------------------------------------------------------------------
     /*! \brief Run the component up to the given date.
@@ -110,7 +110,7 @@ public:
      *       initialization.
      *  \exception h_exception If an error occurred for any reason while running.
      */
-    virtual void run( const double runToDate ) throw ( h_exception ) = 0;
+    virtual void run( const double runToDate ) = 0;
 
     //------------------------------------------------------------------------------
     /*! \brief Run the component in spinup mode.
@@ -123,7 +123,7 @@ public:
      *  \return     A bool indicating whether the component is spun up.
      *  \exception  h_exception If an error occurred for any reason while running.
      */
-    virtual bool run_spinup( const int step ) throw ( h_exception ) { return true; }
+    virtual bool run_spinup( const int step ) { return true; }
 
     //------------------------------------------------------------------------------
     /*! \brief Reset the component's state to what it was at some previous time.
@@ -153,7 +153,7 @@ public:
      *  \param date Date to which to reset component state
      *  \exception h_exception If unable to perform the reset.
      */
-    virtual void reset(double time) throw(h_exception) = 0;
+    virtual void reset(double time) = 0;
 
     //------------------------------------------------------------------------------
     /*! \brief We will no longer attempt to run the model; perform any cleanup.
@@ -181,7 +181,7 @@ private:
      *                         value to the appropriate type.
      */
     virtual unitval getData( const std::string& varName,
-                            const double date ) throw ( h_exception ) = 0;
+                            const double date ) = 0;
 };
 
 // Inline methods

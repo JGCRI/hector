@@ -74,7 +74,7 @@ void DummyModelComponent::init( Core* core ) {
 // documentation is inherited
 unitval DummyModelComponent::sendMessage( const std::string& message,
                                          const std::string& datum,
-                                         const message_data info ) throw ( h_exception )
+                                         const message_data info )
 {
     unitval returnval;
 
@@ -96,7 +96,7 @@ unitval DummyModelComponent::sendMessage( const std::string& message,
 //------------------------------------------------------------------------------
 // documentation is inherited
 void DummyModelComponent::setData( const string& varName,
-                                   const message_data& data ) throw ( h_exception )
+                                   const message_data& data )
 {
     try {
         if( varName == H_STRINGIFY_VAR( slope ) ) {
@@ -118,7 +118,7 @@ void DummyModelComponent::setData( const string& varName,
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-void DummyModelComponent::prepareToRun() throw ( h_exception ) {
+void DummyModelComponent::prepareToRun() {
 
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
 
@@ -131,7 +131,7 @@ void DummyModelComponent::prepareToRun() throw ( h_exception ) {
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-void DummyModelComponent::run( const double runToDate ) throw ( h_exception ) {
+void DummyModelComponent::run( const double runToDate ) {
     // for some reason we need to calculate at a time-step of .1
     const double timeStep = 0.1;
     // make sure we can take at least 1 time-step.
@@ -146,7 +146,7 @@ void DummyModelComponent::run( const double runToDate ) throw ( h_exception ) {
 //------------------------------------------------------------------------------
 // documentation is inherited
 unitval DummyModelComponent::getData( const std::string& varName,
-                                     const double date ) throw ( h_exception ) {
+                                     const double date ) {
 
     unitval returnval;
 
@@ -160,7 +160,7 @@ unitval DummyModelComponent::getData( const std::string& varName,
     return returnval;
 }
 
-void DummyModelComponent::reset(double time) throw(h_exception)
+void DummyModelComponent::reset(double time)
 {
     // This is a no-op for this component
     H_LOG(logger, Logger::NOTICE)

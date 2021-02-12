@@ -45,8 +45,8 @@ public:
     tseries();
 
     void set( double, T_data );
-    T_data get( double ) const throw( h_exception );
-    T_data get_deriv( double ) const throw( h_exception );
+    T_data get( double ) const;
+    T_data get_deriv( double ) const;
     bool exists( double ) const;
 
     double firstdate() const;
@@ -82,7 +82,7 @@ struct interp_helper {
     static void error_check( const std::map<double, T_data>& userData,
                              h_interpolator& interpolator, std::string name,
                              bool& isDirty, bool endinterp_allowed,
-                             const double index ) throw( h_exception )
+                             const double index )
     {
         H_ASSERT( userData.size() > 1, "time series data(" + name + ") must have size>1" );
 
@@ -111,7 +111,7 @@ struct interp_helper {
     static T_data interp( const std::map<double, T_data>& userData,
                           h_interpolator& interpolator, std::string name,
                           bool& isDirty, bool endinterp_allowed,
-                          const double index ) throw( h_exception )
+                          const double index )
     {
         error_check( userData, interpolator, name, isDirty, endinterp_allowed, index );
 
@@ -120,7 +120,7 @@ struct interp_helper {
     static T_data calc_deriv( const std::map<double, T_data>& userData,
                               h_interpolator& interpolator, std::string name,
                               bool& isDirty, bool endinterp_allowed,
-                              const double index ) throw( h_exception )
+                              const double index )
     {
         error_check( userData, interpolator, name, isDirty, endinterp_allowed, index );
 
@@ -140,7 +140,7 @@ struct interp_helper<unitval> {
     static void error_check( const std::map<double, T_unit_type>& userData,
                              h_interpolator& interpolator, std::string name,
                              bool& isDirty, bool endinterp_allowed,
-                             const double index ) throw( h_exception )
+                             const double index )
     {
         H_ASSERT( userData.size() > 1, "time series data (" + name + ") must have size>1" );
 
@@ -169,7 +169,7 @@ struct interp_helper<unitval> {
     static T_unit_type interp( const std::map<double, T_unit_type>& userData,
                                h_interpolator& interpolator, std::string name,
                                bool& isDirty, bool endinterp_allowed,
-                               const double index ) throw( h_exception )
+                               const double index )
     {
         error_check( userData, interpolator, name, isDirty, endinterp_allowed, index );
 
@@ -178,7 +178,7 @@ struct interp_helper<unitval> {
     static T_unit_type calc_deriv( const std::map<double, T_unit_type>& userData,
                                    h_interpolator& interpolator, std::string name,
                                    bool& isDirty, bool endinterp_allowed,
-                                   const double index ) throw( h_exception )
+                                   const double index )
     {
         error_check( userData, interpolator, name, isDirty, endinterp_allowed, index );
 
@@ -298,7 +298,7 @@ bool tseries<T_data>::exists( double t ) const {
  *  as a constant (i.e, return the single value that we have).
  */
 template <class T_data>
-T_data tseries<T_data>::get( double t ) const throw( h_exception ) {
+T_data tseries<T_data>::get( double t ) const {
     if(mapdata.size() == 1)
         return mapdata.begin()->second;
     typename std::map<double,T_data>::const_iterator itr = mapdata.find( t );
@@ -322,7 +322,7 @@ T_data tseries<T_data>::get( double t ) const throw( h_exception ) {
  *
  */
 template <class T_data>
-T_data tseries<T_data>::get_deriv( double t ) const throw( h_exception ) {
+T_data tseries<T_data>::get_deriv( double t ) const {
     if(mapdata.size() == 1) {
         H_THROW( "More than one data point needed to calculate a derivative" );
     }

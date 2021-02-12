@@ -64,7 +64,7 @@ void SulfurComponent::init( Core* coreptr ) {
 // documentation is inherited
 unitval SulfurComponent::sendMessage( const std::string& message,
                                      const std::string& datum,
-                                     const message_data info ) throw ( h_exception )
+                                     const message_data info )
 {
     unitval returnval;
 
@@ -87,7 +87,7 @@ unitval SulfurComponent::sendMessage( const std::string& message,
 //------------------------------------------------------------------------------
 // documentation is inherited
 void SulfurComponent::setData( const string& varName,
-                               const message_data& data ) throw ( h_exception )
+                               const message_data& data )
 {
     H_LOG( logger, Logger::DEBUG ) << "Setting " << varName << "[" << data.date << "]=" << data.value_str << std::endl;
 
@@ -119,7 +119,7 @@ void SulfurComponent::setData( const string& varName,
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-void SulfurComponent::prepareToRun() throw ( h_exception ) {
+void SulfurComponent::prepareToRun() {
 
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
     oldDate = core->getStartDate();
@@ -127,7 +127,7 @@ void SulfurComponent::prepareToRun() throw ( h_exception ) {
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-void SulfurComponent::run( const double runToDate ) throw ( h_exception ) {
+void SulfurComponent::run( const double runToDate ) {
     H_ASSERT( !core->inSpinup() && runToDate-oldDate == 1, "timestep must equal 1" );
     oldDate = runToDate;
 }
@@ -135,7 +135,7 @@ void SulfurComponent::run( const double runToDate ) throw ( h_exception ) {
 //------------------------------------------------------------------------------
 // documentation is inherited
 unitval SulfurComponent::getData( const std::string& varName,
-                                 const double date ) throw ( h_exception ) {
+                                 const double date ) {
 
     unitval returnval;
 
@@ -163,7 +163,7 @@ unitval SulfurComponent::getData( const std::string& varName,
     return returnval;
 }
 
-void SulfurComponent::reset(double time) throw(h_exception)
+void SulfurComponent::reset(double time)
 {
     // This component doesn't calculate anything, so all we have to do
     // is reset the time counter.

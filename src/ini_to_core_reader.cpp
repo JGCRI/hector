@@ -61,7 +61,7 @@ INIToCoreReader::~INIToCoreReader() {
  *                         or there was a problem in the Core trying to set the
  *                         data.
  */
-void INIToCoreReader::parse( const string& filename ) throw ( h_exception ) {
+void INIToCoreReader::parse( const string& filename ) {
     iniFilePath = filename;
     int errorCode = ini_parse( filename.c_str(), valueHandler, this );
 

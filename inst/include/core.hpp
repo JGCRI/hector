@@ -44,13 +44,13 @@ public:
     void init();
 
     void setData( const std::string& componentName, const std::string& varName,
-                  const message_data& data ) throw ( h_exception );
+                  const message_data& data );
 
     void addVisitor( AVisitor* visitor );
 
-    void prepareToRun() throw ( h_exception );
+    void prepareToRun();
 
-    void run(double runtodate=-1.0) throw ( h_exception );
+    void run(double runtodate=-1.0);
 
     void reset(double resetdate);
 
@@ -59,10 +59,10 @@ public:
     Logger &getGlobalLogger() {return glog;}
 
     IModelComponent* getComponentByCapability( const std::string& capabilityName
-                                              ) const throw ( h_exception );
+                                              ) const;
 
     void registerCapability(const std::string& capabilityName, const std::string& componentName, bool warndupe=true
-                            )  throw ( h_exception );
+                            ) ;
 
     int checkCapability( const std::string& capabilityName );
 
@@ -70,11 +70,11 @@ public:
     void registerInput(const std::string &inputName, const std::string &componentName);
 
     unitval sendMessage( const std::string& message,
-                        const std::string& datum ) throw ( h_exception );
+                        const std::string& datum );
 
     unitval sendMessage( const std::string& message,
                         const std::string& datum,
-                        const message_data& info ) throw ( h_exception );
+                        const message_data& info );
 
     double getStartDate() const { return startDate; };
     double getEndDate() const { return endDate; };
@@ -83,7 +83,7 @@ public:
     bool inSpinup() const { return in_spinup; };
     bool outputEnabled( std::string componentName ) { return std::find( disabledOutputComponents.begin(),
                 disabledOutputComponents.end(), componentName) == disabledOutputComponents.end(); }
-    void addModelComponent( IModelComponent* modelComponent ) throw ( h_exception );
+    void addModelComponent( IModelComponent* modelComponent );
 
     // IVisitable methods
     virtual void accept( AVisitor* visitor );
@@ -91,7 +91,7 @@ public:
     static double undefinedIndex();
 
     IModelComponent* getComponentByName( const std::string& componentName
-                                        ) const throw ( h_exception );
+                                        ) const;
 
     //! Manage cores in the global registry
     static int mkcore(bool logtofile=false,

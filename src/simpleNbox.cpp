@@ -213,7 +213,7 @@ void SimpleNbox::init( Core* coreptr ) {
 // documentation is inherited
 unitval SimpleNbox::sendMessage( const std::string& message,
                                 const std::string& datum,
-                                const message_data info ) throw ( h_exception )
+                                const message_data info )
 {
     unitval returnval;
 
@@ -236,7 +236,7 @@ unitval SimpleNbox::sendMessage( const std::string& message,
 //------------------------------------------------------------------------------
 // documentation is inherited
 void SimpleNbox::setData( const std::string &varName,
-                          const message_data& data ) throw( h_exception )
+                          const message_data& data )
 {
     // Does the varName contain our parse character? If so, split it
     std::vector<std::string> splitvec;
@@ -437,7 +437,7 @@ double SimpleNbox::sum_map( double_stringmap pool ) const
 //------------------------------------------------------------------------------
 // documentation is inherited
 unitval SimpleNbox::getData(const std::string& varName,
-                            const double date) throw ( h_exception )
+                            const double date)
 {
     unitval returnval;
 
@@ -592,7 +592,7 @@ unitval SimpleNbox::getData(const std::string& varName,
     return static_cast<unitval>(returnval);
 }
 
-void SimpleNbox::reset(double time) throw(h_exception)
+void SimpleNbox::reset(double time)
 {
     // Reset all state variables to their values at the reset time
     earth_c = earth_c_ts.get(time);
