@@ -24,6 +24,15 @@ namespace Hector {
 
 using namespace boost;
 
+// test helper function
+void identity_tests(bool trk) {
+    string trks = trk ? "true" : "false";
+    fluxpool a(1.0, U_UNITLESS, trk);
+    H_ASSERT(a == a, "a not equal to itself for " + trks);
+    H_ASSERT(a / a == 1.0, "a divided by itself not 1 for " + trks);
+    H_ASSERT(a - a == fluxpool(0, U_UNITLESS, trk), "a minus itself not 0 for " + trks);
+}
+
 //------------------------------------------------------------------------------
 /*! \brief constructor
  */
@@ -36,14 +45,20 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
     Ftalbedo.name = "albedo";
     CO2_constrain.name = "CO2_constrain";
 
+    // The actual atmos_c value will be filled in later by setData
+    atmos_c.set(0.0, U_PGC, true, "atmos_c");
+    
     // earth_c keeps track of how much fossil C is pulled out
     // so that we can do a mass-balance check throughout the run
     // 2020-02-05 With the introduction of non-negative 'fluxpool' class
     // we can't start earth_c at zero. Value of 4000 is from
     // http://globecarboncycle.unh.edu/CarbonCycleBackground.pdf
-    earth_c.set( 4000, U_PGC );
+    earth_c.set( 4000, U_PGC, true, "earth_c" );
     
+    // -----------------------------------------
     // fluxpool test code - move to unit test later BBL-TODO
+    // -----------------------------------------
+    
     fluxpool x1(1.0, U_PGC);
     fluxpool x2(2.0, U_PGC);
     unitval y1(1.0, U_PGC);
@@ -56,6 +71,8 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
     test = x1 / 2.0;
     test = x1 - y1;
     test = x1 + y2;
+
+    identity_tests(false);
     
     // Things that SHOULD throw an exception
     int thrown = 0;
@@ -66,9 +83,78 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
     try { test = x1 * -1.0; } catch ( h_exception e ) { thrown++; }
     try { test = -1.0 * x1; } catch ( h_exception e ) { thrown++; }
     try { test = x1 / -1.0; } catch ( h_exception e ) { thrown++; }
+    try { if(x1 == fluxpool(1.0, U_UNITLESS)) {}; } catch ( h_exception e ) { thrown++; }
 
-    H_ASSERT(thrown == 7, "Something didn't throw!")
+    H_ASSERT(thrown == 8, "1-something didn't throw!")
+    
+    // Tracking test code
+    
+    identity_tests(true);
+
+    // Non-tracked objects shouldn't give back tracking info
+    fluxpool x(1.0, U_PGC);
+    H_ASSERT(x.tracking == false, "default fluxpool shouldn't track");
+    thrown = 0;
+    try { x.get_sources(); } catch ( h_exception e ) { thrown++; }
+    try { x.get_fraction(""); } catch ( h_exception e ) { thrown++; }
+    H_ASSERT(thrown == 2, "2-something didn't throw");
+    
+    fluxpool y(1.0, U_PGC, true, "y");
+    H_ASSERT(y.get_fraction("blah blah") == 0.0, "get_fraction wasn't 0");
+    H_ASSERT(y.get_fraction("y") == 1.0, "get_fraction wasn't 1");
+    vector<string> source = y.get_sources();
+    H_ASSERT(source.size() == 1, "source wasn't size 1");
+    H_ASSERT(source.at(0) == "y", "source wasn't y");
+
+    // An actual tracking test
+    // Test 1: one source, one destination
+    fluxpool    src1(10, U_PGC, true, "src1"),
+                dest(0.0, U_PGC, true, "dest");
+    
+    fluxpool flux = src1 * 0.4;
+    dest = dest + flux;
+    src1 = src1 - flux;
+
+//    std::cout << "src1 is " << src1 << std::endl;
+//    std::cout << "flux is " << flux << std::endl;
+//    std::cout << "dest is " << dest << std::endl;
+    
+    H_ASSERT(dest.get_fraction("src1") == 1.0, "dest fraction src1 wasn't 1");
+    source = dest.get_sources();
+    H_ASSERT(source.size() == 2, "dest source wasn't size 2");
+    H_ASSERT(find(source.begin(), source.end(), "src1") != source.end(), "src wasn't in dest sources");
+
+    // Test 2: two sources, one destination
+    
+    fluxpool src2(10, U_PGC, true, "src2");
+    flux = src2 * 0.6;
+    dest = dest + flux;
+    src2 = src2 - flux;
+    
+    H_ASSERT(dest.get_fraction("src1") == 0.4, "get_fraction wasn't 0.5 for src1");
+    H_ASSERT(dest.get_fraction("src2") == 0.6, "get_fraction wasn't 0.5 for src2");
+    source = dest.get_sources();
+    H_ASSERT(source.size() == 3, "dest source wasn't size 3");
+
+    // Test 3: start with a unitval flux and construct fluxpool (neeeded e.g. for LUC)
+    
+    unitval uflux(1.0, U_PGC);
+    flux = src1.flux_from_unitval(uflux);
+    H_ASSERT(uflux.value(U_PGC) == flux.value(U_PGC), "flux and uflux values and/or units don't match");
+    vector<string> s1 = src1.get_sources(), s2 = flux.get_sources();
+    H_ASSERT(s1.size() == s2.size(), "flux and flux source maps not same size");
+    H_ASSERT(std::equal(s1.begin(), s1.end(), s2.begin()), "flux and uflux values source maps don't match");
+ 
+    // Test 4: adjusting a total
+    
+//    cout << "\nTEST4\n" << dest << endl;
+    dest.adjust_pool_to_val(dest.value(U_PGC) * 1.1);
+//    cout << dest << endl;
+    H_ASSERT(dest.get_fraction("untracked") - 1.0/11.0 < 1e-6, "untracked not correct");
+
+ //   H_THROW("stop");
 }
+
 
 //------------------------------------------------------------------------------
 // documentation is inherited
@@ -509,9 +595,9 @@ unitval SimpleNbox::getData(const std::string& varName,
 void SimpleNbox::reset(double time)
 {
     // Reset all state variables to their values at the reset time
-    earth_c.set( earth_c_ts.get(time).value( U_PGC ), U_PGC );
-    atmos_c.set( atmos_c_ts.get(time).value( U_PGC ), U_PGC );
-    Ca.set( Ca_ts.get(time).value( U_PPMV_CO2 ), U_PPMV_CO2 );
+    earth_c = earth_c_ts.get(time);
+    atmos_c = atmos_c_ts.get(time);
+    Ca = Ca_ts.get(time);
 
     veg_c = veg_c_tv.get(time);
     detritus_c = detritus_c_tv.get(time);
@@ -607,7 +693,7 @@ void SimpleNbox::set_c0(double newc0)
         H_LOG(logger, Logger::DEBUG) << "massdiff= " << massdiff << "  new masstot= " << masstot
                                      << "\n";
     }
-    C0.set(newc0, U_PPMV_CO2);
+    C0.set(newc0, U_PPMV_CO2, C0.tracking, C0.name);
 }
 
 // Check if `biome` is present in biome_list
