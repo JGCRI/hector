@@ -36,7 +36,7 @@ class INIToCoreReader {
     INIToCoreReader( Core* core );
     ~INIToCoreReader();
 
-    void parse( const std::string& filename ) throw ( h_exception );
+    void parse( const std::string& filename );
 
     private:
     //! Weak reference to a Core object that will handle parsed values

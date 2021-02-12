@@ -69,7 +69,7 @@ void OHComponent::init( Core* coreptr ) {
 // documentation is inherited
 unitval OHComponent::sendMessage( const std::string& message,
                                   const std::string& datum,
-                                  const message_data info ) throw ( h_exception )
+                                  const message_data info )
 {
     unitval returnval;
 
@@ -89,7 +89,7 @@ unitval OHComponent::sendMessage( const std::string& message,
 //------------------------------------------------------------------------------
 // documentation is inherited
 void OHComponent::setData( const string& varName,
-                            const message_data& data ) throw ( h_exception )
+                            const message_data& data )
 {
     try {
          if( varName == D_EMISSIONS_NOX ) {
@@ -127,7 +127,7 @@ void OHComponent::setData( const string& varName,
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-void OHComponent::prepareToRun() throw ( h_exception ) {
+void OHComponent::prepareToRun() {
 
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
     oldDate = core->getStartDate();
@@ -138,7 +138,7 @@ void OHComponent::prepareToRun() throw ( h_exception ) {
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-void OHComponent::run( const double runToDate ) throw ( h_exception )
+void OHComponent::run( const double runToDate )
 {
     H_LOG(logger, Logger::DEBUG) << "olddate:  " << oldDate << " runToDate: " << runToDate << std::endl;
     H_ASSERT( !core->inSpinup() && runToDate-oldDate == 1, "timestep must equal 1" );
@@ -171,7 +171,7 @@ void OHComponent::run( const double runToDate ) throw ( h_exception )
 //------------------------------------------------------------------------------
 // documentation is inherited
 unitval OHComponent::getData( const std::string& varName,
-                              const double date ) throw ( h_exception ) {
+                              const double date ) {
 
     unitval returnval;
 
@@ -194,7 +194,7 @@ unitval OHComponent::getData( const std::string& varName,
     return returnval;
 }
 
-void OHComponent::reset(double time) throw(h_exception)
+void OHComponent::reset(double time)
 {
     oldDate = time;
     H_LOG(logger, Logger::NOTICE)

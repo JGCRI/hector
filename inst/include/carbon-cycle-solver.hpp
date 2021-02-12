@@ -61,18 +61,18 @@ public:
     
     virtual unitval sendMessage( const std::string& message,
                                 const std::string& datum,
-                                const message_data info=message_data() ) throw ( h_exception );
+                                const message_data info=message_data() );
     
     virtual void setData( const std::string& varName,
-                          const message_data& data ) throw ( h_exception );
+                          const message_data& data );
     
-    virtual void prepareToRun() throw ( h_exception );
+    virtual void prepareToRun();
     
-    virtual void run( const double runToDate ) throw ( h_exception );
+    virtual void run( const double runToDate );
     
-    virtual bool run_spinup( const int step ) throw ( h_exception );
+    virtual bool run_spinup( const int step );
     
-    virtual void reset(double date) throw(h_exception);
+    virtual void reset(double date);
 
     virtual void shutDown();
     
@@ -82,7 +82,7 @@ public:
     
 private:
     virtual unitval getData( const std::string& varName,
-                            const double valueIndex ) throw ( h_exception );
+                            const double valueIndex );
     
     //! Number of variables to integrate
     int nc;
@@ -114,7 +114,7 @@ private:
         double* t;
     };
     
-    void failure( int stat, double t0, double tmid ) throw( h_exception );
+    void failure( int stat, double t0, double tmid );
     
     bool in_spinup;
     

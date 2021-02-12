@@ -64,7 +64,7 @@ void CarbonCycleSolver::init( Core* coreptr ) {
 // documentation is inherited
 unitval CarbonCycleSolver::sendMessage( const std::string& message,
                                        const std::string& datum,
-                                       const message_data info ) throw ( h_exception )
+                                       const message_data info )
 {
     unitval returnval;
 
@@ -86,7 +86,7 @@ unitval CarbonCycleSolver::sendMessage( const std::string& message,
 //------------------------------------------------------------------------------
 // documentation is inherited
 void CarbonCycleSolver::setData( const std::string &varName,
-                                 const message_data& data ) throw ( h_exception )
+                                 const message_data& data )
 {
     H_LOG( logger, Logger::DEBUG ) << "Setting " << varName << "[" << data.date << "]=" << data.value_str << std::endl;
 
@@ -121,7 +121,7 @@ void CarbonCycleSolver::setData( const std::string &varName,
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-void CarbonCycleSolver::prepareToRun() throw( h_exception )
+void CarbonCycleSolver::prepareToRun()
 {
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
 
@@ -141,7 +141,7 @@ void CarbonCycleSolver::prepareToRun() throw( h_exception )
 //------------------------------------------------------------------------------
 // documentation is inherited
 unitval CarbonCycleSolver::getData( const std::string& varName,
-                                   const double date ) throw ( h_exception ) {
+                                   const double date ) {
 
     unitval returnval;
 
@@ -152,7 +152,7 @@ unitval CarbonCycleSolver::getData( const std::string& varName,
     return returnval;
 }
 
-void CarbonCycleSolver::reset(double time) throw(h_exception)
+void CarbonCycleSolver::reset(double time)
 {
     // Only state maintained by this component is the time counter
     t = time;
@@ -216,7 +216,7 @@ void CarbonCycleSolver::ODEEvalFunctor::operator()( const std::vector<double>& y
  *  \param[in] tmid     middle of time step
  *  \exception          will always happen; gsl solver has failed
  */
-void CarbonCycleSolver::failure( int stat, double t0, double tmid ) throw( h_exception ) {
+void CarbonCycleSolver::failure( int stat, double t0, double tmid ) {
     H_LOG( logger, Logger::SEVERE ) << "gsl_ode_evolve_apply failed at t= " <<
     t0 << "  tinit= " << t << "  tmid = " << tmid << "  last dt= " <<
     dt << "\nError code: " << stat << "\ncvals:\n";
@@ -228,7 +228,7 @@ void CarbonCycleSolver::failure( int stat, double t0, double tmid ) throw( h_exc
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-void CarbonCycleSolver::run( const double tnew ) throw ( h_exception )
+void CarbonCycleSolver::run( const double tnew )
 {
     if(tnew <= t) {
         H_LOG(logger, Logger::SEVERE) << "run(): tnew= " << tnew << "   t= " << t << std::endl;
@@ -309,7 +309,7 @@ void CarbonCycleSolver::run( const double tnew ) throw ( h_exception )
  *  carbon pools, at the end of the preindustrial period before the main run.
  *  To reach this point, run the carbon model until all dc/dt are ~0.
  */
-bool CarbonCycleSolver::run_spinup( const int step ) throw( h_exception )
+bool CarbonCycleSolver::run_spinup( const int step )
 {
 
     if( !in_spinup ) {  // first time

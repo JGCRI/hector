@@ -67,7 +67,7 @@ void CH4Component::init( Core* coreptr ) {
 // documentation is inherited
 unitval CH4Component::sendMessage( const std::string& message,
                                   const std::string& datum,
-                                  const message_data info ) throw ( h_exception ) {
+                                  const message_data info ) {
     unitval returnval;
 
     if( message==M_GETDATA ) {          //! Caller is requesting data
@@ -89,7 +89,7 @@ unitval CH4Component::sendMessage( const std::string& message,
 //------------------------------------------------------------------------------
 // documentation is inherited
 void CH4Component::setData( const string& varName,
-                            const message_data& data ) throw ( h_exception ) {
+                            const message_data& data ) {
     try {
          if( varName ==  D_PREINDUSTRIAL_CH4  ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
@@ -124,7 +124,7 @@ void CH4Component::setData( const string& varName,
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-void CH4Component::prepareToRun() throw ( h_exception ) {
+void CH4Component::prepareToRun() {
 
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
     oldDate = core->getStartDate();
@@ -137,7 +137,7 @@ void CH4Component::prepareToRun() throw ( h_exception ) {
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-void CH4Component::run( const double runToDate ) throw ( h_exception ) {
+void CH4Component::run( const double runToDate ) {
 	H_ASSERT( !core->inSpinup() && runToDate-oldDate == 1, "timestep must equal 1" );
 
     if ( CH4_constrain.size() && CH4_constrain.exists( runToDate ) ) {
@@ -177,7 +177,7 @@ void CH4Component::run( const double runToDate ) throw ( h_exception ) {
 //------------------------------------------------------------------------------
 // documentation is inherited
 unitval CH4Component::getData( const std::string& varName,
-                              const double date ) throw ( h_exception ) {
+                              const double date ) {
 
     unitval returnval;
 
@@ -206,7 +206,7 @@ unitval CH4Component::getData( const std::string& varName,
     return returnval;
 }
 
-void CH4Component::reset(double time) throw(h_exception) {
+void CH4Component::reset(double time) {
     // reset the internal time counter and truncate concentration time
     // series
     oldDate = time;

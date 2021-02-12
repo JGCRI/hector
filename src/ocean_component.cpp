@@ -87,7 +87,7 @@ void OceanComponent::init( Core* coreptr ) {
 // documentation is inherited
 unitval OceanComponent::sendMessage( const std::string& message,
                                     const std::string& datum,
-                                    const message_data info ) throw ( h_exception )
+                                    const message_data info )
 {
     unitval returnval;
 
@@ -116,7 +116,7 @@ unitval OceanComponent::sendMessage( const std::string& message,
 //------------------------------------------------------------------------------
 // documentation is inherited
 void OceanComponent::setData( const string& varName,
-                              const message_data& data ) throw ( h_exception )
+                              const message_data& data )
 {
     H_LOG( logger, Logger::DEBUG ) << "Setting " << varName << "[" << data.date << "]=" << data.value_str << std::endl;
 
@@ -162,7 +162,7 @@ void OceanComponent::setData( const string& varName,
 //------------------------------------------------------------------------------
 // documentation is inherited
 // TO DO: should we put these in the ini file instead?
-void OceanComponent::prepareToRun() throw ( h_exception ) {
+void OceanComponent::prepareToRun() {
 
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
 
@@ -278,7 +278,7 @@ unitval OceanComponent::annual_totalcflux( const double date, const unitval& Ca,
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-void OceanComponent::run( const double runToDate ) throw ( h_exception ) {
+void OceanComponent::run( const double runToDate ) {
 
     Ca = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_CO2 );
     Tgav = core->sendMessage( M_GETDATA, D_GLOBAL_TEMP );
@@ -323,7 +323,7 @@ void OceanComponent::run( const double runToDate ) throw ( h_exception ) {
 }
     //------------------------------------------------------------------------------
 // documentation is inherited
-bool OceanComponent::run_spinup( const int step ) throw ( h_exception ) {
+bool OceanComponent::run_spinup( const int step ) {
     run( step );
     return true;        // solver will be the one signalling
 }
@@ -331,7 +331,7 @@ bool OceanComponent::run_spinup( const int step ) throw ( h_exception ) {
 //------------------------------------------------------------------------------
 // documentation is inherited
 unitval OceanComponent::getData( const std::string& varName,
-                                const double date ) throw ( h_exception ) {
+                                const double date ) {
 
     unitval returnval;
 
@@ -551,7 +551,7 @@ void OceanComponent::stashCValues( double t, const double c[] ) {
    }
 
 
-void OceanComponent::reset(double time) throw(h_exception)
+void OceanComponent::reset(double time)
 {
 
     // Reset state variables to their values at the reset time
