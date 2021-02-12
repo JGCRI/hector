@@ -40,7 +40,7 @@ using namespace std;
  *  \param fileName The name of a csv file to read from.
  *  \exception h_exception If there were errors when opening the file.
  */
-CSVTableReader::CSVTableReader( const string& fileName ) throw ( h_exception )
+CSVTableReader::CSVTableReader( const string& fileName )
 :fileName( fileName )
 {
     // allow exceptions from bad io operations
@@ -113,7 +113,7 @@ string CSVTableReader::csv_getline() {
  */
 
 void CSVTableReader::process( Core* core, const string& componentName,
-                             const string& varName ) throw ( h_exception )
+                             const string& varName )
 {
     using namespace boost;
     try {

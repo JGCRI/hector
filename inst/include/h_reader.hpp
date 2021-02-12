@@ -31,7 +31,7 @@ class h_reader {
 public:
     h_reader( std::string fname, readertype_t style, bool doparse=true );
     virtual ~h_reader() {delete reader;}
-    void parse() throw( h_exception );
+    void parse();
     std::string get_string( std::string section, std::string name, std::string defaultvalue );
     double get_number( std::string section, std::string name, double defaultvalue );
 private:

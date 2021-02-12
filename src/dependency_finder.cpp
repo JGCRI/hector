@@ -82,7 +82,7 @@ bool DependencyFinder::addDependency( const string& aObjectName,
  * \pre All relevant objects must have called addDependency() to add their dependencies to the matrix.
  * \sa getOrdering
  */
-void DependencyFinder::createOrdering() throw ( h_exception ) {
+void DependencyFinder::createOrdering() {
     // If there is an existing stored ordering, clear it.
     mOrdering.clear();
 

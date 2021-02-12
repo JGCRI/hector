@@ -73,7 +73,7 @@ void HalocarbonComponent::init( Core* coreptr ) {
 // documentation is inherited
 unitval HalocarbonComponent::sendMessage( const std::string& message,
                                          const std::string& datum,
-                                         const message_data info ) throw ( h_exception )
+                                         const message_data info )
 {
     unitval returnval;
 
@@ -95,7 +95,7 @@ unitval HalocarbonComponent::sendMessage( const std::string& message,
 //------------------------------------------------------------------------------
 // documentation is inherited
 void HalocarbonComponent::setData( const string& varName,
-                                   const message_data& data ) throw ( h_exception )
+                                   const message_data& data )
 {
     H_LOG( logger, Logger::DEBUG ) << "Setting " << varName << "[" << data.date << "]=" << data.value_str << std::endl;
 
@@ -133,7 +133,7 @@ void HalocarbonComponent::setData( const string& varName,
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-void HalocarbonComponent::prepareToRun() throw ( h_exception ) {
+void HalocarbonComponent::prepareToRun() {
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
     oldDate = core->getStartDate();
 
@@ -150,7 +150,7 @@ void HalocarbonComponent::prepareToRun() throw ( h_exception ) {
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-void HalocarbonComponent::run( const double runToDate ) throw ( h_exception ) {
+void HalocarbonComponent::run( const double runToDate ) {
 	H_ASSERT( !core->inSpinup() && runToDate-oldDate == 1, "timestep must equal 1" );
     #define AtmosphereDryAirConstant 1.8
 
@@ -189,7 +189,7 @@ void HalocarbonComponent::run( const double runToDate ) throw ( h_exception ) {
 //------------------------------------------------------------------------------
 // documentation is inherited
 unitval HalocarbonComponent::getData( const std::string& varName,
-                                     const double date ) throw ( h_exception ) {
+                                     const double date ) {
 
     unitval returnval;
     double getdate = date;      // will be used for any variable where a date is allowed.
@@ -237,7 +237,7 @@ unitval HalocarbonComponent::getData( const std::string& varName,
 }
 
 
-void HalocarbonComponent::reset(double time) throw(h_exception)
+void HalocarbonComponent::reset(double time)
 {
     // reset time counter and truncate outputs
     oldDate = time;

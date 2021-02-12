@@ -55,7 +55,7 @@ public:
     DependencyFinder();
     bool addDependency( const std::string& aObjectName,
                         const std::string& aDependency );
-    void createOrdering() throw ( h_exception );
+    void createOrdering();
     const std::vector<std::string>& getOrdering() const;
 private:
     void removeDependency( const size_t aObject, const size_t aDependency );

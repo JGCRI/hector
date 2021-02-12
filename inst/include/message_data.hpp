@@ -60,7 +60,7 @@ struct message_data {
      *      - The unitval units do not match the expected units.
      *      - The value string could not be parsed.
      */
-    unitval getUnitval(const unit_types& expectedUnits, const bool strict = false) const throw ( h_exception ) {
+    unitval getUnitval(const unit_types& expectedUnits, const bool strict = false) const {
         if(isVal) {
             if (strict) {
                 H_ASSERT( value_unitval.units() == expectedUnits, "Units: "+value_unitval.unitsName()+" do not match expected: "+unitval::unitsName( expectedUnits ) );

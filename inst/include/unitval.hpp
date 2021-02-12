@@ -136,20 +136,20 @@ protected:
 
 public:
     static std::string unitsName( const unit_types );
-    static unit_types parseUnitsName( const std::string& ) throw( h_exception );
+    static unit_types parseUnitsName( const std::string& );
 
     unitval();
     unitval( double, unit_types );
 
     void set( double, unit_types, double );
 
-    double value( unit_types ) const throw( h_exception );
+    double value( unit_types ) const;
     unit_types units() const { return valUnits; };
     std::string unitsName() const { return unitsName( valUnits ); };
-    void expecting_unit( const unit_types& ) throw( h_exception );
+    void expecting_unit( const unit_types& );
 
-    static unitval parse_unitval( const std::string&, const unit_types& ) throw( h_exception );
-    static unitval parse_unitval( const std::string&, const std::string&, const unit_types& ) throw( h_exception );
+    static unitval parse_unitval( const std::string&, const unit_types& );
+    static unitval parse_unitval( const std::string&, const std::string&, const unit_types& );
 
     /*! Allow us to assign a unitval to a double.
      *  \note    Do not use this in Hector.  It is intended for other
@@ -224,7 +224,7 @@ void unitval::set( double v, unit_types u, double err=0.0 ) {
  *  Get value. Caller has to provide assumed units, as a check.
  */
 inline
-double unitval::value( unit_types u ) const throw( h_exception ) {
+double unitval::value( unit_types u ) const {
     H_ASSERT( u==valUnits, "variable is not of this type.  Expected: " + unitsName(valUnits) +
              "; got: " + unitsName(u) );
     return( val );
