@@ -108,7 +108,7 @@ private:
     // A functor to provide callbacks for the ODE solver. 
     struct ODEEvalFunctor {
         ODEEvalFunctor( CarbonCycleModel* cmodel, double* time ):modelptr(cmodel), t(time) { }
-        void operator()( const std::vector<double>& y, std::vector<double>& dydt, double t ) throw( bad_derivative_exception );
+        void operator()( const std::vector<double>& y, std::vector<double>& dydt, double t );
         void operator()( const std::vector<double>& y, double t );
         CarbonCycleModel* modelptr;
         double* t;

@@ -182,7 +182,7 @@ void CarbonCycleSolver::shutDown()
  */
 void CarbonCycleSolver::ODEEvalFunctor::operator()( const std::vector<double>& y,
                                                     std::vector<double>& dydt,
-                                                    double t ) throw ( bad_derivative_exception )
+                                                    double t )
 {
     // Note the std garuntees vetors are contigous so we can convert to array by
     // taking the address of the first value.
