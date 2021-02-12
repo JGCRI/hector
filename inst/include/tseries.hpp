@@ -198,7 +198,7 @@ struct interp_helper<fluxpool> {
     static void error_check( const std::map<double, T_unit_type>& userData,
                              h_interpolator& interpolator, std::string name,
                              bool& isDirty, bool endinterp_allowed,
-                             const double index ) throw( h_exception )
+                             const double index )
     {
         H_ASSERT( userData.size() > 1, "time series data (" + name + ") must have size>1" );
 
@@ -227,7 +227,7 @@ struct interp_helper<fluxpool> {
     static T_unit_type interp( const std::map<double, T_unit_type>& userData,
                                h_interpolator& interpolator, std::string name,
                                bool& isDirty, bool endinterp_allowed,
-                               const double index ) throw( h_exception )
+                               const double index )
     {
         error_check( userData, interpolator, name, isDirty, endinterp_allowed, index );
 
@@ -236,7 +236,7 @@ struct interp_helper<fluxpool> {
     static T_unit_type calc_deriv( const std::map<double, T_unit_type>& userData,
                                    h_interpolator& interpolator, std::string name,
                                    bool& isDirty, bool endinterp_allowed,
-                                   const double index ) throw( h_exception )
+                                   const double index )
     {
         error_check( userData, interpolator, name, isDirty, endinterp_allowed, index );
 
