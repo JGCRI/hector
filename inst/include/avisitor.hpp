@@ -31,7 +31,6 @@ class TemperatureComponent;
 class BlackCarbonComponent;
 class OrganicCarbonComponent;
 class OceanComponent;
-class OneLineOceanComponent;
 class SulfurComponent;
 class OzoneComponent;
 
@@ -68,7 +67,6 @@ public:
     virtual void visit( BlackCarbonComponent* c ) {}
     virtual void visit( OrganicCarbonComponent* c ) {}
     virtual void visit( OceanComponent* c ) {}
-    virtual void visit( OneLineOceanComponent* c ) {}
 	virtual void visit( SulfurComponent* c ) {}
 	virtual void visit( OzoneComponent* c ) {}
 };

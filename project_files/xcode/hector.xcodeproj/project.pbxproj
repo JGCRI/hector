@@ -73,7 +73,6 @@
 		278603F7215532D8001B8255 /* INIReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 278603C5215532D6001B8255 /* INIReader.cpp */; };
 		278603F8215532D8001B8255 /* h_reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 278603C6215532D6001B8255 /* h_reader.cpp */; };
 		278603F9215532D8001B8255 /* h_reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 278603C6215532D6001B8255 /* h_reader.cpp */; };
-		278603FA215532D8001B8255 /* onelineocean_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 278603C7215532D6001B8255 /* onelineocean_component.cpp */; };
 		278603FB215532D8001B8255 /* onelineocean_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 278603C7215532D6001B8255 /* onelineocean_component.cpp */; };
 		278603FC215532D8001B8255 /* csv_table_reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 278603C8215532D6001B8255 /* csv_table_reader.cpp */; };
 		278603FD215532D8001B8255 /* csv_table_reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 278603C8215532D6001B8255 /* csv_table_reader.cpp */; };
@@ -559,7 +558,6 @@
 				278603FE215532D8001B8255 /* slr_component.cpp in Sources */,
 				278603F8215532D8001B8255 /* h_reader.cpp in Sources */,
 				27860402215532D8001B8255 /* dependency_finder.cpp in Sources */,
-				278603FA215532D8001B8255 /* onelineocean_component.cpp in Sources */,
 				278603F0215532D8001B8255 /* core.cpp in Sources */,
 				278603F6215532D8001B8255 /* INIReader.cpp in Sources */,
 				27860406215532D8001B8255 /* oc_component.cpp in Sources */,
