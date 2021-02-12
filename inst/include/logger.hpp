@@ -100,12 +100,12 @@ public:
     ~Logger();
 
     void open( const std::string& logName, bool echoToScreen,
-               bool echoToFile, LogLevel minLogLevel ) throw ( h_exception );
+               bool echoToFile, LogLevel minLogLevel );
 
     bool shouldWrite( const LogLevel writeLevel ) const;
 
     std::ostream& write( const LogLevel writeLevel,
-                        const std::string& functionInfo ) throw ( h_exception );
+                        const std::string& functionInfo );
 
     void close();
 

@@ -70,7 +70,7 @@ void OzoneComponent::init( Core* coreptr ) {
 // documentation is inherited
 unitval OzoneComponent::sendMessage( const std::string& message,
                                     const std::string& datum,
-                                    const message_data info ) throw ( h_exception )
+                                    const message_data info )
 {
     unitval returnval;
 
@@ -92,7 +92,7 @@ unitval OzoneComponent::sendMessage( const std::string& message,
 //------------------------------------------------------------------------------
 // documentation is inherited
 void OzoneComponent::setData( const string& varName,
-                              const message_data& data ) throw ( h_exception )
+                              const message_data& data )
 {
     H_LOG( logger, Logger::DEBUG ) << "Setting " << varName << "[" << data.date << "]=" << data.value_str << std::endl;
 
@@ -120,7 +120,7 @@ void OzoneComponent::setData( const string& varName,
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-void OzoneComponent::prepareToRun() throw ( h_exception ) {
+void OzoneComponent::prepareToRun() {
 
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
     oldDate = core->getStartDate();
@@ -129,7 +129,7 @@ void OzoneComponent::prepareToRun() throw ( h_exception ) {
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-void OzoneComponent::run( const double runToDate ) throw ( h_exception ) {
+void OzoneComponent::run( const double runToDate ) {
 
 	// Calculate O3 based on NOX, CO, NMVOC, CH4.
     // Modified from Tanaka et al 2007
@@ -150,7 +150,7 @@ void OzoneComponent::run( const double runToDate ) throw ( h_exception ) {
 //------------------------------------------------------------------------------
 // documentation is inherited
 unitval OzoneComponent::getData( const std::string& varName,
-                                 const double date ) throw ( h_exception ) {
+                                 const double date ) {
 
     unitval returnval;
 
@@ -165,7 +165,7 @@ unitval OzoneComponent::getData( const std::string& varName,
 }
 
 
-void OzoneComponent::reset(double time) throw(h_exception)
+void OzoneComponent::reset(double time)
 {
     O3.truncate(time);
     oldDate = time;

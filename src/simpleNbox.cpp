@@ -98,7 +98,7 @@ void SimpleNbox::init( Core* coreptr ) {
 // documentation is inherited
 unitval SimpleNbox::sendMessage( const std::string& message,
                                 const std::string& datum,
-                                const message_data info ) throw ( h_exception )
+                                const message_data info )
 {
     unitval returnval;
 
@@ -121,7 +121,7 @@ unitval SimpleNbox::sendMessage( const std::string& message,
 //------------------------------------------------------------------------------
 // documentation is inherited
 void SimpleNbox::setData( const std::string &varName,
-                          const message_data& data ) throw( h_exception )
+                          const message_data& data )
 {
     // Does the varName contain our parse character? If so, split it
     std::vector<std::string> splitvec;
@@ -297,9 +297,8 @@ void SimpleNbox::setData( const std::string &varName,
  *  For example, the main carbon pools (except earth) should always be positive;
  *  partitioning coefficients should not exceed 1; etc.
  */
-void SimpleNbox::sanitychecks() throw( h_exception )
+void SimpleNbox::sanitychecks()
 {
-
     // Make a few sanity checks here, and then return.
     H_ASSERT( atmos_c.value( U_PGC ) > 0.0, "atmos_c pool <=0" );
 
@@ -374,7 +373,7 @@ void SimpleNbox::log_pools( const double t )
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-void SimpleNbox::prepareToRun() throw( h_exception )
+void SimpleNbox::prepareToRun()
 {
 
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
@@ -441,7 +440,7 @@ void SimpleNbox::prepareToRun() throw( h_exception )
  *  This run method doesn't do much, because it's the carbon-cycle-solver
  *  run that does all the work.
  */
-void SimpleNbox::run( const double runToDate ) throw ( h_exception )
+void SimpleNbox::run( const double runToDate )
 {
     in_spinup = core->inSpinup();
     sanitychecks();
@@ -456,7 +455,7 @@ void SimpleNbox::run( const double runToDate ) throw ( h_exception )
  *  This run_spinup method doesn't do much, because it's the carbon-cycle-solver
  *  run that does all the work.
  */
-bool SimpleNbox::run_spinup( const int step ) throw ( h_exception )
+bool SimpleNbox::run_spinup( const int step )
 {
     sanitychecks();
     in_spinup = true;
@@ -466,7 +465,7 @@ bool SimpleNbox::run_spinup( const int step ) throw ( h_exception )
 //------------------------------------------------------------------------------
 // documentation is inherited
 unitval SimpleNbox::getData(const std::string& varName,
-                            const double date) throw ( h_exception )
+                            const double date)
 {
     unitval returnval;
 
@@ -620,7 +619,7 @@ unitval SimpleNbox::getData(const std::string& varName,
     return returnval;
 }
 
-void SimpleNbox::reset(double time) throw(h_exception)
+void SimpleNbox::reset(double time)
 {
     // Reset all state variables to their values at the reset time
     earth_c = earth_c_ts.get(time);

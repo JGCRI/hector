@@ -55,7 +55,7 @@ void OneLineOceanComponent::init( Core* coreptr ) {
 // documentation is inherited
 unitval OneLineOceanComponent::sendMessage( const std::string& message,
                                            const std::string& datum,
-                                           const message_data info ) throw ( h_exception )
+                                           const message_data info )
 {
     unitval returnval;
 
@@ -78,7 +78,7 @@ unitval OneLineOceanComponent::sendMessage( const std::string& message,
 //------------------------------------------------------------------------------
 // documentation is inherited
 void OneLineOceanComponent::setData( const string& varName,
-                                     const message_data& data ) throw ( h_exception )
+                                     const message_data& data )
 {
     H_LOG( logger, Logger::DEBUG ) << "Setting " << varName << "[" << data.date << "]=" << data.value_str << std::endl;
 
@@ -97,7 +97,7 @@ void OneLineOceanComponent::setData( const string& varName,
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-void OneLineOceanComponent::prepareToRun() throw ( h_exception ) {
+void OneLineOceanComponent::prepareToRun() {
 
     oldDate = core->getStartDate();
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
@@ -105,7 +105,7 @@ void OneLineOceanComponent::prepareToRun() throw ( h_exception ) {
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-void OneLineOceanComponent::run( const double runToDate ) throw ( h_exception ) {
+void OneLineOceanComponent::run( const double runToDate ) {
 
     double atmos_c = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_C ).value( U_PGC );
     unitval atmos_co2 = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_CO2 );
@@ -128,7 +128,7 @@ void OneLineOceanComponent::run( const double runToDate ) throw ( h_exception ) 
 //------------------------------------------------------------------------------
 // documentation is inherited
 unitval OneLineOceanComponent::getData( const std::string& varName,
-                                       const double date ) throw ( h_exception ) {
+                                       const double date ) {
 
     unitval returnval;
 
@@ -148,7 +148,7 @@ unitval OneLineOceanComponent::getData( const std::string& varName,
 }
 
 
-void OneLineOceanComponent::reset(double time) throw(h_exception)
+void OneLineOceanComponent::reset(double time)
 {
     oldDate = time;
     H_LOG(logger, Logger::NOTICE)

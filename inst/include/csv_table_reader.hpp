@@ -40,11 +40,11 @@ class Core;
  */
 class CSVTableReader {
 public:
-    CSVTableReader( const std::string& fileName ) throw ( h_exception );
+    CSVTableReader( const std::string& fileName );
     ~CSVTableReader();
 
     void process( Core* core, const std::string& componentName,
-                  const std::string& varName ) throw ( h_exception );
+                  const std::string& varName );
 
 private:
     //! The file name to read data from.  Kept around for error reporting.
