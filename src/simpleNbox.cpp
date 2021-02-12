@@ -319,40 +319,6 @@ void SimpleNbox::setData( const std::string &varName,
 }
 
 //------------------------------------------------------------------------------
-/*! \brief      Sanity checks
- *  \exception  If any of the sanity checks fails
- *
- *  This is called internally throughout the model run and performs sanity checks.
- *  For example, the main carbon pools (except earth) should always be positive;
- *  partitioning coefficients should not exceed 1; etc.
- */
-void SimpleNbox::sanitychecks()
-{
-    // Make a few sanity checks here, and then return.
-    H_ASSERT( atmos_c.value( U_PGC ) > 0.0, "atmos_c pool <=0" );
-
-    for ( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
-        std::string biome = *it;
-        H_ASSERT( veg_c.at(biome).value( U_PGC ) >= 0.0, "veg_c pool < 0" );
-        H_ASSERT( detritus_c.at(biome).value( U_PGC ) >= 0.0, "detritus_c pool < 0" );
-        H_ASSERT( soil_c.at(biome).value( U_PGC ) >= 0.0, "soil_c pool < 0" );
-        H_ASSERT( npp_flux0.at(biome).value( U_PGC_YR ) >= 0.0, "npp_flux0 < 0" );
-
-        H_ASSERT( f_nppv.at(biome) >= 0.0, "f_nppv <0" );
-        H_ASSERT( f_nppd.at(biome) >= 0.0, "f_nppd <0" );
-        H_ASSERT( f_nppv.at(biome) + f_nppd.at(biome) <= 1.0, "f_nppv + f_nppd >1" );
-        H_ASSERT( f_litterd.at(biome) >= 0.0 && f_litterd.at(biome) <= 1.0, "f_litterd <0 or >1" );
-    }
-
-    H_ASSERT( f_lucv >= 0.0, "f_lucv <0" );
-    H_ASSERT( f_lucd >= 0.0, "f_lucd <0" );
-    H_ASSERT( f_lucv + f_lucd <= 1.0, "f_lucv + f_lucd >1" );
-
-    H_ASSERT( C0.value( U_PPMV_CO2 ) > 0.0, "C0 <= 0" );
-    H_ASSERT( Ca.value( U_PPMV_CO2 ) > 0.0, "Ca <= 0" );
-}
-
-//------------------------------------------------------------------------------
 /*! \brief      Sum a string->unitval map
  *  \param      pool to sum over
  *  \returns    Sum of the unitvals in the map
