@@ -47,7 +47,7 @@ test_that("Basic hcore functionality works", {
 test_that("Write out logs", {
 
   log_dir <- file.path(getwd(), "logs")
-  if(dir.exists(log_dir)) {
+  if (dir.exists(log_dir)) {
     # Remove any pre-existing logs so we get an accurate count below
     unlink(file.path(log_dir, "*.log"))
   }
