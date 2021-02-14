@@ -46,6 +46,12 @@ test_that("Basic hcore functionality works", {
 
 test_that("Write out logs", {
 
+  log_dir <- file.path(getwd(), "logs")
+  if(dir.exists(log_dir)) {
+    # Remove any pre-existing logs so we get an accurate count below
+    unlink(file.path(log_dir, "*.log"))
+  }
+
   ## Turn logging ON for one test and confirm it runs (see GitHub issues #372 and #381)
   hc_log <- newcore(file.path(inputdir, "hector_rcp45.ini"),
                     name = "RCP45",
@@ -53,12 +59,11 @@ test_that("Write out logs", {
   run(hc_log, 2100)
   shutdown(hc_log)
 
-  # look for the existence of the `logs` directory
-  log_dir <- file.path(getwd(), "logs")
+  # Look for the existence of the `logs` directory
   expect_true(dir.exists(log_dir))
 
   # Check to see that individual log files were written out
-  expect_equal(length(list.files(log_dir, pattern = ".log")), 41)
+  expect_equal(length(list.files(log_dir, pattern = ".log")), 40)
 
   # Check that errors on shutdown cores get caught
   expect_error(getdate(hc_log), "Invalid or inactive")
