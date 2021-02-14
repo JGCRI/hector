@@ -25,7 +25,6 @@
 #include "forcing_component.hpp"
 #include "slr_component.hpp"
 #include "ocean_component.hpp"
-#include "onelineocean_component.hpp"
 #include "o3_component.hpp"
 #include "temperature_component.hpp"
 #include "core.hpp"
@@ -113,8 +112,6 @@ void Core::init() {
     temp = new slrComponent();
     modelComponents[ temp->getComponentName() ] = temp;
     temp = new OceanComponent();
-    modelComponents[ temp->getComponentName() ] = temp;
-    temp = new OneLineOceanComponent();
     modelComponents[ temp->getComponentName() ] = temp;
     temp = new TemperatureComponent();
     modelComponents[ temp->getComponentName() ] = temp;
