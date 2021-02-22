@@ -204,11 +204,8 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     log_pools( t );
 
     // Store solver pools into our internal variables
-
-    // earth - atmosphere fluxes
     
-    // get the earth emissions (ffi) and uptake (ccs)
-    // note these come back as UNTRACKED fluxpools
+    // get the UNTRACKED earth emissions (ffi) and uptake (ccs)
     // We immediately adjust them for the year fraction (as the solver
     // may call stashCValues multiple times within a given year)
     fluxpool ffi_untracked = ffi(t, in_spinup) * yf;  // function also used by calcDerivs()
@@ -216,34 +213,21 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     
     // now construct the TRACKED versions
     // because earth_c is tracked, ffi and ccs automatically become tracked as well
-    // the double subtraction is a bit weird, but the end result should be a tracked
-    // fluxpool with the value of the untracked version and tracking information of
-    // the source pool
-    fluxpool ffi = earth_c.flux_from_fluxpool(ffi_untracked);
-    fluxpool ccs = atmos_c.flux_from_fluxpool(ccs_untracked);
-    // ...and update the main pools
-//    cout << "\n" << t << "-------------\nAbout to add ffi/ccs \n" <<
-//        "atmos_c:" << atmos_c << "earth_c: " << earth_c << endl;
-//    cout << "ffi is " << ffi << endl;
-//    cout << "ccs is " << ccs << endl;
-    
-    earth_c = (earth_c - ffi) + ccs;
-//    cout << "About to adjust earth_c " << earth_c << endl;
-//    cout << "Solver value is " << c[SNBOX_EARTH] << endl;
-    
-    earth_c.adjust_pool_to_val(c[SNBOX_EARTH], false); // adjusts pool to output from calcderivs
-//    cout << "Done earth_c" << earth_c << endl;
+    fluxpool ffi_flux = earth_c.flux_from_fluxpool(ffi_untracked);
+    fluxpool ccs_flux = atmos_c.flux_from_fluxpool(ccs_untracked);
 
+    fluxpool luc_e_untracked = luc_emission(t, in_spinup) * yf;
+    fluxpool luc_u_untracked = luc_uptake(t, in_spinup) * yf;
 
-    atmos_c = (atmos_c + ffi) - ccs;
-//    cout << "About to adjust atmos_c " << atmos_c << endl;
-//    cout << "Solver value is " << c[SNBOX_ATMOS] << endl;
-    atmos_c.adjust_pool_to_val(c[SNBOX_ATMOS]); // adjusts pool to output from calcderivs
-//     cout << "Done atmos_c " << atmos_c << endl;
+    // Land-use change uptake from atmosphere to veg, detritus, and soil
+    fluxpool luc_fav_flux = atmos_c.flux_from_fluxpool(luc_u_untracked * f_lucv);
+    fluxpool luc_fad_flux = atmos_c.flux_from_fluxpool(luc_u_untracked * f_lucd);
+    fluxpool luc_fas_flux = atmos_c.flux_from_fluxpool(luc_u_untracked * ( 1 - f_lucv - f_lucd ));
 
     // Record the land C flux
     const fluxpool npp_total = sum_npp();
     const fluxpool rh_total = sum_rh();
+
     // TODO: If/when we implement fire, update this calculation to include it
     // (as a negative term).
     // BBL-TODO this is really "exchange" not a flux
@@ -272,13 +256,68 @@ void SimpleNbox::stashCValues( double t, const double c[] )
 
     for( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
         std::string biome = *it;
-        const double wt     = ( npp( biome ) + rh( biome ) ) / npp_rh_total;
-        veg_c[ biome ]      = veg_c.at( biome ) + veg_delta * wt;
-        detritus_c[ biome ] = detritus_c.at( biome ) + det_delta * wt;
-        soil_c[ biome ]     = soil_c.at( biome ) + soil_delta * wt;
-        H_LOG( logger,Logger::DEBUG ) << "Biome " << biome << " weight = " << wt << std::endl;
-    }
+        fluxpool npp_biome = npp(biome);
+        const double wt = (npp_biome + rh( biome ) ) / npp_rh_total;
 
+        // Update all pools for NPP
+        fluxpool npp_fav_biome_flux = atmos_c.flux_from_fluxpool(npp_biome * f_nppv.at(biome));
+        fluxpool npp_fad_biome_flux = atmos_c.flux_from_fluxpool(npp_biome* f_nppd.at(biome));
+        fluxpool npp_fas_biome_flux = atmos_c.flux_from_fluxpool(npp_biome * ( 1 - f_nppv.at(biome) - f_nppd.at(biome)));
+        veg_c[ biome ] = veg_c[ biome ] + npp_fav_biome_flux;
+        detritus_c[ biome ] = detritus_c[ biome ] + npp_fad_biome_flux;
+        soil_c[ biome ] = soil_c[ biome ] + npp_fas_biome_flux;
+        //atmos_c = atmos_c - npp_fav_biome_flux - npp_fad_biome_flux - npp_fas_biome_flux;
+
+        // Update soil, detritus, and atmosphere with RH fluxes
+        //fluxpool rh_fda_flux = detritus_c[ biome ].flux_from_fluxpool(rh_fda(biome));
+        //fluxpool rh_fsa_flux = soil_c[ biome ].flux_from_fluxpool(rh_fsa(biome));
+        //atmos_c = atmos_c + rh_fda_flux + rh_fsa_flux;
+        //detritus_c[ biome ] = detritus_c[ biome ] - rh_fda_flux;
+        //soil_c[ biome ] = soil_c[ biome ] - rh_fsa_flux;
+
+
+        // Update atmosphere with luc emissons from all land pools and biomes
+        fluxpool luc_fva_biome_flux = veg_c[ biome ].flux_from_fluxpool((luc_e_untracked*f_lucv)*wt);
+        fluxpool luc_fda_biome_flux = detritus_c[biome].flux_from_fluxpool((luc_e_untracked*f_lucd)*wt);
+        fluxpool luc_fsa_biome_flux = soil_c[biome].flux_from_fluxpool((luc_e_untracked*( 1 - f_lucv - f_lucd ))*wt);
+        atmos_c = atmos_c + luc_fva_biome_flux - luc_fav_flux*wt;
+        atmos_c = atmos_c + luc_fda_biome_flux - luc_fad_flux*wt;
+        atmos_c = atmos_c + luc_fsa_biome_flux - luc_fas_flux*wt;
+
+        // Update veg_c, detritus_c, and soil_c with luc uptake from atmos per biome
+        veg_c[ biome ] = veg_c[ biome ] + luc_fav_flux*wt - luc_fva_biome_flux;
+        detritus_c[ biome ] = detritus_c[ biome ] + luc_fad_flux*wt - luc_fda_biome_flux;
+        soil_c[ biome ] = soil_c[ biome ] + luc_fas_flux*wt - luc_fsa_biome_flux; 
+        
+        // Adjust biome pools to final values from calcDerives
+        veg_c[ biome ].adjust_pool_to_val(newveg.value(U_PGC) * wt);
+        detritus_c[ biome ].adjust_pool_to_val(newdet.value(U_PGC) * wt);
+        soil_c[ biome ].adjust_pool_to_val(newsoil.value(U_PGC) * wt);
+        H_LOG( logger,Logger::DEBUG ) << "Biome " << biome << " weight = " << wt << std::endl;
+
+        // cout<<"veg: "<<veg_c[biome]<<endl;
+    }
+    
+
+        // ...and update the main pools
+//    cout << "\n" << t << "-------------\nAbout to add ffi/ccs \n" <<
+//        "atmos_c:" << atmos_c << "earth_c: " << earth_c << endl;
+//    cout << "ffi is " << ffi << endl;
+//    cout << "ccs is " << ccs << endl;
+    
+    earth_c = (earth_c - ffi_flux) + ccs_flux;
+//    cout << "About to adjust earth_c " << earth_c << endl;
+//    cout << "Solver value is " << c[SNBOX_EARTH] << endl;
+
+    earth_c.adjust_pool_to_val(c[SNBOX_EARTH], false); // adjusts pool to output from calcderivs
+//    cout << "Done earth_c" << earth_c << endl;
+
+    atmos_c = (atmos_c + ffi_flux) - ccs_flux;
+//    cout << "About to adjust atmos_c " << atmos_c << endl;
+//    cout << "Solver value is " << c[SNBOX_ATMOS] << endl;
+    atmos_c.adjust_pool_to_val(c[SNBOX_ATMOS]); // adjusts pool to output from calcderivs
+//     cout << "Done atmos_c " << atmos_c << endl;
+    //cout<<"atmos:" <<atmos_c<<endl;
     omodel->stashCValues( t, c );   // tell ocean model to store new C values
 
     log_pools( t );
@@ -411,7 +450,7 @@ fluxpool SimpleNbox::rh( std::string biome ) const
  */
 fluxpool SimpleNbox::sum_rh() const
 {
-    fluxpool total( 0.0, U_PGC_YR );
+    fluxpool total( 0.0, U_PGC_YR);
     for( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
         total = total + rh( *it );
     }
@@ -449,6 +488,36 @@ fluxpool SimpleNbox::ccs(double t, bool in_spinup) const
 }
 
 //------------------------------------------------------------------------------
+/*! \brief      Compute land use change emissions (when input emissions > 0)
+ *  \returns    luc flux from land to atmosphere
+ */
+fluxpool SimpleNbox::luc_emission(double t, bool in_spinup) const
+{
+    if( !in_spinup ) {   // no perturbation allowed if in spinup
+        double totflux = lucEmissions.get( t ).value(U_PGC_YR);
+        if(totflux >= 0.0) {
+            return fluxpool(totflux, U_PGC_YR);
+        }
+    }
+    return fluxpool(0.0, U_PGC_YR);
+}
+
+//------------------------------------------------------------------------------
+/*! \brief      Compute land use change uptake (when input emissions < 0)
+ *  \returns    luc flux from atmosphere to land
+ */
+fluxpool SimpleNbox::luc_uptake(double t, bool in_spinup) const
+{
+    if( !in_spinup ) {   // no perturbation allowed if in spinup
+        double totflux = lucEmissions.get( t ).value(U_PGC_YR);
+        if(totflux < 0.0) {
+            return fluxpool(-totflux, U_PGC_YR);
+        }
+    }
+    return fluxpool(0.0, U_PGC_YR);
+}
+
+//------------------------------------------------------------------------------
 /*! \brief              Compute model fluxes for a time step
  *  \param[in]  t       time
  *  \param[in]  c       carbon pools (no units)
@@ -458,7 +527,6 @@ fluxpool SimpleNbox::ccs(double t, bool in_spinup) const
 int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
 {
     // Solver is attempting to go from ODEstartdate to t
-
     // Atmosphere-ocean flux is calculated by ocean_component
     const int omodel_err = omodel->calcderivs( t, c, dcdt );
     const double ao_exchange = dcdt[ SNBOX_OCEAN ];
@@ -519,16 +587,8 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
     fluxpool ccs_flux_current = ccs(t, in_spinup);
     
     // Annual land use change emissions
-    fluxpool luc_emission_current( 0.0, U_PGC_YR );
-    fluxpool luc_uptake_current( 0.0, U_PGC_YR );
-    if( !in_spinup ) {   // no perturbation allowed if in spinup
-        double totflux = lucEmissions.get( t ).value(U_PGC_YR);
-        if(totflux >= 0.0) {
-            luc_emission_current.set(totflux, U_PGC_YR);
-        } else {
-            luc_uptake_current.set(-totflux, U_PGC_YR);
-        }
-    }
+    fluxpool luc_emission_current = luc_emission(t, in_spinup);
+    fluxpool luc_uptake_current = luc_uptake(t, in_spinup);
 
     // Land-use change emissions come from veg, detritus, and soil
     fluxpool luc_fva = luc_emission_current * f_lucv;
@@ -581,7 +641,7 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
 
 /*    printf( "%6.3f%8.3f%8.2f%8.2f%8.2f%8.2f%8.2f\n", t, dcdt[ SNBOX_ATMOS ],
             dcdt[ SNBOX_VEG ], dcdt[ SNBOX_DET ], dcdt[ SNBOX_SOIL ], dcdt[ SNBOX_OCEAN ], dcdt[ SNBOX_EARTH ] );
-*/
+*/ 
     return omodel_err;
 }
 

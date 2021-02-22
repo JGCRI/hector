@@ -1,0 +1,4436 @@
+year,pool_name,pool_value,pool_units,source_name,source_fraction
+1746,atmos_c,588.074,Pg C,earth_c,5.1014e-06
+1746,atmos_c,588.074,Pg C,atmos_c,0.999995
+
+1746,earth_c,5500,Pg C,atmos_c,0
+1746,earth_c,5500,Pg C,earth_c,1
+
+1747,atmos_c,588.077,Pg C,earth_c,1.02027e-05
+1747,atmos_c,588.077,Pg C,atmos_c,0.99999
+
+1747,earth_c,5499.99,Pg C,atmos_c,0
+1747,earth_c,5499.99,Pg C,earth_c,1
+
+1748,atmos_c,588.08,Pg C,untracked,3.85308e-08
+1748,atmos_c,588.08,Pg C,earth_c,1.5304e-05
+1748,atmos_c,588.08,Pg C,atmos_c,0.999985
+
+1748,earth_c,5499.99,Pg C,atmos_c,0
+1748,earth_c,5499.99,Pg C,earth_c,1
+
+1749,atmos_c,588.083,Pg C,untracked,3.85306e-08
+1749,atmos_c,588.083,Pg C,earth_c,2.04053e-05
+1749,atmos_c,588.083,Pg C,atmos_c,0.99998
+
+1749,earth_c,5499.99,Pg C,untracked,0
+1749,earth_c,5499.99,Pg C,earth_c,1
+1749,earth_c,5499.99,Pg C,atmos_c,0
+
+1750,atmos_c,588.085,Pg C,untracked,3.85304e-08
+1750,atmos_c,588.085,Pg C,earth_c,2.55065e-05
+1750,atmos_c,588.085,Pg C,atmos_c,0.999974
+
+1750,earth_c,5499.99,Pg C,untracked,0
+1750,earth_c,5499.99,Pg C,earth_c,1
+1750,earth_c,5499.99,Pg C,atmos_c,0
+
+1751,atmos_c,588.088,Pg C,untracked,3.85302e-08
+1751,atmos_c,588.088,Pg C,earth_c,3.06076e-05
+1751,atmos_c,588.088,Pg C,atmos_c,0.999969
+
+1751,earth_c,5499.98,Pg C,untracked,0
+1751,earth_c,5499.98,Pg C,earth_c,1
+1751,earth_c,5499.98,Pg C,atmos_c,0
+
+1752,atmos_c,588.091,Pg C,untracked,3.853e-08
+1752,atmos_c,588.091,Pg C,earth_c,3.57087e-05
+1752,atmos_c,588.091,Pg C,atmos_c,0.999964
+
+1752,earth_c,5499.98,Pg C,untracked,0
+1752,earth_c,5499.98,Pg C,earth_c,1
+1752,earth_c,5499.98,Pg C,atmos_c,0
+
+1753,atmos_c,588.093,Pg C,untracked,3.85298e-08
+1753,atmos_c,588.093,Pg C,earth_c,4.08098e-05
+1753,atmos_c,588.093,Pg C,atmos_c,0.999959
+
+1753,earth_c,5499.98,Pg C,untracked,0
+1753,earth_c,5499.98,Pg C,earth_c,1
+1753,earth_c,5499.98,Pg C,atmos_c,0
+
+1754,atmos_c,588.095,Pg C,untracked,3.85296e-08
+1754,atmos_c,588.095,Pg C,earth_c,4.59108e-05
+1754,atmos_c,588.095,Pg C,atmos_c,0.999954
+
+1754,earth_c,5499.97,Pg C,untracked,0
+1754,earth_c,5499.97,Pg C,earth_c,1
+1754,earth_c,5499.97,Pg C,atmos_c,0
+
+1755,atmos_c,588.097,Pg C,untracked,3.85294e-08
+1755,atmos_c,588.097,Pg C,earth_c,5.10117e-05
+1755,atmos_c,588.097,Pg C,atmos_c,0.999949
+
+1755,earth_c,5499.97,Pg C,untracked,0
+1755,earth_c,5499.97,Pg C,earth_c,1
+1755,earth_c,5499.97,Pg C,atmos_c,0
+
+1756,atmos_c,588.099,Pg C,untracked,3.85292e-08
+1756,atmos_c,588.099,Pg C,earth_c,5.61126e-05
+1756,atmos_c,588.099,Pg C,atmos_c,0.999944
+
+1756,earth_c,5499.97,Pg C,untracked,0
+1756,earth_c,5499.97,Pg C,earth_c,1
+1756,earth_c,5499.97,Pg C,atmos_c,0
+
+1757,atmos_c,588.1,Pg C,untracked,3.8529e-08
+1757,atmos_c,588.1,Pg C,earth_c,6.12135e-05
+1757,atmos_c,588.1,Pg C,atmos_c,0.999939
+
+1757,earth_c,5499.96,Pg C,untracked,0
+1757,earth_c,5499.96,Pg C,earth_c,1
+1757,earth_c,5499.96,Pg C,atmos_c,0
+
+1758,atmos_c,588.101,Pg C,untracked,3.85288e-08
+1758,atmos_c,588.101,Pg C,earth_c,6.63144e-05
+1758,atmos_c,588.101,Pg C,atmos_c,0.999934
+
+1758,earth_c,5499.96,Pg C,untracked,0
+1758,earth_c,5499.96,Pg C,earth_c,1
+1758,earth_c,5499.96,Pg C,atmos_c,0
+
+1759,atmos_c,588.102,Pg C,untracked,3.85286e-08
+1759,atmos_c,588.102,Pg C,earth_c,7.14151e-05
+1759,atmos_c,588.102,Pg C,atmos_c,0.999929
+
+1759,earth_c,5499.96,Pg C,untracked,0
+1759,earth_c,5499.96,Pg C,earth_c,1
+1759,earth_c,5499.96,Pg C,atmos_c,0
+
+1760,atmos_c,588.103,Pg C,untracked,3.85285e-08
+1760,atmos_c,588.103,Pg C,earth_c,7.65159e-05
+1760,atmos_c,588.103,Pg C,atmos_c,0.999923
+
+1760,earth_c,5499.96,Pg C,untracked,0
+1760,earth_c,5499.96,Pg C,earth_c,1
+1760,earth_c,5499.96,Pg C,atmos_c,0
+
+1761,atmos_c,588.104,Pg C,untracked,3.85283e-08
+1761,atmos_c,588.104,Pg C,earth_c,8.16166e-05
+1761,atmos_c,588.104,Pg C,atmos_c,0.999918
+
+1761,earth_c,5499.95,Pg C,untracked,0
+1761,earth_c,5499.95,Pg C,earth_c,1
+1761,earth_c,5499.95,Pg C,atmos_c,0
+
+1762,atmos_c,588.104,Pg C,untracked,3.85281e-08
+1762,atmos_c,588.104,Pg C,earth_c,8.67173e-05
+1762,atmos_c,588.104,Pg C,atmos_c,0.999913
+
+1762,earth_c,5499.95,Pg C,untracked,0
+1762,earth_c,5499.95,Pg C,earth_c,1
+1762,earth_c,5499.95,Pg C,atmos_c,0
+
+1763,atmos_c,588.104,Pg C,untracked,3.85279e-08
+1763,atmos_c,588.104,Pg C,earth_c,9.1818e-05
+1763,atmos_c,588.104,Pg C,atmos_c,0.999908
+
+1763,earth_c,5499.95,Pg C,untracked,0
+1763,earth_c,5499.95,Pg C,earth_c,1
+1763,earth_c,5499.95,Pg C,atmos_c,0
+
+1764,atmos_c,588.105,Pg C,untracked,3.85277e-08
+1764,atmos_c,588.105,Pg C,earth_c,9.69187e-05
+1764,atmos_c,588.105,Pg C,atmos_c,0.999903
+
+1764,earth_c,5499.94,Pg C,untracked,0
+1764,earth_c,5499.94,Pg C,earth_c,1
+1764,earth_c,5499.94,Pg C,atmos_c,0
+
+1765,atmos_c,588.105,Pg C,untracked,3.85275e-08
+1765,atmos_c,588.105,Pg C,earth_c,0.000102019
+1765,atmos_c,588.105,Pg C,atmos_c,0.999898
+
+1765,earth_c,5499.94,Pg C,untracked,0
+1765,earth_c,5499.94,Pg C,earth_c,1
+1765,earth_c,5499.94,Pg C,atmos_c,0
+
+1766,atmos_c,588.107,Pg C,untracked,3.85273e-08
+1766,atmos_c,588.107,Pg C,earth_c,0.00010712
+1766,atmos_c,588.107,Pg C,atmos_c,0.999893
+
+1766,earth_c,5499.94,Pg C,untracked,0
+1766,earth_c,5499.94,Pg C,earth_c,1
+1766,earth_c,5499.94,Pg C,atmos_c,0
+
+1767,atmos_c,588.14,Pg C,atmos_c,0.999837
+1767,atmos_c,588.14,Pg C,untracked,5.09058e-05
+1767,atmos_c,588.14,Pg C,earth_c,0.000112215
+
+1767,earth_c,5499.93,Pg C,untracked,0
+1767,earth_c,5499.93,Pg C,earth_c,1
+1767,earth_c,5499.93,Pg C,atmos_c,0
+
+1768,atmos_c,588.213,Pg C,atmos_c,0.999712
+1768,atmos_c,588.213,Pg C,untracked,0.000170701
+1768,atmos_c,588.213,Pg C,earth_c,0.000117301
+
+1768,earth_c,5499.93,Pg C,untracked,0
+1768,earth_c,5499.93,Pg C,earth_c,1
+1768,earth_c,5499.93,Pg C,atmos_c,0
+
+1769,atmos_c,588.295,Pg C,atmos_c,0.999573
+1769,atmos_c,588.295,Pg C,untracked,0.000304397
+1769,atmos_c,588.295,Pg C,earth_c,0.000122384
+
+1769,earth_c,5499.93,Pg C,untracked,0
+1769,earth_c,5499.93,Pg C,earth_c,1
+1769,earth_c,5499.93,Pg C,atmos_c,0
+
+1770,atmos_c,588.364,Pg C,atmos_c,0.999456
+1770,atmos_c,588.364,Pg C,untracked,0.000416112
+1770,atmos_c,588.364,Pg C,earth_c,0.000127469
+
+1770,earth_c,5499.93,Pg C,untracked,0
+1770,earth_c,5499.93,Pg C,earth_c,1
+1770,earth_c,5499.93,Pg C,atmos_c,0
+
+1771,atmos_c,588.428,Pg C,atmos_c,0.999347
+1771,atmos_c,588.428,Pg C,untracked,0.000519163
+1771,atmos_c,588.428,Pg C,earth_c,0.000134252
+
+1771,earth_c,5499.92,Pg C,untracked,0
+1771,earth_c,5499.92,Pg C,earth_c,1
+1771,earth_c,5499.92,Pg C,atmos_c,0
+
+1772,atmos_c,588.507,Pg C,atmos_c,0.999214
+1772,atmos_c,588.507,Pg C,untracked,0.000645219
+1772,atmos_c,588.507,Pg C,earth_c,0.000141031
+
+1772,earth_c,5499.92,Pg C,untracked,0
+1772,earth_c,5499.92,Pg C,earth_c,1
+1772,earth_c,5499.92,Pg C,atmos_c,0
+
+1773,atmos_c,588.6,Pg C,atmos_c,0.999055
+1773,atmos_c,588.6,Pg C,untracked,0.00079686
+1773,atmos_c,588.6,Pg C,earth_c,0.000147805
+
+1773,earth_c,5499.91,Pg C,untracked,0
+1773,earth_c,5499.91,Pg C,earth_c,1
+1773,earth_c,5499.91,Pg C,atmos_c,0
+
+1774,atmos_c,588.703,Pg C,atmos_c,0.998881
+1774,atmos_c,588.703,Pg C,untracked,0.000964092
+1774,atmos_c,588.703,Pg C,earth_c,0.000154574
+
+1774,earth_c,5499.91,Pg C,untracked,0
+1774,earth_c,5499.91,Pg C,earth_c,1
+1774,earth_c,5499.91,Pg C,atmos_c,0
+
+1775,atmos_c,588.81,Pg C,atmos_c,0.998699
+1775,atmos_c,588.81,Pg C,untracked,0.0011399
+1775,atmos_c,588.81,Pg C,earth_c,0.000161339
+
+1775,earth_c,5499.91,Pg C,untracked,0
+1775,earth_c,5499.91,Pg C,earth_c,1
+1775,earth_c,5499.91,Pg C,atmos_c,0
+
+1776,atmos_c,588.921,Pg C,atmos_c,0.998511
+1776,atmos_c,588.921,Pg C,untracked,0.0013211
+1776,atmos_c,588.921,Pg C,earth_c,0.000168101
+
+1776,earth_c,5499.9,Pg C,untracked,0
+1776,earth_c,5499.9,Pg C,earth_c,1
+1776,earth_c,5499.9,Pg C,atmos_c,0
+
+1777,atmos_c,589.034,Pg C,atmos_c,0.998319
+1777,atmos_c,589.034,Pg C,untracked,0.00150646
+1777,atmos_c,589.034,Pg C,earth_c,0.000174859
+
+1777,earth_c,5499.9,Pg C,untracked,0
+1777,earth_c,5499.9,Pg C,earth_c,1
+1777,earth_c,5499.9,Pg C,atmos_c,0
+
+1778,atmos_c,589.15,Pg C,atmos_c,0.998123
+1778,atmos_c,589.15,Pg C,untracked,0.00169489
+1778,atmos_c,589.15,Pg C,earth_c,0.000181614
+
+1778,earth_c,5499.89,Pg C,untracked,0
+1778,earth_c,5499.89,Pg C,earth_c,1
+1778,earth_c,5499.89,Pg C,atmos_c,0
+
+1779,atmos_c,589.266,Pg C,atmos_c,0.997926
+1779,atmos_c,589.266,Pg C,untracked,0.00188579
+1779,atmos_c,589.266,Pg C,earth_c,0.000188366
+
+1779,earth_c,5499.89,Pg C,untracked,0
+1779,earth_c,5499.89,Pg C,earth_c,1
+1779,earth_c,5499.89,Pg C,atmos_c,0
+
+1780,atmos_c,589.385,Pg C,atmos_c,0.997726
+1780,atmos_c,589.385,Pg C,untracked,0.00207935
+1780,atmos_c,589.385,Pg C,earth_c,0.000195115
+
+1780,earth_c,5499.89,Pg C,untracked,0
+1780,earth_c,5499.89,Pg C,earth_c,1
+1780,earth_c,5499.89,Pg C,atmos_c,0
+
+1781,atmos_c,589.505,Pg C,atmos_c,0.997521
+1781,atmos_c,589.505,Pg C,untracked,0.00227508
+1781,atmos_c,589.505,Pg C,earth_c,0.000203557
+
+1781,earth_c,5499.88,Pg C,untracked,0
+1781,earth_c,5499.88,Pg C,earth_c,1
+1781,earth_c,5499.88,Pg C,atmos_c,0
+
+1782,atmos_c,589.628,Pg C,atmos_c,0.997314
+1782,atmos_c,589.628,Pg C,untracked,0.00247449
+1782,atmos_c,589.628,Pg C,earth_c,0.000211995
+
+1782,earth_c,5499.88,Pg C,untracked,0
+1782,earth_c,5499.88,Pg C,earth_c,1
+1782,earth_c,5499.88,Pg C,atmos_c,0
+
+1783,atmos_c,589.747,Pg C,atmos_c,0.997112
+1783,atmos_c,589.747,Pg C,untracked,0.00266802
+1783,atmos_c,589.747,Pg C,earth_c,0.00022043
+
+1783,earth_c,5499.87,Pg C,untracked,0
+1783,earth_c,5499.87,Pg C,earth_c,1
+1783,earth_c,5499.87,Pg C,atmos_c,0
+
+1784,atmos_c,589.846,Pg C,atmos_c,0.996945
+1784,atmos_c,589.846,Pg C,untracked,0.00282581
+1784,atmos_c,589.846,Pg C,earth_c,0.00022887
+
+1784,earth_c,5499.87,Pg C,untracked,0
+1784,earth_c,5499.87,Pg C,earth_c,1
+1784,earth_c,5499.87,Pg C,atmos_c,0
+
+1785,atmos_c,589.92,Pg C,atmos_c,0.996819
+1785,atmos_c,589.92,Pg C,untracked,0.00294325
+1785,atmos_c,589.92,Pg C,earth_c,0.000237317
+
+1785,earth_c,5499.86,Pg C,untracked,0
+1785,earth_c,5499.86,Pg C,earth_c,1
+1785,earth_c,5499.86,Pg C,atmos_c,0
+
+1786,atmos_c,590.001,Pg C,atmos_c,0.996683
+1786,atmos_c,590.001,Pg C,untracked,0.00307087
+1786,atmos_c,590.001,Pg C,earth_c,0.000245759
+
+1786,earth_c,5499.86,Pg C,untracked,0
+1786,earth_c,5499.86,Pg C,earth_c,1
+1786,earth_c,5499.86,Pg C,atmos_c,0
+
+1787,atmos_c,590.107,Pg C,atmos_c,0.996505
+1787,atmos_c,590.107,Pg C,untracked,0.00324107
+1787,atmos_c,590.107,Pg C,earth_c,0.000254188
+
+1787,earth_c,5499.85,Pg C,untracked,0
+1787,earth_c,5499.85,Pg C,earth_c,1
+1787,earth_c,5499.85,Pg C,atmos_c,0
+
+1788,atmos_c,590.23,Pg C,atmos_c,0.996296
+1788,atmos_c,590.23,Pg C,untracked,0.00344176
+1788,atmos_c,590.23,Pg C,earth_c,0.000262606
+
+1788,earth_c,5499.85,Pg C,untracked,0
+1788,earth_c,5499.85,Pg C,earth_c,1
+1788,earth_c,5499.85,Pg C,atmos_c,0
+
+1789,atmos_c,590.361,Pg C,atmos_c,0.996076
+1789,atmos_c,590.361,Pg C,untracked,0.00365343
+1789,atmos_c,590.361,Pg C,earth_c,0.000271017
+
+1789,earth_c,5499.84,Pg C,untracked,0
+1789,earth_c,5499.84,Pg C,earth_c,1
+1789,earth_c,5499.84,Pg C,atmos_c,0
+
+1790,atmos_c,590.47,Pg C,atmos_c,0.995892
+1790,atmos_c,590.47,Pg C,untracked,0.00382887
+1790,atmos_c,590.47,Pg C,earth_c,0.000279435
+
+1790,earth_c,5499.84,Pg C,untracked,0
+1790,earth_c,5499.84,Pg C,earth_c,1
+1790,earth_c,5499.84,Pg C,atmos_c,0
+
+1791,atmos_c,590.538,Pg C,atmos_c,0.995777
+1791,atmos_c,590.538,Pg C,untracked,0.00393331
+1791,atmos_c,590.538,Pg C,earth_c,0.000289563
+
+1791,earth_c,5499.83,Pg C,untracked,0
+1791,earth_c,5499.83,Pg C,earth_c,1
+1791,earth_c,5499.83,Pg C,atmos_c,0
+
+1792,atmos_c,590.6,Pg C,atmos_c,0.995673
+1792,atmos_c,590.6,Pg C,untracked,0.00402739
+1792,atmos_c,590.6,Pg C,earth_c,0.000299692
+
+1792,earth_c,5499.82,Pg C,untracked,0
+1792,earth_c,5499.82,Pg C,earth_c,1
+1792,earth_c,5499.82,Pg C,atmos_c,0
+
+1793,atmos_c,590.692,Pg C,atmos_c,0.995517
+1793,atmos_c,590.692,Pg C,untracked,0.00417343
+1793,atmos_c,590.692,Pg C,earth_c,0.000309803
+
+1793,earth_c,5499.82,Pg C,untracked,0
+1793,earth_c,5499.82,Pg C,earth_c,1
+1793,earth_c,5499.82,Pg C,atmos_c,0
+
+1794,atmos_c,590.813,Pg C,atmos_c,0.995314
+1794,atmos_c,590.813,Pg C,untracked,0.00436651
+1794,atmos_c,590.813,Pg C,earth_c,0.000319895
+
+1794,earth_c,5499.81,Pg C,untracked,0
+1794,earth_c,5499.81,Pg C,earth_c,1
+1794,earth_c,5499.81,Pg C,atmos_c,0
+
+1795,atmos_c,590.944,Pg C,atmos_c,0.995092
+1795,atmos_c,590.944,Pg C,untracked,0.00457766
+1795,atmos_c,590.944,Pg C,earth_c,0.000329977
+
+1795,earth_c,5499.81,Pg C,untracked,0
+1795,earth_c,5499.81,Pg C,earth_c,1
+1795,earth_c,5499.81,Pg C,atmos_c,0
+
+1796,atmos_c,591.073,Pg C,atmos_c,0.994875
+1796,atmos_c,591.073,Pg C,untracked,0.004785
+1796,atmos_c,591.073,Pg C,earth_c,0.000340056
+
+1796,earth_c,5499.8,Pg C,untracked,0
+1796,earth_c,5499.8,Pg C,earth_c,1
+1796,earth_c,5499.8,Pg C,atmos_c,0
+
+1797,atmos_c,591.201,Pg C,atmos_c,0.99466
+1797,atmos_c,591.201,Pg C,untracked,0.0049878
+1797,atmos_c,591.201,Pg C,earth_c,0.000351823
+
+1797,earth_c,5499.79,Pg C,untracked,0
+1797,earth_c,5499.79,Pg C,earth_c,1
+1797,earth_c,5499.79,Pg C,atmos_c,0
+
+1798,atmos_c,591.333,Pg C,atmos_c,0.994438
+1798,atmos_c,591.333,Pg C,untracked,0.00519844
+1798,atmos_c,591.333,Pg C,earth_c,0.000363582
+
+1798,earth_c,5499.79,Pg C,untracked,0
+1798,earth_c,5499.79,Pg C,earth_c,1
+1798,earth_c,5499.79,Pg C,atmos_c,0
+
+1799,atmos_c,591.471,Pg C,atmos_c,0.994207
+1799,atmos_c,591.471,Pg C,untracked,0.00541791
+1799,atmos_c,591.471,Pg C,earth_c,0.000375332
+
+1799,earth_c,5499.78,Pg C,untracked,0
+1799,earth_c,5499.78,Pg C,earth_c,1
+1799,earth_c,5499.78,Pg C,atmos_c,0
+
+1800,atmos_c,591.611,Pg C,atmos_c,0.993971
+1800,atmos_c,591.611,Pg C,untracked,0.0056405
+1800,atmos_c,591.611,Pg C,earth_c,0.000388765
+
+1800,earth_c,5499.77,Pg C,untracked,0
+1800,earth_c,5499.77,Pg C,earth_c,1
+1800,earth_c,5499.77,Pg C,atmos_c,0
+
+1801,atmos_c,591.753,Pg C,atmos_c,0.993733
+1801,atmos_c,591.753,Pg C,untracked,0.00586499
+1801,atmos_c,591.753,Pg C,earth_c,0.000402192
+
+1801,earth_c,5499.76,Pg C,untracked,0
+1801,earth_c,5499.76,Pg C,earth_c,1
+1801,earth_c,5499.76,Pg C,atmos_c,0
+
+1802,atmos_c,591.896,Pg C,atmos_c,0.993493
+1802,atmos_c,591.896,Pg C,untracked,0.00608846
+1802,atmos_c,591.896,Pg C,earth_c,0.000418989
+
+1802,earth_c,5499.76,Pg C,untracked,0
+1802,earth_c,5499.76,Pg C,earth_c,1
+1802,earth_c,5499.76,Pg C,atmos_c,0
+
+1803,atmos_c,592.04,Pg C,atmos_c,0.993251
+1803,atmos_c,592.04,Pg C,untracked,0.00631464
+1803,atmos_c,592.04,Pg C,earth_c,0.000434089
+
+1803,earth_c,5499.75,Pg C,untracked,0
+1803,earth_c,5499.75,Pg C,earth_c,1
+1803,earth_c,5499.75,Pg C,atmos_c,0
+
+1804,atmos_c,592.183,Pg C,atmos_c,0.993011
+1804,atmos_c,592.183,Pg C,untracked,0.00653957
+1804,atmos_c,592.183,Pg C,earth_c,0.000449182
+
+1804,earth_c,5499.74,Pg C,untracked,0
+1804,earth_c,5499.74,Pg C,earth_c,1
+1804,earth_c,5499.74,Pg C,atmos_c,0
+
+1805,atmos_c,592.325,Pg C,atmos_c,0.992772
+1805,atmos_c,592.325,Pg C,untracked,0.00676401
+1805,atmos_c,592.325,Pg C,earth_c,0.000464268
+
+1805,earth_c,5499.73,Pg C,untracked,0
+1805,earth_c,5499.73,Pg C,earth_c,1
+1805,earth_c,5499.73,Pg C,atmos_c,0
+
+1806,atmos_c,592.469,Pg C,atmos_c,0.992531
+1806,atmos_c,592.469,Pg C,untracked,0.00698747
+1806,atmos_c,592.469,Pg C,earth_c,0.000481034
+
+1806,earth_c,5499.72,Pg C,untracked,0
+1806,earth_c,5499.72,Pg C,earth_c,1
+1806,earth_c,5499.72,Pg C,atmos_c,0
+
+1807,atmos_c,592.613,Pg C,atmos_c,0.99229
+1807,atmos_c,592.613,Pg C,untracked,0.0072119
+1807,atmos_c,592.613,Pg C,earth_c,0.000497792
+
+1807,earth_c,5499.71,Pg C,untracked,0
+1807,earth_c,5499.71,Pg C,earth_c,1
+1807,earth_c,5499.71,Pg C,atmos_c,0
+
+1808,atmos_c,592.757,Pg C,atmos_c,0.992049
+1808,atmos_c,592.757,Pg C,untracked,0.00743635
+1808,atmos_c,592.757,Pg C,earth_c,0.000514541
+
+1808,earth_c,5499.7,Pg C,untracked,0
+1808,earth_c,5499.7,Pg C,earth_c,1
+1808,earth_c,5499.7,Pg C,atmos_c,0
+
+1809,atmos_c,592.792,Pg C,atmos_c,0.99199
+1809,atmos_c,592.792,Pg C,untracked,0.00747865
+1809,atmos_c,592.792,Pg C,earth_c,0.00053138
+
+1809,earth_c,5499.69,Pg C,untracked,0
+1809,earth_c,5499.69,Pg C,earth_c,1
+1809,earth_c,5499.69,Pg C,atmos_c,0
+
+1810,atmos_c,592.531,Pg C,untracked,0.00747853
+1810,atmos_c,592.531,Pg C,earth_c,0.00054824
+1810,atmos_c,592.531,Pg C,atmos_c,0.991973
+
+1810,earth_c,5499.68,Pg C,untracked,0
+1810,earth_c,5499.68,Pg C,earth_c,1
+1810,earth_c,5499.68,Pg C,atmos_c,0
+
+1811,atmos_c,592.097,Pg C,untracked,0.00747839
+1811,atmos_c,592.097,Pg C,earth_c,0.000566271
+1811,atmos_c,592.097,Pg C,atmos_c,0.991955
+
+1811,earth_c,5499.67,Pg C,untracked,0
+1811,earth_c,5499.67,Pg C,earth_c,1
+1811,earth_c,5499.67,Pg C,atmos_c,0
+
+1812,atmos_c,591.761,Pg C,untracked,0.00747825
+1812,atmos_c,591.761,Pg C,earth_c,0.000584843
+1812,atmos_c,591.761,Pg C,atmos_c,0.991937
+
+1812,earth_c,5499.66,Pg C,untracked,0
+1812,earth_c,5499.66,Pg C,earth_c,1
+1812,earth_c,5499.66,Pg C,atmos_c,0
+
+1813,atmos_c,591.619,Pg C,untracked,0.00747811
+1813,atmos_c,591.619,Pg C,earth_c,0.000603422
+1813,atmos_c,591.619,Pg C,atmos_c,0.991918
+
+1813,earth_c,5499.65,Pg C,untracked,0
+1813,earth_c,5499.65,Pg C,earth_c,1
+1813,earth_c,5499.65,Pg C,atmos_c,0
+
+1814,atmos_c,591.61,Pg C,untracked,0.00747798
+1814,atmos_c,591.61,Pg C,earth_c,0.000622004
+1814,atmos_c,591.61,Pg C,atmos_c,0.9919
+
+1814,earth_c,5499.63,Pg C,untracked,0
+1814,earth_c,5499.63,Pg C,earth_c,1
+1814,earth_c,5499.63,Pg C,atmos_c,0
+
+1815,atmos_c,591.544,Pg C,untracked,0.00747783
+1815,atmos_c,591.544,Pg C,earth_c,0.000641647
+1815,atmos_c,591.544,Pg C,atmos_c,0.991881
+
+1815,earth_c,5499.62,Pg C,untracked,0
+1815,earth_c,5499.62,Pg C,earth_c,1
+1815,earth_c,5499.62,Pg C,atmos_c,0
+
+1816,atmos_c,591.14,Pg C,untracked,0.00747767
+1816,atmos_c,591.14,Pg C,earth_c,0.000662986
+1816,atmos_c,591.14,Pg C,atmos_c,0.991859
+
+1816,earth_c,5499.61,Pg C,untracked,0
+1816,earth_c,5499.61,Pg C,earth_c,1
+1816,earth_c,5499.61,Pg C,atmos_c,0
+
+1817,atmos_c,590.48,Pg C,untracked,0.0074775
+1817,atmos_c,590.48,Pg C,earth_c,0.000686035
+1817,atmos_c,590.48,Pg C,atmos_c,0.991836
+
+1817,earth_c,5499.6,Pg C,untracked,0
+1817,earth_c,5499.6,Pg C,earth_c,1
+1817,earth_c,5499.6,Pg C,atmos_c,0
+
+1818,atmos_c,589.969,Pg C,untracked,0.00747732
+1818,atmos_c,589.969,Pg C,earth_c,0.000709736
+1818,atmos_c,589.969,Pg C,atmos_c,0.991813
+
+1818,earth_c,5499.58,Pg C,untracked,0
+1818,earth_c,5499.58,Pg C,earth_c,1
+1818,earth_c,5499.58,Pg C,atmos_c,0
+
+1819,atmos_c,589.793,Pg C,untracked,0.00747714
+1819,atmos_c,589.793,Pg C,earth_c,0.000733451
+1819,atmos_c,589.793,Pg C,atmos_c,0.991789
+
+1819,earth_c,5499.57,Pg C,untracked,0
+1819,earth_c,5499.57,Pg C,earth_c,1
+1819,earth_c,5499.57,Pg C,atmos_c,0
+
+1820,atmos_c,589.865,Pg C,atmos_c,0.991669
+1820,atmos_c,589.865,Pg C,untracked,0.00757402
+1820,atmos_c,589.865,Pg C,earth_c,0.000757096
+
+1820,earth_c,5499.56,Pg C,untracked,0
+1820,earth_c,5499.56,Pg C,earth_c,1
+1820,earth_c,5499.56,Pg C,atmos_c,0
+
+1821,atmos_c,590.059,Pg C,atmos_c,0.991343
+1821,atmos_c,590.059,Pg C,untracked,0.00787652
+1821,atmos_c,590.059,Pg C,earth_c,0.000780574
+
+1821,earth_c,5499.54,Pg C,untracked,0
+1821,earth_c,5499.54,Pg C,earth_c,1
+1821,earth_c,5499.54,Pg C,atmos_c,0
+
+1822,atmos_c,590.293,Pg C,atmos_c,0.990949
+1822,atmos_c,590.293,Pg C,untracked,0.00824582
+1822,atmos_c,590.293,Pg C,earth_c,0.000805044
+
+1822,earth_c,5499.53,Pg C,untracked,0
+1822,earth_c,5499.53,Pg C,earth_c,1
+1822,earth_c,5499.53,Pg C,atmos_c,0
+
+1823,atmos_c,590.534,Pg C,atmos_c,0.990544
+1823,atmos_c,590.534,Pg C,untracked,0.00862457
+1823,atmos_c,590.534,Pg C,earth_c,0.00083118
+
+1823,earth_c,5499.51,Pg C,untracked,0
+1823,earth_c,5499.51,Pg C,earth_c,1
+1823,earth_c,5499.51,Pg C,atmos_c,0
+
+1824,atmos_c,590.771,Pg C,atmos_c,0.990147
+1824,atmos_c,590.771,Pg C,untracked,0.00899485
+1824,atmos_c,590.771,Pg C,earth_c,0.00085793
+
+1824,earth_c,5499.5,Pg C,untracked,0
+1824,earth_c,5499.5,Pg C,earth_c,1
+1824,earth_c,5499.5,Pg C,atmos_c,0
+
+1825,atmos_c,591.001,Pg C,atmos_c,0.989762
+1825,atmos_c,591.001,Pg C,untracked,0.00935263
+1825,atmos_c,591.001,Pg C,earth_c,0.000885731
+
+1825,earth_c,5499.48,Pg C,untracked,0
+1825,earth_c,5499.48,Pg C,earth_c,1
+1825,earth_c,5499.48,Pg C,atmos_c,0
+
+1826,atmos_c,591.225,Pg C,atmos_c,0.989387
+1826,atmos_c,591.225,Pg C,untracked,0.00969932
+1826,atmos_c,591.225,Pg C,earth_c,0.000914149
+
+1826,earth_c,5499.46,Pg C,untracked,0
+1826,earth_c,5499.46,Pg C,earth_c,1
+1826,earth_c,5499.46,Pg C,atmos_c,0
+
+1827,atmos_c,591.445,Pg C,atmos_c,0.98902
+1827,atmos_c,591.445,Pg C,untracked,0.0100366
+1827,atmos_c,591.445,Pg C,earth_c,0.000943615
+
+1827,earth_c,5499.44,Pg C,untracked,0
+1827,earth_c,5499.44,Pg C,earth_c,1
+1827,earth_c,5499.44,Pg C,atmos_c,0
+
+1828,atmos_c,591.66,Pg C,atmos_c,0.98866
+1828,atmos_c,591.66,Pg C,untracked,0.0103666
+1828,atmos_c,591.66,Pg C,earth_c,0.000973694
+
+1828,earth_c,5499.43,Pg C,untracked,0
+1828,earth_c,5499.43,Pg C,earth_c,1
+1828,earth_c,5499.43,Pg C,atmos_c,0
+
+1829,atmos_c,591.871,Pg C,atmos_c,0.988307
+1829,atmos_c,591.871,Pg C,untracked,0.0106893
+1829,atmos_c,591.871,Pg C,earth_c,0.00100376
+
+1829,earth_c,5499.41,Pg C,untracked,0
+1829,earth_c,5499.41,Pg C,earth_c,1
+1829,earth_c,5499.41,Pg C,atmos_c,0
+
+1830,atmos_c,592.075,Pg C,atmos_c,0.987967
+1830,atmos_c,592.075,Pg C,untracked,0.0109928
+1830,atmos_c,592.075,Pg C,earth_c,0.00104018
+
+1830,earth_c,5499.39,Pg C,untracked,0
+1830,earth_c,5499.39,Pg C,earth_c,1
+1830,earth_c,5499.39,Pg C,atmos_c,0
+
+1831,atmos_c,592.231,Pg C,atmos_c,0.987707
+1831,atmos_c,592.231,Pg C,untracked,0.0112135
+1831,atmos_c,592.231,Pg C,earth_c,0.00107937
+
+1831,earth_c,5499.36,Pg C,untracked,0
+1831,earth_c,5499.36,Pg C,earth_c,1
+1831,earth_c,5499.36,Pg C,atmos_c,0
+
+1832,atmos_c,592.284,Pg C,atmos_c,0.987618
+1832,atmos_c,592.284,Pg C,untracked,0.0112641
+1832,atmos_c,592.284,Pg C,earth_c,0.0011181
+
+1832,earth_c,5499.34,Pg C,untracked,0
+1832,earth_c,5499.34,Pg C,earth_c,1
+1832,earth_c,5499.34,Pg C,atmos_c,0
+
+1833,atmos_c,592.276,Pg C,untracked,0.0112637
+1833,atmos_c,592.276,Pg C,earth_c,0.00115795
+1833,atmos_c,592.276,Pg C,atmos_c,0.987578
+
+1833,earth_c,5499.32,Pg C,untracked,0
+1833,earth_c,5499.32,Pg C,earth_c,1
+1833,earth_c,5499.32,Pg C,atmos_c,0
+
+1834,atmos_c,592.31,Pg C,atmos_c,0.987522
+1834,atmos_c,592.31,Pg C,untracked,0.0112798
+1834,atmos_c,592.31,Pg C,earth_c,0.00119841
+
+1834,earth_c,5499.29,Pg C,untracked,0
+1834,earth_c,5499.29,Pg C,earth_c,1
+1834,earth_c,5499.29,Pg C,atmos_c,0
+
+1835,atmos_c,592.338,Pg C,atmos_c,0.987473
+1835,atmos_c,592.338,Pg C,untracked,0.0112872
+1835,atmos_c,592.338,Pg C,earth_c,0.00123992
+
+1835,earth_c,5499.27,Pg C,untracked,0
+1835,earth_c,5499.27,Pg C,earth_c,1
+1835,earth_c,5499.27,Pg C,atmos_c,0
+
+1836,atmos_c,592.232,Pg C,untracked,0.0112867
+1836,atmos_c,592.232,Pg C,earth_c,0.00128631
+1836,atmos_c,592.232,Pg C,atmos_c,0.987427
+
+1836,earth_c,5499.24,Pg C,untracked,0
+1836,earth_c,5499.24,Pg C,earth_c,1
+1836,earth_c,5499.24,Pg C,atmos_c,0
+
+1837,atmos_c,592.072,Pg C,untracked,0.0112861
+1837,atmos_c,592.072,Pg C,earth_c,0.00133522
+1837,atmos_c,592.072,Pg C,atmos_c,0.987379
+
+1837,earth_c,5499.21,Pg C,untracked,0
+1837,earth_c,5499.21,Pg C,earth_c,1
+1837,earth_c,5499.21,Pg C,atmos_c,0
+
+1838,atmos_c,592.025,Pg C,untracked,0.0112856
+1838,atmos_c,592.025,Pg C,earth_c,0.0013852
+1838,atmos_c,592.025,Pg C,atmos_c,0.987329
+
+1838,earth_c,5499.18,Pg C,untracked,0
+1838,earth_c,5499.18,Pg C,earth_c,1
+1838,earth_c,5499.18,Pg C,atmos_c,0
+
+1839,atmos_c,592.122,Pg C,atmos_c,0.987169
+1839,atmos_c,592.122,Pg C,untracked,0.0113944
+1839,atmos_c,592.122,Pg C,earth_c,0.0014367
+
+1839,earth_c,5499.15,Pg C,untracked,0
+1839,earth_c,5499.15,Pg C,earth_c,1
+1839,earth_c,5499.15,Pg C,atmos_c,0
+
+1840,atmos_c,592.307,Pg C,atmos_c,0.986859
+1840,atmos_c,592.307,Pg C,untracked,0.0116499
+1840,atmos_c,592.307,Pg C,earth_c,0.0014907
+
+1840,earth_c,5499.12,Pg C,untracked,0
+1840,earth_c,5499.12,Pg C,earth_c,1
+1840,earth_c,5499.12,Pg C,atmos_c,0
+
+1841,atmos_c,592.525,Pg C,atmos_c,0.986497
+1841,atmos_c,592.525,Pg C,untracked,0.0119561
+1841,atmos_c,592.525,Pg C,earth_c,0.00154691
+
+1841,earth_c,5499.09,Pg C,untracked,0
+1841,earth_c,5499.09,Pg C,earth_c,1
+1841,earth_c,5499.09,Pg C,atmos_c,0
+
+1842,atmos_c,592.749,Pg C,atmos_c,0.986125
+1842,atmos_c,592.749,Pg C,untracked,0.0122694
+1842,atmos_c,592.749,Pg C,earth_c,0.00160581
+
+1842,earth_c,5499.05,Pg C,untracked,0
+1842,earth_c,5499.05,Pg C,earth_c,1
+1842,earth_c,5499.05,Pg C,atmos_c,0
+
+1843,atmos_c,592.973,Pg C,atmos_c,0.985751
+1843,atmos_c,592.973,Pg C,untracked,0.0125819
+1843,atmos_c,592.973,Pg C,earth_c,0.00166697
+
+1843,earth_c,5499.02,Pg C,untracked,0
+1843,earth_c,5499.02,Pg C,earth_c,1
+1843,earth_c,5499.02,Pg C,atmos_c,0
+
+1844,atmos_c,593.191,Pg C,atmos_c,0.985389
+1844,atmos_c,593.191,Pg C,untracked,0.0128801
+1844,atmos_c,593.191,Pg C,earth_c,0.00173085
+
+1844,earth_c,5498.98,Pg C,untracked,0
+1844,earth_c,5498.98,Pg C,earth_c,1
+1844,earth_c,5498.98,Pg C,atmos_c,0
+
+1845,atmos_c,593.402,Pg C,atmos_c,0.985038
+1845,atmos_c,593.402,Pg C,untracked,0.0131616
+1845,atmos_c,593.402,Pg C,earth_c,0.00180019
+
+1845,earth_c,5498.94,Pg C,untracked,0
+1845,earth_c,5498.94,Pg C,earth_c,1
+1845,earth_c,5498.94,Pg C,atmos_c,0
+
+1846,atmos_c,593.615,Pg C,atmos_c,0.984685
+1846,atmos_c,593.615,Pg C,untracked,0.0134434
+1846,atmos_c,593.615,Pg C,earth_c,0.00187198
+
+1846,earth_c,5498.89,Pg C,untracked,0
+1846,earth_c,5498.89,Pg C,earth_c,1
+1846,earth_c,5498.89,Pg C,atmos_c,0
+
+1847,atmos_c,593.835,Pg C,atmos_c,0.984321
+1847,atmos_c,593.835,Pg C,untracked,0.0137323
+1847,atmos_c,593.835,Pg C,earth_c,0.00194687
+
+1847,earth_c,5498.85,Pg C,untracked,0
+1847,earth_c,5498.85,Pg C,earth_c,1
+1847,earth_c,5498.85,Pg C,atmos_c,0
+
+1848,atmos_c,594.059,Pg C,atmos_c,0.983949
+1848,atmos_c,594.059,Pg C,untracked,0.0140262
+1848,atmos_c,594.059,Pg C,earth_c,0.00202462
+
+1848,earth_c,5498.8,Pg C,untracked,0
+1848,earth_c,5498.8,Pg C,earth_c,1
+1848,earth_c,5498.8,Pg C,atmos_c,0
+
+1849,atmos_c,594.285,Pg C,atmos_c,0.983575
+1849,atmos_c,594.285,Pg C,untracked,0.0143192
+1849,atmos_c,594.285,Pg C,earth_c,0.00210611
+
+1849,earth_c,5498.75,Pg C,untracked,0
+1849,earth_c,5498.75,Pg C,earth_c,1
+1849,earth_c,5498.75,Pg C,atmos_c,0
+
+1850,atmos_c,594.509,Pg C,atmos_c,0.983204
+1850,atmos_c,594.509,Pg C,untracked,0.014602
+1850,atmos_c,594.509,Pg C,earth_c,0.00219364
+
+1850,earth_c,5498.7,Pg C,untracked,0
+1850,earth_c,5498.7,Pg C,earth_c,1
+1850,earth_c,5498.7,Pg C,atmos_c,0
+
+1851,atmos_c,594.719,Pg C,atmos_c,0.982857
+1851,atmos_c,594.719,Pg C,untracked,0.0148591
+1851,atmos_c,594.719,Pg C,earth_c,0.00228367
+
+1851,earth_c,5498.65,Pg C,untracked,0
+1851,earth_c,5498.65,Pg C,earth_c,1
+1851,earth_c,5498.65,Pg C,atmos_c,0
+
+1852,atmos_c,594.942,Pg C,atmos_c,0.982489
+1852,atmos_c,594.942,Pg C,untracked,0.0151341
+1852,atmos_c,594.942,Pg C,earth_c,0.00237675
+
+1852,earth_c,5498.59,Pg C,untracked,0
+1852,earth_c,5498.59,Pg C,earth_c,1
+1852,earth_c,5498.59,Pg C,atmos_c,0
+
+1853,atmos_c,595.184,Pg C,atmos_c,0.98209
+1853,atmos_c,595.184,Pg C,untracked,0.0154367
+1853,atmos_c,595.184,Pg C,earth_c,0.00247366
+
+1853,earth_c,5498.54,Pg C,untracked,0
+1853,earth_c,5498.54,Pg C,earth_c,1
+1853,earth_c,5498.54,Pg C,atmos_c,0
+
+1854,atmos_c,595.424,Pg C,atmos_c,0.981694
+1854,atmos_c,595.424,Pg C,untracked,0.0157239
+1854,atmos_c,595.424,Pg C,earth_c,0.0025823
+
+1854,earth_c,5498.47,Pg C,untracked,0
+1854,earth_c,5498.47,Pg C,earth_c,1
+1854,earth_c,5498.47,Pg C,atmos_c,0
+
+1855,atmos_c,595.662,Pg C,atmos_c,0.981302
+1855,atmos_c,595.662,Pg C,untracked,0.0159987
+1855,atmos_c,595.662,Pg C,earth_c,0.00269921
+
+1855,earth_c,5498.4,Pg C,untracked,0
+1855,earth_c,5498.4,Pg C,earth_c,1
+1855,earth_c,5498.4,Pg C,atmos_c,0
+
+1856,atmos_c,595.868,Pg C,atmos_c,0.980962
+1856,atmos_c,595.868,Pg C,untracked,0.0162145
+1856,atmos_c,595.868,Pg C,earth_c,0.00282372
+
+1856,earth_c,5498.33,Pg C,untracked,0
+1856,earth_c,5498.33,Pg C,earth_c,1
+1856,earth_c,5498.33,Pg C,atmos_c,0
+
+1857,atmos_c,595.961,Pg C,atmos_c,0.980808
+1857,atmos_c,595.961,Pg C,untracked,0.0162395
+1857,atmos_c,595.961,Pg C,earth_c,0.00295206
+
+1857,earth_c,5498.25,Pg C,untracked,0
+1857,earth_c,5498.25,Pg C,earth_c,1
+1857,earth_c,5498.25,Pg C,atmos_c,0
+
+1858,atmos_c,595.951,Pg C,untracked,0.0162374
+1858,atmos_c,595.951,Pg C,earth_c,0.00308213
+1858,atmos_c,595.951,Pg C,atmos_c,0.98068
+
+1858,earth_c,5498.17,Pg C,untracked,0
+1858,earth_c,5498.17,Pg C,earth_c,1
+1858,earth_c,5498.17,Pg C,atmos_c,0
+
+1859,atmos_c,595.976,Pg C,untracked,0.0162352
+1859,atmos_c,595.976,Pg C,earth_c,0.00321887
+1859,atmos_c,595.976,Pg C,atmos_c,0.980546
+
+1859,earth_c,5498.09,Pg C,untracked,0
+1859,earth_c,5498.09,Pg C,earth_c,1
+1859,earth_c,5498.09,Pg C,atmos_c,0
+
+1860,atmos_c,596.1,Pg C,atmos_c,0.980341
+1860,atmos_c,596.1,Pg C,untracked,0.0162914
+1860,atmos_c,596.1,Pg C,earth_c,0.0033675
+
+1860,earth_c,5498.01,Pg C,untracked,0
+1860,earth_c,5498.01,Pg C,earth_c,1
+1860,earth_c,5498.01,Pg C,atmos_c,0
+
+1861,atmos_c,596.296,Pg C,atmos_c,0.980019
+1861,atmos_c,596.296,Pg C,untracked,0.0164572
+1861,atmos_c,596.296,Pg C,earth_c,0.00352403
+
+1861,earth_c,5497.91,Pg C,untracked,0
+1861,earth_c,5497.91,Pg C,earth_c,1
+1861,earth_c,5497.91,Pg C,atmos_c,0
+
+1862,atmos_c,596.485,Pg C,atmos_c,0.979709
+1862,atmos_c,596.485,Pg C,untracked,0.0166061
+1862,atmos_c,596.485,Pg C,earth_c,0.0036847
+
+1862,earth_c,5497.82,Pg C,untracked,0
+1862,earth_c,5497.82,Pg C,earth_c,1
+1862,earth_c,5497.82,Pg C,atmos_c,0
+
+1863,atmos_c,596.631,Pg C,atmos_c,0.979469
+1863,atmos_c,596.631,Pg C,untracked,0.0166758
+1863,atmos_c,596.631,Pg C,earth_c,0.00385517
+
+1863,earth_c,5497.72,Pg C,untracked,0
+1863,earth_c,5497.72,Pg C,earth_c,1
+1863,earth_c,5497.72,Pg C,atmos_c,0
+
+1864,atmos_c,596.774,Pg C,atmos_c,0.979234
+1864,atmos_c,596.774,Pg C,untracked,0.0167276
+1864,atmos_c,596.774,Pg C,earth_c,0.00403857
+
+1864,earth_c,5497.61,Pg C,untracked,0
+1864,earth_c,5497.61,Pg C,earth_c,1
+1864,earth_c,5497.61,Pg C,atmos_c,0
+
+1865,atmos_c,596.935,Pg C,atmos_c,0.978969
+1865,atmos_c,596.935,Pg C,untracked,0.0167969
+1865,atmos_c,596.935,Pg C,earth_c,0.0042339
+
+1865,earth_c,5497.49,Pg C,untracked,0
+1865,earth_c,5497.49,Pg C,earth_c,1
+1865,earth_c,5497.49,Pg C,atmos_c,0
+
+1866,atmos_c,597.112,Pg C,atmos_c,0.978679
+1866,atmos_c,597.112,Pg C,untracked,0.0168853
+1866,atmos_c,597.112,Pg C,earth_c,0.00443571
+
+1866,earth_c,5497.37,Pg C,untracked,0
+1866,earth_c,5497.37,Pg C,earth_c,1
+1866,earth_c,5497.37,Pg C,atmos_c,0
+
+1867,atmos_c,597.298,Pg C,atmos_c,0.978375
+1867,atmos_c,597.298,Pg C,untracked,0.0169757
+1867,atmos_c,597.298,Pg C,earth_c,0.00464891
+
+1867,earth_c,5497.25,Pg C,untracked,0
+1867,earth_c,5497.25,Pg C,earth_c,1
+1867,earth_c,5497.25,Pg C,atmos_c,0
+
+1868,atmos_c,597.486,Pg C,atmos_c,0.978067
+1868,atmos_c,597.486,Pg C,untracked,0.0170613
+1868,atmos_c,597.486,Pg C,earth_c,0.00487171
+
+1868,earth_c,5497.11,Pg C,untracked,0
+1868,earth_c,5497.11,Pg C,earth_c,1
+1868,earth_c,5497.11,Pg C,atmos_c,0
+
+1869,atmos_c,597.673,Pg C,atmos_c,0.977761
+1869,atmos_c,597.673,Pg C,untracked,0.0171341
+1869,atmos_c,597.673,Pg C,earth_c,0.0051053
+
+1869,earth_c,5496.97,Pg C,untracked,0
+1869,earth_c,5496.97,Pg C,earth_c,1
+1869,earth_c,5496.97,Pg C,atmos_c,0
+
+1870,atmos_c,597.856,Pg C,atmos_c,0.977462
+1870,atmos_c,597.856,Pg C,untracked,0.0171904
+1870,atmos_c,597.856,Pg C,earth_c,0.00534803
+
+1870,earth_c,5496.83,Pg C,untracked,0
+1870,earth_c,5496.83,Pg C,earth_c,1
+1870,earth_c,5496.83,Pg C,atmos_c,0
+
+1871,atmos_c,598.045,Pg C,atmos_c,0.977153
+1871,atmos_c,598.045,Pg C,untracked,0.0172428
+1871,atmos_c,598.045,Pg C,earth_c,0.00560399
+
+1871,earth_c,5496.68,Pg C,untracked,0
+1871,earth_c,5496.68,Pg C,earth_c,1
+1871,earth_c,5496.68,Pg C,atmos_c,0
+
+1872,atmos_c,598.285,Pg C,atmos_c,0.976762
+1872,atmos_c,598.285,Pg C,untracked,0.017354
+1872,atmos_c,598.285,Pg C,earth_c,0.0058844
+
+1872,earth_c,5496.51,Pg C,untracked,0
+1872,earth_c,5496.51,Pg C,earth_c,1
+1872,earth_c,5496.51,Pg C,atmos_c,0
+
+1873,atmos_c,598.564,Pg C,atmos_c,0.976305
+1873,atmos_c,598.564,Pg C,untracked,0.01751
+1873,atmos_c,598.564,Pg C,earth_c,0.00618511
+
+1873,earth_c,5496.33,Pg C,untracked,0
+1873,earth_c,5496.33,Pg C,earth_c,1
+1873,earth_c,5496.33,Pg C,atmos_c,0
+
+1874,atmos_c,598.833,Pg C,atmos_c,0.975867
+1874,atmos_c,598.833,Pg C,untracked,0.017655
+1874,atmos_c,598.833,Pg C,earth_c,0.00647778
+
+1874,earth_c,5496.16,Pg C,untracked,0
+1874,earth_c,5496.16,Pg C,earth_c,1
+1874,earth_c,5496.16,Pg C,atmos_c,0
+
+1875,atmos_c,599.097,Pg C,atmos_c,0.975437
+1875,atmos_c,599.097,Pg C,untracked,0.0177796
+1875,atmos_c,599.097,Pg C,earth_c,0.00678364
+
+1875,earth_c,5495.97,Pg C,untracked,0
+1875,earth_c,5495.97,Pg C,earth_c,1
+1875,earth_c,5495.97,Pg C,atmos_c,0
+
+1876,atmos_c,599.365,Pg C,atmos_c,0.975001
+1876,atmos_c,599.365,Pg C,untracked,0.0178991
+1876,atmos_c,599.365,Pg C,earth_c,0.00710009
+
+1876,earth_c,5495.78,Pg C,untracked,0
+1876,earth_c,5495.78,Pg C,earth_c,1
+1876,earth_c,5495.78,Pg C,atmos_c,0
+
+1877,atmos_c,599.62,Pg C,atmos_c,0.974586
+1877,atmos_c,599.62,Pg C,untracked,0.0179929
+1877,atmos_c,599.62,Pg C,earth_c,0.00742146
+
+1877,earth_c,5495.59,Pg C,untracked,0
+1877,earth_c,5495.59,Pg C,earth_c,1
+1877,earth_c,5495.59,Pg C,atmos_c,0
+
+1878,atmos_c,599.868,Pg C,atmos_c,0.974183
+1878,atmos_c,599.868,Pg C,untracked,0.0180722
+1878,atmos_c,599.868,Pg C,earth_c,0.00774513
+
+1878,earth_c,5495.4,Pg C,untracked,0
+1878,earth_c,5495.4,Pg C,earth_c,1
+1878,earth_c,5495.4,Pg C,atmos_c,0
+
+1879,atmos_c,600.127,Pg C,atmos_c,0.973763
+1879,atmos_c,600.127,Pg C,untracked,0.0181453
+1879,atmos_c,600.127,Pg C,earth_c,0.00809172
+
+1879,earth_c,5495.19,Pg C,untracked,0
+1879,earth_c,5495.19,Pg C,earth_c,1
+1879,earth_c,5495.19,Pg C,atmos_c,0
+
+1880,atmos_c,600.409,Pg C,atmos_c,0.973306
+1880,atmos_c,600.409,Pg C,untracked,0.0182134
+1880,atmos_c,600.409,Pg C,earth_c,0.00848099
+
+1880,earth_c,5494.97,Pg C,untracked,0
+1880,earth_c,5494.97,Pg C,earth_c,1
+1880,earth_c,5494.97,Pg C,atmos_c,0
+
+1881,atmos_c,600.717,Pg C,atmos_c,0.972807
+1881,atmos_c,600.717,Pg C,untracked,0.0183121
+1881,atmos_c,600.717,Pg C,earth_c,0.00888116
+
+1881,earth_c,5494.73,Pg C,untracked,0
+1881,earth_c,5494.73,Pg C,earth_c,1
+1881,earth_c,5494.73,Pg C,atmos_c,0
+
+1882,atmos_c,601.015,Pg C,atmos_c,0.972324
+1882,atmos_c,601.015,Pg C,untracked,0.0183733
+1882,atmos_c,601.015,Pg C,earth_c,0.0093027
+
+1882,earth_c,5494.48,Pg C,untracked,0
+1882,earth_c,5494.48,Pg C,earth_c,1
+1882,earth_c,5494.48,Pg C,atmos_c,0
+
+1883,atmos_c,601.272,Pg C,untracked,0.018365
+1883,atmos_c,601.272,Pg C,earth_c,0.00975085
+1883,atmos_c,601.272,Pg C,atmos_c,0.971884
+
+1883,earth_c,5494.22,Pg C,untracked,0
+1883,earth_c,5494.22,Pg C,earth_c,1
+1883,earth_c,5494.22,Pg C,atmos_c,0
+
+1884,atmos_c,601.319,Pg C,untracked,0.0183566
+1884,atmos_c,601.319,Pg C,earth_c,0.0102035
+1884,atmos_c,601.319,Pg C,atmos_c,0.97144
+
+1884,earth_c,5493.94,Pg C,untracked,0
+1884,earth_c,5493.94,Pg C,earth_c,1
+1884,earth_c,5493.94,Pg C,atmos_c,0
+
+1885,atmos_c,601.134,Pg C,untracked,0.0183482
+1885,atmos_c,601.134,Pg C,earth_c,0.0106584
+1885,atmos_c,601.134,Pg C,atmos_c,0.970993
+
+1885,earth_c,5493.67,Pg C,untracked,0
+1885,earth_c,5493.67,Pg C,earth_c,1
+1885,earth_c,5493.67,Pg C,atmos_c,0
+
+1886,atmos_c,600.98,Pg C,untracked,0.0183396
+1886,atmos_c,600.98,Pg C,earth_c,0.0111183
+1886,atmos_c,600.98,Pg C,atmos_c,0.970542
+
+1886,earth_c,5493.39,Pg C,untracked,0
+1886,earth_c,5493.39,Pg C,earth_c,1
+1886,earth_c,5493.39,Pg C,atmos_c,0
+
+1887,atmos_c,600.96,Pg C,untracked,0.0183308
+1887,atmos_c,600.96,Pg C,earth_c,0.011595
+1887,atmos_c,600.96,Pg C,atmos_c,0.970074
+
+1887,earth_c,5493.1,Pg C,untracked,0
+1887,earth_c,5493.1,Pg C,earth_c,1
+1887,earth_c,5493.1,Pg C,atmos_c,0
+
+1888,atmos_c,601.046,Pg C,untracked,0.0183212
+1888,atmos_c,601.046,Pg C,earth_c,0.0121131
+1888,atmos_c,601.046,Pg C,atmos_c,0.969566
+
+1888,earth_c,5492.79,Pg C,untracked,0
+1888,earth_c,5492.79,Pg C,earth_c,1
+1888,earth_c,5492.79,Pg C,atmos_c,0
+
+1889,atmos_c,601.198,Pg C,untracked,0.0183112
+1889,atmos_c,601.198,Pg C,earth_c,0.0126503
+1889,atmos_c,601.198,Pg C,atmos_c,0.969038
+
+1889,earth_c,5492.46,Pg C,untracked,0
+1889,earth_c,5492.46,Pg C,earth_c,1
+1889,earth_c,5492.46,Pg C,atmos_c,0
+
+1890,atmos_c,601.363,Pg C,untracked,0.0183007
+1890,atmos_c,601.363,Pg C,earth_c,0.013217
+1890,atmos_c,601.363,Pg C,atmos_c,0.968482
+
+1890,earth_c,5492.12,Pg C,untracked,0
+1890,earth_c,5492.12,Pg C,earth_c,1
+1890,earth_c,5492.12,Pg C,atmos_c,0
+
+1891,atmos_c,601.529,Pg C,untracked,0.0182896
+1891,atmos_c,601.529,Pg C,earth_c,0.0138173
+1891,atmos_c,601.529,Pg C,atmos_c,0.967893
+
+1891,earth_c,5491.76,Pg C,untracked,0
+1891,earth_c,5491.76,Pg C,earth_c,1
+1891,earth_c,5491.76,Pg C,atmos_c,0
+
+1892,atmos_c,601.708,Pg C,untracked,0.0182782
+1892,atmos_c,601.708,Pg C,earth_c,0.0144289
+1892,atmos_c,601.708,Pg C,atmos_c,0.967293
+
+1892,earth_c,5491.38,Pg C,untracked,0
+1892,earth_c,5491.38,Pg C,earth_c,1
+1892,earth_c,5491.38,Pg C,atmos_c,0
+
+1893,atmos_c,601.924,Pg C,untracked,0.018267
+1893,atmos_c,601.924,Pg C,earth_c,0.0150371
+1893,atmos_c,601.924,Pg C,atmos_c,0.966696
+
+1893,earth_c,5491.01,Pg C,untracked,0
+1893,earth_c,5491.01,Pg C,earth_c,1
+1893,earth_c,5491.01,Pg C,atmos_c,0
+
+1894,atmos_c,602.193,Pg C,untracked,0.0182555
+1894,atmos_c,602.193,Pg C,earth_c,0.0156556
+1894,atmos_c,602.193,Pg C,atmos_c,0.966089
+
+1894,earth_c,5490.63,Pg C,untracked,0
+1894,earth_c,5490.63,Pg C,earth_c,1
+1894,earth_c,5490.63,Pg C,atmos_c,0
+
+1895,atmos_c,602.523,Pg C,untracked,0.0182435
+1895,atmos_c,602.523,Pg C,earth_c,0.0163048
+1895,atmos_c,602.523,Pg C,atmos_c,0.965452
+
+1895,earth_c,5490.24,Pg C,untracked,0
+1895,earth_c,5490.24,Pg C,earth_c,1
+1895,earth_c,5490.24,Pg C,atmos_c,0
+
+1896,atmos_c,602.874,Pg C,untracked,0.0182309
+1896,atmos_c,602.874,Pg C,earth_c,0.0169806
+1896,atmos_c,602.874,Pg C,atmos_c,0.964789
+
+1896,earth_c,5489.83,Pg C,untracked,0
+1896,earth_c,5489.83,Pg C,earth_c,1
+1896,earth_c,5489.83,Pg C,atmos_c,0
+
+1897,atmos_c,603.205,Pg C,untracked,0.0182179
+1897,atmos_c,603.205,Pg C,earth_c,0.0176848
+1897,atmos_c,603.205,Pg C,atmos_c,0.964097
+
+1897,earth_c,5489.4,Pg C,untracked,0
+1897,earth_c,5489.4,Pg C,earth_c,1
+1897,earth_c,5489.4,Pg C,atmos_c,0
+
+1898,atmos_c,603.516,Pg C,untracked,0.0182041
+1898,atmos_c,603.516,Pg C,earth_c,0.0184264
+1898,atmos_c,603.516,Pg C,atmos_c,0.963369
+
+1898,earth_c,5488.95,Pg C,untracked,0
+1898,earth_c,5488.95,Pg C,earth_c,1
+1898,earth_c,5488.95,Pg C,atmos_c,0
+
+1899,atmos_c,603.856,Pg C,untracked,0.0181893
+1899,atmos_c,603.856,Pg C,earth_c,0.019225
+1899,atmos_c,603.856,Pg C,atmos_c,0.962586
+
+1899,earth_c,5488.46,Pg C,untracked,0
+1899,earth_c,5488.46,Pg C,earth_c,1
+1899,earth_c,5488.46,Pg C,atmos_c,0
+
+1900,atmos_c,604.246,Pg C,untracked,0.0181735
+1900,atmos_c,604.246,Pg C,earth_c,0.0200753
+1900,atmos_c,604.246,Pg C,atmos_c,0.961751
+
+1900,earth_c,5487.94,Pg C,untracked,0
+1900,earth_c,5487.94,Pg C,earth_c,1
+1900,earth_c,5487.94,Pg C,atmos_c,0
+
+1901,atmos_c,604.692,Pg C,untracked,0.0181571
+1901,atmos_c,604.692,Pg C,earth_c,0.0209589
+1901,atmos_c,604.692,Pg C,atmos_c,0.960884
+
+1901,earth_c,5487.4,Pg C,untracked,0
+1901,earth_c,5487.4,Pg C,earth_c,1
+1901,earth_c,5487.4,Pg C,atmos_c,0
+
+1902,atmos_c,605.167,Pg C,untracked,0.0181403
+1902,atmos_c,605.167,Pg C,earth_c,0.0218661
+1902,atmos_c,605.167,Pg C,atmos_c,0.959994
+
+1902,earth_c,5486.84,Pg C,untracked,0
+1902,earth_c,5486.84,Pg C,earth_c,1
+1902,earth_c,5486.84,Pg C,atmos_c,0
+
+1903,atmos_c,605.573,Pg C,untracked,0.0181224
+1903,atmos_c,605.573,Pg C,earth_c,0.0228318
+1903,atmos_c,605.573,Pg C,atmos_c,0.959046
+
+1903,earth_c,5486.25,Pg C,untracked,0
+1903,earth_c,5486.25,Pg C,earth_c,1
+1903,earth_c,5486.25,Pg C,atmos_c,0
+
+1904,atmos_c,605.883,Pg C,untracked,0.0181038
+1904,atmos_c,605.883,Pg C,earth_c,0.0238337
+1904,atmos_c,605.883,Pg C,atmos_c,0.958062
+
+1904,earth_c,5485.63,Pg C,untracked,0
+1904,earth_c,5485.63,Pg C,earth_c,1
+1904,earth_c,5485.63,Pg C,atmos_c,0
+
+1905,atmos_c,606.214,Pg C,untracked,0.0180843
+1905,atmos_c,606.214,Pg C,earth_c,0.0248852
+1905,atmos_c,606.214,Pg C,atmos_c,0.95703
+
+1905,earth_c,5484.98,Pg C,untracked,0
+1905,earth_c,5484.98,Pg C,earth_c,1
+1905,earth_c,5484.98,Pg C,atmos_c,0
+
+1906,atmos_c,606.694,Pg C,untracked,0.0180636
+1906,atmos_c,606.694,Pg C,earth_c,0.0260036
+1906,atmos_c,606.694,Pg C,atmos_c,0.955933
+
+1906,earth_c,5484.3,Pg C,untracked,0
+1906,earth_c,5484.3,Pg C,earth_c,1
+1906,earth_c,5484.3,Pg C,atmos_c,0
+
+1907,atmos_c,607.292,Pg C,untracked,0.0180408
+1907,atmos_c,607.292,Pg C,earth_c,0.0272298
+1907,atmos_c,607.292,Pg C,atmos_c,0.954729
+
+1907,earth_c,5483.55,Pg C,untracked,0
+1907,earth_c,5483.55,Pg C,earth_c,1
+1907,earth_c,5483.55,Pg C,atmos_c,0
+
+1908,atmos_c,607.907,Pg C,untracked,0.0180183
+1908,atmos_c,607.907,Pg C,earth_c,0.0284434
+1908,atmos_c,607.907,Pg C,atmos_c,0.953538
+
+1908,earth_c,5482.78,Pg C,untracked,0
+1908,earth_c,5482.78,Pg C,earth_c,1
+1908,earth_c,5482.78,Pg C,atmos_c,0
+
+1909,atmos_c,608.511,Pg C,untracked,0.0179954
+1909,atmos_c,608.511,Pg C,earth_c,0.0296825
+1909,atmos_c,608.511,Pg C,atmos_c,0.952322
+
+1909,earth_c,5482.02,Pg C,untracked,0
+1909,earth_c,5482.02,Pg C,earth_c,1
+1909,earth_c,5482.02,Pg C,atmos_c,0
+
+1910,atmos_c,609.147,Pg C,untracked,0.0179714
+1910,atmos_c,609.147,Pg C,earth_c,0.0309732
+1910,atmos_c,609.147,Pg C,atmos_c,0.951055
+
+1910,earth_c,5481.21,Pg C,untracked,0
+1910,earth_c,5481.21,Pg C,earth_c,1
+1910,earth_c,5481.21,Pg C,atmos_c,0
+
+1911,atmos_c,609.778,Pg C,untracked,0.0179469
+1911,atmos_c,609.778,Pg C,earth_c,0.0322947
+1911,atmos_c,609.778,Pg C,atmos_c,0.949758
+
+1911,earth_c,5480.39,Pg C,untracked,0
+1911,earth_c,5480.39,Pg C,earth_c,1
+1911,earth_c,5480.39,Pg C,atmos_c,0
+
+1912,atmos_c,610.389,Pg C,untracked,0.0179214
+1912,atmos_c,610.389,Pg C,earth_c,0.0336708
+1912,atmos_c,610.389,Pg C,atmos_c,0.948408
+
+1912,earth_c,5479.53,Pg C,untracked,0
+1912,earth_c,5479.53,Pg C,earth_c,1
+1912,earth_c,5479.53,Pg C,atmos_c,0
+
+1913,atmos_c,610.955,Pg C,untracked,0.0178942
+1913,atmos_c,610.955,Pg C,earth_c,0.0351363
+1913,atmos_c,610.955,Pg C,atmos_c,0.946969
+
+1913,earth_c,5478.62,Pg C,untracked,0
+1913,earth_c,5478.62,Pg C,earth_c,1
+1913,earth_c,5478.62,Pg C,atmos_c,0
+
+1914,atmos_c,611.428,Pg C,untracked,0.0178687
+1914,atmos_c,611.428,Pg C,earth_c,0.0365137
+1914,atmos_c,611.428,Pg C,atmos_c,0.945618
+
+1914,earth_c,5477.72,Pg C,untracked,0
+1914,earth_c,5477.72,Pg C,earth_c,1
+1914,earth_c,5477.72,Pg C,atmos_c,0
+
+1915,atmos_c,611.863,Pg C,untracked,0.0178441
+1915,atmos_c,611.863,Pg C,earth_c,0.0378373
+1915,atmos_c,611.863,Pg C,atmos_c,0.944319
+
+1915,earth_c,5476.88,Pg C,untracked,0
+1915,earth_c,5476.88,Pg C,earth_c,1
+1915,earth_c,5476.88,Pg C,atmos_c,0
+
+1916,atmos_c,612.353,Pg C,untracked,0.0178183
+1916,atmos_c,612.353,Pg C,earth_c,0.0392276
+1916,atmos_c,612.353,Pg C,atmos_c,0.942954
+
+1916,earth_c,5476.01,Pg C,untracked,0
+1916,earth_c,5476.01,Pg C,earth_c,1
+1916,earth_c,5476.01,Pg C,atmos_c,0
+
+1917,atmos_c,612.912,Pg C,untracked,0.017791
+1917,atmos_c,612.912,Pg C,earth_c,0.0407027
+1917,atmos_c,612.912,Pg C,atmos_c,0.941506
+
+1917,earth_c,5475.08,Pg C,untracked,0
+1917,earth_c,5475.08,Pg C,earth_c,1
+1917,earth_c,5475.08,Pg C,atmos_c,0
+
+1918,atmos_c,613.485,Pg C,untracked,0.0177637
+1918,atmos_c,613.485,Pg C,earth_c,0.0421731
+1918,atmos_c,613.485,Pg C,atmos_c,0.940063
+
+1918,earth_c,5474.14,Pg C,untracked,0
+1918,earth_c,5474.14,Pg C,earth_c,1
+1918,earth_c,5474.14,Pg C,atmos_c,0
+
+1919,atmos_c,613.979,Pg C,untracked,0.0177395
+1919,atmos_c,613.979,Pg C,earth_c,0.0434806
+1919,atmos_c,613.979,Pg C,atmos_c,0.93878
+
+1919,earth_c,5473.26,Pg C,untracked,0
+1919,earth_c,5473.26,Pg C,earth_c,1
+1919,earth_c,5473.26,Pg C,atmos_c,0
+
+1920,atmos_c,614.468,Pg C,untracked,0.0177135
+1920,atmos_c,614.468,Pg C,earth_c,0.0448817
+1920,atmos_c,614.468,Pg C,atmos_c,0.937405
+
+1920,earth_c,5472.4,Pg C,untracked,0
+1920,earth_c,5472.4,Pg C,earth_c,1
+1920,earth_c,5472.4,Pg C,atmos_c,0
+
+1921,atmos_c,614.943,Pg C,untracked,0.0176894
+1921,atmos_c,614.943,Pg C,earth_c,0.0461784
+1921,atmos_c,614.943,Pg C,atmos_c,0.936132
+
+1921,earth_c,5471.53,Pg C,untracked,0
+1921,earth_c,5471.53,Pg C,earth_c,1
+1921,earth_c,5471.53,Pg C,atmos_c,0
+
+1922,atmos_c,615.366,Pg C,untracked,0.0176654
+1922,atmos_c,615.366,Pg C,earth_c,0.0474712
+1922,atmos_c,615.366,Pg C,atmos_c,0.934863
+
+1922,earth_c,5470.7,Pg C,untracked,0
+1922,earth_c,5470.7,Pg C,earth_c,1
+1922,earth_c,5470.7,Pg C,atmos_c,0
+
+1923,atmos_c,615.875,Pg C,untracked,0.0176385
+1923,atmos_c,615.875,Pg C,earth_c,0.0489224
+1923,atmos_c,615.875,Pg C,atmos_c,0.933439
+
+1923,earth_c,5469.8,Pg C,untracked,0
+1923,earth_c,5469.8,Pg C,earth_c,1
+1923,earth_c,5469.8,Pg C,atmos_c,0
+
+1924,atmos_c,616.439,Pg C,untracked,0.0176109
+1924,atmos_c,616.439,Pg C,earth_c,0.0504101
+1924,atmos_c,616.439,Pg C,atmos_c,0.931979
+
+1924,earth_c,5468.83,Pg C,untracked,0
+1924,earth_c,5468.83,Pg C,earth_c,1
+1924,earth_c,5468.83,Pg C,atmos_c,0
+
+1925,atmos_c,616.995,Pg C,untracked,0.0175831
+1925,atmos_c,616.995,Pg C,earth_c,0.0519097
+1925,atmos_c,616.995,Pg C,atmos_c,0.930507
+
+1925,earth_c,5467.86,Pg C,untracked,0
+1925,earth_c,5467.86,Pg C,earth_c,1
+1925,earth_c,5467.86,Pg C,atmos_c,0
+
+1926,atmos_c,617.545,Pg C,untracked,0.0175552
+1926,atmos_c,617.545,Pg C,earth_c,0.0534178
+1926,atmos_c,617.545,Pg C,atmos_c,0.929027
+
+1926,earth_c,5466.88,Pg C,untracked,0
+1926,earth_c,5466.88,Pg C,earth_c,1
+1926,earth_c,5466.88,Pg C,atmos_c,0
+
+1927,atmos_c,618.143,Pg C,untracked,0.017525
+1927,atmos_c,618.143,Pg C,earth_c,0.0550428
+1927,atmos_c,618.143,Pg C,atmos_c,0.927432
+
+1927,earth_c,5465.86,Pg C,untracked,0
+1927,earth_c,5465.86,Pg C,earth_c,1
+1927,earth_c,5465.86,Pg C,atmos_c,0
+
+1928,atmos_c,618.782,Pg C,untracked,0.0174949
+1928,atmos_c,618.782,Pg C,earth_c,0.0566681
+1928,atmos_c,618.782,Pg C,atmos_c,0.925837
+
+1928,earth_c,5464.8,Pg C,untracked,0
+1928,earth_c,5464.8,Pg C,earth_c,1
+1928,earth_c,5464.8,Pg C,atmos_c,0
+
+1929,atmos_c,619.444,Pg C,untracked,0.0174626
+1929,atmos_c,619.444,Pg C,earth_c,0.0584104
+1929,atmos_c,619.444,Pg C,atmos_c,0.924127
+
+1929,earth_c,5463.69,Pg C,untracked,0
+1929,earth_c,5463.69,Pg C,earth_c,1
+1929,earth_c,5463.69,Pg C,atmos_c,0
+
+1930,atmos_c,620.11,Pg C,untracked,0.0174329
+1930,atmos_c,620.11,Pg C,earth_c,0.0600083
+1930,atmos_c,620.11,Pg C,atmos_c,0.922559
+
+1930,earth_c,5462.59,Pg C,untracked,0
+1930,earth_c,5462.59,Pg C,earth_c,1
+1930,earth_c,5462.59,Pg C,atmos_c,0
+
+1931,atmos_c,620.691,Pg C,untracked,0.0174066
+1931,atmos_c,620.691,Pg C,earth_c,0.0614311
+1931,atmos_c,620.691,Pg C,atmos_c,0.921162
+
+1931,earth_c,5461.6,Pg C,untracked,0
+1931,earth_c,5461.6,Pg C,earth_c,1
+1931,earth_c,5461.6,Pg C,atmos_c,0
+
+1932,atmos_c,621.125,Pg C,untracked,0.0173828
+1932,atmos_c,621.125,Pg C,earth_c,0.0627101
+1932,atmos_c,621.125,Pg C,atmos_c,0.919907
+
+1932,earth_c,5460.7,Pg C,untracked,0
+1932,earth_c,5460.7,Pg C,earth_c,1
+1932,earth_c,5460.7,Pg C,atmos_c,0
+
+1933,atmos_c,621.485,Pg C,untracked,0.0173579
+1933,atmos_c,621.485,Pg C,earth_c,0.0640557
+1933,atmos_c,621.485,Pg C,atmos_c,0.918586
+
+1933,earth_c,5459.83,Pg C,untracked,0
+1933,earth_c,5459.83,Pg C,earth_c,1
+1933,earth_c,5459.83,Pg C,atmos_c,0
+
+1934,atmos_c,621.897,Pg C,untracked,0.0173307
+1934,atmos_c,621.897,Pg C,earth_c,0.0655188
+1934,atmos_c,621.897,Pg C,atmos_c,0.91715
+
+1934,earth_c,5458.9,Pg C,untracked,0
+1934,earth_c,5458.9,Pg C,earth_c,1
+1934,earth_c,5458.9,Pg C,atmos_c,0
+
+1935,atmos_c,622.365,Pg C,untracked,0.0173022
+1935,atmos_c,622.365,Pg C,earth_c,0.0670594
+1935,atmos_c,622.365,Pg C,atmos_c,0.915638
+
+1935,earth_c,5457.9,Pg C,untracked,0
+1935,earth_c,5457.9,Pg C,earth_c,1
+1935,earth_c,5457.9,Pg C,atmos_c,0
+
+1936,atmos_c,622.901,Pg C,untracked,0.0172708
+1936,atmos_c,622.901,Pg C,earth_c,0.0687502
+1936,atmos_c,622.901,Pg C,atmos_c,0.913979
+
+1936,earth_c,5456.82,Pg C,untracked,0
+1936,earth_c,5456.82,Pg C,earth_c,1
+1936,earth_c,5456.82,Pg C,atmos_c,0
+
+1937,atmos_c,623.505,Pg C,untracked,0.0172374
+1937,atmos_c,623.505,Pg C,earth_c,0.0705542
+1937,atmos_c,623.505,Pg C,atmos_c,0.912208
+
+1937,earth_c,5455.65,Pg C,untracked,0
+1937,earth_c,5455.65,Pg C,earth_c,1
+1937,earth_c,5455.65,Pg C,atmos_c,0
+
+1938,atmos_c,624.087,Pg C,untracked,0.0172058
+1938,atmos_c,624.087,Pg C,earth_c,0.0722535
+1938,atmos_c,624.087,Pg C,atmos_c,0.910541
+
+1938,earth_c,5454.48,Pg C,untracked,0
+1938,earth_c,5454.48,Pg C,earth_c,1
+1938,earth_c,5454.48,Pg C,atmos_c,0
+
+1939,atmos_c,624.644,Pg C,untracked,0.017173
+1939,atmos_c,624.644,Pg C,earth_c,0.0740221
+1939,atmos_c,624.644,Pg C,atmos_c,0.908805
+
+1939,earth_c,5453.31,Pg C,untracked,0
+1939,earth_c,5453.31,Pg C,earth_c,1
+1939,earth_c,5453.31,Pg C,atmos_c,0
+
+1940,atmos_c,625.255,Pg C,untracked,0.0171374
+1940,atmos_c,625.255,Pg C,earth_c,0.0759437
+1940,atmos_c,625.255,Pg C,atmos_c,0.906919
+
+1940,earth_c,5452.06,Pg C,untracked,0
+1940,earth_c,5452.06,Pg C,earth_c,1
+1940,earth_c,5452.06,Pg C,atmos_c,0
+
+1941,atmos_c,625.908,Pg C,untracked,0.0171009
+1941,atmos_c,625.908,Pg C,earth_c,0.077911
+1941,atmos_c,625.908,Pg C,atmos_c,0.904988
+
+1941,earth_c,5450.75,Pg C,untracked,0
+1941,earth_c,5450.75,Pg C,earth_c,1
+1941,earth_c,5450.75,Pg C,atmos_c,0
+
+1942,atmos_c,626.568,Pg C,untracked,0.0170643
+1942,atmos_c,626.568,Pg C,earth_c,0.0798838
+1942,atmos_c,626.568,Pg C,atmos_c,0.903052
+
+1942,earth_c,5449.41,Pg C,untracked,0
+1942,earth_c,5449.41,Pg C,earth_c,1
+1942,earth_c,5449.41,Pg C,atmos_c,0
+
+1943,atmos_c,627.244,Pg C,untracked,0.0170265
+1943,atmos_c,627.244,Pg C,earth_c,0.081922
+1943,atmos_c,627.244,Pg C,atmos_c,0.901051
+
+1943,earth_c,5448.04,Pg C,untracked,0
+1943,earth_c,5448.04,Pg C,earth_c,1
+1943,earth_c,5448.04,Pg C,atmos_c,0
+
+1944,atmos_c,627.921,Pg C,untracked,0.0169891
+1944,atmos_c,627.921,Pg C,earth_c,0.0839418
+1944,atmos_c,627.921,Pg C,atmos_c,0.899069
+
+1944,earth_c,5446.65,Pg C,untracked,0
+1944,earth_c,5446.65,Pg C,earth_c,1
+1944,earth_c,5446.65,Pg C,atmos_c,0
+
+1945,atmos_c,628.476,Pg C,untracked,0.0169577
+1945,atmos_c,628.476,Pg C,earth_c,0.085631
+1945,atmos_c,628.476,Pg C,atmos_c,0.897411
+
+1945,earth_c,5445.38,Pg C,untracked,0
+1945,earth_c,5445.38,Pg C,earth_c,1
+1945,earth_c,5445.38,Pg C,atmos_c,0
+
+1946,atmos_c,629,Pg C,untracked,0.0169244
+1946,atmos_c,629,Pg C,earth_c,0.0874286
+1946,atmos_c,629,Pg C,atmos_c,0.895647
+
+1946,earth_c,5444.18,Pg C,untracked,0
+1946,earth_c,5444.18,Pg C,earth_c,1
+1946,earth_c,5444.18,Pg C,atmos_c,0
+
+1947,atmos_c,629.681,Pg C,untracked,0.016887
+1947,atmos_c,629.681,Pg C,earth_c,0.0894437
+1947,atmos_c,629.681,Pg C,atmos_c,0.893669
+
+1947,earth_c,5442.87,Pg C,untracked,0
+1947,earth_c,5442.87,Pg C,earth_c,1
+1947,earth_c,5442.87,Pg C,atmos_c,0
+
+1948,atmos_c,630.465,Pg C,untracked,0.0168477
+1948,atmos_c,630.465,Pg C,earth_c,0.091563
+1948,atmos_c,630.465,Pg C,atmos_c,0.891589
+
+1948,earth_c,5441.44,Pg C,untracked,0
+1948,earth_c,5441.44,Pg C,earth_c,1
+1948,earth_c,5441.44,Pg C,atmos_c,0
+
+1949,atmos_c,631.241,Pg C,untracked,0.0168099
+1949,atmos_c,631.241,Pg C,earth_c,0.0936031
+1949,atmos_c,631.241,Pg C,atmos_c,0.889587
+
+1949,earth_c,5439.99,Pg C,untracked,0
+1949,earth_c,5439.99,Pg C,earth_c,1
+1949,earth_c,5439.99,Pg C,atmos_c,0
+
+1950,atmos_c,632.083,Pg C,untracked,0.0167666
+1950,atmos_c,632.083,Pg C,earth_c,0.0959375
+1950,atmos_c,632.083,Pg C,atmos_c,0.887296
+
+1950,earth_c,5438.47,Pg C,untracked,0
+1950,earth_c,5438.47,Pg C,earth_c,1
+1950,earth_c,5438.47,Pg C,atmos_c,0
+
+1951,atmos_c,633.169,Pg C,untracked,0.0167198
+1951,atmos_c,633.169,Pg C,earth_c,0.0984592
+1951,atmos_c,633.169,Pg C,atmos_c,0.884821
+
+1951,earth_c,5436.77,Pg C,untracked,0
+1951,earth_c,5436.77,Pg C,earth_c,1
+1951,earth_c,5436.77,Pg C,atmos_c,0
+
+1952,atmos_c,634.393,Pg C,untracked,0.0166725
+1952,atmos_c,634.393,Pg C,earth_c,0.101009
+1952,atmos_c,634.393,Pg C,atmos_c,0.882318
+
+1952,earth_c,5434.99,Pg C,untracked,0
+1952,earth_c,5434.99,Pg C,earth_c,1
+1952,earth_c,5434.99,Pg C,atmos_c,0
+
+1953,atmos_c,635.606,Pg C,untracked,0.0166243
+1953,atmos_c,635.606,Pg C,earth_c,0.103611
+1953,atmos_c,635.606,Pg C,atmos_c,0.879765
+
+1953,earth_c,5433.17,Pg C,untracked,0
+1953,earth_c,5433.17,Pg C,earth_c,1
+1953,earth_c,5433.17,Pg C,atmos_c,0
+
+1954,atmos_c,636.828,Pg C,untracked,0.0165757
+1954,atmos_c,636.828,Pg C,earth_c,0.106233
+1954,atmos_c,636.828,Pg C,atmos_c,0.877191
+
+1954,earth_c,5431.32,Pg C,untracked,0
+1954,earth_c,5431.32,Pg C,earth_c,1
+1954,earth_c,5431.32,Pg C,atmos_c,0
+
+1955,atmos_c,638.151,Pg C,untracked,0.0165227
+1955,atmos_c,638.151,Pg C,earth_c,0.109091
+1955,atmos_c,638.151,Pg C,atmos_c,0.874386
+
+1955,earth_c,5429.36,Pg C,untracked,0
+1955,earth_c,5429.36,Pg C,earth_c,1
+1955,earth_c,5429.36,Pg C,atmos_c,0
+
+1956,atmos_c,639.626,Pg C,untracked,0.0164665
+1956,atmos_c,639.626,Pg C,earth_c,0.112121
+1956,atmos_c,639.626,Pg C,atmos_c,0.871412
+
+1956,earth_c,5427.25,Pg C,untracked,0
+1956,earth_c,5427.25,Pg C,earth_c,1
+1956,earth_c,5427.25,Pg C,atmos_c,0
+
+1957,atmos_c,641.198,Pg C,untracked,0.0164082
+1957,atmos_c,641.198,Pg C,earth_c,0.115261
+1957,atmos_c,641.198,Pg C,atmos_c,0.86833
+
+1957,earth_c,5425.03,Pg C,untracked,0
+1957,earth_c,5425.03,Pg C,earth_c,1
+1957,earth_c,5425.03,Pg C,atmos_c,0
+
+1958,atmos_c,642.825,Pg C,untracked,0.0163488
+1958,atmos_c,642.825,Pg C,earth_c,0.118465
+1958,atmos_c,642.825,Pg C,atmos_c,0.865186
+
+1958,earth_c,5422.73,Pg C,untracked,0
+1958,earth_c,5422.73,Pg C,earth_c,1
+1958,earth_c,5422.73,Pg C,atmos_c,0
+
+1959,atmos_c,644.458,Pg C,untracked,0.0162864
+1959,atmos_c,644.458,Pg C,earth_c,0.121828
+1959,atmos_c,644.458,Pg C,atmos_c,0.861885
+
+1959,earth_c,5420.33,Pg C,untracked,0
+1959,earth_c,5420.33,Pg C,earth_c,1
+1959,earth_c,5420.33,Pg C,atmos_c,0
+
+1960,atmos_c,646.099,Pg C,untracked,0.0162216
+1960,atmos_c,646.099,Pg C,earth_c,0.125326
+1960,atmos_c,646.099,Pg C,atmos_c,0.858453
+
+1960,earth_c,5417.81,Pg C,untracked,0
+1960,earth_c,5417.81,Pg C,earth_c,1
+1960,earth_c,5417.81,Pg C,atmos_c,0
+
+1961,atmos_c,647.757,Pg C,untracked,0.0161567
+1961,atmos_c,647.757,Pg C,earth_c,0.128823
+1961,atmos_c,647.757,Pg C,atmos_c,0.85502
+
+1961,earth_c,5415.23,Pg C,untracked,0
+1961,earth_c,5415.23,Pg C,earth_c,1
+1961,earth_c,5415.23,Pg C,atmos_c,0
+
+1962,atmos_c,649.415,Pg C,untracked,0.0160896
+1962,atmos_c,649.415,Pg C,earth_c,0.13244
+1962,atmos_c,649.415,Pg C,atmos_c,0.851471
+
+1962,earth_c,5412.58,Pg C,untracked,0
+1962,earth_c,5412.58,Pg C,earth_c,1
+1962,earth_c,5412.58,Pg C,atmos_c,0
+
+1963,atmos_c,651.118,Pg C,untracked,0.0160194
+1963,atmos_c,651.118,Pg C,earth_c,0.136228
+1963,atmos_c,651.118,Pg C,atmos_c,0.847753
+
+1963,earth_c,5409.81,Pg C,untracked,0
+1963,earth_c,5409.81,Pg C,earth_c,1
+1963,earth_c,5409.81,Pg C,atmos_c,0
+
+1964,atmos_c,652.804,Pg C,untracked,0.0159457
+1964,atmos_c,652.804,Pg C,earth_c,0.1402
+1964,atmos_c,652.804,Pg C,atmos_c,0.843855
+
+1964,earth_c,5406.88,Pg C,untracked,0
+1964,earth_c,5406.88,Pg C,earth_c,1
+1964,earth_c,5406.88,Pg C,atmos_c,0
+
+1965,atmos_c,654.457,Pg C,untracked,0.0158693
+1965,atmos_c,654.457,Pg C,earth_c,0.144322
+1965,atmos_c,654.457,Pg C,atmos_c,0.839809
+
+1965,earth_c,5403.8,Pg C,untracked,0
+1965,earth_c,5403.8,Pg C,earth_c,1
+1965,earth_c,5403.8,Pg C,atmos_c,0
+
+1966,atmos_c,656.254,Pg C,untracked,0.0157895
+1966,atmos_c,656.254,Pg C,earth_c,0.148621
+1966,atmos_c,656.254,Pg C,atmos_c,0.835589
+
+1966,earth_c,5400.58,Pg C,untracked,0
+1966,earth_c,5400.58,Pg C,earth_c,1
+1966,earth_c,5400.58,Pg C,atmos_c,0
+
+1967,atmos_c,658.252,Pg C,untracked,0.0157079
+1967,atmos_c,658.252,Pg C,earth_c,0.153024
+1967,atmos_c,658.252,Pg C,atmos_c,0.831268
+
+1967,earth_c,5397.22,Pg C,untracked,0
+1967,earth_c,5397.22,Pg C,earth_c,1
+1967,earth_c,5397.22,Pg C,atmos_c,0
+
+1968,atmos_c,660.366,Pg C,untracked,0.0156227
+1968,atmos_c,660.366,Pg C,earth_c,0.157615
+1968,atmos_c,660.366,Pg C,atmos_c,0.826762
+
+1968,earth_c,5393.72,Pg C,untracked,0
+1968,earth_c,5393.72,Pg C,earth_c,1
+1968,earth_c,5393.72,Pg C,atmos_c,0
+
+1969,atmos_c,662.548,Pg C,untracked,0.0155333
+1969,atmos_c,662.548,Pg C,earth_c,0.162435
+1969,atmos_c,662.548,Pg C,atmos_c,0.822032
+
+1969,earth_c,5390.03,Pg C,untracked,0
+1969,earth_c,5390.03,Pg C,earth_c,1
+1969,earth_c,5390.03,Pg C,atmos_c,0
+
+1970,atmos_c,664.848,Pg C,untracked,0.0154384
+1970,atmos_c,664.848,Pg C,earth_c,0.167556
+1970,atmos_c,664.848,Pg C,atmos_c,0.817005
+
+1970,earth_c,5386.09,Pg C,untracked,0
+1970,earth_c,5386.09,Pg C,earth_c,1
+1970,earth_c,5386.09,Pg C,atmos_c,0
+
+1971,atmos_c,667.251,Pg C,untracked,0.0153407
+1971,atmos_c,667.251,Pg C,earth_c,0.17282
+1971,atmos_c,667.251,Pg C,atmos_c,0.811839
+
+1971,earth_c,5381.93,Pg C,untracked,0
+1971,earth_c,5381.93,Pg C,earth_c,1
+1971,earth_c,5381.93,Pg C,atmos_c,0
+
+1972,atmos_c,669.74,Pg C,untracked,0.0152403
+1972,atmos_c,669.74,Pg C,earth_c,0.178238
+1972,atmos_c,669.74,Pg C,atmos_c,0.806522
+
+1972,earth_c,5377.62,Pg C,untracked,0
+1972,earth_c,5377.62,Pg C,earth_c,1
+1972,earth_c,5377.62,Pg C,atmos_c,0
+
+1973,atmos_c,672.38,Pg C,untracked,0.0151355
+1973,atmos_c,672.38,Pg C,earth_c,0.183886
+1973,atmos_c,672.38,Pg C,atmos_c,0.800978
+
+1973,earth_c,5373.1,Pg C,untracked,0
+1973,earth_c,5373.1,Pg C,earth_c,1
+1973,earth_c,5373.1,Pg C,atmos_c,0
+
+1974,atmos_c,675.067,Pg C,untracked,0.0150317
+1974,atmos_c,675.067,Pg C,earth_c,0.189484
+1974,atmos_c,675.067,Pg C,atmos_c,0.795484
+
+1974,earth_c,5368.46,Pg C,untracked,0
+1974,earth_c,5368.46,Pg C,earth_c,1
+1974,earth_c,5368.46,Pg C,atmos_c,0
+
+1975,atmos_c,677.649,Pg C,untracked,0.0149296
+1975,atmos_c,677.649,Pg C,earth_c,0.194987
+1975,atmos_c,677.649,Pg C,atmos_c,0.790083
+
+1975,earth_c,5363.83,Pg C,untracked,0
+1975,earth_c,5363.83,Pg C,earth_c,1
+1975,earth_c,5363.83,Pg C,atmos_c,0
+
+1976,atmos_c,680.291,Pg C,untracked,0.0148228
+1976,atmos_c,680.291,Pg C,earth_c,0.200747
+1976,atmos_c,680.291,Pg C,atmos_c,0.78443
+
+1976,earth_c,5359.08,Pg C,untracked,0
+1976,earth_c,5359.08,Pg C,earth_c,1
+1976,earth_c,5359.08,Pg C,atmos_c,0
+
+1977,atmos_c,683.128,Pg C,untracked,0.0147141
+1977,atmos_c,683.128,Pg C,earth_c,0.206612
+1977,atmos_c,683.128,Pg C,atmos_c,0.778674
+
+1977,earth_c,5354.13,Pg C,untracked,0
+1977,earth_c,5354.13,Pg C,earth_c,1
+1977,earth_c,5354.13,Pg C,atmos_c,0
+
+1978,atmos_c,686.055,Pg C,untracked,0.0146049
+1978,atmos_c,686.055,Pg C,earth_c,0.212497
+1978,atmos_c,686.055,Pg C,atmos_c,0.772898
+
+1978,earth_c,5349.06,Pg C,untracked,0
+1978,earth_c,5349.06,Pg C,earth_c,1
+1978,earth_c,5349.06,Pg C,atmos_c,0
+
+1979,atmos_c,689.093,Pg C,untracked,0.0144911
+1979,atmos_c,689.093,Pg C,earth_c,0.218632
+1979,atmos_c,689.093,Pg C,atmos_c,0.766877
+
+1979,earth_c,5343.82,Pg C,untracked,0
+1979,earth_c,5343.82,Pg C,earth_c,1
+1979,earth_c,5343.82,Pg C,atmos_c,0
+
+1980,atmos_c,692.142,Pg C,untracked,0.0143799
+1980,atmos_c,692.142,Pg C,earth_c,0.224632
+1980,atmos_c,692.142,Pg C,atmos_c,0.760988
+
+1980,earth_c,5338.46,Pg C,untracked,0
+1980,earth_c,5338.46,Pg C,earth_c,1
+1980,earth_c,5338.46,Pg C,atmos_c,0
+
+1981,atmos_c,695.035,Pg C,untracked,0.0142733
+1981,atmos_c,695.035,Pg C,earth_c,0.230378
+1981,atmos_c,695.035,Pg C,atmos_c,0.755348
+
+1981,earth_c,5333.21,Pg C,untracked,0
+1981,earth_c,5333.21,Pg C,earth_c,1
+1981,earth_c,5333.21,Pg C,atmos_c,0
+
+1982,atmos_c,697.858,Pg C,untracked,0.0141688
+1982,atmos_c,697.858,Pg C,earth_c,0.236014
+1982,atmos_c,697.858,Pg C,atmos_c,0.749817
+
+1982,earth_c,5328.06,Pg C,untracked,0
+1982,earth_c,5328.06,Pg C,earth_c,1
+1982,earth_c,5328.06,Pg C,atmos_c,0
+
+1983,atmos_c,700.525,Pg C,untracked,0.0140658
+1983,atmos_c,700.525,Pg C,earth_c,0.241567
+1983,atmos_c,700.525,Pg C,atmos_c,0.744367
+
+1983,earth_c,5322.94,Pg C,untracked,0
+1983,earth_c,5322.94,Pg C,earth_c,1
+1983,earth_c,5322.94,Pg C,atmos_c,0
+
+1984,atmos_c,703.117,Pg C,untracked,0.0139611
+1984,atmos_c,703.117,Pg C,earth_c,0.247209
+1984,atmos_c,703.117,Pg C,atmos_c,0.73883
+
+1984,earth_c,5317.74,Pg C,untracked,0
+1984,earth_c,5317.74,Pg C,earth_c,1
+1984,earth_c,5317.74,Pg C,atmos_c,0
+
+1985,atmos_c,705.948,Pg C,untracked,0.0138545
+1985,atmos_c,705.948,Pg C,earth_c,0.252957
+1985,atmos_c,705.948,Pg C,atmos_c,0.733188
+
+1985,earth_c,5312.37,Pg C,untracked,0
+1985,earth_c,5312.37,Pg C,earth_c,1
+1985,earth_c,5312.37,Pg C,atmos_c,0
+
+1986,atmos_c,709.001,Pg C,untracked,0.013746
+1986,atmos_c,709.001,Pg C,earth_c,0.258809
+1986,atmos_c,709.001,Pg C,atmos_c,0.727445
+
+1986,earth_c,5306.85,Pg C,untracked,0
+1986,earth_c,5306.85,Pg C,earth_c,1
+1986,earth_c,5306.85,Pg C,atmos_c,0
+
+1987,atmos_c,712.209,Pg C,untracked,0.0136362
+1987,atmos_c,712.209,Pg C,earth_c,0.264728
+1987,atmos_c,712.209,Pg C,atmos_c,0.721636
+
+1987,earth_c,5301.16,Pg C,untracked,0
+1987,earth_c,5301.16,Pg C,earth_c,1
+1987,earth_c,5301.16,Pg C,atmos_c,0
+
+1988,atmos_c,715.557,Pg C,untracked,0.0135243
+1988,atmos_c,715.557,Pg C,earth_c,0.270762
+1988,atmos_c,715.557,Pg C,atmos_c,0.715714
+
+1988,earth_c,5295.31,Pg C,untracked,0
+1988,earth_c,5295.31,Pg C,earth_c,1
+1988,earth_c,5295.31,Pg C,atmos_c,0
+
+1989,atmos_c,719.025,Pg C,untracked,0.0134109
+1989,atmos_c,719.025,Pg C,earth_c,0.276876
+1989,atmos_c,719.025,Pg C,atmos_c,0.709713
+
+1989,earth_c,5289.28,Pg C,untracked,0
+1989,earth_c,5289.28,Pg C,earth_c,1
+1989,earth_c,5289.28,Pg C,atmos_c,0
+
+1990,atmos_c,722.521,Pg C,untracked,0.0132975
+1990,atmos_c,722.521,Pg C,earth_c,0.282991
+1990,atmos_c,722.521,Pg C,atmos_c,0.703711
+
+1990,earth_c,5283.16,Pg C,untracked,0
+1990,earth_c,5283.16,Pg C,earth_c,1
+1990,earth_c,5283.16,Pg C,atmos_c,0
+
+1991,atmos_c,726.053,Pg C,untracked,0.0131842
+1991,atmos_c,726.053,Pg C,earth_c,0.289101
+1991,atmos_c,726.053,Pg C,atmos_c,0.697715
+
+1991,earth_c,5276.97,Pg C,untracked,0
+1991,earth_c,5276.97,Pg C,earth_c,1
+1991,earth_c,5276.97,Pg C,atmos_c,0
+
+1992,atmos_c,729.283,Pg C,untracked,0.0130731
+1992,atmos_c,729.283,Pg C,earth_c,0.295092
+1992,atmos_c,729.283,Pg C,atmos_c,0.691835
+
+1992,earth_c,5270.8,Pg C,untracked,0
+1992,earth_c,5270.8,Pg C,earth_c,1
+1992,earth_c,5270.8,Pg C,atmos_c,0
+
+1993,atmos_c,732.133,Pg C,untracked,0.0129641
+1993,atmos_c,732.133,Pg C,earth_c,0.300969
+1993,atmos_c,732.133,Pg C,atmos_c,0.686067
+
+1993,earth_c,5264.68,Pg C,untracked,0
+1993,earth_c,5264.68,Pg C,earth_c,1
+1993,earth_c,5264.68,Pg C,atmos_c,0
+
+1994,atmos_c,735.085,Pg C,untracked,0.0128551
+1994,atmos_c,735.085,Pg C,earth_c,0.306847
+1994,atmos_c,735.085,Pg C,atmos_c,0.680298
+
+1994,earth_c,5258.49,Pg C,untracked,0
+1994,earth_c,5258.49,Pg C,earth_c,1
+1994,earth_c,5258.49,Pg C,atmos_c,0
+
+1995,atmos_c,738.291,Pg C,untracked,0.0127453
+1995,atmos_c,738.291,Pg C,earth_c,0.312768
+1995,atmos_c,738.291,Pg C,atmos_c,0.674486
+
+1995,earth_c,5252.19,Pg C,untracked,0
+1995,earth_c,5252.19,Pg C,earth_c,1
+1995,earth_c,5252.19,Pg C,atmos_c,0
+
+1996,atmos_c,741.682,Pg C,untracked,0.0126346
+1996,atmos_c,741.682,Pg C,earth_c,0.318737
+1996,atmos_c,741.682,Pg C,atmos_c,0.668628
+
+1996,earth_c,5245.75,Pg C,untracked,0
+1996,earth_c,5245.75,Pg C,earth_c,1
+1996,earth_c,5245.75,Pg C,atmos_c,0
+
+1997,atmos_c,745.169,Pg C,untracked,0.0125233
+1997,atmos_c,745.169,Pg C,earth_c,0.324736
+1997,atmos_c,745.169,Pg C,atmos_c,0.662741
+
+1997,earth_c,5239.18,Pg C,untracked,0
+1997,earth_c,5239.18,Pg C,earth_c,1
+1997,earth_c,5239.18,Pg C,atmos_c,0
+
+1998,atmos_c,748.647,Pg C,untracked,0.0124132
+1998,atmos_c,748.647,Pg C,earth_c,0.330673
+1998,atmos_c,748.647,Pg C,atmos_c,0.656914
+
+1998,earth_c,5232.58,Pg C,untracked,0
+1998,earth_c,5232.58,Pg C,earth_c,1
+1998,earth_c,5232.58,Pg C,atmos_c,0
+
+1999,atmos_c,752.048,Pg C,untracked,0.012305
+1999,atmos_c,752.048,Pg C,earth_c,0.33651
+1999,atmos_c,752.048,Pg C,atmos_c,0.651185
+
+1999,earth_c,5226,Pg C,untracked,0
+1999,earth_c,5226,Pg C,earth_c,1
+1999,earth_c,5226,Pg C,atmos_c,0
+
+2000,atmos_c,755.46,Pg C,untracked,0.0121966
+2000,atmos_c,755.46,Pg C,earth_c,0.342355
+2000,atmos_c,755.46,Pg C,atmos_c,0.645449
+
+2000,earth_c,5219.35,Pg C,untracked,0
+2000,earth_c,5219.35,Pg C,earth_c,1
+2000,earth_c,5219.35,Pg C,atmos_c,0
+
+2001,atmos_c,758.969,Pg C,untracked,0.012087
+2001,atmos_c,758.969,Pg C,earth_c,0.348262
+2001,atmos_c,758.969,Pg C,atmos_c,0.639651
+
+2001,earth_c,5212.53,Pg C,untracked,0
+2001,earth_c,5212.53,Pg C,earth_c,1
+2001,earth_c,5212.53,Pg C,atmos_c,0
+
+2002,atmos_c,762.574,Pg C,untracked,0.0119775
+2002,atmos_c,762.574,Pg C,earth_c,0.354168
+2002,atmos_c,762.574,Pg C,atmos_c,0.633855
+
+2002,earth_c,5205.61,Pg C,untracked,0
+2002,earth_c,5205.61,Pg C,earth_c,1
+2002,earth_c,5205.61,Pg C,atmos_c,0
+
+2003,atmos_c,766.359,Pg C,untracked,0.0118659
+2003,atmos_c,766.359,Pg C,earth_c,0.360185
+2003,atmos_c,766.359,Pg C,atmos_c,0.627949
+
+2003,earth_c,5198.49,Pg C,untracked,0
+2003,earth_c,5198.49,Pg C,earth_c,1
+2003,earth_c,5198.49,Pg C,atmos_c,0
+
+2004,atmos_c,770.433,Pg C,untracked,0.0117503
+2004,atmos_c,770.433,Pg C,earth_c,0.36642
+2004,atmos_c,770.433,Pg C,atmos_c,0.62183
+
+2004,earth_c,5191.01,Pg C,untracked,0
+2004,earth_c,5191.01,Pg C,earth_c,1
+2004,earth_c,5191.01,Pg C,atmos_c,0
+
+2005,atmos_c,774.747,Pg C,untracked,0.0116314
+2005,atmos_c,774.747,Pg C,earth_c,0.372829
+2005,atmos_c,774.747,Pg C,atmos_c,0.61554
+
+2005,earth_c,5183.19,Pg C,untracked,0
+2005,earth_c,5183.19,Pg C,earth_c,1
+2005,earth_c,5183.19,Pg C,atmos_c,0
+
+2006,atmos_c,779.123,Pg C,untracked,0.0115116
+2006,atmos_c,779.123,Pg C,earth_c,0.379291
+2006,atmos_c,779.123,Pg C,atmos_c,0.609198
+
+2006,earth_c,5175.16,Pg C,untracked,0
+2006,earth_c,5175.16,Pg C,earth_c,1
+2006,earth_c,5175.16,Pg C,atmos_c,0
+
+2007,atmos_c,783.463,Pg C,untracked,0.0113918
+2007,atmos_c,783.463,Pg C,earth_c,0.38575
+2007,atmos_c,783.463,Pg C,atmos_c,0.602858
+
+2007,earth_c,5166.99,Pg C,untracked,0
+2007,earth_c,5166.99,Pg C,earth_c,1
+2007,earth_c,5166.99,Pg C,atmos_c,0
+
+2008,atmos_c,787.781,Pg C,untracked,0.0112721
+2008,atmos_c,787.781,Pg C,earth_c,0.392206
+2008,atmos_c,787.781,Pg C,atmos_c,0.596522
+
+2008,earth_c,5158.7,Pg C,untracked,0
+2008,earth_c,5158.7,Pg C,earth_c,1
+2008,earth_c,5158.7,Pg C,atmos_c,0
+
+2009,atmos_c,792.101,Pg C,untracked,0.0111524
+2009,atmos_c,792.101,Pg C,earth_c,0.398655
+2009,atmos_c,792.101,Pg C,atmos_c,0.590192
+
+2009,earth_c,5150.29,Pg C,untracked,0
+2009,earth_c,5150.29,Pg C,earth_c,1
+2009,earth_c,5150.29,Pg C,atmos_c,0
+
+2010,atmos_c,796.434,Pg C,untracked,0.011033
+2010,atmos_c,796.434,Pg C,earth_c,0.405097
+2010,atmos_c,796.434,Pg C,atmos_c,0.58387
+
+2010,earth_c,5141.74,Pg C,untracked,0
+2010,earth_c,5141.74,Pg C,earth_c,1
+2010,earth_c,5141.74,Pg C,atmos_c,0
+
+2011,atmos_c,800.786,Pg C,untracked,0.0109137
+2011,atmos_c,800.786,Pg C,earth_c,0.411528
+2011,atmos_c,800.786,Pg C,atmos_c,0.577558
+
+2011,earth_c,5133.07,Pg C,untracked,0
+2011,earth_c,5133.07,Pg C,earth_c,1
+2011,earth_c,5133.07,Pg C,atmos_c,0
+
+2012,atmos_c,805.159,Pg C,untracked,0.0107947
+2012,atmos_c,805.159,Pg C,earth_c,0.417947
+2012,atmos_c,805.159,Pg C,atmos_c,0.571258
+
+2012,earth_c,5124.28,Pg C,untracked,0
+2012,earth_c,5124.28,Pg C,earth_c,1
+2012,earth_c,5124.28,Pg C,atmos_c,0
+
+2013,atmos_c,809.53,Pg C,untracked,0.0106758
+2013,atmos_c,809.53,Pg C,earth_c,0.424359
+2013,atmos_c,809.53,Pg C,atmos_c,0.564966
+
+2013,earth_c,5115.35,Pg C,untracked,0
+2013,earth_c,5115.35,Pg C,earth_c,1
+2013,earth_c,5115.35,Pg C,atmos_c,0
+
+2014,atmos_c,813.972,Pg C,untracked,0.0105573
+2014,atmos_c,813.972,Pg C,earth_c,0.430747
+2014,atmos_c,813.972,Pg C,atmos_c,0.558695
+
+2014,earth_c,5106.3,Pg C,untracked,0
+2014,earth_c,5106.3,Pg C,earth_c,1
+2014,earth_c,5106.3,Pg C,atmos_c,0
+
+2015,atmos_c,818.434,Pg C,untracked,0.0104391
+2015,atmos_c,818.434,Pg C,earth_c,0.437118
+2015,atmos_c,818.434,Pg C,atmos_c,0.552443
+
+2015,earth_c,5097.13,Pg C,untracked,0
+2015,earth_c,5097.13,Pg C,earth_c,1
+2015,earth_c,5097.13,Pg C,atmos_c,0
+
+2016,atmos_c,822.918,Pg C,untracked,0.0103213
+2016,atmos_c,822.918,Pg C,earth_c,0.443468
+2016,atmos_c,822.918,Pg C,atmos_c,0.54621
+
+2016,earth_c,5087.82,Pg C,untracked,0
+2016,earth_c,5087.82,Pg C,earth_c,1
+2016,earth_c,5087.82,Pg C,atmos_c,0
+
+2017,atmos_c,827.429,Pg C,untracked,0.010204
+2017,atmos_c,827.429,Pg C,earth_c,0.449797
+2017,atmos_c,827.429,Pg C,atmos_c,0.539999
+
+2017,earth_c,5078.4,Pg C,untracked,0
+2017,earth_c,5078.4,Pg C,earth_c,1
+2017,earth_c,5078.4,Pg C,atmos_c,0
+
+2018,atmos_c,831.973,Pg C,untracked,0.010087
+2018,atmos_c,831.973,Pg C,earth_c,0.456103
+2018,atmos_c,831.973,Pg C,atmos_c,0.53381
+
+2018,earth_c,5068.84,Pg C,untracked,0
+2018,earth_c,5068.84,Pg C,earth_c,1
+2018,earth_c,5068.84,Pg C,atmos_c,0
+
+2019,atmos_c,836.553,Pg C,untracked,0.00997054
+2019,atmos_c,836.553,Pg C,earth_c,0.462384
+2019,atmos_c,836.553,Pg C,atmos_c,0.527645
+
+2019,earth_c,5059.16,Pg C,untracked,0
+2019,earth_c,5059.16,Pg C,earth_c,1
+2019,earth_c,5059.16,Pg C,atmos_c,0
+
+2020,atmos_c,841.171,Pg C,untracked,0.00985454
+2020,atmos_c,841.171,Pg C,earth_c,0.468639
+2020,atmos_c,841.171,Pg C,atmos_c,0.521506
+
+2020,earth_c,5049.35,Pg C,untracked,0
+2020,earth_c,5049.35,Pg C,earth_c,1
+2020,earth_c,5049.35,Pg C,atmos_c,0
+
+2021,atmos_c,845.839,Pg C,untracked,0.00973919
+2021,atmos_c,845.839,Pg C,earth_c,0.474859
+2021,atmos_c,845.839,Pg C,atmos_c,0.515402
+
+2021,earth_c,5039.42,Pg C,untracked,0
+2021,earth_c,5039.42,Pg C,earth_c,1
+2021,earth_c,5039.42,Pg C,atmos_c,0
+
+2022,atmos_c,850.569,Pg C,untracked,0.0096246
+2022,atmos_c,850.569,Pg C,earth_c,0.481038
+2022,atmos_c,850.569,Pg C,atmos_c,0.509338
+
+2022,earth_c,5029.39,Pg C,untracked,0
+2022,earth_c,5029.39,Pg C,earth_c,1
+2022,earth_c,5029.39,Pg C,atmos_c,0
+
+2023,atmos_c,855.359,Pg C,untracked,0.00951077
+2023,atmos_c,855.359,Pg C,earth_c,0.487175
+2023,atmos_c,855.359,Pg C,atmos_c,0.503314
+
+2023,earth_c,5019.25,Pg C,untracked,0
+2023,earth_c,5019.25,Pg C,earth_c,1
+2023,earth_c,5019.25,Pg C,atmos_c,0
+
+2024,atmos_c,860.209,Pg C,untracked,0.00939774
+2024,atmos_c,860.209,Pg C,earth_c,0.49327
+2024,atmos_c,860.209,Pg C,atmos_c,0.497332
+
+2024,earth_c,5009,Pg C,untracked,0
+2024,earth_c,5009,Pg C,earth_c,1
+2024,earth_c,5009,Pg C,atmos_c,0
+
+2025,atmos_c,865.117,Pg C,untracked,0.00928551
+2025,atmos_c,865.117,Pg C,earth_c,0.499321
+2025,atmos_c,865.117,Pg C,atmos_c,0.491393
+
+2025,earth_c,4998.64,Pg C,untracked,0
+2025,earth_c,4998.64,Pg C,earth_c,1
+2025,earth_c,4998.64,Pg C,atmos_c,0
+
+2026,atmos_c,870.083,Pg C,untracked,0.00917411
+2026,atmos_c,870.083,Pg C,earth_c,0.505328
+2026,atmos_c,870.083,Pg C,atmos_c,0.485498
+
+2026,earth_c,4988.17,Pg C,untracked,0
+2026,earth_c,4988.17,Pg C,earth_c,1
+2026,earth_c,4988.17,Pg C,atmos_c,0
+
+2027,atmos_c,875.108,Pg C,untracked,0.00906355
+2027,atmos_c,875.108,Pg C,earth_c,0.511289
+2027,atmos_c,875.108,Pg C,atmos_c,0.479647
+
+2027,earth_c,4977.6,Pg C,untracked,0
+2027,earth_c,4977.6,Pg C,earth_c,1
+2027,earth_c,4977.6,Pg C,atmos_c,0
+
+2028,atmos_c,880.19,Pg C,untracked,0.00895385
+2028,atmos_c,880.19,Pg C,earth_c,0.517205
+2028,atmos_c,880.19,Pg C,atmos_c,0.473841
+
+2028,earth_c,4966.92,Pg C,untracked,0
+2028,earth_c,4966.92,Pg C,earth_c,1
+2028,earth_c,4966.92,Pg C,atmos_c,0
+
+2029,atmos_c,885.331,Pg C,untracked,0.00884501
+2029,atmos_c,885.331,Pg C,earth_c,0.523073
+2029,atmos_c,885.331,Pg C,atmos_c,0.468082
+
+2029,earth_c,4956.12,Pg C,untracked,0
+2029,earth_c,4956.12,Pg C,earth_c,1
+2029,earth_c,4956.12,Pg C,atmos_c,0
+
+2030,atmos_c,890.53,Pg C,untracked,0.00873706
+2030,atmos_c,890.53,Pg C,earth_c,0.528894
+2030,atmos_c,890.53,Pg C,atmos_c,0.462369
+
+2030,earth_c,4945.23,Pg C,untracked,0
+2030,earth_c,4945.23,Pg C,earth_c,1
+2030,earth_c,4945.23,Pg C,atmos_c,0
+
+2031,atmos_c,895.757,Pg C,untracked,0.00863042
+2031,atmos_c,895.757,Pg C,earth_c,0.534644
+2031,atmos_c,895.757,Pg C,atmos_c,0.456725
+
+2031,earth_c,4934.25,Pg C,untracked,0
+2031,earth_c,4934.25,Pg C,earth_c,1
+2031,earth_c,4934.25,Pg C,atmos_c,0
+
+2032,atmos_c,900.988,Pg C,untracked,0.00852532
+2032,atmos_c,900.988,Pg C,earth_c,0.540311
+2032,atmos_c,900.988,Pg C,atmos_c,0.451164
+
+2032,earth_c,4923.24,Pg C,untracked,0
+2032,earth_c,4923.24,Pg C,earth_c,1
+2032,earth_c,4923.24,Pg C,atmos_c,0
+
+2033,atmos_c,906.224,Pg C,untracked,0.00842175
+2033,atmos_c,906.224,Pg C,earth_c,0.545896
+2033,atmos_c,906.224,Pg C,atmos_c,0.445683
+
+2033,earth_c,4912.19,Pg C,untracked,0
+2033,earth_c,4912.19,Pg C,earth_c,1
+2033,earth_c,4912.19,Pg C,atmos_c,0
+
+2034,atmos_c,911.44,Pg C,untracked,0.0083197
+2034,atmos_c,911.44,Pg C,earth_c,0.551398
+2034,atmos_c,911.44,Pg C,atmos_c,0.440282
+
+2034,earth_c,4901.1,Pg C,untracked,0
+2034,earth_c,4901.1,Pg C,earth_c,1
+2034,earth_c,4901.1,Pg C,atmos_c,0
+
+2035,atmos_c,916.709,Pg C,untracked,0.00821908
+2035,atmos_c,916.709,Pg C,earth_c,0.556823
+2035,atmos_c,916.709,Pg C,atmos_c,0.434957
+
+2035,earth_c,4889.98,Pg C,untracked,0
+2035,earth_c,4889.98,Pg C,earth_c,1
+2035,earth_c,4889.98,Pg C,atmos_c,0
+
+2036,atmos_c,921.98,Pg C,untracked,0.00811991
+2036,atmos_c,921.98,Pg C,earth_c,0.562171
+2036,atmos_c,921.98,Pg C,atmos_c,0.429709
+
+2036,earth_c,4878.81,Pg C,untracked,0
+2036,earth_c,4878.81,Pg C,earth_c,1
+2036,earth_c,4878.81,Pg C,atmos_c,0
+
+2037,atmos_c,927.255,Pg C,untracked,0.00802215
+2037,atmos_c,927.255,Pg C,earth_c,0.567442
+2037,atmos_c,927.255,Pg C,atmos_c,0.424536
+
+2037,earth_c,4867.61,Pg C,untracked,0
+2037,earth_c,4867.61,Pg C,earth_c,1
+2037,earth_c,4867.61,Pg C,atmos_c,0
+
+2038,atmos_c,932.54,Pg C,untracked,0.00792579
+2038,atmos_c,932.54,Pg C,earth_c,0.572638
+2038,atmos_c,932.54,Pg C,atmos_c,0.419436
+
+2038,earth_c,4856.37,Pg C,untracked,0
+2038,earth_c,4856.37,Pg C,earth_c,1
+2038,earth_c,4856.37,Pg C,atmos_c,0
+
+2039,atmos_c,937.837,Pg C,untracked,0.0078308
+2039,atmos_c,937.837,Pg C,earth_c,0.57776
+2039,atmos_c,937.837,Pg C,atmos_c,0.41441
+
+2039,earth_c,4845.09,Pg C,untracked,0
+2039,earth_c,4845.09,Pg C,earth_c,1
+2039,earth_c,4845.09,Pg C,atmos_c,0
+
+2040,atmos_c,943.148,Pg C,untracked,0.00773716
+2040,atmos_c,943.148,Pg C,earth_c,0.582809
+2040,atmos_c,943.148,Pg C,atmos_c,0.409454
+
+2040,earth_c,4833.77,Pg C,untracked,0
+2040,earth_c,4833.77,Pg C,earth_c,1
+2040,earth_c,4833.77,Pg C,atmos_c,0
+
+2041,atmos_c,948.442,Pg C,untracked,0.00764519
+2041,atmos_c,948.442,Pg C,earth_c,0.587768
+2041,atmos_c,948.442,Pg C,atmos_c,0.404587
+
+2041,earth_c,4822.45,Pg C,untracked,0
+2041,earth_c,4822.45,Pg C,earth_c,1
+2041,earth_c,4822.45,Pg C,atmos_c,0
+
+2042,atmos_c,953.691,Pg C,untracked,0.00755506
+2042,atmos_c,953.691,Pg C,earth_c,0.592628
+2042,atmos_c,953.691,Pg C,atmos_c,0.399817
+
+2042,earth_c,4811.15,Pg C,untracked,0
+2042,earth_c,4811.15,Pg C,earth_c,1
+2042,earth_c,4811.15,Pg C,atmos_c,0
+
+2043,atmos_c,958.898,Pg C,untracked,0.00746672
+2043,atmos_c,958.898,Pg C,earth_c,0.597391
+2043,atmos_c,958.898,Pg C,atmos_c,0.395142
+
+2043,earth_c,4799.89,Pg C,untracked,0
+2043,earth_c,4799.89,Pg C,earth_c,1
+2043,earth_c,4799.89,Pg C,atmos_c,0
+
+2044,atmos_c,964.064,Pg C,untracked,0.00738011
+2044,atmos_c,964.064,Pg C,earth_c,0.602061
+2044,atmos_c,964.064,Pg C,atmos_c,0.390559
+
+2044,earth_c,4788.66,Pg C,untracked,0
+2044,earth_c,4788.66,Pg C,earth_c,1
+2044,earth_c,4788.66,Pg C,atmos_c,0
+
+2045,atmos_c,969.191,Pg C,untracked,0.00729519
+2045,atmos_c,969.191,Pg C,earth_c,0.60664
+2045,atmos_c,969.191,Pg C,atmos_c,0.386065
+
+2045,earth_c,4777.46,Pg C,untracked,0
+2045,earth_c,4777.46,Pg C,earth_c,1
+2045,earth_c,4777.46,Pg C,atmos_c,0
+
+2046,atmos_c,974.279,Pg C,untracked,0.00721192
+2046,atmos_c,974.279,Pg C,earth_c,0.61113
+2046,atmos_c,974.279,Pg C,atmos_c,0.381658
+
+2046,earth_c,4766.29,Pg C,untracked,0
+2046,earth_c,4766.29,Pg C,earth_c,1
+2046,earth_c,4766.29,Pg C,atmos_c,0
+
+2047,atmos_c,979.331,Pg C,untracked,0.00713024
+2047,atmos_c,979.331,Pg C,earth_c,0.615534
+2047,atmos_c,979.331,Pg C,atmos_c,0.377335
+
+2047,earth_c,4755.15,Pg C,untracked,0
+2047,earth_c,4755.15,Pg C,earth_c,1
+2047,earth_c,4755.15,Pg C,atmos_c,0
+
+2048,atmos_c,984.347,Pg C,untracked,0.00705012
+2048,atmos_c,984.347,Pg C,earth_c,0.619854
+2048,atmos_c,984.347,Pg C,atmos_c,0.373095
+
+2048,earth_c,4744.05,Pg C,untracked,0
+2048,earth_c,4744.05,Pg C,earth_c,1
+2048,earth_c,4744.05,Pg C,atmos_c,0
+
+2049,atmos_c,989.329,Pg C,untracked,0.00697151
+2049,atmos_c,989.329,Pg C,earth_c,0.624093
+2049,atmos_c,989.329,Pg C,atmos_c,0.368936
+
+2049,earth_c,4732.97,Pg C,untracked,0
+2049,earth_c,4732.97,Pg C,earth_c,1
+2049,earth_c,4732.97,Pg C,atmos_c,0
+
+2050,atmos_c,994.278,Pg C,untracked,0.00689439
+2050,atmos_c,994.278,Pg C,earth_c,0.628252
+2050,atmos_c,994.278,Pg C,atmos_c,0.364854
+
+2050,earth_c,4721.92,Pg C,untracked,0
+2050,earth_c,4721.92,Pg C,earth_c,1
+2050,earth_c,4721.92,Pg C,atmos_c,0
+
+2051,atmos_c,999.125,Pg C,untracked,0.00681926
+2051,atmos_c,999.125,Pg C,earth_c,0.632303
+2051,atmos_c,999.125,Pg C,atmos_c,0.360878
+
+2051,earth_c,4710.97,Pg C,untracked,0
+2051,earth_c,4710.97,Pg C,earth_c,1
+2051,earth_c,4710.97,Pg C,atmos_c,0
+
+2052,atmos_c,1003.8,Pg C,untracked,0.0067464
+2052,atmos_c,1003.8,Pg C,earth_c,0.636231
+2052,atmos_c,1003.8,Pg C,atmos_c,0.357023
+
+2052,earth_c,4700.19,Pg C,untracked,0
+2052,earth_c,4700.19,Pg C,earth_c,1
+2052,earth_c,4700.19,Pg C,atmos_c,0
+
+2053,atmos_c,1008.32,Pg C,untracked,0.00667573
+2053,atmos_c,1008.32,Pg C,earth_c,0.640042
+2053,atmos_c,1008.32,Pg C,atmos_c,0.353283
+
+2053,earth_c,4689.56,Pg C,untracked,0
+2053,earth_c,4689.56,Pg C,earth_c,1
+2053,earth_c,4689.56,Pg C,atmos_c,0
+
+2054,atmos_c,1012.68,Pg C,untracked,0.00660717
+2054,atmos_c,1012.68,Pg C,earth_c,0.643739
+2054,atmos_c,1012.68,Pg C,atmos_c,0.349654
+
+2054,earth_c,4679.1,Pg C,untracked,0
+2054,earth_c,4679.1,Pg C,earth_c,1
+2054,earth_c,4679.1,Pg C,atmos_c,0
+
+2055,atmos_c,1016.87,Pg C,untracked,0.00654082
+2055,atmos_c,1016.87,Pg C,earth_c,0.647316
+2055,atmos_c,1016.87,Pg C,atmos_c,0.346143
+
+2055,earth_c,4668.8,Pg C,untracked,0
+2055,earth_c,4668.8,Pg C,earth_c,1
+2055,earth_c,4668.8,Pg C,atmos_c,0
+
+2056,atmos_c,1020.94,Pg C,untracked,0.00647627
+2056,atmos_c,1020.94,Pg C,earth_c,0.650797
+2056,atmos_c,1020.94,Pg C,atmos_c,0.342727
+
+2056,earth_c,4658.67,Pg C,untracked,0
+2056,earth_c,4658.67,Pg C,earth_c,1
+2056,earth_c,4658.67,Pg C,atmos_c,0
+
+2057,atmos_c,1024.85,Pg C,untracked,0.00641362
+2057,atmos_c,1024.85,Pg C,earth_c,0.654175
+2057,atmos_c,1024.85,Pg C,atmos_c,0.339411
+
+2057,earth_c,4648.7,Pg C,untracked,0
+2057,earth_c,4648.7,Pg C,earth_c,1
+2057,earth_c,4648.7,Pg C,atmos_c,0
+
+2058,atmos_c,1028.61,Pg C,untracked,0.00635281
+2058,atmos_c,1028.61,Pg C,earth_c,0.657454
+2058,atmos_c,1028.61,Pg C,atmos_c,0.336194
+
+2058,earth_c,4638.89,Pg C,untracked,0
+2058,earth_c,4638.89,Pg C,earth_c,1
+2058,earth_c,4638.89,Pg C,atmos_c,0
+
+2059,atmos_c,1032.23,Pg C,untracked,0.00629379
+2059,atmos_c,1032.23,Pg C,earth_c,0.660636
+2059,atmos_c,1032.23,Pg C,atmos_c,0.33307
+
+2059,earth_c,4629.24,Pg C,untracked,0
+2059,earth_c,4629.24,Pg C,earth_c,1
+2059,earth_c,4629.24,Pg C,atmos_c,0
+
+2060,atmos_c,1035.71,Pg C,untracked,0.00623651
+2060,atmos_c,1035.71,Pg C,earth_c,0.663725
+2060,atmos_c,1035.71,Pg C,atmos_c,0.330039
+
+2060,earth_c,4619.76,Pg C,untracked,0
+2060,earth_c,4619.76,Pg C,earth_c,1
+2060,earth_c,4619.76,Pg C,atmos_c,0
+
+2061,atmos_c,1039.03,Pg C,untracked,0.00618114
+2061,atmos_c,1039.03,Pg C,earth_c,0.66671
+2061,atmos_c,1039.03,Pg C,atmos_c,0.327109
+
+2061,earth_c,4610.47,Pg C,untracked,0
+2061,earth_c,4610.47,Pg C,earth_c,1
+2061,earth_c,4610.47,Pg C,atmos_c,0
+
+2062,atmos_c,1042.14,Pg C,untracked,0.00612777
+2062,atmos_c,1042.14,Pg C,earth_c,0.669588
+2062,atmos_c,1042.14,Pg C,atmos_c,0.324284
+
+2062,earth_c,4601.41,Pg C,untracked,0
+2062,earth_c,4601.41,Pg C,earth_c,1
+2062,earth_c,4601.41,Pg C,atmos_c,0
+
+2063,atmos_c,1045.06,Pg C,untracked,0.00607635
+2063,atmos_c,1045.06,Pg C,earth_c,0.672361
+2063,atmos_c,1045.06,Pg C,atmos_c,0.321563
+
+2063,earth_c,4592.58,Pg C,untracked,0
+2063,earth_c,4592.58,Pg C,earth_c,1
+2063,earth_c,4592.58,Pg C,atmos_c,0
+
+2064,atmos_c,1047.8,Pg C,untracked,0.00602681
+2064,atmos_c,1047.8,Pg C,earth_c,0.675032
+2064,atmos_c,1047.8,Pg C,atmos_c,0.318941
+
+2064,earth_c,4583.98,Pg C,untracked,0
+2064,earth_c,4583.98,Pg C,earth_c,1
+2064,earth_c,4583.98,Pg C,atmos_c,0
+
+2065,atmos_c,1050.34,Pg C,untracked,0.00597909
+2065,atmos_c,1050.34,Pg C,earth_c,0.677605
+2065,atmos_c,1050.34,Pg C,atmos_c,0.316416
+
+2065,earth_c,4575.61,Pg C,untracked,0
+2065,earth_c,4575.61,Pg C,earth_c,1
+2065,earth_c,4575.61,Pg C,atmos_c,0
+
+2066,atmos_c,1052.71,Pg C,untracked,0.00593315
+2066,atmos_c,1052.71,Pg C,earth_c,0.680082
+2066,atmos_c,1052.71,Pg C,atmos_c,0.313985
+
+2066,earth_c,4567.46,Pg C,untracked,0
+2066,earth_c,4567.46,Pg C,earth_c,1
+2066,earth_c,4567.46,Pg C,atmos_c,0
+
+2067,atmos_c,1054.89,Pg C,untracked,0.00588894
+2067,atmos_c,1054.89,Pg C,earth_c,0.682466
+2067,atmos_c,1054.89,Pg C,atmos_c,0.311645
+
+2067,earth_c,4559.54,Pg C,untracked,0
+2067,earth_c,4559.54,Pg C,earth_c,1
+2067,earth_c,4559.54,Pg C,atmos_c,0
+
+2068,atmos_c,1056.9,Pg C,untracked,0.0058464
+2068,atmos_c,1056.9,Pg C,earth_c,0.684759
+2068,atmos_c,1056.9,Pg C,atmos_c,0.309394
+
+2068,earth_c,4551.86,Pg C,untracked,0
+2068,earth_c,4551.86,Pg C,earth_c,1
+2068,earth_c,4551.86,Pg C,atmos_c,0
+
+2069,atmos_c,1058.72,Pg C,untracked,0.0058055
+2069,atmos_c,1058.72,Pg C,earth_c,0.686965
+2069,atmos_c,1058.72,Pg C,atmos_c,0.30723
+
+2069,earth_c,4544.4,Pg C,untracked,0
+2069,earth_c,4544.4,Pg C,earth_c,1
+2069,earth_c,4544.4,Pg C,atmos_c,0
+
+2070,atmos_c,1060.38,Pg C,untracked,0.0057662
+2070,atmos_c,1060.38,Pg C,earth_c,0.689084
+2070,atmos_c,1060.38,Pg C,atmos_c,0.30515
+
+2070,earth_c,4537.16,Pg C,untracked,0
+2070,earth_c,4537.16,Pg C,earth_c,1
+2070,earth_c,4537.16,Pg C,atmos_c,0
+
+2071,atmos_c,1061.83,Pg C,untracked,0.00572866
+2071,atmos_c,1061.83,Pg C,earth_c,0.691108
+2071,atmos_c,1061.83,Pg C,atmos_c,0.303163
+
+2071,earth_c,4530.19,Pg C,untracked,0
+2071,earth_c,4530.19,Pg C,earth_c,1
+2071,earth_c,4530.19,Pg C,atmos_c,0
+
+2072,atmos_c,1063.05,Pg C,untracked,0.005693
+2072,atmos_c,1063.05,Pg C,earth_c,0.693031
+2072,atmos_c,1063.05,Pg C,atmos_c,0.301276
+
+2072,earth_c,4523.51,Pg C,untracked,0
+2072,earth_c,4523.51,Pg C,earth_c,1
+2072,earth_c,4523.51,Pg C,atmos_c,0
+
+2073,atmos_c,1064.05,Pg C,untracked,0.00565915
+2073,atmos_c,1064.05,Pg C,earth_c,0.694856
+2073,atmos_c,1064.05,Pg C,atmos_c,0.299485
+
+2073,earth_c,4517.13,Pg C,untracked,0
+2073,earth_c,4517.13,Pg C,earth_c,1
+2073,earth_c,4517.13,Pg C,atmos_c,0
+
+2074,atmos_c,1064.82,Pg C,untracked,0.00562708
+2074,atmos_c,1064.82,Pg C,earth_c,0.696585
+2074,atmos_c,1064.82,Pg C,atmos_c,0.297787
+
+2074,earth_c,4511.04,Pg C,untracked,0
+2074,earth_c,4511.04,Pg C,earth_c,1
+2074,earth_c,4511.04,Pg C,atmos_c,0
+
+2075,atmos_c,1065.37,Pg C,untracked,0.00559675
+2075,atmos_c,1065.37,Pg C,earth_c,0.698221
+2075,atmos_c,1065.37,Pg C,atmos_c,0.296183
+
+2075,earth_c,4505.24,Pg C,untracked,0
+2075,earth_c,4505.24,Pg C,earth_c,1
+2075,earth_c,4505.24,Pg C,atmos_c,0
+
+2076,atmos_c,1065.72,Pg C,untracked,0.00556834
+2076,atmos_c,1065.72,Pg C,earth_c,0.699753
+2076,atmos_c,1065.72,Pg C,atmos_c,0.294679
+
+2076,earth_c,4499.74,Pg C,untracked,0
+2076,earth_c,4499.74,Pg C,earth_c,1
+2076,earth_c,4499.74,Pg C,atmos_c,0
+
+2077,atmos_c,1065.84,Pg C,untracked,0.0055416
+2077,atmos_c,1065.84,Pg C,earth_c,0.701195
+2077,atmos_c,1065.84,Pg C,atmos_c,0.293264
+
+2077,earth_c,4494.53,Pg C,untracked,0
+2077,earth_c,4494.53,Pg C,earth_c,1
+2077,earth_c,4494.53,Pg C,atmos_c,0
+
+2078,atmos_c,1065.75,Pg C,untracked,0.00551651
+2078,atmos_c,1065.75,Pg C,earth_c,0.702548
+2078,atmos_c,1065.75,Pg C,atmos_c,0.291936
+
+2078,earth_c,4489.61,Pg C,untracked,0
+2078,earth_c,4489.61,Pg C,earth_c,1
+2078,earth_c,4489.61,Pg C,atmos_c,0
+
+2079,atmos_c,1065.45,Pg C,untracked,0.00549303
+2079,atmos_c,1065.45,Pg C,earth_c,0.703813
+2079,atmos_c,1065.45,Pg C,atmos_c,0.290694
+
+2079,earth_c,4484.99,Pg C,untracked,0
+2079,earth_c,4484.99,Pg C,earth_c,1
+2079,earth_c,4484.99,Pg C,atmos_c,0
+
+2080,atmos_c,1064.94,Pg C,untracked,0.00547116
+2080,atmos_c,1064.94,Pg C,earth_c,0.704993
+2080,atmos_c,1064.94,Pg C,atmos_c,0.289536
+
+2080,earth_c,4480.66,Pg C,untracked,0
+2080,earth_c,4480.66,Pg C,earth_c,1
+2080,earth_c,4480.66,Pg C,atmos_c,0
+
+2081,atmos_c,1064.38,Pg C,untracked,0.00544973
+2081,atmos_c,1064.38,Pg C,earth_c,0.706148
+2081,atmos_c,1064.38,Pg C,atmos_c,0.288402
+
+2081,earth_c,4476.48,Pg C,untracked,0
+2081,earth_c,4476.48,Pg C,earth_c,1
+2081,earth_c,4476.48,Pg C,atmos_c,0
+
+2082,atmos_c,1063.9,Pg C,untracked,0.00542836
+2082,atmos_c,1063.9,Pg C,earth_c,0.7073
+2082,atmos_c,1063.9,Pg C,atmos_c,0.287271
+
+2082,earth_c,4472.3,Pg C,untracked,0
+2082,earth_c,4472.3,Pg C,earth_c,1
+2082,earth_c,4472.3,Pg C,atmos_c,0
+
+2083,atmos_c,1063.5,Pg C,untracked,0.00540707
+2083,atmos_c,1063.5,Pg C,earth_c,0.708448
+2083,atmos_c,1063.5,Pg C,atmos_c,0.286145
+
+2083,earth_c,4468.11,Pg C,untracked,0
+2083,earth_c,4468.11,Pg C,earth_c,1
+2083,earth_c,4468.11,Pg C,atmos_c,0
+
+2084,atmos_c,1063.17,Pg C,untracked,0.00538585
+2084,atmos_c,1063.17,Pg C,earth_c,0.709593
+2084,atmos_c,1063.17,Pg C,atmos_c,0.285022
+
+2084,earth_c,4463.92,Pg C,untracked,0
+2084,earth_c,4463.92,Pg C,earth_c,1
+2084,earth_c,4463.92,Pg C,atmos_c,0
+
+2085,atmos_c,1062.92,Pg C,untracked,0.0053647
+2085,atmos_c,1062.92,Pg C,earth_c,0.710733
+2085,atmos_c,1062.92,Pg C,atmos_c,0.283902
+
+2085,earth_c,4459.74,Pg C,untracked,0
+2085,earth_c,4459.74,Pg C,earth_c,1
+2085,earth_c,4459.74,Pg C,atmos_c,0
+
+2086,atmos_c,1062.73,Pg C,untracked,0.00534362
+2086,atmos_c,1062.73,Pg C,earth_c,0.711869
+2086,atmos_c,1062.73,Pg C,atmos_c,0.282787
+
+2086,earth_c,4455.55,Pg C,untracked,0
+2086,earth_c,4455.55,Pg C,earth_c,1
+2086,earth_c,4455.55,Pg C,atmos_c,0
+
+2087,atmos_c,1062.62,Pg C,untracked,0.00532262
+2087,atmos_c,1062.62,Pg C,earth_c,0.713002
+2087,atmos_c,1062.62,Pg C,atmos_c,0.281676
+
+2087,earth_c,4451.36,Pg C,untracked,0
+2087,earth_c,4451.36,Pg C,earth_c,1
+2087,earth_c,4451.36,Pg C,atmos_c,0
+
+2088,atmos_c,1062.57,Pg C,untracked,0.0053017
+2088,atmos_c,1062.57,Pg C,earth_c,0.71413
+2088,atmos_c,1062.57,Pg C,atmos_c,0.280568
+
+2088,earth_c,4447.17,Pg C,untracked,0
+2088,earth_c,4447.17,Pg C,earth_c,1
+2088,earth_c,4447.17,Pg C,atmos_c,0
+
+2089,atmos_c,1062.59,Pg C,untracked,0.00528085
+2089,atmos_c,1062.59,Pg C,earth_c,0.715254
+2089,atmos_c,1062.59,Pg C,atmos_c,0.279465
+
+2089,earth_c,4442.98,Pg C,untracked,0
+2089,earth_c,4442.98,Pg C,earth_c,1
+2089,earth_c,4442.98,Pg C,atmos_c,0
+
+2090,atmos_c,1062.67,Pg C,untracked,0.00526007
+2090,atmos_c,1062.67,Pg C,earth_c,0.716375
+2090,atmos_c,1062.67,Pg C,atmos_c,0.278365
+
+2090,earth_c,4438.79,Pg C,untracked,0
+2090,earth_c,4438.79,Pg C,earth_c,1
+2090,earth_c,4438.79,Pg C,atmos_c,0
+
+2091,atmos_c,1062.81,Pg C,untracked,0.00523938
+2091,atmos_c,1062.81,Pg C,earth_c,0.71749
+2091,atmos_c,1062.81,Pg C,atmos_c,0.27727
+
+2091,earth_c,4434.6,Pg C,untracked,0
+2091,earth_c,4434.6,Pg C,earth_c,1
+2091,earth_c,4434.6,Pg C,atmos_c,0
+
+2092,atmos_c,1063.01,Pg C,untracked,0.00521876
+2092,atmos_c,1063.01,Pg C,earth_c,0.718602
+2092,atmos_c,1063.01,Pg C,atmos_c,0.276179
+
+2092,earth_c,4430.4,Pg C,untracked,0
+2092,earth_c,4430.4,Pg C,earth_c,1
+2092,earth_c,4430.4,Pg C,atmos_c,0
+
+2093,atmos_c,1063.26,Pg C,untracked,0.00519823
+2093,atmos_c,1063.26,Pg C,earth_c,0.719709
+2093,atmos_c,1063.26,Pg C,atmos_c,0.275093
+
+2093,earth_c,4426.21,Pg C,untracked,0
+2093,earth_c,4426.21,Pg C,earth_c,1
+2093,earth_c,4426.21,Pg C,atmos_c,0
+
+2094,atmos_c,1063.57,Pg C,untracked,0.00517777
+2094,atmos_c,1063.57,Pg C,earth_c,0.720812
+2094,atmos_c,1063.57,Pg C,atmos_c,0.27401
+
+2094,earth_c,4422.01,Pg C,untracked,0
+2094,earth_c,4422.01,Pg C,earth_c,1
+2094,earth_c,4422.01,Pg C,atmos_c,0
+
+2095,atmos_c,1063.94,Pg C,untracked,0.0051574
+2095,atmos_c,1063.94,Pg C,earth_c,0.721911
+2095,atmos_c,1063.94,Pg C,atmos_c,0.272932
+
+2095,earth_c,4417.81,Pg C,untracked,0
+2095,earth_c,4417.81,Pg C,earth_c,1
+2095,earth_c,4417.81,Pg C,atmos_c,0
+
+2096,atmos_c,1064.4,Pg C,untracked,0.00513713
+2096,atmos_c,1064.4,Pg C,earth_c,0.723004
+2096,atmos_c,1064.4,Pg C,atmos_c,0.271859
+
+2096,earth_c,4413.61,Pg C,untracked,0
+2096,earth_c,4413.61,Pg C,earth_c,1
+2096,earth_c,4413.61,Pg C,atmos_c,0
+
+2097,atmos_c,1064.87,Pg C,untracked,0.00511694
+2097,atmos_c,1064.87,Pg C,earth_c,0.724092
+2097,atmos_c,1064.87,Pg C,atmos_c,0.270791
+
+2097,earth_c,4409.42,Pg C,untracked,0
+2097,earth_c,4409.42,Pg C,earth_c,1
+2097,earth_c,4409.42,Pg C,atmos_c,0
+
+2098,atmos_c,1065.37,Pg C,untracked,0.00509683
+2098,atmos_c,1065.37,Pg C,earth_c,0.725177
+2098,atmos_c,1065.37,Pg C,atmos_c,0.269727
+
+2098,earth_c,4405.21,Pg C,untracked,0
+2098,earth_c,4405.21,Pg C,earth_c,1
+2098,earth_c,4405.21,Pg C,atmos_c,0
+
+2099,atmos_c,1065.93,Pg C,untracked,0.00507681
+2099,atmos_c,1065.93,Pg C,earth_c,0.726256
+2099,atmos_c,1065.93,Pg C,atmos_c,0.268667
+
+2099,earth_c,4401.01,Pg C,untracked,0
+2099,earth_c,4401.01,Pg C,earth_c,1
+2099,earth_c,4401.01,Pg C,atmos_c,0
+
+2100,atmos_c,1066.54,Pg C,untracked,0.00505687
+2100,atmos_c,1066.54,Pg C,earth_c,0.727331
+2100,atmos_c,1066.54,Pg C,atmos_c,0.267612
+
+2100,earth_c,4396.81,Pg C,untracked,0
+2100,earth_c,4396.81,Pg C,earth_c,1
+2100,earth_c,4396.81,Pg C,atmos_c,0
+
+2101,atmos_c,1067.13,Pg C,untracked,0.00503755
+2101,atmos_c,1067.13,Pg C,earth_c,0.728373
+2101,atmos_c,1067.13,Pg C,atmos_c,0.266589
+
+2101,earth_c,4392.66,Pg C,untracked,0
+2101,earth_c,4392.66,Pg C,earth_c,1
+2101,earth_c,4392.66,Pg C,atmos_c,0
+
+2102,atmos_c,1067.64,Pg C,untracked,0.00501883
+2102,atmos_c,1067.64,Pg C,earth_c,0.729382
+2102,atmos_c,1067.64,Pg C,atmos_c,0.265599
+
+2102,earth_c,4388.63,Pg C,untracked,0
+2102,earth_c,4388.63,Pg C,earth_c,1
+2102,earth_c,4388.63,Pg C,atmos_c,0
+
+2103,atmos_c,1068.1,Pg C,untracked,0.00500072
+2103,atmos_c,1068.1,Pg C,earth_c,0.730359
+2103,atmos_c,1068.1,Pg C,atmos_c,0.26464
+
+2103,earth_c,4384.71,Pg C,untracked,0
+2103,earth_c,4384.71,Pg C,earth_c,1
+2103,earth_c,4384.71,Pg C,atmos_c,0
+
+2104,atmos_c,1068.49,Pg C,untracked,0.00498321
+2104,atmos_c,1068.49,Pg C,earth_c,0.731303
+2104,atmos_c,1068.49,Pg C,atmos_c,0.263713
+
+2104,earth_c,4380.9,Pg C,untracked,0
+2104,earth_c,4380.9,Pg C,earth_c,1
+2104,earth_c,4380.9,Pg C,atmos_c,0
+
+2105,atmos_c,1068.8,Pg C,untracked,0.00496628
+2105,atmos_c,1068.8,Pg C,earth_c,0.732216
+2105,atmos_c,1068.8,Pg C,atmos_c,0.262818
+
+2105,earth_c,4377.2,Pg C,untracked,0
+2105,earth_c,4377.2,Pg C,earth_c,1
+2105,earth_c,4377.2,Pg C,atmos_c,0
+
+2106,atmos_c,1069.05,Pg C,untracked,0.00494993
+2106,atmos_c,1069.05,Pg C,earth_c,0.733098
+2106,atmos_c,1069.05,Pg C,atmos_c,0.261952
+
+2106,earth_c,4373.61,Pg C,untracked,0
+2106,earth_c,4373.61,Pg C,earth_c,1
+2106,earth_c,4373.61,Pg C,atmos_c,0
+
+2107,atmos_c,1069.25,Pg C,untracked,0.00493415
+2107,atmos_c,1069.25,Pg C,earth_c,0.733948
+2107,atmos_c,1069.25,Pg C,atmos_c,0.261118
+
+2107,earth_c,4370.14,Pg C,untracked,0
+2107,earth_c,4370.14,Pg C,earth_c,1
+2107,earth_c,4370.14,Pg C,atmos_c,0
+
+2108,atmos_c,1069.38,Pg C,untracked,0.00491894
+2108,atmos_c,1069.38,Pg C,earth_c,0.734768
+2108,atmos_c,1069.38,Pg C,atmos_c,0.260313
+
+2108,earth_c,4366.78,Pg C,untracked,0
+2108,earth_c,4366.78,Pg C,earth_c,1
+2108,earth_c,4366.78,Pg C,atmos_c,0
+
+2109,atmos_c,1069.44,Pg C,untracked,0.0049043
+2109,atmos_c,1069.44,Pg C,earth_c,0.735558
+2109,atmos_c,1069.44,Pg C,atmos_c,0.259538
+
+2109,earth_c,4363.53,Pg C,untracked,0
+2109,earth_c,4363.53,Pg C,earth_c,1
+2109,earth_c,4363.53,Pg C,atmos_c,0
+
+2110,atmos_c,1069.44,Pg C,untracked,0.00489021
+2110,atmos_c,1069.44,Pg C,earth_c,0.736318
+2110,atmos_c,1069.44,Pg C,atmos_c,0.258792
+
+2110,earth_c,4360.39,Pg C,untracked,0
+2110,earth_c,4360.39,Pg C,earth_c,1
+2110,earth_c,4360.39,Pg C,atmos_c,0
+
+2111,atmos_c,1069.39,Pg C,untracked,0.00487652
+2111,atmos_c,1069.39,Pg C,earth_c,0.737056
+2111,atmos_c,1069.39,Pg C,atmos_c,0.258067
+
+2111,earth_c,4357.35,Pg C,untracked,0
+2111,earth_c,4357.35,Pg C,earth_c,1
+2111,earth_c,4357.35,Pg C,atmos_c,0
+
+2112,atmos_c,1069.31,Pg C,untracked,0.00486323
+2112,atmos_c,1069.31,Pg C,earth_c,0.737773
+2112,atmos_c,1069.31,Pg C,atmos_c,0.257364
+
+2112,earth_c,4354.38,Pg C,untracked,0
+2112,earth_c,4354.38,Pg C,earth_c,1
+2112,earth_c,4354.38,Pg C,atmos_c,0
+
+2113,atmos_c,1069.2,Pg C,untracked,0.00485034
+2113,atmos_c,1069.2,Pg C,earth_c,0.738468
+2113,atmos_c,1069.2,Pg C,atmos_c,0.256682
+
+2113,earth_c,4351.5,Pg C,untracked,0
+2113,earth_c,4351.5,Pg C,earth_c,1
+2113,earth_c,4351.5,Pg C,atmos_c,0
+
+2114,atmos_c,1069.06,Pg C,untracked,0.00483784
+2114,atmos_c,1069.06,Pg C,earth_c,0.739142
+2114,atmos_c,1069.06,Pg C,atmos_c,0.25602
+
+2114,earth_c,4348.7,Pg C,untracked,0
+2114,earth_c,4348.7,Pg C,earth_c,1
+2114,earth_c,4348.7,Pg C,atmos_c,0
+
+2115,atmos_c,1068.88,Pg C,untracked,0.00482572
+2115,atmos_c,1068.88,Pg C,earth_c,0.739795
+2115,atmos_c,1068.88,Pg C,atmos_c,0.255379
+
+2115,earth_c,4345.98,Pg C,untracked,0
+2115,earth_c,4345.98,Pg C,earth_c,1
+2115,earth_c,4345.98,Pg C,atmos_c,0
+
+2116,atmos_c,1068.67,Pg C,untracked,0.004814
+2116,atmos_c,1068.67,Pg C,earth_c,0.740427
+2116,atmos_c,1068.67,Pg C,atmos_c,0.254759
+
+2116,earth_c,4343.33,Pg C,untracked,0
+2116,earth_c,4343.33,Pg C,earth_c,1
+2116,earth_c,4343.33,Pg C,atmos_c,0
+
+2117,atmos_c,1068.43,Pg C,untracked,0.00480266
+2117,atmos_c,1068.43,Pg C,earth_c,0.741039
+2117,atmos_c,1068.43,Pg C,atmos_c,0.254159
+
+2117,earth_c,4340.77,Pg C,untracked,0
+2117,earth_c,4340.77,Pg C,earth_c,1
+2117,earth_c,4340.77,Pg C,atmos_c,0
+
+2118,atmos_c,1068.15,Pg C,untracked,0.0047917
+2118,atmos_c,1068.15,Pg C,earth_c,0.74163
+2118,atmos_c,1068.15,Pg C,atmos_c,0.253579
+
+2118,earth_c,4338.29,Pg C,untracked,0
+2118,earth_c,4338.29,Pg C,earth_c,1
+2118,earth_c,4338.29,Pg C,atmos_c,0
+
+2119,atmos_c,1067.84,Pg C,untracked,0.00478111
+2119,atmos_c,1067.84,Pg C,earth_c,0.7422
+2119,atmos_c,1067.84,Pg C,atmos_c,0.253019
+
+2119,earth_c,4335.88,Pg C,untracked,0
+2119,earth_c,4335.88,Pg C,earth_c,1
+2119,earth_c,4335.88,Pg C,atmos_c,0
+
+2120,atmos_c,1067.5,Pg C,untracked,0.00477091
+2120,atmos_c,1067.5,Pg C,earth_c,0.742751
+2120,atmos_c,1067.5,Pg C,atmos_c,0.252479
+
+2120,earth_c,4333.56,Pg C,untracked,0
+2120,earth_c,4333.56,Pg C,earth_c,1
+2120,earth_c,4333.56,Pg C,atmos_c,0
+
+2121,atmos_c,1067.15,Pg C,untracked,0.00476086
+2121,atmos_c,1067.15,Pg C,earth_c,0.743292
+2121,atmos_c,1067.15,Pg C,atmos_c,0.251947
+
+2121,earth_c,4331.29,Pg C,untracked,0
+2121,earth_c,4331.29,Pg C,earth_c,1
+2121,earth_c,4331.29,Pg C,atmos_c,0
+
+2122,atmos_c,1066.8,Pg C,untracked,0.00475098
+2122,atmos_c,1066.8,Pg C,earth_c,0.743825
+2122,atmos_c,1066.8,Pg C,atmos_c,0.251424
+
+2122,earth_c,4329.05,Pg C,untracked,0
+2122,earth_c,4329.05,Pg C,earth_c,1
+2122,earth_c,4329.05,Pg C,atmos_c,0
+
+2123,atmos_c,1066.47,Pg C,untracked,0.00474125
+2123,atmos_c,1066.47,Pg C,earth_c,0.74435
+2123,atmos_c,1066.47,Pg C,atmos_c,0.250909
+
+2123,earth_c,4326.85,Pg C,untracked,0
+2123,earth_c,4326.85,Pg C,earth_c,1
+2123,earth_c,4326.85,Pg C,atmos_c,0
+
+2124,atmos_c,1066.15,Pg C,untracked,0.00473168
+2124,atmos_c,1066.15,Pg C,earth_c,0.744866
+2124,atmos_c,1066.15,Pg C,atmos_c,0.250403
+
+2124,earth_c,4324.68,Pg C,untracked,0
+2124,earth_c,4324.68,Pg C,earth_c,1
+2124,earth_c,4324.68,Pg C,atmos_c,0
+
+2125,atmos_c,1065.84,Pg C,untracked,0.00472228
+2125,atmos_c,1065.84,Pg C,earth_c,0.745373
+2125,atmos_c,1065.84,Pg C,atmos_c,0.249905
+
+2125,earth_c,4322.54,Pg C,untracked,0
+2125,earth_c,4322.54,Pg C,earth_c,1
+2125,earth_c,4322.54,Pg C,atmos_c,0
+
+2126,atmos_c,1065.53,Pg C,untracked,0.00471302
+2126,atmos_c,1065.53,Pg C,earth_c,0.745872
+2126,atmos_c,1065.53,Pg C,atmos_c,0.249415
+
+2126,earth_c,4320.43,Pg C,untracked,0
+2126,earth_c,4320.43,Pg C,earth_c,1
+2126,earth_c,4320.43,Pg C,atmos_c,0
+
+2127,atmos_c,1065.24,Pg C,untracked,0.00470393
+2127,atmos_c,1065.24,Pg C,earth_c,0.746362
+2127,atmos_c,1065.24,Pg C,atmos_c,0.248934
+
+2127,earth_c,4318.35,Pg C,untracked,0
+2127,earth_c,4318.35,Pg C,earth_c,1
+2127,earth_c,4318.35,Pg C,atmos_c,0
+
+2128,atmos_c,1064.94,Pg C,untracked,0.00469499
+2128,atmos_c,1064.94,Pg C,earth_c,0.746844
+2128,atmos_c,1064.94,Pg C,atmos_c,0.248461
+
+2128,earth_c,4316.31,Pg C,untracked,0
+2128,earth_c,4316.31,Pg C,earth_c,1
+2128,earth_c,4316.31,Pg C,atmos_c,0
+
+2129,atmos_c,1064.66,Pg C,untracked,0.00468621
+2129,atmos_c,1064.66,Pg C,earth_c,0.747318
+2129,atmos_c,1064.66,Pg C,atmos_c,0.247996
+
+2129,earth_c,4314.3,Pg C,untracked,0
+2129,earth_c,4314.3,Pg C,earth_c,1
+2129,earth_c,4314.3,Pg C,atmos_c,0
+
+2130,atmos_c,1064.38,Pg C,untracked,0.00467758
+2130,atmos_c,1064.38,Pg C,earth_c,0.747783
+2130,atmos_c,1064.38,Pg C,atmos_c,0.247539
+
+2130,earth_c,4312.32,Pg C,untracked,0
+2130,earth_c,4312.32,Pg C,earth_c,1
+2130,earth_c,4312.32,Pg C,atmos_c,0
+
+2131,atmos_c,1064.1,Pg C,untracked,0.00466907
+2131,atmos_c,1064.1,Pg C,earth_c,0.748241
+2131,atmos_c,1064.1,Pg C,atmos_c,0.247089
+
+2131,earth_c,4310.36,Pg C,untracked,0
+2131,earth_c,4310.36,Pg C,earth_c,1
+2131,earth_c,4310.36,Pg C,atmos_c,0
+
+2132,atmos_c,1063.84,Pg C,untracked,0.0046607
+2132,atmos_c,1063.84,Pg C,earth_c,0.748693
+2132,atmos_c,1063.84,Pg C,atmos_c,0.246646
+
+2132,earth_c,4308.44,Pg C,untracked,0
+2132,earth_c,4308.44,Pg C,earth_c,1
+2132,earth_c,4308.44,Pg C,atmos_c,0
+
+2133,atmos_c,1063.59,Pg C,untracked,0.00465244
+2133,atmos_c,1063.59,Pg C,earth_c,0.749138
+2133,atmos_c,1063.59,Pg C,atmos_c,0.246209
+
+2133,earth_c,4306.54,Pg C,untracked,0
+2133,earth_c,4306.54,Pg C,earth_c,1
+2133,earth_c,4306.54,Pg C,atmos_c,0
+
+2134,atmos_c,1063.34,Pg C,untracked,0.00464431
+2134,atmos_c,1063.34,Pg C,earth_c,0.749577
+2134,atmos_c,1063.34,Pg C,atmos_c,0.245779
+
+2134,earth_c,4304.66,Pg C,untracked,0
+2134,earth_c,4304.66,Pg C,earth_c,1
+2134,earth_c,4304.66,Pg C,atmos_c,0
+
+2135,atmos_c,1063.11,Pg C,untracked,0.0046363
+2135,atmos_c,1063.11,Pg C,earth_c,0.750009
+2135,atmos_c,1063.11,Pg C,atmos_c,0.245355
+
+2135,earth_c,4302.81,Pg C,untracked,0
+2135,earth_c,4302.81,Pg C,earth_c,1
+2135,earth_c,4302.81,Pg C,atmos_c,0
+
+2136,atmos_c,1062.88,Pg C,untracked,0.00462842
+2136,atmos_c,1062.88,Pg C,earth_c,0.750434
+2136,atmos_c,1062.88,Pg C,atmos_c,0.244938
+
+2136,earth_c,4300.99,Pg C,untracked,0
+2136,earth_c,4300.99,Pg C,earth_c,1
+2136,earth_c,4300.99,Pg C,atmos_c,0
+
+2137,atmos_c,1062.66,Pg C,untracked,0.00462065
+2137,atmos_c,1062.66,Pg C,earth_c,0.750852
+2137,atmos_c,1062.66,Pg C,atmos_c,0.244527
+
+2137,earth_c,4299.19,Pg C,untracked,0
+2137,earth_c,4299.19,Pg C,earth_c,1
+2137,earth_c,4299.19,Pg C,atmos_c,0
+
+2138,atmos_c,1062.45,Pg C,untracked,0.00461301
+2138,atmos_c,1062.45,Pg C,earth_c,0.751264
+2138,atmos_c,1062.45,Pg C,atmos_c,0.244123
+
+2138,earth_c,4297.42,Pg C,untracked,0
+2138,earth_c,4297.42,Pg C,earth_c,1
+2138,earth_c,4297.42,Pg C,atmos_c,0
+
+2139,atmos_c,1062.24,Pg C,untracked,0.00460549
+2139,atmos_c,1062.24,Pg C,earth_c,0.75167
+2139,atmos_c,1062.24,Pg C,atmos_c,0.243725
+
+2139,earth_c,4295.67,Pg C,untracked,0
+2139,earth_c,4295.67,Pg C,earth_c,1
+2139,earth_c,4295.67,Pg C,atmos_c,0
+
+2140,atmos_c,1062.04,Pg C,untracked,0.00459809
+2140,atmos_c,1062.04,Pg C,earth_c,0.752069
+2140,atmos_c,1062.04,Pg C,atmos_c,0.243333
+
+2140,earth_c,4293.95,Pg C,untracked,0
+2140,earth_c,4293.95,Pg C,earth_c,1
+2140,earth_c,4293.95,Pg C,atmos_c,0
+
+2141,atmos_c,1061.84,Pg C,untracked,0.00459082
+2141,atmos_c,1061.84,Pg C,earth_c,0.752461
+2141,atmos_c,1061.84,Pg C,atmos_c,0.242948
+
+2141,earth_c,4292.25,Pg C,untracked,0
+2141,earth_c,4292.25,Pg C,earth_c,1
+2141,earth_c,4292.25,Pg C,atmos_c,0
+
+2142,atmos_c,1061.64,Pg C,untracked,0.00458366
+2142,atmos_c,1061.64,Pg C,earth_c,0.752847
+2142,atmos_c,1061.64,Pg C,atmos_c,0.24257
+
+2142,earth_c,4290.58,Pg C,untracked,0
+2142,earth_c,4290.58,Pg C,earth_c,1
+2142,earth_c,4290.58,Pg C,atmos_c,0
+
+2143,atmos_c,1061.45,Pg C,untracked,0.00457663
+2143,atmos_c,1061.45,Pg C,earth_c,0.753226
+2143,atmos_c,1061.45,Pg C,atmos_c,0.242197
+
+2143,earth_c,4288.94,Pg C,untracked,0
+2143,earth_c,4288.94,Pg C,earth_c,1
+2143,earth_c,4288.94,Pg C,atmos_c,0
+
+2144,atmos_c,1061.26,Pg C,untracked,0.00456973
+2144,atmos_c,1061.26,Pg C,earth_c,0.753598
+2144,atmos_c,1061.26,Pg C,atmos_c,0.241832
+
+2144,earth_c,4287.32,Pg C,untracked,0
+2144,earth_c,4287.32,Pg C,earth_c,1
+2144,earth_c,4287.32,Pg C,atmos_c,0
+
+2145,atmos_c,1061.07,Pg C,untracked,0.00456294
+2145,atmos_c,1061.07,Pg C,earth_c,0.753964
+2145,atmos_c,1061.07,Pg C,atmos_c,0.241473
+
+2145,earth_c,4285.73,Pg C,untracked,0
+2145,earth_c,4285.73,Pg C,earth_c,1
+2145,earth_c,4285.73,Pg C,atmos_c,0
+
+2146,atmos_c,1060.89,Pg C,untracked,0.00455627
+2146,atmos_c,1060.89,Pg C,earth_c,0.754324
+2146,atmos_c,1060.89,Pg C,atmos_c,0.24112
+
+2146,earth_c,4284.16,Pg C,untracked,0
+2146,earth_c,4284.16,Pg C,earth_c,1
+2146,earth_c,4284.16,Pg C,atmos_c,0
+
+2147,atmos_c,1060.7,Pg C,untracked,0.00454973
+2147,atmos_c,1060.7,Pg C,earth_c,0.754677
+2147,atmos_c,1060.7,Pg C,atmos_c,0.240774
+
+2147,earth_c,4282.62,Pg C,untracked,0
+2147,earth_c,4282.62,Pg C,earth_c,1
+2147,earth_c,4282.62,Pg C,atmos_c,0
+
+2148,atmos_c,1060.52,Pg C,untracked,0.0045433
+2148,atmos_c,1060.52,Pg C,earth_c,0.755023
+2148,atmos_c,1060.52,Pg C,atmos_c,0.240434
+
+2148,earth_c,4281.11,Pg C,untracked,0
+2148,earth_c,4281.11,Pg C,earth_c,1
+2148,earth_c,4281.11,Pg C,atmos_c,0
+
+2149,atmos_c,1060.36,Pg C,untracked,0.00453674
+2149,atmos_c,1060.36,Pg C,earth_c,0.755377
+2149,atmos_c,1060.36,Pg C,atmos_c,0.240086
+
+2149,earth_c,4279.59,Pg C,untracked,0
+2149,earth_c,4279.59,Pg C,earth_c,1
+2149,earth_c,4279.59,Pg C,atmos_c,0
+
+2150,atmos_c,1060.25,Pg C,untracked,0.00453013
+2150,atmos_c,1060.25,Pg C,earth_c,0.755734
+2150,atmos_c,1060.25,Pg C,atmos_c,0.239736
+
+2150,earth_c,4278.05,Pg C,untracked,0
+2150,earth_c,4278.05,Pg C,earth_c,1
+2150,earth_c,4278.05,Pg C,atmos_c,0
+
+2151,atmos_c,1060.18,Pg C,untracked,0.0045235
+2151,atmos_c,1060.18,Pg C,earth_c,0.756091
+2151,atmos_c,1060.18,Pg C,atmos_c,0.239386
+
+2151,earth_c,4276.5,Pg C,untracked,0
+2151,earth_c,4276.5,Pg C,earth_c,1
+2151,earth_c,4276.5,Pg C,atmos_c,0
+
+2152,atmos_c,1060.12,Pg C,untracked,0.00451688
+2152,atmos_c,1060.12,Pg C,earth_c,0.756448
+2152,atmos_c,1060.12,Pg C,atmos_c,0.239035
+
+2152,earth_c,4274.95,Pg C,untracked,0
+2152,earth_c,4274.95,Pg C,earth_c,1
+2152,earth_c,4274.95,Pg C,atmos_c,0
+
+2153,atmos_c,1060.09,Pg C,untracked,0.00451027
+2153,atmos_c,1060.09,Pg C,earth_c,0.756804
+2153,atmos_c,1060.09,Pg C,atmos_c,0.238686
+
+2153,earth_c,4273.39,Pg C,untracked,0
+2153,earth_c,4273.39,Pg C,earth_c,1
+2153,earth_c,4273.39,Pg C,atmos_c,0
+
+2154,atmos_c,1060.07,Pg C,untracked,0.00450369
+2154,atmos_c,1060.07,Pg C,earth_c,0.757159
+2154,atmos_c,1060.07,Pg C,atmos_c,0.238337
+
+2154,earth_c,4271.84,Pg C,untracked,0
+2154,earth_c,4271.84,Pg C,earth_c,1
+2154,earth_c,4271.84,Pg C,atmos_c,0
+
+2155,atmos_c,1060.07,Pg C,untracked,0.00449715
+2155,atmos_c,1060.07,Pg C,earth_c,0.757512
+2155,atmos_c,1060.07,Pg C,atmos_c,0.237991
+
+2155,earth_c,4270.3,Pg C,untracked,0
+2155,earth_c,4270.3,Pg C,earth_c,1
+2155,earth_c,4270.3,Pg C,atmos_c,0
+
+2156,atmos_c,1060.08,Pg C,untracked,0.00449066
+2156,atmos_c,1060.08,Pg C,earth_c,0.757862
+2156,atmos_c,1060.08,Pg C,atmos_c,0.237648
+
+2156,earth_c,4268.76,Pg C,untracked,0
+2156,earth_c,4268.76,Pg C,earth_c,1
+2156,earth_c,4268.76,Pg C,atmos_c,0
+
+2157,atmos_c,1060.1,Pg C,untracked,0.00448422
+2157,atmos_c,1060.1,Pg C,earth_c,0.758209
+2157,atmos_c,1060.1,Pg C,atmos_c,0.237307
+
+2157,earth_c,4267.23,Pg C,untracked,0
+2157,earth_c,4267.23,Pg C,earth_c,1
+2157,earth_c,4267.23,Pg C,atmos_c,0
+
+2158,atmos_c,1060.13,Pg C,untracked,0.00447783
+2158,atmos_c,1060.13,Pg C,earth_c,0.758554
+2158,atmos_c,1060.13,Pg C,atmos_c,0.236969
+
+2158,earth_c,4265.72,Pg C,untracked,0
+2158,earth_c,4265.72,Pg C,earth_c,1
+2158,earth_c,4265.72,Pg C,atmos_c,0
+
+2159,atmos_c,1060.17,Pg C,untracked,0.00447148
+2159,atmos_c,1060.17,Pg C,earth_c,0.758896
+2159,atmos_c,1060.17,Pg C,atmos_c,0.236633
+
+2159,earth_c,4264.21,Pg C,untracked,0
+2159,earth_c,4264.21,Pg C,earth_c,1
+2159,earth_c,4264.21,Pg C,atmos_c,0
+
+2160,atmos_c,1060.21,Pg C,untracked,0.00446519
+2160,atmos_c,1060.21,Pg C,earth_c,0.759235
+2160,atmos_c,1060.21,Pg C,atmos_c,0.2363
+
+2160,earth_c,4262.71,Pg C,untracked,0
+2160,earth_c,4262.71,Pg C,earth_c,1
+2160,earth_c,4262.71,Pg C,atmos_c,0
+
+2161,atmos_c,1060.26,Pg C,untracked,0.00445895
+2161,atmos_c,1060.26,Pg C,earth_c,0.759571
+2161,atmos_c,1060.26,Pg C,atmos_c,0.23597
+
+2161,earth_c,4261.22,Pg C,untracked,0
+2161,earth_c,4261.22,Pg C,earth_c,1
+2161,earth_c,4261.22,Pg C,atmos_c,0
+
+2162,atmos_c,1060.32,Pg C,untracked,0.00445277
+2162,atmos_c,1060.32,Pg C,earth_c,0.759905
+2162,atmos_c,1060.32,Pg C,atmos_c,0.235643
+
+2162,earth_c,4259.74,Pg C,untracked,0
+2162,earth_c,4259.74,Pg C,earth_c,1
+2162,earth_c,4259.74,Pg C,atmos_c,0
+
+2163,atmos_c,1060.38,Pg C,untracked,0.00444665
+2163,atmos_c,1060.38,Pg C,earth_c,0.760235
+2163,atmos_c,1060.38,Pg C,atmos_c,0.235318
+
+2163,earth_c,4258.28,Pg C,untracked,0
+2163,earth_c,4258.28,Pg C,earth_c,1
+2163,earth_c,4258.28,Pg C,atmos_c,0
+
+2164,atmos_c,1060.45,Pg C,untracked,0.00444058
+2164,atmos_c,1060.45,Pg C,earth_c,0.760562
+2164,atmos_c,1060.45,Pg C,atmos_c,0.234997
+
+2164,earth_c,4256.82,Pg C,untracked,0
+2164,earth_c,4256.82,Pg C,earth_c,1
+2164,earth_c,4256.82,Pg C,atmos_c,0
+
+2165,atmos_c,1060.53,Pg C,untracked,0.00443456
+2165,atmos_c,1060.53,Pg C,earth_c,0.760886
+2165,atmos_c,1060.53,Pg C,atmos_c,0.234679
+
+2165,earth_c,4255.38,Pg C,untracked,0
+2165,earth_c,4255.38,Pg C,earth_c,1
+2165,earth_c,4255.38,Pg C,atmos_c,0
+
+2166,atmos_c,1060.61,Pg C,untracked,0.00442861
+2166,atmos_c,1060.61,Pg C,earth_c,0.761208
+2166,atmos_c,1060.61,Pg C,atmos_c,0.234364
+
+2166,earth_c,4253.95,Pg C,untracked,0
+2166,earth_c,4253.95,Pg C,earth_c,1
+2166,earth_c,4253.95,Pg C,atmos_c,0
+
+2167,atmos_c,1060.69,Pg C,untracked,0.0044227
+2167,atmos_c,1060.69,Pg C,earth_c,0.761526
+2167,atmos_c,1060.69,Pg C,atmos_c,0.234051
+
+2167,earth_c,4252.52,Pg C,untracked,0
+2167,earth_c,4252.52,Pg C,earth_c,1
+2167,earth_c,4252.52,Pg C,atmos_c,0
+
+2168,atmos_c,1060.78,Pg C,untracked,0.00441686
+2168,atmos_c,1060.78,Pg C,earth_c,0.761841
+2168,atmos_c,1060.78,Pg C,atmos_c,0.233742
+
+2168,earth_c,4251.11,Pg C,untracked,0
+2168,earth_c,4251.11,Pg C,earth_c,1
+2168,earth_c,4251.11,Pg C,atmos_c,0
+
+2169,atmos_c,1060.88,Pg C,untracked,0.00441107
+2169,atmos_c,1060.88,Pg C,earth_c,0.762153
+2169,atmos_c,1060.88,Pg C,atmos_c,0.233435
+
+2169,earth_c,4249.72,Pg C,untracked,0
+2169,earth_c,4249.72,Pg C,earth_c,1
+2169,earth_c,4249.72,Pg C,atmos_c,0
+
+2170,atmos_c,1060.98,Pg C,untracked,0.00440533
+2170,atmos_c,1060.98,Pg C,earth_c,0.762463
+2170,atmos_c,1060.98,Pg C,atmos_c,0.233132
+
+2170,earth_c,4248.33,Pg C,untracked,0
+2170,earth_c,4248.33,Pg C,earth_c,1
+2170,earth_c,4248.33,Pg C,atmos_c,0
+
+2171,atmos_c,1061.09,Pg C,untracked,0.00439964
+2171,atmos_c,1061.09,Pg C,earth_c,0.762769
+2171,atmos_c,1061.09,Pg C,atmos_c,0.232831
+
+2171,earth_c,4246.95,Pg C,untracked,0
+2171,earth_c,4246.95,Pg C,earth_c,1
+2171,earth_c,4246.95,Pg C,atmos_c,0
+
+2172,atmos_c,1061.2,Pg C,untracked,0.00439401
+2172,atmos_c,1061.2,Pg C,earth_c,0.763073
+2172,atmos_c,1061.2,Pg C,atmos_c,0.232533
+
+2172,earth_c,4245.59,Pg C,untracked,0
+2172,earth_c,4245.59,Pg C,earth_c,1
+2172,earth_c,4245.59,Pg C,atmos_c,0
+
+2173,atmos_c,1061.32,Pg C,untracked,0.00438842
+2173,atmos_c,1061.32,Pg C,earth_c,0.763374
+2173,atmos_c,1061.32,Pg C,atmos_c,0.232237
+
+2173,earth_c,4244.23,Pg C,untracked,0
+2173,earth_c,4244.23,Pg C,earth_c,1
+2173,earth_c,4244.23,Pg C,atmos_c,0
+
+2174,atmos_c,1061.44,Pg C,untracked,0.00438289
+2174,atmos_c,1061.44,Pg C,earth_c,0.763673
+2174,atmos_c,1061.44,Pg C,atmos_c,0.231944
+
+2174,earth_c,4242.89,Pg C,untracked,0
+2174,earth_c,4242.89,Pg C,earth_c,1
+2174,earth_c,4242.89,Pg C,atmos_c,0
+
+2175,atmos_c,1061.56,Pg C,untracked,0.0043774
+2175,atmos_c,1061.56,Pg C,earth_c,0.763969
+2175,atmos_c,1061.56,Pg C,atmos_c,0.231654
+
+2175,earth_c,4241.55,Pg C,untracked,0
+2175,earth_c,4241.55,Pg C,earth_c,1
+2175,earth_c,4241.55,Pg C,atmos_c,0
+
+2176,atmos_c,1061.69,Pg C,untracked,0.00437197
+2176,atmos_c,1061.69,Pg C,earth_c,0.764262
+2176,atmos_c,1061.69,Pg C,atmos_c,0.231366
+
+2176,earth_c,4240.23,Pg C,untracked,0
+2176,earth_c,4240.23,Pg C,earth_c,1
+2176,earth_c,4240.23,Pg C,atmos_c,0
+
+2177,atmos_c,1061.82,Pg C,untracked,0.00436658
+2177,atmos_c,1061.82,Pg C,earth_c,0.764552
+2177,atmos_c,1061.82,Pg C,atmos_c,0.231081
+
+2177,earth_c,4238.91,Pg C,untracked,0
+2177,earth_c,4238.91,Pg C,earth_c,1
+2177,earth_c,4238.91,Pg C,atmos_c,0
+
+2178,atmos_c,1061.95,Pg C,untracked,0.00436125
+2178,atmos_c,1061.95,Pg C,earth_c,0.76484
+2178,atmos_c,1061.95,Pg C,atmos_c,0.230799
+
+2178,earth_c,4237.61,Pg C,untracked,0
+2178,earth_c,4237.61,Pg C,earth_c,1
+2178,earth_c,4237.61,Pg C,atmos_c,0
+
+2179,atmos_c,1062.08,Pg C,untracked,0.00435596
+2179,atmos_c,1062.08,Pg C,earth_c,0.765125
+2179,atmos_c,1062.08,Pg C,atmos_c,0.230519
+
+2179,earth_c,4236.31,Pg C,untracked,0
+2179,earth_c,4236.31,Pg C,earth_c,1
+2179,earth_c,4236.31,Pg C,atmos_c,0
+
+2180,atmos_c,1062.22,Pg C,untracked,0.00435072
+2180,atmos_c,1062.22,Pg C,earth_c,0.765407
+2180,atmos_c,1062.22,Pg C,atmos_c,0.230242
+
+2180,earth_c,4235.03,Pg C,untracked,0
+2180,earth_c,4235.03,Pg C,earth_c,1
+2180,earth_c,4235.03,Pg C,atmos_c,0
+
+2181,atmos_c,1062.35,Pg C,untracked,0.00434553
+2181,atmos_c,1062.35,Pg C,earth_c,0.765687
+2181,atmos_c,1062.35,Pg C,atmos_c,0.229967
+
+2181,earth_c,4233.76,Pg C,untracked,0
+2181,earth_c,4233.76,Pg C,earth_c,1
+2181,earth_c,4233.76,Pg C,atmos_c,0
+
+2182,atmos_c,1062.49,Pg C,untracked,0.00434038
+2182,atmos_c,1062.49,Pg C,earth_c,0.765965
+2182,atmos_c,1062.49,Pg C,atmos_c,0.229695
+
+2182,earth_c,4232.49,Pg C,untracked,0
+2182,earth_c,4232.49,Pg C,earth_c,1
+2182,earth_c,4232.49,Pg C,atmos_c,0
+
+2183,atmos_c,1062.63,Pg C,untracked,0.00433527
+2183,atmos_c,1062.63,Pg C,earth_c,0.76624
+2183,atmos_c,1062.63,Pg C,atmos_c,0.229424
+
+2183,earth_c,4231.23,Pg C,untracked,0
+2183,earth_c,4231.23,Pg C,earth_c,1
+2183,earth_c,4231.23,Pg C,atmos_c,0
+
+2184,atmos_c,1062.77,Pg C,untracked,0.0043302
+2184,atmos_c,1062.77,Pg C,earth_c,0.766514
+2184,atmos_c,1062.77,Pg C,atmos_c,0.229156
+
+2184,earth_c,4229.99,Pg C,untracked,0
+2184,earth_c,4229.99,Pg C,earth_c,1
+2184,earth_c,4229.99,Pg C,atmos_c,0
+
+2185,atmos_c,1062.9,Pg C,untracked,0.00432518
+2185,atmos_c,1062.9,Pg C,earth_c,0.766784
+2185,atmos_c,1062.9,Pg C,atmos_c,0.22889
+
+2185,earth_c,4228.75,Pg C,untracked,0
+2185,earth_c,4228.75,Pg C,earth_c,1
+2185,earth_c,4228.75,Pg C,atmos_c,0
+
+2186,atmos_c,1063.04,Pg C,untracked,0.0043202
+2186,atmos_c,1063.04,Pg C,earth_c,0.767053
+2186,atmos_c,1063.04,Pg C,atmos_c,0.228627
+
+2186,earth_c,4227.52,Pg C,untracked,0
+2186,earth_c,4227.52,Pg C,earth_c,1
+2186,earth_c,4227.52,Pg C,atmos_c,0
+
+2187,atmos_c,1063.19,Pg C,untracked,0.00431526
+2187,atmos_c,1063.19,Pg C,earth_c,0.767319
+2187,atmos_c,1063.19,Pg C,atmos_c,0.228365
+
+2187,earth_c,4226.3,Pg C,untracked,0
+2187,earth_c,4226.3,Pg C,earth_c,1
+2187,earth_c,4226.3,Pg C,atmos_c,0
+
+2188,atmos_c,1063.33,Pg C,untracked,0.00431036
+2188,atmos_c,1063.33,Pg C,earth_c,0.767583
+2188,atmos_c,1063.33,Pg C,atmos_c,0.228106
+
+2188,earth_c,4225.08,Pg C,untracked,0
+2188,earth_c,4225.08,Pg C,earth_c,1
+2188,earth_c,4225.08,Pg C,atmos_c,0
+
+2189,atmos_c,1063.47,Pg C,untracked,0.00430551
+2189,atmos_c,1063.47,Pg C,earth_c,0.767845
+2189,atmos_c,1063.47,Pg C,atmos_c,0.227849
+
+2189,earth_c,4223.88,Pg C,untracked,0
+2189,earth_c,4223.88,Pg C,earth_c,1
+2189,earth_c,4223.88,Pg C,atmos_c,0
+
+2190,atmos_c,1063.61,Pg C,untracked,0.0043007
+2190,atmos_c,1063.61,Pg C,earth_c,0.768105
+2190,atmos_c,1063.61,Pg C,atmos_c,0.227595
+
+2190,earth_c,4222.69,Pg C,untracked,0
+2190,earth_c,4222.69,Pg C,earth_c,1
+2190,earth_c,4222.69,Pg C,atmos_c,0
+
+2191,atmos_c,1063.75,Pg C,untracked,0.00429592
+2191,atmos_c,1063.75,Pg C,earth_c,0.768362
+2191,atmos_c,1063.75,Pg C,atmos_c,0.227342
+
+2191,earth_c,4221.5,Pg C,untracked,0
+2191,earth_c,4221.5,Pg C,earth_c,1
+2191,earth_c,4221.5,Pg C,atmos_c,0
+
+2192,atmos_c,1063.89,Pg C,untracked,0.00429118
+2192,atmos_c,1063.89,Pg C,earth_c,0.768618
+2192,atmos_c,1063.89,Pg C,atmos_c,0.227091
+
+2192,earth_c,4220.32,Pg C,untracked,0
+2192,earth_c,4220.32,Pg C,earth_c,1
+2192,earth_c,4220.32,Pg C,atmos_c,0
+
+2193,atmos_c,1064.02,Pg C,untracked,0.00428647
+2193,atmos_c,1064.02,Pg C,earth_c,0.768871
+2193,atmos_c,1064.02,Pg C,atmos_c,0.226842
+
+2193,earth_c,4219.15,Pg C,untracked,0
+2193,earth_c,4219.15,Pg C,earth_c,1
+2193,earth_c,4219.15,Pg C,atmos_c,0
+
+2194,atmos_c,1064.16,Pg C,untracked,0.00428181
+2194,atmos_c,1064.16,Pg C,earth_c,0.769123
+2194,atmos_c,1064.16,Pg C,atmos_c,0.226595
+
+2194,earth_c,4217.99,Pg C,untracked,0
+2194,earth_c,4217.99,Pg C,earth_c,1
+2194,earth_c,4217.99,Pg C,atmos_c,0
+
+2195,atmos_c,1064.29,Pg C,untracked,0.00427717
+2195,atmos_c,1064.29,Pg C,earth_c,0.769373
+2195,atmos_c,1064.29,Pg C,atmos_c,0.22635
+
+2195,earth_c,4216.83,Pg C,untracked,0
+2195,earth_c,4216.83,Pg C,earth_c,1
+2195,earth_c,4216.83,Pg C,atmos_c,0
+
+2196,atmos_c,1064.43,Pg C,untracked,0.00427258
+2196,atmos_c,1064.43,Pg C,earth_c,0.769621
+2196,atmos_c,1064.43,Pg C,atmos_c,0.226107
+
+2196,earth_c,4215.68,Pg C,untracked,0
+2196,earth_c,4215.68,Pg C,earth_c,1
+2196,earth_c,4215.68,Pg C,atmos_c,0
+
+2197,atmos_c,1064.57,Pg C,untracked,0.00426802
+2197,atmos_c,1064.57,Pg C,earth_c,0.769867
+2197,atmos_c,1064.57,Pg C,atmos_c,0.225865
+
+2197,earth_c,4214.54,Pg C,untracked,0
+2197,earth_c,4214.54,Pg C,earth_c,1
+2197,earth_c,4214.54,Pg C,atmos_c,0
+
+2198,atmos_c,1064.7,Pg C,untracked,0.00426349
+2198,atmos_c,1064.7,Pg C,earth_c,0.770111
+2198,atmos_c,1064.7,Pg C,atmos_c,0.225626
+
+2198,earth_c,4213.41,Pg C,untracked,0
+2198,earth_c,4213.41,Pg C,earth_c,1
+2198,earth_c,4213.41,Pg C,atmos_c,0
+
+2199,atmos_c,1064.83,Pg C,untracked,0.004259
+2199,atmos_c,1064.83,Pg C,earth_c,0.770353
+2199,atmos_c,1064.83,Pg C,atmos_c,0.225388
+
+2199,earth_c,4212.28,Pg C,untracked,0
+2199,earth_c,4212.28,Pg C,earth_c,1
+2199,earth_c,4212.28,Pg C,atmos_c,0
+
+2200,atmos_c,1064.96,Pg C,untracked,0.00425455
+2200,atmos_c,1064.96,Pg C,earth_c,0.770593
+2200,atmos_c,1064.96,Pg C,atmos_c,0.225153
+
+2200,earth_c,4211.16,Pg C,untracked,0
+2200,earth_c,4211.16,Pg C,earth_c,1
+2200,earth_c,4211.16,Pg C,atmos_c,0
+
+2201,atmos_c,1065.09,Pg C,untracked,0.00425013
+2201,atmos_c,1065.09,Pg C,earth_c,0.770831
+2201,atmos_c,1065.09,Pg C,atmos_c,0.224919
+
+2201,earth_c,4210.05,Pg C,untracked,0
+2201,earth_c,4210.05,Pg C,earth_c,1
+2201,earth_c,4210.05,Pg C,atmos_c,0
+
+2202,atmos_c,1065.21,Pg C,untracked,0.00424573
+2202,atmos_c,1065.21,Pg C,earth_c,0.771068
+2202,atmos_c,1065.21,Pg C,atmos_c,0.224686
+
+2202,earth_c,4208.95,Pg C,untracked,0
+2202,earth_c,4208.95,Pg C,earth_c,1
+2202,earth_c,4208.95,Pg C,atmos_c,0
+
+2203,atmos_c,1065.33,Pg C,untracked,0.00424137
+2203,atmos_c,1065.33,Pg C,earth_c,0.771303
+2203,atmos_c,1065.33,Pg C,atmos_c,0.224455
+
+2203,earth_c,4207.85,Pg C,untracked,0
+2203,earth_c,4207.85,Pg C,earth_c,1
+2203,earth_c,4207.85,Pg C,atmos_c,0
+
+2204,atmos_c,1065.44,Pg C,untracked,0.00423704
+2204,atmos_c,1065.44,Pg C,earth_c,0.771537
+2204,atmos_c,1065.44,Pg C,atmos_c,0.224226
+
+2204,earth_c,4206.75,Pg C,untracked,0
+2204,earth_c,4206.75,Pg C,earth_c,1
+2204,earth_c,4206.75,Pg C,atmos_c,0
+
+2205,atmos_c,1065.55,Pg C,untracked,0.00423274
+2205,atmos_c,1065.55,Pg C,earth_c,0.771769
+2205,atmos_c,1065.55,Pg C,atmos_c,0.223998
+
+2205,earth_c,4205.67,Pg C,untracked,0
+2205,earth_c,4205.67,Pg C,earth_c,1
+2205,earth_c,4205.67,Pg C,atmos_c,0
+
+2206,atmos_c,1065.66,Pg C,untracked,0.00422847
+2206,atmos_c,1065.66,Pg C,earth_c,0.771999
+2206,atmos_c,1065.66,Pg C,atmos_c,0.223772
+
+2206,earth_c,4204.59,Pg C,untracked,0
+2206,earth_c,4204.59,Pg C,earth_c,1
+2206,earth_c,4204.59,Pg C,atmos_c,0
+
+2207,atmos_c,1065.76,Pg C,untracked,0.00422423
+2207,atmos_c,1065.76,Pg C,earth_c,0.772228
+2207,atmos_c,1065.76,Pg C,atmos_c,0.223548
+
+2207,earth_c,4203.52,Pg C,untracked,0
+2207,earth_c,4203.52,Pg C,earth_c,1
+2207,earth_c,4203.52,Pg C,atmos_c,0
+
+2208,atmos_c,1065.85,Pg C,untracked,0.00422002
+2208,atmos_c,1065.85,Pg C,earth_c,0.772455
+2208,atmos_c,1065.85,Pg C,atmos_c,0.223325
+
+2208,earth_c,4202.45,Pg C,untracked,0
+2208,earth_c,4202.45,Pg C,earth_c,1
+2208,earth_c,4202.45,Pg C,atmos_c,0
+
+2209,atmos_c,1065.95,Pg C,untracked,0.00421584
+2209,atmos_c,1065.95,Pg C,earth_c,0.77268
+2209,atmos_c,1065.95,Pg C,atmos_c,0.223104
+
+2209,earth_c,4201.39,Pg C,untracked,0
+2209,earth_c,4201.39,Pg C,earth_c,1
+2209,earth_c,4201.39,Pg C,atmos_c,0
+
+2210,atmos_c,1066.03,Pg C,untracked,0.00421169
+2210,atmos_c,1066.03,Pg C,earth_c,0.772904
+2210,atmos_c,1066.03,Pg C,atmos_c,0.222884
+
+2210,earth_c,4200.34,Pg C,untracked,0
+2210,earth_c,4200.34,Pg C,earth_c,1
+2210,earth_c,4200.34,Pg C,atmos_c,0
+
+2211,atmos_c,1066.11,Pg C,untracked,0.00420756
+2211,atmos_c,1066.11,Pg C,earth_c,0.773126
+2211,atmos_c,1066.11,Pg C,atmos_c,0.222666
+
+2211,earth_c,4199.29,Pg C,untracked,0
+2211,earth_c,4199.29,Pg C,earth_c,1
+2211,earth_c,4199.29,Pg C,atmos_c,0
+
+2212,atmos_c,1066.19,Pg C,untracked,0.00420347
+2212,atmos_c,1066.19,Pg C,earth_c,0.773347
+2212,atmos_c,1066.19,Pg C,atmos_c,0.222449
+
+2212,earth_c,4198.25,Pg C,untracked,0
+2212,earth_c,4198.25,Pg C,earth_c,1
+2212,earth_c,4198.25,Pg C,atmos_c,0
+
+2213,atmos_c,1066.26,Pg C,untracked,0.00419939
+2213,atmos_c,1066.26,Pg C,earth_c,0.773567
+2213,atmos_c,1066.26,Pg C,atmos_c,0.222234
+
+2213,earth_c,4197.21,Pg C,untracked,0
+2213,earth_c,4197.21,Pg C,earth_c,1
+2213,earth_c,4197.21,Pg C,atmos_c,0
+
+2214,atmos_c,1066.33,Pg C,untracked,0.00419535
+2214,atmos_c,1066.33,Pg C,earth_c,0.773785
+2214,atmos_c,1066.33,Pg C,atmos_c,0.22202
+
+2214,earth_c,4196.18,Pg C,untracked,0
+2214,earth_c,4196.18,Pg C,earth_c,1
+2214,earth_c,4196.18,Pg C,atmos_c,0
+
+2215,atmos_c,1066.4,Pg C,untracked,0.00419133
+2215,atmos_c,1066.4,Pg C,earth_c,0.774002
+2215,atmos_c,1066.4,Pg C,atmos_c,0.221807
+
+2215,earth_c,4195.15,Pg C,untracked,0
+2215,earth_c,4195.15,Pg C,earth_c,1
+2215,earth_c,4195.15,Pg C,atmos_c,0
+
+2216,atmos_c,1066.46,Pg C,untracked,0.00418733
+2216,atmos_c,1066.46,Pg C,earth_c,0.774217
+2216,atmos_c,1066.46,Pg C,atmos_c,0.221596
+
+2216,earth_c,4194.13,Pg C,untracked,0
+2216,earth_c,4194.13,Pg C,earth_c,1
+2216,earth_c,4194.13,Pg C,atmos_c,0
+
+2217,atmos_c,1066.51,Pg C,untracked,0.00418337
+2217,atmos_c,1066.51,Pg C,earth_c,0.774431
+2217,atmos_c,1066.51,Pg C,atmos_c,0.221386
+
+2217,earth_c,4193.12,Pg C,untracked,0
+2217,earth_c,4193.12,Pg C,earth_c,1
+2217,earth_c,4193.12,Pg C,atmos_c,0
+
+2218,atmos_c,1066.56,Pg C,untracked,0.00417942
+2218,atmos_c,1066.56,Pg C,earth_c,0.774644
+2218,atmos_c,1066.56,Pg C,atmos_c,0.221177
+
+2218,earth_c,4192.11,Pg C,untracked,0
+2218,earth_c,4192.11,Pg C,earth_c,1
+2218,earth_c,4192.11,Pg C,atmos_c,0
+
+2219,atmos_c,1066.61,Pg C,untracked,0.00417551
+2219,atmos_c,1066.61,Pg C,earth_c,0.774855
+2219,atmos_c,1066.61,Pg C,atmos_c,0.22097
+
+2219,earth_c,4191.11,Pg C,untracked,0
+2219,earth_c,4191.11,Pg C,earth_c,1
+2219,earth_c,4191.11,Pg C,atmos_c,0
+
+2220,atmos_c,1066.65,Pg C,untracked,0.00417162
+2220,atmos_c,1066.65,Pg C,earth_c,0.775065
+2220,atmos_c,1066.65,Pg C,atmos_c,0.220764
+
+2220,earth_c,4190.11,Pg C,untracked,0
+2220,earth_c,4190.11,Pg C,earth_c,1
+2220,earth_c,4190.11,Pg C,atmos_c,0
+
+2221,atmos_c,1066.69,Pg C,untracked,0.00416775
+2221,atmos_c,1066.69,Pg C,earth_c,0.775273
+2221,atmos_c,1066.69,Pg C,atmos_c,0.220559
+
+2221,earth_c,4189.12,Pg C,untracked,0
+2221,earth_c,4189.12,Pg C,earth_c,1
+2221,earth_c,4189.12,Pg C,atmos_c,0
+
+2222,atmos_c,1066.72,Pg C,untracked,0.0041639
+2222,atmos_c,1066.72,Pg C,earth_c,0.775481
+2222,atmos_c,1066.72,Pg C,atmos_c,0.220355
+
+2222,earth_c,4188.13,Pg C,untracked,0
+2222,earth_c,4188.13,Pg C,earth_c,1
+2222,earth_c,4188.13,Pg C,atmos_c,0
+
+2223,atmos_c,1066.74,Pg C,untracked,0.00416007
+2223,atmos_c,1066.74,Pg C,earth_c,0.775687
+2223,atmos_c,1066.74,Pg C,atmos_c,0.220153
+
+2223,earth_c,4187.15,Pg C,untracked,0
+2223,earth_c,4187.15,Pg C,earth_c,1
+2223,earth_c,4187.15,Pg C,atmos_c,0
+
+2224,atmos_c,1066.76,Pg C,untracked,0.00415627
+2224,atmos_c,1066.76,Pg C,earth_c,0.775892
+2224,atmos_c,1066.76,Pg C,atmos_c,0.219952
+
+2224,earth_c,4186.17,Pg C,untracked,0
+2224,earth_c,4186.17,Pg C,earth_c,1
+2224,earth_c,4186.17,Pg C,atmos_c,0
+
+2225,atmos_c,1066.78,Pg C,untracked,0.00415249
+2225,atmos_c,1066.78,Pg C,earth_c,0.776096
+2225,atmos_c,1066.78,Pg C,atmos_c,0.219752
+
+2225,earth_c,4185.19,Pg C,untracked,0
+2225,earth_c,4185.19,Pg C,earth_c,1
+2225,earth_c,4185.19,Pg C,atmos_c,0
+
+2226,atmos_c,1066.79,Pg C,untracked,0.00414873
+2226,atmos_c,1066.79,Pg C,earth_c,0.776298
+2226,atmos_c,1066.79,Pg C,atmos_c,0.219553
+
+2226,earth_c,4184.22,Pg C,untracked,0
+2226,earth_c,4184.22,Pg C,earth_c,1
+2226,earth_c,4184.22,Pg C,atmos_c,0
+
+2227,atmos_c,1066.8,Pg C,untracked,0.004145
+2227,atmos_c,1066.8,Pg C,earth_c,0.7765
+2227,atmos_c,1066.8,Pg C,atmos_c,0.219355
+
+2227,earth_c,4183.26,Pg C,untracked,0
+2227,earth_c,4183.26,Pg C,earth_c,1
+2227,earth_c,4183.26,Pg C,atmos_c,0
+
+2228,atmos_c,1066.8,Pg C,untracked,0.00414128
+2228,atmos_c,1066.8,Pg C,earth_c,0.7767
+2228,atmos_c,1066.8,Pg C,atmos_c,0.219158
+
+2228,earth_c,4182.3,Pg C,untracked,0
+2228,earth_c,4182.3,Pg C,earth_c,1
+2228,earth_c,4182.3,Pg C,atmos_c,0
+
+2229,atmos_c,1066.8,Pg C,untracked,0.00413759
+2229,atmos_c,1066.8,Pg C,earth_c,0.776899
+2229,atmos_c,1066.8,Pg C,atmos_c,0.218963
+
+2229,earth_c,4181.35,Pg C,untracked,0
+2229,earth_c,4181.35,Pg C,earth_c,1
+2229,earth_c,4181.35,Pg C,atmos_c,0
+
+2230,atmos_c,1066.79,Pg C,untracked,0.00413392
+2230,atmos_c,1066.79,Pg C,earth_c,0.777097
+2230,atmos_c,1066.79,Pg C,atmos_c,0.218769
+
+2230,earth_c,4180.4,Pg C,untracked,0
+2230,earth_c,4180.4,Pg C,earth_c,1
+2230,earth_c,4180.4,Pg C,atmos_c,0
+
+2231,atmos_c,1066.77,Pg C,untracked,0.00413027
+2231,atmos_c,1066.77,Pg C,earth_c,0.777294
+2231,atmos_c,1066.77,Pg C,atmos_c,0.218576
+
+2231,earth_c,4179.45,Pg C,untracked,0
+2231,earth_c,4179.45,Pg C,earth_c,1
+2231,earth_c,4179.45,Pg C,atmos_c,0
+
+2232,atmos_c,1066.75,Pg C,untracked,0.00412664
+2232,atmos_c,1066.75,Pg C,earth_c,0.77749
+2232,atmos_c,1066.75,Pg C,atmos_c,0.218383
+
+2232,earth_c,4178.51,Pg C,untracked,0
+2232,earth_c,4178.51,Pg C,earth_c,1
+2232,earth_c,4178.51,Pg C,atmos_c,0
+
+2233,atmos_c,1066.72,Pg C,untracked,0.00412302
+2233,atmos_c,1066.72,Pg C,earth_c,0.777685
+2233,atmos_c,1066.72,Pg C,atmos_c,0.218192
+
+2233,earth_c,4177.57,Pg C,untracked,0
+2233,earth_c,4177.57,Pg C,earth_c,1
+2233,earth_c,4177.57,Pg C,atmos_c,0
+
+2234,atmos_c,1066.69,Pg C,untracked,0.00411943
+2234,atmos_c,1066.69,Pg C,earth_c,0.777879
+2234,atmos_c,1066.69,Pg C,atmos_c,0.218002
+
+2234,earth_c,4176.64,Pg C,untracked,0
+2234,earth_c,4176.64,Pg C,earth_c,1
+2234,earth_c,4176.64,Pg C,atmos_c,0
+
+2235,atmos_c,1066.66,Pg C,untracked,0.00411585
+2235,atmos_c,1066.66,Pg C,earth_c,0.778071
+2235,atmos_c,1066.66,Pg C,atmos_c,0.217813
+
+2235,earth_c,4175.71,Pg C,untracked,0
+2235,earth_c,4175.71,Pg C,earth_c,1
+2235,earth_c,4175.71,Pg C,atmos_c,0
+
+2236,atmos_c,1066.61,Pg C,untracked,0.0041123
+2236,atmos_c,1066.61,Pg C,earth_c,0.778263
+2236,atmos_c,1066.61,Pg C,atmos_c,0.217625
+
+2236,earth_c,4174.79,Pg C,untracked,0
+2236,earth_c,4174.79,Pg C,earth_c,1
+2236,earth_c,4174.79,Pg C,atmos_c,0
+
+2237,atmos_c,1066.57,Pg C,untracked,0.00410876
+2237,atmos_c,1066.57,Pg C,earth_c,0.778454
+2237,atmos_c,1066.57,Pg C,atmos_c,0.217437
+
+2237,earth_c,4173.87,Pg C,untracked,0
+2237,earth_c,4173.87,Pg C,earth_c,1
+2237,earth_c,4173.87,Pg C,atmos_c,0
+
+2238,atmos_c,1066.51,Pg C,untracked,0.00410524
+2238,atmos_c,1066.51,Pg C,earth_c,0.778644
+2238,atmos_c,1066.51,Pg C,atmos_c,0.217251
+
+2238,earth_c,4172.95,Pg C,untracked,0
+2238,earth_c,4172.95,Pg C,earth_c,1
+2238,earth_c,4172.95,Pg C,atmos_c,0
+
+2239,atmos_c,1066.45,Pg C,untracked,0.00410174
+2239,atmos_c,1066.45,Pg C,earth_c,0.778832
+2239,atmos_c,1066.45,Pg C,atmos_c,0.217066
+
+2239,earth_c,4172.04,Pg C,untracked,0
+2239,earth_c,4172.04,Pg C,earth_c,1
+2239,earth_c,4172.04,Pg C,atmos_c,0
+
+2240,atmos_c,1066.39,Pg C,untracked,0.00409826
+2240,atmos_c,1066.39,Pg C,earth_c,0.77902
+2240,atmos_c,1066.39,Pg C,atmos_c,0.216882
+
+2240,earth_c,4171.13,Pg C,untracked,0
+2240,earth_c,4171.13,Pg C,earth_c,1
+2240,earth_c,4171.13,Pg C,atmos_c,0
+
+2241,atmos_c,1066.32,Pg C,untracked,0.0040948
+2241,atmos_c,1066.32,Pg C,earth_c,0.779207
+2241,atmos_c,1066.32,Pg C,atmos_c,0.216699
+
+2241,earth_c,4170.23,Pg C,untracked,0
+2241,earth_c,4170.23,Pg C,earth_c,1
+2241,earth_c,4170.23,Pg C,atmos_c,0
+
+2242,atmos_c,1066.24,Pg C,untracked,0.00409135
+2242,atmos_c,1066.24,Pg C,earth_c,0.779393
+2242,atmos_c,1066.24,Pg C,atmos_c,0.216516
+
+2242,earth_c,4169.33,Pg C,untracked,0
+2242,earth_c,4169.33,Pg C,earth_c,1
+2242,earth_c,4169.33,Pg C,atmos_c,0
+
+2243,atmos_c,1066.16,Pg C,untracked,0.00408792
+2243,atmos_c,1066.16,Pg C,earth_c,0.779578
+2243,atmos_c,1066.16,Pg C,atmos_c,0.216335
+
+2243,earth_c,4168.43,Pg C,untracked,0
+2243,earth_c,4168.43,Pg C,earth_c,1
+2243,earth_c,4168.43,Pg C,atmos_c,0
+
+2244,atmos_c,1066.07,Pg C,untracked,0.00408451
+2244,atmos_c,1066.07,Pg C,earth_c,0.779762
+2244,atmos_c,1066.07,Pg C,atmos_c,0.216154
+
+2244,earth_c,4167.54,Pg C,untracked,0
+2244,earth_c,4167.54,Pg C,earth_c,1
+2244,earth_c,4167.54,Pg C,atmos_c,0
+
+2245,atmos_c,1065.98,Pg C,untracked,0.00408111
+2245,atmos_c,1065.98,Pg C,earth_c,0.779945
+2245,atmos_c,1065.98,Pg C,atmos_c,0.215974
+
+2245,earth_c,4166.65,Pg C,untracked,0
+2245,earth_c,4166.65,Pg C,earth_c,1
+2245,earth_c,4166.65,Pg C,atmos_c,0
+
+2246,atmos_c,1065.88,Pg C,untracked,0.00407773
+2246,atmos_c,1065.88,Pg C,earth_c,0.780127
+2246,atmos_c,1065.88,Pg C,atmos_c,0.215795
+
+2246,earth_c,4165.76,Pg C,untracked,0
+2246,earth_c,4165.76,Pg C,earth_c,1
+2246,earth_c,4165.76,Pg C,atmos_c,0
+
+2247,atmos_c,1065.77,Pg C,untracked,0.00407436
+2247,atmos_c,1065.77,Pg C,earth_c,0.780309
+2247,atmos_c,1065.77,Pg C,atmos_c,0.215617
+
+2247,earth_c,4164.88,Pg C,untracked,0
+2247,earth_c,4164.88,Pg C,earth_c,1
+2247,earth_c,4164.88,Pg C,atmos_c,0
+
+2248,atmos_c,1065.66,Pg C,untracked,0.00407102
+2248,atmos_c,1065.66,Pg C,earth_c,0.780489
+2248,atmos_c,1065.66,Pg C,atmos_c,0.21544
+
+2248,earth_c,4164,Pg C,untracked,0
+2248,earth_c,4164,Pg C,earth_c,1
+2248,earth_c,4164,Pg C,atmos_c,0
+
+2249,atmos_c,1065.55,Pg C,untracked,0.00406768
+2249,atmos_c,1065.55,Pg C,earth_c,0.780669
+2249,atmos_c,1065.55,Pg C,atmos_c,0.215264
+
+2249,earth_c,4163.13,Pg C,untracked,0
+2249,earth_c,4163.13,Pg C,earth_c,1
+2249,earth_c,4163.13,Pg C,atmos_c,0
+
+2250,atmos_c,1065.43,Pg C,untracked,0.00406437
+2250,atmos_c,1065.43,Pg C,earth_c,0.780848
+2250,atmos_c,1065.43,Pg C,atmos_c,0.215088
+
+2250,earth_c,4162.26,Pg C,untracked,0
+2250,earth_c,4162.26,Pg C,earth_c,1
+2250,earth_c,4162.26,Pg C,atmos_c,0
+
+2251,atmos_c,1065.3,Pg C,untracked,0.00406107
+2251,atmos_c,1065.3,Pg C,earth_c,0.781026
+2251,atmos_c,1065.3,Pg C,atmos_c,0.214913
+
+2251,earth_c,4161.39,Pg C,untracked,0
+2251,earth_c,4161.39,Pg C,earth_c,1
+2251,earth_c,4161.39,Pg C,atmos_c,0
+
+2252,atmos_c,1065.16,Pg C,untracked,0.00405778
+2252,atmos_c,1065.16,Pg C,earth_c,0.781203
+2252,atmos_c,1065.16,Pg C,atmos_c,0.214739
+
+2252,earth_c,4160.53,Pg C,untracked,0
+2252,earth_c,4160.53,Pg C,earth_c,1
+2252,earth_c,4160.53,Pg C,atmos_c,0
+
+2253,atmos_c,1065.02,Pg C,untracked,0.00405451
+2253,atmos_c,1065.02,Pg C,earth_c,0.781379
+2253,atmos_c,1065.02,Pg C,atmos_c,0.214566
+
+2253,earth_c,4159.66,Pg C,untracked,0
+2253,earth_c,4159.66,Pg C,earth_c,1
+2253,earth_c,4159.66,Pg C,atmos_c,0
+
+2254,atmos_c,1064.88,Pg C,untracked,0.00405125
+2254,atmos_c,1064.88,Pg C,earth_c,0.781555
+2254,atmos_c,1064.88,Pg C,atmos_c,0.214394
+
+2254,earth_c,4158.81,Pg C,untracked,0
+2254,earth_c,4158.81,Pg C,earth_c,1
+2254,earth_c,4158.81,Pg C,atmos_c,0
+
+2255,atmos_c,1064.73,Pg C,untracked,0.00404801
+2255,atmos_c,1064.73,Pg C,earth_c,0.78173
+2255,atmos_c,1064.73,Pg C,atmos_c,0.214222
+
+2255,earth_c,4157.95,Pg C,untracked,0
+2255,earth_c,4157.95,Pg C,earth_c,1
+2255,earth_c,4157.95,Pg C,atmos_c,0
+
+2256,atmos_c,1064.57,Pg C,untracked,0.00404478
+2256,atmos_c,1064.57,Pg C,earth_c,0.781904
+2256,atmos_c,1064.57,Pg C,atmos_c,0.214051
+
+2256,earth_c,4157.1,Pg C,untracked,0
+2256,earth_c,4157.1,Pg C,earth_c,1
+2256,earth_c,4157.1,Pg C,atmos_c,0
+
+2257,atmos_c,1064.41,Pg C,untracked,0.00404156
+2257,atmos_c,1064.41,Pg C,earth_c,0.782077
+2257,atmos_c,1064.41,Pg C,atmos_c,0.213881
+
+2257,earth_c,4156.25,Pg C,untracked,0
+2257,earth_c,4156.25,Pg C,earth_c,1
+2257,earth_c,4156.25,Pg C,atmos_c,0
+
+2258,atmos_c,1064.24,Pg C,untracked,0.00403836
+2258,atmos_c,1064.24,Pg C,earth_c,0.78225
+2258,atmos_c,1064.24,Pg C,atmos_c,0.213712
+
+2258,earth_c,4155.41,Pg C,untracked,0
+2258,earth_c,4155.41,Pg C,earth_c,1
+2258,earth_c,4155.41,Pg C,atmos_c,0
+
+2259,atmos_c,1064.07,Pg C,untracked,0.00403517
+2259,atmos_c,1064.07,Pg C,earth_c,0.782422
+2259,atmos_c,1064.07,Pg C,atmos_c,0.213543
+
+2259,earth_c,4154.56,Pg C,untracked,0
+2259,earth_c,4154.56,Pg C,earth_c,1
+2259,earth_c,4154.56,Pg C,atmos_c,0
+
+2260,atmos_c,1063.89,Pg C,untracked,0.004032
+2260,atmos_c,1063.89,Pg C,earth_c,0.782593
+2260,atmos_c,1063.89,Pg C,atmos_c,0.213375
+
+2260,earth_c,4153.72,Pg C,untracked,0
+2260,earth_c,4153.72,Pg C,earth_c,1
+2260,earth_c,4153.72,Pg C,atmos_c,0
+
+2261,atmos_c,1063.71,Pg C,untracked,0.00402884
+2261,atmos_c,1063.71,Pg C,earth_c,0.782763
+2261,atmos_c,1063.71,Pg C,atmos_c,0.213208
+
+2261,earth_c,4152.89,Pg C,untracked,0
+2261,earth_c,4152.89,Pg C,earth_c,1
+2261,earth_c,4152.89,Pg C,atmos_c,0
+
+2262,atmos_c,1063.52,Pg C,untracked,0.00402569
+2262,atmos_c,1063.52,Pg C,earth_c,0.782933
+2262,atmos_c,1063.52,Pg C,atmos_c,0.213041
+
+2262,earth_c,4152.06,Pg C,untracked,0
+2262,earth_c,4152.06,Pg C,earth_c,1
+2262,earth_c,4152.06,Pg C,atmos_c,0
+
+2263,atmos_c,1063.32,Pg C,untracked,0.00402256
+2263,atmos_c,1063.32,Pg C,earth_c,0.783102
+2263,atmos_c,1063.32,Pg C,atmos_c,0.212876
+
+2263,earth_c,4151.23,Pg C,untracked,0
+2263,earth_c,4151.23,Pg C,earth_c,1
+2263,earth_c,4151.23,Pg C,atmos_c,0
+
+2264,atmos_c,1063.12,Pg C,untracked,0.00401944
+2264,atmos_c,1063.12,Pg C,earth_c,0.78327
+2264,atmos_c,1063.12,Pg C,atmos_c,0.21271
+
+2264,earth_c,4150.4,Pg C,untracked,0
+2264,earth_c,4150.4,Pg C,earth_c,1
+2264,earth_c,4150.4,Pg C,atmos_c,0
+
+2265,atmos_c,1062.92,Pg C,untracked,0.00401633
+2265,atmos_c,1062.92,Pg C,earth_c,0.783438
+2265,atmos_c,1062.92,Pg C,atmos_c,0.212546
+
+2265,earth_c,4149.57,Pg C,untracked,0
+2265,earth_c,4149.57,Pg C,earth_c,1
+2265,earth_c,4149.57,Pg C,atmos_c,0
+
+2266,atmos_c,1062.71,Pg C,untracked,0.00401323
+2266,atmos_c,1062.71,Pg C,earth_c,0.783605
+2266,atmos_c,1062.71,Pg C,atmos_c,0.212382
+
+2266,earth_c,4148.75,Pg C,untracked,0
+2266,earth_c,4148.75,Pg C,earth_c,1
+2266,earth_c,4148.75,Pg C,atmos_c,0
+
+2267,atmos_c,1062.49,Pg C,untracked,0.00401015
+2267,atmos_c,1062.49,Pg C,earth_c,0.783771
+2267,atmos_c,1062.49,Pg C,atmos_c,0.212219
+
+2267,earth_c,4147.93,Pg C,untracked,0
+2267,earth_c,4147.93,Pg C,earth_c,1
+2267,earth_c,4147.93,Pg C,atmos_c,0
+
+2268,atmos_c,1062.27,Pg C,untracked,0.00400707
+2268,atmos_c,1062.27,Pg C,earth_c,0.783937
+2268,atmos_c,1062.27,Pg C,atmos_c,0.212056
+
+2268,earth_c,4147.12,Pg C,untracked,0
+2268,earth_c,4147.12,Pg C,earth_c,1
+2268,earth_c,4147.12,Pg C,atmos_c,0
+
+2269,atmos_c,1062.05,Pg C,untracked,0.00400401
+2269,atmos_c,1062.05,Pg C,earth_c,0.784102
+2269,atmos_c,1062.05,Pg C,atmos_c,0.211894
+
+2269,earth_c,4146.3,Pg C,untracked,0
+2269,earth_c,4146.3,Pg C,earth_c,1
+2269,earth_c,4146.3,Pg C,atmos_c,0
+
+2270,atmos_c,1061.82,Pg C,untracked,0.00400097
+2270,atmos_c,1061.82,Pg C,earth_c,0.784266
+2270,atmos_c,1061.82,Pg C,atmos_c,0.211733
+
+2270,earth_c,4145.49,Pg C,untracked,0
+2270,earth_c,4145.49,Pg C,earth_c,1
+2270,earth_c,4145.49,Pg C,atmos_c,0
+
+2271,atmos_c,1061.59,Pg C,untracked,0.00399793
+2271,atmos_c,1061.59,Pg C,earth_c,0.78443
+2271,atmos_c,1061.59,Pg C,atmos_c,0.211572
+
+2271,earth_c,4144.69,Pg C,untracked,0
+2271,earth_c,4144.69,Pg C,earth_c,1
+2271,earth_c,4144.69,Pg C,atmos_c,0
+
+2272,atmos_c,1061.35,Pg C,untracked,0.00399491
+2272,atmos_c,1061.35,Pg C,earth_c,0.784593
+2272,atmos_c,1061.35,Pg C,atmos_c,0.211412
+
+2272,earth_c,4143.88,Pg C,untracked,0
+2272,earth_c,4143.88,Pg C,earth_c,1
+2272,earth_c,4143.88,Pg C,atmos_c,0
+
+2273,atmos_c,1061.11,Pg C,untracked,0.00399189
+2273,atmos_c,1061.11,Pg C,earth_c,0.784755
+2273,atmos_c,1061.11,Pg C,atmos_c,0.211253
+
+2273,earth_c,4143.08,Pg C,untracked,0
+2273,earth_c,4143.08,Pg C,earth_c,1
+2273,earth_c,4143.08,Pg C,atmos_c,0
+
+2274,atmos_c,1060.86,Pg C,untracked,0.00398889
+2274,atmos_c,1060.86,Pg C,earth_c,0.784917
+2274,atmos_c,1060.86,Pg C,atmos_c,0.211094
+
+2274,earth_c,4142.28,Pg C,untracked,0
+2274,earth_c,4142.28,Pg C,earth_c,1
+2274,earth_c,4142.28,Pg C,atmos_c,0
+
+2275,atmos_c,1060.61,Pg C,untracked,0.0039859
+2275,atmos_c,1060.61,Pg C,earth_c,0.785079
+2275,atmos_c,1060.61,Pg C,atmos_c,0.210936
+
+2275,earth_c,4141.48,Pg C,untracked,0
+2275,earth_c,4141.48,Pg C,earth_c,1
+2275,earth_c,4141.48,Pg C,atmos_c,0
+
+2276,atmos_c,1060.36,Pg C,untracked,0.00398292
+2276,atmos_c,1060.36,Pg C,earth_c,0.785239
+2276,atmos_c,1060.36,Pg C,atmos_c,0.210778
+
+2276,earth_c,4140.69,Pg C,untracked,0
+2276,earth_c,4140.69,Pg C,earth_c,1
+2276,earth_c,4140.69,Pg C,atmos_c,0
+
+2277,atmos_c,1060.1,Pg C,untracked,0.00397995
+2277,atmos_c,1060.1,Pg C,earth_c,0.785399
+2277,atmos_c,1060.1,Pg C,atmos_c,0.210621
+
+2277,earth_c,4139.89,Pg C,untracked,0
+2277,earth_c,4139.89,Pg C,earth_c,1
+2277,earth_c,4139.89,Pg C,atmos_c,0
+
+2278,atmos_c,1059.84,Pg C,untracked,0.00397699
+2278,atmos_c,1059.84,Pg C,earth_c,0.785559
+2278,atmos_c,1059.84,Pg C,atmos_c,0.210464
+
+2278,earth_c,4139.1,Pg C,untracked,0
+2278,earth_c,4139.1,Pg C,earth_c,1
+2278,earth_c,4139.1,Pg C,atmos_c,0
+
+2279,atmos_c,1059.57,Pg C,untracked,0.00397404
+2279,atmos_c,1059.57,Pg C,earth_c,0.785718
+2279,atmos_c,1059.57,Pg C,atmos_c,0.210308
+
+2279,earth_c,4138.32,Pg C,untracked,0
+2279,earth_c,4138.32,Pg C,earth_c,1
+2279,earth_c,4138.32,Pg C,atmos_c,0
+
+2280,atmos_c,1059.31,Pg C,untracked,0.0039711
+2280,atmos_c,1059.31,Pg C,earth_c,0.785876
+2280,atmos_c,1059.31,Pg C,atmos_c,0.210153
+
+2280,earth_c,4137.53,Pg C,untracked,0
+2280,earth_c,4137.53,Pg C,earth_c,1
+2280,earth_c,4137.53,Pg C,atmos_c,0
+
+2281,atmos_c,1059.03,Pg C,untracked,0.00396818
+2281,atmos_c,1059.03,Pg C,earth_c,0.786034
+2281,atmos_c,1059.03,Pg C,atmos_c,0.209998
+
+2281,earth_c,4136.75,Pg C,untracked,0
+2281,earth_c,4136.75,Pg C,earth_c,1
+2281,earth_c,4136.75,Pg C,atmos_c,0
+
+2282,atmos_c,1058.76,Pg C,untracked,0.00396526
+2282,atmos_c,1058.76,Pg C,earth_c,0.786191
+2282,atmos_c,1058.76,Pg C,atmos_c,0.209843
+
+2282,earth_c,4135.97,Pg C,untracked,0
+2282,earth_c,4135.97,Pg C,earth_c,1
+2282,earth_c,4135.97,Pg C,atmos_c,0
+
+2283,atmos_c,1058.48,Pg C,untracked,0.00396235
+2283,atmos_c,1058.48,Pg C,earth_c,0.786348
+2283,atmos_c,1058.48,Pg C,atmos_c,0.209689
+
+2283,earth_c,4135.19,Pg C,untracked,0
+2283,earth_c,4135.19,Pg C,earth_c,1
+2283,earth_c,4135.19,Pg C,atmos_c,0
+
+2284,atmos_c,1058.2,Pg C,untracked,0.00395946
+2284,atmos_c,1058.2,Pg C,earth_c,0.786504
+2284,atmos_c,1058.2,Pg C,atmos_c,0.209536
+
+2284,earth_c,4134.41,Pg C,untracked,0
+2284,earth_c,4134.41,Pg C,earth_c,1
+2284,earth_c,4134.41,Pg C,atmos_c,0
+
+2285,atmos_c,1057.92,Pg C,untracked,0.00395657
+2285,atmos_c,1057.92,Pg C,earth_c,0.78666
+2285,atmos_c,1057.92,Pg C,atmos_c,0.209383
+
+2285,earth_c,4133.64,Pg C,untracked,0
+2285,earth_c,4133.64,Pg C,earth_c,1
+2285,earth_c,4133.64,Pg C,atmos_c,0
+
+2286,atmos_c,1057.63,Pg C,untracked,0.00395369
+2286,atmos_c,1057.63,Pg C,earth_c,0.786815
+2286,atmos_c,1057.63,Pg C,atmos_c,0.209231
+
+2286,earth_c,4132.87,Pg C,untracked,0
+2286,earth_c,4132.87,Pg C,earth_c,1
+2286,earth_c,4132.87,Pg C,atmos_c,0
+
+2287,atmos_c,1057.34,Pg C,untracked,0.00395082
+2287,atmos_c,1057.34,Pg C,earth_c,0.78697
+2287,atmos_c,1057.34,Pg C,atmos_c,0.209079
+
+2287,earth_c,4132.1,Pg C,untracked,0
+2287,earth_c,4132.1,Pg C,earth_c,1
+2287,earth_c,4132.1,Pg C,atmos_c,0
+
+2288,atmos_c,1057.05,Pg C,untracked,0.00394796
+2288,atmos_c,1057.05,Pg C,earth_c,0.787124
+2288,atmos_c,1057.05,Pg C,atmos_c,0.208928
+
+2288,earth_c,4131.33,Pg C,untracked,0
+2288,earth_c,4131.33,Pg C,earth_c,1
+2288,earth_c,4131.33,Pg C,atmos_c,0
+
+2289,atmos_c,1056.76,Pg C,untracked,0.00394512
+2289,atmos_c,1056.76,Pg C,earth_c,0.787278
+2289,atmos_c,1056.76,Pg C,atmos_c,0.208777
+
+2289,earth_c,4130.57,Pg C,untracked,0
+2289,earth_c,4130.57,Pg C,earth_c,1
+2289,earth_c,4130.57,Pg C,atmos_c,0
+
+2290,atmos_c,1056.46,Pg C,untracked,0.00394228
+2290,atmos_c,1056.46,Pg C,earth_c,0.787431
+2290,atmos_c,1056.46,Pg C,atmos_c,0.208627
+
+2290,earth_c,4129.81,Pg C,untracked,0
+2290,earth_c,4129.81,Pg C,earth_c,1
+2290,earth_c,4129.81,Pg C,atmos_c,0
+
+2291,atmos_c,1056.17,Pg C,untracked,0.00393945
+2291,atmos_c,1056.17,Pg C,earth_c,0.787583
+2291,atmos_c,1056.17,Pg C,atmos_c,0.208477
+
+2291,earth_c,4129.05,Pg C,untracked,0
+2291,earth_c,4129.05,Pg C,earth_c,1
+2291,earth_c,4129.05,Pg C,atmos_c,0
+
+2292,atmos_c,1055.87,Pg C,untracked,0.00393663
+2292,atmos_c,1055.87,Pg C,earth_c,0.787735
+2292,atmos_c,1055.87,Pg C,atmos_c,0.208328
+
+2292,earth_c,4128.29,Pg C,untracked,0
+2292,earth_c,4128.29,Pg C,earth_c,1
+2292,earth_c,4128.29,Pg C,atmos_c,0
+
+2293,atmos_c,1055.57,Pg C,untracked,0.00393381
+2293,atmos_c,1055.57,Pg C,earth_c,0.787887
+2293,atmos_c,1055.57,Pg C,atmos_c,0.208179
+
+2293,earth_c,4127.53,Pg C,untracked,0
+2293,earth_c,4127.53,Pg C,earth_c,1
+2293,earth_c,4127.53,Pg C,atmos_c,0
+
+2294,atmos_c,1055.26,Pg C,untracked,0.00393101
+2294,atmos_c,1055.26,Pg C,earth_c,0.788038
+2294,atmos_c,1055.26,Pg C,atmos_c,0.208031
+
+2294,earth_c,4126.78,Pg C,untracked,0
+2294,earth_c,4126.78,Pg C,earth_c,1
+2294,earth_c,4126.78,Pg C,atmos_c,0
+
+2295,atmos_c,1054.96,Pg C,untracked,0.00392822
+2295,atmos_c,1054.96,Pg C,earth_c,0.788189
+2295,atmos_c,1054.96,Pg C,atmos_c,0.207883
+
+2295,earth_c,4126.03,Pg C,untracked,0
+2295,earth_c,4126.03,Pg C,earth_c,1
+2295,earth_c,4126.03,Pg C,atmos_c,0
+
+2296,atmos_c,1054.66,Pg C,untracked,0.00392543
+2296,atmos_c,1054.66,Pg C,earth_c,0.788339
+2296,atmos_c,1054.66,Pg C,atmos_c,0.207736
+
+2296,earth_c,4125.28,Pg C,untracked,0
+2296,earth_c,4125.28,Pg C,earth_c,1
+2296,earth_c,4125.28,Pg C,atmos_c,0
+
+2297,atmos_c,1054.35,Pg C,untracked,0.00392266
+2297,atmos_c,1054.35,Pg C,earth_c,0.788489
+2297,atmos_c,1054.35,Pg C,atmos_c,0.207589
+
+2297,earth_c,4124.53,Pg C,untracked,0
+2297,earth_c,4124.53,Pg C,earth_c,1
+2297,earth_c,4124.53,Pg C,atmos_c,0
+
+2298,atmos_c,1054.04,Pg C,untracked,0.00391989
+2298,atmos_c,1054.04,Pg C,earth_c,0.788638
+2298,atmos_c,1054.04,Pg C,atmos_c,0.207442
+
+2298,earth_c,4123.79,Pg C,untracked,0
+2298,earth_c,4123.79,Pg C,earth_c,1
+2298,earth_c,4123.79,Pg C,atmos_c,0
+
+2299,atmos_c,1053.73,Pg C,untracked,0.00391713
+2299,atmos_c,1053.73,Pg C,earth_c,0.788787
+2299,atmos_c,1053.73,Pg C,atmos_c,0.207296
+
+2299,earth_c,4123.04,Pg C,untracked,0
+2299,earth_c,4123.04,Pg C,earth_c,1
+2299,earth_c,4123.04,Pg C,atmos_c,0
+
+2300,atmos_c,1053.43,Pg C,untracked,0.00391438
+2300,atmos_c,1053.43,Pg C,earth_c,0.788935
+2300,atmos_c,1053.43,Pg C,atmos_c,0.207151
+
+2300,earth_c,4122.3,Pg C,untracked,0
+2300,earth_c,4122.3,Pg C,earth_c,1
+2300,earth_c,4122.3,Pg C,atmos_c,0
+

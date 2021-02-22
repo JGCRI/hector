@@ -51,9 +51,9 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
     // earth_c keeps track of how much fossil C is pulled out
     // so that we can do a mass-balance check throughout the run
     // 2020-02-05 With the introduction of non-negative 'fluxpool' class
-    // we can't start earth_c at zero. Value of 4000 is from
-    // http://globecarboncycle.unh.edu/CarbonCycleBackground.pdf
-    earth_c.set( 4000, U_PGC, true, "earth_c" );
+    // we can't start earth_c at zero. Value of 5500 is set to avoid
+    // overdrawing in RCP 8.5
+    earth_c.set( 5500, U_PGC, true, "earth_c" );
     
     // -----------------------------------------
     // fluxpool test code - move to unit test later BBL-TODO
@@ -131,8 +131,8 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
     dest = dest + flux;
     src2 = src2 - flux;
     
-    H_ASSERT(dest.get_fraction("src1") == 0.4, "get_fraction wasn't 0.5 for src1");
-    H_ASSERT(dest.get_fraction("src2") == 0.6, "get_fraction wasn't 0.5 for src2");
+    H_ASSERT(dest.get_fraction("src1") == 0.4, "get_fraction wasn't 0.4 for src1");
+    H_ASSERT(dest.get_fraction("src2") == 0.6, "get_fraction wasn't 0.6 for src2");
     source = dest.get_sources();
     H_ASSERT(source.size() == 3, "dest source wasn't size 3");
 
@@ -153,6 +153,18 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
     H_ASSERT(dest.get_fraction("untracked") - 1.0/11.0 < 1e-6, "untracked not correct");
 
  //   H_THROW("stop");
+
+    // Need to add tests with varied source pools to ensure source pools are preserved
+    fluxpool testMult(10, U_PGC, true, "test1");
+    fluxpool testFlux(3, U_PGC, true, "flux1");
+    cout <<"testMult before: "<<testMult<<endl;
+    testMult = testMult + testFlux;
+    cout <<"testMult before: "<<testMult<<endl;
+    testMult = testMult - testFlux;
+    //testMult = testMult*2.0;
+    //cout <<"testMult before: "<<testMult<<endl;
+    //testMult = testMult / 2.0;
+    cout <<"testMult after: "<<testMult<<endl;
 }
 
 
@@ -310,19 +322,19 @@ void SimpleNbox::setData( const std::string &varName,
             // `reset` (which includes code like `veg_c = veg_c_tv.get(t)`).
             
             // Data are coming in as unitvals, but change to fluxpools
-            veg_c[ biome ] = fluxpool(data.getUnitval( U_PGC ).value(U_PGC), U_PGC);
+            veg_c[ biome ] = fluxpool(data.getUnitval( U_PGC ).value(U_PGC), U_PGC, true, "veg_c_" + biome);
             if (data.date != Core::undefinedIndex()) {
                 veg_c_tv.set(data.date, veg_c);
             }
         }
         else if( varNameParsed == D_DETRITUSC ) {
-            detritus_c[ biome ] = fluxpool(data.getUnitval( U_PGC ).value(U_PGC), U_PGC);
+            detritus_c[ biome ] = fluxpool(data.getUnitval( U_PGC ).value(U_PGC), U_PGC, true, "detritus_c_" + biome);
             if (data.date != Core::undefinedIndex()) {
                 detritus_c_tv.set(data.date, detritus_c);
             }
         }
         else if( varNameParsed == D_SOILC ) {
-            soil_c[ biome ] = fluxpool(data.getUnitval( U_PGC ).value(U_PGC), U_PGC);
+            soil_c[ biome ] = fluxpool(data.getUnitval( U_PGC ).value(U_PGC), U_PGC, true, "soil_c_" + biome);
             if (data.date != Core::undefinedIndex()) {
                 soil_c_tv.set(data.date, soil_c);
             }
@@ -413,9 +425,11 @@ void SimpleNbox::setData( const std::string &varName,
 fluxpool SimpleNbox::sum_map( fluxpool_stringmap pool ) const
 {
     H_ASSERT( pool.size(), "can't sum an empty map" );
-    fluxpool sum( 0.0, pool.begin()->second.units() );
-    for( fluxpool_stringmap::const_iterator it = pool.begin(); it != pool.end(); it++ )
+    fluxpool sum( 0.0, pool.begin()->second.units(), pool.begin()->second.tracking);
+    for( fluxpool_stringmap::const_iterator it = pool.begin(); it != pool.end(); it++ ) {
+        H_ASSERT(sum.tracking == (it->second).tracking, "tracking mismatch in sum_map function");
         sum = sum + it->second;
+    }
     return sum;
 }
 
@@ -705,7 +719,6 @@ bool SimpleNbox::has_biome(const std::string& biome) {
 // and the same parameters as the most recently created biome.
 void SimpleNbox::createBiome(const std::string& biome)
 {
-
     H_LOG(logger, Logger::DEBUG) << "Creating new biome '" << biome << "'." << std::endl;
 
     // Throw an error if the biome already exists
@@ -713,11 +726,11 @@ void SimpleNbox::createBiome(const std::string& biome)
     H_ASSERT(!has_biome( biome ), errmsg);
 
     // Initialize new pools
-    veg_c[ biome ] = fluxpool(0, U_PGC);
+    veg_c[ biome ] = fluxpool(0, U_PGC, true, "veg_c_"+biome);
     add_biome_to_ts(veg_c_tv, biome, veg_c.at( biome ));
-    detritus_c[ biome ] = fluxpool(0, U_PGC);
+    detritus_c[ biome ] = fluxpool(0, U_PGC, true, "detritus_c_" + biome);
     add_biome_to_ts(detritus_c_tv, biome, detritus_c.at( biome ));
-    soil_c[ biome ] = fluxpool(0, U_PGC);
+    soil_c[ biome ] = fluxpool(0, U_PGC, true, "soil_c_" + biome);
     add_biome_to_ts(soil_c_tv, biome, soil_c.at( biome ));
 
     npp_flux0[ biome ] = fluxpool(0, U_PGC_YR);

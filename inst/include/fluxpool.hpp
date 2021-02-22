@@ -25,7 +25,6 @@ using namespace std;
  *
  *  Created by Ben on 2021-02-05.
  *  Tracking implementation 2021 by Skylar Gering, Harvey Mudd College
-
  *
  */
 
@@ -63,7 +62,7 @@ public:
 
 private:
     // private constructor used only when adding
-    fluxpool(unitval, unordered_map<string, double>, string);
+    fluxpool(unitval, unordered_map<string, double>, bool, string);
     // tracking information is held in a map <source name, fraction of total>
     unordered_map<string, double> ctmap;
 };
@@ -92,9 +91,9 @@ fluxpool::fluxpool( double v, unit_types u, bool track = false, string pool_name
 /*! \brief Private constructor with explicit source pool map
  */
 inline
-fluxpool::fluxpool(unitval v, unordered_map<string, double> pool_map, string pool_name) {
+fluxpool::fluxpool(unitval v, unordered_map<string, double> pool_map, bool track = true, string pool_name = "?") {
     unitval::set(v.value(v.units()), v.units(), 0.0);
-    tracking = true;
+    tracking = track;
     ctmap = pool_map;
     name = pool_name;
     
@@ -115,10 +114,11 @@ fluxpool::fluxpool(unitval v, unordered_map<string, double> pool_map, string poo
 inline
 void fluxpool::set( double v, unit_types u, bool track = false, string pool_name = "?" ) {
     if(v < 0) {
- //        std::cout << "uh oh";
+    //     std::cout << "uh oh";
      }
-    H_ASSERT(v >= 0, "Flux and pool values may not be negative in " + name);
     name = pool_name;
+    H_ASSERT(v >= 0, "Flux and pool values may be negative in " + name);
+
     tracking = track;
     ctmap[name] = 1.0;
     unitval::set(v, u, 0.0);
@@ -158,7 +158,7 @@ double fluxpool::get_fraction(string source) const {
 inline
 fluxpool fluxpool::flux_from_unitval(unitval f) const {
     // BBL-TODO seems like we need an assert here
-    return fluxpool(f, ctmap, name);
+    return fluxpool(f, ctmap, tracking, name);
 }
 
 inline
@@ -246,7 +246,7 @@ fluxpool operator+ ( const fluxpool& lhs, const fluxpool& rhs ) {
       }
     }
 
-    return fluxpool(new_total, new_origins, lhs.name);
+    return fluxpool(new_total, new_origins, lhs.tracking, lhs.name);
 }
 
 //-----------------------------------------------------------------------
@@ -270,8 +270,7 @@ fluxpool operator- ( const fluxpool& lhs, const fluxpool& rhs ) {
     }
     H_ASSERT( lhs.valUnits == rhs.units(), "units mismatch: " + rhs.name );
     H_ASSERT( lhs.tracking == rhs.tracking, "tracking mismatch: " + lhs.name + " and " + rhs.name )
-    fluxpool diff( lhs.val - rhs.val, lhs.valUnits, lhs.tracking, lhs.name );
-    diff.ctmap = lhs.ctmap;
+    fluxpool diff( unitval(lhs.val - rhs.val, lhs.valUnits), lhs.ctmap, lhs.tracking, lhs.name );
     return diff;
 }
 
@@ -282,7 +281,8 @@ fluxpool operator- ( const fluxpool& lhs, const fluxpool& rhs ) {
 inline
 fluxpool operator- ( const fluxpool& lhs, const unitval& rhs ) {
     H_ASSERT( lhs.valUnits == rhs.units(), "units mismatch: " + lhs.name );
-    return fluxpool( lhs.val - rhs.value( lhs.valUnits ), lhs.valUnits, lhs.tracking, lhs.name );
+    unitval diff(lhs.val - rhs.value(lhs.valUnits), lhs.units());
+    return fluxpool( diff, lhs.ctmap, lhs.tracking, lhs.name );
 }
 
 //-----------------------------------------------------------------------
@@ -290,11 +290,11 @@ fluxpool operator- ( const fluxpool& lhs, const unitval& rhs ) {
  */
 inline
 fluxpool operator* ( const fluxpool& lhs, const double rhs ) {
-    return fluxpool( lhs.val * rhs, lhs.valUnits, lhs.tracking, lhs.name );
+    return fluxpool( unitval(lhs.val * rhs, lhs.valUnits), lhs.ctmap, lhs.tracking, lhs.name );
 }
 inline
 fluxpool operator* ( const double lhs, const fluxpool& rhs ) {
-    return fluxpool( lhs * rhs.val, rhs.valUnits, rhs.tracking, rhs.name  );
+    return rhs * lhs;
 }
 
 //-----------------------------------------------------------------------
@@ -302,7 +302,7 @@ fluxpool operator* ( const double lhs, const fluxpool& rhs ) {
  */
 inline
 fluxpool operator/ ( const fluxpool& lhs, const double rhs ) {
-    return fluxpool( lhs.val / rhs, lhs.valUnits, lhs.tracking, lhs.name );
+    return fluxpool( unitval(lhs.val / rhs, lhs.valUnits), lhs.ctmap, lhs.tracking, lhs.name );
 }
 
 //-----------------------------------------------------------------------

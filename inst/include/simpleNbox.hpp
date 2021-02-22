@@ -201,6 +201,8 @@ private:
     fluxpool sum_rh() const;                     //!< calculates current RH, global total
     fluxpool ffi(double t, bool in_spinup) const;
     fluxpool ccs(double t, bool in_spinup) const;
+    fluxpool luc_emission(double t, bool in_spinip) const;
+    fluxpool luc_uptake(double t, bool in_spinip) const;
 
     /*****************************************************************
      * Private helper functions
