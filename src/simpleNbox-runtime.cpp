@@ -266,15 +266,28 @@ void SimpleNbox::stashCValues( double t, const double c[] )
         veg_c[ biome ] = veg_c[ biome ] + npp_fav_biome_flux;
         detritus_c[ biome ] = detritus_c[ biome ] + npp_fad_biome_flux;
         soil_c[ biome ] = soil_c[ biome ] + npp_fas_biome_flux;
-        //atmos_c = atmos_c - npp_fav_biome_flux - npp_fad_biome_flux - npp_fas_biome_flux;
+        atmos_c = atmos_c - npp_fav_biome_flux - npp_fad_biome_flux - npp_fas_biome_flux;
 
         // Update soil, detritus, and atmosphere with RH fluxes
-        //fluxpool rh_fda_flux = detritus_c[ biome ].flux_from_fluxpool(rh_fda(biome));
-        //fluxpool rh_fsa_flux = soil_c[ biome ].flux_from_fluxpool(rh_fsa(biome));
-        //atmos_c = atmos_c + rh_fda_flux + rh_fsa_flux;
-        //detritus_c[ biome ] = detritus_c[ biome ] - rh_fda_flux;
-        //soil_c[ biome ] = soil_c[ biome ] - rh_fsa_flux;
+        fluxpool rh_fda_flux = detritus_c[ biome ].flux_from_fluxpool(rh_fda(biome));
+        fluxpool rh_fsa_flux = soil_c[ biome ].flux_from_fluxpool(rh_fsa(biome));
+        atmos_c = atmos_c + rh_fda_flux + rh_fsa_flux;
+        detritus_c[ biome ] = detritus_c[ biome ] - rh_fda_flux;
+        soil_c[ biome ] = soil_c[ biome ] - rh_fsa_flux;
 
+        // Update litter from veg to soil and detritus
+        fluxpool litter_flux = veg_c[ biome ] * 0.035;
+        fluxpool litter_fvd_flux = litter_flux * f_litterd.at(biome);
+        fluxpool litter_fvs_flux = litter_flux * (1 - f_litterd.at(biome));
+        detritus_c[ biome ] = detritus_c[ biome ] + litter_fvd_flux;
+        soil_c[ biome ] = soil_c[ biome ] + litter_fvs_flux;
+        veg_c[ biome ] = veg_c[ biome ] - litter_fvd_flux - litter_fvs_flux;
+
+        // Update detritus and soil with detsoil flux
+        fluxpool detsoil_flux = detritus_c[ biome ] * 0.6; // I don't think this value is correct? 
+        soil_c[ biome ] = soil_c[ biome ] + detsoil_flux;
+        //cout<<"det soil flux: "<<detsoil_flux.value(U_PGC)<<endl;
+        //detritus_c[ biome ] = detritus_c[ biome ] - detsoil_flux;
 
         // Update atmosphere with luc emissons from all land pools and biomes
         fluxpool luc_fva_biome_flux = veg_c[ biome ].flux_from_fluxpool((luc_e_untracked*f_lucv)*wt);
@@ -290,6 +303,8 @@ void SimpleNbox::stashCValues( double t, const double c[] )
         soil_c[ biome ] = soil_c[ biome ] + luc_fas_flux*wt - luc_fsa_biome_flux; 
         
         // Adjust biome pools to final values from calcDerives
+        cout<<"det diff: "<< detritus_c[ biome ] - (newdet.value(U_PGC) * wt) <<endl;
+        cout<<"soil diff: "<< soil_c[ biome ] - (newsoil.value(U_PGC) * wt) <<endl;
         veg_c[ biome ].adjust_pool_to_val(newveg.value(U_PGC) * wt);
         detritus_c[ biome ].adjust_pool_to_val(newdet.value(U_PGC) * wt);
         soil_c[ biome ].adjust_pool_to_val(newsoil.value(U_PGC) * wt);
