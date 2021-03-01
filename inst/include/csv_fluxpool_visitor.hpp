@@ -54,6 +54,9 @@ private:
 
     //! Helper function: print a line to the output stream
     virtual void print_pool(fluxpool);
+
+    //! Temporary helper to print differences in flux from calcDerives
+    virtual void print_diff(double, string);
     
     //! pointers to other components and stuff
     Core*             core;

@@ -77,6 +77,15 @@ void CSVFluxPoolVisitor::print_pool(fluxpool x) {
 }
 
 //------------------------------------------------------------------------------
+/*! \brief Print a double value and its name
+ */
+void CSVFluxPoolVisitor::print_diff(double x, string name){
+     csvFile << datestring << DELIMITER <<
+                "Diff" << DELIMITER << x << DELIMITER << "U_PGC" << DELIMITER <<
+                name << DELIMITER << 0 << endl;
+}
+
+//------------------------------------------------------------------------------
 // documentation is inherited
 void CSVFluxPoolVisitor::visit( SimpleNbox* c ) {
     if( !core->outputEnabled( c->getComponentName() ) ) return;
@@ -86,10 +95,18 @@ void CSVFluxPoolVisitor::visit( SimpleNbox* c ) {
     print_pool( c->earth_c );
     for( auto it = c->biome_list.begin(); it != c->biome_list.end(); it++ ) {
         std::string biome = *it;
-        print_pool( c->veg_c[ "global" ] );
-        print_pool( c->detritus_c[ "global" ] );
-        print_pool( c->soil_c[ "global" ] );
+        print_pool( c->veg_c[ biome ] );
+        print_pool( c->detritus_c[ biome ] );
+        print_pool( c->soil_c[ biome ] );
+
+        // Temporary Print Outs
+        print_diff(c->veg_diff[biome], "veg_diff");
+        print_diff(c->soil_diff[biome], "soil_diff");
+        print_diff(c->det_diff[biome], "det_diff");
     }
+    print_diff(c->atmos_diff, "atmos_diff");
+    print_diff(c->earth_diff, "earth_diff");
+    csvFile << endl;
 }
 
 }

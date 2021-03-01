@@ -265,6 +265,9 @@ fluxpool operator+ ( const fluxpool& lhs, const unitval& rhs ) {
  */
 inline
 fluxpool operator- ( const fluxpool& lhs, const fluxpool& rhs ) {
+    // TODO: Weighted tracking needed for isotope implementation
+    // Should not affect current tracked pools as only fluxes from the
+    // same pools are currently subtracked (same map so should not change map)
     if(lhs.units() != rhs.units()) {
         cout << "uh oh";
     }

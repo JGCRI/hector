@@ -157,14 +157,14 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
     // Need to add tests with varied source pools to ensure source pools are preserved
     fluxpool testMult(10, U_PGC, true, "test1");
     fluxpool testFlux(3, U_PGC, true, "flux1");
-    cout <<"testMult before: "<<testMult<<endl;
+    //cout <<"testMult before: "<<testMult<<endl;
     testMult = testMult + testFlux;
-    cout <<"testMult before: "<<testMult<<endl;
+    //cout <<"testMult before: "<<testMult<<endl;
     testMult = testMult - testFlux;
     //testMult = testMult*2.0;
     //cout <<"testMult before: "<<testMult<<endl;
     //testMult = testMult / 2.0;
-    cout <<"testMult after: "<<testMult<<endl;
+    //cout <<"testMult after: "<<testMult<<endl;
 }
 
 

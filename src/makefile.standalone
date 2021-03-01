@@ -17,10 +17,10 @@ export HROOT
 
 ## Boost root
 ifeq ($(strip $(BOOSTVERSION)),)
-BOOSTVERSION	= 1.72.0_3
+BOOSTVERSION	= 1_63_0
 endif
 ifeq ($(strip $(BOOSTROOT)),)
-BOOSTROOT	= /usr/local/Cellar/boost/1.72.0_3
+BOOSTROOT	= $(HOME)/src/boost_$(BOOSTVERSION)
 endif
 ifeq ($(strip $(BOOSTLIB)),)
 ## BOOSTROOT can be customized in the environment by compiling as:
