@@ -288,6 +288,20 @@ private:
         }
     }
 
+    /*****************************************************************
+     * Tracking Helper Functions
+     *****************************************************************/
+    void startTracking(){
+        earth_c.tracking = true;
+        atmos_c.tracking = true;
+        for( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
+            std::string biome = *it;
+            veg_c[ biome ].tracking = true;
+            soil_c[ biome ].tracking = true;
+            detritus_c[ biome ].tracking = true;
+        }
+    }
+
 
 };
 

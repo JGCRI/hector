@@ -142,7 +142,9 @@ void SimpleNbox::run( const double runToDate )
 {
     in_spinup = core->inSpinup();
     sanitychecks();
-
+    if(tcurrent == 1746){
+        startTracking();
+    }
     Tgav_record.set( runToDate, core->sendMessage( M_GETDATA, D_GLOBAL_TEMP ).value( U_DEGC ) );
 }
 
@@ -192,7 +194,6 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     // Solver has gone from ODEstartdate to t
     const double yf = ( t - ODEstartdate );
     H_ASSERT( yf >= 0 && yf <= 1, "yearfraction out of bounds" );
-
     H_LOG( logger,Logger::DEBUG ) << "Stashing at t=" << t << ", solver pools at " << t << ": " <<
         "  atm = " << c[ SNBOX_ATMOS ] <<
         "  veg = " << c[ SNBOX_VEG ] <<
@@ -248,8 +249,9 @@ void SimpleNbox::stashCValues( double t, const double c[] )
 
     for( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
         std::string biome = *it;
-        fluxpool npp_biome = npp(biome);
-        const double wt = (npp_biome + rh( biome ) ) / npp_rh_total;
+        const double wt = (npp(biome) + rh( biome ) ) / npp_rh_total;
+        
+        fluxpool npp_biome = npp(biome) * yf;
 
         // Update atmosphere with luc emissons from all land pools and biomes
         fluxpool luc_fva_biome_flux = veg_c[ biome ].flux_from_fluxpool((luc_e_untracked*f_lucv)*wt);
@@ -258,12 +260,12 @@ void SimpleNbox::stashCValues( double t, const double c[] )
         atmos_c = atmos_c + luc_fva_biome_flux - luc_fav_flux*wt;
         atmos_c = atmos_c + luc_fda_biome_flux - luc_fad_flux*wt;
         atmos_c = atmos_c + luc_fsa_biome_flux - luc_fas_flux*wt;
-
+        
         // Update veg_c, detritus_c, and soil_c with luc uptake from atmos per biome
         veg_c[ biome ] = veg_c[ biome ] + luc_fav_flux*wt - luc_fva_biome_flux;
         detritus_c[ biome ] = detritus_c[ biome ] + luc_fad_flux*wt - luc_fda_biome_flux;
         soil_c[ biome ] = soil_c[ biome ] + luc_fas_flux*wt - luc_fsa_biome_flux; 
-
+        
         // Update all pools for NPP
         fluxpool npp_fav_biome_flux = atmos_c.flux_from_fluxpool(npp_biome * f_nppv.at(biome));
         fluxpool npp_fad_biome_flux = atmos_c.flux_from_fluxpool(npp_biome* f_nppd.at(biome));
@@ -272,24 +274,24 @@ void SimpleNbox::stashCValues( double t, const double c[] )
         detritus_c[ biome ] = detritus_c[ biome ] + npp_fad_biome_flux;
         soil_c[ biome ] = soil_c[ biome ] + npp_fas_biome_flux;
         atmos_c = atmos_c - npp_fav_biome_flux - npp_fad_biome_flux - npp_fas_biome_flux;
-
+        
         // Update soil, detritus, and atmosphere with RH fluxes
-        fluxpool rh_fda_flux = detritus_c[ biome ].flux_from_fluxpool(rh_fda(biome));
-        fluxpool rh_fsa_flux = soil_c[ biome ].flux_from_fluxpool(rh_fsa(biome));
+        fluxpool rh_fda_flux = detritus_c[ biome ].flux_from_fluxpool(yf * rh_fda(biome));
+        fluxpool rh_fsa_flux = soil_c[ biome ].flux_from_fluxpool(yf * rh_fsa(biome));
         atmos_c = atmos_c + rh_fda_flux + rh_fsa_flux;
         detritus_c[ biome ] = detritus_c[ biome ] - rh_fda_flux;
         soil_c[ biome ] = soil_c[ biome ] - rh_fsa_flux;
 
         // Update litter from veg to soil and detritus
-        fluxpool litter_flux = veg_c[ biome ] * 0.035;
+        fluxpool litter_flux = veg_c[ biome ] * (0.035 * yf);
         fluxpool litter_fvd_flux = litter_flux * f_litterd.at(biome);
         fluxpool litter_fvs_flux = litter_flux * (1 - f_litterd.at(biome));
         detritus_c[ biome ] = detritus_c[ biome ] + litter_fvd_flux;
         soil_c[ biome ] = soil_c[ biome ] + litter_fvs_flux;
         veg_c[ biome ] = veg_c[ biome ] - litter_flux;
-
+        
         // Update detritus and soil with detsoil flux
-        fluxpool detsoil_flux = detritus_c[ biome ] * 0.6;
+        fluxpool detsoil_flux = detritus_c[ biome ] * (0.6 * yf);
         soil_c[ biome ] = soil_c[ biome ] + detsoil_flux;
         // THIS IS THE ONE THAT CAUSES THE TRACKING TO GET MESSED UP
         //detritus_c[ biome ] = detritus_c[ biome ] - detsoil_flux;
@@ -298,12 +300,11 @@ void SimpleNbox::stashCValues( double t, const double c[] )
         veg_diff[biome] = veg_c[biome].value(U_PGC) - c[SNBOX_VEG]*wt;
         soil_diff[biome] = soil_c[biome].value(U_PGC) - c[SNBOX_SOIL]*wt;
         det_diff[ biome ] = detritus_c[biome].value(U_PGC) - c[SNBOX_DET]*wt;
-
         // Adjust biome pools to final values from calcDerives
         veg_c[ biome ].adjust_pool_to_val(newveg.value(U_PGC) * wt);
         detritus_c[ biome ].adjust_pool_to_val(newdet.value(U_PGC) * wt);
         soil_c[ biome ].adjust_pool_to_val(newsoil.value(U_PGC) * wt);
-
+        
         H_LOG( logger,Logger::DEBUG ) << "Biome " << biome << " weight = " << wt << std::endl;
     }
     

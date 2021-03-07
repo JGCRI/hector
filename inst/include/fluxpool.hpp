@@ -158,18 +158,13 @@ double fluxpool::get_fraction(string source) const {
 inline
 fluxpool fluxpool::flux_from_unitval(unitval f) const {
     // BBL-TODO seems like we need an assert here
-    return fluxpool(f, ctmap, tracking, name);
+    return fluxpool(f, ctmap, tracking);
 }
 
 inline
 fluxpool fluxpool::flux_from_fluxpool(fluxpool f) const {
-    f.ctmap = ctmap;
-    f.tracking = tracking;
-
-    // We're asking for a pool so we adopt the source's units
-    f.valUnits = valUnits;
-
-    return f;
+    unitval flux = unitval(f.value(f.valUnits), valUnits);
+    return fluxpool(flux, ctmap, tracking);
 }
 
 //-----------------------------------------------------------------------
@@ -180,7 +175,7 @@ inline
 void fluxpool::adjust_pool_to_val(const double solvedSize, const bool allow_untracked = true) {
     const double diff = solvedSize - val;  // reducing numeric precision errors
 
-    if(diff > 0 && allow_untracked) {  // record difference as due to untracked source
+    if(tracking && diff > 0 && allow_untracked) {  // record difference as due to untracked source
         fluxpool flux(diff, this->valUnits, true, "untracked");
         fluxpool adjusted = *this + flux;
         this->ctmap = adjusted.ctmap;
