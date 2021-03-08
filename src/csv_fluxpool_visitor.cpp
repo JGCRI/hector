@@ -93,6 +93,7 @@ void CSVFluxPoolVisitor::visit( SimpleNbox* c ) {
     // The potentially tracked pools
     print_pool( c->atmos_c );
     print_pool( c->earth_c );
+    print_pool( c->ocean_model_c );
     for( auto it = c->biome_list.begin(); it != c->biome_list.end(); it++ ) {
         std::string biome = *it;
         print_pool( c->veg_c[ biome ] );

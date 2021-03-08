@@ -106,6 +106,7 @@ private:
     fluxpool earth_c;               //!< earth pool, Pg C; for mass-balance
     fluxpool atmos_c;                //!< atmosphere pool, Pg C
     fluxpool    Ca;                  //!< current [CO2], ppmv
+    fluxpool ocean_model_c;
 
     // Carbon pools -- biome-specific
     fluxpool_stringmap veg_c;        //!< vegetation pools, Pg C
@@ -116,6 +117,7 @@ private:
 
     double_stringmap tempfertd, tempferts; //!< temperature effect on respiration (unitless)
 
+    double trackingYear;
     // Temporary to investigate flux excess or shortage
     double earth_diff;
     double atmos_diff;
@@ -294,6 +296,7 @@ private:
     void startTracking(){
         earth_c.tracking = true;
         atmos_c.tracking = true;
+        ocean_model_c.tracking = true;
         for( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
             std::string biome = *it;
             veg_c[ biome ].tracking = true;

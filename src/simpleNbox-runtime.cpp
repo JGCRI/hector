@@ -142,7 +142,7 @@ void SimpleNbox::run( const double runToDate )
 {
     in_spinup = core->inSpinup();
     sanitychecks();
-    if(tcurrent == 1746){
+    if(!in_spinup && tcurrent == trackingYear){
         startTracking();
     }
     Tgav_record.set( runToDate, core->sendMessage( M_GETDATA, D_GLOBAL_TEMP ).value( U_DEGC ) );
@@ -203,7 +203,6 @@ void SimpleNbox::stashCValues( double t, const double c[] )
         "  earth = " << c[ SNBOX_EARTH ] << std::endl;
 
     log_pools( t );
-    
     // get the UNTRACKED earth emissions (ffi) and uptake (ccs)
     // We immediately adjust them for the year fraction (as the solver
     // may call stashCValues multiple times within a given year)
@@ -214,6 +213,17 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     // because earth_c is tracked, ffi and ccs automatically become tracked as well
     fluxpool ffi_flux = earth_c.flux_from_fluxpool(ffi_untracked);
     fluxpool ccs_flux = atmos_c.flux_from_fluxpool(ccs_untracked);
+
+    unitval ocean_atmos = unitval(c[SNBOX_OCEAN] - ocean_model_c.value(U_PGC), U_PGC);
+    fluxpool oa_flux(0.0, U_PGC);
+    fluxpool ao_flux(0.0, U_PGC);
+    if(ocean_atmos > 0){
+        ao_flux = atmos_c.flux_from_unitval(ocean_atmos);
+        oa_flux = ocean_model_c.flux_from_fluxpool(oa_flux);
+    } else {
+        oa_flux = ocean_model_c.flux_from_unitval(-ocean_atmos);
+        ao_flux = atmos_c.flux_from_fluxpool(ao_flux);
+    }
 
     fluxpool luc_e_untracked = luc_emission(t, in_spinup) * yf;
     fluxpool luc_u_untracked = luc_uptake(t, in_spinup) * yf;
@@ -250,7 +260,7 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     for( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
         std::string biome = *it;
         const double wt = (npp(biome) + rh( biome ) ) / npp_rh_total;
-        
+
         fluxpool npp_biome = npp(biome) * yf;
 
         // Update atmosphere with luc emissons from all land pools and biomes
@@ -294,7 +304,7 @@ void SimpleNbox::stashCValues( double t, const double c[] )
         fluxpool detsoil_flux = detritus_c[ biome ] * (0.6 * yf);
         soil_c[ biome ] = soil_c[ biome ] + detsoil_flux;
         // THIS IS THE ONE THAT CAUSES THE TRACKING TO GET MESSED UP
-        //detritus_c[ biome ] = detritus_c[ biome ] - detsoil_flux;
+        // detritus_c[ biome ] = detritus_c[ biome ] - detsoil_flux;
         
         // TEMPORARY TO INVESTIGATE FLUXES
         veg_diff[biome] = veg_c[biome].value(U_PGC) - c[SNBOX_VEG]*wt;
@@ -311,6 +321,10 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     // Update earth_c and atmos_c with fossil fuel related fluxes
     earth_c = (earth_c - ffi_flux) + ccs_flux;
     atmos_c = (atmos_c + ffi_flux) - ccs_flux;
+
+    // ocean-atmosphere flux adjustment
+    ocean_model_c = ocean_model_c - oa_flux + ao_flux;
+    atmos_c = atmos_c + oa_flux - ao_flux;
 
     // TEMPORARY TO INVESTIGATE FLUXES
     earth_diff = earth_c - c[SNBOX_EARTH];
