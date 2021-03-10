@@ -261,7 +261,7 @@ void SimpleNbox::stashCValues( double t, const double c[] )
         std::string biome = *it;
         const double wt = (npp(biome) + rh( biome ) ) / npp_rh_total;
 
-        fluxpool npp_biome = npp(biome) * yf;
+        fluxpool npp_biome = yf * npp(biome);
 
         // Update atmosphere with luc emissons from all land pools and biomes
         fluxpool luc_fva_biome_flux = veg_c[ biome ].flux_from_fluxpool((luc_e_untracked*f_lucv)*wt);
@@ -304,7 +304,7 @@ void SimpleNbox::stashCValues( double t, const double c[] )
         fluxpool detsoil_flux = detritus_c[ biome ] * (0.6 * yf);
         soil_c[ biome ] = soil_c[ biome ] + detsoil_flux;
         // THIS IS THE ONE THAT CAUSES THE TRACKING TO GET MESSED UP
-        // detritus_c[ biome ] = detritus_c[ biome ] - detsoil_flux;
+        detritus_c[ biome ] = detritus_c[ biome ] - detsoil_flux;
         
         // TEMPORARY TO INVESTIGATE FLUXES
         veg_diff[biome] = veg_c[biome].value(U_PGC) - c[SNBOX_VEG]*wt;

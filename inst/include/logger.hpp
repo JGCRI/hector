@@ -19,7 +19,7 @@
 
 #include "h_exception.hpp"
 
-#define LOG_DIRECTORY "inst/logs/"
+#define LOG_DIRECTORY "logs/"
 #define LOG_EXTENSION ".log"
 
 namespace Hector {
