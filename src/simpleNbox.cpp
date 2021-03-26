@@ -64,18 +64,142 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
     // fluxpool test code - move to unit test later BBL-TODO
     // -----------------------------------------
     
-    fluxpool x1(1.0, U_PGC);
-    fluxpool x2(2.0, U_PGC);
-    unitval y1(1.0, U_PGC);
-    unitval y2(2.0, U_PGC);
+    // Construction Tests
+    unitval u1(1.0, U_PGC);
+    unitval u2(2.0, U_PGC);
+    unitval u3 = u1 + u2;
+
+    fluxpool f0;
+    std::unordered_map<std::string, double> f0_map = f0.get_tracking_map();
+    H_ASSERT(f0.tracking == false, "default constructor tracking isn't false");
+    H_ASSERT(f0.value(U_UNDEFINED) == 0.0, "default constructor value and units don't set");
+    H_ASSERT(f0_map.empty() == true, "default constructor doesn't create empty map");
+    H_ASSERT(f0.name == "?",  "default constructor doesn't set name correctly");
+
+    fluxpool f1(1.0, U_PGC);
+    H_ASSERT(f1.tracking == false, "basic constructor tracking isn't default to false");
+    H_ASSERT(f1.value(U_PGC) == 1.0, "basic constructor value and units don't set");
+    H_ASSERT(f1.name == "?",  "basic constructor doesn't set name correctly");
+    f1.name = "f1"; //for ease of testing later
+    std::unordered_map<std::string, double> f1_map = f1.get_tracking_map();
+    H_ASSERT(f1_map.size() == 1, "basic constructor-wrong size map");
+    fluxpool f1_track = f1; // for ease of testing later
+    f1_track.tracking = true;
+    H_ASSERT(f1_track.get_fraction("?") == 1, "basic constructor fraction doesn't set correctly");
+
+    fluxpool f2(2.0, U_PGC, false, "f2");
+    fluxpool f2_track = f2;
+    f2_track.tracking = true;
+    H_ASSERT(f2_track.tracking == true, "basic constructor tracking doesn't set correctly");
+    H_ASSERT(f2_track.value(U_PGC) == 2.0, "basic constructor value and units don't set");
+    H_ASSERT(f2_track.name == "f2",  "basic constructor doesn't set name correctly");
+    std::unordered_map<std::string, double> f2_track_map = f2_track.get_tracking_map();
+    H_ASSERT(f2_track_map.size() == 1, "basic constructor-wrong size map");
+    H_ASSERT(f2_track.get_fraction("f2") == 1, "basic constructor fraction doesn't set correctly");
+
+    // Set Tests
+    fluxpool set1;
+    set1.set(1, U_PGC);
+    H_ASSERT(set1.tracking == false, "set doesn't set tracking correctly");
+    H_ASSERT(set1.value(U_PGC) == 1.0, "set value and units don't set");
+    H_ASSERT(set1.name == "?",  "set doesn't set name correctly");
+    set1.tracking = true;
+    std::unordered_map<std::string, double> set1_map = set1.get_tracking_map();
+    H_ASSERT(set1_map.size() == 1, "set-wrong size map");
+    H_ASSERT(set1.get_fraction("?") == 1, "set fraction doesn't set correctly");
+
+    fluxpool set2;
+    set2.set(2.0, U_PGC, true, "set2");
+    H_ASSERT(set2.tracking == true, "set doesn't set tracking correct");
+    H_ASSERT(set2.name == "set2", "set doesn't set name");
+
+    //get_sources and get_fraction tests
+    fluxpool empty_pool;
+    empty_pool.tracking = true;
+    vector<string> no_sources = empty_pool.get_sources();
+    H_ASSERT(no_sources.empty() == true, "error on fetching empty list of sources");
+    H_ASSERT(empty_pool.get_fraction("") == 0, "doesn't return 0 for strings not in map");
+
+    vector<string> f1_sources = f1_track.get_sources();
+    H_ASSERT(f1_sources.size() == 1, "f1 has wrong number of sources");
+    vector<string> sources_actual;
+    sources_actual.push_back("?"); //f1_track has name of ? from default testing
+    H_ASSERT(sources_actual == f1_sources, "set1 sources doesn't match actual sources");
+    H_ASSERT(f1_track.get_fraction("?") == 1, "one element get fraction doesn't work");
+
+    fluxpool f3_track = f2_track + f1_track;
+    vector<string> f3_sources = f3_track.get_sources();
+    sort(f3_sources.begin(), f3_sources.end());
+    sources_actual.push_back("f2");
+    sort(sources_actual.begin(), sources_actual.end());
+    H_ASSERT(sources_actual == f3_sources, "f3 sources doesn't match actual sources");
+    H_ASSERT(f3_track.get_fraction("?") == u1/u3, "two element get fraction doesn't work"); 
+    H_ASSERT(f3_track.get_fraction("f2") == u2/u3, "two element get fraction doesn't work"); 
+
+    // flux_from_unitval and flux_from_fluxpool tests
+    fluxpool flux1 = f1.flux_from_unitval(u1);
+    H_ASSERT(flux1 == u1, "flux_from_untival doesn't set value right");
+    H_ASSERT(flux1.name == "?", "flux_from_untival default name");
+    H_ASSERT(flux1.tracking == f1.tracking, "flux_from_untival tracking when tracking is false");
+    H_ASSERT(flux1.get_tracking_map() == f1.get_tracking_map(), "flux_from_untival map not set correctly");
+    
+    fluxpool flux1_named = f1.flux_from_unitval(u1, "flux1");
+    H_ASSERT(flux1_named.name == "flux1", "flux_from_untival set name");
+
+    fluxpool flux1_track = f1_track.flux_from_unitval(u1); 
+    H_ASSERT(flux1_track.tracking == f1_track.tracking, "flux_from_untival tracking when tracking is true");
+    H_ASSERT(flux1_track.get_tracking_map() == f1_track.get_tracking_map(), "flux_from_untival map not set correctly");
+
+    fluxpool flux3_track = f3_track.flux_from_unitval(u3);
+    H_ASSERT(flux3_track.get_tracking_map() == f3_track.get_tracking_map(), "flux_from_untival map not set correctly with multiple keys");
+
+    // Still need to make sure no negative unitvals can make fluxes
+    fluxpool flux4_track = flux3_track + flux1_track;
+    fluxpool flux4 = flux1.flux_from_fluxpool(flux4_track);
+    H_ASSERT(flux4.value(flux4_track.units()) == flux4_track.value(flux4.units()), "flux_from_fluxpool sets value correctly");
+    H_ASSERT(flux4.name == "?", "flux_from_fluxpool doesn't set default name");
+    H_ASSERT(flux4.get_tracking_map() == flux1.get_tracking_map(), "flux_from_fluxpool map not set correctly");
+    H_ASSERT(flux4.tracking == flux1.tracking, "flux_from_fluxpool tracking not set correctly"); 
+  
+    fluxpool flux4_named = flux4_track.flux_from_fluxpool(flux4, "flux4");
+    H_ASSERT(flux4_named.name == "flux4", "flux_from_fluxpool doesn't set name");
+    H_ASSERT(flux4_named.tracking == flux4_track.tracking, "flux_from_fluxpool doesn't set tracking when true");
+    
+    // Adjust Pool To Val tests
+    fluxpool adjust2_no_track = f2.flux_from_unitval(u1);
+    adjust2_no_track.adjust_pool_to_val(u2.value(u2.units()));
+    H_ASSERT(adjust2_no_track == u2, "value is not adjusted correctly");
+    adjust2_no_track.tracking = true;
+    H_ASSERT(adjust2_no_track.get_fraction("untracked") == 0, "when not tracking, untracked is not added to the map");
+    
+    fluxpool adjust1_track = f2_track.flux_from_unitval(u2);
+    adjust1_track.adjust_pool_to_val(u1.value(u1.units()));
+    H_ASSERT(adjust1_track == u1, "value is not adjusted correctly when tracking");
+    H_ASSERT(adjust1_track.get_fraction("untracked") == 0, "when tracking with negative diff, untracked is not added to the map");
+
+    fluxpool adjust2_no_untracked = f2_track.flux_from_unitval(u1);
+    adjust2_no_untracked.adjust_pool_to_val(u2.value(u2.units()), false);
+    H_ASSERT(adjust2_no_untracked == u2, "value is not adjusted correctly");
+    H_ASSERT(adjust2_no_untracked.get_fraction("untracked") == 0, "when tracking with negative diff, untracked is not added to the map");
+
+    fluxpool adjust2_track = f1_track.flux_from_unitval(u1);
+    adjust2_track.adjust_pool_to_val(u2);
+    H_ASSERT(adjust2_track == u2, "value not adjusted correctly when tracking");
+    H_ASSERT(adjust2_track.get_fraction("untracked") == (u1/u2), "untracked value not added to map");
+    H_EXCEPTION_H
+
+    // Need following tests:
+    // untracked positve and negative fluxpools (do maps tracking name and value match)
+    // tracked positive test (do maps tracking name and value match)
+
 
     // Things that should NOT throw an exception
-    fluxpool test = x2 - x1;
-    test = x1 + x2;
-    test = x1 * 2.0;
-    test = x1 / 2.0;
-    test = x1 - y1;
-    test = x1 + y2;
+    fluxpool test = f2 - f1;
+    test = f1 + f2;
+    test = f1 * 2.0;
+    test = f1 / 2.0;
+    test = f1 - u1;
+    test = f1 + u2;
 
     identity_tests(false);
     
@@ -83,12 +207,12 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
     int thrown = 0;
     try { fluxpool(-1.0, U_PGC ); } catch ( h_exception e ) { thrown++; }
     try { test.set(-1.0, U_PGC ); } catch ( h_exception e ) { thrown++; }
-    try { test = x1 - x2; } catch ( h_exception e ) { thrown++; }
-    try { test = x1 - y2; } catch ( h_exception e ) { thrown++; }
-    try { test = x1 * -1.0; } catch ( h_exception e ) { thrown++; }
-    try { test = -1.0 * x1; } catch ( h_exception e ) { thrown++; }
-    try { test = x1 / -1.0; } catch ( h_exception e ) { thrown++; }
-    try { if(x1 == fluxpool(1.0, U_UNITLESS)) {}; } catch ( h_exception e ) { thrown++; }
+    try { test = f1 - f2; } catch ( h_exception e ) { thrown++; }
+    try { test = f1 - u2; } catch ( h_exception e ) { thrown++; }
+    try { test = f1 * -1.0; } catch ( h_exception e ) { thrown++; }
+    try { test = -1.0 * f1; } catch ( h_exception e ) { thrown++; }
+    try { test = f1 / -1.0; } catch ( h_exception e ) { thrown++; }
+    try { if(f1 == fluxpool(1.0, U_UNITLESS)) {}; } catch ( h_exception e ) { thrown++; }
 
     H_ASSERT(thrown == 8, "1-something didn't throw!")
     
@@ -158,18 +282,6 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
     H_ASSERT(dest.get_fraction("untracked") - 1.0/11.0 < 1e-6, "untracked not correct");
 
  //   H_THROW("stop");
-
-    // Need to add tests with varied source pools to ensure source pools are preserved
-    fluxpool testMult(10, U_PGC, true, "test1");
-    fluxpool testFlux(3, U_PGC, true, "flux1");
-    //cout <<"testMult before: "<<testMult<<endl;
-    testMult = testMult + testFlux;
-    //cout <<"testMult before: "<<testMult<<endl;
-    testMult = testMult - testFlux;
-    //testMult = testMult*2.0;
-    //cout <<"testMult before: "<<testMult<<endl;
-    //testMult = testMult / 2.0;
-    //cout <<"testMult after: "<<testMult<<endl;
 }
 
 

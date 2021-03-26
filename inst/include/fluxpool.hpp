@@ -40,10 +40,11 @@ public:
     // tracking-specific functions
     vector<string> get_sources() const;
     double get_fraction(string source) const;
+    unordered_map<string, double> get_tracking_map() const;
     bool tracking;
     string name;
-    fluxpool flux_from_unitval(unitval) const;
-    fluxpool flux_from_fluxpool(fluxpool) const;
+    fluxpool flux_from_unitval(unitval, string) const;
+    fluxpool flux_from_fluxpool(fluxpool, string) const;
     void adjust_pool_to_val(const double, const bool);
 
     // math operators
@@ -77,6 +78,7 @@ fluxpool operator*(double d, const fluxpool& ct);
 inline
 fluxpool::fluxpool() {
     tracking = false;
+    name = "?";
 }
 
 //-----------------------------------------------------------------------
@@ -110,15 +112,12 @@ fluxpool::fluxpool(unitval v, unordered_map<string, double> pool_map, bool track
 
 //-----------------------------------------------------------------------
 /*! \brief Check that the value is >=0 before passing control to unitval
+ *  \warning Resets map so 'name' key's value is 1, all others removed
  */
 inline
 void fluxpool::set( double v, unit_types u, bool track = false, string pool_name = "?" ) {
-    if(v < 0) {
-    //     std::cout << "uh oh";
-     }
     name = pool_name;
     H_ASSERT(v >= 0, "Flux and pool values may be negative in " + name);
-
     tracking = track;
     ctmap[name] = 1.0;
     unitval::set(v, u, 0.0);
@@ -128,7 +127,7 @@ void fluxpool::set( double v, unit_types u, bool track = false, string pool_name
 /*! \brief Return a string vector of the current sources
  */
 inline
-std::vector<std::string> fluxpool::get_sources() const {
+vector<string> fluxpool::get_sources() const {
     H_ASSERT(tracking, "get_sources() requires tracking to be on in " + name);
     vector<string> sources;
     for (auto itr = ctmap.begin(); itr != ctmap.end(); itr++) {
@@ -152,19 +151,27 @@ double fluxpool::get_fraction(string source) const {
 }
 
 //-----------------------------------------------------------------------
+/*! \brief Return the whole map
+ */
+inline
+unordered_map<string, double> fluxpool::get_tracking_map() const {
+    return this->ctmap;
+}
+
+//-----------------------------------------------------------------------
 /*! \brief Given a unitval, return a fluxpool with that total and our source pool map.
                         This is needed when dealing with LUC and other input (i.e. unitval) fluxes
  */
 inline
-fluxpool fluxpool::flux_from_unitval(unitval f) const {
+fluxpool fluxpool::flux_from_unitval(unitval f, string name = "?") const {
     // BBL-TODO seems like we need an assert here
-    return fluxpool(f, ctmap, tracking);
+    return fluxpool(f, ctmap, tracking, name);
 }
 
 inline
-fluxpool fluxpool::flux_from_fluxpool(fluxpool f) const {
+fluxpool fluxpool::flux_from_fluxpool(fluxpool f, string name = "?") const {
     unitval flux = unitval(f.value(f.valUnits), valUnits);
-    return fluxpool(flux, ctmap, tracking);
+    return fluxpool(flux, ctmap, tracking, name);
 }
 
 //-----------------------------------------------------------------------
