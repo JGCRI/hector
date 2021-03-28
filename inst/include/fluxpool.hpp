@@ -34,7 +34,7 @@ class fluxpool: public unitval {
 
 public:
     fluxpool();
-    fluxpool( double, unit_types, bool, string  );
+    fluxpool( double, unit_types, bool, string );
     void set( double, unit_types, bool, string );
     
     // tracking-specific functions
@@ -259,7 +259,7 @@ inline
 fluxpool operator+ ( const fluxpool& lhs, const unitval& rhs ) {
     H_ASSERT( lhs.valUnits == rhs.units(), "units mismatch: " + lhs.name );
     H_ASSERT( !lhs.tracking, "Can't add a unitval to a tracking fluxpool");
-    return fluxpool( lhs.val + rhs.value( lhs.valUnits ), lhs.valUnits );
+    return fluxpool( lhs.val + rhs.value(rhs.units()), lhs.valUnits, false, lhs.name );
 }
 
 //-----------------------------------------------------------------------
@@ -270,9 +270,6 @@ fluxpool operator- ( const fluxpool& lhs, const fluxpool& rhs ) {
     // TODO: Weighted tracking needed for isotope implementation
     // Should not affect current tracked pools as only fluxes from the
     // same pools are currently subtracked (same map so should not change map)
-    if(lhs.units() != rhs.units()) {
-        cout << "uh oh";
-    }
     H_ASSERT( lhs.valUnits == rhs.units(), "units mismatch: " + rhs.name );
     H_ASSERT( lhs.tracking == rhs.tracking, "tracking mismatch: " + lhs.name + " and " + rhs.name )
     fluxpool diff( unitval(lhs.val - rhs.val, lhs.valUnits), lhs.ctmap, lhs.tracking, lhs.name );

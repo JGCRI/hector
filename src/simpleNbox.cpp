@@ -65,6 +65,7 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
     // -----------------------------------------
     
     // Construction Tests
+    unitval u0(0.0, U_PGC);
     unitval u1(1.0, U_PGC);
     unitval u2(2.0, U_PGC);
     unitval u3 = u1 + u2;
@@ -80,7 +81,6 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
     H_ASSERT(f1.tracking == false, "basic constructor tracking isn't default to false");
     H_ASSERT(f1.value(U_PGC) == 1.0, "basic constructor value and units don't set");
     H_ASSERT(f1.name == "?",  "basic constructor doesn't set name correctly");
-    f1.name = "f1"; //for ease of testing later
     std::unordered_map<std::string, double> f1_map = f1.get_tracking_map();
     H_ASSERT(f1_map.size() == 1, "basic constructor-wrong size map");
     fluxpool f1_track = f1; // for ease of testing later
@@ -112,6 +112,7 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
     set2.set(2.0, U_PGC, true, "set2");
     H_ASSERT(set2.tracking == true, "set doesn't set tracking correct");
     H_ASSERT(set2.name == "set2", "set doesn't set name");
+    H_ASSERT(set2.get_fraction("set2") == 1, "set fraction doesn't set correctly with custom name");
 
     //get_sources and get_fraction tests
     fluxpool empty_pool;
@@ -127,6 +128,7 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
     H_ASSERT(sources_actual == f1_sources, "set1 sources doesn't match actual sources");
     H_ASSERT(f1_track.get_fraction("?") == 1, "one element get fraction doesn't work");
 
+    fluxpool f3 = f2 + f1;
     fluxpool f3_track = f2_track + f1_track;
     vector<string> f3_sources = f3_track.get_sources();
     sort(f3_sources.begin(), f3_sources.end());
@@ -188,9 +190,85 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
     H_ASSERT(adjust2_track.get_fraction("untracked") == (u1/u2), "untracked value not added to map");
     H_EXCEPTION_H
 
-    // Need following tests:
-    // untracked positve and negative fluxpools (do maps tracking name and value match)
-    // tracked positive test (do maps tracking name and value match)
+    // Multiplication Tests
+    fluxpool mult0r = f1*0.0;
+    H_ASSERT(mult0r == u0, "multiplication by 0 does not work");
+    H_ASSERT(f1 != u0, "multipiled fluxpool is not affected");
+    fluxpool mult0l = 0.0*f1;
+    H_ASSERT(mult0l == u0, "multiplication by 0 does not work");
+
+    fluxpool mult4 = f1_track*2.0;
+    H_ASSERT(mult4 == u2, "multiplication by 0 does not work");
+    H_ASSERT(mult4.get_tracking_map() == f1.get_tracking_map(), "product map same as multipiled map");
+    H_ASSERT(mult4.name == f1_track.name, "names aren't preserved during multiplicaiton");
+    H_ASSERT(mult4.tracking == f1_track.tracking, "tracking is not preserved during multiplicaiton");
+    mult4 = mult4 + f2_track;
+    H_ASSERT(mult4.get_tracking_map() != f1_track.get_tracking_map(), "multiplication does not produce a deep copy");
+    fluxpool mult3 = mult4 * 0.5;
+    // test for map with more than one element
+    H_ASSERT(mult3.get_tracking_map() == mult4.get_tracking_map(), "product map same as multipiled map with multiple elements");
+
+
+    // Division Tests
+    fluxpool div1 = f2_track/2.0;
+    H_ASSERT(div1 == u1, "division does not work");
+    H_ASSERT(div1.get_tracking_map() == f2_track.get_tracking_map(), "quotient map same as multipiled map");
+    H_ASSERT(div1.name == f2_track.name, "names aren't preserved during division");
+    H_ASSERT(div1.tracking == f2_track.tracking, "tracking is not preserved during multiplicaiton");
+    div1 = div1 + f1_track;
+    H_ASSERT(div1.get_tracking_map() != f2_track.get_tracking_map(), "division does not produce a deep copy");
+    fluxpool div2 = div1/0.5;
+    // test for map with more than one element
+    H_ASSERT(div2.get_tracking_map() == div2.get_tracking_map(), "quotient map same as divided map with multiple elements");
+
+    // Subtraction Tests with Unitvals
+    fluxpool sub_zero = f2 - u0;
+    H_ASSERT(sub_zero == f2, "subtraction by zero works");
+
+    fluxpool sub1 = f2 - u1;
+    H_ASSERT(sub1 == u1, "subtraction value doesn't work when not tracked");
+    H_ASSERT(sub1.get_tracking_map() == f2.get_tracking_map(), "untracked subtraction changes map");
+    H_ASSERT(sub1.name == f2.name, "subtraction preserves name");
+    H_ASSERT(sub1.tracking == f2.tracking, "subtract preserved tracking");
+
+    fluxpool sub1_track = f2_track - u1;
+    H_ASSERT(sub1_track == u1, "subtraction value doesn't work when tracked");
+    H_ASSERT(sub1_track.get_tracking_map() == f2_track.get_tracking_map(), "tracked subtraction changes map");
+    H_ASSERT(sub1_track.name == f2_track.name, "subtraction preserves name");
+    H_ASSERT(sub1_track.tracking == f2_track.tracking, "subtract preserved tracking");
+
+    fluxpool sub2_track = f3_track - u1;
+    H_ASSERT(sub2_track.get_tracking_map() == f3_track.get_tracking_map(), "tracked subtraction changes map with multiple keys");
+
+    // Subtraction Tests with Fluxpools
+    sub1_track = f2_track - f1_track;
+    H_ASSERT(sub1_track == u1, "subtraction value doesn't work when tracked");
+    H_ASSERT(sub1_track.get_tracking_map() == f2_track.get_tracking_map(), "tracked subtraction changes map");
+    H_ASSERT(sub1_track.name == f2_track.name, "subtraction preserves name");
+    H_ASSERT(sub1_track.tracking == f2_track.tracking, "subtract preserved tracking");
+
+    sub2_track = f3_track - f1_track;
+    H_ASSERT(sub2_track.get_tracking_map() == f3_track.get_tracking_map(), "tracked subtraction changes map with multiple keys");
+
+    // Addition Tests with unitvals
+    fluxpool add2 = f1 + u1;
+    H_ASSERT(add2.name == f1.name, "name not preserved in unitval addition");
+    H_ASSERT(add2.tracking == f1.tracking, "tracking not preserved in unitval addition");
+    H_ASSERT(add2 == u2, "value not preserved in unitval addition");
+    fluxpool add4 = f3 + u1;
+
+    // Addition Tests with Fluxpools
+    fluxpool add3 = f1 + f2;
+    H_ASSERT(add3.name == f1.name, "addition of fluxpools doesn't preserve name when not tracking");
+    H_ASSERT(add3.tracking == f1.tracking, "addition of fluxpools doesn't preserve tracking when not tracking");
+    H_ASSERT(add3 == u3, "addition of fluxpools doesn't preserve value when not tracking");
+
+    fluxpool add3_track = f1_track + f2_track;
+    H_ASSERT(add3_track.name == f1_track.name, "addition of fluxpools doesn't preserve name when tracking");
+    H_ASSERT(add3_track.tracking == f1_track.tracking, "addition of fluxpools doesn't preserve tracking when tracking");
+    H_ASSERT(add3_track == u3, "addition of fluxpools doesn't preserve value when tracking");
+    H_ASSERT(add3_track.get_fraction(f1_track.name) == u1/u3, "addition of fluxpools does not modify map correctly when tracking");
+    H_ASSERT(add3_track.get_fraction(f2_track.name) == u2/u3, "addition of fluxpools does not modify map correctly when tracking");
 
 
     // Things that should NOT throw an exception
@@ -213,8 +291,14 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
     try { test = -1.0 * f1; } catch ( h_exception e ) { thrown++; }
     try { test = f1 / -1.0; } catch ( h_exception e ) { thrown++; }
     try { if(f1 == fluxpool(1.0, U_UNITLESS)) {}; } catch ( h_exception e ) { thrown++; }
-
-    H_ASSERT(thrown == 8, "1-something didn't throw!")
+    try { test = f2 - unitval(0.0, U_UNITLESS); } catch ( h_exception e ) { thrown++; }
+    try { test = f2 - fluxpool(0.0, U_UNITLESS, true); } catch ( h_exception e ) { thrown++; }
+    try { test = f2_track - f1; } catch ( h_exception e ) { thrown++; }
+    try { test = f2_track + u1; } catch ( h_exception e ) { thrown++; }
+    try { test = f2_track + unitval(0.0, U_UNITLESS); } catch ( h_exception e ) { thrown++; }
+    try { test = f2_track + f1; } catch ( h_exception e ) { thrown++; }
+    try { test = f2_track + fluxpool(1.0, U_UNITLESS); } catch ( h_exception e ) { thrown++; }
+    H_ASSERT(thrown == 15, "1-something didn't throw!")
     
     // Tracking test code
     
@@ -244,9 +328,6 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
     dest = dest + flux;
     src1 = src1 - flux;
 
-//    std::cout << "src1 is " << src1 << std::endl;
-//    std::cout << "flux is " << flux << std::endl;
-//    std::cout << "dest is " << dest << std::endl;
     
     H_ASSERT(dest.get_fraction("src1") == 1.0, "dest fraction src1 wasn't 1");
     source = dest.get_sources();
@@ -275,13 +356,9 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
     H_ASSERT(std::equal(s1.begin(), s1.end(), s2.begin()), "flux and uflux values source maps don't match");
  
     // Test 4: adjusting a total
-    
-//    cout << "\nTEST4\n" << dest << endl;
-    dest.adjust_pool_to_val(dest.value(U_PGC) * 1.1);
-//    cout << dest << endl;
-    H_ASSERT(dest.get_fraction("untracked") - 1.0/11.0 < 1e-6, "untracked not correct");
 
- //   H_THROW("stop");
+    dest.adjust_pool_to_val(dest.value(U_PGC) * 1.1);
+    H_ASSERT(dest.get_fraction("untracked") - 1.0/11.0 < 1e-6, "untracked not correct");
 }
 
 
