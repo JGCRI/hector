@@ -6,6 +6,44 @@
 	objectVersion = 52;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		27B2C24F261511C8005DE26D /* ch4_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C22C261511C5005DE26D /* ch4_component.cpp */; };
+		27B2C250261511C8005DE26D /* h_reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C22D261511C5005DE26D /* h_reader.cpp */; };
+		27B2C251261511C8005DE26D /* ini.c in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C22E261511C5005DE26D /* ini.c */; };
+		27B2C252261511C8005DE26D /* carbon-cycle-solver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C22F261511C5005DE26D /* carbon-cycle-solver.cpp */; };
+		27B2C253261511C8005DE26D /* forcing_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C230261511C5005DE26D /* forcing_component.cpp */; };
+		27B2C254261511C8005DE26D /* halocarbon_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C231261511C5005DE26D /* halocarbon_component.cpp */; };
+		27B2C255261511C8005DE26D /* so2_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C232261511C5005DE26D /* so2_component.cpp */; };
+		27B2C256261511C8005DE26D /* o3_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C233261511C5005DE26D /* o3_component.cpp */; };
+		27B2C257261511C8005DE26D /* csv_table_reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C234261511C6005DE26D /* csv_table_reader.cpp */; };
+		27B2C258261511C8005DE26D /* onelineocean_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C235261511C6005DE26D /* onelineocean_component.cpp */; };
+		27B2C259261511C8005DE26D /* oh_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C236261511C6005DE26D /* oh_component.cpp */; };
+		27B2C25A261511C8005DE26D /* ocean_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C237261511C6005DE26D /* ocean_component.cpp */; };
+		27B2C25B261511C8005DE26D /* RcppExports.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C238261511C6005DE26D /* RcppExports.cpp */; };
+		27B2C25C261511C8005DE26D /* h_interpolator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C239261511C6005DE26D /* h_interpolator.cpp */; };
+		27B2C25D261511C8005DE26D /* n2o_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C23A261511C6005DE26D /* n2o_component.cpp */; };
+		27B2C25E261511C8005DE26D /* bc_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C23B261511C6005DE26D /* bc_component.cpp */; };
+		27B2C25F261511C8005DE26D /* dependency_finder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C23C261511C6005DE26D /* dependency_finder.cpp */; };
+		27B2C260261511C8005DE26D /* core.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C23D261511C6005DE26D /* core.cpp */; };
+		27B2C261261511C8005DE26D /* oceanbox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C23E261511C7005DE26D /* oceanbox.cpp */; };
+		27B2C262261511C8005DE26D /* csv_outputstream_visitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C23F261511C7005DE26D /* csv_outputstream_visitor.cpp */; };
+		27B2C263261511C8005DE26D /* ini_to_core_reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C240261511C7005DE26D /* ini_to_core_reader.cpp */; };
+		27B2C264261511C8005DE26D /* ocean_csys.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C241261511C7005DE26D /* ocean_csys.cpp */; };
+		27B2C265261511C8005DE26D /* temperature_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C242261511C7005DE26D /* temperature_component.cpp */; };
+		27B2C266261511C8005DE26D /* unitval.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C243261511C7005DE26D /* unitval.cpp */; };
+		27B2C267261511C8005DE26D /* rcpp_hector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C244261511C7005DE26D /* rcpp_hector.cpp */; };
+		27B2C268261511C8005DE26D /* simpleNbox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C245261511C7005DE26D /* simpleNbox.cpp */; };
+		27B2C269261511C8005DE26D /* logger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C246261511C7005DE26D /* logger.cpp */; };
+		27B2C26A261511C8005DE26D /* slr_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C247261511C7005DE26D /* slr_component.cpp */; };
+		27B2C26B261511C8005DE26D /* INIReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C248261511C7005DE26D /* INIReader.cpp */; };
+		27B2C26C261511C8005DE26D /* dummy_model_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C249261511C7005DE26D /* dummy_model_component.cpp */; };
+		27B2C26D261511C8005DE26D /* oc_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C24A261511C8005DE26D /* oc_component.cpp */; };
+		27B2C26E261511C8005DE26D /* carbon-cycle-model.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C24B261511C8005DE26D /* carbon-cycle-model.cpp */; };
+		27B2C26F261511C8005DE26D /* rcpp_constants.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C24C261511C8005DE26D /* rcpp_constants.cpp */; };
+		27B2C270261511C8005DE26D /* spline_forsythe.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C24D261511C8005DE26D /* spline_forsythe.cpp */; };
+		27B2C271261511C8005DE26D /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C24E261511C8005DE26D /* main.cpp */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		27585CF626150F1A00BA1EF5 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -20,6 +58,82 @@
 
 /* Begin PBXFileReference section */
 		27585CF826150F1A00BA1EF5 /* hector */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = hector; sourceTree = BUILT_PRODUCTS_DIR; };
+		27B2C2012615112D005DE26D /* ocean_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ocean_component.hpp; path = ../../inst/include/ocean_component.hpp; sourceTree = "<group>"; };
+		27B2C2022615112D005DE26D /* csv_table_reader.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = csv_table_reader.hpp; path = ../../inst/include/csv_table_reader.hpp; sourceTree = "<group>"; };
+		27B2C2032615112D005DE26D /* tseries.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = tseries.hpp; path = ../../inst/include/tseries.hpp; sourceTree = "<group>"; };
+		27B2C2042615112D005DE26D /* bc_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = bc_component.hpp; path = ../../inst/include/bc_component.hpp; sourceTree = "<group>"; };
+		27B2C2052615112D005DE26D /* halocarbon_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = halocarbon_component.hpp; path = ../../inst/include/halocarbon_component.hpp; sourceTree = "<group>"; };
+		27B2C2062615112D005DE26D /* forcing_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = forcing_component.hpp; path = ../../inst/include/forcing_component.hpp; sourceTree = "<group>"; };
+		27B2C2072615112D005DE26D /* simpleNbox.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = simpleNbox.hpp; path = ../../inst/include/simpleNbox.hpp; sourceTree = "<group>"; };
+		27B2C2082615112D005DE26D /* h_reader.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = h_reader.hpp; path = ../../inst/include/h_reader.hpp; sourceTree = "<group>"; };
+		27B2C2092615112D005DE26D /* component_data.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = component_data.hpp; path = ../../inst/include/component_data.hpp; sourceTree = "<group>"; };
+		27B2C20A2615112D005DE26D /* ch4_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ch4_component.hpp; path = ../../inst/include/ch4_component.hpp; sourceTree = "<group>"; };
+		27B2C20B2615112D005DE26D /* carbon-cycle-solver.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = "carbon-cycle-solver.hpp"; path = "../../inst/include/carbon-cycle-solver.hpp"; sourceTree = "<group>"; };
+		27B2C20C2615112D005DE26D /* o3_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = o3_component.hpp; path = ../../inst/include/o3_component.hpp; sourceTree = "<group>"; };
+		27B2C20D2615112D005DE26D /* unitval.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = unitval.hpp; path = ../../inst/include/unitval.hpp; sourceTree = "<group>"; };
+		27B2C20E2615112D005DE26D /* ivisitable.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ivisitable.hpp; path = ../../inst/include/ivisitable.hpp; sourceTree = "<group>"; };
+		27B2C20F2615112D005DE26D /* logger.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = logger.hpp; path = ../../inst/include/logger.hpp; sourceTree = "<group>"; };
+		27B2C2102615112D005DE26D /* ocean_csys.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ocean_csys.hpp; path = ../../inst/include/ocean_csys.hpp; sourceTree = "<group>"; };
+		27B2C2112615112E005DE26D /* csv_outputstream_visitor.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = csv_outputstream_visitor.hpp; path = ../../inst/include/csv_outputstream_visitor.hpp; sourceTree = "<group>"; };
+		27B2C2122615112E005DE26D /* hector.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = hector.hpp; path = ../../inst/include/hector.hpp; sourceTree = "<group>"; };
+		27B2C2132615112E005DE26D /* ini.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ini.h; path = ../../inst/include/ini.h; sourceTree = "<group>"; };
+		27B2C2142615112E005DE26D /* component_names.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = component_names.hpp; path = ../../inst/include/component_names.hpp; sourceTree = "<group>"; };
+		27B2C2152615112E005DE26D /* message_data.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = message_data.hpp; path = ../../inst/include/message_data.hpp; sourceTree = "<group>"; };
+		27B2C2162615112E005DE26D /* oceanbox.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = oceanbox.hpp; path = ../../inst/include/oceanbox.hpp; sourceTree = "<group>"; };
+		27B2C2172615112E005DE26D /* temperature_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = temperature_component.hpp; path = ../../inst/include/temperature_component.hpp; sourceTree = "<group>"; };
+		27B2C2182615112E005DE26D /* dummy_model_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = dummy_model_component.hpp; path = ../../inst/include/dummy_model_component.hpp; sourceTree = "<group>"; };
+		27B2C2192615112E005DE26D /* oh_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = oh_component.hpp; path = ../../inst/include/oh_component.hpp; sourceTree = "<group>"; };
+		27B2C21A2615112E005DE26D /* onelineocean_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = onelineocean_component.hpp; path = ../../inst/include/onelineocean_component.hpp; sourceTree = "<group>"; };
+		27B2C21B2615112E005DE26D /* ini_to_core_reader.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ini_to_core_reader.hpp; path = ../../inst/include/ini_to_core_reader.hpp; sourceTree = "<group>"; };
+		27B2C21C2615112E005DE26D /* avisitor.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = avisitor.hpp; path = ../../inst/include/avisitor.hpp; sourceTree = "<group>"; };
+		27B2C21D2615112E005DE26D /* so2_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = so2_component.hpp; path = ../../inst/include/so2_component.hpp; sourceTree = "<group>"; };
+		27B2C21E2615112E005DE26D /* dependency_finder.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = dependency_finder.hpp; path = ../../inst/include/dependency_finder.hpp; sourceTree = "<group>"; };
+		27B2C21F2615112E005DE26D /* h_util.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = h_util.hpp; path = ../../inst/include/h_util.hpp; sourceTree = "<group>"; };
+		27B2C2202615112E005DE26D /* core.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = core.hpp; path = ../../inst/include/core.hpp; sourceTree = "<group>"; };
+		27B2C2212615112E005DE26D /* tvector.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = tvector.hpp; path = ../../inst/include/tvector.hpp; sourceTree = "<group>"; };
+		27B2C2222615112E005DE26D /* imodel_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = imodel_component.hpp; path = ../../inst/include/imodel_component.hpp; sourceTree = "<group>"; };
+		27B2C2232615112E005DE26D /* h_interpolator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = h_interpolator.hpp; path = ../../inst/include/h_interpolator.hpp; sourceTree = "<group>"; };
+		27B2C2242615112E005DE26D /* slr_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = slr_component.hpp; path = ../../inst/include/slr_component.hpp; sourceTree = "<group>"; };
+		27B2C2262615112F005DE26D /* n2o_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = n2o_component.hpp; path = ../../inst/include/n2o_component.hpp; sourceTree = "<group>"; };
+		27B2C2272615112F005DE26D /* oc_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = oc_component.hpp; path = ../../inst/include/oc_component.hpp; sourceTree = "<group>"; };
+		27B2C2282615112F005DE26D /* INIReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INIReader.h; path = ../../inst/include/INIReader.h; sourceTree = "<group>"; };
+		27B2C2292615112F005DE26D /* h_exception.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = h_exception.hpp; path = ../../inst/include/h_exception.hpp; sourceTree = "<group>"; };
+		27B2C22A2615112F005DE26D /* carbon-cycle-model.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = "carbon-cycle-model.hpp"; path = "../../inst/include/carbon-cycle-model.hpp"; sourceTree = "<group>"; };
+		27B2C22C261511C5005DE26D /* ch4_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ch4_component.cpp; path = ../../src/ch4_component.cpp; sourceTree = "<group>"; };
+		27B2C22D261511C5005DE26D /* h_reader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = h_reader.cpp; path = ../../src/h_reader.cpp; sourceTree = "<group>"; };
+		27B2C22E261511C5005DE26D /* ini.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ini.c; path = ../../src/ini.c; sourceTree = "<group>"; };
+		27B2C22F261511C5005DE26D /* carbon-cycle-solver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "carbon-cycle-solver.cpp"; path = "../../src/carbon-cycle-solver.cpp"; sourceTree = "<group>"; };
+		27B2C230261511C5005DE26D /* forcing_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = forcing_component.cpp; path = ../../src/forcing_component.cpp; sourceTree = "<group>"; };
+		27B2C231261511C5005DE26D /* halocarbon_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = halocarbon_component.cpp; path = ../../src/halocarbon_component.cpp; sourceTree = "<group>"; };
+		27B2C232261511C5005DE26D /* so2_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = so2_component.cpp; path = ../../src/so2_component.cpp; sourceTree = "<group>"; };
+		27B2C233261511C5005DE26D /* o3_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = o3_component.cpp; path = ../../src/o3_component.cpp; sourceTree = "<group>"; };
+		27B2C234261511C6005DE26D /* csv_table_reader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = csv_table_reader.cpp; path = ../../src/csv_table_reader.cpp; sourceTree = "<group>"; };
+		27B2C235261511C6005DE26D /* onelineocean_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = onelineocean_component.cpp; path = ../../src/onelineocean_component.cpp; sourceTree = "<group>"; };
+		27B2C236261511C6005DE26D /* oh_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = oh_component.cpp; path = ../../src/oh_component.cpp; sourceTree = "<group>"; };
+		27B2C237261511C6005DE26D /* ocean_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ocean_component.cpp; path = ../../src/ocean_component.cpp; sourceTree = "<group>"; };
+		27B2C238261511C6005DE26D /* RcppExports.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RcppExports.cpp; path = ../../src/RcppExports.cpp; sourceTree = "<group>"; };
+		27B2C239261511C6005DE26D /* h_interpolator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = h_interpolator.cpp; path = ../../src/h_interpolator.cpp; sourceTree = "<group>"; };
+		27B2C23A261511C6005DE26D /* n2o_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = n2o_component.cpp; path = ../../src/n2o_component.cpp; sourceTree = "<group>"; };
+		27B2C23B261511C6005DE26D /* bc_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = bc_component.cpp; path = ../../src/bc_component.cpp; sourceTree = "<group>"; };
+		27B2C23C261511C6005DE26D /* dependency_finder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = dependency_finder.cpp; path = ../../src/dependency_finder.cpp; sourceTree = "<group>"; };
+		27B2C23D261511C6005DE26D /* core.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = core.cpp; path = ../../src/core.cpp; sourceTree = "<group>"; };
+		27B2C23E261511C7005DE26D /* oceanbox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = oceanbox.cpp; path = ../../src/oceanbox.cpp; sourceTree = "<group>"; };
+		27B2C23F261511C7005DE26D /* csv_outputstream_visitor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = csv_outputstream_visitor.cpp; path = ../../src/csv_outputstream_visitor.cpp; sourceTree = "<group>"; };
+		27B2C240261511C7005DE26D /* ini_to_core_reader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ini_to_core_reader.cpp; path = ../../src/ini_to_core_reader.cpp; sourceTree = "<group>"; };
+		27B2C241261511C7005DE26D /* ocean_csys.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ocean_csys.cpp; path = ../../src/ocean_csys.cpp; sourceTree = "<group>"; };
+		27B2C242261511C7005DE26D /* temperature_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = temperature_component.cpp; path = ../../src/temperature_component.cpp; sourceTree = "<group>"; };
+		27B2C243261511C7005DE26D /* unitval.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = unitval.cpp; path = ../../src/unitval.cpp; sourceTree = "<group>"; };
+		27B2C244261511C7005DE26D /* rcpp_hector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = rcpp_hector.cpp; path = ../../src/rcpp_hector.cpp; sourceTree = "<group>"; };
+		27B2C245261511C7005DE26D /* simpleNbox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = simpleNbox.cpp; path = ../../src/simpleNbox.cpp; sourceTree = "<group>"; };
+		27B2C246261511C7005DE26D /* logger.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = logger.cpp; path = ../../src/logger.cpp; sourceTree = "<group>"; };
+		27B2C247261511C7005DE26D /* slr_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = slr_component.cpp; path = ../../src/slr_component.cpp; sourceTree = "<group>"; };
+		27B2C248261511C7005DE26D /* INIReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = INIReader.cpp; path = ../../src/INIReader.cpp; sourceTree = "<group>"; };
+		27B2C249261511C7005DE26D /* dummy_model_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = dummy_model_component.cpp; path = ../../src/dummy_model_component.cpp; sourceTree = "<group>"; };
+		27B2C24A261511C8005DE26D /* oc_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = oc_component.cpp; path = ../../src/oc_component.cpp; sourceTree = "<group>"; };
+		27B2C24B261511C8005DE26D /* carbon-cycle-model.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "carbon-cycle-model.cpp"; path = "../../src/carbon-cycle-model.cpp"; sourceTree = "<group>"; };
+		27B2C24C261511C8005DE26D /* rcpp_constants.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = rcpp_constants.cpp; path = ../../src/rcpp_constants.cpp; sourceTree = "<group>"; };
+		27B2C24D261511C8005DE26D /* spline_forsythe.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = spline_forsythe.cpp; path = ../../src/spline_forsythe.cpp; sourceTree = "<group>"; };
+		27B2C24E261511C8005DE26D /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = ../../src/main.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -36,6 +150,8 @@
 		27585CEF26150F1A00BA1EF5 = {
 			isa = PBXGroup;
 			children = (
+				27B2C22B26151149005DE26D /* Headers */,
+				27B2C272261511CD005DE26D /* Source */,
 				27585CF926150F1A00BA1EF5 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -46,6 +162,96 @@
 				27585CF826150F1A00BA1EF5 /* hector */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		27B2C22B26151149005DE26D /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+				27B2C21C2615112E005DE26D /* avisitor.hpp */,
+				27B2C2042615112D005DE26D /* bc_component.hpp */,
+				27B2C22A2615112F005DE26D /* carbon-cycle-model.hpp */,
+				27B2C20B2615112D005DE26D /* carbon-cycle-solver.hpp */,
+				27B2C20A2615112D005DE26D /* ch4_component.hpp */,
+				27B2C2092615112D005DE26D /* component_data.hpp */,
+				27B2C2142615112E005DE26D /* component_names.hpp */,
+				27B2C2202615112E005DE26D /* core.hpp */,
+				27B2C2112615112E005DE26D /* csv_outputstream_visitor.hpp */,
+				27B2C2022615112D005DE26D /* csv_table_reader.hpp */,
+				27B2C21E2615112E005DE26D /* dependency_finder.hpp */,
+				27B2C2182615112E005DE26D /* dummy_model_component.hpp */,
+				27B2C2062615112D005DE26D /* forcing_component.hpp */,
+				27B2C2292615112F005DE26D /* h_exception.hpp */,
+				27B2C2232615112E005DE26D /* h_interpolator.hpp */,
+				27B2C2082615112D005DE26D /* h_reader.hpp */,
+				27B2C21F2615112E005DE26D /* h_util.hpp */,
+				27B2C2052615112D005DE26D /* halocarbon_component.hpp */,
+				27B2C2122615112E005DE26D /* hector.hpp */,
+				27B2C2222615112E005DE26D /* imodel_component.hpp */,
+				27B2C21B2615112E005DE26D /* ini_to_core_reader.hpp */,
+				27B2C2132615112E005DE26D /* ini.h */,
+				27B2C2282615112F005DE26D /* INIReader.h */,
+				27B2C20E2615112D005DE26D /* ivisitable.hpp */,
+				27B2C20F2615112D005DE26D /* logger.hpp */,
+				27B2C2152615112E005DE26D /* message_data.hpp */,
+				27B2C2262615112F005DE26D /* n2o_component.hpp */,
+				27B2C20C2615112D005DE26D /* o3_component.hpp */,
+				27B2C2272615112F005DE26D /* oc_component.hpp */,
+				27B2C2012615112D005DE26D /* ocean_component.hpp */,
+				27B2C2102615112D005DE26D /* ocean_csys.hpp */,
+				27B2C2162615112E005DE26D /* oceanbox.hpp */,
+				27B2C2192615112E005DE26D /* oh_component.hpp */,
+				27B2C21A2615112E005DE26D /* onelineocean_component.hpp */,
+				27B2C2072615112D005DE26D /* simpleNbox.hpp */,
+				27B2C2242615112E005DE26D /* slr_component.hpp */,
+				27B2C21D2615112E005DE26D /* so2_component.hpp */,
+				27B2C2172615112E005DE26D /* temperature_component.hpp */,
+				27B2C2032615112D005DE26D /* tseries.hpp */,
+				27B2C2212615112E005DE26D /* tvector.hpp */,
+				27B2C20D2615112D005DE26D /* unitval.hpp */,
+			);
+			name = Headers;
+			sourceTree = "<group>";
+		};
+		27B2C272261511CD005DE26D /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				27B2C23B261511C6005DE26D /* bc_component.cpp */,
+				27B2C24B261511C8005DE26D /* carbon-cycle-model.cpp */,
+				27B2C22F261511C5005DE26D /* carbon-cycle-solver.cpp */,
+				27B2C22C261511C5005DE26D /* ch4_component.cpp */,
+				27B2C23D261511C6005DE26D /* core.cpp */,
+				27B2C23F261511C7005DE26D /* csv_outputstream_visitor.cpp */,
+				27B2C234261511C6005DE26D /* csv_table_reader.cpp */,
+				27B2C23C261511C6005DE26D /* dependency_finder.cpp */,
+				27B2C249261511C7005DE26D /* dummy_model_component.cpp */,
+				27B2C230261511C5005DE26D /* forcing_component.cpp */,
+				27B2C239261511C6005DE26D /* h_interpolator.cpp */,
+				27B2C22D261511C5005DE26D /* h_reader.cpp */,
+				27B2C231261511C5005DE26D /* halocarbon_component.cpp */,
+				27B2C240261511C7005DE26D /* ini_to_core_reader.cpp */,
+				27B2C22E261511C5005DE26D /* ini.c */,
+				27B2C248261511C7005DE26D /* INIReader.cpp */,
+				27B2C246261511C7005DE26D /* logger.cpp */,
+				27B2C24E261511C8005DE26D /* main.cpp */,
+				27B2C23A261511C6005DE26D /* n2o_component.cpp */,
+				27B2C233261511C5005DE26D /* o3_component.cpp */,
+				27B2C24A261511C8005DE26D /* oc_component.cpp */,
+				27B2C237261511C6005DE26D /* ocean_component.cpp */,
+				27B2C241261511C7005DE26D /* ocean_csys.cpp */,
+				27B2C23E261511C7005DE26D /* oceanbox.cpp */,
+				27B2C236261511C6005DE26D /* oh_component.cpp */,
+				27B2C235261511C6005DE26D /* onelineocean_component.cpp */,
+				27B2C24C261511C8005DE26D /* rcpp_constants.cpp */,
+				27B2C244261511C7005DE26D /* rcpp_hector.cpp */,
+				27B2C238261511C6005DE26D /* RcppExports.cpp */,
+				27B2C245261511C7005DE26D /* simpleNbox.cpp */,
+				27B2C247261511C7005DE26D /* slr_component.cpp */,
+				27B2C232261511C5005DE26D /* so2_component.cpp */,
+				27B2C24D261511C8005DE26D /* spline_forsythe.cpp */,
+				27B2C242261511C7005DE26D /* temperature_component.cpp */,
+				27B2C243261511C7005DE26D /* unitval.cpp */,
+			);
+			name = Source;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -105,6 +311,41 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				27B2C254261511C8005DE26D /* halocarbon_component.cpp in Sources */,
+				27B2C258261511C8005DE26D /* onelineocean_component.cpp in Sources */,
+				27B2C264261511C8005DE26D /* ocean_csys.cpp in Sources */,
+				27B2C260261511C8005DE26D /* core.cpp in Sources */,
+				27B2C26B261511C8005DE26D /* INIReader.cpp in Sources */,
+				27B2C255261511C8005DE26D /* so2_component.cpp in Sources */,
+				27B2C26D261511C8005DE26D /* oc_component.cpp in Sources */,
+				27B2C257261511C8005DE26D /* csv_table_reader.cpp in Sources */,
+				27B2C25F261511C8005DE26D /* dependency_finder.cpp in Sources */,
+				27B2C266261511C8005DE26D /* unitval.cpp in Sources */,
+				27B2C25A261511C8005DE26D /* ocean_component.cpp in Sources */,
+				27B2C26A261511C8005DE26D /* slr_component.cpp in Sources */,
+				27B2C270261511C8005DE26D /* spline_forsythe.cpp in Sources */,
+				27B2C259261511C8005DE26D /* oh_component.cpp in Sources */,
+				27B2C251261511C8005DE26D /* ini.c in Sources */,
+				27B2C26F261511C8005DE26D /* rcpp_constants.cpp in Sources */,
+				27B2C265261511C8005DE26D /* temperature_component.cpp in Sources */,
+				27B2C268261511C8005DE26D /* simpleNbox.cpp in Sources */,
+				27B2C271261511C8005DE26D /* main.cpp in Sources */,
+				27B2C25C261511C8005DE26D /* h_interpolator.cpp in Sources */,
+				27B2C263261511C8005DE26D /* ini_to_core_reader.cpp in Sources */,
+				27B2C25E261511C8005DE26D /* bc_component.cpp in Sources */,
+				27B2C24F261511C8005DE26D /* ch4_component.cpp in Sources */,
+				27B2C262261511C8005DE26D /* csv_outputstream_visitor.cpp in Sources */,
+				27B2C25B261511C8005DE26D /* RcppExports.cpp in Sources */,
+				27B2C267261511C8005DE26D /* rcpp_hector.cpp in Sources */,
+				27B2C26E261511C8005DE26D /* carbon-cycle-model.cpp in Sources */,
+				27B2C252261511C8005DE26D /* carbon-cycle-solver.cpp in Sources */,
+				27B2C269261511C8005DE26D /* logger.cpp in Sources */,
+				27B2C256261511C8005DE26D /* o3_component.cpp in Sources */,
+				27B2C25D261511C8005DE26D /* n2o_component.cpp in Sources */,
+				27B2C250261511C8005DE26D /* h_reader.cpp in Sources */,
+				27B2C253261511C8005DE26D /* forcing_component.cpp in Sources */,
+				27B2C26C261511C8005DE26D /* dummy_model_component.cpp in Sources */,
+				27B2C261261511C8005DE26D /* oceanbox.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
