@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		27808CF12615CEFA00BE8B90 /* libgtest.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 27808CF02615CEFA00BE8B90 /* libgtest.dylib */; };
+		27808CF42615D31A00BE8B90 /* test_tseries.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27A02A4B2615CAA100AF9BFA /* test_tseries.cpp */; };
 		27A02A5E2615CBB800AF9BFA /* halocarbon_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C231261511C5005DE26D /* halocarbon_component.cpp */; };
 		27A02A5F2615CBB800AF9BFA /* onelineocean_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C235261511C6005DE26D /* onelineocean_component.cpp */; };
 		27A02A602615CBB800AF9BFA /* ocean_csys.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C241261511C7005DE26D /* ocean_csys.cpp */; };
@@ -497,6 +498,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				27808CF42615D31A00BE8B90 /* test_tseries.cpp in Sources */,
 				27A02A892615CBDB00AF9BFA /* testing_main.cpp in Sources */,
 				27A02A5E2615CBB800AF9BFA /* halocarbon_component.cpp in Sources */,
 				27A02A5F2615CBB800AF9BFA /* onelineocean_component.cpp in Sources */,
