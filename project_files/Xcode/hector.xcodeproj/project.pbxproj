@@ -7,6 +7,43 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		27808CF12615CEFA00BE8B90 /* libgtest.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 27808CF02615CEFA00BE8B90 /* libgtest.dylib */; };
+		27A02A5E2615CBB800AF9BFA /* halocarbon_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C231261511C5005DE26D /* halocarbon_component.cpp */; };
+		27A02A5F2615CBB800AF9BFA /* onelineocean_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C235261511C6005DE26D /* onelineocean_component.cpp */; };
+		27A02A602615CBB800AF9BFA /* ocean_csys.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C241261511C7005DE26D /* ocean_csys.cpp */; };
+		27A02A612615CBB800AF9BFA /* core.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C23D261511C6005DE26D /* core.cpp */; };
+		27A02A622615CBB800AF9BFA /* INIReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C248261511C7005DE26D /* INIReader.cpp */; };
+		27A02A632615CBB800AF9BFA /* so2_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C232261511C5005DE26D /* so2_component.cpp */; };
+		27A02A642615CBB800AF9BFA /* oc_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C24A261511C8005DE26D /* oc_component.cpp */; };
+		27A02A652615CBB800AF9BFA /* csv_table_reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C234261511C6005DE26D /* csv_table_reader.cpp */; };
+		27A02A662615CBB800AF9BFA /* dependency_finder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C23C261511C6005DE26D /* dependency_finder.cpp */; };
+		27A02A672615CBB800AF9BFA /* unitval.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C243261511C7005DE26D /* unitval.cpp */; };
+		27A02A682615CBB800AF9BFA /* ocean_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C237261511C6005DE26D /* ocean_component.cpp */; };
+		27A02A692615CBB800AF9BFA /* slr_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C247261511C7005DE26D /* slr_component.cpp */; };
+		27A02A6A2615CBB800AF9BFA /* spline_forsythe.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C24D261511C8005DE26D /* spline_forsythe.cpp */; };
+		27A02A6B2615CBB800AF9BFA /* oh_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C236261511C6005DE26D /* oh_component.cpp */; };
+		27A02A6C2615CBB800AF9BFA /* ini.c in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C22E261511C5005DE26D /* ini.c */; };
+		27A02A6D2615CBB800AF9BFA /* temperature_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C242261511C7005DE26D /* temperature_component.cpp */; };
+		27A02A6E2615CBB800AF9BFA /* simpleNbox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C245261511C7005DE26D /* simpleNbox.cpp */; };
+		27A02A702615CBB800AF9BFA /* h_interpolator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C239261511C6005DE26D /* h_interpolator.cpp */; };
+		27A02A712615CBB800AF9BFA /* ini_to_core_reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C240261511C7005DE26D /* ini_to_core_reader.cpp */; };
+		27A02A722615CBB800AF9BFA /* bc_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C23B261511C6005DE26D /* bc_component.cpp */; };
+		27A02A732615CBB800AF9BFA /* ch4_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C22C261511C5005DE26D /* ch4_component.cpp */; };
+		27A02A742615CBB800AF9BFA /* csv_outputstream_visitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C23F261511C7005DE26D /* csv_outputstream_visitor.cpp */; };
+		27A02A752615CBB800AF9BFA /* carbon-cycle-model.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C24B261511C8005DE26D /* carbon-cycle-model.cpp */; };
+		27A02A762615CBB800AF9BFA /* carbon-cycle-solver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C22F261511C5005DE26D /* carbon-cycle-solver.cpp */; };
+		27A02A772615CBB800AF9BFA /* logger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C246261511C7005DE26D /* logger.cpp */; };
+		27A02A782615CBB800AF9BFA /* o3_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C233261511C5005DE26D /* o3_component.cpp */; };
+		27A02A792615CBB800AF9BFA /* n2o_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C23A261511C6005DE26D /* n2o_component.cpp */; };
+		27A02A7A2615CBB800AF9BFA /* h_reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C22D261511C5005DE26D /* h_reader.cpp */; };
+		27A02A7B2615CBB800AF9BFA /* forcing_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C230261511C5005DE26D /* forcing_component.cpp */; };
+		27A02A7C2615CBB800AF9BFA /* dummy_model_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C249261511C7005DE26D /* dummy_model_component.cpp */; };
+		27A02A7D2615CBB800AF9BFA /* oceanbox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C23E261511C7005DE26D /* oceanbox.cpp */; };
+		27A02A7F2615CBB800AF9BFA /* libboost_filesystem.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 27B2C27A26155326005DE26D /* libboost_filesystem.dylib */; };
+		27A02A802615CBB800AF9BFA /* libboost_system.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 27B2C27C26155331005DE26D /* libboost_system.dylib */; };
+		27A02A832615CBB800AF9BFA /* libboost_filesystem.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 27B2C27A26155326005DE26D /* libboost_filesystem.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		27A02A842615CBB800AF9BFA /* libboost_system.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 27B2C27C26155331005DE26D /* libboost_system.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		27A02A892615CBDB00AF9BFA /* testing_main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27A02A4D2615CAA100AF9BFA /* testing_main.cpp */; };
 		27B2C24F261511C8005DE26D /* ch4_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C22C261511C5005DE26D /* ch4_component.cpp */; };
 		27B2C250261511C8005DE26D /* h_reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C22D261511C5005DE26D /* h_reader.cpp */; };
 		27B2C251261511C8005DE26D /* ini.c in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C22E261511C5005DE26D /* ini.c */; };
@@ -55,6 +92,27 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 		};
+		27A02A812615CBB800AF9BFA /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		27A02A822615CBB800AF9BFA /* Embed Libraries */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				27A02A832615CBB800AF9BFA /* libboost_filesystem.dylib in Embed Libraries */,
+				27A02A842615CBB800AF9BFA /* libboost_system.dylib in Embed Libraries */,
+			);
+			name = "Embed Libraries";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		27B2C282261562AC005DE26D /* Embed Libraries */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -71,6 +129,7 @@
 
 /* Begin PBXFileReference section */
 		27585CF826150F1A00BA1EF5 /* hector */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = hector; sourceTree = BUILT_PRODUCTS_DIR; };
+		27808CF02615CEFA00BE8B90 /* libgtest.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libgtest.dylib; path = ../../../../../../../../../usr/local/lib/libgtest.dylib; sourceTree = "<group>"; };
 		27A02A462615CAA100AF9BFA /* test_logger.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_logger.cpp; path = ../../../src/Testing/test_logger.cpp; sourceTree = "<group>"; };
 		27A02A472615CAA100AF9BFA /* test_restart.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_restart.cpp; path = ../../../src/Testing/test_restart.cpp; sourceTree = "<group>"; };
 		27A02A482615CAA100AF9BFA /* test_csv_file_reader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_csv_file_reader.cpp; path = ../../../src/Testing/test_csv_file_reader.cpp; sourceTree = "<group>"; };
@@ -82,6 +141,7 @@
 		27A02A4E2615CAA100AF9BFA /* test_core.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_core.cpp; path = ../../../src/Testing/test_core.cpp; sourceTree = "<group>"; };
 		27A02A4F2615CAA100AF9BFA /* test_hreader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_hreader.cpp; path = ../../../src/Testing/test_hreader.cpp; sourceTree = "<group>"; };
 		27A02A502615CAA100AF9BFA /* test_inih.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_inih.cpp; path = ../../../src/Testing/test_inih.cpp; sourceTree = "<group>"; };
+		27A02A882615CBB800AF9BFA /* hector-tests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "hector-tests"; sourceTree = BUILT_PRODUCTS_DIR; };
 		27B2C2012615112D005DE26D /* ocean_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ocean_component.hpp; path = ../../inst/include/ocean_component.hpp; sourceTree = "<group>"; };
 		27B2C2022615112D005DE26D /* csv_table_reader.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = csv_table_reader.hpp; path = ../../inst/include/csv_table_reader.hpp; sourceTree = "<group>"; };
 		27B2C2032615112D005DE26D /* tseries.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = tseries.hpp; path = ../../inst/include/tseries.hpp; sourceTree = "<group>"; };
@@ -171,6 +231,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		27A02A7E2615CBB800AF9BFA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				27A02A7F2615CBB800AF9BFA /* libboost_filesystem.dylib in Frameworks */,
+				27A02A802615CBB800AF9BFA /* libboost_system.dylib in Frameworks */,
+				27808CF12615CEFA00BE8B90 /* libgtest.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -189,6 +259,7 @@
 			isa = PBXGroup;
 			children = (
 				27585CF826150F1A00BA1EF5 /* hector */,
+				27A02A882615CBB800AF9BFA /* hector-tests */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -301,6 +372,7 @@
 		27B2C273261551A9005DE26D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				27808CF02615CEFA00BE8B90 /* libgtest.dylib */,
 				27B2C27C26155331005DE26D /* libboost_system.dylib */,
 				27B2C27A26155326005DE26D /* libboost_filesystem.dylib */,
 				27B2C276261551B7005DE26D /* libboost_system.a */,
@@ -328,6 +400,24 @@
 			name = hector;
 			productName = hector;
 			productReference = 27585CF826150F1A00BA1EF5 /* hector */;
+			productType = "com.apple.product-type.tool";
+		};
+		27A02A5C2615CBB800AF9BFA /* hector-tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 27A02A852615CBB800AF9BFA /* Build configuration list for PBXNativeTarget "hector-tests" */;
+			buildPhases = (
+				27A02A5D2615CBB800AF9BFA /* Sources */,
+				27A02A7E2615CBB800AF9BFA /* Frameworks */,
+				27A02A812615CBB800AF9BFA /* CopyFiles */,
+				27A02A822615CBB800AF9BFA /* Embed Libraries */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "hector-tests";
+			productName = hector;
+			productReference = 27A02A882615CBB800AF9BFA /* hector-tests */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
@@ -358,6 +448,7 @@
 			projectRoot = "";
 			targets = (
 				27585CF726150F1A00BA1EF5 /* hector */,
+				27A02A5C2615CBB800AF9BFA /* hector-tests */,
 			);
 		};
 /* End PBXProject section */
@@ -399,6 +490,45 @@
 				27B2C253261511C8005DE26D /* forcing_component.cpp in Sources */,
 				27B2C26C261511C8005DE26D /* dummy_model_component.cpp in Sources */,
 				27B2C261261511C8005DE26D /* oceanbox.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		27A02A5D2615CBB800AF9BFA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				27A02A892615CBDB00AF9BFA /* testing_main.cpp in Sources */,
+				27A02A5E2615CBB800AF9BFA /* halocarbon_component.cpp in Sources */,
+				27A02A5F2615CBB800AF9BFA /* onelineocean_component.cpp in Sources */,
+				27A02A602615CBB800AF9BFA /* ocean_csys.cpp in Sources */,
+				27A02A612615CBB800AF9BFA /* core.cpp in Sources */,
+				27A02A622615CBB800AF9BFA /* INIReader.cpp in Sources */,
+				27A02A632615CBB800AF9BFA /* so2_component.cpp in Sources */,
+				27A02A642615CBB800AF9BFA /* oc_component.cpp in Sources */,
+				27A02A652615CBB800AF9BFA /* csv_table_reader.cpp in Sources */,
+				27A02A662615CBB800AF9BFA /* dependency_finder.cpp in Sources */,
+				27A02A672615CBB800AF9BFA /* unitval.cpp in Sources */,
+				27A02A682615CBB800AF9BFA /* ocean_component.cpp in Sources */,
+				27A02A692615CBB800AF9BFA /* slr_component.cpp in Sources */,
+				27A02A6A2615CBB800AF9BFA /* spline_forsythe.cpp in Sources */,
+				27A02A6B2615CBB800AF9BFA /* oh_component.cpp in Sources */,
+				27A02A6C2615CBB800AF9BFA /* ini.c in Sources */,
+				27A02A6D2615CBB800AF9BFA /* temperature_component.cpp in Sources */,
+				27A02A6E2615CBB800AF9BFA /* simpleNbox.cpp in Sources */,
+				27A02A702615CBB800AF9BFA /* h_interpolator.cpp in Sources */,
+				27A02A712615CBB800AF9BFA /* ini_to_core_reader.cpp in Sources */,
+				27A02A722615CBB800AF9BFA /* bc_component.cpp in Sources */,
+				27A02A732615CBB800AF9BFA /* ch4_component.cpp in Sources */,
+				27A02A742615CBB800AF9BFA /* csv_outputstream_visitor.cpp in Sources */,
+				27A02A752615CBB800AF9BFA /* carbon-cycle-model.cpp in Sources */,
+				27A02A762615CBB800AF9BFA /* carbon-cycle-solver.cpp in Sources */,
+				27A02A772615CBB800AF9BFA /* logger.cpp in Sources */,
+				27A02A782615CBB800AF9BFA /* o3_component.cpp in Sources */,
+				27A02A792615CBB800AF9BFA /* n2o_component.cpp in Sources */,
+				27A02A7A2615CBB800AF9BFA /* h_reader.cpp in Sources */,
+				27A02A7B2615CBB800AF9BFA /* forcing_component.cpp in Sources */,
+				27A02A7C2615CBB800AF9BFA /* dummy_model_component.cpp in Sources */,
+				27A02A7D2615CBB800AF9BFA /* oceanbox.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -546,6 +676,48 @@
 			};
 			name = Release;
 		};
+		27A02A862615CBB800AF9BFA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				HEADER_SEARCH_PATHS = (
+					"${BOOSTROOT}",
+					"${GTEST}",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"${BOOSTLIB}",
+					"${GTESTLIB}",
+				);
+				OTHER_LDFLAGS = (
+					"-lboost_system",
+					"-lboost_filesystem",
+					"-lgtest",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		27A02A872615CBB800AF9BFA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				HEADER_SEARCH_PATHS = (
+					"${BOOSTROOT}",
+					"${GTEST}",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"${BOOSTLIB}",
+					"${GTESTLIB}",
+				);
+				OTHER_LDFLAGS = (
+					"-lboost_system",
+					"-lboost_filesystem",
+					"-lgtest",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -563,6 +735,15 @@
 			buildConfigurations = (
 				27585D0026150F1A00BA1EF5 /* Debug */,
 				27585D0126150F1A00BA1EF5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		27A02A852615CBB800AF9BFA /* Build configuration list for PBXNativeTarget "hector-tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				27A02A862615CBB800AF9BFA /* Debug */,
+				27A02A872615CBB800AF9BFA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
