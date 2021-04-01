@@ -11,7 +11,7 @@ This will automatically install all of Hector's dependencies as well.
 (Note that because this requires compiling from source, you will need to have a C compiler installed and configured.
 
 On **Windows**, you will also need to install [Rtools](https://cloud.r-project.org/bin/windows/Rtools/).
-On **MacOS** and **Linux**, the required tools should be included as part of a standard R installation.)
+On **Mac OS** and **Linux**, the required tools should be included as part of a standard R installation.)
 
 ```r
 # If the `devtools` isn't installed, first run:
@@ -135,29 +135,26 @@ Run Hector from the terminal with the command line.
 ./src/hector ./inst/input/name-of-ini.ini
 ```
 
-
-
-## Xcode (Mac OSX)
+## Xcode (Mac OS X)
 
 These directions assume a basic familiarity with Xcode and Mac OS X software installation.
 
 * Install [Xcode](https://developer.apple.com/xcode/downloads/) if necessary. Hector has been built and tested with Mac OS >= 10.8.5. The project files are for Xcode 11.3.1.
 * Download and install Boost, following instructions above.
 * Download the [Hector zip file](https://github.com/JGCRI/hector/archive/master.zip) or check out the repository using Git.
-* From Xcode, open the project file in `project_files/Xcode/hector.cxodeproj`.
-* Build the project. See below if you encounter errors.
-* Change the current Scheme settings (Scheme->Edit Scheme) and add a command-line argument (*Arguments* tab, e.g. "input/hector_rcp45.ini").
+* From Xcode, open the project file in `project_files/Xcode/hector.xcodeproj`.
+
+The Xcode project file is configured to use constants defining custom paths, rather than hard-coded paths.
+This means that developers and users can set these paths without overwriting each other.
+
+* You will need to set several custom paths (Preferences -> Locations -> Custom Paths): `BOOSTLIB`, `BOOSTROOT`, and `HECTORDIR`. These are the Boost runtime library, the Boost root under which the headers can be found in `boost/`, and the runtime working directory for the model (the repository root).
+* If you want to build Hector's testing framework (the `hector-tests` target) add `GTEST` and `GTESTLIB` custom paths; these are analogous to their Boost counterparts.
+
+At this point you should be ready to go:
+
+* Build the project, making sure you're building the `hector` target.
 * Run!
-
-Xcode Build Settings to check if you encounter build errors, they should match the version installed on your machine:
-
-* *Architectures-Base SDK*: OS X 10.8 [or OS X version on machine] 
-* *Build Options-Compiler for C/C++/Objective-C*: Default compiler (Apple LLVM 5.1)
-* *Search Paths-Header Search Paths*: "/usr/local/include /usr/local/lib/boost_1_52_0/" [or other header directories, this is important for homebrew users]
-* *Search Paths-Library Search Paths*: "/usr/local/lib/" [or other library directories]
-* *LLVM-Language-C++-C++ Standard Library*: libc++ (LLVM C++ standard library with C++11 support)
-* *Linking-Other Linker Flags*: "-lgsl -lgslcblas -lm"
-* *User-Defined*: "GCC_MODEL_TUNING" defined as "G5"
+* To run a different scenario, change the current Scheme settings (Scheme->Edit Scheme) and modify or add a command-line argument (*Arguments* tab, e.g. "./inst/input/hector_rcp45.ini").
 
 Xcode Resources 
 
@@ -165,7 +162,7 @@ Xcode Resources
 * [Xcode Debugging](https://developer.apple.com/library/archive/documentation/DeveloperTools/Conceptual/debugging_with_xcode/chapters/debugging_tools.html)
 
 
-## Visual Studio Code (Mac OSX & Windows)
+## Visual Studio Code (Windows)
 
 * Install [Visual Studio Code](https://code.visualstudio.com/download), if necessary.
 * Download and install *Boost*, following instructions above.
@@ -176,7 +173,4 @@ Xcode Resources
 
 ## Visual Studio
 
-VS sln is not supported at this time see [VS Hector github issue](https://github.com/JGCRI/hector/issues/415) for more details. 
-
-
-
+VS is not supported at this time see [VS Hector github issue](https://github.com/JGCRI/hector/issues/415) for more details. 
