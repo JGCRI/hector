@@ -39,6 +39,10 @@
 		27B2C26E261511C8005DE26D /* carbon-cycle-model.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C24B261511C8005DE26D /* carbon-cycle-model.cpp */; };
 		27B2C270261511C8005DE26D /* spline_forsythe.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C24D261511C8005DE26D /* spline_forsythe.cpp */; };
 		27B2C271261511C8005DE26D /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C24E261511C8005DE26D /* main.cpp */; };
+		27B2C280261562AB005DE26D /* libboost_filesystem.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 27B2C27A26155326005DE26D /* libboost_filesystem.dylib */; };
+		27B2C281261562AB005DE26D /* libboost_filesystem.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 27B2C27A26155326005DE26D /* libboost_filesystem.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		27B2C283261562B7005DE26D /* libboost_system.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 27B2C27C26155331005DE26D /* libboost_system.dylib */; };
+		27B2C284261562B7005DE26D /* libboost_system.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 27B2C27C26155331005DE26D /* libboost_system.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -50,6 +54,18 @@
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 1;
+		};
+		27B2C282261562AC005DE26D /* Embed Libraries */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				27B2C281261562AB005DE26D /* libboost_filesystem.dylib in Embed Libraries */,
+				27B2C284261562B7005DE26D /* libboost_system.dylib in Embed Libraries */,
+			);
+			name = "Embed Libraries";
+			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
@@ -128,6 +144,10 @@
 		27B2C24B261511C8005DE26D /* carbon-cycle-model.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "carbon-cycle-model.cpp"; path = "../../src/carbon-cycle-model.cpp"; sourceTree = "<group>"; };
 		27B2C24D261511C8005DE26D /* spline_forsythe.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = spline_forsythe.cpp; path = ../../src/spline_forsythe.cpp; sourceTree = "<group>"; };
 		27B2C24E261511C8005DE26D /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = ../../src/main.cpp; sourceTree = "<group>"; };
+		27B2C274261551A9005DE26D /* libboost_filesystem.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_filesystem.a; path = ../../../../../../../../../usr/local/boost_1_73_0/stage/lib/libboost_filesystem.a; sourceTree = "<group>"; };
+		27B2C276261551B7005DE26D /* libboost_system.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_system.a; path = ../../../../../../../../../usr/local/boost_1_73_0/stage/lib/libboost_system.a; sourceTree = "<group>"; };
+		27B2C27A26155326005DE26D /* libboost_filesystem.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libboost_filesystem.dylib; path = ../../../../../../../../../usr/local/boost_1_73_0/stage/lib/libboost_filesystem.dylib; sourceTree = "<group>"; };
+		27B2C27C26155331005DE26D /* libboost_system.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libboost_system.dylib; path = ../../../../../../../../../usr/local/boost_1_73_0/stage/lib/libboost_system.dylib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,6 +155,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				27B2C280261562AB005DE26D /* libboost_filesystem.dylib in Frameworks */,
+				27B2C283261562B7005DE26D /* libboost_system.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -147,6 +169,7 @@
 				27B2C22B26151149005DE26D /* Headers */,
 				27B2C272261511CD005DE26D /* Source */,
 				27585CF926150F1A00BA1EF5 /* Products */,
+				27B2C273261551A9005DE26D /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -245,6 +268,17 @@
 			name = Source;
 			sourceTree = "<group>";
 		};
+		27B2C273261551A9005DE26D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				27B2C27C26155331005DE26D /* libboost_system.dylib */,
+				27B2C27A26155326005DE26D /* libboost_filesystem.dylib */,
+				27B2C276261551B7005DE26D /* libboost_system.a */,
+				27B2C274261551A9005DE26D /* libboost_filesystem.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -255,6 +289,7 @@
 				27585CF426150F1A00BA1EF5 /* Sources */,
 				27585CF526150F1A00BA1EF5 /* Frameworks */,
 				27585CF626150F1A00BA1EF5 /* CopyFiles */,
+				27B2C282261562AC005DE26D /* Embed Libraries */,
 			);
 			buildRules = (
 			);
@@ -390,11 +425,17 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "${BOOST}";
+				HEADER_SEARCH_PATHS = "${BOOSTROOT}";
+				LIBRARY_SEARCH_PATHS = "${BOOSTLIB}";
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"-lboost_system",
+					"-lboost_filesystem",
+				);
+				OTHER_LIBTOOLFLAGS = "";
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -443,10 +484,16 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				HEADER_SEARCH_PATHS = "${BOOST}";
+				HEADER_SEARCH_PATHS = "${BOOSTROOT}";
+				LIBRARY_SEARCH_PATHS = "${BOOSTLIB}";
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				OTHER_LDFLAGS = (
+					"-lboost_system",
+					"-lboost_filesystem",
+				);
+				OTHER_LIBTOOLFLAGS = "";
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -455,6 +502,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				LIBRARY_SEARCH_PATHS = "${BOOSTLIB}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -463,6 +511,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				LIBRARY_SEARCH_PATHS = "${BOOSTLIB}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
