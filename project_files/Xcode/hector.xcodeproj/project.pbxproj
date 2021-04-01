@@ -71,6 +71,17 @@
 
 /* Begin PBXFileReference section */
 		27585CF826150F1A00BA1EF5 /* hector */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = hector; sourceTree = BUILT_PRODUCTS_DIR; };
+		27A02A462615CAA100AF9BFA /* test_logger.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_logger.cpp; path = ../../../src/Testing/test_logger.cpp; sourceTree = "<group>"; };
+		27A02A472615CAA100AF9BFA /* test_restart.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_restart.cpp; path = ../../../src/Testing/test_restart.cpp; sourceTree = "<group>"; };
+		27A02A482615CAA100AF9BFA /* test_csv_file_reader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_csv_file_reader.cpp; path = ../../../src/Testing/test_csv_file_reader.cpp; sourceTree = "<group>"; };
+		27A02A492615CAA100AF9BFA /* test_dependency_finder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_dependency_finder.cpp; path = ../../../src/Testing/test_dependency_finder.cpp; sourceTree = "<group>"; };
+		27A02A4A2615CAA100AF9BFA /* test_ini_to_core_reader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_ini_to_core_reader.cpp; path = ../../../src/Testing/test_ini_to_core_reader.cpp; sourceTree = "<group>"; };
+		27A02A4B2615CAA100AF9BFA /* test_tseries.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_tseries.cpp; path = ../../../src/Testing/test_tseries.cpp; sourceTree = "<group>"; };
+		27A02A4C2615CAA100AF9BFA /* test_units.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_units.cpp; path = ../../../src/Testing/test_units.cpp; sourceTree = "<group>"; };
+		27A02A4D2615CAA100AF9BFA /* testing_main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = testing_main.cpp; path = ../../../src/Testing/testing_main.cpp; sourceTree = "<group>"; };
+		27A02A4E2615CAA100AF9BFA /* test_core.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_core.cpp; path = ../../../src/Testing/test_core.cpp; sourceTree = "<group>"; };
+		27A02A4F2615CAA100AF9BFA /* test_hreader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_hreader.cpp; path = ../../../src/Testing/test_hreader.cpp; sourceTree = "<group>"; };
+		27A02A502615CAA100AF9BFA /* test_inih.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_inih.cpp; path = ../../../src/Testing/test_inih.cpp; sourceTree = "<group>"; };
 		27B2C2012615112D005DE26D /* ocean_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ocean_component.hpp; path = ../../inst/include/ocean_component.hpp; sourceTree = "<group>"; };
 		27B2C2022615112D005DE26D /* csv_table_reader.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = csv_table_reader.hpp; path = ../../inst/include/csv_table_reader.hpp; sourceTree = "<group>"; };
 		27B2C2032615112D005DE26D /* tseries.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = tseries.hpp; path = ../../inst/include/tseries.hpp; sourceTree = "<group>"; };
@@ -168,6 +179,7 @@
 			children = (
 				27B2C22B26151149005DE26D /* Headers */,
 				27B2C272261511CD005DE26D /* Source */,
+				27A02A452615CA7300AF9BFA /* Testing */,
 				27585CF926150F1A00BA1EF5 /* Products */,
 				27B2C273261551A9005DE26D /* Frameworks */,
 			);
@@ -179,6 +191,24 @@
 				27585CF826150F1A00BA1EF5 /* hector */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		27A02A452615CA7300AF9BFA /* Testing */ = {
+			isa = PBXGroup;
+			children = (
+				27A02A4E2615CAA100AF9BFA /* test_core.cpp */,
+				27A02A482615CAA100AF9BFA /* test_csv_file_reader.cpp */,
+				27A02A492615CAA100AF9BFA /* test_dependency_finder.cpp */,
+				27A02A4F2615CAA100AF9BFA /* test_hreader.cpp */,
+				27A02A4A2615CAA100AF9BFA /* test_ini_to_core_reader.cpp */,
+				27A02A502615CAA100AF9BFA /* test_inih.cpp */,
+				27A02A462615CAA100AF9BFA /* test_logger.cpp */,
+				27A02A472615CAA100AF9BFA /* test_restart.cpp */,
+				27A02A4B2615CAA100AF9BFA /* test_tseries.cpp */,
+				27A02A4C2615CAA100AF9BFA /* test_units.cpp */,
+				27A02A4D2615CAA100AF9BFA /* testing_main.cpp */,
+			);
+			path = Testing;
 			sourceTree = "<group>";
 		};
 		27B2C22B26151149005DE26D /* Headers */ = {
