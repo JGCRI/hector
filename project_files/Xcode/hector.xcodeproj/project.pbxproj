@@ -19,7 +19,6 @@
 		27B2C258261511C8005DE26D /* onelineocean_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C235261511C6005DE26D /* onelineocean_component.cpp */; };
 		27B2C259261511C8005DE26D /* oh_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C236261511C6005DE26D /* oh_component.cpp */; };
 		27B2C25A261511C8005DE26D /* ocean_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C237261511C6005DE26D /* ocean_component.cpp */; };
-		27B2C25B261511C8005DE26D /* RcppExports.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C238261511C6005DE26D /* RcppExports.cpp */; };
 		27B2C25C261511C8005DE26D /* h_interpolator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C239261511C6005DE26D /* h_interpolator.cpp */; };
 		27B2C25D261511C8005DE26D /* n2o_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C23A261511C6005DE26D /* n2o_component.cpp */; };
 		27B2C25E261511C8005DE26D /* bc_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C23B261511C6005DE26D /* bc_component.cpp */; };
@@ -31,7 +30,6 @@
 		27B2C264261511C8005DE26D /* ocean_csys.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C241261511C7005DE26D /* ocean_csys.cpp */; };
 		27B2C265261511C8005DE26D /* temperature_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C242261511C7005DE26D /* temperature_component.cpp */; };
 		27B2C266261511C8005DE26D /* unitval.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C243261511C7005DE26D /* unitval.cpp */; };
-		27B2C267261511C8005DE26D /* rcpp_hector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C244261511C7005DE26D /* rcpp_hector.cpp */; };
 		27B2C268261511C8005DE26D /* simpleNbox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C245261511C7005DE26D /* simpleNbox.cpp */; };
 		27B2C269261511C8005DE26D /* logger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C246261511C7005DE26D /* logger.cpp */; };
 		27B2C26A261511C8005DE26D /* slr_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C247261511C7005DE26D /* slr_component.cpp */; };
@@ -39,7 +37,6 @@
 		27B2C26C261511C8005DE26D /* dummy_model_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C249261511C7005DE26D /* dummy_model_component.cpp */; };
 		27B2C26D261511C8005DE26D /* oc_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C24A261511C8005DE26D /* oc_component.cpp */; };
 		27B2C26E261511C8005DE26D /* carbon-cycle-model.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C24B261511C8005DE26D /* carbon-cycle-model.cpp */; };
-		27B2C26F261511C8005DE26D /* rcpp_constants.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C24C261511C8005DE26D /* rcpp_constants.cpp */; };
 		27B2C270261511C8005DE26D /* spline_forsythe.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C24D261511C8005DE26D /* spline_forsythe.cpp */; };
 		27B2C271261511C8005DE26D /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C24E261511C8005DE26D /* main.cpp */; };
 /* End PBXBuildFile section */
@@ -111,7 +108,6 @@
 		27B2C235261511C6005DE26D /* onelineocean_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = onelineocean_component.cpp; path = ../../src/onelineocean_component.cpp; sourceTree = "<group>"; };
 		27B2C236261511C6005DE26D /* oh_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = oh_component.cpp; path = ../../src/oh_component.cpp; sourceTree = "<group>"; };
 		27B2C237261511C6005DE26D /* ocean_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ocean_component.cpp; path = ../../src/ocean_component.cpp; sourceTree = "<group>"; };
-		27B2C238261511C6005DE26D /* RcppExports.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RcppExports.cpp; path = ../../src/RcppExports.cpp; sourceTree = "<group>"; };
 		27B2C239261511C6005DE26D /* h_interpolator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = h_interpolator.cpp; path = ../../src/h_interpolator.cpp; sourceTree = "<group>"; };
 		27B2C23A261511C6005DE26D /* n2o_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = n2o_component.cpp; path = ../../src/n2o_component.cpp; sourceTree = "<group>"; };
 		27B2C23B261511C6005DE26D /* bc_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = bc_component.cpp; path = ../../src/bc_component.cpp; sourceTree = "<group>"; };
@@ -123,7 +119,6 @@
 		27B2C241261511C7005DE26D /* ocean_csys.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ocean_csys.cpp; path = ../../src/ocean_csys.cpp; sourceTree = "<group>"; };
 		27B2C242261511C7005DE26D /* temperature_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = temperature_component.cpp; path = ../../src/temperature_component.cpp; sourceTree = "<group>"; };
 		27B2C243261511C7005DE26D /* unitval.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = unitval.cpp; path = ../../src/unitval.cpp; sourceTree = "<group>"; };
-		27B2C244261511C7005DE26D /* rcpp_hector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = rcpp_hector.cpp; path = ../../src/rcpp_hector.cpp; sourceTree = "<group>"; };
 		27B2C245261511C7005DE26D /* simpleNbox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = simpleNbox.cpp; path = ../../src/simpleNbox.cpp; sourceTree = "<group>"; };
 		27B2C246261511C7005DE26D /* logger.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = logger.cpp; path = ../../src/logger.cpp; sourceTree = "<group>"; };
 		27B2C247261511C7005DE26D /* slr_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = slr_component.cpp; path = ../../src/slr_component.cpp; sourceTree = "<group>"; };
@@ -131,7 +126,6 @@
 		27B2C249261511C7005DE26D /* dummy_model_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = dummy_model_component.cpp; path = ../../src/dummy_model_component.cpp; sourceTree = "<group>"; };
 		27B2C24A261511C8005DE26D /* oc_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = oc_component.cpp; path = ../../src/oc_component.cpp; sourceTree = "<group>"; };
 		27B2C24B261511C8005DE26D /* carbon-cycle-model.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "carbon-cycle-model.cpp"; path = "../../src/carbon-cycle-model.cpp"; sourceTree = "<group>"; };
-		27B2C24C261511C8005DE26D /* rcpp_constants.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = rcpp_constants.cpp; path = ../../src/rcpp_constants.cpp; sourceTree = "<group>"; };
 		27B2C24D261511C8005DE26D /* spline_forsythe.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = spline_forsythe.cpp; path = ../../src/spline_forsythe.cpp; sourceTree = "<group>"; };
 		27B2C24E261511C8005DE26D /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = ../../src/main.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -241,9 +235,6 @@
 				27B2C23E261511C7005DE26D /* oceanbox.cpp */,
 				27B2C236261511C6005DE26D /* oh_component.cpp */,
 				27B2C235261511C6005DE26D /* onelineocean_component.cpp */,
-				27B2C24C261511C8005DE26D /* rcpp_constants.cpp */,
-				27B2C244261511C7005DE26D /* rcpp_hector.cpp */,
-				27B2C238261511C6005DE26D /* RcppExports.cpp */,
 				27B2C245261511C7005DE26D /* simpleNbox.cpp */,
 				27B2C247261511C7005DE26D /* slr_component.cpp */,
 				27B2C232261511C5005DE26D /* so2_component.cpp */,
@@ -326,7 +317,6 @@
 				27B2C270261511C8005DE26D /* spline_forsythe.cpp in Sources */,
 				27B2C259261511C8005DE26D /* oh_component.cpp in Sources */,
 				27B2C251261511C8005DE26D /* ini.c in Sources */,
-				27B2C26F261511C8005DE26D /* rcpp_constants.cpp in Sources */,
 				27B2C265261511C8005DE26D /* temperature_component.cpp in Sources */,
 				27B2C268261511C8005DE26D /* simpleNbox.cpp in Sources */,
 				27B2C271261511C8005DE26D /* main.cpp in Sources */,
@@ -335,8 +325,6 @@
 				27B2C25E261511C8005DE26D /* bc_component.cpp in Sources */,
 				27B2C24F261511C8005DE26D /* ch4_component.cpp in Sources */,
 				27B2C262261511C8005DE26D /* csv_outputstream_visitor.cpp in Sources */,
-				27B2C25B261511C8005DE26D /* RcppExports.cpp in Sources */,
-				27B2C267261511C8005DE26D /* rcpp_hector.cpp in Sources */,
 				27B2C26E261511C8005DE26D /* carbon-cycle-model.cpp in Sources */,
 				27B2C252261511C8005DE26D /* carbon-cycle-solver.cpp in Sources */,
 				27B2C269261511C8005DE26D /* logger.cpp in Sources */,
@@ -358,7 +346,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -393,7 +381,7 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
+					"hDEBUG=1",
 					"$(inherited)",
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -402,6 +390,9 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"/usr/local/boost_1_73_0/\n/usr/local/boost_1_73_0/\n/usr/local/boost_1_73_0/",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -416,7 +407,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -454,6 +445,9 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"/usr/local/boost_1_73_0/\n/usr/local/boost_1_73_0/\n/usr/local/boost_1_73_0/",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
