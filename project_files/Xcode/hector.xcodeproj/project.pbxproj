@@ -10,7 +10,6 @@
 		27808CF12615CEFA00BE8B90 /* libgtest.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 27808CF02615CEFA00BE8B90 /* libgtest.dylib */; };
 		27808CF42615D31A00BE8B90 /* test_tseries.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27A02A4B2615CAA100AF9BFA /* test_tseries.cpp */; };
 		27A02A5E2615CBB800AF9BFA /* halocarbon_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C231261511C5005DE26D /* halocarbon_component.cpp */; };
-		27A02A5F2615CBB800AF9BFA /* onelineocean_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C235261511C6005DE26D /* onelineocean_component.cpp */; };
 		27A02A602615CBB800AF9BFA /* ocean_csys.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C241261511C7005DE26D /* ocean_csys.cpp */; };
 		27A02A612615CBB800AF9BFA /* core.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C23D261511C6005DE26D /* core.cpp */; };
 		27A02A622615CBB800AF9BFA /* INIReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C248261511C7005DE26D /* INIReader.cpp */; };
@@ -54,7 +53,6 @@
 		27B2C255261511C8005DE26D /* so2_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C232261511C5005DE26D /* so2_component.cpp */; };
 		27B2C256261511C8005DE26D /* o3_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C233261511C5005DE26D /* o3_component.cpp */; };
 		27B2C257261511C8005DE26D /* csv_table_reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C234261511C6005DE26D /* csv_table_reader.cpp */; };
-		27B2C258261511C8005DE26D /* onelineocean_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C235261511C6005DE26D /* onelineocean_component.cpp */; };
 		27B2C259261511C8005DE26D /* oh_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C236261511C6005DE26D /* oh_component.cpp */; };
 		27B2C25A261511C8005DE26D /* ocean_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C237261511C6005DE26D /* ocean_component.cpp */; };
 		27B2C25C261511C8005DE26D /* h_interpolator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C239261511C6005DE26D /* h_interpolator.cpp */; };
@@ -193,7 +191,6 @@
 		27B2C232261511C5005DE26D /* so2_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = so2_component.cpp; path = ../../src/so2_component.cpp; sourceTree = "<group>"; };
 		27B2C233261511C5005DE26D /* o3_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = o3_component.cpp; path = ../../src/o3_component.cpp; sourceTree = "<group>"; };
 		27B2C234261511C6005DE26D /* csv_table_reader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = csv_table_reader.cpp; path = ../../src/csv_table_reader.cpp; sourceTree = "<group>"; };
-		27B2C235261511C6005DE26D /* onelineocean_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = onelineocean_component.cpp; path = ../../src/onelineocean_component.cpp; sourceTree = "<group>"; };
 		27B2C236261511C6005DE26D /* oh_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = oh_component.cpp; path = ../../src/oh_component.cpp; sourceTree = "<group>"; };
 		27B2C237261511C6005DE26D /* ocean_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ocean_component.cpp; path = ../../src/ocean_component.cpp; sourceTree = "<group>"; };
 		27B2C239261511C6005DE26D /* h_interpolator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = h_interpolator.cpp; path = ../../src/h_interpolator.cpp; sourceTree = "<group>"; };
@@ -359,7 +356,6 @@
 				27B2C241261511C7005DE26D /* ocean_csys.cpp */,
 				27B2C23E261511C7005DE26D /* oceanbox.cpp */,
 				27B2C236261511C6005DE26D /* oh_component.cpp */,
-				27B2C235261511C6005DE26D /* onelineocean_component.cpp */,
 				27B2C245261511C7005DE26D /* simpleNbox.cpp */,
 				27B2C247261511C7005DE26D /* slr_component.cpp */,
 				27B2C232261511C5005DE26D /* so2_component.cpp */,
@@ -460,7 +456,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				27B2C254261511C8005DE26D /* halocarbon_component.cpp in Sources */,
-				27B2C258261511C8005DE26D /* onelineocean_component.cpp in Sources */,
 				27B2C264261511C8005DE26D /* ocean_csys.cpp in Sources */,
 				27B2C260261511C8005DE26D /* core.cpp in Sources */,
 				27B2C26B261511C8005DE26D /* INIReader.cpp in Sources */,
@@ -501,7 +496,6 @@
 				27808CF42615D31A00BE8B90 /* test_tseries.cpp in Sources */,
 				27A02A892615CBDB00AF9BFA /* testing_main.cpp in Sources */,
 				27A02A5E2615CBB800AF9BFA /* halocarbon_component.cpp in Sources */,
-				27A02A5F2615CBB800AF9BFA /* onelineocean_component.cpp in Sources */,
 				27A02A602615CBB800AF9BFA /* ocean_csys.cpp in Sources */,
 				27A02A612615CBB800AF9BFA /* core.cpp in Sources */,
 				27A02A622615CBB800AF9BFA /* INIReader.cpp in Sources */,
