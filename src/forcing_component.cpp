@@ -311,16 +311,16 @@ void ForcingComponent::run( const double runToDate ) {
 
             // ---------- Stratospheric H2O from CH4 oxidation ----------
             // From Tanaka et al, 2007, but using Joos et al., 2001 value of 0.05
-            const double fh2o = 0.05 * ( 0.036 * ( sqrt( Ma ) - sqrt( M0 ) ) );
-            forcings[D_RF_H2O_STRAT].set( fh2o, U_W_M2 );
+            const double fh2o_strat = 0.05 * ( 0.036 * ( sqrt( Ma ) - sqrt( M0 ) ) );
+            forcings[D_RF_H2O_STRAT].set( fh2o_strat, U_W_M2 );
         }
 
         // ---------- Troposheric Ozone ----------
         if( core->checkCapability( D_ATMOSPHERIC_O3 ) ) {
             //from Tanaka et al, 2007
             const double ozone = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_O3, message_data( runToDate ) ).value( U_DU_O3 );
-            const double fo3 = 0.042 * ozone;
-            forcings[D_RF_O3_TROP].set( fo3, U_W_M2 );
+            const double fo3_trop = 0.042 * ozone;
+            forcings[D_RF_O3_TROP].set( fo3_trop, U_W_M2 );
         }
 
         // ---------- Halocarbons ----------
