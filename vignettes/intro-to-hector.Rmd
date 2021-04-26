@@ -43,7 +43,7 @@ ini_file <- system.file("input/hector_rcp45.ini", package = "hector")
 ```
 
 
-Alternatively, users may provide a path to an ini file external to the Hector package on their local machine. This ini file must comply with the Hector  [ini requireiments](https://github.com/JGCRI/hector/wiki/InputFiles). 
+Alternatively, users may provide a path to an ini file external to the Hector package on their local machine. This ini file must comply with the Hector  [ini requirements](https://github.com/JGCRI/hector/wiki/InputFiles). 
 
 ```{r}
 external_ini_file <- "/path/to/ini/on/local/machine/my_ini.ini"
