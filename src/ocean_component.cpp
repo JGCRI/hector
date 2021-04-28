@@ -347,9 +347,9 @@ unitval OceanComponent::getData( const std::string& varName,
 
     unitval returnval;
 
-    if( varName != D_OCEAN_CFLUX ) {
-        H_ASSERT( date == Core::undefinedIndex(), "Date data not available for " + varName + " in OceanComponent::getData()" );
-    }
+  //  if( varName != D_OCEAN_CFLUX ) {
+    //    H_ASSERT( date == Core::undefinedIndex(), "Date data not available for " + varName + " in OceanComponent::getData()" );
+    //}
 
     if( varName == D_OCEAN_CFLUX ) {
         // If no date, we're in spinup; just return the current value
@@ -359,19 +359,25 @@ unitval OceanComponent::getData( const std::string& varName,
             returnval = annualflux_sum_ts.get(date);
         }
     } else if( varName == D_OCEAN_C ) {
-        returnval = totalcpool();
+        H_ASSERT( date != Core::undefinedIndex(), "Date required for ocean total carbon pool" );
+        returnval = Ca_ts.get( date );
 	} else if( varName == D_HL_DO ) {
         returnval = surfaceHL.annual_box_fluxes[ &deep ] ;
     } else if( varName == D_PH_HL ) {
+        H_ASSERT( date != Core::undefinedIndex(), "Date required for high-latitude Ph" );
         returnval = surfaceHL.mychemistry.pH;
 	} else if( varName == D_PH_LL ) {
         returnval = surfaceLL.mychemistry.pH;
 	} else if( varName == D_ATM_OCEAN_FLUX_HL ) {
-		returnval = unitval( annualflux_sumHL.value( U_PGC ), U_PGC_YR );
+	    H_ASSERT( date != Core::undefinedIndex(), "Date required for atmosphere-ocean carbon flux, high-latitude" );
+	    returnval = annualflux_sumHL_ts.get(date);
     } else if( varName == D_ATM_OCEAN_FLUX_LL ) {
-		returnval = unitval( annualflux_sumLL.value( U_PGC ), U_PGC_YR );
+        H_ASSERT( date != Core::undefinedIndex(), "Date required for atmosphere-ocean carbon flux, low-latitude" );
+        returnval = annualflux_sumLL_ts.get(date);
 	} else if( varName == D_PCO2_HL ) {
         returnval = surfaceHL.mychemistry.PCO2o;
+	//    detritus_c_tv.get(date)
+
 	} else if( varName == D_PCO2_LL ) {
 		returnval = surfaceLL.mychemistry.PCO2o;
     } else if( varName == D_DIC_HL ) {
@@ -383,10 +389,12 @@ unitval OceanComponent::getData( const std::string& varName,
 	} else if( varName == D_CARBON_LL ) {
         returnval = surfaceLL.get_carbon();
 	} else if( varName == D_CARBON_IO ) {
-		returnval = inter.get_carbon();
+	  H_ASSERT( date != Core::undefinedIndex(), "Date required for intermediate ocean carbon pool" );
+	  returnval = C_IO_ts.get(date);
     } else if( varName == D_CARBON_DO ) {
         returnval = deep.get_carbon();
     } else if( varName == D_TT ) {
+        H_ASSERT( date != Core::undefinedIndex() == Core::undefinedIndex() , "date not allowed" );
         returnval = tt;
     } else if( varName == D_TU ) {
         returnval = tu;
@@ -609,8 +617,7 @@ void OceanComponent::reset(double time)
 
 void OceanComponent::record_state(double time)
 {
-    H_LOG(logger, Logger::DEBUG) << "Recording component state at t= "
-                                 << time << endl;
+    H_LOG(logger, Logger::DEBUG) << "Recording component state at t= " << time << endl;
     surfaceHL_tv.set(time, surfaceHL);
     surfaceLL_tv.set(time, surfaceLL);
     inter_tv.set(time, inter);
@@ -623,6 +630,7 @@ void OceanComponent::record_state(double time)
     annualflux_sumHL_ts.set(time, annualflux_sumHL);
     annualflux_sumLL_ts.set(time, annualflux_sumLL);
     lastflux_annualized_ts.set(time, lastflux_annualized);
+    C_IO_ts.set(time, inter.get_carbon());
 
     max_timestep_ts.set(time, max_timestep);
     reduced_timestep_timeout_ts.set(time, reduced_timestep_timeout);
