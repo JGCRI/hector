@@ -93,6 +93,14 @@ void OceanComponent::init( Core* coreptr ) {
     core->registerCapability( D_TEMP_LL, getComponentName() );
     core->registerCapability( D_CO3_HL, getComponentName() );
     core->registerCapability( D_CO3_LL, getComponentName() );
+
+
+    // Register the inputs we can receive from outside
+    core->registerInput(D_TT, getComponentName());
+    core->registerInput(D_TU, getComponentName());
+    core->registerInput(D_TWI, getComponentName());
+    core->registerInput(D_TID, getComponentName());
+
 }
 
 //------------------------------------------------------------------------------
@@ -107,8 +115,7 @@ unitval OceanComponent::sendMessage( const std::string& message,
         return getData( datum, info.date );
 
     } else if( message == M_SETDATA ) {   //! Caller is requesting to set data
-        H_THROW("Ocean sendMessage not yet implemented for message=M_SETDATA.");
-        //TODO: call setData below
+        setData(datum, info);
         //TODO: change core so that parsing is routed through sendMessage
         //TODO: make setData private
 
@@ -118,7 +125,7 @@ unitval OceanComponent::sendMessage( const std::string& message,
         H_LOG( logger, Logger::DEBUG ) << "Atmosphere dumping " << carbon << " Pg C to deep ocean" << std::endl;
         deep.set_carbon( deep.get_carbon() + carbon );
 
-    } else {                        //! We don't handle any other messages
+    } else { //! We don't handle any other messages
         H_THROW( "Caller sent unknown message: "+message );
     }
 
