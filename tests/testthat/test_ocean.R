@@ -33,13 +33,13 @@ test_that("Checking carbon pools", {
 
 test_that("Checking ocean flux", {
 
-    # The total ocean to atmopshere flux should equal the sum of the ocean to atmopshere fluxes
+    # The total ocean to atmosphere flux should equal the sum of the ocean to atmosphere fluxes
     # at the high and low latitudes.
 
     # Get the total ocean to atmosphere flux.
     total_flux <- fetchvars(core = hc, dates = t_dates, vars = OCEAN_CFLUX())
 
-    # Parse out the fluxes from the high and low lattidue pools and calcualte the sum
+    # Parse out the fluxes from the high and low latitude pools and calculate the sum
     # to compare with the total.
     pool_fluxes <- fetchvars(core = hc, dates = t_dates, vars = c(ATM_OCEAN_FLUX_HL(), ATM_OCEAN_FLUX_LL()))
     sum_pool_flux <- aggregate(value ~ year, data = pool_fluxes, sum)
@@ -48,17 +48,17 @@ test_that("Checking ocean flux", {
 
 })
 
-test_that("Checking high and low latitude differenes", {
+test_that("Checking high and low latitude difference", {
 
     # We expect that the high and low latitude ocean boxes produce different
-    # results, they should have different temperature, carbonn fluxes, co3, and ph values.
+    # results, they should have different temperature, carbon fluxes, co3, and ph values.
 
-    # Calculate the sum of the high laltitude variables.
+    # Calculate the sum of the high latitude variables.
     hl_vars <- c(OCEAN_C_HL(), PH_HL(), ATM_OCEAN_FLUX_HL(), PCO2_HL(), TEMP_HL(), CO3_HL() )
     hl_results <- fetchvars(core = hc, dates = t_dates, vars = hl_vars)
     mean_hl <- aggregate(value ~ variable, data = hl_results, mean)
 
-    # Calcualte the sum of the low latitude variables.
+    # Calculate the sum of the low latitude variables.
     ll_vars <- c(OCEAN_C_LL(), PH_LL(), ATM_OCEAN_FLUX_LL(), PCO2_LL(), TEMP_LL(), CO3_LL() )
     ll_results <- fetchvars(core = hc, dates = t_dates, vars = ll_vars)
     mean_ll <- aggregate(value ~ variable, data = ll_results, mean)
@@ -76,7 +76,7 @@ test_that("Read and writing ocean parameters", {
     # Should throw an error if a date is passed in.
     expect_error(fetchvars(hc, dates = t_dates, vars = params))
 
-    # Save a copy of the default hector paramter values.
+    # Save a copy of the default hector parameter values.
     default_params <- fetchvars(hc, dates = NA, vars = params)
     expect_equal(nrow(default_params), length(params))
 
@@ -89,11 +89,11 @@ test_that("Read and writing ocean parameters", {
     # Change the default hector parameters.
     new_params <- default_params$value * 1.1
 
-    # Run hector with the new parmater values and the new output with the old output.
+    # Run hector with the new parameter values and the new output with the old output.
     mapply(function(val, p, u){
 
         # Create a new hector core each time so that only one
-        # parmater is being changed at a time.
+        # parameter is being changed at a time.
         hc2 <- newcore(rcp45)
 
         # reset the hector core
@@ -106,10 +106,10 @@ test_that("Read and writing ocean parameters", {
         # Make sure that Hector output is changed when ocean component parameters are
         # changed. It is safe to expect that the change in the Hector output should be
         # greater than the error threshold which we've set at 1e-10
-        # What is the absolute differnce between the mean ocean variables?
+        # What is the absolute difference between the mean ocean variables?
         error_threshold <- 1e-10
         diff <- abs(new_mean$value - default_mean$value)
-        expect_true(all(diff > error_threshold), info = cat('probelm with reseting ', p, '\n'))
+        expect_true(all(diff > error_threshold), info = cat('problem with resetting ', p, '\n'))
 
     }, val = new_params, p = params, u = default_params$units)
 
