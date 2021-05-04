@@ -364,7 +364,7 @@ unitval OceanComponent::getData( const std::string& varName,
         }
     } else if( varName == D_OCEAN_C ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for ocean total carbon pool" );
-        returnval = Ca_ts.get( date );
+        returnval = totalcpool();
 	} else if( varName == D_HL_DO ) {
 	    H_ASSERT( date != Core::undefinedIndex(), "Date required for deep ocean carbon pool" );
 	    returnval = C_DO_ts.get( date );
