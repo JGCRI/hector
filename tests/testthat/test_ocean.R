@@ -14,8 +14,6 @@ run(hc, max(t_dates))
 
 test_that("Checking carbon pools", {
 
-    out <- fetchvars(core = hc, dates = t_dates, vars =  "Ca")
-
     # The sum of the high and low latitude, intermediate, and deep ocean pools should
     # equal the size of the ocean pool.
     total_ocean_pool <- fetchvars(core = hc, dates = t_dates, vars = OCEAN_C())
