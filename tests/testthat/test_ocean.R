@@ -14,20 +14,21 @@ run(hc, max(t_dates))
 
 test_that("Checking carbon pools", {
 
+    out <- fetchvars(core = hc, dates = t_dates, vars =  "Ca")
+
     # The sum of the high and low latitude, intermediate, and deep ocean pools should
     # equal the size of the ocean pool.
     total_ocean_pool <- fetchvars(core = hc, dates = t_dates, vars = OCEAN_C())
-    # Convert the total ocean pool from ppmvco2 to pgC so that the units for the
-    # total flux and aggregate flux are equivalent.
-    PPMVCO2_TO_PGC <- (1/(1.0/2.13))
-    total_ocean_pool_value <- total_ocean_pool$value *  PPMVCO2_TO_PGC
 
     carbon_pools <- c(OCEAN_C_HL(), OCEAN_C_LL(), OCEAN_C_IO(), OCEAN_C_DO())
     individual_carbon_pools <- fetchvars(core = hc, dates = t_dates, vars = carbon_pools)
     sum_carbon_pools <- aggregate(value ~ year, data = individual_carbon_pools, sum)
 
-
-    expect_equal(total_ocean_pool_value, sum_carbon_pools$value)
+    # Define an error threhold that corresponds to less than about .025% of the average
+    # total carbon pool.
+    allowable_percent <- 0.025
+    error_thresh <- (mean(total_ocean_pool$value) * allowable_percent) / 100
+    expect_equal(total_ocean_pool$value, sum_carbon_pools$value, tolerance = error_thresh)
     })
 
 
@@ -41,7 +42,8 @@ test_that("Checking ocean flux", {
 
     # Parse out the fluxes from the high and low latitude pools and calculate the sum
     # to compare with the total.
-    pool_fluxes <- fetchvars(core = hc, dates = t_dates, vars = c(ATM_OCEAN_FLUX_HL(), ATM_OCEAN_FLUX_LL()))
+    pool_fluxes <- fetchvars(core = hc, dates = t_dates, vars = c(ATM_OCEAN_FLUX_HL(),
+                                                                  ATM_OCEAN_FLUX_LL()))
     sum_pool_flux <- aggregate(value ~ year, data = pool_fluxes, sum)
 
     expect_equal(total_flux$value, sum_pool_flux$value)
@@ -54,12 +56,12 @@ test_that("Checking high and low latitude difference", {
     # results, they should have different temperature, carbon fluxes, co3, and ph values.
 
     # Calculate the sum of the high latitude variables.
-    hl_vars <- c(OCEAN_C_HL(), PH_HL(), ATM_OCEAN_FLUX_HL(), PCO2_HL(), TEMP_HL(), CO3_HL() )
+    hl_vars <- c(OCEAN_C_HL(), PH_HL(), ATM_OCEAN_FLUX_HL(), PCO2_HL(), TEMP_HL(), CO3_HL())
     hl_results <- fetchvars(core = hc, dates = t_dates, vars = hl_vars)
     mean_hl <- aggregate(value ~ variable, data = hl_results, mean)
 
     # Calculate the sum of the low latitude variables.
-    ll_vars <- c(OCEAN_C_LL(), PH_LL(), ATM_OCEAN_FLUX_LL(), PCO2_LL(), TEMP_LL(), CO3_LL() )
+    ll_vars <- c(OCEAN_C_LL(), PH_LL(), ATM_OCEAN_FLUX_LL(), PCO2_LL(), TEMP_LL(), CO3_LL())
     ll_results <- fetchvars(core = hc, dates = t_dates, vars = ll_vars)
     mean_ll <- aggregate(value ~ variable, data = ll_results, mean)
 
@@ -90,7 +92,7 @@ test_that("Read and writing ocean parameters", {
     new_params <- default_params$value * 1.1
 
     # Run hector with the new parameter values and the new output with the old output.
-    mapply(function(val, p, u){
+    mapply(function(val, p, u) {
 
         # Create a new hector core each time so that only one
         # parameter is being changed at a time.
@@ -109,7 +111,7 @@ test_that("Read and writing ocean parameters", {
         # What is the absolute difference between the mean ocean variables?
         error_threshold <- 1e-10
         diff <- abs(new_mean$value - default_mean$value)
-        expect_true(all(diff > error_threshold), info = cat('problem with resetting ', p, '\n'))
+        expect_true(all(diff > error_threshold), info = cat("problem with resetting ", p, "\n"))
 
     }, val = new_params, p = params, u = default_params$units)
 
