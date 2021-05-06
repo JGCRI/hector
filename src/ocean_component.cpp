@@ -81,6 +81,26 @@ void OceanComponent::init( Core* coreptr ) {
     core->registerCapability( D_TU, getComponentName() );
     core->registerCapability( D_TWI, getComponentName() );
     core->registerCapability( D_TID, getComponentName() );
+    core->registerCapability( D_PH_HL, getComponentName() );
+    core->registerCapability( D_PH_LL, getComponentName() );
+    core->registerCapability( D_ATM_OCEAN_FLUX_HL, getComponentName() );
+    core->registerCapability( D_ATM_OCEAN_FLUX_LL, getComponentName() );
+    core->registerCapability( D_PCO2_HL, getComponentName() );
+    core->registerCapability( D_PCO2_LL, getComponentName() );
+    core->registerCapability( D_DIC_HL, getComponentName() );
+    core->registerCapability( D_DIC_LL, getComponentName() );
+    core->registerCapability( D_TEMP_HL, getComponentName() );
+    core->registerCapability( D_TEMP_LL, getComponentName() );
+    core->registerCapability( D_CO3_HL, getComponentName() );
+    core->registerCapability( D_CO3_LL, getComponentName() );
+
+
+    // Register the inputs we can receive from outside
+    core->registerInput(D_TT, getComponentName());
+    core->registerInput(D_TU, getComponentName());
+    core->registerInput(D_TWI, getComponentName());
+    core->registerInput(D_TID, getComponentName());
+
 }
 
 //------------------------------------------------------------------------------
@@ -95,8 +115,7 @@ unitval OceanComponent::sendMessage( const std::string& message,
         return getData( datum, info.date );
 
     } else if( message == M_SETDATA ) {   //! Caller is requesting to set data
-        H_THROW("Ocean sendMessage not yet implemented for message=M_SETDATA.");
-        //TODO: call setData below
+        setData(datum, info);
         //TODO: change core so that parsing is routed through sendMessage
         //TODO: make setData private
 
@@ -106,7 +125,7 @@ unitval OceanComponent::sendMessage( const std::string& message,
         H_LOG( logger, Logger::DEBUG ) << "Atmosphere dumping " << carbon << " Pg C to deep ocean" << std::endl;
         deep.set_carbon( deep.get_carbon() + carbon );
 
-    } else {                        //! We don't handle any other messages
+    } else { //! We don't handle any other messages
         H_THROW( "Caller sent unknown message: "+message );
     }
 
@@ -335,9 +354,6 @@ unitval OceanComponent::getData( const std::string& varName,
 
     unitval returnval;
 
-    if( varName != D_OCEAN_CFLUX ) {
-        H_ASSERT( date == Core::undefinedIndex(), "Date data not available for " + varName + " in OceanComponent::getData()" );
-    }
 
     if( varName == D_OCEAN_CFLUX ) {
         // If no date, we're in spinup; just return the current value
@@ -347,61 +363,89 @@ unitval OceanComponent::getData( const std::string& varName,
             returnval = annualflux_sum_ts.get(date);
         }
     } else if( varName == D_OCEAN_C ) {
+        H_ASSERT( date != Core::undefinedIndex(), "Date required for ocean total carbon pool" );
         returnval = totalcpool();
 	} else if( varName == D_HL_DO ) {
-        returnval = surfaceHL.annual_box_fluxes[ &deep ] ;
+	    H_ASSERT( date != Core::undefinedIndex(), "Date required for deep ocean carbon pool" );
+	    returnval = C_DO_ts.get( date );
     } else if( varName == D_PH_HL ) {
-        returnval = surfaceHL.mychemistry.pH;
+        H_ASSERT( date != Core::undefinedIndex(), "Date required for high-latitude Ph" );
+        returnval = PH_HL_ts.get( date );
 	} else if( varName == D_PH_LL ) {
-        returnval = surfaceLL.mychemistry.pH;
+	    H_ASSERT( date != Core::undefinedIndex(), "Date required for low-latitude Ph" );
+	    returnval = PH_LL_ts.get( date );
 	} else if( varName == D_ATM_OCEAN_FLUX_HL ) {
-		returnval = unitval( annualflux_sumHL.value( U_PGC ), U_PGC_YR );
+	    H_ASSERT( date != Core::undefinedIndex(), "Date required for atmosphere-ocean carbon flux, high-latitude" );
+	    returnval = annualflux_sumHL_ts.get(date);
     } else if( varName == D_ATM_OCEAN_FLUX_LL ) {
-		returnval = unitval( annualflux_sumLL.value( U_PGC ), U_PGC_YR );
+        H_ASSERT( date != Core::undefinedIndex(), "Date required for atmosphere-ocean carbon flux, low-latitude" );
+        returnval = annualflux_sumLL_ts.get(date);
 	} else if( varName == D_PCO2_HL ) {
-        returnval = surfaceHL.mychemistry.PCO2o;
+	    H_ASSERT( date != Core::undefinedIndex(), "Date required for partial pressure of CO2, high-latitude" );
+	    returnval = pco2_HL_ts.get( date );
 	} else if( varName == D_PCO2_LL ) {
-		returnval = surfaceLL.mychemistry.PCO2o;
+	    H_ASSERT( date != Core::undefinedIndex(), "Date required for partial pressure of CO2, low-latitude" );
+	    returnval = pco2_LL_ts.get( date );
     } else if( varName == D_DIC_HL ) {
-        returnval = surfaceHL.mychemistry.convertToDIC( surfaceHL.get_carbon() );
+        H_ASSERT( date != Core::undefinedIndex(), "Date required for dissolved inorganic carbon, high-latitude" );
+        returnval = dic_HL_ts.get( date );
 	} else if( varName == D_DIC_LL ) {
-        returnval = surfaceLL.mychemistry.convertToDIC( surfaceLL.get_carbon() );
+	    H_ASSERT( date != Core::undefinedIndex(), "Date required for dissolved inorganic carbon, low-latitude" );
+	    returnval = dic_LL_ts.get( date );
 	} else if( varName == D_CARBON_HL ) {
-        returnval = surfaceHL.get_carbon();
+       H_ASSERT( date != Core::undefinedIndex(), "Date required for ocean surface high-latitude carbon pool" );
+	   returnval = Ca_HL_ts.get(date);
 	} else if( varName == D_CARBON_LL ) {
-        returnval = surfaceLL.get_carbon();
+	    H_ASSERT( date != Core::undefinedIndex(), "Date required for ocean surface low-latitude carbon pool" );
+	    returnval = Ca_LL_ts.get(date);
 	} else if( varName == D_CARBON_IO ) {
-		returnval = inter.get_carbon();
+	  H_ASSERT( date != Core::undefinedIndex(), "Date required for intermediate ocean carbon pool" );
+	  returnval = C_IO_ts.get(date);
     } else if( varName == D_CARBON_DO ) {
-        returnval = deep.get_carbon();
+        H_ASSERT( date != Core::undefinedIndex(), "Date required for deep ocean carbon pool" );
+        returnval = C_DO_ts.get(date);
     } else if( varName == D_TT ) {
+        H_ASSERT( date == Core::undefinedIndex() , "date not allowed" );
         returnval = tt;
     } else if( varName == D_TU ) {
+        H_ASSERT( date == Core::undefinedIndex() , "date not allowed" );
         returnval = tu;
      } else if( varName == D_TID ) {
+        H_ASSERT( date == Core::undefinedIndex() , "date not allowed" );
         returnval = tid;
      } else if( varName == D_TWI ) {
+        H_ASSERT( date == Core::undefinedIndex() , "date not allowed" );
         returnval = twi;
 	} else if( varName == D_OMEGACA_HL ) {
+	    H_ASSERT( date == Core::undefinedIndex() , "date not allowed" );
         returnval = surfaceHL.mychemistry.OmegaCa;
 	} else if( varName == D_OMEGACA_LL ) {
+	    H_ASSERT( date == Core::undefinedIndex() , "date not allowed" );
 		returnval = surfaceLL.mychemistry.OmegaCa;
 	} else if( varName == D_OMEGAAR_HL ) {
+	    H_ASSERT( date == Core::undefinedIndex() , "date not allowed" );
         returnval = surfaceHL.mychemistry.OmegaAr;
 	} else if( varName == D_OMEGAAR_LL ) {
+	    H_ASSERT( date == Core::undefinedIndex() , "date not allowed" );
         returnval = surfaceLL.mychemistry.OmegaAr;
     } else if( varName == D_REVELLE_HL ) {
+        H_ASSERT( date == Core::undefinedIndex() , "date not allowed" );
         returnval = surfaceHL.calc_revelle();
     } else if( varName == D_REVELLE_LL ) {
+        H_ASSERT( date == Core::undefinedIndex() , "date not allowed" );
         returnval = surfaceLL.calc_revelle();
     } else if( varName == D_TEMP_HL ) {
-		returnval = surfaceHL.get_Tbox();
+        H_ASSERT( date != Core::undefinedIndex(), "Date required for ocean temperature, high-latitude" );
+        returnval = temp_HL_ts.get(date);
 	} else if( varName == D_TEMP_LL ) {
-		returnval = surfaceLL.get_Tbox();
+	    H_ASSERT( date != Core::undefinedIndex(), "Date required for ocean temperature, low-latitude" );
+	    returnval = temp_LL_ts.get(date);
 	} else if( varName == D_CO3_LL ) {
-		returnval = surfaceLL.mychemistry.CO3;
+	    H_ASSERT( date != Core::undefinedIndex(), "Date required for carbonate concentration, low-latitude" );
+	    returnval = co3_LL_ts.get(date);
 	} else if( varName == D_CO3_HL ) {
-		returnval = surfaceHL.mychemistry.CO3;
+	    H_ASSERT( date != Core::undefinedIndex(), "Date required for carbonate concentration, high-latitude" );
+		returnval = co3_HL_ts.get(date);
     } else if( varName == D_TIMESTEPS ) {
         returnval = unitval( timesteps, U_UNITLESS );
     } else {
@@ -597,20 +641,36 @@ void OceanComponent::reset(double time)
 
 void OceanComponent::record_state(double time)
 {
-    H_LOG(logger, Logger::DEBUG) << "Recording component state at t= "
-                                 << time << endl;
+    H_LOG(logger, Logger::DEBUG) << "Recording component state at t= " << time << endl;
     surfaceHL_tv.set(time, surfaceHL);
     surfaceLL_tv.set(time, surfaceLL);
     inter_tv.set(time, inter);
     deep_tv.set(time, deep);
 
+    // Record the state of the various ocean boxes and variables at each time step
+    // in a unitval time series so that the output can be output by the
+    // R wrapper.
     Tgav_ts.set(time, Tgav);
     Ca_ts.set(time, Ca);
-
     annualflux_sum_ts.set(time, annualflux_sum);
     annualflux_sumHL_ts.set(time, annualflux_sumHL);
     annualflux_sumLL_ts.set(time, annualflux_sumLL);
     lastflux_annualized_ts.set(time, lastflux_annualized);
+    C_IO_ts.set(time, inter.get_carbon());
+    Ca_HL_ts.set(time, surfaceHL.get_carbon());
+    C_DO_ts.set(time, surfaceHL.annual_box_fluxes[ &deep ]);
+    PH_HL_ts.set(time, surfaceHL.mychemistry.pH);
+    PH_LL_ts.set(time, surfaceLL.mychemistry.pH);
+    pco2_HL_ts.set(time, surfaceHL.mychemistry.PCO2o);
+    pco2_LL_ts.set(time, surfaceLL.mychemistry.PCO2o);
+    dic_HL_ts.set(time, surfaceHL.mychemistry.convertToDIC( surfaceHL.get_carbon() ));
+    dic_LL_ts.set(time, surfaceLL.mychemistry.convertToDIC( surfaceLL.get_carbon() ));
+    Ca_LL_ts.set(time, surfaceLL.get_carbon());
+    C_DO_ts.set(time, deep.get_carbon());
+    temp_HL_ts.set(time, surfaceHL.get_Tbox());
+    temp_LL_ts.set(time, surfaceLL.get_Tbox());
+    co3_HL_ts.set(time, surfaceHL.mychemistry.CO3);
+    co3_LL_ts.set(time, surfaceLL.mychemistry.CO3);
 
     max_timestep_ts.set(time, max_timestep);
     reduced_timestep_timeout_ts.set(time, reduced_timestep_timeout);
