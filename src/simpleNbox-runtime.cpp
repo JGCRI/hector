@@ -214,6 +214,8 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     fluxpool ffi_flux = earth_c.flux_from_fluxpool(ffi_untracked);
     fluxpool ccs_flux = atmos_c.flux_from_fluxpool(ccs_untracked);
 
+    // current ocean fluxes
+    // TODO: Add all other ocean pools and get fluxes from DOECLIM and ocean box of Hector
     unitval ocean_atmos = unitval(c[SNBOX_OCEAN] - ocean_model_c.value(U_PGC), U_PGC);
     fluxpool oa_flux(0.0, U_PGC);
     fluxpool ao_flux(0.0, U_PGC);
