@@ -311,9 +311,9 @@ void SimpleNbox::stashCValues( double t, const double c[] )
         soil_diff[biome] = soil_c[biome].value(U_PGC) - c[SNBOX_SOIL]*wt;
         det_diff[ biome ] = detritus_c[biome].value(U_PGC) - c[SNBOX_DET]*wt;
         // Adjust biome pools to final values from calcDerives
-        veg_c[ biome ].adjust_pool_to_val(newveg.value(U_PGC) * wt);
-        detritus_c[ biome ].adjust_pool_to_val(newdet.value(U_PGC) * wt);
-        soil_c[ biome ].adjust_pool_to_val(newsoil.value(U_PGC) * wt);
+        veg_c[ biome ].adjust_pool_to_val(newveg.value(U_PGC) * wt, false);
+        detritus_c[ biome ].adjust_pool_to_val(newdet.value(U_PGC) * wt, false);
+        soil_c[ biome ].adjust_pool_to_val(newsoil.value(U_PGC) * wt, false);
         
         H_LOG( logger,Logger::DEBUG ) << "Biome " << biome << " weight = " << wt << std::endl;
     }
@@ -331,7 +331,7 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     atmos_diff = atmos_c - c[SNBOX_ATMOS];
     // adjusts non-biome pools to output from calcderivs
     earth_c.adjust_pool_to_val(c[SNBOX_EARTH], false); 
-    atmos_c.adjust_pool_to_val(c[SNBOX_ATMOS]);
+    atmos_c.adjust_pool_to_val(c[SNBOX_ATMOS], false);
 
     omodel->stashCValues( t, c );   // tell ocean model to store new C values
 
