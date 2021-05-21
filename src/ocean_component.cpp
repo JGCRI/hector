@@ -354,104 +354,120 @@ unitval OceanComponent::getData( const std::string& varName,
 
     unitval returnval;
 
-
-    if( varName == D_OCEAN_CFLUX ) {
+    if(date == Core::undefinedIndex() ){
         // If no date, we're in spinup; just return the current value
-        if( date == Core::undefinedIndex() ) {
-            returnval = annualflux_sum;
-        } else {
-            returnval = annualflux_sum_ts.get(date);
-        }
-    } else if( varName == D_OCEAN_C ) {
-        H_ASSERT( date != Core::undefinedIndex(), "Date required for ocean total carbon pool" );
-        returnval = totalcpool();
-	} else if( varName == D_HL_DO ) {
-	    H_ASSERT( date != Core::undefinedIndex(), "Date required for deep ocean carbon pool" );
-	    returnval = C_DO_ts.get( date );
-    } else if( varName == D_PH_HL ) {
-        H_ASSERT( date != Core::undefinedIndex(), "Date required for high-latitude Ph" );
-        returnval = PH_HL_ts.get( date );
-	} else if( varName == D_PH_LL ) {
-	    H_ASSERT( date != Core::undefinedIndex(), "Date required for low-latitude Ph" );
-	    returnval = PH_LL_ts.get( date );
-	} else if( varName == D_ATM_OCEAN_FLUX_HL ) {
-	    H_ASSERT( date != Core::undefinedIndex(), "Date required for atmosphere-ocean carbon flux, high-latitude" );
-	    returnval = annualflux_sumHL_ts.get(date);
-    } else if( varName == D_ATM_OCEAN_FLUX_LL ) {
-        H_ASSERT( date != Core::undefinedIndex(), "Date required for atmosphere-ocean carbon flux, low-latitude" );
-        returnval = annualflux_sumLL_ts.get(date);
-	} else if( varName == D_PCO2_HL ) {
-	    H_ASSERT( date != Core::undefinedIndex(), "Date required for partial pressure of CO2, high-latitude" );
-	    returnval = pco2_HL_ts.get( date );
-	} else if( varName == D_PCO2_LL ) {
-	    H_ASSERT( date != Core::undefinedIndex(), "Date required for partial pressure of CO2, low-latitude" );
-	    returnval = pco2_LL_ts.get( date );
-    } else if( varName == D_DIC_HL ) {
-        H_ASSERT( date != Core::undefinedIndex(), "Date required for dissolved inorganic carbon, high-latitude" );
-        returnval = dic_HL_ts.get( date );
-	} else if( varName == D_DIC_LL ) {
-	    H_ASSERT( date != Core::undefinedIndex(), "Date required for dissolved inorganic carbon, low-latitude" );
-	    returnval = dic_LL_ts.get( date );
-	} else if( varName == D_CARBON_HL ) {
-       H_ASSERT( date != Core::undefinedIndex(), "Date required for ocean surface high-latitude carbon pool" );
-	   returnval = Ca_HL_ts.get(date);
-	} else if( varName == D_CARBON_LL ) {
-	    H_ASSERT( date != Core::undefinedIndex(), "Date required for ocean surface low-latitude carbon pool" );
-	    returnval = Ca_LL_ts.get(date);
-	} else if( varName == D_CARBON_IO ) {
-	  H_ASSERT( date != Core::undefinedIndex(), "Date required for intermediate ocean carbon pool" );
-	  returnval = C_IO_ts.get(date);
-    } else if( varName == D_CARBON_DO ) {
-        H_ASSERT( date != Core::undefinedIndex(), "Date required for deep ocean carbon pool" );
-        returnval = C_DO_ts.get(date);
-    } else if( varName == D_TT ) {
-        H_ASSERT( date == Core::undefinedIndex() , "date not allowed" );
-        returnval = tt;
-    } else if( varName == D_TU ) {
-        H_ASSERT( date == Core::undefinedIndex() , "date not allowed" );
-        returnval = tu;
-     } else if( varName == D_TID ) {
-        H_ASSERT( date == Core::undefinedIndex() , "date not allowed" );
-        returnval = tid;
-     } else if( varName == D_TWI ) {
-        H_ASSERT( date == Core::undefinedIndex() , "date not allowed" );
-        returnval = twi;
-	} else if( varName == D_OMEGACA_HL ) {
-	    H_ASSERT( date == Core::undefinedIndex() , "date not allowed" );
-        returnval = surfaceHL.mychemistry.OmegaCa;
-	} else if( varName == D_OMEGACA_LL ) {
-	    H_ASSERT( date == Core::undefinedIndex() , "date not allowed" );
-		returnval = surfaceLL.mychemistry.OmegaCa;
-	} else if( varName == D_OMEGAAR_HL ) {
-	    H_ASSERT( date == Core::undefinedIndex() , "date not allowed" );
-        returnval = surfaceHL.mychemistry.OmegaAr;
-	} else if( varName == D_OMEGAAR_LL ) {
-	    H_ASSERT( date == Core::undefinedIndex() , "date not allowed" );
-        returnval = surfaceLL.mychemistry.OmegaAr;
-    } else if( varName == D_REVELLE_HL ) {
-        H_ASSERT( date == Core::undefinedIndex() , "date not allowed" );
-        returnval = surfaceHL.calc_revelle();
-    } else if( varName == D_REVELLE_LL ) {
-        H_ASSERT( date == Core::undefinedIndex() , "date not allowed" );
-        returnval = surfaceLL.calc_revelle();
-    } else if( varName == D_TEMP_HL ) {
-        H_ASSERT( date != Core::undefinedIndex(), "Date required for ocean temperature, high-latitude" );
-        returnval = temp_HL_ts.get(date);
-	} else if( varName == D_TEMP_LL ) {
-	    H_ASSERT( date != Core::undefinedIndex(), "Date required for ocean temperature, low-latitude" );
-	    returnval = temp_LL_ts.get(date);
-	} else if( varName == D_CO3_LL ) {
-	    H_ASSERT( date != Core::undefinedIndex(), "Date required for carbonate concentration, low-latitude" );
-	    returnval = co3_LL_ts.get(date);
-	} else if( varName == D_CO3_HL ) {
-	    H_ASSERT( date != Core::undefinedIndex(), "Date required for carbonate concentration, high-latitude" );
-		returnval = co3_HL_ts.get(date);
-    } else if( varName == D_TIMESTEPS ) {
-        returnval = unitval( timesteps, U_UNITLESS );
-    } else {
-        H_THROW( "Caller is requesting unknown variable: " + varName );
-    }
 
+        if( varName == D_OCEAN_CFLUX ){
+                returnval = annualflux_sum;
+        } else if( varName == D_TT ) {
+            returnval = tt;
+        } else if( varName == D_TU ) {
+            returnval = tu;
+         } else if( varName == D_TID ) {
+            returnval = tid;
+         } else if( varName == D_TWI ) {
+            returnval = twi;
+        } else if( varName == D_OMEGACA_HL ) {
+            returnval = surfaceHL.mychemistry.OmegaCa;
+        } else if( varName == D_OMEGACA_LL ) {
+            returnval = surfaceLL.mychemistry.OmegaCa;
+        } else if( varName == D_OMEGAAR_HL ) {
+            returnval = surfaceHL.mychemistry.OmegaAr;
+        } else if( varName == D_OMEGAAR_LL ) {
+            returnval = surfaceLL.mychemistry.OmegaAr;
+        } else if( varName == D_REVELLE_HL ) {
+            returnval = surfaceHL.calc_revelle();
+        } else if( varName == D_REVELLE_LL ) {
+            returnval = surfaceLL.calc_revelle();
+        } else if( varName == D_ATM_OCEAN_FLUX_HL ) {
+            returnval = unitval( annualflux_sumHL.value( U_PGC ), U_PGC_YR );
+        } else if( varName == D_ATM_OCEAN_FLUX_LL ) {
+            returnval = unitval( annualflux_sumLL.value( U_PGC ), U_PGC_YR );
+        } else if( varName == D_CARBON_DO ) {
+               returnval = deep.get_carbon();
+        } else if( varName == D_CARBON_HL ) {
+            returnval = surfaceHL.get_carbon();
+        } else if( varName == D_CARBON_LL ) {
+            returnval = surfaceLL.get_carbon();
+        } else if( varName == D_CARBON_IO ) {
+        returnval = inter.get_carbon();
+        } else if( varName == D_DIC_HL ) {
+            returnval = surfaceHL.mychemistry.convertToDIC( surfaceHL.get_carbon() );
+        } else if( varName == D_DIC_LL ) {
+        returnval = surfaceLL.mychemistry.convertToDIC( surfaceLL.get_carbon() );
+        } else if( varName == D_HL_DO ) {
+            returnval = surfaceHL.annual_box_fluxes[ &deep ] ;
+        } else if( varName == D_PCO2_HL ) {
+            returnval = surfaceHL.mychemistry.PCO2o;
+        } else if( varName == D_PCO2_LL ) {
+            returnval = surfaceLL.mychemistry.PCO2o;
+        } else if( varName == D_PH_HL ) {
+               returnval = surfaceHL.mychemistry.pH;
+        } else if( varName == D_PH_LL ) {
+               returnval = surfaceLL.mychemistry.pH;
+        } else if( varName == D_TEMP_HL ) {
+            returnval = surfaceHL.get_Tbox();
+        } else if( varName == D_TEMP_LL ) {
+            returnval = surfaceLL.get_Tbox();
+        } else if( varName == D_OCEAN_C ) {
+            returnval = totalcpool();
+        } else if( varName == D_CO3_HL ) {
+        returnval = surfaceHL.mychemistry.CO3;
+        } else if( varName == D_CO3_LL ) {
+            returnval = surfaceLL.mychemistry.CO3;
+        } else if( varName == D_TIMESTEPS ) {
+             returnval = unitval( timesteps, U_UNITLESS );
+        } else {
+            H_THROW( "Problem with user request for constant data: " + varName );
+        }
+        
+    } else if(date != Core::undefinedIndex() ){
+        if( varName == D_OCEAN_CFLUX ){
+                returnval = annualflux_sum_ts.get(date);
+        } else if( varName == D_OCEAN_C ) {
+            returnval = totalcpool();
+        } else if( varName == D_HL_DO ) {
+            returnval = C_DO_ts.get( date );
+        } else if( varName == D_PH_HL ) {
+            returnval = PH_HL_ts.get( date );
+        } else if( varName == D_PH_LL ) {
+            returnval = PH_LL_ts.get( date );
+        } else if( varName == D_ATM_OCEAN_FLUX_HL ) {
+            returnval = annualflux_sumHL_ts.get(date);
+        } else if( varName == D_ATM_OCEAN_FLUX_LL ) {
+            returnval = annualflux_sumLL_ts.get(date);
+        } else if( varName == D_PCO2_HL ) {
+            returnval = pco2_HL_ts.get( date );
+        } else if( varName == D_PCO2_LL ) {
+            returnval = pco2_LL_ts.get( date );
+        } else if( varName == D_DIC_HL ) {
+            returnval = dic_HL_ts.get( date );
+        } else if( varName == D_DIC_LL ) {
+            returnval = dic_LL_ts.get( date );
+        } else if( varName == D_CARBON_HL ) {
+           returnval = Ca_HL_ts.get(date);
+        } else if( varName == D_CARBON_LL ) {
+            returnval = Ca_LL_ts.get(date);
+        } else if( varName == D_CARBON_IO ) {
+          returnval = C_IO_ts.get(date);
+        } else if( varName == D_CARBON_DO ) {
+            returnval = C_DO_ts.get(date);
+        } else if( varName == D_TEMP_HL ) {
+            returnval = temp_HL_ts.get(date);
+        } else if( varName == D_TEMP_LL ) {
+            returnval = temp_LL_ts.get(date);
+        } else if( varName == D_CO3_LL ) {
+            returnval = co3_LL_ts.get(date);
+        } else if( varName == D_CO3_HL ) {
+            returnval = co3_HL_ts.get(date);
+        } else {
+            H_THROW( "Problem with user request for time series: " + varName );
+        }
+        
+    } else {
+        H_ASSERT( date == Core::undefinedIndex(), "Date data not available for " + varName + " in OceanComponent::getData()" );
+    }
+    
     return returnval;
 }
 
