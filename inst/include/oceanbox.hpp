@@ -26,7 +26,7 @@
 #include "unitval.hpp"
 #include "ocean_csys.hpp"
 
-// Mean global temperature change from preindustrial deg C, this is used by the ocean component which, requires
+// Mean absolute global temperature, preindustrial (deg C), this is used by the ocean component which, requires
 // absolute temperature to calculate ocean chemistry.
 #define MEAN_GLOBAL_TEMP 15
 
