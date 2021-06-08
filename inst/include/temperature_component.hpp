@@ -74,8 +74,8 @@ private:
     // Hard-coded DOECLIM parameters
     double dt = 1;                     // years per timestep (this is implicit in Hector)
     int ns;                               // number of timesteps
-    const double ak = 0.31;               // slope in climate feedback - land-sea heat exchange linear relationship (W/(m2K))
-    const double bk = 1.59;               // offset in climate feedback - land-sea heat exchange linear relationship,(W/(m2K))
+    const double ak = 0.31;               // slope in climate feedback - land-sea heat exchange linear relationship (W/m2/K)
+    const double bk = 1.59;               // offset in climate feedback - land-sea heat exchange linear relationship,(W/m2/K)
     const double csw = 0.13;              // specific heat capacity of seawater (Wyr/(m3K))
     const double earth_area = 5100656E8;  // (m2)
     const double secs_per_Year = 60.0 * 60.0 * 24.0 * 365.2422; //  secs. * min. * hrs. * tropical calendar days (seconds)
@@ -83,8 +83,8 @@ private:
     const double rlam = 1.43;             // factor between land clim. sens. and sea surface clim. sens. T_L2x = rlam*T_S2x (unitless)
     const double zbot = 4000.0;           // bottom depth of the interior ocean (m)
     const double bsi = 1.3;               // warming factor for marine surface air over SST due to retreating sea ice, (unitless)
-    const double cal = 0.52;              // effective heat capacity of land-troposphere system (Wyr/(m2K))
-    const double cas = 7.80;              // effective heat capacity of mixed layer-troposphere system (Wyr/(m2K))
+    const double cal = 0.52;              // effective heat capacity of land-troposphere system (W*yr/m2/K)
+    const double cas = 7.80;              // effective heat capacity of mixed layer-troposphere system (W*yr/m2/K)
     const double flnd = 0.29;             // fractional land area (unitless)
     const double fso = 0.95;              // ocean fractional area below 60m (unitless)
 
