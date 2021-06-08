@@ -141,7 +141,6 @@ private:
     unitval tgav_land;     //!< global average land surface air temperature anomaly, deg C
     unitval tgav_oceanair; //!< global average ocean surface air temperature anomaly, deg C
     unitval tgav_sst;      //!< global average ocean surface (water) temperature anomaly, deg C
-    unitval tgaveq;        //!< equilibrium temp without ocean heat flux, currently set = tgav
     unitval flux_mixed;    //!< heat flux into mixed layer of ocean, W/m2
     unitval flux_interior; //!< heat flux into interior layer of ocean, W/m2
     unitval heatflux;      //!< heat flux into ocean, W/m2

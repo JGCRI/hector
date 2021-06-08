@@ -1705,16 +1705,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// GLOBAL_TEMPEQ
-String GLOBAL_TEMPEQ();
-RcppExport SEXP _hector_GLOBAL_TEMPEQ() {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(GLOBAL_TEMPEQ());
-    return rcpp_result_gen;
-END_RCPP
-}
 // OCEAN_SURFACE_TEMP
 String OCEAN_SURFACE_TEMP();
 RcppExport SEXP _hector_OCEAN_SURFACE_TEMP() {
@@ -2101,7 +2091,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_AERO_SCALE", (DL_FUNC) &_hector_AERO_SCALE, 0},
     {"_hector_VOLCANIC_SCALE", (DL_FUNC) &_hector_VOLCANIC_SCALE, 0},
     {"_hector_GLOBAL_TEMP", (DL_FUNC) &_hector_GLOBAL_TEMP, 0},
-    {"_hector_GLOBAL_TEMPEQ", (DL_FUNC) &_hector_GLOBAL_TEMPEQ, 0},
     {"_hector_OCEAN_SURFACE_TEMP", (DL_FUNC) &_hector_OCEAN_SURFACE_TEMP, 0},
     {"_hector_OCEAN_AIR_TEMP", (DL_FUNC) &_hector_OCEAN_AIR_TEMP, 0},
     {"_hector_LAND_AIR_TEMP", (DL_FUNC) &_hector_LAND_AIR_TEMP, 0},

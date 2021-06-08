@@ -87,7 +87,6 @@ void TemperatureComponent::init( Core* coreptr ) {
     logger.open( getComponentName(), false, coreptr->getGlobalLogger().getEchoToFile(), coreptr->getGlobalLogger().getMinLogLevel() );
     H_LOG( logger, Logger::DEBUG ) << "hello " << getComponentName() << std::endl;
 
-    tgaveq.set( 0.0, U_DEGC, 0.0 );
     tgav.set( 0.0, U_DEGC, 0.0 );
     flux_mixed.set( 0.0, U_W_M2, 0.0 );
     flux_interior.set( 0.0, U_W_M2, 0.0 );
@@ -109,7 +108,6 @@ void TemperatureComponent::init( Core* coreptr ) {
     core->registerCapability( D_LAND_AIR_TEMP, getComponentName() );
     core->registerCapability( D_OCEAN_AIR_TEMP, getComponentName() );
     core->registerCapability( D_OCEAN_SURFACE_TEMP, getComponentName() );
-    core->registerCapability( D_GLOBAL_TEMPEQ, getComponentName() );
     core->registerCapability( D_FLUX_MIXED, getComponentName() );
     core->registerCapability( D_FLUX_INTERIOR, getComponentName() );
     core->registerCapability( D_HEAT_FLUX, getComponentName() );
@@ -465,8 +463,6 @@ unitval TemperatureComponent::getData( const std::string& varName,
         // If no date is supplied, return the current value
         if( varName == D_GLOBAL_TEMP ) {
             returnval = tgav;
-        } else if( varName == D_GLOBAL_TEMPEQ ) {
-            returnval = tgaveq;
         } else if( varName == D_LAND_AIR_TEMP ) {
             returnval = tgav_land;
         } else if( varName == D_OCEAN_SURFACE_TEMP ) {
@@ -507,8 +503,6 @@ unitval TemperatureComponent::getData( const std::string& varName,
             returnval = unitval(temp_sst[tstep], U_DEGC);
         } else if( varName == D_OCEAN_AIR_TEMP ) {
             returnval = bsi * unitval(temp_sst[tstep], U_DEGC);
-        } else if( varName == D_GLOBAL_TEMPEQ ) {
-            returnval = unitval(temp[tstep], U_DEGC);
         } else if( varName == D_FLUX_MIXED ) {
 	    returnval = unitval(heatflux_mixed[tstep], U_W_M2);
         } else if( varName == D_FLUX_INTERIOR ) {
@@ -562,7 +556,6 @@ void TemperatureComponent::setoutputs(int tstep)
     flux_interior.set( heatflux_interior[tstep], U_W_M2, 0.0 );
     heatflux.set( heatflux_mixed[tstep] + fso * heatflux_interior[tstep], U_W_M2, 0.0 );
     tgav.set(temp[tstep], U_DEGC, 0.0);
-    tgaveq.set(temp[tstep], U_DEGC, 0.0); // per comment line 140 of temperature_component.hpp
     tgav_land.set(temp_landair[tstep], U_DEGC, 0.0);
     tgav_sst.set(temp_sst[tstep], U_DEGC, 0.0);
     temp_oceanair = bsi * temp_sst[tstep];
