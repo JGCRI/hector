@@ -72,7 +72,7 @@ private:
     void setoutputs(int tstep);
 
     // Hard-coded DOECLIM parameters
-    double dt = 1;                     // years per timestep (this is implicit in Hector)
+    const double dt = 1;                     // years per timestep (this is implicit in Hector)
     int ns;                               // number of timesteps
     const double ak = 0.31;               // slope in climate feedback - land-sea heat exchange linear relationship (W/m2/K)
     const double bk = 1.59;               // offset in climate feedback - land-sea heat exchange linear relationship,(W/m2/K)
