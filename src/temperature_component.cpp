@@ -226,7 +226,7 @@ void TemperatureComponent::prepareToRun() {
 
     // Dependent DOECLIM model parameters, based on constants set in the header
     // Constants & conversion factors
-    kcon = 3155.0;               // conversion factor from cm2/s to m2/yr; TODO do we want to use secs_per_Year / 10000 to be consistent?
+    kcon = secs_per_Year / 10000;               // conversion factor from cm2/s to m2/yr;
     ocean_area = (1.0 - flnd) * earth_area;    // m2
 
     // Calculate climate feedback parameterisation
