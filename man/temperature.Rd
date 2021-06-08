@@ -34,7 +34,7 @@ type.
 }
 \section{Functions}{
 \itemize{
-\item \code{GLOBAL_TEMP}: Global mean temperature
+\item \code{GLOBAL_TEMP}: Global mean temperature anomaly
 
 \item \code{GLOBAL_TEMPEQ}: Equilibrium global temperature
 
@@ -60,7 +60,7 @@ instead of the more natural looking \code{GETDATA}.
 }
 
 \seealso{
-Other capability identifiers: 
+Other capability identifiers:
 \code{\link{carboncycle}},
 \code{\link{concentrations}},
 \code{\link{constraints}},
