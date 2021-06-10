@@ -1316,18 +1316,11 @@ String VOLCANIC_SCALE() {
 return D_VOLCANIC_SCALE;
 }
 
-//' @describeIn temperature Global mean temperature
+//' @describeIn temperature Global mean temperature anomaly
 //' @export
 // [[Rcpp::export]]
 String GLOBAL_TEMP() {
 return D_GLOBAL_TEMP;
-}
-
-//' @describeIn temperature Equilibrium global temperature
-//' @export
-// [[Rcpp::export]]
-String GLOBAL_TEMPEQ() {
-return D_GLOBAL_TEMPEQ;
 }
 
 //' @describeIn temperature Average ocean surface temperature anomaly

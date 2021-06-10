@@ -87,7 +87,6 @@ void TemperatureComponent::init( Core* coreptr ) {
     logger.open( getComponentName(), false, coreptr->getGlobalLogger().getEchoToFile(), coreptr->getGlobalLogger().getMinLogLevel() );
     H_LOG( logger, Logger::DEBUG ) << "hello " << getComponentName() << std::endl;
 
-    tgaveq.set( 0.0, U_DEGC, 0.0 );
     tgav.set( 0.0, U_DEGC, 0.0 );
     flux_mixed.set( 0.0, U_W_M2, 0.0 );
     flux_interior.set( 0.0, U_W_M2, 0.0 );
@@ -109,7 +108,6 @@ void TemperatureComponent::init( Core* coreptr ) {
     core->registerCapability( D_LAND_AIR_TEMP, getComponentName() );
     core->registerCapability( D_OCEAN_AIR_TEMP, getComponentName() );
     core->registerCapability( D_OCEAN_SURFACE_TEMP, getComponentName() );
-    core->registerCapability( D_GLOBAL_TEMPEQ, getComponentName() );
     core->registerCapability( D_FLUX_MIXED, getComponentName() );
     core->registerCapability( D_FLUX_INTERIOR, getComponentName() );
     core->registerCapability( D_HEAT_FLUX, getComponentName() );
@@ -224,54 +222,66 @@ void TemperatureComponent::prepareToRun() {
         C[i] = 0.0;
     }
 
-    // DOECLIM parameters calculated from constants set in header
+    // DOECLIM model parameters, based on constants set in the header
+    // Constants & conversion factors
+    kcon = secs_per_Year / 10000;               // conversion factor from cm2/s to m2/yr;
     ocean_area = (1.0 - flnd) * earth_area;    // m2
-    cnum = rlam * flnd + bsi * (1.0 - flnd);   // factor from sea-surface climate sensitivity to global mean
-    cden = rlam * flnd - ak * (rlam - bsi);    // intermediate parameter
-    cfl = flnd * cnum / cden * q2co / S - bk * (rlam - bsi) / cden;      // land climate feedback parameter, W/m2/K
-    cfs = (rlam * flnd - ak / (1.0 - flnd) * (rlam - bsi)) * cnum / cden * q2co / S + rlam * flnd / (1.0 - flnd) * bk * (rlam - bsi) / cden;                                // sea climate feedback parameter, W/m2/K
-    kls = bk * rlam * flnd / cden - ak * flnd * cnum / cden * q2co / S;  // land-sea heat exchange coefficient, W/m2/K
-    keff = kcon * diff;                                                  // ocean heat diffusivity, m2/yr
-    taubot = pow(zbot,2) / keff;                                         // ocean bottom diffusion time scale, yr
-    powtoheat = ocean_area * secs_per_Year / pow(10.0,22);               // convert flux to total ocean heat
-    taucfs = cas / cfs;                                                  // sea climate feedback time scale, yr
-    taucfl = cal / cfl;                                                  // land climate feedback time scale, yr
-    taudif = pow(cas,2) / pow(csw,2) * M_PI / keff;                      // interior ocean heat uptake time scale, yr
-    tauksl  = (1.0 - flnd) * cas / kls;                                  // sea-land heat exchange time scale, yr
-    taukls  = flnd * cal / kls;                                          // land-sea heat exchange time scale, yr
 
+    // Calculate climate feedback parameterisation
+    cnum = rlam * flnd + bsi * (1.0 - flnd);   // denominator used to calculate climate senstivity feedback parameters over land & sea
+    cden = rlam * flnd - ak * (rlam - bsi);    // another denominator use to calculate climate senstivity feedback parameters over land & sea
+    cfl = flnd * cnum / cden * q2co / S - bk * (rlam - bsi) / cden;  // calculate the land climate feedback parameter (W/(m2K)) eq A.19 Kriegler 2005
+    cfs = (rlam * flnd - ak / (1.0 - flnd) * (rlam - bsi)) * cnum / cden * q2co / S + rlam * flnd / (1.0 - flnd) * bk * (rlam - bsi) / cden; // calculate the sea climate feedback parameter (W/(m2K)) eq A.20 Kriegler 2005
+    kls = bk * rlam * flnd / cden - ak * flnd * cnum / cden * q2co / S;  // land-sea heat exchange coefficient (W/(m2K)) eq A.21 Kriegler 2005
+
+    // Calculate ocean heat flux parameters & conversion factors
+    keff = kcon * diff;                                                  // covert units of ocean heat diffusivity (m2/yr)
+    powtoheat = ocean_area * secs_per_Year / pow(10.0,22);               // conversion factor to convert total ocean heat flux to (m2*s)
+
+    // Get the six different times scales used in the numerical aproximation of the heat flux into the interior ocean
+    // See eq A.22 Kriegler 2005 for more details.
+    taubot = pow(zbot,2) / keff;                                         // number of years for the ocean to equilibrates, bottom water has warmed as much as the surface (yr)
+    taucfs = cas / cfs;                                                  // sea climate feedback time scale (yr)
+    taucfl = cal / cfl;                                                  // land climate feedback time scale (yr)
+    taudif = pow(cas,2) / pow(csw,2) * M_PI / keff;                      // interior ocean heat uptake time scale (yr)
+    tauksl  = (1.0 - flnd) * cas / kls;                                  // sea-land heat exchange time scale (yr)
+    taukls  = flnd * cal / kls;                                          // land-sea heat exchange time scale (yr)
+
+    // Set up and solve the correction terms for the analytical solution for the DOECLIM integrands.
+
+    // Set Up
     // Components of the analytical solution to the integral found in the temperature difference equation
     // Third order bottom correction terms will be "more than sufficient" for simulations out to 2500
     // (Equation A.25, EK05, or 2.3.23, TK07)
 
     // First order
     KT0[ns-1] = 4.0 - 2.0 * pow(2.0, 0.5);
-    KTA1[ns-1] = -8.0 * exp(-taubot / double(dt)) + 4.0 * pow(2.0, 0.5) * exp(-0.5 * taubot / double(dt));
-    KTB1[ns-1] = 4.0 * pow((M_PI * taubot / double(dt)), 0.5) * (1.0 + erf(pow(0.5 * taubot / double(dt), 0.5)) - 2.0 * erf(pow(taubot / double(dt), 0.5)));
+    KTA1[ns-1] = -8.0 * exp(-taubot / dt) + 4.0 * pow(2.0, 0.5) * exp(-0.5 * taubot / dt);
+    KTB1[ns-1] = 4.0 * pow((M_PI * taubot / dt), 0.5) * (1.0 + erf(pow(0.5 * taubot / dt, 0.5)) - 2.0 * erf(pow(taubot / dt, 0.5)));
 
     // Second order
-    KTA2[ns-1] =  8.0 * exp(-4.0 * taubot / double(dt)) - 4.0 * pow(2.0, 0.5) * exp(-2.0 * taubot / double(dt));
-    KTB2[ns-1] = -8.0 * pow((M_PI * taubot / double(dt)), 0.5) * (1.0 + erf(pow((2.0 * taubot / double(dt)), 0.5)) - 2.0 * erf(2.0 * pow((taubot / double(dt)), 0.5)) );
+    KTA2[ns-1] =  8.0 * exp(-4.0 * taubot / dt) - 4.0 * pow(2.0, 0.5) * exp(-2.0 * taubot / dt);
+    KTB2[ns-1] = -8.0 * pow((M_PI * taubot / dt), 0.5) * (1.0 + erf(pow((2.0 * taubot / dt), 0.5)) - 2.0 * erf(2.0 * pow((taubot / dt), 0.5)) );
 
     // Third order
-    KTA3[ns-1] = -8.0 * exp(-9.0 * taubot / double(dt)) + 4.0 * pow(2.0, 0.5) * exp(-4.5 * taubot / double(dt));
-    KTB3[ns-1] = 12.0 * pow((M_PI * taubot / double(dt)), 0.5) * (1.0 + erf(pow((4.5 * taubot / double(dt)), 0.5)) - 2.0 * erf(3.0 * pow((taubot / double(dt)), 0.5)) );
+    KTA3[ns-1] = -8.0 * exp(-9.0 * taubot / dt) + 4.0 * pow(2.0, 0.5) * exp(-4.5 * taubot / dt);
+    KTB3[ns-1] = 12.0 * pow((M_PI * taubot / dt), 0.5) * (1.0 + erf(pow((4.5 * taubot / dt), 0.5)) - 2.0 * erf(3.0 * pow((taubot / dt), 0.5)) );
 
     // Calculate the kernel component vectors
     for(int i=0; i<(ns-1); i++) {
 
         // First order
-        KT0[i] = 4.0 * pow((double(ns-i)), 0.5) - 2.0 * pow((double(ns+1-i)), 0.5) - 2.0 * pow(double(ns-1-i), 0.5);
-        KTA1[i] = -8.0 * pow(double(ns-i), 0.5) * exp(-taubot / double(dt) / double(ns-i)) + 4.0 * pow(double(ns+1-i), 0.5) * exp(-taubot / double(dt) / double(ns+1-i)) + 4.0 * pow(double(ns-1-i), 0.5) * exp(-taubot/double(dt) / double(ns-1-i));
-        KTB1[i] =  4.0 * pow((M_PI * taubot / double(dt)), 0.5) * ( erf(pow((taubot / double(dt) / double(ns-1-i)), 0.5)) + erf(pow((taubot / double(dt) / double(ns+1-i)), 0.5)) - 2.0 * erf(pow((taubot / double(dt) / double(ns-i)), 0.5)) );
+        KT0[i] = 4.0 * pow(double(ns-i), 0.5) - 2.0 * pow(double(ns+1-i), 0.5) - 2.0 * pow(double(ns-1-i), 0.5);
+        KTA1[i] = -8.0 * pow(double(ns-i), 0.5) * exp(-taubot / dt / double(ns-i)) + 4.0 * pow(double(ns+1-i), 0.5) * exp(-taubot / dt / double(ns+1-i)) + 4.0 * pow(double(ns-1-i), 0.5) * exp(-taubot/dt / double(ns-1-i));
+        KTB1[i] =  4.0 * pow((M_PI * taubot / dt), 0.5) * ( erf(pow((taubot / dt / double(ns-1-i)), 0.5)) + erf(pow((taubot / dt / double(ns+1-i)), 0.5)) - 2.0 * erf(pow((taubot / dt / double(ns-i)), 0.5)) );
 
         // Second order
-        KTA2[i] =  8.0 * pow(double(ns-i), 0.5) * exp(-4.0 * taubot / double(dt) / double(ns-i)) - 4.0 * pow(double(ns+1-i), 0.5) * exp(-4.0 * taubot / double(dt) / double(ns+1-i)) - 4.0 * pow(double(ns-1-i), 0.5) * exp(-4.0 * taubot / double(dt) / double(ns-1-i));
-        KTB2[i] = -8.0 * pow((M_PI * taubot / double(dt)), 0.5) * ( erf(2.0 * pow((taubot / double(dt) / double(ns-1-i)), 0.5)) + erf(2.0 * pow((taubot / double(dt) / double(ns+1-i)), 0.5)) - 2.0 * erf(2.0 * pow((taubot / double(dt) / double(ns-i)), 0.5)) );
+        KTA2[i] =  8.0 * pow(double(ns-i), 0.5) * exp(-4.0 * taubot / dt / double(ns-i)) - 4.0 * pow(double(ns+1-i), 0.5) * exp(-4.0 * taubot / dt / double(ns+1-i)) - 4.0 * pow(double(ns-1-i), 0.5) * exp(-4.0 * taubot / dt / double(ns-1-i));
+        KTB2[i] = -8.0 * pow((M_PI * taubot / dt), 0.5) * ( erf(2.0 * pow((taubot / dt / double(ns-1-i)), 0.5)) + erf(2.0 * pow((taubot / dt / double(ns+1-i)), 0.5)) - 2.0 * erf(2.0 * pow((taubot / dt / double(ns-i)), 0.5)) );
 
         // Third order
-        KTA3[i] = -8.0 * pow(double(ns-i), 0.5) * exp(-9.0 * taubot / double(dt) / double(ns-i)) + 4.0 * pow(double(ns+1-i), 0.5) * exp(-9.0 * taubot / double(dt) / double(ns+1-i)) + 4.0 * pow(double(ns-1-i), 0.5) * exp(-9.0 * taubot / double(dt) / double(ns-1-i));
-        KTB3[i] = 12.0 * pow((M_PI * taubot / double(dt)), 0.5) * ( erf(3.0 * pow((taubot / double(dt) / double(ns-1-i)), 0.5)) + erf(3.0 * pow((taubot / double(dt) / double(ns+1-i)), 0.5)) - 2.0 * erf(3.0 * pow((taubot / double(dt) / double(ns-i)), 0.5)) );
+        KTA3[i] = -8.0 * pow(double(ns-i), 0.5) * exp(-9.0 * taubot / dt / double(ns-i)) + 4.0 * pow(double(ns+1-i), 0.5) * exp(-9.0 * taubot / dt / double(ns+1-i)) + 4.0 * pow(double(ns-1-i), 0.5) * exp(-9.0 * taubot / dt / double(ns-1-i));
+        KTB3[i] = 12.0 * pow((M_PI * taubot / dt), 0.5) * ( erf(3.0 * pow((taubot / dt / double(ns-1-i)), 0.5)) + erf(3.0 * pow((taubot / dt / double(ns+1-i)), 0.5)) - 2.0 * erf(3.0 * pow((taubot / dt / double(ns-i)), 0.5)) );
     }
 
     // Sum up the kernel components
@@ -287,28 +297,32 @@ void TemperatureComponent::prepareToRun() {
     C[1] = -1 * bsi / pow(taukls, 2.0) - bsi / taucfl / taukls - bsi / taucfs / taukls - pow(bsi, 2.0) / taukls / tauksl;
     C[2] = -1 * bsi / pow(tauksl, 2.0) - 1.0 / taucfs / tauksl - 1.0 / taucfl / tauksl -1.0 / taukls / tauksl;
     C[3] = 1.0 / pow(taucfs, 2.0) + pow(bsi, 2.0) / pow(tauksl, 2.0) + 2.0 * bsi / taucfs / tauksl + bsi / taukls / tauksl;
+
     for(int i=0; i<4; i++) {
-        C[i] = C[i] * (pow(double(dt), 2.0) / 12.0);
+        C[i] = C[i] * (pow(dt, 2.0) / 12.0);
     }
 
     //------------------------------------------------------------------
-    // Matrices of difference equation system B*T(i+1) = Q(i) + A*T(i)
+    // Matrices of difference equation system, see A.27 Kriegler 2005.
+    // B*T(i+1) = Q(i) + A*T(i)
     // T = (TL,TS)
-    // (Equations 2.3.24 and 2.3.27, TK07)
-    B[0] = 1.0 + double(dt) / (2.0 * taucfl) + double(dt) / (2.0 * taukls);
-    B[1] = double(-dt) / (2.0 * taukls) * bsi;
-    B[2] = double(-dt) / (2.0 * tauksl);
-    B[3] = 1.0 + double(dt) / (2.0 * taucfs) + double(dt) / (2.0 * tauksl) * bsi + 2.0 * fso * pow((double(dt) / taudif), 0.5);
+    // successor temperatures (TL;i+1; TS;i+1)
+    B[0] = 1.0 + dt / (2.0 * taucfl) + dt / (2.0 * taukls);
+    B[1] = -dt / (2.0 * taukls) * bsi;
+    B[2] = -dt / (2.0 * tauksl);
+    B[3] = 1.0 + dt / (2.0 * taucfs) + dt / (2.0 * tauksl) * bsi + 2.0 * fso * pow((dt / taudif), 0.5);
 
-    A[0] = 1.0 - double(dt) / (2.0 * taucfl) - double(dt) / (2.0 * taukls);
-    A[1] = double(dt) / (2.0 * taukls) * bsi;
-    A[2] = double(dt) / (2.0 * tauksl);
-    A[3] = 1.0 - double(dt) / (2.0 * taucfs) - double(dt) / (2.0 * tauksl) * bsi + Ker[ns-1] * fso * pow((double(dt) / taudif), 0.5);
+    // predecessors temperatures
+    A[0] = 1.0 - dt / (2.0 * taucfl) - dt / (2.0 * taukls);
+    A[1] = dt / (2.0 * taukls) * bsi;
+    A[2] = dt / (2.0 * tauksl);
+    A[3] = 1.0 - dt / (2.0 * taucfs) - dt / (2.0 * tauksl) * bsi + Ker[ns-1] * fso * pow((dt / taudif), 0.5);
+
+    // The algorithm to integrate Model
     for (int i=0; i<4; i++) {
         B[i] = B[i] + C[i];
         A[i] = A[i] + C[i];
     }
-
     // Calculate the inverse of B
     invert_1d_2x2_matrix(B, IB);
 }
@@ -382,15 +396,15 @@ void TemperatureComponent::run( const double runToDate ) {
         // Assume linear forcing change between tstep and tstep+1
         QC1 = (DelQL/cal*(1.0/taucfl+1.0/taukls)-bsi*DelQO/cas/taukls);
         QC2 = (DelQO/cas*(1.0/taucfs+bsi/tauksl)-DelQL/cal/tauksl);
-        QC1 = QC1 * pow(double(dt), 2.0)/12.0;
-        QC2 = QC2 * pow(double(dt), 2.0)/12.0;
+        QC1 = QC1 * pow(dt, 2.0)/12.0;
+        QC2 = QC2 * pow(dt, 2.0)/12.0;
 
         // ----------------- Initial Conditions --------------------
         // Initialization of temperature and forcing vector:
         // Factor 1/2 in front of Q in Equation A.27, EK05, and Equation 2.3.27, TK07 is a typo!
         // Assumption: linear forcing change between n and n+1
-        DQ1 = 0.5*double(dt)/cal*(QL[tstep]+QL[tstep-1]);
-        DQ2 = 0.5*double(dt)/cas*(QO[tstep]+QO[tstep-1]);
+        DQ1 = 0.5*dt/cal*(QL[tstep]+QL[tstep-1]);
+        DQ2 = 0.5*dt/cas*(QO[tstep]+QO[tstep-1]);
         DQ1 = DQ1 + QC1;
         DQ2 = DQ2 + QC2;
 
@@ -399,7 +413,7 @@ void TemperatureComponent::run( const double runToDate ) {
         for(int i = 0; i <= tstep; i++) {
             DPAST2 = DPAST2 + temp_sst[i] * Ker[ns-tstep+i-1];
         }
-        DPAST2 = DPAST2 * fso * pow((double(dt)/taudif), 0.5);
+        DPAST2 = DPAST2 * fso * pow((dt/taudif), 0.5);
 
         DTEAUX1 = A[0] * temp_landair[tstep-1] + A[1] * temp_sst[tstep-1];
         DTEAUX2 = A[2] * temp_landair[tstep-1] + A[3] * temp_sst[tstep-1];
@@ -449,8 +463,6 @@ unitval TemperatureComponent::getData( const std::string& varName,
         // If no date is supplied, return the current value
         if( varName == D_GLOBAL_TEMP ) {
             returnval = tgav;
-        } else if( varName == D_GLOBAL_TEMPEQ ) {
-            returnval = tgaveq;
         } else if( varName == D_LAND_AIR_TEMP ) {
             returnval = tgav_land;
         } else if( varName == D_OCEAN_SURFACE_TEMP ) {
@@ -491,8 +503,6 @@ unitval TemperatureComponent::getData( const std::string& varName,
             returnval = unitval(temp_sst[tstep], U_DEGC);
         } else if( varName == D_OCEAN_AIR_TEMP ) {
             returnval = bsi * unitval(temp_sst[tstep], U_DEGC);
-        } else if( varName == D_GLOBAL_TEMPEQ ) {
-            returnval = unitval(temp[tstep], U_DEGC);
         } else if( varName == D_FLUX_MIXED ) {
 	    returnval = unitval(heatflux_mixed[tstep], U_W_M2);
         } else if( varName == D_FLUX_INTERIOR ) {
@@ -546,7 +556,6 @@ void TemperatureComponent::setoutputs(int tstep)
     flux_interior.set( heatflux_interior[tstep], U_W_M2, 0.0 );
     heatflux.set( heatflux_mixed[tstep] + fso * heatflux_interior[tstep], U_W_M2, 0.0 );
     tgav.set(temp[tstep], U_DEGC, 0.0);
-    tgaveq.set(temp[tstep], U_DEGC, 0.0); // per comment line 140 of temperature_component.hpp
     tgav_land.set(temp_landair[tstep], U_DEGC, 0.0);
     tgav_sst.set(temp_sst[tstep], U_DEGC, 0.0);
     temp_oceanair = bsi * temp_sst[tstep];
@@ -554,4 +563,3 @@ void TemperatureComponent::setoutputs(int tstep)
 }
 
 }
-

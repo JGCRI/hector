@@ -1020,16 +1020,10 @@ VOLCANIC_SCALE <- function() {
     .Call('_hector_VOLCANIC_SCALE', PACKAGE = 'hector')
 }
 
-#' @describeIn temperature Global mean temperature
+#' @describeIn temperature Global mean temperature anomaly
 #' @export
 GLOBAL_TEMP <- function() {
     .Call('_hector_GLOBAL_TEMP', PACKAGE = 'hector')
-}
-
-#' @describeIn temperature Equilibrium global temperature
-#' @export
-GLOBAL_TEMPEQ <- function() {
-    .Call('_hector_GLOBAL_TEMPEQ', PACKAGE = 'hector')
 }
 
 #' @describeIn temperature Average ocean surface temperature anomaly

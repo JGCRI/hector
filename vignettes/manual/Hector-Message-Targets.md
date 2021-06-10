@@ -209,7 +209,6 @@ TODO:  indicate which ones are valid for reading and which are valid for writing
 // Temperature
  D_ECS                   
  D_GLOBAL_TEMP           
- D_GLOBAL_TEMPEQ         
  D_TGAV_CONSTRAIN        
  D_SO2D_B                
  D_SO2I_B                
