@@ -12,6 +12,15 @@
  *
  */
 
+/* References:
+
+ Meinshausen et al. (2011): Meinshausen, M., Raper, S. C. B., and Wigley, T. M. L.: Emulating coupled atmosphere-ocean and carbon cycle models with a simpler model, MAGICC6 – Part 1: Model description and calibration, Atmos. Chem. Phys., 11, 1417–1456, https://doi.org/10.5194/acp-11-1417-2011, 2011.
+
+ */
+
+
+
+
 // some boost headers generate warnings under clang; not our problem, ignore
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Weverything"
@@ -282,7 +291,9 @@ void ForcingComponent::run( const double runToDate ) {
         // Instantaneous radiative forcings for CO2, CH4, and N2O from http://www.esrl.noaa.gov/gmd/aggi/
         // These are in turn from IPCC (2001)
 
-        // This is identical to that of MAGICC; see Meinshausen et al. (2011)
+        // This is identical to that of MAGICC; Meinshausen et al. (2011) equation A35
+        // adjusted radiative forcing by CO2 (Wm−2) is equal to the forcing efficiency for a unit increases *
+        // the change in CO2 concentrations relative to the preindustrial value.
         unitval Ca = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_CO2 );
         if( runToDate==baseyear )
             C0 = Ca;
