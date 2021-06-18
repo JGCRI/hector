@@ -119,6 +119,8 @@ void TemperatureComponent::init( Core* coreptr ) {
     core->registerDependency( D_RF_SO2d, getComponentName() );
     core->registerDependency( D_RF_SO2i, getComponentName() );
     core->registerDependency( D_RF_VOL, getComponentName() );
+    core->registerDependency( D_ACO2, getComponentName() );
+
 
     // Register the inputs we can receive from outside
     core->registerInput(D_ECS, getComponentName());
@@ -162,7 +164,7 @@ void TemperatureComponent::setData( const string& varName,
         } else if( varName == D_DIFFUSIVITY ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
             diff = data.getUnitval(U_CM2_S);
-	} else if( varName == D_AERO_SCALE ) {
+        } else if( varName == D_AERO_SCALE ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
             alpha = data.getUnitval(U_UNITLESS);
         } else if(varName == D_VOLCANIC_SCALE) {
@@ -226,6 +228,15 @@ void TemperatureComponent::prepareToRun() {
     // Constants & conversion factors
     kcon = secs_per_Year / 10000;               // conversion factor from cm2/s to m2/yr;
     ocean_area = (1.0 - flnd) * earth_area;    // m2
+    
+
+    aCO2 = core->sendMessage( M_GETDATA, D_ACO2 );
+    std::cout << " Kalyn " << aCO2 << std::endl;
+    
+    double q2co;
+    q2co = aCO2 * log(2);
+    
+    std::cout << " Kalyn " << q2co << std::endl;
 
     // Calculate climate feedback parameterisation
     cnum = rlam * flnd + bsi * (1.0 - flnd);   // denominator used to calculate climate senstivity feedback parameters over land & sea
@@ -347,7 +358,6 @@ void TemperatureComponent::run( const double runToDate ) {
     //
     // If the user has supplied temperature data, use that (except if past its end)
     if( tgav_constrain.size() && runToDate <= tgav_constrain.lastdate() ) {
-    //    H_LOG( logger, Logger::NOTICE ) << "** Using user-supplied temperature" << std::endl;
         H_LOG( logger, Logger::SEVERE ) << "** ERROR - Temperature can't currently handle user-supplied temperature" << std::endl;
         H_THROW("User-supplied temperature not yet implemented.")
     }

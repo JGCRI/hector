@@ -167,7 +167,6 @@ void ForcingComponent::init( Core* coreptr ) {
     }
 
     // Register our dependencies
-
     core->registerDependency( D_ATMOSPHERIC_CH4, getComponentName() );
     core->registerDependency( D_ATMOSPHERIC_CO2, getComponentName() );
     core->registerDependency( D_ATMOSPHERIC_O3, getComponentName() );
@@ -175,7 +174,6 @@ void ForcingComponent::init( Core* coreptr ) {
     core->registerDependency( D_EMISSIONS_OC, getComponentName() );
     core->registerDependency( D_NATURAL_SO2, getComponentName() );
     core->registerDependency( D_ATMOSPHERIC_N2O, getComponentName() );
-
     core->registerDependency( D_RF_CF4, getComponentName() );
     core->registerDependency( D_RF_C2F6, getComponentName() );
     core->registerDependency( D_RF_HFC23, getComponentName() );
@@ -204,7 +202,7 @@ void ForcingComponent::init( Core* coreptr ) {
     core->registerDependency( D_RF_CH3Cl, getComponentName() );
     core->registerDependency( D_RF_T_ALBEDO, getComponentName() );
 
-    // Register inputs
+    // Register the inputs we can receive from outside
     core->registerInput( D_ACO2, getComponentName() );
 
 
@@ -303,7 +301,6 @@ void ForcingComponent::run( const double runToDate ) {
         unitval Ca = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_CO2 );
         if( runToDate==baseyear )
             C0 = Ca;
-        std::cout << aCO2 << std::endl;
         forcings[D_RF_CO2 ].set( aCO2 * log( Ca/C0 ), U_W_M2 );
 
         // ---------- Terrestrial albedo ----------
@@ -489,6 +486,8 @@ unitval ForcingComponent::getData( const std::string& varName,
 
     if( varName == D_RF_BASEYEAR ) {
         returnval.set( baseyear, U_UNITLESS );
+    } else if (varName == D_ACO2) {
+        returnval = aCO2;
     } else if (varName == D_RF_SO2) {
         // total SO2 forcing
         std::map<std::string, unitval>::const_iterator forcing_SO2d = forcings.find( D_RF_SO2d );

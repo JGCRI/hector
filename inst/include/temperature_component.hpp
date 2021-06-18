@@ -79,7 +79,8 @@ private:
     const double csw = 0.13;              // specific heat capacity of seawater (Wyr/(m3K))
     const double earth_area = 5100656E8;  // (m2)
     const double secs_per_Year = 60.0 * 60.0 * 24.0 * 365.2422; //  secs. * min. * hrs. * tropical calendar days (seconds)
-    const double q2co = 3.7;              // radiative forcing for atmospheric CO2 doubling (W/m2)
+    //const double q2co = 3.7;              // radiative forcing for atmospheric CO2 doubling (W/m2)
+    //const double q2co;
     const double rlam = 1.43;             // factor between land clim. sens. and sea surface clim. sens. T_L2x = rlam*T_S2x (unitless)
     const double zbot = 4000.0;           // bottom depth of the interior ocean (m)
     const double bsi = 1.3;               // warming factor for marine surface air over SST due to retreating sea ice, (unitless)
@@ -135,6 +136,7 @@ private:
     unitval diff;          //!< ocean heat diffusivity, cm2/s
     unitval alpha;	       //!< aerosol forcing factor, unitless
     unitval volscl;        //!< volcanic forcing scaling factor, unitless
+    unitval aCO2; 
 
     // Model outputs
     unitval tgav;          //!< global average surface air temperature anomaly, deg C
