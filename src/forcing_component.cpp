@@ -203,6 +203,11 @@ void ForcingComponent::init( Core* coreptr ) {
     core->registerDependency( D_RF_CH3Br, getComponentName() );
     core->registerDependency( D_RF_CH3Cl, getComponentName() );
     core->registerDependency( D_RF_T_ALBEDO, getComponentName() );
+
+    // Register inputs
+    core->registerInput( D_ACO2, getComponentName() );
+
+
 }
 
 //------------------------------------------------------------------------------
@@ -217,9 +222,7 @@ unitval ForcingComponent::sendMessage( const std::string& message,
         return getData( datum, info.date );
 
     } else if( message==M_SETDATA ) {   //! Caller is requesting to set data
-        //TODO: call setData below
-        //TODO: change core so that parsing is routed through sendMessage
-        //TODO: make setData private
+              setData(datum, info);
 
     } else {                        //! We don't handle any other messages
         H_THROW( "Caller sent unknown message: "+message );
@@ -239,6 +242,9 @@ void ForcingComponent::setData( const string& varName,
         if( varName == D_RF_BASEYEAR ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
             baseyear = data.getUnitval(U_UNDEFINED);
+        } else if( varName == D_ACO2 ) {
+            H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
+            aCO2 = data.getUnitval(U_W_M2);
         } else if( varName == D_FTOT_CONSTRAIN ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
             Ftot_constrain.set(data.date, data.getUnitval(U_W_M2));
@@ -297,7 +303,8 @@ void ForcingComponent::run( const double runToDate ) {
         unitval Ca = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_CO2 );
         if( runToDate==baseyear )
             C0 = Ca;
-        forcings[D_RF_CO2 ].set( 5.35 * log( Ca/C0 ), U_W_M2 );
+        std::cout << aCO2 << std::endl;
+        forcings[D_RF_CO2 ].set( aCO2 * log( Ca/C0 ), U_W_M2 );
 
         // ---------- Terrestrial albedo ----------
         if( core->checkCapability( D_RF_T_ALBEDO ) ) {
