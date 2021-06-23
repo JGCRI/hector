@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		277D29DC2683669E003177A2 /* libboost_system.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 277D29DA2683669E003177A2 /* libboost_system.dylib */; };
+		277D29DD2683669E003177A2 /* libboost_filesystem.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 277D29DB2683669E003177A2 /* libboost_filesystem.dylib */; };
 		27808CF12615CEFA00BE8B90 /* libgtest.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 27808CF02615CEFA00BE8B90 /* libgtest.dylib */; };
 		27808CF42615D31A00BE8B90 /* test_tseries.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27A02A4B2615CAA100AF9BFA /* test_tseries.cpp */; };
 		27A02A5E2615CBB800AF9BFA /* halocarbon_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C231261511C5005DE26D /* halocarbon_component.cpp */; };
@@ -75,10 +77,6 @@
 		27B2C26E261511C8005DE26D /* carbon-cycle-model.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C24B261511C8005DE26D /* carbon-cycle-model.cpp */; };
 		27B2C270261511C8005DE26D /* spline_forsythe.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C24D261511C8005DE26D /* spline_forsythe.cpp */; };
 		27B2C271261511C8005DE26D /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C24E261511C8005DE26D /* main.cpp */; };
-		27B2C280261562AB005DE26D /* libboost_filesystem.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 27B2C27A26155326005DE26D /* libboost_filesystem.dylib */; };
-		27B2C281261562AB005DE26D /* libboost_filesystem.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 27B2C27A26155326005DE26D /* libboost_filesystem.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		27B2C283261562B7005DE26D /* libboost_system.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 27B2C27C26155331005DE26D /* libboost_system.dylib */; };
-		27B2C284261562B7005DE26D /* libboost_system.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 27B2C27C26155331005DE26D /* libboost_system.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -118,8 +116,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				27B2C281261562AB005DE26D /* libboost_filesystem.dylib in Embed Libraries */,
-				27B2C284261562B7005DE26D /* libboost_system.dylib in Embed Libraries */,
 			);
 			name = "Embed Libraries";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -128,6 +124,8 @@
 
 /* Begin PBXFileReference section */
 		27585CF826150F1A00BA1EF5 /* hector */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = hector; sourceTree = BUILT_PRODUCTS_DIR; };
+		277D29DA2683669E003177A2 /* libboost_system.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libboost_system.dylib; path = ../../../../../../../../../usr/local/lib/libboost_system.dylib; sourceTree = "<group>"; };
+		277D29DB2683669E003177A2 /* libboost_filesystem.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libboost_filesystem.dylib; path = ../../../../../../../../../usr/local/lib/libboost_filesystem.dylib; sourceTree = "<group>"; };
 		27808CF02615CEFA00BE8B90 /* libgtest.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libgtest.dylib; path = ../../../../../../../../../usr/local/lib/libgtest.dylib; sourceTree = "<group>"; };
 		27A02A462615CAA100AF9BFA /* test_logger.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_logger.cpp; path = ../../../src/Testing/test_logger.cpp; sourceTree = "<group>"; };
 		27A02A472615CAA100AF9BFA /* test_restart.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_restart.cpp; path = ../../../src/Testing/test_restart.cpp; sourceTree = "<group>"; };
@@ -224,8 +222,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				27B2C280261562AB005DE26D /* libboost_filesystem.dylib in Frameworks */,
-				27B2C283261562B7005DE26D /* libboost_system.dylib in Frameworks */,
+				277D29DC2683669E003177A2 /* libboost_system.dylib in Frameworks */,
+				277D29DD2683669E003177A2 /* libboost_filesystem.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -369,6 +367,8 @@
 		27B2C273261551A9005DE26D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				277D29DB2683669E003177A2 /* libboost_filesystem.dylib */,
+				277D29DA2683669E003177A2 /* libboost_system.dylib */,
 				27808CF02615CEFA00BE8B90 /* libgtest.dylib */,
 				27B2C27C26155331005DE26D /* libboost_system.dylib */,
 				27B2C27A26155326005DE26D /* libboost_filesystem.dylib */,
