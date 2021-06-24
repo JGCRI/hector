@@ -10,6 +10,10 @@
  *
  *  Created by Ben Vega-Westhoff on 11/1/16.
  *
+ * Meinshausen, M., Raper, S. C. B., and Wigley, T. M. L.: Emulating coupled atmosphere-ocean
+ * and carbon cycle models with a simpler model, MAGICC6 – Part 1: Model description and
+ * calibration, Atmos. Chem. Phys., 11, 1417–1456, https://doi.org/10.5194/acp-11-1417-2011, 2011.
+ *
  */
 
 // some boost headers generate warnings under clang; not our problem, ignore
@@ -225,19 +229,15 @@ void TemperatureComponent::prepareToRun() {
     }
 
     // DOECLIM model parameters, based on constants set in the header
+    //
     // Constants & conversion factors
     kcon = secs_per_Year / 10000;               // conversion factor from cm2/s to m2/yr;
     ocean_area = (1.0 - flnd) * earth_area;    // m2
 
-
-    //aCO2 = core->sendMessage( M_GETDATA, D_ACO2 );
-    //std::cout << " Kalyn " << aCO2 << std::endl;
-
-    //double q2co;
-    //q2co = aCO2 * log(2);
-    double q2co  = 3.7;
-
-    std::cout << " Kalyn " << q2co << std::endl;
+    // Determine the radiative forcing for atmospheric CO2 doubling, based on the
+    // forcing efficiency for CO2 (W/m2) (see eq A36 of Meinshausen et al. 2011).
+    aCO2 = core->sendMessage( M_GETDATA, D_ACO2 );
+    q2co = aCO2 * log(2);
 
     // Calculate climate feedback parameterisation
     cnum = rlam * flnd + bsi * (1.0 - flnd);   // denominator used to calculate climate senstivity feedback parameters over land & sea

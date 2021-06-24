@@ -368,7 +368,7 @@ String RF_CH3BR() {
 return D_RFADJ_CH3Br;
 }
 
-//' @describeIn forcings
+//' @describeIn forcings Radiative forcing efficiency for CO2
 //' @export
 // [[Rcpp::export]]
 String alpha_CO2() {

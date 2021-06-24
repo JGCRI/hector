@@ -282,7 +282,7 @@ RF_CH3BR <- function() {
     .Call('_hector_RF_CH3BR', PACKAGE = 'hector')
 }
 
-#' @describeIn forcings
+#' @describeIn forcings Radiative forcing efficiency for CO2
 #' @export
 alpha_CO2 <- function() {
     .Call('_hector_alpha_CO2', PACKAGE = 'hector')

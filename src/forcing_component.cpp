@@ -161,6 +161,7 @@ void ForcingComponent::init( Core* coreptr ) {
     core->registerCapability( D_RF_SO2i, getComponentName());
     core->registerCapability( D_RF_SO2, getComponentName());
     core->registerCapability( D_RF_VOL, getComponentName());
+    core->registerCapability( D_ACO2, getComponentName());
     for(int i=0; i<N_HALO_FORCINGS; ++i) {
         core->registerCapability(adjusted_halo_forcings[i], getComponentName());
         forcing_name_map[adjusted_halo_forcings[i]] = halo_forcing_names[i];
@@ -466,7 +467,7 @@ unitval ForcingComponent::getData( const std::string& varName,
     unitval returnval;
     double getdate = date;             // This is why I hate declaring PBV args as const!
 
-    
+
     if(getdate == Core::undefinedIndex()) {
         // If no date specified, provide the current date
         getdate = currentYear;
@@ -475,7 +476,7 @@ unitval ForcingComponent::getData( const std::string& varName,
     if(getdate < baseyear) {
         // Forcing component hasn't run yet, so there is no data to get.
         returnval.set(0.0, U_W_M2);
-        
+
         // If requesting data not associated with a date aka a parameter,
         // return the parameter value.
         if(varName == D_ACO2){
@@ -492,7 +493,7 @@ unitval ForcingComponent::getData( const std::string& varName,
 
     forcings_t forcings(forcings_ts.get(getdate));
 
-    // Return values associated with date information. 
+    // Return values associated with date information.
     if( varName == D_RF_BASEYEAR ) {
         returnval.set( baseyear, U_UNITLESS );
 
