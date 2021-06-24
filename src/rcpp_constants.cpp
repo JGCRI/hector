@@ -368,6 +368,13 @@ String RF_CH3BR() {
 return D_RFADJ_CH3Br;
 }
 
+//' @describeIn forcings
+//' @export
+// [[Rcpp::export]]
+String alpha_CO2() {
+    return D_ACO2;
+}
+
 /* halocarbon emissions */
 //' @describeIn haloemiss Emissions for CF4
 //' @export

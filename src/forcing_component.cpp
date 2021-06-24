@@ -301,7 +301,8 @@ void ForcingComponent::run( const double runToDate ) {
         unitval Ca = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_CO2 );
         if( runToDate==baseyear )
             C0 = Ca;
-        forcings[D_RF_CO2 ].set( aCO2 * log( Ca/C0 ), U_W_M2 );
+        //forcings[D_RF_CO2 ].set( aCO2 * log( Ca/C0 ), U_W_M2 );
+        forcings[D_RF_CO2 ].set( aCO2.value(U_W_M2) * log( Ca/C0 ), U_W_M2 );
 
         // ---------- Terrestrial albedo ----------
         if( core->checkCapability( D_RF_T_ALBEDO ) ) {
@@ -465,6 +466,7 @@ unitval ForcingComponent::getData( const std::string& varName,
     unitval returnval;
     double getdate = date;             // This is why I hate declaring PBV args as const!
 
+    
     if(getdate == Core::undefinedIndex()) {
         // If no date specified, provide the current date
         getdate = currentYear;
@@ -473,6 +475,12 @@ unitval ForcingComponent::getData( const std::string& varName,
     if(getdate < baseyear) {
         // Forcing component hasn't run yet, so there is no data to get.
         returnval.set(0.0, U_W_M2);
+        
+        // If requesting data not associated with a date aka a parameter,
+        // return the parameter value.
+        if(varName == D_ACO2){
+            returnval = aCO2;
+        }
         return returnval;
     }
 
@@ -484,10 +492,10 @@ unitval ForcingComponent::getData( const std::string& varName,
 
     forcings_t forcings(forcings_ts.get(getdate));
 
+    // Return values associated with date information. 
     if( varName == D_RF_BASEYEAR ) {
         returnval.set( baseyear, U_UNITLESS );
-    } else if (varName == D_ACO2) {
-        returnval = aCO2;
+
     } else if (varName == D_RF_SO2) {
         // total SO2 forcing
         std::map<std::string, unitval>::const_iterator forcing_SO2d = forcings.find( D_RF_SO2d );

@@ -98,10 +98,10 @@ void TemperatureComponent::init( Core* coreptr ) {
     tgav_constrain.name = D_TGAV_CONSTRAIN;
 
     // Define the doeclim parameters
-    diff.set( 0.55, U_CM2_S );    // default ocean heat diffusivity, cm2/s. value is CDICE default (varname is kappa there).
-    S.set( 3.0, U_DEGC );         // default climate sensitivity, K (varname is t2co in CDICE).
-    alpha.set( 1.0, U_UNITLESS);  // default aerosol scaling, unitless (similar to alpha in CDICE).
-    volscl.set(1.0, U_UNITLESS);  // Default volcanic scaling, unitless (works the same way as alpha)
+   // diff.set( 0.55, U_CM2_S );    // default ocean heat diffusivity, cm2/s. value is CDICE default (varname is kappa there).
+   // S.set( 3.0, U_DEGC );         // default climate sensitivity, K (varname is t2co in CDICE).
+   // alpha.set( 1.0, U_UNITLESS);  // default aerosol scaling, unitless (similar to alpha in CDICE).
+    //volscl.set(1.0, U_UNITLESS);  // Default volcanic scaling, unitless (works the same way as alpha)
 
     // Register the data we can provide
     core->registerCapability( D_GLOBAL_TEMP, getComponentName() );
@@ -228,14 +228,15 @@ void TemperatureComponent::prepareToRun() {
     // Constants & conversion factors
     kcon = secs_per_Year / 10000;               // conversion factor from cm2/s to m2/yr;
     ocean_area = (1.0 - flnd) * earth_area;    // m2
-    
 
-    aCO2 = core->sendMessage( M_GETDATA, D_ACO2 );
-    std::cout << " Kalyn " << aCO2 << std::endl;
-    
-    double q2co;
-    q2co = aCO2 * log(2);
-    
+
+    //aCO2 = core->sendMessage( M_GETDATA, D_ACO2 );
+    //std::cout << " Kalyn " << aCO2 << std::endl;
+
+    //double q2co;
+    //q2co = aCO2 * log(2);
+    double q2co  = 3.7;
+
     std::cout << " Kalyn " << q2co << std::endl;
 
     // Calculate climate feedback parameterisation
