@@ -121,12 +121,6 @@ component using the \code{\link{GETDATA}} message type.
 \item \code{CO3_HL}: Carbonate concentration, high-latitude
 }}
 
-\section{To Do}{
-
-Some of these could be made writeable as well as readable.  Notably, TT, TU,
-TWI, and TID are only set from the input, not calculated.
-}
-
 \section{Note}{
 
 Because these identifiers are provided as \code{#define} macros in the hector code,

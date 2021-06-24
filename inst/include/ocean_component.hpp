@@ -150,13 +150,28 @@ private:
 
     // Ocean conditions over time
     tseries<unitval> Tgav_ts;
-    tseries<unitval> Ca_ts;
-
-    // Atmosphere-ocean flux
     tseries<unitval> annualflux_sum_ts;
     tseries<unitval> annualflux_sumHL_ts;
     tseries<unitval> annualflux_sumLL_ts;
     tseries<unitval> lastflux_annualized_ts;
+    tseries<unitval> Ca_ts;
+    tseries<unitval> Ca_HL_ts;
+    tseries<unitval> Ca_LL_ts;
+    tseries<unitval> C_IO_ts;
+    tseries<unitval> C_DO_ts;
+    tseries<unitval> PH_HL_ts;
+    tseries<unitval> PH_LL_ts;
+    tseries<unitval> pco2_HL_ts;
+    tseries<unitval> pco2_LL_ts;
+    tseries<unitval> dic_HL_ts;
+    tseries<unitval> dic_LL_ts;
+    tseries<unitval> temp_HL_ts;
+    tseries<unitval> temp_LL_ts;
+    tseries<unitval> co3_HL_ts;
+    tseries<unitval> co3_LL_ts;
+
+
+
 
     // timestep control
     tseries<double> max_timestep_ts;
