@@ -43,8 +43,6 @@
 		27A02A7D2615CBB800AF9BFA /* oceanbox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C23E261511C7005DE26D /* oceanbox.cpp */; };
 		27A02A7F2615CBB800AF9BFA /* libboost_filesystem.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 27B2C27A26155326005DE26D /* libboost_filesystem.dylib */; };
 		27A02A802615CBB800AF9BFA /* libboost_system.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 27B2C27C26155331005DE26D /* libboost_system.dylib */; };
-		27A02A832615CBB800AF9BFA /* libboost_filesystem.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 27B2C27A26155326005DE26D /* libboost_filesystem.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		27A02A842615CBB800AF9BFA /* libboost_system.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 27B2C27C26155331005DE26D /* libboost_system.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		27A02A892615CBDB00AF9BFA /* testing_main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27A02A4D2615CAA100AF9BFA /* testing_main.cpp */; };
 		27B2C24F261511C8005DE26D /* ch4_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C22C261511C5005DE26D /* ch4_component.cpp */; };
 		27B2C250261511C8005DE26D /* h_reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C22D261511C5005DE26D /* h_reader.cpp */; };
@@ -104,8 +102,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				27A02A832615CBB800AF9BFA /* libboost_filesystem.dylib in Embed Libraries */,
-				27A02A842615CBB800AF9BFA /* libboost_system.dylib in Embed Libraries */,
 			);
 			name = "Embed Libraries";
 			runOnlyForDeploymentPostprocessing = 0;
