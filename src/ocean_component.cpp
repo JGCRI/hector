@@ -81,6 +81,26 @@ void OceanComponent::init( Core* coreptr ) {
     core->registerCapability( D_TU, getComponentName() );
     core->registerCapability( D_TWI, getComponentName() );
     core->registerCapability( D_TID, getComponentName() );
+    core->registerCapability( D_PH_HL, getComponentName() );
+    core->registerCapability( D_PH_LL, getComponentName() );
+    core->registerCapability( D_ATM_OCEAN_FLUX_HL, getComponentName() );
+    core->registerCapability( D_ATM_OCEAN_FLUX_LL, getComponentName() );
+    core->registerCapability( D_PCO2_HL, getComponentName() );
+    core->registerCapability( D_PCO2_LL, getComponentName() );
+    core->registerCapability( D_DIC_HL, getComponentName() );
+    core->registerCapability( D_DIC_LL, getComponentName() );
+    core->registerCapability( D_TEMP_HL, getComponentName() );
+    core->registerCapability( D_TEMP_LL, getComponentName() );
+    core->registerCapability( D_CO3_HL, getComponentName() );
+    core->registerCapability( D_CO3_LL, getComponentName() );
+
+
+    // Register the inputs we can receive from outside
+    core->registerInput(D_TT, getComponentName());
+    core->registerInput(D_TU, getComponentName());
+    core->registerInput(D_TWI, getComponentName());
+    core->registerInput(D_TID, getComponentName());
+
 }
 
 //------------------------------------------------------------------------------
@@ -95,8 +115,7 @@ unitval OceanComponent::sendMessage( const std::string& message,
         return getData( datum, info.date );
 
     } else if( message == M_SETDATA ) {   //! Caller is requesting to set data
-        H_THROW("Ocean sendMessage not yet implemented for message=M_SETDATA.");
-        //TODO: call setData below
+        setData(datum, info);
         //TODO: change core so that parsing is routed through sendMessage
         //TODO: make setData private
 
@@ -106,7 +125,7 @@ unitval OceanComponent::sendMessage( const std::string& message,
         H_LOG( logger, Logger::DEBUG ) << "Atmosphere dumping " << carbon << " Pg C to deep ocean" << std::endl;
         deep.set_carbon( deep.get_carbon() + carbon );
 
-    } else {                        //! We don't handle any other messages
+    } else { //! We don't handle any other messages
         H_THROW( "Caller sent unknown message: "+message );
     }
 
@@ -335,79 +354,120 @@ unitval OceanComponent::getData( const std::string& varName,
 
     unitval returnval;
 
-    if( varName != D_OCEAN_CFLUX ) {
+    if(date == Core::undefinedIndex() ){
+        // If no date, we're in spinup; just return the current value
+
+        if( varName == D_OCEAN_CFLUX ){
+                returnval = annualflux_sum;
+        } else if( varName == D_TT ) {
+            returnval = tt;
+        } else if( varName == D_TU ) {
+            returnval = tu;
+         } else if( varName == D_TID ) {
+            returnval = tid;
+         } else if( varName == D_TWI ) {
+            returnval = twi;
+        } else if( varName == D_OMEGACA_HL ) {
+            returnval = surfaceHL.mychemistry.OmegaCa;
+        } else if( varName == D_OMEGACA_LL ) {
+            returnval = surfaceLL.mychemistry.OmegaCa;
+        } else if( varName == D_OMEGAAR_HL ) {
+            returnval = surfaceHL.mychemistry.OmegaAr;
+        } else if( varName == D_OMEGAAR_LL ) {
+            returnval = surfaceLL.mychemistry.OmegaAr;
+        } else if( varName == D_REVELLE_HL ) {
+            returnval = surfaceHL.calc_revelle();
+        } else if( varName == D_REVELLE_LL ) {
+            returnval = surfaceLL.calc_revelle();
+        } else if( varName == D_ATM_OCEAN_FLUX_HL ) {
+            returnval = unitval( annualflux_sumHL.value( U_PGC ), U_PGC_YR );
+        } else if( varName == D_ATM_OCEAN_FLUX_LL ) {
+            returnval = unitval( annualflux_sumLL.value( U_PGC ), U_PGC_YR );
+        } else if( varName == D_CARBON_DO ) {
+               returnval = deep.get_carbon();
+        } else if( varName == D_CARBON_HL ) {
+            returnval = surfaceHL.get_carbon();
+        } else if( varName == D_CARBON_LL ) {
+            returnval = surfaceLL.get_carbon();
+        } else if( varName == D_CARBON_IO ) {
+        returnval = inter.get_carbon();
+        } else if( varName == D_DIC_HL ) {
+            returnval = surfaceHL.mychemistry.convertToDIC( surfaceHL.get_carbon() );
+        } else if( varName == D_DIC_LL ) {
+        returnval = surfaceLL.mychemistry.convertToDIC( surfaceLL.get_carbon() );
+        } else if( varName == D_HL_DO ) {
+            returnval = surfaceHL.annual_box_fluxes[ &deep ] ;
+        } else if( varName == D_PCO2_HL ) {
+            returnval = surfaceHL.mychemistry.PCO2o;
+        } else if( varName == D_PCO2_LL ) {
+            returnval = surfaceLL.mychemistry.PCO2o;
+        } else if( varName == D_PH_HL ) {
+               returnval = surfaceHL.mychemistry.pH;
+        } else if( varName == D_PH_LL ) {
+               returnval = surfaceLL.mychemistry.pH;
+        } else if( varName == D_TEMP_HL ) {
+            returnval = surfaceHL.get_Tbox();
+        } else if( varName == D_TEMP_LL ) {
+            returnval = surfaceLL.get_Tbox();
+        } else if( varName == D_OCEAN_C ) {
+            returnval = totalcpool();
+        } else if( varName == D_CO3_HL ) {
+        returnval = surfaceHL.mychemistry.CO3;
+        } else if( varName == D_CO3_LL ) {
+            returnval = surfaceLL.mychemistry.CO3;
+        } else if( varName == D_TIMESTEPS ) {
+             returnval = unitval( timesteps, U_UNITLESS );
+        } else {
+            H_THROW( "Problem with user request for constant data: " + varName );
+        }
+        
+    } else if(date != Core::undefinedIndex() ){
+        if( varName == D_OCEAN_CFLUX ){
+                returnval = annualflux_sum_ts.get(date);
+        } else if( varName == D_OCEAN_C ) {
+            returnval = totalcpool();
+        } else if( varName == D_HL_DO ) {
+            returnval = C_DO_ts.get( date );
+        } else if( varName == D_PH_HL ) {
+            returnval = PH_HL_ts.get( date );
+        } else if( varName == D_PH_LL ) {
+            returnval = PH_LL_ts.get( date );
+        } else if( varName == D_ATM_OCEAN_FLUX_HL ) {
+            returnval = annualflux_sumHL_ts.get(date);
+        } else if( varName == D_ATM_OCEAN_FLUX_LL ) {
+            returnval = annualflux_sumLL_ts.get(date);
+        } else if( varName == D_PCO2_HL ) {
+            returnval = pco2_HL_ts.get( date );
+        } else if( varName == D_PCO2_LL ) {
+            returnval = pco2_LL_ts.get( date );
+        } else if( varName == D_DIC_HL ) {
+            returnval = dic_HL_ts.get( date );
+        } else if( varName == D_DIC_LL ) {
+            returnval = dic_LL_ts.get( date );
+        } else if( varName == D_CARBON_HL ) {
+           returnval = Ca_HL_ts.get(date);
+        } else if( varName == D_CARBON_LL ) {
+            returnval = Ca_LL_ts.get(date);
+        } else if( varName == D_CARBON_IO ) {
+          returnval = C_IO_ts.get(date);
+        } else if( varName == D_CARBON_DO ) {
+            returnval = C_DO_ts.get(date);
+        } else if( varName == D_TEMP_HL ) {
+            returnval = temp_HL_ts.get(date);
+        } else if( varName == D_TEMP_LL ) {
+            returnval = temp_LL_ts.get(date);
+        } else if( varName == D_CO3_LL ) {
+            returnval = co3_LL_ts.get(date);
+        } else if( varName == D_CO3_HL ) {
+            returnval = co3_HL_ts.get(date);
+        } else {
+            H_THROW( "Problem with user request for time series: " + varName );
+        }
+        
+    } else {
         H_ASSERT( date == Core::undefinedIndex(), "Date data not available for " + varName + " in OceanComponent::getData()" );
     }
-
-    if( varName == D_OCEAN_CFLUX ) {
-        // If no date, we're in spinup; just return the current value
-        if( date == Core::undefinedIndex() ) {
-            returnval = annualflux_sum;
-        } else {
-            returnval = annualflux_sum_ts.get(date);
-        }
-    } else if( varName == D_OCEAN_C ) {
-        returnval = totalcpool();
-	} else if( varName == D_HL_DO ) {
-        returnval = surfaceHL.annual_box_fluxes[ &deep ] ;
-    } else if( varName == D_PH_HL ) {
-        returnval = surfaceHL.mychemistry.pH;
-	} else if( varName == D_PH_LL ) {
-        returnval = surfaceLL.mychemistry.pH;
-	} else if( varName == D_ATM_OCEAN_FLUX_HL ) {
-		returnval = unitval( annualflux_sumHL.value( U_PGC ), U_PGC_YR );
-    } else if( varName == D_ATM_OCEAN_FLUX_LL ) {
-		returnval = unitval( annualflux_sumLL.value( U_PGC ), U_PGC_YR );
-	} else if( varName == D_PCO2_HL ) {
-        returnval = surfaceHL.mychemistry.PCO2o;
-	} else if( varName == D_PCO2_LL ) {
-		returnval = surfaceLL.mychemistry.PCO2o;
-    } else if( varName == D_DIC_HL ) {
-        returnval = surfaceHL.mychemistry.convertToDIC( surfaceHL.get_carbon() );
-	} else if( varName == D_DIC_LL ) {
-        returnval = surfaceLL.mychemistry.convertToDIC( surfaceLL.get_carbon() );
-	} else if( varName == D_CARBON_HL ) {
-        returnval = surfaceHL.get_carbon();
-	} else if( varName == D_CARBON_LL ) {
-        returnval = surfaceLL.get_carbon();
-	} else if( varName == D_CARBON_IO ) {
-		returnval = inter.get_carbon();
-    } else if( varName == D_CARBON_DO ) {
-        returnval = deep.get_carbon();
-    } else if( varName == D_TT ) {
-        returnval = tt;
-    } else if( varName == D_TU ) {
-        returnval = tu;
-     } else if( varName == D_TID ) {
-        returnval = tid;
-     } else if( varName == D_TWI ) {
-        returnval = twi;
-	} else if( varName == D_OMEGACA_HL ) {
-        returnval = surfaceHL.mychemistry.OmegaCa;
-	} else if( varName == D_OMEGACA_LL ) {
-		returnval = surfaceLL.mychemistry.OmegaCa;
-	} else if( varName == D_OMEGAAR_HL ) {
-        returnval = surfaceHL.mychemistry.OmegaAr;
-	} else if( varName == D_OMEGAAR_LL ) {
-        returnval = surfaceLL.mychemistry.OmegaAr;
-    } else if( varName == D_REVELLE_HL ) {
-        returnval = surfaceHL.calc_revelle();
-    } else if( varName == D_REVELLE_LL ) {
-        returnval = surfaceLL.calc_revelle();
-    } else if( varName == D_TEMP_HL ) {
-		returnval = surfaceHL.get_Tbox();
-	} else if( varName == D_TEMP_LL ) {
-		returnval = surfaceLL.get_Tbox();
-	} else if( varName == D_CO3_LL ) {
-		returnval = surfaceLL.mychemistry.CO3;
-	} else if( varName == D_CO3_HL ) {
-		returnval = surfaceHL.mychemistry.CO3;
-    } else if( varName == D_TIMESTEPS ) {
-        returnval = unitval( timesteps, U_UNITLESS );
-    } else {
-        H_THROW( "Caller is requesting unknown variable: " + varName );
-    }
-
+    
     return returnval;
 }
 
@@ -597,20 +657,36 @@ void OceanComponent::reset(double time)
 
 void OceanComponent::record_state(double time)
 {
-    H_LOG(logger, Logger::DEBUG) << "Recording component state at t= "
-                                 << time << endl;
+    H_LOG(logger, Logger::DEBUG) << "Recording component state at t= " << time << endl;
     surfaceHL_tv.set(time, surfaceHL);
     surfaceLL_tv.set(time, surfaceLL);
     inter_tv.set(time, inter);
     deep_tv.set(time, deep);
 
+    // Record the state of the various ocean boxes and variables at each time step
+    // in a unitval time series so that the output can be output by the
+    // R wrapper.
     Tgav_ts.set(time, Tgav);
     Ca_ts.set(time, Ca);
-
     annualflux_sum_ts.set(time, annualflux_sum);
     annualflux_sumHL_ts.set(time, annualflux_sumHL);
     annualflux_sumLL_ts.set(time, annualflux_sumLL);
     lastflux_annualized_ts.set(time, lastflux_annualized);
+    C_IO_ts.set(time, inter.get_carbon());
+    Ca_HL_ts.set(time, surfaceHL.get_carbon());
+    C_DO_ts.set(time, surfaceHL.annual_box_fluxes[ &deep ]);
+    PH_HL_ts.set(time, surfaceHL.mychemistry.pH);
+    PH_LL_ts.set(time, surfaceLL.mychemistry.pH);
+    pco2_HL_ts.set(time, surfaceHL.mychemistry.PCO2o);
+    pco2_LL_ts.set(time, surfaceLL.mychemistry.PCO2o);
+    dic_HL_ts.set(time, surfaceHL.mychemistry.convertToDIC( surfaceHL.get_carbon() ));
+    dic_LL_ts.set(time, surfaceLL.mychemistry.convertToDIC( surfaceLL.get_carbon() ));
+    Ca_LL_ts.set(time, surfaceLL.get_carbon());
+    C_DO_ts.set(time, deep.get_carbon());
+    temp_HL_ts.set(time, surfaceHL.get_Tbox());
+    temp_LL_ts.set(time, surfaceLL.get_Tbox());
+    co3_HL_ts.set(time, surfaceHL.mychemistry.CO3);
+    co3_LL_ts.set(time, surfaceLL.mychemistry.CO3);
 
     max_timestep_ts.set(time, max_timestep);
     reduced_timestep_timeout_ts.set(time, reduced_timestep_timeout);

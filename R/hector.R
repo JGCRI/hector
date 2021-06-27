@@ -84,7 +84,7 @@ runscenario <- function(infile) {
 #' @export
 newcore <- function(inifile, loglevel = 0, suppresslogging = TRUE,
                     name = "unnamed hector core") {
-  hcore <- newcore_impl(inifile, loglevel, suppresslogging, name)
+  hcore <- newcore_impl(normalizePath(inifile), loglevel, suppresslogging, name)
   class(hcore) <- c("hcore", class(hcore))
   reg.finalizer(hcore, hector::shutdown)
   hcore
