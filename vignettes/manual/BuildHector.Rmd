@@ -148,7 +148,8 @@ The Xcode project file is configured to use constants defining custom paths, rat
 This means that developers and users can set these paths without overwriting each other.
 
 * You will need to set several custom paths (Preferences -> Locations -> Custom Paths): `BOOSTLIB`, `BOOSTROOT`, and `HECTORDIR`. These are the Boost runtime library, the Boost root under which the headers can be found in `boost/`, and the runtime working directory for the model (the repository root).
-* If you want to build Hector's testing framework (the `hector-tests` target) add `GTEST` and `GTESTLIB` custom paths; these are analogous to their Boost counterparts.
+* If you want to build Hector's testing framework (the `hector-tests` target; this is optional and only relevant for C++ developers) add GTEST and GTESTLIB custom paths to Xcode; these are analogous to their Boost counterparts. You will need to install [googletest](https://github.com/google/googletest) on your machine.
+
 
 At this point you should be ready to go:
 
