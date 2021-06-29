@@ -1,0 +1,746 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 52;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		277D29DC2683669E003177A2 /* libboost_system.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 277D29DA2683669E003177A2 /* libboost_system.dylib */; };
+		277D29DD2683669E003177A2 /* libboost_filesystem.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 277D29DB2683669E003177A2 /* libboost_filesystem.dylib */; };
+		27808CF12615CEFA00BE8B90 /* libgtest.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 27808CF02615CEFA00BE8B90 /* libgtest.dylib */; };
+		27808CF42615D31A00BE8B90 /* test_tseries.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27A02A4B2615CAA100AF9BFA /* test_tseries.cpp */; };
+		27A02A5E2615CBB800AF9BFA /* halocarbon_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C231261511C5005DE26D /* halocarbon_component.cpp */; };
+		27A02A602615CBB800AF9BFA /* ocean_csys.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C241261511C7005DE26D /* ocean_csys.cpp */; };
+		27A02A612615CBB800AF9BFA /* core.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C23D261511C6005DE26D /* core.cpp */; };
+		27A02A622615CBB800AF9BFA /* INIReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C248261511C7005DE26D /* INIReader.cpp */; };
+		27A02A632615CBB800AF9BFA /* so2_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C232261511C5005DE26D /* so2_component.cpp */; };
+		27A02A642615CBB800AF9BFA /* oc_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C24A261511C8005DE26D /* oc_component.cpp */; };
+		27A02A652615CBB800AF9BFA /* csv_table_reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C234261511C6005DE26D /* csv_table_reader.cpp */; };
+		27A02A662615CBB800AF9BFA /* dependency_finder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C23C261511C6005DE26D /* dependency_finder.cpp */; };
+		27A02A672615CBB800AF9BFA /* unitval.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C243261511C7005DE26D /* unitval.cpp */; };
+		27A02A682615CBB800AF9BFA /* ocean_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C237261511C6005DE26D /* ocean_component.cpp */; };
+		27A02A692615CBB800AF9BFA /* slr_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C247261511C7005DE26D /* slr_component.cpp */; };
+		27A02A6A2615CBB800AF9BFA /* spline_forsythe.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C24D261511C8005DE26D /* spline_forsythe.cpp */; };
+		27A02A6B2615CBB800AF9BFA /* oh_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C236261511C6005DE26D /* oh_component.cpp */; };
+		27A02A6C2615CBB800AF9BFA /* ini.c in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C22E261511C5005DE26D /* ini.c */; };
+		27A02A6D2615CBB800AF9BFA /* temperature_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C242261511C7005DE26D /* temperature_component.cpp */; };
+		27A02A6E2615CBB800AF9BFA /* simpleNbox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C245261511C7005DE26D /* simpleNbox.cpp */; };
+		27A02A702615CBB800AF9BFA /* h_interpolator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C239261511C6005DE26D /* h_interpolator.cpp */; };
+		27A02A712615CBB800AF9BFA /* ini_to_core_reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C240261511C7005DE26D /* ini_to_core_reader.cpp */; };
+		27A02A722615CBB800AF9BFA /* bc_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C23B261511C6005DE26D /* bc_component.cpp */; };
+		27A02A732615CBB800AF9BFA /* ch4_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C22C261511C5005DE26D /* ch4_component.cpp */; };
+		27A02A742615CBB800AF9BFA /* csv_outputstream_visitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C23F261511C7005DE26D /* csv_outputstream_visitor.cpp */; };
+		27A02A752615CBB800AF9BFA /* carbon-cycle-model.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C24B261511C8005DE26D /* carbon-cycle-model.cpp */; };
+		27A02A762615CBB800AF9BFA /* carbon-cycle-solver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C22F261511C5005DE26D /* carbon-cycle-solver.cpp */; };
+		27A02A772615CBB800AF9BFA /* logger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C246261511C7005DE26D /* logger.cpp */; };
+		27A02A782615CBB800AF9BFA /* o3_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C233261511C5005DE26D /* o3_component.cpp */; };
+		27A02A792615CBB800AF9BFA /* n2o_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C23A261511C6005DE26D /* n2o_component.cpp */; };
+		27A02A7A2615CBB800AF9BFA /* h_reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C22D261511C5005DE26D /* h_reader.cpp */; };
+		27A02A7B2615CBB800AF9BFA /* forcing_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C230261511C5005DE26D /* forcing_component.cpp */; };
+		27A02A7C2615CBB800AF9BFA /* dummy_model_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C249261511C7005DE26D /* dummy_model_component.cpp */; };
+		27A02A7D2615CBB800AF9BFA /* oceanbox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C23E261511C7005DE26D /* oceanbox.cpp */; };
+		27A02A7F2615CBB800AF9BFA /* libboost_filesystem.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 27B2C27A26155326005DE26D /* libboost_filesystem.dylib */; };
+		27A02A802615CBB800AF9BFA /* libboost_system.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 27B2C27C26155331005DE26D /* libboost_system.dylib */; };
+		27A02A892615CBDB00AF9BFA /* testing_main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27A02A4D2615CAA100AF9BFA /* testing_main.cpp */; };
+		27B2C24F261511C8005DE26D /* ch4_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C22C261511C5005DE26D /* ch4_component.cpp */; };
+		27B2C250261511C8005DE26D /* h_reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C22D261511C5005DE26D /* h_reader.cpp */; };
+		27B2C251261511C8005DE26D /* ini.c in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C22E261511C5005DE26D /* ini.c */; };
+		27B2C252261511C8005DE26D /* carbon-cycle-solver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C22F261511C5005DE26D /* carbon-cycle-solver.cpp */; };
+		27B2C253261511C8005DE26D /* forcing_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C230261511C5005DE26D /* forcing_component.cpp */; };
+		27B2C254261511C8005DE26D /* halocarbon_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C231261511C5005DE26D /* halocarbon_component.cpp */; };
+		27B2C255261511C8005DE26D /* so2_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C232261511C5005DE26D /* so2_component.cpp */; };
+		27B2C256261511C8005DE26D /* o3_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C233261511C5005DE26D /* o3_component.cpp */; };
+		27B2C257261511C8005DE26D /* csv_table_reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C234261511C6005DE26D /* csv_table_reader.cpp */; };
+		27B2C259261511C8005DE26D /* oh_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C236261511C6005DE26D /* oh_component.cpp */; };
+		27B2C25A261511C8005DE26D /* ocean_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C237261511C6005DE26D /* ocean_component.cpp */; };
+		27B2C25C261511C8005DE26D /* h_interpolator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C239261511C6005DE26D /* h_interpolator.cpp */; };
+		27B2C25D261511C8005DE26D /* n2o_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C23A261511C6005DE26D /* n2o_component.cpp */; };
+		27B2C25E261511C8005DE26D /* bc_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C23B261511C6005DE26D /* bc_component.cpp */; };
+		27B2C25F261511C8005DE26D /* dependency_finder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C23C261511C6005DE26D /* dependency_finder.cpp */; };
+		27B2C260261511C8005DE26D /* core.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C23D261511C6005DE26D /* core.cpp */; };
+		27B2C261261511C8005DE26D /* oceanbox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C23E261511C7005DE26D /* oceanbox.cpp */; };
+		27B2C262261511C8005DE26D /* csv_outputstream_visitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C23F261511C7005DE26D /* csv_outputstream_visitor.cpp */; };
+		27B2C263261511C8005DE26D /* ini_to_core_reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C240261511C7005DE26D /* ini_to_core_reader.cpp */; };
+		27B2C264261511C8005DE26D /* ocean_csys.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C241261511C7005DE26D /* ocean_csys.cpp */; };
+		27B2C265261511C8005DE26D /* temperature_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C242261511C7005DE26D /* temperature_component.cpp */; };
+		27B2C266261511C8005DE26D /* unitval.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C243261511C7005DE26D /* unitval.cpp */; };
+		27B2C268261511C8005DE26D /* simpleNbox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C245261511C7005DE26D /* simpleNbox.cpp */; };
+		27B2C269261511C8005DE26D /* logger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C246261511C7005DE26D /* logger.cpp */; };
+		27B2C26A261511C8005DE26D /* slr_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C247261511C7005DE26D /* slr_component.cpp */; };
+		27B2C26B261511C8005DE26D /* INIReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C248261511C7005DE26D /* INIReader.cpp */; };
+		27B2C26C261511C8005DE26D /* dummy_model_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C249261511C7005DE26D /* dummy_model_component.cpp */; };
+		27B2C26D261511C8005DE26D /* oc_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C24A261511C8005DE26D /* oc_component.cpp */; };
+		27B2C26E261511C8005DE26D /* carbon-cycle-model.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C24B261511C8005DE26D /* carbon-cycle-model.cpp */; };
+		27B2C270261511C8005DE26D /* spline_forsythe.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C24D261511C8005DE26D /* spline_forsythe.cpp */; };
+		27B2C271261511C8005DE26D /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C24E261511C8005DE26D /* main.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		27585CF626150F1A00BA1EF5 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		27A02A812615CBB800AF9BFA /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		27A02A822615CBB800AF9BFA /* Embed Libraries */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Libraries";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		27B2C282261562AC005DE26D /* Embed Libraries */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Libraries";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		27585CF826150F1A00BA1EF5 /* hector */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = hector; sourceTree = BUILT_PRODUCTS_DIR; };
+		277D29DA2683669E003177A2 /* libboost_system.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libboost_system.dylib; path = ../../../../../../../../../usr/local/lib/libboost_system.dylib; sourceTree = "<group>"; };
+		277D29DB2683669E003177A2 /* libboost_filesystem.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libboost_filesystem.dylib; path = ../../../../../../../../../usr/local/lib/libboost_filesystem.dylib; sourceTree = "<group>"; };
+		27808CF02615CEFA00BE8B90 /* libgtest.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libgtest.dylib; path = ../../../../../../../../../usr/local/lib/libgtest.dylib; sourceTree = "<group>"; };
+		27A02A462615CAA100AF9BFA /* test_logger.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_logger.cpp; path = ../../../src/Testing/test_logger.cpp; sourceTree = "<group>"; };
+		27A02A472615CAA100AF9BFA /* test_restart.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_restart.cpp; path = ../../../src/Testing/test_restart.cpp; sourceTree = "<group>"; };
+		27A02A482615CAA100AF9BFA /* test_csv_file_reader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_csv_file_reader.cpp; path = ../../../src/Testing/test_csv_file_reader.cpp; sourceTree = "<group>"; };
+		27A02A492615CAA100AF9BFA /* test_dependency_finder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_dependency_finder.cpp; path = ../../../src/Testing/test_dependency_finder.cpp; sourceTree = "<group>"; };
+		27A02A4A2615CAA100AF9BFA /* test_ini_to_core_reader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_ini_to_core_reader.cpp; path = ../../../src/Testing/test_ini_to_core_reader.cpp; sourceTree = "<group>"; };
+		27A02A4B2615CAA100AF9BFA /* test_tseries.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_tseries.cpp; path = ../../../src/Testing/test_tseries.cpp; sourceTree = "<group>"; };
+		27A02A4C2615CAA100AF9BFA /* test_units.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_units.cpp; path = ../../../src/Testing/test_units.cpp; sourceTree = "<group>"; };
+		27A02A4D2615CAA100AF9BFA /* testing_main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = testing_main.cpp; path = ../../../src/Testing/testing_main.cpp; sourceTree = "<group>"; };
+		27A02A4E2615CAA100AF9BFA /* test_core.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_core.cpp; path = ../../../src/Testing/test_core.cpp; sourceTree = "<group>"; };
+		27A02A4F2615CAA100AF9BFA /* test_hreader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_hreader.cpp; path = ../../../src/Testing/test_hreader.cpp; sourceTree = "<group>"; };
+		27A02A502615CAA100AF9BFA /* test_inih.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_inih.cpp; path = ../../../src/Testing/test_inih.cpp; sourceTree = "<group>"; };
+		27A02A882615CBB800AF9BFA /* hector-tests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "hector-tests"; sourceTree = BUILT_PRODUCTS_DIR; };
+		27B2C2012615112D005DE26D /* ocean_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ocean_component.hpp; path = ../../inst/include/ocean_component.hpp; sourceTree = "<group>"; };
+		27B2C2022615112D005DE26D /* csv_table_reader.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = csv_table_reader.hpp; path = ../../inst/include/csv_table_reader.hpp; sourceTree = "<group>"; };
+		27B2C2032615112D005DE26D /* tseries.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = tseries.hpp; path = ../../inst/include/tseries.hpp; sourceTree = "<group>"; };
+		27B2C2042615112D005DE26D /* bc_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = bc_component.hpp; path = ../../inst/include/bc_component.hpp; sourceTree = "<group>"; };
+		27B2C2052615112D005DE26D /* halocarbon_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = halocarbon_component.hpp; path = ../../inst/include/halocarbon_component.hpp; sourceTree = "<group>"; };
+		27B2C2062615112D005DE26D /* forcing_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = forcing_component.hpp; path = ../../inst/include/forcing_component.hpp; sourceTree = "<group>"; };
+		27B2C2072615112D005DE26D /* simpleNbox.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = simpleNbox.hpp; path = ../../inst/include/simpleNbox.hpp; sourceTree = "<group>"; };
+		27B2C2082615112D005DE26D /* h_reader.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = h_reader.hpp; path = ../../inst/include/h_reader.hpp; sourceTree = "<group>"; };
+		27B2C2092615112D005DE26D /* component_data.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = component_data.hpp; path = ../../inst/include/component_data.hpp; sourceTree = "<group>"; };
+		27B2C20A2615112D005DE26D /* ch4_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ch4_component.hpp; path = ../../inst/include/ch4_component.hpp; sourceTree = "<group>"; };
+		27B2C20B2615112D005DE26D /* carbon-cycle-solver.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = "carbon-cycle-solver.hpp"; path = "../../inst/include/carbon-cycle-solver.hpp"; sourceTree = "<group>"; };
+		27B2C20C2615112D005DE26D /* o3_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = o3_component.hpp; path = ../../inst/include/o3_component.hpp; sourceTree = "<group>"; };
+		27B2C20D2615112D005DE26D /* unitval.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = unitval.hpp; path = ../../inst/include/unitval.hpp; sourceTree = "<group>"; };
+		27B2C20E2615112D005DE26D /* ivisitable.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ivisitable.hpp; path = ../../inst/include/ivisitable.hpp; sourceTree = "<group>"; };
+		27B2C20F2615112D005DE26D /* logger.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = logger.hpp; path = ../../inst/include/logger.hpp; sourceTree = "<group>"; };
+		27B2C2102615112D005DE26D /* ocean_csys.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ocean_csys.hpp; path = ../../inst/include/ocean_csys.hpp; sourceTree = "<group>"; };
+		27B2C2112615112E005DE26D /* csv_outputstream_visitor.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = csv_outputstream_visitor.hpp; path = ../../inst/include/csv_outputstream_visitor.hpp; sourceTree = "<group>"; };
+		27B2C2122615112E005DE26D /* hector.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = hector.hpp; path = ../../inst/include/hector.hpp; sourceTree = "<group>"; };
+		27B2C2132615112E005DE26D /* ini.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ini.h; path = ../../inst/include/ini.h; sourceTree = "<group>"; };
+		27B2C2142615112E005DE26D /* component_names.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = component_names.hpp; path = ../../inst/include/component_names.hpp; sourceTree = "<group>"; };
+		27B2C2152615112E005DE26D /* message_data.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = message_data.hpp; path = ../../inst/include/message_data.hpp; sourceTree = "<group>"; };
+		27B2C2162615112E005DE26D /* oceanbox.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = oceanbox.hpp; path = ../../inst/include/oceanbox.hpp; sourceTree = "<group>"; };
+		27B2C2172615112E005DE26D /* temperature_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = temperature_component.hpp; path = ../../inst/include/temperature_component.hpp; sourceTree = "<group>"; };
+		27B2C2182615112E005DE26D /* dummy_model_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = dummy_model_component.hpp; path = ../../inst/include/dummy_model_component.hpp; sourceTree = "<group>"; };
+		27B2C2192615112E005DE26D /* oh_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = oh_component.hpp; path = ../../inst/include/oh_component.hpp; sourceTree = "<group>"; };
+		27B2C21A2615112E005DE26D /* onelineocean_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = onelineocean_component.hpp; path = ../../inst/include/onelineocean_component.hpp; sourceTree = "<group>"; };
+		27B2C21B2615112E005DE26D /* ini_to_core_reader.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ini_to_core_reader.hpp; path = ../../inst/include/ini_to_core_reader.hpp; sourceTree = "<group>"; };
+		27B2C21C2615112E005DE26D /* avisitor.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = avisitor.hpp; path = ../../inst/include/avisitor.hpp; sourceTree = "<group>"; };
+		27B2C21D2615112E005DE26D /* so2_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = so2_component.hpp; path = ../../inst/include/so2_component.hpp; sourceTree = "<group>"; };
+		27B2C21E2615112E005DE26D /* dependency_finder.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = dependency_finder.hpp; path = ../../inst/include/dependency_finder.hpp; sourceTree = "<group>"; };
+		27B2C21F2615112E005DE26D /* h_util.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = h_util.hpp; path = ../../inst/include/h_util.hpp; sourceTree = "<group>"; };
+		27B2C2202615112E005DE26D /* core.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = core.hpp; path = ../../inst/include/core.hpp; sourceTree = "<group>"; };
+		27B2C2212615112E005DE26D /* tvector.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = tvector.hpp; path = ../../inst/include/tvector.hpp; sourceTree = "<group>"; };
+		27B2C2222615112E005DE26D /* imodel_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = imodel_component.hpp; path = ../../inst/include/imodel_component.hpp; sourceTree = "<group>"; };
+		27B2C2232615112E005DE26D /* h_interpolator.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = h_interpolator.hpp; path = ../../inst/include/h_interpolator.hpp; sourceTree = "<group>"; };
+		27B2C2242615112E005DE26D /* slr_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = slr_component.hpp; path = ../../inst/include/slr_component.hpp; sourceTree = "<group>"; };
+		27B2C2262615112F005DE26D /* n2o_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = n2o_component.hpp; path = ../../inst/include/n2o_component.hpp; sourceTree = "<group>"; };
+		27B2C2272615112F005DE26D /* oc_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = oc_component.hpp; path = ../../inst/include/oc_component.hpp; sourceTree = "<group>"; };
+		27B2C2282615112F005DE26D /* INIReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = INIReader.h; path = ../../inst/include/INIReader.h; sourceTree = "<group>"; };
+		27B2C2292615112F005DE26D /* h_exception.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = h_exception.hpp; path = ../../inst/include/h_exception.hpp; sourceTree = "<group>"; };
+		27B2C22A2615112F005DE26D /* carbon-cycle-model.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = "carbon-cycle-model.hpp"; path = "../../inst/include/carbon-cycle-model.hpp"; sourceTree = "<group>"; };
+		27B2C22C261511C5005DE26D /* ch4_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ch4_component.cpp; path = ../../src/ch4_component.cpp; sourceTree = "<group>"; };
+		27B2C22D261511C5005DE26D /* h_reader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = h_reader.cpp; path = ../../src/h_reader.cpp; sourceTree = "<group>"; };
+		27B2C22E261511C5005DE26D /* ini.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ini.c; path = ../../src/ini.c; sourceTree = "<group>"; };
+		27B2C22F261511C5005DE26D /* carbon-cycle-solver.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "carbon-cycle-solver.cpp"; path = "../../src/carbon-cycle-solver.cpp"; sourceTree = "<group>"; };
+		27B2C230261511C5005DE26D /* forcing_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = forcing_component.cpp; path = ../../src/forcing_component.cpp; sourceTree = "<group>"; };
+		27B2C231261511C5005DE26D /* halocarbon_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = halocarbon_component.cpp; path = ../../src/halocarbon_component.cpp; sourceTree = "<group>"; };
+		27B2C232261511C5005DE26D /* so2_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = so2_component.cpp; path = ../../src/so2_component.cpp; sourceTree = "<group>"; };
+		27B2C233261511C5005DE26D /* o3_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = o3_component.cpp; path = ../../src/o3_component.cpp; sourceTree = "<group>"; };
+		27B2C234261511C6005DE26D /* csv_table_reader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = csv_table_reader.cpp; path = ../../src/csv_table_reader.cpp; sourceTree = "<group>"; };
+		27B2C236261511C6005DE26D /* oh_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = oh_component.cpp; path = ../../src/oh_component.cpp; sourceTree = "<group>"; };
+		27B2C237261511C6005DE26D /* ocean_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ocean_component.cpp; path = ../../src/ocean_component.cpp; sourceTree = "<group>"; };
+		27B2C239261511C6005DE26D /* h_interpolator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = h_interpolator.cpp; path = ../../src/h_interpolator.cpp; sourceTree = "<group>"; };
+		27B2C23A261511C6005DE26D /* n2o_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = n2o_component.cpp; path = ../../src/n2o_component.cpp; sourceTree = "<group>"; };
+		27B2C23B261511C6005DE26D /* bc_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = bc_component.cpp; path = ../../src/bc_component.cpp; sourceTree = "<group>"; };
+		27B2C23C261511C6005DE26D /* dependency_finder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = dependency_finder.cpp; path = ../../src/dependency_finder.cpp; sourceTree = "<group>"; };
+		27B2C23D261511C6005DE26D /* core.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = core.cpp; path = ../../src/core.cpp; sourceTree = "<group>"; };
+		27B2C23E261511C7005DE26D /* oceanbox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = oceanbox.cpp; path = ../../src/oceanbox.cpp; sourceTree = "<group>"; };
+		27B2C23F261511C7005DE26D /* csv_outputstream_visitor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = csv_outputstream_visitor.cpp; path = ../../src/csv_outputstream_visitor.cpp; sourceTree = "<group>"; };
+		27B2C240261511C7005DE26D /* ini_to_core_reader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ini_to_core_reader.cpp; path = ../../src/ini_to_core_reader.cpp; sourceTree = "<group>"; };
+		27B2C241261511C7005DE26D /* ocean_csys.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ocean_csys.cpp; path = ../../src/ocean_csys.cpp; sourceTree = "<group>"; };
+		27B2C242261511C7005DE26D /* temperature_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = temperature_component.cpp; path = ../../src/temperature_component.cpp; sourceTree = "<group>"; };
+		27B2C243261511C7005DE26D /* unitval.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = unitval.cpp; path = ../../src/unitval.cpp; sourceTree = "<group>"; };
+		27B2C245261511C7005DE26D /* simpleNbox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = simpleNbox.cpp; path = ../../src/simpleNbox.cpp; sourceTree = "<group>"; };
+		27B2C246261511C7005DE26D /* logger.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = logger.cpp; path = ../../src/logger.cpp; sourceTree = "<group>"; };
+		27B2C247261511C7005DE26D /* slr_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = slr_component.cpp; path = ../../src/slr_component.cpp; sourceTree = "<group>"; };
+		27B2C248261511C7005DE26D /* INIReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = INIReader.cpp; path = ../../src/INIReader.cpp; sourceTree = "<group>"; };
+		27B2C249261511C7005DE26D /* dummy_model_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = dummy_model_component.cpp; path = ../../src/dummy_model_component.cpp; sourceTree = "<group>"; };
+		27B2C24A261511C8005DE26D /* oc_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = oc_component.cpp; path = ../../src/oc_component.cpp; sourceTree = "<group>"; };
+		27B2C24B261511C8005DE26D /* carbon-cycle-model.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "carbon-cycle-model.cpp"; path = "../../src/carbon-cycle-model.cpp"; sourceTree = "<group>"; };
+		27B2C24D261511C8005DE26D /* spline_forsythe.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = spline_forsythe.cpp; path = ../../src/spline_forsythe.cpp; sourceTree = "<group>"; };
+		27B2C24E261511C8005DE26D /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = ../../src/main.cpp; sourceTree = "<group>"; };
+		27B2C274261551A9005DE26D /* libboost_filesystem.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_filesystem.a; path = ../../../../../../../../../usr/local/boost_1_73_0/stage/lib/libboost_filesystem.a; sourceTree = "<group>"; };
+		27B2C276261551B7005DE26D /* libboost_system.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_system.a; path = ../../../../../../../../../usr/local/boost_1_73_0/stage/lib/libboost_system.a; sourceTree = "<group>"; };
+		27B2C27A26155326005DE26D /* libboost_filesystem.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libboost_filesystem.dylib; path = ../../../../../../../../../usr/local/boost_1_73_0/stage/lib/libboost_filesystem.dylib; sourceTree = "<group>"; };
+		27B2C27C26155331005DE26D /* libboost_system.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libboost_system.dylib; path = ../../../../../../../../../usr/local/boost_1_73_0/stage/lib/libboost_system.dylib; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		27585CF526150F1A00BA1EF5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				277D29DC2683669E003177A2 /* libboost_system.dylib in Frameworks */,
+				277D29DD2683669E003177A2 /* libboost_filesystem.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		27A02A7E2615CBB800AF9BFA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				27A02A7F2615CBB800AF9BFA /* libboost_filesystem.dylib in Frameworks */,
+				27A02A802615CBB800AF9BFA /* libboost_system.dylib in Frameworks */,
+				27808CF12615CEFA00BE8B90 /* libgtest.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		27585CEF26150F1A00BA1EF5 = {
+			isa = PBXGroup;
+			children = (
+				27B2C22B26151149005DE26D /* Headers */,
+				27B2C272261511CD005DE26D /* Source */,
+				27A02A452615CA7300AF9BFA /* Testing */,
+				27585CF926150F1A00BA1EF5 /* Products */,
+				27B2C273261551A9005DE26D /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		27585CF926150F1A00BA1EF5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				27585CF826150F1A00BA1EF5 /* hector */,
+				27A02A882615CBB800AF9BFA /* hector-tests */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		27A02A452615CA7300AF9BFA /* Testing */ = {
+			isa = PBXGroup;
+			children = (
+				27A02A4E2615CAA100AF9BFA /* test_core.cpp */,
+				27A02A482615CAA100AF9BFA /* test_csv_file_reader.cpp */,
+				27A02A492615CAA100AF9BFA /* test_dependency_finder.cpp */,
+				27A02A4F2615CAA100AF9BFA /* test_hreader.cpp */,
+				27A02A4A2615CAA100AF9BFA /* test_ini_to_core_reader.cpp */,
+				27A02A502615CAA100AF9BFA /* test_inih.cpp */,
+				27A02A462615CAA100AF9BFA /* test_logger.cpp */,
+				27A02A472615CAA100AF9BFA /* test_restart.cpp */,
+				27A02A4B2615CAA100AF9BFA /* test_tseries.cpp */,
+				27A02A4C2615CAA100AF9BFA /* test_units.cpp */,
+				27A02A4D2615CAA100AF9BFA /* testing_main.cpp */,
+			);
+			path = Testing;
+			sourceTree = "<group>";
+		};
+		27B2C22B26151149005DE26D /* Headers */ = {
+			isa = PBXGroup;
+			children = (
+				27B2C21C2615112E005DE26D /* avisitor.hpp */,
+				27B2C2042615112D005DE26D /* bc_component.hpp */,
+				27B2C22A2615112F005DE26D /* carbon-cycle-model.hpp */,
+				27B2C20B2615112D005DE26D /* carbon-cycle-solver.hpp */,
+				27B2C20A2615112D005DE26D /* ch4_component.hpp */,
+				27B2C2092615112D005DE26D /* component_data.hpp */,
+				27B2C2142615112E005DE26D /* component_names.hpp */,
+				27B2C2202615112E005DE26D /* core.hpp */,
+				27B2C2112615112E005DE26D /* csv_outputstream_visitor.hpp */,
+				27B2C2022615112D005DE26D /* csv_table_reader.hpp */,
+				27B2C21E2615112E005DE26D /* dependency_finder.hpp */,
+				27B2C2182615112E005DE26D /* dummy_model_component.hpp */,
+				27B2C2062615112D005DE26D /* forcing_component.hpp */,
+				27B2C2292615112F005DE26D /* h_exception.hpp */,
+				27B2C2232615112E005DE26D /* h_interpolator.hpp */,
+				27B2C2082615112D005DE26D /* h_reader.hpp */,
+				27B2C21F2615112E005DE26D /* h_util.hpp */,
+				27B2C2052615112D005DE26D /* halocarbon_component.hpp */,
+				27B2C2122615112E005DE26D /* hector.hpp */,
+				27B2C2222615112E005DE26D /* imodel_component.hpp */,
+				27B2C21B2615112E005DE26D /* ini_to_core_reader.hpp */,
+				27B2C2132615112E005DE26D /* ini.h */,
+				27B2C2282615112F005DE26D /* INIReader.h */,
+				27B2C20E2615112D005DE26D /* ivisitable.hpp */,
+				27B2C20F2615112D005DE26D /* logger.hpp */,
+				27B2C2152615112E005DE26D /* message_data.hpp */,
+				27B2C2262615112F005DE26D /* n2o_component.hpp */,
+				27B2C20C2615112D005DE26D /* o3_component.hpp */,
+				27B2C2272615112F005DE26D /* oc_component.hpp */,
+				27B2C2012615112D005DE26D /* ocean_component.hpp */,
+				27B2C2102615112D005DE26D /* ocean_csys.hpp */,
+				27B2C2162615112E005DE26D /* oceanbox.hpp */,
+				27B2C2192615112E005DE26D /* oh_component.hpp */,
+				27B2C21A2615112E005DE26D /* onelineocean_component.hpp */,
+				27B2C2072615112D005DE26D /* simpleNbox.hpp */,
+				27B2C2242615112E005DE26D /* slr_component.hpp */,
+				27B2C21D2615112E005DE26D /* so2_component.hpp */,
+				27B2C2172615112E005DE26D /* temperature_component.hpp */,
+				27B2C2032615112D005DE26D /* tseries.hpp */,
+				27B2C2212615112E005DE26D /* tvector.hpp */,
+				27B2C20D2615112D005DE26D /* unitval.hpp */,
+			);
+			name = Headers;
+			sourceTree = "<group>";
+		};
+		27B2C272261511CD005DE26D /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				27B2C23B261511C6005DE26D /* bc_component.cpp */,
+				27B2C24B261511C8005DE26D /* carbon-cycle-model.cpp */,
+				27B2C22F261511C5005DE26D /* carbon-cycle-solver.cpp */,
+				27B2C22C261511C5005DE26D /* ch4_component.cpp */,
+				27B2C23D261511C6005DE26D /* core.cpp */,
+				27B2C23F261511C7005DE26D /* csv_outputstream_visitor.cpp */,
+				27B2C234261511C6005DE26D /* csv_table_reader.cpp */,
+				27B2C23C261511C6005DE26D /* dependency_finder.cpp */,
+				27B2C249261511C7005DE26D /* dummy_model_component.cpp */,
+				27B2C230261511C5005DE26D /* forcing_component.cpp */,
+				27B2C239261511C6005DE26D /* h_interpolator.cpp */,
+				27B2C22D261511C5005DE26D /* h_reader.cpp */,
+				27B2C231261511C5005DE26D /* halocarbon_component.cpp */,
+				27B2C240261511C7005DE26D /* ini_to_core_reader.cpp */,
+				27B2C22E261511C5005DE26D /* ini.c */,
+				27B2C248261511C7005DE26D /* INIReader.cpp */,
+				27B2C246261511C7005DE26D /* logger.cpp */,
+				27B2C24E261511C8005DE26D /* main.cpp */,
+				27B2C23A261511C6005DE26D /* n2o_component.cpp */,
+				27B2C233261511C5005DE26D /* o3_component.cpp */,
+				27B2C24A261511C8005DE26D /* oc_component.cpp */,
+				27B2C237261511C6005DE26D /* ocean_component.cpp */,
+				27B2C241261511C7005DE26D /* ocean_csys.cpp */,
+				27B2C23E261511C7005DE26D /* oceanbox.cpp */,
+				27B2C236261511C6005DE26D /* oh_component.cpp */,
+				27B2C245261511C7005DE26D /* simpleNbox.cpp */,
+				27B2C247261511C7005DE26D /* slr_component.cpp */,
+				27B2C232261511C5005DE26D /* so2_component.cpp */,
+				27B2C24D261511C8005DE26D /* spline_forsythe.cpp */,
+				27B2C242261511C7005DE26D /* temperature_component.cpp */,
+				27B2C243261511C7005DE26D /* unitval.cpp */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		27B2C273261551A9005DE26D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				277D29DB2683669E003177A2 /* libboost_filesystem.dylib */,
+				277D29DA2683669E003177A2 /* libboost_system.dylib */,
+				27808CF02615CEFA00BE8B90 /* libgtest.dylib */,
+				27B2C27C26155331005DE26D /* libboost_system.dylib */,
+				27B2C27A26155326005DE26D /* libboost_filesystem.dylib */,
+				27B2C276261551B7005DE26D /* libboost_system.a */,
+				27B2C274261551A9005DE26D /* libboost_filesystem.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		27585CF726150F1A00BA1EF5 /* hector */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 27585CFF26150F1A00BA1EF5 /* Build configuration list for PBXNativeTarget "hector" */;
+			buildPhases = (
+				27585CF426150F1A00BA1EF5 /* Sources */,
+				27585CF526150F1A00BA1EF5 /* Frameworks */,
+				27585CF626150F1A00BA1EF5 /* CopyFiles */,
+				27B2C282261562AC005DE26D /* Embed Libraries */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = hector;
+			productName = hector;
+			productReference = 27585CF826150F1A00BA1EF5 /* hector */;
+			productType = "com.apple.product-type.tool";
+		};
+		27A02A5C2615CBB800AF9BFA /* hector-tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 27A02A852615CBB800AF9BFA /* Build configuration list for PBXNativeTarget "hector-tests" */;
+			buildPhases = (
+				27A02A5D2615CBB800AF9BFA /* Sources */,
+				27A02A7E2615CBB800AF9BFA /* Frameworks */,
+				27A02A812615CBB800AF9BFA /* CopyFiles */,
+				27A02A822615CBB800AF9BFA /* Embed Libraries */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "hector-tests";
+			productName = hector;
+			productReference = 27A02A882615CBB800AF9BFA /* hector-tests */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		27585CF026150F1A00BA1EF5 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1130;
+				ORGANIZATIONNAME = "Bond-Lamberty, Benjamin";
+				TargetAttributes = {
+					27585CF726150F1A00BA1EF5 = {
+						CreatedOnToolsVersion = 11.3.1;
+					};
+				};
+			};
+			buildConfigurationList = 27585CF326150F1A00BA1EF5 /* Build configuration list for PBXProject "hector" */;
+			compatibilityVersion = "Xcode 11.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 27585CEF26150F1A00BA1EF5;
+			productRefGroup = 27585CF926150F1A00BA1EF5 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				27585CF726150F1A00BA1EF5 /* hector */,
+				27A02A5C2615CBB800AF9BFA /* hector-tests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		27585CF426150F1A00BA1EF5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				27B2C254261511C8005DE26D /* halocarbon_component.cpp in Sources */,
+				27B2C264261511C8005DE26D /* ocean_csys.cpp in Sources */,
+				27B2C260261511C8005DE26D /* core.cpp in Sources */,
+				27B2C26B261511C8005DE26D /* INIReader.cpp in Sources */,
+				27B2C255261511C8005DE26D /* so2_component.cpp in Sources */,
+				27B2C26D261511C8005DE26D /* oc_component.cpp in Sources */,
+				27B2C257261511C8005DE26D /* csv_table_reader.cpp in Sources */,
+				27B2C25F261511C8005DE26D /* dependency_finder.cpp in Sources */,
+				27B2C266261511C8005DE26D /* unitval.cpp in Sources */,
+				27B2C25A261511C8005DE26D /* ocean_component.cpp in Sources */,
+				27B2C26A261511C8005DE26D /* slr_component.cpp in Sources */,
+				27B2C270261511C8005DE26D /* spline_forsythe.cpp in Sources */,
+				27B2C259261511C8005DE26D /* oh_component.cpp in Sources */,
+				27B2C251261511C8005DE26D /* ini.c in Sources */,
+				27B2C265261511C8005DE26D /* temperature_component.cpp in Sources */,
+				27B2C268261511C8005DE26D /* simpleNbox.cpp in Sources */,
+				27B2C271261511C8005DE26D /* main.cpp in Sources */,
+				27B2C25C261511C8005DE26D /* h_interpolator.cpp in Sources */,
+				27B2C263261511C8005DE26D /* ini_to_core_reader.cpp in Sources */,
+				27B2C25E261511C8005DE26D /* bc_component.cpp in Sources */,
+				27B2C24F261511C8005DE26D /* ch4_component.cpp in Sources */,
+				27B2C262261511C8005DE26D /* csv_outputstream_visitor.cpp in Sources */,
+				27B2C26E261511C8005DE26D /* carbon-cycle-model.cpp in Sources */,
+				27B2C252261511C8005DE26D /* carbon-cycle-solver.cpp in Sources */,
+				27B2C269261511C8005DE26D /* logger.cpp in Sources */,
+				27B2C256261511C8005DE26D /* o3_component.cpp in Sources */,
+				27B2C25D261511C8005DE26D /* n2o_component.cpp in Sources */,
+				27B2C250261511C8005DE26D /* h_reader.cpp in Sources */,
+				27B2C253261511C8005DE26D /* forcing_component.cpp in Sources */,
+				27B2C26C261511C8005DE26D /* dummy_model_component.cpp in Sources */,
+				27B2C261261511C8005DE26D /* oceanbox.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		27A02A5D2615CBB800AF9BFA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				27808CF42615D31A00BE8B90 /* test_tseries.cpp in Sources */,
+				27A02A892615CBDB00AF9BFA /* testing_main.cpp in Sources */,
+				27A02A5E2615CBB800AF9BFA /* halocarbon_component.cpp in Sources */,
+				27A02A602615CBB800AF9BFA /* ocean_csys.cpp in Sources */,
+				27A02A612615CBB800AF9BFA /* core.cpp in Sources */,
+				27A02A622615CBB800AF9BFA /* INIReader.cpp in Sources */,
+				27A02A632615CBB800AF9BFA /* so2_component.cpp in Sources */,
+				27A02A642615CBB800AF9BFA /* oc_component.cpp in Sources */,
+				27A02A652615CBB800AF9BFA /* csv_table_reader.cpp in Sources */,
+				27A02A662615CBB800AF9BFA /* dependency_finder.cpp in Sources */,
+				27A02A672615CBB800AF9BFA /* unitval.cpp in Sources */,
+				27A02A682615CBB800AF9BFA /* ocean_component.cpp in Sources */,
+				27A02A692615CBB800AF9BFA /* slr_component.cpp in Sources */,
+				27A02A6A2615CBB800AF9BFA /* spline_forsythe.cpp in Sources */,
+				27A02A6B2615CBB800AF9BFA /* oh_component.cpp in Sources */,
+				27A02A6C2615CBB800AF9BFA /* ini.c in Sources */,
+				27A02A6D2615CBB800AF9BFA /* temperature_component.cpp in Sources */,
+				27A02A6E2615CBB800AF9BFA /* simpleNbox.cpp in Sources */,
+				27A02A702615CBB800AF9BFA /* h_interpolator.cpp in Sources */,
+				27A02A712615CBB800AF9BFA /* ini_to_core_reader.cpp in Sources */,
+				27A02A722615CBB800AF9BFA /* bc_component.cpp in Sources */,
+				27A02A732615CBB800AF9BFA /* ch4_component.cpp in Sources */,
+				27A02A742615CBB800AF9BFA /* csv_outputstream_visitor.cpp in Sources */,
+				27A02A752615CBB800AF9BFA /* carbon-cycle-model.cpp in Sources */,
+				27A02A762615CBB800AF9BFA /* carbon-cycle-solver.cpp in Sources */,
+				27A02A772615CBB800AF9BFA /* logger.cpp in Sources */,
+				27A02A782615CBB800AF9BFA /* o3_component.cpp in Sources */,
+				27A02A792615CBB800AF9BFA /* n2o_component.cpp in Sources */,
+				27A02A7A2615CBB800AF9BFA /* h_reader.cpp in Sources */,
+				27A02A7B2615CBB800AF9BFA /* forcing_component.cpp in Sources */,
+				27A02A7C2615CBB800AF9BFA /* dummy_model_component.cpp in Sources */,
+				27A02A7D2615CBB800AF9BFA /* oceanbox.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		27585CFD26150F1A00BA1EF5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"hDEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "${BOOSTROOT}";
+				LIBRARY_SEARCH_PATHS = "${BOOSTLIB}";
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"-lboost_system",
+					"-lboost_filesystem",
+				);
+				OTHER_LIBTOOLFLAGS = "";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		27585CFE26150F1A00BA1EF5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "${BOOSTROOT}";
+				LIBRARY_SEARCH_PATHS = "${BOOSTLIB}";
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				OTHER_LDFLAGS = (
+					"-lboost_system",
+					"-lboost_filesystem",
+				);
+				OTHER_LIBTOOLFLAGS = "";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		27585D0026150F1A00BA1EF5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				LIBRARY_SEARCH_PATHS = "${BOOSTLIB}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		27585D0126150F1A00BA1EF5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				LIBRARY_SEARCH_PATHS = "${BOOSTLIB}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		27A02A862615CBB800AF9BFA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				HEADER_SEARCH_PATHS = (
+					"${BOOSTROOT}",
+					"${GTEST}",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"${BOOSTLIB}",
+					"${GTESTLIB}",
+				);
+				OTHER_LDFLAGS = (
+					"-lboost_system",
+					"-lboost_filesystem",
+					"-lgtest",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		27A02A872615CBB800AF9BFA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				HEADER_SEARCH_PATHS = (
+					"${BOOSTROOT}",
+					"${GTEST}",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"${BOOSTLIB}",
+					"${GTESTLIB}",
+				);
+				OTHER_LDFLAGS = (
+					"-lboost_system",
+					"-lboost_filesystem",
+					"-lgtest",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		27585CF326150F1A00BA1EF5 /* Build configuration list for PBXProject "hector" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				27585CFD26150F1A00BA1EF5 /* Debug */,
+				27585CFE26150F1A00BA1EF5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		27585CFF26150F1A00BA1EF5 /* Build configuration list for PBXNativeTarget "hector" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				27585D0026150F1A00BA1EF5 /* Debug */,
+				27585D0126150F1A00BA1EF5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		27A02A852615CBB800AF9BFA /* Build configuration list for PBXNativeTarget "hector-tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				27A02A862615CBB800AF9BFA /* Debug */,
+				27A02A872615CBB800AF9BFA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 27585CF026150F1A00BA1EF5 /* Project object */;
+}

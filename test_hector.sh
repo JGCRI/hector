@@ -4,6 +4,9 @@
 # Intended for Travis-CI, but can be used locally too
 # BBL May 2020
 
+# exit when any command fails
+set -e
+
 if [ $# -eq 0 ]
   then
     echo "One argument (path to executable) required"

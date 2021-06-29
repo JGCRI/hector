@@ -1,4 +1,19 @@
-on: [push, pull_request]
+# Controls when the action will run.
+on:
+  push:
+    branches:
+      - master
+      - github_actions
+  pull_request:
+    branches: master
+
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    # Launch run at 6am the 1st of every month.
+    - cron:  '0 6 1 * *'
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
 
 name: R-CMD
 

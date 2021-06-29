@@ -32,14 +32,16 @@ GTEST_API_ int main(int argc, char **argv) {
         
 	}
 	catch( const h_exception &e ) {
-		cerr << "* Program exception: " << e.msg << "\n* Function " << e.func << ", file " 
-        << e.file << ", line " << e.linenum << endl;
+        cerr << "* Program exception:\n" << e << endl;
+        return 1;
 	}
 	catch( std::exception &e ) {
-		cerr << "Standard exception: " << e.what() << endl;
+        cerr << "Standard exception: " << e.what() << endl;
+        return 2;
 	}
     catch( ... ) {
         cerr << "Other exception! " << endl;
+        return 3;
     }
 
 }
