@@ -16,7 +16,7 @@
 #include <gtest/gtest.h>
 #include <fstream>
 
-#include "input/inih/INIReader.h"
+#include "INIReader.h"
 #include "h_exception.hpp"
 
 using namespace std;
