@@ -39,7 +39,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../../index.html">
-    <span class="fas fa-home fa-lg"></span>
+    <span class="fa fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -71,7 +71,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/JGCRI/hector">
-    <span class="fas fa-github fa-lg"></span>
+    <span class="fa fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -108,7 +108,7 @@
 <a href="#r-hector" class="anchor"></a>R Hector</h1>
 <p>To install R, follow the <a href="https://cloud.r-project.org/">official instructions</a> for your platform.</p>
 <p>To install the version associated with the current <code>master</code> git branch on GitHub, use the <code>devtools::install_github</code> function. This will automatically install all of Hector’s dependencies as well. (Note that because this requires compiling from source, you will need to have a C compiler installed and configured.</p>
-<p>On <strong>Windows</strong>, you will also need to install <a href="https://cloud.r-project.org/bin/windows/Rtools/">Rtools</a>. On <strong>MacOS</strong> and <strong>Linux</strong>, the required tools should be included as part of a standard R installation.)</p>
+<p>On <strong>Windows</strong>, you will also need to install <a href="https://cloud.r-project.org/bin/windows/Rtools/">Rtools</a>. On <strong>Mac OS</strong> and <strong>Linux</strong>, the required tools should be included as part of a standard R installation.)</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># If the `devtools` isn't installed, first run:</span>
 <span class="co"># install.packages("devtools")</span>
@@ -164,35 +164,26 @@
 <pre><code>./src/hector ./inst/input/name-of-ini.ini</code></pre>
 </div>
 </div>
-<div id="xcode-mac-osx" class="section level2">
+<div id="xcode-mac-os-x" class="section level2">
 <h2 class="hasAnchor">
-<a href="#xcode-mac-osx" class="anchor"></a>Xcode (Mac OSX)</h2>
+<a href="#xcode-mac-os-x" class="anchor"></a>Xcode (Mac OS X)</h2>
 <p>These directions assume a basic familiarity with Xcode and Mac OS X software installation.</p>
 <ul>
 <li>Install <a href="https://developer.apple.com/xcode/downloads/">Xcode</a> if necessary. Hector has been built and tested with Mac OS &gt;= 10.8.5. The project files are for Xcode 11.3.1.</li>
 <li>Download and install Boost, following instructions above.</li>
 <li>Download the <a href="https://github.com/JGCRI/hector/archive/master.zip">Hector zip file</a> or check out the repository using Git.</li>
-<li>From Xcode, open the project file in <code>project_files/Xcode/hector.cxodeproj</code>.</li>
-<li>Build the project. See below if you encounter errors.</li>
-<li>Change the current Scheme settings (Scheme-&gt;Edit Scheme) and add a command-line argument (<em>Arguments</em> tab, e.g. “input/hector_rcp45.ini”).</li>
-<li>Run!</li>
+<li>From Xcode, open the project file in <code>project_files/Xcode/hector.xcodeproj</code>.</li>
 </ul>
-<p>Xcode Build Settings to check if you encounter build errors, they should match the version installed on your machine:</p>
+<p>The Xcode project file is configured to use constants defining custom paths, rather than hard-coded paths. This means that developers and users can set these paths without overwriting each other.</p>
 <ul>
-<li>
-<em>Architectures-Base SDK</em>: OS X 10.8 [or OS X version on machine]</li>
-<li>
-<em>Build Options-Compiler for C/C++/Objective-C</em>: Default compiler (Apple LLVM 5.1)</li>
-<li>
-<em>Search Paths-Header Search Paths</em>: “/usr/local/include /usr/local/lib/boost_1_52_0/” [or other header directories, this is important for homebrew users]</li>
-<li>
-<em>Search Paths-Library Search Paths</em>: “/usr/local/lib/” [or other library directories]</li>
-<li>
-<em>LLVM-Language-C++-C++ Standard Library</em>: libc++ (LLVM C++ standard library with C++11 support)</li>
-<li>
-<em>Linking-Other Linker Flags</em>: “-lgsl -lgslcblas -lm”</li>
-<li>
-<em>User-Defined</em>: “GCC_MODEL_TUNING” defined as “G5”</li>
+<li>You will need to set several custom paths (Preferences -&gt; Locations -&gt; Custom Paths): <code>BOOSTLIB</code>, <code>BOOSTROOT</code>, and <code>HECTORDIR</code>. These are the Boost runtime library, the Boost root under which the headers can be found in <code>boost/</code>, and the runtime working directory for the model (the repository root).</li>
+<li>If you want to build Hector’s testing framework (the <code>hector-tests</code> target; this is optional and only relevant for C++ developers) add GTEST and GTESTLIB custom paths to Xcode; these are analogous to their Boost counterparts. You will need to install <a href="https://github.com/google/googletest">googletest</a> on your machine.</li>
+</ul>
+<p>At this point you should be ready to go:</p>
+<ul>
+<li>Build the project, making sure you’re building the <code>hector</code> target.</li>
+<li>Run!</li>
+<li>To run a different scenario, change the current Scheme settings (Scheme-&gt;Edit Scheme) and modify or add a command-line argument (<em>Arguments</em> tab, e.g. “./inst/input/hector_rcp45.ini”).</li>
 </ul>
 <p>Xcode Resources</p>
 <ul>
@@ -200,9 +191,9 @@
 <li><a href="https://developer.apple.com/library/archive/documentation/DeveloperTools/Conceptual/debugging_with_xcode/chapters/debugging_tools.html">Xcode Debugging</a></li>
 </ul>
 </div>
-<div id="visual-studio-code-mac-osx-windows" class="section level2">
+<div id="visual-studio-code-windows" class="section level2">
 <h2 class="hasAnchor">
-<a href="#visual-studio-code-mac-osx-windows" class="anchor"></a>Visual Studio Code (Mac OSX &amp; Windows)</h2>
+<a href="#visual-studio-code-windows" class="anchor"></a>Visual Studio Code (Windows)</h2>
 <ul>
 <li>Install <a href="https://code.visualstudio.com/download">Visual Studio Code</a>, if necessary.</li>
 <li>Download and install <em>Boost</em>, following instructions above.</li>
@@ -214,7 +205,7 @@
 <div id="visual-studio" class="section level2">
 <h2 class="hasAnchor">
 <a href="#visual-studio" class="anchor"></a>Visual Studio</h2>
-<p>VS sln is not supported at this time see <a href="https://github.com/JGCRI/hector/issues/415">VS Hector github issue</a> for more details.</p>
+<p>VS is not supported at this time see <a href="https://github.com/JGCRI/hector/issues/415">VS Hector github issue</a> for more details.</p>
 </div>
 </div>
   </div>
