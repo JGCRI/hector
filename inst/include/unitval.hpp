@@ -129,6 +129,7 @@ enum unit_types {
 
 class unitval {
 
+protected:
     double      val;
     double      valErr;
     unit_types  valUnits;
