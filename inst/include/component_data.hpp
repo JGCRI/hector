@@ -54,7 +54,7 @@
 #define D_RF_SO2                D_RF_PREFIX "SO2"
 #define D_RF_VOL                D_RF_PREFIX "vol" // forcing from volcanic so2
 #define D_RF_halocarbons        D_RF_PREFIX "halocarbons"
-#define D_ACO2                  "aco2"      // effective radiative forcing
+#define D_ACO2                  "aco2"            // forcing efficiency for CO2
 
 
 // halocarbon components
