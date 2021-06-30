@@ -27,12 +27,10 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          # for latest stable version of R for MacOSX
-          - {os: macOS-latest, r: 'release'}
+          # test on one version of R for MacOSX
           - {os: macOS-latest, r: '3.6'}
 
-          # for windows stable versions
-          - {os: windows-latest, r: 'release'}
+          # test on one version of R for windows
           - {os: windows-latest, r: '3.6'}
 
           # latest stable version of R for ubuntu-16.04 is 3.5; ubuntu-latest is migrating to 20.04 by the end of 2020
