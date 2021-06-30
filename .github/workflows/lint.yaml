@@ -15,7 +15,7 @@ name: lint
 
 jobs:
   lint:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
@@ -39,9 +39,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          install.packages(c("remotes"))
+          install.packages(c("remotes", "lintr"))
           remotes::install_deps(dependencies = TRUE)
-          remotes::install_cran("lintr")
         shell: Rscript {0}
 
       - name: Install package
