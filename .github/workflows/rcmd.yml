@@ -28,10 +28,10 @@ jobs:
       matrix:
         config:
           # test on one version of R for MacOSX
-          - {os: macOS-latest, r: '3.6'}
+          - {os: macOS-latest, r: 'release'}
 
           # test on one version of R for windows
-          - {os: windows-latest, r: '3.6'}
+          - {os: windows-latest, r: 'release'}
 
           # latest stable version of R for ubuntu-16.04 is 3.5; ubuntu-latest is migrating to 20.04 by the end of 2020
           - {os: ubuntu-16.04, r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
