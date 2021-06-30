@@ -16,14 +16,14 @@
 #include <iostream>
 #include <gtest/gtest.h>
 
-#include "data/tseries.hpp"
+#include "tseries.hpp"
 #include "h_exception.hpp"
 
 using namespace std;
 
 TEST(TestTSeries, SmallBasics) {
     
-    tseries<double> test;
+    Hector::tseries<double> test;
 	
     // Simple tests
     
@@ -43,22 +43,22 @@ TEST(TestTSeries, SmallBasics) {
 
 TEST(TestTSeries, SmallFirstLast) {
 
-	tseries<double> test;
+	Hector::tseries<double> test;
 	
 	int p1 = 1, p2 = 2, p3 = 3;
     test.set( p1, 2 );		
     test.set( p2, 4 );
     test.set( p3, 6 );
 
-    EXPECT_EQ( test.first(),p1 );
-    EXPECT_EQ( test.last(), p3 );
+    EXPECT_EQ( test.firstdate(),p1 );
+    EXPECT_EQ( test.lastdate(), p3 );
 }
 
 TEST(TestTSeries, SmallLinearInterp) {
 
     // Interpolation testing
 
-	tseries<double> test;
+	Hector::tseries<double> test;
 	int p1 = 1, p2 = 2;
 	double v1 = 4, v2 = 5;
     test.set( p1, v1 );		
@@ -78,29 +78,24 @@ TEST(TestTSeries, SmallLinearInterp) {
 
 TEST(TestTSeries, EmptyTS) {
 	
-	tseries<double> test_empty;
+	Hector::tseries<double> test_empty;
     test_empty.allowInterp( true );
 	
 	EXPECT_EQ( test_empty.size(), 0 );
     EXPECT_THROW( test_empty.get( 1 ), h_exception );
 }
 
-TEST(TestTSeries, SmallInterpThrow) {
+TEST(TestTSeries, NoInterpAllowed) {
 	
 	// No interpolation allowed case
-	tseries<double> test;
+	Hector::tseries<double> test;
+    test.allowInterp(false);
     EXPECT_THROW( test.get( 4234.0 ), h_exception );
-
-	// Interpolation allowed, but not enough data
-	test.allowInterp( true );
-	test.set( 1, 1 );
-	EXPECT_EQ( test.size(), 1 );
-	EXPECT_THROW( test.get( 4234.0 ), h_exception );
 }
 
 TEST(TestTSeries, SmallOverwrite) {
 	
-	tseries<double> test;
+	Hector::tseries<double> test;
 	int p1 = 1, p2 = 2;
 	double v1 = 4, v2 = 5;
     test.set( p1, v1 );		
@@ -279,7 +274,7 @@ TEST(TestTSeries, BigTimeSeries) {
     
     int n = sizeof( x ) / sizeof( double );
     
-    tseries<double> co2;
+    Hector::tseries<double> co2;
     co2.allowInterp( true );    
     int i;
     for( i=0; i<n; i++)
@@ -317,7 +312,7 @@ TEST(TestTSeries, BigTimeSeries) {
 }
 
 TEST(TestTSeries, PartialInterp) {
-	tseries<double> test;
+	Hector::tseries<double> test;
     test.set( 1, 1 );
     test.set( 2, 2 );
     test.allowPartialInterp( true );

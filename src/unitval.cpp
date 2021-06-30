@@ -115,6 +115,8 @@ string unitval::unitsName( const unit_types u ) {
         break;
     case U_YRS: return "Years";
         break;
+    case U_M3_S: return  "m3/s";
+        break;
 
     default: H_THROW( "Unhandled unit!" );
     }
