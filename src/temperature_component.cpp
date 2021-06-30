@@ -10,9 +10,15 @@
  *
  *  Created by Ben Vega-Westhoff on 11/1/16.
  *
- * Meinshausen, M., Raper, S. C. B., and Wigley, T. M. L.: Emulating coupled atmosphere-ocean
- * and carbon cycle models with a simpler model, MAGICC6 – Part 1: Model description and
- * calibration, Atmos. Chem. Phys., 11, 1417–1456, https://doi.org/10.5194/acp-11-1417-2011, 2011.
+ * DOECLIM is based on
+ *  Kriegler, E. (2005) Imprecise probability analysis for Integrated Assessment of climate change. Ph.D. dissertation. Potsdam Universität. 256 pp. (http://opus.kobv.de/ubp/volltexte/2005/561/; DOECLIM introduced in Chapter 2 and Annexes A and B)
+ *  Tanaka, K. & Kriegler, E. (2007) Aggregated carbon cycle, atmospheric chemistry, and climate model (ACC2) – Description of the forward and inverse modes – . Reports Earth Syst. Sci. 199.
+ *  Garner, G., Reed, P. & Keller, K. (2016) Climate risk management requires explicit representation of societal trade-offs. Clim. Change 134, 713–723.
+ *
+ * Other References
+ *  Meinshausen, M., Raper, S. C. B., and Wigley, T. M. L.: Emulating coupled atmosphere-ocean
+ *  and carbon cycle models with a simpler model, MAGICC6 – Part 1: Model description and
+ *  calibration, Atmos. Chem. Phys., 11, 1417–1456, https://doi.org/10.5194/acp-11-1417-2011, 2011.
  *
  */
 
@@ -101,11 +107,6 @@ void TemperatureComponent::init( Core* coreptr ) {
     tgav_constrain.allowInterp( true );
     tgav_constrain.name = D_TGAV_CONSTRAIN;
 
-    // Define the doeclim parameters
-   // diff.set( 0.55, U_CM2_S );    // default ocean heat diffusivity, cm2/s. value is CDICE default (varname is kappa there).
-   // S.set( 3.0, U_DEGC );         // default climate sensitivity, K (varname is t2co in CDICE).
-   // alpha.set( 1.0, U_UNITLESS);  // default aerosol scaling, unitless (similar to alpha in CDICE).
-    //volscl.set(1.0, U_UNITLESS);  // Default volcanic scaling, unitless (works the same way as alpha)
 
     // Register the data we can provide
     core->registerCapability( D_GLOBAL_TEMP, getComponentName() );
