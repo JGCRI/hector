@@ -188,9 +188,6 @@ NULL
 #'
 #' @inheritSection msgtype Note
 #'
-#' @section To Do:
-#' Some of these could be made writeable as well as readable.  Notably, TT, TU,
-#' TWI, and TID are only set from the input, not calculated.
 #' @name ocean
 #' @family capability identifiers
 NULL

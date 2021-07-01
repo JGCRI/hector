@@ -28,7 +28,6 @@
 #define TEMPERATURE_COMPONENT_NAME "temperature"
 
 #define OCEAN_COMPONENT_NAME "ocean"
-#define ONELINEOCEAN_COMPONENT_NAME "onelineocean"
 
 /***
  * The name of a HC component is X_COMPONENT_BASE + HALOCARBON_EXTENSION
