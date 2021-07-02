@@ -14,6 +14,7 @@
 		27962905268F237300333AA3 /* csv_fluxpool_visitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27962904268F237200333AA3 /* csv_fluxpool_visitor.cpp */; };
 		27962908268F23CB00333AA3 /* simpleNbox-runtime.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27962907268F23CB00333AA3 /* simpleNbox-runtime.cpp */; };
 		27962909268F241100333AA3 /* simpleNbox-runtime.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27962907268F23CB00333AA3 /* simpleNbox-runtime.cpp */; };
+		2796290B268F253D00333AA3 /* test_tracking.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2796290A268F253C00333AA3 /* test_tracking.cpp */; };
 		27A02A5E2615CBB800AF9BFA /* halocarbon_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C231261511C5005DE26D /* halocarbon_component.cpp */; };
 		27A02A602615CBB800AF9BFA /* ocean_csys.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C241261511C7005DE26D /* ocean_csys.cpp */; };
 		27A02A612615CBB800AF9BFA /* core.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C23D261511C6005DE26D /* core.cpp */; };
@@ -130,6 +131,7 @@
 		27962904268F237200333AA3 /* csv_fluxpool_visitor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = csv_fluxpool_visitor.cpp; path = ../../src/csv_fluxpool_visitor.cpp; sourceTree = "<group>"; };
 		27962906268F239A00333AA3 /* fluxpool.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = fluxpool.hpp; path = ../../inst/include/fluxpool.hpp; sourceTree = "<group>"; };
 		27962907268F23CB00333AA3 /* simpleNbox-runtime.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "simpleNbox-runtime.cpp"; path = "../../src/simpleNbox-runtime.cpp"; sourceTree = "<group>"; };
+		2796290A268F253C00333AA3 /* test_tracking.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_tracking.cpp; path = ../../../src/Testing/test_tracking.cpp; sourceTree = "<group>"; };
 		27A02A462615CAA100AF9BFA /* test_logger.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_logger.cpp; path = ../../../src/Testing/test_logger.cpp; sourceTree = "<group>"; };
 		27A02A472615CAA100AF9BFA /* test_restart.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_restart.cpp; path = ../../../src/Testing/test_restart.cpp; sourceTree = "<group>"; };
 		27A02A482615CAA100AF9BFA /* test_csv_file_reader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_csv_file_reader.cpp; path = ../../../src/Testing/test_csv_file_reader.cpp; sourceTree = "<group>"; };
@@ -274,6 +276,7 @@
 				27A02A502615CAA100AF9BFA /* test_inih.cpp */,
 				27A02A462615CAA100AF9BFA /* test_logger.cpp */,
 				27A02A472615CAA100AF9BFA /* test_restart.cpp */,
+				2796290A268F253C00333AA3 /* test_tracking.cpp */,
 				27A02A4B2615CAA100AF9BFA /* test_tseries.cpp */,
 				27A02A4C2615CAA100AF9BFA /* test_units.cpp */,
 				27A02A4D2615CAA100AF9BFA /* testing_main.cpp */,
@@ -334,7 +337,6 @@
 		27B2C272261511CD005DE26D /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				27962907268F23CB00333AA3 /* simpleNbox-runtime.cpp */,
 				27962904268F237200333AA3 /* csv_fluxpool_visitor.cpp */,
 				27B2C23B261511C6005DE26D /* bc_component.cpp */,
 				27B2C24B261511C8005DE26D /* carbon-cycle-model.cpp */,
@@ -362,6 +364,7 @@
 				27B2C23E261511C7005DE26D /* oceanbox.cpp */,
 				27B2C236261511C6005DE26D /* oh_component.cpp */,
 				27B2C245261511C7005DE26D /* simpleNbox.cpp */,
+				27962907268F23CB00333AA3 /* simpleNbox-runtime.cpp */,
 				27B2C247261511C7005DE26D /* slr_component.cpp */,
 				27B2C232261511C5005DE26D /* so2_component.cpp */,
 				27B2C24D261511C8005DE26D /* spline_forsythe.cpp */,
@@ -532,6 +535,7 @@
 				27A02A782615CBB800AF9BFA /* o3_component.cpp in Sources */,
 				27A02A792615CBB800AF9BFA /* n2o_component.cpp in Sources */,
 				27A02A7A2615CBB800AF9BFA /* h_reader.cpp in Sources */,
+				2796290B268F253D00333AA3 /* test_tracking.cpp in Sources */,
 				27A02A7B2615CBB800AF9BFA /* forcing_component.cpp in Sources */,
 				27A02A7C2615CBB800AF9BFA /* dummy_model_component.cpp in Sources */,
 				27A02A7D2615CBB800AF9BFA /* oceanbox.cpp in Sources */,
