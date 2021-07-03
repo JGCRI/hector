@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2746135526908E260069D565 /* test_logger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27A02A462615CAA100AF9BFA /* test_logger.cpp */; };
 		2746135626909AF20069D565 /* test_inih.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27A02A502615CAA100AF9BFA /* test_inih.cpp */; };
+		2746135826909CD70069D565 /* test_hreader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27A02A4F2615CAA100AF9BFA /* test_hreader.cpp */; };
 		277D29DC2683669E003177A2 /* libboost_system.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 277D29DA2683669E003177A2 /* libboost_system.dylib */; };
 		277D29DD2683669E003177A2 /* libboost_filesystem.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 277D29DB2683669E003177A2 /* libboost_filesystem.dylib */; };
 		27808CF12615CEFA00BE8B90 /* libgtest.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 27808CF02615CEFA00BE8B90 /* libgtest.dylib */; };
@@ -537,6 +538,7 @@
 				27A02A7A2615CBB800AF9BFA /* h_reader.cpp in Sources */,
 				2796290B268F253D00333AA3 /* test_tracking.cpp in Sources */,
 				27A02A7B2615CBB800AF9BFA /* forcing_component.cpp in Sources */,
+				2746135826909CD70069D565 /* test_hreader.cpp in Sources */,
 				27A02A7C2615CBB800AF9BFA /* dummy_model_component.cpp in Sources */,
 				27A02A7D2615CBB800AF9BFA /* oceanbox.cpp in Sources */,
 			);

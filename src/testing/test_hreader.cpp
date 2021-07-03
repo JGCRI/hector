@@ -16,10 +16,11 @@
 #include <gtest/gtest.h>
 #include <fstream>
 
-#include "input/h_reader.hpp"
+#include "h_reader.hpp"
 #include "h_exception.hpp"
 
 using namespace std;
+using namespace Hector;
 
 // Small helper function for tests below - writes a test INI file
 void test_hreader_writefile(  char* filename, string contents ) {
@@ -114,7 +115,7 @@ TEST( TestHreader, CorruptSection ) {
                    "[section3   ; comment ]\n"
                    "name2=value2\n" );
     
-    INIReader reader( filename );    
+    INIReader reader( filename );
 	EXPECT_TRUE( reader.ParseError() );
 	
     remove( filename );     // clean up    
