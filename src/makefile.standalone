@@ -1,5 +1,5 @@
 ifeq ($(strip $(CXX)),)
-CXX      = g++
+	CXX      = g++
 endif 
 CXXFLAGS = -g $(INCLUDES) $(OPTFLAGS) $(CXXEXTRA) $(CXXPROF) $(WFLAGS) -MMD -std=c++14 
 CFLAGS   = -g $(INCLUDES) $(OPTFLAGS) $(CCEXTRA) -MMD
@@ -15,12 +15,13 @@ HROOT	= $(CURDIR)/..
 HDRDIR	= $(HROOT)/inst/include
 export HROOT
 
-## Boost root
+## ----------------------------------------------------
+## Boost settings
 ifeq ($(strip $(BOOSTVERSION)),)
-BOOSTVERSION	= 1_63_0
+	BOOSTVERSION	= 1_63_0
 endif
 ifeq ($(strip $(BOOSTROOT)),)
-BOOSTROOT	= $(HOME)/src/boost_$(BOOSTVERSION)
+	BOOSTROOT	= $(HOME)/src/boost_$(BOOSTVERSION)
 endif
 ifeq ($(strip $(BOOSTLIB)),)
 ## BOOSTROOT can be customized in the environment by compiling as:
@@ -36,15 +37,20 @@ ifeq ($(strip $(BOOSTLIB)),)
 BOOSTLIB = $(BOOSTROOT)/lib
 endif
 
-## Gtest root
-GTVERS	= 1.5.0
-GTROOT	= $(HROOT)/libs/gtest-$(GTVERS)
+## ----------------------------------------------------
+## googletest settings
+
+ifeq ($(strip $(GTLIB)),)
+	## Our GitHub Actions script installs the gtest libraries in /usr/lib
+	GTLIB	= /usr/lib/
+endif
+
 GTINC	= $(GTROOT)/include
-GTLIB	= $(GTROOT)/lib/.libs
 
 export GTLIB GTINC
 
 
+## ----------------------------------------------------
 ## sources in the top level directory
 CXXSRCS	= $(wildcard *.cpp)
 MAINS   = main.cpp main-api.cpp
@@ -55,6 +61,7 @@ CSRCS   = $(wildcard *.c)
 OBJS	= $(CXXSRCS:.cpp=.o) $(CSRCS:.c=.o)
 DEPS	= $(CXXSRCS:.cpp=.d) $(CSRCS:.c=.d)
 
+## ----------------------------------------------------
 ## default target
 hector: libhector.a main.o
 	$(CXX) $(LDFLAGS) -o hector main.o -lhector -lm -lboost_system -lboost_filesystem
@@ -85,7 +92,7 @@ libhector.a: $(OBJS)
 -include $(DEPS)
 
 gtest:
-	if [ ! -f $(GTROOT)/config.status ] ; then cd $(GTROOT) && ./configure; fi
+##	if [ ! -f $(GTROOT)/config.status ] ; then cd $(GTROOT) && ./configure; fi
 	$(MAKE) -C $(GTROOT)
 
 clean:
