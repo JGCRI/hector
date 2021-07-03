@@ -8,7 +8,7 @@
  *  test_logger.hpp
  *  hector
  *
- *  Created by Pralit Patel on 9/23/10.
+ *  Created by Pralit Patel on 2010-09-23
  *
  */
 
