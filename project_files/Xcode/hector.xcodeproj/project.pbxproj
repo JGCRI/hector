@@ -138,7 +138,6 @@
 		27A02A492615CAA100AF9BFA /* test_dependency_finder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_dependency_finder.cpp; path = ../../../src/Testing/test_dependency_finder.cpp; sourceTree = "<group>"; };
 		27A02A4A2615CAA100AF9BFA /* test_ini_to_core_reader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_ini_to_core_reader.cpp; path = ../../../src/Testing/test_ini_to_core_reader.cpp; sourceTree = "<group>"; };
 		27A02A4B2615CAA100AF9BFA /* test_tseries.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_tseries.cpp; path = ../../../src/Testing/test_tseries.cpp; sourceTree = "<group>"; };
-		27A02A4C2615CAA100AF9BFA /* test_units.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_units.cpp; path = ../../../src/Testing/test_units.cpp; sourceTree = "<group>"; };
 		27A02A4D2615CAA100AF9BFA /* testing_main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = testing_main.cpp; path = ../../../src/Testing/testing_main.cpp; sourceTree = "<group>"; };
 		27A02A4E2615CAA100AF9BFA /* test_core.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_core.cpp; path = ../../../src/Testing/test_core.cpp; sourceTree = "<group>"; };
 		27A02A4F2615CAA100AF9BFA /* test_hreader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_hreader.cpp; path = ../../../src/Testing/test_hreader.cpp; sourceTree = "<group>"; };
@@ -278,7 +277,6 @@
 				27A02A472615CAA100AF9BFA /* test_restart.cpp */,
 				2796290A268F253C00333AA3 /* test_tracking.cpp */,
 				27A02A4B2615CAA100AF9BFA /* test_tseries.cpp */,
-				27A02A4C2615CAA100AF9BFA /* test_units.cpp */,
 				27A02A4D2615CAA100AF9BFA /* testing_main.cpp */,
 			);
 			path = Testing;
