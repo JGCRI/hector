@@ -22,6 +22,36 @@
 
 using namespace Hector;
 
+// Test fixture - these objects are used repeatedly throughout the tests below,
+// so defined here in a single place
+// More info: https://github.com/google/googletest/blob/master/docs/primer.md
+class TrackingTest : public ::testing::Test {
+ protected:
+  void SetUp() override {
+      u0 = unitval(0.0, U_PGC);
+      u1 = unitval(1.0, U_PGC);
+      u2 = unitval(2.0, U_PGC);
+      u3 = u1 + u2;
+      
+      f1 = fluxpool(1.0, U_PGC);
+      f1_track = f1; // for ease of testing later
+      f1_track.tracking = true;
+      
+      f2 = fluxpool(2.0, U_PGC, false, "f2");
+      f2_track = f2;
+      f2_track.tracking = true;
+      
+      f3 = f2 + f1;
+      f3_track = f2_track + f1_track;
+  }
+
+  // void TearDown() override {}
+
+    unitval u0, u1, u2, u3;
+    fluxpool f0, f1, f1_track;
+    fluxpool f2, f2_track;
+    fluxpool f3, f3_track;
+};
 
 // test helper function
 void identity_tests(bool trk) {
@@ -32,7 +62,7 @@ void identity_tests(bool trk) {
     EXPECT_EQ(a - a, fluxpool(0, U_UNITLESS, trk)); // "a minus itself not 0"
 }
 
-TEST( TestTracking, Construction ) {
+TEST_F( TrackingTest, Construction ) {
     
     // Default constructor
     fluxpool f0;
@@ -43,21 +73,15 @@ TEST( TestTracking, Construction ) {
     EXPECT_EQ(f0.name, "?") << "default constructor doesn't set name correctly";
     
     // 4 argument constructor with default values
-    fluxpool f1(1.0, U_PGC);
     EXPECT_FALSE(f1.tracking) << "basic constructor tracking isn't default to false";
     EXPECT_EQ(f1.value(U_PGC), 1.0) << "basic constructor value and units don't set";
     EXPECT_EQ(f1.name, "?") << "basic constructor doesn't set name correctly";
     
     std::unordered_map<std::string, double> f1_map = f1.get_tracking_map();
     EXPECT_EQ(f1_map.size(), 1) << "basic constructor-wrong size map";
-    fluxpool f1_track = f1; // for ease of testing later
-    f1_track.tracking = true;
     EXPECT_EQ(f1_track.get_fraction("?"), 1) << "basic constructor fraction doesn't set correctly";
     
     // 4 argument constructor
-    fluxpool f2(2.0, U_PGC, false, "f2");
-    fluxpool f2_track = f2;
-    f2_track.tracking = true;
     EXPECT_TRUE(f2_track.tracking) << "basic constructor tracking doesn't set correctly";
     EXPECT_EQ(f2_track.value(U_PGC), 2.0) << "basic constructor value and units don't set";
     EXPECT_EQ(f2_track.name, "f2") << "basic constructor doesn't set name correctly";
@@ -66,7 +90,7 @@ TEST( TestTracking, Construction ) {
     EXPECT_EQ(f2_track.get_fraction("f2"), 1) << "basic constructor fraction doesn't set correctly";
 }
 
-TEST( TestTracking, Setting ) {
+TEST_F( TrackingTest, Setting ) {
     // Basic set test
     fluxpool set1;
     set1.set(1, U_PGC);
@@ -86,7 +110,7 @@ TEST( TestTracking, Setting ) {
     EXPECT_EQ(set2.get_fraction("set2"), 1) << "set fraction doesn't set correctly with custom name";
 }
 
-TEST( TestTracking, Getting ) {
+TEST_F( TrackingTest, Getting ) {
     // Sources and fractions from an empty map
     fluxpool empty_pool;
     empty_pool.tracking = true;
@@ -95,9 +119,6 @@ TEST( TestTracking, Getting ) {
     EXPECT_EQ(empty_pool.get_fraction(""), 0) << "doesn't return 0 for strings not in map";
     
     // Sources and fractions from a map with one key
-    fluxpool f1(1.0, U_PGC);
-    fluxpool f1_track = f1; // for ease of testing later
-    f1_track.tracking = true;
     
     vector<string> f1_sources = f1_track.get_sources();
     EXPECT_EQ(f1_sources.size(), 1) << "f1 has wrong number of sources";
@@ -107,17 +128,6 @@ TEST( TestTracking, Getting ) {
     EXPECT_EQ(f1_track.get_fraction("?"), 1) << "one element get_fraction doesn't work";
     
     // Sources and fractions from a map with multiple keys
-    fluxpool f2(2.0, U_PGC, false, "f2");
-    fluxpool f2_track = f2;
-    f2_track.tracking = true;
-    
-    fluxpool f3 = f2 + f1;
-    fluxpool f3_track = f2_track + f1_track;
-    
-    unitval u0(0.0, U_PGC);
-    unitval u1(1.0, U_PGC);
-    unitval u2(2.0, U_PGC);
-    unitval u3 = u1 + u2;
     
     vector<string> f3_sources = f3_track.get_sources();
     sort(f3_sources.begin(), f3_sources.end());
@@ -128,23 +138,8 @@ TEST( TestTracking, Getting ) {
     EXPECT_EQ(f3_track.get_fraction("f2"), u2/u3) << "two element get fraction doesn't work";
 }
 
-TEST( TestTracking, FluxFrom ) {
+TEST_F( TrackingTest, FluxFrom ) {
     // Flux_from_unitval and flux_from_fluxpool tests
-    
-    unitval u1(1.0, U_PGC);
-    unitval u2(2.0, U_PGC);
-    unitval u3 = u1 + u2;
-    
-    fluxpool f1(1.0, U_PGC);
-    fluxpool f1_track = f1; // for ease of testing later
-    f1_track.tracking = true;
-    
-    fluxpool f2(2.0, U_PGC, false, "f2");
-    fluxpool f2_track = f2;
-    f2_track.tracking = true;
-    
-    fluxpool f3 = f2 + f1;
-    fluxpool f3_track = f2_track + f1_track;
     
     // Basic flux from unitval test
     fluxpool flux1 = f1.flux_from_unitval(u1);
@@ -180,20 +175,9 @@ TEST( TestTracking, FluxFrom ) {
     EXPECT_EQ(flux4_named.tracking, flux4_track.tracking) << "flux_from_fluxpool doesn't set tracking when true";
 }
 
-TEST( TestTracking, AdjustPool ) {
+TEST_F( TrackingTest, AdjustPool ) {
     // Adjust Pool To Val tests
-    
-    unitval u1(1.0, U_PGC);
-    unitval u2(2.0, U_PGC);
-    
-    fluxpool f1(1.0, U_PGC);
-    fluxpool f1_track = f1; // for ease of testing later
-    f1_track.tracking = true;
-    
-    fluxpool f2(2.0, U_PGC, false, "f2");
-    fluxpool f2_track = f2;
-    f2_track.tracking = true;
-    
+        
     // Adjusting when not tracking - no "untracked"
     fluxpool adjust2_no_track = f2.flux_from_unitval(u1);
     adjust2_no_track.adjust_pool_to_val(u2.value(u2.units()));
@@ -220,23 +204,7 @@ TEST( TestTracking, AdjustPool ) {
     EXPECT_EQ(adjust2_track.get_fraction("untracked"), u1/u2) << "untracked value not added to map";
 }
 
-TEST( TestTracking, Math ) {
-    
-    unitval u0(0.0, U_PGC);
-    unitval u1(1.0, U_PGC);
-    unitval u2(2.0, U_PGC);
-    unitval u3 = u1 + u2;
-    
-    fluxpool f1(1.0, U_PGC);
-    fluxpool f1_track = f1; // for ease of testing later
-    f1_track.tracking = true;
-    
-    fluxpool f2(2.0, U_PGC, false, "f2");
-    fluxpool f2_track = f2;
-    f2_track.tracking = true;
-    
-    fluxpool f3 = f2 + f1;
-    fluxpool f3_track = f2_track + f1_track;
+TEST_F( TrackingTest, Math ) {
     
     // Multiplication Tests
     fluxpool mult0r = f1*0.0;
@@ -345,7 +313,7 @@ TEST( TestTracking, Math ) {
     EXPECT_THROW(f2_track + fluxpool(1.0, U_UNITLESS), h_exception);
 }
 
-TEST( TestTracking, Tracking ) {
+TEST_F( TrackingTest, Tracking ) {
     // Tracking tests
     identity_tests(true);
     
