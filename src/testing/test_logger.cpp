@@ -1,9 +1,9 @@
 /* Hector -- A Simple Climate Model
-   Copyright (C) 2014-2015  Battelle Memorial Institute
-
-   Please see the accompanying file LICENSE.md for additional licensing
-   information.
-*/
+ Copyright (C) 2014-2015  Battelle Memorial Institute
+ 
+ Please see the accompanying file LICENSE.md for additional licensing
+ information.
+ */
 /*
  *  test_logger.hpp
  *  hector
@@ -19,8 +19,10 @@
 #include "h_exception.hpp"
 #include "logger.hpp"
 
-class TestLogger : public testing::Test {
-// google test fixtures must be protected
+using namespace Hector;
+
+class LoggerTest : public testing::Test {
+    // google test fixtures must be protected
 protected:
     // fixture methods
     virtual void SetUp() {
@@ -29,7 +31,7 @@ protected:
         // avoid stomping over someone else's files.
         H_ASSERT( !fileExists( testFile1.c_str() ), "testfile1 exists" );
         H_ASSERT( !fileExists( testFile2.c_str() ), "testfile2 exists" );
-
+        
         loggerNoEcho.open( testFile1, false, true, Logger::WARNING );
         std::streambuf* tmpBuff = std::cout.rdbuf( &consoleTestBuff );
         loggerEcho.open( testFile2, true, true, Logger::WARNING );
@@ -38,29 +40,31 @@ protected:
         // original back into cout
         std::cout.rdbuf( tmpBuff );
     }
-
-    // only define TearDown if it is needed
+    
     virtual void TearDown() {
         // close the loggers explicitly so that the temp files can be deleted.
         loggerNoEcho.close();
         loggerEcho.close();
         
         // attempt to delete the temp files
-        int retCode = remove( testFile1.c_str() );
-        if( retCode != 0 )
-            std::cout << "Warning could not remove temp file " << testFile1 << std::endl;
-        retCode = remove( testFile2.c_str() );
-        if( retCode != 0 )
-            std::cout << "Warning could not remove temp file " << testFile2 << std::endl;
+        int retCode;
+        if(fileExists( testFile1.c_str() )) {
+            retCode = remove( testFile1.c_str() );
+            if( retCode != 0 )
+                std::cout << "Warning could not remove " << testFile1 << std::endl;
+        }
+        
+        if(fileExists( testFile2.c_str() )) {
+            retCode = remove( testFile2.c_str() );
+            if( retCode != 0 )
+                std::cout << "Warning could not remove " << testFile2 << std::endl;
+        }
     }
     
     // other helper methods
     bool fileExists( const char* fileName ) const {
         std::ifstream test( fileName );
-        
-        // this conversion to bool will let us know if the file successfully
-        // opened
-        return test;
+        return test.good();
     }
     
     std::string testFile1;
@@ -72,48 +76,55 @@ protected:
     std::stringbuf consoleTestBuff;
 };
 
-TEST_F(TestLogger, UninitializedLog) {
-    Logger unitialized;
-    ASSERT_THROW(H_LOG(unitialized, Logger::SEVERE), h_exception);
+TEST_F(LoggerTest, UninitializedLog) {
+    Logger uninitialized;
+    
+    // 2021-07-03: H_LOG no longer throws an error because the log isn't
+    // "enabled" and so Logger::write is never called. I'm not sure it's
+    // possible to have an enabled but uninitialized log.  -BBL
+    //ASSERT_THROW(H_LOG(unitialized, Logger::SEVERE), h_exception);
+    // Instead test write() directly
+    EXPECT_THROW(uninitialized.write(Logger::SEVERE, ""), h_exception);
 }
 
-TEST_F(TestLogger, PriorityTooLow) {
+TEST_F(LoggerTest, PriorityTooLow) {
+    const std::string oldlog = consoleTestBuff.str();
     H_LOG(loggerEcho, Logger::DEBUG) << "This message should not show up" << std::endl;
-    
-    ASSERT_EQ(consoleTestBuff.str(), "");
+    EXPECT_EQ(consoleTestBuff.str(), oldlog);  // i.e. no change
 }
 
-TEST_F(TestLogger, PriorityHighEnough) {
+TEST_F(LoggerTest, PriorityHighEnough) {
+    const std::string oldlog = consoleTestBuff.str();
     H_LOG(loggerEcho, Logger::SEVERE) << "This message should show up" << std::endl;
-    
-    // TODO: what to do about the non-deterministic logging message
     const std::string bufferValue = consoleTestBuff.str();
-    EXPECT_NE(bufferValue, "");
-    
+    EXPECT_NE(bufferValue, oldlog);  // i.e. a change
+
     // TODO: create a more strict regular expression for what we are expecting.
     testing::internal::RE regex( ".*This message should show up" );
-    ASSERT_TRUE(testing::internal::RE::PartialMatch( bufferValue, regex ) ) << "The actual value was " << bufferValue;
+    EXPECT_TRUE(testing::internal::RE::PartialMatch( bufferValue, regex ) ) << "The actual value was " << bufferValue;
     
 }
 
-TEST_F(TestLogger, PrioritySameAsMin) {
+TEST_F(LoggerTest, PrioritySameAsMin) {
     H_LOG(loggerEcho, Logger::WARNING) << "This message should show up" << std::endl;
     
     // TODO: what to do about the non-deterministic logging message
-    ASSERT_NE(consoleTestBuff.str(), "");
+    EXPECT_NE(consoleTestBuff.str(), "");
 }
 
-TEST_F(TestLogger, NoEchoDoesNotEcho) {
+TEST_F(LoggerTest, NoEchoDoesNotEcho) {
+    const std::string oldlog = consoleTestBuff.str();
     H_LOG(loggerNoEcho, Logger::SEVERE) << "This message should not show up" << std::endl;
     
-    ASSERT_EQ(consoleTestBuff.str(), "");
+    EXPECT_EQ(consoleTestBuff.str(), oldlog);  // i.e. no change
 }
 
-TEST_F(TestLogger, LogToClosedLogger) {
-    loggerEcho.close();
+TEST_F(LoggerTest, LogToClosedLogger) {
+    const std::string oldlog = consoleTestBuff.str();
+loggerEcho.close();
     EXPECT_THROW(
-                 H_LOG(loggerEcho, Logger::SEVERE) 
-                    << "This message should not show up" << std::endl,
+                 H_LOG(loggerEcho, Logger::SEVERE)
+                 << "This message should not show up" << std::endl,
                  h_exception );
-    ASSERT_EQ(consoleTestBuff.str(), "");
+    EXPECT_EQ(consoleTestBuff.str(), oldlog);  // i.e. no change
 }

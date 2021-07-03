@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2746135526908E260069D565 /* test_logger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27A02A462615CAA100AF9BFA /* test_logger.cpp */; };
 		277D29DC2683669E003177A2 /* libboost_system.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 277D29DA2683669E003177A2 /* libboost_system.dylib */; };
 		277D29DD2683669E003177A2 /* libboost_filesystem.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 277D29DB2683669E003177A2 /* libboost_filesystem.dylib */; };
 		27808CF12615CEFA00BE8B90 /* libgtest.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 27808CF02615CEFA00BE8B90 /* libgtest.dylib */; };
@@ -523,6 +524,7 @@
 				27A02A702615CBB800AF9BFA /* h_interpolator.cpp in Sources */,
 				27A02A712615CBB800AF9BFA /* ini_to_core_reader.cpp in Sources */,
 				27A02A722615CBB800AF9BFA /* bc_component.cpp in Sources */,
+				2746135526908E260069D565 /* test_logger.cpp in Sources */,
 				27A02A732615CBB800AF9BFA /* ch4_component.cpp in Sources */,
 				27A02A742615CBB800AF9BFA /* csv_outputstream_visitor.cpp in Sources */,
 				27A02A752615CBB800AF9BFA /* carbon-cycle-model.cpp in Sources */,
