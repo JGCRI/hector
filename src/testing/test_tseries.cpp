@@ -21,7 +21,7 @@
 
 using namespace std;
 
-TEST(TestTSeries, SmallBasics) {
+TEST(TSeriesTest, SmallBasics) {
     
     Hector::tseries<double> test;
 	
@@ -41,7 +41,7 @@ TEST(TestTSeries, SmallBasics) {
     EXPECT_EQ( test.get( p1 ), v1 );
 }
 
-TEST(TestTSeries, SmallFirstLast) {
+TEST(TSeriesTest, SmallFirstLast) {
 
 	Hector::tseries<double> test;
 	
@@ -54,7 +54,7 @@ TEST(TestTSeries, SmallFirstLast) {
     EXPECT_EQ( test.lastdate(), p3 );
 }
 
-TEST(TestTSeries, SmallLinearInterp) {
+TEST(TSeriesTest, SmallLinearInterp) {
 
     // Interpolation testing
 
@@ -76,7 +76,7 @@ TEST(TestTSeries, SmallLinearInterp) {
     
 }
 
-TEST(TestTSeries, EmptyTS) {
+TEST(TSeriesTest, EmptyTS) {
 	
 	Hector::tseries<double> test_empty;
     test_empty.allowInterp( true );
@@ -85,7 +85,7 @@ TEST(TestTSeries, EmptyTS) {
     EXPECT_THROW( test_empty.get( 1 ), h_exception );
 }
 
-TEST(TestTSeries, NoInterpAllowed) {
+TEST(TSeriesTest, NoInterpAllowed) {
 	
 	// No interpolation allowed case
 	Hector::tseries<double> test;
@@ -93,7 +93,7 @@ TEST(TestTSeries, NoInterpAllowed) {
     EXPECT_THROW( test.get( 4234.0 ), h_exception );
 }
 
-TEST(TestTSeries, SmallOverwrite) {
+TEST(TSeriesTest, SmallOverwrite) {
 	
 	Hector::tseries<double> test;
 	int p1 = 1, p2 = 2;
@@ -106,7 +106,7 @@ TEST(TestTSeries, SmallOverwrite) {
 
 }
 
-TEST(TestTSeries, BigTimeSeries) {
+TEST(TSeriesTest, BigTimeSeries) {
 
     // Test with a big time series
 
@@ -311,7 +311,7 @@ TEST(TestTSeries, BigTimeSeries) {
 */
 }
 
-TEST(TestTSeries, PartialInterp) {
+TEST(TSeriesTest, PartialInterp) {
 	Hector::tseries<double> test;
     test.set( 1, 1 );
     test.set( 2, 2 );
