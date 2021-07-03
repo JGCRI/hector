@@ -36,5 +36,5 @@ jobs:
           GTLIB=/usr/lib
           GTINC=
           BOOSTLIB=/usr/local/lib BOOSTVERSION=$ver BOOSTROOT=/usr/include/boost 
-          make hector
-          bash ./test_hector.sh ./src/hector
+          make gtest
+          ./src/hector
