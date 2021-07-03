@@ -133,7 +133,6 @@
 		27962907268F23CB00333AA3 /* simpleNbox-runtime.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "simpleNbox-runtime.cpp"; path = "../../src/simpleNbox-runtime.cpp"; sourceTree = "<group>"; };
 		2796290A268F253C00333AA3 /* test_tracking.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_tracking.cpp; path = ../../../src/Testing/test_tracking.cpp; sourceTree = "<group>"; };
 		27A02A462615CAA100AF9BFA /* test_logger.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_logger.cpp; path = ../../../src/Testing/test_logger.cpp; sourceTree = "<group>"; };
-		27A02A472615CAA100AF9BFA /* test_restart.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_restart.cpp; path = ../../../src/Testing/test_restart.cpp; sourceTree = "<group>"; };
 		27A02A482615CAA100AF9BFA /* test_csv_file_reader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_csv_file_reader.cpp; path = ../../../src/Testing/test_csv_file_reader.cpp; sourceTree = "<group>"; };
 		27A02A492615CAA100AF9BFA /* test_dependency_finder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_dependency_finder.cpp; path = ../../../src/Testing/test_dependency_finder.cpp; sourceTree = "<group>"; };
 		27A02A4A2615CAA100AF9BFA /* test_ini_to_core_reader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_ini_to_core_reader.cpp; path = ../../../src/Testing/test_ini_to_core_reader.cpp; sourceTree = "<group>"; };
@@ -274,7 +273,6 @@
 				27A02A4A2615CAA100AF9BFA /* test_ini_to_core_reader.cpp */,
 				27A02A502615CAA100AF9BFA /* test_inih.cpp */,
 				27A02A462615CAA100AF9BFA /* test_logger.cpp */,
-				27A02A472615CAA100AF9BFA /* test_restart.cpp */,
 				2796290A268F253C00333AA3 /* test_tracking.cpp */,
 				27A02A4B2615CAA100AF9BFA /* test_tseries.cpp */,
 				27A02A4D2615CAA100AF9BFA /* testing_main.cpp */,
