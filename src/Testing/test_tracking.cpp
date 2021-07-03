@@ -24,7 +24,7 @@ using namespace Hector;
 
 // Test fixture - these objects are used repeatedly throughout the tests below,
 // so defined here in a single place
-// More info: https://github.com/google/googletest/blob/master/docs/primer.md
+// Fixture info: https://github.com/google/googletest/blob/master/docs/primer.md
 class TrackingTest : public ::testing::Test {
  protected:
   void SetUp() override {
@@ -57,15 +57,14 @@ class TrackingTest : public ::testing::Test {
 void identity_tests(bool trk) {
     string trks = trk ? "true" : "false";
     fluxpool a(1.0, U_UNITLESS, trk);
-    EXPECT_EQ(a, a); // "a not equal to itself"
-    EXPECT_EQ(a / a, 1.0); // "a divided by itself not 1"
-    EXPECT_EQ(a - a, fluxpool(0, U_UNITLESS, trk)); // "a minus itself not 0"
+    EXPECT_EQ(a, a) << "a not equal to itself for trk=" << trk;
+    EXPECT_EQ(a / a, 1.0) << "a/a not 1 for trk=" << trk;
+    EXPECT_EQ(a - a, fluxpool(0, U_UNITLESS, trk)) << "a-a not 0 for trk=" << trk;
 }
 
 TEST_F( TrackingTest, Construction ) {
     
     // Default constructor
-    fluxpool f0;
     std::unordered_map<std::string, double> f0_map = f0.get_tracking_map();
     EXPECT_EQ(f0.tracking, false) << "default constructor tracking isn't false";
     EXPECT_EQ(f0.value(U_UNDEFINED), 0.0) << "constructor value and units aren't set";
@@ -73,7 +72,7 @@ TEST_F( TrackingTest, Construction ) {
     EXPECT_EQ(f0.name, "?") << "default constructor doesn't set name correctly";
     
     // 4 argument constructor with default values
-    EXPECT_FALSE(f1.tracking) << "basic constructor tracking isn't default to false";
+    EXPECT_FALSE(f1.tracking) << "basic constructor tracking doesn't default to false";
     EXPECT_EQ(f1.value(U_PGC), 1.0) << "basic constructor value and units don't set";
     EXPECT_EQ(f1.name, "?") << "basic constructor doesn't set name correctly";
     
@@ -134,8 +133,8 @@ TEST_F( TrackingTest, Getting ) {
     sources_actual.push_back("f2");
     sort(sources_actual.begin(), sources_actual.end());
     EXPECT_EQ(sources_actual, f3_sources) << "f3 sources doesn't match actual sources";
-    EXPECT_EQ(f3_track.get_fraction("?"), u1/u3) << "two element get fraction doesn't work";
-    EXPECT_EQ(f3_track.get_fraction("f2"), u2/u3) << "two element get fraction doesn't work";
+    EXPECT_EQ(f3_track.get_fraction("?"), u1 / u3) << "two element get fraction doesn't work";
+    EXPECT_EQ(f3_track.get_fraction("f2"), u2 / u3) << "two element get fraction doesn't work";
 }
 
 TEST_F( TrackingTest, FluxFrom ) {
@@ -207,22 +206,22 @@ TEST_F( TrackingTest, AdjustPool ) {
 TEST_F( TrackingTest, Math ) {
     
     // Multiplication Tests
-    fluxpool mult0r = f1*0.0;
+    fluxpool mult0r = f1 * 0.0;
     EXPECT_EQ(mult0r, u0) << "multiplication by 0 does not work";
     EXPECT_FALSE(f1 == u0) << "multiplied fluxpool is not affected";
-    fluxpool mult0l = 0.0*f1;
+    fluxpool mult0l = 0.0 * f1;
     EXPECT_EQ(mult0l, u0) << "multiplication by 0 does not work";
     
     fluxpool mult4 = f1_track * 2.0;
     EXPECT_EQ(mult4, u2) << "multiplication by 0 does not work";
-    EXPECT_EQ(mult4.get_tracking_map(), f1.get_tracking_map()) << "product map same as multipiled map";
+    EXPECT_EQ(mult4.get_tracking_map(), f1.get_tracking_map()) << "product map same as multiplied map";
     EXPECT_EQ(mult4.name, f1_track.name) << "names aren't preserved during multiplication";
-    EXPECT_EQ(mult4.tracking, f1_track.tracking) << "tracking is not preserved during multiplicaiton";
+    EXPECT_EQ(mult4.tracking, f1_track.tracking) << "tracking is not preserved during multiplication";
     mult4 = mult4 + f2_track;
     EXPECT_FALSE(mult4.get_tracking_map() == f1_track.get_tracking_map()) << "multiplication does not produce a deep copy";
     fluxpool mult3 = mult4 * 0.5;
     // test for map with more than one element
-    EXPECT_EQ(mult3.get_tracking_map(), mult4.get_tracking_map()) <<"product map same as multipiled map with multiple elements";
+    EXPECT_EQ(mult3.get_tracking_map(), mult4.get_tracking_map()) << "product map same as multiplied map with multiple elements";
     
     // Division Tests
     fluxpool div1 = f2_track / 2.0;
@@ -238,13 +237,13 @@ TEST_F( TrackingTest, Math ) {
     
     // Subtraction Tests with Unitvals
     fluxpool sub_zero = f2 - u0;
-    EXPECT_EQ(sub_zero, f2) << "subtraction by zero works";
+    EXPECT_EQ(sub_zero, f2) << "subtraction by zero doesn't work";
     
     fluxpool sub1 = f2 - u1;
     EXPECT_EQ(sub1, u1) << "subtraction value doesn't work when not tracked";
     EXPECT_EQ(sub1.get_tracking_map(), f2.get_tracking_map()) << "untracked subtraction changes map";
     EXPECT_EQ(sub1.name, f2.name) << "subtraction preserves name";
-    EXPECT_EQ(sub1.tracking, f2.tracking) << "subtract preserved tracking";
+    EXPECT_EQ(sub1.tracking, f2.tracking) << "subtract preserves tracking";
     
     fluxpool sub1_track = f2_track - u1;
     EXPECT_EQ(sub1_track, u1) << "subtraction value doesn't work when tracked";
@@ -368,5 +367,5 @@ TEST_F( TrackingTest, Tracking ) {
     // Test 4: adjusting a total
     
     dest.adjust_pool_to_val(dest.value(U_PGC) * 1.1);
-    EXPECT_TRUE(dest.get_fraction("untracked") - 1.0/11.0 < 1e-6) << "untracked not correct";
+    EXPECT_TRUE(dest.get_fraction("untracked") - 1.0 / 11.0 < 1e-6) << "untracked not correct";
 }
