@@ -33,7 +33,7 @@ void test_inih_writefile(  char* filename, string contents ) {
 	}
 }
 
-TEST( TestINIH, SimpleFile ) {
+TEST( INIHTest, SimpleFile ) {
 
     char filename[] = "simple.ini";
     test_inih_writefile( filename, 
@@ -56,7 +56,7 @@ TEST( TestINIH, SimpleFile ) {
     remove( filename );     // clean up
 }
 
-TEST( TestINIH, ComplexFile ) {
+TEST( INIHTest, ComplexFile ) {
 
     char filename[] = "complex.ini";
     test_inih_writefile( filename, 
@@ -103,7 +103,7 @@ TEST( TestINIH, ComplexFile ) {
     remove( filename );     // clean up    
 }
 
-TEST( TestINIH, CorruptSection ) {
+TEST( INIHTest, CorruptSection ) {
     
     char filename[] = "corruptsection.ini";
     test_inih_writefile( filename, 

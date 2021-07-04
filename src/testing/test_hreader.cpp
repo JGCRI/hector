@@ -35,7 +35,7 @@ void test_hreader_writefile(  char* filename, string contents ) {
 }
 
 
-TEST( TestHreader, SimpleFile ) {
+TEST( HreaderTest, SimpleFile ) {
     
     char filename[] = "simple.ini";
     test_hreader_writefile( filename, 
@@ -58,7 +58,7 @@ TEST( TestHreader, SimpleFile ) {
     remove( filename );     // clean up
 }
 
-TEST( TestHreader, ComplexFile ) {
+TEST( HreaderTest, ComplexFile ) {
     
     char filename[] = "complex.ini";
     test_hreader_writefile( filename, 
@@ -105,7 +105,7 @@ TEST( TestHreader, ComplexFile ) {
     remove( filename );     // clean up    
 }
 
-TEST( TestHreader, CorruptSection ) {
+TEST( HreaderTest, CorruptSection ) {
     
     char filename[] = "corruptsection.ini";
     test_hreader_writefile( filename, 
