@@ -17,13 +17,7 @@ export HROOT
 
 ## ----------------------------------------------------
 ## Boost settings
-ifeq ($(strip $(BOOSTVERSION)),)
-	BOOSTVERSION	= 1_63_0
-endif
-ifeq ($(strip $(BOOSTROOT)),)
-	BOOSTROOT	= $(HOME)/src/boost_$(BOOSTVERSION)
-endif
-ifeq ($(strip $(BOOSTLIB)),)
+
 ## BOOSTROOT can be customized in the environment by compiling as:
 ##     BOOSTROOT=/path/to/boost_X_Y_Z make hector
 ## For package manager installs, this could be in any of the following
@@ -34,7 +28,15 @@ ifeq ($(strip $(BOOSTLIB)),)
 ## NOTE that if compiling BOOST from source, libraries may be
 ## installed in BOOSTROOT/stage/lib, in which case you may need to
 ## create a symbolic link from BOOSTROOT/lib to BOOSTROOT/stage/lib.
-BOOSTLIB = $(BOOSTROOT)/lib
+
+ifeq ($(strip $(BOOSTROOT)),)
+	BOOSTROOT	= /usr/local/
+endif
+ifeq ($(strip $(BOOSTINC)),)
+	BOOSTINC	= $(BOOSTROOT)/include
+endif
+ifeq ($(strip $(BOOSTLIB)),)
+	BOOSTLIB	= $(BOOSTROOT)/lib
 endif
 
 ## ----------------------------------------------------
