@@ -86,8 +86,9 @@ test: testing
 	cd testing && ./hector-unit-tests
 
 testing: INCLUDES += -I$(GTINC)
-testing: gtest components topdir
-	$(MAKE) -C testing hector-unit-tests
+##testing: components topdir
+testing: libhector.a
+	$(MAKE) -C Testing hector-unit-tests
 
 lib: libhector.a
 libhector.a: $(OBJS)
@@ -95,10 +96,6 @@ libhector.a: $(OBJS)
 
 ## top level directory objects
 -include $(DEPS)
-
-gtest:
-	if [ ! -f $(GTROOT)/config.status ] ; then cd $(GTROOT) && ./configure; fi
-	$(MAKE) -C Testing gtest
 
 clean:
 	-$(MAKE) -C testing clean
@@ -112,3 +109,4 @@ chkvar:
 	echo $(INCLUDES)
 	echo $(BOOSTROOT)
 	echo $(GTROOT)
+	-$(MAKE) -C testing chkvar
