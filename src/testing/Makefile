@@ -28,5 +28,6 @@ clean:
 	-rm hector-unit-tests
 
 chkvar:
-	echo "------- Testing"
-	echo $(OBJS)
+	@echo "------- Testing"
+	@echo "OBJS:"
+	@echo $(OBJS)

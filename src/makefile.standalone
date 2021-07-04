@@ -1,10 +1,16 @@
+## Makefile for Hector v3
+## Original author: Robert Link
+## Greatly revised by Ben Bond-Lamberty, 2021
+
+## ----------------------------------------------------
+## Build settings
 ifeq ($(strip $(CXX)),)
 	CXX      = g++
 endif 
 CXXFLAGS = -g $(INCLUDES) $(OPTFLAGS) $(CXXEXTRA) $(CXXPROF) $(WFLAGS) -MMD -std=c++14 
 CFLAGS   = -g $(INCLUDES) $(OPTFLAGS) $(CCEXTRA) -MMD
 INCLUDES = -I"$(BOOSTROOT)" -I"$(HDRDIR)"
-WFLAGS   = -Wall -Wno-unused-local-typedefs # Turn on warnings, turn off one particularly annoying one that infests Boost libs
+WFLAGS   = -Wall -Wno-unused-local-typedefs # Turn off warnings, esp. one common in Boost files
 OPTFLAGS = -O3
 LDFLAGS	 = $(CXXPROF) -L"$(BOOSTLIB)" -L. -Wl,-rpath,"$(BOOSTLIB)"
 
@@ -54,12 +60,13 @@ endif
 
 export GTLIB GTINC
 
-
 ## ----------------------------------------------------
-## sources in the top level directory
+## Sources in the top level directory
 CXXSRCS	= $(wildcard *.cpp)
 MAINS   = main.cpp main-api.cpp
 RCPPS   = $(wildcard rcpp_*.cpp) RcppExports.cpp
+## Remove the mains (main.cpp and main-api.cpp) as well Rcpp files
+## They'll be included separately later as needed
 CXXSRCS := $(filter-out $(MAINS), $(CXXSRCS))
 CXXSRCS := $(filter-out $(RCPPS), $(CXXSRCS))
 CSRCS   = $(wildcard *.c)
@@ -67,9 +74,14 @@ OBJS	= $(CXXSRCS:.cpp=.o) $(CSRCS:.c=.o)
 DEPS	= $(CXXSRCS:.cpp=.d) $(CSRCS:.c=.d)
 
 ## ----------------------------------------------------
-## default target
+## Default target
 hector: libhector.a main.o
 	$(CXX) $(LDFLAGS) -o hector main.o -lhector -lm -lboost_system -lboost_filesystem
+
+## Testing target
+testing: INCLUDES += -I$(GTINC)
+testing: libhector.a
+	$(MAKE) -C Testing hector-unit-tests
 
 ## alternate version that uses the capabilities needed for driving
 ## hector from an external source (e.g., an IAM)
@@ -85,11 +97,6 @@ hector: libhector.a main.o
 test: testing
 	cd testing && ./hector-unit-tests
 
-testing: INCLUDES += -I$(GTINC)
-##testing: components topdir
-testing: libhector.a
-	$(MAKE) -C Testing hector-unit-tests
-
 lib: libhector.a
 libhector.a: $(OBJS)
 	ar ru libhector.a *.o
@@ -103,10 +110,16 @@ clean:
 	-rm -rf build
 
 chkvar:
-	echo $(CXXSRCS)
-	echo $(CSRCS)
-	echo $(OBJS)
-	echo $(INCLUDES)
-	echo $(BOOSTROOT)
-	echo $(GTROOT)
+	@echo -n "CXXSRCS:"
+	@echo $(CXXSRCS)
+	@echo "CSRCS:"
+	@echo $(CSRCS)
+	@echo "OBJS:"
+	@echo $(OBJS)
+	@echo "INCLUDES:"
+	@echo $(INCLUDES)
+	@echo "BOOSTROOT:"
+	@echo $(BOOSTROOT)
+	@echo "GTROOT:"
+	@echo $(GTROOT)
 	-$(MAKE) -C testing chkvar
