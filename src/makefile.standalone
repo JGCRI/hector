@@ -40,12 +40,15 @@ endif
 ## ----------------------------------------------------
 ## googletest settings
 
-ifeq ($(strip $(GTLIB)),)
-	## Our GitHub Actions script installs the gtest libraries in /usr/lib
-	GTLIB	= /usr/lib/
+ifeq ($(strip $(GTROOT)),)
+	GTROOT	= /usr/local/
 endif
-
-GTINC	= $(GTROOT)/include
+ifeq ($(strip $(GTINC)),)
+	GTINC	= $(GTROOT)/include
+endif
+ifeq ($(strip $(GTLIB)),)
+	GTLIB	= $(GTROOT)/lib
+endif
 
 export GTLIB GTINC
 
@@ -92,8 +95,8 @@ libhector.a: $(OBJS)
 -include $(DEPS)
 
 gtest:
-##	if [ ! -f $(GTROOT)/config.status ] ; then cd $(GTROOT) && ./configure; fi
-	$(MAKE) -C $(GTROOT)
+	if [ ! -f $(GTROOT)/config.status ] ; then cd $(GTROOT) && ./configure; fi
+	$(MAKE) -C Testing gtest
 
 clean:
 	-$(MAKE) -C testing clean
@@ -105,3 +108,5 @@ chkvar:
 	echo $(CSRCS)
 	echo $(OBJS)
 	echo $(INCLUDES)
+	echo $(BOOSTROOT)
+	echo $(GTROOT)
