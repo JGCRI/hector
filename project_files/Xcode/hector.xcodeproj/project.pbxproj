@@ -10,6 +10,7 @@
 		2746135526908E260069D565 /* test_logger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27A02A462615CAA100AF9BFA /* test_logger.cpp */; };
 		2746135626909AF20069D565 /* test_inih.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27A02A502615CAA100AF9BFA /* test_inih.cpp */; };
 		2746135826909CD70069D565 /* test_hreader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27A02A4F2615CAA100AF9BFA /* test_hreader.cpp */; };
+		277B66A82693896E00EEFC24 /* test_ini_to_core_reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27A02A4A2615CAA100AF9BFA /* test_ini_to_core_reader.cpp */; };
 		277D29DC2683669E003177A2 /* libboost_system.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 277D29DA2683669E003177A2 /* libboost_system.dylib */; };
 		277D29DD2683669E003177A2 /* libboost_filesystem.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 277D29DB2683669E003177A2 /* libboost_filesystem.dylib */; };
 		27808CF12615CEFA00BE8B90 /* libgtest.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 27808CF02615CEFA00BE8B90 /* libgtest.dylib */; };
@@ -511,6 +512,7 @@
 				27A02A612615CBB800AF9BFA /* core.cpp in Sources */,
 				27A02A622615CBB800AF9BFA /* INIReader.cpp in Sources */,
 				27A02A632615CBB800AF9BFA /* so2_component.cpp in Sources */,
+				277B66A82693896E00EEFC24 /* test_ini_to_core_reader.cpp in Sources */,
 				27A02A642615CBB800AF9BFA /* oc_component.cpp in Sources */,
 				27962909268F241100333AA3 /* simpleNbox-runtime.cpp in Sources */,
 				27A02A652615CBB800AF9BFA /* csv_table_reader.cpp in Sources */,

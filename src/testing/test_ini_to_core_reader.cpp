@@ -17,9 +17,11 @@
 #include <gtest/gtest.h>
 
 #include "h_exception.hpp"
-#include "core/core.hpp"
-#include "core/dummy_model_component.hpp"
-#include "input/ini_to_core_reader.hpp"
+#include "core.hpp"
+#include "dummy_model_component.hpp"
+#include "ini_to_core_reader.hpp"
+
+using namespace Hector;
 
 /*! \brief Unit tests for the INIToCoreReader class.
  *
@@ -48,7 +50,6 @@ protected:
         testFile.open( testFileName.c_str(), std::ios::in | std::ios::out | std::ios::trunc );
     }
     
-    // only define TearDown if it is needed
     virtual void TearDown() {
         // close the file explicitly so that the temp files can be deleted.
         testFile.close();
@@ -62,13 +63,10 @@ protected:
     // other helper methods
     bool fileExists( const char* fileName ) const {
         std::ifstream test( fileName );
-        
-        // this conversion to bool will let us know if the file successfully
-        // opened
-        return test;
+        return test.good();
     }
     
-    Core core;
+    Core core{Logger::DEBUG, false, true};
     
     INIToCoreReader reader;
     
@@ -133,26 +131,26 @@ TEST_F(TestINIToCore, ParseSingleIndex) {
 
 TEST_F(TestINIToCore, TableFilenameNoPrefix) {
     testFile << "[dummy-component]" << std:: endl;
-    testFile << "c=non_existant.csv" << std::endl;
+    testFile << "c=non_existent.csv" << std::endl;
     // make sure this throws an exception for the right reason and not due to
-    // a non existant file
+    // a nonexistent file
     try {
         reader.parse(testFileName);
     } catch( h_exception e) {
         // we should get and exception from dummy model component when it
         // tries to set c to a single value
-        ASSERT_EQ( e.file, "dummy_model_component.cpp" );
+        ASSERT_EQ( e.get_filename(), "dummy_model_component.cpp" );
     }
 }
 
 TEST_F(TestINIToCore, TableFilenameWithCSVPrefix) {
     testFile << "[dummy-component]" << std:: endl;
-    testFile << "c=csv:non_existant.csv" << std::endl;
+    testFile << "c=csv:non_existent.csv" << std::endl;
     try {
         reader.parse(testFileName);
     } catch( h_exception e ) {
         // looking for an exception from CSVTableReader which indicates that it
         // understood to try to read a CSV file
-        ASSERT_EQ( e.file, "csv_table_reader.cpp" );
+        ASSERT_EQ( e.get_filename(), "csv_table_reader.cpp" );
     }
 }
