@@ -1,6 +1,6 @@
 ## Makefile for Hector v3
 ## Original author: Robert Link
-## Revised by Ben Bond-Lamberty, 2021
+## Greatly revised by Ben Bond-Lamberty, 2021
 
 ## ----------------------------------------------------
 ## Build settings
@@ -45,9 +45,6 @@ ifeq ($(strip $(BOOSTLIB)),)
 	BOOSTLIB	= $(BOOSTROOT)/lib
 endif
 
-## ----------------------------------------------------
-## googletest settings
-
 ifeq ($(strip $(GTROOT)),)
 	GTROOT	= /usr/local/
 endif
@@ -66,8 +63,8 @@ export GTLIB GTINC
 CXXSRCS	= $(wildcard *.cpp)
 MAINS   = main.cpp main-api.cpp
 RCPPS   = $(wildcard rcpp_*.cpp) RcppExports.cpp
-## Remove the mains (main.cpp and main-api.cpp) as well as Rcpp files
-## The main file will be added later; WHICH main depends on the target 
+## Remove the mains, as well as Rcpp files, from source list
+## The main file will be added later; *which* main depends on the target 
 CXXSRCS := $(filter-out $(MAINS), $(CXXSRCS))
 CXXSRCS := $(filter-out $(RCPPS), $(CXXSRCS))
 CSRCS   = $(wildcard *.c)
@@ -92,14 +89,11 @@ testing: libhector.a
 # hector-api: libhector.a main-api.o
 # 	$(CXX) $(LDFLAGS) -o hector-api main-api.o -lhector -lgsl -lgslcblas -lm
 
-## Targets that do not literally name files
-.PHONY: clean 
+## Targets that do not literally name files; we always want them run when requested
+.PHONY: clean testing chkvar
 
 libhector.a: $(OBJS)
 	ar ru libhector.a *.o
-
-## top level directory objects
--include $(DEPS)
 
 clean:
 	-$(MAKE) -C testing clean
