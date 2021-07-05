@@ -5,7 +5,7 @@ SRCS	= $(wildcard *.cpp)
 
 ## ** TEMPORARY **
 ## the following files aren't working yet; remove them
-UNDONE = test_core.cpp test_csv_file_reader.cpp test_dependency_finder.cpp test_ini_to_core_reader.cpp
+UNDONE = test_core.cpp test_csv_file_reader.cpp test_dependency_finder.cpp
 SRCS := $(filter-out $(UNDONE), $(SRCS))
 
 OBJS	= $(SRCS:.cpp=.o)
