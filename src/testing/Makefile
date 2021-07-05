@@ -19,9 +19,9 @@ DEPS	= $(SRCS:.cpp=.d)
 LDFLAGS += -L$(GTLIB) -Wl,-L$(GTLIB),-L../
 
 ## ----------------------------------------------------
-
+## Default target
 hector-unit-tests: $(OBJS) ../libhector.a
-	$(CXX) $(LDFLAGS) -o hector-unit-tests $(OBJS) ../*.o -lhector -lgtest -lpthread -lm -lboost_system -lboost_filesystem
+	$(CXX) $(LDFLAGS) -o hector-unit-tests $(OBJS) ../libhector.a -lhector -lgtest -lpthread -lm -lboost_system -lboost_filesystem
 	
 clean:
 	-rm *.o
