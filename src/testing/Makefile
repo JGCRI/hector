@@ -1,17 +1,29 @@
 ## This Makefile is meant to be invoked recursively from the top level directory
 
+## This (SRCS) will include testing_main.cpp
 SRCS	= $(wildcard *.cpp)
+
+## ** TEMPORARY **
+## the following files aren't working yet; remove them
+UNDONE = test_core.cpp test_csv_file_reader.cpp test_dependency_finder.cpp
+SRCS := $(filter-out $(UNDONE), $(SRCS))
+
 OBJS	= $(SRCS:.cpp=.o)
 DEPS	= $(SRCS:.cpp=.d)
+LDFLAGS += -L$(GTLIB) -Wl,-L$(GTLIB),-L../
 
+## ----------------------------------------------------
+## Default target
+hector-unit-tests: $(OBJS) ../libhector.a
+	$(CXX) $(LDFLAGS) -o hector-unit-tests $(OBJS) ../libhector.a -lhector -lgtest -lpthread -lm -lboost_system -lboost_filesystem
 
--include $(DEPS)
-
-LDFLAGS += -L$(GTLIB) -Wl,-rpath=$(GTLIB)
-
-hector-unit-tests: $(OBJS)
-	$(CXX) $(LDFLAGS) -o hector-unit-tests *.o ../build/*.o ../logger.o -lgtest -lpthread -lm
-
+.PHONY: clean chkvar
+	
 clean:
 	-rm *.o
 	-rm hector-unit-tests
+
+chkvar:
+	@echo "------- Testing"
+	@echo "OBJS:"
+	@echo $(OBJS)
