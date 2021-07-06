@@ -14,6 +14,7 @@
 \alias{RF_SO2I}
 \alias{RF_SO2}
 \alias{RF_VOL}
+\alias{alpha_CO2}
 \alias{RF_CH4}
 \title{Identifiers for capabilities in the Hector forcing component}
 \usage{
@@ -40,6 +41,8 @@ RF_SO2I()
 RF_SO2()
 
 RF_VOL()
+
+alpha_CO2()
 
 RF_CH4()
 }
@@ -74,6 +77,8 @@ messages.)
 \item \code{RF_SO2}: Total contribution (direct and indirect) of SO2 to radiative forcing
 
 \item \code{RF_VOL}: Radiative forcing due to volcanic activity
+
+\item \code{alpha_CO2}: Radiative forcing efficiency for CO2
 
 \item \code{RF_CH4}: Radiative forcing due to methane
 }}
