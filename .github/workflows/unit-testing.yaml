@@ -34,5 +34,5 @@ jobs:
         run: |
           BOOSTROOT=/usr/local/
           GTROOT=/usr/local/
-          make testing
+          make chkvar
           ./src/Testing/hector-unit-tests
