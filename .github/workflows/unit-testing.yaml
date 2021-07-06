@@ -25,7 +25,7 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
       - name: Install gtest
-      # following https://github.com/bastianhjaeger/github_actions_gtest_example
+      # based on https://github.com/bastianhjaeger/github_actions_gtest_example
         run: sudo apt-get install libgtest-dev && cd /usr/src/gtest && sudo cmake CMakeLists.txt && sudo make && sudo cp lib/*.a /usr/local/lib 
       - name: Install Boost
         run: sudo apt install libboost-filesystem-dev libboost-system-dev
@@ -34,5 +34,5 @@ jobs:
         run: |
           BOOSTROOT=/usr/local/
           GTROOT=/usr/local/
-          make chkvar
+          make chkvar testing
           ./src/Testing/hector-unit-tests
