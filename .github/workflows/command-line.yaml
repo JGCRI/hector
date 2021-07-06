@@ -38,23 +38,3 @@ jobs:
           echo Boost version $ver
           BOOSTLIB=/usr/local/lib BOOSTVERSION=$ver BOOSTROOT=/usr/include/boost make hector
           bash ./test_hector.sh ./src/hector
-
-  macos:
-    runs-on: macos-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-      - name: build and run test
-        run: |
-          brew install boost
-          ver=`ls /usr/local/Cellar/boost/`
-          echo Boost version $ver
-
-          # Build the Hector executable, provide the links to boost libs
-          BOOST=/usr/local/Cellar/boost
-          BOOSTLIB=$BOOST/$ver/lib BOOSTROOT=$BOOST/$ver/include/boost make hector
-
-          # Run the Hector test script
-          bash ./test_hector.sh ./src/hector
