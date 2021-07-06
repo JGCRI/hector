@@ -10,12 +10,12 @@ SRCS := $(filter-out $(UNDONE), $(SRCS))
 
 OBJS	= $(SRCS:.cpp=.o)
 DEPS	= $(SRCS:.cpp=.d)
-LDFLAGS += -L$(GTLIB) -Wl,-L$(GTLIB),-L../
+LDFLAGS += -L$(GTLIB) -Wl,-L../
 
 ## ----------------------------------------------------
 ## Default target
 hector-unit-tests: $(OBJS) ../libhector.a
-	$(CXX) $(LDFLAGS) -o hector-unit-tests $(OBJS) ../libhector.a -lhector -lgtest -lpthread -lm -lboost_system -lboost_filesystem
+	$(CXX) $(LDFLAGS) -o hector-unit-tests $(OBJS) -lhector -lgtest -lpthread -lm -lboost_system -lboost_filesystem
 
 .PHONY: clean chkvar
 	
@@ -27,3 +27,4 @@ chkvar:
 	@echo "------- Testing"
 	@echo "OBJS:"
 	@echo $(OBJS)
+	@echo $(LDFLAGS)
