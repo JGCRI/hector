@@ -9,7 +9,10 @@ on:
       - master
       - github_actions
   pull_request:
-    branches: master land_tracking makefile
+    branches: 
+        - master 
+        - land_tracking
+        - makefile
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
