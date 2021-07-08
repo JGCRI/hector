@@ -9,7 +9,7 @@ UNDONE = test_core.cpp test_csv_file_reader.cpp test_dependency_finder.cpp
 SRCS := $(filter-out $(UNDONE), $(SRCS))
 
 OBJS	= $(SRCS:.cpp=.o)
-DEPS	= $(SRCS:.cpp=.d)
+##DEPS	= $(SRCS:.cpp=.d)
 LDFLAGS += -L$(GTLIB) -Wl,-L../
 
 ## ----------------------------------------------------
@@ -25,6 +25,7 @@ clean:
 
 chkvar:
 	@echo "------- Testing"
+	ls
 	@echo "OBJS:"
 	@echo $(OBJS)
 	@echo "LDFLAGS:"

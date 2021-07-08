@@ -69,7 +69,7 @@ CXXSRCS := $(filter-out $(MAINS), $(CXXSRCS))
 CXXSRCS := $(filter-out $(RCPPS), $(CXXSRCS))
 CSRCS   = $(wildcard *.c)
 OBJS	= $(CXXSRCS:.cpp=.o) $(CSRCS:.c=.o)
-DEPS	= $(CXXSRCS:.cpp=.d) $(CSRCS:.c=.d)
+##DEPS	= $(CXXSRCS:.cpp=.d) $(CSRCS:.c=.d)
 
 ## ----------------------------------------------------
 ## Default target
