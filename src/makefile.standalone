@@ -77,7 +77,8 @@ hector: libhector.a main.o
 
 ## Testing target
 testing: libhector.a 
-	$(MAKE) -C Testing hector-unit-tests
+	cd Testing/ && $(MAKE) hector-unit-tests
+#	$(MAKE) -C Testing hector-unit-tests
 
 ## Alternate version that uses the capabilities needed for driving
 ## Hector from an external source (e.g., an IAM)
