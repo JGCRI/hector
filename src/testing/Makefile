@@ -31,3 +31,5 @@ chkvar:
 	@echo $(OBJS)
 	@echo "LDFLAGS:"
 	@echo $(LDFLAGS)
+	@echo "INCLUDES:"
+	@echo $(INCLUDES)

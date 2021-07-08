@@ -94,11 +94,13 @@ libhector.a: $(OBJS)
 	ar ru libhector.a $(OBJS)
 
 clean:
-	-$(MAKE) -C testing clean
+	-$(MAKE) -C Testing clean
 	-rm hector *.o *.d
 	-rm -rf build
 
 chkvar:
+	@echo "LDFLAGS:"
+	@echo $(LDFLAGS)
 	@echo -n "CXXSRCS:"
 	@echo $(CXXSRCS)
 	@echo "CSRCS:"
