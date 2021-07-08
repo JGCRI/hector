@@ -33,3 +33,5 @@ chkvar:
 	@echo $(LDFLAGS)
 	@echo "INCLUDES:"
 	@echo $(INCLUDES)
+	@echo "GTROOT:"
+	@echo $(GTROOT)
