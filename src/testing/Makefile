@@ -31,6 +31,7 @@ chkvar:
 	@echo $(CXXFLAGS)
 	@echo "OBJS:"
 	@echo $(OBJS)
+	ls
 	@echo "LDFLAGS:"
 	@echo $(LDFLAGS)
 	@echo "INCLUDES:"

@@ -109,7 +109,6 @@ chkvar:
 	@echo $(CSRCS)
 	@echo "OBJS:"
 	@echo $(OBJS)
-	ls
 	@echo "INCLUDES:"
 	@echo $(INCLUDES)
 	@echo "BOOSTROOT:"
