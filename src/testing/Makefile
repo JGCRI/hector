@@ -14,11 +14,11 @@ INCLUDES += -I$(GTINC)
 
 ## ----------------------------------------------------
 ## Default target
-hector-unit-tests: $(OBJS) ../libhector.a
-	$(CXX) $(LDFLAGS) -o hector-unit-tests $(OBJS) -lhector -lgtest -lpthread -lm -lboost_system -lboost_filesystem
+hector-unit-tests: $(OBJS)
+	$(CXX) $(LDFLAGS) $(CXXFLAGS) -o hector-unit-tests $(OBJS) -lhector -lgtest -lpthread -lm -lboost_system -lboost_filesystem
 
 .PHONY: clean chkvar
-	
+
 clean:
 	-rm *.o
 	-rm hector-unit-tests
