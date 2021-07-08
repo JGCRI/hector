@@ -76,8 +76,8 @@ hector: libhector.a main.o
 	$(CXX) $(LDFLAGS) -o hector main.o -lhector -lm -lboost_system -lboost_filesystem
 
 ## Testing target
-testing:
-	$(MAKE) -C Testing hector-unit-tests
+testing: libhector.a
+	ls Testing/ && $(MAKE) -C Testing hector-unit-tests
 
 ## Alternate version that uses the capabilities needed for driving
 ## Hector from an external source (e.g., an IAM)

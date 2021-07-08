@@ -17,7 +17,7 @@ INCLUDES += -I$(GTINC)
 hector-unit-tests: $(OBJS)
 	$(CXX) $(LDFLAGS) $(CXXFLAGS) -o hector-unit-tests $(SRCS) -lhector -lgtest -lpthread -lm -lboost_system -lboost_filesystem
 
-.PHONY: clean chkvar hector-unit-tests
+.PHONY: clean chkvar
 
 clean:
 	-rm *.o *.d
