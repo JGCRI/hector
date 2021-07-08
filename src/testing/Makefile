@@ -14,7 +14,7 @@ LDFLAGS += -L$(GTLIB) -Wl,-L../
 
 ## ----------------------------------------------------
 ## Default target
-hector-unit-tests: $(OBJS)
+hector-unit-tests: $(SRCS)
 	$(CXX) $(LDFLAGS) -o hector-unit-tests $(OBJS) -lhector -lgtest -lpthread -lm -lboost_system -lboost_filesystem
 
 .PHONY: clean chkvar
@@ -25,7 +25,6 @@ clean:
 
 chkvar:
 	@echo "------- Testing"
-	ls
 	@echo "OBJS:"
 	@echo $(OBJS)
 	@echo "LDFLAGS:"
