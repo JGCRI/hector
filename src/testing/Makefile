@@ -9,12 +9,12 @@ UNDONE = test_core.cpp test_csv_file_reader.cpp test_dependency_finder.cpp
 SRCS := $(filter-out $(UNDONE), $(SRCS))
 
 OBJS	= $(SRCS:.cpp=.o)
-##DEPS	= $(SRCS:.cpp=.d)
 LDFLAGS += -L$(GTLIB) -Wl,-L../
+INCLUDES += -I$(GTINC)
 
 ## ----------------------------------------------------
 ## Default target
-hector-unit-tests: $(SRCS)
+hector-unit-tests: $(OBJS) ../libhector.a
 	$(CXX) $(LDFLAGS) -o hector-unit-tests $(OBJS) -lhector -lgtest -lpthread -lm -lboost_system -lboost_filesystem
 
 .PHONY: clean chkvar
@@ -25,6 +25,8 @@ clean:
 
 chkvar:
 	@echo "------- Testing"
+	@echo "CXX:"
+	@echo $(CXX)
 	@echo "OBJS:"
 	@echo $(OBJS)
 	@echo "LDFLAGS:"

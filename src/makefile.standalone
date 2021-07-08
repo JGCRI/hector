@@ -16,7 +16,7 @@ LDFLAGS	 = $(CXXPROF) -L"$(BOOSTLIB)" -L. -Wl,-rpath,"$(BOOSTLIB)"
 HDRDIR	 = $(CURDIR)/../inst/include
 
 ## These will be needed by the testing makefile
-export CXXFLAGS OPTFLAGS
+export CXX CXXFLAGS OPTFLAGS LDFLAGS
 
 ## ----------------------------------------------------
 ## Boost and Googletest settings
@@ -69,7 +69,6 @@ CXXSRCS := $(filter-out $(MAINS), $(CXXSRCS))
 CXXSRCS := $(filter-out $(RCPPS), $(CXXSRCS))
 CSRCS   = $(wildcard *.c)
 OBJS	= $(CXXSRCS:.cpp=.o) $(CSRCS:.c=.o)
-##DEPS	= $(CXXSRCS:.cpp=.d) $(CSRCS:.c=.d)
 
 ## ----------------------------------------------------
 ## Default target
@@ -77,7 +76,6 @@ hector: libhector.a main.o
 	$(CXX) $(LDFLAGS) -o hector main.o -lhector -lm -lboost_system -lboost_filesystem
 
 ## Testing target
-testing: INCLUDES += -I$(GTINC)
 testing: libhector.a 
 	$(MAKE) -C Testing hector-unit-tests
 
