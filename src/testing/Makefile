@@ -27,11 +27,11 @@ chkvar:
 	@echo "------- Testing"
 	@echo "CXX:"
 	@echo $(CXX)
+	@echo "CXXFLAGS:"
+	@echo $(CXXFLAGS)
 	@echo "OBJS:"
 	@echo $(OBJS)
 	@echo "LDFLAGS:"
 	@echo $(LDFLAGS)
 	@echo "INCLUDES:"
 	@echo $(INCLUDES)
-	@echo "GTROOT:"
-	@echo $(GTROOT)
