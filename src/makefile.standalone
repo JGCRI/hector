@@ -16,7 +16,7 @@ LDFLAGS	 = $(CXXPROF) -L"$(BOOSTLIB)" -L. -Wl,-rpath,"$(BOOSTLIB)"
 HDRDIR	 = $(CURDIR)/../inst/include
 
 ## These will be needed by the testing makefile
-export CXXFLAGS OPTFLAGS
+export CXX CXXFLAGS OPTFLAGS
 
 ## ----------------------------------------------------
 ## Boost and Googletest settings
