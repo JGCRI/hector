@@ -9,7 +9,7 @@ ifeq ($(strip $(CXX)),)
 endif 
 CXXFLAGS = -g $(INCLUDES) $(OPTFLAGS) $(CXXEXTRA) $(CXXPROF) $(WFLAGS) -MMD -std=c++14 
 CFLAGS   = -g $(INCLUDES) $(OPTFLAGS) $(CCEXTRA) -MMD
-INCLUDES = -I"$(BOOSTROOT)" -I"$(HDRDIR)"
+INCLUDES = -I"$(BOOSTINC)" -I"$(HDRDIR)"
 WFLAGS   = -Wall -Wno-unused-local-typedefs # Turn off warnings, esp. one common in Boost files
 OPTFLAGS = -O3
 LDFLAGS	 = $(CXXPROF) -L"$(BOOSTLIB)" -L. -Wl,-rpath,"$(BOOSTLIB)"
@@ -101,12 +101,15 @@ clean:
 chkvar:
 	@echo "LDFLAGS:"
 	@echo $(LDFLAGS)
+	@echo "CXXFLAGS:"
+	@echo $(CXXFLAGS)
 	@echo -n "CXXSRCS:"
 	@echo $(CXXSRCS)
 	@echo "CSRCS:"
 	@echo $(CSRCS)
 	@echo "OBJS:"
 	@echo $(OBJS)
+	ls
 	@echo "INCLUDES:"
 	@echo $(INCLUDES)
 	@echo "BOOSTROOT:"
