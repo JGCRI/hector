@@ -76,9 +76,8 @@ hector: libhector.a main.o
 	$(CXX) $(LDFLAGS) -o hector main.o -lhector -lm -lboost_system -lboost_filesystem
 
 ## Testing target
-testing: libhector.a 
-	cd Testing/ && $(MAKE) hector-unit-tests
-#	$(MAKE) -C Testing hector-unit-tests
+testing:
+	$(MAKE) -C Testing hector-unit-tests
 
 ## Alternate version that uses the capabilities needed for driving
 ## Hector from an external source (e.g., an IAM)
@@ -92,7 +91,7 @@ testing: libhector.a
 .PHONY: clean testing chkvar
 
 libhector.a: $(OBJS)
-	ar ru libhector.a $(OBJS)
+	ar cr libhector.a $(OBJS)
 
 clean:
 	-$(MAKE) -C Testing clean
@@ -116,5 +115,4 @@ chkvar:
 	@echo $(BOOSTROOT)
 	@echo "GTROOT:"
 	@echo $(GTROOT)
-	@echo 	$(CXX) $(LDFLAGS) -o hector main.o -lhector -lm -lboost_system -lboost_filesystem
 	-$(MAKE) -C testing chkvar

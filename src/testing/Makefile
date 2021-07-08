@@ -17,10 +17,10 @@ INCLUDES += -I$(GTINC)
 hector-unit-tests: $(OBJS)
 	$(CXX) $(LDFLAGS) $(CXXFLAGS) -o hector-unit-tests $(SRCS) -lhector -lgtest -lpthread -lm -lboost_system -lboost_filesystem
 
-.PHONY: clean chkvar
+.PHONY: clean chkvar hector-unit-tests
 
 clean:
-	-rm *.o
+	-rm *.o *.d
 	-rm hector-unit-tests
 
 chkvar:
@@ -36,4 +36,3 @@ chkvar:
 	@echo $(LDFLAGS)
 	@echo "INCLUDES:"
 	@echo $(INCLUDES)
-	@echo 	$(CXX) $(LDFLAGS) $(CXXFLAGS) -o hector-unit-tests $(OBJS) -lhector -lgtest -lpthread -lm -lboost_system -lboost_filesystem
