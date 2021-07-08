@@ -36,3 +36,4 @@ chkvar:
 	@echo $(LDFLAGS)
 	@echo "INCLUDES:"
 	@echo $(INCLUDES)
+	@echo 	$(CXX) $(LDFLAGS) $(CXXFLAGS) -o hector-unit-tests $(OBJS) -lhector -lgtest -lpthread -lm -lboost_system -lboost_filesystem

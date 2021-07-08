@@ -115,4 +115,5 @@ chkvar:
 	@echo $(BOOSTROOT)
 	@echo "GTROOT:"
 	@echo $(GTROOT)
+	@echo 	$(CXX) $(LDFLAGS) -o hector main.o -lhector -lm -lboost_system -lboost_filesystem
 	-$(MAKE) -C testing chkvar
