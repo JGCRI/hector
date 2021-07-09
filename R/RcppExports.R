@@ -294,6 +294,12 @@ alpha_N2O <- function() {
     .Call('_hector_alpha_N2O', PACKAGE = 'hector')
 }
 
+#' @describeIn forcings Radiative forcing efficiency for CH4
+#' @export
+alpha_CH4 <- function() {
+    .Call('_hector_alpha_CH4', PACKAGE = 'hector')
+}
+
 #' @describeIn haloemiss Emissions for CF4
 #' @export
 EMISSIONS_CF4 <- function() {

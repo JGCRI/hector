@@ -14,6 +14,13 @@
 
 /* References:
 
+ Bond et al. 2013: Bond, T. C., Doherty, S. J., Fahey, D. W., Forster, P. M., Berntsen, T., DeAngelo, B. J., Flanner, M. G., Ghan, S., K rcher, B., Koch,
+    D., Kinne, S., Kondo, Y., Quinn, P. K., Sarofim, M. C., Schultz, M. G., Schulz, M., Venkataraman, C., Zhang, H., Zhang, S.,
+    Bellouin, N., Guttikunda, S. K., Hopke, P. K., Jacobson, M. Z., Kaiser, J. W., Klimont, Z., Lohmann, U., Schwarz, J. P.,
+    Shindell, D., Storelvmo, T., Warren, S. G., and Zender, C. S.:
+    Bounding the role of black carbon in the climate system: A scientific assessment, J. Geophys. Res.-Atmos., 118, 5380–5552,
+    doi:10.1002/jgrd.50171, 2013.
+
  Meinshausen et al. (2011): Meinshausen, M., Raper, S. C. B., and Wigley, T. M. L.: Emulating coupled atmosphere-ocean
     and carbon cycle models with a simpler model, MAGICC6 – Part 1: Model description and calibration, Atmos. Chem.
     Phys., 11, 1417–1456, https://doi.org/10.5194/acp-11-1417-2011, 2011.
@@ -170,6 +177,8 @@ void ForcingComponent::init( Core* coreptr ) {
     core->registerCapability( D_RF_VOL, getComponentName());
     core->registerCapability( D_ACO2, getComponentName());
     core->registerCapability( D_AN2O, getComponentName());
+    core->registerCapability( D_ACH4, getComponentName());
+
 
     for(int i=0; i<N_HALO_FORCINGS; ++i) {
         core->registerCapability(adjusted_halo_forcings[i], getComponentName());
@@ -215,6 +224,8 @@ void ForcingComponent::init( Core* coreptr ) {
     // Register the inputs we can receive from outside
     core->registerInput( D_ACO2, getComponentName() );
     core->registerInput( D_AN2O, getComponentName() );
+    core->registerInput( D_ACH4, getComponentName() );
+
 
 
 
@@ -258,6 +269,9 @@ void ForcingComponent::setData( const string& varName,
         } else if( varName == D_AN2O ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
             aN2O = data.getUnitval(U_W_M2);
+        } else if( varName == D_ACH4 ) {
+            H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
+            aCH4 = data.getUnitval(U_W_M2);
         } else if( varName == D_FTOT_CONSTRAIN ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
             Ftot_constrain.set(data.date, data.getUnitval(U_W_M2));
@@ -336,7 +350,10 @@ void ForcingComponent::run( const double runToDate ) {
             double Na = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_N2O, message_data( runToDate ) ).value( U_PPBV_N2O );
             double N0 = core->sendMessage( M_GETDATA, D_PREINDUSTRIAL_N2O ).value( U_PPBV_N2O );
 
-            double fch4 =  0.036 * ( sqrt( Ma ) - sqrt( M0 ) ) - ( f( Ma, N0 ) - f( M0, N0 ) );
+            // Joos et al., 2001 equation A*
+            // CH4 radiative forcing is adjsuted by the function f(M,N) to account for
+            // the overlap in CH4 and N20 bands.
+            double fch4 = aCH4.value(U_W_M2) * ( sqrt( Ma ) - sqrt( M0 ) ) - ( f( Ma, N0 ) - f( M0, N0 ) );
             forcings[D_RF_CH4].set( fch4, U_W_M2 );
 
             // Joos et al., 2001 equation A10
@@ -346,8 +363,10 @@ void ForcingComponent::run( const double runToDate ) {
             forcings[D_RF_N2O].set( fn2o, U_W_M2 );
 
             // ---------- Stratospheric H2O from CH4 oxidation ----------
-            // From Tanaka et al, 2007, but using Joos et al., 2001 value of 0.05
-            const double fh2o_strat = 0.05 * ( 0.036 * ( sqrt( Ma ) - sqrt( M0 ) ) );
+            // Joos et al., 2001 equation (A13)
+            // The radiative forcing from stratospheric H2O due to CH4 oxidation
+            // is 5% of CH4 RF.
+            const double fh2o_strat = 0.05 * ( aCH4.value(U_W_M2) * ( sqrt( Ma ) - sqrt( M0 ) ) );
             forcings[D_RF_H2O_STRAT].set( fh2o_strat, U_W_M2 );
         }
 
@@ -500,7 +519,12 @@ unitval ForcingComponent::getData( const std::string& varName,
         // return the parameter value.
         if(varName == D_ACO2){
             returnval = aCO2;
+        } else if (varName == D_AN2O){
+            returnval = aN2O;
+        } else if (varName == D_ACH4){
+            returnval = aCH4;
         }
+
         return returnval;
     }
 
