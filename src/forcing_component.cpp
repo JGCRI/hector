@@ -14,8 +14,15 @@
 
 /* References:
 
- Meinshausen et al. (2011): Meinshausen, M., Raper, S. C. B., and Wigley, T. M. L.: Emulating coupled atmosphere-ocean and carbon cycle models with a simpler model, MAGICC6 – Part 1: Model description and calibration, Atmos. Chem. Phys., 11, 1417–1456, https://doi.org/10.5194/acp-11-1417-2011, 2011.
+ Meinshausen et al. (2011): Meinshausen, M., Raper, S. C. B., and Wigley, T. M. L.: Emulating coupled atmosphere-ocean
+    and carbon cycle models with a simpler model, MAGICC6 – Part 1: Model description and calibration, Atmos. Chem.
+    Phys., 11, 1417–1456, https://doi.org/10.5194/acp-11-1417-2011, 2011.
 
+ Joos et al. 2001: Joos, F., Prentice, I. C., Sitch, S., Meyer, R., Hooss, G., Plattner,
+    G.-K., Gerber, S., and Hasselmann, K.: Global warming feedbacks
+    on terrestrial carbon uptake under the Intergovernmental
+    Panel on Climate Change (IPCC) Emission Scenarios, Global
+    Biogeochem. Cy., 15, 891–907, doi:10.1029/2000GB001375, 2001.
  */
 
 
@@ -162,6 +169,8 @@ void ForcingComponent::init( Core* coreptr ) {
     core->registerCapability( D_RF_SO2, getComponentName());
     core->registerCapability( D_RF_VOL, getComponentName());
     core->registerCapability( D_ACO2, getComponentName());
+    core->registerCapability( D_AN2O, getComponentName());
+
     for(int i=0; i<N_HALO_FORCINGS; ++i) {
         core->registerCapability(adjusted_halo_forcings[i], getComponentName());
         forcing_name_map[adjusted_halo_forcings[i]] = halo_forcing_names[i];
@@ -205,6 +214,8 @@ void ForcingComponent::init( Core* coreptr ) {
 
     // Register the inputs we can receive from outside
     core->registerInput( D_ACO2, getComponentName() );
+    core->registerInput( D_AN2O, getComponentName() );
+
 
 
 }
@@ -244,6 +255,9 @@ void ForcingComponent::setData( const string& varName,
         } else if( varName == D_ACO2 ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
             aCO2 = data.getUnitval(U_W_M2);
+        } else if( varName == D_AN2O ) {
+            H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
+            aN2O = data.getUnitval(U_W_M2);
         } else if( varName == D_FTOT_CONSTRAIN ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
             Ftot_constrain.set(data.date, data.getUnitval(U_W_M2));
@@ -314,6 +328,8 @@ void ForcingComponent::run( const double runToDate ) {
         // Equations from Joos et al., 2001
         if( core->checkCapability( D_ATMOSPHERIC_CH4 ) && core->checkCapability( D_ATMOSPHERIC_N2O ) ) {
 
+            // Define the function f(M,N) that accounts for the overlap CH4 and N20 bands
+            // with equation (A9) from Joos et al., 2001.
 #define f(M,N) 0.47 * log( 1 + 2.01 * 1e-5 * pow( M * N, 0.75 ) + 5.31 * 1e-15 * M * pow( M * N, 1.52 ) )
             double Ma = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_CH4, message_data( runToDate ) ).value( U_PPBV_CH4 );
             double M0 = core->sendMessage( M_GETDATA, D_PREINDUSTRIAL_CH4 ).value( U_PPBV_CH4 );
@@ -323,7 +339,10 @@ void ForcingComponent::run( const double runToDate ) {
             double fch4 =  0.036 * ( sqrt( Ma ) - sqrt( M0 ) ) - ( f( Ma, N0 ) - f( M0, N0 ) );
             forcings[D_RF_CH4].set( fch4, U_W_M2 );
 
-            double fn2o =  0.12 * ( sqrt( Na ) - sqrt( N0 ) ) - ( f( M0, Na ) - f( M0, N0 ) );
+            // Joos et al., 2001 equation A10
+            // N2O radiative forcing is adjsuted by the function f(M,N) to account for
+            // the overlap in CH4 and N20 bands.
+            double fn2o =  aN2O.value(U_W_M2) * ( sqrt( Na ) - sqrt( N0 ) ) - ( f( M0, Na ) - f( M0, N0 ) );
             forcings[D_RF_N2O].set( fn2o, U_W_M2 );
 
             // ---------- Stratospheric H2O from CH4 oxidation ----------

@@ -76,6 +76,7 @@ private:
     double currentYear;     //! Tracks current year
     unitval C0;             //! Records base year atmospheric CO2
     unitval aCO2;           //! alpha CO2, forcing efficiency for CO2 (W/m2)
+    unitval aN2O;           //! alpha N2O, forcing efficiency for N2O (W/m2)
     tseries<unitval> Ftot_constrain;       //! Total forcing can be supplied
 
     Core* core;             //! Core

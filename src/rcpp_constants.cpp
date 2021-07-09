@@ -375,6 +375,13 @@ String alpha_CO2() {
     return D_ACO2;
 }
 
+//' @describeIn forcings Radiative forcing efficiency for N2O
+//' @export
+// [[Rcpp::export]]
+String alpha_N2O() {
+    return D_AN2O;
+}
+
 /* halocarbon emissions */
 //' @describeIn haloemiss Emissions for CF4
 //' @export
