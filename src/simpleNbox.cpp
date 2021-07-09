@@ -1130,9 +1130,6 @@ void SimpleNbox::record_state(double t)
     H_LOG(logger, Logger::DEBUG) << "record_state: recorded tempferts = " << tempferts[SNBOX_DEFAULT_BIOME]
                                  << " at time= " << t << std::endl;
 
-    // ocean model appears to be controlled by the N-box model.  Seems
-    // like it makes swapping out for another model a nightmare, but
-    // that's where we're at.
     omodel->record_state(t);
 
 }
