@@ -11,7 +11,6 @@
  *  Created by Corinne on 11/20/2014.
  *
  */
-// changed back to using only concentrations
 
 #include <math.h>
 #include "oh_component.hpp"
