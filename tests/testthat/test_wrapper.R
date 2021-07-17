@@ -128,7 +128,7 @@ test_that("Reset produces identical results", {
 })
 
 test_that("Exceptions are caught", {
-  suppressWarnings(expect_error( hc <- newcore("foo"), "does not exist") )
+  suppressWarnings(expect_error(hc <- newcore("foo"), "does not exist"))
   hc <- newcore(file.path(inputdir, "hector_rcp45.ini"), suppresslogging = TRUE)
   setvar(hc, NA, BETA(), -1.0, NA)
   expect_error(reset(hc), "beta")
