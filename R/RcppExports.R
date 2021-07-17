@@ -1083,7 +1083,7 @@ newcore_impl <- function(inifile, loglevel, suppresslogging, name) {
     .Call('_hector_newcore_impl', PACKAGE = 'hector', inifile, loglevel, suppresslogging, name)
 }
 
-#' Shut down a hector instance
+#' Shutdown a hector instance
 #'
 #' Shutting down an instance will free the instance itself and all of the objects it created. Any attempted
 #' operation on the instance after that will raise an error.

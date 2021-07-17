@@ -134,6 +134,7 @@ private:
     tseries<fluxpool> earth_c_ts;  //!< Time series of earth carbon pool
     tseries<fluxpool> atmos_c_ts;  //!< Time series of atmosphere carbon pool
     tseries<fluxpool> Ca_ts;       //!< Time series of atmosphere CO2 concentration
+    tseries<fluxpool> ocean_model_c_tv;     //!< Time series of biome-specific ocean model carbon pools
 
     tvector<fluxpool_stringmap> veg_c_tv;      //!< Time series of biome-specific vegetation carbon pools
     tvector<fluxpool_stringmap> detritus_c_tv; //!< Time series of biome-specific detritus carbon pools
