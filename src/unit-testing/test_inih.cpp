@@ -8,7 +8,7 @@
  *  test_inih.cpp
  *  hector
  *
- *  Created by Ben on 10/7/10.
+ *  Created by Ben on 2010-07-10
  *
  */
 
@@ -31,10 +31,9 @@ void test_inih_writefile(  char* filename, string contents ) {
 	else {
 		H_THROW( "Error writing test file " + string( filename ) );
 	}
-
 }
 
-TEST( TestINIH, SimpleFile ) {
+TEST( INIHTest, SimpleFile ) {
 
     char filename[] = "simple.ini";
     test_inih_writefile( filename, 
@@ -47,7 +46,7 @@ TEST( TestINIH, SimpleFile ) {
               "Name = Bob Smith       ; Spaces around '=' are stripped\n"
               "Email = bob@smith.com  ; And comments (like this) ignored\n" );
     
-    INIReader reader( filename );    
+    Hector::INIReader reader( filename );
 	EXPECT_FALSE( reader.ParseError() );
 		
     EXPECT_EQ( reader.GetInteger( "protocol", "version", -1 ), 6 );
@@ -57,7 +56,7 @@ TEST( TestINIH, SimpleFile ) {
     remove( filename );     // clean up
 }
 
-TEST( TestINIH, ComplexFile ) {
+TEST( INIHTest, ComplexFile ) {
 
     char filename[] = "complex.ini";
     test_inih_writefile( filename, 
@@ -82,7 +81,7 @@ TEST( TestINIH, ComplexFile ) {
               "#test5 = 567 ; entire line commented\n"
               "# test6 = 678 ; entire line commented, except in MULTILINE mode\n" );
               
-    INIReader reader( filename );    
+    Hector::INIReader reader( filename );
 	EXPECT_FALSE( reader.ParseError() );
 	
     EXPECT_EQ( reader.Get( "section1", "one", "" ), "This is a test" );
@@ -104,7 +103,7 @@ TEST( TestINIH, ComplexFile ) {
     remove( filename );     // clean up    
 }
 
-TEST( TestINIH, CorruptSection ) {
+TEST( INIHTest, CorruptSection ) {
     
     char filename[] = "corruptsection.ini";
     test_inih_writefile( filename, 
@@ -114,7 +113,7 @@ TEST( TestINIH, CorruptSection ) {
                 "[section3   ; comment ]\n"
                 "name2=value2\n" );
      
-    INIReader reader( filename );    
+    Hector::INIReader reader( filename );
 	EXPECT_TRUE( reader.ParseError() );
 	
     remove( filename );     // clean up    

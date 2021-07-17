@@ -62,7 +62,7 @@ libs/
 *.suo
 
 # Output
-output/output*
+output/*
 
 # R
 .Rhistory

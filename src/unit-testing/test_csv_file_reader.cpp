@@ -18,11 +18,13 @@
 #include <gtest/gtest.h>
 
 #include "h_exception.hpp"
-#include "core/core.hpp"
-#include "input/csv_table_reader.hpp"
-#include "core/avisitor.hpp"
-#include "core/dummy_model_component.hpp"
-#include "data/tseries.hpp"
+#include "core.hpp"
+#include "csv_table_reader.hpp"
+#include "avisitor.hpp"
+#include "dummy_model_component.hpp"
+#include "tseries.hpp"
+
+using namespace Hector;
 
 /*! \brief Create a testing environment so that we can create our temporary file
  *         before we construct our test reader.
@@ -48,10 +50,7 @@ public:
     // other helper methods
     bool fileExists( const char* fileName ) const {
         std::ifstream test( fileName );
-        
-        // this conversion to bool will let us know if the file successfully
-        // opened
-        return test;
+        return test.good();
     }
     
     static std::string testFileName;
@@ -127,7 +126,7 @@ protected:
     };
 };
 
-TEST_F(TestCSVTableReader, ReadNonExistantFile) {
+TEST_F(TestCSVTableReader, ReadNonExistentFile) {
     ASSERT_THROW(CSVTableReader reader2("does_not_exist.csv"), h_exception);
 }
 

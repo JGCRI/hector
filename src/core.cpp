@@ -368,7 +368,6 @@ bool Core::run_spinup()
         spunup = true;
         for( NameComponentIterator it = modelComponents.begin(); it != modelComponents.end(); ++it )
             spunup = spunup && ( *it ).second->run_spinup( step );
-
         // Let visitors attempt to collect data if necessary
         for( VisitorIterator visitorIt = modelVisitors.begin(); visitorIt != modelVisitors.end(); ++visitorIt ) {
             if( ( *visitorIt )->shouldVisit( in_spinup, step ) ) {

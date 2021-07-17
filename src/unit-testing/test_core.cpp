@@ -16,9 +16,11 @@
 #include <gtest/gtest.h>
 
 #include "h_exception.hpp"
-#include "core/core.hpp"
-#include "core/dummy_model_component.hpp"
-#include "core/avisitor.hpp"
+#include "core.hpp"
+#include "dummy_model_component.hpp"
+#include "avisitor.hpp"
+
+using namespace Hector;
 
 /*! \brief Unit tests for the Core class.
  *

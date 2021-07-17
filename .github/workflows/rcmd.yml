@@ -5,7 +5,9 @@ on:
       - master
       - github_actions
   pull_request:
-    branches: master
+    branches:
+      - master
+      - land_tracking
 
   schedule:
     # * is a special character in YAML so you have to quote this string

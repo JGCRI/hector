@@ -8,7 +8,7 @@
  *  test_dependency_finder.cpp
  *  hector
  *
- *  Created by Pralit Patel on 3/28/11.
+ *  Created by Pralit Patel on 2011-03-28
  *
  */
 
@@ -22,6 +22,7 @@
 #include "dependency_finder.hpp"
 
 using namespace std;
+using namespace Hector;
 
 /*! \brief Unit tests for the dependency finder.
  *
@@ -49,7 +50,7 @@ TEST_F(TestDependencyFinder, SimpleLinear) {
     depFinder.addDependency( "a", "b" );
     depFinder.addDependency( "b", "c" );
 
-	ASSERT_NO_THROW( depFinder.createOrdering() );
+	EXPECT_NO_THROW( depFinder.createOrdering() );
     
     // We expect the ordering in reverse:
     vector<string> expectedOrdering( 3 );
@@ -59,7 +60,7 @@ TEST_F(TestDependencyFinder, SimpleLinear) {
     
     vector<string> ordering = depFinder.getOrdering();
     
-    ASSERT_EQ( expectedOrdering.size(), ordering.size() );
+    EXPECT_EQ( expectedOrdering.size(), ordering.size() );
     
     for( int i = 0; i < ordering.size(); ++i ) {
         EXPECT_EQ( expectedOrdering[ i ], ordering[ i ] );
@@ -88,21 +89,21 @@ TEST_F(TestDependencyFinder, TwoSeperate) {
     depFinder.addDependency( "a", "b" );
     depFinder.addDependency( "c", "d" );
     
-	ASSERT_NO_THROW( depFinder.createOrdering() );
+	EXPECT_NO_THROW( depFinder.createOrdering() );
     
     vector<string> ordering = depFinder.getOrdering();
     
     typedef vector<string>::const_iterator iter;
     
     iter aIt = find( ordering.begin(), ordering.end(), "a" );
-    ASSERT_TRUE( aIt != ordering.end() );
+    EXPECT_NE( aIt, ordering.end() );
     iter bIt = find( ordering.begin(), ordering.end(), "b" );
-    ASSERT_TRUE( bIt != ordering.end() );
+    EXPECT_NE( bIt, ordering.end() );
     iter cIt = find( ordering.begin(), ordering.end(), "c" );
-    ASSERT_TRUE( cIt != ordering.end() );
+    EXPECT_NE( cIt, ordering.end() );
     iter dIt = find( ordering.begin(), ordering.end(), "d" );
-    ASSERT_TRUE( dIt != ordering.end() );
-    
+    EXPECT_NE( dIt, ordering.end() );
+
     // expect that b is before a
     EXPECT_LT( bIt - ordering.begin(), aIt - ordering.begin() ) << "Ordering: " << ordering << endl;
     // expect that d is before c
@@ -114,7 +115,7 @@ TEST_F(TestDependencyFinder, TwoSeperate) {
 TEST_F(TestDependencyFinder, MultipleDependencies) {
     DependencyFinder depFinder;
     // Create a scenario where something is dependent on two objects and
-    // two objects are dependant on one object
+    // two objects are dependent on one object
     //   a
     //  / \
     // V   V
@@ -127,20 +128,20 @@ TEST_F(TestDependencyFinder, MultipleDependencies) {
     depFinder.addDependency( "b", "d" );
     depFinder.addDependency( "c", "d" );
     
-	ASSERT_NO_THROW( depFinder.createOrdering() );
+	EXPECT_NO_THROW( depFinder.createOrdering() );
     
     vector<string> ordering = depFinder.getOrdering();
     
     typedef vector<string>::const_iterator iter;
     
     iter aIt = find( ordering.begin(), ordering.end(), "a" );
-    ASSERT_TRUE( aIt != ordering.end() );
+    EXPECT_NE( aIt, ordering.end() );
     iter bIt = find( ordering.begin(), ordering.end(), "b" );
-    ASSERT_TRUE( bIt != ordering.end() );
+    EXPECT_NE( bIt, ordering.end() );
     iter cIt = find( ordering.begin(), ordering.end(), "c" );
-    ASSERT_TRUE( cIt != ordering.end() );
+    EXPECT_NE( cIt, ordering.end() );
     iter dIt = find( ordering.begin(), ordering.end(), "d" );
-    ASSERT_TRUE( dIt != ordering.end() );
+    EXPECT_NE( dIt, ordering.end() );
     
     // expect that b is before a
     EXPECT_LT( bIt - ordering.begin(), aIt - ordering.begin() ) << "Ordering: " << ordering << endl;
