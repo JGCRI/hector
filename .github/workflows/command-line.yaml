@@ -10,10 +10,12 @@ on:
       - master
       - github_actions
   pull_request:
-    branches: master
+    branches:
+      - master
+      - land_tracking
   schedule:
     # * is a special character in YAML so you have to quote this string
-    # Launch run at 6am the 1st of every month.	
+    # Launch run at 6am the 1st of every month.
     - cron:  '0 6 1 * *'
 
   # Allows you to run this workflow manually from the Actions tab
