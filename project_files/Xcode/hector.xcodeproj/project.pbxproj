@@ -436,7 +436,7 @@
 		27585CF026150F1A00BA1EF5 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1130;
+				LastUpgradeCheck = 1150;
 				ORGANIZATIONNAME = "Bond-Lamberty, Benjamin";
 				TargetAttributes = {
 					27585CF726150F1A00BA1EF5 = {
@@ -679,6 +679,7 @@
 		27585D0026150F1A00BA1EF5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				LIBRARY_SEARCH_PATHS = "${BOOSTLIB}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -688,6 +689,7 @@
 		27585D0126150F1A00BA1EF5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				LIBRARY_SEARCH_PATHS = "${BOOSTLIB}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -697,6 +699,7 @@
 		27A02A862615CBB800AF9BFA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				HEADER_SEARCH_PATHS = (
 					"${BOOSTROOT}",
@@ -718,6 +721,7 @@
 		27A02A872615CBB800AF9BFA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				HEADER_SEARCH_PATHS = (
 					"${BOOSTROOT}",
