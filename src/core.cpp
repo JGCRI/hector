@@ -440,7 +440,7 @@ void Core::run(double runtodate) {
     for(double currDate = lastDate+1.0; currDate <= runtodate; currDate += 1.0 ) {
         // If we've hit the tracking start year, note this in the log
         if(currDate == trackingDate) {
-            H_LOG(glog, Logger::NOTICE) << "Starting tracking (" << currDate << ")" << endl;
+            H_LOG(glog, Logger::NOTICE) << "Starting tracking in " << currDate << endl;
             // nb components are responsible for checking and acting on this
         }
         
