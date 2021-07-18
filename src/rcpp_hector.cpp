@@ -67,11 +67,13 @@ Environment newcore_impl(String inifile, int loglevel, bool suppresslogging, Str
         // Construct the object we are going to return to R
         double strtdate = hcore->getStartDate();
         double enddate = hcore->getEndDate();
+        double trackdate = hcore->getTrackingDate();
 
         Environment rv(new_env());
         rv["coreidx"] = coreidx;
         rv["strtdate"] = strtdate;
         rv["enddate"] = enddate;
+        rv["trackdate"] = trackdate;
         rv["inifile"] = inifile;
         rv["name"] = name;
         rv["clean"] = true;
@@ -87,7 +89,7 @@ Environment newcore_impl(String inifile, int loglevel, bool suppresslogging, Str
 }
 
 
-//' Shutdown a hector instance
+//' Shut down a hector instance
 //'
 //' Shutting down an instance will free the instance itself and all of the objects it created. Any attempted
 //' operation on the instance after that will raise an error.

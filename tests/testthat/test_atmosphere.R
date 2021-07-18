@@ -1,4 +1,4 @@
-context("Check Atmosphere")
+context("Check atmosphere")
 # Check some basic science to make sure Hector's atmosphere behaves as expected.
 
 inputdir <- system.file("input", package = "hector")

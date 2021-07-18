@@ -83,7 +83,7 @@ runscenario <- function(infile) {
 #' @family main user interface functions
 #' @export
 newcore <- function(inifile, loglevel = 0, suppresslogging = TRUE,
-                    name = "unnamed hector core") {
+                    name = "Unnamed Hector core") {
   hcore <- newcore_impl(normalizePath(inifile), loglevel, suppresslogging, name)
   class(hcore) <- c("hcore", class(hcore))
   reg.finalizer(hcore, hector::shutdown)
@@ -155,9 +155,9 @@ format.hcore <- function(x, ...) {
   else {
     cdate <- getdate(x)
     sprintf(
-      "Hector core:\t%s\nStart date:\t%d\nEnd date:\t%d\nCurrent date:\t%d\nInput file:\t%s",
+      "Hector core:\t%s\nStart date:\t%d\nEnd date:\t%d\nCurrent date:\t%d\nTracking date:\t%d\nInput file:\t%s",
       x$name,
-      as.integer(x$strtdate), as.integer(x$enddate), as.integer(cdate),
+      as.integer(x$strtdate), as.integer(x$enddate), as.integer(cdate), as.integer(x$trackdate),
       x$inifile
     )
   }
