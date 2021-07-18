@@ -56,9 +56,6 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
     // we can't start earth_c at zero. Value of 5500 is set to avoid
     // overdrawing in RCP 8.5
     earth_c.set( 5500, U_PGC, false, "earth_c" );
-
-    // TODO: This needs to be read in from the CSV
-    ocean_model_c.set( 38000, U_PGC, false, "ocean_c" );
 }
 
 

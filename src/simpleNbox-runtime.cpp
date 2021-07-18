@@ -77,6 +77,10 @@ void SimpleNbox::prepareToRun()
 {
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
 
+    // Set our (temporary) ocean c tracking variable to the actual total ocean C
+    unitval oceanc = core->sendMessage( M_GETDATA, D_OCEAN_C );
+    ocean_model_c.set( oceanc.value( U_PGC ), U_PGC, false, "ocean_c" );
+
     // If any 'global' settings, there shouldn't also be regional
     if ( (has_biome( SNBOX_DEFAULT_BIOME )) & (biome_list.size() > 1) ) {
         H_THROW( "Cannot have both global and biome-specific data! "
