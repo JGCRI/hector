@@ -80,3 +80,5 @@ vignettes/rsconnect
 # vignette caches
 /vignettes/*_cache
 docs
+/doc/
+/Meta/

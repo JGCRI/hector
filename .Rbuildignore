@@ -39,3 +39,5 @@ _pkgdown.yml
 
 # lintr config
 .lintr
+^doc$
+^Meta$
