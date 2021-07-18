@@ -146,7 +146,11 @@ void SimpleNbox::run( const double runToDate )
 {
     in_spinup = core->inSpinup();
     sanitychecks();
-    if(!in_spinup && tcurrent == trackingYear){
+    
+    // If we've hit the tracking start year, enagage!
+    const double tdate = core->getTrackingDate();
+    if(!in_spinup && tcurrent == tdate){
+        H_LOG( logger, Logger::NOTICE ) << "Tracking start" << std::endl;
         startTracking();
     }
     Tgav_record.set( runToDate, core->sendMessage( M_GETDATA, D_GLOBAL_TEMP ).value( U_DEGC ) );

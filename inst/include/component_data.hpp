@@ -23,6 +23,7 @@
 #define D_RUN_NAME              "run_name"
 #define D_START_DATE            "startDate"
 #define D_END_DATE              "endDate"
+#define D_TRACKING_DATE         "trackingDate"
 #define D_DO_SPINUP             "do_spinup"
 #define D_MAX_SPINUP            "max_spinup"
 #define D_ENABLED               "enabled"

@@ -53,6 +53,7 @@ Core::Core(Logger::LogLevel loglvl, bool echotoscreen, bool echotofile) :
     startDate( -1.0 ),
     endDate( -1.0 ),
     lastDate( -1.0),
+    trackingDate( 9999 ),
     isInited( false ),
     do_spinup( true ),
     max_spinup( 2000 ),
@@ -213,6 +214,9 @@ void Core::setData( const string& componentName, const string& varName,
             } else if( varName == D_END_DATE ) {
                 H_ASSERT( data.date == undefinedIndex(), "date not allowed" );
                 endDate = data.getUnitval(U_UNDEFINED);
+            } else if( varName == D_TRACKING_DATE ) {
+                H_ASSERT( data.date == undefinedIndex(), "date not allowed" );
+                trackingDate = data.getUnitval(U_UNDEFINED);
             } else if( varName == D_DO_SPINUP ) {
                 H_ASSERT( data.date == undefinedIndex(), "date not allowed" );
                 do_spinup = (data.getUnitval(U_UNDEFINED) > 0);
@@ -281,7 +285,6 @@ void Core::addVisitor( AVisitor* visitor ) {
  */
 void Core::prepareToRun(void)
 {
-
     /* Most of this stuff only needs to be done once, even if we reset the
      * model; therefore it would be a good candidate to go in init instead of
      * here.  However, in order to remove disabled components we have to first
@@ -435,6 +438,12 @@ void Core::run(double runtodate) {
     // 6. Run all model dates.
     H_LOG( glog, Logger::NOTICE) << "Running..." << endl;
     for(double currDate = lastDate+1.0; currDate <= runtodate; currDate += 1.0 ) {
+        // If we've hit the tracking start year, note this in the log
+        if(currDate == trackingDate) {
+            H_LOG(glog, Logger::NOTICE) << "Starting tracking (" << currDate << ")" << endl;
+            // nb components are responsible for checking and acting on this
+        }
+        
         for( NameComponentIterator it = modelComponents.begin(); it != modelComponents.end(); ++it ) {
             ( *it ).second->run( currDate );
         }

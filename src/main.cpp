@@ -44,6 +44,7 @@ int main (int argc, char * const argv[]) {
         // Parse the main configuration file
         if( argc > 1 ) {
             if( ifstream( argv[1] ) ) {
+                H_LOG( glog, Logger::NOTICE ) << "Reading input file " << argv[ 1 ] << endl;
                 h_reader reader( argv[1], INI_style );
             } else {
                 H_LOG( glog, Logger::SEVERE ) << "Couldn't find input file " << argv[ 1 ] << endl;

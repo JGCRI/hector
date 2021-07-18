@@ -45,8 +45,6 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
     Ftalbedo.name = "albedo";
     CO2_constrain.name = "CO2_constrain";
 
-    // TODO: Have this read in by csv and set by setData
-    trackingYear = 1850;
     // The actual atmos_c value will be filled in later by setData
     atmos_c.set(0.0, U_PGC, false, "atmos_c");
     

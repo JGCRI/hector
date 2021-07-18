@@ -117,7 +117,6 @@ private:
 
     double_stringmap tempfertd, tempferts; //!< temperature effect on respiration (unitless)
 
-    double trackingYear;
     // Temporary to investigate flux excess or shortage
     double earth_diff;
     double atmos_diff;

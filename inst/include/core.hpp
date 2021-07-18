@@ -10,7 +10,7 @@
  *  core.h - The core model which will manage model components
  *  hector
  *
- *  Created by Pralit on 10/29/10.
+ *  Created by Pralit on 10/29/2010.
  *
  */
 
@@ -78,6 +78,7 @@ public:
 
     double getStartDate() const { return startDate; };
     double getEndDate() const { return endDate; };
+    double getTrackingDate() const { return trackingDate; };
     double getCurrentDate() const {return lastDate;}
     std::string getRun_name() const { return run_name; };
     bool inSpinup() const { return in_spinup; };
@@ -140,6 +141,10 @@ private:
     //------------------------------------------------------------------------------
     //! The last date we've run up to
     double lastDate;
+
+    //------------------------------------------------------------------------------
+     //! The date to start tracking carbon cycle flows
+     double trackingDate;
 
     //------------------------------------------------------------------------------
     //! A flag to indicate that the core has been initialized.
