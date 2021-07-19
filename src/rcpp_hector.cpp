@@ -305,7 +305,7 @@ DataFrame sendmessage(Environment core, String msgtype, String capability, Numer
     }
     catch(h_exception e) {
         // Units need to be specified in setData and incorrect pr missing units will throw an error
-        if (msgstr=="setData"){
+        if (msgstr==M_SETDATA){
             std::stringstream emsg;
             emsg << "invalid unit type '" << unitstr << "' in input " << capstr;
             Rcpp::stop(emsg.str());
