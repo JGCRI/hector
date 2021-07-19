@@ -352,7 +352,6 @@ void ForcingComponent::run( const double runToDate ) {
         unitval Ca = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_CO2 );
         if( runToDate==baseyear )
             C0 = Ca;
-        //forcings[D_RF_CO2 ].set( aCO2 * log( Ca/C0 ), U_W_M2 );
         forcings[D_RF_CO2 ].set( aCO2.value(U_W_M2) * log( Ca/C0 ), U_W_M2 );
 
         // ---------- Terrestrial albedo ----------
