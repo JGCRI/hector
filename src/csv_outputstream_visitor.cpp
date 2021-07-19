@@ -43,7 +43,8 @@ using namespace std;
 
 //------------------------------------------------------------------------------
 /*! \brief Constructor
- *  \param filename The file to write the csv output to.
+ *  \param outputStream The file to write the csv output to
+ *  \param printHeader Boolean controlling whether we print a header or not
  */
 CSVOutputStreamVisitor::CSVOutputStreamVisitor( ostream& outputStream, const bool printHeader )
 :csvFile( outputStream )

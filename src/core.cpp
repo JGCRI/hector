@@ -528,7 +528,7 @@ IModelComponent* Core::getComponentByName( const string& componentName ) const
 
 //------------------------------------------------------------------------------
 /*! \brief Returns the model component with a particular capability.
- *  \param componentName The capability of the component to retrieve.
+ *  \param capabilityName The capability of the component to retrieve.
  *  \exception h_exception If the capabilityName was not recognized.
  */
 IModelComponent* Core::getComponentByCapability( const string& capabilityName ) const
@@ -598,7 +598,6 @@ void Core::registerInput(const string& inputName, const string& componentName) {
 //------------------------------------------------------------------------------
 /*! \brief Check whether a capability has been registered with the core
  *  \param capabilityName The capability of the component to register.
- *  \param componentName The name of the associated component.
  *  \returns int Count of the components registered to provide this.
  */
 int Core::checkCapability( const string& capabilityName ) {

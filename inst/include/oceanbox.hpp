@@ -40,11 +40,11 @@ class oceanbox {
 private:
 	unitval carbon;
 	unitval CarbonToAdd;
-	std::vector<oceanbox*> connection_list;  //<! a vector of ocean box pointers
-	std::vector<double> connection_k;        //<! a vector of ocean k values (fraction)
-	std::vector<double> carbonHistory;       //<! a vector of past C states
-   	std::vector<double> carbonLossHistory;   //<! a vector of past C losses
-	std::vector<int> connection_window;      //<! a vector of connection windows to average over
+    std::vector<oceanbox*> connection_list;  ///< a vector of ocean box pointers
+    std::vector<double> connection_k;        ///< a vector of ocean k values (fraction)
+    std::vector<double> carbonHistory;       ///< a vector of past C states
+    std::vector<double> carbonLossHistory;   ///< a vector of past C losses
+    std::vector<int> connection_window;      ///< a vector of connection windows to average over
 
     double vectorHistoryMean( std::vector<double> v, int lookback ) const;
 
@@ -54,8 +54,8 @@ private:
 
 	void sens_parameters();
 
-    unitval Ca;             //<! Atmospheric CO2, ppm
-    unitval Tbox;           //<! box absolute temperature, degC
+    unitval Ca;             ///< Atmospheric CO2, ppm
+    unitval Tbox;           ///< box absolute temperature, degC
     unitval pco2_lastyear;  //
     unitval dic_lastyear;   //
     unitval compute_tabsC( const unitval Tgav ) const;
@@ -63,7 +63,7 @@ private:
 public:
 	oceanbox (); // constructor
 
-	std::map <oceanbox*, unitval> annual_box_fluxes;   //<! Map of our fluxes to other boxes
+    std::map <oceanbox*, unitval> annual_box_fluxes;   ///< Map of our fluxes to other boxes
 
 	void initbox( unitval C, std::string N="" );
     void make_connection( oceanbox* ob, const double k, const int window );
@@ -83,16 +83,16 @@ public:
 
     unitval calc_revelle();
 
-	unitval deltaT;     //<! difference between box temperature and global temperature
+    unitval deltaT;     ///< difference between box temperature and global temperature
     unitval preindustrial_flux;
     bool surfacebox;
 
     double warmingfactor;        //!< regional warming relative to global (1.0=same)
 
     // Ocean box chemistry
-    oceancsys mychemistry;      //<! box chemistry
-	bool active_chemistry;      //<! box has active chemistry model?
-	void chem_equilibrate( const unitval current_Ca );    //<! equilibrate chemistry model to a given flux
+    oceancsys mychemistry;      ///< box chemistry
+    bool active_chemistry;      ///< box has active chemistry model?
+    void chem_equilibrate( const unitval current_Ca );    ///< equilibrate chemistry model to a given flux
     double fmin( double alk, void *params );
 
     unitval atmosphere_flux;

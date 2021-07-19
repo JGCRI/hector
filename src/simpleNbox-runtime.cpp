@@ -55,7 +55,7 @@ void SimpleNbox::sanitychecks()
 
 //------------------------------------------------------------------------------
 /*! \brief      Log pool states
- *  \param      current date
+ *  \param      t date
  */
 void SimpleNbox::log_pools( const double t )
 {
@@ -190,7 +190,7 @@ void SimpleNbox::getCValues( double t, double c[] )
 //------------------------------------------------------------------------------
 /*! \brief                  Transfer new model pools from ODE solver array back to model pools
  *  \param[in] t            Time, double, the ending date of the solver
- *  \param[in] double       Flat array of carbon pools (no units)
+ *  \param[in] c       Flat array of carbon pools (no units)
  *  \exception h_exception  If ocean model diverges from our pool tracking all ocean C
  *  \exception h_exception  If mass is not conserved
  *

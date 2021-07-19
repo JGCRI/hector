@@ -90,9 +90,9 @@ class PolyDerivFunctor {
 
 //------------------------------------------------------------------------------
 /*! \brief Find the largest real root, using GSL or appropriate algorithms
- *  \param ncoeff   Number of coefficients
- *  \param *a       Coefficients
- *  \return         Largest real root (H+ ion)
+ *  \param ncoeffs   Number of coefficients
+ *  \param a                Coefficients
+ *  \return        Largest real root (H+ ion)
  */
 double find_largest_root( const int ncoeffs, double* a ) {
     

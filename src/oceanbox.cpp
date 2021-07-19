@@ -230,7 +230,7 @@ unitval oceanbox::compute_connection_flux( int i, double yf ) const {
 
 //------------------------------------------------------------------------------
 /*! \brief Compute all fluxes between boxes
- * \param[in] Ca                atmospheric CO2
+ * \param[in] current_Ca                atmospheric CO2
  * \param[in] yf                year fraction (0-1)
  * \param[in] do_circ           flag: do circulation, or not?
  */
@@ -340,7 +340,7 @@ void oceanbox::update_state() {
 
 //------------------------------------------------------------------------------
 /*! \brief          A new year is starting. Zero flux variables.
- *  \param[in] t    Mean global temperature this year
+ *  \param[in] Tgav    Mean global temperature this year
  */
 void oceanbox::new_year( const unitval Tgav ) {
     
@@ -358,7 +358,7 @@ void oceanbox::new_year( const unitval Tgav ) {
 //------------------------------------------------------------------------------
 /*! \brief              Function that chem_equilibrate tries to minimize
  *  \param[in] alk      alkalinity value to try
- *  \param[in] *params  pointer to other parameters (just f_target currently)
+ *  \param[in] params  pointer to other parameters (just f_target currently)
  *  \returns            double, difference between flux and target flux
  *
  *  The gsl minimization algorithm calls this function, which slots alk
@@ -398,7 +398,7 @@ struct FMinWrapper {
 
 //------------------------------------------------------------------------------
 /*! \brief                  Equilibrate the chemistry model to a given flux
- *  \param[in] Ca           Atmospheric CO2 (ppmv)
+ *  \param[in] current_Ca           Atmospheric CO2 (ppmv)
  *
  *  \details The global carbon cycle can be spun up with ocean chemistry either
  *  on or off. In the former case, the ocean continually equilibrates with the
