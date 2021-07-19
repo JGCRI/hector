@@ -185,6 +185,7 @@ void ForcingComponent::init( Core* coreptr ) {
     core->registerCapability( D_AN2O, getComponentName());
     core->registerCapability( D_ACH4, getComponentName());
     core->registerCapability( D_ATROPO3, getComponentName());
+    core->registerCapability( D_ASO2D, getComponentName());
 
 
     for(int i=0; i<N_HALO_FORCINGS; ++i) {
@@ -233,6 +234,8 @@ void ForcingComponent::init( Core* coreptr ) {
     core->registerInput( D_AN2O, getComponentName() );
     core->registerInput( D_ACH4, getComponentName() );
     core->registerInput( D_ATROPO3, getComponentName() );
+    core->registerInput( D_ASO2D, getComponentName());
+
 
 
 
@@ -283,6 +286,9 @@ void ForcingComponent::setData( const string& varName,
         } else if( varName == D_ATROPO3 ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
             atropO3 = data.getUnitval(U_W_M2);
+        } else if( varName == D_ASO2D ) {
+            H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
+            aso2d = data.getUnitval(U_W_M2);
         } else if( varName == D_FTOT_CONSTRAIN ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
             Ftot_constrain.set(data.date, data.getUnitval(U_W_M2));
@@ -361,13 +367,13 @@ void ForcingComponent::run( const double runToDate ) {
             double Na = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_N2O, message_data( runToDate ) ).value( U_PPBV_N2O );
             double N0 = core->sendMessage( M_GETDATA, D_PREINDUSTRIAL_N2O ).value( U_PPBV_N2O );
 
-            // Joos et al., 2001 equation A*
+            // Joos et al., 2001 equation (A8)
             // CH4 radiative forcing is adjsuted by the function f(M,N) to account for
             // the overlap in CH4 and N20 bands.
             double fch4 = aCH4.value(U_W_M2) * ( sqrt( Ma ) - sqrt( M0 ) ) - ( f( Ma, N0 ) - f( M0, N0 ) );
             forcings[D_RF_CH4].set( fch4, U_W_M2 );
 
-            // Joos et al., 2001 equation A10
+            // Joos et al., 2001 equation (A10)
             // N2O radiative forcing is adjsuted by the function f(M,N) to account for
             // the overlap in CH4 and N20 bands.
             double fn2o =  aN2O.value(U_W_M2) * ( sqrt( Na ) - sqrt( N0 ) ) - ( f( M0, Na ) - f( M0, N0 ) );
@@ -452,13 +458,14 @@ void ForcingComponent::run( const double runToDate ) {
             unitval S0 = core->sendMessage( M_GETDATA, D_2000_SO2 );
             unitval SN = core->sendMessage( M_GETDATA, D_NATURAL_SO2 );
 
-            // Includes only direct forcings from Forster et al 2007 (IPCC)
-            // Equations from Joos et al., 2001
+            // Direct radiative forcing by sulphate aerosols
+            // from Joos et al., 2001 equation (A14).
             H_ASSERT( S0.value( U_GG_S ) >0, "S0 is 0" );
             unitval emission = core->sendMessage( M_GETDATA, D_EMISSIONS_SO2, message_data( runToDate ) );
-            double fso2d = -0.35 * emission/S0;
+            //double fso2d = -0.35 * emission/S0;
+            double fso2d =  aso2d.value(U_W_M2) * emission/S0;
             forcings[D_RF_SO2d].set( fso2d, U_W_M2 );
-            // includes only direct forcings from Forster etal 2007 (IPCC)
+
 
             // Indirect aerosol effect via changes in cloud properties
             const double a = -0.6 * ( log( ( SN.value( U_GG_S ) + emission.value( U_GG_S ) ) / SN.value( U_GG_S ) ) ); // -.6
@@ -537,6 +544,8 @@ unitval ForcingComponent::getData( const std::string& varName,
             returnval = aCH4;
         } else if (varName == D_ATROPO3){
             returnval = atropO3;
+        } else if (varName == D_ASO2D){
+            returnval = aso2d;
         }
 
         return returnval;

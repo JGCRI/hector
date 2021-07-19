@@ -396,6 +396,13 @@ String alpha_tropO3() {
     return D_ATROPO3;
 }
 
+//' @describeIn forcings Radiative forcing efficiency for direct effects of SO2
+//' @export
+// [[Rcpp::export]]
+String alpha_dirSO2() {
+    return D_ASO2D;
+}
+
 /* halocarbon emissions */
 //' @describeIn haloemiss Emissions for CF4
 //' @export

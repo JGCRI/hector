@@ -58,6 +58,7 @@
 #define D_AN2O                  "alpha_N2O"            // forcing efficiency for N2O
 #define D_ACH4                  "alpha_CH4"            // forcing efficiency for CH4
 #define D_ATROPO3               "alpha_tropo3"         // forcing efficiency for tropospheric O3
+#define D_ASO2D                 "alpha_dirSO2"         // forcing efficiency for direct effects of sulphate aerosols
 
 
 // halocarbon components
