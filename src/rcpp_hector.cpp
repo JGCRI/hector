@@ -304,10 +304,14 @@ DataFrame sendmessage(Environment core, String msgtype, String capability, Numer
         utype = Hector::unitval::parseUnitsName(unitstr);
     }
     catch(h_exception e) {
-        // std::stringstream emsg;
-        // emsg << "sendmessage: invalid unit type: " << unitstr;
-        // Rcpp::stop(emsg.str());
-        utype = Hector::U_UNDEFINED;
+        // Units need to be specified in setData and incorrect pr missing units will throw an error
+        if (msgstr=="setData"){
+            std::stringstream emsg;
+            emsg << "invalid unit type '" << unitstr << "' in input " << capstr;
+            Rcpp::stop(emsg.str());
+        } else {  // Units do not need to be specified in getData, setting to undefined
+            utype = Hector::U_UNDEFINED;
+        }
     }
 
     NumericVector valueout(N);
