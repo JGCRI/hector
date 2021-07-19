@@ -505,6 +505,16 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// alpha_tropO3
+String alpha_tropO3();
+RcppExport SEXP _hector_alpha_tropO3() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(alpha_tropO3());
+    return rcpp_result_gen;
+END_RCPP
+}
 // EMISSIONS_CF4
 String EMISSIONS_CF4();
 RcppExport SEXP _hector_EMISSIONS_CF4() {
@@ -2002,6 +2012,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_alpha_CO2", (DL_FUNC) &_hector_alpha_CO2, 0},
     {"_hector_alpha_N2O", (DL_FUNC) &_hector_alpha_N2O, 0},
     {"_hector_alpha_CH4", (DL_FUNC) &_hector_alpha_CH4, 0},
+    {"_hector_alpha_tropO3", (DL_FUNC) &_hector_alpha_tropO3, 0},
     {"_hector_EMISSIONS_CF4", (DL_FUNC) &_hector_EMISSIONS_CF4, 0},
     {"_hector_EMISSIONS_C2F6", (DL_FUNC) &_hector_EMISSIONS_C2F6, 0},
     {"_hector_EMISSIONS_HFC23", (DL_FUNC) &_hector_EMISSIONS_HFC23, 0},

@@ -78,6 +78,8 @@ private:
     unitval aCO2;           //! alpha CO2, forcing efficiency for CO2 (W/m2)
     unitval aN2O;           //! alpha N2O, forcing efficiency for N2O (W/m2)
     unitval aCH4;           //! alpha CH4, forcing efficiency for CH4 (W/m2)
+    unitval atropO3;        //! alpha trop O3, forcing efficiency for tropospheric O3 (W/m2)
+
     tseries<unitval> Ftot_constrain;       //! Total forcing can be supplied
 
     Core* core;             //! Core

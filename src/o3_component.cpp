@@ -12,6 +12,15 @@
  *
  */
 
+/* References:
+
+Tanaka, Katsumasa, Elmar Kriegler, Thomas Bruckner, Georg Hooss, Wolfgang Knorr, Thomas Raddatz,
+and Richard Tol. 2007. “Aggregated Carbon Cycle, Atmospheric Chemistry and Climate Model
+(ACC2): Description of Forward and Inverse Mode.”
+
+
+*/
+
 #include <math.h>
 
 #include "o3_component.hpp"
@@ -131,14 +140,15 @@ void OzoneComponent::prepareToRun() {
 // documentation is inherited
 void OzoneComponent::run( const double runToDate ) {
 
-	// Calculate O3 based on NOX, CO, NMVOC, CH4.
-    // Modified from Tanaka et al 2007
-
+	// Calculate the trop O3 concentration based on CH4 concentrations &
+	// NOX, CO, NMVOC emissions.
     unitval current_nox = NOX_emissions.get( runToDate );
 	unitval current_co = CO_emissions.get( runToDate );
 	unitval current_nmvoc = NMVOC_emissions.get( runToDate );
 	unitval current_ch4 = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_CH4, runToDate );
 
+	// Tanaka et al. 2007 equation (2.2.21)
+	// For Hector the Tanaka equation was modified so that... TODO finnish comment!
     O3.set( runToDate, unitval( ( 5*log( current_ch4 ) ) + ( 0.125*current_nox ) + ( 0.0011*current_co )
                + ( 0.0033*current_nmvoc ), U_DU_O3 ) );
 

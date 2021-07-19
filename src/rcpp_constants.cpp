@@ -389,6 +389,13 @@ String alpha_CH4() {
     return D_ACH4;
 }
 
+//' @describeIn forcings Radiative forcing efficiency for tropospheric O3
+//' @export
+// [[Rcpp::export]]
+String alpha_tropO3() {
+    return D_ATROPO3;
+}
+
 /* halocarbon emissions */
 //' @describeIn haloemiss Emissions for CF4
 //' @export

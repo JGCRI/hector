@@ -300,6 +300,12 @@ alpha_CH4 <- function() {
     .Call('_hector_alpha_CH4', PACKAGE = 'hector')
 }
 
+#' @describeIn forcings Radiative forcing efficiency for tropospheric O3
+#' @export
+alpha_tropO3 <- function() {
+    .Call('_hector_alpha_tropO3', PACKAGE = 'hector')
+}
+
 #' @describeIn haloemiss Emissions for CF4
 #' @export
 EMISSIONS_CF4 <- function() {

@@ -57,6 +57,7 @@
 #define D_ACO2                  "alpha_CO2"            // forcing efficiency for CO2
 #define D_AN2O                  "alpha_N2O"            // forcing efficiency for N2O
 #define D_ACH4                  "alpha_CH4"            // forcing efficiency for CH4
+#define D_ATROPO3               "alpha_tropo3"         // forcing efficiency for tropospheric O3
 
 
 // halocarbon components

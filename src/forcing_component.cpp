@@ -21,15 +21,21 @@
     Bounding the role of black carbon in the climate system: A scientific assessment, J. Geophys. Res.-Atmos., 118, 5380–5552,
     doi:10.1002/jgrd.50171, 2013.
 
- Meinshausen et al. (2011): Meinshausen, M., Raper, S. C. B., and Wigley, T. M. L.: Emulating coupled atmosphere-ocean
-    and carbon cycle models with a simpler model, MAGICC6 – Part 1: Model description and calibration, Atmos. Chem.
-    Phys., 11, 1417–1456, https://doi.org/10.5194/acp-11-1417-2011, 2011.
-
  Joos et al. 2001: Joos, F., Prentice, I. C., Sitch, S., Meyer, R., Hooss, G., Plattner,
     G.-K., Gerber, S., and Hasselmann, K.: Global warming feedbacks
     on terrestrial carbon uptake under the Intergovernmental
     Panel on Climate Change (IPCC) Emission Scenarios, Global
     Biogeochem. Cy., 15, 891–907, doi:10.1029/2000GB001375, 2001.
+
+ Meinshausen et al. (2011): Meinshausen, M., Raper, S. C. B., and Wigley, T. M. L.: Emulating coupled atmosphere-ocean
+    and carbon cycle models with a simpler model, MAGICC6 – Part 1: Model description and calibration, Atmos. Chem.
+    Phys., 11, 1417–1456, https://doi.org/10.5194/acp-11-1417-2011, 2011.
+
+ Tanaka, Katsumasa, Elmar Kriegler, Thomas Bruckner, Georg Hooss, Wolfgang Knorr, Thomas Raddatz,
+    and Richard Tol. 2007. “Aggregated Carbon Cycle, Atmospheric Chemistry and Climate Model
+    (ACC2): Description of Forward and Inverse Mode.”
+
+
  */
 
 
@@ -178,6 +184,7 @@ void ForcingComponent::init( Core* coreptr ) {
     core->registerCapability( D_ACO2, getComponentName());
     core->registerCapability( D_AN2O, getComponentName());
     core->registerCapability( D_ACH4, getComponentName());
+    core->registerCapability( D_ATROPO3, getComponentName());
 
 
     for(int i=0; i<N_HALO_FORCINGS; ++i) {
@@ -225,6 +232,7 @@ void ForcingComponent::init( Core* coreptr ) {
     core->registerInput( D_ACO2, getComponentName() );
     core->registerInput( D_AN2O, getComponentName() );
     core->registerInput( D_ACH4, getComponentName() );
+    core->registerInput( D_ATROPO3, getComponentName() );
 
 
 
@@ -272,6 +280,9 @@ void ForcingComponent::setData( const string& varName,
         } else if( varName == D_ACH4 ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
             aCH4 = data.getUnitval(U_W_M2);
+        } else if( varName == D_ATROPO3 ) {
+            H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
+            atropO3 = data.getUnitval(U_W_M2);
         } else if( varName == D_FTOT_CONSTRAIN ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
             Ftot_constrain.set(data.date, data.getUnitval(U_W_M2));
@@ -372,9 +383,10 @@ void ForcingComponent::run( const double runToDate ) {
 
         // ---------- Troposheric Ozone ----------
         if( core->checkCapability( D_ATMOSPHERIC_O3 ) ) {
-            //from Tanaka et al, 2007
+            // Tanaka et al. 2007 equation (2.2.22)
+            // The radiative forcing of tropospheric O3 is the radiative efficiency * O3 concentrations.
             const double ozone = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_O3, message_data( runToDate ) ).value( U_DU_O3 );
-            const double fo3_trop = 0.042 * ozone;
+            const double fo3_trop = atropO3 * ozone;
             forcings[D_RF_O3_TROP].set( fo3_trop, U_W_M2 );
         }
 
@@ -523,6 +535,8 @@ unitval ForcingComponent::getData( const std::string& varName,
             returnval = aN2O;
         } else if (varName == D_ACH4){
             returnval = aCH4;
+        } else if (varName == D_ATROPO3){
+            returnval = atropO3;
         }
 
         return returnval;
