@@ -312,6 +312,12 @@ alpha_dirSO2 <- function() {
     .Call('_hector_alpha_dirSO2', PACKAGE = 'hector')
 }
 
+#' @describeIn forcings Radiative forcing efficiency for indirect effects of SO2
+#' @export
+alpha_indirSO2 <- function() {
+    .Call('_hector_alpha_indirSO2', PACKAGE = 'hector')
+}
+
 #' @describeIn haloemiss Emissions for CF4
 #' @export
 EMISSIONS_CF4 <- function() {

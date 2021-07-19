@@ -186,6 +186,7 @@ void ForcingComponent::init( Core* coreptr ) {
     core->registerCapability( D_ACH4, getComponentName());
     core->registerCapability( D_ATROPO3, getComponentName());
     core->registerCapability( D_ASO2D, getComponentName());
+    core->registerCapability( D_ASO2I, getComponentName());
 
 
     for(int i=0; i<N_HALO_FORCINGS; ++i) {
@@ -235,6 +236,7 @@ void ForcingComponent::init( Core* coreptr ) {
     core->registerInput( D_ACH4, getComponentName() );
     core->registerInput( D_ATROPO3, getComponentName() );
     core->registerInput( D_ASO2D, getComponentName());
+    core->registerInput( D_ASO2I, getComponentName());
 
 
 
@@ -289,6 +291,9 @@ void ForcingComponent::setData( const string& varName,
         } else if( varName == D_ASO2D ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
             aso2d = data.getUnitval(U_W_M2);
+        } else if( varName == D_ASO2I ) {
+            H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
+            aso2in = data.getUnitval(U_W_M2);
         } else if( varName == D_FTOT_CONSTRAIN ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
             Ftot_constrain.set(data.date, data.getUnitval(U_W_M2));
@@ -462,13 +467,13 @@ void ForcingComponent::run( const double runToDate ) {
             // from Joos et al., 2001 equation (A14).
             H_ASSERT( S0.value( U_GG_S ) >0, "S0 is 0" );
             unitval emission = core->sendMessage( M_GETDATA, D_EMISSIONS_SO2, message_data( runToDate ) );
-            //double fso2d = -0.35 * emission/S0;
             double fso2d =  aso2d.value(U_W_M2) * emission/S0;
             forcings[D_RF_SO2d].set( fso2d, U_W_M2 );
 
 
             // Indirect aerosol effect via changes in cloud properties
-            const double a = -0.6 * ( log( ( SN.value( U_GG_S ) + emission.value( U_GG_S ) ) / SN.value( U_GG_S ) ) ); // -.6
+            // from Joos et al., 2001 equation (A15).
+            const double a = aso2in.value(U_W_M2) * ( log( ( SN.value( U_GG_S ) + emission.value( U_GG_S ) ) / SN.value( U_GG_S ) ) ); // -.6
             const double b =  pow ( log ( ( SN.value( U_GG_S ) + S0.value( U_GG_S ) ) / SN.value( U_GG_S ) ), -1 );
             double fso2i = a * b;
             forcings[D_RF_SO2i].set( fso2i, U_W_M2 );
@@ -546,6 +551,8 @@ unitval ForcingComponent::getData( const std::string& varName,
             returnval = atropO3;
         } else if (varName == D_ASO2D){
             returnval = aso2d;
+        } else if (varName == D_ASO2I){
+            returnval = aso2in;
         }
 
         return returnval;

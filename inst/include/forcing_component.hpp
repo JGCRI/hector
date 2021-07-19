@@ -80,6 +80,7 @@ private:
     unitval aCH4;           //! alpha CH4, forcing efficiency for CH4 (W/m2)
     unitval atropO3;        //! alpha trop O3, forcing efficiency for tropospheric O3 (W/m2)
     unitval aso2d;          //! alpha SO2 dir, forcing efficiency for direct effects of SO2 (W/m2)
+    unitval aso2in;          //! alpha SO2 dir, forcing efficiency for indirect effects of SO2 (W/m2)
 
 
     tseries<unitval> Ftot_constrain;       //! Total forcing can be supplied
