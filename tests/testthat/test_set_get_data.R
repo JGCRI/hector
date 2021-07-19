@@ -60,4 +60,6 @@ for (v in emissions) {
   })
 }
 
-expect_error(setvar(hc, year, VEG_C(), 500, "boogedyboo"))
+test_that("Setting variable with invalid unit throws an error", {
+  expect_error(setvar(hc, year, VEG_C(), 500, "boogedyboo"))
+})
