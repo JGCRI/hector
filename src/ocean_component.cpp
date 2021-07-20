@@ -94,13 +94,11 @@ void OceanComponent::init( Core* coreptr ) {
     core->registerCapability( D_CO3_HL, getComponentName() );
     core->registerCapability( D_CO3_LL, getComponentName() );
 
-
     // Register the inputs we can receive from outside
     core->registerInput(D_TT, getComponentName());
     core->registerInput(D_TU, getComponentName());
     core->registerInput(D_TWI, getComponentName());
     core->registerInput(D_TID, getComponentName());
-
 }
 
 //------------------------------------------------------------------------------
@@ -180,7 +178,7 @@ void OceanComponent::setData( const string& varName,
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-// TO DO: should we put these in the ini file instead?
+// TODO: should we put these in the ini file instead?
 void OceanComponent::prepareToRun() {
 
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
@@ -200,18 +198,18 @@ void OceanComponent::prepareToRun() {
     inter.initbox( unitval( 8400, U_PGC ),  "intermediate" );
     deep.initbox( unitval( 26000, U_PGC ),  "deep" );
 
-    double time = 60*60*24*365.25;  // seconds per year
+    double time = 60 * 60 * 24 * 365.25;  // seconds per year
 
     // ocean_volume = 1.36e18 m3
     double thick_LL = 100;
     double thick_HL = 100;
-    double thick_inter = 1000-thick_LL;
-    double thick_deep = 3777-thick_inter-thick_LL; // 3777m - 1000m - 100m
+    double thick_inter = 1000 - thick_LL;
+    double thick_deep = 3777 - thick_inter-thick_LL; // 3777m - 1000m - 100m
 
     //	const double ocean_sarea = 5.101e14; // surface area m2
     const double ocean_area = 3.6e14; // m2;
     const double part_high = 0.15;
-    const double part_low = 1-part_high;
+    const double part_low = 1 - part_high;
     const double LL_volume = ocean_area * part_low * thick_LL;
     const double HL_volume = ocean_area * part_high * thick_HL;
     const double I_volume = ocean_area* thick_inter;
@@ -226,9 +224,9 @@ void OceanComponent::prepareToRun() {
     double IO_LL = ( tt.value( U_M3_S) * time )  / I_volume;
 
     // Exchange parameters --> not explicitly modeling diffusion
-    double IO_LLex = ( twi.value( U_M3_S) *time ) / I_volume;
+    double IO_LLex = ( twi.value( U_M3_S) * time ) / I_volume;
     double LL_IOex = ( twi.value( U_M3_S) * time ) / LL_volume;
-    double DO_IOex = ( tid.value( U_M3_S) *time ) / D_volume;
+    double DO_IOex = ( tid.value( U_M3_S) * time ) / D_volume;
     double IO_DOex = ( tid.value( U_M3_S) * time ) / I_volume;
 
     // make_connection( box to connect to, k value, window size (0=present only) )
@@ -288,7 +286,7 @@ unitval OceanComponent::annual_totalcflux( const double date, const unitval& Ca,
                             + surfaceLL.mychemistry.calc_annual_surface_flux( Ca, cpoolscale );
     }
 
-        if( !in_spinup && oceanflux_constrain.size() && date <= oceanflux_constrain.lastdate() ) {
+    if( !in_spinup && oceanflux_constrain.size() && date <= oceanflux_constrain.lastdate() ) {
         flux = oceanflux_constrain.get( date );
     }
 
@@ -336,7 +334,6 @@ void OceanComponent::run( const double runToDate ) {
     // Call compute_fluxes with do_boxfluxes=false to run just chemistry
 	surfaceHL.compute_fluxes( Ca, 1.0, false );
 	surfaceLL.compute_fluxes( Ca, 1.0, false );
-
 
     // Now wait for the solver to call us
 }
@@ -524,8 +521,9 @@ void OceanComponent::slowparameval( double t, const double c[] ) {
 // documentation is inherited
 void OceanComponent::stashCValues( double t, const double c[] ) {
 
-    H_LOG( logger,Logger::DEBUG ) << "Stashing at t=" << t << ", model pools at " << t << ": " << c[ 0 ] << " "
-    << c[ 1 ] << " " << c[ 2 ] << " " << c[ 3 ] << " " << c[ 4 ] << " " << c[ 5 ] << std::endl;
+    H_LOG( logger,Logger::DEBUG ) << "Stashing at t=" << t << ", model pools at " << t << ": " <<
+    c[ 0 ] << " " << c[ 1 ] << " " << c[ 2 ] << " " << c[ 3 ] << " " << c[ 4 ] << " " <<
+    c[ 5 ] << std::endl;
 
 	// At this point the solver has converged, going from ODEstartdate to t
     // Now we finalize calculations: circulate ocean, update carbon states, etc.
@@ -558,7 +556,7 @@ void OceanComponent::stashCValues( double t, const double c[] ) {
 
     // This (along with carbon-cycle-solver obviously) is the heart of the reduced-timestep code.
     // If carbon flux has exceeded some critical value, need to reduce timestep for the future.
-    unitval cflux_annualdiff = solver_flux/yearfraction - lastflux_annualized;
+    unitval cflux_annualdiff = solver_flux / yearfraction - lastflux_annualized;
 
     if( cflux_annualdiff.value( U_PGC ) > OCEAN_TSR_TRIGGER1 ) {
         // Annual fluxes are changing rapidly. Reduce the max timestep allowed.
@@ -607,13 +605,10 @@ void OceanComponent::stashCValues( double t, const double c[] ) {
 
     // All good! t will be the start of the next timestep, so
     ODEstartdate = t;
-
    }
-
 
 void OceanComponent::reset(double time)
 {
-
     // Reset state variables to their values at the reset time
     surfaceHL = surfaceHL_tv.get(time);
     surfaceLL = surfaceLL_tv.get(time);
@@ -631,7 +626,6 @@ void OceanComponent::reset(double time)
     max_timestep = max_timestep_ts.get(time);
     reduced_timestep_timeout = reduced_timestep_timeout_ts.get(time);
     timesteps = 0;
-
 
     // truncate all the time series beyond the reset time
     surfaceHL_tv.truncate(time);
@@ -653,7 +647,6 @@ void OceanComponent::reset(double time)
     H_LOG(logger, Logger::NOTICE)
         << getComponentName() << " reset to time= " << time << "\n";
 }
-
 
 void OceanComponent::record_state(double time)
 {

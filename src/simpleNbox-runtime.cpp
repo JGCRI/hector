@@ -200,8 +200,11 @@ void SimpleNbox::getCValues( double t, double c[] )
 void SimpleNbox::stashCValues( double t, const double c[] )
 {
     // Solver has gone from ODEstartdate to t
+    // Note this is NOT guaranteed to be a full year jump! So compute the fraction
+    // of the year we have advanced for use below
     const double yf = ( t - ODEstartdate );
     H_ASSERT( yf >= 0 && yf <= 1, "yearfraction out of bounds" );
+    
     H_LOG( logger,Logger::DEBUG ) << "Stashing at t=" << t << ", solver pools at " << t << ": " <<
         "  atm = " << c[ SNBOX_ATMOS ] <<
         "  veg = " << c[ SNBOX_VEG ] <<
@@ -209,8 +212,8 @@ void SimpleNbox::stashCValues( double t, const double c[] )
         "  soil = " << c[ SNBOX_SOIL ] <<
         "  ocean = " << c[ SNBOX_OCEAN ] <<
         "  earth = " << c[ SNBOX_EARTH ] << std::endl;
-
     log_pools( t );
+    
     // get the UNTRACKED earth emissions (ffi) and uptake (ccs)
     // We immediately adjust them for the year fraction (as the solver
     // may call stashCValues multiple times within a given year)
@@ -229,10 +232,10 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     fluxpool ao_flux(0.0, U_PGC);
     if(ocean_atmos > 0){
         ao_flux = atmos_c.flux_from_unitval(ocean_atmos);
-        oa_flux = ocean_model_c.flux_from_fluxpool(oa_flux);
+        oa_flux = ocean_model_c.flux_from_fluxpool(oa_flux); // i.e., 0
     } else {
         oa_flux = ocean_model_c.flux_from_unitval(-ocean_atmos);
-        ao_flux = atmos_c.flux_from_fluxpool(ao_flux);
+        ao_flux = atmos_c.flux_from_fluxpool(ao_flux); // i.e., 0
     }
 
     fluxpool luc_e_untracked = luc_emission(t, in_spinup) * yf;
@@ -243,7 +246,7 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     fluxpool luc_fad_flux = atmos_c.flux_from_fluxpool(luc_u_untracked * f_lucd);
     fluxpool luc_fas_flux = atmos_c.flux_from_fluxpool(luc_u_untracked * ( 1 - f_lucv - f_lucd ));
 
-    // Record the land C flux
+    // Calculate net primary production and heterotrophic respiration
     const fluxpool npp_total = sum_npp();
     const fluxpool rh_total = sum_rh();
 
@@ -251,6 +254,7 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     // (as a negative term).
     // BBL-TODO this is really "exchange" not a flux
     // pull these values into doubles as we're constructing a unitval exchange from positive-only fluxpools
+    // TODO: this is missing LUC uptake from above!
     const double alf = npp_total.value(U_PGC_YR) - rh_total.value(U_PGC_YR) - lucEmissions.get( t ).value(U_PGC_YR);
     atmosland_flux.set(alf, U_PGC_YR);
     atmosland_flux_ts.set(t, atmosland_flux);
@@ -266,29 +270,30 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     const unitval newveg( c[ SNBOX_VEG ], U_PGC );
     const unitval newdet( c[ SNBOX_DET ], U_PGC );
     const unitval newsoil( c[ SNBOX_SOIL ], U_PGC );
-
+    const double f_lucs = 1 - f_lucv - f_lucd; // LUC fraction to soil
+    
     for( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
         std::string biome = *it;
-        const double wt = (npp(biome) + rh( biome ) ) / npp_rh_total;
+        const double wt = (npp( biome ) + rh( biome ) ) / npp_rh_total;
 
-        fluxpool npp_biome = yf * npp(biome);
+        fluxpool npp_biome = yf * npp( biome );
 
         // Update atmosphere with luc emissons from all land pools and biomes
-        fluxpool luc_fva_biome_flux = veg_c[ biome ].flux_from_fluxpool((luc_e_untracked*f_lucv)*wt);
-        fluxpool luc_fda_biome_flux = detritus_c[biome].flux_from_fluxpool((luc_e_untracked*f_lucd)*wt);
-        fluxpool luc_fsa_biome_flux = soil_c[biome].flux_from_fluxpool((luc_e_untracked*( 1 - f_lucv - f_lucd ))*wt);
-        atmos_c = atmos_c + luc_fva_biome_flux - luc_fav_flux*wt;
-        atmos_c = atmos_c + luc_fda_biome_flux - luc_fad_flux*wt;
-        atmos_c = atmos_c + luc_fsa_biome_flux - luc_fas_flux*wt;
+        fluxpool luc_fva_biome_flux = veg_c[ biome ].flux_from_fluxpool((luc_e_untracked * f_lucv) * wt);
+        fluxpool luc_fda_biome_flux = detritus_c[biome].flux_from_fluxpool((luc_e_untracked * f_lucd) * wt);
+        fluxpool luc_fsa_biome_flux = soil_c[biome].flux_from_fluxpool((luc_e_untracked * f_lucs) * wt);
+        atmos_c = atmos_c + luc_fva_biome_flux - luc_fav_flux * wt;
+        atmos_c = atmos_c + luc_fda_biome_flux - luc_fad_flux * wt;
+        atmos_c = atmos_c + luc_fsa_biome_flux - luc_fas_flux * wt;
         
         // Update veg_c, detritus_c, and soil_c with luc uptake from atmos per biome
-        veg_c[ biome ] = veg_c[ biome ] + luc_fav_flux*wt - luc_fva_biome_flux;
-        detritus_c[ biome ] = detritus_c[ biome ] + luc_fad_flux*wt - luc_fda_biome_flux;
-        soil_c[ biome ] = soil_c[ biome ] + luc_fas_flux*wt - luc_fsa_biome_flux; 
+        veg_c[ biome ] = veg_c[ biome ] + luc_fav_flux * wt - luc_fva_biome_flux;
+        detritus_c[ biome ] = detritus_c[ biome ] + luc_fad_flux * wt - luc_fda_biome_flux;
+        soil_c[ biome ] = soil_c[ biome ] + luc_fas_flux * wt - luc_fsa_biome_flux;
         
         // Update all pools for NPP
         fluxpool npp_fav_biome_flux = atmos_c.flux_from_fluxpool(npp_biome * f_nppv.at(biome));
-        fluxpool npp_fad_biome_flux = atmos_c.flux_from_fluxpool(npp_biome* f_nppd.at(biome));
+        fluxpool npp_fad_biome_flux = atmos_c.flux_from_fluxpool(npp_biome * f_nppd.at(biome));
         fluxpool npp_fas_biome_flux = atmos_c.flux_from_fluxpool(npp_biome * ( 1 - f_nppv.at(biome) - f_nppd.at(biome)));
         veg_c[ biome ] = veg_c[ biome ] + npp_fav_biome_flux;
         detritus_c[ biome ] = detritus_c[ biome ] + npp_fad_biome_flux;
@@ -317,9 +322,9 @@ void SimpleNbox::stashCValues( double t, const double c[] )
         detritus_c[ biome ] = detritus_c[ biome ] - detsoil_flux;
         
         // TEMPORARY TO INVESTIGATE FLUXES
-        veg_diff[biome] = veg_c[biome].value(U_PGC) - c[SNBOX_VEG]*wt;
-        soil_diff[biome] = soil_c[biome].value(U_PGC) - c[SNBOX_SOIL]*wt;
-        det_diff[ biome ] = detritus_c[biome].value(U_PGC) - c[SNBOX_DET]*wt;
+        veg_diff[biome] = veg_c[biome].value(U_PGC) - c[SNBOX_VEG] * wt;
+        soil_diff[biome] = soil_c[biome].value(U_PGC) - c[SNBOX_SOIL] * wt;
+        det_diff[ biome ] = detritus_c[biome].value(U_PGC) - c[SNBOX_DET] * wt;
         // Adjust biome pools to final values from calcDerives
         veg_c[ biome ].adjust_pool_to_val(newveg.value(U_PGC) * wt, false);
         detritus_c[ biome ].adjust_pool_to_val(newdet.value(U_PGC) * wt, false);
