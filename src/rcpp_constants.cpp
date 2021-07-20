@@ -368,46 +368,46 @@ String RF_CH3BR() {
 return D_RFADJ_CH3Br;
 }
 
-//' @describeIn forcings Radiative forcing efficiency for CO2
+//' @describeIn rho CO2 radiative forcing per doubling of CO2
 //' @export
 // [[Rcpp::export]]
-String alpha_CO2() {
-    return D_ACO2;
+String rho_CO2() {
+    return D_RHO_CO2;
 }
 
-//' @describeIn forcings Radiative forcing efficiency for N2O
+//' @describeIn rho Radiative forcing efficiency for N2O
 //' @export
 // [[Rcpp::export]]
-String alpha_N2O() {
-    return D_AN2O;
+String rho_N2O() {
+    return D_RHO_N2O;
 }
 
-//' @describeIn forcings Radiative forcing efficiency for CH4
+//' @describeIn rho Radiative forcing efficiency for CH4
 //' @export
 // [[Rcpp::export]]
-String alpha_CH4() {
-    return D_ACH4;
+String rho_CH4() {
+    return D_RHO_CH4;
 }
 
-//' @describeIn forcings Radiative forcing efficiency for tropospheric O3
+//' @describeIn rho Radiative forcing efficiency for tropospheric O3
 //' @export
 // [[Rcpp::export]]
-String alpha_tropO3() {
-    return D_ATROPO3;
+String rho_tropO3() {
+    return D_RHO_TROPO3;
 }
 
-//' @describeIn forcings Radiative forcing efficiency for direct effects of SO2
+//' @describeIn rho Direct forcing per unit sulphate aerosols emissions
 //' @export
 // [[Rcpp::export]]
-String alpha_dirSO2() {
-    return D_ASO2D;
+String rho_SO2d() {
+    return D_RHO_SO2d;
 }
 
-//' @describeIn forcings Radiative forcing efficiency for indirect effects of SO2
+//' @describeIn rho Indirect forcing per unit sulphate aerosols emissions
 //' @export
 // [[Rcpp::export]]
-String alpha_indirSO2() {
-    return D_ASO2I;
+String rho_SO2i() {
+    return D_RHO_SO2i;
 }
 
 /* halocarbon emissions */

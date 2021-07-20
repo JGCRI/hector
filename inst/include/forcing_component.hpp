@@ -75,12 +75,12 @@ private:
     double baseyear;        //! Year which forcing calculations will start
     double currentYear;     //! Tracks current year
     unitval C0;             //! Records base year atmospheric CO2
-    unitval aCO2;           //! alpha CO2, forcing efficiency for CO2 (W/m2)
-    unitval aN2O;           //! alpha N2O, forcing efficiency for N2O (W/m2)
-    unitval aCH4;           //! alpha CH4, forcing efficiency for CH4 (W/m2)
-    unitval atropO3;        //! alpha trop O3, forcing efficiency for tropospheric O3 (W/m2)
-    unitval aso2d;          //! alpha SO2 dir, forcing efficiency for direct effects of SO2 (W/m2)
-    unitval aso2in;          //! alpha SO2 dir, forcing efficiency for indirect effects of SO2 (W/m2)
+    unitval rhoCO2;         //! rho CO2, forcing efficiency for doubling of CO2 (W/m2)
+    unitval rhoN2O;         //! rho N2O, forcing efficiency for N2O (W/m2)
+    unitval rhoCH4;         //! rho CH4, forcing efficiency for CH4 (W/m2)
+    unitval rhotropO3;      //! rho trop O3, forcing efficiency for tropospheric O3 (W/m2)
+    unitval rhoso2d;        //! rho SO2 dir, direct forcing efficiency per unit of SO2 emissions (W/m2)
+    unitval rhoso2i;        //! rho SO2 indir, indirect forcing efficiency per unit of SO2 emissions (W/m2)
 
 
     tseries<unitval> Ftot_constrain;       //! Total forcing can be supplied

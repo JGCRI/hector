@@ -124,7 +124,7 @@ void TemperatureComponent::init( Core* coreptr ) {
     core->registerDependency( D_RF_SO2d, getComponentName() );
     core->registerDependency( D_RF_SO2i, getComponentName() );
     core->registerDependency( D_RF_VOL, getComponentName() );
-    core->registerDependency( D_ACO2, getComponentName() );
+    core->registerDependency( D_RHO_CO2, getComponentName() );
 
 
     // Register the inputs we can receive from outside
@@ -237,8 +237,8 @@ void TemperatureComponent::prepareToRun() {
 
     // Determine the radiative forcing for atmospheric CO2 doubling, based on the
     // forcing efficiency for CO2 (W/m2) (see eq A36 of Meinshausen et al. 2011).
-    aCO2 = core->sendMessage( M_GETDATA, D_ACO2 );
-    q2co = aCO2 * log(2);
+    rhoCO2 = core->sendMessage( M_GETDATA, D_RHO_CO2 );
+    q2co = rhoCO2 * log(2);
 
     // Calculate climate feedback parameterisation
     cnum = rlam * flnd + bsi * (1.0 - flnd);   // denominator used to calculate climate senstivity feedback parameters over land & sea

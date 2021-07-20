@@ -107,6 +107,7 @@ Other capability identifiers:
 \code{\link{haloforcings}},
 \code{\link{methane}},
 \code{\link{ocean}},
+\code{\link{rho}},
 \code{\link{so2}},
 \code{\link{temperature}}
 }

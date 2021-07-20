@@ -14,8 +14,6 @@
 \alias{RF_SO2I}
 \alias{RF_SO2}
 \alias{RF_VOL}
-\alias{alpha_CO2}
-\alias{alpha_N2O}
 \alias{RF_CH4}
 \title{Identifiers for capabilities in the Hector forcing component}
 \usage{
@@ -42,10 +40,6 @@ RF_SO2I()
 RF_SO2()
 
 RF_VOL()
-
-alpha_CO2()
-
-alpha_N2O()
 
 RF_CH4()
 }
@@ -81,10 +75,6 @@ messages.)
 
 \item \code{RF_VOL}: Radiative forcing due to volcanic activity
 
-\item \code{alpha_CO2}: Radiative forcing efficiency for CO2
-
-\item \code{alpha_N2O}: Radiative forcing efficiency for N2O
-
 \item \code{RF_CH4}: Radiative forcing due to methane
 }}
 
@@ -97,7 +87,8 @@ instead of the more natural looking \code{GETDATA}.
 }
 
 \seealso{
-\link{haloforcings} for forcings from halocarbons.
+\link{haloforcings} for forcings from halocarbons and \link{rho} for parameters
+related to radiative forcing efficiency.
 
 Other capability identifiers: 
 \code{\link{carboncycle}},
@@ -110,6 +101,7 @@ Other capability identifiers:
 \code{\link{methane}},
 \code{\link{ocean}},
 \code{\link{parameters}},
+\code{\link{rho}},
 \code{\link{so2}},
 \code{\link{temperature}}
 }

@@ -37,9 +37,25 @@ NULL
 #' @inheritSection msgtype Note
 #'
 #' @name forcings
-#' @seealso \link{haloforcings} for forcings from halocarbons.
+#' @seealso \link{haloforcings} for forcings from halocarbons and \link{rho} for parameters
+#' related to radiative forcing efficiency.
 #' @family capability identifiers
 NULL
+
+#' Identifiers for Hector forcing component parameters
+#'
+#' These identifiers specify radiative forcing efficiency in hector these values
+#' can be read and/or set by hectors forcing and halocarbon components.
+#' the forcing component.
+#'
+#' @inheritSection msgtype Note
+#'
+#' @name rho
+#' @seealso \link{haloforcings} for forcings from halocarbons and \link{forcings}
+#' forcing values provided from the hector forcing component.
+#' @family capability identifiers
+NULL
+
 
 #' Identifiers for variables in the Hector carbon cycle component
 #'

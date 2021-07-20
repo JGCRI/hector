@@ -61,6 +61,7 @@ Other capability identifiers:
 \code{\link{methane}},
 \code{\link{ocean}},
 \code{\link{parameters}},
+\code{\link{rho}},
 \code{\link{temperature}}
 }
 \concept{capability identifiers}

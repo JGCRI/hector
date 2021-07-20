@@ -475,63 +475,63 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// alpha_CO2
-String alpha_CO2();
-RcppExport SEXP _hector_alpha_CO2() {
+// rho_CO2
+String rho_CO2();
+RcppExport SEXP _hector_rho_CO2() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(alpha_CO2());
+    rcpp_result_gen = Rcpp::wrap(rho_CO2());
     return rcpp_result_gen;
 END_RCPP
 }
-// alpha_N2O
-String alpha_N2O();
-RcppExport SEXP _hector_alpha_N2O() {
+// rho_N2O
+String rho_N2O();
+RcppExport SEXP _hector_rho_N2O() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(alpha_N2O());
+    rcpp_result_gen = Rcpp::wrap(rho_N2O());
     return rcpp_result_gen;
 END_RCPP
 }
-// alpha_CH4
-String alpha_CH4();
-RcppExport SEXP _hector_alpha_CH4() {
+// rho_CH4
+String rho_CH4();
+RcppExport SEXP _hector_rho_CH4() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(alpha_CH4());
+    rcpp_result_gen = Rcpp::wrap(rho_CH4());
     return rcpp_result_gen;
 END_RCPP
 }
-// alpha_tropO3
-String alpha_tropO3();
-RcppExport SEXP _hector_alpha_tropO3() {
+// rho_tropO3
+String rho_tropO3();
+RcppExport SEXP _hector_rho_tropO3() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(alpha_tropO3());
+    rcpp_result_gen = Rcpp::wrap(rho_tropO3());
     return rcpp_result_gen;
 END_RCPP
 }
-// alpha_dirSO2
-String alpha_dirSO2();
-RcppExport SEXP _hector_alpha_dirSO2() {
+// rho_SO2d
+String rho_SO2d();
+RcppExport SEXP _hector_rho_SO2d() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(alpha_dirSO2());
+    rcpp_result_gen = Rcpp::wrap(rho_SO2d());
     return rcpp_result_gen;
 END_RCPP
 }
-// alpha_indirSO2
-String alpha_indirSO2();
-RcppExport SEXP _hector_alpha_indirSO2() {
+// rho_SO2i
+String rho_SO2i();
+RcppExport SEXP _hector_rho_SO2i() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(alpha_indirSO2());
+    rcpp_result_gen = Rcpp::wrap(rho_SO2i());
     return rcpp_result_gen;
 END_RCPP
 }
@@ -2029,12 +2029,12 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_RF_HALON2402", (DL_FUNC) &_hector_RF_HALON2402, 0},
     {"_hector_RF_CH3CL", (DL_FUNC) &_hector_RF_CH3CL, 0},
     {"_hector_RF_CH3BR", (DL_FUNC) &_hector_RF_CH3BR, 0},
-    {"_hector_alpha_CO2", (DL_FUNC) &_hector_alpha_CO2, 0},
-    {"_hector_alpha_N2O", (DL_FUNC) &_hector_alpha_N2O, 0},
-    {"_hector_alpha_CH4", (DL_FUNC) &_hector_alpha_CH4, 0},
-    {"_hector_alpha_tropO3", (DL_FUNC) &_hector_alpha_tropO3, 0},
-    {"_hector_alpha_dirSO2", (DL_FUNC) &_hector_alpha_dirSO2, 0},
-    {"_hector_alpha_indirSO2", (DL_FUNC) &_hector_alpha_indirSO2, 0},
+    {"_hector_rho_CO2", (DL_FUNC) &_hector_rho_CO2, 0},
+    {"_hector_rho_N2O", (DL_FUNC) &_hector_rho_N2O, 0},
+    {"_hector_rho_CH4", (DL_FUNC) &_hector_rho_CH4, 0},
+    {"_hector_rho_tropO3", (DL_FUNC) &_hector_rho_tropO3, 0},
+    {"_hector_rho_SO2d", (DL_FUNC) &_hector_rho_SO2d, 0},
+    {"_hector_rho_SO2i", (DL_FUNC) &_hector_rho_SO2i, 0},
     {"_hector_EMISSIONS_CF4", (DL_FUNC) &_hector_EMISSIONS_CF4, 0},
     {"_hector_EMISSIONS_C2F6", (DL_FUNC) &_hector_EMISSIONS_C2F6, 0},
     {"_hector_EMISSIONS_HFC23", (DL_FUNC) &_hector_EMISSIONS_HFC23, 0},

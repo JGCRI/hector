@@ -282,40 +282,40 @@ RF_CH3BR <- function() {
     .Call('_hector_RF_CH3BR', PACKAGE = 'hector')
 }
 
-#' @describeIn forcings Radiative forcing efficiency for CO2
+#' @describeIn rho CO2 radiative forcing per doubling of CO2
 #' @export
-alpha_CO2 <- function() {
-    .Call('_hector_alpha_CO2', PACKAGE = 'hector')
+rho_CO2 <- function() {
+    .Call('_hector_rho_CO2', PACKAGE = 'hector')
 }
 
-#' @describeIn forcings Radiative forcing efficiency for N2O
+#' @describeIn rho Radiative forcing efficiency for N2O
 #' @export
-alpha_N2O <- function() {
-    .Call('_hector_alpha_N2O', PACKAGE = 'hector')
+rho_N2O <- function() {
+    .Call('_hector_rho_N2O', PACKAGE = 'hector')
 }
 
-#' @describeIn forcings Radiative forcing efficiency for CH4
+#' @describeIn rho Radiative forcing efficiency for CH4
 #' @export
-alpha_CH4 <- function() {
-    .Call('_hector_alpha_CH4', PACKAGE = 'hector')
+rho_CH4 <- function() {
+    .Call('_hector_rho_CH4', PACKAGE = 'hector')
 }
 
-#' @describeIn forcings Radiative forcing efficiency for tropospheric O3
+#' @describeIn rho Radiative forcing efficiency for tropospheric O3
 #' @export
-alpha_tropO3 <- function() {
-    .Call('_hector_alpha_tropO3', PACKAGE = 'hector')
+rho_tropO3 <- function() {
+    .Call('_hector_rho_tropO3', PACKAGE = 'hector')
 }
 
-#' @describeIn forcings Radiative forcing efficiency for direct effects of SO2
+#' @describeIn rho Direct forcing per unit sulphate aerosols emissions
 #' @export
-alpha_dirSO2 <- function() {
-    .Call('_hector_alpha_dirSO2', PACKAGE = 'hector')
+rho_SO2d <- function() {
+    .Call('_hector_rho_SO2d', PACKAGE = 'hector')
 }
 
-#' @describeIn forcings Radiative forcing efficiency for indirect effects of SO2
+#' @describeIn rho Indirect forcing per unit sulphate aerosols emissions
 #' @export
-alpha_indirSO2 <- function() {
-    .Call('_hector_alpha_indirSO2', PACKAGE = 'hector')
+rho_SO2i <- function() {
+    .Call('_hector_rho_SO2i', PACKAGE = 'hector')
 }
 
 #' @describeIn haloemiss Emissions for CF4

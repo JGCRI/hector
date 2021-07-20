@@ -54,12 +54,12 @@
 #define D_RF_SO2                D_RF_PREFIX "SO2"
 #define D_RF_VOL                D_RF_PREFIX "vol" // forcing from volcanic so2
 #define D_RF_halocarbons        D_RF_PREFIX "halocarbons"
-#define D_ACO2                  "alpha_CO2"            // forcing efficiency for CO2
-#define D_AN2O                  "alpha_N2O"            // forcing efficiency for N2O
-#define D_ACH4                  "alpha_CH4"            // forcing efficiency for CH4
-#define D_ATROPO3               "alpha_tropo3"         // forcing efficiency for tropospheric O3
-#define D_ASO2D                 "alpha_dirSO2"         // forcing efficiency for direct effects of sulphate aerosols
-#define D_ASO2I                 "alpha_inSO2"          // forcing efficiency for indirect effects of sulphate aerosols
+#define D_RHO_CO2                "rho_CO2"            // CO2 forcing per doubling
+#define D_RHO_N2O                "rho_N2O"            // forcing efficiency for N2O
+#define D_RHO_CH4                "rho_CH4"            // forcing efficiency for CH4
+#define D_RHO_TROPO3             "rho_tropo3"         // forcing efficiency for tropospheric O3
+#define D_RHO_SO2d               "rho_SO2d"           // direct forcing per unit sulphate aerosols emissions
+#define D_RHO_SO2i               "rho_SO2i"           // indirect forcing per unit sulphate aerosols emissions
 
 
 // halocarbon components

@@ -181,12 +181,12 @@ void ForcingComponent::init( Core* coreptr ) {
     core->registerCapability( D_RF_SO2i, getComponentName());
     core->registerCapability( D_RF_SO2, getComponentName());
     core->registerCapability( D_RF_VOL, getComponentName());
-    core->registerCapability( D_ACO2, getComponentName());
-    core->registerCapability( D_AN2O, getComponentName());
-    core->registerCapability( D_ACH4, getComponentName());
-    core->registerCapability( D_ATROPO3, getComponentName());
-    core->registerCapability( D_ASO2D, getComponentName());
-    core->registerCapability( D_ASO2I, getComponentName());
+    core->registerCapability( D_RHO_CO2, getComponentName());
+    core->registerCapability( D_RHO_N2O, getComponentName());
+    core->registerCapability( D_RHO_CH4, getComponentName());
+    core->registerCapability( D_RHO_TROPO3, getComponentName());
+    core->registerCapability( D_RHO_SO2d, getComponentName());
+    core->registerCapability( D_RHO_SO2i, getComponentName());
 
 
     for(int i=0; i<N_HALO_FORCINGS; ++i) {
@@ -200,6 +200,7 @@ void ForcingComponent::init( Core* coreptr ) {
     core->registerDependency( D_ATMOSPHERIC_O3, getComponentName() );
     core->registerDependency( D_EMISSIONS_BC, getComponentName() );
     core->registerDependency( D_EMISSIONS_OC, getComponentName() );
+    core->registerDependency( D_EMISSIONS_SO2, getComponentName() );
     core->registerDependency( D_NATURAL_SO2, getComponentName() );
     core->registerDependency( D_ATMOSPHERIC_N2O, getComponentName() );
     core->registerDependency( D_RF_CF4, getComponentName() );
@@ -231,12 +232,12 @@ void ForcingComponent::init( Core* coreptr ) {
     core->registerDependency( D_RF_T_ALBEDO, getComponentName() );
 
     // Register the inputs we can receive from outside
-    core->registerInput( D_ACO2, getComponentName() );
-    core->registerInput( D_AN2O, getComponentName() );
-    core->registerInput( D_ACH4, getComponentName() );
-    core->registerInput( D_ATROPO3, getComponentName() );
-    core->registerInput( D_ASO2D, getComponentName());
-    core->registerInput( D_ASO2I, getComponentName());
+    core->registerInput( D_RHO_CO2, getComponentName() );
+    core->registerInput( D_RHO_N2O, getComponentName() );
+    core->registerInput( D_RHO_CH4, getComponentName() );
+    core->registerInput( D_RHO_TROPO3, getComponentName() );
+    core->registerInput( D_RHO_SO2d, getComponentName());
+    core->registerInput( D_RHO_SO2i, getComponentName());
 
 
 
@@ -276,24 +277,24 @@ void ForcingComponent::setData( const string& varName,
         if( varName == D_RF_BASEYEAR ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
             baseyear = data.getUnitval(U_UNDEFINED);
-        } else if( varName == D_ACO2 ) {
+        } else if( varName == D_RHO_CO2 ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
-            aCO2 = data.getUnitval(U_W_M2);
-        } else if( varName == D_AN2O ) {
+            rhoCO2 = data.getUnitval(U_W_M2);
+        } else if( varName == D_RHO_N2O ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
-            aN2O = data.getUnitval(U_W_M2);
-        } else if( varName == D_ACH4 ) {
+            rhoN2O = data.getUnitval(U_W_M2);
+        } else if( varName == D_RHO_CH4 ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
-            aCH4 = data.getUnitval(U_W_M2);
-        } else if( varName == D_ATROPO3 ) {
+            rhoCH4 = data.getUnitval(U_W_M2);
+        } else if( varName == D_RHO_TROPO3 ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
-            atropO3 = data.getUnitval(U_W_M2);
-        } else if( varName == D_ASO2D ) {
+            rhotropO3 = data.getUnitval(U_W_M2);
+        } else if( varName == D_RHO_SO2d ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
-            aso2d = data.getUnitval(U_W_M2);
-        } else if( varName == D_ASO2I ) {
+            rhoso2d = data.getUnitval(U_W_M2);
+        } else if( varName == D_RHO_SO2i ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
-            aso2in = data.getUnitval(U_W_M2);
+            rhoso2i = data.getUnitval(U_W_M2);
         } else if( varName == D_FTOT_CONSTRAIN ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
             Ftot_constrain.set(data.date, data.getUnitval(U_W_M2));
@@ -352,7 +353,7 @@ void ForcingComponent::run( const double runToDate ) {
         unitval Ca = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_CO2 );
         if( runToDate==baseyear )
             C0 = Ca;
-        forcings[D_RF_CO2 ].set( aCO2.value(U_W_M2) * log( Ca/C0 ), U_W_M2 );
+        forcings[D_RF_CO2 ].set( rhoCO2.value(U_W_M2) * log( Ca/C0 ), U_W_M2 );
 
         // ---------- Terrestrial albedo ----------
         if( core->checkCapability( D_RF_T_ALBEDO ) ) {
@@ -374,20 +375,20 @@ void ForcingComponent::run( const double runToDate ) {
             // Joos et al., 2001 equation (A8)
             // CH4 radiative forcing is adjsuted by the function f(M,N) to account for
             // the overlap in CH4 and N20 bands.
-            double fch4 = aCH4.value(U_W_M2) * ( sqrt( Ma ) - sqrt( M0 ) ) - ( f( Ma, N0 ) - f( M0, N0 ) );
+            double fch4 = rhoCH4.value(U_W_M2) * ( sqrt( Ma ) - sqrt( M0 ) ) - ( f( Ma, N0 ) - f( M0, N0 ) );
             forcings[D_RF_CH4].set( fch4, U_W_M2 );
 
             // Joos et al., 2001 equation (A10)
             // N2O radiative forcing is adjsuted by the function f(M,N) to account for
             // the overlap in CH4 and N20 bands.
-            double fn2o =  aN2O.value(U_W_M2) * ( sqrt( Na ) - sqrt( N0 ) ) - ( f( M0, Na ) - f( M0, N0 ) );
+            double fn2o =  rhoN2O.value(U_W_M2) * ( sqrt( Na ) - sqrt( N0 ) ) - ( f( M0, Na ) - f( M0, N0 ) );
             forcings[D_RF_N2O].set( fn2o, U_W_M2 );
 
             // ---------- Stratospheric H2O from CH4 oxidation ----------
             // Joos et al., 2001 equation (A13)
             // The radiative forcing from stratospheric H2O due to CH4 oxidation
             // is 5% of CH4 RF.
-            const double fh2o_strat = 0.05 * ( aCH4.value(U_W_M2) * ( sqrt( Ma ) - sqrt( M0 ) ) );
+            const double fh2o_strat = 0.05 * ( rhoCH4.value(U_W_M2) * ( sqrt( Ma ) - sqrt( M0 ) ) );
             forcings[D_RF_H2O_STRAT].set( fh2o_strat, U_W_M2 );
         }
 
@@ -396,7 +397,7 @@ void ForcingComponent::run( const double runToDate ) {
             // Tanaka et al. 2007 equation (2.2.22)
             // The radiative forcing of tropospheric O3 is the radiative efficiency * O3 concentrations.
             const double ozone = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_O3, message_data( runToDate ) ).value( U_DU_O3 );
-            const double fo3_trop = atropO3 * ozone;
+            const double fo3_trop = rhotropO3 * ozone;
             forcings[D_RF_O3_TROP].set( fo3_trop, U_W_M2 );
         }
 
@@ -466,13 +467,13 @@ void ForcingComponent::run( const double runToDate ) {
             // from Joos et al., 2001 equation (A14).
             H_ASSERT( S0.value( U_GG_S ) >0, "S0 is 0" );
             unitval emission = core->sendMessage( M_GETDATA, D_EMISSIONS_SO2, message_data( runToDate ) );
-            double fso2d =  aso2d.value(U_W_M2) * emission/S0;
+            double fso2d =  rhoso2d.value(U_W_M2) * emission/S0;
             forcings[D_RF_SO2d].set( fso2d, U_W_M2 );
 
 
             // Indirect aerosol effect via changes in cloud properties
             // from Joos et al., 2001 equation (A15).
-            const double a = aso2in.value(U_W_M2) * ( log( ( SN.value( U_GG_S ) + emission.value( U_GG_S ) ) / SN.value( U_GG_S ) ) ); // -.6
+            const double a = rhoso2i.value(U_W_M2) * ( log( ( SN.value( U_GG_S ) + emission.value( U_GG_S ) ) / SN.value( U_GG_S ) ) ); // -.6
             const double b =  pow ( log ( ( SN.value( U_GG_S ) + S0.value( U_GG_S ) ) / SN.value( U_GG_S ) ), -1 );
             double fso2i = a * b;
             forcings[D_RF_SO2i].set( fso2i, U_W_M2 );
@@ -540,18 +541,18 @@ unitval ForcingComponent::getData( const std::string& varName,
 
         // If requesting data not associated with a date aka a parameter,
         // return the parameter value.
-        if(varName == D_ACO2){
-            returnval = aCO2;
-        } else if (varName == D_AN2O){
-            returnval = aN2O;
-        } else if (varName == D_ACH4){
-            returnval = aCH4;
-        } else if (varName == D_ATROPO3){
-            returnval = atropO3;
-        } else if (varName == D_ASO2D){
-            returnval = aso2d;
-        } else if (varName == D_ASO2I){
-            returnval = aso2in;
+        if(varName == D_RHO_CO2){
+            returnval = rhoCO2;
+        } else if (varName == D_RHO_N2O){
+            returnval = rhoN2O;
+        } else if (varName == D_RHO_CH4){
+            returnval = rhoCH4;
+        } else if (varName == D_RHO_TROPO3){
+            returnval = rhotropO3;
+        } else if (varName == D_RHO_SO2d){
+            returnval = rhoso2d;
+        } else if (varName == D_RHO_SO2i){
+            returnval = rhoso2i;
         }
 
         return returnval;
