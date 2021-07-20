@@ -60,5 +60,5 @@ for (v in emissions) {
 }
 
 test_that("Setting variable with invalid unit throws an error", {
-  expect_error(setvar(hc, year, VEG_C(), 500, "boogedyboo"))
+  expect_error(setvar(hc, year, VEG_C(), 500, "boogedyboo"), regex = "invalid unit")
 })
