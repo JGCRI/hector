@@ -445,10 +445,8 @@ fluxpool SimpleNbox::rh_fda( std::string biome, double time ) const
     } else {
         det_t = detritus_c_tv.get( time ).at( biome );
         tfd = tempfertd_tv.get( time ).at( biome );
-        //double_stringmap tfd = tempfertd_tv[ time ];
     }
     fluxpool dflux( det_t.value( U_PGC ) * 0.25, U_PGC_YR );
-    //return dflux * tempfertd.at( biome, time );
     return dflux * tfd;
 }
 
@@ -468,7 +466,6 @@ fluxpool SimpleNbox::rh_fsa( std::string biome, double time ) const
         tfs = tempferts_tv.get( time ).at( biome );
     }
     fluxpool soilflux( soil_t.value( U_PGC ) * 0.02, U_PGC_YR );
-    //return soilflux * tempferts.at( biome, time );
     return soilflux * tfs;
 }
 
