@@ -57,13 +57,17 @@ void HalocarbonComponent::init( Core* coreptr ) {
     H0.set( 0.0, U_PPTV );      //! Default is no preindustrial, but user can override
 
     // Register the data we can provide
-    core->registerCapability( D_RF_PREFIX+myGasName, getComponentName() );  // can provide forcing data
-    core->registerCapability( myGasName+CONCENTRATION_EXTENSION, getComponentName() );  // can provide concentrations
-    core->registerCapability( myGasName+CONC_CONSTRAINT_EXTENSION, getComponentName() ); // can provide concentration constraints
+    core->registerCapability( D_RF_PREFIX+myGasName, getComponentName() );                // can provide forcing data
+    core->registerCapability( myGasName+CONCENTRATION_EXTENSION, getComponentName() );    // can provide concentrations
+    core->registerCapability( myGasName+CONC_CONSTRAINT_EXTENSION, getComponentName() );  // can provide concentration constraints
+    core->registerCapability( D_HCRHO_PREFIX+myGasName, getComponentName() );             // can provide rho
+
 
     // Register the inputs we can receive from outside
-    core->registerInput(myGasName+CONC_CONSTRAINT_EXTENSION, getComponentName());   // inform core that we can accept concentration constraints for this gas
-    core->registerInput(myGasName+EMISSIONS_EXTENSION, getComponentName()); // inform core that we can accept emissions for this gas
+    core->registerInput( myGasName+CONC_CONSTRAINT_EXTENSION, getComponentName());   // inform core that we can accept concentration constraints for this gas
+    core->registerInput( myGasName+EMISSIONS_EXTENSION, getComponentName());         // inform core that we can accept emissions for this gas
+    core->registerInput( D_HCRHO_PREFIX+myGasName, getComponentName());              // inform core that we can accept rho for this gas
+
 }
 
 //------------------------------------------------------------------------------
@@ -99,11 +103,12 @@ void HalocarbonComponent::setData( const string& varName,
     try {
         const string emiss_var_name = myGasName + EMISSIONS_EXTENSION;
         const string conc_var_name = myGasName + CONC_CONSTRAINT_EXTENSION;
+        const string hc_rho_name = D_HCRHO_PREFIX + myGasName;
 
         if( varName == D_HC_TAU ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
             tau = data.getUnitval(U_UNDEFINED);
-        } else if( varName == D_HC_RHO ) {
+        } else if( varName == hc_rho_name ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
             rho = data.getUnitval(U_W_M2_PPTV);
         } else if( varName == D_HC_MOLARMASS ) {
@@ -202,6 +207,11 @@ unitval HalocarbonComponent::getData( const std::string& varName,
         // use date as input, not getdate, b/c there should be no date specified.
         H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for preindustrial hc" );
         returnval = H0;
+    }
+    else if( varName == D_HCRHO_PREFIX+myGasName ) {
+        // use date as input, not getdate, b/c there should be no date specified.
+        H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for rho" );
+        returnval = rho;
     }
     else if( varName == myGasName+CONCENTRATION_EXTENSION ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for halocarbon concentration" );

@@ -284,50 +284,50 @@ RF_CH3BR <- function() {
 
 #' @describeIn rho CO2 radiative forcing per doubling of CO2
 #' @export
-rho_CO2 <- function() {
-    .Call('_hector_rho_CO2', PACKAGE = 'hector')
+RHO_CO2 <- function() {
+    .Call('_hector_RHO_CO2', PACKAGE = 'hector')
 }
 
 #' @describeIn rho Radiative forcing efficiency for N2O
 #' @export
-rho_N2O <- function() {
-    .Call('_hector_rho_N2O', PACKAGE = 'hector')
+RHO_N2O <- function() {
+    .Call('_hector_RHO_N2O', PACKAGE = 'hector')
 }
 
 #' @describeIn rho Radiative forcing efficiency for CH4
 #' @export
-rho_CH4 <- function() {
-    .Call('_hector_rho_CH4', PACKAGE = 'hector')
+RHO_CH4 <- function() {
+    .Call('_hector_RHO_CH4', PACKAGE = 'hector')
 }
 
 #' @describeIn rho Radiative forcing efficiency for tropospheric O3
 #' @export
-rho_tropO3 <- function() {
-    .Call('_hector_rho_tropO3', PACKAGE = 'hector')
+RHO_tropO3 <- function() {
+    .Call('_hector_RHO_tropO3', PACKAGE = 'hector')
 }
 
 #' @describeIn rho Direct forcing per unit sulphate aerosols emissions
 #' @export
-rho_SO2d <- function() {
-    .Call('_hector_rho_SO2d', PACKAGE = 'hector')
+RHO_SO2d <- function() {
+    .Call('_hector_RHO_SO2d', PACKAGE = 'hector')
 }
 
 #' @describeIn rho Indirect forcing per unit sulphate aerosols emissions
 #' @export
-rho_SO2i <- function() {
-    .Call('_hector_rho_SO2i', PACKAGE = 'hector')
+RHO_SO2i <- function() {
+    .Call('_hector_RHO_SO2i', PACKAGE = 'hector')
 }
 
 #' @describeIn rho Forcing per unit BC emissions
 #' @export
-rho_BC <- function() {
-    .Call('_hector_rho_BC', PACKAGE = 'hector')
+RHO_BC <- function() {
+    .Call('_hector_RHO_BC', PACKAGE = 'hector')
 }
 
 #' @describeIn rho Forcing per unit OC emissions
 #' @export
-rho_OC <- function() {
-    .Call('_hector_rho_OC', PACKAGE = 'hector')
+RHO_OC <- function() {
+    .Call('_hector_RHO_OC', PACKAGE = 'hector')
 }
 
 #' @describeIn haloemiss Emissions for CF4
@@ -640,6 +640,162 @@ CH3CL_CONSTRAIN <- function() {
 #' @export
 CH3BR_CONSTRAIN <- function() {
     .Call('_hector_CH3BR_CONSTRAIN', PACKAGE = 'hector')
+}
+
+#' @describeIn rho a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for CF4
+#' @export
+RHO_CF4 <- function() {
+    .Call('_hector_RHO_CF4', PACKAGE = 'hector')
+}
+
+#' @describeIn rho a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for C2F6
+#' @export
+RHO_C2F6 <- function() {
+    .Call('_hector_RHO_C2F6', PACKAGE = 'hector')
+}
+
+#' @describeIn rho a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for HFC-23
+#' @export
+RHO_HFC23 <- function() {
+    .Call('_hector_RHO_HFC23', PACKAGE = 'hector')
+}
+
+#' @describeIn rho a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for HFC-32
+#' @export
+RHO_HFC32 <- function() {
+    .Call('_hector_RHO_HFC32', PACKAGE = 'hector')
+}
+
+#' @describeIn rho a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for HFC-4310
+#' @export
+RHO_HFC4310 <- function() {
+    .Call('_hector_RHO_HFC4310', PACKAGE = 'hector')
+}
+
+#' @describeIn rho a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for HFC-125
+#' @export
+RHO_HFC125 <- function() {
+    .Call('_hector_RHO_HFC125', PACKAGE = 'hector')
+}
+
+#' @describeIn rho a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for HFC-134a
+#' @export
+RHO_HFC134A <- function() {
+    .Call('_hector_RHO_HFC134A', PACKAGE = 'hector')
+}
+
+#' @describeIn rho a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for HFC-143a
+#' @export
+RHO_HFC143A <- function() {
+    .Call('_hector_RHO_HFC143A', PACKAGE = 'hector')
+}
+
+#' @describeIn rho a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for HFC-227ea
+#' @export
+RHO_HFC227EA <- function() {
+    .Call('_hector_RHO_HFC227EA', PACKAGE = 'hector')
+}
+
+#' @describeIn rho a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for HFC-254fa
+#' @export
+RHO_HFC245FA <- function() {
+    .Call('_hector_RHO_HFC245FA', PACKAGE = 'hector')
+}
+
+#' @describeIn rho a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for sulfur hexafluoride
+#' @export
+RHO_SF6 <- function() {
+    .Call('_hector_RHO_SF6', PACKAGE = 'hector')
+}
+
+#' @describeIn rho a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for CFC-11
+#' @export
+RHO_CFC11 <- function() {
+    .Call('_hector_RHO_CFC11', PACKAGE = 'hector')
+}
+
+#' @describeIn rho a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for CFC-12
+#' @export
+RHO_CFC12 <- function() {
+    .Call('_hector_RHO_CFC12', PACKAGE = 'hector')
+}
+
+#' @describeIn rho a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for CFC-113
+#' @export
+RHO_CFC113 <- function() {
+    .Call('_hector_RHO_CFC113', PACKAGE = 'hector')
+}
+
+#' @describeIn rho a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for CFC-114
+#' @export
+RHO_CFC114 <- function() {
+    .Call('_hector_RHO_CFC114', PACKAGE = 'hector')
+}
+
+#' @describeIn rho a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for CFC-115
+#' @export
+RHO_CFC115 <- function() {
+    .Call('_hector_RHO_CFC115', PACKAGE = 'hector')
+}
+
+#' @describeIn rho a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for carbon tetrachloride
+#' @export
+RHO_CCL4 <- function() {
+    .Call('_hector_RHO_CCL4', PACKAGE = 'hector')
+}
+
+#' @describeIn rho a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for trichloroethane
+#' @export
+RHO_CH3CCL3 <- function() {
+    .Call('_hector_RHO_CH3CCL3', PACKAGE = 'hector')
+}
+
+#' @describeIn rho a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for HCFC-22
+#' @export
+RHO_HCFC22 <- function() {
+    .Call('_hector_RHO_HCFC22', PACKAGE = 'hector')
+}
+
+#' @describeIn rho a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for HCFC-141b
+#' @export
+RHO_HCFC141B <- function() {
+    .Call('_hector_RHO_HCFC141B', PACKAGE = 'hector')
+}
+
+#' @describeIn rho a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for HCFC-142b
+#' @export
+RHO_HCFC142B <- function() {
+    .Call('_hector_RHO_HCFC142B', PACKAGE = 'hector')
+}
+
+#' @describeIn rho a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for halon-1211
+#' @export
+RHO_HALON1211 <- function() {
+    .Call('_hector_RHO_HALON1211', PACKAGE = 'hector')
+}
+
+#' @describeIn rho a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for halon-1301
+#' @export
+RHO_HALON1301 <- function() {
+    .Call('_hector_RHO_HALON1301', PACKAGE = 'hector')
+}
+
+#' @describeIn rho a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for halon-2402
+#' @export
+RHO_HALON2402 <- function() {
+    .Call('_hector_RHO_HALON2402', PACKAGE = 'hector')
+}
+
+#' @describeIn rho a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for chloromethane
+#' @export
+RHO_CH3CL <- function() {
+    .Call('_hector_RHO_CH3CL', PACKAGE = 'hector')
+}
+
+#' @describeIn rho a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for bromomethane
+#' @export
+RHO_CH3BR <- function() {
+    .Call('_hector_RHO_CH3BR', PACKAGE = 'hector')
 }
 
 #' @rdname methane
