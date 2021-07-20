@@ -53,7 +53,6 @@ for (v in emissions) {
   test_that(paste0("Setting variable ", v, " works."), {
     expect_silent(setvar(hc, year, v, val, unit))
   })
-            
   invisible(run(hc, year))
   test_that(paste0("Getting variable ", v, " works."), {
     expect_equal(fetchvars(hc, year, v)[["value"]], val)
