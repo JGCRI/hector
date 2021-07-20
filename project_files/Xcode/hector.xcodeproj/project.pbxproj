@@ -173,7 +173,6 @@
 		27B2C2172615112E005DE26D /* temperature_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = temperature_component.hpp; path = ../../inst/include/temperature_component.hpp; sourceTree = "<group>"; };
 		27B2C2182615112E005DE26D /* dummy_model_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = dummy_model_component.hpp; path = ../../inst/include/dummy_model_component.hpp; sourceTree = "<group>"; };
 		27B2C2192615112E005DE26D /* oh_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = oh_component.hpp; path = ../../inst/include/oh_component.hpp; sourceTree = "<group>"; };
-		27B2C21A2615112E005DE26D /* onelineocean_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = onelineocean_component.hpp; path = ../../inst/include/onelineocean_component.hpp; sourceTree = "<group>"; };
 		27B2C21B2615112E005DE26D /* ini_to_core_reader.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ini_to_core_reader.hpp; path = ../../inst/include/ini_to_core_reader.hpp; sourceTree = "<group>"; };
 		27B2C21C2615112E005DE26D /* avisitor.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = avisitor.hpp; path = ../../inst/include/avisitor.hpp; sourceTree = "<group>"; };
 		27B2C21D2615112E005DE26D /* so2_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = so2_component.hpp; path = ../../inst/include/so2_component.hpp; sourceTree = "<group>"; };
@@ -290,8 +289,6 @@
 		27B2C22B26151149005DE26D /* Headers */ = {
 			isa = PBXGroup;
 			children = (
-				27962906268F239A00333AA3 /* fluxpool.hpp */,
-				27962903268F235500333AA3 /* csv_fluxpool_visitor.hpp */,
 				27B2C21C2615112E005DE26D /* avisitor.hpp */,
 				27B2C2042615112D005DE26D /* bc_component.hpp */,
 				27B2C22A2615112F005DE26D /* carbon-cycle-model.hpp */,
@@ -300,10 +297,12 @@
 				27B2C2092615112D005DE26D /* component_data.hpp */,
 				27B2C2142615112E005DE26D /* component_names.hpp */,
 				27B2C2202615112E005DE26D /* core.hpp */,
+				27962903268F235500333AA3 /* csv_fluxpool_visitor.hpp */,
 				27B2C2112615112E005DE26D /* csv_outputstream_visitor.hpp */,
 				27B2C2022615112D005DE26D /* csv_table_reader.hpp */,
 				27B2C21E2615112E005DE26D /* dependency_finder.hpp */,
 				27B2C2182615112E005DE26D /* dummy_model_component.hpp */,
+				27962906268F239A00333AA3 /* fluxpool.hpp */,
 				27B2C2062615112D005DE26D /* forcing_component.hpp */,
 				27B2C2292615112F005DE26D /* h_exception.hpp */,
 				27B2C2232615112E005DE26D /* h_interpolator.hpp */,
@@ -325,7 +324,6 @@
 				27B2C2102615112D005DE26D /* ocean_csys.hpp */,
 				27B2C2162615112E005DE26D /* oceanbox.hpp */,
 				27B2C2192615112E005DE26D /* oh_component.hpp */,
-				27B2C21A2615112E005DE26D /* onelineocean_component.hpp */,
 				27B2C2072615112D005DE26D /* simpleNbox.hpp */,
 				27B2C2242615112E005DE26D /* slr_component.hpp */,
 				27B2C21D2615112E005DE26D /* so2_component.hpp */,
