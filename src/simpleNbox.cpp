@@ -92,6 +92,7 @@ void SimpleNbox::init( Core* coreptr ) {
     core->registerCapability( D_SOILC, getComponentName() );
     core->registerCapability( D_NPP_FLUX0, getComponentName() );
     core->registerCapability( D_NPP, getComponentName() );
+    core->registerCapability( D_RH, getComponentName() );
 
     // Register our dependencies
     core->registerDependency( D_OCEAN_CFLUX, getComponentName() );
