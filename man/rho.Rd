@@ -8,6 +8,8 @@
 \alias{rho_tropO3}
 \alias{rho_SO2d}
 \alias{rho_SO2i}
+\alias{rho_BC}
+\alias{rho_OC}
 \title{Identifiers for Hector forcing component parameters}
 \usage{
 rho_CO2()
@@ -21,6 +23,10 @@ rho_tropO3()
 rho_SO2d()
 
 rho_SO2i()
+
+rho_BC()
+
+rho_OC()
 }
 \description{
 These identifiers specify radiative forcing efficiency in hector these values
@@ -40,6 +46,10 @@ the forcing component.
 \item \code{rho_SO2d}: Direct forcing per unit sulphate aerosols emissions
 
 \item \code{rho_SO2i}: Indirect forcing per unit sulphate aerosols emissions
+
+\item \code{rho_BC}: Forcing per unit BC emissions
+
+\item \code{rho_OC}: Forcing per unit OC emissions
 }}
 
 \section{Note}{

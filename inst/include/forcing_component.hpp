@@ -79,8 +79,10 @@ private:
     unitval rhoN2O;         //! rho N2O, forcing efficiency for N2O (W/m2)
     unitval rhoCH4;         //! rho CH4, forcing efficiency for CH4 (W/m2)
     unitval rhotropO3;      //! rho trop O3, forcing efficiency for tropospheric O3 (W/m2)
-    unitval rhoso2d;        //! rho SO2 dir, direct forcing efficiency per unit of SO2 emissions (W/m2)
-    unitval rhoso2i;        //! rho SO2 indir, indirect forcing efficiency per unit of SO2 emissions (W/m2)
+    unitval rhoSO2d;        //! rho SO2 dir, direct forcing efficiency per unit of SO2 emissions (W/m2)
+    unitval rhoSO2i;        //! rho SO2 indir, indirect forcing efficiency per unit of SO2 emissions (W/m2)
+    unitval rhoOC;          //! rho OC, forcing efficiency per unit of OC emissions (W/m2)
+    unitval rhoBC;          //! rho BC,  forcing efficiency per unit of BC emissions (W/m2)
 
 
     tseries<unitval> Ftot_constrain;       //! Total forcing can be supplied

@@ -187,7 +187,8 @@ void ForcingComponent::init( Core* coreptr ) {
     core->registerCapability( D_RHO_TROPO3, getComponentName());
     core->registerCapability( D_RHO_SO2d, getComponentName());
     core->registerCapability( D_RHO_SO2i, getComponentName());
-
+    core->registerCapability( D_RHO_BC, getComponentName());
+    core->registerCapability( D_RHO_OC, getComponentName());
 
     for(int i=0; i<N_HALO_FORCINGS; ++i) {
         core->registerCapability(adjusted_halo_forcings[i], getComponentName());
@@ -238,6 +239,8 @@ void ForcingComponent::init( Core* coreptr ) {
     core->registerInput( D_RHO_TROPO3, getComponentName() );
     core->registerInput( D_RHO_SO2d, getComponentName());
     core->registerInput( D_RHO_SO2i, getComponentName());
+    core->registerInput( D_RHO_OC, getComponentName());
+    core->registerInput( D_RHO_BC, getComponentName());
 
 
 
@@ -291,10 +294,16 @@ void ForcingComponent::setData( const string& varName,
             rhotropO3 = data.getUnitval(U_W_M2);
         } else if( varName == D_RHO_SO2d ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
-            rhoso2d = data.getUnitval(U_W_M2);
+            rhoSO2d = data.getUnitval(U_W_M2);
         } else if( varName == D_RHO_SO2i ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
-            rhoso2i = data.getUnitval(U_W_M2);
+            rhoSO2i = data.getUnitval(U_W_M2);
+        } else if( varName == D_RHO_OC ) {
+            H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
+            rhoOC = data.getUnitval(U_W_M2);
+        } else if( varName == D_RHO_BC ) {
+            H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
+            rhoBC = data.getUnitval(U_W_M2);
         } else if( varName == D_FTOT_CONSTRAIN ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
             Ftot_constrain.set(data.date, data.getUnitval(U_W_M2));
@@ -444,14 +453,14 @@ void ForcingComponent::run( const double runToDate ) {
 
         // ---------- Black carbon ----------
         if( core->checkCapability( D_EMISSIONS_BC ) ) {
-            double fbc = 0.0743 * core->sendMessage( M_GETDATA, D_EMISSIONS_BC, message_data( runToDate ) ).value( U_TG );
+            double fbc = rhoBC.value(U_W_M2) * core->sendMessage( M_GETDATA, D_EMISSIONS_BC, message_data( runToDate ) ).value( U_TG );
             forcings[D_RF_BC].set( fbc, U_W_M2 );
             // includes both indirect and direct forcings from Bond et al 2013, Journal of Geophysical Research Atmo (table C1 - Central)
         }
 
         // ---------- Organic carbon ----------
         if( core->checkCapability( D_EMISSIONS_OC ) ) {
-            double foc = -0.0128 * core->sendMessage( M_GETDATA, D_EMISSIONS_OC, message_data( runToDate ) ).value( U_TG );
+            double foc = rhoOC.value(U_W_M2) * core->sendMessage( M_GETDATA, D_EMISSIONS_OC, message_data( runToDate ) ).value( U_TG );
             forcings[D_RF_OC].set( foc, U_W_M2 );
             // includes both indirect and direct forcings from Bond et al 2013, Journal of Geophysical Research Atmo (table C1 - Central).
             // The fossil fuel and biomass are weighted (-4.5) then added to the snow and clouds for a total of -12.8 (personal communication Steve Smith, PNNL)
@@ -467,13 +476,13 @@ void ForcingComponent::run( const double runToDate ) {
             // from Joos et al., 2001 equation (A14).
             H_ASSERT( S0.value( U_GG_S ) >0, "S0 is 0" );
             unitval emission = core->sendMessage( M_GETDATA, D_EMISSIONS_SO2, message_data( runToDate ) );
-            double fso2d =  rhoso2d.value(U_W_M2) * emission/S0;
+            double fso2d =  rhoSO2d.value(U_W_M2) * emission/S0;
             forcings[D_RF_SO2d].set( fso2d, U_W_M2 );
 
 
             // Indirect aerosol effect via changes in cloud properties
             // from Joos et al., 2001 equation (A15).
-            const double a = rhoso2i.value(U_W_M2) * ( log( ( SN.value( U_GG_S ) + emission.value( U_GG_S ) ) / SN.value( U_GG_S ) ) ); // -.6
+            const double a = rhoSO2i.value(U_W_M2) * ( log( ( SN.value( U_GG_S ) + emission.value( U_GG_S ) ) / SN.value( U_GG_S ) ) ); // -.6
             const double b =  pow ( log ( ( SN.value( U_GG_S ) + S0.value( U_GG_S ) ) / SN.value( U_GG_S ) ), -1 );
             double fso2i = a * b;
             forcings[D_RF_SO2i].set( fso2i, U_W_M2 );
@@ -550,9 +559,13 @@ unitval ForcingComponent::getData( const std::string& varName,
         } else if (varName == D_RHO_TROPO3){
             returnval = rhotropO3;
         } else if (varName == D_RHO_SO2d){
-            returnval = rhoso2d;
+            returnval = rhoSO2d;
         } else if (varName == D_RHO_SO2i){
-            returnval = rhoso2i;
+            returnval = rhoSO2i;
+        } else if (varName == D_RHO_BC){
+            returnval = rhoBC;
+        } else if (varName == D_RHO_OC){
+            returnval = rhoOC;
         }
 
         return returnval;

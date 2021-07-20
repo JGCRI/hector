@@ -535,6 +535,26 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// rho_BC
+String rho_BC();
+RcppExport SEXP _hector_rho_BC() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(rho_BC());
+    return rcpp_result_gen;
+END_RCPP
+}
+// rho_OC
+String rho_OC();
+RcppExport SEXP _hector_rho_OC() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(rho_OC());
+    return rcpp_result_gen;
+END_RCPP
+}
 // EMISSIONS_CF4
 String EMISSIONS_CF4();
 RcppExport SEXP _hector_EMISSIONS_CF4() {
@@ -2035,6 +2055,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_rho_tropO3", (DL_FUNC) &_hector_rho_tropO3, 0},
     {"_hector_rho_SO2d", (DL_FUNC) &_hector_rho_SO2d, 0},
     {"_hector_rho_SO2i", (DL_FUNC) &_hector_rho_SO2i, 0},
+    {"_hector_rho_BC", (DL_FUNC) &_hector_rho_BC, 0},
+    {"_hector_rho_OC", (DL_FUNC) &_hector_rho_OC, 0},
     {"_hector_EMISSIONS_CF4", (DL_FUNC) &_hector_EMISSIONS_CF4, 0},
     {"_hector_EMISSIONS_C2F6", (DL_FUNC) &_hector_EMISSIONS_C2F6, 0},
     {"_hector_EMISSIONS_HFC23", (DL_FUNC) &_hector_EMISSIONS_HFC23, 0},

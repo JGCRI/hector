@@ -60,6 +60,9 @@
 #define D_RHO_TROPO3             "rho_tropo3"         // forcing efficiency for tropospheric O3
 #define D_RHO_SO2d               "rho_SO2d"           // direct forcing per unit sulphate aerosols emissions
 #define D_RHO_SO2i               "rho_SO2i"           // indirect forcing per unit sulphate aerosols emissions
+#define D_RHO_BC                 "rho_BC"             // forcing per unit emissions BC emissions
+#define D_RHO_OC                 "rho_OC"             // forcing per unit emissions OC emissions
+
 
 
 // halocarbon components

@@ -410,6 +410,20 @@ String rho_SO2i() {
     return D_RHO_SO2i;
 }
 
+//' @describeIn rho Forcing per unit BC emissions
+//' @export
+// [[Rcpp::export]]
+String rho_BC() {
+    return D_RHO_BC;
+}
+
+//' @describeIn rho Forcing per unit OC emissions
+//' @export
+// [[Rcpp::export]]
+String rho_OC() {
+    return D_RHO_OC;
+}
+
 /* halocarbon emissions */
 //' @describeIn haloemiss Emissions for CF4
 //' @export

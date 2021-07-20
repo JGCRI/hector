@@ -318,6 +318,18 @@ rho_SO2i <- function() {
     .Call('_hector_rho_SO2i', PACKAGE = 'hector')
 }
 
+#' @describeIn rho Forcing per unit BC emissions
+#' @export
+rho_BC <- function() {
+    .Call('_hector_rho_BC', PACKAGE = 'hector')
+}
+
+#' @describeIn rho Forcing per unit OC emissions
+#' @export
+rho_OC <- function() {
+    .Call('_hector_rho_OC', PACKAGE = 'hector')
+}
+
 #' @describeIn haloemiss Emissions for CF4
 #' @export
 EMISSIONS_CF4 <- function() {
