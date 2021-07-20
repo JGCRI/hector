@@ -8,6 +8,7 @@ ifeq ($(strip $(CXX)),)
 	CXX  = g++
 endif 
 CXXFLAGS = -g $(INCLUDES) $(OPTFLAGS) $(CXXEXTRA) $(CXXPROF) $(WFLAGS) -MMD -std=c++14 
+## Note that $(CCEXTRA) allows for custom flags; see https://github.com/JGCRI/hector/issues/407
 CFLAGS   = -g $(INCLUDES) $(OPTFLAGS) $(CCEXTRA) -MMD
 INCLUDES = -I"$(BOOSTINC)" -I"$(HDRDIR)"
 WFLAGS   = -Wall -Wno-unused-local-typedefs # Turn off warnings, esp. one common in Boost files
