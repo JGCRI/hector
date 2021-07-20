@@ -491,8 +491,8 @@ unitval SimpleNbox::getData(const std::string& varName,
         // evaluates for the current date).
         returnval = sum_npp(date);
     } else if( varNameParsed == D_RH ) {
-        H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for rh" );
-        returnval = sum_rh();
+        //H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for rh" );
+        returnval = sum_rh( date );
     }else {
         H_THROW( "Caller is requesting unknown variable: " + varName );
     }
