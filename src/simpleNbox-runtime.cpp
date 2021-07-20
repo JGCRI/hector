@@ -208,7 +208,7 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     // may call stashCValues multiple times within a given year)
     fluxpool ffi_untracked = ffi(t, in_spinup) * yf;  // function also used by calcDerivs()
     fluxpool ccs_untracked = ccs(t, in_spinup) * yf;  // function also used by calcDerivs()
-    
+
     // now construct the TRACKED versions
     // because earth_c is tracked, ffi and ccs automatically become tracked as well
     fluxpool ffi_flux = earth_c.flux_from_fluxpool(ffi_untracked);
@@ -272,12 +272,12 @@ void SimpleNbox::stashCValues( double t, const double c[] )
         atmos_c = atmos_c + luc_fva_biome_flux - luc_fav_flux*wt;
         atmos_c = atmos_c + luc_fda_biome_flux - luc_fad_flux*wt;
         atmos_c = atmos_c + luc_fsa_biome_flux - luc_fas_flux*wt;
-        
+
         // Update veg_c, detritus_c, and soil_c with luc uptake from atmos per biome
         veg_c[ biome ] = veg_c[ biome ] + luc_fav_flux*wt - luc_fva_biome_flux;
         detritus_c[ biome ] = detritus_c[ biome ] + luc_fad_flux*wt - luc_fda_biome_flux;
-        soil_c[ biome ] = soil_c[ biome ] + luc_fas_flux*wt - luc_fsa_biome_flux; 
-        
+        soil_c[ biome ] = soil_c[ biome ] + luc_fas_flux*wt - luc_fsa_biome_flux;
+
         // Update all pools for NPP
         fluxpool npp_fav_biome_flux = atmos_c.flux_from_fluxpool(npp_biome * f_nppv.at(biome));
         fluxpool npp_fad_biome_flux = atmos_c.flux_from_fluxpool(npp_biome* f_nppd.at(biome));
@@ -286,7 +286,7 @@ void SimpleNbox::stashCValues( double t, const double c[] )
         detritus_c[ biome ] = detritus_c[ biome ] + npp_fad_biome_flux;
         soil_c[ biome ] = soil_c[ biome ] + npp_fas_biome_flux;
         atmos_c = atmos_c - npp_fav_biome_flux - npp_fad_biome_flux - npp_fas_biome_flux;
-        
+
         // Update soil, detritus, and atmosphere with RH fluxes
         fluxpool rh_fda_flux = detritus_c[ biome ].flux_from_fluxpool(yf * rh_fda(biome));
         fluxpool rh_fsa_flux = soil_c[ biome ].flux_from_fluxpool(yf * rh_fsa(biome));
@@ -301,13 +301,13 @@ void SimpleNbox::stashCValues( double t, const double c[] )
         detritus_c[ biome ] = detritus_c[ biome ] + litter_fvd_flux;
         soil_c[ biome ] = soil_c[ biome ] + litter_fvs_flux;
         veg_c[ biome ] = veg_c[ biome ] - litter_flux;
-        
+
         // Update detritus and soil with detsoil flux
         fluxpool detsoil_flux = detritus_c[ biome ] * (0.6 * yf);
         soil_c[ biome ] = soil_c[ biome ] + detsoil_flux;
         // THIS IS THE ONE THAT CAUSES THE TRACKING TO GET MESSED UP
         detritus_c[ biome ] = detritus_c[ biome ] - detsoil_flux;
-        
+
         // TEMPORARY TO INVESTIGATE FLUXES
         veg_diff[biome] = veg_c[biome].value(U_PGC) - c[SNBOX_VEG]*wt;
         soil_diff[biome] = soil_c[biome].value(U_PGC) - c[SNBOX_SOIL]*wt;
@@ -316,10 +316,10 @@ void SimpleNbox::stashCValues( double t, const double c[] )
         veg_c[ biome ].adjust_pool_to_val(newveg.value(U_PGC) * wt, false);
         detritus_c[ biome ].adjust_pool_to_val(newdet.value(U_PGC) * wt, false);
         soil_c[ biome ].adjust_pool_to_val(newsoil.value(U_PGC) * wt, false);
-        
+
         H_LOG( logger,Logger::DEBUG ) << "Biome " << biome << " weight = " << wt << std::endl;
     }
-    
+
     // Update earth_c and atmos_c with fossil fuel related fluxes
     earth_c = (earth_c - ffi_flux) + ccs_flux;
     atmos_c = (atmos_c + ffi_flux) - ccs_flux;
@@ -332,7 +332,7 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     earth_diff = earth_c - c[SNBOX_EARTH];
     atmos_diff = atmos_c - c[SNBOX_ATMOS];
     // adjusts non-biome pools to output from calcderivs
-    earth_c.adjust_pool_to_val(c[SNBOX_EARTH], false); 
+    earth_c.adjust_pool_to_val(c[SNBOX_EARTH], false);
     atmos_c.adjust_pool_to_val(c[SNBOX_ATMOS], false);
 
     omodel->stashCValues( t, c );   // tell ocean model to store new C values
@@ -373,7 +373,7 @@ void SimpleNbox::stashCValues( double t, const double c[] )
 
         // Ugly: residual is a unitval, but calculated by subtracting two fluxpools, so extract value
         residual.set(atmos_c.value(U_PGC) - atmos_cpool_to_match.value(U_PGC), U_PGC);
-        
+
         H_LOG( logger,Logger::DEBUG ) << t << "- have " << Ca << " want " <<  atmppmv.value( U_PPMV_CO2 ) << std::endl;
         H_LOG( logger,Logger::DEBUG ) << t << "- have " << atmos_c << " want " << atmos_cpool_to_match << "; residual = " << residual << std::endl;
 
@@ -435,41 +435,59 @@ fluxpool SimpleNbox::sum_npp(double time) const
 /*! \brief      Compute detritus component of annual heterotrophic respiration
  *  \returns    current detritus component of annual heterotrophic respiration
  */
-fluxpool SimpleNbox::rh_fda( std::string biome ) const
+fluxpool SimpleNbox::rh_fda( std::string biome, double time ) const
 {
-    fluxpool dflux( detritus_c.at( biome ).value( U_PGC ) * 0.25, U_PGC_YR );
-    return dflux * tempfertd.at( biome );
+    unitval det_t;
+    double tfd;
+    if(time == Core::undefinedIndex()) {
+        det_t = detritus_c.at( biome );
+        tfd = tempfertd.at( biome );
+    } else {
+        det_t = detritus_c_tv.get( time ).at( biome );
+        tfd = tempfertd_tv.get( time ).at( biome );
+    }
+    fluxpool dflux( det_t.value( U_PGC ) * 0.25, U_PGC_YR );
+    return dflux * tfd;
 }
 
 //------------------------------------------------------------------------------
 /*! \brief      Compute soil component of annual heterotrophic respiration
  *  \returns    current soil component of annual heterotrophic respiration
  */
-fluxpool SimpleNbox::rh_fsa( std::string biome ) const
+fluxpool SimpleNbox::rh_fsa( std::string biome, double time ) const
 {
-    fluxpool soilflux( soil_c.at( biome ).value( U_PGC ) * 0.02, U_PGC_YR );
-    return soilflux * tempferts.at( biome );
+    unitval soil_t;
+    double tfs;
+    if(time == Core::undefinedIndex()) {
+        soil_t = soil_c.at( biome );
+        tfs = tempferts.at( biome );
+    } else {
+        soil_t = soil_c_tv.get( time ).at( biome );
+        tfs = tempferts_tv.get( time ).at( biome );
+    }
+    fluxpool soilflux( soil_t.value( U_PGC ) * 0.02, U_PGC_YR );
+    return soilflux * tfs;
 }
 
 //------------------------------------------------------------------------------
 /*! \brief      Compute total annual heterotrophic respiration
  *  \returns    current annual heterotrophic respiration
  */
-fluxpool SimpleNbox::rh( std::string biome ) const
+fluxpool SimpleNbox::rh( std::string biome, double time ) const
 {
     // Heterotrophic respiration is the sum of fluxes from detritus and soil
-    return rh_fda( biome ) + rh_fsa( biome );
+    return rh_fda( biome, time ) + rh_fsa( biome, time );
 }
 
 //------------------------------------------------------------------------------
 /*! \brief      Compute global heterotrophic respiration
  *  \returns    Annual RH summed across all biomes
  */
-fluxpool SimpleNbox::sum_rh() const
+fluxpool SimpleNbox::sum_rh( double time ) const
 {
     fluxpool total( 0.0, U_PGC_YR);
     for( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
-        total = total + rh( *it );
+        total = total + rh( *it, time );
     }
     return total;
 }
@@ -602,7 +620,7 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
     // Annual fossil fuels and industry emissions and atmosphere CO2 capture (CCS or whatever)
     fluxpool ffi_flux_current = ffi(t, in_spinup);
     fluxpool ccs_flux_current = ccs(t, in_spinup);
-    
+
     // Annual land use change emissions
     fluxpool luc_emission_current = luc_emission(t, in_spinup);
     fluxpool luc_uptake_current = luc_uptake(t, in_spinup);
@@ -658,7 +676,7 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
 
 /*    printf( "%6.3f%8.3f%8.2f%8.2f%8.2f%8.2f%8.2f\n", t, dcdt[ SNBOX_ATMOS ],
             dcdt[ SNBOX_VEG ], dcdt[ SNBOX_DET ], dcdt[ SNBOX_SOIL ], dcdt[ SNBOX_OCEAN ], dcdt[ SNBOX_EARTH ] );
-*/ 
+*/
     return omodel_err;
 }
 

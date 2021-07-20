@@ -6,6 +6,7 @@
 \alias{NBP}
 \alias{ATMOSPHERIC_CO2}
 \alias{NPP}
+\alias{RH}
 \alias{ATMOSPHERIC_C}
 \alias{FFI_EMISSIONS}
 \alias{LUC_EMISSIONS}
@@ -23,6 +24,8 @@ NBP()
 ATMOSPHERIC_CO2()
 
 NPP()
+
+RH()
 
 ATMOSPHERIC_C()
 

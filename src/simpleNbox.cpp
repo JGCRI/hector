@@ -92,6 +92,7 @@ void SimpleNbox::init( Core* coreptr ) {
     core->registerCapability( D_SOILC, getComponentName() );
     core->registerCapability( D_NPP_FLUX0, getComponentName() );
     core->registerCapability( D_NPP, getComponentName() );
+    core->registerCapability( D_RH, getComponentName() );
 
     // Register our dependencies
     core->registerDependency( D_OCEAN_CFLUX, getComponentName() );
@@ -490,8 +491,9 @@ unitval SimpleNbox::getData(const std::string& varName,
         // evaluates for the current date).
         returnval = sum_npp(date);
     } else if( varNameParsed == D_RH ) {
-        H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for rh" );
-        returnval = sum_rh();
+        // `sum_rh` works whether or not `date` is defined (if undefined, it
+        // evaluates for the current date).
+        returnval = sum_rh( date );
     }else {
         H_THROW( "Caller is requesting unknown variable: " + varName );
     }
