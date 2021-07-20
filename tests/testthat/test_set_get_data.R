@@ -58,3 +58,7 @@ for (v in emissions) {
     expect_equal(fetchvars(hc, year, v)[["value"]], val)
   })
 }
+
+test_that("Setting variable with invalid unit throws an error", {
+  expect_error(setvar(hc, year, VEG_C(), 500, "boogedyboo"), regex = "invalid unit")
+})
