@@ -199,7 +199,7 @@ void OceanComponent::prepareToRun() {
     inter.initbox( 8400, "intermediate" );
     deep.initbox( 26000, "deep" );
 
-    double time = 60 * 60 * 24 * 365.25;  // seconds per year
+    double spy = 60 * 60 * 24 * 365.25;  // seconds per year
 
     // ocean_volume = 1.36e18 m3
     double thick_LL = 100;
@@ -218,17 +218,17 @@ void OceanComponent::prepareToRun() {
 
     // transport * seconds / volume of box
     // Advection --> transport of carbon from one box to the next (k values, fraction/yr )
-    double LL_HL = ( tt.value( U_M3_S ) * time ) / LL_volume;
-    double HL_DO = ( ( tt + tu).value( U_M3_S ) * time ) / HL_volume;
-    double DO_IO = ( ( tt + tu).value( U_M3_S ) * time ) / D_volume;
-    double IO_HL = ( tu.value( U_M3_S) * time )  / I_volume;
-    double IO_LL = ( tt.value( U_M3_S) * time )  / I_volume;
+    double LL_HL = ( tt.value( U_M3_S ) * spy ) / LL_volume;
+    double HL_DO = ( ( tt + tu).value( U_M3_S ) * spy ) / HL_volume;
+    double DO_IO = ( ( tt + tu).value( U_M3_S ) * spy ) / D_volume;
+    double IO_HL = ( tu.value( U_M3_S) * spy )  / I_volume;
+    double IO_LL = ( tt.value( U_M3_S) * spy )  / I_volume;
 
     // Exchange parameters --> not explicitly modeling diffusion
-    double IO_LLex = ( twi.value( U_M3_S) * time ) / I_volume;
-    double LL_IOex = ( twi.value( U_M3_S) * time ) / LL_volume;
-    double DO_IOex = ( tid.value( U_M3_S) * time ) / D_volume;
-    double IO_DOex = ( tid.value( U_M3_S) * time ) / I_volume;
+    double IO_LLex = ( twi.value( U_M3_S) * spy ) / I_volume;
+    double LL_IOex = ( twi.value( U_M3_S) * spy ) / LL_volume;
+    double DO_IOex = ( tid.value( U_M3_S) * spy ) / D_volume;
+    double IO_DOex = ( tid.value( U_M3_S) * spy ) / I_volume;
 
     // make_connection( box to connect to, k value, window size (0=present only) )
     surfaceLL.make_connection( &surfaceHL, LL_HL, 1 );
