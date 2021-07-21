@@ -35,7 +35,7 @@ if( log != NULL ) H_LOG( (*log), level )
 oceanbox::oceanbox() {
     logger = NULL;
     deltaT.set( 0.0, U_DEGC );
-    initbox( unitval( 0.0, U_PGC ), "?" );
+    initbox( fluxpool( 0.0, U_PGC ), "?" );
     surfacebox = false;
     preindustrial_flux.set( 0.0, U_PGC_YR );
     warmingfactor = 1.0;      // by default warms exactly as global
@@ -47,15 +47,15 @@ oceanbox::oceanbox() {
 /*! \brief sets the amount of carbon in this box
  */
 void oceanbox::set_carbon( const unitval C) {
-	carbon = C;
+    carbon = fluxpool( C.value( U_PGC ), U_PGC, false, Name );
 	OB_LOG( logger, Logger::WARNING ) << Name << " box C has been set to " << carbon << endl;
-	carbonHistory.insert( carbonHistory.begin(), C.value( U_PGC ) );
+	carbonHistory.insert( carbonHistory.begin(), carbon );
 }
 
 //------------------------------------------------------------------------------
 /*! \brief initialize basic information in an oceanbox
  */
-void oceanbox::initbox( unitval C, string N ) {
+void oceanbox::initbox( fluxpool carbon, string name ) {
     // Reset the box to its pristine state
     connection_list.clear();
     connection_k.clear();
@@ -64,26 +64,26 @@ void oceanbox::initbox( unitval C, string N ) {
     connection_window.clear();
     annual_box_fluxes.clear();
     
-    set_carbon( C );
-    if( N != "" ) Name = N;
+    set_carbon( carbon );
+    if( name != "" ) Name = name;
     CarbonToAdd.set( 0.0, U_PGC );  // each box is separate from each other, and we keep track of carbon in each box.
     active_chemistry = false;
     
-    OB_LOG( logger, Logger::NOTICE) << "hello " << N << endl;
+    OB_LOG( logger, Logger::NOTICE) << "hello " << name << endl;
 }
 
 //------------------------------------------------------------------------------
 /*! \brief          Add carbon to an oceanbox
- *  \param[in] C    amount of carbon to add to this box
+ *  \param[in] carbon    Amount of carbon to add to this box
  *
  *  Carbon flows between boxes arrive via this method. Any carbon (it must be
  *  a positive value) is scheduled for addition; the actual increment happens
  *  in update_state().
  */
-void oceanbox::add_carbon( unitval C ) {
-	H_ASSERT( C.value( U_PGC ) >= 0.0, "add_carbon called with negative value" );
-	CarbonToAdd = CarbonToAdd + C;
-	OB_LOG( logger, Logger::DEBUG) << Name << " receiving " << C << " (" << CarbonToAdd << ")" << endl;
+void oceanbox::add_carbon( fluxpool carbon ) {
+	H_ASSERT( carbon.value( U_PGC ) >= 0.0, "add_carbon called with negative value" );
+	CarbonToAdd = CarbonToAdd + carbon;
+	OB_LOG( logger, Logger::DEBUG) << Name << " receiving " << carbon << " (" << CarbonToAdd << ")" << endl;
 }
 
 //------------------------------------------------------------------------------
@@ -104,6 +104,7 @@ unitval oceanbox::compute_tabsC( const unitval Tgav ) const {
  *  \details                How do we identify is the box is oscillating? Count how many
  *  sign flips there are in the deltas (C(t)-C(t-1)) of a certain magnitude.
  */
+/*
 bool oceanbox::oscillating( const unsigned lookback, const double maxamp, const int maxflips ) const {
     
 #define sgn( x ) ( x > 0 ) - ( x < 0 )
@@ -123,6 +124,7 @@ bool oceanbox::oscillating( const unsigned lookback, const double maxamp, const 
     }
     return flipcount>maxflips && ( maxC-minC )/currentC*100 > maxamp;
 }
+*/
 
 //------------------------------------------------------------------------------
 /*! \brief                  Calculate mean past box carbon
@@ -130,17 +132,17 @@ bool oceanbox::oscillating( const unsigned lookback, const double maxamp, const 
  *  \returns                bool indicating whether box C is oscillating recently
  *  \exception              lookback must be non-negative
  */
-double oceanbox::vectorHistoryMean( std::vector<double> v, int lookback ) const {
+fluxpool oceanbox::vectorHistoryMean( std::vector<fluxpool> v, int lookback ) const {
     H_ASSERT( lookback > 0, "lookback must be >0" );
     H_ASSERT( v.size() > 0, "vector size must be >0" );
 
     lookback = min<int>( int( v.size() ), lookback );
 
-    double sum = 0.0;
+    fluxpool sum = v[ 0 ];
     for ( int j=0; j<lookback; j++ )  {
-        sum += v[ j ]; // sum up the past states
+        sum = sum + v[ j ]; // sum up the past states
     }
-    return sum / lookback;
+    return sum / double(lookback);
 }
 
 //------------------------------------------------------------------------------
@@ -218,14 +220,14 @@ void oceanbox::log_state() {
  * \param[in] yf    year fraction (0-1)
  * \returns         flux in Pg C, accounting for yf, connection strength
  */
-unitval oceanbox::compute_connection_flux( int i, double yf ) const {
+fluxpool oceanbox::compute_connection_flux( int i, double yf ) const {
     // Compute the mean_carbon over connection-specific history window
-    double mean_carbon = carbon.value( U_PGC );
-    if( connection_window[ i ] )
+    fluxpool mean_carbon = carbon;
+    if( connection_window[ i ] ) {
         mean_carbon = vectorHistoryMean( carbonHistory, connection_window[ i ] );
-    
-    unitval closs( mean_carbon * connection_k[ i ] * yf, U_PGC );
-    return closs;
+    }
+        
+    return mean_carbon * connection_k[ i ] * yf;
 }
 
 //------------------------------------------------------------------------------
@@ -267,29 +269,11 @@ void oceanbox::compute_fluxes( const unitval current_Ca, const double yf, const 
     
 	// Step 4 : calculate the carbon transports between the boxes
     if( do_circ ) {
-        double unstable_box_flux_adjust = 1.0;
-        
-        // 'Preflight' the outbound fluxes, i.e. get estimate of their total
-        unitval closs_total( 0.0, U_PGC );
-        for( unsigned i=0; i < connection_window.size(); i++ ){
-            closs_total = closs_total + compute_connection_flux( i, yf );
-        } // for i
+        fluxpool closs_total( 0.0, U_PGC, carbon.tracking );
 
-        if( /* DISABLES CODE */ (0) /* osc */ ) {
-            const double mean_past_loss = vectorHistoryMean( carbonLossHistory, 10 );
-            unstable_box_flux_adjust = mean_past_loss / closs_total.value( U_PGC );
-            
-            OB_LOG( logger, Logger::DEBUG) << Name << "is oscillating." << std::endl;
-            std::cout << "Preflighted connection fluxes = " << closs_total << std::endl;
-            std::cout << "Recent mean loss = " << mean_past_loss << std::endl;
-            std::cout << "unstable_box_flux_adjust = " << unstable_box_flux_adjust << std::endl;
-            // The box's C is oscillating
-        }
-                
-        closs_total.set( 0.0, U_PGC );
         for( unsigned i=0; i < connection_window.size(); i++ ){
 
-            unitval closs = compute_connection_flux( i, yf ) * unstable_box_flux_adjust;
+            fluxpool closs = compute_connection_flux( i, yf );
 
             OB_LOG( logger, Logger::DEBUG) << Name << " conn " << i << " flux= " << closs << endl;
                  
@@ -300,7 +284,7 @@ void oceanbox::compute_fluxes( const unitval current_Ca, const double yf, const 
                 unitval( closs.value( U_PGC ), U_PGC_YR );
         } // for i
         
-        carbonLossHistory.insert( carbonLossHistory.begin (), closs_total.value( U_PGC ) );
+        carbonLossHistory.insert( carbonLossHistory.begin(), closs_total );
         
     } // if do_circulation
 }
@@ -308,19 +292,18 @@ void oceanbox::compute_fluxes( const unitval current_Ca, const double yf, const 
 //------------------------------------------------------------------------------
 /*! \brief    Function to calculate Revelle Factor
 */
-
 // 2 ways of solving for the Revelle factor
 // keep track of last year pCO2 in the ocean and DIC
 unitval oceanbox::calc_revelle() {
-    H_ASSERT( active_chemistry, "Active Chemistry required");
+    H_ASSERT( active_chemistry, "Active chemistry required");
         
 //    unitval deltapco2 = Ca - pco2_lastyear;
     unitval deltadic = mychemistry.convertToDIC(carbon) - dic_lastyear;
     
-    H_ASSERT( deltadic.value( U_UMOL_KG) != 0, "DeltaDIC can not be zero");
+    H_ASSERT( deltadic.value( U_UMOL_KG) != 0, "DeltaDIC cannot be zero");
     
-    // Revelle Factor can be calculated multiple ways.  
-    // Based on changing atmospheric conditions as well approximated via DIC and CO3
+    // Revelle Factor can be calculated multiple ways:
+    // based on changing atmospheric conditions as well as approximated via DIC and CO3
      return unitval ( mychemistry.convertToDIC( carbon ) / mychemistry.CO3, U_UNITLESS ); 
     // under high CO2, the HL box numbers are potentially unrealistic. 
 }
@@ -330,11 +313,8 @@ unitval oceanbox::calc_revelle() {
  */
 void oceanbox::update_state() {
     
-	carbonHistory.insert( carbonHistory.begin (), carbon.value( U_PGC ) );
-	
+	carbonHistory.insert( carbonHistory.begin (), carbon );
 	carbon = carbon + CarbonToAdd + atmosphere_flux;
-    
-	H_ASSERT( carbon.value( U_PGC ) >= 0.0, "box carbon is negative" );
 	CarbonToAdd.set( 0.0, U_PGC );
 }
 
@@ -421,7 +401,6 @@ void oceanbox::chem_equilibrate( const unitval current_Ca ) {
 	OB_LOG( logger, Logger::DEBUG) << "Equilibrating chemistry for box " << Name << endl;
     
 	// Initialize the box chemistry values: temperature, atmospheric CO2, DIC
-//	mychemistry.ocean_csys_run( Tbox, carbon );
     
     unitval dic = mychemistry.convertToDIC( carbon );
 	OB_LOG( logger, Logger::DEBUG) << "Ca=" << Ca << ", DIC=" << dic <<  endl;

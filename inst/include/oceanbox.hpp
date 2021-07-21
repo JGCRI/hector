@@ -25,6 +25,7 @@
 #include "logger.hpp"
 #include "unitval.hpp"
 #include "ocean_csys.hpp"
+#include "fluxpool.hpp"
 
 #define MEAN_GLOBAL_TEMP 15
 
@@ -38,17 +39,17 @@ class oceanbox {
      *  and may (or not) have active chemistry.
      */
 private:
-	unitval carbon;
-	unitval CarbonToAdd;
+	fluxpool carbon;
+	fluxpool CarbonToAdd;
     std::vector<oceanbox*> connection_list;  ///< a vector of ocean box pointers
     std::vector<double> connection_k;        ///< a vector of ocean k values (fraction)
-    std::vector<double> carbonHistory;       ///< a vector of past C states
-    std::vector<double> carbonLossHistory;   ///< a vector of past C losses
+    std::vector<fluxpool> carbonHistory;       ///< a vector of past C states
+    std::vector<fluxpool> carbonLossHistory;   ///< a vector of past C losses
     std::vector<int> connection_window;      ///< a vector of connection windows to average over
 
-    double vectorHistoryMean( std::vector<double> v, int lookback ) const;
+    fluxpool vectorHistoryMean( std::vector<fluxpool> v, int lookback ) const;
 
-    unitval compute_connection_flux( int i, double yf ) const;
+    fluxpool compute_connection_flux( int i, double yf ) const;
 
 	std::string Name;
 
@@ -65,7 +66,7 @@ public:
 
     std::map <oceanbox*, unitval> annual_box_fluxes;   ///< Map of our fluxes to other boxes
 
-	void initbox( unitval C, std::string N="" );
+	void initbox( fluxpool C, std::string name="" );
     void make_connection( oceanbox* ob, const double k, const int window );
 	void compute_fluxes( const unitval current_Ca, const double yf, const bool do_circ=true );
     void log_state();
@@ -73,16 +74,14 @@ public:
 	void new_year( const unitval Tgav );
 
 	void set_carbon( const unitval C );
-	unitval get_carbon() const { return carbon; };
-	void add_carbon( unitval C );
+	fluxpool get_carbon() const { return carbon; };
+	void add_carbon( fluxpool C );
 
-    bool oscillating( const unsigned lookback, const double maxamp, const int maxflips ) const;
+    //bool oscillating( const unsigned lookback, const double maxamp, const int maxflips ) const;
 
     // Functions to get internal box data
     unitval get_Tbox() const { return Tbox; };
-
     unitval calc_revelle();
-
     unitval deltaT;     ///< difference between box temperature and global temperature
     unitval preindustrial_flux;
     bool surfacebox;
@@ -95,7 +94,7 @@ public:
     void chem_equilibrate( const unitval current_Ca );    ///< equilibrate chemistry model to a given flux
     double fmin( double alk, void *params );
 
-    unitval atmosphere_flux;
+    unitval atmosphere_flux;    //!< atmosphere -> ocean flux
 
 	// logger
     Logger* logger;

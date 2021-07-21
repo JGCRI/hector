@@ -185,18 +185,18 @@ void OceanComponent::prepareToRun() {
 
     // Set up our ocean box model. Carbon values here can be overridden by user input
     H_LOG( logger, Logger::DEBUG ) << "Setting up ocean box model" << std::endl;
-    surfaceHL.initbox( unitval( 140, U_PGC ), "HL" );
+    surfaceHL.initbox( fluxpool( 140, U_PGC, false, "HL" ), "HL" );
     surfaceHL.surfacebox = true;
     surfaceHL.preindustrial_flux.set( 1.000, U_PGC_YR );         // used if no spinup chemistry
     surfaceHL.active_chemistry = spinup_chem;
 
-    surfaceLL.initbox( unitval( 770, U_PGC ),  "LL" );
+    surfaceLL.initbox( fluxpool( 770, U_PGC, false, "LL" ),  "LL" );
     surfaceLL.surfacebox = true;
     surfaceLL.preindustrial_flux.set( -1.000, U_PGC_YR );        // used if no spinup chemistry
     surfaceLL.active_chemistry = spinup_chem;
 
-    inter.initbox( unitval( 8400, U_PGC ),  "intermediate" );
-    deep.initbox( unitval( 26000, U_PGC ),  "deep" );
+    inter.initbox( fluxpool( 8400, U_PGC, false, "intermediate" ),  "intermediate" );
+    deep.initbox( fluxpool( 26000, U_PGC, false, "deep" ),  "deep" );
 
     double time = 60 * 60 * 24 * 365.25;  // seconds per year
 
@@ -238,16 +238,15 @@ void OceanComponent::prepareToRun() {
     inter.make_connection( &deep, IO_DOex, 1 );
     deep.make_connection( &inter, DO_IO + DO_IOex, 1 );
 
-    //inputs for surface chemistry boxes
-    //surfaceHL.mychemistry.alk = // mol/kg
-    surfaceHL.deltaT.set( -13.0, U_DEGC );  // delta T is added 288.15 to return the initial temperature value of the surface box
+    // inputs for surface chemistry boxes
+    surfaceHL.deltaT.set( -13.0, U_DEGC );
     surfaceHL.mychemistry.S             = 34.5; // Salinity
     surfaceHL.mychemistry.volumeofbox   = HL_volume; //5.4e15; //m3
     surfaceHL.mychemistry.As            = ocean_area * part_high ; // surface area m2
     surfaceHL.mychemistry.U             = 6.7; // average wind speed m/s
 
     //surfaceLL.mychemistry.alk = // mol/kg
-    surfaceLL.deltaT.set( 7.0, U_DEGC );    // delta T is added to 288.15 to return the initial temperature value of the surface box
+    surfaceLL.deltaT.set( 7.0, U_DEGC );
     surfaceLL.mychemistry.S             = 34.5; // Salinity
     surfaceLL.mychemistry.volumeofbox   = LL_volume; //3.06e16; //m3
     surfaceLL.mychemistry.As            = ocean_area * part_low; // surface area m2
@@ -264,7 +263,7 @@ void OceanComponent::prepareToRun() {
 /*! \brief      Internal function to add up all model C pools
  *  \returns    unitval, total carbon in the ocean
  */
-unitval OceanComponent::totalcpool() const {
+fluxpool OceanComponent::totalcpool() const {
 	return deep.get_carbon() + inter.get_carbon() + surfaceLL.get_carbon() + surfaceHL.get_carbon();
 }
 
@@ -337,7 +336,8 @@ void OceanComponent::run( const double runToDate ) {
 
     // Now wait for the solver to call us
 }
-    //------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------
 // documentation is inherited
 bool OceanComponent::run_spinup( const int step ) {
     run( step );
@@ -487,7 +487,7 @@ void OceanComponent::getCValues( double t, double c[] ) {
  *  in the array dydt, for arguments (t,y) and parameters params." -GSL docs
  *  Compute the air-ocean flux (Pg C/yr) at time t and for pools c[]
  */
-int  OceanComponent::calcderivs( double t, const double c[], double dcdt[] ) const {
+int OceanComponent::calcderivs( double t, const double c[], double dcdt[] ) const {
 
     const double yearfraction = ( t - ODEstartdate );
 

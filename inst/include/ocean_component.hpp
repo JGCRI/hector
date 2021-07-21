@@ -75,8 +75,6 @@ public:
     void stashCValues( double t, const double c[] );
     void record_state(double t);
 
-    void run1( const double runToDate );
-
 private:
     virtual unitval getData( const std::string& varName,
                             const double date );
@@ -103,7 +101,6 @@ private:
     // Spinup mode flag
     bool in_spinup;         //!< Are we currently in spinup?
 
-
     /*****************************************************************
      * Model parameters
      *****************************************************************/
@@ -113,20 +110,17 @@ private:
     unitval twi;         //!< m3/s warm-intermediate exchange
     unitval tid;         //!< m3/s intermediate-deep exchange
 
-
     /*****************************************************************
      * Input data
      *****************************************************************/
     bool spinup_chem;       //!< run chemistry during spinup?
     tseries<unitval> oceanflux_constrain;      //!< atmosphere->ocean C flux data to constrain to
 
-
     /*****************************************************************
      * Private helper functions
      *****************************************************************/
-    unitval totalcpool() const;
+    fluxpool totalcpool() const;
     unitval annual_totalcflux( const double date, const unitval& Ca, const double cpoolscale=1.0 ) const;
-
 
     /*****************************************************************
      * Adaptive timestep control
@@ -169,9 +163,6 @@ private:
     tseries<unitval> temp_LL_ts;
     tseries<unitval> co3_HL_ts;
     tseries<unitval> co3_LL_ts;
-
-
-
 
     // timestep control
     tseries<double> max_timestep_ts;
