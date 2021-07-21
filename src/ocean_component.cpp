@@ -119,6 +119,7 @@ unitval OceanComponent::sendMessage( const std::string& message,
 
 	} else if( message == M_DUMP_TO_DEEP_OCEAN ) {
         // info struct holds the amount being dumped/extracted from deep ocean
+        // this is a unitval, not fluxpool, as we DON'T want to track this carbon movement
         unitval carbon = info.value_unitval;
         H_LOG( logger, Logger::DEBUG ) << "Atmosphere dumping " << carbon << " Pg C to deep ocean" << std::endl;
         deep.set_carbon( deep.get_carbon() + carbon );
@@ -185,18 +186,18 @@ void OceanComponent::prepareToRun() {
 
     // Set up our ocean box model. Carbon values here can be overridden by user input
     H_LOG( logger, Logger::DEBUG ) << "Setting up ocean box model" << std::endl;
-    surfaceHL.initbox( fluxpool( 140, U_PGC, false, "HL" ), "HL" );
+    surfaceHL.initbox( 140, "HL" );
     surfaceHL.surfacebox = true;
     surfaceHL.preindustrial_flux.set( 1.000, U_PGC_YR );         // used if no spinup chemistry
     surfaceHL.active_chemistry = spinup_chem;
 
-    surfaceLL.initbox( fluxpool( 770, U_PGC, false, "LL" ),  "LL" );
+    surfaceLL.initbox( 770, "LL" );
     surfaceLL.surfacebox = true;
     surfaceLL.preindustrial_flux.set( -1.000, U_PGC_YR );        // used if no spinup chemistry
     surfaceLL.active_chemistry = spinup_chem;
 
-    inter.initbox( fluxpool( 8400, U_PGC, false, "intermediate" ),  "intermediate" );
-    deep.initbox( fluxpool( 26000, U_PGC, false, "deep" ),  "deep" );
+    inter.initbox( 8400, "intermediate" );
+    deep.initbox( 26000, "deep" );
 
     double time = 60 * 60 * 24 * 365.25;  // seconds per year
 

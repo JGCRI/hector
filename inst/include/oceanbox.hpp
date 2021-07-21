@@ -40,7 +40,7 @@ class oceanbox {
      */
 private:
 	fluxpool carbon;
-	fluxpool CarbonToAdd;
+	fluxpool CarbonAdditions, CarbonSubtractions;
     std::vector<oceanbox*> connection_list;  ///< a vector of ocean box pointers
     std::vector<double> connection_k;        ///< a vector of ocean k values (fraction)
     std::vector<fluxpool> carbonHistory;       ///< a vector of past C states
@@ -66,7 +66,7 @@ public:
 
     std::map <oceanbox*, unitval> annual_box_fluxes;   ///< Map of our fluxes to other boxes
 
-	void initbox( fluxpool C, std::string name="" );
+	void initbox( double C, std::string name="" );
     void make_connection( oceanbox* ob, const double k, const int window );
 	void compute_fluxes( const unitval current_Ca, const double yf, const bool do_circ=true );
     void log_state();

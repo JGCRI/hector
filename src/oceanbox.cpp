@@ -35,7 +35,7 @@ if( log != NULL ) H_LOG( (*log), level )
 oceanbox::oceanbox() {
     logger = NULL;
     deltaT.set( 0.0, U_DEGC );
-    initbox( fluxpool( 0.0, U_PGC ), "?" );
+    initbox( 0.0, "?" );
     surfacebox = false;
     preindustrial_flux.set( 0.0, U_PGC_YR );
     warmingfactor = 1.0;      // by default warms exactly as global
@@ -55,7 +55,7 @@ void oceanbox::set_carbon( const unitval C) {
 //------------------------------------------------------------------------------
 /*! \brief initialize basic information in an oceanbox
  */
-void oceanbox::initbox( fluxpool carbon, string name ) {
+void oceanbox::initbox( double carbon, string name ) {
     // Reset the box to its pristine state
     connection_list.clear();
     connection_k.clear();
@@ -64,9 +64,11 @@ void oceanbox::initbox( fluxpool carbon, string name ) {
     connection_window.clear();
     annual_box_fluxes.clear();
     
-    set_carbon( carbon );
+     // Each box is separate from each other, and we keep track of carbon in each box
     if( name != "" ) Name = name;
-    CarbonToAdd.set( 0.0, U_PGC );  // each box is separate from each other, and we keep track of carbon in each box.
+    set_carbon( unitval(carbon, U_PGC ) );
+    CarbonAdditions.set( 0.0, U_PGC, false, "CarbonAdditions" );
+    CarbonSubtractions.set( 0.0, U_PGC, false, "CarbonSubtractions" );
     active_chemistry = false;
     
     OB_LOG( logger, Logger::NOTICE) << "hello " << name << endl;
@@ -81,9 +83,8 @@ void oceanbox::initbox( fluxpool carbon, string name ) {
  *  in update_state().
  */
 void oceanbox::add_carbon( fluxpool carbon ) {
-	H_ASSERT( carbon.value( U_PGC ) >= 0.0, "add_carbon called with negative value" );
-	CarbonToAdd = CarbonToAdd + carbon;
-	OB_LOG( logger, Logger::DEBUG) << Name << " receiving " << carbon << " (" << CarbonToAdd << ")" << endl;
+	CarbonAdditions = CarbonAdditions + carbon;
+	OB_LOG( logger, Logger::DEBUG) << Name << " receiving " << carbon << " (" << CarbonAdditions << ")" << endl;
 }
 
 //------------------------------------------------------------------------------
@@ -191,14 +192,16 @@ double round( const double d ) { return floor( d + 0.5 ); }
  */
 void oceanbox::log_state() {
 	OB_LOG( logger, Logger::DEBUG) << "----- State of " << Name << " box -----" << endl;
-    unitval futurec = carbon + CarbonToAdd + atmosphere_flux;
+    fluxpool futurec = carbon + CarbonAdditions + atmosphere_flux - CarbonSubtractions;
 	OB_LOG( logger, Logger::DEBUG) << "   carbon = " << carbon << " -> " << futurec << endl;
 	OB_LOG( logger, Logger::DEBUG) << "   T=" << Tbox << ", surfacebox=" << surfacebox << ", active_chemistry=" << active_chemistry << endl;
-	OB_LOG( logger, Logger::DEBUG) << "   CarbonToAdd = " << CarbonToAdd << " ("
-        << ( CarbonToAdd/carbon*100 ) << "%)" << endl;
+	OB_LOG( logger, Logger::DEBUG) << "   CarbonAdditions = " << CarbonAdditions << " ("
+        << ( CarbonAdditions / carbon*100 ) << "%)" << endl;
+    OB_LOG( logger, Logger::DEBUG) << "   CarbonSubtractions = " << CarbonSubtractions << " ("
+        << ( CarbonSubtractions / carbon * 100 ) << "%)" << endl;
     if( surfacebox ) {
         OB_LOG( logger, Logger::DEBUG) << "   FPgC = " << atmosphere_flux << " ("
-            << ( atmosphere_flux/carbon*100 ) << "%)" << endl;
+            << ( atmosphere_flux / carbon * 100 ) << "%)" << endl;
     }
 
     unitval K0 = mychemistry.get_K0();
@@ -278,9 +281,9 @@ void oceanbox::compute_fluxes( const unitval current_Ca, const double yf, const 
             OB_LOG( logger, Logger::DEBUG) << Name << " conn " << i << " flux= " << closs << endl;
                  
             connection_list[ i ]->add_carbon( closs );
-            CarbonToAdd = CarbonToAdd - closs;  // PgC
+            CarbonSubtractions = CarbonSubtractions + closs;  // PgC
             closs_total = closs_total + closs;
-           annual_box_fluxes[ connection_list[ i ] ] = annual_box_fluxes[ connection_list[ i ] ] +
+            annual_box_fluxes[ connection_list[ i ] ] = annual_box_fluxes[ connection_list[ i ] ] +
                 unitval( closs.value( U_PGC ), U_PGC_YR );
         } // for i
         
@@ -314,8 +317,9 @@ unitval oceanbox::calc_revelle() {
 void oceanbox::update_state() {
     
 	carbonHistory.insert( carbonHistory.begin (), carbon );
-	carbon = carbon + CarbonToAdd + atmosphere_flux;
-	CarbonToAdd.set( 0.0, U_PGC );
+	carbon = carbon + CarbonAdditions + atmosphere_flux - CarbonSubtractions;
+    CarbonAdditions.set( 0.0, U_PGC, carbon.tracking, "CarbonAdditions" );
+    CarbonSubtractions.set( 0.0, U_PGC, carbon.tracking, "CarbonSubtractions" );
 }
 
 //------------------------------------------------------------------------------
