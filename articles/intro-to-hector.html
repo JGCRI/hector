@@ -175,7 +175,7 @@
 <code class="sourceCode R"><span class="fu"><a href="../reference/fetchvars.html">fetchvars</a></span><span class="op">(</span><span class="va">core</span>, <span class="cn">NA</span>, <span class="fu"><a href="../reference/parameters.html">BETA</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> </code></pre></div>
 <pre><code>##              scenario year variable value      units
 ## 1 unnamed hector core   NA     beta   0.4 (unitless)</code></pre>
-<p>Now, let’s run the simulation again with a higher value for CO2 fertilization. But, before we do, let’s look once again at the Hector <code>core</code> object.</p>
+<p>Now, let’s run the simulation again with a higher value for CO<span class="math inline">\(_2\)</span> fertilization. But, before we do, let’s look once again at the Hector <code>core</code> object.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">core</span></code></pre></div>
 <pre><code>## Hector core: unnamed hector core
@@ -194,6 +194,7 @@
 <p>This will effectively “rewind” the core back to either the provided <code>date</code> (defaults to 0 if missing) or the model start date (set in the INI file; default is 1745), whichever is greater. In addition, if the <code>date</code> argument is less than the model start date and spinup is enabled (<code>do_spinup = 1</code> in the INI file), then the core will re-do its spinup process with the current set of parameters.</p>
 <hr>
 <p><strong>NOTE</strong></p>
+<p>Prior to a normal run beginning in 1750, Hector has an optional “spinup” mode where it runs the carbon cycle with no perturbations until it stabilizes. Essentially, the model removes human emissions and runs until there are no more changes in the carbon pools and the system has reached equilibrium.</p>
 <p>Because changing Hector parameters can change the post-spinup equilibrium values of state variables, Hector will automatically run <code><a href="../reference/reset.html">reset(core, date = 0)</a></code> at the beginning of the next <code>run</code> call if it detects that any of its parameters have changed. This means that is not currently possible to change Hector <em>parameters</em> (such as <span class="math inline">\(\beta\)</span> or preindustrial CO<sub>2</sub>) part-way through a run. However, it is still possible to change the values of certain <em>drivers</em> and <em>state variables</em> (such as the CO<sub>2</sub> emissions) in the middle of a run.</p>
 <hr>
 <p>So, as a result of the <code>reset</code> command, the core’s “Current Date” is now the model start date–1745. We can now perform another run with the new CO<span class="math inline">\(_2\)</span> fertilization value.</p>
@@ -214,7 +215,7 @@
 ## 4 unnamed hector core 2003       Ca 355.3855 ppmv CO2
 ## 5 unnamed hector core 2004       Ca 357.1007 ppmv CO2
 ## 6 unnamed hector core 2005       Ca 358.9513 ppmv CO2</code></pre>
-<p>Let’s see how changing the CO2 fertilization affects our results.</p>
+<p>Let’s see how changing the CO<span class="math inline">\(_2\)</span> fertilization affects our results.</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">results</span><span class="op">[[</span><span class="st">"beta"</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">0.36</span>
 <span class="va">results_40</span><span class="op">[[</span><span class="st">"beta"</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">0.40</span>
@@ -226,7 +227,7 @@
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">variable</span>, scales <span class="op">=</span> <span class="st">"free_y"</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guides.html">guides</a></span><span class="op">(</span>color <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guide_legend.html">guide_legend</a></span><span class="op">(</span>title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html">expression</a></span><span class="op">(</span><span class="va">beta</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="intro-to-hector_files/figure-html/compare-co2-fert-1.png" width="700"></p>
-<p>As expected, increasing CO2 fertilization increases the strength of the terrestrial carbon sink and therefore reduces atmospheric CO2, radiative forcing, and global temperature. However, the effects only become pronounced in the latter half of the 21st Century.</p>
+<p>As expected, increasing CO<span class="math inline">\(_2\)</span> fertilization increases the strength of the terrestrial carbon sink and therefore reduces atmospheric CO<span class="math inline">\(_2\)</span>, radiative forcing, and global temperature. However, the effects only become pronounced in the latter half of the 21st Century.</p>
 </div>
 <div id="sensitivity-analysis" class="section level1">
 <h1 class="hasAnchor">
