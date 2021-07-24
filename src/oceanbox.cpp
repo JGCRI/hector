@@ -140,7 +140,8 @@ fluxpool oceanbox::vectorHistoryMean( std::vector<fluxpool> v, int lookback ) co
     lookback = min<int>( int( v.size() ), lookback );
 
     fluxpool sum = v[ 0 ];
-    for ( int j=0; j<lookback; j++ )  {
+    // Note we're skipping v[0] because sum is set to that, above
+    for ( int j=1; j<lookback; j++ )  {
         sum = sum + v[ j ]; // sum up the past states
     }
     return sum / double(lookback);
