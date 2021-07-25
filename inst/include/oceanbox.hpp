@@ -77,6 +77,8 @@ public:
 	fluxpool get_carbon() const { return carbon; };
 	void add_carbon( fluxpool C );
 
+    void start_tracking();
+    
     //bool oscillating( const unsigned lookback, const double maxamp, const int maxflips ) const;
 
     // Functions to get internal box data

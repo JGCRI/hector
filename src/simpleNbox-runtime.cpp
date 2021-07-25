@@ -151,7 +151,7 @@ void SimpleNbox::run( const double runToDate )
     const double tdate = core->getTrackingDate();
     if(!in_spinup && tcurrent == tdate){
         H_LOG( logger, Logger::NOTICE ) << "Tracking start" << std::endl;
-        startTracking();
+        start_tracking();
     }
     Tgav_record.set( runToDate, core->sendMessage( M_GETDATA, D_GLOBAL_TEMP ).value( U_DEGC ) );
 }

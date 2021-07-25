@@ -38,6 +38,7 @@ namespace Hector {
  *  between layers and latitudinal regions, etc.
  */
 class OceanComponent : public CarbonCycleModel {
+    friend class CSVFluxPoolVisitor;
 
 public:
     OceanComponent();

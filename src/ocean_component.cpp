@@ -297,6 +297,16 @@ unitval OceanComponent::annual_totalcflux( const double date, const unitval& Ca,
 // documentation is inherited
 void OceanComponent::run( const double runToDate ) {
 
+    // If we've hit the tracking start year, enagage!
+    const double tdate = core->getTrackingDate();
+    if(!in_spinup && runToDate == tdate){
+        H_LOG( logger, Logger::NOTICE ) << "Tracking start" << std::endl;
+        surfaceHL.start_tracking();
+        surfaceLL.start_tracking();
+        inter.start_tracking();
+        deep.start_tracking();
+    }
+
     Ca = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_CO2 );
     Tgav = core->sendMessage( M_GETDATA, D_GLOBAL_TEMP );
     in_spinup = core->inSpinup();
@@ -555,8 +565,9 @@ void OceanComponent::stashCValues( double t, const double c[] ) {
     surfaceHL.atmosphere_flux = surfaceHL.atmosphere_flux + adjustment;
     surfaceLL.atmosphere_flux = surfaceLL.atmosphere_flux + adjustment;
 
-    // This (along with carbon-cycle-solver obviously) is the heart of the reduced-timestep code.
-    // If carbon flux has exceeded some critical value, need to reduce timestep for the future.
+    // This (along with carbon-cycle-solver obviously) is the heart of the
+    // reduced-timestep code. If carbon flux has exceeded some critical value,
+    // we need to reduce timestep for the future.
     unitval cflux_annualdiff = solver_flux / yearfraction - lastflux_annualized;
 
     if( cflux_annualdiff.value( U_PGC ) > OCEAN_TSR_TRIGGER1 ) {

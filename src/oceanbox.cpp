@@ -229,6 +229,7 @@ fluxpool oceanbox::compute_connection_flux( int i, double yf ) const {
     fluxpool mean_carbon = carbon;
     if( connection_window[ i ] ) {
         mean_carbon = vectorHistoryMean( carbonHistory, connection_window[ i ] );
+        mean_carbon.tracking = carbon.tracking;
     }
         
     return mean_carbon * connection_k[ i ] * yf;
@@ -449,6 +450,15 @@ void oceanbox::chem_equilibrate( const unitval current_Ca ) {
         << setw( w ) << "f_target" << setw( w ) << "diff" << endl;
     OB_LOG( logger, Logger::DEBUG) << setw( w ) << r.first << setw( w ) << atmosphere_flux
         << setw( w ) << f_target << setw( w ) << r.second << endl;
+}
+
+//------------------------------------------------------------------------------
+/*! \brief        Start tracking mode for this oceanbox
+*/
+void oceanbox::start_tracking() {
+    carbon.tracking = true;
+    CarbonAdditions.tracking = true;
+    CarbonSubtractions.tracking = true;
 }
 
 }

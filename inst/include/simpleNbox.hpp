@@ -293,7 +293,7 @@ private:
     /*****************************************************************
      * Tracking Helper Functions
      *****************************************************************/
-    void startTracking(){
+    void start_tracking(){
         earth_c.tracking = true;
         atmos_c.tracking = true;
         ocean_model_c.tracking = true;
