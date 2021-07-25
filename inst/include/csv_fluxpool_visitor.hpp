@@ -21,7 +21,7 @@
 
 #define DELIMITER ","
 
-namespace Hector{
+namespace Hector {
     /*! \brief A visitor which will the contents of each tracked pool at each model period.
  */
 class CSVFluxPoolVisitor : public AVisitor {
@@ -32,6 +32,7 @@ public:
     virtual bool shouldVisit( const bool in_spinup, const double date );
     virtual void visit( Core* c );
     virtual void visit( SimpleNbox* c );
+    virtual void visit( OceanComponent* c );
 
 private:
     //! The file output stream in which the csv output will be written to.

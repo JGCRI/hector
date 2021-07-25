@@ -16,9 +16,9 @@
 #include <boost/lexical_cast.hpp>
 #include "core.hpp"
 #include "simpleNbox.hpp"
+#include "ocean_component.hpp"
 #include "csv_fluxpool_visitor.hpp"
 #include "unitval.hpp"
-#include "fluxpool.hpp"
 #include "h_util.hpp"
 
 namespace Hector {
@@ -109,6 +109,17 @@ void CSVFluxPoolVisitor::visit( SimpleNbox* c ) {
     print_diff(c->atmos_diff, "atmos_diff");
     print_diff(c->earth_diff, "earth_diff");
     csvFile << endl;
+}
+
+//------------------------------------------------------------------------------
+// documentation is inherited
+void CSVFluxPoolVisitor::visit( OceanComponent* c ) {
+    if( !core->outputEnabled( c->getComponentName() ) ) return;
+
+    print_pool( c->surfaceHL.get_carbon() );
+    print_pool( c->surfaceLL.get_carbon() );
+    print_pool( c->inter.get_carbon() );
+    print_pool( c->deep.get_carbon() );
 }
 
 }
