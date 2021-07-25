@@ -13,6 +13,8 @@ on:
     branches:
       - master
       - land_tracking
+      - tracking-vars
+
   schedule:
     # * is a special character in YAML so you have to quote this string
     # Launch run at 6am the 1st of every month.
