@@ -229,15 +229,17 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     fluxpool ccs_flux = atmos_c.flux_from_fluxpool(ccs_untracked);
 
     // current ocean fluxes
-    // TODO: Add all other ocean pools and get fluxes from DOECLIM and ocean box of Hector
+    omodel->stashCValues( t, c );   // tell ocean model to store new C values (and compute final surface fluxes)
     unitval ocean_atmos = unitval(c[SNBOX_OCEAN] - ocean_model_c.value(U_PGC), U_PGC);
+    fluxpool ocean_surface = omodel->get_surface_pools();
+    
     fluxpool oa_flux(0.0, U_PGC);
     fluxpool ao_flux(0.0, U_PGC);
     if(ocean_atmos > 0){
         ao_flux = atmos_c.flux_from_unitval(ocean_atmos);
-        oa_flux = ocean_model_c.flux_from_fluxpool(oa_flux); // i.e., 0
+        oa_flux = ocean_surface.flux_from_fluxpool(oa_flux); // i.e., 0
     } else {
-        oa_flux = ocean_model_c.flux_from_unitval(-ocean_atmos);
+        oa_flux = ocean_surface.flux_from_unitval(-ocean_atmos);
         ao_flux = atmos_c.flux_from_fluxpool(ao_flux); // i.e., 0
     }
 
@@ -350,8 +352,6 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     // adjusts non-biome pools to output from calcderivs
     earth_c.adjust_pool_to_val(c[SNBOX_EARTH], false);
     atmos_c.adjust_pool_to_val(c[SNBOX_ATMOS], false);
-
-    omodel->stashCValues( t, c );   // tell ocean model to store new C values
 
     log_pools( t );
 

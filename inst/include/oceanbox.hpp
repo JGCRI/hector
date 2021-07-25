@@ -78,6 +78,8 @@ public:
     
 	void set_carbon( const unitval C );
 	fluxpool get_carbon() const { return carbon; };
+    fluxpool get_oa_flux() const { return oa_flux; };
+    
 	void add_carbon( fluxpool C );
 
     void start_tracking();

@@ -75,7 +75,8 @@ public:
     void slowparameval( double t, const double c[] );
     void stashCValues( double t, const double c[] );
     void record_state(double t);
-    void set_atmosphere_sources( fluxpool atm );
+    void set_atmosphere_sources( fluxpool atm ) { atmosphere_cpool = atm; };
+    fluxpool get_surface_pools() const;
     
 private:
     virtual unitval getData( const std::string& varName,

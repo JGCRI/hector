@@ -510,8 +510,7 @@ int OceanComponent::calcderivs( double t, const double c[], double dcdt[] ) cons
     const double cpoolscale = ( surfacepools + cpooldiff ) / surfacepools;
     unitval Ca( c[ SNBOX_ATMOS ] * PGC_TO_PPMVCO2, U_PPMV_CO2 );
 
-    const double cflux = annual_totalcflux( t, Ca, cpoolscale ).value( U_PGC_YR );
-    dcdt[ SNBOX_OCEAN ] = cflux;
+    dcdt[ SNBOX_OCEAN ] = annual_totalcflux( t, Ca, cpoolscale ).value( U_PGC_YR );
 
     // If too big a timestep--i.e., stashCvalues below has signalled a reduced step
     // that we're exceeding--signal to the solver that this won't work for us.
@@ -529,8 +528,12 @@ void OceanComponent::slowparameval( double t, const double c[] ) {
     in_spinup = core->inSpinup();
 }
 
-void OceanComponent::set_atmosphere_sources( fluxpool atm ) {
-    atmosphere_cpool = atm;
+//------------------------------------------------------------------------------
+/*! \brief   Return the ocean-atmosphere flux (really, its source map) to simpleNbox
+*  \returns           The two ocean-atmosphere fluxpools added together
+*/
+fluxpool OceanComponent::get_surface_pools() const {
+    return surfaceLL.get_carbon() + surfaceHL.get_carbon();
 }
 
 //------------------------------------------------------------------------------
@@ -568,8 +571,10 @@ void OceanComponent::stashCValues( double t, const double c[] ) {
     if( currentflux.value( U_PGC ) ) adjustment = ( solver_flux - currentflux ) / 2.0;
 	H_LOG( logger, Logger::DEBUG) << "Solver flux = " << solver_flux << ", currentflux = " << currentflux << ", adjust = " << adjustment << std::endl;
     surfaceHL.atmosphere_flux = surfaceHL.atmosphere_flux + adjustment;
-    surfaceHL.separate_surface_fluxes(atmosphere_cpool);
     surfaceLL.atmosphere_flux = surfaceLL.atmosphere_flux + adjustment;
+    
+    // Separate the one net flux (can be positive or negative) into the two fluxpool fluxes (always positive)
+    surfaceHL.separate_surface_fluxes(atmosphere_cpool);
     surfaceLL.separate_surface_fluxes(atmosphere_cpool);
     
     // This (along with carbon-cycle-solver obviously) is the heart of the
