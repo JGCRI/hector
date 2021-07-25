@@ -99,10 +99,7 @@ fluxpool::fluxpool(unitval v, unordered_map<string, double> pool_map, bool track
     ctmap = pool_map;
     name = pool_name;
     
-    if(v < 0) {
-        H_ASSERT(v >= 0, "Flux and pool values may not be negative in " + name);
-
-    }
+    H_ASSERT(v >= 0, "Flux and pool values may not be negative in " + name);
 
      // check pool_map data
     double frac = 0.0;
