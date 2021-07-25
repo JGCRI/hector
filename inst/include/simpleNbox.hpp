@@ -106,7 +106,6 @@ private:
     fluxpool earth_c;               //!< earth pool, Pg C; for mass-balance
     fluxpool atmos_c;                //!< atmosphere pool, Pg C
     fluxpool    Ca;                  //!< current [CO2], ppmv
-    fluxpool ocean_model_c;
 
     // Carbon pools -- biome-specific
     fluxpool_stringmap veg_c;        //!< vegetation pools, Pg C
@@ -133,7 +132,6 @@ private:
     tseries<fluxpool> earth_c_ts;  //!< Time series of earth carbon pool
     tseries<fluxpool> atmos_c_ts;  //!< Time series of atmosphere carbon pool
     tseries<fluxpool> Ca_ts;       //!< Time series of atmosphere CO2 concentration
-    tseries<fluxpool> ocean_model_c_tv;     //!< Time series of biome-specific ocean model carbon pools
 
     tvector<fluxpool_stringmap> veg_c_tv;      //!< Time series of biome-specific vegetation carbon pools
     tvector<fluxpool_stringmap> detritus_c_tv; //!< Time series of biome-specific detritus carbon pools
@@ -296,7 +294,6 @@ private:
     void start_tracking(){
         earth_c.tracking = true;
         atmos_c.tracking = true;
-        ocean_model_c.tracking = true;
         for( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
             std::string biome = *it;
             veg_c[ biome ].tracking = true;

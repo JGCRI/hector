@@ -77,10 +77,6 @@ void SimpleNbox::prepareToRun()
 {
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
 
-    // Set our (temporary) ocean c tracking variable to the actual total ocean C
-    unitval oceanc = core->sendMessage( M_GETDATA, D_OCEAN_C );
-    ocean_model_c.set( oceanc.value( U_PGC ), U_PGC, false, "ocean_c" );
-
     // If any 'global' settings, there shouldn't also be regional
     if ( (has_biome( SNBOX_DEFAULT_BIOME )) & (biome_list.size() > 1) ) {
         H_THROW( "Cannot have both global and biome-specific data! "
@@ -229,8 +225,9 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     fluxpool ccs_flux = atmos_c.flux_from_fluxpool(ccs_untracked);
 
     // current ocean fluxes
+    const unitval ocean_carbon = core->sendMessage( M_GETDATA, D_OCEAN_C);
     omodel->stashCValues( t, c );   // tell ocean model to store new C values (and compute final surface fluxes)
-    unitval ocean_atmos = unitval(c[SNBOX_OCEAN] - ocean_model_c.value(U_PGC), U_PGC);
+    unitval ocean_atmos = unitval(c[SNBOX_OCEAN] - ocean_carbon.value(U_PGC), U_PGC);
     fluxpool ocean_surface = omodel->get_surface_pools();
     
     fluxpool oa_flux(0.0, U_PGC);
@@ -343,7 +340,6 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     atmos_c = (atmos_c + ffi_flux) - ccs_flux;
 
     // ocean-atmosphere flux adjustment
-    ocean_model_c = ocean_model_c - oa_flux + ao_flux;
     atmos_c = atmos_c + oa_flux - ao_flux;
 
     // TEMPORARY TO INVESTIGATE FLUXES

@@ -507,7 +507,6 @@ void SimpleNbox::reset(double time)
     veg_c = veg_c_tv.get(time);
     detritus_c = detritus_c_tv.get(time);
     soil_c = soil_c_tv.get(time);
-    ocean_model_c = ocean_model_c_tv.get(time);
     
     residual = residual_ts.get(time);
 
@@ -535,7 +534,6 @@ void SimpleNbox::reset(double time)
     veg_c_tv.truncate(time);
     detritus_c_tv.truncate(time);
     soil_c_tv.truncate(time);
-    ocean_model_c_tv.truncate(time);
     
     residual_ts.truncate(time);
 
@@ -573,7 +571,6 @@ void SimpleNbox::record_state(double t)
     veg_c_tv.set(t, veg_c);
     detritus_c_tv.set(t, detritus_c);
     soil_c_tv.set(t, soil_c);
-    ocean_model_c_tv.set(t, ocean_model_c);
     
     residual_ts.set(t, residual);
 
