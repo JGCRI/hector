@@ -70,11 +70,11 @@ public:
 
 	void initbox( double C, std::string name="" );
     void make_connection( oceanbox* ob, const double k, const int window );
-	void compute_fluxes( const unitval current_Ca, const double yf, const bool do_circ=true );
+	void compute_fluxes( const unitval current_Ca, const fluxpool atmosphere_cpool, const double yf, const bool do_circ=true );
     void log_state();
 	void update_state();
 	void new_year( const unitval Tgav );
-    void separate_surface_fluxes();
+    void separate_surface_fluxes( fluxpool atmosphere_pool );
     
 	void set_carbon( const unitval C );
 	fluxpool get_carbon() const { return carbon; };

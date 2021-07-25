@@ -309,7 +309,9 @@ void OceanComponent::run( const double runToDate ) {
 
     Ca = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_CO2 );
     Tgav = core->sendMessage( M_GETDATA, D_GLOBAL_TEMP );
+    //atmosphere_cpool = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_C );
     in_spinup = core->inSpinup();
+    
 	annualflux_sum.set( 0.0, U_PGC );
 	annualflux_sumHL.set( 0.0, U_PGC );
 	annualflux_sumLL.set( 0.0, U_PGC );
@@ -341,8 +343,8 @@ void OceanComponent::run( const double runToDate ) {
    }
 
     // Call compute_fluxes with do_boxfluxes=false to run just chemistry
-	surfaceHL.compute_fluxes( Ca, 1.0, false );
-	surfaceLL.compute_fluxes( Ca, 1.0, false );
+	surfaceHL.compute_fluxes( Ca, atmosphere_cpool, 1.0, false );
+	surfaceLL.compute_fluxes( Ca, atmosphere_cpool, 1.0, false );
 
     // Now wait for the solver to call us
 }
@@ -527,6 +529,10 @@ void OceanComponent::slowparameval( double t, const double c[] ) {
     in_spinup = core->inSpinup();
 }
 
+void OceanComponent::set_atmosphere_sources( fluxpool atm ) {
+    atmosphere_cpool = atm;
+}
+
 //------------------------------------------------------------------------------
 // documentation is inherited
 void OceanComponent::stashCValues( double t, const double c[] ) {
@@ -547,10 +553,10 @@ void OceanComponent::stashCValues( double t, const double c[] ) {
     unitval Ca( c[ SNBOX_ATMOS ] * PGC_TO_PPMVCO2, U_PPMV_CO2 );
 
     // Compute fluxes between the boxes (advection of carbon)
-    surfaceHL.compute_fluxes( Ca, yearfraction );
-	surfaceLL.compute_fluxes( Ca, yearfraction );
-	inter.compute_fluxes( Ca, yearfraction );
-	deep.compute_fluxes( Ca, yearfraction );
+    surfaceHL.compute_fluxes( Ca, atmosphere_cpool, yearfraction );
+	surfaceLL.compute_fluxes( Ca, atmosphere_cpool, yearfraction );
+	inter.compute_fluxes( Ca, atmosphere_cpool, yearfraction );
+	deep.compute_fluxes( Ca, atmosphere_cpool, yearfraction );
 
     // At this point, compute_fluxes has (by calling the chemistry model) computed atmosphere-
     // ocean fluxes for the surface boxes. But these are end-of-timestep values, and we need to
@@ -562,9 +568,9 @@ void OceanComponent::stashCValues( double t, const double c[] ) {
     if( currentflux.value( U_PGC ) ) adjustment = ( solver_flux - currentflux ) / 2.0;
 	H_LOG( logger, Logger::DEBUG) << "Solver flux = " << solver_flux << ", currentflux = " << currentflux << ", adjust = " << adjustment << std::endl;
     surfaceHL.atmosphere_flux = surfaceHL.atmosphere_flux + adjustment;
-    surfaceHL.separate_surface_fluxes();
+    surfaceHL.separate_surface_fluxes(atmosphere_cpool);
     surfaceLL.atmosphere_flux = surfaceLL.atmosphere_flux + adjustment;
-    surfaceLL.separate_surface_fluxes();
+    surfaceLL.separate_surface_fluxes(atmosphere_cpool);
     
     // This (along with carbon-cycle-solver obviously) is the heart of the
     // reduced-timestep code. If carbon flux has exceeded some critical value,

@@ -75,7 +75,8 @@ public:
     void slowparameval( double t, const double c[] );
     void stashCValues( double t, const double c[] );
     void record_state(double t);
-
+    void set_atmosphere_sources( fluxpool atm );
+    
 private:
     virtual unitval getData( const std::string& varName,
                             const double date );
@@ -94,7 +95,8 @@ private:
     // Atmosphere conditions
     unitval Tgav;           //!< Global temperature anomaly, degC
     unitval Ca;             //!< Atmospheric CO2, ppm
-
+    fluxpool atmosphere_cpool;
+    
     // Atmosphere-ocean flux
     unitval annualflux_sum, annualflux_sumHL, annualflux_sumLL;     //!< Running annual totals atm-ocean flux, for output reporting
     unitval lastflux_annualized;        //!< Last atm-ocean flux when solver ordered us to 'stash' C values

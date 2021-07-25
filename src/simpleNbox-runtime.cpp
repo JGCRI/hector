@@ -110,7 +110,7 @@ void SimpleNbox::prepareToRun()
     }
 
     // Save a pointer to the ocean model in use
-    omodel = dynamic_cast<CarbonCycleModel*>( core->getComponentByCapability( D_OCEAN_C ) );
+    omodel = dynamic_cast<OceanComponent*>( core->getComponentByCapability( D_OCEAN_C ) );
 
     if( !Ftalbedo.size() ) {          // if no albedo data, assume constant
         unitval alb( -0.2, U_W_M2 ); // default is MAGICC value
@@ -149,11 +149,14 @@ void SimpleNbox::run( const double runToDate )
     
     // If we've hit the tracking start year, enagage!
     const double tdate = core->getTrackingDate();
-    if(!in_spinup && tcurrent == tdate){
+    if(!in_spinup && runToDate == tdate){
         H_LOG( logger, Logger::NOTICE ) << "Tracking start" << std::endl;
         start_tracking();
     }
     Tgav_record.set( runToDate, core->sendMessage( M_GETDATA, D_GLOBAL_TEMP ).value( U_DEGC ) );
+    
+    // TODO: this is a hack, because currently we can't pass fluxpools around via sendMessage
+    omodel->set_atmosphere_sources( atmos_c );  // inform ocean model what our atmosphere looks like
 }
 
 //------------------------------------------------------------------------------
@@ -704,8 +707,8 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
  */
 void SimpleNbox::slowparameval( double t, const double c[] )
 {
-    omodel->slowparameval( t, c );      // pass msg on to ocean model
-
+    omodel->slowparameval( t, c );              // pass msg on to ocean model
+    
     // CO2 fertilization
     Ca.set( c[ SNBOX_ATMOS ] * PGC_TO_PPMVCO2, U_PPMV_CO2 );
 

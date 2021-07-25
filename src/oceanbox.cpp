@@ -247,7 +247,7 @@ fluxpool oceanbox::compute_connection_flux( int i, double yf ) const {
  * \param[in] yf                year fraction (0-1)
  * \param[in] do_circ           flag: do circulation, or not?
  */
-void oceanbox::compute_fluxes( const unitval current_Ca, const double yf, const bool do_circ ) {
+void oceanbox::compute_fluxes( const unitval current_Ca, const fluxpool atmosphere_cpool, const double yf, const bool do_circ ) {
     
     Ca = current_Ca;
     
@@ -270,7 +270,7 @@ void oceanbox::compute_fluxes( const unitval current_Ca, const double yf, const 
     // Step 2 : account for partial year
     atmosphere_flux = atmosphere_flux * yf;
 
-    separate_surface_fluxes();
+    separate_surface_fluxes( atmosphere_cpool );
     
     // Step 3: check if this box is oscillating
     /*
@@ -301,14 +301,13 @@ void oceanbox::compute_fluxes( const unitval current_Ca, const double yf, const 
     } // if do_circulation
 }
 
-void oceanbox::separate_surface_fluxes() {
+void oceanbox::separate_surface_fluxes( fluxpool atmosphere_pool ) {
     // Set the fluxpool values from the current atmosphere_flux unitval
-    fluxpool pseudo_atmosphere = fluxpool(1.0, U_PGC, carbon.tracking, "<atmosphere>");
     if(atmosphere_flux > 0) {
-        ao_flux = pseudo_atmosphere.flux_from_unitval(atmosphere_flux);
+        ao_flux = atmosphere_pool.flux_from_unitval(atmosphere_flux);
         oa_flux = carbon.flux_from_unitval(unitval( 0.0, U_PGC ));
     } else {
-        ao_flux = pseudo_atmosphere.flux_from_unitval(unitval( 0.0, U_PGC ));
+        ao_flux = atmosphere_pool.flux_from_unitval(unitval( 0.0, U_PGC ));
         oa_flux = carbon.flux_from_unitval(-atmosphere_flux);
     }
 }

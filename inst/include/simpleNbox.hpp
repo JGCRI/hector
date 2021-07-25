@@ -224,7 +224,7 @@ private:
 
     bool has_biome(const std::string& biome);
 
-    CarbonCycleModel *omodel;           //!< pointer to the ocean model in use
+    OceanComponent *omodel;           //!< pointer to the ocean model in use
 
     // Add a biome to a time-series map variable (e.g. veg_c_tv)
     template <class T_data>
