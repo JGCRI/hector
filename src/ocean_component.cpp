@@ -323,8 +323,7 @@ void OceanComponent::run( const double runToDate ) {
     deep.new_year( Tgav );
 
     H_LOG( logger, Logger::DEBUG ) << "----------------------------------------------------" << std::endl;
-    H_LOG( logger, Logger::DEBUG ) << "runToDate=" << runToDate << ", spinup=" << in_spinup << std::endl;
-   H_LOG( logger, Logger::DEBUG ) << "runToDate=" << runToDate << ", Ca=" << Ca << ", spinup=" << in_spinup << std::endl;
+    H_LOG( logger, Logger::DEBUG ) << "runToDate=" << runToDate << ", Ca=" << Ca << ", spinup=" << in_spinup << std::endl;
 
     // If chemistry models weren't turned on during spinup, do so now
     if( !spinup_chem && !in_spinup && !surfaceHL.active_chemistry ) {
@@ -563,8 +562,10 @@ void OceanComponent::stashCValues( double t, const double c[] ) {
     if( currentflux.value( U_PGC ) ) adjustment = ( solver_flux - currentflux ) / 2.0;
 	H_LOG( logger, Logger::DEBUG) << "Solver flux = " << solver_flux << ", currentflux = " << currentflux << ", adjust = " << adjustment << std::endl;
     surfaceHL.atmosphere_flux = surfaceHL.atmosphere_flux + adjustment;
+    surfaceHL.separate_surface_fluxes();
     surfaceLL.atmosphere_flux = surfaceLL.atmosphere_flux + adjustment;
-
+    surfaceLL.separate_surface_fluxes();
+    
     // This (along with carbon-cycle-solver obviously) is the heart of the
     // reduced-timestep code. If carbon flux has exceeded some critical value,
     // we need to reduce timestep for the future.

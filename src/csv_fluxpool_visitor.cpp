@@ -73,7 +73,6 @@ void CSVFluxPoolVisitor::print_pool(fluxpool x) {
                 x.name << DELIMITER << x.value(U_PGC) << DELIMITER << x.unitsName() << DELIMITER <<
                 s << DELIMITER << x.get_fraction(s) << endl;
         }
-        csvFile << endl;
     }
 }
 
@@ -108,7 +107,6 @@ void CSVFluxPoolVisitor::visit( SimpleNbox* c ) {
     }
     print_diff(c->atmos_diff, "atmos_diff");
     print_diff(c->earth_diff, "earth_diff");
-    csvFile << endl;
 }
 
 //------------------------------------------------------------------------------

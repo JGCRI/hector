@@ -60,6 +60,8 @@ private:
     unitval pco2_lastyear;  //
     unitval dic_lastyear;   //
     unitval compute_tabsC( const unitval Tgav ) const;
+    fluxpool ao_flux;           //!< atmosphere -> ocean flux
+    fluxpool oa_flux;           //!< ocean -> atmosphere flux
 
 public:
 	oceanbox (); // constructor
@@ -72,7 +74,8 @@ public:
     void log_state();
 	void update_state();
 	void new_year( const unitval Tgav );
-
+    void separate_surface_fluxes();
+    
 	void set_carbon( const unitval C );
 	fluxpool get_carbon() const { return carbon; };
 	void add_carbon( fluxpool C );
@@ -97,7 +100,7 @@ public:
     double fmin( double alk, void *params );
 
     unitval atmosphere_flux;    //!< atmosphere -> ocean flux
-
+    
 	// logger
     Logger* logger;
 };

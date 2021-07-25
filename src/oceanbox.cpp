@@ -41,6 +41,8 @@ oceanbox::oceanbox() {
     warmingfactor = 1.0;      // by default warms exactly as global
     Tbox = unitval( -999, U_DEGC );
     atmosphere_flux.set( 0.0, U_PGC );
+    ao_flux.set( 0.0, U_PGC );
+    oa_flux.set( 0.0, U_PGC );
 }
 
 //------------------------------------------------------------------------------
@@ -67,8 +69,8 @@ void oceanbox::initbox( double carbon, string name ) {
      // Each box is separate from each other, and we keep track of carbon in each box
     if( name != "" ) Name = name;
     set_carbon( unitval(carbon, U_PGC ) );
-    CarbonAdditions.set( 0.0, U_PGC, false, "CarbonAdditions" );
-    CarbonSubtractions.set( 0.0, U_PGC, false, "CarbonSubtractions" );
+    CarbonAdditions.set( 0.0, U_PGC, false, name );
+    CarbonSubtractions.set( 0.0, U_PGC, false, name );
     active_chemistry = false;
     
     OB_LOG( logger, Logger::NOTICE) << "hello " << name << endl;
@@ -84,7 +86,7 @@ void oceanbox::initbox( double carbon, string name ) {
  */
 void oceanbox::add_carbon( fluxpool carbon ) {
 	CarbonAdditions = CarbonAdditions + carbon;
-	OB_LOG( logger, Logger::DEBUG) << Name << " receiving " << carbon << " (" << CarbonAdditions << ")" << endl;
+	OB_LOG( logger, Logger::DEBUG) << Name << " receiving " << carbon << " (" << CarbonAdditions << CarbonSubtractions << ")" << endl;
 }
 
 //------------------------------------------------------------------------------
@@ -193,16 +195,20 @@ double round( const double d ) { return floor( d + 0.5 ); }
  */
 void oceanbox::log_state() {
 	OB_LOG( logger, Logger::DEBUG) << "----- State of " << Name << " box -----" << endl;
-    fluxpool futurec = carbon + CarbonAdditions + atmosphere_flux - CarbonSubtractions;
-	OB_LOG( logger, Logger::DEBUG) << "   carbon = " << carbon << " -> " << futurec << endl;
+    fluxpool futurec = carbon + CarbonAdditions + ao_flux - oa_flux - CarbonSubtractions;
+    OB_LOG( logger, Logger::DEBUG) << "   carbon = " << carbon.value(U_PGC) << " -> " << futurec.value(U_PGC) << endl;
 	OB_LOG( logger, Logger::DEBUG) << "   T=" << Tbox << ", surfacebox=" << surfacebox << ", active_chemistry=" << active_chemistry << endl;
-	OB_LOG( logger, Logger::DEBUG) << "   CarbonAdditions = " << CarbonAdditions << " ("
+    OB_LOG( logger, Logger::DEBUG) << "   CarbonAdditions = " << CarbonAdditions.value(U_PGC) << " ("
         << ( CarbonAdditions / carbon*100 ) << "%)" << endl;
-    OB_LOG( logger, Logger::DEBUG) << "   CarbonSubtractions = " << CarbonSubtractions << " ("
+    OB_LOG( logger, Logger::DEBUG) << "   CarbonSubtractions = " << CarbonSubtractions.value(U_PGC) << " ("
         << ( CarbonSubtractions / carbon * 100 ) << "%)" << endl;
     if( surfacebox ) {
-        OB_LOG( logger, Logger::DEBUG) << "   FPgC = " << atmosphere_flux << " ("
+        OB_LOG( logger, Logger::DEBUG) << "   FPgC = " << atmosphere_flux.value(U_PGC) << " ("
             << ( atmosphere_flux / carbon * 100 ) << "%)" << endl;
+        OB_LOG( logger, Logger::DEBUG) << "   ao_flux = " << ao_flux.value(U_PGC) << " ("
+            << ( ao_flux / carbon * 100 ) << "%)" << endl;
+        OB_LOG( logger, Logger::DEBUG) << "   oa_flux = " << oa_flux.value(U_PGC) << " ("
+            << ( oa_flux / carbon * 100 ) << "%)" << endl;
     }
 
     unitval K0 = mychemistry.get_K0();
@@ -252,7 +258,6 @@ void oceanbox::compute_fluxes( const unitval current_Ca, const double yf, const 
 		mychemistry.ocean_csys_run( Tbox, carbon );
         
         atmosphere_flux = unitval( mychemistry.calc_annual_surface_flux( Ca ).value( U_PGC_YR ), U_PGC );
-        
 	} else  {
 		// No active chemistry, so atmosphere-box flux is simply a function of the
 		// difference between box carbon and atmospheric carbon s.t. it is preindustrial_flux
@@ -265,6 +270,8 @@ void oceanbox::compute_fluxes( const unitval current_Ca, const double yf, const 
     // Step 2 : account for partial year
     atmosphere_flux = atmosphere_flux * yf;
 
+    separate_surface_fluxes();
+    
     // Step 3: check if this box is oscillating
     /*
     const bool osc = oscillating( 10, // over the last 10 states,
@@ -294,6 +301,18 @@ void oceanbox::compute_fluxes( const unitval current_Ca, const double yf, const 
     } // if do_circulation
 }
 
+void oceanbox::separate_surface_fluxes() {
+    // Set the fluxpool values from the current atmosphere_flux unitval
+    fluxpool pseudo_atmosphere = fluxpool(1.0, U_PGC, carbon.tracking, "<atmosphere>");
+    if(atmosphere_flux > 0) {
+        ao_flux = pseudo_atmosphere.flux_from_unitval(atmosphere_flux);
+        oa_flux = carbon.flux_from_unitval(unitval( 0.0, U_PGC ));
+    } else {
+        ao_flux = pseudo_atmosphere.flux_from_unitval(unitval( 0.0, U_PGC ));
+        oa_flux = carbon.flux_from_unitval(-atmosphere_flux);
+    }
+}
+
 //------------------------------------------------------------------------------
 /*! \brief    Function to calculate Revelle Factor
 */
@@ -319,9 +338,10 @@ unitval oceanbox::calc_revelle() {
 void oceanbox::update_state() {
     
 	carbonHistory.insert( carbonHistory.begin (), carbon );
-	carbon = carbon + CarbonAdditions + atmosphere_flux - CarbonSubtractions;
-    CarbonAdditions.set( 0.0, U_PGC, carbon.tracking, "CarbonAdditions" );
-    CarbonSubtractions.set( 0.0, U_PGC, carbon.tracking, "CarbonSubtractions" );
+	carbon = carbon + CarbonAdditions + ao_flux - oa_flux - CarbonSubtractions;
+    // these start with 0 from themselves (this box)
+    CarbonAdditions.set( 0.0, U_PGC, carbon.tracking, Name );
+    CarbonSubtractions.set( 0.0, U_PGC, carbon.tracking, Name );
 }
 
 //------------------------------------------------------------------------------
