@@ -41,9 +41,6 @@ private:
     // Data retained while the visitor is operating
     double current_date;
 
-    // Spin up Flag
-    bool in_spinup;
-
     //! Current model date, stored as a string for output
     std::string datestring;
 
