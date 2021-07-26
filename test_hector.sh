@@ -40,6 +40,16 @@ sed 's/endDate=2300/endDate=2250/' $INPUT/hector_rcp45.ini > $INPUT/hector_rcp45
 $HECTOR $INPUT/hector_rcp45_time.ini
 rm $INPUT/hector_rcp45_time.ini
 
+# Turn on tracking
+echo "---------- Running: tracking ----------"
+sed 's/trackingDate=9999/trackingDate=1850/' $INPUT/hector_rcp45.ini > $INPUT/hector_rcp45_tracking.ini
+$HECTOR $INPUT/hector_rcp45_tracking.ini
+echo "---------- Running: tracking & CO2 constraint ----------"
+sed 's/;CO2_constrain=csv:constraints\/lawdome_co2.csv/CO2_constrain=csv:constraints\/lawdome_co2.csv/' $INPUT/hector_rcp45_tracking.ini > $INPUT/hector_rcp45_tracking_co2.ini
+$HECTOR $INPUT/hector_rcp45_tracking_co2.ini
+rm $INPUT/hector_rcp45_tracking_co2.ini
+rm $INPUT/hector_rcp45_tracking.ini
+
 # Turn off spinup
 echo "---------- Running: no spinup ----------"
 sed 's/do_spinup=1/do_spinup=0/' $INPUT/hector_rcp45.ini > $INPUT/hector_rcp45_spinup.ini
