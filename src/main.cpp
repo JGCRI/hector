@@ -37,7 +37,7 @@ int main (int argc, char * const argv[]) {
 
 	try {
         // Create the Hector core
-        Core core;
+        Core core(Hector::Logger::NOTICE, true, true);
         Logger& glog = core.getGlobalLogger();
         H_LOG( glog, Logger::NOTICE ) << MODEL_NAME << " wrapper start" << endl;
 

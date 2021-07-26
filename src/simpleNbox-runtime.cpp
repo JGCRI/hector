@@ -77,10 +77,6 @@ void SimpleNbox::prepareToRun()
 {
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
 
-    // Set our (temporary) ocean c tracking variable to the actual total ocean C
-    unitval oceanc = core->sendMessage( M_GETDATA, D_OCEAN_C );
-    ocean_model_c.set( oceanc.value( U_PGC ), U_PGC, false, "ocean_c" );
-
     // If any 'global' settings, there shouldn't also be regional
     if ( (has_biome( SNBOX_DEFAULT_BIOME )) & (biome_list.size() > 1) ) {
         H_THROW( "Cannot have both global and biome-specific data! "
@@ -110,7 +106,7 @@ void SimpleNbox::prepareToRun()
     }
 
     // Save a pointer to the ocean model in use
-    omodel = dynamic_cast<CarbonCycleModel*>( core->getComponentByCapability( D_OCEAN_C ) );
+    omodel = dynamic_cast<OceanComponent*>( core->getComponentByCapability( D_OCEAN_C ) );
 
     if( !Ftalbedo.size() ) {          // if no albedo data, assume constant
         unitval alb( -0.2, U_W_M2 ); // default is MAGICC value
@@ -149,11 +145,14 @@ void SimpleNbox::run( const double runToDate )
     
     // If we've hit the tracking start year, enagage!
     const double tdate = core->getTrackingDate();
-    if(!in_spinup && tcurrent == tdate){
+    if(!in_spinup && runToDate == tdate){
         H_LOG( logger, Logger::NOTICE ) << "Tracking start" << std::endl;
-        startTracking();
+        start_tracking();
     }
     Tgav_record.set( runToDate, core->sendMessage( M_GETDATA, D_GLOBAL_TEMP ).value( U_DEGC ) );
+    
+    // TODO: this is a hack, because currently we can't pass fluxpools around via sendMessage
+    omodel->set_atmosphere_sources( atmos_c );  // inform ocean model what our atmosphere looks like
 }
 
 //------------------------------------------------------------------------------
@@ -226,15 +225,18 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     fluxpool ccs_flux = atmos_c.flux_from_fluxpool(ccs_untracked);
 
     // current ocean fluxes
-    // TODO: Add all other ocean pools and get fluxes from DOECLIM and ocean box of Hector
-    unitval ocean_atmos = unitval(c[SNBOX_OCEAN] - ocean_model_c.value(U_PGC), U_PGC);
+    const unitval ocean_carbon = core->sendMessage( M_GETDATA, D_OCEAN_C);
+    omodel->stashCValues( t, c );   // tell ocean model to store new C values (and compute final surface fluxes)
+    unitval ocean_atmos = unitval(c[SNBOX_OCEAN] - ocean_carbon.value(U_PGC), U_PGC);
+    fluxpool ocean_surface = omodel->get_surface_pools();
+    
     fluxpool oa_flux(0.0, U_PGC);
     fluxpool ao_flux(0.0, U_PGC);
     if(ocean_atmos > 0){
         ao_flux = atmos_c.flux_from_unitval(ocean_atmos);
-        oa_flux = ocean_model_c.flux_from_fluxpool(oa_flux); // i.e., 0
+        oa_flux = ocean_surface.flux_from_fluxpool(oa_flux); // i.e., 0
     } else {
-        oa_flux = ocean_model_c.flux_from_unitval(-ocean_atmos);
+        oa_flux = ocean_surface.flux_from_unitval(-ocean_atmos);
         ao_flux = atmos_c.flux_from_fluxpool(ao_flux); // i.e., 0
     }
 
@@ -338,7 +340,6 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     atmos_c = (atmos_c + ffi_flux) - ccs_flux;
 
     // ocean-atmosphere flux adjustment
-    ocean_model_c = ocean_model_c - oa_flux + ao_flux;
     atmos_c = atmos_c + oa_flux - ao_flux;
 
     // TEMPORARY TO INVESTIGATE FLUXES
@@ -347,8 +348,6 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     // adjusts non-biome pools to output from calcderivs
     earth_c.adjust_pool_to_val(c[SNBOX_EARTH], false);
     atmos_c.adjust_pool_to_val(c[SNBOX_ATMOS], false);
-
-    omodel->stashCValues( t, c );   // tell ocean model to store new C values
 
     log_pools( t );
 
@@ -704,8 +703,8 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
  */
 void SimpleNbox::slowparameval( double t, const double c[] )
 {
-    omodel->slowparameval( t, c );      // pass msg on to ocean model
-
+    omodel->slowparameval( t, c );              // pass msg on to ocean model
+    
     // CO2 fertilization
     Ca.set( c[ SNBOX_ATMOS ] * PGC_TO_PPMVCO2, U_PPMV_CO2 );
 

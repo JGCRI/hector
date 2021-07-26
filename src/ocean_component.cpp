@@ -121,7 +121,10 @@ unitval OceanComponent::sendMessage( const std::string& message,
         // info struct holds the amount being dumped/extracted from deep ocean
         unitval carbon = info.value_unitval;
         H_LOG( logger, Logger::DEBUG ) << "Atmosphere dumping " << carbon << " Pg C to deep ocean" << std::endl;
-        deep.set_carbon( deep.get_carbon() + carbon );
+        
+        // We don't want this to be tracked, so just overwrite the deep total
+        carbon = carbon + unitval(deep.get_carbon().value( U_PGC ), U_PGC);
+        deep.set_carbon( carbon );
 
     } else { //! We don't handle any other messages
         H_THROW( "Caller sent unknown message: "+message );
@@ -178,27 +181,26 @@ void OceanComponent::setData( const string& varName,
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-// TODO: should we put these in the ini file instead?
 void OceanComponent::prepareToRun() {
 
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
 
     // Set up our ocean box model. Carbon values here can be overridden by user input
     H_LOG( logger, Logger::DEBUG ) << "Setting up ocean box model" << std::endl;
-    surfaceHL.initbox( unitval( 140, U_PGC ), "HL" );
+    surfaceHL.initbox( 140, "HL" );
     surfaceHL.surfacebox = true;
     surfaceHL.preindustrial_flux.set( 1.000, U_PGC_YR );         // used if no spinup chemistry
     surfaceHL.active_chemistry = spinup_chem;
 
-    surfaceLL.initbox( unitval( 770, U_PGC ),  "LL" );
+    surfaceLL.initbox( 770, "LL" );
     surfaceLL.surfacebox = true;
     surfaceLL.preindustrial_flux.set( -1.000, U_PGC_YR );        // used if no spinup chemistry
     surfaceLL.active_chemistry = spinup_chem;
 
-    inter.initbox( unitval( 8400, U_PGC ),  "intermediate" );
-    deep.initbox( unitval( 26000, U_PGC ),  "deep" );
+    inter.initbox( 8400, "intermediate" );
+    deep.initbox( 26000, "deep" );
 
-    double time = 60 * 60 * 24 * 365.25;  // seconds per year
+    double spy = 60 * 60 * 24 * 365.25;  // seconds per year
 
     // ocean_volume = 1.36e18 m3
     double thick_LL = 100;
@@ -217,17 +219,17 @@ void OceanComponent::prepareToRun() {
 
     // transport * seconds / volume of box
     // Advection --> transport of carbon from one box to the next (k values, fraction/yr )
-    double LL_HL = ( tt.value( U_M3_S ) * time ) / LL_volume;
-    double HL_DO = ( ( tt + tu).value( U_M3_S ) * time ) / HL_volume;
-    double DO_IO = ( ( tt + tu).value( U_M3_S ) * time ) / D_volume;
-    double IO_HL = ( tu.value( U_M3_S) * time )  / I_volume;
-    double IO_LL = ( tt.value( U_M3_S) * time )  / I_volume;
+    double LL_HL = ( tt.value( U_M3_S ) * spy ) / LL_volume;
+    double HL_DO = ( ( tt + tu).value( U_M3_S ) * spy ) / HL_volume;
+    double DO_IO = ( ( tt + tu).value( U_M3_S ) * spy ) / D_volume;
+    double IO_HL = ( tu.value( U_M3_S) * spy )  / I_volume;
+    double IO_LL = ( tt.value( U_M3_S) * spy )  / I_volume;
 
     // Exchange parameters --> not explicitly modeling diffusion
-    double IO_LLex = ( twi.value( U_M3_S) * time ) / I_volume;
-    double LL_IOex = ( twi.value( U_M3_S) * time ) / LL_volume;
-    double DO_IOex = ( tid.value( U_M3_S) * time ) / D_volume;
-    double IO_DOex = ( tid.value( U_M3_S) * time ) / I_volume;
+    double IO_LLex = ( twi.value( U_M3_S) * spy ) / I_volume;
+    double LL_IOex = ( twi.value( U_M3_S) * spy ) / LL_volume;
+    double DO_IOex = ( tid.value( U_M3_S) * spy ) / D_volume;
+    double IO_DOex = ( tid.value( U_M3_S) * spy ) / I_volume;
 
     // make_connection( box to connect to, k value, window size (0=present only) )
     surfaceLL.make_connection( &surfaceHL, LL_HL, 1 );
@@ -238,16 +240,15 @@ void OceanComponent::prepareToRun() {
     inter.make_connection( &deep, IO_DOex, 1 );
     deep.make_connection( &inter, DO_IO + DO_IOex, 1 );
 
-    //inputs for surface chemistry boxes
-    //surfaceHL.mychemistry.alk = // mol/kg
-    surfaceHL.deltaT.set( -13.0, U_DEGC );  // delta T is added 288.15 to return the initial temperature value of the surface box
+    // inputs for surface chemistry boxes
+    surfaceHL.deltaT.set( -13.0, U_DEGC );
     surfaceHL.mychemistry.S             = 34.5; // Salinity
     surfaceHL.mychemistry.volumeofbox   = HL_volume; //5.4e15; //m3
     surfaceHL.mychemistry.As            = ocean_area * part_high ; // surface area m2
     surfaceHL.mychemistry.U             = 6.7; // average wind speed m/s
 
     //surfaceLL.mychemistry.alk = // mol/kg
-    surfaceLL.deltaT.set( 7.0, U_DEGC );    // delta T is added to 288.15 to return the initial temperature value of the surface box
+    surfaceLL.deltaT.set( 7.0, U_DEGC );
     surfaceLL.mychemistry.S             = 34.5; // Salinity
     surfaceLL.mychemistry.volumeofbox   = LL_volume; //3.06e16; //m3
     surfaceLL.mychemistry.As            = ocean_area * part_low; // surface area m2
@@ -264,7 +265,7 @@ void OceanComponent::prepareToRun() {
 /*! \brief      Internal function to add up all model C pools
  *  \returns    unitval, total carbon in the ocean
  */
-unitval OceanComponent::totalcpool() const {
+fluxpool OceanComponent::totalcpool() const {
 	return deep.get_carbon() + inter.get_carbon() + surfaceLL.get_carbon() + surfaceHL.get_carbon();
 }
 
@@ -297,9 +298,21 @@ unitval OceanComponent::annual_totalcflux( const double date, const unitval& Ca,
 // documentation is inherited
 void OceanComponent::run( const double runToDate ) {
 
+    // If we've hit the tracking start year, enagage!
+    const double tdate = core->getTrackingDate();
+    if(!in_spinup && runToDate == tdate){
+        H_LOG( logger, Logger::NOTICE ) << "Tracking start" << std::endl;
+        surfaceHL.start_tracking();
+        surfaceLL.start_tracking();
+        inter.start_tracking();
+        deep.start_tracking();
+    }
+
     Ca = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_CO2 );
     Tgav = core->sendMessage( M_GETDATA, D_GLOBAL_TEMP );
+    //atmosphere_cpool = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_C );
     in_spinup = core->inSpinup();
+    
 	annualflux_sum.set( 0.0, U_PGC );
 	annualflux_sumHL.set( 0.0, U_PGC );
 	annualflux_sumLL.set( 0.0, U_PGC );
@@ -313,8 +326,7 @@ void OceanComponent::run( const double runToDate ) {
     deep.new_year( Tgav );
 
     H_LOG( logger, Logger::DEBUG ) << "----------------------------------------------------" << std::endl;
-    H_LOG( logger, Logger::DEBUG ) << "runToDate=" << runToDate << ", spinup=" << in_spinup << std::endl;
-   H_LOG( logger, Logger::DEBUG ) << "runToDate=" << runToDate << ", Ca=" << Ca << ", spinup=" << in_spinup << std::endl;
+    H_LOG( logger, Logger::DEBUG ) << "runToDate=" << runToDate << ", Ca=" << Ca << ", spinup=" << in_spinup << std::endl;
 
     // If chemistry models weren't turned on during spinup, do so now
     if( !spinup_chem && !in_spinup && !surfaceHL.active_chemistry ) {
@@ -332,12 +344,13 @@ void OceanComponent::run( const double runToDate ) {
    }
 
     // Call compute_fluxes with do_boxfluxes=false to run just chemistry
-	surfaceHL.compute_fluxes( Ca, 1.0, false );
-	surfaceLL.compute_fluxes( Ca, 1.0, false );
+	surfaceHL.compute_fluxes( Ca, atmosphere_cpool, 1.0, false );
+	surfaceLL.compute_fluxes( Ca, atmosphere_cpool, 1.0, false );
 
     // Now wait for the solver to call us
 }
-    //------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------
 // documentation is inherited
 bool OceanComponent::run_spinup( const int step ) {
     run( step );
@@ -487,7 +500,7 @@ void OceanComponent::getCValues( double t, double c[] ) {
  *  in the array dydt, for arguments (t,y) and parameters params." -GSL docs
  *  Compute the air-ocean flux (Pg C/yr) at time t and for pools c[]
  */
-int  OceanComponent::calcderivs( double t, const double c[], double dcdt[] ) const {
+int OceanComponent::calcderivs( double t, const double c[], double dcdt[] ) const {
 
     const double yearfraction = ( t - ODEstartdate );
 
@@ -498,8 +511,7 @@ int  OceanComponent::calcderivs( double t, const double c[], double dcdt[] ) con
     const double cpoolscale = ( surfacepools + cpooldiff ) / surfacepools;
     unitval Ca( c[ SNBOX_ATMOS ] * PGC_TO_PPMVCO2, U_PPMV_CO2 );
 
-    const double cflux = annual_totalcflux( t, Ca, cpoolscale ).value( U_PGC_YR );
-    dcdt[ SNBOX_OCEAN ] = cflux;
+    dcdt[ SNBOX_OCEAN ] = annual_totalcflux( t, Ca, cpoolscale ).value( U_PGC_YR );
 
     // If too big a timestep--i.e., stashCvalues below has signalled a reduced step
     // that we're exceeding--signal to the solver that this won't work for us.
@@ -515,6 +527,14 @@ int  OceanComponent::calcderivs( double t, const double c[], double dcdt[] ) con
 void OceanComponent::slowparameval( double t, const double c[] ) {
 
     in_spinup = core->inSpinup();
+}
+
+//------------------------------------------------------------------------------
+/*! \brief   Return the ocean-atmosphere flux (really, its source map) to simpleNbox
+*  \returns           The two ocean-atmosphere fluxpools added together
+*/
+fluxpool OceanComponent::get_surface_pools() const {
+    return surfaceLL.get_carbon() + surfaceHL.get_carbon();
 }
 
 //------------------------------------------------------------------------------
@@ -537,10 +557,10 @@ void OceanComponent::stashCValues( double t, const double c[] ) {
     unitval Ca( c[ SNBOX_ATMOS ] * PGC_TO_PPMVCO2, U_PPMV_CO2 );
 
     // Compute fluxes between the boxes (advection of carbon)
-    surfaceHL.compute_fluxes( Ca, yearfraction );
-	surfaceLL.compute_fluxes( Ca, yearfraction );
-	inter.compute_fluxes( Ca, yearfraction );
-	deep.compute_fluxes( Ca, yearfraction );
+    surfaceHL.compute_fluxes( Ca, atmosphere_cpool, yearfraction );
+	surfaceLL.compute_fluxes( Ca, atmosphere_cpool, yearfraction );
+	inter.compute_fluxes( Ca, atmosphere_cpool, yearfraction );
+	deep.compute_fluxes( Ca, atmosphere_cpool, yearfraction );
 
     // At this point, compute_fluxes has (by calling the chemistry model) computed atmosphere-
     // ocean fluxes for the surface boxes. But these are end-of-timestep values, and we need to
@@ -553,9 +573,14 @@ void OceanComponent::stashCValues( double t, const double c[] ) {
 	H_LOG( logger, Logger::DEBUG) << "Solver flux = " << solver_flux << ", currentflux = " << currentflux << ", adjust = " << adjustment << std::endl;
     surfaceHL.atmosphere_flux = surfaceHL.atmosphere_flux + adjustment;
     surfaceLL.atmosphere_flux = surfaceLL.atmosphere_flux + adjustment;
-
-    // This (along with carbon-cycle-solver obviously) is the heart of the reduced-timestep code.
-    // If carbon flux has exceeded some critical value, need to reduce timestep for the future.
+    
+    // Separate the one net flux (can be positive or negative) into the two fluxpool fluxes (always positive)
+    surfaceHL.separate_surface_fluxes(atmosphere_cpool);
+    surfaceLL.separate_surface_fluxes(atmosphere_cpool);
+    
+    // This (along with carbon-cycle-solver obviously) is the heart of the
+    // reduced-timestep code. If carbon flux has exceeded some critical value,
+    // we need to reduce timestep for the future.
     unitval cflux_annualdiff = solver_flux / yearfraction - lastflux_annualized;
 
     if( cflux_annualdiff.value( U_PGC ) > OCEAN_TSR_TRIGGER1 ) {

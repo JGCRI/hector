@@ -16,9 +16,9 @@
 #include <boost/lexical_cast.hpp>
 #include "core.hpp"
 #include "simpleNbox.hpp"
+#include "ocean_component.hpp"
 #include "csv_fluxpool_visitor.hpp"
 #include "unitval.hpp"
-#include "fluxpool.hpp"
 #include "h_util.hpp"
 
 namespace Hector {
@@ -73,7 +73,6 @@ void CSVFluxPoolVisitor::print_pool(fluxpool x) {
                 x.name << DELIMITER << x.value(U_PGC) << DELIMITER << x.unitsName() << DELIMITER <<
                 s << DELIMITER << x.get_fraction(s) << endl;
         }
-        csvFile << endl;
     }
 }
 
@@ -94,7 +93,6 @@ void CSVFluxPoolVisitor::visit( SimpleNbox* c ) {
     // The potentially tracked pools
     print_pool( c->atmos_c );
     print_pool( c->earth_c );
-    print_pool( c->ocean_model_c );
     for( auto it = c->biome_list.begin(); it != c->biome_list.end(); it++ ) {
         std::string biome = *it;
         print_pool( c->veg_c[ biome ] );
@@ -108,7 +106,17 @@ void CSVFluxPoolVisitor::visit( SimpleNbox* c ) {
     }
     print_diff(c->atmos_diff, "atmos_diff");
     print_diff(c->earth_diff, "earth_diff");
-    csvFile << endl;
+}
+
+//------------------------------------------------------------------------------
+// documentation is inherited
+void CSVFluxPoolVisitor::visit( OceanComponent* c ) {
+    if( !core->outputEnabled( c->getComponentName() ) ) return;
+
+    print_pool( c->surfaceHL.get_carbon() );
+    print_pool( c->surfaceLL.get_carbon() );
+    print_pool( c->inter.get_carbon() );
+    print_pool( c->deep.get_carbon() );
 }
 
 }
