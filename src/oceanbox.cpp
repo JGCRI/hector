@@ -50,7 +50,6 @@ oceanbox::oceanbox() {
 void oceanbox::set_carbon( const unitval C) {
     carbon.adjust_pool_to_val( C.value( U_PGC ));
 	OB_LOG( logger, Logger::WARNING ) << Name << " box C has been set to " << carbon << endl;
-	carbonHistory.insert( carbonHistory.begin(), carbon );
 }
 
 //------------------------------------------------------------------------------
@@ -59,15 +58,12 @@ void oceanbox::set_carbon( const unitval C) {
 void oceanbox::initbox( double boxc, string name ) {
     connection_list.clear();
     connection_k.clear();
-    carbonHistory.clear(); 
-    carbonLossHistory.clear();
     connection_window.clear();
     annual_box_fluxes.clear();
     
      // Each box is separate from each other, and we keep track of carbon in each box
     Name = name;
     carbon.set( boxc, U_PGC, false, name );
-    carbonHistory.insert( carbonHistory.begin(), carbon );
     CarbonAdditions.set( 0.0, U_PGC, false, name );
     CarbonSubtractions.set( 0.0, U_PGC, false, name );
     active_chemistry = false;
@@ -95,57 +91,6 @@ void oceanbox::add_carbon( fluxpool carbon ) {
  */
 unitval oceanbox::compute_tabsC( const unitval Tgav ) const {
     return Tgav * warmingfactor + unitval( MEAN_GLOBAL_TEMP, U_DEGC ) + deltaT;
-}
-
-//------------------------------------------------------------------------------
-/*! \brief          Is box C oscillating?
- *  \param[in] lookback     Window size to look back into the past
- *  \param[in] maxamp       Max amplitude (% of box size) allowed
- *  \param[in] maxflips     Max flips (direction reversals) allowed
- *  \returns                bool indicating whether box C is oscillating recently
- *  \details                How do we identify is the box is oscillating? Count how many
- *  sign flips there are in the deltas (C(t)-C(t-1)) of a certain magnitude.
- */
-/*
-bool oceanbox::oscillating( const unsigned lookback, const double maxamp, const int maxflips ) const {
-    
-#define sgn( x ) ( x > 0 ) - ( x < 0 )
-    
-    if( carbonHistory.size() < lookback ) return false;
-    
-    const double currentC = carbon.value( U_PGC );
-    double minC = currentC, maxC = currentC;
-    double lastdelta = currentC - carbonHistory[ 0 ];
-    int flipcount = 0;
-    for ( unsigned i=0; i<lookback-1; i++ )  {
-        double delta = carbonHistory[ i ]-carbonHistory[ i+1 ];
-        flipcount += ( sgn( lastdelta ) != sgn( delta ) );
-        lastdelta = delta;
-        minC = min( minC, carbonHistory[ i ] );
-        maxC = max( maxC, carbonHistory[ i ] );
-    }
-    return flipcount>maxflips && ( maxC-minC )/currentC*100 > maxamp;
-}
-*/
-
-//------------------------------------------------------------------------------
-/*! \brief                  Calculate mean past box carbon
- *  \param[in] lookback     Window size to look back into the past (including current value)
- *  \returns                bool indicating whether box C is oscillating recently
- *  \exception              lookback must be non-negative
- */
-fluxpool oceanbox::vectorHistoryMean( std::vector<fluxpool> v, int lookback ) const {
-    H_ASSERT( lookback > 0, "lookback must be >0" );
-    H_ASSERT( v.size() > 0, "vector size must be >0" );
-
-    lookback = min<int>( int( v.size() ), lookback );
-
-    fluxpool sum = v[ 0 ];
-    // Note we're skipping v[0] because sum is set to that, above
-    for ( int j=1; j<lookback; j++ )  {
-        sum = sum + v[ j ]; // sum up the past states
-    }
-    return sum / double(lookback);
 }
 
 //------------------------------------------------------------------------------
@@ -224,23 +169,6 @@ void oceanbox::log_state() {
 }
 
 //------------------------------------------------------------------------------
-/*! \brief Compute one flux from this to another box
- * \param[in] i     connection number
- * \param[in] yf    year fraction (0-1)
- * \returns         flux in Pg C, accounting for yf, connection strength
- */
-fluxpool oceanbox::compute_connection_flux( int i, double yf ) const {
-    // Compute the mean_carbon over connection-specific history window
-    fluxpool mean_carbon = carbon;
-    if( connection_window[ i ] ) {
-        mean_carbon = vectorHistoryMean( carbonHistory, connection_window[ i ] );
-        mean_carbon.tracking = carbon.tracking;
-    }
-        
-    return mean_carbon * connection_k[ i ] * yf;
-}
-
-//------------------------------------------------------------------------------
 /*! \brief Compute all fluxes between boxes
  * \param[in] current_Ca                atmospheric CO2
  * \param[in] yf                year fraction (0-1)
@@ -284,7 +212,7 @@ void oceanbox::compute_fluxes( const unitval current_Ca, const fluxpool atmosphe
 
         for( unsigned i=0; i < connection_window.size(); i++ ){
 
-            fluxpool closs = compute_connection_flux( i, yf );
+            fluxpool closs = carbon * connection_k[ i ] * yf;
 
             OB_LOG( logger, Logger::DEBUG) << Name << " conn " << i << " flux= " << closs << endl;
                  
@@ -294,9 +222,7 @@ void oceanbox::compute_fluxes( const unitval current_Ca, const fluxpool atmosphe
             annual_box_fluxes[ connection_list[ i ] ] = annual_box_fluxes[ connection_list[ i ] ] +
                 unitval( closs.value( U_PGC ), U_PGC_YR );
         } // for i
-        
-        carbonLossHistory.insert( carbonLossHistory.begin(), closs_total );
-        
+                
     } // if do_circulation
 }
 
@@ -335,7 +261,6 @@ unitval oceanbox::calc_revelle() {
  */
 void oceanbox::update_state() {
     
-	carbonHistory.insert( carbonHistory.begin (), carbon );
 	carbon = carbon + CarbonAdditions + ao_flux - oa_flux - CarbonSubtractions;
     // these start with 0 from themselves (this box)
     CarbonAdditions.set( 0.0, U_PGC, carbon.tracking, Name );

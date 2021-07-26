@@ -43,17 +43,9 @@ private:
 	fluxpool CarbonAdditions, CarbonSubtractions;
     std::vector<oceanbox*> connection_list;  ///< a vector of ocean box pointers
     std::vector<double> connection_k;        ///< a vector of ocean k values (fraction)
-    std::vector<fluxpool> carbonHistory;       ///< a vector of past C states
-    std::vector<fluxpool> carbonLossHistory;   ///< a vector of past C losses
     std::vector<int> connection_window;      ///< a vector of connection windows to average over
 
-    fluxpool vectorHistoryMean( std::vector<fluxpool> v, int lookback ) const;
-
-    fluxpool compute_connection_flux( int i, double yf ) const;
-
 	std::string Name;
-
-	void sens_parameters();
 
     unitval Ca;             ///< Atmospheric CO2, ppm
     unitval Tbox;           ///< box absolute temperature, degC
@@ -84,8 +76,6 @@ public:
 
     void start_tracking();
     
-    //bool oscillating( const unsigned lookback, const double maxamp, const int maxflips ) const;
-
     // Functions to get internal box data
     unitval get_Tbox() const { return Tbox; };
     unitval calc_revelle();
@@ -101,7 +91,7 @@ public:
     void chem_equilibrate( const unitval current_Ca );    ///< equilibrate chemistry model to a given flux
     double fmin( double alk, void *params );
 
-    unitval atmosphere_flux;    //!< atmosphere -> ocean flux
+    unitval atmosphere_flux;    //!< positive is atmosphere -> ocean flux, negative ocean -> atmosphere
     
 	// logger
     Logger* logger;
