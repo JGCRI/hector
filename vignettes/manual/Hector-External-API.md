@@ -31,7 +31,7 @@ You don't absolutely need any of the other files in the Hector directories, but 
 # hector-api: libhector.a main-api.o
 # 	$(CXX) $(LDFLAGS) -o hector-api main-api.o -lhector -lgsl -lgslcblas -lm
 ```
-Then run `make hector-api` to build the example.  From the top-level hector directory, run `hector-api input/api-example.ini` to run the example code.  The example code reads emissions for several gasses from the files in the `input/emissions` directory and loads those emissions into the Hector core through the API.  Emissions for the remaining gasses are set from the input file, as in the stand-alone version of Hector.
+Then run `make hector-api` to build the example.  From the top-level hector directory, run `hector-api input/api-example.ini` to run the example code.  The example code reads emissions for several gases from the files in the `input/emissions` directory and loads those emissions into the Hector core through the API.  Emissions for the remaining gases are set from the input file, as in the stand-alone version of Hector.
 
 ## Using the API
 
@@ -133,7 +133,7 @@ Hector::unitval n2oconc = hcore.sendMessage(M_GETDATA, D_ATMOSPHERIC_N2O, year);
 // retrieve total forcing at current model time
 Hector::unitval rftot = hcore.sendMessage(M_GETDATA, D_RF_TOTAL);
 ```
-There is a bit of inconsistency about the use of dates in these calls.  Generally, the date is forbidden for forcings, except for halocarbon forcings, where it is required.  Dates are forbidden for CO2 concentrations, but required for other gasses.  We hope to address these inconsistencies in subsequent updates.  Note that for outputs that do not allow a date to be supplied, the only way to get a value of the output for a particular date is to stop the run at that date and call `sendMessage()` to get the value for the current model time.
+There is a bit of inconsistency about the use of dates in these calls.  Generally, the date is forbidden for forcings, except for halocarbon forcings, where it is required.  Dates are forbidden for CO$_2$ concentrations, but required for other gasses.  We hope to address these inconsistencies in subsequent updates.  Note that for outputs that do not allow a date to be supplied, the only way to get a value of the output for a particular date is to stop the run at that date and call `sendMessage()` to get the value for the current model time.
 
 The return value is a `unitval` structure.  These can be manipulated directly, or if they are assigned to a double, the units will be stripped off leaving only the value:
 ```C++

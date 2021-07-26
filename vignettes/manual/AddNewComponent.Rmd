@@ -7,14 +7,15 @@ Step one:
 -----------
 
 Add two new files:  
-* headers/core/X.hpp
-* source/core/X.cpp
+* `headers/core/X.hpp`
+* `source/core/X.cpp`
 
 It is best to copy and modify the corresponding files from an already constructed component.
 
 Step two (within X.hpp):  
 -----------
-Under `private` list the variables that are used in the component and their corresponding type. E.g. 
+Under `private` list the variables that are used in the component and their corresponding type. 
+E.g. 
 * `tseries<unitval> x` to create a [time series](TSeries.html).
 * `unitval x` to declare a [value with associated units](Unitvals.html).
 * `double x` 
