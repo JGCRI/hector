@@ -46,3 +46,4 @@ hector_rcp45$commit <- hector_commit
 comp_data <- rbind(hector_rcp45_constrained, hector_rcp45)
 out_file <- file.path(out_dir, "hector_comp.csv")
 write.csv(comp_data, file = out_file, row.names = FALSE)
+message("All done.")
