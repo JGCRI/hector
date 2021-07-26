@@ -35,12 +35,11 @@ if( log != NULL ) H_LOG( (*log), level )
 oceanbox::oceanbox() {
     logger = NULL;
     deltaT.set( 0.0, U_DEGC );
-    initbox( 0.0, "?" );
     surfacebox = false;
-    preindustrial_flux.set( 0.0, U_PGC_YR );
     warmingfactor = 1.0;      // by default warms exactly as global
     Tbox = unitval( -999, U_DEGC );
     atmosphere_flux.set( 0.0, U_PGC );
+    preindustrial_flux.set( 0.0, U_PGC_YR );
     ao_flux.set( 0.0, U_PGC );
     oa_flux.set( 0.0, U_PGC );
 }
@@ -49,16 +48,15 @@ oceanbox::oceanbox() {
 /*! \brief sets the amount of carbon in this box
  */
 void oceanbox::set_carbon( const unitval C) {
-    carbon = fluxpool( C.value( U_PGC ), U_PGC, false, Name );
+    carbon.adjust_pool_to_val( C.value( U_PGC ));
 	OB_LOG( logger, Logger::WARNING ) << Name << " box C has been set to " << carbon << endl;
 	carbonHistory.insert( carbonHistory.begin(), carbon );
 }
 
 //------------------------------------------------------------------------------
-/*! \brief initialize basic information in an oceanbox
+/*! \brief initialize all needed information in an oceanbox
  */
-void oceanbox::initbox( double carbon, string name ) {
-    // Reset the box to its pristine state
+void oceanbox::initbox( double boxc, string name ) {
     connection_list.clear();
     connection_k.clear();
     carbonHistory.clear(); 
@@ -67,12 +65,13 @@ void oceanbox::initbox( double carbon, string name ) {
     annual_box_fluxes.clear();
     
      // Each box is separate from each other, and we keep track of carbon in each box
-    if( name != "" ) Name = name;
-    set_carbon( unitval(carbon, U_PGC ) );
+    Name = name;
+    carbon.set( boxc, U_PGC, false, name );
+    carbonHistory.insert( carbonHistory.begin(), carbon );
     CarbonAdditions.set( 0.0, U_PGC, false, name );
     CarbonSubtractions.set( 0.0, U_PGC, false, name );
     active_chemistry = false;
-    
+
     OB_LOG( logger, Logger::NOTICE) << "hello " << name << endl;
 }
 

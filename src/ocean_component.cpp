@@ -119,10 +119,12 @@ unitval OceanComponent::sendMessage( const std::string& message,
 
 	} else if( message == M_DUMP_TO_DEEP_OCEAN ) {
         // info struct holds the amount being dumped/extracted from deep ocean
-        // this is a unitval, not fluxpool, as we DON'T want to track this carbon movement
         unitval carbon = info.value_unitval;
         H_LOG( logger, Logger::DEBUG ) << "Atmosphere dumping " << carbon << " Pg C to deep ocean" << std::endl;
-        deep.set_carbon( deep.get_carbon() + carbon );
+        
+        // We don't want this to be tracked, so just overwrite the deep total
+        carbon = carbon + unitval(deep.get_carbon().value( U_PGC ), U_PGC);
+        deep.set_carbon( carbon );
 
     } else { //! We don't handle any other messages
         H_THROW( "Caller sent unknown message: "+message );
@@ -179,7 +181,6 @@ void OceanComponent::setData( const string& varName,
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-// TODO: should we put these in the ini file instead?
 void OceanComponent::prepareToRun() {
 
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
