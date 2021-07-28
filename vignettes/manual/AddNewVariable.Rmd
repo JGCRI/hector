@@ -13,7 +13,7 @@ Under the corresponding component add variable
 
 
 _In hpp file of component_ 
-Add variable as `tseries`, `unitval`, `double`, etc. 
+Add variable as `tseries`, `unitval`, `double`, etc. and add its associated time series (when necessary; see above).
 
 _In component_data.hpp_
 Define the variables that are being added
@@ -43,4 +43,4 @@ _If this variable is called in another component._
 For example, if adding in a variable within the forcing component
     Ex: `unitval SN = core->getData( D_ATMOSPHERIC_SO2, runToDate);`
 
-If this variable is a `unitval`, the new `unitval` needs to appear in the `unitval.hpp` file.
+If this variable is a `unitval`, the relevant code file must include `unitval.hpp`.
