@@ -1096,6 +1096,13 @@ return D_FFI_EMISSIONS;
 //' @rdname carboncycle
 //' @export
 // [[Rcpp::export]]
+String DACCS_UPTAKE() {
+   return D_DACCS_UPTAKE;
+}
+
+//' @rdname carboncycle
+//' @export
+// [[Rcpp::export]]
 String LUC_EMISSIONS() {
 return D_LUC_EMISSIONS;
 }
