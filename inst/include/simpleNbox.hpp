@@ -165,6 +165,7 @@ private:
 
     // Carbon fluxes
     tseries<unitval> ffiEmissions;      //!< fossil fuels and industry emissions, Pg C/yr
+    tseries<unitval> daccsUptake;       //!< direct air carbon capture and storage, Pg C/yr
     tseries<unitval> lucEmissions;      //!< land use change emissions, Pg C/yr
 
     // Albedo
