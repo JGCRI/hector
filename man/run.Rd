@@ -22,6 +22,7 @@ of the run.  To get results, run \code{fetch}.
 \seealso{
 Other main user interface functions: 
 \code{\link{fetchvars}()},
+\code{\link{get_tracking_data}()},
 \code{\link{newcore}()},
 \code{\link{reset}()},
 \code{\link{setvar}()},

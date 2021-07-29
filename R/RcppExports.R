@@ -1151,8 +1151,8 @@ getdate <- function(core) {
 #'
 #' @param core Handle to the Hector instance.
 #' @export
-get_tracking_data <- function(core) {
-    .Call('_hector_get_tracking_data', PACKAGE = 'hector', core)
+get_tracking_data_impl <- function(core) {
+    .Call('_hector_get_tracking_data_impl', PACKAGE = 'hector', core)
 }
 
 #' Retrieve the current list of biomes for a Hector instance

@@ -202,7 +202,7 @@ double getdate(Environment core)
 //' @param core Handle to the Hector instance.
 //' @export
 // [[Rcpp::export]]
-std::string get_tracking_data(Environment core)
+std::string get_tracking_data_impl(Environment core)
 {
     Hector::Core *hcore = gethcore(core);
     std::string tracking_data = hcore->TrackingData();

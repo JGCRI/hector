@@ -90,6 +90,19 @@ newcore <- function(inifile, loglevel = 0, suppresslogging = TRUE,
   hcore
 }
 
+#' Retrieve the tracking data for a Hector instance
+#'
+#' @param core Handle to the Hector instance.
+#' @return A \code{\link{data.frame}} with the tracking data. Columns include
+#' \code{year} (integer), \code{pool_name} (character), \code{pool_value}
+#' (double), \code{pool_units} (character), \code{source_name} (character),
+#' and \code{source_fraction} (double).
+#' @family main user interface functions
+#' @export
+get_tracking_data <- function(core) {
+  td <- get_tracking_data_impl(core)
+  read.csv(textConnection(td), stringsAsFactors = FALSE)
+}
 
 #### Utility functions
 ### The elements of an hcore object are
