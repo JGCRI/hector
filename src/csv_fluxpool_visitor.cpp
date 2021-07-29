@@ -30,12 +30,14 @@ using namespace std;
  *  \param outputStream The file to write the csv output to
  *  \param printHeader Boolean controlling whether we print a header or not
  */
-CSVFluxPoolVisitor::CSVFluxPoolVisitor( ostream& outputStream, const bool printHeader )
-:csvFile( outputStream )
+CSVFluxPoolVisitor::CSVFluxPoolVisitor( ostream& outputStream, const bool printHeader ) :
+    csvFile( outputStream ),
+    csvBuffer("")
 {
+    
     if( printHeader ) {
         // Print table header
-        csvFile << "year" << DELIMITER
+        csvBuffer << "year" << DELIMITER
                 << "pool_name" << DELIMITER << "pool_value" << DELIMITER << "pool_units" << DELIMITER
                 << "source_name" << DELIMITER << "source_fraction" <<endl;
     }
@@ -45,6 +47,8 @@ CSVFluxPoolVisitor::CSVFluxPoolVisitor( ostream& outputStream, const bool printH
 /*! \brief Destructor
  */
 CSVFluxPoolVisitor::~CSVFluxPoolVisitor() {
+    // Write out the buffer to the csv file
+    csvFile << csvBuffer.str();
 }
 
 //------------------------------------------------------------------------------
@@ -69,7 +73,7 @@ void CSVFluxPoolVisitor::print_pool(fluxpool x) {
     if(x.tracking) {
         vector<string> sources = x.get_sources();
         for (auto &s: sources) {
-            csvFile << datestring << DELIMITER <<
+            csvBuffer << datestring << DELIMITER <<
                 x.name << DELIMITER << x.value(U_PGC) << DELIMITER << x.unitsName() << DELIMITER <<
                 s << DELIMITER << x.get_fraction(s) << endl;
         }
@@ -80,7 +84,7 @@ void CSVFluxPoolVisitor::print_pool(fluxpool x) {
 /*! \brief Print a double value and its name
  */
 void CSVFluxPoolVisitor::print_diff(double x, string name){
-     csvFile << datestring << DELIMITER <<
+     csvBuffer << datestring << DELIMITER <<
                 "Diff" << DELIMITER << x << DELIMITER << "U_PGC" << DELIMITER <<
                 name << DELIMITER << 0 << endl;
 }

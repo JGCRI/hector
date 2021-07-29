@@ -37,6 +37,7 @@ public:
 private:
     //! The file output stream in which the csv output will be written to.
     std::ostream& csvFile;
+    std::stringstream csvBuffer;
 
     // Data retained while the visitor is operating
     double current_date;
