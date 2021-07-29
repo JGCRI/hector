@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{shutdown}
 \alias{shutdown}
-\title{Shutdown a hector instance}
+\title{Shut down a hector instance}
 \usage{
 shutdown(core)
 }

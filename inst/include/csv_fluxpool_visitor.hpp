@@ -34,6 +34,8 @@ public:
     virtual void visit( SimpleNbox* c );
     virtual void visit( OceanComponent* c );
 
+    std::string get_buffer() const { return csvBuffer.str(); };
+    
 private:
     //! The file output stream in which the csv output will be written to.
     std::ostream& csvFile;

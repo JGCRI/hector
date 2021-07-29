@@ -8,7 +8,7 @@ newcore(
   inifile,
   loglevel = 0,
   suppresslogging = TRUE,
-  name = "unnamed hector core"
+  name = "Unnamed Hector core"
 )
 }
 \arguments{

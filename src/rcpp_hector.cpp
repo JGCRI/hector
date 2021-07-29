@@ -197,6 +197,18 @@ double getdate(Environment core)
     return hcore->getCurrentDate();
 }
 
+//' Retrieve the tracking data for a Hector instance
+//'
+//' @param core Handle to the Hector instance.
+//' @export
+// [[Rcpp::export]]
+std::string get_tracking_data(Environment core)
+{
+    Hector::Core *hcore = gethcore(core);
+    std::string tracking_data = hcore->TrackingData();
+    return tracking_data;
+}
+
 //' Retrieve the current list of biomes for a Hector instance
 //'
 //' @param core Handle to the Hector instance from which to retrieve

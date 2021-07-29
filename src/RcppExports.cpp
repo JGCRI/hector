@@ -1870,6 +1870,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// get_tracking_data
+std::string get_tracking_data(Environment core);
+RcppExport SEXP _hector_get_tracking_data(SEXP coreSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Environment >::type core(coreSEXP);
+    rcpp_result_gen = Rcpp::wrap(get_tracking_data(core));
+    return rcpp_result_gen;
+END_RCPP
+}
 // get_biome_list
 std::vector<std::string> get_biome_list(Environment core);
 RcppExport SEXP _hector_get_biome_list(SEXP coreSEXP) {
@@ -2131,6 +2142,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_reset", (DL_FUNC) &_hector_reset, 2},
     {"_hector_run", (DL_FUNC) &_hector_run, 2},
     {"_hector_getdate", (DL_FUNC) &_hector_getdate, 1},
+    {"_hector_get_tracking_data", (DL_FUNC) &_hector_get_tracking_data, 1},
     {"_hector_get_biome_list", (DL_FUNC) &_hector_get_biome_list, 1},
     {"_hector_create_biome_impl", (DL_FUNC) &_hector_create_biome_impl, 2},
     {"_hector_delete_biome_impl", (DL_FUNC) &_hector_delete_biome_impl, 2},

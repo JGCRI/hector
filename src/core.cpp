@@ -195,6 +195,22 @@ void Core::init() {
 }
 
 //------------------------------------------------------------------------------
+/*! \brief Return the carbon tracking data stored in the csvFluxPoolVisitor
+ */
+std::string Core::TrackingData() const {
+    
+    // I'm pretty sure I should be using a virtual function for this
+    for( auto visitorIt : modelVisitors ) {
+        const CSVFluxPoolVisitor* bad_idea = dynamic_cast<const CSVFluxPoolVisitor*>(visitorIt);
+        if(bad_idea != nullptr ) {
+            return(bad_idea->get_buffer());
+        }
+
+    }
+    return "tracking data!";
+}
+
+//------------------------------------------------------------------------------
 /*! \brief Route a setData to the component specified by componentName or parse
  *         the data if componentName is equal to Core::getComponentName().
  *  \param componentName The name of the component to forward the setData to.

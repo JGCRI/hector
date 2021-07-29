@@ -68,7 +68,9 @@ public:
 
     void registerDependency( const std::string& capabilityName, const std::string& componentName );
     void registerInput(const std::string &inputName, const std::string &componentName);
-
+    
+    std::string TrackingData() const;
+    
     unitval sendMessage( const std::string& message,
                         const std::string& datum );
 
@@ -121,10 +123,8 @@ private:
     // prepareToRun.
     bool setup_complete;
 
-
     //! Cause all components to run their spinup procedure.
     bool run_spinup();
-
 
     //------------------------------------------------------------------------------
     //! Current run name.
