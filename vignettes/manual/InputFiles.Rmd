@@ -4,9 +4,9 @@ title: Hector input files
 
 # General information
 
-When Hector is invoked from the command line, it takes a [single](https://github.com/JGCRI/hector/issues/69) parameter: the name of the primary input file to read. This file, typically stored in the `input/` directory, contains configuration and parameter data controlling the model's run, output, and behavior.
+When Hector is invoked from the command line, it takes a single parameter: the name of the primary input file to read. This file, typically stored in the `input/` directory, contains configuration and parameter data controlling the model's run, output, and behavior.
 
-The primary input file is a text [INI-style](http://en.wikipedia.org/wiki/INI_file) file with *sections*, *properties*, and *values*. For example, the beginning of the RCP 4.5 [file](https://github.com/JGCRI/hector/blob/master/input/hector_rcp45.ini) included in the repository looks like this:
+The primary input file is a text [INI-style](http://en.wikipedia.org/wiki/INI_file) file with *sections*, *properties*, and *values*. For example, the beginning of the RCP 4.5 file included in the repository looks like this:
 
 ```
 ; Config file for hector model: RCP45

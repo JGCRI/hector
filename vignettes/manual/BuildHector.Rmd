@@ -185,4 +185,4 @@ Xcode Resources
 
 ## Visual Studio
 
-VS is not supported at this time see [VS Hector github issue](https://github.com/JGCRI/hector/issues/415) for more details. 
+VS is not supported at this time. See [VS Hector github issue](https://github.com/JGCRI/hector/issues/415) for more details. 

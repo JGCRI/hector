@@ -49,7 +49,7 @@ run(hcore, 1999)
 
 Our target function will take a vector of emission values as input and return a vector of 
 discrepancies between the hector outputs and the target output.  We'll make the target concentration
-value 1820 ppbv CH4 (a bit higher than the year 2000 value in the baseline scenario).
+value 1820 ppbv CH$_4$ (a bit higher than the year 2000 value in the baseline scenario).
 
 ```{r targfn.init}
 f <- function(emiss)
@@ -58,7 +58,7 @@ f <- function(emiss)
     reset(hcore, 1999)
     run(hcore, 2100)
     hout <- fetchvars(hcore, 2000:2100, ATMOSPHERIC_CH4())
-    ## return the difference between the target of 1850 (constant) and the actual
+    ## return the difference between the target of 1820 (constant) and the actual
     hout$value - 1820
 }
 ```
@@ -67,7 +67,7 @@ f <- function(emiss)
 
 To solve for the target emissions we just pass the target function to `nleqslv`.  We also need an initial guess
 for the emissions.  It doesn't really matter what the guess is, so long as it isn't something so large that it 
-will cause the model to fail outright.  We will use a constant 300 Tg CH4 as the initial guess.
+will cause the model to fail outright.  We will use a constant 300 Tg CH$_4$ as the initial guess.
 
 ```{r solve}
 x <- rep(300.0, times=101)  # 2000:2001 includes both endpoints
@@ -93,7 +93,7 @@ The convergence looks ok, so let's plot the results:
      labs(y = "Emissions (Tg CH4)", x = 'year')
 ```
 
-The concentration target of 1820 ppbv CH4 that we specified in 2000 is a bit of a jump from what was in the 
+The concentration target of 1820 ppbv CH$_4$ that we specified in 2000 is a bit of a jump from what was in the 
 scenario we based our run on (the original was about 1811 ppbv), so we have a small spike in emissions in 2000.  After
 that the emissions settle down into something smoother.
 
