@@ -39,6 +39,8 @@ void identity_tests(bool trk) {
 SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
     ffiEmissions.allowInterp( true );
     ffiEmissions.name = "ffiEmissions";
+    daccsUptake.allowInterp( true );
+    daccsUptake.name = "daccsUptake";
     lucEmissions.allowInterp( true );
     lucEmissions.name = "lucEmissions";
     Ftalbedo.allowInterp( true );
@@ -94,6 +96,7 @@ void SimpleNbox::init( Core* coreptr ) {
 
     // Register the inputs we can receive from outside
     core->registerInput(D_FFI_EMISSIONS, getComponentName());
+    core->registerInput(D_DACCS_UPTAKE, getComponentName());
     core->registerInput(D_LUC_EMISSIONS, getComponentName());
     core->registerInput(D_PREINDUSTRIAL_CO2, getComponentName());
     core->registerInput(D_VEGC, getComponentName());
@@ -269,6 +272,11 @@ void SimpleNbox::setData( const std::string &varName,
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
             H_ASSERT( biome == SNBOX_DEFAULT_BIOME, "fossil fuels and industry emissions must be global" );
             ffiEmissions.set( data.date, data.getUnitval( U_PGC_YR ) );
+        }
+        else if( varNameParsed == D_DACCS_UPTAKE ) {
+            H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
+            H_ASSERT( biome == SNBOX_DEFAULT_BIOME, "direct air carbon capture and storage must be global" );
+            daccsUptake.set( data.date, data.getUnitval( U_PGC_YR ) );
         }
         else if( varNameParsed == D_LUC_EMISSIONS ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
@@ -469,6 +477,9 @@ unitval SimpleNbox::getData(const std::string& varName,
     } else if( varNameParsed == D_FFI_EMISSIONS ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for ffi emissions" );
         returnval = ffiEmissions.get( date );
+    } else if( varNameParsed == D_DACCS_UPTAKE ) {
+            H_ASSERT( date != Core::undefinedIndex(), "Date required for daccs uptake" );
+            returnval = daccsUptake.get( date );
     } else if( varNameParsed == D_LUC_EMISSIONS ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for luc emissions" );
         returnval = lucEmissions.get( date );

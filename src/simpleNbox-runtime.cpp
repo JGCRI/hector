@@ -511,10 +511,7 @@ fluxpool SimpleNbox::sum_rh( double time ) const
 fluxpool SimpleNbox::ffi(double t, bool in_spinup) const
 {
     if( !in_spinup ) {   // no perturbation allowed if in spinup
-        double totflux = ffiEmissions.get( t ).value(U_PGC_YR);
-        if(totflux >= 0.0) {
-            return fluxpool(totflux, U_PGC_YR);
-        }
+        return fluxpool(ffiEmissions.get( t ).value(U_PGC_YR), U_PGC_YR);
     }
     return fluxpool(0.0, U_PGC_YR);
 }
@@ -526,10 +523,7 @@ fluxpool SimpleNbox::ffi(double t, bool in_spinup) const
 fluxpool SimpleNbox::ccs(double t, bool in_spinup) const
 {
     if( !in_spinup ) {   // no perturbation allowed if in spinup
-        double totflux = ffiEmissions.get( t ).value(U_PGC_YR);
-        if(totflux < 0.0) {
-            return fluxpool(-totflux, U_PGC_YR);
-        }
+        return fluxpool(daccsUptake.get( t ).value(U_PGC_YR), U_PGC_YR);
     }
     return fluxpool(0.0, U_PGC_YR);
 }

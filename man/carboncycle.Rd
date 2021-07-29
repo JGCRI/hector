@@ -9,6 +9,7 @@
 \alias{RH}
 \alias{ATMOSPHERIC_C}
 \alias{FFI_EMISSIONS}
+\alias{DACCS_UPTAKE}
 \alias{LUC_EMISSIONS}
 \alias{CO2_CONSTRAIN}
 \alias{VEG_C}
@@ -30,6 +31,8 @@ RH()
 ATMOSPHERIC_C()
 
 FFI_EMISSIONS()
+
+DACCS_UPTAKE()
 
 LUC_EMISSIONS()
 

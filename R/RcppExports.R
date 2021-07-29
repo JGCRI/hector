@@ -890,6 +890,12 @@ FFI_EMISSIONS <- function() {
 
 #' @rdname carboncycle
 #' @export
+DACCS_UPTAKE <- function() {
+    .Call('_hector_DACCS_UPTAKE', PACKAGE = 'hector')
+}
+
+#' @rdname carboncycle
+#' @export
 LUC_EMISSIONS <- function() {
     .Call('_hector_LUC_EMISSIONS', PACKAGE = 'hector')
 }

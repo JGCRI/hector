@@ -1490,6 +1490,16 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// DACCS_UPTAKE
+String DACCS_UPTAKE();
+RcppExport SEXP _hector_DACCS_UPTAKE() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(DACCS_UPTAKE());
+    return rcpp_result_gen;
+END_RCPP
+}
 // LUC_EMISSIONS
 String LUC_EMISSIONS();
 RcppExport SEXP _hector_LUC_EMISSIONS() {
@@ -2095,6 +2105,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_PREINDUSTRIAL_CO2", (DL_FUNC) &_hector_PREINDUSTRIAL_CO2, 0},
     {"_hector_ATMOSPHERIC_C", (DL_FUNC) &_hector_ATMOSPHERIC_C, 0},
     {"_hector_FFI_EMISSIONS", (DL_FUNC) &_hector_FFI_EMISSIONS, 0},
+    {"_hector_DACCS_UPTAKE", (DL_FUNC) &_hector_DACCS_UPTAKE, 0},
     {"_hector_LUC_EMISSIONS", (DL_FUNC) &_hector_LUC_EMISSIONS, 0},
     {"_hector_BETA", (DL_FUNC) &_hector_BETA, 1},
     {"_hector_Q10_RH", (DL_FUNC) &_hector_Q10_RH, 1},

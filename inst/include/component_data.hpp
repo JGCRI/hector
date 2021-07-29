@@ -275,6 +275,7 @@
 #define D_DETRITUSC             "detritus_c"
 #define D_SOILC                 "soil_c"
 #define D_FFI_EMISSIONS         "ffi_emissions"
+#define D_DACCS_UPTAKE          "daccs_uptake"
 #define D_LUC_EMISSIONS         "luc_emissions"
 #define D_CO2FERT               "co2fert"
 #define D_TEMPFERTD              "detritus_tempfert"
