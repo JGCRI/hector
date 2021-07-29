@@ -34,6 +34,7 @@
 #include "h_util.hpp"
 #include "simpleNbox.hpp"
 #include "avisitor.hpp"
+#include "csv_fluxpool_visitor.hpp"
 
 namespace Hector {
 
@@ -733,7 +734,15 @@ std::vector<Core *> Core::core_registry;
  */
 int Core::mkcore(bool logtofile, Logger::LogLevel loglvl, bool logtoscrn)
 {
-    core_registry.push_back(new Core(loglvl, logtoscrn, logtofile));
+    // Create a dummy output filestream, essentially /dev/null
+    std::ofstream dummy;
+    CSVFluxPoolVisitor* visitr = new CSVFluxPoolVisitor( dummy );
+
+    // Create the new core, add the visitor, and push onto the core registry
+    Core* core = new Core(loglvl, logtoscrn, logtofile);
+    core->addVisitor( visitr );
+    core_registry.push_back(core);
+    
     return (int)core_registry.size() - 1;
 }
 
