@@ -103,20 +103,20 @@
 <h2 class="hasAnchor">
 <a href="#step-one" class="anchor"></a>Step one:</h2>
 <p>Add two new files:<br>
-* headers/core/X.hpp * source/core/X.cpp</p>
+* <code>headers/core/X.hpp</code> * <code>source/core/X.cpp</code></p>
 <p>It is best to copy and modify the corresponding files from an already constructed component.</p>
 </div>
 <div id="step-two-within-x-hpp" class="section level2">
 <h2 class="hasAnchor">
 <a href="#step-two-within-x-hpp" class="anchor"></a>Step two (within X.hpp):</h2>
-<p>Under <code>private</code> list the variables that are used in the component and their corresponding type. E.g. * <code>tseries&lt;unitval&gt; x</code> to create a <a href="TSeries.html">time series</a>. * <code>unitval x</code> to declare a <a href="Unitvals.html">value with associated units</a>. * <code>double x</code></p>
+<p>Under <code>private</code> list the variables that are used in the component and their corresponding type. Because of Hector’s ability to <a href="https://jgcri.github.io/hector/reference/reset.html">reset</a>, every state variable generally needs an associated time series history variable. E.g. * <code>tseries&lt;unitval&gt; x</code> to create a <a href="https://jgcri.github.io/hector/articles/manual/TimeSeries.html">time series</a>. * <code>unitval x</code> to declare a <a href="Unitvals.html">value with associated units</a>. * <code>double x</code></p>
 </div>
 <div id="step-three-within-x-cpp" class="section level2">
 <h2 class="hasAnchor">
 <a href="#step-three-within-x-cpp" class="anchor"></a>Step three (within X.cpp):</h2>
 <p>Make sure that you <code>#include X.hpp</code>.</p>
 <p><em>In the constructor</em><br>
-If the variable is a tseries, add all of the variables allowing for interpolation and their corresponding names</p>
+If the variable is a <code>tseries</code>, add all of the variables allowing for interpolation and their corresponding names</p>
 <pre><code>XComponent::XComponent() {
     X_emissions.allowInterp( true ); 
     X_emissions.name = X_COMPONENT_NAME; </code></pre>
@@ -125,7 +125,8 @@ Inform the core what data the component can provide (<em>registerCapability</em>
 <pre><code>core-&gt;registerCapability( D_ATMOSPHERIC_X, getComponentName() );
 core-&gt;registerDependency( D_LIFETIME_X, getComponentName() );</code></pre>
 <p><em>In X::setData</em><br>
-Set the data that are used as inputs within this component, typically coming from the ini file. [[For examples of tseries vs. unitvals in setData|AddTSeries]].</p>
+Set the data that are used as inputs within this component, typically coming from the INI file.<br>
+[[For examples of <code>tseries</code> vs. <code>unitvals</code> in <a href="https://jgcri.github.io/hector/articles/manual/TimeSeries.html">Time Series</a>]].</p>
 <p><em>In X::prepareToRun</em> TODO: describe</p>
 <p><em>In X::run</em> The run method contains the equations and code used in this component. Here is where you would want a log statement, written out to the component’s log.</p>
 <p><code>H_LOG( logger, Logger::DEBUG ) &lt;&lt; "Year " &lt;&lt; runToDate &lt;&lt; " X concentration = " &lt;&lt; X.get( runToDate ) &lt;&lt; std::endl;</code></p>

@@ -98,31 +98,35 @@
 
     
     
-<p>Adding a new variable to a method using getData to obtain the information defined in the ini file</p>
-<p>In hector.ini under the corresponding component add variable Ex: SN = 42000;</p>
-<p>In hpp file of component add variable as tseries/unitval/double/etc.</p>
-<p>In component_data.hpp define the variables that are being added Ex: #define D_ATMOSPHERIC_SO2 “SN” These names do <em>not</em> have to match internal component variables but the ini definition <em>has to</em> match what appears in quotes</p>
-<p>In the component file .cpp under init, need to register the Capability core-&gt;registerCapability( D_ATMOSPHERIC_SO2, getComponentName() );</p>
-<p>In cpp file of component, under getData and setData, add the new variables in before the Error message NOTE: see tseries documentation for more information on getData</p>
+<p>Adding a new variable to a method using <code>getData</code> to obtain the information defined in the INI file.</p>
+<div id="method" class="section level2">
+<h2 class="hasAnchor">
+<a href="#method" class="anchor"></a>Method</h2>
+<p><em>In hector.ini</em> Under the corresponding component add variable Ex: <code>SN = 42000;</code></p>
+<p><em>In hpp file of component</em> Add variable as <code>tseries</code>, <code>unitval</code>, <code>double</code>, etc. and add its associated time series (when necessary; see above).</p>
+<p><em>In component_data.hpp</em> Define the variables that are being added Ex: <code>#define D_ATMOSPHERIC_SO2 "SN"</code></p>
+<p>These names do <em>not</em> have to match internal component variables but the INI definition <em>has to</em> match what appears in quotes</p>
+<p><em>In the component file.cpp</em> Under init, need to register the Capability <code>core-&gt;registerCapability( D_ATMOSPHERIC_SO2, getComponentName() );</code></p>
+<p><em>In cpp file of component</em> Under <code>getData</code> and <code>setData</code>, add the new variables in before the Error message</p>
+<p>NOTE: see <a href="https://jgcri.github.io/hector/articles/manual/TimeSeries.html">tseries</a> documentation for more information on <code>getData</code></p>
 <pre><code>(getData)
-else if( varName == D_ATMOSPHERIC_SO2 ) {
-   
-returnval = SN;
-    
-(setData)
+else if(varName == D_ATMOSPHERIC_SO2 ) {
+  returnval = SN;
+  (setData)
 else if( varName ==  D_ATMOSPHERIC_SO2  ) {
-       
-H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
-
-    SN.set( lexical_cast&lt;double&gt;( value ), U_GG );
+  H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed");
+SN.set( lexical_cast&lt;double&gt;( value ), U_GG );
     }</code></pre>
-<p>If this variable is called in another component. For example if adding in a variable within the focing component Ex: unitval SN = core-&gt;getData( D_ATMOSPHERIC_SO2, runToDate);</p>
-<p>If this variable is a unitval, the new unitval needs to appear in the unitval.hpp file.</p>
+<p><em>If this variable is called in another component.</em> For example, if adding in a variable within the forcing component Ex: <code>unitval SN = core-&gt;getData( D_ATMOSPHERIC_SO2, runToDate);</code></p>
+<p>If this variable is a <code>unitval</code>, the relevant code file must include <code>unitval.hpp</code>.</p>
+</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-      </div>
+        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
+    </nav>
+</div>
 
 </div>
 
