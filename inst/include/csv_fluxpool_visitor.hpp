@@ -42,7 +42,7 @@ private:
     std::stringstream csvBuffer;
 
     // Data retained while the visitor is operating
-    double current_date;
+    double tracking_date;
 
     //! Current model date, stored as a string for output
     std::string datestring;

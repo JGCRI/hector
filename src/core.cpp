@@ -207,7 +207,7 @@ std::string Core::TrackingData() const {
         }
 
     }
-    return "tracking data!";
+    return "";
 }
 
 //------------------------------------------------------------------------------
@@ -368,7 +368,13 @@ void Core::prepareToRun(void)
         //       H_LOG( glog, Logger::DEBUG) << "Preparing " << (*it).second->getComponentName() << " to run" << endl;
         ( *it ).second->prepareToRun();
     }
-
+    
+    // ------------------------------------
+    // Visit all the visitors; this lets them record the core pointer, tracking date, etc.
+    for( auto visitorIt : modelVisitors ) {
+        visitorIt->visit( this );
+    } // for
+    
     // ------------------------------------
     // 5. Spin up the model
     if( do_spinup ) {

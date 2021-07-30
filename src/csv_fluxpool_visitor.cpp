@@ -34,7 +34,6 @@ CSVFluxPoolVisitor::CSVFluxPoolVisitor( ostream& outputStream, const bool printH
     csvFile( outputStream ),
     csvBuffer("")
 {
-    
     if( printHeader ) {
         // Print table header
         csvBuffer << "year" << DELIMITER
@@ -54,9 +53,9 @@ CSVFluxPoolVisitor::~CSVFluxPoolVisitor() {
 //------------------------------------------------------------------------------
 // documentation is inherited
 bool CSVFluxPoolVisitor::shouldVisit( const bool in_spinup, const double date ) {
-    // visit all non-spinup model periods
     datestring = boost::lexical_cast<string>( date );
-    return !in_spinup;
+    // visit all model periods that are >= the initial tracking date
+    return date >= tracking_date;
 }
 
 //------------------------------------------------------------------------------
@@ -64,6 +63,7 @@ bool CSVFluxPoolVisitor::shouldVisit( const bool in_spinup, const double date ) 
 void CSVFluxPoolVisitor::visit( Core* c ) {
     run_name = c->getRun_name();
     core = c;
+    tracking_date = core->getTrackingDate();
 }
 
 //------------------------------------------------------------------------------

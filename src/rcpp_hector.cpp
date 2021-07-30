@@ -205,8 +205,7 @@ double getdate(Environment core)
 std::string get_tracking_data_impl(Environment core)
 {
     Hector::Core *hcore = gethcore(core);
-    std::string tracking_data = hcore->TrackingData();
-    return tracking_data;
+    return hcore->TrackingData();
 }
 
 //' Retrieve the current list of biomes for a Hector instance
