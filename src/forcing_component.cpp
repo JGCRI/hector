@@ -616,6 +616,25 @@ unitval ForcingComponent::getData( const std::string& varName,
         } else {
             if (currentYear < baseyear) {
                 returnval.set( 0.0, U_W_M2 );
+            }
+            // If requesting data not associated with a date aka a parameter,
+            // return the parameter value.
+            if(varName == D_RHO_CO2){
+                returnval = rhoCO2;
+            } else if (varName == D_RHO_N2O){
+                returnval = rhoN2O;
+            } else if (varName == D_RHO_CH4){
+                returnval = rhoCH4;
+            } else if (varName == D_RHO_TROPO3){
+                returnval = rhotropO3;
+            } else if (varName == D_RHO_SO2d){
+                returnval = rhoSO2d;
+            } else if (varName == D_RHO_SO2i){
+                returnval = rhoSO2i;
+            } else if (varName == D_RHO_BC){
+                returnval = rhoBC;
+            } else if (varName == D_RHO_OC){
+                returnval = rhoOC;
             } else {
                 H_THROW( "Caller is requesting unknown variable: " + varName );
             }
