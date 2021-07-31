@@ -36,6 +36,7 @@ public:
     virtual void visit( OceanComponent* c );
 
     std::string get_buffer() const;
+    void reset( const double reset_date );
     
 private:
     //! The file output stream in which the csv output will be written to.

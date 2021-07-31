@@ -51,6 +51,12 @@ public:
     virtual bool shouldVisit( const bool in_spinup, const double date ) = 0;
 
     //------------------------------------------------------------------------------
+    /*! \brief Allow visitors to reset their data upon a core reset.
+     *  \param reset_date The date to reset to.
+     */
+    virtual void reset( const double reset_date ) {}
+
+    //------------------------------------------------------------------------------
     // Add a visit for all visitable subclasses here.
     // TODO: should we create a .cpp for these?
     virtual void visit( Core* core ) {}

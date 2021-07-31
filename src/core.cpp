@@ -501,11 +501,19 @@ void Core::reset(double resetdate)
         }
     }
 
-    for(NameComponentIterator it = modelComponents.begin(); it != modelComponents.end(); ++it) {
-        H_LOG(glog, Logger::DEBUG) << "Resetting component: " << it->first << endl;
-        it->second->reset(resetdate);
+    // Order all components to reset
+    for( auto it : modelComponents ) {
+        H_LOG(glog, Logger::DEBUG) << "Resetting component: " << it.first << endl;
+        it.second->reset(resetdate);
     }
 
+    // Inform all visitors of the reset as well
+    // Currently (2021) only csvFluxPoolVisitor cares (implements this)
+    for( auto it: modelVisitors ) {
+        H_LOG(glog, Logger::DEBUG) << "Resetting visitor" << endl;
+        it->reset(resetdate);
+    }
+    
     // The prepareToRun function reruns all of the initial setup, including the
     // spinup.  This is necessary because we may have changed some of the model
     // parameters, and for many components the parameters produce their effect

@@ -145,7 +145,9 @@ void CSVFluxPoolVisitor::visit( OceanComponent* c ) {
 }
 
 //------------------------------------------------------------------------------
-// Assemble the time series strings into a single string and return to core
+/*! \brief Assemble the time series strings into a single string and return to core.
+ *  \return The visitor output assembled into a single string.
+ */
 std::string CSVFluxPoolVisitor::get_buffer() const {
     stringstream output;
     
@@ -156,6 +158,12 @@ std::string CSVFluxPoolVisitor::get_buffer() const {
     }
     
     return output.str();
+}
+
+//------------------------------------------------------------------------------
+// documentation is inherited
+void CSVFluxPoolVisitor::reset( const double reset_date ) {
+    csvBuffer.truncate( reset_date );
 }
 
 }
