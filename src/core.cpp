@@ -197,7 +197,7 @@ void Core::init() {
 //------------------------------------------------------------------------------
 /*! \brief Return the carbon tracking data stored in the csvFluxPoolVisitor
  */
-std::string Core::TrackingData() const {
+std::string Core::getTrackingData() const {
     
     // I'm pretty sure I should be using a virtual function for this
     for( auto visitorIt : modelVisitors ) {

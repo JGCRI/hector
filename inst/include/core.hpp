@@ -69,8 +69,6 @@ public:
     void registerDependency( const std::string& capabilityName, const std::string& componentName );
     void registerInput(const std::string &inputName, const std::string &componentName);
     
-    std::string TrackingData() const;
-    
     unitval sendMessage( const std::string& message,
                         const std::string& datum );
 
@@ -81,6 +79,7 @@ public:
     double getStartDate() const { return startDate; };
     double getEndDate() const { return endDate; };
     double getTrackingDate() const { return trackingDate; };
+    std::string getTrackingData() const;
     double getCurrentDate() const {return lastDate;}
     std::string getRun_name() const { return run_name; };
     bool inSpinup() const { return in_spinup; };
