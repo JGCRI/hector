@@ -49,10 +49,11 @@ CSVFluxPoolVisitor::CSVFluxPoolVisitor( ostream& outputStream, const bool printH
 CSVFluxPoolVisitor::~CSVFluxPoolVisitor() {
     // Write out the buffer to the csv file before closing down
     
-    csvFile << header; // the header (or an empty string)
-    
-    for( double yr = csvBuffer.firstdate(); yr <= csvBuffer.lastdate(); yr++ ) {
-        csvFile << csvBuffer.get(yr);
+    if(csvBuffer.size()) {
+        csvFile << header; // the header (or an empty string)
+        for( double yr = csvBuffer.firstdate(); yr <= csvBuffer.lastdate(); yr++ ) {
+            csvFile << csvBuffer.get(yr);
+        }
     }
 }
 
@@ -151,10 +152,11 @@ void CSVFluxPoolVisitor::visit( OceanComponent* c ) {
 std::string CSVFluxPoolVisitor::get_buffer() const {
     stringstream output;
     
-    output << header; // the header (or an empty string)
-    
-    for( double yr = csvBuffer.firstdate(); yr <= csvBuffer.lastdate(); yr++ ) {
-        output << csvBuffer.get(yr);
+    if(csvBuffer.size()) {
+        output << header; // the header (or an empty string)        
+        for( double yr = csvBuffer.firstdate(); yr <= csvBuffer.lastdate(); yr++ ) {
+            output << csvBuffer.get(yr);
+        }
     }
     
     return output.str();
