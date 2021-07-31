@@ -47,7 +47,7 @@ CSVFluxPoolVisitor::CSVFluxPoolVisitor( ostream& outputStream, const bool printH
 /*! \brief Destructor
  */
 CSVFluxPoolVisitor::~CSVFluxPoolVisitor() {
-    // Write out the buffer to the csv file
+    // Write out the buffer to the csv file before closing down
     
     csvFile << header; // the header (or an empty string)
     
