@@ -18,6 +18,7 @@
 
 #include "avisitor.hpp"
 #include "fluxpool.hpp"
+#include "tseries.hpp"
 
 #define DELIMITER ","
 
@@ -34,14 +35,18 @@ public:
     virtual void visit( SimpleNbox* c );
     virtual void visit( OceanComponent* c );
 
-    std::string get_buffer() const { return csvBuffer.str(); };
+    std::string get_buffer() const;
     
 private:
     //! The file output stream in which the csv output will be written to.
     std::ostream& csvFile;
-    std::stringstream csvBuffer;
-
+    
+    //! The buffer—holds output until ready to be returned to the core or written to the csv file
+    tseries<std::string> csvBuffer;
+    std::string header;
+    
     // Data retained while the visitor is operating
+    double current_date;
     double tracking_date;
 
     //! Current model date, stored as a string for output

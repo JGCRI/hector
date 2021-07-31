@@ -31,15 +31,16 @@ using namespace std;
  *  \param printHeader Boolean controlling whether we print a header or not
  */
 CSVFluxPoolVisitor::CSVFluxPoolVisitor( ostream& outputStream, const bool printHeader ) :
-    csvFile( outputStream ),
-    csvBuffer("")
+    csvFile( outputStream )
 {
+    stringstream hdr;
     if( printHeader ) {
-        // Print table header
-        csvBuffer << "year" << DELIMITER
-                << "pool_name" << DELIMITER << "pool_value" << DELIMITER << "pool_units" << DELIMITER
-                << "source_name" << DELIMITER << "source_fraction" <<endl;
+        // Store table header
+        hdr << "year" << DELIMITER << "pool_name" << DELIMITER << "pool_value"
+        << DELIMITER << "pool_units" << DELIMITER << "source_name"
+        << DELIMITER << "source_fraction" << endl;
     }
+    header = hdr.str();
 }
 
 //------------------------------------------------------------------------------
@@ -47,12 +48,18 @@ CSVFluxPoolVisitor::CSVFluxPoolVisitor( ostream& outputStream, const bool printH
  */
 CSVFluxPoolVisitor::~CSVFluxPoolVisitor() {
     // Write out the buffer to the csv file
-    csvFile << csvBuffer.str();
+    
+    csvFile << header; // the header (or an empty string)
+    
+    for( double yr = csvBuffer.firstdate(); yr <= csvBuffer.lastdate(); yr++ ) {
+        csvFile << csvBuffer.get(yr);
+    }
 }
 
 //------------------------------------------------------------------------------
 // documentation is inherited
 bool CSVFluxPoolVisitor::shouldVisit( const bool in_spinup, const double date ) {
+    current_date = date;
     datestring = boost::lexical_cast<string>( date );
     // visit all model periods that are >= the initial tracking date
     return date >= tracking_date;
@@ -71,12 +78,18 @@ void CSVFluxPoolVisitor::visit( Core* c ) {
  */
 void CSVFluxPoolVisitor::print_pool(fluxpool x) {
     if(x.tracking) {
+        stringstream output;
+        // there might already be "diff" output
+        if(csvBuffer.exists(current_date)) {
+            output << csvBuffer.get(current_date);
+        }
         vector<string> sources = x.get_sources();
         for (auto &s: sources) {
-            csvBuffer << datestring << DELIMITER <<
-                x.name << DELIMITER << x.value(U_PGC) << DELIMITER << x.unitsName() << DELIMITER <<
-                s << DELIMITER << x.get_fraction(s) << endl;
+            output << datestring << DELIMITER << x.name << DELIMITER
+            << x.value(U_PGC) << DELIMITER << x.unitsName() << DELIMITER
+            << s << DELIMITER << x.get_fraction(s) << endl;
         }
+        csvBuffer.set(current_date, output.str());
     }
 }
 
@@ -84,9 +97,17 @@ void CSVFluxPoolVisitor::print_pool(fluxpool x) {
 /*! \brief Print a double value and its name
  */
 void CSVFluxPoolVisitor::print_diff(double x, string name){
-     csvBuffer << datestring << DELIMITER <<
-                "Diff" << DELIMITER << x << DELIMITER << "U_PGC" << DELIMITER <<
-                name << DELIMITER << 0 << endl;
+    stringstream output;
+    // there might already be pool output
+    if(csvBuffer.exists(current_date)) {
+        output << csvBuffer.get(current_date);
+    }
+
+    output << datestring << DELIMITER << "Diff" << DELIMITER << x
+    << DELIMITER << "U_PGC" << DELIMITER << name << DELIMITER
+    << 0 << endl;
+    
+    csvBuffer.set(current_date, output.str());
 }
 
 //------------------------------------------------------------------------------
@@ -123,4 +144,19 @@ void CSVFluxPoolVisitor::visit( OceanComponent* c ) {
     print_pool( c->deep.get_carbon() );
 }
 
+//------------------------------------------------------------------------------
+// Assemble the time series strings into a single string and return to core
+std::string CSVFluxPoolVisitor::get_buffer() const {
+    stringstream output;
+    
+    output << header; // the header (or an empty string)
+    
+    for( double yr = csvBuffer.firstdate(); yr <= csvBuffer.lastdate(); yr++ ) {
+        output << csvBuffer.get(yr);
+    }
+    
+    return output.str();
 }
+
+}
+
