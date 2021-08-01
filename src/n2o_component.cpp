@@ -212,6 +212,8 @@ unitval N2OComponent::getData( const std::string& varName,
     return returnval;
 }
 
+//------------------------------------------------------------------------------
+// documentation is inherited
 void N2OComponent::reset(double time)
 {
     // reset time counter, and truncate output time series

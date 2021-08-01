@@ -505,7 +505,8 @@ unitval TemperatureComponent::getData( const std::string& varName,
     return returnval;
 }
 
-
+//------------------------------------------------------------------------------
+// documentation is inherited
 void TemperatureComponent::reset(double time)
 {
     // We take a slightly different approach in this component's reset method than we have in other components.  The
@@ -520,8 +521,6 @@ void TemperatureComponent::reset(double time)
     H_LOG(logger, Logger::NOTICE)
         << getComponentName() << " reset to time= " << time << "\n";
 }
-
-
 
 //------------------------------------------------------------------------------
 // documentation is inherited

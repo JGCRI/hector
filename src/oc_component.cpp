@@ -54,7 +54,6 @@ void OrganicCarbonComponent::init( Core* coreptr ) {
     core->registerInput(D_EMISSIONS_OC, getComponentName());
 }
 
-
 //------------------------------------------------------------------------------
 // documentation is inherited
 unitval OrganicCarbonComponent::sendMessage( const std::string& message,
@@ -132,6 +131,8 @@ unitval OrganicCarbonComponent::getData( const std::string& varName,
     return returnval;
 }
 
+//------------------------------------------------------------------------------
+// documentation is inherited
 void OrganicCarbonComponent::reset(double time)
 {
     oldDate = time;
