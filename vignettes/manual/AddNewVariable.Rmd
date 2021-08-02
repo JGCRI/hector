@@ -7,25 +7,25 @@ Adding a new variable to a method using `getData` to obtain the information defi
 Method
 ---------
 
-_In hector.ini_
+_In hector.ini_  
 Under the corresponding component add variable
 	Ex: `SN = 42000;`
 
 
-_In hpp file of component_ 
+_In hpp file of component_   
 Add variable as `tseries`, `unitval`, `double`, etc. and add its associated time series (when necessary; see above).
 
-_In component_data.hpp_
+_In component_data.hpp_  
 Define the variables that are being added
 	Ex: `#define D_ATMOSPHERIC_SO2 "SN"`
 	
 These names do *not* have to match internal component variables but the INI definition *has to* match what appears in quotes
 
-_In the component file.cpp_
+_In the component file.cpp_  
 Under init, need to register the Capability
 	`core->registerCapability( D_ATMOSPHERIC_SO2, getComponentName() );`
 
-_In cpp file of component_
+_In cpp file of component_  
 Under `getData` and `setData`, add the new variables in before the Error message 
 
 NOTE: see [tseries](https://jgcri.github.io/hector/articles/manual/TimeSeries.html) documentation for more information on `getData`
@@ -39,7 +39,7 @@ NOTE: see [tseries](https://jgcri.github.io/hector/articles/manual/TimeSeries.ht
     SN.set( lexical_cast<double>( value ), U_GG );
         }
 
-_If this variable is called in another component._
+_If this variable is called in another component._  
 For example, if adding in a variable within the forcing component
     Ex: `unitval SN = core->getData( D_ATMOSPHERIC_SO2, runToDate);`
 
