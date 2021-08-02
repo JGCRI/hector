@@ -8,7 +8,7 @@ All contributions must pass through a pull request (PR) process before being mer
 
 We encourage all contributors to read and comply with the following guidelines:
 
-* Before embarking on your work, open a [development](link) GitHub issue to provide a brief description of your change or development, including justification and timeline. This allows us to provide feedback, and helps us plan and prepare for your PR;
+* Before embarking on your work, open a [development](https://github.com/JGCRI/hector/issues/new?assignees=&labels=&template=development.md) GitHub issue to provide a brief description of your change or development, including justification and timeline. This allows us to provide feedback, and helps us plan and prepare for your PR;
 * We use [GitHub's pull request feature](https://docs.github.com/en/free-pro-team@latest/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request) to merge new developments into Hector. We will not merge changes made directly to the master branch, please make your changes to a [branch](https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging);
 * Use [Roxygen](https://roxygen2.r-lib.org/) where applicable (e.g., adding or changing functions, adding data sets) but also add thorough and coherent inline documentation; 
 * Add [unit tests](https://r-pkgs.org/tests.html) if applicable, when adding or changing functions;
