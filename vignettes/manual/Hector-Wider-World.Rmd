@@ -27,7 +27,7 @@ Hector v1.1 contains an updated ocean temperature algorithm to better match the 
 ### Hector v2.5
 > Vega-Westhoff, B., Sriver, R. L., Hartin, C. A., Wong, T. E., & Keller, K. (2019). Impacts of observational constraints related to sea level on estimates of climate sensitivity. Earth's Future, 7, 677– 690. https://doi.org/10.1029/2018EF001082
 
-Hector v2.5 incorporates a one dimensional diffusive heat and energy balance model called [DOECLIM](https://pure.mpg.de/rest/items/item_994422_1/component/file_994421/content) and a global sea level module called [BRICK](https://doi.org/10.5194/gmd-10-2741-2017). This allows for probabilistic assessments of global surface temperature and sea level changes. 
+Hector v2.5 incorporates a one dimensional diffusive heat and energy balance model called [DOECLIM](https://pure.mpg.de/rest/items/item_994422_1/component/file_994421/content) and a global sea level module called [BRICK](https://doi.org/10.5194/gmd-10-2741-2017).
 
 ## Hector in Literature
 
@@ -36,7 +36,7 @@ Below are journal articles that use or reference Hector.
 
 --
 
-[A permafrost implementation in the simple carbon-climate model Hector v.2.3pf](https://gmd.copernicus.org/articles/14/4751/2021/gmd-14-4751-2021.pdf)
+[A permafrost implementation in the simple carbon-climate model Hector v.2.3pf](https://gmd.copernicus.org/articles/14/4751/2021/)
 
 > Woodard, D. L., Shiklomanov, A. N., Kravitz, B., Hartin, C., Bond-Lamberty, B. (2021). A permafrost implementation in the simple carbon-climate model Hector v.2.3pf. Geosci. Model Dev., 14, 4751–4767. ttps://doi.org/10.5194/gmd-14-4751-2021
 
@@ -99,6 +99,7 @@ HectorUI is an R Shiny web interface designed to be user-friendly and to provide
 The HectorUI interface can be found [here](https://jgcri.shinyapps.io/HectorUI/).
 
 The HectorUI paper can be found [here](https://joss.theoj.org/papers/10.21105/joss.02782)  
+
 > Evanoff J.E., C.R. Vernon, S.T. Waldhoff, A.C. Snyder, and C.A. Hartin. 2020. "hectorui: A web-based interactive scenario builder and visualization application for the Hector climate model." The Journal of Open Source Software 5, no. 56:Article No. 2782. PNNL-SA-156861. https://doi.org/10.21105/joss.02782
 
 A YouTube overview of HectorUI by Stephanie Pennington can be found [here](https://www.youtube.com/watch?v=fBHXS7pjZcI).
