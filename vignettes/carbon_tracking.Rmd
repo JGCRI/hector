@@ -23,8 +23,9 @@ Hector's carbon tracking feature helps to trace the movement between various poo
 First, let's load the packages we will need.
 
 ``` {r hector.init}
-library(ggplot2)
 library(hector)
+library(dplyr)
+library(ggplot2)
 ```
 
 Next, in order to use the carbon tracking feature, we must first modify the .ini file that we will be using. The .ini files can be found under `/hector/inst/input`. For this example, let's choose RCP 4.5 by selecting the `hector_rcp45.ini` file. 
@@ -43,9 +44,11 @@ run(core)
 
 tdata <- get_tracking_data(core)
 head(tdata)
+
+tdata <- tdata %>% filter(pool_name != "Diff")
 ```
 
-The `tdata` dataset contains information on year, pool name, amount of units in each pool, and the fraction of each source within that pool. 
+The `tdata` dataset contains information on year, pool name, amount of units in each pool, and the fraction of each source within that pool. The last line removes the `Diff` pool, which tracks how much certain pools have changed. This is useful, but not for our example.
 
 ## Results
 
@@ -54,18 +57,20 @@ By using ggplot, we can create time series graphs of the results of this trackin
 ``` {r hector.plot1}
 tplot <- ggplot(tdata, aes(year, source_fraction, fill = source_name)) +
   geom_area() +
-  facet_wrap(~pool_name)
+  facet_wrap(~pool_name) +
+  theme(axis.text = element_text(size = 7)) +
+  ggtitle("Source Percentage Change Over Time") +
+  xlab("Year") +
+  ylab("Source Fraction")
 
 tplot
 ```
 
 Let's take a look at these graphs. Note that the `earth_c` pool is always 100% `earth_c`. There are no inflows to this pool, and outflows into other pools are viewed as human emissions. We see that around 1800, human emissions begin to appear in various pools, like `atmos_c` or `soil_c_global`. Between 1900-2000, human emissions take off and become major sources by 2100. 
 
-Now, if we want to examine just one pool, we can do the following. Note that this example requires the `dplyr` package. 
+Now, if we want to examine just one pool, we can do the following. 
 
 ``` {r hector.atm}
-library(dplyr)
-
 atmos <- tdata %>% filter(pool_name == "atmos_c")
 
 atm <- atmos %>% 
