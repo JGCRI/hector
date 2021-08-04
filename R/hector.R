@@ -101,7 +101,7 @@ newcore <- function(inifile, loglevel = 0, suppresslogging = TRUE,
 #' @export
 get_tracking_data <- function(core) {
   td <- get_tracking_data_impl(core)
-  if(td != "") {
+  if (td != "") {
     read.csv(textConnection(td), stringsAsFactors = FALSE)
   } else {
     data.frame()  # throw error instead?
