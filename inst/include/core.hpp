@@ -50,7 +50,7 @@ public:
 
     void prepareToRun();
 
-    void run(double runtodate=-1.0);
+    void run(double runtodate = -1.0);
 
     void reset(double resetdate);
 
@@ -68,7 +68,7 @@ public:
 
     void registerDependency( const std::string& capabilityName, const std::string& componentName );
     void registerInput(const std::string &inputName, const std::string &componentName);
-
+    
     unitval sendMessage( const std::string& message,
                         const std::string& datum );
 
@@ -79,6 +79,7 @@ public:
     double getStartDate() const { return startDate; };
     double getEndDate() const { return endDate; };
     double getTrackingDate() const { return trackingDate; };
+    std::string getTrackingData() const;
     double getCurrentDate() const {return lastDate;}
     std::string getRun_name() const { return run_name; };
     bool inSpinup() const { return in_spinup; };
@@ -121,10 +122,8 @@ private:
     // prepareToRun.
     bool setup_complete;
 
-
     //! Cause all components to run their spinup procedure.
     bool run_spinup();
-
 
     //------------------------------------------------------------------------------
     //! Current run name.

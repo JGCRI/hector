@@ -34,6 +34,7 @@
 #include "h_util.hpp"
 #include "simpleNbox.hpp"
 #include "avisitor.hpp"
+#include "csv_fluxpool_visitor.hpp"
 
 namespace Hector {
 
@@ -191,6 +192,22 @@ void Core::init() {
 
     // Set that the core has now been initialized.
     isInited = true;
+}
+
+//------------------------------------------------------------------------------
+/*! \brief Return the carbon tracking data stored in the csvFluxPoolVisitor
+ */
+std::string Core::getTrackingData() const {
+
+    // I'm pretty sure I should be using a virtual function for this
+    for( auto visitorIt : modelVisitors ) {
+        const CSVFluxPoolVisitor* bad_idea = dynamic_cast<const CSVFluxPoolVisitor*>(visitorIt);
+        if(bad_idea != nullptr ) {
+            return(bad_idea->get_buffer());
+        }
+
+    }
+    return "";
 }
 
 //------------------------------------------------------------------------------
@@ -353,6 +370,12 @@ void Core::prepareToRun(void)
     }
 
     // ------------------------------------
+    // Visit all the visitors; this lets them record the core pointer, tracking date, etc.
+    for( auto visitorIt : modelVisitors ) {
+        visitorIt->visit( this );
+    } // for
+
+    // ------------------------------------
     // 5. Spin up the model
     if( do_spinup ) {
         H_LOG( glog, Logger::NOTICE) << "Spinning up model..." << endl;
@@ -415,7 +438,6 @@ bool Core::run_spinup()
  *
  *  \exception h_exception An error which may occur at any stage of the process.
  */
-
 void Core::run(double runtodate) {
     if(runtodate < 0.0) {
         // run to the configured default enddate.  This is mainly for
@@ -443,7 +465,7 @@ void Core::run(double runtodate) {
             H_LOG(glog, Logger::NOTICE) << "Starting tracking in " << currDate << endl;
             // nb components are responsible for checking and acting on this
         }
-        
+
         for( NameComponentIterator it = modelComponents.begin(); it != modelComponents.end(); ++it ) {
             ( *it ).second->run( currDate );
         }
@@ -478,9 +500,17 @@ void Core::reset(double resetdate)
         }
     }
 
-    for(NameComponentIterator it = modelComponents.begin(); it != modelComponents.end(); ++it) {
-        H_LOG(glog, Logger::DEBUG) << "Resetting component: " << it->first << endl;
-        it->second->reset(resetdate);
+    // Order all components to reset
+    for( auto it : modelComponents ) {
+        H_LOG(glog, Logger::DEBUG) << "Resetting component: " << it.first << endl;
+        it.second->reset(resetdate);
+    }
+
+    // Inform all visitors of the reset as well
+    // Currently (2021) only csvFluxPoolVisitor cares (implements this)
+    for( auto it: modelVisitors ) {
+        H_LOG(glog, Logger::DEBUG) << "Resetting visitor" << endl;
+        it->reset(resetdate);
     }
 
     // The prepareToRun function reruns all of the initial setup, including the
@@ -733,7 +763,15 @@ std::vector<Core *> Core::core_registry;
  */
 int Core::mkcore(bool logtofile, Logger::LogLevel loglvl, bool logtoscrn)
 {
-    core_registry.push_back(new Core(loglvl, logtoscrn, logtofile));
+    // Create a dummy output filestream, essentially /dev/null
+    std::ofstream dummy;
+    CSVFluxPoolVisitor* visitr = new CSVFluxPoolVisitor( dummy );
+
+    // Create the new core, add the visitor, and push onto the core registry
+    Core* core = new Core(loglvl, logtoscrn, logtofile);
+    core->addVisitor( visitr );
+    core_registry.push_back(core);
+
     return (int)core_registry.size() - 1;
 }
 

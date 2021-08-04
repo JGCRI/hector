@@ -114,16 +114,15 @@ Environment shutdown(Environment core)
 
 //' Reset a Hector instance to an earlier date
 //'
-//' Resetting the model returns it to its state at a previous time.  If the requested time
-//' is before the model start date (any value will do; conventionally zero is used), then
-//' the spinup will be rerun, and the model will be
-//' left ready to run at the start date.  (By contrast, resetting \emph{to} the start
-//' date leaves the model ready to run at the start date, but without having rerun the
-//' spinup.)
+//' Resetting the model returns it to its state at a previous time.  If the
+//' requested time is before the model start date, then the spinup will be
+//' rerun, and the model will be left ready to run at the start date. (By
+//' contrast, resetting \emph{to} the start date leaves the model ready to run
+//' at the start date, but without having rerun the spinup.)
 //'
 //' @param core Handle for the Hector instance that is to be reset.
-//' @param date Date to reset to.  The default is to reset to the model start date with
-//' a rerun of the spinup.
+//' @param date Date to reset to.  The default is to reset to the model start
+//' date with a rerun of the spinup.
 //' @family main user interface functions
 //' @export
 // [[Rcpp::export]]
@@ -150,17 +149,17 @@ Environment reset(Environment core, double date=0)
 
 //' Run the Hector climate model
 //'
-//' Run Hector up through the specified time.  This function does not return the results
-//' of the run.  To get results, run \code{fetch}.
+//' Run Hector up through the specified time.  This function does not return the
+//' results of the run.  To get results, run \code{fetch}.
 //'
 //' @param core Handle to the Hector instance that is to be run.
-//' @param runtodate Date to run to.  The default is to run to the end date configured
-//' in the input file used to initialize the core.
+//' @param runtodate Date to run to.  The default is to run to the end date
+//' configured in the input file used to initialize the core.
 //' @return The Hector instance handle
 //' @export
 //' @family main user interface functions
 // [[Rcpp::export]]
-Environment run(Environment core, double runtodate=-1.0)
+Environment run(Environment core, double runtodate = -1.0)
 {
     if(!core["clean"])
         reset(core, core["reset_date"]);
@@ -195,6 +194,17 @@ double getdate(Environment core)
 {
     Hector::Core *hcore = gethcore(core);
     return hcore->getCurrentDate();
+}
+
+//' Retrieve the tracking data for a Hector instance
+//'
+//' @param core Handle to the Hector instance.
+//' @export
+// [[Rcpp::export]]
+std::string get_tracking_data_impl(Environment core)
+{
+    Hector::Core *hcore = gethcore(core);
+    return hcore->getTrackingData();
 }
 
 //' Retrieve the current list of biomes for a Hector instance

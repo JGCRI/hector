@@ -84,6 +84,7 @@
 		27B2C26E261511C8005DE26D /* carbon-cycle-model.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C24B261511C8005DE26D /* carbon-cycle-model.cpp */; };
 		27B2C270261511C8005DE26D /* spline_forsythe.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C24D261511C8005DE26D /* spline_forsythe.cpp */; };
 		27B2C271261511C8005DE26D /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C24E261511C8005DE26D /* main.cpp */; };
+		27F2613726B55617004BDD47 /* csv_fluxpool_visitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27962904268F237200333AA3 /* csv_fluxpool_visitor.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -510,6 +511,7 @@
 				27A02A602615CBB800AF9BFA /* ocean_csys.cpp in Sources */,
 				27A02A612615CBB800AF9BFA /* core.cpp in Sources */,
 				27A02A622615CBB800AF9BFA /* INIReader.cpp in Sources */,
+				27F2613726B55617004BDD47 /* csv_fluxpool_visitor.cpp in Sources */,
 				27A02A632615CBB800AF9BFA /* so2_component.cpp in Sources */,
 				27A02A642615CBB800AF9BFA /* oc_component.cpp in Sources */,
 				273FC39F26A3570B00D5303E /* test_fluxpool.cpp in Sources */,

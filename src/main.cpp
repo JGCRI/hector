@@ -80,7 +80,6 @@ int main (int argc, char * const argv[]) {
           else
               csvFluxPoolTrackingFile.open( string( string( OUTPUT_DIRECTORY ) + "tracking_" + rn + ".csv" ).c_str(), ios::out );
 
-
         ostream outputStream( &csvoutputStreamFile );
         CSVOutputStreamVisitor csvOutputStreamVisitor( outputStream );
         core.addVisitor( &csvOutputStreamVisitor );

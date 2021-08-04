@@ -1,4 +1,4 @@
-context("Run concentration forced Hector")
+context("Concentration forced Hector")
 
 rcp45 <- function() newcore(system.file("input", "hector_rcp45.ini", package = "hector"))
 

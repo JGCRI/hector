@@ -67,13 +67,10 @@ public:
 /*! \brief A helper class to allow template specialization for interpolation.
  *
  * The interpolator expects types to be double convertible and will not compile
- * if the templated type can not be implicitly converted.  Creating a specialization
+ * if the templated type can not be implicitly converted (or unless a specialization
+ * has been created, as for strings below).  Creating a specialization
  * of this class to explicitly convert to double will allow the use of tseries with
  * that type and run as expected including interpolation.
- *
- * \todo Should we create a specialization for non-double types that just throws
- *       an exception?  This will allow us to use tseries with that type just
- *       without interpolation.
  */
 template<class T_data>
 struct interp_helper {
@@ -244,6 +241,34 @@ struct interp_helper<fluxpool> {
     }
 };
 
+//-----------------------------------------------------------------------
+/*! \brief Interpolation specialization for strings.
+ */
+template<>
+struct interp_helper<string> {
+    typedef string T_unit_type;
+    static void error_check( const std::map<double, T_unit_type>& userData,
+                             h_interpolator& interpolator, std::string name,
+                             bool& isDirty, bool endinterp_allowed,
+                             const double index ) throw( h_exception )
+    {
+        H_THROW( "String interpolation not allowed" );
+    }
+    static T_unit_type interp( const std::map<double, T_unit_type>& userData,
+                               h_interpolator& interpolator, std::string name,
+                               bool& isDirty, bool endinterp_allowed,
+                               const double index ) throw( h_exception )
+    {
+         H_THROW( "String interpolation not allowed" );
+    }
+    static T_unit_type calc_deriv( const std::map<double, T_unit_type>& userData,
+                                   h_interpolator& interpolator, std::string name,
+                                   bool& isDirty, bool endinterp_allowed,
+                                   const double index ) throw( h_exception )
+    {
+        H_THROW( "String derivative not allowed" );
+    }
+};
 
 /*  "Because templates are compiled when required, this forces a restriction
     for multi-file projects: the implementation (definition) of a template
