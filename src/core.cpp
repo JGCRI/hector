@@ -507,7 +507,7 @@ void Core::reset(double resetdate)
     }
 
     // Inform all visitors of the reset as well
-    // Currently (2021) only csvFluxPoolVisitor cares (implements this)
+    // Currently (2021) only csvFluxPoolVisitor implements this
     for( auto it: modelVisitors ) {
         H_LOG(glog, Logger::DEBUG) << "Resetting visitor" << endl;
         it->reset(resetdate);
