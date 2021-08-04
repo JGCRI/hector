@@ -50,7 +50,7 @@ public:
 
     void prepareToRun();
 
-    void run(double runtodate=-1.0);
+    void run(double runtodate = -1.0);
 
     void reset(double resetdate);
 

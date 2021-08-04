@@ -198,7 +198,7 @@ void Core::init() {
 /*! \brief Return the carbon tracking data stored in the csvFluxPoolVisitor
  */
 std::string Core::getTrackingData() const {
-    
+
     // I'm pretty sure I should be using a virtual function for this
     for( auto visitorIt : modelVisitors ) {
         const CSVFluxPoolVisitor* bad_idea = dynamic_cast<const CSVFluxPoolVisitor*>(visitorIt);
@@ -368,13 +368,13 @@ void Core::prepareToRun(void)
         //       H_LOG( glog, Logger::DEBUG) << "Preparing " << (*it).second->getComponentName() << " to run" << endl;
         ( *it ).second->prepareToRun();
     }
-    
+
     // ------------------------------------
     // Visit all the visitors; this lets them record the core pointer, tracking date, etc.
     for( auto visitorIt : modelVisitors ) {
         visitorIt->visit( this );
     } // for
-    
+
     // ------------------------------------
     // 5. Spin up the model
     if( do_spinup ) {
@@ -438,7 +438,6 @@ bool Core::run_spinup()
  *
  *  \exception h_exception An error which may occur at any stage of the process.
  */
-
 void Core::run(double runtodate) {
     if(runtodate < 0.0) {
         // run to the configured default enddate.  This is mainly for
@@ -466,7 +465,7 @@ void Core::run(double runtodate) {
             H_LOG(glog, Logger::NOTICE) << "Starting tracking in " << currDate << endl;
             // nb components are responsible for checking and acting on this
         }
-        
+
         for( NameComponentIterator it = modelComponents.begin(); it != modelComponents.end(); ++it ) {
             ( *it ).second->run( currDate );
         }
@@ -513,7 +512,7 @@ void Core::reset(double resetdate)
         H_LOG(glog, Logger::DEBUG) << "Resetting visitor" << endl;
         it->reset(resetdate);
     }
-    
+
     // The prepareToRun function reruns all of the initial setup, including the
     // spinup.  This is necessary because we may have changed some of the model
     // parameters, and for many components the parameters produce their effect
@@ -772,7 +771,7 @@ int Core::mkcore(bool logtofile, Logger::LogLevel loglvl, bool logtoscrn)
     Core* core = new Core(loglvl, logtoscrn, logtofile);
     core->addVisitor( visitr );
     core_registry.push_back(core);
-    
+
     return (int)core_registry.size() - 1;
 }
 
