@@ -1,4 +1,4 @@
-context("Running Hector with multiple biomes")
+context("Hector with multiple biomes")
 
 rcp45 <- function() {
   newcore(system.file("input", "hector_rcp45.ini",
