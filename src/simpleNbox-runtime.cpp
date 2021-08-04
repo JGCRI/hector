@@ -107,6 +107,8 @@ void SimpleNbox::prepareToRun()
 
     // Save a pointer to the ocean model in use
     omodel = dynamic_cast<OceanComponent*>( core->getComponentByCapability( D_OCEAN_C ) );
+    // TODO: this is a hack, because currently we can't pass fluxpools around via sendMessage
+    omodel->set_atmosphere_sources( atmos_c );  // inform ocean model what our atmosphere looks like
 
     if( !Ftalbedo.size() ) {          // if no albedo data, assume constant
         unitval alb( -0.2, U_W_M2 ); // default is MAGICC value
