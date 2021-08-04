@@ -236,6 +236,8 @@ unitval slrComponent::getData( const std::string& varName,
     return returnval;
 }
 
+//------------------------------------------------------------------------------
+// documentation is inherited
 void slrComponent::reset(double time)
 {
     oldDate = time;
@@ -248,8 +250,6 @@ void slrComponent::reset(double time)
     H_LOG(logger, Logger::NOTICE)
         << getComponentName() << " reset to time= " << time << "\n";
 }
-
-
 
 //------------------------------------------------------------------------------
 // documentation is inherited

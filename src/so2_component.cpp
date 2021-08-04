@@ -163,6 +163,8 @@ unitval SulfurComponent::getData( const std::string& varName,
     return returnval;
 }
 
+//------------------------------------------------------------------------------
+// documentation is inherited
 void SulfurComponent::reset(double time)
 {
     // This component doesn't calculate anything, so all we have to do
@@ -171,8 +173,6 @@ void SulfurComponent::reset(double time)
     H_LOG(logger, Logger::NOTICE)
         << getComponentName() << " reset to time= " << time << "\n";
 }
-
-
 
 //------------------------------------------------------------------------------
 // documentation is inherited

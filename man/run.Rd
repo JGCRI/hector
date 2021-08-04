@@ -9,15 +9,15 @@ run(core, runtodate = -1)
 \arguments{
 \item{core}{Handle to the Hector instance that is to be run.}
 
-\item{runtodate}{Date to run to.  The default is to run to the end date configured
-in the input file used to initialize the core.}
+\item{runtodate}{Date to run to.  The default is to run to the end date
+configured in the input file used to initialize the core.}
 }
 \value{
 The Hector instance handle
 }
 \description{
-Run Hector up through the specified time.  This function does not return the results
-of the run.  To get results, run \code{fetch}.
+Run Hector up through the specified time.  This function does not return the
+results of the run.  To get results, run \code{fetch}.
 }
 \seealso{
 Other main user interface functions: 

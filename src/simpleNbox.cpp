@@ -497,6 +497,8 @@ unitval SimpleNbox::getData(const std::string& varName,
     return static_cast<unitval>(returnval);
 }
 
+//------------------------------------------------------------------------------
+// documentation is inherited
 void SimpleNbox::reset(double time)
 {
     // Reset all state variables to their values at the reset time
@@ -555,12 +557,13 @@ void SimpleNbox::shutDown()
 }
 
 //------------------------------------------------------------------------------
-/*! \brief visitor accept code
- */
+// documentation is inherited
 void SimpleNbox::accept( AVisitor* visitor ) {
     visitor->visit( this );
 }
 
+//------------------------------------------------------------------------------
+// documentation is inherited
 void SimpleNbox::record_state(double t)
 {
     tcurrent = t;

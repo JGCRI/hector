@@ -1,4 +1,4 @@
-context("Test changes to Hector parameters")
+context("Hector parameter changes")
 
 # Make sure that changing parameters has the desired impact on Hector output.
 inputdir <- system.file("input", package = "hector")

@@ -495,8 +495,7 @@ void OceanComponent::getCValues( double t, double c[] ) {
  *  \param[in]  c       carbon pools (no units)
  *  \param[out] dcdt    carbon deltas - we fill in only ocean change
  *  \returns            code indicating success or failure
- *
-     *  \details "This function should store the vector elements f_i(t,y,params)
+ *  \details "This function should store the vector elements f_i(t,y,params)
  *  in the array dydt, for arguments (t,y) and parameters params." -GSL docs
  *  Compute the air-ocean flux (Pg C/yr) at time t and for pools c[]
  */
@@ -632,6 +631,8 @@ void OceanComponent::stashCValues( double t, const double c[] ) {
     ODEstartdate = t;
    }
 
+//------------------------------------------------------------------------------
+// documentation is inherited
 void OceanComponent::reset(double time)
 {
     // Reset state variables to their values at the reset time
@@ -673,6 +674,8 @@ void OceanComponent::reset(double time)
         << getComponentName() << " reset to time= " << time << "\n";
 }
 
+//------------------------------------------------------------------------------
+// documentation is inherited
 void OceanComponent::record_state(double time)
 {
     H_LOG(logger, Logger::DEBUG) << "Recording component state at t= " << time << endl;
