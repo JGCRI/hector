@@ -12,12 +12,12 @@ Under the corresponding component add variable
 	Ex: `SN = 42000;`
 
 
+
 _In hpp file of component_   
 Add variable as `tseries`, `unitval`, `double`, etc. and add its associated time series (when necessary; see above).
 
-_In component_data.hpp_  
-Define the variables that are being added
-	Ex: `#define D_ATMOSPHERIC_SO2 "SN"`
+Define the variables that are being added  
+Ex: `#define D_ATMOSPHERIC_SO2 "SN"`
 	
 These names do *not* have to match internal component variables but the INI definition *has to* match what appears in quotes
 
@@ -39,8 +39,10 @@ NOTE: see [tseries](https://jgcri.github.io/hector/articles/manual/TimeSeries.ht
     SN.set( lexical_cast<double>( value ), U_GG );
         }
 
+
 _If this variable is called in another component._  
-For example, if adding in a variable within the forcing component
-    Ex: `unitval SN = core->getData( D_ATMOSPHERIC_SO2, runToDate);`
+
+For example, if adding in a variable within the forcing component  
+Ex: `unitval SN = core->getData( D_ATMOSPHERIC_SO2, runToDate);`
 
 If this variable is a `unitval`, the relevant code file must include `unitval.hpp`.
