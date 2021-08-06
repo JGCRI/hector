@@ -1,6 +1,6 @@
 # Installing and building Hector
 
-There are lots of ways to use Hector, as a stand alone executable, through the UI, and as an R package. Here we provide installation and building instructions for the R Hector package and the executable. 
+There are lots of ways to use Hector: as a stand alone executable, through the UI, and as an R package. Here we provide installation and building instructions for the R Hector package and the executable. 
 
 # R Hector 
 

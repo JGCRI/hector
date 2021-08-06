@@ -17,9 +17,9 @@ We encourage all contributors to read and comply with the following guidelines:
 
 Hector adheres to the [semantic versioning](https://semver.org/) ideology. This being said, since not all model development will be equal in scope or magnitude, not all PR reviews will be equal. The types of Hector PR we expect include: 
 
-* "Patch changes" that make no impact on Hector functionality, such as documentation fixes, or removing dead code are the easiest to assess and merge.
-* "Minor changes" that don’t change the model’s behavior in any fundamental way, and don’t change its inputs, may require unit tests and some more review.
-* "Major changes"  that change the model’s input or output structure, or induce major behavioral shifts, are considered _breaking changes_. These are subject to the most stringent reviews, will require scientific justification of the development and evidence that the changes have the intended consequences. These PRs will almost always be merged into a development branch, not master until a new version of the Hector is ready for release. 
+* "Patch changes" that make no impact on Hector functionality, such as documentation fixes or removing dead code, are the easiest to assess and merge.
+* "Minor changes" that don’t change the model’s behavior in any fundamental way and don’t change its inputs may require unit tests and some more review.
+* "Major changes"  that change the model’s input or output structure or induce major behavioral shifts, are considered _breaking changes_. These are subject to the most stringent reviews and will require scientific justification of the development and evidence that the changes have the intended consequences. These PRs will almost always be merged into a development branch, not master, until a new version of the Hector is ready for release. 
 
 
 Thank you for your interest in contributing to Hector and we look forward to working with you! However, we maintain the right to refuse to merge PRs that do not comply with these guidelines or that do not meet contribution standards. 
