@@ -9,7 +9,7 @@ trackingcore <- function() {
     newcore(tracking_testfile, name = "test", suppresslogging = TRUE)
 }
 
-error_threshold <- 1e-8
+error_threshold <- 1e-6
 
 # THINGS WE WANT TO TEST
 
@@ -39,7 +39,7 @@ test_that("Tracking run produces correct data", {
 
     # Run core and get tracking data, then test that the class is data.frame
     core <- trackingcore()
-    run(core, 2100)
+    run(core)
 
     df <- get_tracking_data(core)
     expect_s3_class(df, "data.frame")
@@ -51,42 +51,45 @@ test_that("Tracking run produces correct data", {
     # (not less than trackingDate, not more than end of run, includes all years)
     track_date <- core$trackdate
     end_date <- core$enddate
+    years <- c(core$trackdate:core$enddate)
 
     # Find the min and max of the data.frame, which should be the track_date
     # and end_date, respectively. Check that the minimum is at least the
     # track_date and the maximum is no higher than the end_date.
+    # Find the non-repeating years within the data.frame, then check
+    # that all years defined above are present.
     data_min <- min(df$year)
     data_max <- max(df$year)
+    data_years <- unique(df$year)
 
     expect_gte(data_min, track_date)
     expect_lte(data_max, end_date)
+    expect_identical(data_years, years)
 
     # Test that all year/pool combinations sum to ~1
 
     # Calculate the total source fraction (which should be equal to 1)
     # from the sum of the individual source fractions.
-    individual_source <- fetchvars(core, vars = df$source_fraction, dates = "NA")
-    sum_source <- aggregate(value ~ year + source_fraction,
-                                data = individual_source,
-                                FUN = "sum")
+    df <- subset(df, pool_name != "Diff")
+    ag <- aggregate(source_fraction ~ year + pool_name, data = df, FUN = sum)
 
-    expect_identical(1, sum_source$value, tolerance = error_threshold)
+    ones <- rep(1, times=length(ag$source_fraction))
+    expect_equal(ones, ag$source_fraction, tolerance = error_threshold)
 
     shutdown(core)
 })
 
 test_that("Tracking works with a core reset", {
 
-    # Test that reset() works - no error is produced
+    # Test that reset() works
 
-    # Run a core, reset, and make sure no error is produced.
+    # Run a core, reset, and make sure the start date has reset.
     core <- trackingcore()
     run(core, 2100)
+    start_date <- core$strtdate
 
     a <- reset(core)
-    expect_error(a, NA)
-
-    shutdown(core)
+    expect_identical(a$strtdate, start_date)
 
     # Test that after reset to <trackingDate>, tracking data frame is empty
 
@@ -99,8 +102,6 @@ test_that("Tracking works with a core reset", {
 
     df <- get_tracking_data(core)
     expect_identical(df, data.frame())
-
-    shutdown(core)
 
     # Test that after reset to >=trackingDate, tracking data frame has correct dates
 
@@ -121,7 +122,6 @@ test_that("Tracking works with a core reset", {
     expect_identical(core2$enddate, end_date)
     expect_identical(core2$trackdate, track_date)
 
-    shutdown(core2)
 
     # Test that for a run-reset-run, tracking data is correct
 
