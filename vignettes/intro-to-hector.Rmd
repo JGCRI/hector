@@ -148,7 +148,7 @@ In addition, if the `date` argument is less than the model start date and spinup
 ***
 **NOTE**
 
-Prior to a normal run beginning in 1750, Hector has an optional "spinup" mode where it runs the carbon cycle with no perturbations until it stabilizes. Essentially, the model removes human emissions and runs until there are no more changes in the carbon pools and the system has reached equilibrium. 
+Prior to a normal run beginning in 1745, Hector has an optional "spinup" mode where it runs the carbon cycle with no perturbations until it stabilizes. Essentially, the model removes human emissions and runs until there are no more changes in the carbon pools and the system has reached equilibrium. 
 
 Because changing Hector parameters can change the post-spinup equilibrium values of state variables, Hector will automatically run `reset(core, date = 0)` at the beginning of the next `run` call if it detects that any of its parameters have changed.
 This means that is not currently possible to change Hector _parameters_ (such as $\beta$ or preindustrial CO~2~) part-way through a run.
@@ -156,7 +156,7 @@ However, it is still possible to change the values of certain _drivers_ and _sta
 
 ***
 
-So, as a result of the `reset` command, the core's "Current Date" is now the model start date--1745.
+So, as a result of the `reset` command, the core's `Current Date` is now the model start date--1745.
 We can now perform another run with the new CO$_2$ fertilization value.
 
 ```{r  run-sim-2}
