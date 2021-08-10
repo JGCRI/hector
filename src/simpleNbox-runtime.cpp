@@ -227,25 +227,15 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     fluxpool ccs_flux = atmos_c.flux_from_fluxpool(ccs_untracked);
 
     // current ocean fluxes
-    const unitval ocean_carbon = core->sendMessage( M_GETDATA, D_OCEAN_C);
     omodel->stashCValues( t, c );   // tell ocean model to store new C values (and compute final surface fluxes)
-    unitval ocean_atmos = unitval(c[SNBOX_OCEAN] - ocean_carbon.value(U_PGC), U_PGC);
-    fluxpool ocean_surface = omodel->get_surface_pools();
+    // ...and now get those fluxes (and their source maps, if tracking)
+    fluxpool oa_flux = omodel->get_oaflux();
+    fluxpool ao_flux = omodel->get_aoflux();
     
-    fluxpool oa_flux(0.0, U_PGC);
-    fluxpool ao_flux(0.0, U_PGC);
-    if(ocean_atmos > 0){
-        ao_flux = atmos_c.flux_from_unitval(ocean_atmos);
-        oa_flux = ocean_surface.flux_from_fluxpool(oa_flux); // i.e., 0
-    } else {
-        oa_flux = ocean_surface.flux_from_unitval(-ocean_atmos);
-        ao_flux = atmos_c.flux_from_fluxpool(ao_flux); // i.e., 0
-    }
-
+    // Land-use change uptake from atmosphere to veg, detritus, and soil
     fluxpool luc_e_untracked = luc_emission(t, in_spinup) * yf;
     fluxpool luc_u_untracked = luc_uptake(t, in_spinup) * yf;
 
-    // Land-use change uptake from atmosphere to veg, detritus, and soil
     fluxpool luc_fav_flux = atmos_c.flux_from_fluxpool(luc_u_untracked * f_lucv);
     fluxpool luc_fad_flux = atmos_c.flux_from_fluxpool(luc_u_untracked * f_lucd);
     fluxpool luc_fas_flux = atmos_c.flux_from_fluxpool(luc_u_untracked * ( 1 - f_lucv - f_lucd ));
