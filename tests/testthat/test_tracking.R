@@ -73,7 +73,7 @@ test_that("Tracking run produces correct data", {
     df <- subset(df, pool_name != "Diff")
     ag <- aggregate(source_fraction ~ year + pool_name, data = df, FUN = sum)
 
-    ones <- rep(1, times=length(ag$source_fraction))
+    ones <- rep(1, times = length(ag$source_fraction))
     expect_equal(ones, ag$source_fraction, tolerance = error_threshold)
 
     shutdown(core)
