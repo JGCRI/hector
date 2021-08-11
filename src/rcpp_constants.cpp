@@ -69,8 +69,16 @@ return (int) Hector::Logger::SEVERE;
  * Capabilities
  *****************************************************************/
 
+/* Core */
+//' @describeIn core Start of carbon tracking (Year)
+//' @export
+// [[Rcpp::export]]
+String TRACKING_DATE() {
+return D_TRACKING_DATE;
+}
+
 /* BC component */
-//' @describeIn emissions Black carbon emissions (\code{"Tg"})
+//' @describeIn emissions Black carbon emissions
 //' @export
 // [[Rcpp::export]]
 String EMISSIONS_BC() {

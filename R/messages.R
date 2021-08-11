@@ -19,7 +19,7 @@ default_fetchvars <- c(ATMOSPHERIC_CO2, RF_TOTAL, RF_CO2, GLOBAL_TEMP)
 #' the default variable list is CO2 concentration, total radiative forcing, CO2
 #' forcing, and global mean temperature.
 #'
-#' @seealso \link{concentrations}, \link{emissions}, \link{forcings},
+#' @seealso \link{core}, \link{concentrations}, \link{emissions}, \link{forcings},
 #' \link{carboncycle}, \link{haloemiss}, \link{haloforcings}, \link{methane},
 #' \link{ocean}, \link{so2}, \link{temperature}, \link{parameters}
 #'

@@ -49,12 +49,12 @@ DIFFUSIVITY()
 }
 \description{
 These identifiers correspond to settable parameters that change the model
-behavior and are subject to uncertainty.  All of these can be set using the
-\code{\link{SETDATA}} message type.  Changing any of these parameters will
+behavior and are subject to uncertainty. All of these can be set using the
+\code{\link{SETDATA}} message type. Changing any of these parameters will
 typically invalidate the hector core's internal state; therefore, after
 setting one or more of these values you should call \code{\link{reset}} before
-attempting to run the model again.  This will rerun the spinup and produce a
-new internally consistent state.  Attempting to run the model without resetting
+attempting to run the model again. This will rerun the spinup and produce a
+new internally consistent state. Attempting to run the model without resetting
 first will usually produce an error (often with a message about failing to conserve
 mass).
 }
@@ -90,7 +90,7 @@ mass).
 \section{Note}{
 
 Because these identifiers are provided as \code{#define} macros in the hector code,
-these identifiers are provided in the R interface as function.  Therefore,
+these identifiers are provided in the R interface as functions. Therefore,
 these objects must be called to use them; \emph{e.g.}, \code{GETDATA()}
 instead of the more natural looking \code{GETDATA}.
 }

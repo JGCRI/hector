@@ -40,7 +40,13 @@ LL_SEVERE <- function() {
     .Call('_hector_LL_SEVERE', PACKAGE = 'hector')
 }
 
-#' @describeIn emissions Black carbon emissions (\code{"Tg"})
+#' @describeIn core Start of carbon tracking (Year)
+#' @export
+TRACKING_DATE <- function() {
+    .Call('_hector_TRACKING_DATE', PACKAGE = 'hector')
+}
+
+#' @describeIn emissions Black carbon emissions
 #' @export
 EMISSIONS_BC <- function() {
     .Call('_hector_EMISSIONS_BC', PACKAGE = 'hector')

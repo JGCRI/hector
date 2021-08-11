@@ -75,6 +75,8 @@ public:
     unitval sendMessage( const std::string& message,
                         const std::string& datum,
                         const message_data& info );
+    
+    unitval getData( const std::string& varName, const double date );
 
     double getStartDate() const { return startDate; };
     double getEndDate() const { return endDate; };

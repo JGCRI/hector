@@ -91,6 +91,9 @@ const string& Core::getComponentName() const {
 void Core::init() {
     H_ASSERT( !isInited, "core has already been initialized" );
 
+    // We handle this input; need to register it here so that R users can change it
+    registerInput( D_TRACKING_DATE, CORE_COMPONENT_NAME );
+    
     // TODO: maybe some model component factory?
     IModelComponent *temp;
 
@@ -661,6 +664,22 @@ unitval Core::sendMessage( const std::string& message,
 }
 
 //------------------------------------------------------------------------------
+// documentation is inherited
+unitval Core::getData( const std::string& varName, const double date ) {
+
+    unitval returnval;
+
+    if( varName == D_TRACKING_DATE ) {
+        H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for tracking date" );
+        returnval = unitval( trackingDate, U_UNITLESS );
+    } else {
+        H_THROW( "Caller is requesting unknown variable: " + varName );
+    }
+
+    return returnval;
+}
+
+//------------------------------------------------------------------------------
 /*! \brief Look up component and send message in one operation.
  *  \param message  The message to pass (typically "getData").
  *  \param datum    The datum caller is interested in.
@@ -698,7 +717,12 @@ unitval Core::sendMessage( const std::string& message,
 
             string err = "Unknown model datum: " + datum;
             H_ASSERT( checkCapability( datum_capability ), err );
-            return getComponentByName( ( *it ).second )->sendMessage( message, datum, info );
+            // Special case: core handles
+            if( ( *it ).second == CORE_COMPONENT_NAME ) {
+                return this->getData( datum, info.date );
+            } else {
+                return getComponentByName( ( *it ).second )->sendMessage( message, datum, info );
+            }
         }
     }
     else if (message == M_SETDATA ) {
@@ -711,8 +735,15 @@ unitval Core::sendMessage( const std::string& message,
                 << "No such input: " << datum << "  Aborting.";
             H_THROW("Invalid datum in sendMessage/SETDATA.");
         }
-        for(componentMapIterator it=itpr.first; it != itpr.second; ++it)
-            getComponentByName(it->second)->sendMessage(message, datum, info);
+
+        for(componentMapIterator it=itpr.first; it != itpr.second; ++it) {
+            // Special case: core handles
+            if( it->second == CORE_COMPONENT_NAME ) {
+                this->setData( CORE_COMPONENT_NAME, datum, info );
+            } else {
+                getComponentByName(it->second)->sendMessage(message, datum, info);
+            }
+        }
 
         return info.value_unitval;
     }
