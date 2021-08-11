@@ -142,5 +142,21 @@ test_that("Tracking works with a core reset", {
 })
 
 test_that("Turning tracking on and off from R works", {
-    # can't do this yet
+
+    # Test that using setvars from R turns trackingDate on...
+
+    inifile <- system.file("input", "hector_rcp45.ini", package = "hector")
+    core <- newcore(inifile)
+    setvar(core, NA, TRACKING_DATE(), 1850, "")
+    x <- fetchvars(core, NA, TRACKING_DATE(), "")
+
+    expect_identical(1850, x$value)
+
+    # ...and that it turns trackingDate off
+
+    setvar(core, NA, TRACKING_DATE(), 9999, "")
+    y <- fetchvars(core, NA, TRACKING_DATE(), "")
+
+    expect_identical(9999, y$value)
+
 })
