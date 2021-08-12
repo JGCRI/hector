@@ -43,9 +43,12 @@ test_that("Test that running a single scenario returns proper outputs", {
 test_that("Test that object is an hcore instance for multiple functions", {
 
     # Test that if function does not receive an hcore class it returns an error
-    expect_error(hector:::isactive("core"), regexp = "Object supplied is not an hcore class instance.")
-    expect_error(hector:::startdate("core"), regexp = "Object supplied is not an hcore class instance.")
-    expect_error(hector:::enddate("core"), regexp = "Object supplied is not an hcore class instance.")
+    expect_error(hector:::isactive("core"),
+                 regexp = "Object supplied is not an hcore class instance.")
+    expect_error(hector:::startdate("core"),
+                 regexp = "Object supplied is not an hcore class instance.")
+    expect_error(hector:::enddate("core"),
+                 regexp = "Object supplied is not an hcore class instance.")
 
 })
 
