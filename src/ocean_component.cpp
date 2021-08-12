@@ -529,11 +529,19 @@ void OceanComponent::slowparameval( double t, const double c[] ) {
 }
 
 //------------------------------------------------------------------------------
-/*! \brief   Return the ocean-atmosphere flux (really, its source map) to simpleNbox
+/*! \brief   Return the ocean-to-atmosphere flux to simpleNbox
 *  \returns           The two ocean-atmosphere fluxpools added together
 */
-fluxpool OceanComponent::get_surface_pools() const {
-    return surfaceLL.get_carbon() + surfaceHL.get_carbon();
+fluxpool OceanComponent::get_oaflux() const {
+    return surfaceLL.get_oa_flux() + surfaceHL.get_oa_flux();
+}
+
+//------------------------------------------------------------------------------
+/*! \brief   Return the atmosphere-to-ocean flux to simpleNbox
+*  \returns           The two atmosphere-ocean fluxpools added together
+*/
+fluxpool OceanComponent::get_aoflux() const {
+    return surfaceLL.get_ao_flux() + surfaceHL.get_ao_flux();
 }
 
 //------------------------------------------------------------------------------
@@ -574,6 +582,7 @@ void OceanComponent::stashCValues( double t, const double c[] ) {
     surfaceLL.atmosphere_flux = surfaceLL.atmosphere_flux + adjustment;
     
     // Separate the one net flux (can be positive or negative) into the two fluxpool fluxes (always positive)
+    // This updates oa_flux and ao_flux within the two ocean boxes
     surfaceHL.separate_surface_fluxes(atmosphere_cpool);
     surfaceLL.separate_surface_fluxes(atmosphere_cpool);
     
