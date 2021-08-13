@@ -1,19 +1,9 @@
-context("Expansion of test code to include all files")
+context("Test code for hector.R")
 
 inputdir <- system.file("input", package = "hector")
 inifile <- file.path(inputdir, "hector_rcp45.ini")
 
-test_that("Test that invalid input variable returns error", {
-
-    # Test that if the length of var_split is >2, error is returned
-    core <- newcore(inifile)
-    expect_error(setvar(core, NA, "global.permafrost.beta", 10, ""),
-                 regexp = "Invalid input variable: '")
-    shutdown(core)
-
-})
-
-test_that("Test that running a single scenario returns proper outputs", {
+test_that("Running a single scenario returns proper outputs", {
 
     core <- newcore(inifile)
     sce <- hector:::runscenario(inifile)
@@ -40,7 +30,7 @@ test_that("Test that running a single scenario returns proper outputs", {
     shutdown(core)
 })
 
-test_that("Test that object is an hcore instance for multiple functions", {
+test_that("Object is an hcore instance (for multiple functions)", {
 
     # Test that if function does not receive an hcore class it returns an error
     expect_error(hector:::isactive("core"),
@@ -52,7 +42,7 @@ test_that("Test that object is an hcore instance for multiple functions", {
 
 })
 
-test_that("Test that inactive core returns error", {
+test_that("Inactive core returns error", {
 
     # Test that if core is inactive, function returns an error
     core <- newcore(inifile)
@@ -62,7 +52,7 @@ test_that("Test that inactive core returns error", {
 
 })
 
-test_that("Test that print.hcore works properly", {
+test_that("print.hcore works properly", {
 
     # Test that print.hcore prints correctly
     core <- newcore(inifile)
