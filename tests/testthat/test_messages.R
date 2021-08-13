@@ -1,4 +1,4 @@
-context("Test code for messages.R")
+context("setvar/fetchvars")
 
 inputdir <- system.file("input", package = "hector")
 inifile <- file.path(inputdir, "hector_rcp45.ini")

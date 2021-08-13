@@ -1,4 +1,4 @@
-context("Test code for hector.R")
+context("Hector core-handling functions")
 
 inputdir <- system.file("input", package = "hector")
 inifile <- file.path(inputdir, "hector_rcp45.ini")
