@@ -2,10 +2,13 @@
 title: "Example: Carbon tracking with Hector"
 author: "Leeya Pressburger"
 date: "8/3/2021"
-output:
-  html_document:
-    toc: yes
-    toc_float: true
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteEncoding{UTF-8}
+  %\VignetteIndexEntry{Example: Carbon tracking with Hector}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -39,7 +42,7 @@ Now, we will read in an .ini file and create a new core. In this example, we wil
 
 In order to use the carbon tracking feature, we must use `setvar` and `fetchvars`. First, let's look at the `trackingDate` prior to setting it to any value. 
 
-``` {r setup}
+``` {r setup.core}
 inifile <- file.path(system.file('input', package = 'hector'),
                      'hector_rcp45.ini')
 core <- newcore(inifile)
