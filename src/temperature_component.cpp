@@ -10,6 +10,16 @@
  *
  *  Created by Ben Vega-Westhoff on 11/1/16.
  *
+ * DOECLIM is based on
+ *  Kriegler, E. (2005) Imprecise probability analysis for Integrated Assessment of climate change. Ph.D. dissertation. Potsdam Universität. 256 pp. (http://opus.kobv.de/ubp/volltexte/2005/561/; DOECLIM introduced in Chapter 2 and Annexes A and B)
+ *  Tanaka, K. & Kriegler, E. (2007) Aggregated carbon cycle, atmospheric chemistry, and climate model (ACC2) – Description of the forward and inverse modes – . Reports Earth Syst. Sci. 199.
+ *  Garner, G., Reed, P. & Keller, K. (2016) Climate risk management requires explicit representation of societal trade-offs. Clim. Change 134, 713–723.
+ *
+ * Other References
+ *  Meinshausen, M., Raper, S. C. B., and Wigley, T. M. L.: Emulating coupled atmosphere-ocean
+ *  and carbon cycle models with a simpler model, MAGICC6 – Part 1: Model description and
+ *  calibration, Atmos. Chem. Phys., 11, 1417–1456, https://doi.org/10.5194/acp-11-1417-2011, 2011.
+ *
  */
 
 // some boost headers generate warnings under clang; not our problem, ignore
@@ -97,11 +107,6 @@ void TemperatureComponent::init( Core* coreptr ) {
     tgav_constrain.allowInterp( true );
     tgav_constrain.name = D_TGAV_CONSTRAIN;
 
-    // Define the doeclim parameters
-    diff.set( 0.55, U_CM2_S );    // default ocean heat diffusivity, cm2/s. value is CDICE default (varname is kappa there).
-    S.set( 3.0, U_DEGC );         // default climate sensitivity, K (varname is t2co in CDICE).
-    alpha.set( 1.0, U_UNITLESS);  // default aerosol scaling, unitless (similar to alpha in CDICE).
-    volscl.set(1.0, U_UNITLESS);  // Default volcanic scaling, unitless (works the same way as alpha)
 
     // Register the data we can provide
     core->registerCapability( D_GLOBAL_TEMP, getComponentName() );
@@ -119,6 +124,8 @@ void TemperatureComponent::init( Core* coreptr ) {
     core->registerDependency( D_RF_SO2d, getComponentName() );
     core->registerDependency( D_RF_SO2i, getComponentName() );
     core->registerDependency( D_RF_VOL, getComponentName() );
+    core->registerDependency( D_ACO2, getComponentName() );
+
 
     // Register the inputs we can receive from outside
     core->registerInput(D_ECS, getComponentName());
@@ -162,7 +169,7 @@ void TemperatureComponent::setData( const string& varName,
         } else if( varName == D_DIFFUSIVITY ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
             diff = data.getUnitval(U_CM2_S);
-	} else if( varName == D_AERO_SCALE ) {
+        } else if( varName == D_AERO_SCALE ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
             alpha = data.getUnitval(U_UNITLESS);
         } else if(varName == D_VOLCANIC_SCALE) {
@@ -223,9 +230,15 @@ void TemperatureComponent::prepareToRun() {
     }
 
     // DOECLIM model parameters, based on constants set in the header
+    //
     // Constants & conversion factors
     kcon = secs_per_Year / 10000;               // conversion factor from cm2/s to m2/yr;
     ocean_area = (1.0 - flnd) * earth_area;    // m2
+
+    // Determine the radiative forcing for atmospheric CO2 doubling, based on the
+    // forcing efficiency for CO2 (W/m2) (see eq A36 of Meinshausen et al. 2011).
+    aCO2 = core->sendMessage( M_GETDATA, D_ACO2 );
+    q2co = aCO2 * log(2);
 
     // Calculate climate feedback parameterisation
     cnum = rlam * flnd + bsi * (1.0 - flnd);   // denominator used to calculate climate senstivity feedback parameters over land & sea
@@ -347,7 +360,6 @@ void TemperatureComponent::run( const double runToDate ) {
     //
     // If the user has supplied temperature data, use that (except if past its end)
     if( tgav_constrain.size() && runToDate <= tgav_constrain.lastdate() ) {
-    //    H_LOG( logger, Logger::NOTICE ) << "** Using user-supplied temperature" << std::endl;
         H_LOG( logger, Logger::SEVERE ) << "** ERROR - Temperature can't currently handle user-supplied temperature" << std::endl;
         H_THROW("User-supplied temperature not yet implemented.")
     }

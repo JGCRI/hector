@@ -282,6 +282,12 @@ RF_CH3BR <- function() {
     .Call('_hector_RF_CH3BR', PACKAGE = 'hector')
 }
 
+#' @describeIn forcings Radiative forcing efficiency for CO2
+#' @export
+alpha_CO2 <- function() {
+    .Call('_hector_alpha_CO2', PACKAGE = 'hector')
+}
+
 #' @describeIn haloemiss Emissions for CF4
 #' @export
 EMISSIONS_CF4 <- function() {
