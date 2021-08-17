@@ -1,3 +1,6 @@
+# Tracking tests
+# Leeyah Pressburger 2021
+
 context("Carbon tracking")
 
 inputdir <- system.file("input", package = "hector")
@@ -5,7 +8,6 @@ inifile <- file.path(inputdir, "hector_rcp45.ini")
 
 error_threshold <- 1e-6
 
-# THINGS WE WANT TO TEST
 
 test_that("No-tracking run produces empty data frame", {
 
@@ -26,13 +28,36 @@ test_that("get_tracking_data handles bad inputs", {
 
 })
 
+test_that("Changing a parameter changes tracking data", {
+
+    # Run core, get tracking data
+    core <- newcore(inifile)
+    setvar(core, NA, TRACKING_DATE(), 1900, "")
+    run(core, runtodate = 2000)
+    df1 <- get_tracking_data(core)
+
+    # ...change a parameter and re-run
+    default_Q10 <- fetchvars(core, NA, Q10_RH())
+    new_Q10 <- default_Q10$value * 0.9
+    setvar(core, NA, Q10_RH(), new_Q10, getunits(Q10_RH()))
+
+    reset(core)
+    run(core, runtodate = 2000)
+    df2 <- get_tracking_data(core)
+
+    expect_true(nrow(df1) == nrow(df2))
+    expect_false(all(df1$source_fraction == df2$source_fraction))
+
+    shutdown(core)
+})
+
 test_that("Tracking run produces correct data", {
 
     # Test that tracking data (from get_tracking_data()) is a data.frame
 
     # Run core and get tracking data, then test that the class is data.frame
     core <- newcore(inifile)
-    setvar(core, NA, TRACKING_DATE(), 1850, "")
+    setvar(core, NA, TRACKING_DATE(), 1770, "")
     run(core)
 
     df <- get_tracking_data(core)
@@ -43,7 +68,7 @@ test_that("Tracking run produces correct data", {
 
     # Test that tracking data frame has correct dates
     # (not less than trackingDate, not more than end of run, includes all years)
-    track_date <- fetchvars(core, NA, TRACKING_DATE(),"")$value
+    track_date <- fetchvars(core, NA, TRACKING_DATE())$value
     end_date <- core$enddate
     years <- c(track_date:end_date)
 
@@ -85,7 +110,7 @@ test_that("Tracking works with a core reset", {
     a <- reset(core)
     expect_identical(a$strtdate, start_date)
 
-    # Test that after reset to <trackingDate, tracking data frame is empty
+    # After reset to <trackingDate>, tracking data frame should be empty
 
     # Run a core and reset to the start date. Check that the
     # get_tracking_data data.frame is identical to an empty one.
@@ -107,12 +132,12 @@ test_that("Tracking works with a core reset", {
 
     start_date <- core1$strtdate
     end_date <- core1$enddate
-    track_date <- fetchvars(core1, NA, TRACKING_DATE(), "")$value
+    track_date <- fetchvars(core1, NA, TRACKING_DATE())$value
 
     # Reset the core, then confirm that the new core's start, end,
     # and tracking dates are identical to the original core's.
     core2 <- reset(core1, date = track_date)
-    track_date2 <- fetchvars(core2, NA, TRACKING_DATE(), "")$value
+    track_date2 <- fetchvars(core2, NA, TRACKING_DATE())$value
 
     expect_identical(core2$strtdate, start_date)
     expect_identical(core2$enddate, end_date)
@@ -126,12 +151,11 @@ test_that("Tracking works with a core reset", {
     core1 <- newcore(inifile)
     setvar(core1, NA, TRACKING_DATE(), 1760, "")
     run(core1, 1770)
-    track_date <- fetchvars(core1, NA, TRACKING_DATE(), "")$value
+    track_date <- fetchvars(core1, NA, TRACKING_DATE())$value
 
     core2 <- reset(core1)
-    track_date2 <- fetchvars(core2, NA, TRACKING_DATE(), "")$value
+    track_date2 <- fetchvars(core2, NA, TRACKING_DATE())$value
     expect_identical(track_date2, track_date)
 
     shutdown(core2)
-
 })

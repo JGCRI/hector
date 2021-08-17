@@ -238,16 +238,3 @@ NULL
 #' @name temperature
 #' @family capability identifiers
 NULL
-
-#' Identifiers for quantities in the core
-#'
-#' These identifiers correspond to variables that can be read and/or set in the
-#' core
-#'
-#' @name core
-#' @section Output variables:
-#' These variables can be read using the \code{\link{GETDATA}} message type.
-#' \describe{
-#' \item{TRACKING_DATE}{Year to start carbon-cycle tracking}
-#' }
-#'

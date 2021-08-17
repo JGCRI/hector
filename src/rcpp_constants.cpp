@@ -70,7 +70,7 @@ return (int) Hector::Logger::SEVERE;
  *****************************************************************/
 
 /* Core */
-//' @describeIn core Start of carbon tracking (Year)
+//' @describeIn parameters Start of carbon tracking (Year)
 //' @export
 // [[Rcpp::export]]
 String TRACKING_DATE() {

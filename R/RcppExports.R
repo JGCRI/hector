@@ -40,7 +40,7 @@ LL_SEVERE <- function() {
     .Call('_hector_LL_SEVERE', PACKAGE = 'hector')
 }
 
-#' @describeIn core Start of carbon tracking (Year)
+#' @describeIn parameters Start of carbon tracking (Year)
 #' @export
 TRACKING_DATE <- function() {
     .Call('_hector_TRACKING_DATE', PACKAGE = 'hector')

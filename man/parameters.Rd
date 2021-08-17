@@ -2,6 +2,7 @@
 % Please edit documentation in R/aadoc.R, R/RcppExports.R
 \name{parameters}
 \alias{parameters}
+\alias{TRACKING_DATE}
 \alias{PREINDUSTRIAL_CO2}
 \alias{BETA}
 \alias{Q10_RH}
@@ -17,6 +18,8 @@
 \alias{DIFFUSIVITY}
 \title{Identifiers for model parameters}
 \usage{
+TRACKING_DATE()
+
 PREINDUSTRIAL_CO2()
 
 BETA(biome = "")
@@ -60,6 +63,8 @@ mass).
 }
 \section{Functions}{
 \itemize{
+\item \code{TRACKING_DATE}: Start of carbon tracking (Year)
+
 \item \code{PREINDUSTRIAL_CO2}: Preindustrial CO2 concentration (\code{"ppmv CO2"})
 
 \item \code{BETA}: CO2 fertilization factor (\code{"(unitless)"})
