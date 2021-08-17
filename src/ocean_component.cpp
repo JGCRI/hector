@@ -300,7 +300,8 @@ unitval OceanComponent::annual_totalcflux( const double date, const unitval& Ca,
 void OceanComponent::run( const double runToDate ) {
 
     Ca = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_CO2 );
-    Tgav = core->sendMessage( M_GETDATA, D_GLOBAL_TEMP );
+    //Tgav = core->sendMessage( M_GETDATA, D_GLOBAL_TEMP );
+    Tgav = unitval(core->sendMessage( M_GETDATA, D_OCEAN_AIR_TEMP ), U_DEGC);
     in_spinup = core->inSpinup();
 	annualflux_sum.set( 0.0, U_PGC );
 	annualflux_sumHL.set( 0.0, U_PGC );
@@ -420,7 +421,7 @@ unitval OceanComponent::getData( const std::string& varName,
         } else {
             H_THROW( "Problem with user request for constant data: " + varName );
         }
-        
+
     } else if(date != Core::undefinedIndex() ){
         if( varName == D_OCEAN_CFLUX ){
                 returnval = annualflux_sum_ts.get(date);
@@ -463,11 +464,11 @@ unitval OceanComponent::getData( const std::string& varName,
         } else {
             H_THROW( "Problem with user request for time series: " + varName );
         }
-        
+
     } else {
         H_ASSERT( date == Core::undefinedIndex(), "Date data not available for " + varName + " in OceanComponent::getData()" );
     }
-    
+
     return returnval;
 }
 
