@@ -203,7 +203,7 @@ ostream& Logger::write( const LogLevel writeLevel,
 {
     H_ASSERT( isInitialized, "can't write to logger until initialized" );
 
-    // note that we not double checking the writeLevel
+    // note that we are not double checking the writeLevel
     return loggerStream << getDateTimeStamp() << ':' <<logLevelToStr( writeLevel )
     << ':' << functionInfo << ": ";
 }

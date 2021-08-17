@@ -62,7 +62,7 @@ libs/
 *.suo
 
 # Output
-output/output*
+output/*
 
 # R
 .Rhistory
@@ -80,3 +80,5 @@ vignettes/rsconnect
 # vignette caches
 /vignettes/*_cache
 docs
+/doc/
+/Meta/

@@ -5,6 +5,11 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
 // GETDATA
 String GETDATA();
 RcppExport SEXP _hector_GETDATA() {
@@ -1455,6 +1460,16 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// RH
+String RH();
+RcppExport SEXP _hector_RH() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(RH());
+    return rcpp_result_gen;
+END_RCPP
+}
 // PREINDUSTRIAL_CO2
 String PREINDUSTRIAL_CO2();
 RcppExport SEXP _hector_PREINDUSTRIAL_CO2() {
@@ -2077,6 +2092,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_NBP", (DL_FUNC) &_hector_NBP, 0},
     {"_hector_ATMOSPHERIC_CO2", (DL_FUNC) &_hector_ATMOSPHERIC_CO2, 0},
     {"_hector_NPP", (DL_FUNC) &_hector_NPP, 0},
+    {"_hector_RH", (DL_FUNC) &_hector_RH, 0},
     {"_hector_PREINDUSTRIAL_CO2", (DL_FUNC) &_hector_PREINDUSTRIAL_CO2, 0},
     {"_hector_ATMOSPHERIC_C", (DL_FUNC) &_hector_ATMOSPHERIC_C, 0},
     {"_hector_FFI_EMISSIONS", (DL_FUNC) &_hector_FFI_EMISSIONS, 0},

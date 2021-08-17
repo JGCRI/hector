@@ -41,6 +41,7 @@ namespace Hector {
 class SimpleNbox : public CarbonCycleModel {
     friend class CSVOutputVisitor;
     friend class CSVOutputStreamVisitor;
+    friend class CSVFluxPoolVisitor;
 
 public:
     SimpleNbox();
@@ -105,6 +106,7 @@ private:
     fluxpool earth_c;               //!< earth pool, Pg C; for mass-balance
     fluxpool atmos_c;                //!< atmosphere pool, Pg C
     fluxpool    Ca;                  //!< current [CO2], ppmv
+    fluxpool ocean_model_c;
 
     // Carbon pools -- biome-specific
     fluxpool_stringmap veg_c;        //!< vegetation pools, Pg C
@@ -115,6 +117,14 @@ private:
 
     double_stringmap tempfertd, tempferts; //!< temperature effect on respiration (unitless)
 
+    double trackingYear;
+    // Temporary to investigate flux excess or shortage
+    double earth_diff;
+    double atmos_diff;
+    double_stringmap veg_diff;
+    double_stringmap soil_diff;
+    double_stringmap det_diff;
+
     /*****************************************************************
      * Records of component state
      * These vectors record the component state over time.  When we do
@@ -124,6 +134,7 @@ private:
     tseries<fluxpool> earth_c_ts;  //!< Time series of earth carbon pool
     tseries<fluxpool> atmos_c_ts;  //!< Time series of atmosphere carbon pool
     tseries<fluxpool> Ca_ts;       //!< Time series of atmosphere CO2 concentration
+    tseries<fluxpool> ocean_model_c_tv;     //!< Time series of biome-specific ocean model carbon pools
 
     tvector<fluxpool_stringmap> veg_c_tv;      //!< Time series of biome-specific vegetation carbon pools
     tvector<fluxpool_stringmap> detritus_c_tv; //!< Time series of biome-specific detritus carbon pools
@@ -148,7 +159,7 @@ private:
     double masstot;                     //!< tracker for mass conservation
     unitval atmosland_flux;             //!< Atmosphere -> land C flux
     tseries<unitval> atmosland_flux_ts; //!< Atmosphere -> land C flux (time series)
-    
+
     /*****************************************************************
      * Input data
      * This information isn't part of the state; it's either read from
@@ -194,10 +205,14 @@ private:
     double calc_co2fert(std::string biome, double time = Core::undefinedIndex()) const; //!< calculates co2 fertilization factor.
     fluxpool npp(std::string biome, double time = Core::undefinedIndex()) const; //!< calculates NPP for a biome
     fluxpool sum_npp(double time = Core::undefinedIndex()) const; //!< calculates NPP, global total
-    fluxpool rh_fda( std::string biome ) const;  //!< calculates current RH from detritus for a biome
-    fluxpool rh_fsa( std::string biome ) const;  //!< calculates current RH from soil for a biome
-    fluxpool rh( std::string biome ) const;      //!< calculates current RH for a biome
-    fluxpool sum_rh() const;                     //!< calculates current RH, global total
+    fluxpool rh_fda( std::string biome, double time = Core::undefinedIndex() ) const;  //!< calculates RH from detritus for a biome
+    fluxpool rh_fsa( std::string biome, double time = Core::undefinedIndex() ) const;  //!< calculates RH from soil for a biome
+    fluxpool rh( std::string biome, double time = Core::undefinedIndex() ) const;      //!< calculates RH for a biome
+    fluxpool sum_rh(double time = Core::undefinedIndex()) const; //!< calculates RH, global total
+    fluxpool ffi(double t, bool in_spinup) const;
+    fluxpool ccs(double t, bool in_spinup) const;
+    fluxpool luc_emission(double t, bool in_spinip) const;
+    fluxpool luc_uptake(double t, bool in_spinip) const;
 
     /*****************************************************************
      * Private helper functions
@@ -273,6 +288,21 @@ private:
                 currval.erase(oldname);
                 ts.set(i, currval);
             }
+        }
+    }
+
+    /*****************************************************************
+     * Tracking Helper Functions
+     *****************************************************************/
+    void startTracking(){
+        earth_c.tracking = true;
+        atmos_c.tracking = true;
+        ocean_model_c.tracking = true;
+        for( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
+            std::string biome = *it;
+            veg_c[ biome ].tracking = true;
+            soil_c[ biome ].tracking = true;
+            detritus_c[ biome ].tracking = true;
         }
     }
 

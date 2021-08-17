@@ -44,25 +44,25 @@ If the current [input file](InputFiles) includes, in its `[simpleNbox]` section,
 CO2_constrain=csv:path/to/constraint/file.csv
 ```
 
-then the model's atmospheric CO2 concentration ([CO2], given in ppmv CO2) will follow the contents of this file (which should have two columns, `Date` and `CO2_constrain`).
-Alternatively, Hector's atmospheric CO2 concentration constraint can be set using the `setvars` function and `CO2_CONSTRAIN` variable.
+then the model's atmospheric CO$_2$ concentration ([CO2], given in ppmv CO2) will follow the contents of this file (which should have two columns, `Date` and `CO2_constrain`).
+Alternatively, Hector's atmospheric CO$_2$ concentration constraint can be set using the `setvars` function and `CO2_CONSTRAIN` variable.
 
-The CO2 constraint is applied at the _end_ of the current time step.
+The CO$_2$ constraint is applied at the _end_ of the current time step.
 The full sequence of events is as follows:
-First, the model solves the current time-step's carbon cycle conditioned on the previous time step's carbon pools, ignoring the CO2 constraint.
-Then, if a CO2 constraint is present, Hector calculates the difference between its calculated atmospheric CO2 and the prescribed CO2 constraint.
-If the target atmospheric CO2 concentration is lower than the calculated CO2, the excess carbon is transferred from the atmosphere to the deep ocean;
-conversely, if the target atmospheric CO2 concentration is greater than the calculated value, the additional carbon is transferred from the deep ocean into the atmosphere.
-Finally, Hector records the current atmospheric CO2 concentration (which is now equal to the constraint value); this is the value that is used in the next time step's evaluation of carbon-climate feedbacks (e.g. CO2 fertilization of net primary productivity, surface ocean carbonate chemistry).
-In other words, an atmospheric CO2 constraint at time $t$ does not affect carbon-climate feedbacks until $t+1$.
+First, the model solves the current time-step's carbon cycle conditioned on the previous time step's carbon pools, ignoring the CO$_2$ constraint.
+Then, if a CO$_2$ constraint is present, Hector calculates the difference between its calculated atmospheric CO$_2$ and the prescribed CO2 constraint.
+If the target atmospheric CO$_2$ concentration is lower than the calculated CO$_2$, the excess carbon is transferred from the atmosphere to the deep ocean;
+conversely, if the target atmospheric CO$_2$ concentration is greater than the calculated value, the additional carbon is transferred from the deep ocean into the atmosphere.
+Finally, Hector records the current atmospheric CO$_2$ concentration (which is now equal to the constraint value); this is the value that is used in the next time step's evaluation of carbon-climate feedbacks (e.g. CO$_2$ fertilization of net primary productivity, surface ocean carbonate chemistry).
+In other words, an atmospheric CO$_2$ constraint at time $t$ does not affect carbon-climate feedbacks until $t+1$.
 
-The CO2 constraint need not span the entirety of the Hector simulation, or even be continuous.
-At any given time step, Hector will check whether or not a CO2 constraint exists at that time step and only apply the constraint if it is present.
-This means that "hybrid" runs are possible, where only some specific time ranges have CO2 constraints while others calculate the atmospheric carbon pool and CO2 concentrations according to Hector's standard [carbon cycle](SimpleNBox).
+The CO$_2$ constraint need not span the entirety of the Hector simulation, or even be continuous.
+At any given time step, Hector will check whether or not a CO$_2$ constraint exists at that time step and only apply the constraint if it is present.
+This means that "hybrid" runs are possible, where only some specific time ranges have CO$_2$ constraints while others calculate the atmospheric carbon pool and CO$_2$ concentrations according to Hector's standard [carbon cycle](SimpleNBox).
 
 # CH4, N2O, and halocarbon concentrations
 
-These all work in more-or-less the same way, and are similar to the atmospheric CO2 constraint (above), except that there is no equivalent to the carbon pool adjustment for these gases.
+These all work in more-or-less the same way, and are similar to the atmospheric CO$_2$ constraint (above), except that there is no equivalent to the carbon pool adjustment for these gases.
 In the [input file](InputFiles), they are triggered by a line like the following in their corresponding component section:
 
 ```
@@ -84,7 +84,7 @@ If the constraint exists, Hector will skip all atmospheric chemistry calculates 
 If the constraint does not exist, Hector will proceed with its standard atmospheric chemistry routines for calculating the atmospheric concentration based on emissions and concentrations of other relevant species.
 This means that _concentration constraints always take precedence over emissions_; in other words, if a particular time step has both emissions and a concentration constraint, the emissions are ignored.
 
-Note that CH4 and N2O have special variables for their pre-industrial concentration that could conflict with the constraint.
+Note that CH$_4$ and N$_2$O have special variables for their pre-industrial concentration that could conflict with the constraint.
 In Hector, _concentration constraints take precedence over pre-industrial concentrations_;
 in other words, Hector assumes that if you provide a concentration constraint for the pre-industrial timestep, that is the concentration you want, regardless of the prescribed pre-industrial value.
 

@@ -26,10 +26,10 @@ create_biome <- function(core, biome,
                          f_nppd = 0.60,
                          f_litterd = 0.98) {
   create_biome_impl(core, biome)
-  setvar(core, 0, VEG_C(biome), veg_c0, "PgC")
-  setvar(core, 0, DETRITUS_C(biome), detritus_c0, "PgC")
-  setvar(core, 0, SOIL_C(biome), soil_c0, "PgC")
-  setvar(core, NA, NPP_FLUX0(biome), npp_flux0, "PgC/yr")
+  setvar(core, 0, VEG_C(biome), veg_c0, "Pg C")
+  setvar(core, 0, DETRITUS_C(biome), detritus_c0, "Pg C")
+  setvar(core, 0, SOIL_C(biome), soil_c0, "Pg C")
+  setvar(core, NA, NPP_FLUX0(biome), npp_flux0, "Pg C/yr")
   setvar(core, NA, WARMINGFACTOR(biome), warmingfactor, NA)
   setvar(core, NA, BETA(biome), beta, NA)
   setvar(core, NA, Q10_RH(biome), q10_rh, NA)

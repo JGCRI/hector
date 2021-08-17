@@ -59,9 +59,9 @@ Hector's mandatory dependencies are listed in the `DESCRIPTION` file under `Impo
 
 Hector can also be compiled as a standalone executable.
 Unlike the R package, this method of installation does not automatically pull in dependencies, so you will have to install them manually.
-Fortunately, Hector's only external dependency--Boost--is freely available under a GPL license.
 
-**Boost** is a free, peer-reviewed portable C++ source library, available at http://www.boost.org/.
+Hector's only external dependency, **Boost**, is a free, peer-reviewed portable
+C++ source library, available at http://www.boost.org/.
 Hector primarily uses Boost "header-only" libraries, which do not need to be compiled independently and only need to be extracted and included with the Hector source.
 However, Hector currently _does_ depend on two Boost libraries--`system` and `filesystem`--that require compilation. 
 
@@ -71,19 +71,24 @@ The Hector makefiles look for Boost libraries and headers in certain default
 locations, but those defaults can be overridden by setting the
 following environment variables:
 
-* `BOOSTROOT` (default `$(HOME)/src/boost_$(BOOSTVERSION)`).
-This variable should contain the full name of the directory created
-when you unpacked Boost. If you unpacked Boost in `$(HOME)/src`, then
-all you need to do is set the `BOOSTVERSION` variable (*q.v.* below) and leave this variable
-at its default value. If you unpacked Boost somewhere else (if you used [Homebrew](https://brew.sh/) to install Boost), or if you changed the name
-of the directory that was created when you unpacked it, then you will
-need to set this variable explicitly. 
+* `BOOSTROOT` (default `/usr/local/`).
+This variable should contain the full name of a directory with `include/` and
+`lib/` subdirectories that contain, respectively, the Boost header and library 
+files. If you installed Boost using a package manager, this is likely where
+it is. If you built Boost from source, or used [Homebrew](https://brew.sh/) to
+install Boost), then you will need to set this variable explicitly. 
 
-* `BOOSTVERSION` (default: `1_52_0`). This variable should contain the
-version number of the version of Boost that you installed.  The
-version number will appear in the name of the tar file you
-downloaded. The `BOOSTVERSION` variable is used in the default value of `BOOSTROOT` to determine the default installation
-directory. If you override the default value of `BOOSTROOT` you can ignore this variable.
+Alternatively, if the header and library locations are not subdirectories of
+a single directory, you can set `BOOSTINC` and `BOOSTLIB` variables to their 
+respective locations. In this case, `BOOSTROOT` is ignored.
+
+* `GTROOT` (default `/usr/local/`).
+This variable should contain the full name of a directory with `include/` and
+`lib/` subdirectories that contain, respectively, the Googletest header and library 
+files. Alternatively, if the header and library locations are not subdirectories of
+a single directory, you can set `GTINC` and `GTLIB` variables to their 
+locations. In this case, `GTROOT` is ignored. **Note that this is only needed
+if you want to run the Hector unit tests.** It's not needed for running the model.
 
 **Shared Library Search Path**
 
@@ -128,11 +133,17 @@ sure to unset `CXXPROF`, clean the build directories with `make clean`,
 and rebuild when you are ready to go back to
 production runs.
 
-
-Run Hector from the terminal with the command line. 
+Run Hector from the terminal:
 
 ```
 ./src/hector ./inst/input/name-of-ini.ini
+```
+
+To run build and run the Hector unit tests, type `make testing`
+and then
+
+```
+./src/Testing/hector-unit-tests
 ```
 
 ## Xcode (Mac OS X)
@@ -150,18 +161,19 @@ This means that developers and users can set these paths without overwriting eac
 * You will need to set several custom paths (Preferences -> Locations -> Custom Paths): `BOOSTLIB`, `BOOSTROOT`, and `HECTORDIR`. These are the Boost runtime library, the Boost root under which the headers can be found in `boost/`, and the runtime working directory for the model (the repository root).
 * If you want to build Hector's testing framework (the `hector-tests` target; this is optional and only relevant for C++ developers) add GTEST and GTESTLIB custom paths to Xcode; these are analogous to their Boost counterparts. You will need to install [googletest](https://github.com/google/googletest) on your machine.
 
-
 At this point you should be ready to go:
 
 * Build the project, making sure you're building the `hector` target.
 * Run!
 * To run a different scenario, change the current Scheme settings (Scheme->Edit Scheme) and modify or add a command-line argument (*Arguments* tab, e.g. "./inst/input/hector_rcp45.ini").
 
+The Xcode profile file includes a `hector-tests` target that builds the unit
+testing framework described above.
+
 Xcode Resources 
 
 * [Xcode Schemes](https://developer.apple.com/library/archive/documentation/ToolsLanguages/Conceptual/Xcode_Overview/ManagingSchemes.html)
 * [Xcode Debugging](https://developer.apple.com/library/archive/documentation/DeveloperTools/Conceptual/debugging_with_xcode/chapters/debugging_tools.html)
-
 
 ## Visual Studio Code (Windows)
 
@@ -171,7 +183,6 @@ Xcode Resources
 * Open Hector in the visual studio code IDE, build Hector with Terminal --> Run Build Task or with a `make hector` call in VSC terminal window. 
 * Run --> Start Debugging or Run Without Debugging or with `./src/hector ./inst/input/name-of-ini.ini` in the VSC terminal window. 
 
-
 ## Visual Studio
 
-VS is not supported at this time see [VS Hector github issue](https://github.com/JGCRI/hector/issues/415) for more details. 
+VS is not supported at this time. See [VS Hector github issue](https://github.com/JGCRI/hector/issues/415) for more details. 

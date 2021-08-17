@@ -870,6 +870,12 @@ NPP <- function() {
     .Call('_hector_NPP', PACKAGE = 'hector')
 }
 
+#' @rdname carboncycle
+#' @export
+RH <- function() {
+    .Call('_hector_RH', PACKAGE = 'hector')
+}
+
 #' @describeIn parameters Preindustrial CO2 concentration (\code{"ppmv CO2"})
 #' @export
 PREINDUSTRIAL_CO2 <- function() {

@@ -7,15 +7,16 @@ Step one:
 -----------
 
 Add two new files:  
-* headers/core/X.hpp
-* source/core/X.cpp
+* `headers/core/X.hpp`
+* `source/core/X.cpp`
 
 It is best to copy and modify the corresponding files from an already constructed component.
 
 Step two (within X.hpp):  
 -----------
-Under `private` list the variables that are used in the component and their corresponding type. E.g. 
-* `tseries<unitval> x` to create a [time series](TSeries.html).
+Under `private` list the variables that are used in the component and their corresponding type. Because of Hector's ability to [reset](https://jgcri.github.io/hector/reference/reset.html), every state variable generally needs an associated time series history variable.
+E.g. 
+* `tseries<unitval> x` to create a [time series](https://jgcri.github.io/hector/articles/manual/TimeSeries.html).
 * `unitval x` to declare a [value with associated units](Unitvals.html).
 * `double x` 
 
@@ -24,7 +25,7 @@ Step three (within X.cpp):
 Make sure that you `#include X.hpp`.
 
 _In the constructor_  
-If the variable is a tseries, add all of the variables allowing for interpolation and their corresponding names
+If the variable is a `tseries`, add all of the variables allowing for interpolation and their corresponding names
 	
 	XComponent::XComponent() {
 	    X_emissions.allowInterp( true ); 
@@ -37,13 +38,14 @@ Inform the core what data the component can provide (*registerCapability*) and w
 	core->registerDependency( D_LIFETIME_X, getComponentName() );
 
 _In X::setData_  
-Set the data that are used as inputs within this component, typically coming from the ini file.  [[For examples of tseries vs. unitvals in setData|AddTSeries]].
+Set the data that are used as inputs within this component, typically coming from the INI file.  
+[[For examples of `tseries` vs. `unitvals` in [Time Series](https://jgcri.github.io/hector/articles/manual/TimeSeries.html)]].
 
 _In X::prepareToRun_
 TODO: describe
 
 _In X::run_
-The run method contains the equations and code used in this component.  Here is where you would want a log statement, written out to the component's log.
+The run method contains the equations and code used in this component. Here is where you would want a log statement, written out to the component's log.
 
 `H_LOG( logger, Logger::DEBUG ) << "Year " << runToDate << " X concentration = " << X.get( runToDate ) << std::endl;`
 
