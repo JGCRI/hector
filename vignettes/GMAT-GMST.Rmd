@@ -1,0 +1,114 @@
+---
+title: "Example: Calculating GMST from GMAT in Hector"
+author: "Leeya Pressburger"
+date: "2021-08-18"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteEncoding{UTF-8}
+  %\VignetteIndexEntry{Example: Carbon tracking with Hector}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+The global mean surface temperature (GMST) is the average of the air temperature over land and the temperature at the surface of the ocean. This is a very useful metric for observing global warming or global cooling. However, Hector does not produce GMST as an output at this time. Hector does measure the global mean air temperature (GMAT), which we can use to back-calculate GMST. 
+
+This vignette will demonstrate how to set up the calculation between GMAT and GMST then plot results to observe differences over time. 
+
+## Setup
+
+Let's load the packages we will need and run a scenario.
+
+*** will have to recode without dplyr/tidyr - might need help with this
+
+``` {r hector.init}
+library(hector)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+
+inifile <- file.path(system.file('input', package = 'hector'),
+                     'hector_rcp45.ini')
+core <- newcore(inifile)
+run(core)
+```
+
+
+## Find GMST
+
+In order to find the GMST from Hector outputs, we will need to calculate it from the ocean surface temperature and the land air temperature. This can be done by finding a weighted sum of the land and ocean temperature. 
+
+$ GMST = (land air temperature * fractional land area) + (ocean surface temperature * (1 - fractional land area)) $
+  
+In other words, the GMST measures the land temperature scaled in proportion to the fractional land coverage on Earth and the ocean temperature scaled in proportion to the fractional ocean coverage, or 1 - the fractional land area.
+
+``` {r find.GMST}
+flnd = 0.29;     ## fractional land area, a constant in Hector
+
+hector_output <- fetchvars(core, 1745:2300, vars = c(LAND_AIR_TEMP(), OCEAN_SURFACE_TEMP(), GLOBAL_TEMP()))
+hector_output <- as.data.frame(hector_output)
+
+hector_output %>% 
+    filter(variable %in% c(LAND_AIR_TEMP(), OCEAN_SURFACE_TEMP())) %>% 
+    spread(variable, value) %>%
+    # Calculate the area weighted sum of the land & ocean temperature
+    mutate(Tgav_land = Tgav_land * flnd,
+           Tgav_ocean_ST = Tgav_ocean_ST * (1 - flnd),
+           value = (Tgav_land + Tgav_ocean_ST)) %>%
+    select(year, value) %>% 
+    mutate(variable = "GMST") -> global_surface_temp
+
+# Rename Hector's variable for GMAT
+global_air_temp <- hector_output %>% 
+  filter(variable == "Tgav") %>% 
+  select(year, value) %>% 
+  mutate(variable = "GMAT") 
+```
+
+## Plot 
+
+The following plot shows GMST and GMAT over time. We see that recently, GMAT is higher than GMST. 
+*** more explanation needed
+
+
+``` {r plot}
+
+data <- rbind(global_surface_temp, global_air_temp)
+
+ggplot(data) + 
+  geom_line(aes(year, value, color = variable)) + 
+  theme_bw()  + 
+  labs(y = expression(degree~'C'), 
+       title = 'Comparison of Hector GMST and GMAT')
+
+ggplot()
+```
+
+
+Then, to highlight the gap between the two temperatures, we can plot the difference. *** more words
+
+``` {r plot.diff}
+
+GMST_d <- data %>% filter(variable == "GMST")
+GMAT_d <- data %>% filter(variable == "GMAT")
+
+GMAT_d$variable <- "GMAT - GMST"
+GMAT_d$value <- GMAT_d$value - GMST_d$value
+
+ggplot(GMAT_d) + 
+    geom_line(aes(year, value, color = variable)) + 
+    theme_bw()  + 
+  labs(y = expression(degree~'C'), 
+       title = 'Differences in temperature over time')
+
+```
+
+## Conclusion
+
+*** more words
