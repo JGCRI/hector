@@ -95,9 +95,13 @@ newcore <- function(inifile, loglevel = 0, suppresslogging = TRUE,
 #' @param core Handle to the Hector instance.
 #' @importFrom utils read.csv
 #' @return A \code{\link{data.frame}} with the tracking data. Columns include
-#' \code{year} (integer), \code{pool_name} (character), \code{pool_value}
-#' (double), \code{pool_units} (character), \code{source_name} (character),
-#' and \code{source_fraction} (double).
+#' \code{year} (integer), \code{component} (character), \code{pool_name} (character),
+#' \code{pool_value} (double), \code{pool_units} (character),
+#' \code{source_name} (character), and \code{source_fraction} (double). The
+#' fractions will always sum to 1 for a given pool and year.
+#' @note The \code{pool_name}, \code{pool_value}, and \code{pool_units} names
+#' differ from those used in the model's standard output stream (\code{variable},
+#' \code{value}, and \code{units} respectively).
 #' @family main user interface functions
 #' @export
 get_tracking_data <- function(core) {
