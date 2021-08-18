@@ -1,6 +1,6 @@
 # Installing and building Hector
 
-There are lots of ways to use Hector, as a stand alone executable, through the UI, and as an R package. Here we provide installation and building instructions for the R Hector package and the executable. 
+There are lots of ways to use Hector: as a stand alone executable, through the UI, and as an R package. Here we provide installation and building instructions for the R Hector package and the executable. 
 
 # R Hector 
 
@@ -63,7 +63,7 @@ Unlike the R package, this method of installation does not automatically pull in
 Hector's only external dependency, **Boost**, is a free, peer-reviewed portable
 C++ source library, available at http://www.boost.org/.
 Hector primarily uses Boost "header-only" libraries, which do not need to be compiled independently and only need to be extracted and included with the Hector source.
-However, Hector currently _does_ depend on two Boost libraries--`system` and `filesystem`--that require compilation. 
+However, Hector currently _does_ depend on one Boost library, `filesystem`, that requires compilation. 
 
 ## Command Line (Linux & Mac OSX)
 
@@ -185,4 +185,4 @@ Xcode Resources
 
 ## Visual Studio
 
-VS is not supported at this time see [VS Hector github issue](https://github.com/JGCRI/hector/issues/415) for more details. 
+VS is not supported at this time. See [VS Hector github issue](https://github.com/JGCRI/hector/issues/415) for more details. 

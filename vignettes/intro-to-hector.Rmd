@@ -125,7 +125,7 @@ We can confirm that our change took effect with another call to `fetchvars`.
 fetchvars(core, NA, BETA()) 
 ```
 
-Now, let's run the simulation again with a higher value for CO2 fertilization.
+Now, let's run the simulation again with a higher value for CO$_2$ fertilization.
 But, before we do, let's look once again at the Hector `core` object.
 
 ```{r core-inspect}
@@ -148,13 +148,15 @@ In addition, if the `date` argument is less than the model start date and spinup
 ***
 **NOTE**
 
+Prior to a normal run beginning in 1745, Hector has an optional "spinup" mode where it runs the carbon cycle with no perturbations until it stabilizes. Essentially, the model removes human emissions and runs until there are no more changes in the carbon pools and the system has reached equilibrium. 
+
 Because changing Hector parameters can change the post-spinup equilibrium values of state variables, Hector will automatically run `reset(core, date = 0)` at the beginning of the next `run` call if it detects that any of its parameters have changed.
 This means that is not currently possible to change Hector _parameters_ (such as $\beta$ or preindustrial CO~2~) part-way through a run.
 However, it is still possible to change the values of certain _drivers_ and _state variables_ (such as the CO~2~ emissions) in the middle of a run.
 
 ***
 
-So, as a result of the `reset` command, the core's "Current Date" is now the model start date--1745.
+So, as a result of the `reset` command, the core's `Current Date` is now the model start date--1745.
 We can now perform another run with the new CO$_2$ fertilization value.
 
 ```{r  run-sim-2}
@@ -163,7 +165,7 @@ results_40 <- fetchvars(core, 2000:2300)
 head(results_40) 
 ```
 
-Let's see how changing the CO2 fertilization affects our results.
+Let's see how changing the CO$_2$ fertilization affects our results.
 
 ```{r  compare-co2-fert }
 results[["beta"]] <- 0.36
@@ -177,7 +179,7 @@ ggplot(compare_results) +
   guides(color = guide_legend(title = expression(beta)))
 ```
 
-As expected, increasing CO2 fertilization increases the strength of the terrestrial carbon sink and therefore reduces atmospheric CO2, radiative forcing, and global temperature.
+As expected, increasing CO$_2$ fertilization increases the strength of the terrestrial carbon sink and therefore reduces atmospheric CO$_2$, radiative forcing, and global temperature.
 However, the effects only become pronounced in the latter half of the 21st Century.
 
 

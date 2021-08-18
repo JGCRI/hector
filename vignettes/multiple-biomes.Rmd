@@ -76,7 +76,7 @@ ggplot(plot_data) +
 ```
 
 The results show that accelerated high-latitude warming induces a positive global feedback in Hector:
-The warmer high-latitudes respire carbon from soil and detritus at a faster rate, which leads to higher CO~2~ concentrations and further warming.
+the warmer high-latitudes respire carbon from soil and detritus at a faster rate, which leads to higher CO~2~ concentrations and further warming.
 
 We can look at these results in more detail by examining the biome-specific pools and fluxes via the optional `biome` argument to Hector's identifier functions (e.g. `VEG_C()`).
 
@@ -110,7 +110,7 @@ Specifically, C4 plants possess a special mechanism for concentrating CO~2~ insi
 Although this makes C4 plants more efficient (particularly in hot and dry environments), this also means that they should have a reduced CO~2~ fertilization effect compared to C3 plants.
 
 In Hector, the CO~2~ fertilization effect is controlled by the parameter $\beta$ (`BETA()`).
-In this example, we will create two "biomes", corresponding to C3 and C4 plants, each with different `BETA()` values, and will compare model outputs from this special case against a reference case (which we can recycle from the `reference_results` object in the previous example).
+In this example, we will create two "biomes," corresponding to C3 and C4 plants, each with different `BETA()` values, and will compare model outputs from this special case against a reference case (which we can recycle from the `reference_results` object in the previous example).
 For the purposes of this example, we will assume that ~10% of the world's terrestrial carbon is associated with C4 plants, and that the CO~2~ fertilization effect for C4 plans is half as strong as that of C3 plants.
 
 ```{r fert-c4}
