@@ -93,7 +93,7 @@ void Core::init() {
 
     // We handle this input; need to register it here so that R users can change it
     registerInput( D_TRACKING_DATE, CORE_COMPONENT_NAME );
-    
+
     // TODO: maybe some model component factory?
     IModelComponent *temp;
 
@@ -236,7 +236,7 @@ void Core::setData( const string& componentName, const string& varName,
                 endDate = data.getUnitval(U_UNDEFINED);
             } else if( varName == D_TRACKING_DATE ) {
                 H_ASSERT( data.date == undefinedIndex(), "date not allowed" );
-                trackingDate = data.getUnitval(U_UNDEFINED);
+                trackingDate = data.getUnitval(U_UNITLESS);
             } else if( varName == D_DO_SPINUP ) {
                 H_ASSERT( data.date == undefinedIndex(), "date not allowed" );
                 do_spinup = (data.getUnitval(U_UNDEFINED) > 0);
