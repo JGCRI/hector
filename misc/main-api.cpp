@@ -6,7 +6,7 @@
 */
 /*
  *  main-api.cpp - example main() using the API
- *  
+ *
  *
  */
 
@@ -100,7 +100,7 @@ int main (int argc, char * const argv[]) {
         tseries<unitval> tempts;
         tseries<unitval> cats;
         tseries<unitval> forcts;
-        
+
         for(double t=core.getStartDate()+5.0; t<=core.getEndDate(); t+=5.0) {
             read_and_set_co2(tlast, t, core, sim_gcam_emiss);
             core.run(t);
@@ -121,7 +121,7 @@ int main (int argc, char * const argv[]) {
             tempts.set(t, temp);
             cats.set(t, ca);
             forcts.set(t, forc);
-            
+
             tlast = t;
         }
 
@@ -143,7 +143,7 @@ int main (int argc, char * const argv[]) {
                 << "\tca old= " << cats.get(newt) << "\tca new= " << ca << "\tdiff= " << ca-cats.get(newt) << "\n"
                 << "\tforc old= " << forcts.get(newt) << "\tforc new= " << forc << "\tdiff= " << forc-forcts.get(newt) << "\n";
         }
-        
+
 
         H_LOG(glog, Logger::NOTICE) << "Shutting down all components.\n";
         core.shutDown();
@@ -176,16 +176,19 @@ void read_and_set_co2(double tstrt, double tend, Core &core, istream &sim_gcam_e
         t = atof(splitvec[0].c_str());
         if(t>=tstrt && t>2010.0) {
             double ffi   = atof(splitvec[1].c_str());
-            double luc   = atof(splitvec[2].c_str());
-            double so2   = atof(splitvec[6].c_str());
-            double bc    = atof(splitvec[10].c_str());
-            double oc    = atof(splitvec[11].c_str());
-            double cf4   = atof(splitvec[13].c_str());
-            double hcf22 = atof(splitvec[32].c_str());
+            double daccs = atof(splitvec[2].c_str());
+            double luc   = atof(splitvec[3].c_str());
+            double so2   = atof(splitvec[7].c_str());
+            double bc    = atof(splitvec[11].c_str());
+            double oc    = atof(splitvec[12].c_str());
+            double cf4   = atof(splitvec[14].c_str());
+            double hcf22 = atof(splitvec[33].c_str());
 
             // This is how you set annual emissions into the model
             core.sendMessage(M_SETDATA, D_FFI_EMISSIONS,
                              message_data(t, unitval(ffi, U_PGC_YR)));
+            core.sendMessage(M_SETDATA, D_DACCS_UPTAKE,
+                             message_data(t, unitval(daccs, U_PGC_YR)));
             core.sendMessage(M_SETDATA, D_LUC_EMISSIONS,
                              message_data(t, unitval(luc, U_PGC_YR)));
             core.sendMessage(M_SETDATA, D_EMISSIONS_SO2,
@@ -201,6 +204,7 @@ void read_and_set_co2(double tstrt, double tend, Core &core, istream &sim_gcam_e
 
             std::cout << "t= " << t << "\n"
                       << "\t\tffi= " << ffi << "\n"
+                      << "\t\tdaccs= " << daccs << "\n"
                       << "\t\tluc= " << luc << "\n"
                       << "\t\tSO2= " << so2 << "\n"
                       << "\t\tBC= "  << bc << "\n"

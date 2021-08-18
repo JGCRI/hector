@@ -90,9 +90,9 @@ class PolyDerivFunctor {
 
 //------------------------------------------------------------------------------
 /*! \brief Find the largest real root, using GSL or appropriate algorithms
- *  \param ncoeff   Number of coefficients
- *  \param *a       Coefficients
- *  \return         Largest real root (H+ ion)
+ *  \param ncoeffs   Number of coefficients
+ *  \param a                Coefficients
+ *  \return        Largest real root (H+ ion)
  */
 double find_largest_root( const int ncoeffs, double* a ) {
     
@@ -283,17 +283,17 @@ void oceancsys::ocean_csys_run( unitval tbox, unitval carbon )
 /*! \brief Calculate the (monthly) atmosphere-surface box flux
  *  \param Ca           Atmospheric CO2
  *  \param cpoolscale   Scale the box C pool by this amount (1.0=none)
- *  \return             Monthly atmospheric C flux, gC/m2/month
+ *  \return             Monthly atmospheric C flux, gC/m2/month (positive = into ocean)
  */
 double oceancsys::calc_monthly_surface_flux( const unitval& Ca, const double cpoolscale ) const {
-	return ( ( Ca.value( U_PPMV_CO2 ) - PCO2o.value( U_UATM ) * cpoolscale ) * Tr.value( U_gC_m2_month_uatm ) ); // units : gC m-2 month-1
+	return ( ( Ca.value( U_PPMV_CO2 ) - PCO2o.value( U_UATM ) * cpoolscale ) * Tr.value( U_gC_m2_month_uatm ) );
 }
 
 //-------------------------------------------------------------------------------
 /*! \brief Calculate the (annualized) atmosphere-surface box flux
  *  \param Ca           Atmospheric CO2
  *  \param cpoolscale   Scale the box C pool by this amount (1.0=none)
- *  \return             Annual atmospheric C flux, Pg C/yr
+ *  \return             Annual atmospheric C flux, Pg C/yr (positive = into ocean)
  */
 unitval oceancsys::calc_annual_surface_flux( const unitval& Ca, const double cpoolscale ) const {
     return unitval( ( calc_monthly_surface_flux( Ca, cpoolscale ) * As * 12.0 ) / 1e15, U_PGC_YR );

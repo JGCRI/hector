@@ -1,4 +1,4 @@
-context("Test basic R wrapper functionality")
+context("R wrapper functionality")
 
 inputdir <- system.file("input", package = "hector")
 testvars <- c(ATMOSPHERIC_CO2(), RF_TOTAL(), GLOBAL_TEMP())
@@ -128,7 +128,7 @@ test_that("Reset produces identical results", {
 })
 
 test_that("Exceptions are caught", {
-  expect_error(hc <- newcore("foo"), "does not exist")
+  suppressWarnings(expect_error(hc <- newcore("foo"), "does not exist"))
   hc <- newcore(file.path(inputdir, "hector_rcp45.ini"), suppresslogging = TRUE)
   setvar(hc, NA, BETA(), -1.0, NA)
   expect_error(reset(hc), "beta")

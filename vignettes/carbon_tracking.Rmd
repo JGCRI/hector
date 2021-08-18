@@ -1,0 +1,134 @@
+---
+title: "Example: Carbon tracking with Hector"
+author: "Leeya Pressburger"
+date: "2021-08-03"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteEncoding{UTF-8}
+  %\VignetteIndexEntry{Example: Carbon tracking with Hector}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+This vignette will walk through Hector's carbon tracking feature and show how to
+turn on tracking, retrieve the tracking data, and display the results.
+
+Hector's carbon tracking feature helps to trace the movement of carbon between 
+various pools as the model runs. At the user-chosen start date, each pool is
+deemed to be composed of 100% carbon from itself, i.e. at that moment in time 
+the deep ocean pool is 100% composed of carbon from the deep pool. 
+
+As the model moves forward in time from the start date, Hector tracks, for 
+each pool, its fractional composition--i.e. the sources of its current carbon. 
+When the run is finished, this data can be read into R and then analyzed.
+
+## Setup
+
+First, let's load the packages we will need.
+
+``` {r hector.init}
+library(hector)
+library(ggplot2)
+```
+
+## Carbon tracking
+
+Now, we will read in an .ini file and create a new core. In this example, we 
+will use RCP 4.5.
+
+In order to use the carbon tracking feature, we must use `setvar` and `fetchvars`. 
+First, let's look at the `trackingDate` prior to setting it to any value. 
+
+``` {r setup.core}
+inifile <- file.path(system.file('input', package = 'hector'),
+                     'hector_rcp45.ini')
+core <- newcore(inifile)
+
+fetchvars(core, NA, TRACKING_DATE())
+```
+
+This returns the variable `trackingDate` with a `value` of 9999. This default 
+value does not turn carbon tracking on (because the model never reaches year 9999).
+
+Now, we will set a `trackingDate`, check that it worked, and run a core. 
+Let's begin tracking in 1750.
+
+``` {r set.date}
+setvar(core, NA, TRACKING_DATE(), 1750, "(unitless)")
+fetchvars(core, NA, TRACKING_DATE())
+
+run(core)
+```
+
+At this point, the model has been run. To retrieve the carbon tracking data, we
+use the command `get_tracking_data()`. This returns a data frame which gives the 
+current state of the pool, and fractions of where the carbon is sourced from, at
+each model time point after `trackingDate`.
+
+``` {r hector.tracking}
+tdata <- get_tracking_data(core)
+head(tdata)
+
+# TODO - the Diff entries are unneeded debugging information; remove
+tdata <- subset(tdata, pool_name != "Diff")
+```
+
+The `tdata` dataset now contains information on year, pool name, amount of 
+carbon in each pool, and the fraction of each source for that pool.
+
+## Results
+
+By using ggplot, we can create time series graphs of how the origin of one
+or more carbon pools in the model changes over time. 
+
+``` {r hector.plot1, fig.width=6}
+ggplot(tdata, aes(year, source_fraction, fill = source_name)) +
+  geom_area() +
+  facet_wrap(~pool_name) +
+  theme(axis.text = element_text(size = 7)) +
+  ggtitle("Source Percentage Change Over Time") +
+  xlab("Year") +
+  ylab("Source Fraction")
+```
+
+Let's take a look at these graphs. Note that the `earth_c` pool is always 100% 
+`earth_c`: there are no inflows to this pool in RCP 4.5 (in contrast, in
+RCP 2.6 there is direct-air carbon capture and storage, so the `earth_c` pool
+origins will change). We see that around 1800, human emissions (from `earth_c`) 
+begin to appear in pools such as `atmos_c` or `soil_c_global`. 
+Between 1900-2000, human emissions take off and become major sources by 2100. 
+
+Let's examine just one pool: 
+
+``` {r hector.atm, fig.width=6}
+atmos <- subset(tdata, pool_name == "atmos_c")
+
+ggplot(atmos,
+    aes(year, source_fraction, fill = source_name)) +
+    geom_area() +
+    facet_wrap(~pool_name) +
+    ggtitle("Source Percentage Change Over Time - Atmosphere") +
+    xlab("Year") +
+    ylab("Source Fraction")
+```
+
+This allows us to better examine the contributions by source to the atmosphere. 
+
+## Conclusion
+
+The carbon tracking feature allows users to identify and trace the composition 
+by source of each pool in Hector. This data can be easily visualized using 
+ggplot to then be used for further study. 
+
+Remember to shut down the core.
+
+```{r shutdown}
+shutdown(core)
+```

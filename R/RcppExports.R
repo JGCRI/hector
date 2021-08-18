@@ -40,7 +40,13 @@ LL_SEVERE <- function() {
     .Call('_hector_LL_SEVERE', PACKAGE = 'hector')
 }
 
-#' @describeIn emissions Black carbon emissions (\code{"Tg"})
+#' @describeIn parameters Start of carbon tracking (Year)
+#' @export
+TRACKING_DATE <- function() {
+    .Call('_hector_TRACKING_DATE', PACKAGE = 'hector')
+}
+
+#' @describeIn emissions Black carbon emissions
 #' @export
 EMISSIONS_BC <- function() {
     .Call('_hector_EMISSIONS_BC', PACKAGE = 'hector')
@@ -864,6 +870,12 @@ NPP <- function() {
     .Call('_hector_NPP', PACKAGE = 'hector')
 }
 
+#' @rdname carboncycle
+#' @export
+RH <- function() {
+    .Call('_hector_RH', PACKAGE = 'hector')
+}
+
 #' @describeIn parameters Preindustrial CO2 concentration (\code{"ppmv CO2"})
 #' @export
 PREINDUSTRIAL_CO2 <- function() {
@@ -880,6 +892,12 @@ ATMOSPHERIC_C <- function() {
 #' @export
 FFI_EMISSIONS <- function() {
     .Call('_hector_FFI_EMISSIONS', PACKAGE = 'hector')
+}
+
+#' @rdname carboncycle
+#' @export
+DACCS_UPTAKE <- function() {
+    .Call('_hector_DACCS_UPTAKE', PACKAGE = 'hector')
 }
 
 #' @rdname carboncycle
@@ -1083,7 +1101,7 @@ newcore_impl <- function(inifile, loglevel, suppresslogging, name) {
     .Call('_hector_newcore_impl', PACKAGE = 'hector', inifile, loglevel, suppresslogging, name)
 }
 
-#' Shutdown a hector instance
+#' Shut down a hector instance
 #'
 #' Shutting down an instance will free the instance itself and all of the objects it created. Any attempted
 #' operation on the instance after that will raise an error.
@@ -1102,16 +1120,15 @@ shutdown <- function(core) {
 
 #' Reset a Hector instance to an earlier date
 #'
-#' Resetting the model returns it to its state at a previous time.  If the requested time
-#' is before the model start date (any value will do; conventionally zero is used), then
-#' the spinup will be rerun, and the model will be
-#' left ready to run at the start date.  (By contrast, resetting \emph{to} the start
-#' date leaves the model ready to run at the start date, but without having rerun the
-#' spinup.)
+#' Resetting the model returns it to its state at a previous time.  If the
+#' requested time is before the model start date, then the spinup will be
+#' rerun, and the model will be left ready to run at the start date. (By
+#' contrast, resetting \emph{to} the start date leaves the model ready to run
+#' at the start date, but without having rerun the spinup.)
 #'
 #' @param core Handle for the Hector instance that is to be reset.
-#' @param date Date to reset to.  The default is to reset to the model start date with
-#' a rerun of the spinup.
+#' @param date Date to reset to.  The default is to reset to the model start
+#' date with a rerun of the spinup.
 #' @family main user interface functions
 #' @export
 reset <- function(core, date = 0) {
@@ -1120,12 +1137,12 @@ reset <- function(core, date = 0) {
 
 #' Run the Hector climate model
 #'
-#' Run Hector up through the specified time.  This function does not return the results
-#' of the run.  To get results, run \code{fetch}.
+#' Run Hector up through the specified time.  This function does not return the
+#' results of the run.  To get results, run \code{fetch}.
 #'
 #' @param core Handle to the Hector instance that is to be run.
-#' @param runtodate Date to run to.  The default is to run to the end date configured
-#' in the input file used to initialize the core.
+#' @param runtodate Date to run to.  The default is to run to the end date
+#' configured in the input file used to initialize the core.
 #' @return The Hector instance handle
 #' @export
 #' @family main user interface functions
@@ -1139,6 +1156,14 @@ run <- function(core, runtodate = -1.0) {
 #' @export
 getdate <- function(core) {
     .Call('_hector_getdate', PACKAGE = 'hector', core)
+}
+
+#' Retrieve the tracking data for a Hector instance
+#'
+#' @param core Handle to the Hector instance.
+#' @export
+get_tracking_data_impl <- function(core) {
+    .Call('_hector_get_tracking_data_impl', PACKAGE = 'hector', core)
 }
 
 #' Retrieve the current list of biomes for a Hector instance

@@ -38,6 +38,7 @@ namespace Hector {
  *  between layers and latitudinal regions, etc.
  */
 class OceanComponent : public CarbonCycleModel {
+    friend class CSVFluxPoolVisitor;
 
 public:
     OceanComponent();
@@ -74,8 +75,9 @@ public:
     void slowparameval( double t, const double c[] );
     void stashCValues( double t, const double c[] );
     void record_state(double t);
-
-    void run1( const double runToDate );
+    void set_atmosphere_sources( fluxpool atm ) { atmosphere_cpool = atm; };
+    fluxpool get_oaflux() const;
+    fluxpool get_aoflux() const;
 
 private:
     virtual unitval getData( const std::string& varName,
@@ -95,14 +97,14 @@ private:
     // Atmosphere conditions
     unitval Tgav;           //!< Global temperature anomaly, degC
     unitval Ca;             //!< Atmospheric CO2, ppm
-
+    fluxpool atmosphere_cpool;
+    
     // Atmosphere-ocean flux
     unitval annualflux_sum, annualflux_sumHL, annualflux_sumLL;     //!< Running annual totals atm-ocean flux, for output reporting
     unitval lastflux_annualized;        //!< Last atm-ocean flux when solver ordered us to 'stash' C values
 
     // Spinup mode flag
     bool in_spinup;         //!< Are we currently in spinup?
-
 
     /*****************************************************************
      * Model parameters
@@ -113,20 +115,17 @@ private:
     unitval twi;         //!< m3/s warm-intermediate exchange
     unitval tid;         //!< m3/s intermediate-deep exchange
 
-
     /*****************************************************************
      * Input data
      *****************************************************************/
     bool spinup_chem;       //!< run chemistry during spinup?
     tseries<unitval> oceanflux_constrain;      //!< atmosphere->ocean C flux data to constrain to
 
-
     /*****************************************************************
      * Private helper functions
      *****************************************************************/
-    unitval totalcpool() const;
+    fluxpool totalcpool() const;
     unitval annual_totalcflux( const double date, const unitval& Ca, const double cpoolscale=1.0 ) const;
-
 
     /*****************************************************************
      * Adaptive timestep control
@@ -169,9 +168,6 @@ private:
     tseries<unitval> temp_LL_ts;
     tseries<unitval> co3_HL_ts;
     tseries<unitval> co3_LL_ts;
-
-
-
 
     // timestep control
     tseries<double> max_timestep_ts;

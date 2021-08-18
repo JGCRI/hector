@@ -83,13 +83,31 @@ runscenario <- function(infile) {
 #' @family main user interface functions
 #' @export
 newcore <- function(inifile, loglevel = 0, suppresslogging = TRUE,
-                    name = "unnamed hector core") {
+                    name = "Unnamed Hector core") {
   hcore <- newcore_impl(normalizePath(inifile), loglevel, suppresslogging, name)
   class(hcore) <- c("hcore", class(hcore))
   reg.finalizer(hcore, hector::shutdown)
   hcore
 }
 
+#' Retrieve the tracking data for a Hector instance
+#'
+#' @param core Handle to the Hector instance.
+#' @importFrom utils read.csv
+#' @return A \code{\link{data.frame}} with the tracking data. Columns include
+#' \code{year} (integer), \code{pool_name} (character), \code{pool_value}
+#' (double), \code{pool_units} (character), \code{source_name} (character),
+#' and \code{source_fraction} (double).
+#' @family main user interface functions
+#' @export
+get_tracking_data <- function(core) {
+  td <- get_tracking_data_impl(core)
+  if (td != "") {
+    read.csv(textConnection(td), stringsAsFactors = FALSE)
+  } else {
+    data.frame()  # throw error instead?
+  }
+}
 
 #### Utility functions
 ### The elements of an hcore object are
@@ -155,7 +173,8 @@ format.hcore <- function(x, ...) {
   else {
     cdate <- getdate(x)
     sprintf(
-      "Hector core:\t%s\nStart date:\t%d\nEnd date:\t%d\nCurrent date:\t%d\nInput file:\t%s",
+      paste0("Hector core:\t%s\nStart date:\t%d\nEnd date:\t%d\n",
+      "Current date:\t%d\nInput file:\t%s"),
       x$name,
       as.integer(x$strtdate), as.integer(x$enddate), as.integer(cdate),
       x$inifile

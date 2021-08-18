@@ -10,10 +10,14 @@ on:
       - master
       - github_actions
   pull_request:
-    branches: master
+    branches:
+      - master
+      - land_tracking
+      - tracking-vars
+
   schedule:
     # * is a special character in YAML so you have to quote this string
-    # Launch run at 6am the 1st of every month.	
+    # Launch run at 6am the 1st of every month.
     - cron:  '0 6 1 * *'
 
   # Allows you to run this workflow manually from the Actions tab
@@ -33,8 +37,5 @@ jobs:
       - name: build and run
         run: |
           sudo apt install libboost-filesystem-dev libboost-system-dev
-
-          ver=`awk '/define.*BOOST_LIB_VERSION/ {print $3}' /usr/include/boost/version.hpp`
-          echo Boost version $ver
-          BOOSTLIB=/usr/local/lib BOOSTVERSION=$ver BOOSTROOT=/usr/include/boost make hector
+          make hector
           bash ./test_hector.sh ./src/hector

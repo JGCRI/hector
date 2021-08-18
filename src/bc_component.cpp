@@ -130,6 +130,8 @@ unitval BlackCarbonComponent::getData( const std::string& varName,
     return returnval;
 }
 
+//------------------------------------------------------------------------------
+// documentation is inherited
 void BlackCarbonComponent::reset(double time)
 {
     // Set time counter to requested date; there are no outputs to
@@ -138,7 +140,6 @@ void BlackCarbonComponent::reset(double time)
     H_LOG(logger, Logger::NOTICE)
         << getComponentName() << " reset to time= " << time << "\n";
 }
-
 
 //------------------------------------------------------------------------------
 // documentation is inherited

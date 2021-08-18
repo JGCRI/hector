@@ -21,6 +21,7 @@
 #include "logger.hpp"
 #include "h_interpolator.hpp"
 #include "unitval.hpp"
+#include "fluxpool.hpp"
 #include "h_exception.hpp"
 
 namespace Hector {
@@ -66,13 +67,10 @@ public:
 /*! \brief A helper class to allow template specialization for interpolation.
  *
  * The interpolator expects types to be double convertible and will not compile
- * if the templated type can not be implicitly converted.  Creating a specialization
+ * if the templated type can not be implicitly converted (or unless a specialization
+ * has been created, as for strings below).  Creating a specialization
  * of this class to explicitly convert to double will allow the use of tseries with
  * that type and run as expected including interpolation.
- *
- * \todo Should we create a specialization for non-double types that just throws
- *       an exception?  This will allow us to use tseries with that type just
- *       without interpolation.
  */
 template<class T_data>
 struct interp_helper {
@@ -129,12 +127,7 @@ struct interp_helper {
 
 
 //-----------------------------------------------------------------------
-/*! \brief Interpolation specialization for boost units quantities.
- *
- * This will allow interpolation of any boost units quantity assuming that the
- * value type is convertible to double.  This is functionally equivalent to the
- * generic version however the double value is accessed via the .value() method
- * and the return value will be in the same units as the other quantities.
+/*! \brief Interpolation specialization for unitvals.
  */
 template<>
 struct interp_helper<unitval> {
@@ -190,6 +183,92 @@ struct interp_helper<unitval> {
     }
 };
 
+
+//-----------------------------------------------------------------------
+/*! \brief Interpolation specialization for fluxpools.
+ */
+template<>
+struct interp_helper<fluxpool> {
+    typedef fluxpool T_unit_type;
+    // TODO: we might want to consider re-organizing this to not have to pass
+    // info around, discuss with Ben
+    static void error_check( const std::map<double, T_unit_type>& userData,
+                             h_interpolator& interpolator, std::string name,
+                             bool& isDirty, bool endinterp_allowed,
+                             const double index ) throw( h_exception )
+    {
+        H_ASSERT( userData.size() > 1, "time series data (" + name + ") must have size>1" );
+
+        if( isDirty ) {       // data have changed; inform interpolator
+            double *x = new double[ userData.size() ];   // allocate
+            double *y = new double[ userData.size() ];
+
+            std::map<double,T_unit_type>::const_iterator itr;    // ...and fill
+            int i=0;
+            for ( itr=userData.begin(); itr != userData.end(); itr++ ) {
+                x[ i ] = (*itr).first;
+                y[ i ] = (*itr).second.value( (*itr).second.units() );
+                i++;
+            }
+
+            interpolator.newdata( i, x, y );
+
+            delete[] x;         // spline will keep its own copy
+            delete[] y;         // spline will keep its own copy
+            isDirty = false;
+        }
+
+        if( index < (*userData.begin()).first || index > (*userData.rbegin()).first )       // beyond-end interpolation
+            H_ASSERT( endinterp_allowed, "end interpolation not allowed" );
+    }
+    static T_unit_type interp( const std::map<double, T_unit_type>& userData,
+                               h_interpolator& interpolator, std::string name,
+                               bool& isDirty, bool endinterp_allowed,
+                               const double index ) throw( h_exception )
+    {
+        error_check( userData, interpolator, name, isDirty, endinterp_allowed, index );
+
+        return fluxpool( interpolator.f( index ), (*(userData.begin())).second.units() );
+    }
+    static T_unit_type calc_deriv( const std::map<double, T_unit_type>& userData,
+                                   h_interpolator& interpolator, std::string name,
+                                   bool& isDirty, bool endinterp_allowed,
+                                   const double index ) throw( h_exception )
+    {
+        error_check( userData, interpolator, name, isDirty, endinterp_allowed, index );
+
+        return fluxpool( interpolator.f_deriv( index ), (*(userData.begin())).second.units() );
+    }
+};
+
+//-----------------------------------------------------------------------
+/*! \brief Interpolation specialization for strings.
+ */
+template<>
+struct interp_helper<string> {
+    typedef string T_unit_type;
+    static void error_check( const std::map<double, T_unit_type>& userData,
+                             h_interpolator& interpolator, std::string name,
+                             bool& isDirty, bool endinterp_allowed,
+                             const double index ) throw( h_exception )
+    {
+        H_THROW( "String interpolation not allowed" );
+    }
+    static T_unit_type interp( const std::map<double, T_unit_type>& userData,
+                               h_interpolator& interpolator, std::string name,
+                               bool& isDirty, bool endinterp_allowed,
+                               const double index ) throw( h_exception )
+    {
+         H_THROW( "String interpolation not allowed" );
+    }
+    static T_unit_type calc_deriv( const std::map<double, T_unit_type>& userData,
+                                   h_interpolator& interpolator, std::string name,
+                                   bool& isDirty, bool endinterp_allowed,
+                                   const double index ) throw( h_exception )
+    {
+        H_THROW( "String derivative not allowed" );
+    }
+};
 
 /*  "Because templates are compiled when required, this forces a restriction
     for multi-file projects: the implementation (definition) of a template

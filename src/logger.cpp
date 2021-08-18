@@ -92,7 +92,7 @@ int Logger::LoggerStreamBuf::overflow( int c ) {
 
 //------------------------------------------------------------------------------
 /*! \brief Write a sequence of characters.
- *  \param c Character sequence to be written.
+ *  \param s Character sequence to be written.
  *  \param n Number of characters to be written.
  *  \return The actual number of characters written.
  */
@@ -203,7 +203,7 @@ ostream& Logger::write( const LogLevel writeLevel,
 {
     H_ASSERT( isInitialized, "can't write to logger until initialized" );
 
-    // note that we not double checking the writeLevel
+    // note that we are not double checking the writeLevel
     return loggerStream << getDateTimeStamp() << ':' <<logLevelToStr( writeLevel )
     << ':' << functionInfo << ": ";
 }
