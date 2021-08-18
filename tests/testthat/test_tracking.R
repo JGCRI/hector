@@ -7,7 +7,7 @@ inputdir <- system.file("input", package = "hector")
 inifile <- file.path(inputdir, "hector_rcp45.ini")
 
 error_threshold <- 1e-6
-
+tunits <- getunits(TRACKING_DATE())
 
 test_that("No-tracking run produces empty data frame", {
 
@@ -32,7 +32,7 @@ test_that("Changing a parameter changes tracking data", {
 
     # Run core, get tracking data
     core <- newcore(inifile)
-    setvar(core, NA, TRACKING_DATE(), 1900, "")
+    setvar(core, NA, TRACKING_DATE(), 1900, tunits)
     run(core, runtodate = 2000)
     df1 <- get_tracking_data(core)
 
@@ -57,7 +57,7 @@ test_that("Tracking run produces correct data", {
 
     # Run core and get tracking data, then test that the class is data.frame
     core <- newcore(inifile)
-    setvar(core, NA, TRACKING_DATE(), 1770, "")
+    setvar(core, NA, TRACKING_DATE(), 1770, tunits)
     run(core)
 
     df <- get_tracking_data(core)
@@ -115,7 +115,7 @@ test_that("Tracking works with a core reset", {
     # Run a core and reset to the start date. Check that the
     # get_tracking_data data.frame is identical to an empty one.
     core <- newcore(inifile)
-    setvar(core, NA, TRACKING_DATE(), 1760, "")
+    setvar(core, NA, TRACKING_DATE(), 1760, tunits)
     run(core, 1770)
 
     reset(core)
@@ -127,7 +127,7 @@ test_that("Tracking works with a core reset", {
 
     # Run a core, and assign the start, end, and track dates to variables.
     core1 <- newcore(inifile)
-    setvar(core1, NA, TRACKING_DATE(), 1760, "")
+    setvar(core1, NA, TRACKING_DATE(), 1760, tunits)
     run(core1, 1770)
 
     start_date <- core1$strtdate
@@ -149,7 +149,7 @@ test_that("Tracking works with a core reset", {
     # Reset the core, run a new core, and check that the tracking
     # date is the same as the original core's.
     core1 <- newcore(inifile)
-    setvar(core1, NA, TRACKING_DATE(), 1760, "")
+    setvar(core1, NA, TRACKING_DATE(), 1760, tunits)
     run(core1, 1770)
     track_date <- fetchvars(core1, NA, TRACKING_DATE())$value
 

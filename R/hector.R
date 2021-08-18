@@ -93,6 +93,7 @@ newcore <- function(inifile, loglevel = 0, suppresslogging = TRUE,
 #' Retrieve the tracking data for a Hector instance
 #'
 #' @param core Handle to the Hector instance.
+#' @importFrom utils read.csv
 #' @return A \code{\link{data.frame}} with the tracking data. Columns include
 #' \code{year} (integer), \code{pool_name} (character), \code{pool_value}
 #' (double), \code{pool_units} (character), \code{source_name} (character),
