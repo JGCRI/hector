@@ -2,10 +2,13 @@
 title: "Example: Carbon tracking with Hector"
 author: "Leeya Pressburger"
 date: "8/3/2021"
-output:
-  html_document:
-    toc: yes
-    toc_float: true
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteEncoding{UTF-8}
+  %\VignetteIndexEntry{Example: Carbon tracking with Hector}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -19,6 +22,7 @@ This vignette will walk through Hector's carbon tracking feature and show how to
 Hector's carbon tracking feature helps to trace the movement of carbon between various pools as the model runs. At the user-chosen start date, each pool is
 deemed to be composed of 100% carbon from itself, i.e. at that moment in time 
 the deep ocean pool is 100% composed of carbon from the deep pool. 
+
 As the model moves forward in time from the start date, Hector tracks, for 
 each pool, its fractional composition--i.e. the sources of its current carbon. 
 When the run is finished, this data can be read into R and then analyzed.
@@ -32,19 +36,28 @@ library(hector)
 library(ggplot2)
 ```
 
-Next, in order to use the carbon tracking feature, we must first modify the .ini file that we will be using. The .ini files can be found under `/hector/inst/input`. For this example, let's choose RCP 4.5 by selecting the `hector_rcp45.ini` file. 
-
-Under the [core] section, there is a value labeled `trackingDate=9999`. This default value does not turn carbon tracking on (because the model never reaches
-year 9999). Enter the date from which you would like to begin tracking; for this example, we will use 1750. Remember to save the file.
-
 ## Carbon tracking
 
-Now, we will read in the .ini file and run a core.
+Now, we will read in an .ini file and create a new core. In this example, we will use RCP 4.5.
 
-``` {r run-hector}
+In order to use the carbon tracking feature, we must use `setvar` and `fetchvars`. First, let's look at the `trackingDate` prior to setting it to any value. 
+
+``` {r setup.core}
 inifile <- file.path(system.file('input', package = 'hector'),
                      'hector_rcp45.ini')
 core <- newcore(inifile)
+
+fetchvars(core, NA, TRACKING_DATE(), "")
+```
+
+This returns the variable `trackingDate` with a `value` of 9999. This default value does not turn carbon tracking on (because the model never reaches year 9999).
+
+Now, we will set a `trackingDate`, check that it worked, and run a core. Let's begin tracking in 1750.
+
+``` {r set.date}
+setvar(core, NA, TRACKING_DATE(), 1750, "")
+fetchvars(core, NA, TRACKING_DATE(), "")
+
 run(core)
 ```
 

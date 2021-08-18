@@ -31,7 +31,7 @@ type.
 }
 \section{Functions}{
 \itemize{
-\item \code{EMISSIONS_BC}: Black carbon emissions (\code{"Tg"})
+\item \code{EMISSIONS_BC}: Black carbon emissions
 
 \item \code{EMISSIONS_N2O}: N2O emissions (\code{"Tg N"})
 
@@ -49,7 +49,7 @@ type.
 \section{Note}{
 
 Because these identifiers are provided as \code{#define} macros in the hector code,
-these identifiers are provided in the R interface as function.  Therefore,
+these identifiers are provided in the R interface as functions. Therefore,
 these objects must be called to use them; \emph{e.g.}, \code{GETDATA()}
 instead of the more natural looking \code{GETDATA}.
 }

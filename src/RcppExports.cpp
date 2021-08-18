@@ -70,6 +70,16 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// TRACKING_DATE
+String TRACKING_DATE();
+RcppExport SEXP _hector_TRACKING_DATE() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(TRACKING_DATE());
+    return rcpp_result_gen;
+END_RCPP
+}
 // EMISSIONS_BC
 String EMISSIONS_BC();
 RcppExport SEXP _hector_EMISSIONS_BC() {
@@ -1974,6 +1984,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_LL_NOTICE", (DL_FUNC) &_hector_LL_NOTICE, 0},
     {"_hector_LL_WARNING", (DL_FUNC) &_hector_LL_WARNING, 0},
     {"_hector_LL_SEVERE", (DL_FUNC) &_hector_LL_SEVERE, 0},
+    {"_hector_TRACKING_DATE", (DL_FUNC) &_hector_TRACKING_DATE, 0},
     {"_hector_EMISSIONS_BC", (DL_FUNC) &_hector_EMISSIONS_BC, 0},
     {"_hector_RF_TOTAL", (DL_FUNC) &_hector_RF_TOTAL, 0},
     {"_hector_RF_T_ALBEDO", (DL_FUNC) &_hector_RF_T_ALBEDO, 0},
