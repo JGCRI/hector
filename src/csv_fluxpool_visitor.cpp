@@ -95,23 +95,6 @@ void CSVFluxPoolVisitor::print_pool(fluxpool x) {
 }
 
 //------------------------------------------------------------------------------
-/*! \brief Print a double value and its name
- */
-void CSVFluxPoolVisitor::print_diff(double x, string name){
-    stringstream output;
-    // there might already be pool output
-    if(csvBuffer.exists(current_date)) {
-        output << csvBuffer.get(current_date);
-    }
-
-    output << datestring << DELIMITER << "Diff" << DELIMITER << x
-    << DELIMITER << "U_PGC" << DELIMITER << name << DELIMITER
-    << 0 << endl;
-    
-    csvBuffer.set(current_date, output.str());
-}
-
-//------------------------------------------------------------------------------
 // documentation is inherited
 void CSVFluxPoolVisitor::visit( SimpleNbox* c ) {
     if( !core->outputEnabled( c->getComponentName() ) ) return;
@@ -124,14 +107,7 @@ void CSVFluxPoolVisitor::visit( SimpleNbox* c ) {
         print_pool( c->veg_c[ biome ] );
         print_pool( c->detritus_c[ biome ] );
         print_pool( c->soil_c[ biome ] );
-
-        // Temporary Print Outs
-        print_diff(c->veg_diff[biome], "veg_diff");
-        print_diff(c->soil_diff[biome], "soil_diff");
-        print_diff(c->det_diff[biome], "det_diff");
     }
-    print_diff(c->atmos_diff, "atmos_diff");
-    print_diff(c->earth_diff, "earth_diff");
 }
 
 //------------------------------------------------------------------------------
@@ -169,4 +145,3 @@ void CSVFluxPoolVisitor::reset( const double reset_date ) {
 }
 
 }
-

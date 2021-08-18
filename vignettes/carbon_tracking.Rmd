@@ -75,9 +75,6 @@ each model time point after `trackingDate`.
 ``` {r hector.tracking}
 tdata <- get_tracking_data(core)
 head(tdata)
-
-# TODO - the Diff entries are unneeded debugging information; remove
-tdata <- subset(tdata, pool_name != "Diff")
 ```
 
 The `tdata` dataset now contains information on year, pool name, amount of 
