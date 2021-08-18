@@ -36,7 +36,7 @@ CSVFluxPoolVisitor::CSVFluxPoolVisitor( ostream& outputStream, const bool printH
     stringstream hdr;
     if( printHeader ) {
         // Store table header
-        hdr << "year" << DELIMITER << "pool_name" << DELIMITER << "pool_value"
+        hdr << "year" << DELIMITER << "component" << DELIMITER << "pool_name" << DELIMITER << "pool_value"
         << DELIMITER << "pool_units" << DELIMITER << "source_name"
         << DELIMITER << "source_fraction" << endl;
     }
@@ -75,9 +75,9 @@ void CSVFluxPoolVisitor::visit( Core* c ) {
 }
 
 //------------------------------------------------------------------------------
-/*! \brief Print the sources, and associated fractions, of a SimpleNBox pool
+/*! \brief Print the sources, and associated fractions, of a fluxpool
  */
-void CSVFluxPoolVisitor::print_pool(fluxpool x) {
+void CSVFluxPoolVisitor::print_pool( const fluxpool x, const string cname ) {
     if(x.tracking) {
         stringstream output;
         // there might already be "diff" output
@@ -86,7 +86,7 @@ void CSVFluxPoolVisitor::print_pool(fluxpool x) {
         }
         vector<string> sources = x.get_sources();
         for (auto &s: sources) {
-            output << datestring << DELIMITER << x.name << DELIMITER
+            output << datestring << DELIMITER << cname << DELIMITER << x.name << DELIMITER
             << x.value(U_PGC) << DELIMITER << x.unitsName() << DELIMITER
             << s << DELIMITER << x.get_fraction(s) << endl;
         }
@@ -99,14 +99,16 @@ void CSVFluxPoolVisitor::print_pool(fluxpool x) {
 void CSVFluxPoolVisitor::visit( SimpleNbox* c ) {
     if( !core->outputEnabled( c->getComponentName() ) ) return;
 
+    const string cname = c->getComponentName();
+    
     // The potentially tracked pools
-    print_pool( c->atmos_c );
-    print_pool( c->earth_c );
+    print_pool( c->atmos_c, cname );
+    print_pool( c->earth_c, cname );
     for( auto it = c->biome_list.begin(); it != c->biome_list.end(); it++ ) {
         std::string biome = *it;
-        print_pool( c->veg_c[ biome ] );
-        print_pool( c->detritus_c[ biome ] );
-        print_pool( c->soil_c[ biome ] );
+        print_pool( c->veg_c[ biome ], cname );
+        print_pool( c->detritus_c[ biome ], cname );
+        print_pool( c->soil_c[ biome ], cname );
     }
 }
 
@@ -115,10 +117,12 @@ void CSVFluxPoolVisitor::visit( SimpleNbox* c ) {
 void CSVFluxPoolVisitor::visit( OceanComponent* c ) {
     if( !core->outputEnabled( c->getComponentName() ) ) return;
 
-    print_pool( c->surfaceHL.get_carbon() );
-    print_pool( c->surfaceLL.get_carbon() );
-    print_pool( c->inter.get_carbon() );
-    print_pool( c->deep.get_carbon() );
+    const string cname = c->getComponentName();
+
+    print_pool( c->surfaceHL.get_carbon(), cname );
+    print_pool( c->surfaceLL.get_carbon(), cname );
+    print_pool( c->inter.get_carbon(), cname );
+    print_pool( c->deep.get_carbon(), cname );
 }
 
 //------------------------------------------------------------------------------

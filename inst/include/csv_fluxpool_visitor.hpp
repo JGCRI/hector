@@ -27,7 +27,7 @@ namespace Hector {
  */
 class CSVFluxPoolVisitor : public AVisitor {
 public:
-    CSVFluxPoolVisitor( std::ostream& outputStream, const bool printHeader = true );
+    CSVFluxPoolVisitor( ostream& outputStream, const bool printHeader = true );
     ~CSVFluxPoolVisitor();
 
     virtual bool shouldVisit( const bool in_spinup, const double date );
@@ -43,26 +43,26 @@ private:
     std::ostream& csvFile;
     
     //! The buffer—holds output until ready to be returned to the core or written to the csv file
-    tseries<std::string> csvBuffer;
-    std::string header;
+    tseries<string> csvBuffer;
+    string header;
     
     // Data retained while the visitor is operating
     double current_date;
     double tracking_date;
 
     //! Current model date, stored as a string for output
-    std::string datestring;
+    string datestring;
 
     //! Current model mode, stored as a string for output
-    std::string spinupstring;
+    string spinupstring;
 
     //! Name of current run
-    std::string run_name;
+    string run_name;
 
-    //! Helper function: print a line to the output stream
-    virtual void print_pool(fluxpool);
+    //! Helper function: print one or more lines of tracking data for a given fluxpool
+    virtual void print_pool( const fluxpool, const string );
 
-    //! pointers to other components and stuff
+    //! Pointers to other components and stuff
     Core*             core;
 };
 
