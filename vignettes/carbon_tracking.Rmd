@@ -43,7 +43,7 @@ library(ggplot2)
 Now, we will read in an .ini file and create a new core. In this example, we 
 will use RCP 4.5.
 
-In order to use the carbon tracking feature, we must use `setvar` and `fetchvars`. 
+In order to use the carbon tracking feature, we must use `setvar` and `fetchvars`. ^[Command line users: to set a tracking start date, change the `trackingDate=9999` line in the `[core]` section of an INI scenario file.]
 First, let's look at the `trackingDate` prior to setting it to any value. 
 
 ``` {r setup.core}
@@ -79,14 +79,14 @@ tdata <- get_tracking_data(core)
 head(tdata)
 ```
 
-The `tdata` dataset now contains information on year, the model component,
+The `tdata` dataset now contains information on year (note that the first year is the start-tracking date we asked for), the model component,
 the name of the pool within that component, the amount of 
 carbon in the pool, and the fraction (0-1) of each source for that pool. 
-The source fractions for a given pool and year will always sum to 1.
+Importantly, the source fractions for a given pool and year will always sum to 1.
 
 Side note: the names in the carbon tracking data (`pool_name`, `pool_value`,
 and `pool_units`) differ from those used in the model's standard stream output
-(which are `variable`, `value`, and `units` respectively).
+(which are `variable`, `value`, and `units` respectively). In contrast, `year` and `component` are named identically in the two output datasets.
 
 ## Results
 
