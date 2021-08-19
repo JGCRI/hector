@@ -37,7 +37,7 @@ These variables can be read from the methane component.
 
 \section{Input variables}{
 
-These variables can be set in the methane component.  The expected units string is given after
+These variables can be set in the methane component. The expected units string is given after
 each description.
 \describe{
 \item{EMISSIONS_CH4}{Methane emissions (\code{"Tg CH4"})}
@@ -51,7 +51,7 @@ each description.
 \section{Note}{
 
 Because these identifiers are provided as \code{#define} macros in the hector code,
-these identifiers are provided in the R interface as function.  Therefore,
+these identifiers are provided in the R interface as functions. Therefore,
 these objects must be called to use them; \emph{e.g.}, \code{GETDATA()}
 instead of the more natural looking \code{GETDATA}.
 }

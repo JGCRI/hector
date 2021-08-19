@@ -160,6 +160,8 @@ unitval DummyModelComponent::getData( const std::string& varName,
     return returnval;
 }
 
+//------------------------------------------------------------------------------
+// documentation is inherited
 void DummyModelComponent::reset(double time)
 {
     // This is a no-op for this component

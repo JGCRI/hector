@@ -8,7 +8,7 @@ newcore(
   inifile,
   loglevel = 0,
   suppresslogging = TRUE,
-  name = "unnamed hector core"
+  name = "Unnamed Hector core"
 )
 }
 \arguments{
@@ -31,6 +31,7 @@ simultaneously is supported.
 \seealso{
 Other main user interface functions: 
 \code{\link{fetchvars}()},
+\code{\link{get_tracking_data}()},
 \code{\link{reset}()},
 \code{\link{run}()},
 \code{\link{setvar}()},

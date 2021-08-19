@@ -9,8 +9,9 @@ fetchvars(core, dates, vars = NULL, scenario = NULL)
 \arguments{
 \item{core}{Hector core object}
 
-\item{dates}{Vector of dates to fetch.  This will be automatically trimmed to
-dates that are between the start date and the latest date currently run.}
+\item{dates}{Vector of dates to fetch; this will be automatically trimmed to
+dates that are between the start date and the latest date currently run.
+Set to \code{NA} to return all dates.}
 
 \item{vars}{List (or vector) of capability strings defining the variables to
 be fetched in the result.}
@@ -40,6 +41,7 @@ forcing, and global mean temperature.
 \link{ocean}, \link{so2}, \link{temperature}, \link{parameters}
 
 Other main user interface functions: 
+\code{\link{get_tracking_data}()},
 \code{\link{newcore}()},
 \code{\link{reset}()},
 \code{\link{run}()},

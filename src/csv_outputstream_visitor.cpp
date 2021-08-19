@@ -43,7 +43,8 @@ using namespace std;
 
 //------------------------------------------------------------------------------
 /*! \brief Constructor
- *  \param filename The file to write the csv output to.
+ *  \param outputStream The file to write the csv output to
+ *  \param printHeader Boolean controlling whether we print a header or not
  */
 CSVOutputStreamVisitor::CSVOutputStreamVisitor( ostream& outputStream, const bool printHeader )
 :csvFile( outputStream )
@@ -164,7 +165,7 @@ void CSVOutputStreamVisitor::visit( SimpleNbox* c ) {
 
     // Biome-specific outputs: <variable>.<biome>
     if( c->veg_c.size() > 1 ) {
-        SimpleNbox::unitval_stringmap::const_iterator it;
+        SimpleNbox::fluxpool_stringmap::const_iterator it;
         for( it = c->veg_c.begin(); it != c->veg_c.end(); it++ ) {
             std::string biome = ( *it ).first;
             STREAM_UNITVAL( csvFile, c, biome+"."+D_NPP, c->npp( biome ) );

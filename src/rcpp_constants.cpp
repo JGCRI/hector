@@ -69,8 +69,16 @@ return (int) Hector::Logger::SEVERE;
  * Capabilities
  *****************************************************************/
 
+/* Core */
+//' @describeIn parameters Start of carbon tracking (Year)
+//' @export
+// [[Rcpp::export]]
+String TRACKING_DATE() {
+return D_TRACKING_DATE;
+}
+
 /* BC component */
-//' @describeIn emissions Black carbon emissions (\code{"Tg"})
+//' @describeIn emissions Black carbon emissions
 //' @export
 // [[Rcpp::export]]
 String EMISSIONS_BC() {
@@ -1065,6 +1073,13 @@ String NPP() {
     return D_NPP;
 }
 
+//' @rdname carboncycle
+//' @export
+// [[Rcpp::export]]
+String RH() {
+    return D_RH;
+}
+
 //' @describeIn parameters Preindustrial CO2 concentration (\code{"ppmv CO2"})
 //' @export
 // [[Rcpp::export]]
@@ -1084,6 +1099,13 @@ return D_ATMOSPHERIC_C;
 // [[Rcpp::export]]
 String FFI_EMISSIONS() {
 return D_FFI_EMISSIONS;
+}
+
+//' @rdname carboncycle
+//' @export
+// [[Rcpp::export]]
+String DACCS_UPTAKE() {
+   return D_DACCS_UPTAKE;
 }
 
 //' @rdname carboncycle

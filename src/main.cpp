@@ -21,6 +21,7 @@
 #include "h_reader.hpp"
 #include "ini_to_core_reader.hpp"
 #include "csv_outputstream_visitor.hpp"
+#include "csv_fluxpool_visitor.hpp"
 
 #include "unitval.hpp"
 
@@ -36,13 +37,14 @@ int main (int argc, char * const argv[]) {
 
 	try {
         // Create the Hector core
-        Core core;
+        Core core(Hector::Logger::NOTICE, true, true);
         Logger& glog = core.getGlobalLogger();
         H_LOG( glog, Logger::NOTICE ) << MODEL_NAME << " wrapper start" << endl;
 
         // Parse the main configuration file
         if( argc > 1 ) {
             if( ifstream( argv[1] ) ) {
+                H_LOG( glog, Logger::NOTICE ) << "Reading input file " << argv[ 1 ] << endl;
                 h_reader reader( argv[1], INI_style );
             } else {
                 H_LOG( glog, Logger::SEVERE ) << "Couldn't find input file " << argv[ 1 ] << endl;
@@ -64,6 +66,7 @@ int main (int argc, char * const argv[]) {
         // Create visitors
         H_LOG( glog, Logger::NOTICE ) << "Adding visitors to the core." << endl;
         filebuf csvoutputStreamFile;
+        filebuf csvFluxPoolTrackingFile;
 
         // Open the stream output file, which has an optional run name (specified in the INI file) in it
         string rn = core.getRun_name();
@@ -71,11 +74,19 @@ int main (int argc, char * const argv[]) {
             csvoutputStreamFile.open( string( string( OUTPUT_DIRECTORY ) + "outputstream.csv" ).c_str(), ios::out );
         else
             csvoutputStreamFile.open( string( string( OUTPUT_DIRECTORY ) + "outputstream_" + rn + ".csv" ).c_str(), ios::out );
-
+        // Open the simpleNbox tracking output file, similarly named
+          if( rn == "" )
+              csvFluxPoolTrackingFile.open( string( string( OUTPUT_DIRECTORY ) + "tracking.csv" ).c_str(), ios::out );
+          else
+              csvFluxPoolTrackingFile.open( string( string( OUTPUT_DIRECTORY ) + "tracking_" + rn + ".csv" ).c_str(), ios::out );
 
         ostream outputStream( &csvoutputStreamFile );
         CSVOutputStreamVisitor csvOutputStreamVisitor( outputStream );
         core.addVisitor( &csvOutputStreamVisitor );
+        
+        ostream trackingStream( &csvFluxPoolTrackingFile );
+        CSVFluxPoolVisitor csvFluxPoolVisitor( trackingStream );
+        core.addVisitor( &csvFluxPoolVisitor );
 
         H_LOG(glog, Logger::NOTICE) << "Calling prepareToRun()\n";
         core.prepareToRun();

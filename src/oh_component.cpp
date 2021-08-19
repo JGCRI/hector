@@ -193,14 +193,14 @@ unitval OHComponent::getData( const std::string& varName,
     return returnval;
 }
 
+//------------------------------------------------------------------------------
+// documentation is inherited
 void OHComponent::reset(double time)
 {
     oldDate = time;
     H_LOG(logger, Logger::NOTICE)
         << getComponentName() << " reset to time= " << time << "\n";
 }
-
-
 
 //------------------------------------------------------------------------------
 // documentation is inherited

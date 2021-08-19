@@ -62,9 +62,8 @@ string TemperatureComponent::getComponentName() const {
 //------------------------------------------------------------------------------
 /*! \brief              Calculates inverse of x and stores in y
  *  \param[in] x        Assume x is setup like x = [a,b,c,d] -> x = |a, b|
- *                                                                  |c, d|
+ *                                                |c, d|
  *  \param[out] y        Inverted 1-d matrix
- *  \returns            void, inverse is stored in y
  */
 void TemperatureComponent::invert_1d_2x2_matrix(double * x, double * y) {
     double temp_d = (x[0]*x[3] - x[1]*x[2]);
@@ -506,7 +505,8 @@ unitval TemperatureComponent::getData( const std::string& varName,
     return returnval;
 }
 
-
+//------------------------------------------------------------------------------
+// documentation is inherited
 void TemperatureComponent::reset(double time)
 {
     // We take a slightly different approach in this component's reset method than we have in other components.  The
@@ -521,8 +521,6 @@ void TemperatureComponent::reset(double time)
     H_LOG(logger, Logger::NOTICE)
         << getComponentName() << " reset to time= " << time << "\n";
 }
-
-
 
 //------------------------------------------------------------------------------
 // documentation is inherited

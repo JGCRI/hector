@@ -199,11 +199,10 @@ DependencyFinder::ObjectIndexMap::iterator DependencyFinder::addTrackedItem( con
 
 /*!
  * \brief Get the name of an object from the matrix index.
- * \param A matrix index to fetch the name for.
+ * \param aIndex A matrix index to fetch the name for.
  * \note This function is slow as it performs a reverse map lookup and should not
  be used in sections of code which are called frequently.
- * \return The name of the item associated with the index, NO_NAME if it is not
- found.
+ * \return The name of the item associated with the index; NO_NAME if it is not found.
  */
 const string& DependencyFinder::getNameFromIndex( const size_t aIndex ) const {
     // Search the map linearly as this is the reverse lookup.

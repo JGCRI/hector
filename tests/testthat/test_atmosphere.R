@@ -1,4 +1,4 @@
-context("Check Atmosphere")
+context("Atmosphere and radiative forcing")
 # Check some basic science to make sure Hector's atmosphere behaves as expected.
 
 inputdir <- system.file("input", package = "hector")
@@ -7,7 +7,6 @@ rcp45 <- file.path(inputdir, "hector_rcp45.ini")
 
 # Our defined allowable error, when comparing two values we expect to be
 # equal differences less than this are assumed to be related to round off error.
-# When the differences between the two values are larger than the threshold, they are significant.
 error_threshold <- 1e-8
 
 test_that("Checking RF values", {
@@ -28,12 +27,12 @@ test_that("Checking RF values", {
   expect_equal(so2_rf$value, sum_so2_id$value, tolerance = error_threshold)
 
 
-  # Now check to make sure that  the total radiative forcing is equal to the sum of the
-  # different radiative forcing agents.
+  # Now check to make sure that  the total radiative forcing is equal to the
+  # sum of the different radiative forcing agents.
   # Save a copy of the total radiative forcing
   total_rf <- fetchvars(hc, dates = t_dates, vars = RF_TOTAL())
 
-  # Extract all of the other RF values and calucate the total value.
+  # Extract all of the other RF values and calculate the total value.
   rf_list <- c(
     RF_T_ALBEDO(), RF_CO2(), RF_N2O(), RF_H2O_STRAT(), RF_O3_TROP(), RF_BC(),
     RF_OC(), RF_SO2D(), RF_SO2I(), RF_VOL(), RF_CH4(), RF_CF4(), RF_C2F6(),

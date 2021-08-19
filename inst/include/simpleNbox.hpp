@@ -17,6 +17,7 @@
 #include "ocean_component.hpp"
 #include "tseries.hpp"
 #include "unitval.hpp"
+#include "fluxpool.hpp"
 #include "carbon-cycle-model.hpp"
 
 #define SNBOX_ATMOS 0
@@ -40,6 +41,7 @@ namespace Hector {
 class SimpleNbox : public CarbonCycleModel {
     friend class CSVOutputVisitor;
     friend class CSVOutputStreamVisitor;
+    friend class CSVFluxPoolVisitor;
 
 public:
     SimpleNbox();
@@ -88,7 +90,7 @@ private:
 
     // typedefs for two map types, to make things easier
     // TODO: these should probably be defined in h_util.hpp or someplace similar?
-    typedef std::map<std::string, unitval> unitval_stringmap;
+    typedef std::map<std::string, fluxpool> fluxpool_stringmap;
     typedef std::map<std::string, double> double_stringmap;
 
     /*****************************************************************
@@ -101,18 +103,25 @@ private:
     std::vector<std::string> biome_list;
 
     // Carbon pools -- global
-    unitval earth_c;                //!< earth pool, Pg C; for mass-balance
-    unitval atmos_c;                //!< atmosphere pool, Pg C
-    unitval    Ca;                  //!< current [CO2], ppmv
+    fluxpool earth_c;               //!< earth pool, Pg C; for mass-balance
+    fluxpool atmos_c;                //!< atmosphere pool, Pg C
+    fluxpool    Ca;                  //!< current [CO2], ppmv
 
     // Carbon pools -- biome-specific
-    unitval_stringmap veg_c;        //!< vegetation pools, Pg C
-    unitval_stringmap detritus_c;   //!< detritus pools, Pg C
-    unitval_stringmap soil_c;       //!< soil pool, Pg C
+    fluxpool_stringmap veg_c;        //!< vegetation pools, Pg C
+    fluxpool_stringmap detritus_c;   //!< detritus pools, Pg C
+    fluxpool_stringmap soil_c;       //!< soil pool, Pg C
 
     unitval residual;               //!< residual (when constraining Ca) flux, Pg C
 
     double_stringmap tempfertd, tempferts; //!< temperature effect on respiration (unitless)
+
+    // Temporary to investigate flux excess or shortage
+    double earth_diff;
+    double atmos_diff;
+    double_stringmap veg_diff;
+    double_stringmap soil_diff;
+    double_stringmap det_diff;
 
     /*****************************************************************
      * Records of component state
@@ -120,13 +129,13 @@ private:
      * a reset, we will retrieve the state at the reset time from these
      * arrays.
      *****************************************************************/
-    tseries<unitval> earth_c_ts;  //!< Time series of earth carbon pool
-    tseries<unitval> atmos_c_ts;  //!< Time series of atmosphere carbon pool
-    tseries<unitval> Ca_ts;       //!< Time series of atmosphere CO2 concentration
+    tseries<fluxpool> earth_c_ts;  //!< Time series of earth carbon pool
+    tseries<fluxpool> atmos_c_ts;  //!< Time series of atmosphere carbon pool
+    tseries<fluxpool> Ca_ts;       //!< Time series of atmosphere CO2 concentration
 
-    tvector<unitval_stringmap> veg_c_tv;      //!< Time series of biome-specific vegetation carbon pools
-    tvector<unitval_stringmap> detritus_c_tv; //!< Time series of biome-specific detritus carbon pools
-    tvector<unitval_stringmap> soil_c_tv;     //!< Time series of biome-specific soil carbon pools
+    tvector<fluxpool_stringmap> veg_c_tv;      //!< Time series of biome-specific vegetation carbon pools
+    tvector<fluxpool_stringmap> detritus_c_tv; //!< Time series of biome-specific detritus carbon pools
+    tvector<fluxpool_stringmap> soil_c_tv;     //!< Time series of biome-specific soil carbon pools
 
     tseries<unitval> residual_ts; //!< Time series of residual flux values
 
@@ -147,7 +156,7 @@ private:
     double masstot;                     //!< tracker for mass conservation
     unitval atmosland_flux;             //!< Atmosphere -> land C flux
     tseries<unitval> atmosland_flux_ts; //!< Atmosphere -> land C flux (time series)
-    
+
     /*****************************************************************
      * Input data
      * This information isn't part of the state; it's either read from
@@ -155,14 +164,15 @@ private:
      *****************************************************************/
 
     // Carbon fluxes
-    tseries<unitval> ffiEmissions;  //!< fossil fuels and industry emissions, Pg C/yr
+    tseries<unitval> ffiEmissions;      //!< fossil fuels and industry emissions, Pg C/yr
+    tseries<unitval> daccsUptake;       //!< direct air carbon capture and storage, Pg C/yr
     tseries<unitval> lucEmissions;      //!< land use change emissions, Pg C/yr
 
     // Albedo
     tseries<unitval> Ftalbedo;   //!< terrestrial albedo forcing, W/m2
 
     // Constraints
-    tseries<unitval> CO2_constrain;      //!< input [CO2] record to constrain model to
+    tseries<fluxpool> CO2_constrain;      //!< input [CO2] record to constrain model to
 
     /*****************************************************************
      * Model parameters
@@ -178,40 +188,42 @@ private:
     double f_lucv, f_lucd;      //!< fraction LUC from vegetation and detritus
 
     // Initial fluxes
-    unitval_stringmap npp_flux0;       //!< preindustrial NPP
+    fluxpool_stringmap npp_flux0;       //!< preindustrial NPP
 
     // Atmospheric CO2, temperature, and their effects
-    unitval    C0;                      //!< preindustrial [CO2], ppmv
+    fluxpool    C0;                      //!< preindustrial [CO2], ppmv
 
-    double_stringmap beta,           //!< shape of CO2 response
-    //                        sigma,          //!< shape of temperature response (not yet implemented)
-        warmingfactor;  //!< regional warming relative to global (1.0=same)
-
-    double_stringmap q10_rh;            //!< Q10 for heterotrophic respiration (unitless)
+    double_stringmap beta;           //!< shape of CO2 response
+    double_stringmap warmingfactor;  //!< regional warming relative to global (1.0=same)
+    double_stringmap q10_rh;         //!< Q10 for heterotrophic respiration (1.0=no response, unitless)
 
     /*****************************************************************
      * Functions computing sub-elements of the carbon cycle
      *****************************************************************/
-    double calc_co2fert(std::string biome, double time = Core::undefinedIndex()) const; //!< calculates co2fertilization factor.
-    unitval npp(std::string biome, double time = Core::undefinedIndex()) const; //!< calculates NPP for a biome
-    unitval sum_npp(double time = Core::undefinedIndex()) const; //!< calculates NPP, global total
-    unitval rh_fda( std::string biome ) const;  //!< calculates current RH from detritus for a biome
-    unitval rh_fsa( std::string biome ) const;  //!< calculates current RH from soil for a biome
-    unitval rh( std::string biome ) const;      //!< calculates current RH for a biome
-    unitval sum_rh() const;                     //!< calculates current RH, global total
+    double calc_co2fert(std::string biome, double time = Core::undefinedIndex()) const; //!< calculates co2 fertilization factor.
+    fluxpool npp(std::string biome, double time = Core::undefinedIndex()) const; //!< calculates NPP for a biome
+    fluxpool sum_npp(double time = Core::undefinedIndex()) const; //!< calculates NPP, global total
+    fluxpool rh_fda( std::string biome, double time = Core::undefinedIndex() ) const;  //!< calculates RH from detritus for a biome
+    fluxpool rh_fsa( std::string biome, double time = Core::undefinedIndex() ) const;  //!< calculates RH from soil for a biome
+    fluxpool rh( std::string biome, double time = Core::undefinedIndex() ) const;      //!< calculates RH for a biome
+    fluxpool sum_rh(double time = Core::undefinedIndex()) const; //!< calculates RH, global total
+    fluxpool ffi(double t, bool in_spinup) const;
+    fluxpool ccs(double t, bool in_spinup) const;
+    fluxpool luc_emission(double t, bool in_spinip) const;
+    fluxpool luc_uptake(double t, bool in_spinip) const;
 
     /*****************************************************************
      * Private helper functions
      *****************************************************************/
     void sanitychecks();                                //!< performs mass-balance and other checks
-    unitval sum_map( unitval_stringmap pool ) const;    //!< sums a unitval map (collection of data)
+    fluxpool sum_map( fluxpool_stringmap pool ) const;    //!< sums a unitval map (collection of data)
     double sum_map( double_stringmap pool ) const;      //!< sums a double map (collection of data)
     void log_pools( const double t );                   //!< prints pool status to the log file
     void set_c0(double newc0);                          //!< set initial co2 and adjust total carbon mass
 
     bool has_biome(const std::string& biome);
 
-    CarbonCycleModel *omodel;           //!< pointer to the ocean model in use
+    OceanComponent *omodel;           //!< pointer to the ocean model in use
 
     // Add a biome to a time-series map variable (e.g. veg_c_tv)
     template <class T_data>
@@ -274,6 +286,20 @@ private:
                 currval.erase(oldname);
                 ts.set(i, currval);
             }
+        }
+    }
+
+    /*****************************************************************
+     * Tracking Helper Functions
+     *****************************************************************/
+    void start_tracking(){
+        earth_c.tracking = true;
+        atmos_c.tracking = true;
+        for( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
+            std::string biome = *it;
+            veg_c[ biome ].tracking = true;
+            soil_c[ biome ].tracking = true;
+            detritus_c[ biome ].tracking = true;
         }
     }
 
