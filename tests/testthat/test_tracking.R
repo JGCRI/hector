@@ -63,7 +63,7 @@ test_that("Tracking run produces correct data", {
     df <- get_tracking_data(core)
     expect_s3_class(df, "data.frame")
 
-    expect_identical(names(df), c("year", "pool_name", "pool_value",
+    expect_identical(names(df), c("year", "component", "pool_name", "pool_value",
                                  "pool_units", "source_name", "source_fraction"))
 
     # Test that tracking data frame has correct dates
@@ -89,7 +89,7 @@ test_that("Tracking run produces correct data", {
 
     # Calculate the total source fraction (which should be equal to 1)
     # from the sum of the individual source fractions.
-    df <- subset(df, pool_name != "Diff")
+
     ag <- aggregate(source_fraction ~ year + pool_name, data = df, FUN = sum)
 
     ones <- rep(1, times = length(ag$source_fraction))

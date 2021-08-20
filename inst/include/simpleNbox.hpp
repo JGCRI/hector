@@ -115,14 +115,7 @@ private:
     unitval residual;               //!< residual (when constraining Ca) flux, Pg C
 
     double_stringmap tempfertd, tempferts; //!< temperature effect on respiration (unitless)
-
-    // Temporary to investigate flux excess or shortage
-    double earth_diff;
-    double atmos_diff;
-    double_stringmap veg_diff;
-    double_stringmap soil_diff;
-    double_stringmap det_diff;
-
+  
     /*****************************************************************
      * Records of component state
      * These vectors record the component state over time.  When we do

@@ -11,12 +11,18 @@ get_tracking_data(core)
 }
 \value{
 A \code{\link{data.frame}} with the tracking data. Columns include
-\code{year} (integer), \code{pool_name} (character), \code{pool_value}
-(double), \code{pool_units} (character), \code{source_name} (character),
-and \code{source_fraction} (double).
+\code{year} (integer), \code{component} (character), \code{pool_name} (character),
+\code{pool_value} (double), \code{pool_units} (character),
+\code{source_name} (character), and \code{source_fraction} (double). The
+fractions will always sum to 1 for a given pool and year.
 }
 \description{
 Retrieve the tracking data for a Hector instance
+}
+\note{
+The \code{pool_name}, \code{pool_value}, and \code{pool_units} names
+differ from those used in the model's standard output stream (\code{variable},
+\code{value}, and \code{units} respectively).
 }
 \seealso{
 Other main user interface functions: 

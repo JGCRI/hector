@@ -232,7 +232,7 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     fluxpool oa_flux = omodel->get_oaflux();
     fluxpool ao_flux = omodel->get_aoflux();
     
-    // Land-use change uptake from atmosphere to veg, detritus, and soil
+    // Land-use change emissions and uptake between atmosphere and veg/detritus/soil
     fluxpool luc_e_untracked = luc_emission(t, in_spinup) * yf;
     fluxpool luc_u_untracked = luc_uptake(t, in_spinup) * yf;
 
@@ -244,19 +244,15 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     const fluxpool npp_total = sum_npp();
     const fluxpool rh_total = sum_rh();
 
-    // TODO: If/when we implement fire, update this calculation to include it
-    // (as a negative term).
     // BBL-TODO this is really "exchange" not a flux
     // pull these values into doubles as we're constructing a unitval exchange from positive-only fluxpools
     // TODO: this is missing LUC uptake from above!
-    const double alf = npp_total.value(U_PGC_YR) - rh_total.value(U_PGC_YR) - lucEmissions.get( t ).value(U_PGC_YR);
+    const double alf = npp_total.value(U_PGC_YR)
+        - rh_total.value(U_PGC_YR)
+        - luc_e_untracked.value(U_PGC_YR)
+        + luc_u_untracked.value(U_PGC_YR);
     atmosland_flux.set(alf, U_PGC_YR);
     atmosland_flux_ts.set(t, atmosland_flux);
-
-    // The solver just knows about one vegetation box, one detritus, and one
-    // soil. So we need to apportion new veg C pool (set by the solver) to
-    // as many biomes as we have. This is not ideal.
-    // TODO: Solver actually solves all boxes in multi-biome system
 
     // Apportioning is done by NPP and RH
     // i.e., biomes with higher values get more of any C change
@@ -312,13 +308,12 @@ void SimpleNbox::stashCValues( double t, const double c[] )
         // Update detritus and soil with detsoil flux
         fluxpool detsoil_flux = detritus_c[ biome ] * (0.6 * yf);
         soil_c[ biome ] = soil_c[ biome ] + detsoil_flux;
-        // THIS IS THE ONE THAT CAUSES THE TRACKING TO GET MESSED UP
+        // Detritus is a small pool that turns over very quickly (i.e. has large fluxes
+        // in and out). As a result calculating it this way produces lots of instability.
+        // Luckily we have the solver's final value to adjust to, below; what we really
+        // want is to pass the carbon-tracking information around if it's being used.
         detritus_c[ biome ] = detritus_c[ biome ] - detsoil_flux;
 
-        // TEMPORARY TO INVESTIGATE FLUXES
-        veg_diff[biome] = veg_c[biome].value(U_PGC) - c[SNBOX_VEG] * wt;
-        soil_diff[biome] = soil_c[biome].value(U_PGC) - c[SNBOX_SOIL] * wt;
-        det_diff[ biome ] = detritus_c[biome].value(U_PGC) - c[SNBOX_DET] * wt;
         // Adjust biome pools to final values from calcDerives
         veg_c[ biome ].adjust_pool_to_val(newveg.value(U_PGC) * wt, false);
         detritus_c[ biome ].adjust_pool_to_val(newdet.value(U_PGC) * wt, false);
@@ -327,17 +322,12 @@ void SimpleNbox::stashCValues( double t, const double c[] )
         H_LOG( logger,Logger::DEBUG ) << "Biome " << biome << " weight = " << wt << std::endl;
     }
 
-    // Update earth_c and atmos_c with fossil fuel related fluxes
+    // Update earth_c and atmos_c with fossil fuel and ocean fluxes
     earth_c = (earth_c - ffi_flux) + ccs_flux;
     atmos_c = (atmos_c + ffi_flux) - ccs_flux;
-
-    // ocean-atmosphere flux adjustment
     atmos_c = atmos_c + oa_flux - ao_flux;
 
-    // TEMPORARY TO INVESTIGATE FLUXES
-    earth_diff = earth_c - c[SNBOX_EARTH];
-    atmos_diff = atmos_c - c[SNBOX_ATMOS];
-    // adjusts non-biome pools to output from calcderivs
+    // adjust non-biome pools to output from calcderivs
     earth_c.adjust_pool_to_val(c[SNBOX_EARTH], false);
     atmos_c.adjust_pool_to_val(c[SNBOX_ATMOS], false);
 
