@@ -43,7 +43,7 @@ library(ggplot2)
 Now, we will read in an .ini file and create a new core. In this example, we 
 will use RCP 4.5.
 
-In order to use the carbon tracking feature, we must use `setvar` and `fetchvars`. 
+In order to use the carbon tracking feature, we must use `setvar` and `fetchvars`. ^[Command line users: to set a tracking start date, change the `trackingDate=9999` line in the `[core]` section of an INI scenario file.]
 First, let's look at the `trackingDate` prior to setting it to any value. 
 
 ``` {r setup.core}
@@ -58,7 +58,9 @@ This returns the variable `trackingDate` with a `value` of 9999. This default
 value does not turn carbon tracking on (because the model never reaches year 9999).
 
 Now, we will set a `trackingDate`, check that it worked, and run a core. 
-Let's begin tracking in 1750.
+Let's begin tracking in 1750. On that date, the model will mark all carbon in
+each of its pools as originating in that pool: the atmosphere will be 100%
+'atmosphere-origin' C, the soil 100% 'soil-origin' C, etc.
 
 ``` {r set.date}
 setvar(core, NA, TRACKING_DATE(), 1750, "(unitless)")
@@ -75,13 +77,16 @@ each model time point after `trackingDate`.
 ``` {r hector.tracking}
 tdata <- get_tracking_data(core)
 head(tdata)
-
-# TODO - the Diff entries are unneeded debugging information; remove
-tdata <- subset(tdata, pool_name != "Diff")
 ```
 
-The `tdata` dataset now contains information on year, pool name, amount of 
-carbon in each pool, and the fraction of each source for that pool.
+The `tdata` dataset now contains information on year (note that the first year is the start-tracking date we asked for), the model component,
+the name of the pool within that component, the amount of 
+carbon in the pool, and the fraction (0-1) of each source for that pool. 
+Importantly, the source fractions for a given pool and year will always sum to 1.
+
+Side note: the names in the carbon tracking data (`pool_name`, `pool_value`,
+and `pool_units`) differ from those used in the model's standard stream output
+(which are `variable`, `value`, and `units` respectively). In contrast, `year` and `component` are named identically in the two output datasets.
 
 ## Results
 
@@ -124,8 +129,8 @@ This allows us to better examine the contributions by source to the atmosphere.
 ## Conclusion
 
 The carbon tracking feature allows users to identify and trace the composition 
-by source of each pool in Hector. This data can be easily visualized using 
-ggplot to then be used for further study. 
+by source of each pool in Hector. This is useful to, for example, calculate
+the model's [airborne fraction](http://dx.doi.org/10.1029/2009GL040613).
 
 Remember to shut down the core.
 
