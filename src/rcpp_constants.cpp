@@ -1116,7 +1116,6 @@ String BETA(String biome = "") {
 }
 
 //' @describeIn parameters Heterotrophic respiration temperature sensitivity factor (\code{"(unitless)"})
-//' @inheritParams BETA
 //' @export
 // [[Rcpp::export]]
 String Q10_RH(String biome = "") {
@@ -1129,7 +1128,6 @@ String Q10_RH(String biome = "") {
 
 
 //' @describeIn parameters Biome-specific warming factor (`(unitless)`)
-//' @inheritParams BETA
 //' @export
 // [[Rcpp::export]]
 String WARMINGFACTOR(String biome = "") {
@@ -1148,7 +1146,6 @@ String CO2_CONSTRAIN() {
 }
 
 //' @describeIn parameters NPP fraction to vegetation (\code{"(unitless)"})
-//' @inheritParams BETA
 //' @export
 // [[Rcpp::export]]
 String F_NPPV(String biome = "") {
@@ -1160,7 +1157,6 @@ String F_NPPV(String biome = "") {
 }
 
 //' @describeIn parameters NPP fraction to detritus (\code{"(unitless)"})
-//' @inheritParams BETA
 //' @export
 // [[Rcpp::export]]
 String F_NPPD(String biome = "") {
@@ -1172,7 +1168,6 @@ String F_NPPD(String biome = "") {
 }
 
 //' @describeIn parameters Litter fraction to detritus (\code{"(unitless)"})
-//' @inheritParams BETA
 //' @export
 // [[Rcpp::export]]
 String F_LITTERD(String biome = "") {
@@ -1198,7 +1193,6 @@ return D_F_LUCD;
 }
 
 //' @describeIn carboncycle Vegetation C pool (`"Pg C"`)
-//' @inheritParams BETA
 //' @export
 // [[Rcpp::export]]
 String VEG_C(String biome = "") {
@@ -1210,7 +1204,6 @@ String VEG_C(String biome = "") {
 }
 
 //' @describeIn carboncycle Vegetation detritus C pool (`"Pg C"`)
-//' @inheritParams BETA
 //' @export
 // [[Rcpp::export]]
 String DETRITUS_C(String biome = "") {
@@ -1222,7 +1215,6 @@ String DETRITUS_C(String biome = "") {
 }
 
 //' @describeIn carboncycle Soil C pool (`"Pg C"`)
-//' @inheritParams BETA
 //' @export
 // [[Rcpp::export]]
 String SOIL_C(String biome = "") {
@@ -1235,7 +1227,6 @@ String SOIL_C(String biome = "") {
 
 //' @describeIn carboncycle Initial net primary productivity (NPP)
 //'   flux (`"Pg C year^-1"`)
-//' @inheritParams BETA
 //' @export
 // [[Rcpp::export]]
 String NPP_FLUX0(String biome = "") {
