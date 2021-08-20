@@ -16,9 +16,9 @@
 #include <boost/lexical_cast.hpp>
 #include "core.hpp"
 #include "simpleNbox.hpp"
+#include "ocean_component.hpp"
 #include "csv_fluxpool_visitor.hpp"
 #include "unitval.hpp"
-#include "fluxpool.hpp"
 #include "h_util.hpp"
 
 namespace Hector {
@@ -27,31 +27,43 @@ using namespace std;
 
 //------------------------------------------------------------------------------
 /*! \brief Constructor
- *  \param filename The file to write the csv output to.
+ *  \param outputStream The file to write the csv output to
+ *  \param printHeader Boolean controlling whether we print a header or not
  */
-CSVFluxPoolVisitor::CSVFluxPoolVisitor( ostream& outputStream, const bool printHeader )
-:csvFile( outputStream )
+CSVFluxPoolVisitor::CSVFluxPoolVisitor( ostream& outputStream, const bool printHeader ) :
+    csvFile( outputStream )
 {
+    stringstream hdr;
     if( printHeader ) {
-        // Print table header
-        csvFile << "year" << DELIMITER
-                << "pool_name" << DELIMITER << "pool_value" << DELIMITER << "pool_units" << DELIMITER
-                << "source_name" << DELIMITER << "source_fraction" <<endl;
+        // Store table header
+        hdr << "year" << DELIMITER << "component" << DELIMITER << "pool_name" << DELIMITER << "pool_value"
+        << DELIMITER << "pool_units" << DELIMITER << "source_name"
+        << DELIMITER << "source_fraction" << endl;
     }
+    header = hdr.str();
 }
 
 //------------------------------------------------------------------------------
 /*! \brief Destructor
  */
 CSVFluxPoolVisitor::~CSVFluxPoolVisitor() {
+    // Write out the buffer to the csv file before closing down
+    
+    if(csvBuffer.size()) {
+        csvFile << header; // the header (or an empty string)
+        for( double yr = csvBuffer.firstdate(); yr <= csvBuffer.lastdate(); yr++ ) {
+            csvFile << csvBuffer.get(yr);
+        }
+    }
 }
 
 //------------------------------------------------------------------------------
 // documentation is inherited
 bool CSVFluxPoolVisitor::shouldVisit( const bool in_spinup, const double date ) {
-    // visit all non-spinup model periods
+    current_date = date;
     datestring = boost::lexical_cast<string>( date );
-    return !in_spinup;
+    // visit all model periods that are >= the initial tracking date
+    return date >= tracking_date;
 }
 
 //------------------------------------------------------------------------------
@@ -59,30 +71,27 @@ bool CSVFluxPoolVisitor::shouldVisit( const bool in_spinup, const double date ) 
 void CSVFluxPoolVisitor::visit( Core* c ) {
     run_name = c->getRun_name();
     core = c;
+    tracking_date = core->getTrackingDate();
 }
 
 //------------------------------------------------------------------------------
-/*! \brief Print the sources, and associated fractions, of a SimpleNBox pool
+/*! \brief Print the sources, and associated fractions, of a fluxpool
  */
-void CSVFluxPoolVisitor::print_pool(fluxpool x) {
+void CSVFluxPoolVisitor::print_pool( const fluxpool x, const string cname ) {
     if(x.tracking) {
+        stringstream output;
+        // there might already be "diff" output
+        if(csvBuffer.exists(current_date)) {
+            output << csvBuffer.get(current_date);
+        }
         vector<string> sources = x.get_sources();
         for (auto &s: sources) {
-            csvFile << datestring << DELIMITER <<
-                x.name << DELIMITER << x.value(U_PGC) << DELIMITER << x.unitsName() << DELIMITER <<
-                s << DELIMITER << x.get_fraction(s) << endl;
+            output << datestring << DELIMITER << cname << DELIMITER << x.name << DELIMITER
+            << x.value(U_PGC) << DELIMITER << x.unitsName() << DELIMITER
+            << s << DELIMITER << x.get_fraction(s) << endl;
         }
-        csvFile << endl;
+        csvBuffer.set(current_date, output.str());
     }
-}
-
-//------------------------------------------------------------------------------
-/*! \brief Print a double value and its name
- */
-void CSVFluxPoolVisitor::print_diff(double x, string name){
-     csvFile << datestring << DELIMITER <<
-                "Diff" << DELIMITER << x << DELIMITER << "U_PGC" << DELIMITER <<
-                name << DELIMITER << 0 << endl;
 }
 
 //------------------------------------------------------------------------------
@@ -90,24 +99,53 @@ void CSVFluxPoolVisitor::print_diff(double x, string name){
 void CSVFluxPoolVisitor::visit( SimpleNbox* c ) {
     if( !core->outputEnabled( c->getComponentName() ) ) return;
 
+    const string cname = c->getComponentName();
+    
     // The potentially tracked pools
-    print_pool( c->atmos_c );
-    print_pool( c->earth_c );
-    print_pool( c->ocean_model_c );
+    print_pool( c->atmos_c, cname );
+    print_pool( c->earth_c, cname );
     for( auto it = c->biome_list.begin(); it != c->biome_list.end(); it++ ) {
         std::string biome = *it;
-        print_pool( c->veg_c[ biome ] );
-        print_pool( c->detritus_c[ biome ] );
-        print_pool( c->soil_c[ biome ] );
-
-        // Temporary Print Outs
-        print_diff(c->veg_diff[biome], "veg_diff");
-        print_diff(c->soil_diff[biome], "soil_diff");
-        print_diff(c->det_diff[biome], "det_diff");
+        print_pool( c->veg_c[ biome ], cname );
+        print_pool( c->detritus_c[ biome ], cname );
+        print_pool( c->soil_c[ biome ], cname );
     }
-    print_diff(c->atmos_diff, "atmos_diff");
-    print_diff(c->earth_diff, "earth_diff");
-    csvFile << endl;
+}
+
+//------------------------------------------------------------------------------
+// documentation is inherited
+void CSVFluxPoolVisitor::visit( OceanComponent* c ) {
+    if( !core->outputEnabled( c->getComponentName() ) ) return;
+
+    const string cname = c->getComponentName();
+
+    print_pool( c->surfaceHL.get_carbon(), cname );
+    print_pool( c->surfaceLL.get_carbon(), cname );
+    print_pool( c->inter.get_carbon(), cname );
+    print_pool( c->deep.get_carbon(), cname );
+}
+
+//------------------------------------------------------------------------------
+/*! \brief Assemble the time series strings into a single string and return to core.
+ *  \return The visitor output assembled into a single string.
+ */
+std::string CSVFluxPoolVisitor::get_buffer() const {
+    stringstream output;
+    
+    if(csvBuffer.size()) {
+        output << header; // the header (or an empty string)        
+        for( double yr = csvBuffer.firstdate(); yr <= csvBuffer.lastdate(); yr++ ) {
+            output << csvBuffer.get(yr);
+        }
+    }
+    
+    return output.str();
+}
+
+//------------------------------------------------------------------------------
+// documentation is inherited
+void CSVFluxPoolVisitor::reset( const double reset_date ) {
+    csvBuffer.truncate( reset_date );
 }
 
 }

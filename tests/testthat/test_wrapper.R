@@ -1,4 +1,4 @@
-context("Test basic R wrapper functionality")
+context("R wrapper functionality")
 
 inputdir <- system.file("input", package = "hector")
 testvars <- c(ATMOSPHERIC_CO2(), RF_TOTAL(), GLOBAL_TEMP())

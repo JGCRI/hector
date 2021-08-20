@@ -58,7 +58,6 @@ public:
      *  \param message  The message (required).
      *  \param datum    The relevant piece of data (optional).
      *  \param info     A message_data struct (optional), giving more information.
-     *  \exception h_exception If message or datum not recognized.
      */
     virtual unitval sendMessage( const std::string& message,
                                 const std::string& datum,
@@ -79,8 +78,6 @@ public:
      *  \param varName The name of the variable to set.
      *  \param data The message_data who's fields will be appropriately set to
      *              contain all relevant information to parse the variable.
-     *  \exception h_exception If varName was not recognized or could not convert
-     *                         value to the appropriate type.
      */
     virtual void setData( const std::string& varName,
                           const message_data& data ) = 0;
@@ -91,10 +88,6 @@ public:
      *  Perform error checking on input data and one-time initializations before
      *  the model starts running. After this, the component should be prepared to
      *  provide data (e.g. during spinup, even if it's not itself spinning up).
-     *
-     *  \param core A pointer to the core should this model component need to get
-     *              additional information from it.
-     *  \exception h_exception If there was any inconsistencies with input data.
      */
     virtual void prepareToRun() = 0;
 
@@ -121,7 +114,6 @@ public:
      *
      *  \param      step The spinup step to run to.
      *  \return     A bool indicating whether the component is spun up.
-     *  \exception  h_exception If an error occurred for any reason while running.
      */
     virtual bool run_spinup( const int step ) { return true; }
 
@@ -150,8 +142,7 @@ public:
      *  include an input date that is still in the future, or a date
      *  that is before the beginning of the simulation.
      *
-     *  \param date Date to which to reset component state
-     *  \exception h_exception If unable to perform the reset.
+     *  \param time Date to which to reset component state
      */
     virtual void reset(double time) = 0;
 
@@ -171,14 +162,9 @@ private:
      *  arrayed inputs?
      *
      *  \param varName The name of the variable to set.
-     *  \param value The string value of the variable to set.  Conversion to the
-     *               appropriate type will be made by the IModelComponent subclass
-     *               on a per variable basis.
-     *  \param valueIndex The time series index value to use when setting value.
+     *  \param date The time series index value to use when setting value.
      *                    If varName is not a time series valueIndex should equal
      *                    Core::undefinedIndex().
-     *  \exception h_exception If varName was not recognized or could not convert
-     *                         value to the appropriate type.
      */
     virtual unitval getData( const std::string& varName,
                             const double date ) = 0;

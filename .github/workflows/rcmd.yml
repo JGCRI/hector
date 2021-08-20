@@ -3,11 +3,13 @@ on:
   push:
     branches:
       - master
-      - github_actions
+      - main
   pull_request:
     branches:
       - master
+      - main
       - land_tracking
+      - tracking-vars
 
   schedule:
     # * is a special character in YAML so you have to quote this string
@@ -69,12 +71,11 @@ jobs:
 
       - name: Install system dependencies
         if: runner.os == 'Linux'
-        env:
-          RHUB_PLATFORM: linux-x86_64-ubuntu-gcc
         run: |
-          Rscript -e "remotes::install_github('r-hub/sysreqs')"
-          sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
-          sudo -s eval "$sysreqs"
+          while read -r cmd
+          do
+            eval sudo $cmd
+          done < <(Rscript -e 'writeLines(remotes::system_requirements("ubuntu", "16.04"))')
 
       - name: Install XQuartz on MacOS
         if: runner.os == 'macOS'

@@ -1,6 +1,6 @@
 Package: hector
 Title: The Hector Simple Climate Model
-Version: 2.5.0
+Version: 3.0.0
 Authors@R: c(person("Robert", "Link", 
             email = "robert.link@pnnl.gov", 
             role = "aut",
@@ -21,6 +21,10 @@ Authors@R: c(person("Robert", "Link",
 	        email = "pralit.patel@pnnl.gov", 
 	        role = "ctb",
 	        comment = c(ORCID = "0000-0003-3992-1061")),
+	     person("Leeya", "Pressburger", 
+	        email = "leeya.pressburger@pnnl.gov", 
+	        role = "ctb",
+	        comment = c(ORCID = "0000-0002-6850-2504")),
 	     person("Alexey", "Shiklomanov",
 	        email = "alexey.shiklomanov@nasa.gov",
 	        role = "ctb",
@@ -54,3 +58,4 @@ Collate:
     'units.R'
 VignetteBuilder: knitr
 RoxygenNote: 7.1.1
+SystemRequirements: GNUmake

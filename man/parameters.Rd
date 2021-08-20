@@ -2,6 +2,7 @@
 % Please edit documentation in R/aadoc.R, R/RcppExports.R
 \name{parameters}
 \alias{parameters}
+\alias{TRACKING_DATE}
 \alias{PREINDUSTRIAL_CO2}
 \alias{BETA}
 \alias{Q10_RH}
@@ -17,6 +18,8 @@
 \alias{DIFFUSIVITY}
 \title{Identifiers for model parameters}
 \usage{
+TRACKING_DATE()
+
 PREINDUSTRIAL_CO2()
 
 BETA(biome = "")
@@ -49,17 +52,19 @@ DIFFUSIVITY()
 }
 \description{
 These identifiers correspond to settable parameters that change the model
-behavior and are subject to uncertainty.  All of these can be set using the
-\code{\link{SETDATA}} message type.  Changing any of these parameters will
+behavior and are subject to uncertainty. All of these can be set using the
+\code{\link{SETDATA}} message type. Changing any of these parameters will
 typically invalidate the hector core's internal state; therefore, after
 setting one or more of these values you should call \code{\link{reset}} before
-attempting to run the model again.  This will rerun the spinup and produce a
-new internally consistent state.  Attempting to run the model without resetting
+attempting to run the model again. This will rerun the spinup and produce a
+new internally consistent state. Attempting to run the model without resetting
 first will usually produce an error (often with a message about failing to conserve
 mass).
 }
 \section{Functions}{
 \itemize{
+\item \code{TRACKING_DATE}: Start of carbon tracking (Year)
+
 \item \code{PREINDUSTRIAL_CO2}: Preindustrial CO2 concentration (\code{"ppmv CO2"})
 
 \item \code{BETA}: CO2 fertilization factor (\code{"(unitless)"})
@@ -90,7 +95,7 @@ mass).
 \section{Note}{
 
 Because these identifiers are provided as \code{#define} macros in the hector code,
-these identifiers are provided in the R interface as function.  Therefore,
+these identifiers are provided in the R interface as functions. Therefore,
 these objects must be called to use them; \emph{e.g.}, \code{GETDATA()}
 instead of the more natural looking \code{GETDATA}.
 }

@@ -39,14 +39,14 @@ void identity_tests(bool trk) {
 SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
     ffiEmissions.allowInterp( true );
     ffiEmissions.name = "ffiEmissions";
+    daccsUptake.allowInterp( true );
+    daccsUptake.name = "daccsUptake";
     lucEmissions.allowInterp( true );
     lucEmissions.name = "lucEmissions";
     Ftalbedo.allowInterp( true );
     Ftalbedo.name = "albedo";
     CO2_constrain.name = "CO2_constrain";
 
-    // TODO: Have this read in by csv and set by setData
-    trackingYear = 1850;
     // The actual atmos_c value will be filled in later by setData
     atmos_c.set(0.0, U_PGC, false, "atmos_c");
     
@@ -56,9 +56,6 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
     // we can't start earth_c at zero. Value of 5500 is set to avoid
     // overdrawing in RCP 8.5
     earth_c.set( 5500, U_PGC, false, "earth_c" );
-
-    // TODO: This needs to be read in from the CSV
-    ocean_model_c.set( 38000, U_PGC, false, "ocean_c" );
 }
 
 
@@ -99,6 +96,7 @@ void SimpleNbox::init( Core* coreptr ) {
 
     // Register the inputs we can receive from outside
     core->registerInput(D_FFI_EMISSIONS, getComponentName());
+    core->registerInput(D_DACCS_UPTAKE, getComponentName());
     core->registerInput(D_LUC_EMISSIONS, getComponentName());
     core->registerInput(D_PREINDUSTRIAL_CO2, getComponentName());
     core->registerInput(D_VEGC, getComponentName());
@@ -274,6 +272,11 @@ void SimpleNbox::setData( const std::string &varName,
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
             H_ASSERT( biome == SNBOX_DEFAULT_BIOME, "fossil fuels and industry emissions must be global" );
             ffiEmissions.set( data.date, data.getUnitval( U_PGC_YR ) );
+        }
+        else if( varNameParsed == D_DACCS_UPTAKE ) {
+            H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
+            H_ASSERT( biome == SNBOX_DEFAULT_BIOME, "direct air carbon capture and storage must be global" );
+            daccsUptake.set( data.date, data.getUnitval( U_PGC_YR ) );
         }
         else if( varNameParsed == D_LUC_EMISSIONS ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
@@ -474,6 +477,9 @@ unitval SimpleNbox::getData(const std::string& varName,
     } else if( varNameParsed == D_FFI_EMISSIONS ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for ffi emissions" );
         returnval = ffiEmissions.get( date );
+    } else if( varNameParsed == D_DACCS_UPTAKE ) {
+            H_ASSERT( date != Core::undefinedIndex(), "Date required for daccs uptake" );
+            returnval = daccsUptake.get( date );
     } else if( varNameParsed == D_LUC_EMISSIONS ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for luc emissions" );
         returnval = lucEmissions.get( date );
@@ -502,6 +508,8 @@ unitval SimpleNbox::getData(const std::string& varName,
     return static_cast<unitval>(returnval);
 }
 
+//------------------------------------------------------------------------------
+// documentation is inherited
 void SimpleNbox::reset(double time)
 {
     // Reset all state variables to their values at the reset time
@@ -512,7 +520,6 @@ void SimpleNbox::reset(double time)
     veg_c = veg_c_tv.get(time);
     detritus_c = detritus_c_tv.get(time);
     soil_c = soil_c_tv.get(time);
-    ocean_model_c = ocean_model_c_tv.get(time);
     
     residual = residual_ts.get(time);
 
@@ -540,7 +547,6 @@ void SimpleNbox::reset(double time)
     veg_c_tv.truncate(time);
     detritus_c_tv.truncate(time);
     soil_c_tv.truncate(time);
-    ocean_model_c_tv.truncate(time);
     
     residual_ts.truncate(time);
 
@@ -562,12 +568,13 @@ void SimpleNbox::shutDown()
 }
 
 //------------------------------------------------------------------------------
-/*! \brief visitor accept code
- */
+// documentation is inherited
 void SimpleNbox::accept( AVisitor* visitor ) {
     visitor->visit( this );
 }
 
+//------------------------------------------------------------------------------
+// documentation is inherited
 void SimpleNbox::record_state(double t)
 {
     tcurrent = t;
@@ -578,7 +585,6 @@ void SimpleNbox::record_state(double t)
     veg_c_tv.set(t, veg_c);
     detritus_c_tv.set(t, detritus_c);
     soil_c_tv.set(t, soil_c);
-    ocean_model_c_tv.set(t, ocean_model_c);
     
     residual_ts.set(t, residual);
 

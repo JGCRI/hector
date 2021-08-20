@@ -20,7 +20,7 @@ NULL
 #'
 #' @section Note:
 #' Because these identifiers are provided as \code{#define} macros in the hector code,
-#' these identifiers are provided in the R interface as function.  Therefore,
+#' these identifiers are provided in the R interface as functions. Therefore,
 #' these objects must be called to use them; \emph{e.g.}, \code{GETDATA()}
 #' instead of the more natural looking \code{GETDATA}.
 #'
@@ -30,7 +30,7 @@ NULL
 #' Identifiers for capabilities in the Hector forcing component
 #'
 #' These identifiers specify forcing values that can be provided by hector via
-#' the forcing component.  All of the values corresponding to these identifiers
+#' the forcing component. All of the values corresponding to these identifiers
 #' are read-only (\emph{i.e.}, they can only appear in \code{\link{GETDATA}}
 #' messages.)
 #'
@@ -76,7 +76,7 @@ NULL
 #' Identifiers for halocarbon forcings
 #'
 #' These identifiers specify forcing values that can be provided by hector via
-#' one of the myriad halocarbon components.  All of the values corresponding to
+#' one of the myriad halocarbon components. All of the values corresponding to
 #' these identifiers are read-only (\emph{i.e.}, they can only appear in
 #' \code{\link{GETDATA}} messages.)  The forcings returned are the
 #' \emph{relative} forcings, with the base year (typically 1750) values
@@ -91,9 +91,9 @@ NULL
 
 #' Identifiers for halocarbon emissions
 #'
-#' These identifiers correspond to emissions values for halocarbons.  They are
+#' These identifiers correspond to emissions values for halocarbons. They are
 #' (for now) write only, meaning they can only appear in \code{\link{SETDATA}}
-#' messages.  In all cases, the expected input units are gigagrams
+#' messages. In all cases, the expected input units are gigagrams
 #' (\code{"Gg"}).
 #'
 #' @inheritSection msgtype Note
@@ -138,7 +138,7 @@ NULL
 #'
 #'
 #' @section Input variables:
-#' These variables can be set in the methane component.  The expected units string is given after
+#' These variables can be set in the methane component. The expected units string is given after
 #' each description.
 #' \describe{
 #' \item{EMISSIONS_CH4}{Methane emissions (\code{"Tg CH4"})}
@@ -215,12 +215,12 @@ NULL
 #' Identifiers for model parameters
 #'
 #' These identifiers correspond to settable parameters that change the model
-#' behavior and are subject to uncertainty.  All of these can be set using the
-#' \code{\link{SETDATA}} message type.  Changing any of these parameters will
+#' behavior and are subject to uncertainty. All of these can be set using the
+#' \code{\link{SETDATA}} message type. Changing any of these parameters will
 #' typically invalidate the hector core's internal state; therefore, after
 #' setting one or more of these values you should call \code{\link{reset}} before
-#' attempting to run the model again.  This will rerun the spinup and produce a
-#' new internally consistent state.  Attempting to run the model without resetting
+#' attempting to run the model again. This will rerun the spinup and produce a
+#' new internally consistent state. Attempting to run the model without resetting
 #' first will usually produce an error (often with a message about failing to conserve
 #' mass).
 #'

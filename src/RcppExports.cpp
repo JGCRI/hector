@@ -70,6 +70,16 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// TRACKING_DATE
+String TRACKING_DATE();
+RcppExport SEXP _hector_TRACKING_DATE() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(TRACKING_DATE());
+    return rcpp_result_gen;
+END_RCPP
+}
 // EMISSIONS_BC
 String EMISSIONS_BC();
 RcppExport SEXP _hector_EMISSIONS_BC() {
@@ -1490,6 +1500,16 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// DACCS_UPTAKE
+String DACCS_UPTAKE();
+RcppExport SEXP _hector_DACCS_UPTAKE() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(DACCS_UPTAKE());
+    return rcpp_result_gen;
+END_RCPP
+}
 // LUC_EMISSIONS
 String LUC_EMISSIONS();
 RcppExport SEXP _hector_LUC_EMISSIONS() {
@@ -1870,6 +1890,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// get_tracking_data_impl
+std::string get_tracking_data_impl(Environment core);
+RcppExport SEXP _hector_get_tracking_data_impl(SEXP coreSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Environment >::type core(coreSEXP);
+    rcpp_result_gen = Rcpp::wrap(get_tracking_data_impl(core));
+    return rcpp_result_gen;
+END_RCPP
+}
 // get_biome_list
 std::vector<std::string> get_biome_list(Environment core);
 RcppExport SEXP _hector_get_biome_list(SEXP coreSEXP) {
@@ -1953,6 +1984,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_LL_NOTICE", (DL_FUNC) &_hector_LL_NOTICE, 0},
     {"_hector_LL_WARNING", (DL_FUNC) &_hector_LL_WARNING, 0},
     {"_hector_LL_SEVERE", (DL_FUNC) &_hector_LL_SEVERE, 0},
+    {"_hector_TRACKING_DATE", (DL_FUNC) &_hector_TRACKING_DATE, 0},
     {"_hector_EMISSIONS_BC", (DL_FUNC) &_hector_EMISSIONS_BC, 0},
     {"_hector_RF_TOTAL", (DL_FUNC) &_hector_RF_TOTAL, 0},
     {"_hector_RF_T_ALBEDO", (DL_FUNC) &_hector_RF_T_ALBEDO, 0},
@@ -2095,6 +2127,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_PREINDUSTRIAL_CO2", (DL_FUNC) &_hector_PREINDUSTRIAL_CO2, 0},
     {"_hector_ATMOSPHERIC_C", (DL_FUNC) &_hector_ATMOSPHERIC_C, 0},
     {"_hector_FFI_EMISSIONS", (DL_FUNC) &_hector_FFI_EMISSIONS, 0},
+    {"_hector_DACCS_UPTAKE", (DL_FUNC) &_hector_DACCS_UPTAKE, 0},
     {"_hector_LUC_EMISSIONS", (DL_FUNC) &_hector_LUC_EMISSIONS, 0},
     {"_hector_BETA", (DL_FUNC) &_hector_BETA, 1},
     {"_hector_Q10_RH", (DL_FUNC) &_hector_Q10_RH, 1},
@@ -2131,6 +2164,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_reset", (DL_FUNC) &_hector_reset, 2},
     {"_hector_run", (DL_FUNC) &_hector_run, 2},
     {"_hector_getdate", (DL_FUNC) &_hector_getdate, 1},
+    {"_hector_get_tracking_data_impl", (DL_FUNC) &_hector_get_tracking_data_impl, 1},
     {"_hector_get_biome_list", (DL_FUNC) &_hector_get_biome_list, 1},
     {"_hector_create_biome_impl", (DL_FUNC) &_hector_create_biome_impl, 2},
     {"_hector_delete_biome_impl", (DL_FUNC) &_hector_delete_biome_impl, 2},

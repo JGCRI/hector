@@ -37,13 +37,14 @@ int main (int argc, char * const argv[]) {
 
 	try {
         // Create the Hector core
-        Core core;
+        Core core(Hector::Logger::NOTICE, true, true);
         Logger& glog = core.getGlobalLogger();
         H_LOG( glog, Logger::NOTICE ) << MODEL_NAME << " wrapper start" << endl;
 
         // Parse the main configuration file
         if( argc > 1 ) {
             if( ifstream( argv[1] ) ) {
+                H_LOG( glog, Logger::NOTICE ) << "Reading input file " << argv[ 1 ] << endl;
                 h_reader reader( argv[1], INI_style );
             } else {
                 H_LOG( glog, Logger::SEVERE ) << "Couldn't find input file " << argv[ 1 ] << endl;
@@ -78,7 +79,6 @@ int main (int argc, char * const argv[]) {
               csvFluxPoolTrackingFile.open( string( string( OUTPUT_DIRECTORY ) + "tracking.csv" ).c_str(), ios::out );
           else
               csvFluxPoolTrackingFile.open( string( string( OUTPUT_DIRECTORY ) + "tracking_" + rn + ".csv" ).c_str(), ios::out );
-
 
         ostream outputStream( &csvoutputStreamFile );
         CSVOutputStreamVisitor csvOutputStreamVisitor( outputStream );
