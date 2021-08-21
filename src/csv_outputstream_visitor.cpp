@@ -173,8 +173,8 @@ void CSVOutputStreamVisitor::visit( SimpleNbox* c ) {
             STREAM_UNITVAL( csvFile, c, biome+"."+D_VEGC, c->veg_c[ biome ] );
             STREAM_UNITVAL( csvFile, c, biome+"."+D_DETRITUSC, c->detritus_c[ biome ] );
             STREAM_UNITVAL( csvFile, c, biome+"."+D_SOILC, c->soil_c[ biome ] );
-            STREAM_UNITVAL( csvFile, c, biome+"."+D_PERMAFROSTC, c->soil_c[ biome ] );
-            STREAM_UNITVAL( csvFile, c, biome+"."+D_THAWEDPC, c->soil_c[ biome ] );
+            STREAM_UNITVAL( csvFile, c, biome+"."+D_PERMAFROSTC, c->permafrost_c[ biome ] );
+            STREAM_UNITVAL( csvFile, c, biome+"."+D_THAWEDPC, c->thawed_permafrost_c[ biome ] );
             STREAM_UNITVAL( csvFile, c, biome+"."+D_TEMPFERTD, unitval( c->tempfertd[ biome ], U_UNITLESS ) );
             STREAM_UNITVAL( csvFile, c, biome+"."+D_TEMPFERTS, unitval( c->tempferts[ biome ], U_UNITLESS ) );
         }

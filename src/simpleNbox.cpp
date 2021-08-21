@@ -66,10 +66,6 @@ void SimpleNbox::init( Core* coreptr ) {
     f_frozen[ SNBOX_DEFAULT_BIOME ] = 1.0;
     new_thaw[ SNBOX_DEFAULT_BIOME ] = 0.0;
     
-    permafrost_c[ SNBOX_DEFAULT_BIOME ].set(0.0, U_PGC );
-    static_c[ SNBOX_DEFAULT_BIOME ].set(0.0, U_PGC );
-    thawed_permafrost_c[ SNBOX_DEFAULT_BIOME ].set(0.0, U_PGC );
-
     rh_ch4_frac[ SNBOX_DEFAULT_BIOME ] = 0.0;
     pf_sigma[ SNBOX_DEFAULT_BIOME ] = 0.986;
     pf_mu[ SNBOX_DEFAULT_BIOME ] = 1.67;
@@ -163,8 +159,8 @@ void SimpleNbox::setData( const std::string &varName,
     boost::split( splitvec, varName, is_any_of( SNBOX_PARSECHAR ) );
     H_ASSERT( splitvec.size() < 3, "max of one separator allowed in variable names" );
     
-    std::string biome = SNBOX_DEFAULT_BIOME;
-    std::string varNameParsed = varName;
+    string biome = SNBOX_DEFAULT_BIOME;
+    string varNameParsed = varName;
     auto it_global = std::find(biome_list.begin(), biome_list.end(), SNBOX_DEFAULT_BIOME);
     
     if( splitvec.size() == 2 ) {    // i.e., in form <biome>.<varname>
@@ -202,6 +198,7 @@ void SimpleNbox::setData( const std::string &varName,
     else {
         H_LOG( logger, Logger::DEBUG ) << "Setting " << biome << "." << varNameParsed << "[" << data.date << "]=" << data.value_str << std::endl;
     }
+    
     try {
         // Initial pools
         if( varNameParsed == D_ATMOSPHERIC_C ) {

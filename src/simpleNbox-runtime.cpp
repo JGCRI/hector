@@ -100,13 +100,13 @@ void SimpleNbox::prepareToRun()
                  "Did you forget to rename the default ('global') biome?")
     }
 
+    cout << biome_list.size() << " " << permafrost_c.size() << " " << thawed_permafrost_c.size() << endl;
+    
     // Ensure consistency between biome_list and all pools and fluxes
     H_ASSERT( biome_list.size() == veg_c.size(), "veg_c and biome_list data not same size" );
     H_ASSERT( biome_list.size() == detritus_c.size(), "detritus_c and biome_list not same size" );
     H_ASSERT( biome_list.size() == soil_c.size(), "soil_c and biome_list not same size" );
     H_ASSERT( biome_list.size() == permafrost_c.size(), "permafrost_c and biome_list not same size" );
-    H_ASSERT( biome_list.size() == thawed_permafrost_c.size(), "thawed_permafrost_c and biome_list not same size" );
-    H_ASSERT( biome_list.size() == static_c.size(), "thawed_permafrost_c and biome_list not same size" );
     H_ASSERT( biome_list.size() == npp_flux0.size(), "npp_flux0 and biome_list not same size" );
 
     for ( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
@@ -115,8 +115,6 @@ void SimpleNbox::prepareToRun()
         H_ASSERT( detritus_c.count( biome ), "no biome data for detritus_c" );
         H_ASSERT( soil_c.count( biome ), "no biome data for soil_c" );
         H_ASSERT( permafrost_c.count( biome ), "no biome data for permafrost_c" );
-        H_ASSERT( thawed_permafrost_c.count( biome ), "no biome data for thawed_permafrost_c" );
-        H_ASSERT( static_c.count( biome ), "no biome data for static_c" );
         H_ASSERT( npp_flux0.count( biome ), "no biome data for npp_flux0" );
 
         H_ASSERT( beta.count( biome ), "no biome value for beta" );
