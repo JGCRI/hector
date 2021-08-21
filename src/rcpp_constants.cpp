@@ -1248,6 +1248,18 @@ String SOIL_C(String biome = "") {
   return out;
 }
 
+//' @describeIn carboncycle Permafrost C pool (`"Pg C"`)
+//' @inheritParams BETA
+//' @export
+// [[Rcpp::export]]
+String PERMAFROST_C(String biome = "") {
+   if (biome == "") return D_PERMAFROSTC;
+   String out = biome;
+   out += ".";
+   out += D_PERMAFROSTC;
+   return out;
+}
+
 //' @describeIn carboncycle Initial net primary productivity (NPP)
 //'   flux (`"Pg C year^-1"`)
 //' @inheritParams BETA

@@ -10,6 +10,7 @@ create_biome(
   veg_c0,
   detritus_c0,
   soil_c0,
+  permafrost_c0,
   npp_flux0,
   warmingfactor = 1,
   beta = 0.36,

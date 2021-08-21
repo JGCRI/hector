@@ -15,6 +15,7 @@
 \alias{VEG_C}
 \alias{DETRITUS_C}
 \alias{SOIL_C}
+\alias{PERMAFROST_C}
 \alias{NPP_FLUX0}
 \title{Identifiers for variables in the Hector carbon cycle component}
 \usage{
@@ -44,6 +45,8 @@ DETRITUS_C(biome = "")
 
 SOIL_C(biome = "")
 
+PERMAFROST_C(biome = "")
+
 NPP_FLUX0(biome = "")
 }
 \arguments{
@@ -63,6 +66,8 @@ carbon cycle
 \item \code{DETRITUS_C}: Vegetation detritus C pool (`"Pg C"`)
 
 \item \code{SOIL_C}: Soil C pool (`"Pg C"`)
+
+\item \code{PERMAFROST_C}: Permafrost C pool (`"Pg C"`)
 
 \item \code{NPP_FLUX0}: Initial net primary productivity (NPP)
 flux (`"Pg C year^-1"`)

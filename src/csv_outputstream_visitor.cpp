@@ -161,6 +161,8 @@ void CSVOutputStreamVisitor::visit( SimpleNbox* c ) {
     STREAM_MESSAGE( csvFile, c, D_VEGC );
     STREAM_MESSAGE( csvFile, c, D_DETRITUSC );
     STREAM_MESSAGE( csvFile, c, D_SOILC );
+    STREAM_MESSAGE( csvFile, c, D_PERMAFROSTC );
+    STREAM_MESSAGE( csvFile, c, D_THAWEDPC );
     STREAM_MESSAGE( csvFile, c, D_EARTHC );
 
     // Biome-specific outputs: <variable>.<biome>
