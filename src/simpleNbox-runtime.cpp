@@ -46,6 +46,17 @@ void SimpleNbox::sanitychecks()
         H_ASSERT( f_nppd.at(biome) >= 0.0, "f_nppd <0" );
         H_ASSERT( f_nppv.at(biome) + f_nppd.at(biome) <= 1.0, "f_nppv + f_nppd >1" );
         H_ASSERT( f_litterd.at(biome) >= 0.0 && f_litterd.at(biome) <= 1.0, "f_litterd <0 or >1" );
+        
+        if (abs(thawed_permafrost_c.at( biome ).value( U_PGC)) < 1e-12){
+            thawed_permafrost_c[ biome ] = thawed_permafrost_c[ biome ] * 0.0;
+        }
+        if (abs(static_c.at( biome ).value( U_PGC)) < 1e-12){
+            static_c[ biome ] = static_c[ biome ] * 0.0;
+        }
+        if (abs(permafrost_c.at( biome ).value( U_PGC)) < 1e-12){
+            permafrost_c[ biome ] = permafrost_c[ biome ] * 0.0;
+        }
+
     }
 
     H_ASSERT( f_lucv >= 0.0, "f_lucv <0" );
@@ -62,11 +73,17 @@ void SimpleNbox::log_pools( const double t )
     // Log pool states
     H_LOG( logger,Logger::DEBUG ) << "---- simpleNbox pool states at t=" << t << " ----" << std::endl;
     H_LOG( logger,Logger::DEBUG ) << "Atmos = " << atmos_c << std::endl;
-    H_LOG( logger,Logger::DEBUG ) << "Biome \tveg_c \t\tdetritus_c \tsoil_c" << std::endl;
+    H_LOG( logger,Logger::DEBUG ) << "Biome \tveg_c \t\tdetritus_c \tsoil_c\t\t thawed_c\t\t permafrost_c" << std::endl;
     for ( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
         std::string biome = *it;
-        H_LOG( logger,Logger::DEBUG ) << biome << "\t" << veg_c[ biome ] << "\t" <<
-        detritus_c[ biome ] << "\t\t" << soil_c[ biome ] << std::endl;
+        H_LOG( logger,Logger::DEBUG ) << biome << "\t" <<
+        veg_c[ biome ] << "\t" <<
+        detritus_c[ biome ] << "\t\t" <<
+        soil_c[ biome ] <<
+        thawed_permafrost_c[ biome ] << "\t" <<
+        static_c[ biome ] << "\t" <<
+        permafrost_c[ biome ] <<
+        std::endl;
     }
     H_LOG( logger,Logger::DEBUG ) << "Earth = " << earth_c << std::endl;
 }
@@ -87,6 +104,9 @@ void SimpleNbox::prepareToRun()
     H_ASSERT( biome_list.size() == veg_c.size(), "veg_c and biome_list data not same size" );
     H_ASSERT( biome_list.size() == detritus_c.size(), "detritus_c and biome_list not same size" );
     H_ASSERT( biome_list.size() == soil_c.size(), "soil_c and biome_list not same size" );
+    H_ASSERT( biome_list.size() == permafrost_c.size(), "permafrost_c and biome_list not same size" );
+    H_ASSERT( biome_list.size() == thawed_permafrost_c.size(), "thawed_permafrost_c and biome_list not same size" );
+    H_ASSERT( biome_list.size() == static_c.size(), "thawed_permafrost_c and biome_list not same size" );
     H_ASSERT( biome_list.size() == npp_flux0.size(), "npp_flux0 and biome_list not same size" );
 
     for ( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
@@ -94,6 +114,9 @@ void SimpleNbox::prepareToRun()
         H_LOG( logger, Logger::DEBUG ) << "Checking that data for biome '" << biome << "' is complete" << std::endl;
         H_ASSERT( detritus_c.count( biome ), "no biome data for detritus_c" );
         H_ASSERT( soil_c.count( biome ), "no biome data for soil_c" );
+        H_ASSERT( permafrost_c.count( biome ), "no biome data for permafrost_c" );
+        H_ASSERT( thawed_permafrost_c.count( biome ), "no biome data for thawed_permafrost_c" );
+        H_ASSERT( static_c.count( biome ), "no biome data for static_c" );
         H_ASSERT( npp_flux0.count( biome ), "no biome data for npp_flux0" );
 
         H_ASSERT( beta.count( biome ), "no biome value for beta" );
@@ -103,6 +126,28 @@ void SimpleNbox::prepareToRun()
                 "Setting to default value = 1.0" << std::endl;
             warmingfactor[ biome ] = 1.0;
         }
+        
+        if ( !rh_ch4_frac.count( biome )) {
+            H_LOG( logger, Logger::NOTICE ) << "No RH CH4 fraction set for biome '" << biome << "'. " <<
+                "Setting to default value = 0.0" << std::endl;
+            rh_ch4_frac[ biome ] = 0.0;
+        }
+
+        if ( !pf_mu.count( biome )) {
+            H_LOG( logger, Logger::NOTICE ) << "No permafrost mu parameter set for biome '" << biome << "'. " <<
+                "Setting to default value = 1.67" << std::endl;
+            pf_sigma[ biome ] = 1.67;
+        }
+
+        if ( !pf_sigma.count( biome )) {
+            H_LOG( logger, Logger::NOTICE ) << "No permafrost sigma parameter set for biome '" << biome << "'. " <<
+                "Setting to default value = 0.986" << std::endl;
+            pf_sigma[ biome ] = 0.986;
+        }
+
+        // Thawed and static permafrost C start at zero
+        thawed_permafrost_c[ biome ].set( 0.0, U_PGC );
+        static_c[ biome ].set( 0.0, U_PGC );
     }
 
     // Save a pointer to the ocean model in use
@@ -461,6 +506,27 @@ fluxpool SimpleNbox::rh_fsa( std::string biome, double time ) const
     }
     fluxpool soilflux( soil_t.value( U_PGC ) * 0.02, U_PGC_YR );
     return soilflux * tfs;
+}
+
+//------------------------------------------------------------------------------
+/*! \brief      Compute thawed permafrost component of annual heterotrophic respiration
+ *  \returns    current thawed permafrost component of annual heterotrophic respiration
+ */
+fluxpool SimpleNbox::rh_ftpa_co2( std::string biome ) const
+{
+  fluxpool tpflux( (thawed_permafrost_c.at( biome ).value( U_PGC ) - static_c.at(biome).value(U_PGC)) * 0.02, U_PGC_YR );
+  return tpflux * tempferts.at( biome ) * (1.0 - rh_ch4_frac.at( biome ));
+}
+
+//------------------------------------------------------------------------------
+/*! \brief      Compute thawed permafrost component of annual heterotrophic respiration
+ *  \returns    current thawed permafrost  component of annual heterotrophic respiration
+ */
+fluxpool SimpleNbox::rh_ftpa_ch4( std::string biome ) const
+{
+  // This behaves exactly like the soil pool above
+  fluxpool tpflux( (thawed_permafrost_c.at( biome ).value( U_PGC ) - static_c.at(biome).value(U_PGC)) * 0.02, U_PGC_YR );
+  return tpflux * tempferts.at( biome ) * rh_ch4_frac.at( biome );
 }
 
 //------------------------------------------------------------------------------
