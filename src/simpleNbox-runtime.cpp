@@ -46,17 +46,16 @@ void SimpleNbox::sanitychecks()
         H_ASSERT( f_nppd.at(biome) >= 0.0, "f_nppd <0" );
         H_ASSERT( f_nppv.at(biome) + f_nppd.at(biome) <= 1.0, "f_nppv + f_nppd >1" );
         H_ASSERT( f_litterd.at(biome) >= 0.0 && f_litterd.at(biome) <= 1.0, "f_litterd <0 or >1" );
-        
-        if (abs(thawed_permafrost_c.at( biome ).value( U_PGC)) < 1e-12){
-            thawed_permafrost_c[ biome ] = thawed_permafrost_c[ biome ] * 0.0;
-        }
-        if (abs(static_c.at( biome ).value( U_PGC)) < 1e-12){
-            static_c[ biome ] = static_c[ biome ] * 0.0;
-        }
-        if (abs(permafrost_c.at( biome ).value( U_PGC)) < 1e-12){
-            permafrost_c[ biome ] = permafrost_c[ biome ] * 0.0;
-        }
 
+        if ( thawed_permafrost_c.at( biome ).value( U_PGC ) < 1e-12 ){
+            thawed_permafrost_c[ biome ].set( 0.0, U_PGC, thawed_permafrost_c[ biome ].tracking, D_THAWEDPC );
+        }
+        if ( static_c.at( biome ).value( U_PGC ) < 1e-12 ){
+            static_c[ biome ].set( 0.0, U_PGC, static_c[ biome ].tracking, "static_c" );
+        }
+        if ( permafrost_c.at( biome ).value( U_PGC ) < 1e-12 ){
+            permafrost_c[ biome ].set( 0.0, U_PGC, permafrost_c[ biome ].tracking, D_PERMAFROSTC );
+        }
     }
 
     H_ASSERT( f_lucv >= 0.0, "f_lucv <0" );
@@ -93,14 +92,12 @@ void SimpleNbox::log_pools( const double t )
 void SimpleNbox::prepareToRun()
 {
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
-
+    
     // If any 'global' settings, there shouldn't also be regional
     if ( (has_biome( SNBOX_DEFAULT_BIOME )) & (biome_list.size() > 1) ) {
         H_THROW( "Cannot have both global and biome-specific data! "
                  "Did you forget to rename the default ('global') biome?")
     }
-
-    cout << biome_list.size() << " " << permafrost_c.size() << " " << thawed_permafrost_c.size() << endl;
     
     // Ensure consistency between biome_list and all pools and fluxes
     H_ASSERT( biome_list.size() == veg_c.size(), "veg_c and biome_list data not same size" );
@@ -144,8 +141,8 @@ void SimpleNbox::prepareToRun()
         }
 
         // Thawed and static permafrost C start at zero
-        thawed_permafrost_c[ biome ].set( 0.0, U_PGC );
-        static_c[ biome ].set( 0.0, U_PGC );
+        thawed_permafrost_c[ biome ].set( 0.0, U_PGC, permafrost_c[ biome ].tracking, D_THAWEDPC );
+        static_c[ biome ].set( 0.0, U_PGC, permafrost_c[ biome ].tracking, "static_c" );
     }
 
     // Save a pointer to the ocean model in use
