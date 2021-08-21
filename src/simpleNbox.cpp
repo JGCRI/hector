@@ -405,6 +405,11 @@ unitval SimpleNbox::getData(const std::string& varName,
         biome_error = "Biome '" + biome + "' missing from biome list. " +
         "Hit this error while trying to retrieve variable: '" + varName + "'.";
     }
+ 
+    // If requesting a biome, ensure it's present
+    if( biome != SNBOX_DEFAULT_BIOME ) {
+        H_ASSERT( has_biome( biome ), biome_error );
+    }
     
     if( varNameParsed == D_ATMOSPHERIC_C ) {
         if(date == Core::undefinedIndex())
@@ -489,7 +494,6 @@ unitval SimpleNbox::getData(const std::string& varName,
             else
                 returnval = sum_map(veg_c_tv.get(date));
         } else {
-            H_ASSERT(has_biome( biome ), biome_error);
             if(date == Core::undefinedIndex())
                 returnval = veg_c.at(biome) ;
             else
@@ -502,7 +506,6 @@ unitval SimpleNbox::getData(const std::string& varName,
             else
                 returnval = sum_map(detritus_c_tv.get(date));
         } else {
-            H_ASSERT(has_biome( biome ), biome_error);
             if(date == Core::undefinedIndex())
                 returnval = detritus_c.at(biome) ;
             else
@@ -515,7 +518,6 @@ unitval SimpleNbox::getData(const std::string& varName,
             else
                 returnval = sum_map(soil_c_tv.get(date));
         } else {
-            H_ASSERT(has_biome( biome ), biome_error);
             if(date == Core::undefinedIndex())
                 returnval = soil_c.at(biome);
             else
@@ -528,7 +530,6 @@ unitval SimpleNbox::getData(const std::string& varName,
             else
                 returnval = sum_map(thawed_permafrost_c_tv.get(date));
         } else {
-            H_ASSERT(has_biome( biome ), biome_error);
             if(date == Core::undefinedIndex())
                 returnval = thawed_permafrost_c.at(biome);
             else
@@ -541,7 +542,6 @@ unitval SimpleNbox::getData(const std::string& varName,
             else
                 returnval = sum_map(permafrost_c_tv.get(date));
         } else {
-            H_ASSERT(has_biome( biome ), biome_error);
             if(date == Core::undefinedIndex())
                 returnval = permafrost_c.at(biome);
             else
@@ -574,7 +574,6 @@ unitval SimpleNbox::getData(const std::string& varName,
                 tempval = temp_step;
             }
         } else { // user requesting a specific biome
-            H_ASSERT( has_biome( biome ), biome_error );
             if(date == Core::undefinedIndex())
                 tempval = f_frozen.at( biome );
             else
@@ -583,7 +582,6 @@ unitval SimpleNbox::getData(const std::string& varName,
         returnval = unitval( tempval, U_UNITLESS );
     } else if( varNameParsed == D_NPP_FLUX0 ) {
         H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for npp_flux0" );
-        H_ASSERT(has_biome( biome ), biome_error);
         returnval = npp_flux0.at(biome);
     } else if( varNameParsed == D_FFI_EMISSIONS ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for ffi emissions" );
@@ -614,7 +612,6 @@ unitval SimpleNbox::getData(const std::string& varName,
             else
                 returnval = sum_map( RH_det_tv.get(date) );
         } else {
-            H_ASSERT(has_biome( biome ), biome_error);
             if(date == Core::undefinedIndex())
                 returnval = RH_det.at(biome);
             else
@@ -627,7 +624,6 @@ unitval SimpleNbox::getData(const std::string& varName,
             else
                 returnval = sum_map( RH_thawed_permafrost_tv.get(date) );
         } else {
-            H_ASSERT(has_biome( biome ), biome_error);
             if(date == Core::undefinedIndex())
                 returnval = RH_thawed_permafrost.at(biome);
             else
@@ -640,7 +636,6 @@ unitval SimpleNbox::getData(const std::string& varName,
             else
                 returnval = sum_map( RH_soil_tv.get(date) );
         } else {
-            H_ASSERT(has_biome( biome ), biome_error);
             if(date == Core::undefinedIndex())
                 returnval = RH_soil.at(biome);
             else
@@ -653,7 +648,6 @@ unitval SimpleNbox::getData(const std::string& varName,
             else
                 returnval = sum_map( RH_ch4_tv.get(date) );
         } else {
-            H_ASSERT(has_biome( biome ), biome_error);
             if(date == Core::undefinedIndex())
                 returnval = RH_ch4.at(biome);
             else
