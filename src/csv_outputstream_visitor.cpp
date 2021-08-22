@@ -97,36 +97,6 @@ void CSVOutputStreamVisitor::visit( Core* c ) {
     core = c;
 }
 
-// TODO: have to consolidate these macros into the two MESSAGE ones,
-// and shift string literals to D_xxxx definitions
-
-// Macro to send a variable with associated unitval units to some output stream
-// Takes s (stream), c (component), xname (variable name), x (output variable)
-#define STREAM_UNITVAL( s, c, xname, x ) { \
-s << linestamp() << c->getComponentName() << DELIMITER \
-<< xname << DELIMITER << x.value( x.units() ) << DELIMITER \
-<< x.unitsName() << std::endl; \
-}
-
-// Macro to send a variable with associated unitval units to some output stream
-// This uses new sendMessage interface in imodel_component
-// Takes s (stream), c (component), xname (variable name), date
-#define STREAM_MESSAGE( s, c, xname ) { \
-unitval x = c->sendMessage( M_GETDATA, xname ); \
-s << linestamp() << c->getComponentName() << DELIMITER \
-<< xname << DELIMITER << x.value( x.units() ) << DELIMITER \
-<< x.unitsName() << std::endl; \
-}
-// Macro for date-dependent variables
-// Takes s (stream), c (component), xname (variable name), date
-#define STREAM_MESSAGE_DATE( s, c, xname, date ) { \
-unitval x = c->sendMessage( M_GETDATA, xname, message_data( date ) ); \
-s << linestamp() << c->getComponentName() << DELIMITER \
-<< xname << DELIMITER << x.value( x.units() ) << DELIMITER \
-<< x.unitsName() << std::endl; \
-}
-
-
 //------------------------------------------------------------------------------
 // documentation is inherited
 void CSVOutputStreamVisitor::visit( ForcingComponent* c ) {
@@ -163,7 +133,7 @@ void CSVOutputStreamVisitor::visit( SimpleNbox* c ) {
     STREAM_MESSAGE( csvFile, c, D_SOILC );
     STREAM_MESSAGE( csvFile, c, D_EARTHC );
 
-    // Biome-specific outputs: <variable>.<biome>
+    // Biome-specific outputs: <biome>.<variable>
     if( c->veg_c.size() > 1 ) {
         SimpleNbox::fluxpool_stringmap::const_iterator it;
         for( it = c->veg_c.begin(); it != c->veg_c.end(); it++ ) {
