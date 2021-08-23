@@ -247,7 +247,7 @@ void SimpleNbox::setData( const std::string &varName,
             }
         }
         else if( varNameParsed == D_PERMAFROSTC ){
-            permafrost_c[ biome ] = fluxpool(data.getUnitval( U_PGC ).value(U_PGC), U_PGC, false, "permafrostc_" + biome);
+            permafrost_c[ biome ] = fluxpool(data.getUnitval( U_PGC ).value(U_PGC), U_PGC, false, varName);
             if ( data.date != Core::undefinedIndex()) {
                 permafrost_c_tv.set(data.date, permafrost_c);
             }
