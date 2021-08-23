@@ -317,7 +317,7 @@ unitval OceanComponent::annual_totalcflux( const double date, const unitval& Ca,
 void OceanComponent::run( const double runToDate ) {
 
     Ca = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_CO2 );
-    Tgav = unitval(core->sendMessage( M_GETDATA, D_OCEAN_AIR_TEMP ), U_DEGC);
+    Tgav = unitval(core->sendMessage( M_GETDATA, D_GLOBAL_TEMP ), U_DEGC);
     in_spinup = core->inSpinup();
 	annualflux_sum.set( 0.0, U_PGC );
 	annualflux_sumHL.set( 0.0, U_PGC );
