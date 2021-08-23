@@ -182,10 +182,12 @@ void SimpleNbox::setData( const std::string &varName,
     }
 
     if (data.isVal) {
-        H_LOG( logger, Logger::DEBUG ) << "Setting " << biome << "." << varNameParsed << "[" << data.date << "]=" << data.value_unitval << std::endl;
+        H_LOG( logger, Logger::DEBUG ) << "Setting " << biome << SNBOX_PARSECHAR
+        << varNameParsed << "[" << data.date << "]=" << data.value_unitval << std::endl;
     }
     else {
-        H_LOG( logger, Logger::DEBUG ) << "Setting " << biome << "." << varNameParsed << "[" << data.date << "]=" << data.value_str << std::endl;
+        H_LOG( logger, Logger::DEBUG ) << "Setting " << biome << SNBOX_PARSECHAR
+        << varNameParsed << "[" << data.date << "]=" << data.value_str << std::endl;
     }
     try {
         // Initial pools
@@ -215,19 +217,19 @@ void SimpleNbox::setData( const std::string &varName,
             // `reset` (which includes code like `veg_c = veg_c_tv.get(t)`).
             
             // Data are coming in as unitvals, but change to fluxpools
-            veg_c[ biome ] = fluxpool(data.getUnitval( U_PGC ).value(U_PGC), U_PGC, false, "veg_c_" + biome);
+            veg_c[ biome ] = fluxpool(data.getUnitval( U_PGC ).value(U_PGC), U_PGC, false, varName);
             if (data.date != Core::undefinedIndex()) {
                 veg_c_tv.set(data.date, veg_c);
             }
         }
         else if( varNameParsed == D_DETRITUSC ) {
-            detritus_c[ biome ] = fluxpool(data.getUnitval( U_PGC ).value(U_PGC), U_PGC, false, "detritus_c_" + biome);
+            detritus_c[ biome ] = fluxpool(data.getUnitval( U_PGC ).value(U_PGC), U_PGC, false, varName);
             if (data.date != Core::undefinedIndex()) {
                 detritus_c_tv.set(data.date, detritus_c);
             }
         }
         else if( varNameParsed == D_SOILC ) {
-            soil_c[ biome ] = fluxpool(data.getUnitval( U_PGC ).value(U_PGC), U_PGC, false, "soil_c_" + biome);
+            soil_c[ biome ] = fluxpool(data.getUnitval( U_PGC ).value(U_PGC), U_PGC, false, varName);
             if (data.date != Core::undefinedIndex()) {
                 soil_c_tv.set(data.date, soil_c);
             }
@@ -628,11 +630,11 @@ void SimpleNbox::createBiome(const std::string& biome)
     H_ASSERT(!has_biome( biome ), errmsg);
 
     // Initialize new pools
-    veg_c[ biome ] = fluxpool(0, U_PGC, false, "veg_c_"+biome);
+    veg_c[ biome ] = fluxpool(0, U_PGC, false, D_VEGC);
     add_biome_to_ts(veg_c_tv, biome, veg_c.at( biome ));
-    detritus_c[ biome ] = fluxpool(0, U_PGC, false, "detritus_c_" + biome);
+    detritus_c[ biome ] = fluxpool(0, U_PGC, false, D_DETRITUSC);
     add_biome_to_ts(detritus_c_tv, biome, detritus_c.at( biome ));
-    soil_c[ biome ] = fluxpool(0, U_PGC, false, "soil_c_" + biome);
+    soil_c[ biome ] = fluxpool(0, U_PGC, false, D_SOILC);
     add_biome_to_ts(soil_c_tv, biome, soil_c.at( biome ));
 
     npp_flux0[ biome ] = fluxpool(0, U_PGC_YR);
