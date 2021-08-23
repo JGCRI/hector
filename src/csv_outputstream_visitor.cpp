@@ -97,36 +97,6 @@ void CSVOutputStreamVisitor::visit( Core* c ) {
     core = c;
 }
 
-// TODO: have to consolidate these macros into the two MESSAGE ones,
-// and shift string literals to D_xxxx definitions
-
-// Macro to send a variable with associated unitval units to some output stream
-// Takes s (stream), c (component), xname (variable name), x (output variable)
-#define STREAM_UNITVAL( s, c, xname, x ) { \
-s << linestamp() << c->getComponentName() << DELIMITER \
-<< xname << DELIMITER << x.value( x.units() ) << DELIMITER \
-<< x.unitsName() << std::endl; \
-}
-
-// Macro to send a variable with associated unitval units to some output stream
-// This uses new sendMessage interface in imodel_component
-// Takes s (stream), c (component), xname (variable name), date
-#define STREAM_MESSAGE( s, c, xname ) { \
-unitval x = c->sendMessage( M_GETDATA, xname ); \
-s << linestamp() << c->getComponentName() << DELIMITER \
-<< xname << DELIMITER << x.value( x.units() ) << DELIMITER \
-<< x.unitsName() << std::endl; \
-}
-// Macro for date-dependent variables
-// Takes s (stream), c (component), xname (variable name), date
-#define STREAM_MESSAGE_DATE( s, c, xname, date ) { \
-unitval x = c->sendMessage( M_GETDATA, xname, message_data( date ) ); \
-s << linestamp() << c->getComponentName() << DELIMITER \
-<< xname << DELIMITER << x.value( x.units() ) << DELIMITER \
-<< x.unitsName() << std::endl; \
-}
-
-
 //------------------------------------------------------------------------------
 // documentation is inherited
 void CSVOutputStreamVisitor::visit( ForcingComponent* c ) {
@@ -152,6 +122,7 @@ void CSVOutputStreamVisitor::visit( SimpleNbox* c ) {
     if( !core->outputEnabled( c->getComponentName() ) ) return;
 
     // Global outputs
+    // Note if there are multiple biomes, these values will be totals, summed across all biomes
     STREAM_MESSAGE( csvFile, c, D_LAND_CFLUX );
     STREAM_MESSAGE( csvFile, c, D_NPP );
     STREAM_MESSAGE( csvFile, c, D_RH );
@@ -165,20 +136,20 @@ void CSVOutputStreamVisitor::visit( SimpleNbox* c ) {
     STREAM_MESSAGE( csvFile, c, D_THAWEDPC );
     STREAM_MESSAGE( csvFile, c, D_EARTHC );
 
-    // Biome-specific outputs: <variable>.<biome>
+    // Biome-specific outputs: <biome>.<variable>
     if( c->veg_c.size() > 1 ) {
         SimpleNbox::fluxpool_stringmap::const_iterator it;
         for( it = c->veg_c.begin(); it != c->veg_c.end(); it++ ) {
-            std::string biome = ( *it ).first;
-            STREAM_UNITVAL( csvFile, c, biome+"."+D_NPP, c->npp( biome ) );
-            STREAM_UNITVAL( csvFile, c, biome+"."+D_RH, c->rh( biome ) );
-            STREAM_UNITVAL( csvFile, c, biome+"."+D_VEGC, c->veg_c[ biome ] );
-            STREAM_UNITVAL( csvFile, c, biome+"."+D_DETRITUSC, c->detritus_c[ biome ] );
-            STREAM_UNITVAL( csvFile, c, biome+"."+D_SOILC, c->soil_c[ biome ] );
-            STREAM_UNITVAL( csvFile, c, biome+"."+D_PERMAFROSTC, c->permafrost_c[ biome ] );
-            STREAM_UNITVAL( csvFile, c, biome+"."+D_THAWEDPC, c->thawed_permafrost_c[ biome ] );
-            STREAM_UNITVAL( csvFile, c, biome+"."+D_TEMPFERTD, unitval( c->tempfertd[ biome ], U_UNITLESS ) );
-            STREAM_UNITVAL( csvFile, c, biome+"."+D_TEMPFERTS, unitval( c->tempferts[ biome ], U_UNITLESS ) );
+            std::string biome = ( *it ).first + SNBOX_PARSECHAR;
+            STREAM_UNITVAL( csvFile, c, biome + D_NPP, c->npp( biome ) );
+            STREAM_UNITVAL( csvFile, c, biome + D_RH, c->rh( biome ) );
+            STREAM_UNITVAL( csvFile, c, biome + D_VEGC, c->veg_c[ biome ] );
+            STREAM_UNITVAL( csvFile, c, biome + D_DETRITUSC, c->detritus_c[ biome ] );
+            STREAM_UNITVAL( csvFile, c, biome + D_SOILC, c->soil_c[ biome ] );
+            STREAM_UNITVAL( csvFile, c, biome + D_PERMAFROSTC, c->permafrost_c[ biome ] );
+            STREAM_UNITVAL( csvFile, c, biome + D_THAWEDPC, c->thawed_permafrost_c[ biome ] );
+            STREAM_UNITVAL( csvFile, c, biome + D_TEMPFERTD, unitval( c->tempfertd[ biome ], U_UNITLESS ) );
+            STREAM_UNITVAL( csvFile, c, biome + D_TEMPFERTS, unitval( c->tempferts[ biome ], U_UNITLESS ) );
         }
     }
 }

@@ -4,10 +4,10 @@
    Please see the accompanying file LICENSE.md for additional licensing
    information.
 */
-#ifndef CSV_FLUXPOOL_VISITOR_H
-#define CSV_FLUXPOOL_VISITOR_H
+#ifndef CSV_TRACKING_VISITOR_H
+#define CSV_TRACKING_VISITOR_H
 /*
- *  csv_fluxpool_visitor.h
+ *  csv_tracking_visitor.h
  *  hector
  *
  *  Created by Skylar Gering on 21 January 2021.
@@ -68,4 +68,4 @@ private:
 
 }
 
-#endif // CSV_FLUXPOOL_VISITOR_H
+#endif // CSV_TRACKING_VISITOR_H
