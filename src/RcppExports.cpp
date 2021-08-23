@@ -30,6 +30,16 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// BIOME_SPLIT_CHAR
+String BIOME_SPLIT_CHAR();
+RcppExport SEXP _hector_BIOME_SPLIT_CHAR() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(BIOME_SPLIT_CHAR());
+    return rcpp_result_gen;
+END_RCPP
+}
 // LL_DEBUG
 int LL_DEBUG();
 RcppExport SEXP _hector_LL_DEBUG() {
@@ -1820,16 +1830,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// BIOME_SPLIT_CHAR
-String BIOME_SPLIT_CHAR();
-RcppExport SEXP _hector_BIOME_SPLIT_CHAR() {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(BIOME_SPLIT_CHAR());
-    return rcpp_result_gen;
-END_RCPP
-}
 // newcore_impl
 Environment newcore_impl(String inifile, int loglevel, bool suppresslogging, String name);
 RcppExport SEXP _hector_newcore_impl(SEXP inifileSEXP, SEXP loglevelSEXP, SEXP suppressloggingSEXP, SEXP nameSEXP) {
@@ -1980,6 +1980,7 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_hector_GETDATA", (DL_FUNC) &_hector_GETDATA, 0},
     {"_hector_SETDATA", (DL_FUNC) &_hector_SETDATA, 0},
+    {"_hector_BIOME_SPLIT_CHAR", (DL_FUNC) &_hector_BIOME_SPLIT_CHAR, 0},
     {"_hector_LL_DEBUG", (DL_FUNC) &_hector_LL_DEBUG, 0},
     {"_hector_LL_NOTICE", (DL_FUNC) &_hector_LL_NOTICE, 0},
     {"_hector_LL_WARNING", (DL_FUNC) &_hector_LL_WARNING, 0},
@@ -2158,7 +2159,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_FLUX_MIXED", (DL_FUNC) &_hector_FLUX_MIXED, 0},
     {"_hector_FLUX_INTERIOR", (DL_FUNC) &_hector_FLUX_INTERIOR, 0},
     {"_hector_HEAT_FLUX", (DL_FUNC) &_hector_HEAT_FLUX, 0},
-    {"_hector_BIOME_SPLIT_CHAR", (DL_FUNC) &_hector_BIOME_SPLIT_CHAR, 0},
     {"_hector_newcore_impl", (DL_FUNC) &_hector_newcore_impl, 4},
     {"_hector_shutdown", (DL_FUNC) &_hector_shutdown, 1},
     {"_hector_reset", (DL_FUNC) &_hector_reset, 2},

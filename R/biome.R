@@ -132,7 +132,7 @@ get_biome_inits <- function(core, biome) {
   ))[, -1]
   current_data <- rbind.data.frame(current_data_1, current_data_2)
   current_values <- current_data[["value"]]
-  names(current_values) <- gsub(paste0(biome, "."), "",
+  names(current_values) <- gsub(paste0(biome, BIOME_SPLIT_CHAR()), "",
     current_data[["variable"]],
     fixed = TRUE
   )

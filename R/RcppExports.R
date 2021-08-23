@@ -16,6 +16,11 @@ SETDATA <- function() {
     .Call('_hector_SETDATA', PACKAGE = 'hector')
 }
 
+#' @describeIn msgtype Character used to separate biome from variable name
+BIOME_SPLIT_CHAR <- function() {
+    .Call('_hector_BIOME_SPLIT_CHAR', PACKAGE = 'hector')
+}
+
 #' @describeIn loglevels Set logging at 'debug' level.
 #' @export
 LL_DEBUG <- function() {
@@ -1090,11 +1095,6 @@ FLUX_INTERIOR <- function() {
 #' @export
 HEAT_FLUX <- function() {
     .Call('_hector_HEAT_FLUX', PACKAGE = 'hector')
-}
-
-#' @describeIn msgtype Character used to separate biome from variable name
-BIOME_SPLIT_CHAR <- function() {
-    .Call('_hector_BIOME_SPLIT_CHAR', PACKAGE = 'hector')
 }
 
 newcore_impl <- function(inifile, loglevel, suppresslogging, name) {
