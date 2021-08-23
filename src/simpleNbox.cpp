@@ -630,11 +630,11 @@ void SimpleNbox::createBiome(const std::string& biome)
     H_ASSERT(!has_biome( biome ), errmsg);
 
     // Initialize new pools
-    veg_c[ biome ] = fluxpool(0, U_PGC, false, "veg_c_"+biome);
+    veg_c[ biome ] = fluxpool(0, U_PGC, false, D_VEGC);
     add_biome_to_ts(veg_c_tv, biome, veg_c.at( biome ));
-    detritus_c[ biome ] = fluxpool(0, U_PGC, false, "detritus_c_" + biome);
+    detritus_c[ biome ] = fluxpool(0, U_PGC, false, D_DETRITUSC);
     add_biome_to_ts(detritus_c_tv, biome, detritus_c.at( biome ));
-    soil_c[ biome ] = fluxpool(0, U_PGC, false, "soil_c_" + biome);
+    soil_c[ biome ] = fluxpool(0, U_PGC, false, D_SOILC);
     add_biome_to_ts(soil_c_tv, biome, soil_c.at( biome ));
 
     npp_flux0[ biome ] = fluxpool(0, U_PGC_YR);
