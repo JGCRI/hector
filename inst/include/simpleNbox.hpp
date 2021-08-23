@@ -114,9 +114,13 @@ private:
     fluxpool_stringmap veg_c;        //!< vegetation pools, Pg C
     fluxpool_stringmap detritus_c;   //!< detritus pools, Pg C
     fluxpool_stringmap soil_c;       //!< soil pool, Pg C
+    // Permafrost documented in:
+    // Woodard, D. L., Shiklomanov, A. N., Kravitz, B., Hartin, C., and Bond-Lamberty, B.:
+    // A permafrost implementation in the simple carbon–climate model Hector v.2.3pf, GMD 14:4751–4767, 2021.
+    // http://dx.doi.org/10.5194/gmd-14-4751-2021
     fluxpool_stringmap permafrost_c; //!< permafrost C pool, Pg C
-    // We track thawed peramfrost separately than soil, so that
-    //  we can apply rh_ch4_frac (the CH4:CO2 ratio) to it
+    // Track thawed peramfrost separately than soil, so that
+    // we can apply rh_ch4_frac (the CH4:CO2 ratio) to it
     fluxpool_stringmap thawed_permafrost_c;     //!< thawed permafrost pool, Pg C
     fluxpool_stringmap static_c;  				//!< static carbon total in thawed permafrost pool
 
