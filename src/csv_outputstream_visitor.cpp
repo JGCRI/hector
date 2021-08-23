@@ -140,16 +140,16 @@ void CSVOutputStreamVisitor::visit( SimpleNbox* c ) {
     if( c->veg_c.size() > 1 ) {
         SimpleNbox::fluxpool_stringmap::const_iterator it;
         for( it = c->veg_c.begin(); it != c->veg_c.end(); it++ ) {
-            std::string biome = ( *it ).first + SNBOX_PARSECHAR;
-            STREAM_UNITVAL( csvFile, c, biome + D_NPP, c->npp( biome ) );
-            STREAM_UNITVAL( csvFile, c, biome + D_RH, c->rh( biome ) );
-            STREAM_UNITVAL( csvFile, c, biome + D_VEGC, c->veg_c[ biome ] );
-            STREAM_UNITVAL( csvFile, c, biome + D_DETRITUSC, c->detritus_c[ biome ] );
-            STREAM_UNITVAL( csvFile, c, biome + D_SOILC, c->soil_c[ biome ] );
-            STREAM_UNITVAL( csvFile, c, biome + D_PERMAFROSTC, c->permafrost_c[ biome ] );
-            STREAM_UNITVAL( csvFile, c, biome + D_THAWEDPC, c->thawed_permafrost_c[ biome ] );
-            STREAM_UNITVAL( csvFile, c, biome + D_TEMPFERTD, unitval( c->tempfertd[ biome ], U_UNITLESS ) );
-            STREAM_UNITVAL( csvFile, c, biome + D_TEMPFERTS, unitval( c->tempferts[ biome ], U_UNITLESS ) );
+            std::string biome = ( *it ).first;
+            STREAM_UNITVAL( csvFile, c, biome + SNBOX_PARSECHAR + D_NPP, c->npp( biome ) );
+            STREAM_UNITVAL( csvFile, c, biome + SNBOX_PARSECHAR + D_RH, c->rh( biome ) );
+            STREAM_UNITVAL( csvFile, c, biome + SNBOX_PARSECHAR + D_VEGC, c->veg_c[ biome ] );
+            STREAM_UNITVAL( csvFile, c, biome + SNBOX_PARSECHAR + D_DETRITUSC, c->detritus_c[ biome ] );
+            STREAM_UNITVAL( csvFile, c, biome + SNBOX_PARSECHAR + D_SOILC, c->soil_c[ biome ] );
+            STREAM_UNITVAL( csvFile, c, biome + SNBOX_PARSECHAR + D_PERMAFROSTC, c->permafrost_c[ biome ] );
+            STREAM_UNITVAL( csvFile, c, biome + SNBOX_PARSECHAR + D_THAWEDPC, c->thawed_permafrost_c[ biome ] );
+            STREAM_UNITVAL( csvFile, c, biome + SNBOX_PARSECHAR + D_TEMPFERTD, unitval( c->tempfertd[ biome ], U_UNITLESS ) );
+            STREAM_UNITVAL( csvFile, c, biome + SNBOX_PARSECHAR + D_TEMPFERTS, unitval( c->tempferts[ biome ], U_UNITLESS ) );
         }
     }
 }
