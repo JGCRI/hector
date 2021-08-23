@@ -83,36 +83,4 @@ AVisitor::~AVisitor() {
 
 }
 
-
-// Macros used by both csv_tracking_visitor and csv_outputstream_visitor
-
-// TODO: consolidate these macros into the two MESSAGE ones,
-// and shift string literals to D_xxxx definitions
-
-// Macro to send a variable with associated unitval units to some output stream
-// Takes s (stream), c (component), xname (variable name), x (output variable)
-#define STREAM_UNITVAL( s, c, xname, x ) { \
-s << linestamp() << c->getComponentName() << DELIMITER \
-<< xname << DELIMITER << x.value( x.units() ) << DELIMITER \
-<< x.unitsName() << std::endl; \
-}
-
-// Macro to send a variable with associated unitval units to some output stream
-// This uses new sendMessage interface in imodel_component
-// Takes s (stream), c (component), xname (variable name)
-#define STREAM_MESSAGE( s, c, xname ) { \
-unitval x = c->sendMessage( M_GETDATA, xname ); \
-s << linestamp() << c->getComponentName() << DELIMITER \
-<< xname << DELIMITER << x.value( x.units() ) << DELIMITER \
-<< x.unitsName() << std::endl; \
-}
-// Macro for date-dependent variables
-// Takes s (stream), c (component), xname (variable name), date
-#define STREAM_MESSAGE_DATE( s, c, xname, date ) { \
-unitval x = c->sendMessage( M_GETDATA, xname, message_data( date ) ); \
-s << linestamp() << c->getComponentName() << DELIMITER \
-<< xname << DELIMITER << x.value( x.units() ) << DELIMITER \
-<< x.unitsName() << std::endl; \
-}
-
 #endif // AVISITOR_H
