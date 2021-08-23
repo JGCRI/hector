@@ -19,7 +19,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 The global mean surface temperature (GMST) is the average of the air temperature 2 meters over the Earth's surface and the temperature at the surface of the ocean.^[Allen, M.R., O.P. Dube, W. Solecki, F. Aragón-Durand, W. Cramer, S. Humphreys, M. Kainuma, J. Kala, N. Mahowald, Y. Mulugetta, R. Perez, M. Wairiu, and K. Zickfeld, 2018: Framing and Context. In: Global Warming of 1.5°C. An IPCC Special Report on the impacts of global warming of 1.5°C above pre-industrial levels and related global greenhouse gas emission pathways, in the context of strengthening the global response to the threat of climate change, sustainable development, and efforts to eradicate poverty [Masson-Delmotte, V., P. Zhai, H.-O. Pörtner, D. Roberts, J. Skea, P.R. Shukla, A. Pirani, W. Moufouma-Okia, C. Péan, R. Pidcock, S. Connors, J.B.R. Matthews, Y. Chen, X. Zhou, M.I. Gomis, E. Lonnoy, T. Maycock, M. Tignor, and T. Waterfield (eds.)]. In Press.] This is a very useful metric for observing global temperature changes. Although changes in GMST are relatively small in terms of numbers, it takes a great deal of heat to warm the entire planet by even a fraction of a degree. Measurements of the temperature changes provide evidence for anthropogenic climate change.
 
-However, Hector does not produce GMST as an output at this time. Hector does measure the global mean air temperature (GMAT), which we can use to back-calculate GMST. GMAT is the air temperature measured 2 meters above the ground and is what is presented in a daily weather report.^[Taylor, Jessica. "Analyzing Surface Air Temperatures by Latitude." NASA, 2018. https://mynasadata.larc.nasa.gov/mini-lesson/analyzing-surface-air-temperatures-latitude-student-activity] 
+However, Hector does not produce GMST as an output at this time. Hector does calculate the global mean air temperature (GMAT), which we can use to back-calculate GMST. GMAT is the air temperature measured 2 meters above the ground and is what is presented in a daily weather report.^[Taylor, Jessica. "Analyzing Surface Air Temperatures by Latitude." NASA, 2018. https://mynasadata.larc.nasa.gov/mini-lesson/analyzing-surface-air-temperatures-latitude-student-activity] 
 
 This vignette demonstrates how to set up the calculation between GMAT and GMST and how to plot results to observe differences over time. 
 
@@ -47,6 +47,8 @@ GMST can be calculated from Hector outputs by computing a weighted sum of the la
 $ GMST = (land air temperature * fractional land area) + (ocean surface temperature * (1 - fractional land area)) $
 
 In Hector, land air temperature is represented by `Tgav_land` (`LAND_AIR_TEMP()`) and ocean surface temperature is represented by `Tgav_ocean_ST` (`OCEAN_SURFACE_TEMP()`). These components stem from the variable `Tgav` (`GLOBAL_TEMP()`), which is how Hector stores GMAT.
+
+Note that the reason that the same variable is represented in two different ways is due to the interaction between the R interface and the underlying C++ model. For example, `LAND_AIR_TEMP()` is the function in R that returns a string message such as `Tgav_land`, which is then passed into the base C++ Hector model. This method is user-friendly as spelling/capitalization is not an issue and developer-friendly as string in C++ can be changed without changing the R user interface.
 
 ``` {r find.GMST}
 flnd = 0.29;     # fractional land area, a constant in Hector
@@ -82,7 +84,7 @@ global_air_temp$variable <- "GMAT"
 
 ## Plot results
 
-The following plot shows GMST and GMAT over time. We see that in about 2000, GMAT begins to increase more quickly than GMST. By 2300, there is a significant gap between the two; GMAT is higher than GMST as GMAT is responding more quickly to anthropogenic forcing. This makes sense as GMST accounts for heating over the oceans which warm more slowly than the atmosphere. 
+The following plot shows GMST and GMAT over time. We see that in about 2000, GMAT begins to increase more quickly than GMST. By 2300, there is a significant gap between the two; GMAT is higher than GMST as GMAT is responding more quickly to anthropogenic forcing. This makes sense as GMST accounts for heating of the ocean surface which warms more slowly than the atmosphere. 
 
 ``` {r plot}
 
