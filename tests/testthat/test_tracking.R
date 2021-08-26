@@ -1,5 +1,5 @@
 # Tracking tests
-# Leeyah Pressburger 2021
+# Leeya Pressburger 2021
 
 context("Carbon tracking")
 
@@ -157,4 +157,105 @@ test_that("Tracking works with a core reset", {
     expect_identical(track_date2, track_date)
 
     shutdown(core2)
+})
+
+test_that("Pool names are valid", {
+    error_threshold <- 1e-3
+    core <- newcore(inifile)
+    setvar(core, NA, TRACKING_DATE(), 1760, tunits)
+    run(core, 1770)
+
+    # Check that pool_name and corresponding pool_units are the same values
+    # as what is returned in the tracking data in the first year of the run
+    tdata <- get_tracking_data(core)
+    track_date <- fetchvars(core, NA, TRACKING_DATE())$value
+    tdata <- subset(tdata, tdata$year == track_date)
+
+    # HL
+    HL <- subset(tdata, tdata$pool_name == "HL")
+    HL_value <- unique(HL$pool_value)
+    HL_units <- unique(HL$pool_units)
+
+    h <- fetchvars(core, 1760, OCEAN_C_HL())
+    expect_equal(h$value, HL_value, tolerance = error_threshold)
+    expect_identical(h$units, HL_units)
+
+    # LL
+    LL <- subset(tdata, tdata$pool_name == "LL")
+    LL_value <- unique(LL$pool_value)
+    LL_units <- unique(LL$pool_units)
+
+    l <- fetchvars(core, 1760, OCEAN_C_LL())
+    expect_equal(l$value, LL_value, tolerance = error_threshold)
+    expect_identical(l$units, LL_units)
+
+    # Intermediate
+    int <- subset(tdata, tdata$pool_name == "intermediate")
+    int_value <- unique(int$pool_value)
+    int_units <- unique(int$pool_units)
+
+    i <- fetchvars(core, 1760, OCEAN_C_IO())
+    expect_equal(i$value, int_value, tolerance = error_threshold)
+    expect_identical(i$units, int_units)
+
+    # Deep
+    deep <- subset(tdata, tdata$pool_name == "deep")
+    deep_value <- unique(deep$pool_value)
+    deep_units <- unique(deep$pool_units)
+
+    d <- fetchvars(core, 1760, OCEAN_C_DO())
+    expect_equal(d$value, deep_value, tolerance = error_threshold)
+    expect_identical(d$units, deep_units)
+
+    # atmos_c
+    atm <- subset(tdata, tdata$pool_name == "atmos_c")
+    atm_value <- unique(atm$pool_value)
+    atm_units <- unique(atm$pool_units)
+
+    a <- fetchvars(core, 1760, ATMOSPHERIC_C())
+    expect_equal(a$value, atm_value, tolerance = error_threshold)
+    expect_identical(a$units, atm_units)
+
+    # earth_c
+    ear <- subset(tdata, tdata$pool_name == "earth_c")
+    ear_value <- unique(ear$pool_value)
+    ear_units <- unique(ear$pool_units)
+
+    e <- fetchvars(core, 1760, EARTH_C())
+    expect_equal(e$value, ear_value, tolerance = error_threshold)
+    expect_identical(e$units, ear_units)
+
+    # veg_c
+    veg <- subset(tdata, tdata$pool_name == "veg_c")
+    veg_value <- unique(veg$pool_value)
+    veg_units <- unique(veg$pool_units)
+
+    v <- fetchvars(core, 1760, VEG_C())
+    expect_equal(v$value, veg_value, tolerance = error_threshold)
+    expect_identical(v$units, veg_units)
+
+    # detritus_c
+    det <- subset(tdata, tdata$pool_name == "detritus_c")
+    det_value <- unique(det$pool_value)
+    det_units <- unique(det$pool_units)
+
+    d <- fetchvars(core, 1760, DETRITUS_C())
+    expect_equal(d$value, det_value, tolerance = error_threshold)
+    expect_identical(d$units, det_units)
+
+    # soil_c
+    soil <- subset(tdata, tdata$pool_name == "soil_c")
+    soil_value <- unique(soil$pool_value)
+    soil_units <- unique(soil$pool_units)
+
+    s <- fetchvars(core, 1760, SOIL_C())
+    expect_equal(s$value, soil_value, tolerance = error_threshold)
+    expect_identical(s$units, soil_units)
+
+    # Check that source_names are present in pool_name column
+    source_names <- sort(unique(tdata$source_name))
+    pool_names <- sort(unique(tdata$pool_name))
+
+    expect_identical(source_names, pool_names)
+
 })
