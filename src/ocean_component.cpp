@@ -216,16 +216,15 @@ void OceanComponent::prepareToRun() {
     // ocean depth
     double thick_LL = 100;         // (m) Thickness of surface ocean from Knox and McElroy (1984)
     double thick_HL = 100;         // (m) Thickness of surface ocean from Knox and McElroy (1984)
-    double thick_inter = 1000-thick_LL;  // (m) Thickness of innner ocean from Knox and McElroy (1984)
-    double thick_deep = 3777-thick_inter-thick_LL; // Thickness of deep ocean from Knox and McElroy (1984)
+    double thick_inter = 1000-thick_LL;  // (m) Thickness of of intermediate ocean from Knox and McElroy (1984)
+    double thick_deep = 3777-thick_inter-thick_LL; // (m) Thickness of deep ocean from Knox and McElroy (1984)
 
     // ocean area
     const double ocean_area = 3.6e14; // (m2) Knox and McElroy (1984);
 
     // Define high and low latitude
-    // cold high-latitude surface box makes up 15% of the ocean surface area latitude > 55
-    // warm low-latitude surface box makes up 85% of the ocean surface area latitude < 55
-    // fractions (unitless)
+    // The cold high-latitude surface box makes up 15% of the total ocean surface area and has latitude > 55
+    // The warm low-latitude surface box makes up the rest.
     const double part_high = 0.15;
     const double part_low = 1-part_high;
 
@@ -317,7 +316,8 @@ unitval OceanComponent::annual_totalcflux( const double date, const unitval& Ca,
 void OceanComponent::run( const double runToDate ) {
 
     Ca = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_CO2 );
-    Tgav = unitval(core->sendMessage( M_GETDATA, D_GLOBAL_TEMP ), U_DEGC);
+    //Tgav = unitval(core->sendMessage( M_GETDATA, D_GLOBAL_TEMP ), U_DEGC);
+    Tgav = unitval(core->sendMessage( M_GETDATA, D_OCEAN_AIR_TEMP ), U_DEGC);
     in_spinup = core->inSpinup();
 	annualflux_sum.set( 0.0, U_PGC );
 	annualflux_sumHL.set( 0.0, U_PGC );
