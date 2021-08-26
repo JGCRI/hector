@@ -87,6 +87,7 @@ void SimpleNbox::init( Core* coreptr ) {
     core->registerCapability( D_VEGC, getComponentName() );
     core->registerCapability( D_DETRITUSC, getComponentName() );
     core->registerCapability( D_SOILC, getComponentName() );
+    core->registerCapability( D_EARTHC, getComponentName() );
     core->registerCapability( D_NPP_FLUX0, getComponentName() );
     core->registerCapability( D_NPP, getComponentName() );
     core->registerCapability( D_RH, getComponentName() );
@@ -427,7 +428,6 @@ unitval SimpleNbox::getData(const std::string& varName,
     } else if(varNameParsed == D_F_LUCD) {
         H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for LUC detritus fraction");
         returnval = unitval(f_lucd, U_UNITLESS);
-
     } else if( varNameParsed == D_EARTHC ) {
         if(date == Core::undefinedIndex())
             returnval = earth_c;
