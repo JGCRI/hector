@@ -206,6 +206,8 @@ unitval CH4Component::getData( const std::string& varName,
     return returnval;
 }
 
+//------------------------------------------------------------------------------
+// documentation is inherited
 void CH4Component::reset(double time) {
     // reset the internal time counter and truncate concentration time
     // series

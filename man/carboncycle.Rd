@@ -9,6 +9,7 @@
 \alias{RH}
 \alias{ATMOSPHERIC_C}
 \alias{FFI_EMISSIONS}
+\alias{DACCS_UPTAKE}
 \alias{LUC_EMISSIONS}
 \alias{CO2_CONSTRAIN}
 \alias{VEG_C}
@@ -30,6 +31,8 @@ RH()
 ATMOSPHERIC_C()
 
 FFI_EMISSIONS()
+
+DACCS_UPTAKE()
 
 LUC_EMISSIONS()
 
@@ -94,7 +97,7 @@ These variables can be read using the \code{\link{GETDATA}} message type:
 \section{Note}{
 
 Because these identifiers are provided as \code{#define} macros in the hector code,
-these identifiers are provided in the R interface as function.  Therefore,
+these identifiers are provided in the R interface as functions. Therefore,
 these objects must be called to use them; \emph{e.g.}, \code{GETDATA()}
 instead of the more natural looking \code{GETDATA}.
 }

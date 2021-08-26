@@ -34,6 +34,13 @@ String SETDATA() {
 return M_SETDATA;
 }
 
+//' @describeIn msgtype Character used to separate biome from variable name
+// [[Rcpp::export]]
+String BIOME_SPLIT_CHAR() {
+   return SNBOX_PARSECHAR;
+}
+
+
 /* Logging levels */
 
 //' @describeIn loglevels Set logging at 'debug' level.
@@ -69,8 +76,16 @@ return (int) Hector::Logger::SEVERE;
  * Capabilities
  *****************************************************************/
 
+/* Core */
+//' @describeIn parameters Start of carbon tracking (Year)
+//' @export
+// [[Rcpp::export]]
+String TRACKING_DATE() {
+return D_TRACKING_DATE;
+}
+
 /* BC component */
-//' @describeIn emissions Black carbon emissions (\code{"Tg"})
+//' @describeIn emissions Black carbon emissions
 //' @export
 // [[Rcpp::export]]
 String EMISSIONS_BC() {
@@ -1096,6 +1111,13 @@ return D_FFI_EMISSIONS;
 //' @rdname carboncycle
 //' @export
 // [[Rcpp::export]]
+String DACCS_UPTAKE() {
+   return D_DACCS_UPTAKE;
+}
+
+//' @rdname carboncycle
+//' @export
+// [[Rcpp::export]]
 String LUC_EMISSIONS() {
 return D_LUC_EMISSIONS;
 }
@@ -1110,7 +1132,7 @@ String BETA(String biome = "") {
   // `Rcpp::String` has a `+=` method, but no `+` method, so have to use
   // this clunky workaround.
   String out = biome;
-  out += ".";
+  out += BIOME_SPLIT_CHAR();
   out += D_BETA;
   return out;
 }
@@ -1121,7 +1143,7 @@ String BETA(String biome = "") {
 String Q10_RH(String biome = "") {
   if (biome == "") return D_Q10_RH;
   String out = biome;
-  out += ".";
+  out += BIOME_SPLIT_CHAR();
   out += D_Q10_RH;
   return out;
 }
@@ -1133,7 +1155,7 @@ String Q10_RH(String biome = "") {
 String WARMINGFACTOR(String biome = "") {
   if (biome == "") return D_WARMINGFACTOR;
   String out = biome;
-  out += ".";
+  out += BIOME_SPLIT_CHAR();
   out += D_WARMINGFACTOR;
   return out;
 }
@@ -1151,7 +1173,7 @@ String CO2_CONSTRAIN() {
 String F_NPPV(String biome = "") {
   if (biome == "") return D_F_NPPV;
   String out = biome;
-  out += ".";
+  out += BIOME_SPLIT_CHAR();
   out += D_F_NPPV;
   return out;
 }
@@ -1162,7 +1184,7 @@ String F_NPPV(String biome = "") {
 String F_NPPD(String biome = "") {
   if (biome == "") return D_F_NPPD;
   String out = biome;
-  out += ".";
+  out += BIOME_SPLIT_CHAR();
   out += D_F_NPPD;
   return out;
 }
@@ -1173,7 +1195,7 @@ String F_NPPD(String biome = "") {
 String F_LITTERD(String biome = "") {
   if (biome == "") return D_F_LITTERD;
   String out = biome;
-  out += ".";
+  out += BIOME_SPLIT_CHAR();
   out += D_F_LITTERD;
   return out;
 }
@@ -1198,7 +1220,7 @@ return D_F_LUCD;
 String VEG_C(String biome = "") {
   if (biome == "") return D_VEGC;
   String out = biome;
-  out += ".";
+  out += BIOME_SPLIT_CHAR();
   out += D_VEGC;
   return out;
 }
@@ -1209,7 +1231,7 @@ String VEG_C(String biome = "") {
 String DETRITUS_C(String biome = "") {
   if (biome == "") return D_DETRITUSC;
   String out = biome;
-  out += ".";
+  out += BIOME_SPLIT_CHAR();
   out += D_DETRITUSC;
   return out;
 }
@@ -1220,9 +1242,16 @@ String DETRITUS_C(String biome = "") {
 String SOIL_C(String biome = "") {
   if (biome == "") return D_SOILC;
   String out = biome;
-  out += ".";
+  out += BIOME_SPLIT_CHAR();
   out += D_SOILC;
   return out;
+}
+
+//' @rdname carboncycle
+//' @export
+// [[Rcpp::export]]
+String EARTH_C() {
+   return D_EARTHC;
 }
 
 //' @describeIn carboncycle Initial net primary productivity (NPP)
@@ -1232,7 +1261,7 @@ String SOIL_C(String biome = "") {
 String NPP_FLUX0(String biome = "") {
   if (biome == "") return D_NPP_FLUX0;
   String out = biome;
-  out += ".";
+  out += BIOME_SPLIT_CHAR();
   out += D_NPP_FLUX0;
   return out;
 }
@@ -1376,10 +1405,4 @@ return D_FLUX_INTERIOR;
 // [[Rcpp::export]]
 String HEAT_FLUX() {
 return D_HEAT_FLUX;
-}
-
-//' @describeIn msgtype Character used to separate biome from variable name
-// [[Rcpp::export]]
-String BIOME_SPLIT_CHAR() {
-return SNBOX_PARSECHAR;
 }

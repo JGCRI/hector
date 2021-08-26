@@ -84,7 +84,7 @@ RF_CH3BR()
 }
 \description{
 These identifiers specify forcing values that can be provided by hector via
-one of the myriad halocarbon components.  All of the values corresponding to
+one of the myriad halocarbon components. All of the values corresponding to
 these identifiers are read-only (\emph{i.e.}, they can only appear in
 \code{\link{GETDATA}} messages.)  The forcings returned are the
 \emph{relative} forcings, with the base year (typically 1750) values
@@ -148,7 +148,7 @@ subtracted off.
 \section{Note}{
 
 Because these identifiers are provided as \code{#define} macros in the hector code,
-these identifiers are provided in the R interface as function.  Therefore,
+these identifiers are provided in the R interface as functions. Therefore,
 these objects must be called to use them; \emph{e.g.}, \code{GETDATA()}
 instead of the more natural looking \code{GETDATA}.
 }

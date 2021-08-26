@@ -164,7 +164,8 @@ unitval OzoneComponent::getData( const std::string& varName,
     return returnval;
 }
 
-
+//------------------------------------------------------------------------------
+// documentation is inherited
 void OzoneComponent::reset(double time)
 {
     O3.truncate(time);

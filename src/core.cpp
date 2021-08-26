@@ -34,6 +34,7 @@
 #include "h_util.hpp"
 #include "simpleNbox.hpp"
 #include "avisitor.hpp"
+#include "csv_tracking_visitor.hpp"
 
 namespace Hector {
 
@@ -53,6 +54,7 @@ Core::Core(Logger::LogLevel loglvl, bool echotoscreen, bool echotofile) :
     startDate( -1.0 ),
     endDate( -1.0 ),
     lastDate( -1.0),
+    trackingDate( 9999 ),
     isInited( false ),
     do_spinup( true ),
     max_spinup( 2000 ),
@@ -88,6 +90,9 @@ const string& Core::getComponentName() const {
  */
 void Core::init() {
     H_ASSERT( !isInited, "core has already been initialized" );
+
+    // We handle this input; need to register it here so that R users can change it
+    registerInput( D_TRACKING_DATE, CORE_COMPONENT_NAME );
 
     // TODO: maybe some model component factory?
     IModelComponent *temp;
@@ -193,6 +198,22 @@ void Core::init() {
 }
 
 //------------------------------------------------------------------------------
+/*! \brief Return the carbon tracking data stored in the csvFluxPoolVisitor
+ */
+std::string Core::getTrackingData() const {
+
+    // I'm pretty sure I should be using a virtual function for this
+    for( auto visitorIt : modelVisitors ) {
+        const CSVFluxPoolVisitor* bad_idea = dynamic_cast<const CSVFluxPoolVisitor*>(visitorIt);
+        if(bad_idea != nullptr ) {
+            return(bad_idea->get_buffer());
+        }
+
+    }
+    return "";
+}
+
+//------------------------------------------------------------------------------
 /*! \brief Route a setData to the component specified by componentName or parse
  *         the data if componentName is equal to Core::getComponentName().
  *  \param componentName The name of the component to forward the setData to.
@@ -213,6 +234,9 @@ void Core::setData( const string& componentName, const string& varName,
             } else if( varName == D_END_DATE ) {
                 H_ASSERT( data.date == undefinedIndex(), "date not allowed" );
                 endDate = data.getUnitval(U_UNDEFINED);
+            } else if( varName == D_TRACKING_DATE ) {
+                H_ASSERT( data.date == undefinedIndex(), "date not allowed" );
+                trackingDate = data.getUnitval(U_UNITLESS);
             } else if( varName == D_DO_SPINUP ) {
                 H_ASSERT( data.date == undefinedIndex(), "date not allowed" );
                 do_spinup = (data.getUnitval(U_UNDEFINED) > 0);
@@ -281,7 +305,6 @@ void Core::addVisitor( AVisitor* visitor ) {
  */
 void Core::prepareToRun(void)
 {
-
     /* Most of this stuff only needs to be done once, even if we reset the
      * model; therefore it would be a good candidate to go in init instead of
      * here.  However, in order to remove disabled components we have to first
@@ -350,6 +373,12 @@ void Core::prepareToRun(void)
     }
 
     // ------------------------------------
+    // Visit all the visitors; this lets them record the core pointer, tracking date, etc.
+    for( auto visitorIt : modelVisitors ) {
+        visitorIt->visit( this );
+    } // for
+
+    // ------------------------------------
     // 5. Spin up the model
     if( do_spinup ) {
         H_LOG( glog, Logger::NOTICE) << "Spinning up model..." << endl;
@@ -412,7 +441,6 @@ bool Core::run_spinup()
  *
  *  \exception h_exception An error which may occur at any stage of the process.
  */
-
 void Core::run(double runtodate) {
     if(runtodate < 0.0) {
         // run to the configured default enddate.  This is mainly for
@@ -435,6 +463,12 @@ void Core::run(double runtodate) {
     // 6. Run all model dates.
     H_LOG( glog, Logger::NOTICE) << "Running..." << endl;
     for(double currDate = lastDate+1.0; currDate <= runtodate; currDate += 1.0 ) {
+        // If we've hit the tracking start year, note this in the log
+        if(currDate == trackingDate) {
+            H_LOG(glog, Logger::NOTICE) << "Starting tracking in " << currDate << endl;
+            // nb components are responsible for checking and acting on this
+        }
+
         for( NameComponentIterator it = modelComponents.begin(); it != modelComponents.end(); ++it ) {
             ( *it ).second->run( currDate );
         }
@@ -469,9 +503,17 @@ void Core::reset(double resetdate)
         }
     }
 
-    for(NameComponentIterator it = modelComponents.begin(); it != modelComponents.end(); ++it) {
-        H_LOG(glog, Logger::DEBUG) << "Resetting component: " << it->first << endl;
-        it->second->reset(resetdate);
+    // Order all components to reset
+    for( auto it : modelComponents ) {
+        H_LOG(glog, Logger::DEBUG) << "Resetting component: " << it.first << endl;
+        it.second->reset(resetdate);
+    }
+
+    // Inform all visitors of the reset as well
+    // Currently (2021) only csvFluxPoolVisitor implements this
+    for( auto it: modelVisitors ) {
+        H_LOG(glog, Logger::DEBUG) << "Resetting visitor" << endl;
+        it->reset(resetdate);
     }
 
     // The prepareToRun function reruns all of the initial setup, including the
@@ -519,7 +561,7 @@ IModelComponent* Core::getComponentByName( const string& componentName ) const
 
 //------------------------------------------------------------------------------
 /*! \brief Returns the model component with a particular capability.
- *  \param componentName The capability of the component to retrieve.
+ *  \param capabilityName The capability of the component to retrieve.
  *  \exception h_exception If the capabilityName was not recognized.
  */
 IModelComponent* Core::getComponentByCapability( const string& capabilityName ) const
@@ -589,7 +631,6 @@ void Core::registerInput(const string& inputName, const string& componentName) {
 //------------------------------------------------------------------------------
 /*! \brief Check whether a capability has been registered with the core
  *  \param capabilityName The capability of the component to register.
- *  \param componentName The name of the associated component.
  *  \returns int Count of the components registered to provide this.
  */
 int Core::checkCapability( const string& capabilityName ) {
@@ -620,6 +661,22 @@ unitval Core::sendMessage( const std::string& message,
                           const std::string& datum )
 {
     return sendMessage( message, datum, message_data() );
+}
+
+//------------------------------------------------------------------------------
+// documentation is inherited
+unitval Core::getData( const std::string& varName, const double date ) {
+
+    unitval returnval;
+
+    if( varName == D_TRACKING_DATE ) {
+        H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for tracking date" );
+        returnval = unitval( trackingDate, U_UNITLESS );
+    } else {
+        H_THROW( "Caller is requesting unknown variable: " + varName );
+    }
+
+    return returnval;
 }
 
 //------------------------------------------------------------------------------
@@ -660,7 +717,12 @@ unitval Core::sendMessage( const std::string& message,
 
             string err = "Unknown model datum: " + datum;
             H_ASSERT( checkCapability( datum_capability ), err );
-            return getComponentByName( ( *it ).second )->sendMessage( message, datum, info );
+            // Special case: core handles
+            if( ( *it ).second == CORE_COMPONENT_NAME ) {
+                return this->getData( datum, info.date );
+            } else {
+                return getComponentByName( ( *it ).second )->sendMessage( message, datum, info );
+            }
         }
     }
     else if (message == M_SETDATA ) {
@@ -673,8 +735,15 @@ unitval Core::sendMessage( const std::string& message,
                 << "No such input: " << datum << "  Aborting.";
             H_THROW("Invalid datum in sendMessage/SETDATA.");
         }
-        for(componentMapIterator it=itpr.first; it != itpr.second; ++it)
-            getComponentByName(it->second)->sendMessage(message, datum, info);
+
+        for(componentMapIterator it=itpr.first; it != itpr.second; ++it) {
+            // Special case: core handles
+            if( it->second == CORE_COMPONENT_NAME ) {
+                this->setData( CORE_COMPONENT_NAME, datum, info );
+            } else {
+                getComponentByName(it->second)->sendMessage(message, datum, info);
+            }
+        }
 
         return info.value_unitval;
     }
@@ -725,7 +794,15 @@ std::vector<Core *> Core::core_registry;
  */
 int Core::mkcore(bool logtofile, Logger::LogLevel loglvl, bool logtoscrn)
 {
-    core_registry.push_back(new Core(loglvl, logtoscrn, logtofile));
+    // Create a dummy output filestream, essentially /dev/null
+    std::ofstream dummy;
+    CSVFluxPoolVisitor* visitr = new CSVFluxPoolVisitor( dummy );
+
+    // Create the new core, add the visitor, and push onto the core registry
+    Core* core = new Core(loglvl, logtoscrn, logtofile);
+    core->addVisitor( visitr );
+    core_registry.push_back(core);
+
     return (int)core_registry.size() - 1;
 }
 

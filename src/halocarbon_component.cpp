@@ -236,7 +236,8 @@ unitval HalocarbonComponent::getData( const std::string& varName,
     return returnval;
 }
 
-
+//------------------------------------------------------------------------------
+// documentation is inherited
 void HalocarbonComponent::reset(double time)
 {
     // reset time counter and truncate outputs
@@ -246,7 +247,6 @@ void HalocarbonComponent::reset(double time)
     H_LOG(logger, Logger::NOTICE)
         << getComponentName() << " reset to time= " << time << "\n";
 }
-
 
 //------------------------------------------------------------------------------
 // documentation is inherited

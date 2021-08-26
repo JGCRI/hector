@@ -35,21 +35,21 @@ public:
 	oceancsys();
 
 	//ocean component will have to provide these values
-	double S;       //<! salinity
-	double As;      //<! area of box m2
-	double Ks;      //<!gas transfer velocity m/yr
+    double S;       ///< salinity
+    double As;      ///< area of box m2
+    double Ks;      ///<gas transfer velocity m/yr
 	double volumeofbox;
 	unitval OmegaCa;
 	unitval OmegaAr;
-	double U;       //<! average wind speed over each surface box
+    double U;       ///< average wind speed over each surface box
 	double H;
 
-	//<! output variables
-	unitval TCO2o;  //<! total CO2 (umol/kg)
-	unitval HCO3;   //<! bicarbonate (umol/kg)
-	unitval CO3;    //<! carbonate (umol/kg)
-	unitval PCO2o;  //<! pCO2 of ocean waters
-	unitval pH;     //<! ocean pH
+    ///< output variables
+    unitval TCO2o;  ///< total CO2 (umol/kg)
+    unitval HCO3;   ///< bicarbonate (umol/kg)
+    unitval CO3;    ///< carbonate (umol/kg)
+    unitval PCO2o;  ///< pCO2 of ocean waters
+    unitval pH;     ///< ocean pH
 
 	unitval convertToDIC( const unitval carbon );
 	void ocean_csys_run( unitval tbox, unitval carbon );
@@ -63,18 +63,18 @@ public:
 private:
     double calc_monthly_surface_flux( const unitval& Ca, const double cpoolscale=1.0 ) const;
 
-	unitval K0;     //<! solubility of CO2 calculated from Weiss 1974 (mol * L-1 * atm-1)
-	unitval Tr;     //<! gas transfer coefficient (gC m-2 month-1 uatm-1)
-	unitval Kh;     //<! solubility of CO2 calculated from Weiss 1974 (mol*kg-1*atm-1)
-	unitval Kw;     //<! equilirbium relationship of H+ and OH- (mol kg-1)
-	unitval K1;     //<! equilibrium relationship of CO2 in seawater (mol kg-1)
-	unitval K2;     //<! equilibrium relationship of CO2 in seawater (mol kg-1)
-	unitval Kb;     //<! equilibrium relationship of boron in seawater (mol kg-1)
-	unitval Sc;     //<! Schmidt Number from Wanninkhof 1992 (unitless)
-	unitval Kspa;   //<! equilibrium relationship of aragonite in seawater (mol kg-1)
-    unitval Kspc;   //<! equilibrium relationship of calcite in seawater (mol kg-1)
+    unitval K0;     ///< solubility of CO2 calculated from Weiss 1974 (mol * L-1 * atm-1)
+    unitval Tr;     ///< gas transfer coefficient (gC m-2 month-1 uatm-1)
+    unitval Kh;     ///< solubility of CO2 calculated from Weiss 1974 (mol*kg-1*atm-1)
+    unitval Kw;     ///< equilirbium relationship of H+ and OH- (mol kg-1)
+    unitval K1;     ///< equilibrium relationship of CO2 in seawater (mol kg-1)
+    unitval K2;     ///< equilibrium relationship of CO2 in seawater (mol kg-1)
+    unitval Kb;     ///< equilibrium relationship of boron in seawater (mol kg-1)
+    unitval Sc;     ///< Schmidt Number from Wanninkhof 1992 (unitless)
+    unitval Kspa;   ///< equilibrium relationship of aragonite in seawater (mol kg-1)
+    unitval Kspc;   ///< equilibrium relationship of calcite in seawater (mol kg-1)
 
-    double alk;     //<! alkilinity (umol/kg)
+    double alk;     ///< alkilinity (umol/kg)
 
     // logger
     Logger* logger;
@@ -88,4 +88,3 @@ private:
 }
 
 #endif
-
