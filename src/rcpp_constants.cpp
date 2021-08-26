@@ -1255,6 +1255,13 @@ String SOIL_C(String biome = "") {
   return out;
 }
 
+//' @rdname carboncycle
+//' @export
+// [[Rcpp::export]]
+String EARTH_C() {
+   return D_EARTHC;
+}
+
 //' @describeIn carboncycle Initial net primary productivity (NPP)
 //'   flux (`"Pg C year^-1"`)
 //' @inheritParams BETA

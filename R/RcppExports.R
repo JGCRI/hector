@@ -993,6 +993,12 @@ SOIL_C <- function(biome = "") {
     .Call('_hector_SOIL_C', PACKAGE = 'hector', biome)
 }
 
+#' @rdname carboncycle
+#' @export
+EARTH_C <- function() {
+    .Call('_hector_EARTH_C', PACKAGE = 'hector')
+}
+
 #' @describeIn carboncycle Initial net primary productivity (NPP)
 #'   flux (`"Pg C year^-1"`)
 #' @inheritParams BETA

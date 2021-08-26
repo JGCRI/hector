@@ -1659,6 +1659,16 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// EARTH_C
+String EARTH_C();
+RcppExport SEXP _hector_EARTH_C() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(EARTH_C());
+    return rcpp_result_gen;
+END_RCPP
+}
 // NPP_FLUX0
 String NPP_FLUX0(String biome);
 RcppExport SEXP _hector_NPP_FLUX0(SEXP biomeSEXP) {
@@ -2142,6 +2152,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_VEG_C", (DL_FUNC) &_hector_VEG_C, 1},
     {"_hector_DETRITUS_C", (DL_FUNC) &_hector_DETRITUS_C, 1},
     {"_hector_SOIL_C", (DL_FUNC) &_hector_SOIL_C, 1},
+    {"_hector_EARTH_C", (DL_FUNC) &_hector_EARTH_C, 0},
     {"_hector_NPP_FLUX0", (DL_FUNC) &_hector_NPP_FLUX0, 1},
     {"_hector_NATURAL_SO2", (DL_FUNC) &_hector_NATURAL_SO2, 0},
     {"_hector_Y2000_SO2", (DL_FUNC) &_hector_Y2000_SO2, 0},
