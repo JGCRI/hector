@@ -184,7 +184,7 @@ void oceancsys::ocean_csys_run( unitval tbox, unitval carbon )
 	const double Sc = 2073.1 - ( 125.62 * Tc ) + (3.6276 * Tc * Tc) - ( 0.043219 * Tc * Tc * Tc );
 
 	// --------------------- Kwater -----------------------------------
-	// calculattequilibrium constants (on the total hydrogen ion scale) as a function of salinity (S) and temperature (T).
+	// Calculate equilibrium constants (on the total hydrogen ion scale) as a function of salinity (S) and temperature (T).
 	// Table 1.1 of Part1: Seawater carbonate chemistry of Riebesell et al. 2011
 	tmp1 = -13847.26/Tk + 148.96502 - 23.6521 * log( Tk ); // eq 1.10  Riebesell et al. 2011
 	tmp2 = + (118.67/Tk - 5.977 + 1.0495*log( Tk ) ) * sqrt( S ) - 0.01615 * S; // eq 1.10 Riebesell et al. 2011
@@ -301,7 +301,7 @@ void oceancsys::ocean_csys_run( unitval tbox, unitval carbon )
 	pH.set (-log10( h ), U_PH);
 
     // ----------------------------------------------------------------------------
-    /*! \brief calculate air-sea flux of carbon
+    /*! Calculate air-sea flux of carbon
      * based on Takahashi et al, 2009 Deep Sea Research
      * Uses K0 (solubility), Sc (Schmidt number) , U (wind stress), PCO2atm, PCO2o
      */
