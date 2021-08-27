@@ -12,6 +12,15 @@
  *
  */
 
+/* References:
+
+ Meinshausen et al. (2011): Meinshausen, M., Raper, S. C. B., and Wigley, T. M. L.: Emulating coupled atmosphere-ocean and carbon cycle models with a simpler model, MAGICC6 – Part 1: Model description and calibration, Atmos. Chem. Phys., 11, 1417–1456, https://doi.org/10.5194/acp-11-1417-2011, 2011.
+
+ */
+
+
+
+
 // some boost headers generate warnings under clang; not our problem, ignore
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Weverything"
@@ -152,13 +161,13 @@ void ForcingComponent::init( Core* coreptr ) {
     core->registerCapability( D_RF_SO2i, getComponentName());
     core->registerCapability( D_RF_SO2, getComponentName());
     core->registerCapability( D_RF_VOL, getComponentName());
+    core->registerCapability( D_ACO2, getComponentName());
     for(int i=0; i<N_HALO_FORCINGS; ++i) {
         core->registerCapability(adjusted_halo_forcings[i], getComponentName());
         forcing_name_map[adjusted_halo_forcings[i]] = halo_forcing_names[i];
     }
 
     // Register our dependencies
-
     core->registerDependency( D_ATMOSPHERIC_CH4, getComponentName() );
     core->registerDependency( D_ATMOSPHERIC_CO2, getComponentName() );
     core->registerDependency( D_ATMOSPHERIC_O3, getComponentName() );
@@ -166,7 +175,6 @@ void ForcingComponent::init( Core* coreptr ) {
     core->registerDependency( D_EMISSIONS_OC, getComponentName() );
     core->registerDependency( D_NATURAL_SO2, getComponentName() );
     core->registerDependency( D_ATMOSPHERIC_N2O, getComponentName() );
-
     core->registerDependency( D_RF_CF4, getComponentName() );
     core->registerDependency( D_RF_C2F6, getComponentName() );
     core->registerDependency( D_RF_HFC23, getComponentName() );
@@ -194,6 +202,11 @@ void ForcingComponent::init( Core* coreptr ) {
     core->registerDependency( D_RF_CH3Br, getComponentName() );
     core->registerDependency( D_RF_CH3Cl, getComponentName() );
     core->registerDependency( D_RF_T_ALBEDO, getComponentName() );
+
+    // Register the inputs we can receive from outside
+    core->registerInput( D_ACO2, getComponentName() );
+
+
 }
 
 //------------------------------------------------------------------------------
@@ -208,9 +221,7 @@ unitval ForcingComponent::sendMessage( const std::string& message,
         return getData( datum, info.date );
 
     } else if( message==M_SETDATA ) {   //! Caller is requesting to set data
-        //TODO: call setData below
-        //TODO: change core so that parsing is routed through sendMessage
-        //TODO: make setData private
+              setData(datum, info);
 
     } else {                        //! We don't handle any other messages
         H_THROW( "Caller sent unknown message: "+message );
@@ -230,6 +241,9 @@ void ForcingComponent::setData( const string& varName,
         if( varName == D_RF_BASEYEAR ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
             baseyear = data.getUnitval(U_UNDEFINED);
+        } else if( varName == D_ACO2 ) {
+            H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
+            aCO2 = data.getUnitval(U_W_M2);
         } else if( varName == D_FTOT_CONSTRAIN ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
             Ftot_constrain.set(data.date, data.getUnitval(U_W_M2));
@@ -282,11 +296,14 @@ void ForcingComponent::run( const double runToDate ) {
         // Instantaneous radiative forcings for CO2, CH4, and N2O from http://www.esrl.noaa.gov/gmd/aggi/
         // These are in turn from IPCC (2001)
 
-        // This is identical to that of MAGICC; see Meinshausen et al. (2011)
+        // This is identical to that of MAGICC; Meinshausen et al. (2011) equation A35
+        // adjusted radiative forcing by CO2 (Wm−2) is equal to the forcing efficiency for a unit increases *
+        // the change in CO2 concentrations relative to the preindustrial value.
         unitval Ca = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_CO2 );
         if( runToDate==baseyear )
             C0 = Ca;
-        forcings[D_RF_CO2 ].set( 5.35 * log( Ca/C0 ), U_W_M2 );
+        //forcings[D_RF_CO2 ].set( aCO2 * log( Ca/C0 ), U_W_M2 );
+        forcings[D_RF_CO2 ].set( aCO2.value(U_W_M2) * log( Ca/C0 ), U_W_M2 );
 
         // ---------- Terrestrial albedo ----------
         if( core->checkCapability( D_RF_T_ALBEDO ) ) {
@@ -311,16 +328,16 @@ void ForcingComponent::run( const double runToDate ) {
 
             // ---------- Stratospheric H2O from CH4 oxidation ----------
             // From Tanaka et al, 2007, but using Joos et al., 2001 value of 0.05
-            const double fh2o = 0.05 * ( 0.036 * ( sqrt( Ma ) - sqrt( M0 ) ) );
-            forcings[D_RF_H2O_STRAT].set( fh2o, U_W_M2 );
+            const double fh2o_strat = 0.05 * ( 0.036 * ( sqrt( Ma ) - sqrt( M0 ) ) );
+            forcings[D_RF_H2O_STRAT].set( fh2o_strat, U_W_M2 );
         }
 
         // ---------- Troposheric Ozone ----------
         if( core->checkCapability( D_ATMOSPHERIC_O3 ) ) {
             //from Tanaka et al, 2007
             const double ozone = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_O3, message_data( runToDate ) ).value( U_DU_O3 );
-            const double fo3 = 0.042 * ozone;
-            forcings[D_RF_O3_TROP].set( fo3, U_W_M2 );
+            const double fo3_trop = 0.042 * ozone;
+            forcings[D_RF_O3_TROP].set( fo3_trop, U_W_M2 );
         }
 
         // ---------- Halocarbons ----------
@@ -450,6 +467,7 @@ unitval ForcingComponent::getData( const std::string& varName,
     unitval returnval;
     double getdate = date;             // This is why I hate declaring PBV args as const!
 
+
     if(getdate == Core::undefinedIndex()) {
         // If no date specified, provide the current date
         getdate = currentYear;
@@ -458,6 +476,12 @@ unitval ForcingComponent::getData( const std::string& varName,
     if(getdate < baseyear) {
         // Forcing component hasn't run yet, so there is no data to get.
         returnval.set(0.0, U_W_M2);
+
+        // If requesting data not associated with a date aka a parameter,
+        // return the parameter value.
+        if(varName == D_ACO2){
+            returnval = aCO2;
+        }
         return returnval;
     }
 
@@ -469,8 +493,10 @@ unitval ForcingComponent::getData( const std::string& varName,
 
     forcings_t forcings(forcings_ts.get(getdate));
 
+    // Return values associated with date information.
     if( varName == D_RF_BASEYEAR ) {
         returnval.set( baseyear, U_UNITLESS );
+
     } else if (varName == D_RF_SO2) {
         // total SO2 forcing
         std::map<std::string, unitval>::const_iterator forcing_SO2d = forcings.find( D_RF_SO2d );

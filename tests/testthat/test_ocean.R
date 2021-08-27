@@ -22,11 +22,9 @@ test_that("Checking carbon pools", {
     individual_carbon_pools <- fetchvars(core = hc, dates = t_dates, vars = carbon_pools)
     sum_carbon_pools <- aggregate(value ~ year, data = individual_carbon_pools, sum)
 
-    # Define an error threhold that corresponds to less than about .025% of the average
-    # total carbon pool.
-    allowable_percent <- 0.025
-    error_thresh <- (mean(total_ocean_pool$value) * allowable_percent) / 100
-    expect_equal(total_ocean_pool$value, sum_carbon_pools$value, tolerance = error_thresh)
+    # The sum of all the ocean carbon pools should equal the amount of carbon in
+    # total ocean carbon pool.
+    expect_equal(total_ocean_pool$value, sum_carbon_pools$value)
     })
 
 

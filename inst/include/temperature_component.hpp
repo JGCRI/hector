@@ -72,27 +72,26 @@ private:
     void setoutputs(int tstep);
 
     // Hard-coded DOECLIM parameters
-    const int dt = 1;                     // years per timestep (this is implicit in Hector)
+    const double dt = 1;                     // years per timestep (this is implicit in Hector)
     int ns;                               // number of timesteps
-    const double ak = 0.31;               // slope in climate feedback - land-sea heat exchange linear relationship
-    const double bk = 1.59;               // offset in climate feedback - land-sea heat exchange linear relationship, W/m2/K
-    const double csw = 0.13;              // specific heat capacity of seawater W*yr/m3/K
-    const double earth_area = 5100656E8;  // m2
-    const double kcon = 3155.0;           // conversion from cm2/s to m2/yr
-    const double q2co = 3.7;              // radiative forcing for atmospheric CO2 doubling, W/m2
-    const double rlam = 1.43;             // factor between land clim. sens. and sea surface clim. sens. T_L2x = rlam*T_S2x
-    const double secs_per_Year = 31556926.0;
-    const double zbot = 4000.0;           // bottom depth of diffusive ocean, m
-    const double bsi = 1.3;               // warming factor for marine surface air over SST (due to retreating sea ice)
-    const double cal = 0.52;               // heat capacity of land-troposphere system, W*yr/m2/K
-    const double cas = 7.80;              // heat capacity of mixed layer-troposphere system, W*yr/m2/K
-    const double flnd = 0.29;             // fractional land area
-    const double fso = 0.95;              // ocean fractional area below 60m
+    const double ak = 0.31;               // slope in climate feedback - land-sea heat exchange linear relationship (W/m2/K)
+    const double bk = 1.59;               // offset in climate feedback - land-sea heat exchange linear relationship,(W/m2/K)
+    const double csw = 0.13;              // specific heat capacity of seawater (Wyr/(m3K))
+    const double earth_area = 5100656E8;  // (m2)
+    const double secs_per_Year = 60.0 * 60.0 * 24.0 * 365.2422; //  secs. * min. * hrs. * tropical calendar days (seconds)
+    const double rlam = 1.43;             // factor between land clim. sens. and sea surface clim. sens. T_L2x = rlam*T_S2x (unitless)
+    const double zbot = 4000.0;           // bottom depth of the interior ocean (m)
+    const double bsi = 1.3;               // warming factor for marine surface air over SST due to retreating sea ice, (unitless)
+    const double cal = 0.52;              // effective heat capacity of land-troposphere system (W*yr/m2/K)
+    const double cas = 7.80;              // effective heat capacity of mixed layer-troposphere system (W*yr/m2/K)
+    const double flnd = 0.29;             // fractional land area (unitless)
+    const double fso = 0.95;              // ocean fractional area below 60m (unitless)
 
     // DOECLIM parameters calculated from constants above
+    double kcon;             // conversion from cm2/s to m2/yr
     double ocean_area;       // m2
     double cnum;             // factor from sea-surface climate sensitivity to global mean
-    double cden;             // intermediate parameter
+    double cden;             // denominator used to figure out the climate senstivity feedback parameters over land & sea
     double cfl;              // land climate feedback parameter, W/m2/K
     double cfs;              // sea climate feedback parameter, W/m2/K
     double kls;              // land-sea heat exchange coefficient, W/m2/K
@@ -104,6 +103,7 @@ private:
     double taudif;           // interior ocean heat uptake time scale, yr
     double tauksl;           // sea-land heat exchange time scale, yr
     double taukls;           // land-sea heat exchange time scale, yr
+    double q2co;       // radiative forcing for atmospheric CO2 doubling (W/m2)
 
     std::vector<double> KT0;
     std::vector<double> KTA1;
@@ -135,13 +135,13 @@ private:
     unitval diff;          //!< ocean heat diffusivity, cm2/s
     unitval alpha;	       //!< aerosol forcing factor, unitless
     unitval volscl;        //!< volcanic forcing scaling factor, unitless
+    unitval aCO2;          //! alpha CO2, forcing efficiency for CO2 (W/m2)
 
     // Model outputs
     unitval tgav;          //!< global average surface air temperature anomaly, deg C
     unitval tgav_land;     //!< global average land surface air temperature anomaly, deg C
     unitval tgav_oceanair; //!< global average ocean surface air temperature anomaly, deg C
     unitval tgav_sst;      //!< global average ocean surface (water) temperature anomaly, deg C
-    unitval tgaveq;        //!< equilibrium temp without ocean heat flux, currently set = tgav
     unitval flux_mixed;    //!< heat flux into mixed layer of ocean, W/m2
     unitval flux_interior; //!< heat flux into interior layer of ocean, W/m2
     unitval heatflux;      //!< heat flux into ocean, W/m2

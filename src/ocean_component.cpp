@@ -10,6 +10,17 @@
  *
  *  Created by Corinne Hartin on 1/3/13.
  *
+ *  Structure of the ocean component (high latitude, low latitude, intermediate & deep ocean) is
+ *  based on Knox & McElroy.
+ *      Knox, F. and McElroy, M. B.: Changes in Atmospheric CO2: Influence
+ *          of the Marine Biota at High Latitude, J. Geophys. Res., 89,
+ *          4629–4637, doi:10.1029/JD089iD03p04629, 1984.
+ *
+ *  Other References
+ *
+ *  Riley, J. P. and Tongudai, M.: The major cation/chlorinity ratios
+ *      in sea water, Chem. Geol., 2, 263–269, doi:10.1016/0009-
+ *      2541(67)90026-5, 1967.
  */
 
 #include <cmath>
@@ -121,7 +132,7 @@ unitval OceanComponent::sendMessage( const std::string& message,
         // info struct holds the amount being dumped/extracted from deep ocean
         unitval carbon = info.value_unitval;
         H_LOG( logger, Logger::DEBUG ) << "Atmosphere dumping " << carbon << " Pg C to deep ocean" << std::endl;
-        
+
         // We don't want this to be tracked, so just overwrite the deep total
         carbon = carbon + unitval(deep.get_carbon().value( U_PGC ), U_PGC);
         deep.set_carbon( carbon );
@@ -202,20 +213,27 @@ void OceanComponent::prepareToRun() {
 
     double spy = 60 * 60 * 24 * 365.25;  // seconds per year
 
-    // ocean_volume = 1.36e18 m3
-    double thick_LL = 100;
-    double thick_HL = 100;
-    double thick_inter = 1000 - thick_LL;
-    double thick_deep = 3777 - thick_inter-thick_LL; // 3777m - 1000m - 100m
 
-    //	const double ocean_sarea = 5.101e14; // surface area m2
-    const double ocean_area = 3.6e14; // m2;
+    // ocean depth
+    double thick_LL = 100;         // (m) Thickness of surface ocean from Knox and McElroy (1984)
+    double thick_HL = 100;         // (m) Thickness of surface ocean from Knox and McElroy (1984)
+    double thick_inter = 1000-thick_LL;  // (m) Thickness of of intermediate ocean from Knox and McElroy (1984)
+    double thick_deep = 3777-thick_inter-thick_LL; // (m) Thickness of deep ocean from Knox and McElroy (1984)
+
+    // ocean area
+    const double ocean_area = 3.6e14; // (m2) Knox and McElroy (1984);
+
+    // Define high and low latitude
+    // The cold high-latitude surface box makes up 15% of the total ocean surface area and has latitude > 55
+    // The warm low-latitude surface box makes up the rest.
     const double part_high = 0.15;
-    const double part_low = 1 - part_high;
+    const double part_low = 1-part_high;
+
+    // ocean box volumes (m3)
     const double LL_volume = ocean_area * part_low * thick_LL;
     const double HL_volume = ocean_area * part_high * thick_HL;
-    const double I_volume = ocean_area* thick_inter;
-    const double D_volume = ocean_area* thick_deep;
+    const double I_volume = ocean_area * thick_inter;
+    const double D_volume = ocean_area * thick_deep;
 
     // transport * seconds / volume of box
     // Advection --> transport of carbon from one box to the next (k values, fraction/yr )
@@ -240,17 +258,16 @@ void OceanComponent::prepareToRun() {
     inter.make_connection( &deep, IO_DOex, 1 );
     deep.make_connection( &inter, DO_IO + DO_IOex, 1 );
 
-    // inputs for surface chemistry boxes
-    surfaceHL.deltaT.set( -13.0, U_DEGC );
-    surfaceHL.mychemistry.S             = 34.5; // Salinity
-    surfaceHL.mychemistry.volumeofbox   = HL_volume; //5.4e15; //m3
+    //inputs for surface chemistry boxes
+    surfaceHL.deltaT.set( -13.0, U_DEGC );  // delta T is added 288.15 to return the initial temperature value of the surface box
+    surfaceHL.mychemistry.S             = 34.5; // Salinity Riley and Tongudai (1967)
+    surfaceHL.mychemistry.volumeofbox   = HL_volume; // m3
     surfaceHL.mychemistry.As            = ocean_area * part_high ; // surface area m2
     surfaceHL.mychemistry.U             = 6.7; // average wind speed m/s
 
-    //surfaceLL.mychemistry.alk = // mol/kg
-    surfaceLL.deltaT.set( 7.0, U_DEGC );
-    surfaceLL.mychemistry.S             = 34.5; // Salinity
-    surfaceLL.mychemistry.volumeofbox   = LL_volume; //3.06e16; //m3
+    surfaceLL.deltaT.set( 7.0, U_DEGC ); // delta T is added 288.15 to return the initial temperature value of the surface box
+    surfaceLL.mychemistry.S             = 34.5;  // Salinity Riley and Tongudai (1967)
+    surfaceLL.mychemistry.volumeofbox   = LL_volume; //m3
     surfaceLL.mychemistry.As            = ocean_area * part_low; // surface area m2
     surfaceLL.mychemistry.U             = 6.7; // average wind speed m/s
 
@@ -310,9 +327,9 @@ void OceanComponent::run( const double runToDate ) {
 
     Ca = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_CO2 );
     Tgav = core->sendMessage( M_GETDATA, D_GLOBAL_TEMP );
-    //atmosphere_cpool = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_C );
+
     in_spinup = core->inSpinup();
-    
+
 	annualflux_sum.set( 0.0, U_PGC );
 	annualflux_sumHL.set( 0.0, U_PGC );
 	annualflux_sumLL.set( 0.0, U_PGC );
@@ -430,12 +447,12 @@ unitval OceanComponent::getData( const std::string& varName,
         } else {
             H_THROW( "Problem with user request for constant data: " + varName );
         }
-        
+
     } else if(date != Core::undefinedIndex() ){
         if( varName == D_OCEAN_CFLUX ){
                 returnval = annualflux_sum_ts.get(date);
         } else if( varName == D_OCEAN_C ) {
-            returnval = totalcpool();
+            returnval = C_DO_ts.get( date ) +  C_IO_ts.get(date) + Ca_LL_ts.get(date) + Ca_HL_ts.get(date);
         } else if( varName == D_HL_DO ) {
             returnval = C_DO_ts.get( date );
         } else if( varName == D_PH_HL ) {
@@ -473,11 +490,11 @@ unitval OceanComponent::getData( const std::string& varName,
         } else {
             H_THROW( "Problem with user request for time series: " + varName );
         }
-        
+
     } else {
         H_ASSERT( date == Core::undefinedIndex(), "Date data not available for " + varName + " in OceanComponent::getData()" );
     }
-    
+
     return returnval;
 }
 
@@ -580,12 +597,12 @@ void OceanComponent::stashCValues( double t, const double c[] ) {
 	H_LOG( logger, Logger::DEBUG) << "Solver flux = " << solver_flux << ", currentflux = " << currentflux << ", adjust = " << adjustment << std::endl;
     surfaceHL.atmosphere_flux = surfaceHL.atmosphere_flux + adjustment;
     surfaceLL.atmosphere_flux = surfaceLL.atmosphere_flux + adjustment;
-    
+
     // Separate the one net flux (can be positive or negative) into the two fluxpool fluxes (always positive)
     // This updates oa_flux and ao_flux within the two ocean boxes
     surfaceHL.separate_surface_fluxes(atmosphere_cpool);
     surfaceLL.separate_surface_fluxes(atmosphere_cpool);
-    
+
     // This (along with carbon-cycle-solver obviously) is the heart of the
     // reduced-timestep code. If carbon flux has exceeded some critical value,
     // we need to reduce timestep for the future.

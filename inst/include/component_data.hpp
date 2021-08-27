@@ -55,6 +55,8 @@
 #define D_RF_SO2                D_RF_PREFIX "SO2"
 #define D_RF_VOL                D_RF_PREFIX "vol" // forcing from volcanic so2
 #define D_RF_halocarbons        D_RF_PREFIX "halocarbons"
+#define D_ACO2                  "aco2"            // forcing efficiency for CO2
+
 
 // halocarbon components
 #define D_RF_CF4                D_RF_PREFIX CF4_COMPONENT_BASE
@@ -217,8 +219,6 @@
 #define D_EMISSIONS_NOX           "NOX_emissions"
 #define D_EMISSIONS_CO            "CO_emissions"
 #define D_EMISSIONS_NMVOC         "NMVOC_emissions"
-//Do not redefine Ma though it is used for o3 component
-//#define D_EMISSIONS_O3 "O3_concentration"
 
 // oc component
 #define D_EMISSIONS_OC          "OC_emissions"
@@ -312,7 +312,6 @@
 #define D_LAND_AIR_TEMP         "Tgav_land"
 #define D_OCEAN_SURFACE_TEMP    "Tgav_ocean_ST"
 #define D_OCEAN_AIR_TEMP        "Tgav_ocean_air"
-#define D_GLOBAL_TEMPEQ         "Tgaveq"
 #define D_TGAV_CONSTRAIN        "tgav_constrain"
 #define D_SO2D_B                "so2d_b"
 #define D_SO2I_B                "so2i_b"

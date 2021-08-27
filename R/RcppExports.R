@@ -293,6 +293,12 @@ RF_CH3BR <- function() {
     .Call('_hector_RF_CH3BR', PACKAGE = 'hector')
 }
 
+#' @describeIn forcings Radiative forcing efficiency for CO2
+#' @export
+alpha_CO2 <- function() {
+    .Call('_hector_alpha_CO2', PACKAGE = 'hector')
+}
+
 #' @describeIn haloemiss Emissions for CF4
 #' @export
 EMISSIONS_CF4 <- function() {
@@ -1040,16 +1046,10 @@ VOLCANIC_SCALE <- function() {
     .Call('_hector_VOLCANIC_SCALE', PACKAGE = 'hector')
 }
 
-#' @describeIn temperature Global mean temperature
+#' @describeIn temperature Global mean temperature anomaly
 #' @export
 GLOBAL_TEMP <- function() {
     .Call('_hector_GLOBAL_TEMP', PACKAGE = 'hector')
-}
-
-#' @describeIn temperature Equilibrium global temperature
-#' @export
-GLOBAL_TEMPEQ <- function() {
-    .Call('_hector_GLOBAL_TEMPEQ', PACKAGE = 'hector')
 }
 
 #' @describeIn temperature Average ocean surface temperature anomaly

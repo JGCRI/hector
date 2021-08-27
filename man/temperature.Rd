@@ -3,7 +3,6 @@
 \name{temperature}
 \alias{temperature}
 \alias{GLOBAL_TEMP}
-\alias{GLOBAL_TEMPEQ}
 \alias{OCEAN_SURFACE_TEMP}
 \alias{OCEAN_AIR_TEMP}
 \alias{LAND_AIR_TEMP}
@@ -13,8 +12,6 @@
 \title{Identifiers for variables associated with the temperature component}
 \usage{
 GLOBAL_TEMP()
-
-GLOBAL_TEMPEQ()
 
 OCEAN_SURFACE_TEMP()
 
@@ -34,9 +31,7 @@ type.
 }
 \section{Functions}{
 \itemize{
-\item \code{GLOBAL_TEMP}: Global mean temperature
-
-\item \code{GLOBAL_TEMPEQ}: Equilibrium global temperature
+\item \code{GLOBAL_TEMP}: Global mean temperature anomaly
 
 \item \code{OCEAN_SURFACE_TEMP}: Average ocean surface temperature anomaly
 
