@@ -15,6 +15,7 @@
 \alias{VEG_C}
 \alias{DETRITUS_C}
 \alias{SOIL_C}
+\alias{EARTH_C}
 \alias{NPP_FLUX0}
 \title{Identifiers for variables in the Hector carbon cycle component}
 \usage{
@@ -44,11 +45,9 @@ DETRITUS_C(biome = "")
 
 SOIL_C(biome = "")
 
+EARTH_C()
+
 NPP_FLUX0(biome = "")
-}
-\arguments{
-\item{biome}{Biome for which to retrieve parameter. If missing or
-`""`, default to `"global"`.}
 }
 \description{
 These identifiers correspond to variables that can be read and/or set in the

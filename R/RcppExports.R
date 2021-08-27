@@ -920,14 +920,12 @@ BETA <- function(biome = "") {
 }
 
 #' @describeIn parameters Heterotrophic respiration temperature sensitivity factor (\code{"(unitless)"})
-#' @inheritParams BETA
 #' @export
 Q10_RH <- function(biome = "") {
     .Call('_hector_Q10_RH', PACKAGE = 'hector', biome)
 }
 
 #' @describeIn parameters Biome-specific warming factor (`(unitless)`)
-#' @inheritParams BETA
 #' @export
 WARMINGFACTOR <- function(biome = "") {
     .Call('_hector_WARMINGFACTOR', PACKAGE = 'hector', biome)
@@ -940,21 +938,18 @@ CO2_CONSTRAIN <- function() {
 }
 
 #' @describeIn parameters NPP fraction to vegetation (\code{"(unitless)"})
-#' @inheritParams BETA
 #' @export
 F_NPPV <- function(biome = "") {
     .Call('_hector_F_NPPV', PACKAGE = 'hector', biome)
 }
 
 #' @describeIn parameters NPP fraction to detritus (\code{"(unitless)"})
-#' @inheritParams BETA
 #' @export
 F_NPPD <- function(biome = "") {
     .Call('_hector_F_NPPD', PACKAGE = 'hector', biome)
 }
 
 #' @describeIn parameters Litter fraction to detritus (\code{"(unitless)"})
-#' @inheritParams BETA
 #' @export
 F_LITTERD <- function(biome = "") {
     .Call('_hector_F_LITTERD', PACKAGE = 'hector', biome)
@@ -973,21 +968,18 @@ F_LUCD <- function() {
 }
 
 #' @describeIn carboncycle Vegetation C pool (`"Pg C"`)
-#' @inheritParams BETA
 #' @export
 VEG_C <- function(biome = "") {
     .Call('_hector_VEG_C', PACKAGE = 'hector', biome)
 }
 
 #' @describeIn carboncycle Vegetation detritus C pool (`"Pg C"`)
-#' @inheritParams BETA
 #' @export
 DETRITUS_C <- function(biome = "") {
     .Call('_hector_DETRITUS_C', PACKAGE = 'hector', biome)
 }
 
 #' @describeIn carboncycle Soil C pool (`"Pg C"`)
-#' @inheritParams BETA
 #' @export
 SOIL_C <- function(biome = "") {
     .Call('_hector_SOIL_C', PACKAGE = 'hector', biome)
@@ -1001,7 +993,6 @@ EARTH_C <- function() {
 
 #' @describeIn carboncycle Initial net primary productivity (NPP)
 #'   flux (`"Pg C year^-1"`)
-#' @inheritParams BETA
 #' @export
 NPP_FLUX0 <- function(biome = "") {
     .Call('_hector_NPP_FLUX0', PACKAGE = 'hector', biome)

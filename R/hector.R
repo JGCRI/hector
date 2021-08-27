@@ -168,7 +168,6 @@ getname <- function(core) {
 NULL
 
 #' @describeIn methods Format method
-#' @inheritParams methods
 #' @export
 format.hcore <- function(x, ...) {
   if (!isactive(x)) {
@@ -187,7 +186,6 @@ format.hcore <- function(x, ...) {
 }
 
 #' @describeIn methods Print method
-#' @inheritParams methods
 #' @export
 print.hcore <- function(x, ...) {
   cat(format(x, ...))
