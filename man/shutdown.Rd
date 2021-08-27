@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{shutdown}
 \alias{shutdown}
-\title{Shutdown a hector instance}
+\title{Shut down a hector instance}
 \usage{
 shutdown(core)
 }
@@ -25,6 +25,7 @@ from active to inactive will be recorded in the caller.
 \seealso{
 Other main user interface functions: 
 \code{\link{fetchvars}()},
+\code{\link{get_tracking_data}()},
 \code{\link{newcore}()},
 \code{\link{reset}()},
 \code{\link{run}()},

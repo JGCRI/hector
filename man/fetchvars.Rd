@@ -41,6 +41,7 @@ forcing, and global mean temperature.
 \link{ocean}, \link{so2}, \link{temperature}, \link{parameters}
 
 Other main user interface functions: 
+\code{\link{get_tracking_data}()},
 \code{\link{newcore}()},
 \code{\link{reset}()},
 \code{\link{run}()},

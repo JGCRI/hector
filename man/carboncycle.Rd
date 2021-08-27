@@ -9,11 +9,13 @@
 \alias{RH}
 \alias{ATMOSPHERIC_C}
 \alias{FFI_EMISSIONS}
+\alias{DACCS_UPTAKE}
 \alias{LUC_EMISSIONS}
 \alias{CO2_CONSTRAIN}
 \alias{VEG_C}
 \alias{DETRITUS_C}
 \alias{SOIL_C}
+\alias{EARTH_C}
 \alias{NPP_FLUX0}
 \title{Identifiers for variables in the Hector carbon cycle component}
 \usage{
@@ -31,6 +33,8 @@ ATMOSPHERIC_C()
 
 FFI_EMISSIONS()
 
+DACCS_UPTAKE()
+
 LUC_EMISSIONS()
 
 CO2_CONSTRAIN()
@@ -41,11 +45,9 @@ DETRITUS_C(biome = "")
 
 SOIL_C(biome = "")
 
+EARTH_C()
+
 NPP_FLUX0(biome = "")
-}
-\arguments{
-\item{biome}{Biome for which to retrieve parameter. If missing or
-`""`, default to `"global"`.}
 }
 \description{
 These identifiers correspond to variables that can be read and/or set in the
@@ -94,7 +96,7 @@ These variables can be read using the \code{\link{GETDATA}} message type:
 \section{Note}{
 
 Because these identifiers are provided as \code{#define} macros in the hector code,
-these identifiers are provided in the R interface as function.  Therefore,
+these identifiers are provided in the R interface as functions. Therefore,
 these objects must be called to use them; \emph{e.g.}, \code{GETDATA()}
 instead of the more natural looking \code{GETDATA}.
 }

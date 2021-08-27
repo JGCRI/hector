@@ -28,6 +28,7 @@ match (i.e., there is no attempt to convert units).
 \seealso{
 Other main user interface functions: 
 \code{\link{fetchvars}()},
+\code{\link{get_tracking_data}()},
 \code{\link{newcore}()},
 \code{\link{reset}()},
 \code{\link{run}()},

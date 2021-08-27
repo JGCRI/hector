@@ -539,6 +539,8 @@ unitval ForcingComponent::getData( const std::string& varName,
     return returnval;
 }
 
+//------------------------------------------------------------------------------
+// documentation is inherited
 void ForcingComponent::reset(double time)
 {
     // Set the current year to the reset year, and drop outputs after the reset year.
@@ -547,7 +549,6 @@ void ForcingComponent::reset(double time)
     H_LOG(logger, Logger::NOTICE)
         << getComponentName() << " reset to time= " << time << "\n";
 }
-
 
 //------------------------------------------------------------------------------
 // documentation is inherited

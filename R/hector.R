@@ -83,13 +83,35 @@ runscenario <- function(infile) {
 #' @family main user interface functions
 #' @export
 newcore <- function(inifile, loglevel = 0, suppresslogging = TRUE,
-                    name = "unnamed hector core") {
+                    name = "Unnamed Hector core") {
   hcore <- newcore_impl(normalizePath(inifile), loglevel, suppresslogging, name)
   class(hcore) <- c("hcore", class(hcore))
   reg.finalizer(hcore, hector::shutdown)
   hcore
 }
 
+#' Retrieve the tracking data for a Hector instance
+#'
+#' @param core Handle to the Hector instance.
+#' @importFrom utils read.csv
+#' @return A \code{\link{data.frame}} with the tracking data. Columns include
+#' \code{year} (integer), \code{component} (character), \code{pool_name} (character),
+#' \code{pool_value} (double), \code{pool_units} (character),
+#' \code{source_name} (character), and \code{source_fraction} (double). The
+#' fractions will always sum to 1 for a given pool and year.
+#' @note The \code{pool_name}, \code{pool_value}, and \code{pool_units} names
+#' differ from those used in the model's standard output stream (\code{variable},
+#' \code{value}, and \code{units} respectively).
+#' @family main user interface functions
+#' @export
+get_tracking_data <- function(core) {
+  td <- get_tracking_data_impl(core)
+  if (td != "") {
+    read.csv(textConnection(td), stringsAsFactors = FALSE)
+  } else {
+    data.frame()  # throw error instead?
+  }
+}
 
 #### Utility functions
 ### The elements of an hcore object are
@@ -146,7 +168,6 @@ getname <- function(core) {
 NULL
 
 #' @describeIn methods Format method
-#' @inheritParams methods
 #' @export
 format.hcore <- function(x, ...) {
   if (!isactive(x)) {
@@ -155,7 +176,8 @@ format.hcore <- function(x, ...) {
   else {
     cdate <- getdate(x)
     sprintf(
-      "Hector core:\t%s\nStart date:\t%d\nEnd date:\t%d\nCurrent date:\t%d\nInput file:\t%s",
+      paste0("Hector core:\t%s\nStart date:\t%d\nEnd date:\t%d\n",
+      "Current date:\t%d\nInput file:\t%s"),
       x$name,
       as.integer(x$strtdate), as.integer(x$enddate), as.integer(cdate),
       x$inifile
@@ -164,7 +186,6 @@ format.hcore <- function(x, ...) {
 }
 
 #' @describeIn methods Print method
-#' @inheritParams methods
 #' @export
 print.hcore <- function(x, ...) {
   cat(format(x, ...))

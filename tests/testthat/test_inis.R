@@ -1,4 +1,4 @@
-context("Test inis")
+context("Test ini files")
 
 # Make sure that all of the ini files can generate an actual hector core.
 test_that("All ini files can be used to set up a hector core", {

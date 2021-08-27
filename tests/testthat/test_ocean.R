@@ -1,4 +1,4 @@
-context("Check Ocean")
+context("Check ocean")
 # Check some basic science to make sure Hector's ocean behaves as expected.
 
 # Run Hector

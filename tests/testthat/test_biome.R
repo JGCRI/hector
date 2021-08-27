@@ -1,4 +1,4 @@
-context("Running Hector with multiple biomes")
+context("Hector with multiple biomes")
 
 rcp45 <- function() {
   newcore(system.file("input", "hector_rcp45.ini",
@@ -9,7 +9,7 @@ rcp45 <- function() {
   )
 }
 
-test_that("Hector runs with multiple biomes created via INI file.", {
+test_that("Hector runs with multiple biomes created via INI file", {
   string2core <- function(ini_string, name, ini_file = NULL) {
     if (is.null(ini_file)) {
       ini_file <- tempfile()

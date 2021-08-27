@@ -25,4 +25,4 @@ This research was supported by the U.S. Department of Energy, Office of Science,
 
  ##  Contributing to Hector
 
- The Hector team welcomes and values community contributions to Hector but please see [Contribution Guide](KRD-UPDATE)
+ The Hector team welcomes and values community contributions but please see our [Contribution Guide](KRD-UPDATE).

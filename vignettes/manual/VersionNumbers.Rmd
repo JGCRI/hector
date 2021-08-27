@@ -2,7 +2,7 @@
 title: Version numbering
 ---
 
-**Not a programmer?** You still need to be aware of what version of Hector you're using, and how it relates to previous versions. ~~The version number and the Git *build number* appear in all output and log files.[not yet]~~
+**Not a programmer?** You still need to be aware of what version of Hector you're using, and how it relates to previous versions.
 
 Generally Hector follows [Semantic Versioning](http://semver.org). Briefly, this means that given a version number MAJOR.MINOR.PATCH, we increment the:
 

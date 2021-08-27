@@ -20,7 +20,7 @@ hector_commit <- system("git rev-parse --short HEAD", intern = TRUE)
 
 
 vars_to_save <- c(ATMOSPHERIC_CO2(), GLOBAL_TEMP(), RF_TOTAL(), RF_CO2(), HEAT_FLUX(), OCEAN_C(), PH_HL())
-dates_to_save <- 1850:1950
+dates_to_save <- as.integer(seq(from = 1850, to = 2100, length.out = 20))
 
 
 # During this old new test we will look at results for two scenarios, a concentration and
@@ -46,3 +46,4 @@ hector_rcp45$commit <- hector_commit
 comp_data <- rbind(hector_rcp45_constrained, hector_rcp45)
 out_file <- file.path(out_dir, "hector_comp.csv")
 write.csv(comp_data, file = out_file, row.names = FALSE)
+message("All done.")

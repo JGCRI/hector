@@ -34,6 +34,13 @@ String SETDATA() {
 return M_SETDATA;
 }
 
+//' @describeIn msgtype Character used to separate biome from variable name
+// [[Rcpp::export]]
+String BIOME_SPLIT_CHAR() {
+   return SNBOX_PARSECHAR;
+}
+
+
 /* Logging levels */
 
 //' @describeIn loglevels Set logging at 'debug' level.
@@ -69,8 +76,16 @@ return (int) Hector::Logger::SEVERE;
  * Capabilities
  *****************************************************************/
 
+/* Core */
+//' @describeIn parameters Start of carbon tracking (Year)
+//' @export
+// [[Rcpp::export]]
+String TRACKING_DATE() {
+return D_TRACKING_DATE;
+}
+
 /* BC component */
-//' @describeIn emissions Black carbon emissions (\code{"Tg"})
+//' @describeIn emissions Black carbon emissions
 //' @export
 // [[Rcpp::export]]
 String EMISSIONS_BC() {
@@ -1103,6 +1118,13 @@ return D_FFI_EMISSIONS;
 //' @rdname carboncycle
 //' @export
 // [[Rcpp::export]]
+String DACCS_UPTAKE() {
+   return D_DACCS_UPTAKE;
+}
+
+//' @rdname carboncycle
+//' @export
+// [[Rcpp::export]]
 String LUC_EMISSIONS() {
 return D_LUC_EMISSIONS;
 }
@@ -1117,32 +1139,30 @@ String BETA(String biome = "") {
   // `Rcpp::String` has a `+=` method, but no `+` method, so have to use
   // this clunky workaround.
   String out = biome;
-  out += ".";
+  out += BIOME_SPLIT_CHAR();
   out += D_BETA;
   return out;
 }
 
 //' @describeIn parameters Heterotrophic respiration temperature sensitivity factor (\code{"(unitless)"})
-//' @inheritParams BETA
 //' @export
 // [[Rcpp::export]]
 String Q10_RH(String biome = "") {
   if (biome == "") return D_Q10_RH;
   String out = biome;
-  out += ".";
+  out += BIOME_SPLIT_CHAR();
   out += D_Q10_RH;
   return out;
 }
 
 
 //' @describeIn parameters Biome-specific warming factor (`(unitless)`)
-//' @inheritParams BETA
 //' @export
 // [[Rcpp::export]]
 String WARMINGFACTOR(String biome = "") {
   if (biome == "") return D_WARMINGFACTOR;
   String out = biome;
-  out += ".";
+  out += BIOME_SPLIT_CHAR();
   out += D_WARMINGFACTOR;
   return out;
 }
@@ -1155,37 +1175,34 @@ String CO2_CONSTRAIN() {
 }
 
 //' @describeIn parameters NPP fraction to vegetation (\code{"(unitless)"})
-//' @inheritParams BETA
 //' @export
 // [[Rcpp::export]]
 String F_NPPV(String biome = "") {
   if (biome == "") return D_F_NPPV;
   String out = biome;
-  out += ".";
+  out += BIOME_SPLIT_CHAR();
   out += D_F_NPPV;
   return out;
 }
 
 //' @describeIn parameters NPP fraction to detritus (\code{"(unitless)"})
-//' @inheritParams BETA
 //' @export
 // [[Rcpp::export]]
 String F_NPPD(String biome = "") {
   if (biome == "") return D_F_NPPD;
   String out = biome;
-  out += ".";
+  out += BIOME_SPLIT_CHAR();
   out += D_F_NPPD;
   return out;
 }
 
 //' @describeIn parameters Litter fraction to detritus (\code{"(unitless)"})
-//' @inheritParams BETA
 //' @export
 // [[Rcpp::export]]
 String F_LITTERD(String biome = "") {
   if (biome == "") return D_F_LITTERD;
   String out = biome;
-  out += ".";
+  out += BIOME_SPLIT_CHAR();
   out += D_F_LITTERD;
   return out;
 }
@@ -1205,50 +1222,53 @@ return D_F_LUCD;
 }
 
 //' @describeIn carboncycle Vegetation C pool (`"Pg C"`)
-//' @inheritParams BETA
 //' @export
 // [[Rcpp::export]]
 String VEG_C(String biome = "") {
   if (biome == "") return D_VEGC;
   String out = biome;
-  out += ".";
+  out += BIOME_SPLIT_CHAR();
   out += D_VEGC;
   return out;
 }
 
 //' @describeIn carboncycle Vegetation detritus C pool (`"Pg C"`)
-//' @inheritParams BETA
 //' @export
 // [[Rcpp::export]]
 String DETRITUS_C(String biome = "") {
   if (biome == "") return D_DETRITUSC;
   String out = biome;
-  out += ".";
+  out += BIOME_SPLIT_CHAR();
   out += D_DETRITUSC;
   return out;
 }
 
 //' @describeIn carboncycle Soil C pool (`"Pg C"`)
-//' @inheritParams BETA
 //' @export
 // [[Rcpp::export]]
 String SOIL_C(String biome = "") {
   if (biome == "") return D_SOILC;
   String out = biome;
-  out += ".";
+  out += BIOME_SPLIT_CHAR();
   out += D_SOILC;
   return out;
 }
 
+//' @rdname carboncycle
+//' @export
+// [[Rcpp::export]]
+String EARTH_C() {
+   return D_EARTHC;
+}
+
 //' @describeIn carboncycle Initial net primary productivity (NPP)
 //'   flux (`"Pg C year^-1"`)
-//' @inheritParams BETA
 //' @export
 // [[Rcpp::export]]
 String NPP_FLUX0(String biome = "") {
   if (biome == "") return D_NPP_FLUX0;
   String out = biome;
-  out += ".";
+  out += BIOME_SPLIT_CHAR();
   out += D_NPP_FLUX0;
   return out;
 }
@@ -1385,10 +1405,4 @@ return D_FLUX_INTERIOR;
 // [[Rcpp::export]]
 String HEAT_FLUX() {
 return D_HEAT_FLUX;
-}
-
-//' @describeIn msgtype Character used to separate biome from variable name
-// [[Rcpp::export]]
-String BIOME_SPLIT_CHAR() {
-return SNBOX_PARSECHAR;
 }

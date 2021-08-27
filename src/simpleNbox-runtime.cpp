@@ -55,7 +55,7 @@ void SimpleNbox::sanitychecks()
 
 //------------------------------------------------------------------------------
 /*! \brief      Log pool states
- *  \param      current date
+ *  \param      t date
  */
 void SimpleNbox::log_pools( const double t )
 {
@@ -106,7 +106,9 @@ void SimpleNbox::prepareToRun()
     }
 
     // Save a pointer to the ocean model in use
-    omodel = dynamic_cast<CarbonCycleModel*>( core->getComponentByCapability( D_OCEAN_C ) );
+    omodel = dynamic_cast<OceanComponent*>( core->getComponentByCapability( D_OCEAN_C ) );
+    // TODO: this is a hack, because currently we can't pass fluxpools around via sendMessage
+    omodel->set_atmosphere_sources( atmos_c );  // inform ocean model what our atmosphere looks like
 
     if( !Ftalbedo.size() ) {          // if no albedo data, assume constant
         unitval alb( -0.2, U_W_M2 ); // default is MAGICC value
@@ -142,10 +144,17 @@ void SimpleNbox::run( const double runToDate )
 {
     in_spinup = core->inSpinup();
     sanitychecks();
-    if(!in_spinup && tcurrent == trackingYear){
-        startTracking();
+    
+    // If we've hit the tracking start year, enagage!
+    const double tdate = core->getTrackingDate();
+    if(!in_spinup && runToDate == tdate){
+        H_LOG( logger, Logger::NOTICE ) << "Tracking start" << std::endl;
+        start_tracking();
     }
     Tgav_record.set( runToDate, core->sendMessage( M_GETDATA, D_GLOBAL_TEMP ).value( U_DEGC ) );
+    
+    // TODO: this is a hack, because currently we can't pass fluxpools around via sendMessage
+    omodel->set_atmosphere_sources( atmos_c );  // inform ocean model what our atmosphere looks like
 }
 
 //------------------------------------------------------------------------------
@@ -182,7 +191,7 @@ void SimpleNbox::getCValues( double t, double c[] )
 //------------------------------------------------------------------------------
 /*! \brief                  Transfer new model pools from ODE solver array back to model pools
  *  \param[in] t            Time, double, the ending date of the solver
- *  \param[in] double       Flat array of carbon pools (no units)
+ *  \param[in] c       Flat array of carbon pools (no units)
  *  \exception h_exception  If ocean model diverges from our pool tracking all ocean C
  *  \exception h_exception  If mass is not conserved
  *
@@ -192,8 +201,11 @@ void SimpleNbox::getCValues( double t, double c[] )
 void SimpleNbox::stashCValues( double t, const double c[] )
 {
     // Solver has gone from ODEstartdate to t
+    // Note this is NOT guaranteed to be a full year jump! So compute the fraction
+    // of the year we have advanced for use below
     const double yf = ( t - ODEstartdate );
     H_ASSERT( yf >= 0 && yf <= 1, "yearfraction out of bounds" );
+    
     H_LOG( logger,Logger::DEBUG ) << "Stashing at t=" << t << ", solver pools at " << t << ": " <<
         "  atm = " << c[ SNBOX_ATMOS ] <<
         "  veg = " << c[ SNBOX_VEG ] <<
@@ -201,8 +213,8 @@ void SimpleNbox::stashCValues( double t, const double c[] )
         "  soil = " << c[ SNBOX_SOIL ] <<
         "  ocean = " << c[ SNBOX_OCEAN ] <<
         "  earth = " << c[ SNBOX_EARTH ] << std::endl;
-
     log_pools( t );
+    
     // get the UNTRACKED earth emissions (ffi) and uptake (ccs)
     // We immediately adjust them for the year fraction (as the solver
     // may call stashCValues multiple times within a given year)
@@ -215,42 +227,32 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     fluxpool ccs_flux = atmos_c.flux_from_fluxpool(ccs_untracked);
 
     // current ocean fluxes
-    // TODO: Add all other ocean pools and get fluxes from DOECLIM and ocean box of Hector
-    unitval ocean_atmos = unitval(c[SNBOX_OCEAN] - ocean_model_c.value(U_PGC), U_PGC);
-    fluxpool oa_flux(0.0, U_PGC);
-    fluxpool ao_flux(0.0, U_PGC);
-    if(ocean_atmos > 0){
-        ao_flux = atmos_c.flux_from_unitval(ocean_atmos);
-        oa_flux = ocean_model_c.flux_from_fluxpool(oa_flux);
-    } else {
-        oa_flux = ocean_model_c.flux_from_unitval(-ocean_atmos);
-        ao_flux = atmos_c.flux_from_fluxpool(ao_flux);
-    }
-
+    omodel->stashCValues( t, c );   // tell ocean model to store new C values (and compute final surface fluxes)
+    // ...and now get those fluxes (and their source maps, if tracking)
+    fluxpool oa_flux = omodel->get_oaflux();
+    fluxpool ao_flux = omodel->get_aoflux();
+    
+    // Land-use change emissions and uptake between atmosphere and veg/detritus/soil
     fluxpool luc_e_untracked = luc_emission(t, in_spinup) * yf;
     fluxpool luc_u_untracked = luc_uptake(t, in_spinup) * yf;
 
-    // Land-use change uptake from atmosphere to veg, detritus, and soil
     fluxpool luc_fav_flux = atmos_c.flux_from_fluxpool(luc_u_untracked * f_lucv);
     fluxpool luc_fad_flux = atmos_c.flux_from_fluxpool(luc_u_untracked * f_lucd);
     fluxpool luc_fas_flux = atmos_c.flux_from_fluxpool(luc_u_untracked * ( 1 - f_lucv - f_lucd ));
 
-    // Record the land C flux
+    // Calculate net primary production and heterotrophic respiration
     const fluxpool npp_total = sum_npp();
     const fluxpool rh_total = sum_rh();
 
-    // TODO: If/when we implement fire, update this calculation to include it
-    // (as a negative term).
     // BBL-TODO this is really "exchange" not a flux
     // pull these values into doubles as we're constructing a unitval exchange from positive-only fluxpools
-    const double alf = npp_total.value(U_PGC_YR) - rh_total.value(U_PGC_YR) - lucEmissions.get( t ).value(U_PGC_YR);
+    // TODO: this is missing LUC uptake from above!
+    const double alf = npp_total.value(U_PGC_YR)
+        - rh_total.value(U_PGC_YR)
+        - luc_e_untracked.value(U_PGC_YR)
+        + luc_u_untracked.value(U_PGC_YR);
     atmosland_flux.set(alf, U_PGC_YR);
     atmosland_flux_ts.set(t, atmosland_flux);
-
-    // The solver just knows about one vegetation box, one detritus, and one
-    // soil. So we need to apportion new veg C pool (set by the solver) to
-    // as many biomes as we have. This is not ideal.
-    // TODO: Solver actually solves all boxes in multi-biome system
 
     // Apportioning is done by NPP and RH
     // i.e., biomes with higher values get more of any C change
@@ -258,29 +260,30 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     const unitval newveg( c[ SNBOX_VEG ], U_PGC );
     const unitval newdet( c[ SNBOX_DET ], U_PGC );
     const unitval newsoil( c[ SNBOX_SOIL ], U_PGC );
-
+    const double f_lucs = 1 - f_lucv - f_lucd; // LUC fraction to soil
+    
     for( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
         std::string biome = *it;
-        const double wt = (npp(biome) + rh( biome ) ) / npp_rh_total;
+        const double wt = (npp( biome ) + rh( biome ) ) / npp_rh_total;
 
-        fluxpool npp_biome = yf * npp(biome);
+        fluxpool npp_biome = yf * npp( biome );
 
         // Update atmosphere with luc emissons from all land pools and biomes
-        fluxpool luc_fva_biome_flux = veg_c[ biome ].flux_from_fluxpool((luc_e_untracked*f_lucv)*wt);
-        fluxpool luc_fda_biome_flux = detritus_c[biome].flux_from_fluxpool((luc_e_untracked*f_lucd)*wt);
-        fluxpool luc_fsa_biome_flux = soil_c[biome].flux_from_fluxpool((luc_e_untracked*( 1 - f_lucv - f_lucd ))*wt);
-        atmos_c = atmos_c + luc_fva_biome_flux - luc_fav_flux*wt;
-        atmos_c = atmos_c + luc_fda_biome_flux - luc_fad_flux*wt;
-        atmos_c = atmos_c + luc_fsa_biome_flux - luc_fas_flux*wt;
-
+        fluxpool luc_fva_biome_flux = veg_c[ biome ].flux_from_fluxpool((luc_e_untracked * f_lucv) * wt);
+        fluxpool luc_fda_biome_flux = detritus_c[biome].flux_from_fluxpool((luc_e_untracked * f_lucd) * wt);
+        fluxpool luc_fsa_biome_flux = soil_c[biome].flux_from_fluxpool((luc_e_untracked * f_lucs) * wt);
+        atmos_c = atmos_c + luc_fva_biome_flux - luc_fav_flux * wt;
+        atmos_c = atmos_c + luc_fda_biome_flux - luc_fad_flux * wt;
+        atmos_c = atmos_c + luc_fsa_biome_flux - luc_fas_flux * wt;
+        
         // Update veg_c, detritus_c, and soil_c with luc uptake from atmos per biome
-        veg_c[ biome ] = veg_c[ biome ] + luc_fav_flux*wt - luc_fva_biome_flux;
-        detritus_c[ biome ] = detritus_c[ biome ] + luc_fad_flux*wt - luc_fda_biome_flux;
-        soil_c[ biome ] = soil_c[ biome ] + luc_fas_flux*wt - luc_fsa_biome_flux;
+        veg_c[ biome ] = veg_c[ biome ] + luc_fav_flux * wt - luc_fva_biome_flux;
+        detritus_c[ biome ] = detritus_c[ biome ] + luc_fad_flux * wt - luc_fda_biome_flux;
+        soil_c[ biome ] = soil_c[ biome ] + luc_fas_flux * wt - luc_fsa_biome_flux;
 
         // Update all pools for NPP
         fluxpool npp_fav_biome_flux = atmos_c.flux_from_fluxpool(npp_biome * f_nppv.at(biome));
-        fluxpool npp_fad_biome_flux = atmos_c.flux_from_fluxpool(npp_biome* f_nppd.at(biome));
+        fluxpool npp_fad_biome_flux = atmos_c.flux_from_fluxpool(npp_biome * f_nppd.at(biome));
         fluxpool npp_fas_biome_flux = atmos_c.flux_from_fluxpool(npp_biome * ( 1 - f_nppv.at(biome) - f_nppd.at(biome)));
         veg_c[ biome ] = veg_c[ biome ] + npp_fav_biome_flux;
         detritus_c[ biome ] = detritus_c[ biome ] + npp_fad_biome_flux;
@@ -305,13 +308,12 @@ void SimpleNbox::stashCValues( double t, const double c[] )
         // Update detritus and soil with detsoil flux
         fluxpool detsoil_flux = detritus_c[ biome ] * (0.6 * yf);
         soil_c[ biome ] = soil_c[ biome ] + detsoil_flux;
-        // THIS IS THE ONE THAT CAUSES THE TRACKING TO GET MESSED UP
+        // Detritus is a small pool that turns over very quickly (i.e. has large fluxes
+        // in and out). As a result calculating it this way produces lots of instability.
+        // Luckily we have the solver's final value to adjust to, below; what we really
+        // want is to pass the carbon-tracking information around if it's being used.
         detritus_c[ biome ] = detritus_c[ biome ] - detsoil_flux;
 
-        // TEMPORARY TO INVESTIGATE FLUXES
-        veg_diff[biome] = veg_c[biome].value(U_PGC) - c[SNBOX_VEG]*wt;
-        soil_diff[biome] = soil_c[biome].value(U_PGC) - c[SNBOX_SOIL]*wt;
-        det_diff[ biome ] = detritus_c[biome].value(U_PGC) - c[SNBOX_DET]*wt;
         // Adjust biome pools to final values from calcDerives
         veg_c[ biome ].adjust_pool_to_val(newveg.value(U_PGC) * wt, false);
         detritus_c[ biome ].adjust_pool_to_val(newdet.value(U_PGC) * wt, false);
@@ -320,22 +322,14 @@ void SimpleNbox::stashCValues( double t, const double c[] )
         H_LOG( logger,Logger::DEBUG ) << "Biome " << biome << " weight = " << wt << std::endl;
     }
 
-    // Update earth_c and atmos_c with fossil fuel related fluxes
+    // Update earth_c and atmos_c with fossil fuel and ocean fluxes
     earth_c = (earth_c - ffi_flux) + ccs_flux;
     atmos_c = (atmos_c + ffi_flux) - ccs_flux;
-
-    // ocean-atmosphere flux adjustment
-    ocean_model_c = ocean_model_c - oa_flux + ao_flux;
     atmos_c = atmos_c + oa_flux - ao_flux;
 
-    // TEMPORARY TO INVESTIGATE FLUXES
-    earth_diff = earth_c - c[SNBOX_EARTH];
-    atmos_diff = atmos_c - c[SNBOX_ATMOS];
-    // adjusts non-biome pools to output from calcderivs
+    // adjust non-biome pools to output from calcderivs
     earth_c.adjust_pool_to_val(c[SNBOX_EARTH], false);
     atmos_c.adjust_pool_to_val(c[SNBOX_ATMOS], false);
-
-    omodel->stashCValues( t, c );   // tell ocean model to store new C values
 
     log_pools( t );
 
@@ -499,10 +493,7 @@ fluxpool SimpleNbox::sum_rh( double time ) const
 fluxpool SimpleNbox::ffi(double t, bool in_spinup) const
 {
     if( !in_spinup ) {   // no perturbation allowed if in spinup
-        double totflux = ffiEmissions.get( t ).value(U_PGC_YR);
-        if(totflux >= 0.0) {
-            return fluxpool(totflux, U_PGC_YR);
-        }
+        return fluxpool(ffiEmissions.get( t ).value(U_PGC_YR), U_PGC_YR);
     }
     return fluxpool(0.0, U_PGC_YR);
 }
@@ -514,10 +505,7 @@ fluxpool SimpleNbox::ffi(double t, bool in_spinup) const
 fluxpool SimpleNbox::ccs(double t, bool in_spinup) const
 {
     if( !in_spinup ) {   // no perturbation allowed if in spinup
-        double totflux = ffiEmissions.get( t ).value(U_PGC_YR);
-        if(totflux < 0.0) {
-            return fluxpool(-totflux, U_PGC_YR);
-        }
+        return fluxpool(daccsUptake.get( t ).value(U_PGC_YR), U_PGC_YR);
     }
     return fluxpool(0.0, U_PGC_YR);
 }
@@ -691,8 +679,8 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
  */
 void SimpleNbox::slowparameval( double t, const double c[] )
 {
-    omodel->slowparameval( t, c );      // pass msg on to ocean model
-
+    omodel->slowparameval( t, c );              // pass msg on to ocean model
+    
     // CO2 fertilization
     Ca.set( c[ SNBOX_ATMOS ] * PGC_TO_PPMVCO2, U_PPMV_CO2 );
 
