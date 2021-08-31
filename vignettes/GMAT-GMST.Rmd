@@ -5,7 +5,7 @@ date: "2021-08-18"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteEncoding{UTF-8}
-  %\VignetteIndexEntry{Example: Carbon tracking with Hector}
+  %\VignetteIndexEntry{Example: Calculating GMST from GMAT in Hector}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
   chunk_output_type: console
