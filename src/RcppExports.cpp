@@ -500,6 +500,526 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// RHO_CF4
+String RHO_CF4();
+RcppExport SEXP _hector_RHO_CF4() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(RHO_CF4());
+    return rcpp_result_gen;
+END_RCPP
+}
+// RHO_C2F6
+String RHO_C2F6();
+RcppExport SEXP _hector_RHO_C2F6() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(RHO_C2F6());
+    return rcpp_result_gen;
+END_RCPP
+}
+// RHO_HFC23
+String RHO_HFC23();
+RcppExport SEXP _hector_RHO_HFC23() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(RHO_HFC23());
+    return rcpp_result_gen;
+END_RCPP
+}
+// RHO_HFC32
+String RHO_HFC32();
+RcppExport SEXP _hector_RHO_HFC32() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(RHO_HFC32());
+    return rcpp_result_gen;
+END_RCPP
+}
+// RHO_HFC4310
+String RHO_HFC4310();
+RcppExport SEXP _hector_RHO_HFC4310() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(RHO_HFC4310());
+    return rcpp_result_gen;
+END_RCPP
+}
+// RHO_HFC125
+String RHO_HFC125();
+RcppExport SEXP _hector_RHO_HFC125() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(RHO_HFC125());
+    return rcpp_result_gen;
+END_RCPP
+}
+// RHO_HFC134A
+String RHO_HFC134A();
+RcppExport SEXP _hector_RHO_HFC134A() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(RHO_HFC134A());
+    return rcpp_result_gen;
+END_RCPP
+}
+// RHO_HFC143A
+String RHO_HFC143A();
+RcppExport SEXP _hector_RHO_HFC143A() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(RHO_HFC143A());
+    return rcpp_result_gen;
+END_RCPP
+}
+// RHO_HFC227EA
+String RHO_HFC227EA();
+RcppExport SEXP _hector_RHO_HFC227EA() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(RHO_HFC227EA());
+    return rcpp_result_gen;
+END_RCPP
+}
+// RHO_HFC245FA
+String RHO_HFC245FA();
+RcppExport SEXP _hector_RHO_HFC245FA() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(RHO_HFC245FA());
+    return rcpp_result_gen;
+END_RCPP
+}
+// RHO_SF6
+String RHO_SF6();
+RcppExport SEXP _hector_RHO_SF6() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(RHO_SF6());
+    return rcpp_result_gen;
+END_RCPP
+}
+// RHO_CFC11
+String RHO_CFC11();
+RcppExport SEXP _hector_RHO_CFC11() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(RHO_CFC11());
+    return rcpp_result_gen;
+END_RCPP
+}
+// RHO_CFC12
+String RHO_CFC12();
+RcppExport SEXP _hector_RHO_CFC12() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(RHO_CFC12());
+    return rcpp_result_gen;
+END_RCPP
+}
+// RHO_CFC113
+String RHO_CFC113();
+RcppExport SEXP _hector_RHO_CFC113() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(RHO_CFC113());
+    return rcpp_result_gen;
+END_RCPP
+}
+// RHO_CFC114
+String RHO_CFC114();
+RcppExport SEXP _hector_RHO_CFC114() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(RHO_CFC114());
+    return rcpp_result_gen;
+END_RCPP
+}
+// RHO_CFC115
+String RHO_CFC115();
+RcppExport SEXP _hector_RHO_CFC115() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(RHO_CFC115());
+    return rcpp_result_gen;
+END_RCPP
+}
+// RHO_CCL4
+String RHO_CCL4();
+RcppExport SEXP _hector_RHO_CCL4() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(RHO_CCL4());
+    return rcpp_result_gen;
+END_RCPP
+}
+// RHO_CH3CCL3
+String RHO_CH3CCL3();
+RcppExport SEXP _hector_RHO_CH3CCL3() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(RHO_CH3CCL3());
+    return rcpp_result_gen;
+END_RCPP
+}
+// RHO_HCFC22
+String RHO_HCFC22();
+RcppExport SEXP _hector_RHO_HCFC22() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(RHO_HCFC22());
+    return rcpp_result_gen;
+END_RCPP
+}
+// RHO_HCFC141B
+String RHO_HCFC141B();
+RcppExport SEXP _hector_RHO_HCFC141B() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(RHO_HCFC141B());
+    return rcpp_result_gen;
+END_RCPP
+}
+// RHO_HCFC142B
+String RHO_HCFC142B();
+RcppExport SEXP _hector_RHO_HCFC142B() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(RHO_HCFC142B());
+    return rcpp_result_gen;
+END_RCPP
+}
+// RHO_HALON1211
+String RHO_HALON1211();
+RcppExport SEXP _hector_RHO_HALON1211() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(RHO_HALON1211());
+    return rcpp_result_gen;
+END_RCPP
+}
+// RHO_HALON1301
+String RHO_HALON1301();
+RcppExport SEXP _hector_RHO_HALON1301() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(RHO_HALON1301());
+    return rcpp_result_gen;
+END_RCPP
+}
+// RHO_HALON2402
+String RHO_HALON2402();
+RcppExport SEXP _hector_RHO_HALON2402() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(RHO_HALON2402());
+    return rcpp_result_gen;
+END_RCPP
+}
+// RHO_CH3CL
+String RHO_CH3CL();
+RcppExport SEXP _hector_RHO_CH3CL() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(RHO_CH3CL());
+    return rcpp_result_gen;
+END_RCPP
+}
+// RHO_CH3BR
+String RHO_CH3BR();
+RcppExport SEXP _hector_RHO_CH3BR() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(RHO_CH3BR());
+    return rcpp_result_gen;
+END_RCPP
+}
+// DELTA_CF4
+String DELTA_CF4();
+RcppExport SEXP _hector_DELTA_CF4() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(DELTA_CF4());
+    return rcpp_result_gen;
+END_RCPP
+}
+// DELTA_C2F6
+String DELTA_C2F6();
+RcppExport SEXP _hector_DELTA_C2F6() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(DELTA_C2F6());
+    return rcpp_result_gen;
+END_RCPP
+}
+// DELTA_HFC23
+String DELTA_HFC23();
+RcppExport SEXP _hector_DELTA_HFC23() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(DELTA_HFC23());
+    return rcpp_result_gen;
+END_RCPP
+}
+// DELTA_HFC32
+String DELTA_HFC32();
+RcppExport SEXP _hector_DELTA_HFC32() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(DELTA_HFC32());
+    return rcpp_result_gen;
+END_RCPP
+}
+// DELTA_HFC4310
+String DELTA_HFC4310();
+RcppExport SEXP _hector_DELTA_HFC4310() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(DELTA_HFC4310());
+    return rcpp_result_gen;
+END_RCPP
+}
+// DELTA_HFC125
+String DELTA_HFC125();
+RcppExport SEXP _hector_DELTA_HFC125() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(DELTA_HFC125());
+    return rcpp_result_gen;
+END_RCPP
+}
+// DELTA_HFC134A
+String DELTA_HFC134A();
+RcppExport SEXP _hector_DELTA_HFC134A() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(DELTA_HFC134A());
+    return rcpp_result_gen;
+END_RCPP
+}
+// DELTA_HFC143A
+String DELTA_HFC143A();
+RcppExport SEXP _hector_DELTA_HFC143A() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(DELTA_HFC143A());
+    return rcpp_result_gen;
+END_RCPP
+}
+// DELTA_HFC227EA
+String DELTA_HFC227EA();
+RcppExport SEXP _hector_DELTA_HFC227EA() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(DELTA_HFC227EA());
+    return rcpp_result_gen;
+END_RCPP
+}
+// DELTA_HFC245FA
+String DELTA_HFC245FA();
+RcppExport SEXP _hector_DELTA_HFC245FA() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(DELTA_HFC245FA());
+    return rcpp_result_gen;
+END_RCPP
+}
+// DELTA_SF6
+String DELTA_SF6();
+RcppExport SEXP _hector_DELTA_SF6() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(DELTA_SF6());
+    return rcpp_result_gen;
+END_RCPP
+}
+// DELTA_CFC11
+String DELTA_CFC11();
+RcppExport SEXP _hector_DELTA_CFC11() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(DELTA_CFC11());
+    return rcpp_result_gen;
+END_RCPP
+}
+// DELTA_CFC12
+String DELTA_CFC12();
+RcppExport SEXP _hector_DELTA_CFC12() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(DELTA_CFC12());
+    return rcpp_result_gen;
+END_RCPP
+}
+// DELTA_CFC113
+String DELTA_CFC113();
+RcppExport SEXP _hector_DELTA_CFC113() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(DELTA_CFC113());
+    return rcpp_result_gen;
+END_RCPP
+}
+// DELTA_CFC114
+String DELTA_CFC114();
+RcppExport SEXP _hector_DELTA_CFC114() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(DELTA_CFC114());
+    return rcpp_result_gen;
+END_RCPP
+}
+// DELTA_CFC115
+String DELTA_CFC115();
+RcppExport SEXP _hector_DELTA_CFC115() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(DELTA_CFC115());
+    return rcpp_result_gen;
+END_RCPP
+}
+// DELTA_CCL4
+String DELTA_CCL4();
+RcppExport SEXP _hector_DELTA_CCL4() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(DELTA_CCL4());
+    return rcpp_result_gen;
+END_RCPP
+}
+// DELTA_CH3CCL3
+String DELTA_CH3CCL3();
+RcppExport SEXP _hector_DELTA_CH3CCL3() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(DELTA_CH3CCL3());
+    return rcpp_result_gen;
+END_RCPP
+}
+// DELTA_HCFC22
+String DELTA_HCFC22();
+RcppExport SEXP _hector_DELTA_HCFC22() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(DELTA_HCFC22());
+    return rcpp_result_gen;
+END_RCPP
+}
+// DELTA_HCFC141B
+String DELTA_HCFC141B();
+RcppExport SEXP _hector_DELTA_HCFC141B() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(DELTA_HCFC141B());
+    return rcpp_result_gen;
+END_RCPP
+}
+// DELTA_HCFC142B
+String DELTA_HCFC142B();
+RcppExport SEXP _hector_DELTA_HCFC142B() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(DELTA_HCFC142B());
+    return rcpp_result_gen;
+END_RCPP
+}
+// DELTA_HALON1211
+String DELTA_HALON1211();
+RcppExport SEXP _hector_DELTA_HALON1211() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(DELTA_HALON1211());
+    return rcpp_result_gen;
+END_RCPP
+}
+// DELTA_HALON1301
+String DELTA_HALON1301();
+RcppExport SEXP _hector_DELTA_HALON1301() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(DELTA_HALON1301());
+    return rcpp_result_gen;
+END_RCPP
+}
+// DELTA_HALON2402
+String DELTA_HALON2402();
+RcppExport SEXP _hector_DELTA_HALON2402() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(DELTA_HALON2402());
+    return rcpp_result_gen;
+END_RCPP
+}
+// DELTA_CH3CL
+String DELTA_CH3CL();
+RcppExport SEXP _hector_DELTA_CH3CL() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(DELTA_CH3CL());
+    return rcpp_result_gen;
+END_RCPP
+}
+// DELTA_CH3BR
+String DELTA_CH3BR();
+RcppExport SEXP _hector_DELTA_CH3BR() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(DELTA_CH3BR());
+    return rcpp_result_gen;
+END_RCPP
+}
 // alpha_CO2
 String alpha_CO2();
 RcppExport SEXP _hector_alpha_CO2() {
@@ -2037,6 +2557,58 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_RF_HALON2402", (DL_FUNC) &_hector_RF_HALON2402, 0},
     {"_hector_RF_CH3CL", (DL_FUNC) &_hector_RF_CH3CL, 0},
     {"_hector_RF_CH3BR", (DL_FUNC) &_hector_RF_CH3BR, 0},
+    {"_hector_RHO_CF4", (DL_FUNC) &_hector_RHO_CF4, 0},
+    {"_hector_RHO_C2F6", (DL_FUNC) &_hector_RHO_C2F6, 0},
+    {"_hector_RHO_HFC23", (DL_FUNC) &_hector_RHO_HFC23, 0},
+    {"_hector_RHO_HFC32", (DL_FUNC) &_hector_RHO_HFC32, 0},
+    {"_hector_RHO_HFC4310", (DL_FUNC) &_hector_RHO_HFC4310, 0},
+    {"_hector_RHO_HFC125", (DL_FUNC) &_hector_RHO_HFC125, 0},
+    {"_hector_RHO_HFC134A", (DL_FUNC) &_hector_RHO_HFC134A, 0},
+    {"_hector_RHO_HFC143A", (DL_FUNC) &_hector_RHO_HFC143A, 0},
+    {"_hector_RHO_HFC227EA", (DL_FUNC) &_hector_RHO_HFC227EA, 0},
+    {"_hector_RHO_HFC245FA", (DL_FUNC) &_hector_RHO_HFC245FA, 0},
+    {"_hector_RHO_SF6", (DL_FUNC) &_hector_RHO_SF6, 0},
+    {"_hector_RHO_CFC11", (DL_FUNC) &_hector_RHO_CFC11, 0},
+    {"_hector_RHO_CFC12", (DL_FUNC) &_hector_RHO_CFC12, 0},
+    {"_hector_RHO_CFC113", (DL_FUNC) &_hector_RHO_CFC113, 0},
+    {"_hector_RHO_CFC114", (DL_FUNC) &_hector_RHO_CFC114, 0},
+    {"_hector_RHO_CFC115", (DL_FUNC) &_hector_RHO_CFC115, 0},
+    {"_hector_RHO_CCL4", (DL_FUNC) &_hector_RHO_CCL4, 0},
+    {"_hector_RHO_CH3CCL3", (DL_FUNC) &_hector_RHO_CH3CCL3, 0},
+    {"_hector_RHO_HCFC22", (DL_FUNC) &_hector_RHO_HCFC22, 0},
+    {"_hector_RHO_HCFC141B", (DL_FUNC) &_hector_RHO_HCFC141B, 0},
+    {"_hector_RHO_HCFC142B", (DL_FUNC) &_hector_RHO_HCFC142B, 0},
+    {"_hector_RHO_HALON1211", (DL_FUNC) &_hector_RHO_HALON1211, 0},
+    {"_hector_RHO_HALON1301", (DL_FUNC) &_hector_RHO_HALON1301, 0},
+    {"_hector_RHO_HALON2402", (DL_FUNC) &_hector_RHO_HALON2402, 0},
+    {"_hector_RHO_CH3CL", (DL_FUNC) &_hector_RHO_CH3CL, 0},
+    {"_hector_RHO_CH3BR", (DL_FUNC) &_hector_RHO_CH3BR, 0},
+    {"_hector_DELTA_CF4", (DL_FUNC) &_hector_DELTA_CF4, 0},
+    {"_hector_DELTA_C2F6", (DL_FUNC) &_hector_DELTA_C2F6, 0},
+    {"_hector_DELTA_HFC23", (DL_FUNC) &_hector_DELTA_HFC23, 0},
+    {"_hector_DELTA_HFC32", (DL_FUNC) &_hector_DELTA_HFC32, 0},
+    {"_hector_DELTA_HFC4310", (DL_FUNC) &_hector_DELTA_HFC4310, 0},
+    {"_hector_DELTA_HFC125", (DL_FUNC) &_hector_DELTA_HFC125, 0},
+    {"_hector_DELTA_HFC134A", (DL_FUNC) &_hector_DELTA_HFC134A, 0},
+    {"_hector_DELTA_HFC143A", (DL_FUNC) &_hector_DELTA_HFC143A, 0},
+    {"_hector_DELTA_HFC227EA", (DL_FUNC) &_hector_DELTA_HFC227EA, 0},
+    {"_hector_DELTA_HFC245FA", (DL_FUNC) &_hector_DELTA_HFC245FA, 0},
+    {"_hector_DELTA_SF6", (DL_FUNC) &_hector_DELTA_SF6, 0},
+    {"_hector_DELTA_CFC11", (DL_FUNC) &_hector_DELTA_CFC11, 0},
+    {"_hector_DELTA_CFC12", (DL_FUNC) &_hector_DELTA_CFC12, 0},
+    {"_hector_DELTA_CFC113", (DL_FUNC) &_hector_DELTA_CFC113, 0},
+    {"_hector_DELTA_CFC114", (DL_FUNC) &_hector_DELTA_CFC114, 0},
+    {"_hector_DELTA_CFC115", (DL_FUNC) &_hector_DELTA_CFC115, 0},
+    {"_hector_DELTA_CCL4", (DL_FUNC) &_hector_DELTA_CCL4, 0},
+    {"_hector_DELTA_CH3CCL3", (DL_FUNC) &_hector_DELTA_CH3CCL3, 0},
+    {"_hector_DELTA_HCFC22", (DL_FUNC) &_hector_DELTA_HCFC22, 0},
+    {"_hector_DELTA_HCFC141B", (DL_FUNC) &_hector_DELTA_HCFC141B, 0},
+    {"_hector_DELTA_HCFC142B", (DL_FUNC) &_hector_DELTA_HCFC142B, 0},
+    {"_hector_DELTA_HALON1211", (DL_FUNC) &_hector_DELTA_HALON1211, 0},
+    {"_hector_DELTA_HALON1301", (DL_FUNC) &_hector_DELTA_HALON1301, 0},
+    {"_hector_DELTA_HALON2402", (DL_FUNC) &_hector_DELTA_HALON2402, 0},
+    {"_hector_DELTA_CH3CL", (DL_FUNC) &_hector_DELTA_CH3CL, 0},
+    {"_hector_DELTA_CH3BR", (DL_FUNC) &_hector_DELTA_CH3BR, 0},
     {"_hector_alpha_CO2", (DL_FUNC) &_hector_alpha_CO2, 0},
     {"_hector_EMISSIONS_CF4", (DL_FUNC) &_hector_EMISSIONS_CF4, 0},
     {"_hector_EMISSIONS_C2F6", (DL_FUNC) &_hector_EMISSIONS_C2F6, 0},
