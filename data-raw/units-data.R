@@ -54,11 +54,20 @@ haloconstrain <- c(
 )
 haloconstrain_units <- "pptv"
 
+hdeltas <- c(DELTA_CF4(), DELTA_C2F6(), DELTA_HFC23(), DELTA_HFC32(), DELTA_HFC4310(), DELTA_HFC125(),
+             DELTA_HFC134A(), DELTA_HFC143A(), DELTA_HFC227EA(), DELTA_HFC245FA(), DELTA_SF6(),
+             DELTA_CFC11(), DELTA_CFC12(), DELTA_CFC113(), DELTA_CFC114(), DELTA_CFC115(), DELTA_CCL4(),
+             DELTA_CH3CCL3(), DELTA_HCFC22(), DELTA_HCFC141B(), DELTA_HCFC142B(), DELTA_HALON1211(),
+             DELTA_HALON1301(), DELTA_HALON2402(), DELTA_CH3CL(), DELTA_CH3BR(), DELTA_CH4()
+)
+
+hdeltas_units <- "(unitless)"
 
 unitstable <- rbind(
   data.frame(variable = hvars, units = hunits),
   data.frame(variable = haloemis, units = halounits),
-  data.frame(variable = haloconstrain, units = haloconstrain_units)
+  data.frame(variable = haloconstrain, units = haloconstrain_units),
+  data.frame(variable = hdeltas, units = hdeltas_units)
 )
 
 usethis::use_data(unitstable, internal = TRUE, overwrite = TRUE)

@@ -1155,6 +1155,14 @@ String RF_CH4() {
 return D_RF_CH4;
 }
 
+//' @describeIn delta Radiative forcing tropospheric adjustment for CH4
+//' @export
+// [[Rcpp::export]]
+String DELTA_CH4() {
+    return D_DELTA_CH4;
+}
+
+
 //' @rdname methane
 //' @export
 // [[Rcpp::export]]

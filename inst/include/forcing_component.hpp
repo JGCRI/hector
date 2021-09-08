@@ -76,7 +76,16 @@ private:
     double currentYear;     //! Tracks current year
     unitval C0;             //! Records base year atmospheric CO2
     unitval aCO2;           //! alpha CO2, forcing efficiency for CO2 (W/m2)
-    tseries<unitval> Ftot_constrain;       //! Total forcing can be supplied
+    tseries<unitval> Ftot_constrain; //! Total forcing can be supplied
+
+
+    // CH4 parameters
+    const double a3 = -8.9603e-5;       // (W m–2 ppb–1) IPCC AR6 parameter for CH4 SARF Table 7.SM.1
+    const double b3 = -1.2462e-4;       // (W m–2 ppb–1) IPCC AR6 parameter for CH4 SARF Table 7.SM.1
+    const double d3 = 0.045194;         // (W m–2 ppb–1/2) IPCC AR6 parameter for CH4 SARF Table 7.SM.1
+    unitval delta_ch4;                  // forcing tropospheric adjustment for CH4 see 7.3.2.2 of IPCC AR6
+
+
 
     Core* core;             //! Core
     Logger logger;          //! Logger

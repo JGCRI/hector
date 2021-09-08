@@ -1590,6 +1590,16 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// DELTA_CH4
+String DELTA_CH4();
+RcppExport SEXP _hector_DELTA_CH4() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(DELTA_CH4());
+    return rcpp_result_gen;
+END_RCPP
+}
 // EMISSIONS_CH4
 String EMISSIONS_CH4();
 RcppExport SEXP _hector_EMISSIONS_CH4() {
@@ -2666,6 +2676,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_CH4_CONSTRAIN", (DL_FUNC) &_hector_CH4_CONSTRAIN, 0},
     {"_hector_PREINDUSTRIAL_CH4", (DL_FUNC) &_hector_PREINDUSTRIAL_CH4, 0},
     {"_hector_RF_CH4", (DL_FUNC) &_hector_RF_CH4, 0},
+    {"_hector_DELTA_CH4", (DL_FUNC) &_hector_DELTA_CH4, 0},
     {"_hector_EMISSIONS_CH4", (DL_FUNC) &_hector_EMISSIONS_CH4, 0},
     {"_hector_NATURAL_CH4", (DL_FUNC) &_hector_NATURAL_CH4, 0},
     {"_hector_LIFETIME_SOIL", (DL_FUNC) &_hector_LIFETIME_SOIL, 0},

@@ -205,6 +205,7 @@ void ForcingComponent::init( Core* coreptr ) {
 
     // Register the inputs we can receive from outside
     core->registerInput( D_ACO2, getComponentName() );
+    core->registerInput( D_DELTA_CH4, getComponentName() );
 
 
 }
@@ -244,6 +245,9 @@ void ForcingComponent::setData( const string& varName,
         } else if( varName == D_ACO2 ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
             aCO2 = data.getUnitval(U_W_M2);
+        } else if( varName == D_DELTA_CH4 ) {
+            H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
+            delta_ch4 = data.getUnitval(U_UNITLESS);
         } else if( varName == D_FTOT_CONSTRAIN ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
             Ftot_constrain.set(data.date, data.getUnitval(U_W_M2));
@@ -274,6 +278,8 @@ void ForcingComponent::prepareToRun() {
         H_LOG( glog, Logger::WARNING ) << "Total forcing will be overwritten by user-supplied values!" << std::endl;
     }
 
+    H_ASSERT( delta_ch4 >= -1 && delta_ch4 <= 1, "bad delta ch4 value" ); // delta is a paramter that must be between -1 and 1
+
     baseyear_forcings.clear();
 }
 
@@ -292,44 +298,56 @@ void ForcingComponent::run( const double runToDate ) {
     } else {
         forcings_t forcings;
 
-        // ---------- CO2 ----------
-        // Instantaneous radiative forcings for CO2, CH4, and N2O from http://www.esrl.noaa.gov/gmd/aggi/
-        // These are in turn from IPCC (2001)
+        //  ---------- Major GHGs ----------
+        if( core->checkCapability( D_ATMOSPHERIC_CH4 ) && core->checkCapability( D_ATMOSPHERIC_N2O ) && core->checkCapability( D_ATMOSPHERIC_CO2) ) {
 
-        // This is identical to that of MAGICC; Meinshausen et al. (2011) equation A35
-        // adjusted radiative forcing by CO2 (Wm−2) is equal to the forcing efficiency for a unit increases *
-        // the change in CO2 concentrations relative to the preindustrial value.
-        unitval Ca = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_CO2 );
-        if( runToDate==baseyear )
-            C0 = Ca;
-        //forcings[D_RF_CO2 ].set( aCO2 * log( Ca/C0 ), U_W_M2 );
-        forcings[D_RF_CO2 ].set( aCO2.value(U_W_M2) * log( Ca/C0 ), U_W_M2 );
+            // Parse our the pre industrial and concentrations to use in RF calculations
+            double M0 = core->sendMessage( M_GETDATA, D_PREINDUSTRIAL_CH4 ).value( U_PPBV_CH4 );
+            double N0 = core->sendMessage( M_GETDATA, D_PREINDUSTRIAL_N2O ).value( U_PPBV_N2O );
+
+            double Ma = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_CH4, message_data( runToDate ) ).value( U_PPBV_CH4 );
+            double Na = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_N2O, message_data( runToDate ) ).value( U_PPBV_N2O );
+
+            // ---------- CO2 ----------
+            // Instantaneous radiative forcings for CO2, CH4, and N2O from http://www.esrl.noaa.gov/gmd/aggi/
+            // These are in turn from IPCC (2001)
+
+            // This is identical to that of MAGICC; Meinshausen et al. (2011) equation A35
+            // adjusted radiative forcing by CO2 (Wm−2) is equal to the forcing efficiency for a unit increases *
+            // the change in CO2 concentrations relative to the preindustrial value.
+            unitval Ca = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_CO2 );
+            if( runToDate==baseyear )
+                C0 = Ca;
+            //forcings[D_RF_CO2 ].set( aCO2 * log( Ca/C0 ), U_W_M2 );
+            forcings[D_RF_CO2 ].set( aCO2.value(U_W_M2) * log( Ca/C0 ), U_W_M2 );
+
+            // ---------- CH4 ----------
+            // CH4 SARF is calculated using simplified expressions from IPCC
+            // AR6 listed in Table 7.SM.1. Then the SARF is adjusted by a scalar
+            // value to account for tropospheric interactions.
+            double sarf_ch4 = (a3 * sqrt( Ma ) + b3 * sqrt( Na ) + d3) * (sqrt(Ma) - sqrt(M0)) ;
+            double fch4 = (delta_ch4 * sarf_ch4) + sarf_ch4;
+            forcings[D_RF_CH4].set( fch4, U_W_M2 );
+            
+             // ---------- Stratospheric H2O from CH4 oxidation ----------
+             // From Tanaka et al, 2007, but using Joos et al., 2001 value of 0.05
+            const double fh2o_strat = 0.05 * ( 0.036 * ( sqrt( Ma ) - sqrt( M0 ) ) );
+            forcings[D_RF_H2O_STRAT].set( fh2o_strat, U_W_M2 );
+  }
+
 
         // ---------- Terrestrial albedo ----------
         if( core->checkCapability( D_RF_T_ALBEDO ) ) {
             forcings[ D_RF_T_ALBEDO ] = core->sendMessage( M_GETDATA, D_RF_T_ALBEDO, message_data( runToDate ) );
         }
 
-        // ---------- N2O and CH4 ----------
         // Equations from Joos et al., 2001
         if( core->checkCapability( D_ATMOSPHERIC_CH4 ) && core->checkCapability( D_ATMOSPHERIC_N2O ) ) {
 
-#define f(M,N) 0.47 * log( 1 + 2.01 * 1e-5 * pow( M * N, 0.75 ) + 5.31 * 1e-15 * M * pow( M * N, 1.52 ) )
-            double Ma = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_CH4, message_data( runToDate ) ).value( U_PPBV_CH4 );
-            double M0 = core->sendMessage( M_GETDATA, D_PREINDUSTRIAL_CH4 ).value( U_PPBV_CH4 );
-            double Na = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_N2O, message_data( runToDate ) ).value( U_PPBV_N2O );
-            double N0 = core->sendMessage( M_GETDATA, D_PREINDUSTRIAL_N2O ).value( U_PPBV_N2O );
-
-            double fch4 =  0.036 * ( sqrt( Ma ) - sqrt( M0 ) ) - ( f( Ma, N0 ) - f( M0, N0 ) );
-            forcings[D_RF_CH4].set( fch4, U_W_M2 );
-
-            double fn2o =  0.12 * ( sqrt( Na ) - sqrt( N0 ) ) - ( f( M0, Na ) - f( M0, N0 ) );
-            forcings[D_RF_N2O].set( fn2o, U_W_M2 );
-
             // ---------- Stratospheric H2O from CH4 oxidation ----------
             // From Tanaka et al, 2007, but using Joos et al., 2001 value of 0.05
-            const double fh2o_strat = 0.05 * ( 0.036 * ( sqrt( Ma ) - sqrt( M0 ) ) );
-            forcings[D_RF_H2O_STRAT].set( fh2o_strat, U_W_M2 );
+           // const double fh2o_strat = 0.05 * ( 0.036 * ( sqrt( Ma ) - sqrt( M0 ) ) );
+            //forcings[D_RF_H2O_STRAT].set( fh2o_strat, U_W_M2 );
         }
 
         // ---------- Troposheric Ozone ----------
@@ -481,7 +499,10 @@ unitval ForcingComponent::getData( const std::string& varName,
         // return the parameter value.
         if(varName == D_ACO2){
             returnval = aCO2;
-        }
+        } else if (varName == D_DELTA_CH4){
+                      returnval = delta_ch4;
+                  }
+        
         return returnval;
     }
 
@@ -530,6 +551,8 @@ unitval ForcingComponent::getData( const std::string& varName,
         } else {
             if (currentYear < baseyear) {
                 returnval.set( 0.0, U_W_M2 );
+            } else if (varName == D_DELTA_CH4){
+                returnval = delta_ch4; 
             } else {
                 H_THROW( "Caller is requesting unknown variable: " + varName );
             }

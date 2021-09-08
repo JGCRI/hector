@@ -947,6 +947,12 @@ RF_CH4 <- function() {
     .Call('_hector_RF_CH4', PACKAGE = 'hector')
 }
 
+#' @describeIn delta Radiative forcing tropospheric adjustment for CH4
+#' @export
+DELTA_CH4 <- function() {
+    .Call('_hector_DELTA_CH4', PACKAGE = 'hector')
+}
+
 #' @rdname methane
 #' @export
 EMISSIONS_CH4 <- function() {
