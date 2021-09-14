@@ -59,6 +59,7 @@ Other capability identifiers:
 \code{\link{carboncycle}},
 \code{\link{concentrations}},
 \code{\link{constraints}},
+\code{\link{delta}},
 \code{\link{forcings}},
 \code{\link{haloconstrain}},
 \code{\link{haloemiss}},
@@ -66,6 +67,7 @@ Other capability identifiers:
 \code{\link{methane}},
 \code{\link{ocean}},
 \code{\link{parameters}},
+\code{\link{rho}},
 \code{\link{so2}},
 \code{\link{temperature}}
 }

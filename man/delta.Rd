@@ -2,6 +2,9 @@
 % Please edit documentation in R/aadoc.R, R/RcppExports.R
 \name{delta}
 \alias{delta}
+\alias{DELTA_CO2}
+\alias{RF_N2O}
+\alias{DELTA_N2O}
 \alias{DELTA_CF4}
 \alias{DELTA_C2F6}
 \alias{DELTA_HFC23}
@@ -28,8 +31,15 @@
 \alias{DELTA_HALON2402}
 \alias{DELTA_CH3CL}
 \alias{DELTA_CH3BR}
+\alias{DELTA_CH4}
 \title{Identifiers for Hector forcing component parameters}
 \usage{
+DELTA_CO2()
+
+RF_N2O()
+
+DELTA_N2O()
+
 DELTA_CF4()
 
 DELTA_C2F6()
@@ -81,6 +91,8 @@ DELTA_HALON2402()
 DELTA_CH3CL()
 
 DELTA_CH3BR()
+
+DELTA_CH4()
 }
 \description{
 These identifiers specify the tropospheric adjustments for the
@@ -89,6 +101,12 @@ they can be read and/or set by hectors forcing and halocarbon components.
 }
 \section{Functions}{
 \itemize{
+\item \code{DELTA_CO2}: the foring tropospheric adjustments for N2O
+
+\item \code{RF_N2O}: the foring tropospheric adjustments for N2O
+
+\item \code{DELTA_N2O}: Radiative forcing due to N2O
+
 \item \code{DELTA_CF4}: the tropospheric adjustments used to convert from stratospheric-temperature adjusted radiative forcing to effective radiative forcing
 
 \item \code{DELTA_C2F6}: the tropospheric adjustments used to convert from stratospheric-temperature adjusted radiative forcing to effective radiative forcing
@@ -140,6 +158,8 @@ they can be read and/or set by hectors forcing and halocarbon components.
 \item \code{DELTA_CH3CL}: the tropospheric adjustments used to convert from stratospheric-temperature adjusted radiative forcing to effective radiative forcing
 
 \item \code{DELTA_CH3BR}: the tropospheric adjustments used to convert from stratospheric-temperature adjusted radiative forcing to effective radiative forcing
+
+\item \code{DELTA_CH4}: Radiative forcing tropospheric adjustment for CH4
 }}
 
 \section{Note}{

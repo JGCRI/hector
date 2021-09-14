@@ -106,6 +106,8 @@ enum unit_types {
 
                     U_W_M2,               // Forcing
                     U_W_M2_PPTV,          // Forcing efficiency
+                    U_W_M2_TG,            // Forcing efficiency
+                    U_W_M2_GG,            // Forcing efficiency
                     U_W_M2_K,             // ocean heat uptake efficiency
 
                     U_M3_S,                // sverdrop (volume transport)

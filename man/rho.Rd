@@ -2,6 +2,9 @@
 % Please edit documentation in R/aadoc.R, R/RcppExports.R
 \name{rho}
 \alias{rho}
+\alias{RHO_BC}
+\alias{RHO_OC}
+\alias{RHO_SO2}
 \alias{RHO_CF4}
 \alias{RHO_C2F6}
 \alias{RHO_HFC23}
@@ -30,6 +33,12 @@
 \alias{RHO_CH3BR}
 \title{Identifiers for Hector forcing component parameters}
 \usage{
+RHO_BC()
+
+RHO_OC()
+
+RHO_SO2()
+
 RHO_CF4()
 
 RHO_C2F6()
@@ -89,6 +98,12 @@ the forcing component.
 }
 \section{Functions}{
 \itemize{
+\item \code{RHO_BC}: a radiative forcing efficiency for BC
+
+\item \code{RHO_OC}: a radiative forcing efficiency for OC
+
+\item \code{RHO_SO2}: a radiative forcing efficiency for SO2
+
 \item \code{RHO_CF4}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for CF4
 
 \item \code{RHO_C2F6}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for C2F6
@@ -125,9 +140,9 @@ the forcing component.
 
 \item \code{RHO_CH3CCL3}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for trichloroethane
 
-\item \code{RHO_HCFC22}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for HCFC-22
+\item \code{RHO_HCFC22}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for HFC-22
 
-\item \code{RHO_HCFC141B}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for HCFC-141b
+\item \code{RHO_HCFC141B}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for HFC-141b
 
 \item \code{RHO_HCFC142B}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for HCFC-142b
 

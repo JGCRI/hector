@@ -95,6 +95,10 @@ string unitval::unitsName( const unit_types u ) {
         break;
     case U_W_M2_PPTV: return "W/m2/pptv";
         break;
+    case U_W_M2_TG: return "W/m2/Tg";
+        break;
+    case U_W_M2_GG: return "W/m2/Gg";
+        break;
     case U_W_M2_K: return "W/m2/K";
         break;
     case U_PH: return "pH";

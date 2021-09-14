@@ -114,11 +114,25 @@ String RF_CO2() {
 return D_RF_CO2;
 }
 
-//' @describeIn forcings Radiative forcing due to N2O
+//' @describeIn delta the foring tropospheric adjustments for N2O
+//' @export
+// [[Rcpp::export]]
+String DELTA_CO2() {
+    return D_DELTA_CO2;
+}
+
+//' @describeIn delta the foring tropospheric adjustments for N2O
 //' @export
 // [[Rcpp::export]]
 String RF_N2O() {
 return D_RF_N2O;
+}
+
+//' @describeIn delta Radiative forcing due to N2O
+//' @export
+// [[Rcpp::export]]
+String DELTA_N2O() {
+    return D_DELTA_N2O;
 }
 
 //' @describeIn forcings Radiative forcing due to stratospheric water vapor
@@ -142,11 +156,25 @@ String RF_BC() {
 return D_RF_BC;
 }
 
+//' @describeIn rho a radiative forcing efficiency for BC
+//' @export
+// [[Rcpp::export]]
+String RHO_BC() {
+    return D_RHO_BC;
+}
+
 //' @describeIn forcings Radiative forcing due to organic carbon
 //' @export
 // [[Rcpp::export]]
 String RF_OC() {
 return D_RF_OC;
+}
+
+//' @describeIn rho a radiative forcing efficiency for OC
+//' @export
+// [[Rcpp::export]]
+String RHO_OC() {
+    return D_RHO_OC;
 }
 
 //' @describeIn forcings Direct contribution of SO2 to radiative forcing
@@ -168,6 +196,13 @@ return D_RF_SO2i;
 // [[Rcpp::export]]
 String RF_SO2() {
 return D_RF_SO2;
+}
+
+//' @describeIn rho a radiative forcing efficiency for SO2
+//' @export
+// [[Rcpp::export]]
+String RHO_SO2() {
+    return D_RHO_SO2;
 }
 
 //' @describeIn forcings Radiative forcing due to volcanic activity
@@ -341,7 +376,7 @@ String RF_HCFC141B() {
 return D_RFADJ_HCFC141b;
 }
 
-//' @describeIn haloforcings Radiative forcing due to HCFC-142b
+//' @describeIn haloforcings Radiative forcing due to HCCFC-142b
 //' @export
 // [[Rcpp::export]]
 String RF_HCFC142B() {
@@ -512,14 +547,14 @@ String RHO_CH3CCL3() {
     return D_HCRHO_CH3CCl3;
 }
 
-//' @describeIn rho a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for HCFC-22
+//' @describeIn rho a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for HFC-22
 //' @export
 // [[Rcpp::export]]
 String RHO_HCFC22() {
     return D_HCRHO_HCFC22;
 }
 
-//' @describeIn rho a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for HCFC-141b
+//' @describeIn rho a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for HFC-141b
 //' @export
 // [[Rcpp::export]]
 String RHO_HCFC141B() {
@@ -892,7 +927,7 @@ String EMISSIONS_HCFC22() {
 return D_EMISSIONS_HCFC22;
 }
 
-//' @describeIn haloemiss Emissions for HCFC-141b
+//' @describeIn haloemiss Emissions for HcFC-141b
 //' @export
 // [[Rcpp::export]]
 String EMISSIONS_HCFC141B() {

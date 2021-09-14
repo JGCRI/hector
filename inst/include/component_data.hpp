@@ -50,12 +50,21 @@
 #define D_RF_O3_TROP            D_RF_PREFIX "O3_trop"
 #define D_RF_BC                 D_RF_PREFIX "BC"
 #define D_RF_OC                 D_RF_PREFIX "OC"
-#define D_RF_SO2d               D_RF_PREFIX "SO2d"
-#define D_RF_SO2i               D_RF_PREFIX "SO2i"
 #define D_RF_SO2                D_RF_PREFIX "SO2"
 #define D_RF_VOL                D_RF_PREFIX "vol" // forcing from volcanic so2
 #define D_RF_halocarbons        D_RF_PREFIX "halocarbons"
 #define D_ACO2                  "aco2"            // forcing efficiency for CO2
+#define D_DELTA_CH4             "delta_ch4"       // forcing tropospheric adjustment
+#define D_DELTA_N2O             "delta_n2o"       // forcing tropospheric adjustment
+#define D_DELTA_CO2             "delta_co2"       // forcing tropospheric adjustment
+#define D_RHO_BC                "rho_bc"          // BC radiative efficiency
+#define D_RHO_OC                "rho_oc"          // BC radiative efficiency
+#define D_RHO_SO2               "rho_so2"         // SO2 radiative efficiency
+#define D_RF_SO2d               D_RF_PREFIX "SO2d"
+#define D_RF_SO2i               D_RF_PREFIX "SO2i"
+
+
+
 
 
 // halocarbon components

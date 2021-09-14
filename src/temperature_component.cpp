@@ -120,8 +120,6 @@ void TemperatureComponent::init( Core* coreptr ) {
     core->registerDependency( D_RF_TOTAL, getComponentName() );
     core->registerDependency( D_RF_BC, getComponentName() );
     core->registerDependency( D_RF_OC, getComponentName() );
-    core->registerDependency( D_RF_SO2d, getComponentName() );
-    core->registerDependency( D_RF_SO2i, getComponentName() );
     core->registerDependency( D_RF_VOL, getComponentName() );
     core->registerDependency( D_ACO2, getComponentName() );
 
@@ -366,8 +364,9 @@ void TemperatureComponent::run( const double runToDate ) {
     // Some needed inputs
     int tstep = runToDate - core->getStartDate();
     double aero_forcing =
-        double(core->sendMessage( M_GETDATA, D_RF_BC ).value( U_W_M2 )) + double(core->sendMessage( M_GETDATA, D_RF_OC).value( U_W_M2 )) +
-        double(core->sendMessage( M_GETDATA, D_RF_SO2d ).value( U_W_M2 )) + double(core->sendMessage( M_GETDATA, D_RF_SO2i ).value( U_W_M2 ));
+    double(core->sendMessage( M_GETDATA, D_RF_BC ).value( U_W_M2 )) + double(core->sendMessage( M_GETDATA, D_RF_OC).value( U_W_M2 )); 
+    //+
+     //   double(core->sendMessage( M_GETDATA, D_RF_SO2d ).value( U_W_M2 )) + double(core->sendMessage( M_GETDATA, D_RF_SO2i ).value( U_W_M2 ));
     double volcanic_forcing = double(core->sendMessage(M_GETDATA, D_RF_VOL));
 
     forcing[tstep] = double(core->sendMessage(M_GETDATA, D_RF_TOTAL).value(U_W_M2))

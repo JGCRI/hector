@@ -66,19 +66,18 @@ private:
     //! Who are we?
     std::string myGasName;
 
-    //! Rate coefficient of loss [relates to year?]
-    double tau;
-
-    //! Radiative forcing efficiency [W/m^2/pptv]
-    unitval rho;
+    // Parameters
+    double tau;   // lifetime in years
+    unitval rho;  // radiative efficiencies W/m2/ppt
+    unitval delta; // tropospheric adjustments scalar unitless
 
     //! Forcing [W/m^2]
     tseries<unitval> hc_forcing;
-
     tseries<unitval> emissions;     //! Time series of emissions, pptv
     tseries<unitval> Ha_ts;         //! Time series of (ambient) concentration, pptv
     tseries<unitval> Ha_constrain; //! Concentration constraint, pptv
     unitval H0;                     //! Preindustrial concentration, pptv
+
 
     double molarMass;
 

@@ -28,14 +28,14 @@ TODO:  indicate which ones are valid for reading and which are valid for writing
 // Halocarbon Forcings
  D_RF_CF4                
  D_RF_C2F6               
- D_RF_HFC23              
- D_RF_HFC32              
- D_RF_HFC4310            
- D_RF_HFC125             
- D_RF_HFC134a            
- D_RF_HFC143a            
- D_RF_HFC227ea           
- D_RF_HFC245fa           
+ D_RF_HCFC23              
+ D_RF_HCFC32              
+ D_RF_HCFC4310            
+ D_RF_HCFC125             
+ D_RF_HCFC134a            
+ D_RF_HCFC143a            
+ D_RF_HCFC227ea           
+ D_RF_HCFC245fa           
  D_RF_SF6                
  D_RF_CFC11              
  D_RF_CFC12              
@@ -56,14 +56,14 @@ TODO:  indicate which ones are valid for reading and which are valid for writing
 // Halocarbon Emissions
  D_EMISSIONS_CF4         
  D_EMISSIONS_C2F6        
- D_EMISSIONS_HFC23       
- D_EMISSIONS_HFC32       
- D_EMISSIONS_HFC4310     
- D_EMISSIONS_HFC125      
- D_EMISSIONS_HFC134a     
- D_EMISSIONS_HFC143a     
- D_EMISSIONS_HFC227ea    
- D_EMISSIONS_HFC245fa    
+ D_EMISSIONS_HCFC23       
+ D_EMISSIONS_HCFC32       
+ D_EMISSIONS_HCFC4310     
+ D_EMISSIONS_HCFC125      
+ D_EMISSIONS_HCFC134a     
+ D_EMISSIONS_HCFC143a     
+ D_EMISSIONS_HCFC227ea    
+ D_EMISSIONS_HCFC245fa    
  D_EMISSIONS_SF6         
  D_EMISSIONS_CFC11       
  D_EMISSIONS_CFC12       

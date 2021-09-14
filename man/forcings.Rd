@@ -5,7 +5,6 @@
 \alias{RF_TOTAL}
 \alias{RF_T_ALBEDO}
 \alias{RF_CO2}
-\alias{RF_N2O}
 \alias{RF_H2O_STRAT}
 \alias{RF_O3_TROP}
 \alias{RF_BC}
@@ -23,8 +22,6 @@ RF_TOTAL()
 RF_T_ALBEDO()
 
 RF_CO2()
-
-RF_N2O()
 
 RF_H2O_STRAT()
 
@@ -60,8 +57,6 @@ messages.)
 
 \item \code{RF_CO2}: Radiative forcing due to CO2
 
-\item \code{RF_N2O}: Radiative forcing due to N2O
-
 \item \code{RF_H2O_STRAT}: Radiative forcing due to stratospheric water vapor
 
 \item \code{RF_O3_TROP}: Radiative forcing due to tropospheric ozone
@@ -92,12 +87,14 @@ instead of the more natural looking \code{GETDATA}.
 }
 
 \seealso{
-\link{haloforcings} for forcings from halocarbons.
+\link{haloforcings} for forcings from halocarbons and \link{rho} for parameters
+related to radiative forcing efficiency.
 
 Other capability identifiers: 
 \code{\link{carboncycle}},
 \code{\link{concentrations}},
 \code{\link{constraints}},
+\code{\link{delta}},
 \code{\link{emissions}},
 \code{\link{haloconstrain}},
 \code{\link{haloemiss}},
@@ -105,6 +102,7 @@ Other capability identifiers:
 \code{\link{methane}},
 \code{\link{ocean}},
 \code{\link{parameters}},
+\code{\link{rho}},
 \code{\link{so2}},
 \code{\link{temperature}}
 }

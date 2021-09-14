@@ -78,6 +78,19 @@ private:
     unitval aCO2;           //! alpha CO2, forcing efficiency for CO2 (W/m2)
     tseries<unitval> Ftot_constrain; //! Total forcing can be supplied
 
+    // CO2 parameters
+    const double a1 = -2.478e-7;        // (W m–2 ppm–2) IPCC AR6 parameter for CH4 SARF Table 7.SM.1
+    const double b1 =  7.590e-4;        // (W m–2 ppm–1) IPCC AR6 parameter for CH4 SARF Table 7.SM.1
+    const double c1 = -2.149e-3;        // (W m–2 ppb–1/2) IPCC AR6 parameter for CH4 SARF Table 7.SM.1
+    const double d1 =  5.248;           // (W m–2) IPCC AR6 parameter for CH4 SARF Table 7.SM.1
+    unitval delta_co2;                  // forcing tropospheric adjustment for CO2 see 7.3.2.1 of IPCC AR6
+
+    // N2O parameters
+    const double a2 = -3.4197e-4;       // (W m–2 ppm–1) IPCC AR6 parameter for CH4 SARF Table 7.SM.1
+    const double b2 = 2.5455e-4;        // (W m–2 ppb–1) IPCC AR6 parameter for CH4 SARF Table 7.SM.1
+    const double c2 = -2.4357e-4;       // (W m–2 ppb–1) IPCC AR6 parameter for CH4 SARF Table 7.SM.1
+    const double d2 = 0.12173;          // (W m-2 ppb–1/2) IPCC AR6 parameter for CH4 SARF Table 7.SM.1
+    unitval delta_n2o;                  // forcing tropospheric adjustment for N2O see 7.3.2.3 of IPCC AR6
 
     // CH4 parameters
     const double a3 = -8.9603e-5;       // (W m–2 ppb–1) IPCC AR6 parameter for CH4 SARF Table 7.SM.1
@@ -85,7 +98,10 @@ private:
     const double d3 = 0.045194;         // (W m–2 ppb–1/2) IPCC AR6 parameter for CH4 SARF Table 7.SM.1
     unitval delta_ch4;                  // forcing tropospheric adjustment for CH4 see 7.3.2.2 of IPCC AR6
 
-
+    // Aerosol parameters
+    unitval rho_bc;                   // (W yr m–2 Tg–1) IPCC AR6 radiative efficiency BC 7.SM.1.3
+    unitval rho_oc;                   // (W yr m–2 Tg–1) IPCC AR6 radiative efficiency OC 7.SM.1.3
+    unitval rho_so2;                  // (W yr m–2 Tg–1) IPCC AR6 radiative efficiency SO2 7.SM.1.3.1
 
     Core* core;             //! Core
     Logger logger;          //! Logger
