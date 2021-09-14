@@ -50,6 +50,7 @@
 #define D_RF_O3_TROP            D_RF_PREFIX "O3_trop"
 #define D_RF_BC                 D_RF_PREFIX "BC"
 #define D_RF_OC                 D_RF_PREFIX "OC"
+#define D_RF_NH3                D_RF_PREFIX "NH3"
 #define D_RF_SO2                D_RF_PREFIX "SO2"
 #define D_RF_VOL                D_RF_PREFIX "vol" // forcing from volcanic so2
 #define D_RF_halocarbons        D_RF_PREFIX "halocarbons"
@@ -60,6 +61,7 @@
 #define D_RHO_BC                "rho_bc"          // BC radiative efficiency
 #define D_RHO_OC                "rho_oc"          // BC radiative efficiency
 #define D_RHO_SO2               "rho_so2"         // SO2 radiative efficiency
+#define D_RHO_NH3               "rho_nh3"         // NH3 radiative efficiency
 #define D_RF_SO2d               D_RF_PREFIX "SO2d"
 #define D_RF_SO2i               D_RF_PREFIX "SO2i"
 
@@ -292,6 +294,9 @@
 
 // oc component
 #define D_EMISSIONS_OC          "OC_emissions"
+
+// nh3 component
+#define D_EMISSIONS_NH3          "NH3_emissions"
 
 // ocean component
 #define D_OCEAN_CFLUX           "atm_ocean_flux"

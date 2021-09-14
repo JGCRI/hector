@@ -129,6 +129,18 @@ RHO_OC <- function() {
     .Call('_hector_RHO_OC', PACKAGE = 'hector')
 }
 
+#' @describeIn forcings Radiative forcing due to NH3
+#' @export
+RF_NH3 <- function() {
+    .Call('_hector_RF_NH3', PACKAGE = 'hector')
+}
+
+#' @describeIn rho a radiative forcing efficiency for NH3
+#' @export
+RHO_NH3 <- function() {
+    .Call('_hector_RHO_NH3', PACKAGE = 'hector')
+}
+
 #' @describeIn forcings Direct contribution of SO2 to radiative forcing
 #' @export
 RF_SO2D <- function() {
@@ -1071,6 +1083,12 @@ EMISSIONS_NMVOC <- function() {
 #' @export
 EMISSIONS_OC <- function() {
     .Call('_hector_EMISSIONS_OC', PACKAGE = 'hector')
+}
+
+#' @describeIn emissions Emissions for NH3 (\code{"Tg"})
+#' @export
+EMISSIONS_NH3 <- function() {
+    .Call('_hector_EMISSIONS_NH3', PACKAGE = 'hector')
 }
 
 #' @describeIn ocean Atmosphere-ocean carbon flux

@@ -9,6 +9,7 @@
 \alias{EMISSIONS_CO}
 \alias{EMISSIONS_NMVOC}
 \alias{EMISSIONS_OC}
+\alias{EMISSIONS_NH3}
 \title{Identifiers for miscellaneous emissions not elsewhere described}
 \usage{
 EMISSIONS_BC()
@@ -24,6 +25,8 @@ EMISSIONS_CO()
 EMISSIONS_NMVOC()
 
 EMISSIONS_OC()
+
+EMISSIONS_NH3()
 }
 \description{
 All of these variables can be set using the \code{\link{SETDATA}} message
@@ -44,6 +47,8 @@ type.
 \item \code{EMISSIONS_NMVOC}: Emissions for non-methane volatile organic compounds (NMVOC) (\code{"Tg NMVOC"})
 
 \item \code{EMISSIONS_OC}: Emissions for organic carbon (\code{"Tg"})
+
+\item \code{EMISSIONS_NH3}: Emissions for NH3 (\code{"Tg"})
 }}
 
 \section{Note}{

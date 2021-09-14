@@ -4,6 +4,7 @@
 \alias{rho}
 \alias{RHO_BC}
 \alias{RHO_OC}
+\alias{RHO_NH3}
 \alias{RHO_SO2}
 \alias{RHO_CF4}
 \alias{RHO_C2F6}
@@ -36,6 +37,8 @@
 RHO_BC()
 
 RHO_OC()
+
+RHO_NH3()
 
 RHO_SO2()
 
@@ -101,6 +104,8 @@ the forcing component.
 \item \code{RHO_BC}: a radiative forcing efficiency for BC
 
 \item \code{RHO_OC}: a radiative forcing efficiency for OC
+
+\item \code{RHO_NH3}: a radiative forcing efficiency for NH3
 
 \item \code{RHO_SO2}: a radiative forcing efficiency for SO2
 

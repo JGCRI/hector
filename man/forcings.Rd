@@ -9,6 +9,7 @@
 \alias{RF_O3_TROP}
 \alias{RF_BC}
 \alias{RF_OC}
+\alias{RF_NH3}
 \alias{RF_SO2D}
 \alias{RF_SO2I}
 \alias{RF_SO2}
@@ -30,6 +31,8 @@ RF_O3_TROP()
 RF_BC()
 
 RF_OC()
+
+RF_NH3()
 
 RF_SO2D()
 
@@ -64,6 +67,8 @@ messages.)
 \item \code{RF_BC}: Radiative forcing due to black carbon
 
 \item \code{RF_OC}: Radiative forcing due to organic carbon
+
+\item \code{RF_NH3}: Radiative forcing due to NH3
 
 \item \code{RF_SO2D}: Direct contribution of SO2 to radiative forcing
 

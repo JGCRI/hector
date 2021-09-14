@@ -220,6 +220,26 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// RF_NH3
+String RF_NH3();
+RcppExport SEXP _hector_RF_NH3() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(RF_NH3());
+    return rcpp_result_gen;
+END_RCPP
+}
+// RHO_NH3
+String RHO_NH3();
+RcppExport SEXP _hector_RHO_NH3() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(RHO_NH3());
+    return rcpp_result_gen;
+END_RCPP
+}
 // RF_SO2D
 String RF_SO2D();
 RcppExport SEXP _hector_RF_SO2D() {
@@ -1800,6 +1820,16 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// EMISSIONS_NH3
+String EMISSIONS_NH3();
+RcppExport SEXP _hector_EMISSIONS_NH3() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(EMISSIONS_NH3());
+    return rcpp_result_gen;
+END_RCPP
+}
 // OCEAN_CFLUX
 String OCEAN_CFLUX();
 RcppExport SEXP _hector_OCEAN_CFLUX() {
@@ -2589,6 +2619,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_RHO_BC", (DL_FUNC) &_hector_RHO_BC, 0},
     {"_hector_RF_OC", (DL_FUNC) &_hector_RF_OC, 0},
     {"_hector_RHO_OC", (DL_FUNC) &_hector_RHO_OC, 0},
+    {"_hector_RF_NH3", (DL_FUNC) &_hector_RF_NH3, 0},
+    {"_hector_RHO_NH3", (DL_FUNC) &_hector_RHO_NH3, 0},
     {"_hector_RF_SO2D", (DL_FUNC) &_hector_RF_SO2D, 0},
     {"_hector_RF_SO2I", (DL_FUNC) &_hector_RF_SO2I, 0},
     {"_hector_RF_SO2", (DL_FUNC) &_hector_RF_SO2, 0},
@@ -2747,6 +2779,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_EMISSIONS_CO", (DL_FUNC) &_hector_EMISSIONS_CO, 0},
     {"_hector_EMISSIONS_NMVOC", (DL_FUNC) &_hector_EMISSIONS_NMVOC, 0},
     {"_hector_EMISSIONS_OC", (DL_FUNC) &_hector_EMISSIONS_OC, 0},
+    {"_hector_EMISSIONS_NH3", (DL_FUNC) &_hector_EMISSIONS_NH3, 0},
     {"_hector_OCEAN_CFLUX", (DL_FUNC) &_hector_OCEAN_CFLUX, 0},
     {"_hector_OCEAN_C", (DL_FUNC) &_hector_OCEAN_C, 0},
     {"_hector_OCEAN_C_HL", (DL_FUNC) &_hector_OCEAN_C_HL, 0},

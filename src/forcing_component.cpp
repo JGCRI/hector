@@ -167,6 +167,7 @@ void ForcingComponent::init( Core* coreptr ) {
     core->registerCapability( D_RF_O3_TROP, getComponentName());
     core->registerCapability( D_RF_BC, getComponentName());
     core->registerCapability( D_RF_OC, getComponentName());
+    core->registerCapability( D_RF_NH3, getComponentName());
     core->registerCapability( D_RF_VOL, getComponentName());
     core->registerCapability( D_ACO2, getComponentName());
     core->registerCapability( D_DELTA_CH4, getComponentName());
@@ -175,6 +176,7 @@ void ForcingComponent::init( Core* coreptr ) {
     core->registerCapability( D_RHO_BC, getComponentName());
     core->registerCapability( D_RHO_OC, getComponentName());
     core->registerCapability( D_RHO_SO2, getComponentName());
+    core->registerCapability( D_RF_NH3, getComponentName());
     for(int i=0; i<N_HALO_FORCINGS; ++i) {
         core->registerCapability(adjusted_halo_forcings[i], getComponentName());
         forcing_name_map[adjusted_halo_forcings[i]] = halo_forcing_names[i];
@@ -186,6 +188,7 @@ void ForcingComponent::init( Core* coreptr ) {
     core->registerDependency( D_ATMOSPHERIC_O3, getComponentName() );
     core->registerDependency( D_EMISSIONS_BC, getComponentName() );
     core->registerDependency( D_EMISSIONS_OC, getComponentName() );
+    core->registerDependency( D_EMISSIONS_NH3, getComponentName() );
     core->registerDependency( D_NATURAL_SO2, getComponentName() );
     core->registerDependency( D_ATMOSPHERIC_N2O, getComponentName() );
     core->registerDependency( D_RF_CF4, getComponentName() );
@@ -224,6 +227,7 @@ void ForcingComponent::init( Core* coreptr ) {
     core->registerInput( D_RHO_BC, getComponentName() );
     core->registerInput( D_RHO_OC, getComponentName() );
     core->registerInput( D_RHO_SO2, getComponentName());
+    core->registerInput( D_RHO_NH3, getComponentName());
 
 
 
@@ -279,6 +283,9 @@ void ForcingComponent::setData( const string& varName,
         } else if( varName == D_RHO_OC ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
             rho_oc = data.getUnitval(U_W_M2_TG);
+        } else if( varName == D_RHO_NH3 ) {
+            H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
+            rho_nh3 = data.getUnitval(U_W_M2_TG);
         } else if( varName == D_RHO_SO2 ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
             rho_so2 = data.getUnitval(U_W_M2_GG);
@@ -474,7 +481,10 @@ void ForcingComponent::run( const double runToDate ) {
             double fso2 = rho_so2 * E_SO2;
             forcings[D_RF_SO2].set( fso2, U_W_M2 );
 
-            // TODO NEED TO ADD NH3
+            // ---------- NH3 ----------
+            double E_NH3 = core->sendMessage( M_GETDATA, D_EMISSIONS_NH3, message_data( runToDate )).value( U_TG );
+            double fnh3 = rho_nh3 * E_NH3;
+            forcings[D_RF_NH3].set( foc, U_W_M2 );
 
             // ---------- RFaci ----------
             // TODO this has to be added to the acctual forcings & unclear what the forcings look like!
@@ -571,6 +581,8 @@ unitval ForcingComponent::getData( const std::string& varName,
             returnval = rho_oc;
         } else if (varName == D_RHO_SO2){
             returnval = rho_so2;
+        } else if (varName == D_RHO_NH3){
+            returnval = rho_nh3;
         }
 
         return returnval;
@@ -618,6 +630,8 @@ unitval ForcingComponent::getData( const std::string& varName,
                 returnval = rho_oc;
             } else if (varName == D_RHO_SO2){
                 returnval = rho_so2;
+            } else if (varName == D_RHO_NH3){
+                returnval = rho_nh3;
             } else {
                 H_THROW( "Caller is requesting unknown variable: " + varName );
             }

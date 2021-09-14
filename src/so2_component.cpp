@@ -10,6 +10,9 @@
  *
  *  Created by Corinne on 5/6/2013
  *
+ *  Note that the SO2 emissions are read in terms of S instead of SO2
+ *  values may need to be converted from g SO2 to g of S.
+ *
  */
 
 #include "so2_component.hpp"

@@ -101,7 +101,8 @@ private:
     // Aerosol parameters
     unitval rho_bc;                   // (W yr m–2 Tg–1) IPCC AR6 radiative efficiency BC 7.SM.1.3
     unitval rho_oc;                   // (W yr m–2 Tg–1) IPCC AR6 radiative efficiency OC 7.SM.1.3
-    unitval rho_so2;                  // (W yr m–2 Tg–1) IPCC AR6 radiative efficiency SO2 7.SM.1.3.1
+    unitval rho_so2;                  // (W yr m–2 Gg–1) IPCC AR6 radiative efficiency SO2 7.SM.1.3.1
+    unitval rho_nh3;                  // (W yr m–2 Tg–1) IPCC AR6 radiative efficiency SO2 7.SM.1.3.1
 
     Core* core;             //! Core
     Logger logger;          //! Logger
