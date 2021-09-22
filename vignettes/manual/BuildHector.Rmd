@@ -10,7 +10,13 @@ To install the version associated with the current `master` git branch on GitHub
 This will automatically install all of Hector's dependencies as well.
 (Note that because this requires compiling from source, you will need to have a C compiler installed and configured.
 
-On **Windows**, you will also need to install [Rtools](https://cloud.r-project.org/bin/windows/Rtools/).
+On **Windows**, you will also need to install Rtools. Download and instructions can be found [here](https://cloud.r-project.org/bin/windows/Rtools/). After installation, there is another step to put the Rtools `make utilities` on the system PATH. This will allow you to compile R packages.
+
+To do so, create a text file `.Renviron` in your Documents folder with the following line: `PATH="${RTOOLS40_HOME}\usr\bin;${PATH}"`. 
+This can be done either with a text editor or in R like so: `writeLines('PATH="${RTOOLS40_HOME}\\usr\\bin;${PATH}"', con = "~/.Renviron")`
+
+Remember to restart R (or Rstudio) and to verify that `make` can be found. Executing `Sys.which("make")` should show the path to your Rtools installation. 
+
 On **Mac OS** and **Linux**, the required tools should be included as part of a standard R installation.)
 
 ```r
