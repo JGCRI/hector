@@ -92,9 +92,6 @@
     <ClInclude Include="..\..\inst\include\oh_component.hpp">
       <Filter>Header Files\components</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inst\include\onelineocean_component.hpp">
-      <Filter>Header Files\components</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\inst\include\slr_component.hpp">
       <Filter>Header Files\components</Filter>
     </ClInclude>
@@ -152,9 +149,6 @@
     <ClInclude Include="..\..\inst\include\avisitor.hpp">
       <Filter>Header Files\visitors</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\inst\include\csv_output_visitor.hpp">
-      <Filter>Header Files\visitors</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\inst\include\csv_outputstream_visitor.hpp">
       <Filter>Header Files\visitors</Filter>
     </ClInclude>
@@ -175,6 +169,12 @@
     </ClInclude>
     <ClInclude Include="..\..\inst\include\INIReader.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inst\include\csv_tracking_visitor.hpp">
+      <Filter>Header Files\visitors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\inst\include\fluxpool.hpp">
+      <Filter>Header Files\data</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -206,9 +206,6 @@
       <Filter>Source Files\components</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\oh_component.cpp">
-      <Filter>Source Files\components</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\onelineocean_component.cpp">
       <Filter>Source Files\components</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\slr_component.cpp">
@@ -262,9 +259,6 @@
     <ClCompile Include="..\..\src\simpleNbox.cpp">
       <Filter>Source Files\models</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\csv_output_visitor.cpp">
-      <Filter>Source Files\visitors</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\csv_outputstream_visitor.cpp">
       <Filter>Source Files\visitors</Filter>
     </ClCompile>
@@ -273,6 +267,12 @@
     </ClCompile>
     <ClCompile Include="..\..\src\INIReader.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\csv_tracking_visitor.cpp">
+      <Filter>Source Files\visitors</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\simpleNbox-runtime.cpp">
+      <Filter>Source Files\models</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

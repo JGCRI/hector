@@ -23,7 +23,9 @@
     <ClInclude Include="..\..\inst\include\ch4_component.hpp" />
     <ClInclude Include="..\..\inst\include\component_data.hpp" />
     <ClInclude Include="..\..\inst\include\component_names.hpp" />
+    <ClInclude Include="..\..\inst\include\csv_tracking_visitor.hpp" />
     <ClInclude Include="..\..\inst\include\dummy_model_component.hpp" />
+    <ClInclude Include="..\..\inst\include\fluxpool.hpp" />
     <ClInclude Include="..\..\inst\include\forcing_component.hpp" />
     <ClInclude Include="..\..\inst\include\halocarbon_component.hpp" />
     <ClInclude Include="..\..\inst\include\imodel_component.hpp" />
@@ -32,7 +34,6 @@
     <ClInclude Include="..\..\inst\include\ocean_component.hpp" />
     <ClInclude Include="..\..\inst\include\oc_component.hpp" />
     <ClInclude Include="..\..\inst\include\oh_component.hpp" />
-    <ClInclude Include="..\..\inst\include\onelineocean_component.hpp" />
     <ClInclude Include="..\..\inst\include\slr_component.hpp" />
     <ClInclude Include="..\..\inst\include\so2_component.hpp" />
     <ClInclude Include="..\..\inst\include\temperature_component.hpp" />
@@ -59,11 +60,11 @@
     <ClInclude Include="..\..\inst\include\simpleNbox.hpp" />
     <ClInclude Include="..\..\inst\include\avisitor.hpp" />
     <ClInclude Include="..\..\inst\include\csv_outputstream_visitor.hpp" />
-    <ClInclude Include="..\..\inst\include\csv_output_visitor.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\bc_component.cpp" />
     <ClCompile Include="..\..\src\ch4_component.cpp" />
+    <ClCompile Include="..\..\src\csv_tracking_visitor.cpp" />
     <ClCompile Include="..\..\src\dummy_model_component.cpp" />
     <ClCompile Include="..\..\src\forcing_component.cpp" />
     <ClCompile Include="..\..\src\halocarbon_component.cpp" />
@@ -72,7 +73,7 @@
     <ClCompile Include="..\..\src\ocean_component.cpp" />
     <ClCompile Include="..\..\src\oc_component.cpp" />
     <ClCompile Include="..\..\src\oh_component.cpp" />
-    <ClCompile Include="..\..\src\onelineocean_component.cpp" />
+    <ClCompile Include="..\..\src\simpleNbox-runtime.cpp" />
     <ClCompile Include="..\..\src\slr_component.cpp" />
     <ClCompile Include="..\..\src\so2_component.cpp" />
     <ClCompile Include="..\..\src\temperature_component.cpp" />
@@ -93,7 +94,6 @@
     <ClCompile Include="..\..\src\ocean_csys.cpp" />
     <ClCompile Include="..\..\src\simpleNbox.cpp" />
     <ClCompile Include="..\..\src\csv_outputstream_visitor.cpp" />
-    <ClCompile Include="..\..\src\csv_output_visitor.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{88489C16-7642-48BB-B36C-C4B9507A1DE2}</ProjectGuid>
@@ -105,20 +105,20 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
