@@ -13,7 +13,7 @@
 		273FC39B26A3570B00D5303E /* test_inih.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 273FC39026A3570B00D5303E /* test_inih.cpp */; };
 		273FC39D26A3570B00D5303E /* test_hreader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 273FC39226A3570B00D5303E /* test_hreader.cpp */; };
 		273FC39E26A3570B00D5303E /* test_ini_to_core_reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 273FC39326A3570B00D5303E /* test_ini_to_core_reader.cpp */; };
-		273FC39F26A3570B00D5303E /* test_fluxpool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 273FC39426A3570B00D5303E /* test_fluxpool.cpp */; };
+		273FC39F26A3570B00D5303E /* test_unitval.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 273FC39426A3570B00D5303E /* test_unitval.cpp */; };
 		273FC3A026A3570B00D5303E /* test_logger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 273FC39526A3570B00D5303E /* test_logger.cpp */; };
 		277D29DC2683669E003177A2 /* libboost_system.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 277D29DA2683669E003177A2 /* libboost_system.dylib */; };
 		277D29DD2683669E003177A2 /* libboost_filesystem.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 277D29DB2683669E003177A2 /* libboost_filesystem.dylib */; };
@@ -138,7 +138,7 @@
 		273FC39126A3570B00D5303E /* test_csv_file_reader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_csv_file_reader.cpp; path = "../../../src/unit-testing/test_csv_file_reader.cpp"; sourceTree = "<group>"; };
 		273FC39226A3570B00D5303E /* test_hreader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_hreader.cpp; path = "../../../src/unit-testing/test_hreader.cpp"; sourceTree = "<group>"; };
 		273FC39326A3570B00D5303E /* test_ini_to_core_reader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_ini_to_core_reader.cpp; path = "../../../src/unit-testing/test_ini_to_core_reader.cpp"; sourceTree = "<group>"; };
-		273FC39426A3570B00D5303E /* test_fluxpool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_fluxpool.cpp; path = "../../../src/unit-testing/test_fluxpool.cpp"; sourceTree = "<group>"; };
+		273FC39426A3570B00D5303E /* test_unitval.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_unitval.cpp; path = "../../../src/unit-testing/test_unitval.cpp"; sourceTree = "<group>"; };
 		273FC39526A3570B00D5303E /* test_logger.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_logger.cpp; path = "../../../src/unit-testing/test_logger.cpp"; sourceTree = "<group>"; };
 		27585CF826150F1A00BA1EF5 /* hector */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = hector; sourceTree = BUILT_PRODUCTS_DIR; };
 		277D29DA2683669E003177A2 /* libboost_system.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libboost_system.dylib; path = ../../../../../../../../../usr/local/lib/libboost_system.dylib; sourceTree = "<group>"; };
@@ -275,7 +275,7 @@
 				273FC38D26A3570B00D5303E /* test_core.cpp */,
 				273FC39126A3570B00D5303E /* test_csv_file_reader.cpp */,
 				273FC38F26A3570B00D5303E /* test_dependency_finder.cpp */,
-				273FC39426A3570B00D5303E /* test_fluxpool.cpp */,
+				273FC39426A3570B00D5303E /* test_unitval.cpp */,
 				273FC39226A3570B00D5303E /* test_hreader.cpp */,
 				273FC39326A3570B00D5303E /* test_ini_to_core_reader.cpp */,
 				273FC39026A3570B00D5303E /* test_inih.cpp */,
@@ -514,7 +514,7 @@
 				27F2613726B55617004BDD47 /* csv_tracking_visitor.cpp in Sources */,
 				27A02A632615CBB800AF9BFA /* so2_component.cpp in Sources */,
 				27A02A642615CBB800AF9BFA /* oc_component.cpp in Sources */,
-				273FC39F26A3570B00D5303E /* test_fluxpool.cpp in Sources */,
+				273FC39F26A3570B00D5303E /* test_unitval.cpp in Sources */,
 				27962909268F241100333AA3 /* simpleNbox-runtime.cpp in Sources */,
 				273FC39D26A3570B00D5303E /* test_hreader.cpp in Sources */,
 				27A02A652615CBB800AF9BFA /* csv_table_reader.cpp in Sources */,

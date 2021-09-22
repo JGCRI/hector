@@ -7,10 +7,10 @@
 #ifndef UNITVAL_H
 #define UNITVAL_H
 /*
- *  unitval.hpp - a very basic units system for numbers
+ *  unitval.hpp - a basic units system for numbers
  *  hector
  *
- *  Created by Ben on 12/31/12.
+ *  Created by Ben on 2012-12-31.
  *
  */
 
@@ -156,7 +156,7 @@ public:
      *           codes that use libhector and don't want to carry
      *           around units.
      */
-    operator double() const {return val;}
+    operator double() const { return val; }
 
     friend unitval operator+ ( const unitval&, const unitval& );
     friend unitval operator- ( const unitval&, const unitval& );
