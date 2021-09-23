@@ -25,9 +25,9 @@ Building and running Hector
 
 Programming topics
 --------------------
-* [Contribution guide](ContributionsGuide.html)
+* See the [Contribution guide](ContributionsGuide.html) and [Authorship Guidelines](AuthorshipGuidelines.html) for how to contribute to Hector
 * Learn how to create a new [component](AddNewComponent.html) or [variable](AddNewVariable.html) in Hector.
-* Hector internals: [unitvals](Unitvals.html), [time series](TimeSeries.html), data passing, the [component API](ComponentAPI.html) .
+* Hector internals: [unitvals](Unitvals.html), [time series](TimeSeries.html), data passing, the [component API](ComponentAPI.html)
 * The Hector [style guide](StyleGuide.html).
 * The Hector [external API](Hector-External-API.html)
 

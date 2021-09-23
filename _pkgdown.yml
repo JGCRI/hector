@@ -5,16 +5,20 @@ navbar:
       href: "index.html"
     - text: Manual
       href: "articles/manual/index.html"
-    - text: Vignettes
+    - text: "Example"
       menu:
-        - text: "A tour of the Hector R interface"
-          href: articles/intro-to-hector.html
         - text: "Example: Using Hector to solve for an emissions pathway"
           href: articles/hector_apply.html
         - text: "Example: Running Hector with multiple biomes"
           href: articles/multiple-biomes.html
+    - text: "Getting Started"
+      menu:
+        - text: "A tour of the Hector R interface"
+          href: articles/intro-to-hector.html
     - text: Reference
       href: "reference/index.html"
+    - text: News
+      href: NEWS.md
   right:
     - icon: fa-github fa-lg
       href: "https://github.com/JGCRI/hector"

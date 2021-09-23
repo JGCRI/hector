@@ -59,3 +59,5 @@ Collate:
 VignetteBuilder: knitr
 RoxygenNote: 7.1.1
 SystemRequirements: GNUmake
+URL: https://github.com/JGCRI/hector
+BugReports: https://github.com/JGCRI/hector/issues
