@@ -94,8 +94,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>..\..\libs\boost-lib;$(IncludePath)</IncludePath>
-    <LibraryPath>..\..\libs\boost-lib\stage\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(BOOSTROOT);$(IncludePath)</IncludePath>
+    <LibraryPath>$(BOOSTLIB);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
