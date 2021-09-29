@@ -189,6 +189,16 @@ Xcode Resources
 * Open Hector in the visual studio code IDE, build Hector with Terminal --> Run Build Task or with a `make hector` call in VSC terminal window. 
 * Run --> Start Debugging or Run Without Debugging or with `./src/hector ./inst/input/name-of-ini.ini` in the VSC terminal window. 
 
-## Visual Studio
+## Visual Studio / Microsoft Visual C++
 
-VS is not supported at this time. See [VS Hector github issue](https://github.com/JGCRI/hector/issues/415) for more details. 
+* Install [Visual Studio](https://visualstudio.microsoft.com/vs/community/) and be sure to the Visual C++ add on as well.
+* Download and install [Boost](https://www.boost.org).  Note you will need to Build the `system` and `filesystem` libraries, details can be found [here](https://www.boost.org/doc/libs/1_75_0/more/getting_started/windows.html).
+* Set the environment variables:
+  * `BOOSTROOT` to the location to which you installed Boost (i.e. `C:\boost_1_75_0`)
+  * `BOOSTLIB` to the location within Boost where the compiled libraries exist (i.e. `C:\boost_1_75_0\stage\lib`)
+* Open the Visual Studio project file which is located in your hector repository under `project_files/VS/hector.sln`
+* Build the `hector` target
+* To run hector:
+  * From the CMD prompt: `project_files/VS/x64/Release/hector.exe ./inst/input/name-of-ini.ini`
+  * From with in the Visual Studio debugger (the working directory will default to `project_files/VS`): `x64/Release/hector.exe ../../inst/input/name-of-ini.ini`
+
