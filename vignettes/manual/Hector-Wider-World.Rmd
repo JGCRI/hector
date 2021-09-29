@@ -24,7 +24,7 @@ The original manuscript for Hector v1.0, published in 2015. Hector is an open so
 
 Hector v1.1 contains an updated ocean temperature algorithm to better match the CMIP5 mean.
  
-### Hector v2.5
+### Hector v2.0
 > Vega-Westhoff, B., Sriver, R. L., Hartin, C. A., Wong, T. E., & Keller, K. (2019). Impacts of observational constraints related to sea level on estimates of climate sensitivity. Earth's Future, 7, 677– 690. https://doi.org/10.1029/2018EF001082
 
 Hector v2.5 incorporates a one dimensional diffusive heat and energy balance model called [DOECLIM](https://pure.mpg.de/rest/items/item_994422_1/component/file_994421/content) and a global sea level module called [BRICK](https://doi.org/10.5194/gmd-10-2741-2017).
