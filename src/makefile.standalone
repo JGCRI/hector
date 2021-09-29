@@ -7,13 +7,28 @@
 ifeq ($(strip $(CXX)),)
 	CXX  = g++
 endif 
-CXXFLAGS = -g $(INCLUDES) $(OPTFLAGS) $(CXXEXTRA) $(CXXPROF) $(WFLAGS) -MMD -std=c++14 
+
+## Check if the user is willing to use the c++17 standard which
+## is mostly just so that we do not have to bother linking any
+## boost libraries
+ifeq ($(strip $(USE_CXX17)),)
+	## Not set so use the default standard: c++14 and set the linker flags
+	## to find and link boost system/filesystem which are then required
+	BOOST_LDFLAGS = -L"$(BOOSTLIB)" -Wl,-rpath,"$(BOOSTLIB)"
+	BOOST_LIB_IMPORT = -lboost_system -lboost_filesystem
+	CXXSTD = c++14
+else
+	## We can just set the standard and leave BOOST_LDFLAGS and BOOST_LIB_IMPORT
+	## alone
+	CXXSTD = c++17
+endif
+CXXFLAGS = -g $(INCLUDES) $(OPTFLAGS) $(CXXEXTRA) $(CXXPROF) $(WFLAGS) -MMD -std=$(CXXSTD)
 ## Note that $(CCEXTRA) allows for custom flags; see https://github.com/JGCRI/hector/issues/407
 CFLAGS   = -g $(INCLUDES) $(OPTFLAGS) $(CCEXTRA) -MMD
 INCLUDES = -I"$(BOOSTINC)" -I"$(HDRDIR)"
 WFLAGS   = -Wall -Wno-unused-local-typedefs # Turn off warnings, esp. one common in Boost files
 OPTFLAGS = -O3
-LDFLAGS	 = $(CXXPROF) -L"$(BOOSTLIB)" -L. -Wl,-rpath,"$(BOOSTLIB)"
+LDFLAGS	 = $(CXXPROF) -L. $(BOOST_LDFLAGS)
 HDRDIR	 = $(CURDIR)/../inst/include
 
 ## These will be needed by the testing makefile
@@ -74,7 +89,7 @@ OBJS	= $(CXXSRCS:.cpp=.o) $(CSRCS:.c=.o)
 ## ----------------------------------------------------
 ## Default target
 hector: libhector.a main.o
-	$(CXX) $(LDFLAGS) -o hector main.o -lhector -lm -lboost_system -lboost_filesystem
+	$(CXX) $(LDFLAGS) -o hector main.o -lhector -lm $(BOOST_LIB_IMPORT)
 
 ## Testing target
 testing: libhector.a

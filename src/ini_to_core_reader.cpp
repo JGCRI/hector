@@ -16,11 +16,16 @@
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/algorithm/string/trim.hpp>
 
-// ANS: If using the R package, use Rcpp to call R's file processing
-// functions. Otherwise (e.g. if building standalone Hector), fall
-// back to boost::filesystem (which needs to be installed).
+// If using the R package, use Rcpp to call R's file processing
+// functions. Otherwise (e.g. if building standalone Hector),
+// use std::filesystem (which is available since the C++ 17 standard)
+// if available and finally fall back to boost::filesystem (which
+// needs to be installed).
 #ifdef USE_RCPP
 #include <Rcpp.h>
+#elif __cpp_lib_filesystem
+#include <filesystem>
+namespace fs = std::filesystem;
 #else
 #include <boost/filesystem.hpp>
 namespace fs = boost::filesystem;
