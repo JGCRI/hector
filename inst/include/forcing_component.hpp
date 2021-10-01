@@ -75,7 +75,6 @@ private:
     double baseyear;        //! Year which forcing calculations will start
     double currentYear;     //! Tracks current year
     unitval C0;             //! Records base year atmospheric CO2
-    unitval aCO2;           //! alpha CO2, forcing efficiency for CO2 (W/m2)
     tseries<unitval> Ftot_constrain; //! Total forcing can be supplied
 
     // CO2 parameters
@@ -98,11 +97,17 @@ private:
     const double d3 = 0.045194;         // (W m–2 ppb–1/2) IPCC AR6 parameter for CH4 SARF Table 7.SM.1
     unitval delta_ch4;                  // forcing tropospheric adjustment for CH4 see 7.3.2.2 of IPCC AR6
 
-    // Aerosol parameters
+    // Aerosol parameters for aerosol-radiation interactions (RFari) see equation 7.SM.1.1 of IPCC AR6
     unitval rho_bc;                   // (W yr m–2 Tg–1) IPCC AR6 radiative efficiency BC 7.SM.1.3
     unitval rho_oc;                   // (W yr m–2 Tg–1) IPCC AR6 radiative efficiency OC 7.SM.1.3
     unitval rho_so2;                  // (W yr m–2 Gg–1) IPCC AR6 radiative efficiency SO2 7.SM.1.3.1
     unitval rho_nh3;                  // (W yr m–2 Tg–1) IPCC AR6 radiative efficiency SO2 7.SM.1.3.1
+
+    // Aerosol parameters for aerosol-cloud interactions (RFaci) see equation Equation 7.SM.1.2 of IPCC AR6
+    double const ari_beta = 2.09841432;                             // (W m-2) IPCC AR6 7.SM.1.3.1
+    double const s_BCOC = 111.05064063;                             // (Tg C yr-1) IPCC AR6 7.SM.1.3.1
+    double const s_SO2 = (260.34644166 * 1000000) * (32.065/64.066) ;  // (Tg SO2 yr–1) IPCC AR6 7.SM.1.3.1 converted to (Gg S yr-1)
+
 
     Core* core;             //! Core
     Logger logger;          //! Logger

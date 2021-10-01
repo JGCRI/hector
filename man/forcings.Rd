@@ -10,11 +10,9 @@
 \alias{RF_BC}
 \alias{RF_OC}
 \alias{RF_NH3}
-\alias{RF_SO2D}
-\alias{RF_SO2I}
-\alias{RF_SO2}
+\alias{RF_ACI}
 \alias{RF_VOL}
-\alias{alpha_CO2}
+\alias{Q_CO2}
 \alias{RF_CH4}
 \title{Identifiers for capabilities in the Hector forcing component}
 \usage{
@@ -34,15 +32,11 @@ RF_OC()
 
 RF_NH3()
 
-RF_SO2D()
-
-RF_SO2I()
-
-RF_SO2()
+RF_ACI()
 
 RF_VOL()
 
-alpha_CO2()
+Q_CO2()
 
 RF_CH4()
 }
@@ -70,15 +64,11 @@ messages.)
 
 \item \code{RF_NH3}: Radiative forcing due to NH3
 
-\item \code{RF_SO2D}: Direct contribution of SO2 to radiative forcing
-
-\item \code{RF_SO2I}: Indirect contribution of SO2 to radiative forcing
-
-\item \code{RF_SO2}: Total contribution (direct and indirect) of SO2 to radiative forcing
+\item \code{RF_ACI}: aerosol-cloud interactions, includes contributions from SO2, BC and OC
 
 \item \code{RF_VOL}: Radiative forcing due to volcanic activity
 
-\item \code{alpha_CO2}: Radiative forcing efficiency for CO2
+\item \code{Q_CO2}: Radiative forcing efficiency for doubling of CO2
 
 \item \code{RF_CH4}: Radiative forcing due to methane
 }}

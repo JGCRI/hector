@@ -21,6 +21,7 @@
 #include "n2o_component.hpp"
 #include "bc_component.hpp"
 #include "oc_component.hpp"
+#include "nh3_component.hpp"
 #include "so2_component.hpp"
 #include "forcing_component.hpp"
 #include "slr_component.hpp"
@@ -177,6 +178,8 @@ void Core::init() {
     temp = new BlackCarbonComponent();
     modelComponents[ temp->getComponentName() ] = temp;
     temp = new OrganicCarbonComponent();
+    modelComponents[ temp->getComponentName() ] = temp;
+    temp = new NH3Component();
     modelComponents[ temp->getComponentName() ] = temp;
     temp = new SulfurComponent();
     modelComponents[ temp->getComponentName() ] = temp;

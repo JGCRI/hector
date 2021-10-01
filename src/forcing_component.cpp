@@ -169,7 +169,6 @@ void ForcingComponent::init( Core* coreptr ) {
     core->registerCapability( D_RF_OC, getComponentName());
     core->registerCapability( D_RF_NH3, getComponentName());
     core->registerCapability( D_RF_VOL, getComponentName());
-    core->registerCapability( D_ACO2, getComponentName());
     core->registerCapability( D_DELTA_CH4, getComponentName());
     core->registerCapability( D_DELTA_N2O, getComponentName());
     core->registerCapability( D_DELTA_CO2, getComponentName());
@@ -177,6 +176,8 @@ void ForcingComponent::init( Core* coreptr ) {
     core->registerCapability( D_RHO_OC, getComponentName());
     core->registerCapability( D_RHO_SO2, getComponentName());
     core->registerCapability( D_RF_NH3, getComponentName());
+    core->registerCapability( D_RF_SO2, getComponentName());
+    core->registerCapability( D_RF_ACI, getComponentName());
     for(int i=0; i<N_HALO_FORCINGS; ++i) {
         core->registerCapability(adjusted_halo_forcings[i], getComponentName());
         forcing_name_map[adjusted_halo_forcings[i]] = halo_forcing_names[i];
@@ -220,7 +221,6 @@ void ForcingComponent::init( Core* coreptr ) {
     core->registerDependency( D_RF_T_ALBEDO, getComponentName() );
 
     // Register the inputs we can receive from outside
-    core->registerInput( D_ACO2, getComponentName() );
     core->registerInput( D_DELTA_CH4, getComponentName() );
     core->registerInput( D_DELTA_N2O, getComponentName() );
     core->registerInput( D_DELTA_CO2, getComponentName() );
@@ -265,9 +265,6 @@ void ForcingComponent::setData( const string& varName,
         if( varName == D_RF_BASEYEAR ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
             baseyear = data.getUnitval(U_UNDEFINED);
-        } else if( varName == D_ACO2 ) {
-            H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
-            aCO2 = data.getUnitval(U_W_M2);
         } else if( varName == D_DELTA_CH4 ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
             delta_ch4 = data.getUnitval(U_UNITLESS);
@@ -320,8 +317,9 @@ void ForcingComponent::prepareToRun() {
     }
 
     // delta parameters must be between -1 and 1
-    H_ASSERT( delta_ch4 >= -1 && delta_ch4 <= 1, "bad delta ch4 value" );
-    H_ASSERT( delta_n2o >= -1 && delta_n2o <= 1, "bad delta n2o value" );
+    H_ASSERT( delta_ch4 >= -1 && delta_ch4 <= 1, "bad delta CH4 value" );
+    H_ASSERT( delta_n2o >= -1 && delta_n2o <= 1, "bad delta N2O value" );
+    H_ASSERT( delta_co2 >= -1 && delta_co2 <= 1, "bad delta CO2 value" );
 
     baseyear_forcings.clear();
 }
@@ -381,7 +379,7 @@ void ForcingComponent::run( const double runToDate ) {
             // value to account for tropospheric interactions see 7.3.2.3.
             // Note that this simplified expression for radiative forcing was calibrated with a
             // preindustrial N20 value of 273.87 ppb.
-            double sarf_n2o = (a2 * sqrt(Ca) + b2 * sqrt(Na) + c2 * sqrt(Ma)) * (sqrt(Na) - sqrt(N0));
+            double sarf_n2o = (a2 * sqrt(Ca) + b2 * sqrt(Na) + c2 * sqrt(Ma) + d2) * (sqrt(Na) - sqrt(N0));
             double fn2o = (delta_n2o * sarf_n2o) + sarf_n2o;
             forcings[D_RF_N2O].set( fn2o, U_W_M2 );
 
@@ -396,8 +394,10 @@ void ForcingComponent::run( const double runToDate ) {
             // TODO what does the AR6 say about this??
             // ---------- Stratospheric H2O from CH4 oxidation ----------
             // From Tanaka et al, 2007, but using Joos et al., 2001 value of 0.05
-            const double fh2o_strat = 0.05 * ( 0.036 * ( sqrt( Ma ) - sqrt( M0 ) ) );
+            const double fh2o_strat = 0.05 * (Ma - M0)/(1831.470998 - M0);
             forcings[D_RF_H2O_STRAT].set( fh2o_strat, U_W_M2 );
+
+
             }
 
         // TODO what does the AR6 say about this??
@@ -410,7 +410,6 @@ void ForcingComponent::run( const double runToDate ) {
         }
 
         // ---------- Halocarbons ----------
-        // TODO: Would like to just 'know' all the halocarbon instances out there
         boost::array<string, 26> halos = {
             {
                 D_RF_CF4,
@@ -472,29 +471,22 @@ void ForcingComponent::run( const double runToDate ) {
             forcings[D_RF_OC].set( foc, U_W_M2 );
 
             // ---------- Sulphate Aerosols ----------
-            unitval S0 = core->sendMessage( M_GETDATA, D_2000_SO2 );
             unitval SN = core->sendMessage( M_GETDATA, D_NATURAL_SO2 );
-            H_ASSERT( S0.value( U_GG_S ) > 0, "S0 is 0" );
-            // TODO need to doubble check what is up with the whole S vs SO2 in the units
-            // also what is wrong with the SO2 cause that is way too hot.
-            double E_SO2 = core->sendMessage( M_GETDATA, D_EMISSIONS_SO2, message_data( runToDate ) ).value( U_GG_S );
-            double fso2 = rho_so2 * E_SO2;
+            unitval SO2_emission = core->sendMessage( M_GETDATA, D_EMISSIONS_SO2, message_data( runToDate ) );
+            double so2_val = SN.value( U_GG_S ) + SO2_emission.value( U_GG_S );
+            double fso2 = rho_so2 * so2_val;
             forcings[D_RF_SO2].set( fso2, U_W_M2 );
 
             // ---------- NH3 ----------
             double E_NH3 = core->sendMessage( M_GETDATA, D_EMISSIONS_NH3, message_data( runToDate )).value( U_TG );
             double fnh3 = rho_nh3 * E_NH3;
-            forcings[D_RF_NH3].set( foc, U_W_M2 );
+            forcings[D_RF_NH3].set( fnh3, U_W_M2 );
 
             // ---------- RFaci ----------
-            // TODO this has to be added to the acctual forcings & unclear what the forcings look like!
             // ERF from aerosol-cloud interactions (RFaci)
-            // Based on Equation 7.SM.1.2 from IPCC AR6
-            double const ari_beta = 2.09841432;
-            double const s_SO2 = 260.34644166;
-            double const s_BCOC = 111.05064063;
-            double faci = -ari_beta*(1 + (E_SO2/s_SO2) + (E_BC + E_OC)/s_BCOC);
-
+            // Based on Equation 7.SM.1.2 from IPCC AR6 where
+            double aci_rf = -ari_beta * (1 + (0/s_SO2) + (E_BC + E_OC)/s_BCOC);
+            forcings[D_RF_ACI].set( aci_rf, U_W_M2);
 
         }
 
@@ -518,6 +510,7 @@ void ForcingComponent::run( const double runToDate ) {
             H_LOG( logger, Logger::DEBUG ) << "forcing " << ( *it).first << " in " << runToDate << " is " << ( *it ).second << std::endl;
         }
 
+
         // Otherwise if the user has supplied total forcing data, use that instead.
         if( Ftot_constrain.size() && runToDate <= Ftot_constrain.lastdate() ) {
             H_LOG( logger, Logger::WARNING ) << "** Overwriting total forcing with user-supplied value" << std::endl;
@@ -539,6 +532,7 @@ void ForcingComponent::run( const double runToDate ) {
         // Subtract base year forcing values from forcings, i.e. make them relative to base year
         for( forcingsIterator it = forcings.begin(); it != forcings.end(); ++it ) {
             forcings[ ( *it ).first ] = ( *it ).second - baseyear_forcings[ ( *it ).first ];
+            
         }
 
         // Store the forcings that we have calculated
@@ -567,9 +561,7 @@ unitval ForcingComponent::getData( const std::string& varName,
 
         // If requesting data not associated with a date aka a parameter,
         // return the parameter value.
-        if(varName == D_ACO2){
-            returnval = aCO2;
-        } else if (varName == D_DELTA_CH4){
+        if(varName == D_DELTA_CH4){
                       returnval = delta_ch4;
         } else if (varName == D_DELTA_N2O){
             returnval = delta_n2o;
@@ -599,9 +591,6 @@ unitval ForcingComponent::getData( const std::string& varName,
     // Return values associated with date information.
     if( varName == D_RF_BASEYEAR ) {
         returnval.set( baseyear, U_UNITLESS );
-
-    } else if (varName == D_RF_SO2) {
-
     } else {
         std::string forcing_name;
         auto forcit = forcing_name_map.find(varName);

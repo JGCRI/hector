@@ -52,9 +52,10 @@
 #define D_RF_OC                 D_RF_PREFIX "OC"
 #define D_RF_NH3                D_RF_PREFIX "NH3"
 #define D_RF_SO2                D_RF_PREFIX "SO2"
+#define D_RF_ACI                D_RF_PREFIX "aci" // forcing from aerosol-cloud interactions
 #define D_RF_VOL                D_RF_PREFIX "vol" // forcing from volcanic so2
 #define D_RF_halocarbons        D_RF_PREFIX "halocarbons"
-#define D_ACO2                  "aco2"            // forcing efficiency for CO2
+#define D_QCO2                  "qco2"            // 2×CO2 RF
 #define D_DELTA_CH4             "delta_ch4"       // forcing tropospheric adjustment
 #define D_DELTA_N2O             "delta_n2o"       // forcing tropospheric adjustment
 #define D_DELTA_CO2             "delta_co2"       // forcing tropospheric adjustment
@@ -62,12 +63,6 @@
 #define D_RHO_OC                "rho_oc"          // BC radiative efficiency
 #define D_RHO_SO2               "rho_so2"         // SO2 radiative efficiency
 #define D_RHO_NH3               "rho_nh3"         // NH3 radiative efficiency
-#define D_RF_SO2d               D_RF_PREFIX "SO2d"
-#define D_RF_SO2i               D_RF_PREFIX "SO2i"
-
-
-
-
 
 // halocarbon components
 #define D_RF_CF4                D_RF_PREFIX CF4_COMPONENT_BASE
@@ -253,8 +248,6 @@
 #define D_HCDELTA_CH3Cl            D_HCDELTA_PREFIX CH3Cl_COMPONENT_BASE
 #define D_HCDELTA_CH3Br            D_HCDELTA_PREFIX CH3Br_COMPONENT_BASE
 
-
-
 // methane component
 #define D_ATMOSPHERIC_CH4       "CH4"
 #define D_PREINDUSTRIAL_CH4     "M0"
@@ -329,9 +322,7 @@
 #define D_TEMP_HL               "Temp_HL"
 #define D_TEMP_LL               "Temp_LL"
 #define D_SPINUP_CHEM           "spinup_chem"
-
 //#define D_SPECIFIC_HEAT			"cp"
-
 #define D_CO3_LL				"CO3_LL"
 #define D_CO3_HL				"CO3_HL"
 #define D_ATM_OCEAN_CONSTRAIN   "atm_ocean_constrain"
@@ -352,9 +343,9 @@
 #define D_FFI_EMISSIONS         "ffi_emissions"
 #define D_DACCS_UPTAKE          "daccs_uptake"
 #define D_LUC_EMISSIONS         "luc_emissions"
-#define D_CO2FERT               "co2fert"
-#define D_TEMPFERTD              "detritus_tempfert"
-#define D_TEMPFERTS              "soil_tempfert"
+//#define D_CO2FERT               "co2fert"
+#define D_TEMPFERTD             "detritus_tempfert"
+#define D_TEMPFERTS             "soil_tempfert"
 #define D_Q10_RH                "q10_rh"
 #define D_NPP                   "npp"
 #define D_RH                    "rh"
@@ -364,9 +355,8 @@
 #define D_F_LUCV                "f_lucv"
 #define D_F_LUCD                "f_lucd"
 #define D_NPP_FLUX0             "npp_flux0"
-#define D_CO2_CONSTRAIN          "CO2_constrain"
+#define D_CO2_CONSTRAIN         "CO2_constrain"
 #define D_BETA                  "beta"
-//#define D_SIGMA                 "sigma"
 #define D_WARMINGFACTOR         "warmingfactor"
 
 // slr component
@@ -376,8 +366,8 @@
 #define D_SLR_NO_ICE            "slr_no_ice"
 
 // so2 component
-#define D_NATURAL_SO2       "SN"
-#define D_2000_SO2     "S0"
+#define D_NATURAL_SO2           "SN"
+#define D_2000_SO2              "S0"
 #define D_EMISSIONS_SO2         "SO2_emissions"
 #define D_VOLCANIC_SO2          "SV"
 
@@ -388,12 +378,6 @@
 #define D_OCEAN_SURFACE_TEMP    "Tgav_ocean_ST"
 #define D_OCEAN_AIR_TEMP        "Tgav_ocean_air"
 #define D_TGAV_CONSTRAIN        "tgav_constrain"
-#define D_SO2D_B                "so2d_b"
-#define D_SO2I_B                "so2i_b"
-#define D_OC_B                  "oc_b"
-#define D_BC_B                  "bc_b"
-
-// temperature component
 #define D_DIFFUSIVITY           "diff"
 #define D_AERO_SCALE            "alpha"
 #define D_VOLCANIC_SCALE        "volscl"

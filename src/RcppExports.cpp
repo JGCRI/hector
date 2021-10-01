@@ -240,26 +240,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// RF_SO2D
-String RF_SO2D();
-RcppExport SEXP _hector_RF_SO2D() {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(RF_SO2D());
-    return rcpp_result_gen;
-END_RCPP
-}
-// RF_SO2I
-String RF_SO2I();
-RcppExport SEXP _hector_RF_SO2I() {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(RF_SO2I());
-    return rcpp_result_gen;
-END_RCPP
-}
 // RF_SO2
 String RF_SO2();
 RcppExport SEXP _hector_RF_SO2() {
@@ -267,6 +247,16 @@ BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     rcpp_result_gen = Rcpp::wrap(RF_SO2());
+    return rcpp_result_gen;
+END_RCPP
+}
+// RF_ACI
+String RF_ACI();
+RcppExport SEXP _hector_RF_ACI() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(RF_ACI());
     return rcpp_result_gen;
 END_RCPP
 }
@@ -1090,13 +1080,13 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// alpha_CO2
-String alpha_CO2();
-RcppExport SEXP _hector_alpha_CO2() {
+// Q_CO2
+String Q_CO2();
+RcppExport SEXP _hector_Q_CO2() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(alpha_CO2());
+    rcpp_result_gen = Rcpp::wrap(Q_CO2());
     return rcpp_result_gen;
 END_RCPP
 }
@@ -2621,9 +2611,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_RHO_OC", (DL_FUNC) &_hector_RHO_OC, 0},
     {"_hector_RF_NH3", (DL_FUNC) &_hector_RF_NH3, 0},
     {"_hector_RHO_NH3", (DL_FUNC) &_hector_RHO_NH3, 0},
-    {"_hector_RF_SO2D", (DL_FUNC) &_hector_RF_SO2D, 0},
-    {"_hector_RF_SO2I", (DL_FUNC) &_hector_RF_SO2I, 0},
     {"_hector_RF_SO2", (DL_FUNC) &_hector_RF_SO2, 0},
+    {"_hector_RF_ACI", (DL_FUNC) &_hector_RF_ACI, 0},
     {"_hector_RHO_SO2", (DL_FUNC) &_hector_RHO_SO2, 0},
     {"_hector_RF_VOL", (DL_FUNC) &_hector_RF_VOL, 0},
     {"_hector_RFADJ_PREFIX", (DL_FUNC) &_hector_RFADJ_PREFIX, 0},
@@ -2706,7 +2695,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_DELTA_HALON2402", (DL_FUNC) &_hector_DELTA_HALON2402, 0},
     {"_hector_DELTA_CH3CL", (DL_FUNC) &_hector_DELTA_CH3CL, 0},
     {"_hector_DELTA_CH3BR", (DL_FUNC) &_hector_DELTA_CH3BR, 0},
-    {"_hector_alpha_CO2", (DL_FUNC) &_hector_alpha_CO2, 0},
+    {"_hector_Q_CO2", (DL_FUNC) &_hector_Q_CO2, 0},
     {"_hector_EMISSIONS_CF4", (DL_FUNC) &_hector_EMISSIONS_CF4, 0},
     {"_hector_EMISSIONS_C2F6", (DL_FUNC) &_hector_EMISSIONS_C2F6, 0},
     {"_hector_EMISSIONS_HFC23", (DL_FUNC) &_hector_EMISSIONS_HFC23, 0},

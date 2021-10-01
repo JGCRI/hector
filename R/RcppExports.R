@@ -141,22 +141,16 @@ RHO_NH3 <- function() {
     .Call('_hector_RHO_NH3', PACKAGE = 'hector')
 }
 
-#' @describeIn forcings Direct contribution of SO2 to radiative forcing
-#' @export
-RF_SO2D <- function() {
-    .Call('_hector_RF_SO2D', PACKAGE = 'hector')
-}
-
-#' @describeIn forcings Indirect contribution of SO2 to radiative forcing
-#' @export
-RF_SO2I <- function() {
-    .Call('_hector_RF_SO2I', PACKAGE = 'hector')
-}
-
-#' @describeIn forcings Total contribution (direct and indirect) of SO2 to radiative forcing
+#' @describeIn forcings
 #' @export
 RF_SO2 <- function() {
     .Call('_hector_RF_SO2', PACKAGE = 'hector')
+}
+
+#' @describeIn forcings aerosol-cloud interactions, includes contributions from SO2, BC and OC
+#' @export
+RF_ACI <- function() {
+    .Call('_hector_RF_ACI', PACKAGE = 'hector')
 }
 
 #' @describeIn rho a radiative forcing efficiency for SO2
@@ -647,10 +641,10 @@ DELTA_CH3BR <- function() {
     .Call('_hector_DELTA_CH3BR', PACKAGE = 'hector')
 }
 
-#' @describeIn forcings Radiative forcing efficiency for CO2
+#' @describeIn forcings Radiative forcing efficiency for doubling of CO2
 #' @export
-alpha_CO2 <- function() {
-    .Call('_hector_alpha_CO2', PACKAGE = 'hector')
+Q_CO2 <- function() {
+    .Call('_hector_Q_CO2', PACKAGE = 'hector')
 }
 
 #' @describeIn haloemiss Emissions for CF4
@@ -1412,7 +1406,7 @@ VOLCANIC_SCALE <- function() {
     .Call('_hector_VOLCANIC_SCALE', PACKAGE = 'hector')
 }
 
-#' @describeIn temperature Global mean temperature anomaly
+#' @describeIn temperature Global mean air temperature anomaly
 #' @export
 GLOBAL_TEMP <- function() {
     .Call('_hector_GLOBAL_TEMP', PACKAGE = 'hector')
@@ -1430,7 +1424,8 @@ OCEAN_AIR_TEMP <- function() {
     .Call('_hector_OCEAN_AIR_TEMP', PACKAGE = 'hector')
 }
 
-#' @describeIn temperature Average land temperature anomaly
+#' @describeIn temperature Average land temperature anomaly, land surface temperature and air temperature
+#' over land are assumed to be equivalent.
 #' @export
 LAND_AIR_TEMP <- function() {
     .Call('_hector_LAND_AIR_TEMP', PACKAGE = 'hector')

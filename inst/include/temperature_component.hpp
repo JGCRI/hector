@@ -103,7 +103,7 @@ private:
     double taudif;           // interior ocean heat uptake time scale, yr
     double tauksl;           // sea-land heat exchange time scale, yr
     double taukls;           // land-sea heat exchange time scale, yr
-    double q2co;       // radiative forcing for atmospheric CO2 doubling (W/m2)
+    unitval q2co2;           // radiative forcing for atmospheric CO2 doubling (W/m2)
 
     std::vector<double> KT0;
     std::vector<double> KTA1;
@@ -135,7 +135,6 @@ private:
     unitval diff;          //!< ocean heat diffusivity, cm2/s
     unitval alpha;	       //!< aerosol forcing factor, unitless
     unitval volscl;        //!< volcanic forcing scaling factor, unitless
-    unitval aCO2;          //! alpha CO2, forcing efficiency for CO2 (W/m2)
 
     // Model outputs
     unitval tgav;          //!< global average surface air temperature anomaly, deg C

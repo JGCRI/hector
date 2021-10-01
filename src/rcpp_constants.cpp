@@ -177,25 +177,32 @@ String RHO_OC() {
     return D_RHO_OC;
 }
 
-//' @describeIn forcings Direct contribution of SO2 to radiative forcing
+//' @describeIn forcings Radiative forcing due to NH3
 //' @export
 // [[Rcpp::export]]
-String RF_SO2D() {
-return D_RF_SO2d;
+String RF_NH3() {
+    return D_RF_NH3;
 }
 
-//' @describeIn forcings Indirect contribution of SO2 to radiative forcing
+//' @describeIn rho a radiative forcing efficiency for NH3
 //' @export
 // [[Rcpp::export]]
-String RF_SO2I() {
-return D_RF_SO2i;
+String RHO_NH3() {
+    return D_RHO_NH3;
 }
 
-//' @describeIn forcings Total contribution (direct and indirect) of SO2 to radiative forcing
+//' @describeIn forcings
 //' @export
 // [[Rcpp::export]]
 String RF_SO2() {
 return D_RF_SO2;
+}
+
+//' @describeIn forcings aerosol-cloud interactions, includes contributions from SO2, BC and OC
+//' @export
+// [[Rcpp::export]]
+String RF_ACI() {
+    return D_RF_ACI;
 }
 
 //' @describeIn rho a radiative forcing efficiency for SO2
@@ -786,11 +793,11 @@ String DELTA_CH3BR() {
     return D_HCDELTA_CH3Br;
 }
 
-//' @describeIn forcings Radiative forcing efficiency for CO2
+//' @describeIn forcings Radiative forcing efficiency for doubling of CO2
 //' @export
 // [[Rcpp::export]]
-String alpha_CO2() {
-    return D_ACO2;
+String Q_CO2() {
+    return D_QCO2;
 }
 
 /* halocarbon emissions */
@@ -1308,6 +1315,14 @@ String EMISSIONS_OC() {
 return D_EMISSIONS_OC;
 }
 
+/* NH3 component */
+//' @describeIn emissions Emissions for NH3 (\code{"Tg"})
+//' @export
+// [[Rcpp::export]]
+String EMISSIONS_NH3() {
+    return D_EMISSIONS_NH3;
+}
+
 /* Ocean component */
 //' @describeIn ocean Atmosphere-ocean carbon flux
 //' @export
@@ -1761,7 +1776,7 @@ String VOLCANIC_SCALE() {
 return D_VOLCANIC_SCALE;
 }
 
-//' @describeIn temperature Global mean temperature anomaly
+//' @describeIn temperature Global mean air temperature anomaly
 //' @export
 // [[Rcpp::export]]
 String GLOBAL_TEMP() {
@@ -1782,7 +1797,8 @@ String OCEAN_AIR_TEMP() {
 return D_OCEAN_AIR_TEMP;
 }
 
-//' @describeIn temperature Average land temperature anomaly
+//' @describeIn temperature Average land temperature anomaly, land surface temperature and air temperature
+//' over land are assumed to be equivalent.
 //' @export
 // [[Rcpp::export]]
 String LAND_AIR_TEMP() {
