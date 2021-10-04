@@ -485,7 +485,7 @@ void ForcingComponent::run( const double runToDate ) {
             // ---------- RFaci ----------
             // ERF from aerosol-cloud interactions (RFaci)
             // Based on Equation 7.SM.1.2 from IPCC AR6 where
-            double aci_rf = -ari_beta * (1 + (0/s_SO2) + (E_BC + E_OC)/s_BCOC);
+            double aci_rf = -ari_beta * (1 + (so2_val/s_SO2) + (E_BC + E_OC)/s_BCOC);
             forcings[D_RF_ACI].set( aci_rf, U_W_M2);
 
         }
