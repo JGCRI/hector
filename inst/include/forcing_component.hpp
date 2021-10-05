@@ -104,9 +104,9 @@ private:
     unitval rho_nh3;                  // (W yr m–2 Tg–1) IPCC AR6 radiative efficiency SO2 7.SM.1.3.1
 
     // Aerosol parameters for aerosol-cloud interactions (RFaci) see equation Equation 7.SM.1.2 of IPCC AR6
-    double const ari_beta = 2.09841432;                             // (W m-2) IPCC AR6 7.SM.1.3.1
-    double const s_BCOC = 111.05064063;                             // (Tg C yr-1) IPCC AR6 7.SM.1.3.1
-    double const s_SO2 = (260.34644166 * 1000000) * (32.065/64.066) ;  // (Tg SO2 yr–1) IPCC AR6 7.SM.1.3.1 converted to (Gg S yr-1)
+    double const ari_beta = 2.09841432;                                 // (W m-2) IPCC AR6 7.SM.1.3.1
+    double const s_BCOC = 111.05064063;                                // (Tg C yr-1) IPCC AR6 7.SM.1.3.1
+    double const s_SO2 = (260.34644166 * 1000) * (32.065/64.066) ;  // (Tg SO2 yr–1) IPCC AR6 7.SM.1.3.1 converted to (Gg S yr-1)
 
 
     Core* core;             //! Core
