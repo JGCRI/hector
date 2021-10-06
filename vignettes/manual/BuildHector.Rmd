@@ -10,8 +10,15 @@ To install the version associated with the current `master` git branch on GitHub
 This will automatically install all of Hector's dependencies as well.
 (Note that because this requires compiling from source, you will need to have a C compiler installed and configured.
 
-On **Windows**, you will also need to install [Rtools](https://cloud.r-project.org/bin/windows/Rtools/).
-On **Mac OS** and **Linux**, the required tools should be included as part of a standard R installation.)
+On **Windows**, you will also need to install Rtools. Download and instructions can be found [here](https://cloud.r-project.org/bin/windows/Rtools/). After installation, there is another step to put the Rtools `make utilities` on the system PATH. This will allow you to compile R packages.
+
+To do so, create a text file `.Renviron` in your Documents folder with the following line:   `PATH="${RTOOLS40_HOME}\usr\bin;${PATH}"`. 
+
+This can be done either with a text editor or in R like so:   `writeLines('PATH="${RTOOLS40_HOME}\\usr\\bin;${PATH}"', con = "~/.Renviron")`
+
+Remember to restart R (or Rstudio) and to verify that `make` can be found. Executing `Sys.which("make")` should show the path to your Rtools installation. 
+
+On **Mac OS** and **Linux**, the required tools should be included as part of a standard R installation.
 
 ```r
 # If the `devtools` isn't installed, first run:
@@ -188,8 +195,8 @@ Xcode Resources
 * Install [Visual Studio](https://visualstudio.microsoft.com/vs/community/) and be sure to the Visual C++ add on as well.
 * Download and install [Boost](https://www.boost.org).  Note you will need to Build the `system` and `filesystem` libraries, details can be found [here](https://www.boost.org/doc/libs/1_75_0/more/getting_started/windows.html).
 * Set the environment variables:
-  * `BOOSTROOT` to the location to which you installed Boost (i.e. `C:\boost_1_75_0`)
-  * `BOOSTLIB` to the location within Boost where the compiled libraries exist (i.e. `C:\boost_1_75_0\stage\lib`)
+  * `BOOSTROOT` to the location to which you installed Boost (e.g. `C:\boost_1_75_0`)
+  * `BOOSTLIB` to the location within Boost where the compiled libraries exist (e.g. `C:\boost_1_75_0\stage\lib`)
 * Open the Visual Studio project file which is located in your hector repository under `project_files/VS/hector.sln`
 * Build the `hector` target
 * To run hector:
