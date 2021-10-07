@@ -219,6 +219,13 @@ String RF_VOL() {
 return D_RF_VOL;
 }
 
+//' @describeIn forcings Radiative miscellaneous forcing read in from ini.
+//' @export
+// [[Rcpp::export]]
+String RF_MISC() {
+    return D_RF_MISC;
+}
+
 /* Halocarbon forcings */
 /* There's a constant for total halocarbon forcing defined in component_data.hpp, but
    returning the total halocarbon forcing appears not to be implemented. */

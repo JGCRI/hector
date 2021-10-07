@@ -12,6 +12,7 @@
 \alias{RF_NH3}
 \alias{RF_ACI}
 \alias{RF_VOL}
+\alias{RF_MISC}
 \alias{Q_CO2}
 \alias{RF_CH4}
 \title{Identifiers for capabilities in the Hector forcing component}
@@ -35,6 +36,8 @@ RF_NH3()
 RF_ACI()
 
 RF_VOL()
+
+RF_MISC()
 
 Q_CO2()
 
@@ -67,6 +70,8 @@ messages.)
 \item \code{RF_ACI}: aerosol-cloud interactions, includes contributions from SO2, BC and OC
 
 \item \code{RF_VOL}: Radiative forcing due to volcanic activity
+
+\item \code{RF_MISC}: Radiative miscellaneous forcing read in from ini.
 
 \item \code{Q_CO2}: Radiative forcing efficiency for doubling of CO2
 

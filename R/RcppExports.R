@@ -165,6 +165,12 @@ RF_VOL <- function() {
     .Call('_hector_RF_VOL', PACKAGE = 'hector')
 }
 
+#' @describeIn forcings Radiative miscellaneous forcing read in from ini.
+#' @export
+RF_MISC <- function() {
+    .Call('_hector_RF_MISC', PACKAGE = 'hector')
+}
+
 RFADJ_PREFIX <- function() {
     .Call('_hector_RFADJ_PREFIX', PACKAGE = 'hector')
 }

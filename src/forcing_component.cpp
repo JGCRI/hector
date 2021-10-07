@@ -127,6 +127,8 @@ using namespace std;
 /*! \brief Constructor
  */
 ForcingComponent::ForcingComponent() {
+    Fmisc_ts.allowInterp( true );
+    Fmisc_ts.name = D_RF_MISC;
 }
 
 //------------------------------------------------------------------------------
@@ -228,8 +230,7 @@ void ForcingComponent::init( Core* coreptr ) {
     core->registerInput( D_RHO_OC, getComponentName() );
     core->registerInput( D_RHO_SO2, getComponentName());
     core->registerInput( D_RHO_NH3, getComponentName());
-
-
+    core->registerInput( D_RF_MISC, getComponentName());
 
 }
 
@@ -289,6 +290,9 @@ void ForcingComponent::setData( const string& varName,
         } else if( varName == D_FTOT_CONSTRAIN ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
             Ftot_constrain.set(data.date, data.getUnitval(U_W_M2));
+        } else if( varName == D_RF_MISC ) {
+            H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
+            Fmisc_ts.set(data.date, data.getUnitval(U_W_M2));
         } else {
             H_LOG( logger, Logger::DEBUG ) << "Unknown variable " << varName << std::endl;
             H_THROW( "Unknown variable name while parsing "+ getComponentName() + ": "
@@ -400,7 +404,6 @@ void ForcingComponent::run( const double runToDate ) {
 
             }
 
-        // TODO what does the AR6 say about this??
         // ---------- Troposheric Ozone ----------
         if( core->checkCapability( D_ATMOSPHERIC_O3 ) ) {
             //from Tanaka et al, 2007
@@ -501,6 +504,11 @@ void ForcingComponent::run( const double runToDate ) {
             forcings[D_RF_VOL] = core->sendMessage( M_GETDATA, D_VOLCANIC_SO2, message_data( runToDate ) );
         }
 
+        // ---------- Miscellaneous forcings ----------
+        // Miscellaneous forcings read in from an ini file.
+        forcings[ D_RF_MISC ] = Fmisc_ts.get( runToDate );
+
+
         // ---------- Total ----------
         // Calculate based as the sum of the different radiative forcings or as the user
         // supplied constraint.
@@ -532,7 +540,7 @@ void ForcingComponent::run( const double runToDate ) {
         // Subtract base year forcing values from forcings, i.e. make them relative to base year
         for( forcingsIterator it = forcings.begin(); it != forcings.end(); ++it ) {
             forcings[ ( *it ).first ] = ( *it ).second - baseyear_forcings[ ( *it ).first ];
-            
+
         }
 
         // Store the forcings that we have calculated

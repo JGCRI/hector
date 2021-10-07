@@ -280,6 +280,16 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// RF_MISC
+String RF_MISC();
+RcppExport SEXP _hector_RF_MISC() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(RF_MISC());
+    return rcpp_result_gen;
+END_RCPP
+}
 // RFADJ_PREFIX
 String RFADJ_PREFIX();
 RcppExport SEXP _hector_RFADJ_PREFIX() {
@@ -2615,6 +2625,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_RF_ACI", (DL_FUNC) &_hector_RF_ACI, 0},
     {"_hector_RHO_SO2", (DL_FUNC) &_hector_RHO_SO2, 0},
     {"_hector_RF_VOL", (DL_FUNC) &_hector_RF_VOL, 0},
+    {"_hector_RF_MISC", (DL_FUNC) &_hector_RF_MISC, 0},
     {"_hector_RFADJ_PREFIX", (DL_FUNC) &_hector_RFADJ_PREFIX, 0},
     {"_hector_RF_PREFIX", (DL_FUNC) &_hector_RF_PREFIX, 0},
     {"_hector_RF_CF4", (DL_FUNC) &_hector_RF_CF4, 0},
