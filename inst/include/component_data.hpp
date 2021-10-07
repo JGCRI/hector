@@ -55,14 +55,17 @@
 #define D_RF_ACI                D_RF_PREFIX "aci" // forcing from aerosol-cloud interactions
 #define D_RF_VOL                D_RF_PREFIX "vol" // forcing from volcanic so2
 #define D_RF_halocarbons        D_RF_PREFIX "halocarbons"
+#define D_RF_MISC               D_RF_PREFIX "misc" // miscellaneous radiative forcings
 #define D_QCO2                  "qco2"            // 2×CO2 RF
-#define D_DELTA_CH4             "delta_ch4"       // forcing tropospheric adjustment
-#define D_DELTA_N2O             "delta_n2o"       // forcing tropospheric adjustment
-#define D_DELTA_CO2             "delta_co2"       // forcing tropospheric adjustment
+#define D_DELTA_CH4             "delta_ch4"       // forcing ch4 adjustment
+#define D_DELTA_N2O             "delta_n2o"       // forcing n2o adjustment
+#define D_DELTA_CO2             "delta_co2"       // forcing co2 adjustment
 #define D_RHO_BC                "rho_bc"          // BC radiative efficiency
 #define D_RHO_OC                "rho_oc"          // BC radiative efficiency
 #define D_RHO_SO2               "rho_so2"         // SO2 radiative efficiency
 #define D_RHO_NH3               "rho_nh3"         // NH3 radiative efficiency
+
+
 
 // halocarbon components
 #define D_RF_CF4                D_RF_PREFIX CF4_COMPONENT_BASE
