@@ -370,7 +370,6 @@
 
 // so2 component
 #define D_NATURAL_SO2           "SN"
-#define D_2000_SO2              "S0"
 #define D_EMISSIONS_SO2         "SO2_emissions"
 #define D_VOLCANIC_SO2          "SV"
 

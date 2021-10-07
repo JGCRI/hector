@@ -1743,13 +1743,6 @@ return D_NATURAL_SO2;
 //' @rdname so2
 //' @export
 // [[Rcpp::export]]
-String Y2000_SO2() {
-return D_2000_SO2;
-}
-
-//' @rdname so2
-//' @export
-// [[Rcpp::export]]
 String EMISSIONS_SO2() {
 return D_EMISSIONS_SO2;
 }

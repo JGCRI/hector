@@ -3,14 +3,11 @@
 \name{so2}
 \alias{so2}
 \alias{NATURAL_SO2}
-\alias{Y2000_SO2}
 \alias{EMISSIONS_SO2}
 \alias{VOLCANIC_SO2}
 \title{Identifiers for quantities in the SO2 component}
 \usage{
 NATURAL_SO2()
-
-Y2000_SO2()
 
 EMISSIONS_SO2()
 

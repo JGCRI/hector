@@ -395,7 +395,6 @@ void ForcingComponent::run( const double runToDate ) {
             double fch4 = (delta_ch4 * sarf_ch4) + sarf_ch4;
             forcings[D_RF_CH4].set( fch4, U_W_M2 );
 
-            // TODO what does the AR6 say about this??
             // ---------- Stratospheric H2O from CH4 oxidation ----------
             // From Tanaka et al, 2007, but using Joos et al., 2001 value of 0.05
             const double fh2o_strat = 0.05 * (Ma - M0)/(1831.470998 - M0);
@@ -454,12 +453,12 @@ void ForcingComponent::run( const double runToDate ) {
 
          // Aerosols
         if( core->checkCapability( D_EMISSIONS_BC ) && core->checkCapability( D_EMISSIONS_OC ) &&
-            core->checkCapability( D_NATURAL_SO2 ) && core->checkCapability( D_EMISSIONS_SO2 ) ) {
+            core->checkCapability( D_NATURAL_SO2 ) && core->checkCapability( D_EMISSIONS_SO2 ) &&
+            core->checkCapability( D_EMISSIONS_NH3 ) ) {
 
             // Aerosol-Radiation Interactions (RFari)
             // RFari was calculated using a simple linear relationship to emissions of
             // BC, OC, SO2, and NH3.
-            // TODO the AR6 includes contributed from NH3.
             // The rho parameters correspond to the radiative efficiencies reported in
             // the text of 7.SM.1.3.1 IPCC AR6, see there for more details.
 
@@ -476,7 +475,7 @@ void ForcingComponent::run( const double runToDate ) {
             // ---------- Sulphate Aerosols ----------
             unitval SN = core->sendMessage( M_GETDATA, D_NATURAL_SO2 );
             unitval SO2_emission = core->sendMessage( M_GETDATA, D_EMISSIONS_SO2, message_data( runToDate ) );
-            double so2_val = SN.value( U_GG_S ) + SO2_emission.value( U_GG_S );
+            double so2_val = (SN.value( U_GG_S ) + SO2_emission.value( U_GG_S ));
             double fso2 = rho_so2 * so2_val;
             forcings[D_RF_SO2].set( fso2, U_W_M2 );
 

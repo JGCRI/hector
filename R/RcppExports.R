@@ -1378,12 +1378,6 @@ NATURAL_SO2 <- function() {
 
 #' @rdname so2
 #' @export
-Y2000_SO2 <- function() {
-    .Call('_hector_Y2000_SO2', PACKAGE = 'hector')
-}
-
-#' @rdname so2
-#' @export
 EMISSIONS_SO2 <- function() {
     .Call('_hector_EMISSIONS_SO2', PACKAGE = 'hector')
 }

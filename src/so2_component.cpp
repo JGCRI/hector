@@ -56,11 +56,16 @@ void SulfurComponent::init( Core* coreptr ) {
     core = coreptr;
 
     // Inform core what data we can provide
+    core->registerCapability( D_EMISSIONS_SO2, getComponentName() );
+    core->registerCapability( D_VOLCANIC_SO2, getComponentName() );
     core->registerCapability( D_NATURAL_SO2, getComponentName() );
-    core->registerCapability( D_2000_SO2, getComponentName() );
-    // accept anthro emissions and volcanic emissions as inputs
+
+
+    // accept anthro emissions, volcanic, and natural emissions as inputs
     core->registerInput(D_EMISSIONS_SO2, getComponentName());
     core->registerInput(D_VOLCANIC_SO2, getComponentName());
+    core->registerInput(D_NATURAL_SO2, getComponentName());
+
 }
 
 //------------------------------------------------------------------------------
@@ -98,10 +103,6 @@ void SulfurComponent::setData( const string& varName,
         if( varName ==  D_EMISSIONS_SO2 ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
             SO2_emissions.set(data.date, data.getUnitval(U_GG_S));
-        }
-		else if( varName ==  D_2000_SO2  ) {
-            H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            S0 = data.getUnitval(U_GG_S);
         }
 		else if( varName ==  D_NATURAL_SO2  ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
@@ -145,10 +146,6 @@ unitval SulfurComponent::getData( const std::string& varName,
     if( varName == D_EMISSIONS_SO2 ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for SO2 emissions" );
         returnval = SO2_emissions.get( date );
-    }
-	else if( varName == D_2000_SO2 ) {
-        H_ASSERT( date == Core::undefinedIndex(), "Date not supported for SO2 in 2000" );
-        returnval = S0;
     }
 	else if( varName == D_NATURAL_SO2 ) {
         H_ASSERT( date == Core::undefinedIndex(), "Date not supported for natural SO2" );
