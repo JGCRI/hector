@@ -63,7 +63,7 @@ Unlike the R package, this method of installation does not automatically pull in
 Hector's only external dependency, **Boost**, is a free, peer-reviewed portable
 C++ source library, available at http://www.boost.org/.
 Hector primarily uses Boost "header-only" libraries, which do not need to be compiled independently and only need to be extracted and included with the Hector source.
-However, Hector currently _does_ depend on one Boost library, `filesystem`, that requires compilation. 
+Note, if your C++ compiler or standard library does [not support the C++ 17 standard](#no-stdfilesystem-support) then the Boost `system` and `filesystem` libraries will need to be compiled/installed.
 
 ## Command Line (Linux & Mac OSX)
 
@@ -133,6 +133,33 @@ sure to unset `CXXPROF`, clean the build directories with `make clean`,
 and rebuild when you are ready to go back to
 production runs.
 
+#### No std::filesystem Support
+If your C++ compiler or standard library is too old it will not have the C++ 17 standard / std::filesystem support. In which case you may recieve errors while building Hector such as the following:
+
+```
+g++  -L.  -o hector main.o -lhector -lm 
+./libhector.a(ini_to_core_reader.o): In function `boost::filesystem::exists(boost::filesystem::path const&)':
+/pic/projects/GCAM/GCAM-libraries/include/boost/filesystem/operations.hpp:404: undefined reference to `boost::filesystem::detail::status(boost::filesystem::path const&, boost::system::error_code*)'
+```
+
+Or on versions of macOS prior to Catalina (10.15):
+```
+ini_to_core_reader.cpp:159:17: error: 'path' is unavailable: introduced in macOS
+      10.15
+            fs::path csvFilePath( csvFileName );
+                ^
+
+```
+
+In this case you can set the environment variables:
+```
+export NO_CXX17=1
+```
+
+In addition you will need to [Compile Boost Libraries](https://www.boost.org/doc/libs/1_77_0/more/getting_started/unix-variants.html) at the minimum `system` and `filesystem`.  Finally ensure that the environment variable `BOOSTROOT` or `BOOSTLIB` is set properly so that Hector is able to find the compiled Boost libraries.
+
+#### Running Hector
+
 Run Hector from the terminal:
 
 ```
@@ -158,7 +185,7 @@ These directions assume a basic familiarity with Xcode and Mac OS X software ins
 The Xcode project file is configured to use constants defining custom paths, rather than hard-coded paths.
 This means that developers and users can set these paths without overwriting each other.
 
-* You will need to set several custom paths (Preferences -> Locations -> Custom Paths): `BOOSTLIB`, `BOOSTROOT`, and `HECTORDIR`. These are the Boost runtime library, the Boost root under which the headers can be found in `boost/`, and the runtime working directory for the model (the repository root).
+* You will need to set several custom paths (Preferences -> Locations -> Custom Paths): `BOOSTROOT`, and `HECTORDIR`. These are the the Boost root under which the headers can be found in `boost/`, and the runtime working directory for the model (the repository root).
 * If you want to build Hector's testing framework (the `hector-tests` target; this is optional and only relevant for C++ developers) add GTEST and GTESTLIB custom paths to Xcode; these are analogous to their Boost counterparts. You will need to install [googletest](https://github.com/google/googletest) on your machine.
 
 At this point you should be ready to go:
@@ -186,10 +213,9 @@ Xcode Resources
 ## Visual Studio / Microsoft Visual C++
 
 * Install [Visual Studio](https://visualstudio.microsoft.com/vs/community/) and be sure to the Visual C++ add on as well.
-* Download and install [Boost](https://www.boost.org).  Note you will need to Build the `system` and `filesystem` libraries, details can be found [here](https://www.boost.org/doc/libs/1_75_0/more/getting_started/windows.html).
+* Download and install [Boost](https://www.boost.org).
 * Set the environment variables:
   * `BOOSTROOT` to the location to which you installed Boost (i.e. `C:\boost_1_75_0`)
-  * `BOOSTLIB` to the location within Boost where the compiled libraries exist (i.e. `C:\boost_1_75_0\stage\lib`)
 * Open the Visual Studio project file which is located in your hector repository under `project_files/VS/hector.sln`
 * Build the `hector` target
 * To run hector:
