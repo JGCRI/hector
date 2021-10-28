@@ -8,19 +8,20 @@ ifeq ($(strip $(CXX)),)
 	CXX  = g++
 endif 
 
-## Check if the user is willing to use the c++17 standard which
+## Check if the user has the c++17 standard library which
 ## is mostly just so that we do not have to bother linking any
-## boost libraries
-ifeq ($(strip $(USE_CXX17)),)
+## boost libraries.  If not we fall back to c++14 and will require
+## the boost system and filesystem libraries are compiled.
+ifeq ($(strip $(NO_CXX17)),)
+	## We can just set the standard and leave BOOST_LDFLAGS and BOOST_LIB_IMPORT
+	## alone
+	CXXSTD = c++17
+else
 	## Not set so use the default standard: c++14 and set the linker flags
 	## to find and link boost system/filesystem which are then required
 	BOOST_LDFLAGS = -L"$(BOOSTLIB)" -Wl,-rpath,"$(BOOSTLIB)"
 	BOOST_LIB_IMPORT = -lboost_system -lboost_filesystem
 	CXXSTD = c++14
-else
-	## We can just set the standard and leave BOOST_LDFLAGS and BOOST_LIB_IMPORT
-	## alone
-	CXXSTD = c++17
 endif
 CXXFLAGS = -g $(INCLUDES) $(OPTFLAGS) $(CXXEXTRA) $(CXXPROF) $(WFLAGS) -MMD -std=$(CXXSTD)
 ## Note that $(CCEXTRA) allows for custom flags; see https://github.com/JGCRI/hector/issues/407
