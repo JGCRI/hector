@@ -31,7 +31,7 @@
 
 #ifdef USE_RCPP
 #include <Rcpp.h>
-#elif __cpp_lib_filesystem
+#elif __cpp_lib_filesystem || __has_include(<filesystem>)
 #include <filesystem>
 namespace fs = std::filesystem;
 typedef std::error_code fs_error_code;
