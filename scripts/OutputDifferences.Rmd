@@ -1,0 +1,124 @@
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Differences in Hector outputs
+
+Hello, this is `leeyabot`! `r emo::ji("robot")`   
+
+The current pull request's outputs differ from `master` as follows:  
+
+
+``` {r differences, echo = FALSE, message = FALSE}
+# Load packages
+library(dplyr)
+library(ggplot2)
+library(hector)
+library(emo)
+
+# Read in comp-data
+dir <- system.file("/tests/testthat/compdata", package = "hector")
+comp_data <- read.csv(file.path(dir, "hector_comp.csv"))
+
+# Variables of interest
+vars <- c(ATMOSPHERIC_C(), GLOBAL_TEMP(), RF_TOTAL())
+
+# Organize data
+compdata <- comp_data %>% 
+    select(scenario, year, variable, value, units, version) %>%
+    filter(scenario == "hector_rcp45.ini") %>%
+    filter(variable %in% vars) %>%
+    mutate(scenario = "rcp45")
+    
+# Read in files for just RCP 4.5 - v3
+inputdir <- system.file("input", package = "hector")
+rcp45 <- file.path(inputdir, "hector_rcp45.ini")
+
+# Run core and retrieve variable
+core <- newcore(rcp45)
+run(core)
+output <- fetchvars(core, core$strtdate:core$enddate, vars, "rcp45")
+output <- output %>% mutate(version = "latest")
+
+# Find differences between versions
+differences <- compdata %>% mutate(diff = output$value - compdata$value)
+differences <- differences %>% select(scenario, year, variable, units, version, diff)
+```
+
+
+```{r summary-table, echo= FALSE}
+
+# Organize data
+output %>%
+    select(value) %>%
+    rename(latest = value) -> new_values
+
+both_versions <- compdata %>%
+    select(year, variable, value) %>%
+    rename(v3.0.0 = value) %>%
+    cbind(new_values)
+
+# Define params
+years <- both_versions$year
+
+# Compute linear regression
+linear <- by(both_versions, both_versions$variable, function(x) lm (both_versions$latest~both_versions$v3.0.0))
+
+# Access r squared
+squares <- sapply(linear, summary)
+squares <- squares %>% 
+    as.data.frame() %>%
+    slice(8) %>%
+    t() -> squares
+
+colnames(squares) <- "R squared"
+
+# Calculate RMSE
+# Extract residuals
+atmos_res <- linear$atmos_c$residuals
+ftot_res <- linear$Ftot$residuals
+tgav_res <- linear$Tgav$residuals
+
+table <- cbind(atmos_res, ftot_res, tgav_res)
+
+# Define function
+RMSE <- function(res) {
+    r <- sqrt(mean(res^2))
+}
+
+# Find RMSE
+error <- as.data.frame(apply(table, MARGIN = 2, RMSE))
+rownames(error) <- c("atmos_c", "Ftot", "Tgav")
+
+# Find mean of data to normalize
+mean3 <- by(both_versions$v3.0.0, both_versions$variable, mean)
+mean3 <- as.data.frame(c(mean3[1], mean3[2], mean3[3]))
+
+# Divide RMSE by means
+NRMSE <- as.data.frame(error[,1] / mean3[,1])
+rownames(NRMSE) <- c("atmos_c", "Ftot", "Tgav")
+colnames(NRMSE) <- "NRMSE"
+
+# Table
+summary_table <- cbind(squares, NRMSE)
+knitr::kable(summary_table, digits = 3)
+```
+
+
+``` {r graphs, echo = FALSE, fig.width = 12, fig.height = 6, message = FALSE}
+# Just the numerical differences
+diff_plot <- ggplot(differences, aes(year, diff, color = variable)) +
+    geom_hline(yintercept = 0, alpha = 0.5) +
+    geom_line() +
+    facet_grid(variable~scenario, scales = "free") +
+    scale_color_manual(labels = c("atmos_c (Pg C)", "Ftot (W/m2)", "Tgav (degC)"), values = c("gold", "aquamarine4", "slateblue4")) +
+    ggtitle("Differences in Hector outputs in v3.0.0 relative to v2.5.0") +
+    labs(x = "Year", y = "Difference in value", col = "Variable") +
+    theme_bw()
+
+# "Note that if an image is an output of your ML workflow (i.e., it is produced
+# by your workflow), you will need to use the cml-publish function to include 
+# it a CML report."  https://github.com/iterative/cml#cml-reports
+# So instead of printing the graph, we save it to a file
+ggsave("diff_plot.png", plot = diff_plot)
+```

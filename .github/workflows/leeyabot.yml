@@ -1,0 +1,35 @@
+name: Leeyabot
+on: [pull_request]
+jobs:
+  run:
+    runs-on: [ubuntu-latest]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: iterative/setup-cml@v1
+      - uses: r-lib/actions/setup-r@master
+        with:
+          r-version: 'release'
+      - uses: r-lib/actions/setup-pandoc@master
+
+      - name: Install libcurl
+        run: sudo apt-get install libcurl4-openssl-dev
+
+      - name: Install dependencies
+        env:
+          GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          install.packages(c("ggplot2", "rmarkdown", "dplyr", "remotes"))
+          remotes::install_github(c("jgcri/hector", "hadley/emo"))
+        shell: Rscript {0}
+
+      - name: Generate report
+        run: |
+          rmarkdown::render("OutputDifferences.Rmd", run_pandoc = FALSE)
+        shell: Rscript {0}
+
+      - name: Post comment
+        env:
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+         cml-publish "diff_plot.png" --md >> OutputDifferences.knit.md
+         cml-send-comment OutputDifferences.knit.md
