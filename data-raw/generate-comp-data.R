@@ -20,7 +20,7 @@ hector_commit <- system("git rev-parse --short HEAD", intern = TRUE)
 
 
 vars_to_save <- c(ATMOSPHERIC_CO2(), GLOBAL_TEMP(), RF_TOTAL(), RF_CO2(), HEAT_FLUX(), OCEAN_C(), PH_HL(), ATMOSPHERIC_C())
-dates_to_save <- c(1745:2300)
+dates_to_save <- 1745:2300
 
 
 # During this old new test we will look at results for two scenarios, a concentration and

@@ -15,9 +15,11 @@ test_that("Hector output passes old new test", {
   comp_data <- read.csv("compdata/hector_comp.csv", stringsAsFactors = FALSE)
   vars <- unique(comp_data$variable)
 
-  time <- c(1850, 1863, 1876, 1889, 1902, 1915, 1928, 1942, 1955, 1968,
-            1981, 1994, 2007, 2021, 2034, 2047, 2060, 2073, 2086, 2100)
+  # These are the years looked at in the original comp_data.csv prior to changes
+  time <- as.integer(seq(from = 1850, to = 2100, length.out = 20))
   scenarios <- unique(comp_data$scenario)
+
+  comp_data <- subset(comp_data, year %in% time)
 
   # Run Hector
   new_data <- do.call(rbind, lapply(scenarios, function(scn) {
