@@ -476,7 +476,7 @@
 </ul>
 </li>
 <li>
-<code><a href="../../reference/reset.html">reset(time)</a></code> – Resets the state of the C model to time <code>time</code>.
+<code>reset(time)</code> – Resets the state of the C model to time <code>time</code>.
 <ul>
 <li>Set the values of all current-time state variables (e.g. <code>atmos_c</code>, <code>veg_c</code>, <code>tempfertd</code>) to their time-series values at time <code>time</code> (e.g. <code>atmos_c_ts.get(time)</code>, <code>veg_c_tv.get(time)</code>, <code>tempfertd_tv.get(time)</code>)</li>
 <li>Re-calculate the CO<sub>2</sub> fertilization effect for each biome (<code>co2fert</code>). If in spinup, force this to 1.0.</li>
