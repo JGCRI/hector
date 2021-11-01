@@ -10,6 +10,7 @@
 \alias{RF_BC}
 \alias{RF_OC}
 \alias{RF_NH3}
+\alias{RF_SO2}
 \alias{RF_ACI}
 \alias{RF_VOL}
 \alias{RF_MISC}
@@ -32,6 +33,8 @@ RF_BC()
 RF_OC()
 
 RF_NH3()
+
+RF_SO2()
 
 RF_ACI()
 
@@ -66,6 +69,8 @@ messages.)
 \item \code{RF_OC}: Radiative forcing due to organic carbon
 
 \item \code{RF_NH3}: Radiative forcing due to NH3
+
+\item \code{RF_SO2}: so2 radiative forcing
 
 \item \code{RF_ACI}: aerosol-cloud interactions, includes contributions from SO2, BC and OC
 

@@ -141,7 +141,7 @@ RHO_NH3 <- function() {
     .Call('_hector_RHO_NH3', PACKAGE = 'hector')
 }
 
-#' @describeIn forcings
+#' @describeIn forcings so2 radiative forcing
 #' @export
 RF_SO2 <- function() {
     .Call('_hector_RF_SO2', PACKAGE = 'hector')
@@ -1368,12 +1368,6 @@ EARTH_C <- function() {
 #' @export
 NPP_FLUX0 <- function(biome = "") {
     .Call('_hector_NPP_FLUX0', PACKAGE = 'hector', biome)
-}
-
-#' @rdname so2
-#' @export
-NATURAL_SO2 <- function() {
-    .Call('_hector_NATURAL_SO2', PACKAGE = 'hector')
 }
 
 #' @rdname so2
