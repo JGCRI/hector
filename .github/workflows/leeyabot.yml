@@ -24,7 +24,8 @@ jobs:
 
       - name: Generate report
         run: |
-          rmarkdown::render("/scripts/OutputDifferences.Rmd", run_pandoc = FALSE)
+          setwd("/scripts")
+          rmarkdown::render("OutputDifferences.Rmd", run_pandoc = FALSE)
         shell: Rscript {0}
 
       - name: Post comment
