@@ -4,7 +4,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Differences in Hector outputs
 
-Hello, this is `leeyabot`! `r emo::ji("robot")`  
+Hello, this is `leeyabot`! `r emo::ji("robot")`
 
 The current pull request's outputs differ from `master` as follows:  
 
@@ -16,8 +16,12 @@ library(ggplot2)
 library(hector)
 library(emo)
 
+# Set root directory
+BASE_DIR <- here::here()
+
 # Read in comp-data
-comp_data <- read.csv(file.path("tests/testthat/compdata/hector_comp.csv"))
+path <- file.path(BASE_DIR, "tests", "testthat", "compdata", "hector_comp.csv")
+comp_data <- read.csv(path)
 
 # Variables of interest
 vars <- c(ATMOSPHERIC_C(), GLOBAL_TEMP(), RF_TOTAL())
@@ -30,10 +34,11 @@ compdata <- comp_data %>%
     mutate(scenario = "rcp45")
     
 # Read in files for just RCP 4.5 - v3
-rcp45 <- file.path("inst/input/hector_rcp45.ini")
+rcp_path <- file.path(BASE_DIR, "inst", "input", "hector_rcp45.ini")
+rcp45 <- read.csv(rcp_path)
 
 # Run core and retrieve variable
-core <- newcore(rcp45)
+core <- newcore(rcp_path)
 run(core)
 output <- fetchvars(core, core$strtdate:core$enddate, vars, "rcp45")
 output <- output %>% mutate(version = "latest")
