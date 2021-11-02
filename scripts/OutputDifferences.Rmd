@@ -17,8 +17,7 @@ library(hector)
 library(emo)
 
 # Read in comp-data
-dir <- system.file("/tests/testthat/compdata", package = "hector")
-comp_data <- read.csv(file.path(dir, "hector_comp.csv"))
+comp_data <- read.csv(file.path("tests/testthat/compdata/hector_comp.csv"))
 
 # Variables of interest
 vars <- c(ATMOSPHERIC_C(), GLOBAL_TEMP(), RF_TOTAL())
@@ -31,8 +30,7 @@ compdata <- comp_data %>%
     mutate(scenario = "rcp45")
     
 # Read in files for just RCP 4.5 - v3
-inputdir <- system.file("input", package = "hector")
-rcp45 <- file.path(inputdir, "hector_rcp45.ini")
+rcp45 <- file.path("inst/input/hector_rcp45.ini")
 
 # Run core and retrieve variable
 core <- newcore(rcp45)
