@@ -15,6 +15,7 @@ library(dplyr)
 library(ggplot2)
 library(hector)
 library(emo)
+library(here)
 
 # Set root directory
 BASE_DIR <- here::here()
