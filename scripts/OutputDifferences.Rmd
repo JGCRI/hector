@@ -32,17 +32,19 @@ compdata <- comp_data %>%
     select(scenario, year, variable, value, units, version) %>%
     filter(scenario == "hector_rcp45.ini") %>%
     filter(variable %in% vars) %>%
-    mutate(scenario = "rcp45")
+    mutate(scenario = "rcp45") %>%
+    arrange(variable)
     
 # Read in files for just RCP 4.5 - v3
 rcp_path <- file.path(BASE_DIR, "inst", "input", "hector_rcp45.ini")
-rcp45 <- read.csv(rcp_path)
 
 # Run core and retrieve variable
 core <- newcore(rcp_path)
 run(core)
 output <- fetchvars(core, core$strtdate:core$enddate, vars, "rcp45")
-output <- output %>% mutate(version = "latest")
+output <- output %>% 
+    mutate(version = "latest") %>%
+    arrange(variable)
 
 # Find differences between versions
 differences <- compdata %>% mutate(diff = output$value - compdata$value)
