@@ -22,8 +22,12 @@ jobs:
           GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
         run: |
           install.packages(c("ggplot2", "rmarkdown", "dplyr", "remotes", "here"))
-          remotes::install_github(c("jgcri/hector", "hadley/emo"))
+          remotes::install_github(c("hadley/emo"))
+          remotes::install_deps(dependencies = TRUE)
         shell: Rscript {0}
+
+      - name: Install package
+        run: R CMD INSTALL .
 
       - name: Generate report
         run: |
@@ -34,5 +38,6 @@ jobs:
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+         cd scripts/
          cml-publish "diff_plot.png" --md >> OutputDifferences.knit.md
          cml-send-comment OutputDifferences.knit.md
