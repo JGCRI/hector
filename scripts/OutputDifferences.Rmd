@@ -105,20 +105,13 @@ colnames(NRMSE) <- "NRMSE"
 
 # Table
 summary_table <- cbind(squares, NRMSE)
-knitr::kable(summary_table, digits = 2)
+knitr::kable(cars, digits = 2)
 ```
 
 
 ``` {r graphs, echo = FALSE, fig.width = 12, fig.height = 6, message = FALSE}
 # Just the numerical differences
-diff_plot <- ggplot(differences, aes(year, diff, color = variable)) +
-    geom_hline(yintercept = 0, alpha = 0.5) +
-    geom_line() +
-    facet_grid(variable~scenario, scales = "free") +
-    scale_color_manual(labels = c("atmos_c (Pg C)", "Ftot (W/m2)", "Tgav (degC)"), values = c("gold", "aquamarine4", "slateblue4")) +
-    ggtitle("Differences in Hector outputs in v3.0.0 relative to v2.5.0") +
-    labs(x = "Year", y = "Difference in value", col = "Variable") +
-    theme_bw()
+diff_plot <- qplot(1, 1)
 
 # "Note that if an image is an output of your ML workflow (i.e., it is produced
 # by your workflow), you will need to use the cml-publish function to include 
