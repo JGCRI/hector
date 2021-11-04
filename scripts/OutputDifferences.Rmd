@@ -1,5 +1,5 @@
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = FALSE)
 ```
 
 ## Differences in Hector outputs
@@ -9,7 +9,7 @@ Hello, this is NEW NEW OUTPUT B-BOY BBL WAS HERE `leeyabot`! `r emo::ji("robot")
 The current pull request's outputs differ from `master` as follows:  
 
 
-``` {r differences, echo = FALSE, message = FALSE}
+```{r difference, message=FALSE}
 # Load packages
 library(dplyr)
 library(ggplot2)
@@ -50,7 +50,7 @@ differences <- differences %>% select(scenario, year, variable, units, version, 
 ```
 
 
-```{r summary-table, echo= FALSE}
+```{r summary-table}
 
 # Organize data
 output %>%
@@ -109,7 +109,7 @@ knitr::kable(cars, digits = 2)
 ```
 
 
-``` {r graphs, echo = FALSE, fig.width = 12, fig.height = 6, message = FALSE}
+``` {r graphs, fig.width = 12, fig.height = 6, message = FALSE}
 # Just the numerical differences
 diff_plot <- qplot(1, 1)
 
