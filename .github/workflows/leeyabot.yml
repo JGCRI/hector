@@ -23,6 +23,7 @@ jobs:
         run: |
           install.packages(c("ggplot2", "rmarkdown", "dplyr", "remotes", "here"))
           remotes::install_github(c("hadley/emo"))
+          remotes::install_deps(dependencies = TRUE)
         shell: Rscript {0}
 
       - name: Install package
