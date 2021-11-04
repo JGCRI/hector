@@ -4,7 +4,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Differences in Hector outputs
 
-Hello, this is `leeyabot`! `r emo::ji("robot")`
+Hello, this is NEW NEW OUTPUT B-BOY BBL WAS HERE `leeyabot`! `r emo::ji("robot")`
 
 The current pull request's outputs differ from `master` as follows:  
 
