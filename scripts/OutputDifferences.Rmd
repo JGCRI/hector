@@ -105,7 +105,7 @@ colnames(NRMSE) <- "NRMSE"
 
 # Table
 summary_table <- cbind(squares, NRMSE)
-knitr::kable(summary_table, digits = 3)
+knitr::kable(summary_table, digits = 2)
 ```
 
 
