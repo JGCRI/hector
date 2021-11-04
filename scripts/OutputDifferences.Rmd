@@ -9,7 +9,7 @@ Hello, this is NEW NEW OUTPUT B-BOY BBL WAS HERE `leeyabot`! `r emo::ji("robot")
 The current pull request's outputs differ from `master` as follows:  
 
 
-```{r difference, message=FALSE}
+```{r difference, include=FALSE}
 # Load packages
 library(dplyr)
 library(ggplot2)
