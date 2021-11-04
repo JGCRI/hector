@@ -1,8 +1,5 @@
 name: Leeyabot
-on:
-  pull_request:
-    branches:
-      - '**' #matches every branch
+on: [push]
 jobs:
   run:
     runs-on: [ubuntu-latest]
