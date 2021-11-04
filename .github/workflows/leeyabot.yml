@@ -19,8 +19,11 @@ jobs:
           GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
         run: |
           install.packages(c("ggplot2", "rmarkdown", "dplyr", "remotes"))
-          remotes::install_github(c("jgcri/hector", "hadley/emo"))
+          remotes::install_github(c("hadley/emo"))
         shell: Rscript {0}
+
+      - name: Install package
+        run: R CMD INSTALL .
 
       - name: Generate report
         run: |
