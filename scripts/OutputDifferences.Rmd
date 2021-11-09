@@ -117,7 +117,7 @@ diff_plot <- ggplot(differences, aes(year, diff, color = variable)) +
     geom_line() +
     facet_grid(variable~scenario, scales = "free") +
     scale_color_manual(labels = c("atmos_c (Pg C)", "Ftot (W/m2)", "Tgav (degC)"), values = c("gold", "aquamarine4", "slateblue4")) +
-    ggtitle("Differences in Hector outputs in v3.0.0 relative to v2.5.0") +
+    ggtitle("Differences in Hector outputs in current version relative to v3.0.0") +
     labs(x = "Year", y = "Difference in value", col = "Variable") +
     theme_bw()
 
