@@ -40,7 +40,7 @@ rcp45 <- file.path(BASE_DIR, "inst", "input", "hector_rcp45.ini")
 
 # Run core and retrieve variable
 core <- newcore(rcp45)
-run(core)
+invisible(run(core))
 output <- fetchvars(core, core$strtdate:core$enddate, vars, "rcp45")
 output <- output %>% 
     mutate(version = "latest") %>%
