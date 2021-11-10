@@ -3,8 +3,6 @@
 
    Please see the accompanying file LICENSE.md for additional licensing
    information.
-*/
-/*
  *  ocean_component.cpp
  *  hector
  *
@@ -196,23 +194,8 @@ void OceanComponent::prepareToRun() {
 
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
 
-    // Set up our ocean box model. Carbon values here can be overridden by user input
-    H_LOG( logger, Logger::DEBUG ) << "Setting up ocean box model" << std::endl;
-    surfaceHL.initbox( 140, "HL" );
-    surfaceHL.surfacebox = true;
-    surfaceHL.preindustrial_flux.set( 1.000, U_PGC_YR );         // used if no spinup chemistry
-    surfaceHL.active_chemistry = spinup_chem;
-
-    surfaceLL.initbox( 770, "LL" );
-    surfaceLL.surfacebox = true;
-    surfaceLL.preindustrial_flux.set( -1.000, U_PGC_YR );        // used if no spinup chemistry
-    surfaceLL.active_chemistry = spinup_chem;
-
-    inter.initbox( 8400, "intermediate" );
-    deep.initbox( 26000, "deep" );
-
+    // Define constants used in ocean box set up.
     double spy = 60 * 60 * 24 * 365.25;  // seconds per year
-
 
     // ocean depth
     double thick_LL = 100;         // (m) Thickness of surface ocean from Knox and McElroy (1984)
@@ -235,6 +218,46 @@ void OceanComponent::prepareToRun() {
     const double I_volume = ocean_area * thick_inter;
     const double D_volume = ocean_area * thick_deep;
 
+    // Calculate the fraction of volume of the two surface boxes, the deep, and
+    // intermediate ocean boxes. The fraction of the volumes will be used to determine the
+    // inital size of the preindustrial carbon pools for Hector's ocean boxes.
+    const double LL_vol_frac = LL_volume / (LL_volume + HL_volume);
+    const double HL_vol_frac = 1 - LL_vol_frac;
+    const double I_vol_frac = I_volume / (I_volume + D_volume);
+    const double D_vol_frac = 1 - I_vol_frac;
+    
+    // Define the size of the preindustrial ocean surface and intermediate-deep ocean carbon pools
+    // from IPCC AR6 Figure 5.12.
+    const double preind_C_surface = 900;   // (Pg C) IPCC AR6 Figure 5.12
+    const double preind_C_ID = 37100;      // (Pg C) IPCC AR6 Figure 5.12
+    
+    // Partition the preindustrial ocean carbon pools by volume.
+    const double LL_preind_C = LL_vol_frac * preind_C_surface;
+    const double HL_preind_C = HL_vol_frac * preind_C_surface;
+    const double I_preind_C = I_vol_frac * preind_C_ID;
+    const double D_preind_C = D_vol_frac * preind_C_ID;
+
+
+    // Set up our ocean box model.
+    H_LOG( logger, Logger::DEBUG ) << "Setting up ocean box model" << std::endl;
+   // surfaceHL.initbox( HL_preind_C, "HL" );
+       surfaceHL.initbox( unitval( 140, U_PGC ), "HL" );
+    surfaceHL.surfacebox = true;
+    surfaceHL.preindustrial_flux.set( 1.000, U_PGC_YR );         // used if no spinup chemistry
+    surfaceHL.active_chemistry = spinup_chem;
+
+   // surfaceLL.initbox( LL_preind_C, "LL" );
+    surfaceLL.initbox( unitval( 770, U_PGC ),  "LL" );
+    surfaceLL.surfacebox = true;
+    surfaceLL.preindustrial_flux.set( -1.000, U_PGC_YR );        // used if no spinup chemistry
+    surfaceLL.active_chemistry = spinup_chem;
+
+   // inter.initbox( I_preind_C, "intermediate" );
+   // deep.initbox( D_preind_C, "deep" );
+    inter.initbox( unitval( 8400, U_PGC ),  "intermediate" );
+       deep.initbox( unitval( 26000, U_PGC ),  "deep" );
+    
+    
     // transport * seconds / volume of box
     // Advection --> transport of carbon from one box to the next (k values, fraction/yr )
     double LL_HL = ( tt.value( U_M3_S ) * spy ) / LL_volume;
@@ -348,6 +371,7 @@ void OceanComponent::run( const double runToDate ) {
     // If chemistry models weren't turned on during spinup, do so now
     if( !spinup_chem && !in_spinup && !surfaceHL.active_chemistry ) {
         H_LOG( logger, Logger::DEBUG ) << "*** Turning on chemistry models ***" << std::endl;
+        std::cout << "triggered when spinup_chem = 0";
         surfaceHL.active_chemistry = true;
         surfaceLL.active_chemistry = true;
         surfaceHL.chem_equilibrate( Ca );
@@ -385,7 +409,7 @@ unitval OceanComponent::getData( const std::string& varName,
         // If no date, we're in spinup; just return the current value
 
         if( varName == D_OCEAN_CFLUX ){
-                returnval = annualflux_sum;
+            returnval = annualflux_sum;
         } else if( varName == D_TT ) {
             returnval = tt;
         } else if( varName == D_TU ) {
@@ -417,11 +441,11 @@ unitval OceanComponent::getData( const std::string& varName,
         } else if( varName == D_CARBON_LL ) {
             returnval = surfaceLL.get_carbon();
         } else if( varName == D_CARBON_IO ) {
-        returnval = inter.get_carbon();
+            returnval = inter.get_carbon();
         } else if( varName == D_DIC_HL ) {
             returnval = surfaceHL.mychemistry.convertToDIC( surfaceHL.get_carbon() );
         } else if( varName == D_DIC_LL ) {
-        returnval = surfaceLL.mychemistry.convertToDIC( surfaceLL.get_carbon() );
+            returnval = surfaceLL.mychemistry.convertToDIC( surfaceLL.get_carbon() );
         } else if( varName == D_HL_DO ) {
             returnval = surfaceHL.annual_box_fluxes[ &deep ] ;
         } else if( varName == D_PCO2_HL ) {
@@ -429,9 +453,9 @@ unitval OceanComponent::getData( const std::string& varName,
         } else if( varName == D_PCO2_LL ) {
             returnval = surfaceLL.mychemistry.PCO2o;
         } else if( varName == D_PH_HL ) {
-               returnval = surfaceHL.mychemistry.pH;
+            returnval = surfaceHL.mychemistry.pH;
         } else if( varName == D_PH_LL ) {
-               returnval = surfaceLL.mychemistry.pH;
+            returnval = surfaceLL.mychemistry.pH;
         } else if( varName == D_TEMP_HL ) {
             returnval = surfaceHL.get_Tbox();
         } else if( varName == D_TEMP_LL ) {
@@ -439,7 +463,7 @@ unitval OceanComponent::getData( const std::string& varName,
         } else if( varName == D_OCEAN_C ) {
             returnval = totalcpool();
         } else if( varName == D_CO3_HL ) {
-        returnval = surfaceHL.mychemistry.CO3;
+            returnval = surfaceHL.mychemistry.CO3;
         } else if( varName == D_CO3_LL ) {
             returnval = surfaceLL.mychemistry.CO3;
         } else if( varName == D_TIMESTEPS ) {
@@ -450,7 +474,7 @@ unitval OceanComponent::getData( const std::string& varName,
 
     } else if(date != Core::undefinedIndex() ){
         if( varName == D_OCEAN_CFLUX ){
-                returnval = annualflux_sum_ts.get(date);
+            returnval = annualflux_sum_ts.get(date);
         } else if( varName == D_OCEAN_C ) {
             returnval = C_DO_ts.get( date ) +  C_IO_ts.get(date) + Ca_LL_ts.get(date) + Ca_HL_ts.get(date);
         } else if( varName == D_HL_DO ) {
@@ -472,11 +496,11 @@ unitval OceanComponent::getData( const std::string& varName,
         } else if( varName == D_DIC_LL ) {
             returnval = dic_LL_ts.get( date );
         } else if( varName == D_CARBON_HL ) {
-           returnval = Ca_HL_ts.get(date);
+            returnval = Ca_HL_ts.get(date);
         } else if( varName == D_CARBON_LL ) {
             returnval = Ca_LL_ts.get(date);
         } else if( varName == D_CARBON_IO ) {
-          returnval = C_IO_ts.get(date);
+            returnval = C_IO_ts.get(date);
         } else if( varName == D_CARBON_DO ) {
             returnval = C_DO_ts.get(date);
         } else if( varName == D_TEMP_HL ) {

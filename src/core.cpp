@@ -463,6 +463,7 @@ void Core::run(double runtodate) {
     // 6. Run all model dates.
     H_LOG( glog, Logger::NOTICE) << "Running..." << endl;
     for(double currDate = lastDate+1.0; currDate <= runtodate; currDate += 1.0 ) {
+        H_LOG( glog, Logger::NOTICE) << currDate << endl;
         // If we've hit the tracking start year, note this in the log
         if(currDate == trackingDate) {
             H_LOG(glog, Logger::NOTICE) << "Starting tracking in " << currDate << endl;

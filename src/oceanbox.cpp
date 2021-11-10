@@ -180,11 +180,11 @@ void oceanbox::compute_fluxes( const unitval current_Ca, const fluxpool atmosphe
     
 	// Step 1 : run chemistry mode, if applicable
 	if( active_chemistry ) {
+        // Active chemistry only runs in the surface boxes.
 		OB_LOG( logger, Logger::DEBUG) << Name << " running ocean_csys" << endl;
-        H_ASSERT( Tbox.value( U_DEGC ) > -999, "bad tbox value" );        // TODO: this isn't a good temperature check
 		mychemistry.ocean_csys_run( Tbox, carbon );
-        
         atmosphere_flux = unitval( mychemistry.calc_annual_surface_flux( Ca ).value( U_PGC_YR ), U_PGC );
+        
 	} else  {
 		// No active chemistry, so atmosphere-box flux is simply a function of the
 		// difference between box carbon and atmospheric carbon s.t. it is preindustrial_flux

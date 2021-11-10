@@ -3,9 +3,9 @@
 
    Please see the accompanying file LICENSE.md for additional licensing
    information.
-*/
-// ocean_csys_class.cpp : Defines the entry point for the console application.
-/*  Ocean Carbon Chemistry CODE File:
+
+ ocean_csys_class.cpp : Defines the entry point for the console application.
+ *  Ocean Carbon Chemistry CODE File:
  *
  *  Created by Corinne Hartin  1/30/13.
 
@@ -126,6 +126,7 @@ double find_largest_root( const int ncoeffs, double* a ) {
     PolyDerivFunctor polyFunctor(a, degree);
     // Use Fujiwara's method to find an upper bound for the roots of the polynomial
     double max = pow(std::abs(a[0] / ( 2.0 * a[degree])), 1.0 / degree);
+
     for(int i = 1; i < degree; ++i) {
         max = std::max(max, pow(std::abs(a[i]/a[degree]), 1.0 / static_cast<double>(degree - i)));
     }
@@ -134,10 +135,14 @@ double find_largest_root( const int ncoeffs, double* a ) {
     // arbitrarily solve unil 60% of the digits are correct.
     const int digits = numeric_limits<double>::digits;
     int get_digits = static_cast<int>(digits * 0.6);
+    std::cout << "max-0.001: " << max-0.001 << "\n";
+    std::cout << "max: " << max << "\n";
+    std::cout << "get_digits: " << get_digits << "\n";
     double h = newton_raphson_iterate(polyFunctor, max-0.001, 0.0, max, get_digits);
 
 	return h;
 }
+
 
 //------------------------------------------------------------------------------
 /*! \brief Run Ocean csys
@@ -157,12 +162,15 @@ void oceancsys::ocean_csys_run( unitval tbox, unitval carbon )
     const double Tc = tbox.value( U_DEGC );
     const double Tk = Tc + 273.15;
 
-	// Check that all is OK with input data
-	H_ASSERT( Tk > 265 && Tk < 308, "bad Tk value" ); // Kelvin
-    H_ASSERT( dic > 1000e-6 && dic < 3700e-6, "bad dic value" );  // mol/kg
+    
+    // Check to make sure the system is within the range for K1 and K2.
+	H_ASSERT( Tk >= 273.15 && Tk <= 308.15, "Temperature out of valid range for K1 and K2." ); // Zeebe & Wolf-Gladrow et al. 2001
+    H_ASSERT( S >= 20 && S <= 40, "Salinity out of valid range for K1 and K2." );              // Zeebe & Wolf-Gladrow et al. 2001
+    H_ASSERT( dic > 1000e-6 && dic < 3700e-6, "bad dic value" );  // unclear as to where this check comes from
+    std::cout << "\n alk: " << alk << "\n";
 
     // alk should be constant once spinup is done, but check anyway
-    H_ASSERT( alk >= 2000e-6 && alk <= 2750e-6, "bad alk value" );  // mol/kg
+    H_ASSERT( alk >= 2000e-6 && alk <= 2750e-6, "bad alk value" );  // unclear where this this check comes from
 
 	/*---------------------------------------------------------------
      This section calculates the constants K0, Sc, K1, K2, Ksp, Ksi etc.
@@ -275,7 +283,7 @@ void oceancsys::ocean_csys_run( unitval tbox, unitval carbon )
         * bor * K1_val * K2_val;
 	const double p1 = tmp + ( Kw_val * Kb_val * K1_val + Kw_val * K1_val * K2_val );
 	const double p0 = Kw_val * Kb_val * K1_val * K2_val;
-
+    std::cout << "--------------\n";
 	m_a[ 0 ] = p0;
 	m_a[ 1 ] = p1;
 	m_a[ 2 ] = p2;
@@ -284,7 +292,8 @@ void oceancsys::ocean_csys_run( unitval tbox, unitval carbon )
 	m_a[ 5 ] = p5;
 
 	// Find the solution to the polynomial of the carbonate system
-	const double h      = find_largest_root( ncoeffs, &m_a[0] );
+	const double h   = find_largest_root( ncoeffs, &m_a[0] );
+    std::cout << "h:" <<  h << "\n";
 
 	// Solve for the remiaing carbonate variables
 	const double co2st  = dic/( 1.0 + K1_val / h + K1_val * K2_val / h / h ); // co2st = CO2*
