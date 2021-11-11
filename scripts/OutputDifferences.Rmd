@@ -34,8 +34,11 @@ compdata <- comp_data %>%
     filter(variable %in% vars) %>%
     mutate(scenario = "rcp45") %>%
     arrange(variable)
-    
-# Read in files for just RCP 4.5 - v3
+  
+# Access compdata version  
+version <- compdata$version[1]
+
+# Read in files for just RCP 4.5
 rcp45 <- file.path(BASE_DIR, "inst", "input", "hector_rcp45.ini")
 
 # Run core and retrieve variable
@@ -47,8 +50,9 @@ output <- output %>%
     arrange(variable)
 
 # Find differences between versions
-differences <- compdata %>% mutate(diff = output$value - compdata$value)
-differences <- differences %>% select(scenario, year, variable, units, version, diff)
+differences <- compdata %>% 
+    mutate(diff = output$value - compdata$value) %>% 
+    select(scenario, year, variable, units, version, diff)
 ```
 
 
@@ -56,35 +60,26 @@ differences <- differences %>% select(scenario, year, variable, units, version, 
 
 # Organize data
 output %>%
-    select(latest = value) -> new_values
+    select(latest_version = value) -> new_values
 
 both_versions <- compdata %>%
     select(year, variable, value) %>%
-    rename(v3.0.0 = value) %>%
+    rename(comp_version = value) %>%
     cbind(new_values)
 
 # Define params
 years <- both_versions$year
 
 # Compute linear regression
-linear <- by(both_versions, both_versions$variable, function(x) lm (both_versions$latest~both_versions$v3.0.0))
+linear <- by(both_versions, both_versions$variable, function(x) lm (both_versions$latest_version~both_versions$comp_version))
 
 # Access r squared
-squares <- sapply(linear, summary)
-squares <- squares %>% 
-    as.data.frame() %>%
-    slice(8) %>%
-    t() -> squares
-
+squares <- as.data.frame(sapply(linear, function(x) summary(x)$r.squared))
 colnames(squares) <- "R squared"
 
 # Calculate RMSE
 # Extract residuals
-atmos_res <- linear$atmos_c$residuals
-ftot_res <- linear$Ftot$residuals
-tgav_res <- linear$Tgav$residuals
-
-table <- cbind(atmos_res, ftot_res, tgav_res)
+resid <- as.data.frame(sapply(linear, function(x) summary(x)$residuals))
 
 # Define function
 RMSE <- function(res) {
@@ -92,33 +87,40 @@ RMSE <- function(res) {
 }
 
 # Find RMSE
-error <- as.data.frame(apply(table, MARGIN = 2, RMSE))
-rownames(error) <- c("atmos_c", "Ftot", "Tgav")
+error <- as.data.frame(lapply(resid, RMSE))
+error <- t(error)
 
 # Find mean of data to normalize
-mean3 <- by(both_versions$v3.0.0, both_versions$variable, mean)
-mean3 <- as.data.frame(c(mean3[1], mean3[2], mean3[3]))
+mean <- both_versions %>% 
+  group_by(variable) %>% 
+  summarize(mean(comp_version))
 
 # Divide RMSE by means
-NRMSE <- as.data.frame(error[,1] / mean3[,1])
-rownames(NRMSE) <- c("atmos_c", "Ftot", "Tgav")
+NRMSE <- as.data.frame(error[,1] / mean[,2])
 colnames(NRMSE) <- "NRMSE"
 
 # Table
 summary_table <- cbind(squares, NRMSE)
-knitr::kable(summary_table, digits = 3)
+knitr::kable(summary_table, digits = 3, format.args = list(nsmall = 3, scientific = FALSE))
 ```
 
 
 ``` {r graphs, echo = FALSE, fig.width = 12, fig.height = 6, message = FALSE}
-# Just the numerical differences
+# Plot of numerical differences between versions
+# Access commit number and units (for legend)
+commit <- comp_data$commit[1]
+units <- c(unique(differences$units))
+# Sort variables so that legend works
+vars <- sort(vars)
+
 diff_plot <- ggplot(differences, aes(year, diff, color = variable)) +
     geom_hline(yintercept = 0, alpha = 0.5) +
     geom_line() +
     facet_grid(variable~scenario, scales = "free") +
-    scale_color_manual(labels = c("atmos_c (Pg C)", "Ftot (W/m2)", "Tgav (degC)"), values = c("gold", "aquamarine4", "slateblue4")) +
-    ggtitle("Differences in Hector outputs in current version relative to v3.0.0") +
-    labs(x = "Year", y = "Difference in value", col = "Variable") +
+    scale_color_viridis_d(breaks = vars, labels = units) +
+    ggtitle(paste0("Differences in Hector outputs in current version relative to commit #", commit)) +
+    labs(x = "Year", y = "Difference in value", col = "Units") +
+    scale_y_continuous(labels = scales::label_scientific(digits = 2)) + 
     theme_bw()
 
 # "Note that if an image is an output of your ML workflow (i.e., it is produced
