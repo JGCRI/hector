@@ -369,7 +369,6 @@
 #define D_SLR_NO_ICE            "slr_no_ice"
 
 // so2 component
-#define D_NATURAL_SO2           "SN"
 #define D_EMISSIONS_SO2         "SO2_emissions"
 #define D_VOLCANIC_SO2          "SV"
 

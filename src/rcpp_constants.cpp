@@ -1736,13 +1736,6 @@ String NPP_FLUX0(String biome = "") {
 //' @rdname so2
 //' @export
 // [[Rcpp::export]]
-String NATURAL_SO2() {
-return D_NATURAL_SO2;
-}
-
-//' @rdname so2
-//' @export
-// [[Rcpp::export]]
 String EMISSIONS_SO2() {
 return D_EMISSIONS_SO2;
 }

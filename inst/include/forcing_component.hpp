@@ -80,10 +80,10 @@ private:
 
 
     // CO2 parameters
-    const double a1 = -2.478e-7;        // (W m–2 ppm–2) IPCC AR6 parameter for CH4 SARF Table 7.SM.1
-    const double b1 =  7.590e-4;        // (W m–2 ppm–1) IPCC AR6 parameter for CH4 SARF Table 7.SM.1
-    const double c1 = -2.149e-3;        // (W m–2 ppb–1/2) IPCC AR6 parameter for CH4 SARF Table 7.SM.1
-    const double d1 =  5.248;           // (W m–2) IPCC AR6 parameter for CH4 SARF Table 7.SM.1
+    const double a1 = -2.4785e-7;        // (W m–2 ppm–2) IPCC AR6 parameter for CH4 SARF Table 7.SM.1
+    const double b1 =  7.5906e-4;        // (W m–2 ppm–1) IPCC AR6 parameter for CH4 SARF Table 7.SM.1
+    const double c1 = -2.1492e-3;        // (W m–2 ppb–1/2) IPCC AR6 parameter for CH4 SARF Table 7.SM.1
+    const double d1 =  5.2488;           // (W m–2) IPCC AR6 parameter for CH4 SARF Table 7.SM.1
     unitval delta_co2;                  // forcing tropospheric adjustment for CO2 see 7.3.2.1 of IPCC AR6
 
     // N2O parameters
@@ -106,7 +106,7 @@ private:
     unitval rho_nh3;                  // (W yr m–2 Tg–1) IPCC AR6 radiative efficiency SO2 7.SM.1.3.1
 
     // Aerosol parameters for aerosol-cloud interactions (RFaci) see equation Equation 7.SM.1.2 of IPCC AR6
-    double const ari_beta = 2.09841432;                             // (W m-2) IPCC AR6 7.SM.1.3.1
+    double const aci_beta = 2.09841432;                             // (W m-2) IPCC AR6 7.SM.1.3.1
     double const s_BCOC = 111.05064063;                             // (Tg C yr-1) IPCC AR6 7.SM.1.3.1
     double const s_SO2 = (260.34644166 * 1000) * (32.065/64.066) ;  // (Tg SO2 yr–1) IPCC AR6 7.SM.1.3.1 converted to (Gg S yr-1)
 

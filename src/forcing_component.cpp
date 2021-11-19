@@ -10,15 +10,6 @@
  *
  *  Created by Ben on 02 March 2011.
  *
- *  KALYN things to do for EPA taks
- *      - figure out if still need the alpha co2
- *      - update the doubling co2 value to the AR6 double thing
- *      - Follow up on the GHGs how is AR6 treating them?
- *      - update the aerosol RF values
- *      - do a ccomparisonn of RF values from AR5 & AR6
- *          - what is the difference that is making AR6 Hector so much cooler
- *      - waht halo carbon componets are we missing???
- *
  */
 
 /* References:
@@ -192,7 +183,6 @@ void ForcingComponent::init( Core* coreptr ) {
     core->registerDependency( D_EMISSIONS_BC, getComponentName() );
     core->registerDependency( D_EMISSIONS_OC, getComponentName() );
     core->registerDependency( D_EMISSIONS_NH3, getComponentName() );
-    core->registerDependency( D_NATURAL_SO2, getComponentName() );
     core->registerDependency( D_ATMOSPHERIC_N2O, getComponentName() );
     core->registerDependency( D_RF_CF4, getComponentName() );
     core->registerDependency( D_RF_C2F6, getComponentName() );
@@ -365,13 +355,13 @@ void ForcingComponent::run( const double runToDate ) {
             double n2o_alpha = c1 * sqrt(Na);
             double alpha_prime;
             if (Ca  > C_alpha_max){
-                alpha_prime = d1 - (pow(b1, 2) / (2 * a1));
+                alpha_prime = d1 - (pow(b1, 2) / (4 * a1));
             } else if (C0 < Ca && Ca < C_alpha_max){
                 alpha_prime = d1 + a1 * pow((Ca-C0), 2) + b1 * (Ca-C0);
             } else if (Ca < C0){
                 alpha_prime = d1;
             } else {
-                H_THROW( "Caller is requesting unknown condition for CO2  SARF ");
+                H_THROW( "Caller is requesting unknown condition for CO2 SARF ");
             }
             double sarf_co2 = (alpha_prime + n2o_alpha) * log(Ca/C0);
             double fco2 = (sarf_co2 * delta_co2) + sarf_co2;
@@ -383,7 +373,7 @@ void ForcingComponent::run( const double runToDate ) {
             // value to account for tropospheric interactions see 7.3.2.3.
             // Note that this simplified expression for radiative forcing was calibrated with a
             // preindustrial N20 value of 273.87 ppb.
-            double sarf_n2o = (a2 * sqrt(Ca) + b2 * sqrt(Na) + c2 * sqrt(Ma) + d2) * (sqrt(Na) - sqrt(N0));
+            double sarf_n2o = ( a2 * sqrt(Ca) + b2 * sqrt(Na) + c2 * sqrt(Ma) + d2) * (sqrt(Na) - sqrt(N0));
             double fn2o = (delta_n2o * sarf_n2o) + sarf_n2o;
             forcings[D_RF_N2O].set( fn2o, U_W_M2 );
 
@@ -395,11 +385,12 @@ void ForcingComponent::run( const double runToDate ) {
             double fch4 = (delta_ch4 * sarf_ch4) + sarf_ch4;
             forcings[D_RF_CH4].set( fch4, U_W_M2 );
 
-            // ---------- Stratospheric H2O from CH4 oxidation ----------
-            // From Tanaka et al, 2007, but using Joos et al., 2001 value of 0.05
-            const double fh2o_strat = 0.05 * (Ma - M0)/(1831.470998 - M0);
+            // ---------- Stratospheric H2O based on CH4 oxidation ----------
+            // The stratospheric water vapour RF based on changes in CH4 concentrations.
+            const double Ma_base = 1831;          // 2014 CH4 concentration ppb from the cmip6 historical scenario
+            const double stratH2O_base = 0.0485; // Strat H2O RF (1850 to 2014) from 7.3.2.6 IPCC AR6
+            const double fh2o_strat = stratH2O_base * ((Ma - M0) / (Ma_base - M0)); //
             forcings[D_RF_H2O_STRAT].set( fh2o_strat, U_W_M2 );
-
 
             }
 
@@ -453,8 +444,7 @@ void ForcingComponent::run( const double runToDate ) {
 
          // Aerosols
         if( core->checkCapability( D_EMISSIONS_BC ) && core->checkCapability( D_EMISSIONS_OC ) &&
-            core->checkCapability( D_NATURAL_SO2 ) && core->checkCapability( D_EMISSIONS_SO2 ) &&
-            core->checkCapability( D_EMISSIONS_NH3 ) ) {
+            core->checkCapability( D_EMISSIONS_SO2 ) && core->checkCapability( D_EMISSIONS_NH3 ) ) {
 
             // Aerosol-Radiation Interactions (RFari)
             // RFari was calculated using a simple linear relationship to emissions of
@@ -473,10 +463,8 @@ void ForcingComponent::run( const double runToDate ) {
             forcings[D_RF_OC].set( foc, U_W_M2 );
 
             // ---------- Sulphate Aerosols ----------
-            unitval SN = core->sendMessage( M_GETDATA, D_NATURAL_SO2 );
             unitval SO2_emission = core->sendMessage( M_GETDATA, D_EMISSIONS_SO2, message_data( runToDate ) );
-            double so2_val = (SN.value( U_GG_S ) + SO2_emission.value( U_GG_S ));
-            double fso2 = rho_so2 * so2_val;
+            double fso2 = rho_so2 * SO2_emission.value( U_GG_S );
             forcings[D_RF_SO2].set( fso2, U_W_M2 );
 
             // ---------- NH3 ----------
@@ -487,7 +475,7 @@ void ForcingComponent::run( const double runToDate ) {
             // ---------- RFaci ----------
             // ERF from aerosol-cloud interactions (RFaci)
             // Based on Equation 7.SM.1.2 from IPCC AR6 where
-            double aci_rf = -ari_beta * (1 + (so2_val/s_SO2) + (E_BC + E_OC)/s_BCOC);
+            double aci_rf = -1  * aci_beta * log(1 + (SO2_emission/s_SO2) + ((E_BC + E_OC)/s_BCOC));
             forcings[D_RF_ACI].set( aci_rf, U_W_M2);
 
         }

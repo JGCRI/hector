@@ -2300,16 +2300,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// NATURAL_SO2
-String NATURAL_SO2();
-RcppExport SEXP _hector_NATURAL_SO2() {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(NATURAL_SO2());
-    return rcpp_result_gen;
-END_RCPP
-}
 // EMISSIONS_SO2
 String EMISSIONS_SO2();
 RcppExport SEXP _hector_EMISSIONS_SO2() {
@@ -2816,7 +2806,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_SOIL_C", (DL_FUNC) &_hector_SOIL_C, 1},
     {"_hector_EARTH_C", (DL_FUNC) &_hector_EARTH_C, 0},
     {"_hector_NPP_FLUX0", (DL_FUNC) &_hector_NPP_FLUX0, 1},
-    {"_hector_NATURAL_SO2", (DL_FUNC) &_hector_NATURAL_SO2, 0},
     {"_hector_EMISSIONS_SO2", (DL_FUNC) &_hector_EMISSIONS_SO2, 0},
     {"_hector_VOLCANIC_SO2", (DL_FUNC) &_hector_VOLCANIC_SO2, 0},
     {"_hector_ECS", (DL_FUNC) &_hector_ECS, 0},
