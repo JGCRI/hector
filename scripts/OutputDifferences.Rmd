@@ -1,4 +1,8 @@
 ```{r setup, include=FALSE}
+# This is the leeyabot Rmarkdown that generates the comment
+# and accompanying table and figure
+# It is run by the `leeyabot.yml` GitHub Action
+# Leeya Pressburger 2021
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
