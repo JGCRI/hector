@@ -250,21 +250,21 @@ struct interp_helper<string> {
     static void error_check( const std::map<double, T_unit_type>& userData,
                              h_interpolator& interpolator, std::string name,
                              bool& isDirty, bool endinterp_allowed,
-                             const double index ) throw( h_exception )
+                             const double index ) noexcept(false)
     {
         H_THROW( "String interpolation not allowed" );
     }
     static T_unit_type interp( const std::map<double, T_unit_type>& userData,
                                h_interpolator& interpolator, std::string name,
                                bool& isDirty, bool endinterp_allowed,
-                               const double index ) throw( h_exception )
+                               const double index ) noexcept(false)
     {
          H_THROW( "String interpolation not allowed" );
     }
     static T_unit_type calc_deriv( const std::map<double, T_unit_type>& userData,
                                    h_interpolator& interpolator, std::string name,
                                    bool& isDirty, bool endinterp_allowed,
-                                   const double index ) throw( h_exception )
+                                   const double index ) noexcept(false)
     {
         H_THROW( "String derivative not allowed" );
     }

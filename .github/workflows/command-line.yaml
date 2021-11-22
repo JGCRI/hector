@@ -36,6 +36,6 @@ jobs:
       - uses: actions/checkout@v2
       - name: build and run
         run: |
-          sudo apt install libboost-filesystem-dev libboost-system-dev
+          sudo apt install libboost-dev
           make hector
           bash ./test_hector.sh ./src/hector

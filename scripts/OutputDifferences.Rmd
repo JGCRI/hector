@@ -57,6 +57,7 @@ differences <- compdata %>%
 
 
 ```{r summary-table, echo= FALSE}
+
 # If there are no differences in outputs, print message and do nothing. Otherwise, run summary table code.
 
 zeros <- rep(0, length(differences$diff))

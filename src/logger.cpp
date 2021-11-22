@@ -17,14 +17,28 @@
 #include "h_util.hpp"
 #include <algorithm>
 
+
 // If using the R package, use Rcpp to call R's file processing
-// functions. Otherwise (e.g. if building standalone Hector), fall
-// back to boost::filesystem (which needs to be installed).
+// functions. Otherwise (e.g. if building standalone Hector),
+// use std::filesystem (which is available since the C++ 17 standard)
+// if available and finally fall back to boost::filesystem (which
+// needs to be installed).
+
+// Language feature detection (to use __cpp_lib_filesystem) isn't even
+// available unil the C++20 standard.  Luckily we can use boost to get
+// it in the meantime.
+#include <boost/config.hpp>
+
 #ifdef USE_RCPP
 #include <Rcpp.h>
+#elif __cpp_lib_filesystem || __has_include(<filesystem>)
+#include <filesystem>
+namespace fs = std::filesystem;
+typedef std::error_code fs_error_code;
 #else
 #include <boost/filesystem.hpp>
 namespace fs = boost::filesystem;
+typedef boost::system::error_code fs_error_code;
 #endif
 
 #ifdef USE_RCPP
@@ -294,7 +308,7 @@ void Logger::chk_logdir(std::string dir)
         // either does not exist or is a file
         // we can try to create it and if it still fails it must
         // have been a file or a permissions error
-        boost::system::error_code status;
+        fs_error_code status;
         if(!fs::create_directory(fs_dir, status)) {
             H_THROW("Directory "+dir+" does not exist and could not create it.");
         }
