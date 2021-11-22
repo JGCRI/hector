@@ -111,7 +111,7 @@ knitr::kable(summary_table, digits = 3, format.args = list(nsmall = 3, scientifi
 ```
 
 
-``` {r graphs, echo = FALSE, fig.width = 12, fig.height = 6, message = FALSE}
+``` {r graphs, echo = FALSE, fig.width = 12, fig.height = 6, message = FALSE, include = FALSE}
 # Plot of numerical differences between versions
 
 # If differences are zero, do nothing. Otherwise, produce graph.
