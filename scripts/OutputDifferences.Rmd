@@ -10,9 +10,6 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Hello, this is `leeyabot`! `r emo::ji("robot")`
 
-The current pull request's outputs differ from `master` as follows:  
-
-
 ``` {r differences, echo = FALSE, message = FALSE}
 # Load packages
 library(dplyr)
@@ -59,14 +56,21 @@ differences <- compdata %>%
     select(scenario, year, variable, units, version, diff)
 ```
 
-
-```{r summary-table, echo= FALSE}
-
-# If there are no differences in outputs, print message and do nothing. Otherwise, run summary table code.
-
+```{r, check-any-change, echo=FALSE, results='asis'}
+# If there are no differences in outputs, do nothing
+# Otherwise, run summary table and graph code
 zeros <- rep(0, length(differences$diff))
-if (isTRUE(all.equal(zeros, differences$diff, tolerance = 1e-7))){
-  cat("The current pull request's outputs do not differ from master.")} else {
+SAME <- isTRUE(all.equal(zeros, differences$diff, tolerance = 1e-7))
+if (SAME) {
+  cat("The current pull request's outputs do not differ from master.")
+} else {
+  cat("The current pull request's outputs differ from `master` as follows:")  
+}
+```
+
+
+```{r summary-table, echo = FALSE}
+if(!SAME) {
 # Organize data
 output %>%
     select(latest_version = value) -> new_values
@@ -116,10 +120,8 @@ knitr::kable(summary_table, digits = 3, format.args = list(nsmall = 3, scientifi
 
 
 ``` {r graphs, echo = FALSE, fig.width = 12, fig.height = 6, message = FALSE, include = FALSE}
+if(!SAME) {
 # Plot of numerical differences between versions
-
-# If differences are zero, do nothing. Otherwise, produce graph.
-if (isTRUE(all.equal(zeros, differences$diff, tolerance = 1e-7))){} else {
 # Access commit number and units (for legend)
 commit <- comp_data$commit[1]
 units <- c(unique(differences$units))
