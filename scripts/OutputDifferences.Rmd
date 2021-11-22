@@ -57,7 +57,11 @@ differences <- compdata %>%
 
 
 ```{r summary-table, echo= FALSE}
+# If there are no differences in outputs, print message and do nothing. Otherwise, run summary table code.
 
+zeros <- rep(0, length(differences$diff))
+if (isTRUE(all.equal(zeros, differences$diff, tolerance = 1e-7))){
+  cat("The current pull request's outputs do not differ from master.")} else {
 # Organize data
 output %>%
     select(latest_version = value) -> new_values
@@ -102,11 +106,15 @@ colnames(NRMSE) <- "NRMSE"
 # Table
 summary_table <- cbind(squares, NRMSE)
 knitr::kable(summary_table, digits = 3, format.args = list(nsmall = 3, scientific = FALSE))
+}
 ```
 
 
 ``` {r graphs, echo = FALSE, fig.width = 12, fig.height = 6, message = FALSE}
 # Plot of numerical differences between versions
+
+# If differences are zero, do nothing. Otherwise, produce graph.
+if (isTRUE(all.equal(zeros, differences$diff, tolerance = 1e-7))){} else {
 # Access commit number and units (for legend)
 commit <- comp_data$commit[1]
 units <- c(unique(differences$units))
@@ -128,4 +136,5 @@ diff_plot <- ggplot(differences, aes(year, diff, color = variable)) +
 # it a CML report."  https://github.com/iterative/cml#cml-reports
 # So instead of printing the graph, we save it to a file
 ggsave("diff_plot.png", plot = diff_plot)
+}
 ```
