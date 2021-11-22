@@ -30,12 +30,12 @@ vars <- c(ATMOSPHERIC_C(), GLOBAL_TEMP(), RF_TOTAL())
 
 # Organize data
 compdata <- comp_data %>% 
-    select(scenario, year, variable, value, units, version) %>%
-    filter(scenario == "hector_rcp45.ini") %>%
-    filter(variable %in% vars) %>%
-    mutate(scenario = "rcp45") %>%
-    arrange(variable)
-  
+  select(scenario, year, variable, value, units, version) %>%
+  filter(scenario == "hector_rcp45.ini") %>%
+  filter(variable %in% vars) %>%
+  mutate(scenario = "rcp45") %>%
+  arrange(variable)
+
 # Access compdata version  
 version <- compdata$version[1]
 
@@ -47,13 +47,13 @@ core <- newcore(rcp45)
 invisible(run(core))
 output <- fetchvars(core, core$strtdate:core$enddate, vars, "rcp45")
 output <- output %>% 
-    mutate(version = "latest") %>%
-    arrange(variable)
+  mutate(version = "latest") %>%
+  arrange(variable)
 
 # Find differences between versions
 differences <- compdata %>% 
-    mutate(diff = output$value - compdata$value) %>% 
-    select(scenario, year, variable, units, version, diff)
+  mutate(diff = output$value - compdata$value) %>% 
+  select(scenario, year, variable, units, version, diff)
 ```
 
 ```{r, check-any-change, echo=FALSE, results='asis'}
@@ -71,64 +71,64 @@ if (SAME) {
 
 ```{r summary-table, echo = FALSE}
 if(!SAME) {
-# Organize data
-output %>%
+  # Organize data
+  output %>%
     select(latest_version = value) -> new_values
-
-both_versions <- compdata %>%
+  
+  both_versions <- compdata %>%
     select(year, variable, value) %>%
     rename(comp_version = value) %>%
     cbind(new_values)
-
-# Define params
-years <- both_versions$year
-
-# Compute linear regression
-linear <- by(both_versions, both_versions$variable, function(x) lm (both_versions$latest_version~both_versions$comp_version))
-
-# Access r squared
-squares <- as.data.frame(sapply(linear, function(x) summary(x)$r.squared))
-colnames(squares) <- "R squared"
-
-# Calculate RMSE
-# Extract residuals
-resid <- as.data.frame(sapply(linear, function(x) summary(x)$residuals))
-
-# Define function
-RMSE <- function(res) {
+  
+  # Define params
+  years <- both_versions$year
+  
+  # Compute linear regression
+  linear <- by(both_versions, both_versions$variable, function(x) lm (both_versions$latest_version~both_versions$comp_version))
+  
+  # Access r squared
+  squares <- as.data.frame(sapply(linear, function(x) summary(x)$r.squared))
+  colnames(squares) <- "R squared"
+  
+  # Calculate RMSE
+  # Extract residuals
+  resid <- as.data.frame(sapply(linear, function(x) summary(x)$residuals))
+  
+  # Define function
+  RMSE <- function(res) {
     r <- sqrt(mean(res^2))
-}
-
-# Find RMSE
-error <- as.data.frame(lapply(resid, RMSE))
-error <- t(error)
-
-# Find mean of data to normalize
-mean <- both_versions %>% 
-  group_by(variable) %>% 
-  summarize(mean(comp_version))
-
-# Divide RMSE by means
-NRMSE <- as.data.frame(error[,1] / mean[,2])
-colnames(NRMSE) <- "NRMSE"
-
-# Table
-summary_table <- cbind(squares, NRMSE)
-knitr::kable(summary_table, digits = 3, format.args = list(nsmall = 3, scientific = FALSE))
+  }
+  
+  # Find RMSE
+  error <- as.data.frame(lapply(resid, RMSE))
+  error <- t(error)
+  
+  # Find mean of data to normalize
+  mean <- both_versions %>% 
+    group_by(variable) %>% 
+    summarize(mean(comp_version))
+  
+  # Divide RMSE by means
+  NRMSE <- as.data.frame(error[,1] / mean[,2])
+  colnames(NRMSE) <- "NRMSE"
+  
+  # Table
+  summary_table <- cbind(squares, NRMSE)
+  knitr::kable(summary_table, digits = 3, format.args = list(nsmall = 3, scientific = FALSE))
 }
 ```
 
 
 ``` {r graphs, echo = FALSE, fig.width = 12, fig.height = 6, message = FALSE, include = FALSE}
 if(!SAME) {
-# Plot of numerical differences between versions
-# Access commit number and units (for legend)
-commit <- comp_data$commit[1]
-units <- c(unique(differences$units))
-# Sort variables so that legend works
-vars <- sort(vars)
-
-diff_plot <- ggplot(differences, aes(year, diff, color = variable)) +
+  # Plot of numerical differences between versions
+  # Access commit number and units (for legend)
+  commit <- comp_data$commit[1]
+  units <- c(unique(differences$units))
+  # Sort variables so that legend works
+  vars <- sort(vars)
+  
+  diff_plot <- ggplot(differences, aes(year, diff, color = variable)) +
     geom_hline(yintercept = 0, alpha = 0.5) +
     geom_line() +
     facet_grid(variable~scenario, scales = "free") +
@@ -137,11 +137,11 @@ diff_plot <- ggplot(differences, aes(year, diff, color = variable)) +
     labs(x = "Year", y = "Difference in value", col = "Units") +
     scale_y_continuous(labels = scales::label_scientific(digits = 2)) + 
     theme_bw()
-
-# "Note that if an image is an output of your ML workflow (i.e., it is produced
-# by your workflow), you will need to use the cml-publish function to include 
-# it a CML report."  https://github.com/iterative/cml#cml-reports
-# So instead of printing the graph, we save it to a file
-ggsave("diff_plot.png", plot = diff_plot)
+  
+  # "Note that if an image is an output of your ML workflow (i.e., it is produced
+  # by your workflow), you will need to use the cml-publish function to include 
+  # it a CML report."  https://github.com/iterative/cml#cml-reports
+  # So instead of printing the graph, we save it to a file
+  ggsave("diff_plot.png", plot = diff_plot)
 }
 ```
