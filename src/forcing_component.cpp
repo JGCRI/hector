@@ -388,7 +388,7 @@ void ForcingComponent::run( const double runToDate ) {
             // ---------- Stratospheric H2O based on CH4 oxidation ----------
             // The stratospheric water vapour RF based on changes in CH4 concentrations.
             const double Ma_base = 1831;          // 2014 CH4 concentration ppb from the cmip6 historical scenario
-            const double stratH2O_base = 0.0485; // Strat H2O RF (1850 to 2014) from 7.3.2.6 IPCC AR6
+            const double stratH2O_base = 0.0485;  // W m-2 Strat H2O RF (1850 to 2014) from 7.3.2.6 IPCC AR6
             const double fh2o_strat = stratH2O_base * ((Ma - M0) / (Ma_base - M0)); //
             forcings[D_RF_H2O_STRAT].set( fh2o_strat, U_W_M2 );
 

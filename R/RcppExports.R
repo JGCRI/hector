@@ -141,7 +141,7 @@ RHO_NH3 <- function() {
     .Call('_hector_RHO_NH3', PACKAGE = 'hector')
 }
 
-#' @describeIn forcings so2 radiative forcing
+#' @describeIn forcings
 #' @export
 RF_SO2 <- function() {
     .Call('_hector_RF_SO2', PACKAGE = 'hector')
