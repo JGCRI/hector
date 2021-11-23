@@ -68,8 +68,7 @@ if (SAME) {
 }
 ```
 
-
-```{r summary-table, echo = FALSE}
+```{r summary-info, echo = FALSE, fig.width = 12, fig.height = 6, message = FALSE, include = FALSE}
 if(!SAME) {
   # Organize data
   output %>%
@@ -115,12 +114,7 @@ if(!SAME) {
   # Table
   summary_table <- cbind(squares, NRMSE)
   knitr::kable(summary_table, digits = 3, format.args = list(nsmall = 3, scientific = FALSE))
-}
-```
-
-
-``` {r graphs, echo = FALSE, fig.width = 12, fig.height = 6, message = FALSE, include = FALSE}
-if(!SAME) {
+  
   # Plot of numerical differences between versions
   # Access commit number and units (for legend)
   commit <- comp_data$commit[1]
