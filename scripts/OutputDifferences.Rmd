@@ -64,10 +64,10 @@ zeros <- rep(0, length(differences$diff))
 SAME <- isTRUE(all.equal(zeros, differences$diff, tolerance = 1e-7))
 if (SAME) {
   cat("The current pull request's outputs do not differ from ", 
-      version, "(", commit, ").", sep = "")
+      version, " (", commit, ").", sep = "")
 } else {
   cat("The current pull request's outputs differ from ", 
-      version, "(", commit, ") as follows:", sep = "")  
+      version, " (", commit, ") as follows:", sep = "")  
 }
 ```
 
@@ -129,7 +129,7 @@ if(!SAME) {
     geom_line() +
     facet_grid(variable~scenario, scales = "free") +
     scale_color_viridis_d(breaks = vars, labels = units) +
-    ggtitle(paste0("Differences relative to ", version, "(", commit, ")")) +
+    ggtitle(paste0("Differences relative to ", version, " (", commit, ")")) +
     labs(x = "Year", y = "Difference in value", col = "Units") +
     scale_y_continuous(labels = scales::label_scientific(digits = 2)) + 
     theme_bw()
