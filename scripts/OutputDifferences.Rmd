@@ -36,8 +36,9 @@ compdata <- comp_data %>%
   mutate(scenario = "rcp45") %>%
   arrange(variable)
 
-# Access compdata version  
+# Access compdata version and commit
 version <- compdata$version[1]
+commit <- comp_data$commit[1]
 
 # Read in files for just RCP 4.5
 rcp45 <- file.path(BASE_DIR, "inst", "input", "hector_rcp45.ini")
@@ -62,9 +63,11 @@ differences <- compdata %>%
 zeros <- rep(0, length(differences$diff))
 SAME <- isTRUE(all.equal(zeros, differences$diff, tolerance = 1e-7))
 if (SAME) {
-  cat("The current pull request's outputs do not differ from master.")
+  cat("The current pull request's outputs do not differ from ", 
+      version, "(", commit, ").", sep = "")
 } else {
-  cat("The current pull request's outputs differ from `master` as follows:")  
+  cat("The current pull request's outputs differ from ", 
+      version, "(", commit, ") as follows:", sep = "")  
 }
 ```
 
@@ -113,11 +116,10 @@ if(!SAME) {
   
   # Table
   summary_table <- cbind(squares, NRMSE)
-  knitr::kable(summary_table, digits = 3, format.args = list(nsmall = 3, scientific = FALSE))
+  knitr::kable(summary_table, digits = 3, 
+               format.args = list(nsmall = 3, scientific = FALSE))
   
   # Plot of numerical differences between versions
-  # Access commit number and units (for legend)
-  commit <- comp_data$commit[1]
   units <- c(unique(differences$units))
   # Sort variables so that legend works
   vars <- sort(vars)
@@ -127,7 +129,7 @@ if(!SAME) {
     geom_line() +
     facet_grid(variable~scenario, scales = "free") +
     scale_color_viridis_d(breaks = vars, labels = units) +
-    ggtitle(paste0("Differences in Hector outputs in current version relative to commit #", commit)) +
+    ggtitle(paste0("Differences relative to ", version, "(", commit, ")")) +
     labs(x = "Year", y = "Difference in value", col = "Units") +
     scale_y_continuous(labels = scales::label_scientific(digits = 2)) + 
     theme_bw()
