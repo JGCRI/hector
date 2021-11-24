@@ -39,5 +39,7 @@ jobs:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
          cd scripts/
-         cml-publish "diff_plot.png" --md >> OutputDifferences.knit.md
+         if [ -f "diff_plot.png" ]; then
+          cml-publish "diff_plot.png" --md >> OutputDifferences.knit.md
+          fi
          cml-send-comment OutputDifferences.knit.md
