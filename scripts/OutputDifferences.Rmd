@@ -8,7 +8,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Differences in Hector outputs
 
-Hello, this is `leeyabot`! `r emo::ji("robot")`
+Hello tech talk-ers, this is `leeyabot`! `r emo::ji("robot")`
 
 ``` {r differences, echo = FALSE, message = FALSE}
 # Load packages
