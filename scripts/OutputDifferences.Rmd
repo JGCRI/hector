@@ -8,7 +8,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Differences in Hector outputs
 
-Hello, this is `leeyabot`! `r emo::ji("robot")`
+Hello tech talk-ers, this is `leeyabot`! `r emo::ji("robot")`
 
 ``` {r differences, echo = FALSE, message = FALSE}
 # Load packages
@@ -71,11 +71,11 @@ if (SAME) {
 }
 ```
 
-```{r summary-info, echo = FALSE, fig.width = 12, fig.height = 6, message = FALSE, include = FALSE}
+```{r summary-info, echo = FALSE, message = FALSE}
 if(!SAME) {
   # Organize data
   output %>%
-    select(latest_version = value) -> new_values
+     select(latest_version = value) -> new_values
   
   both_versions <- compdata %>%
     select(year, variable, value) %>%
@@ -98,7 +98,7 @@ if(!SAME) {
   
   # Define function
   RMSE <- function(res) {
-    r <- sqrt(mean(res^2))
+     r <- sqrt(mean(res^2))
   }
   
   # Find RMSE
@@ -109,18 +109,23 @@ if(!SAME) {
   mean <- both_versions %>% 
     group_by(variable) %>% 
     summarize(mean(comp_version))
-  
+
   # Divide RMSE by means
   NRMSE <- as.data.frame(error[,1] / mean[,2])
   colnames(NRMSE) <- "NRMSE"
-  
+
   # Table
   summary_table <- cbind(squares, NRMSE)
-  knitr::kable(summary_table, digits = 3, 
-               format.args = list(nsmall = 3, scientific = FALSE))
-  
+  knitr::kable(summary_table, digits = 3, format.args = list(nsmall = 3, scientific = FALSE))
+}
+```
+
+``` {r graph, echo = FALSE, fig.width = 12, fig.height = 6, message = FALSE, include = FALSE}
+
+if(!SAME) {
   # Plot of numerical differences between versions
   units <- c(unique(differences$units))
+  
   # Sort variables so that legend works
   vars <- sort(vars)
   
