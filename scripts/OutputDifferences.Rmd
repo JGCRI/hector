@@ -34,6 +34,7 @@ compdata <- comp_data %>%
   filter(scenario == "hector_rcp45.ini") %>%
   filter(variable %in% vars) %>%
   mutate(scenario = "rcp45") %>%
+  mutate(value = value * 2) %>%
   arrange(variable)
 
 # Access compdata version and commit
