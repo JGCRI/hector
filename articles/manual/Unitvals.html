@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">hector</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.5.0</span>
       </span>
     </div>
 
@@ -70,7 +72,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/JGCRI/hector">
+  <a href="https://github.com/JGCRI/hector" class="external-link">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -98,33 +100,33 @@
 
     
     
-<p>Hector both <em>allows</em> (internally to each component, and when reading inputs) and <em>requires</em> (passing data between components, and writing outputs) values to have associated <strong>units</strong>. The internal unit system is simple, not providing <a href="http://www.boost.org/doc/libs/1_57_0/doc/html/boost_units.html">unit conversion</a> for example, but also lightweight and easy. Our use of units is prompted primarily by safety–to avoid the “Mars Climate Orbiter” <a href="http://en.wikipedia.org/wiki/Mars_Climate_Orbiter#Cause_of_failure">problem</a> of mismatched unit–as well as having easy-to-interpret outputs.</p>
+<p>Hector both <em>allows</em> (internally to each component, and when reading inputs) and <em>requires</em> (passing data between components, and writing outputs) values to have associated <strong>units</strong>. The internal unit system is simple, not providing <a href="http://www.boost.org/doc/libs/1_57_0/doc/html/boost_units.html" class="external-link">unit conversion</a> for example, but also lightweight and easy. Our use of units is prompted primarily by safety–to avoid the “Mars Climate Orbiter” <a href="http://en.wikipedia.org/wiki/Mars_Climate_Orbiter#Cause_of_failure" class="external-link">problem</a> of mismatched unit–as well as having easy-to-interpret outputs.</p>
 <p>The internal C++ type is called <code>unitval</code>, and its code is located in <code>headers/data/unitval.hpp</code>.</p>
-<div id="creating-a-variable-with-associated-unit" class="section level2">
-<h2 class="hasAnchor">
-<a href="#creating-a-variable-with-associated-unit" class="anchor"></a>Creating a variable with associated unit</h2>
+<div class="section level2">
+<h2 id="creating-a-variable-with-associated-unit">Creating a variable with associated unit<a class="anchor" aria-label="anchor" href="#creating-a-variable-with-associated-unit"></a>
+</h2>
 <p>Two ways to create a <code>unitval</code>:</p>
 <pre><code>unitval x(1, U_PGC);  # x now holds 1 petagram of carbon
 unitval y;
 y.set(2, U_CO2_PPMV);</code></pre>
 </div>
-<div id="doing-math" class="section level2">
-<h2 class="hasAnchor">
-<a href="#doing-math" class="anchor"></a>Doing math</h2>
+<div class="section level2">
+<h2 id="doing-math">Doing math<a class="anchor" aria-label="anchor" href="#doing-math"></a>
+</h2>
 <p>The <code>unitval</code> class supports basic mathematical operations.</p>
 <pre><code># assume that y and z are already defined unitvals
 unitval x = y + z;  # y and z must have identical units or an error is thrown
 unitval x = y * 2.0;  # multiplying by a constant always works</code></pre>
 </div>
-<div id="extracting-a-unitval-value" class="section level2">
-<h2 class="hasAnchor">
-<a href="#extracting-a-unitval-value" class="anchor"></a>Extracting a <code>unitval</code> value</h2>
+<div class="section level2">
+<h2 id="extracting-a-unitval-value">Extracting a <code>unitval</code> value<a class="anchor" aria-label="anchor" href="#extracting-a-unitval-value"></a>
+</h2>
 <p>Internally within components, we often simply want to work with numbers, extracting them from <code>unitval</code> objects. This is straightforward, but first we have to ‘prove’ that we know the correct units:</p>
 <pre><code>double x = y.value(U_PGC); # we assert that y's units are petagrams C</code></pre>
 </div>
-<div id="when-is-unitval-required" class="section level2">
-<h2 class="hasAnchor">
-<a href="#when-is-unitval-required" class="anchor"></a>When is <code>unitval</code> required?</h2>
+<div class="section level2">
+<h2 id="when-is-unitval-required">When is <code>unitval</code> required?<a class="anchor" aria-label="anchor" href="#when-is-unitval-required"></a>
+</h2>
 <p>Using <code>unitvals</code> <em>within</em> a component is optional, but it’s required when passing data <em>between</em> components. This falls into three categories:</p>
 <ul>
 <li>Querying the core for data. Read more about Hector’s internal <a href="InternalDataPassing.html">data passing</a>.</li>
@@ -132,20 +134,20 @@ unitval x = y * 2.0;  # multiplying by a constant always works</code></pre>
 <li>Output. Read more about Hector’s <a href="OutputVisitors.html">output visitors</a>.</li>
 </ul>
 </div>
-<div id="when-is-unitval-optional" class="section level2">
-<h2 class="hasAnchor">
-<a href="#when-is-unitval-optional" class="anchor"></a>When is <code>unitval</code> optional?</h2>
+<div class="section level2">
+<h2 id="when-is-unitval-optional">When is <code>unitval</code> optional?<a class="anchor" aria-label="anchor" href="#when-is-unitval-optional"></a>
+</h2>
 <p>In input files.</p>
 <p>TODO.</p>
 <pre><code>if( varName == D_PREINDUSTRIAL_N2O ) {`
             `H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );`
             `N0 = unitval::parse_unitval( data.value_str, data.units_str, U_PPBV_N2O );`</code></pre>
 </div>
-<div id="missing-values" class="section level2">
-<h2 class="hasAnchor">
-<a href="#missing-values" class="anchor"></a>Missing values</h2>
+<div class="section level2">
+<h2 id="missing-values">Missing values<a class="anchor" aria-label="anchor" href="#missing-values"></a>
+</h2>
 <p>Briefly, when you need to return a missing value, use the <code>MISSING_FLOAT</code> macro defined in <code>inst/include/unitval.hpp</code>. This macro will return <code>NA_REAL</code> (from <code>Rcpp</code>) if Hector is compiled as an R package (technically, if the <code>USE_RCPP</code> macro is defined) and <code>NAN</code> (from <code>std</code>) otherwise.</p>
-<p>Why this complexity? R (and, by extension, Rcpp) distinguish between two kinds of “placeholder” numeric values: A <em>missing</em> value (<code>NA_real_</code> in R; often abbreviated to <code>NA</code>) represents an unobserved value; for instance, if you take annual observations from 1990 to 2000 but failed to make a measurement in 1996. On the other hand, <em>not a number</em> (<code>NaN</code>) represents the result of an invalid mathematical operation, such as taking the square root of a negative number. Both of these values propagate through any calculations in which they are involved, both in R and C++, and both can be detected and removed by R’s <code><a href="https://rdrr.io/r/base/NA.html">is.na()</a></code> function and removed by <code>na.omit</code>, <code>na.rm = TRUE</code>, and friends. (The R function <code><a href="https://rdrr.io/r/base/is.finite.html">is.nan()</a></code> can used to check specifically for <code>NaN</code> values – <code>is.nan(NaN) =&gt; TRUE</code>, but <code>is.nan(NA) =&gt; FALSE</code>). However, because they mean fundamentally different things (and suggest different errors), we try to preserve this distinction if we can. (For example, if some code you run returns <code>NA</code> then you would suspect that required values were not set somewhere. On the other hand, if the code returns <code>NaN</code>, you know that all values were set but resulted in a mathematically invalid calculation. Your approach to debugging these problems would likely be different.)</p>
+<p>Why this complexity? R (and, by extension, Rcpp) distinguish between two kinds of “placeholder” numeric values: A <em>missing</em> value (<code>NA_real_</code> in R; often abbreviated to <code>NA</code>) represents an unobserved value; for instance, if you take annual observations from 1990 to 2000 but failed to make a measurement in 1996. On the other hand, <em>not a number</em> (<code>NaN</code>) represents the result of an invalid mathematical operation, such as taking the square root of a negative number. Both of these values propagate through any calculations in which they are involved, both in R and C++, and both can be detected and removed by R’s <code><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na()</a></code> function and removed by <code>na.omit</code>, <code>na.rm = TRUE</code>, and friends. (The R function <code><a href="https://rdrr.io/r/base/is.finite.html" class="external-link">is.nan()</a></code> can used to check specifically for <code>NaN</code> values – <code>is.nan(NaN) =&gt; TRUE</code>, but <code>is.nan(NA) =&gt; FALSE</code>). However, because they mean fundamentally different things (and suggest different errors), we try to preserve this distinction if we can. (For example, if some code you run returns <code>NA</code> then you would suspect that required values were not set somewhere. On the other hand, if the code returns <code>NaN</code>, you know that all values were set but resulted in a mathematically invalid calculation. Your approach to debugging these problems would likely be different.)</p>
 </div>
   </div>
 
@@ -160,11 +162,13 @@ unitval x = y * 2.0;  # multiplying by a constant always works</code></pre>
 
 
       <footer><div class="copyright">
-  <p>Developed by Robert Link, Kalyn Dorheim.</p>
+  <p></p>
+<p>Developed by Robert Link, Kalyn Dorheim.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
 </div>
 
       </footer>
@@ -172,6 +176,8 @@ unitval x = y * 2.0;  # multiplying by a constant always works</code></pre>
 
   
 
+
+  
 
   </body>
 </html>

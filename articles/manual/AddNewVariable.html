@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">hector</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.5.0</span>
       </span>
     </div>
 
@@ -70,7 +72,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/JGCRI/hector">
+  <a href="https://github.com/JGCRI/hector" class="external-link">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -99,9 +101,9 @@
     
     
 <p>Adding a new variable to a method using <code>getData</code> to obtain the information defined in the INI file.</p>
-<div id="method" class="section level2">
-<h2 class="hasAnchor">
-<a href="#method" class="anchor"></a>Method</h2>
+<div class="section level2">
+<h2 id="method">Method<a class="anchor" aria-label="anchor" href="#method"></a>
+</h2>
 <p><em>In hector.ini</em><br>
 Under the corresponding component add variable Ex: <code>SN = 42000;</code></p>
 <p><em>In hpp file of component</em><br>
@@ -113,7 +115,7 @@ Ex: <code>#define D_ATMOSPHERIC_SO2 "SN"</code></p>
 Under init, need to register the Capability <code>core-&gt;registerCapability( D_ATMOSPHERIC_SO2, getComponentName() );</code></p>
 <p><em>In cpp file of component</em><br>
 Under <code>getData</code> and <code>setData</code>, add the new variables in before the Error message</p>
-<p>NOTE: see <a href="https://jgcri.github.io/hector/articles/manual/TimeSeries.html">tseries</a> documentation for more information on <code>getData</code></p>
+<p>NOTE: see <a href="https://jgcri.github.io/hector/articles/manual/TimeSeries.html" class="external-link">tseries</a> documentation for more information on <code>getData</code></p>
 <pre><code>(getData)
 else if(varName == D_ATMOSPHERIC_SO2 ) {
   returnval = SN;
@@ -140,11 +142,13 @@ Ex: <code>unitval SN = core-&gt;getData( D_ATMOSPHERIC_SO2, runToDate);</code></
 
 
       <footer><div class="copyright">
-  <p>Developed by Robert Link, Kalyn Dorheim.</p>
+  <p></p>
+<p>Developed by Robert Link, Kalyn Dorheim.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
 </div>
 
       </footer>
@@ -152,6 +156,8 @@ Ex: <code>unitval SN = core-&gt;getData( D_ATMOSPHERIC_SO2, runToDate);</code></
 
   
 
+
+  
 
   </body>
 </html>

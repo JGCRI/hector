@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">hector</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">2.5.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.5.0</span>
       </span>
     </div>
 
@@ -70,7 +72,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/JGCRI/hector">
+  <a href="https://github.com/JGCRI/hector" class="external-link">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -104,9 +106,9 @@
 <a href="#simplenbox-science">Scientific basis</a> behind the terrestrial C cycle</li>
 <li><a href="#simplenbox-implementation">Implementation details</a></li>
 </ul>
-<div id="simplenbox-science" class="section level1">
-<h1 class="hasAnchor">
-<a href="#simplenbox-science" class="anchor"></a>Science</h1>
+<div class="section level1">
+<h1 id="simplenbox-science">Science<a class="anchor" aria-label="anchor" href="#simplenbox-science"></a>
+</h1>
 <p>Hector’s land C sink is divided into three pools: vegetation (<span class="math inline">\(C_v\)</span>), detritus (<span class="math inline">\(C_d\)</span>), and soil (<span class="math inline">\(C_s\)</span>). These sinks are global by default, but they can be divided into <span class="math inline">\(n\)</span> “biomes” with unique parameters and initial pool sizes.</p>
 <p>The total C flux from atmosphere to land at time <span class="math inline">\(t\)</span> (<span class="math inline">\(F_{L}(t)\)</span>; also known as Net Biome Production, NBP) is the net of C sequestration by photosynthesis (net primary productivity, <span class="math inline">\(NPP_i(t)\)</span>) and C release by heterotrophic respiration (<span class="math inline">\(RH_i(t)\)</span>) summed across each biome <span class="math inline">\(i\)</span>, and global land use change (<span class="math inline">\(LUC(t)\)</span>) (note that this calculation does not currently include fire, another important land C source):</p>
 <p><span class="math display">\[ F_{L}(t) = \sum_{i=1}^{n} \left( NPP_i(t) - RH_i(t) \right) - LUC(t)  \]</span></p>
@@ -123,10 +125,10 @@
 <img src="hector_terrestrial_c.svg" alt=""><p class="caption">Summary of terrestrial C cycle in Hector. The full Hector C cycle also includes ocean and “Earth” C pools that exchange C with the atmosphere, but these are omitted for clarity.</p>
 </div>
 </div>
-<div id="simplenbox-implementation" class="section level1">
-<h1 class="hasAnchor">
-<a href="#simplenbox-implementation" class="anchor"></a>Implementation</h1>
-<p>The state of the global C cycle in Hector is defined by a length 6 vector <code>c</code>, which describes the amount of C (in Pg C) in the atmosphere (0), vegetation (1), detritus (2), soil (3), ocean (4), and “Earth” (5) at the current time step. At each Hector time step, <code>c</code> is solved by the <code>CarbonCycleSolver::run()</code> function (defined in <a href="https://github.com/JGCRI/hector/blob/master/src/carbon-cycle-solver.cpp"><code>src/carbon-cycle-solver.cpp</code></a>) in the following general steps:</p>
+<div class="section level1">
+<h1 id="simplenbox-implementation">Implementation<a class="anchor" aria-label="anchor" href="#simplenbox-implementation"></a>
+</h1>
+<p>The state of the global C cycle in Hector is defined by a length 6 vector <code>c</code>, which describes the amount of C (in Pg C) in the atmosphere (0), vegetation (1), detritus (2), soil (3), ocean (4), and “Earth” (5) at the current time step. At each Hector time step, <code>c</code> is solved by the <code>CarbonCycleSolver::run()</code> function (defined in <a href="https://github.com/JGCRI/hector/blob/master/src/carbon-cycle-solver.cpp" class="external-link"><code>src/carbon-cycle-solver.cpp</code></a>) in the following general steps:</p>
 <ol style="list-style-type: decimal">
 <li>Retrieve the current estimates of various pools from variables defined by the C cycle model and assign them to the relevant parts of <code>c</code> (<code>getCValues</code>).</li>
 <li>Integrate from the beginning of the time step using updated slow parameters (<code>slowparameval</code>).</li>
@@ -134,10 +136,10 @@
 <li>Re-calculate C cycle model internal variables based on the solved values of <code>c</code> (<code>stashCValues</code>).</li>
 <li>Record the model state (<code>record_state</code>).</li>
 </ol>
-<p>These steps are described in more detail below. The complete code for the terrestrial C cycle lives in <a href="https://github.com/jgcri/hector/blob/master/src/simpleNbox.cpp"><code>src/simpleNbox.cpp</code></a> file (with associated headers in <a href="https://github.com/JGCRI/hector/blob/master/inst/include/simpleNbox.hpp"><code>inst/include/simpleNbox.hpp</code></a>).</p>
-<div id="setting-the-c-vector-getcvalues" class="section level2">
-<h2 class="hasAnchor">
-<a href="#setting-the-c-vector-getcvalues" class="anchor"></a>Setting the <code>c</code> vector (<code>getCValues</code>)</h2>
+<p>These steps are described in more detail below. The complete code for the terrestrial C cycle lives in <a href="https://github.com/jgcri/hector/blob/master/src/simpleNbox.cpp" class="external-link"><code>src/simpleNbox.cpp</code></a> file (with associated headers in <a href="https://github.com/JGCRI/hector/blob/master/inst/include/simpleNbox.hpp" class="external-link"><code>inst/include/simpleNbox.hpp</code></a>).</p>
+<div class="section level2">
+<h2 id="setting-the-c-vector-getcvalues">Setting the <code>c</code> vector (<code>getCValues</code>)<a class="anchor" aria-label="anchor" href="#setting-the-c-vector-getcvalues"></a>
+</h2>
 <p>This function sets the values of the <code>c</code> vector to the corresponding state variables in the C cycle model.</p>
 <ul>
 <li><p>The atmospheric C pool for the current time step is defined by <code>atmos_c</code>, which is always a scalar unit quantity (because CO<sub>2</sub> is assumed to be well-mixed in the atmosphere).</p></li>
@@ -146,9 +148,9 @@
 </ul>
 <p>All of these variables have are in units Pg C.</p>
 </div>
-<div id="slow-parameter-evaluation-slowparameval" class="section level2">
-<h2 class="hasAnchor">
-<a href="#slow-parameter-evaluation-slowparameval" class="anchor"></a>Slow parameter evaluation (<code>slowparameval</code>)</h2>
+<div class="section level2">
+<h2 id="slow-parameter-evaluation-slowparameval">Slow parameter evaluation (<code>slowparameval</code>)<a class="anchor" aria-label="anchor" href="#slow-parameter-evaluation-slowparameval"></a>
+</h2>
 <ul>
 <li><p>Perform the ocean C model’s slow parameter evaluation (<code>omodel-&gt;slowparameval</code>)</p></li>
 <li>
@@ -167,9 +169,9 @@
 </ul>
 <p>Note that these effect parameters are calculated but not yet applied. They will be applied to the actual NPP and RH estimates during the ODE solving loop.</p>
 </div>
-<div id="c-cycle-derivatives-calcderivs" class="section level2">
-<h2 class="hasAnchor">
-<a href="#c-cycle-derivatives-calcderivs" class="anchor"></a>C cycle derivatives (<code>calcderivs</code>)</h2>
+<div class="section level2">
+<h2 id="c-cycle-derivatives-calcderivs">C cycle derivatives (<code>calcderivs</code>)<a class="anchor" aria-label="anchor" href="#c-cycle-derivatives-calcderivs"></a>
+</h2>
 <ul>
 <li>Calculate NPP for each biome (<code>npp</code> function)</li>
 <li>Partition NPP C gain into vegetation, detritus, and soil pools according to fractions</li>
@@ -179,9 +181,9 @@
 <li>Store changes in pools in <code>dcdt</code> vector (same structure as <code>c</code>)</li>
 </ul>
 </div>
-<div id="storing-the-results-stashcvalues" class="section level2">
-<h2 class="hasAnchor">
-<a href="#storing-the-results-stashcvalues" class="anchor"></a>Storing the results (<code>stashCValues</code>)</h2>
+<div class="section level2">
+<h2 id="storing-the-results-stashcvalues">Storing the results (<code>stashCValues</code>)<a class="anchor" aria-label="anchor" href="#storing-the-results-stashcvalues"></a>
+</h2>
 <ul>
 <li>Reset the atmospheric CO<sub>2</sub> state variable (<code>atmos_c</code>) to the current value from <code>c</code>
 </li>
@@ -204,16 +206,16 @@
 <li>If Hector is running under atmospheric CO<sub>2</sub> constraint, re-calculate the atmospheric CO<sub>2</sub> pool to match the constraint and move any residual C to/from the deep ocean pool.</li>
 </ul>
 </div>
-<div id="recording-the-state-record_state" class="section level2">
-<h2 class="hasAnchor">
-<a href="#recording-the-state-record_state" class="anchor"></a>Recording the state (<code>record_state</code>)</h2>
+<div class="section level2">
+<h2 id="recording-the-state-record_state">Recording the state (<code>record_state</code>)<a class="anchor" aria-label="anchor" href="#recording-the-state-record_state"></a>
+</h2>
 <p>This just sets the time-series versions of all of the C cycle state variables (e.g. <code>atmos_c_ts</code>, <code>veg_c_tv</code>, <code>detritus_c_tv</code>, <code>tempfertd_tv</code>) to their corresponding state variables at the current time step (e.g. <code>atmos_c</code>, <code>veg_c</code>, <code>detritus_c</code>, <code>tempfertd</code>).</p>
 </div>
-<div id="simplenbox-setdata" class="section level2">
-<h2 class="hasAnchor">
-<a href="#simplenbox-setdata" class="anchor"></a>Setting (<code>setData</code>) and retrieving (<code>getData</code>) values</h2>
+<div class="section level2">
+<h2 id="simplenbox-setdata">Setting (<code>setData</code>) and retrieving (<code>getData</code>) values<a class="anchor" aria-label="anchor" href="#simplenbox-setdata"></a>
+</h2>
 <p>The following values related to the terrestrial C cycle can be set via <code>setData</code>.</p>
-<table class="table">
+<table style="width:100%;" class="table">
 <colgroup>
 <col width="23%">
 <col width="7%">
@@ -452,9 +454,9 @@
 </tbody>
 </table>
 </div>
-<div id="other-routines" class="section level2">
-<h2 class="hasAnchor">
-<a href="#other-routines" class="anchor"></a>Other routines</h2>
+<div class="section level2">
+<h2 id="other-routines">Other routines<a class="anchor" aria-label="anchor" href="#other-routines"></a>
+</h2>
 <ul>
 <li>
 <code>init()</code> – Initialize the C cycle model
@@ -519,11 +521,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Robert Link, Kalyn Dorheim.</p>
+  <p></p>
+<p>Developed by Robert Link, Kalyn Dorheim.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
 </div>
 
       </footer>
@@ -531,6 +535,8 @@
 
   
 
+
+  
 
   </body>
 </html>

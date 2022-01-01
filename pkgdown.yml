@@ -1,23 +1,23 @@
 pandoc: 2.7.3
-pkgdown: 1.6.1
+pkgdown: 2.0.1
 pkgdown_sha: ~
 articles:
   hector_apply: hector_apply.html
   intro-to-hector: intro-to-hector.html
-  manual/AddNewComponent: AddNewComponent.html
-  manual/AddNewVariable: AddNewVariable.html
-  manual/BuildHector: BuildHector.html
-  manual/ComponentAPI: ComponentAPI.html
-  manual/Constraints: Constraints.html
-  manual/ContributionsGuide: ContributionsGuide.html
-  manual/Hector-Wider-World: Hector-Wider-World.html
-  manual/InputFiles: InputFiles.html
-  manual/SimpleNBox: SimpleNBox.html
-  manual/StyleGuide: StyleGuide.html
-  manual/TimeSeries: TimeSeries.html
-  manual/Unitvals: Unitvals.html
-  manual/VersionNumbers: VersionNumbers.html
-  manual/index: index.html
+  AddNewComponent: manual/AddNewComponent.html
+  AddNewVariable: manual/AddNewVariable.html
+  BuildHector: manual/BuildHector.html
+  ComponentAPI: manual/ComponentAPI.html
+  Constraints: manual/Constraints.html
+  ContributionsGuide: manual/ContributionsGuide.html
+  Hector-Wider-World: manual/Hector-Wider-World.html
+  InputFiles: manual/InputFiles.html
+  SimpleNBox: manual/SimpleNBox.html
+  StyleGuide: manual/StyleGuide.html
+  TimeSeries: manual/TimeSeries.html
+  Unitvals: manual/Unitvals.html
+  VersionNumbers: manual/VersionNumbers.html
+  index: manual/index.html
   multiple-biomes: multiple-biomes.html
-last_built: 2021-12-01T06:38Z
+last_built: 2022-01-01T06:32Z
 
