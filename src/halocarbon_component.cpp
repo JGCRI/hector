@@ -10,6 +10,11 @@
  *
  *  Created by Pralit Patel on 1/20/11.
  *
+ * References
+ * Hartin 2015: Hartin, C. A., Patel, P., Schwarber, A., Link, R. P., and Bond-Lamberty, B. P.: A simple
+ *      object-oriented and open-source model for scientific and policy analyses of the global climate
+ *      system – Hector v1.0, Geosci. Model Dev., 8, 939–955, https://doi.org/10.5194/gmd-8-939-2015, 2015.
+ * IPCC AR6: Need to add the citation!
  */
 
 #include <math.h>
@@ -56,17 +61,19 @@ void HalocarbonComponent::init( Core* coreptr ) {
     molarMass = 0.0;
     H0.set( 0.0, U_PPTV );      //! Default is no preindustrial, but user can override
 
-    //! \remark Inform core that we can provide forcing data
-    core->registerCapability( D_RF_PREFIX+myGasName, getComponentName() );
-    //! \remark Inform core that we can provide concentrations
-    core->registerCapability( myGasName+CONCENTRATION_EXTENSION, getComponentName() );
-    //! \remark Inform core that we can provide concentration constraints
-    core->registerCapability( myGasName+CONC_CONSTRAINT_EXTENSION, getComponentName() );
-    // inform core that we can accept emissions for this gas
-    core->registerInput(myGasName+EMISSIONS_EXTENSION, getComponentName());
+    // Register the data we can provide
+    core->registerCapability( D_RF_PREFIX+myGasName, getComponentName() );                // can provide forcing data
+    core->registerCapability( myGasName+CONCENTRATION_EXTENSION, getComponentName() );    // can provide concentrations
+    core->registerCapability( myGasName+CONC_CONSTRAINT_EXTENSION, getComponentName() );  // can provide concentration constraints
+    core->registerCapability( D_HCRHO_PREFIX+myGasName, getComponentName() );             // can provide rho
+    core->registerCapability( D_HCDELTA_PREFIX+myGasName, getComponentName() );                  // can provide rho
 
-    // inform core that we can accept concentration constraints for this gas
-    core->registerInput(myGasName+CONC_CONSTRAINT_EXTENSION, getComponentName()); 
+    // Register the inputs we can receive from outside
+    core->registerInput( myGasName+CONC_CONSTRAINT_EXTENSION, getComponentName());   // inform core that we can accept concentration constraints for this gas
+    core->registerInput( myGasName+EMISSIONS_EXTENSION, getComponentName());         // inform core that we can accept emissions for this gas
+    core->registerInput( myGasName+CONC_CONSTRAINT_EXTENSION, getComponentName() );  // inform the core we can accept provide concentration constraints
+    core->registerInput( D_HCRHO_PREFIX+myGasName, getComponentName() );             // nform the core we can accept rho for each HC.
+    core->registerInput( D_HCDELTA_PREFIX+myGasName, getComponentName());                             // inform the core we can accept delta
 }
 
 //------------------------------------------------------------------------------
@@ -106,9 +113,12 @@ void HalocarbonComponent::setData( const string& varName,
         if( varName == D_HC_TAU ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
             tau = data.getUnitval(U_UNDEFINED);
-        } else if( varName == D_HC_RHO ) {
+        } else if( varName == D_HCRHO_PREFIX + myGasName ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
             rho = data.getUnitval(U_W_M2_PPTV);
+        } else if( varName == D_HCDELTA_PREFIX+myGasName ) {
+            H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
+            delta = data.getUnitval(U_UNITLESS);
         } else if( varName == D_HC_MOLARMASS ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
             molarMass = data.getUnitval(U_UNDEFINED);
@@ -140,6 +150,7 @@ void HalocarbonComponent::prepareToRun() {
     H_ASSERT( tau != -1 && tau != 0, "tau has bad value" );
     H_ASSERT( rho.units() != U_UNDEFINED, "rho has undefined units" );
     H_ASSERT( molarMass > 0, "molarMass must be >0" );
+    H_ASSERT( delta >= -1 && delta <= 1, "bad delta value" ); // delta is a paramter that must be between -1 and 1
 
     Ha_ts.set(oldDate,H0);
 
@@ -155,7 +166,7 @@ void HalocarbonComponent::run( const double runToDate ) {
     #define AtmosphereDryAirConstant 1.8
 
     unitval Ha(Ha_ts.get(oldDate));
-    
+
     // If emissions-forced, calculate concentration from emissions and lifespan.
     if ( Ha_constrain.size() && Ha_constrain.exists( runToDate ) ) {
         // Concentration-forced. Just grab the current value from the time series.
@@ -168,7 +179,7 @@ void HalocarbonComponent::run( const double runToDate ) {
         double emissMol = emissions.get( runToDate ).value( U_GG ) / molarMass * timestep; // this is in U_GMOL
         unitval concDeltaEmiss;
         concDeltaEmiss.set( emissMol / ( 0.1 * AtmosphereDryAirConstant ), U_PPTV );
-    
+
         // Update the atmospheric concentration, accounting for this delta and exponential decay
         double expfac = exp(-alpha);
         Ha = Ha*expfac + concDeltaEmiss*tau * (1.0-expfac);
@@ -177,9 +188,18 @@ void HalocarbonComponent::run( const double runToDate ) {
     H_LOG( logger, Logger::DEBUG ) << "date: " << runToDate << " concentration: "<< Ha << endl;
     Ha_ts.set(runToDate, Ha);
 
-    // Calculate radiative forcing    TODO: this should be moved to forcing component
+    // Calculate radiative forcing
+    double adjusted_rf;
+    double rf_unadjusted;
     unitval rf;
-    rf.set( rho.value( U_W_M2_PPTV ) * Ha.value( U_PPTV ), U_W_M2 );
+
+    // First calculate the stratospheric-temperature adjusted radiative efficiencies
+    // using parameter values from IPCC AR6 & Equation 16 from Hartin 2015.
+    rf_unadjusted = rho.value( U_W_M2_PPTV ) * Ha.value( U_PPTV );
+    // Now calculate the effective radiative forcing value by adjusting the
+    // radiative forcing by the tropospheric adjustments (the delta parameter).
+    adjusted_rf = rf_unadjusted + delta.value( U_UNITLESS ) * rf_unadjusted;
+    rf.set( adjusted_rf, U_W_M2 );
     hc_forcing.set( runToDate, rf );
 
     // Update time counter.
@@ -205,6 +225,16 @@ unitval HalocarbonComponent::getData( const std::string& varName,
         // use date as input, not getdate, b/c there should be no date specified.
         H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for preindustrial hc" );
         returnval = H0;
+    }
+    else if( varName == D_HCRHO_PREFIX + myGasName ) {
+        // use date as input, not getdate, b/c there should be no date specified.
+        H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for rho" );
+        returnval = rho;
+    }
+    else if( varName == D_HCDELTA_PREFIX + myGasName ) {
+        // use date as input, not getdate, b/c there should be no date specified.
+        H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for delta" );
+        returnval = delta;
     }
     else if( varName == myGasName+CONCENTRATION_EXTENSION ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for halocarbon concentration" );
@@ -261,53 +291,5 @@ void HalocarbonComponent::accept( AVisitor* visitor ) {
     visitor->visit( this );
 }
 
-
-//------------------------------------------------------------------------------
-/* \brief                       Calculate the derivative of this halocarbon at the
- *                              current date given the current concentration
- * \param[in] currConcentration The current concentration at the current date
- * \param[in] currDate          The current date.
- * \return                      change from current concentration
- *
- *  The change from the current concentration is computed by by adding emissions
- *  and assuming a constant decay of the halocarbons currently in the atmosphere.
- */
-/*
- unitval HalocarbonComponent::getChangeInConcentration( unitval currConcentration, double currDate ) const
- {
- #define AtmosphereDryAirConstant 1.8
-
- const double timestep = 1.0;
- const double alpha = 1 / tau;
-
- unitval cumulativeEmissMol;
- cumulativeEmissMol.set( emissions.get( currDate ).value( U_GG ) / molarMass * timestep, U_GMOL );
-
- unitval concFromEmiss;
- concFromEmiss.set( cumulativeEmissMol.value( U_GMOL ) / ( 0.1 * AtmosphereDryAirConstant ), U_PPTV );
-
- return currConcentration * -alpha + concFromEmiss;
- }
- */
-
-//------------------------------------------------------------------------------
-/* \brief               Runge-Kutta approximation
- * \param[in] time1     The start year which we assume we have already have a concentration
- * \param[in] time2     The end year in which we want to approximate a concentration
- * \return              The approximate solution
- *
- * A simple Runge-Kutta to approximate the concentration over some time step.
- */
-/*
- unitval HalocarbonComponent::rk( double time1, double time2 ) const {
- const double h = 1; // relates to time2?
- unitval currConcentration = concentration.get( time1 );
- unitval k0 = getChangeInConcentration( currConcentration, time1 );
- unitval k1 = getChangeInConcentration( currConcentration + k0 * 0.5, time1 + 0.5 * h );
- unitval k2 = getChangeInConcentration( currConcentration + k1 * 0.5, time1 + 0.5 * h );
- unitval k3 = getChangeInConcentration( currConcentration + k2, time1 + h );
- return currConcentration + ( k0 + k1 * 2.0 + k2 * 2.0 + k3 ) / 6.0;
- }
- */
 
 }

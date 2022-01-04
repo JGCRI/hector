@@ -5,16 +5,16 @@
 \alias{RF_TOTAL}
 \alias{RF_T_ALBEDO}
 \alias{RF_CO2}
-\alias{RF_N2O}
 \alias{RF_H2O_STRAT}
 \alias{RF_O3_TROP}
 \alias{RF_BC}
 \alias{RF_OC}
-\alias{RF_SO2D}
-\alias{RF_SO2I}
+\alias{RF_NH3}
 \alias{RF_SO2}
+\alias{RF_ACI}
 \alias{RF_VOL}
-\alias{alpha_CO2}
+\alias{RF_MISC}
+\alias{Q_CO2}
 \alias{RF_CH4}
 \title{Identifiers for capabilities in the Hector forcing component}
 \usage{
@@ -24,8 +24,6 @@ RF_T_ALBEDO()
 
 RF_CO2()
 
-RF_N2O()
-
 RF_H2O_STRAT()
 
 RF_O3_TROP()
@@ -34,15 +32,17 @@ RF_BC()
 
 RF_OC()
 
-RF_SO2D()
-
-RF_SO2I()
+RF_NH3()
 
 RF_SO2()
 
+RF_ACI()
+
 RF_VOL()
 
-alpha_CO2()
+RF_MISC()
+
+Q_CO2()
 
 RF_CH4()
 }
@@ -60,25 +60,25 @@ messages.)
 
 \item \code{RF_CO2}: Radiative forcing due to CO2
 
-\item \code{RF_N2O}: Radiative forcing due to N2O
-
 \item \code{RF_H2O_STRAT}: Radiative forcing due to stratospheric water vapor
 
 \item \code{RF_O3_TROP}: Radiative forcing due to tropospheric ozone
 
-\item \code{RF_BC}: Radiative forcing due to black carbon
+\item \code{RF_BC}: Radiative forcing due to black carbon aerosol-radiation interactions
 
-\item \code{RF_OC}: Radiative forcing due to organic carbon
+\item \code{RF_OC}: Radiative forcing due to organic carbon aerosol-radiation interactions
 
-\item \code{RF_SO2D}: Direct contribution of SO2 to radiative forcing
+\item \code{RF_NH3}: Radiative forcing due to NH3 aerosol-radiation interactions
 
-\item \code{RF_SO2I}: Indirect contribution of SO2 to radiative forcing
+\item \code{RF_SO2}: Radiative forcing due to SO2 aerosol-radiation interactions
 
-\item \code{RF_SO2}: Total contribution (direct and indirect) of SO2 to radiative forcing
+\item \code{RF_ACI}: aerosol-cloud interactions, includes contributions from SO2, BC and OC
 
 \item \code{RF_VOL}: Radiative forcing due to volcanic activity
 
-\item \code{alpha_CO2}: Radiative forcing efficiency for CO2
+\item \code{RF_MISC}: Radiative miscellaneous forcing read in from ini.
+
+\item \code{Q_CO2}: Radiative forcing efficiency for doubling of CO2
 
 \item \code{RF_CH4}: Radiative forcing due to methane
 }}
@@ -92,12 +92,14 @@ instead of the more natural looking \code{GETDATA}.
 }
 
 \seealso{
-\link{haloforcings} for forcings from halocarbons.
+\link{haloforcings} for forcings from halocarbons and \link{rho} for parameters
+related to radiative forcing efficiency.
 
 Other capability identifiers: 
 \code{\link{carboncycle}},
 \code{\link{concentrations}},
 \code{\link{constraints}},
+\code{\link{delta}},
 \code{\link{emissions}},
 \code{\link{haloconstrain}},
 \code{\link{haloemiss}},
@@ -105,6 +107,7 @@ Other capability identifiers:
 \code{\link{methane}},
 \code{\link{ocean}},
 \code{\link{parameters}},
+\code{\link{rho}},
 \code{\link{so2}},
 \code{\link{temperature}}
 }

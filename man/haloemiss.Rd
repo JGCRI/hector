@@ -128,7 +128,7 @@ messages. In all cases, the expected input units are gigagrams
 
 \item \code{EMISSIONS_HCFC22}: Emissions for HCFC-22
 
-\item \code{EMISSIONS_HCFC141B}: Emissions for HCFC-141b
+\item \code{EMISSIONS_HCFC141B}: Emissions for HcFC-141b
 
 \item \code{EMISSIONS_HCFC142B}: Emissions for HCFC-142b
 
@@ -156,6 +156,7 @@ Other capability identifiers:
 \code{\link{carboncycle}},
 \code{\link{concentrations}},
 \code{\link{constraints}},
+\code{\link{delta}},
 \code{\link{emissions}},
 \code{\link{forcings}},
 \code{\link{haloconstrain}},
@@ -163,6 +164,7 @@ Other capability identifiers:
 \code{\link{methane}},
 \code{\link{ocean}},
 \code{\link{parameters}},
+\code{\link{rho}},
 \code{\link{so2}},
 \code{\link{temperature}}
 }

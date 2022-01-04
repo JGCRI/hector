@@ -24,9 +24,9 @@
 
 /*!
  * \brief The model version number to be included in logs and outputs.
- * \note This must be updated manually when the model version changes.
+ * \note  Manually update the git tag to match this.
  */
-#define MODEL_VERSION "2.5.0"
+#define MODEL_VERSION "3.0"
 
 #define OUTPUT_DIRECTORY "output/"
 

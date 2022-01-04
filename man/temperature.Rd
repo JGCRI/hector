@@ -31,13 +31,14 @@ type.
 }
 \section{Functions}{
 \itemize{
-\item \code{GLOBAL_TEMP}: Global mean temperature anomaly
+\item \code{GLOBAL_TEMP}: Global mean air temperature anomaly
 
 \item \code{OCEAN_SURFACE_TEMP}: Average ocean surface temperature anomaly
 
 \item \code{OCEAN_AIR_TEMP}: Average ocean air temperature anomaly
 
-\item \code{LAND_AIR_TEMP}: Average land temperature anomaly
+\item \code{LAND_AIR_TEMP}: Average land temperature anomaly, land surface temperature and air temperature
+over land are assumed to be equivalent.
 
 \item \code{FLUX_MIXED}: Heat flux into the mixed layer of the ocean
 
@@ -59,6 +60,7 @@ Other capability identifiers:
 \code{\link{carboncycle}},
 \code{\link{concentrations}},
 \code{\link{constraints}},
+\code{\link{delta}},
 \code{\link{emissions}},
 \code{\link{forcings}},
 \code{\link{haloconstrain}},
@@ -67,6 +69,7 @@ Other capability identifiers:
 \code{\link{methane}},
 \code{\link{ocean}},
 \code{\link{parameters}},
+\code{\link{rho}},
 \code{\link{so2}}
 }
 \concept{capability identifiers}

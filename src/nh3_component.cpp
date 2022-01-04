@@ -5,17 +5,12 @@
    information.
 */
 /*
- *  so2_component.cpp
+ *  nh3_component.cpp
  *  hector
- *
- *  Created by Corinne on 5/6/2013
- *
- *  Note that the SO2 emissions are read in terms of S instead of SO2
- *  values may need to be converted from g SO2 to g of S.
  *
  */
 
-#include "so2_component.hpp"
+#include "nh3_component.hpp"
 #include "core.hpp"
 #include "h_util.hpp"
 #include "avisitor.hpp"
@@ -27,50 +22,41 @@ using namespace std;
 //------------------------------------------------------------------------------
 /*! \brief Constructor
  */
-SulfurComponent::SulfurComponent() {
-    SO2_emissions.allowInterp( true );
-	SV.allowInterp( true );
-    SO2_emissions.name = SULFUR_COMPONENT_NAME;
-	SV.name = SULFUR_COMPONENT_NAME;
+NH3Component::NH3Component() {
+    NH3_emissions.allowInterp( true );
+    NH3_emissions.name = NH3_COMPONENT_NAME;
 }
 
 //------------------------------------------------------------------------------
 /*! \brief Destructor
  */
-SulfurComponent::~SulfurComponent() {
+NH3Component::~NH3Component() {
 }
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-string SulfurComponent::getComponentName() const {
-    const string name = SULFUR_COMPONENT_NAME;
+string NH3Component::getComponentName() const {
+    const string name = NH3_COMPONENT_NAME;
 
     return name;
 }
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-void SulfurComponent::init( Core* coreptr ) {
+void NH3Component::init( Core* coreptr ) {
     logger.open( getComponentName(), false, coreptr->getGlobalLogger().getEchoToFile(), coreptr->getGlobalLogger().getMinLogLevel() );
     H_LOG( logger, Logger::DEBUG ) << "hello " << getComponentName() << std::endl;
     core = coreptr;
 
-    // Inform core what data we can provide
-    core->registerCapability( D_EMISSIONS_SO2, getComponentName() );
-    core->registerCapability( D_VOLCANIC_SO2, getComponentName() );
-
-
-    // accept anthro emissions, volcanic, and natural emissions as inputs
-    core->registerInput(D_EMISSIONS_SO2, getComponentName());
-    core->registerInput(D_VOLCANIC_SO2, getComponentName());
-
+    // Inform core what data we can accept
+    core->registerInput(D_EMISSIONS_NH3, getComponentName());
 }
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-unitval SulfurComponent::sendMessage( const std::string& message,
-                                     const std::string& datum,
-                                     const message_data info )
+unitval NH3Component::sendMessage( const std::string& message,
+                                          const std::string& datum,
+                                          const message_data info )
 {
     unitval returnval;
 
@@ -78,7 +64,6 @@ unitval SulfurComponent::sendMessage( const std::string& message,
         return getData( datum, info.date );
 
     } else if( message==M_SETDATA ) {   //! Caller is requesting to set data
-        //TODO: call setData below
         //TODO: change core so that parsing is routed through sendMessage
         //TODO: make setData private
         setData(datum, info);
@@ -92,21 +77,16 @@ unitval SulfurComponent::sendMessage( const std::string& message,
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-void SulfurComponent::setData( const string& varName,
-                               const message_data& data )
+void NH3Component::setData( const string& varName,
+                                    const message_data& data )
 {
     H_LOG( logger, Logger::DEBUG ) << "Setting " << varName << "[" << data.date << "]=" << data.value_str << std::endl;
 
     try {
-        if( varName ==  D_EMISSIONS_SO2 ) {
+        if( varName ==  D_EMISSIONS_NH3  ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            SO2_emissions.set(data.date, data.getUnitval(U_GG_S));
-        }
-		else if( varName ==  D_VOLCANIC_SO2  ) {
-            H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            SV.set(data.date, data.getUnitval(U_W_M2));
-        }
-		else {
+            NH3_emissions.set(data.date, data.getUnitval(U_TG));
+        } else {
             H_THROW( "Unknown variable name while parsing " + getComponentName() + ": "
                     + varName );
         }
@@ -117,7 +97,7 @@ void SulfurComponent::setData( const string& varName,
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-void SulfurComponent::prepareToRun() {
+void NH3Component::prepareToRun() {
 
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
     oldDate = core->getStartDate();
@@ -125,28 +105,23 @@ void SulfurComponent::prepareToRun() {
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-void SulfurComponent::run( const double runToDate ) {
+void NH3Component::run( const double runToDate ) {
     H_ASSERT( !core->inSpinup() && runToDate-oldDate == 1, "timestep must equal 1" );
     oldDate = runToDate;
 }
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-unitval SulfurComponent::getData( const std::string& varName,
-                                 const double date ) {
+unitval NH3Component::getData( const std::string& varName,
+                                      const double date ) {
 
     unitval returnval;
 
-    if( varName == D_EMISSIONS_SO2 ) {
-        H_ASSERT( date != Core::undefinedIndex(), "Date required for SO2 emissions" );
-        returnval = SO2_emissions.get( date );
-    }
-	else if( varName == D_VOLCANIC_SO2 ) {
-        H_ASSERT( date != Core::undefinedIndex(), "Date required for volcanic SO2" );
-        if( SV.size() ) returnval = SV.get( date );
-           else returnval = unitval( 0.0, U_W_M2 );
-    }
-	else {
+    H_ASSERT( date != Core::undefinedIndex(), "Date required for nh3_component" );
+
+    if( varName == D_EMISSIONS_NH3 ) {
+        returnval = NH3_emissions.get( date );
+    } else {
         H_THROW( "Caller is requesting unknown variable: " + varName );
     }
 
@@ -155,10 +130,10 @@ unitval SulfurComponent::getData( const std::string& varName,
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-void SulfurComponent::reset(double time)
+void NH3Component::reset(double time)
 {
-    // This component doesn't calculate anything, so all we have to do
-    // is reset the time counter.
+    // Set time counter to requested date; there are no outputs to
+    // reset.
     oldDate = time;
     H_LOG(logger, Logger::NOTICE)
         << getComponentName() << " reset to time= " << time << "\n";
@@ -166,14 +141,14 @@ void SulfurComponent::reset(double time)
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-void SulfurComponent::shutDown() {
+void NH3Component::shutDown() {
 	H_LOG( logger, Logger::DEBUG ) << "goodbye " << getComponentName() << std::endl;
     logger.close();
 }
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-void SulfurComponent::accept( AVisitor* visitor ) {
+void NH3Component::accept( AVisitor* visitor ) {
     visitor->visit( this );
 }
 
