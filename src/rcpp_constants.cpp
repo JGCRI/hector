@@ -149,49 +149,49 @@ String RF_O3_TROP() {
 return D_RF_O3_TROP;
 }
 
-//' @describeIn forcings Radiative forcing due to black carbon
+//' @describeIn forcings Radiative forcing due to black carbon aerosol-radiation interactions
 //' @export
 // [[Rcpp::export]]
 String RF_BC() {
 return D_RF_BC;
 }
 
-//' @describeIn rho a radiative forcing efficiency for BC
+//' @describeIn rho a radiative forcing efficiency for BC aerosol-radiation interactions
 //' @export
 // [[Rcpp::export]]
 String RHO_BC() {
     return D_RHO_BC;
 }
 
-//' @describeIn forcings Radiative forcing due to organic carbon
+//' @describeIn forcings Radiative forcing due to organic carbon aerosol-radiation interactions
 //' @export
 // [[Rcpp::export]]
 String RF_OC() {
 return D_RF_OC;
 }
 
-//' @describeIn rho a radiative forcing efficiency for OC
+//' @describeIn rho a radiative forcing efficiency for OC aerosol-radiation interactions
 //' @export
 // [[Rcpp::export]]
 String RHO_OC() {
     return D_RHO_OC;
 }
 
-//' @describeIn forcings Radiative forcing due to NH3
+//' @describeIn forcings Radiative forcing due to NH3 aerosol-radiation interactions
 //' @export
 // [[Rcpp::export]]
 String RF_NH3() {
     return D_RF_NH3;
 }
 
-//' @describeIn rho a radiative forcing efficiency for NH3
+//' @describeIn rho a radiative forcing efficiency for NH3 aerosol-radiation interactions
 //' @export
 // [[Rcpp::export]]
 String RHO_NH3() {
     return D_RHO_NH3;
 }
 
-//' @describeIn forcings
+//' @describeIn forcings Radiative forcing due to SO2 aerosol-radiation interactions
 //' @export
 // [[Rcpp::export]]
 String RF_SO2() {

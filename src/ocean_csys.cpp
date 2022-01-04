@@ -158,7 +158,7 @@ void oceancsys::ocean_csys_run( unitval tbox, unitval carbon )
     const double Tk = Tc + 273.15;
 
 	// Check that all is OK with input data
-	//H_ASSERT( Tk > 265 && Tk < 308, "bad Tk value" ); // Kelvin
+	H_ASSERT( Tk > 265 && Tk < 308, "bad Tk value" ); // Kelvin
     H_ASSERT( dic > 1000e-6 && dic < 3700e-6, "bad dic value" );  // mol/kg
 
     // alk should be constant once spinup is done, but check anyway

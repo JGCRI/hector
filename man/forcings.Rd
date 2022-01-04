@@ -64,11 +64,11 @@ messages.)
 
 \item \code{RF_O3_TROP}: Radiative forcing due to tropospheric ozone
 
-\item \code{RF_BC}: Radiative forcing due to black carbon  aerosol-radiation interactions
+\item \code{RF_BC}: Radiative forcing due to black carbon aerosol-radiation interactions
 
-\item \code{RF_OC}: Radiative forcing due to organic carbon  aerosol-radiation interactions
+\item \code{RF_OC}: Radiative forcing due to organic carbon aerosol-radiation interactions
 
-\item \code{RF_NH3}: Radiative forcing due to NH3  aerosol-radiation interactions
+\item \code{RF_NH3}: Radiative forcing due to NH3 aerosol-radiation interactions
 
 \item \code{RF_SO2}: Radiative forcing due to SO2 aerosol-radiation interactions
 
