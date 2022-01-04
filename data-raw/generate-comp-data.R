@@ -26,24 +26,24 @@ dates_to_save <- 1745:2300
 # During this old new test we will look at results for two scenarios, a concentration and
 # emission driven runs.
 
-# The first scenario to run is the constrained RCP 4.5
-ini <- here::here("inst", "input", "hector_rcp45_constrained.ini")
-hc <- newcore(ini)
-run(hc, max(dates_to_save))
-hector_rcp45_constrained <- fetchvars(hc, scenario = basename(ini), dates = dates_to_save, vars = vars_to_save)
-hector_rcp45_constrained$version <- hector_version # Add the Hector version.
-hector_rcp45_constrained$commit <- hector_commit
-
+# # The first scenario to run is the constrained RCP 4.5
+# ini <- here::here("inst", "input", "hector_ssp245_constrained.ini")
+# hc <- newcore(ini)
+# run(hc, max(dates_to_save))
+# hector_ssp245_constrained <- fetchvars(hc, scenario = basename(ini), dates = dates_to_save, vars = vars_to_save)
+# hector_ssp245_constrained$version <- hector_version # Add the Hector version.
+# hector_ssp245_constrained$commit <- hector_commit
+hector_ssp245_constrained <- NULL
 # Second run.
-ini <- here::here("inst", "input", "hector_rcp45.ini")
+ini <- here::here("inst", "input", "hector_ssp245.ini")
 hc <- newcore(ini)
 run(hc, max(dates_to_save))
-hector_rcp45 <- fetchvars(hc, scenario = basename(ini), dates = dates_to_save, vars = vars_to_save)
-hector_rcp45$version <- hector_version # Add the Hector version.
-hector_rcp45$commit <- hector_commit
+hector_ssp245 <- fetchvars(hc, scenario = basename(ini), dates = dates_to_save, vars = vars_to_save)
+hector_ssp245$version <- hector_version # Add the Hector version.
+hector_ssp245$commit <- hector_commit
 
 # Save the comparison data for the unit tests.
-comp_data <- rbind(hector_rcp45_constrained, hector_rcp45)
+comp_data <- rbind(hector_ssp245_constrained, hector_ssp245)
 out_file <- file.path(out_dir, "hector_comp.csv")
 write.csv(comp_data, file = out_file, row.names = FALSE)
 message("All done.")
