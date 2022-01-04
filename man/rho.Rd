@@ -101,13 +101,13 @@ the forcing component.
 }
 \section{Functions}{
 \itemize{
-\item \code{RHO_BC}: a radiative forcing efficiency for BC
+\item \code{RHO_BC}: a radiative forcing efficiency for BC  aerosol-radiation interactions
 
-\item \code{RHO_OC}: a radiative forcing efficiency for OC
+\item \code{RHO_OC}: a radiative forcing efficiency for OC aerosol-radiation interactions
 
-\item \code{RHO_NH3}: a radiative forcing efficiency for NH3
+\item \code{RHO_NH3}: a radiative forcing efficiency for NH3 aerosol-radiation interactions
 
-\item \code{RHO_SO2}: a radiative forcing efficiency for SO2
+\item \code{RHO_SO2}: a radiative forcing efficiency for SO2  aerosol-radiation interactions
 
 \item \code{RHO_CF4}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for CF4
 

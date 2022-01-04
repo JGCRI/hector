@@ -105,43 +105,43 @@ RF_O3_TROP <- function() {
     .Call('_hector_RF_O3_TROP', PACKAGE = 'hector')
 }
 
-#' @describeIn forcings Radiative forcing due to black carbon
+#' @describeIn forcings Radiative forcing due to black carbon  aerosol-radiation interactions
 #' @export
 RF_BC <- function() {
     .Call('_hector_RF_BC', PACKAGE = 'hector')
 }
 
-#' @describeIn rho a radiative forcing efficiency for BC
+#' @describeIn rho a radiative forcing efficiency for BC  aerosol-radiation interactions
 #' @export
 RHO_BC <- function() {
     .Call('_hector_RHO_BC', PACKAGE = 'hector')
 }
 
-#' @describeIn forcings Radiative forcing due to organic carbon
+#' @describeIn forcings Radiative forcing due to organic carbon  aerosol-radiation interactions
 #' @export
 RF_OC <- function() {
     .Call('_hector_RF_OC', PACKAGE = 'hector')
 }
 
-#' @describeIn rho a radiative forcing efficiency for OC
+#' @describeIn rho a radiative forcing efficiency for OC aerosol-radiation interactions
 #' @export
 RHO_OC <- function() {
     .Call('_hector_RHO_OC', PACKAGE = 'hector')
 }
 
-#' @describeIn forcings Radiative forcing due to NH3
+#' @describeIn forcings Radiative forcing due to NH3  aerosol-radiation interactions
 #' @export
 RF_NH3 <- function() {
     .Call('_hector_RF_NH3', PACKAGE = 'hector')
 }
 
-#' @describeIn rho a radiative forcing efficiency for NH3
+#' @describeIn rho a radiative forcing efficiency for NH3 aerosol-radiation interactions
 #' @export
 RHO_NH3 <- function() {
     .Call('_hector_RHO_NH3', PACKAGE = 'hector')
 }
 
-#' @describeIn forcings
+#' @describeIn forcings Radiative forcing due to SO2 aerosol-radiation interactions
 #' @export
 RF_SO2 <- function() {
     .Call('_hector_RF_SO2', PACKAGE = 'hector')
@@ -153,7 +153,7 @@ RF_ACI <- function() {
     .Call('_hector_RF_ACI', PACKAGE = 'hector')
 }
 
-#' @describeIn rho a radiative forcing efficiency for SO2
+#' @describeIn rho a radiative forcing efficiency for SO2  aerosol-radiation interactions
 #' @export
 RHO_SO2 <- function() {
     .Call('_hector_RHO_SO2', PACKAGE = 'hector')
