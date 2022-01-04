@@ -28,6 +28,6 @@
  */
 #define MODEL_VERSION "2.5.0"
 
-#define OUTPUT_DIRECTORY "/Users/dorh012/Desktop/"
+#define OUTPUT_DIRECTORY "output/"
 
 #endif // H_UTIL_H
