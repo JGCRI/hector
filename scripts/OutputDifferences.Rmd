@@ -31,9 +31,9 @@ vars <- c(ATMOSPHERIC_C(), GLOBAL_TEMP(), RF_TOTAL())
 # Organize data
 compdata <- comp_data %>% 
   select(scenario, year, variable, value, units, version) %>%
-  filter(scenario == "hector_rcp45.ini") %>%
+  filter(scenario == "hector_ssp245.ini") %>%
   filter(variable %in% vars) %>%
-  mutate(scenario = "rcp45") %>%
+  mutate(scenario = "ssp245") %>%
   arrange(variable)
 
 # Access compdata version and commit
@@ -41,12 +41,12 @@ version <- compdata$version[1]
 commit <- comp_data$commit[1]
 
 # Read in files for just RCP 4.5
-rcp45 <- file.path(BASE_DIR, "inst", "input", "hector_rcp45.ini")
+ssp245 <- file.path(BASE_DIR, "inst", "input", "hector_ssp245.ini")
 
 # Run core and retrieve variable
-core <- newcore(rcp45)
+core <- newcore(ssp245)
 invisible(run(core))
-output <- fetchvars(core, core$strtdate:core$enddate, vars, "rcp45")
+output <- fetchvars(core, core$strtdate:core$enddate, vars, "ssp245")
 output <- output %>% 
   mutate(version = "latest") %>%
   arrange(variable)

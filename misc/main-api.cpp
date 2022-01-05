@@ -199,7 +199,7 @@ void read_and_set_co2(double tstrt, double tend, Core &core, istream &sim_gcam_e
                              message_data(t, unitval(oc, U_TG)));
             core.sendMessage(M_SETDATA, D_EMISSIONS_CF4,
                              message_data(t, unitval(cf4, U_GG)));
-            core.sendMessage(M_SETDATA, D_EMISSIONS_HCF22,
+            core.sendMessage(M_SETDATA, D_EMISSIONS_HFC22,
                              message_data(t, unitval(hcf22, U_GG)));
 
             std::cout << "t= " << t << "\n"
