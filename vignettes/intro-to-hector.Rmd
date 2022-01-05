@@ -12,12 +12,7 @@ editor_options:
 ---
 
 ```{r setup, include=FALSE}
-# TODO figure out how to avoid this hack
-# see https://www.r-bloggers.com/2020/04/setting-the-graphics-device-in-a-rmarkdown-document/
-ragg_png = function(..., res = 192) {
-  ragg::agg_png(..., res = res, units = "in")
-}
-knitr::opts_chunk$set(dev = "ragg_png", fig.ext = "png", echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, dpi = 150)
 ```
 
 This vignette provides a basic introduction for running Hector with R.
@@ -36,10 +31,10 @@ Hector is configured via an INI file, which defines run metadata, inputs (e.g. e
 For details on this file, see [InputFiles](https://github.com/JGCRI/hector/wiki/InputFiles) on the Hector GitHub Wiki.
 
 These files ship with the Hector R package, in the `input` subdirectory, which allows them to be accessed via `system.file`.
-Below, we get the path of the input file corresponding to the scenario RCP 4.5.
+Below, we get the path of the input file corresponding to the scenario SPP245.
 
 ```{r  ini-file }
-ini_file <- system.file("input/hector_rcp45.ini", package = "hector") 
+ini_file <- system.file("input/hector_ssp245.ini", package = "hector") 
 ```
 
 
@@ -200,7 +195,7 @@ However, to save typing (and, in general, to be good programmers!), let's create
 #' @param value Parameter value
 #' @param dates Sequence of years for running simulation (default = #'
 #'   `2000:2300`)
-#' @param ini_file Hector parameter file (default = RCP 4.5 file)
+#' @param ini_file Hector parameter file (default = SSP245 file)
 #' @return Results, as data.frame, with additional `parameter_value`
 #'   column
 run_with_param <- function(core, parameter, value) {
