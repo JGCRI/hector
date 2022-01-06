@@ -40,8 +40,6 @@ remotes::install("/path/to/hector")
 # For the current directory, use `"."` or run the function with no arguments.
 ```
 
-...or, if you are using the [RStudio IDE](https://www.rstudio.com/products/rstudio/), use the "Install and Restart", "Clean and Rebuild", and similar tools in the "Build" tab.
-
 If you do not want to install `remotes`, you can also install from a local copy by using the base-R `install.packages` function as follows:
 
 ```r
