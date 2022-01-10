@@ -25,8 +25,8 @@ if [ ! -d $INPUT ]; then
     exit 1
 fi
 
-# Run the basic RCPs
-echo "---------- Running: basic RCPs ----------"
+# Run the basic SSPs
+echo "---------- Running: basic SSPs ----------"
 $HECTOR $INPUT/hector_ssp119.ini
 $HECTOR $INPUT/hector_ssp126.ini
 $HECTOR $INPUT/hector_ssp370.ini
@@ -49,7 +49,7 @@ sed 's/trackingDate=9999/trackingDate=1850/' $INPUT/hector_ssp245.ini > $INPUT/h
 $HECTOR $INPUT/hector_ssp245_tracking.ini
 
 echo "---------- Running: tracking & CO2 constraint ----------"
-sed 's/;CO2_constrain=csv:tables\/ssp245_emiss-constraints_rf.csv/CO2_constrain=csv:tables\/ssp245_emiss-constraints_rf.csv/' $INPUT/hector_spp245_tracking.ini > $INPUT/hector_spp245_tracking_co2.ini
+sed 's/;CO2_constrain=csv:tables\/ssp245_emiss-constraints_rf.csv/CO2_constrain=csv:tables\/ssp245_emiss-constraints_rf.csv/' $INPUT/hector_ssp245_tracking.ini > $INPUT/hector_ssp245_tracking_co2.ini
 $HECTOR $INPUT/hector_ssp245_tracking_co2.ini
 rm $INPUT/hector_ssp245_tracking_co2.ini
 rm $INPUT/hector_ssp245_tracking.ini
@@ -68,7 +68,7 @@ rm $INPUT/hector_ssp245_co2.ini
 
 # Temperature
 echo "---------- Running: Tgav constraint ----------"
-sed 's/;tgav_constrain=csv:tables\/CONSTRAINT.csv/tgav_constrain=csv:tables/tgav_historical.csv/' $INPUT/hector_ssp245.ini > $INPUT/hector_ssp245_tgav.ini
+sed 's/;tgav_constrain=csv:tables\/CONSTRAINT.csv/tgav_constrain=csv:tables\/tgav_historical.csv/' $INPUT/hector_ssp245.ini > $INPUT/hector_ssp245_tgav.ini
 $HECTOR $INPUT/hector_ssp245_tgav.ini
 rm $INPUT/hector_ssp245_tgav.ini
 
