@@ -81,6 +81,8 @@
 		27B2C270261511C8005DE26D /* spline_forsythe.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C24D261511C8005DE26D /* spline_forsythe.cpp */; };
 		27B2C271261511C8005DE26D /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C24E261511C8005DE26D /* main.cpp */; };
 		27F2613726B55617004BDD47 /* csv_tracking_visitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27962904268F237200333AA3 /* csv_tracking_visitor.cpp */; };
+		954D62AE278E005500840656 /* nh3_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 954D62AD278E005500840656 /* nh3_component.cpp */; };
+		954D62AF278E005500840656 /* nh3_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 954D62AD278E005500840656 /* nh3_component.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -214,6 +216,8 @@
 		27B2C24B261511C8005DE26D /* carbon-cycle-model.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "carbon-cycle-model.cpp"; path = "../../src/carbon-cycle-model.cpp"; sourceTree = "<group>"; };
 		27B2C24D261511C8005DE26D /* spline_forsythe.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = spline_forsythe.cpp; path = ../../src/spline_forsythe.cpp; sourceTree = "<group>"; };
 		27B2C24E261511C8005DE26D /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = ../../src/main.cpp; sourceTree = "<group>"; };
+		954D62AD278E005500840656 /* nh3_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = nh3_component.cpp; path = ../../src/nh3_component.cpp; sourceTree = "<group>"; };
+		954D62B0278E007500840656 /* nh3_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = nh3_component.hpp; path = ../../inst/include/nh3_component.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -276,6 +280,7 @@
 		27B2C22B26151149005DE26D /* Headers */ = {
 			isa = PBXGroup;
 			children = (
+				954D62B0278E007500840656 /* nh3_component.hpp */,
 				27B2C21C2615112E005DE26D /* avisitor.hpp */,
 				27B2C2042615112D005DE26D /* bc_component.hpp */,
 				27B2C22A2615112F005DE26D /* carbon-cycle-model.hpp */,
@@ -325,6 +330,7 @@
 		27B2C272261511CD005DE26D /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				954D62AD278E005500840656 /* nh3_component.cpp */,
 				27B2C23B261511C6005DE26D /* bc_component.cpp */,
 				27B2C24B261511C8005DE26D /* carbon-cycle-model.cpp */,
 				27B2C22F261511C5005DE26D /* carbon-cycle-solver.cpp */,
@@ -474,6 +480,7 @@
 				27B2C252261511C8005DE26D /* carbon-cycle-solver.cpp in Sources */,
 				27B2C269261511C8005DE26D /* logger.cpp in Sources */,
 				27B2C256261511C8005DE26D /* o3_component.cpp in Sources */,
+				954D62AE278E005500840656 /* nh3_component.cpp in Sources */,
 				27B2C25D261511C8005DE26D /* n2o_component.cpp in Sources */,
 				27B2C250261511C8005DE26D /* h_reader.cpp in Sources */,
 				27962905268F237300333AA3 /* csv_tracking_visitor.cpp in Sources */,
@@ -524,6 +531,7 @@
 				27A02A7A2615CBB800AF9BFA /* h_reader.cpp in Sources */,
 				273FC3A026A3570B00D5303E /* test_logger.cpp in Sources */,
 				273FC39726A3570B00D5303E /* testing_main.cpp in Sources */,
+				954D62AF278E005500840656 /* nh3_component.cpp in Sources */,
 				27A02A7B2615CBB800AF9BFA /* forcing_component.cpp in Sources */,
 				27A02A7C2615CBB800AF9BFA /* dummy_model_component.cpp in Sources */,
 				27A02A7D2615CBB800AF9BFA /* oceanbox.cpp in Sources */,
