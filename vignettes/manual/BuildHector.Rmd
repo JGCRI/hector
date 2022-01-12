@@ -202,7 +202,7 @@ At this point you should be ready to go:
 
 * Build the project, making sure you're building the `hector` target.
 * Run!
-* To run a different scenario, change the current Scheme settings (Scheme->Edit Scheme) and modify or add a command-line argument (*Arguments* tab, e.g. "./inst/input/hector_ssp245.ini").
+* To run a different scenario, change the current Scheme settings (Scheme->Edit Scheme) and modify or add a command-line argument (*Arguments* tab, e.g. "./inst/input/hector_ssp245.ini"). 
 
 The Xcode profile file includes a `hector-tests` target that builds the unit
 testing framework described above.
