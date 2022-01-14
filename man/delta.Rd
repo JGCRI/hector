@@ -96,8 +96,9 @@ DELTA_CH4()
 }
 \description{
 These identifiers specify the tropospheric adjustments for the
-stratospheric-temperature adjusted radiative forings. These values must be a number between -1 and 1,
-they can be read and/or set by hectors forcing and halocarbon components.
+stratospheric-temperature adjusted radiative forcings.
+These values must be a number between -1 and 1, and
+can be read and/or set by hectors forcing and halocarbon components.
 }
 \section{Functions}{
 \itemize{

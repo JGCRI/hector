@@ -59,8 +59,9 @@ NULL
 #' Identifiers for Hector forcing component parameters
 #'
 #' These identifiers specify the tropospheric adjustments for the
-#' stratospheric-temperature adjusted radiative forings. These values must be a number between -1 and 1,
-#' they can be read and/or set by hectors forcing and halocarbon components.
+#' stratospheric-temperature adjusted radiative forcings.
+#' These values must be a number between -1 and 1, and
+#' can be read and/or set by hectors forcing and halocarbon components.
 #'
 #' @inheritSection msgtype Note
 #'
@@ -167,8 +168,8 @@ NULL
 #'
 #'
 #' @section Input variables:
-#' These variables can be set in the methane component. The expected units string is given after
-#' each description.
+#' These variables can be set in the methane component. The expected units
+#' string is given after each description.
 #' \describe{
 #' \item{EMISSIONS_CH4}{Methane emissions (\code{"Tg CH4"})}
 #' \item{PREINDUSTRIAL_CH4}{Preindustrial methane concentration (\code{"ppbv CH4"})}
@@ -250,8 +251,8 @@ NULL
 #' setting one or more of these values you should call \code{\link{reset}} before
 #' attempting to run the model again. This will rerun the spinup and produce a
 #' new internally consistent state. Attempting to run the model without resetting
-#' first will usually produce an error (often with a message about failing to conserve
-#' mass).
+#' first will usually produce an error (often with a message about failing to
+#' conserve mass).
 #'
 #' @inheritSection msgtype Note
 #' @name parameters

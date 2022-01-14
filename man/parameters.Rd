@@ -58,8 +58,8 @@ typically invalidate the hector core's internal state; therefore, after
 setting one or more of these values you should call \code{\link{reset}} before
 attempting to run the model again. This will rerun the spinup and produce a
 new internally consistent state. Attempting to run the model without resetting
-first will usually produce an error (often with a message about failing to conserve
-mass).
+first will usually produce an error (often with a message about failing to
+conserve mass).
 }
 \section{Functions}{
 \itemize{
