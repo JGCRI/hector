@@ -9,4 +9,3 @@ test_that("All ini files can be used to set up a hector core", {
     expect_true(hc)
   }
 })
-

@@ -99,7 +99,8 @@ test_that("Garbage collection shuts down hector cores", {
 ## Ensure the scenario name can change in the output
 ## when the core is set up different names.
 test_that("Scenario column is created in output", {
-  hc <- newcore(file.path(inputdir, "hector_ssp245.ini"), suppresslogging = TRUE, name = "scenario1")
+  hc <- newcore(file.path(inputdir, "hector_ssp245.ini"),
+                suppresslogging = TRUE, name = "scenario1")
   run(hc)
 
   outdata1 <- fetchvars(hc, dates, testvars)

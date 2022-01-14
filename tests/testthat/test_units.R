@@ -21,4 +21,3 @@ test_that("Invalid units retrieval warns.", {
   )
   expect_equal(units, units_true)
 })
-
