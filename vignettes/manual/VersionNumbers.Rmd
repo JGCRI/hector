@@ -28,4 +28,4 @@ Name or unit change for parameter or output<sup>5</sup> | MAJOR
 2. E.g. a new `seaIce` component that doesn't require any inputs (assumes if not present).
 3. E.g. a new `x` that is required to run.
 4. E.g. a new `seaIce` component that requires inputs.
-5. See issue #xx about associating units with input parameters.
+5. See issue #79 about associating units with input parameters.

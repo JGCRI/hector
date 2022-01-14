@@ -13,7 +13,13 @@
  */
 
 #include <fstream>
+
+// some boost headers generate warnings under clang; not our problem, ignore
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Weverything"
 #include <boost/lexical_cast.hpp>
+#pragma clang diagnostic pop
+
 #include "core.hpp"
 #include "simpleNbox.hpp"
 #include "ocean_component.hpp"
