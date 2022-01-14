@@ -218,8 +218,6 @@ test_that("Split biomes, and modify parameters", {
   expect_equivalent(default_veg + permafrost_veg, global_veg2)
   invisible(run(core))
   r_biome <- fetchvars(core, 2000:2100)
-  # BBL this test is failing as part of the Hector v3 update.
-  #expect_equivalent(r_global, r_biome)
 
   # Sum of biome-specific pools should exactly equal global results at
   # each time step. This is a robust test!
