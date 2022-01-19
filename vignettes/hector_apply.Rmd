@@ -11,14 +11,8 @@ editor_options:
   chunk_output_type: console
 ---
 
-
 ```{r setup, include=FALSE}
-# TODO figure out how to avoid this hack
-# see https://www.r-bloggers.com/2020/04/setting-the-graphics-device-in-a-rmarkdown-document/
-ragg_png = function(..., res = 192) {
-  ragg::agg_png(..., res = res, units = "in")
-}
-knitr::opts_chunk$set(dev = "ragg_png", fig.ext = "png", echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, dpi = 150)
 ```
 
 ## Introduction
@@ -42,7 +36,7 @@ and beyond, we will run up through 1999.
 ```{r hector.init}
 library('ggplot2')
 library('hector')
-hector_inifile <- file.path(system.file('input', package='hector'), 'hector_rcp60.ini')
+hector_inifile <- file.path(system.file('input', package='hector'), 'hector_ssp245.ini')
 hcore <- newcore(hector_inifile, suppresslogging=TRUE)
 run(hcore, 1999)
 ```

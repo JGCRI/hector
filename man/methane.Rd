@@ -37,8 +37,8 @@ These variables can be read from the methane component.
 
 \section{Input variables}{
 
-These variables can be set in the methane component. The expected units string is given after
-each description.
+These variables can be set in the methane component. The expected units
+string is given after each description.
 \describe{
 \item{EMISSIONS_CH4}{Methane emissions (\code{"Tg CH4"})}
 \item{PREINDUSTRIAL_CH4}{Preindustrial methane concentration (\code{"ppbv CH4"})}

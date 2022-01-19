@@ -189,14 +189,17 @@ These directions assume a basic familiarity with Xcode and Mac OS X software ins
 The Xcode project file is configured to use constants defining custom paths, rather than hard-coded paths.
 This means that developers and users can set these paths without overwriting each other.
 
-* You will need to set several custom paths (Preferences -> Locations -> Custom Paths): `BOOSTROOT`, and `HECTORDIR`. These are the Boost root under which the headers can be found in `boost/`, and the runtime working directory for the model (the repository root).
+* You will need to set several custom paths (Preferences -> Locations -> Custom Paths): `BOOSTROOT`, and `HECTORDIR`.
+    * `BOOSTROOT` is the root directory where the Boost headers can be found in `boost/`.  
+    * `HECTORDIR` should be set to root directory for the model (the repository root) Xcode will use this path to the ini files used by the various schemes and to write the csv files to the output directory. 
+
 * If you want to build Hector's testing framework (the `hector-tests` target; this is optional and only relevant for C++ developers) add GTEST and GTESTLIB custom paths to Xcode; these are analogous to their Boost counterparts. You will need to install [googletest](https://github.com/google/googletest) on your machine.
 
 At this point you should be ready to go:
 
 * Build the project, making sure you're building the `hector` target.
 * Run!
-* To run a different scenario, change the current Scheme settings (Scheme->Edit Scheme) and modify or add a command-line argument (*Arguments* tab, e.g. "./inst/input/hector_rcp45.ini").
+* To run a different scenario, change the current Scheme settings (Scheme->Edit Scheme) and modify or add a command-line argument (*Arguments* tab, e.g. "./inst/input/hector_ssp245.ini"). 
 
 The Xcode profile file includes a `hector-tests` target that builds the unit
 testing framework described above.

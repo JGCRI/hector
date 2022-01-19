@@ -12,9 +12,13 @@
  *
  */
 
+// some boost headers generate warnings under clang; not our problem, ignore
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Weverything"
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/algorithm/string/trim.hpp>
+#pragma clang diagnostic pop
 
 // If using the R package, use Rcpp to call R's file processing
 // functions. Otherwise (e.g. if building standalone Hector),

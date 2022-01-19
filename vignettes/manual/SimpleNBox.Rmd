@@ -33,10 +33,10 @@ $$ RH_d = \frac{1}{4} C_d Q_{10}^{T_{i}(t) / 10}$$
 Note that the residence times of soil and detritus C pools---50 and 4 years, respectively---are currently hard-coded values in Hector.
 
 Fluxes associated with land use change ($LUC$) are prescribed via the `luc_emissions` variable in the INI value.
-Example time series associated with representative carbon pathways (RCP) 2.6, 4.5, 6.0, and 8.5 are included with Hector in the corresponding `inst/input/emissions/RCP**_emissions.csv` files.
+Example time series associated with shared socioeconomic pathways (SSPs) are included with Hector in the corresponding `inst/input/tables/ssp**_emiss-constraints_rf.csv` files.
 
 In each biome at each time step, the vegetation pools change as follows (biome, $i$ and time, $t$ subscripts omitted for clarity):
-C gain from NPP is distributed to vegetation, detritus, and soil according to fractionation parameters $f_{nv}$, $f_{nd}$, and $f_{ns}$, respectively.
+C gain from NPP is distributed to vegetation, detritus, and soil according to fraction parameters $f_{nv}$, $f_{nd}$, and $f_{ns}$, respectively.
 Similarly, each pool bears a fraction of the total C loss from land-use change ($F_{LC}$), again according to fractions $f_{lv}$, $f_{ld}$, and $f_{ls}$.
 The detritus and soil pools also lose C via heterotrophic respiration ($RH_d$ and $RH_s$, respectively).
 Finally, a fixed fraction of vegetation C is transferred to detritus as litterfall ($f_{vd}$), and a fraction of both vegetation ($f_{vs}$) and detritus ($f_{ds}$) C are transferred to soil.

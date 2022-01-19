@@ -42,7 +42,7 @@ emissions <- c(
 
 # Setting emissions variables
 for (v in emissions) {
-  hc <- newcore(system.file("input", "hector_rcp45.ini", package = "hector"),
+  hc <- newcore(system.file("input", "hector_ssp245.ini", package = "hector"),
     suppresslogging = TRUE
   )
   # Use a random (positive) value here to make sure we are getting and setting

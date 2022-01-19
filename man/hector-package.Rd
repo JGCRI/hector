@@ -6,7 +6,11 @@
 \alias{hector-package}
 \title{hector: The Hector Simple Climate Model}
 \description{
-Provides an R interface for the Hector Simple Climate Model. Using this interface you can set up and initialize the model, change model parameters and emissions inputs, run Hector, and retrieve model outputs. Note that the package authors are not identical to the C++ model authors.
+Provides an R interface for the Hector Simple Climate
+    Model. Using this interface you can set up and initialize the model,
+    change model parameters and emissions inputs, run Hector, and
+    retrieve model outputs. Note that the package authors are not
+    identical to the C++ model authors.
 }
 \details{
 This package allows you to run the Hector Simple Climate Model (SCM) from R
@@ -17,12 +21,8 @@ and receive the results back as R data frames.
 To run a scenario, you will need a scenario input file.  Several examples are
 included in the \code{input} directory, which you can find with the
 expression \code{system.file('input', package='hector')}.  The input files
-have names like \code{'hector_rcpNN.ini'}, where \code{NN} is one of
-\code{26}, \code{45}, \code{60}, or \code{85}.  Example outputs for these
-scenarios are in the \code{output} directory, which you can find in a similar
-way.  Their names are \code{'sample_outputstream_rcpNN.csv'} Note, however,
-that these outputs were rounded to 4 significant digits, so you might see
-some discrepancies with your outputs unless you similarly round them.
+have names like  \code{'hector_sspNNN.ini'}, where \code{NNN} is one of
+\code{119}, \code{126}, \code{245}, \code{370}, \code{434}, \code{460}, or \code{ssp585}.
 
 There is a quickstart wrapper called \code{\link{runscenario}}, which takes
 an input file as an argument, runs the scenario, and returns the results in a
