@@ -40,14 +40,14 @@ library(ggplot2)
 ## Carbon tracking
 
 Now, we will read in an .ini file and create a new core. In this example, we 
-will use RCP 4.5.
+will use SSP245.
 
 In order to use the carbon tracking feature, we must use `setvar` and `fetchvars`. ^[Command line users: to set a tracking start date, change the `trackingDate=9999` line in the `[core]` section of an INI scenario file.]
 First, let's look at the `trackingDate` prior to setting it to any value. 
 
 ``` {r setup.core}
 inifile <- file.path(system.file('input', package = 'hector'),
-                     'hector_rcp45.ini')
+                     'hector_ssp245.ini')
 core <- newcore(inifile)
 
 fetchvars(core, NA, TRACKING_DATE())
@@ -103,8 +103,8 @@ ggplot(tdata, aes(year, source_fraction, fill = source_name)) +
 ```
 
 Let's take a look at these graphs. Note that the `earth_c` pool is always 100% 
-`earth_c`: there are no inflows to this pool in RCP 4.5 (in contrast, in
-RCP 2.6 there is direct-air carbon capture and storage, so the `earth_c` pool
+`earth_c`: there are no inflows to this pool in SSP245 (in contrast, in
+SSP245 there is direct-air carbon capture and storage, so the `earth_c` pool
 origins will change). We see that around 1800, human emissions (from `earth_c`) 
 begin to appear in pools such as `atmos_c` or `soil_c_global`. 
 Between 1900-2000, human emissions take off and become major sources by 2100. 
@@ -178,11 +178,11 @@ AF_calc <- function(results, start, stop) {
 }
 ```
 
-Next, we will run our functions for the RCP 4.5 scenario between 1750 and 2050 with tracking beginning at the start of the run. We can then find the value of the airborne fraction in any year of the model run. Let's look at how the airborne fraction changes over time from 1950 to 2020 in ten year increments as well as the value in just the year 2020.
+Next, we will run our functions for the SSP245 scenario between 1750 and 2050 with tracking beginning at the start of the run. We can then find the value of the airborne fraction in any year of the model run. Let's look at how the airborne fraction changes over time from 1950 to 2020 in ten year increments as well as the value in just the year 2020.
 
 ``` {r hector.calculations}
-rcp45 <- system.file("input", "hector_rcp45.ini", package = "hector")
-results <- tracking_results(rcp45, 1750, 2050, 1750, "RCP 4.5")
+ssp245 <- system.file("input", "hector_ssp245.ini", package = "hector")
+results <- tracking_results(ssp245, 1750, 2050, 1750, "SSP245")
 
 AF_1950 <- AF_calc(results, 1750, 1950)
 AF_1960 <- AF_calc(results, 1750, 1960)

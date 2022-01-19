@@ -9,13 +9,13 @@ When Hector is invoked from the command line, it takes a single parameter: the n
 The primary input file is a text [INI-style](http://en.wikipedia.org/wiki/INI_file) file with *sections*, *properties*, and *values*. For example, the beginning of the RCP 4.5 file included in the repository looks like this:
 
 ```
-; Config file for hector model: RCP45
+; Config file for hector model: SSP245
 ;------------------------------------------------------------------------
 [core]
-run_name=rcp45
+run_name=ssp245
 ```
 
-Here, comments start with a semicolon (`;`); *section names* (`core`) are enclosed in square brackets; and a *property* (`run_name`) is assigned a *value* (`rcp45`). Properties are guaranteed to be unique within a particular section, and all sections match one-to-one with a model [component](ComponentAPI.html).
+Here, comments start with a semicolon (`;`); *section names* (`core`) are enclosed in square brackets; and a *property* (`run_name`) is assigned a *value* (`ssp245`). Properties are guaranteed to be unique within a particular section, and all sections match one-to-one with a model [component](ComponentAPI.html).
 
 There are two Hector-specific wrinkles to the INI property-value assignment scheme. First, some properties have a time index that's required when assigning:
 
@@ -27,10 +27,10 @@ Ftalbedo[1950]=-0.2
 More commonly, such [time series](TimeSeries.html) are assigned by reading data in from a comma-separated value text file:
 
 ```
-lucEmissions=csv:input/emissions/RCP45_emissions.csv 
+lucEmissions=csv:input/emissions/ssp245_emissions.csv 
 ```
 
-In this case, the `input/emissions/RCP45_emissions.csv` file is parsed and the data in column `lucEmissions` are assigned to the model variable, with a required `Date` column providing the time index.
+In this case, the `input/emissions/ssp245_emissions.csv` file is parsed and the data in column `lucEmissions` are assigned to the model variable, with a required `Date` column providing the time index.
 
 # List of model parameters
 

@@ -10,7 +10,7 @@
  *  nh3_component.hpp
  *  hector
  *
- *  Created by Ben on 05/26/2011.
+ *  Created by Kalyn D 2021.
  *
  */
 
@@ -22,7 +22,7 @@
 namespace Hector {
 
 //------------------------------------------------------------------------------
-/*! \brief Organic carbon model component.
+/*! \brief NH3 model component.
  *
  *  This doesn't do much yet.
  */

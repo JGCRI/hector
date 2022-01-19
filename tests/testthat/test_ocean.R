@@ -4,11 +4,11 @@ context("Check ocean")
 # Run Hector
 inputdir <- system.file("input", package = "hector")
 sampledir <- system.file("output", package = "hector")
-rcp45 <- file.path(inputdir, "hector_rcp45.ini")
+ssp245 <- file.path(inputdir, "hector_ssp245.ini")
 
 # Dates to extract values and run Hector.
 t_dates <- 1850:1900
-hc <- newcore(rcp45)
+hc <- newcore(ssp245)
 run(hc, max(t_dates))
 
 
@@ -92,7 +92,7 @@ test_that("Read and writing ocean parameters", {
 
         # Create a new hector core each time so that only one
         # parameter is being changed at a time.
-        hc2 <- newcore(rcp45)
+        hc2 <- newcore(ssp245)
 
         # reset the hector core
         setvar(hc2, dates = NA, var = p, values = val, unit = u)

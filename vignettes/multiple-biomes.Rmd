@@ -10,12 +10,7 @@ vignette: >
 ---
 
 ```{r setup, include=FALSE}
-# TODO figure out how to avoid this hack
-# see https://www.r-bloggers.com/2020/04/setting-the-graphics-device-in-a-rmarkdown-document/
-ragg_png = function(..., res = 192) {
-  ragg::agg_png(..., res = res, units = "in")
-}
-knitr::opts_chunk$set(dev = "ragg_png", fig.ext = "png", echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, dpi = 150, fig.width = 5, fig.height = 4)
 ```
 
 By default, Hector's carbon cycle model treats the entire land surface as a single, homogeneous ecosystem.
@@ -40,8 +35,8 @@ In this example, we will explore the implications of this effect with Hector.
 First, let's run a reference case.
 
 ```{r warming-reference}
-rcp45 <- system.file("input", "hector_rcp45.ini", package = "hector")
-core <- newcore(rcp45, suppresslogging = TRUE)
+ssp245 <- system.file("input", "hector_ssp245.ini", package = "hector")
+core <- newcore(ssp245, suppresslogging = TRUE)
 invisible(run(core, 2100))
 result_vars <- c(ATMOSPHERIC_CO2(), RF_TOTAL(), GLOBAL_TEMP(),
                  VEG_C(), SOIL_C(), DETRITUS_C())
@@ -114,7 +109,7 @@ In this example, we will create two "biomes," corresponding to C3 and C4 plants,
 For the purposes of this example, we will assume that ~10% of the world's terrestrial carbon is associated with C4 plants, and that the CO~2~ fertilization effect for C4 plans is half as strong as that of C3 plants.
 
 ```{r fert-c4}
-core <- newcore(rcp45, suppresslogging = TRUE)
+core <- newcore(ssp245, suppresslogging = TRUE)
 split_biome(core, "global", c("C3", "C4"),
             fveg_c = c(0.9, 0.1),
             beta = c(0.36, 0.18))
