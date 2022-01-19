@@ -30,4 +30,10 @@
 
 #define OUTPUT_DIRECTORY "output/"
 
+namespace Hector {
+
+void ensure_dir_exists(const std::string& dir);
+
+}
+
 #endif // H_UTIL_H

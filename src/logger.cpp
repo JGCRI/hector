@@ -18,29 +18,6 @@
 #include <algorithm>
 
 
-// If using the R package, use Rcpp to call R's file processing
-// functions. Otherwise (e.g. if building standalone Hector),
-// use std::filesystem (which is available since the C++ 17 standard)
-// if available and finally fall back to boost::filesystem (which
-// needs to be installed).
-
-// Language feature detection (to use __cpp_lib_filesystem) isn't even
-// available unil the C++20 standard.  Luckily we can use boost to get
-// it in the meantime.
-#include <boost/config.hpp>
-
-#ifdef USE_RCPP
-#include <Rcpp.h>
-#elif __cpp_lib_filesystem || __has_include(<filesystem>)
-#include <filesystem>
-namespace fs = std::filesystem;
-typedef std::error_code fs_error_code;
-#else
-#include <boost/filesystem.hpp>
-namespace fs = boost::filesystem;
-typedef boost::system::error_code fs_error_code;
-#endif
-
 #ifdef USE_RCPP
 // This should be defined only if compiling as an R package
 #include <Rcpp.h>
@@ -172,7 +149,7 @@ void Logger::open( const string& logName, bool echoToScreen,
     this->echoToFile = echoToFile;
 
     if (echoToFile) {
-        chk_logdir(LOG_DIRECTORY);
+        ensure_dir_exists(LOG_DIRECTORY);
 
         const string fqName = LOG_DIRECTORY + logName + LOG_EXTENSION;	// fully-qualified name
 
@@ -276,44 +253,6 @@ const char* Logger::getDateTimeStamp() {
     }
 
     return ret;
-}
-
-/*!
- * \brief Checks if the given directory exists. If not it attempts to create
- *        it and if it was unable to do that it will raise an exception.
- * \param dir The directory to check/create.
- */
-void Logger::chk_logdir(std::string dir)
-{
-#ifdef USE_RCPP
-    // Load R functions for path management
-    Rcpp::Environment base("package:base");
-    Rcpp::Environment utils("package:utils");
-    Rcpp::Function dirCreate = base["dir.create"];
-    Rcpp::Function file_test = utils["file_test"];
-    // use file_test -d to see if dir exists and is a directory
-    if(!Rcpp::as<bool>(file_test("-d", dir))) {
-        // either does not exist or is a file
-        // we can try to create it and if it still fails it must
-        // have been a file or a permissions error
-        if(!Rcpp::as<bool>(dirCreate(dir))) {
-            // no luck, throw exception
-            H_THROW("Directory "+dir+" does not exist and could not create it.");
-        }
-    }
-#else
-    fs::path fs_dir(dir);
-    // first check to see if dir exists and is a directory
-    if(!fs::is_directory(fs_dir)) {
-        // either does not exist or is a file
-        // we can try to create it and if it still fails it must
-        // have been a file or a permissions error
-        fs_error_code status;
-        if(!fs::create_directory(fs_dir, status)) {
-            H_THROW("Directory "+dir+" does not exist and could not create it.");
-        }
-    }
-#endif
 }
 
 //------------------------------------------------------------------------------
