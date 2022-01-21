@@ -83,11 +83,11 @@ pyhector is a Python interface for Hector.
 Github found [here](https://github.com/openclimatedata/pyhector).
 
 ### YouTube Walkthrough
-[Here](https://www.youtube.com/watch?v=EFJS-buvGN8) is a video walkthrough by Kalyn Dorheim including information on: 
+[Here](https://www.youtube.com/watch?v=EFJS-buvGN8) is a video walk through by Kalyn Dorheim including information on using Hector v2.5: 
 
 * Installing Hector
 * Running a core
-* Running RCP 4.5
+* Running a scenario
 * Accessing and plotting results
 * Shutting down a core
 * Changing a parameter

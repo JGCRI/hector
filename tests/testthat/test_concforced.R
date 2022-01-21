@@ -1,6 +1,6 @@
 context("Concentration forced Hector")
 
-rcp45 <- function() newcore(system.file("input", "hector_rcp45.ini", package = "hector"))
+ssp245 <- function() newcore(system.file("input", "hector_ssp245.ini", package = "hector"))
 
 test_that("Concentration-forced runs work for halocarbons", {
 
@@ -15,7 +15,7 @@ test_that("Concentration-forced runs work for halocarbons", {
 
 
   # Run emission driven Hector
-  hc <- rcp45()
+  hc <- ssp245()
   invisible(run(hc))
 
   # Save the dates and output variables to test.
@@ -23,7 +23,7 @@ test_that("Concentration-forced runs work for halocarbons", {
   outvars <- c(GLOBAL_TEMP(), "HFC23_concentration", EMISSIONS_HFC23())
 
   # Extract the emission driven results, saving a copy of the HFC23
-  # concentrations and emission seperately to manipulate.
+  # concentrations and emission separately to manipulate.
   emissOut <- fetchvars(hc, dates, outvars)
   emissOut_HFCconc <- subset(emissOut, variable == "HFC23_concentration")
   emissOut_HFCemiss <- subset(emissOut, variable == EMISSIONS_HFC23())
@@ -32,7 +32,8 @@ test_that("Concentration-forced runs work for halocarbons", {
   setvar(hc,
          emissOut_HFCconc$year, HFC23_CONSTRAIN(),
          emissOut_HFCconc$value,
-         getunits(HFC23_CONSTRAIN()))
+         getunits(HFC23_CONSTRAIN())
+  )
   invisible(reset(hc))
   invisible(run(hc))
   conOut <- fetchvars(hc, dates, outvars)
@@ -46,7 +47,7 @@ test_that("Concentration-forced runs work for halocarbons", {
   invisible(reset(hc))
   invisible(run(hc))
 
-  # The HCF concentrations should equal the constrainnt read in.
+  # The HCF concentrations should equal the constraint read in.
   expect_equal(fetchvars(hc, dates, "HFC23_concentration")$value, new_HFC_con)
 
   # Compare the outputs from the emission driven and the perturbed
@@ -60,15 +61,15 @@ test_that("Concentration-forced runs work for halocarbons", {
 test_that("Concentration-forced runs work for CH4", {
 
   # Run emission driven Hector
-  hc <- rcp45()
+  hc <- ssp245()
   invisible(run(hc))
 
   # Save the dates and output variables to test.
   dates <- seq(startdate(hc), getdate(hc))
-  outvars <- c(GLOBAL_TEMP(), ATMOSPHERIC_CH4(), EMISSIONS_CH4())
+  outvars <- c(GLOBAL_TEMP(), ATMOSPHERIC_CH4(), EMISSIONS_CH4(), RF_CH4())
 
   # Extract the emission driven results, saving a copy of the CH4
-  # concentrations and emission seperately to manipulate.
+  # concentrations and emission separately to manipulate.
   emissOut <- fetchvars(hc, dates, outvars)
   emissOut_CH4conc <- subset(emissOut, variable == ATMOSPHERIC_CH4())
   emissOut_CH4emiss <- subset(emissOut, variable == EMISSIONS_CH4())
@@ -92,7 +93,7 @@ test_that("Concentration-forced runs work for CH4", {
   invisible(reset(hc))
   invisible(run(hc))
 
-  # The CH4 concentrations should equal the constrainnt read in.
+  # The CH4 concentrations should equal the constraint read in.
   expect_equal(fetchvars(hc, dates, ATMOSPHERIC_CH4())$value, new_CH4_con)
 
   # Compare the outputs from the emission driven and the perturbed
@@ -101,21 +102,23 @@ test_that("Concentration-forced runs work for CH4", {
   # concentration driven runs.
   new_out <- fetchvars(hc, 2000:2100, outvars)
   to_compare <- subset(conOut, year %in% 2000:2100)
+  names(new_out) <- c("scenario", "year", "variable", "new_value", "units")
+
   expect_true(all(new_out$value >= to_compare$value))
 })
 
 test_that("Concentration-forced runs work for N2O", {
 
   # Run emission driven Hector
-  hc <- rcp45()
+  hc <- ssp245()
   invisible(run(hc))
 
   # Save the dates and output variables to test.
   dates <- seq(startdate(hc), getdate(hc))
-  outvars <- c(GLOBAL_TEMP(), ATMOSPHERIC_N2O(), EMISSIONS_N2O())
+  outvars <- c(GLOBAL_TEMP(), ATMOSPHERIC_N2O(), EMISSIONS_N2O(), RF_N2O())
 
   # Extract the emission driven results, saving a copy of the N2O
-  # concentrations and emission seperately to manipulate.
+  # concentrations and emission separately to manipulate.
   emissOut <- fetchvars(hc, dates, outvars)
   emissOut_N2Oconc <- subset(emissOut, variable == ATMOSPHERIC_N2O())
   emissOut_N2Oemiss <- subset(emissOut, variable == EMISSIONS_N2O())
@@ -157,13 +160,13 @@ test_that("Atmospheric CO2 concentrations can be constrained", {
   years <- 1850:2100
   vars <- c(ATMOSPHERIC_CO2(), GLOBAL_TEMP(), RF_TOTAL(), RF_CO2())
 
-  # Initate a Hector core and save results.
-  hc <- rcp45()
+  # Instate a Hector core and save results.
+  hc <- ssp245()
   run(hc)
-  rcp45_out <- fetchvars(hc, years, vars)
-  rcp45_conc <- subset(rcp45_out, variable == ATMOSPHERIC_CO2())
+  ssp245_out <- fetchvars(hc, years, vars)
+  ssp245_conc <- subset(ssp245_out, variable == ATMOSPHERIC_CO2())
 
-  constrained_values <- rcp45_conc$value * 3
+  constrained_values <- ssp245_conc$value * 3
   setvar(hc, years, CO2_CONSTRAIN(), constrained_values, getunits(CO2_CONSTRAIN()))
   reset(hc)
   run(hc)
@@ -174,10 +177,10 @@ test_that("Atmospheric CO2 concentrations can be constrained", {
   expect_equal(hico2_conc$value, constrained_values)
 
   # The run with the higher CO2 should be warmer, with a higher total and CO2 RF.
-  expect_true(all(hico2_out$value >= rcp45_out$value))
+  expect_true(all(hico2_out$value >= ssp245_out$value))
 
   # Now test what happens when the CO2 concentrations are decreased
-  constrained_values <- rcp45_conc$value * 0.5
+  constrained_values <- ssp245_conc$value * 0.5
   setvar(hc, years, CO2_CONSTRAIN(), constrained_values, getunits(CO2_CONSTRAIN()))
   reset(hc)
   run(hc)
@@ -188,110 +191,18 @@ test_that("Atmospheric CO2 concentrations can be constrained", {
   expect_equal(lowco2_conc$value, constrained_values)
 
   # The run with the higher CO2 should be warmer, with a higher total and CO2 RF.
-  expect_true(all(lowco2_out$value <= rcp45_out$value))
-})
-
-# Instead of using the R wrapper to set up the concetnration driven runs
-# manipulate the underlying ini file. This tests to make sure the underly C++
-# code works.
-test_that("Concentration driven runs via INI file works", {
-
-  # Read in the ini file and find all of the lines in the ini file that are commented out
-  # they will all start with ";"
-  ini_txt_all <- readLines(system.file("input", "hector_rcp45.ini", package = "hector"))
-  ini_txt <- grep("^ *;", ini_txt_all, value = TRUE, invert = TRUE)
-
-  # Parese out all of the types of the halocarbons.
-  rxp <- "\\[([[:alnum:]]+)_halocarbon\\]"
-  halocarbs <- gsub(rxp, "\\1", grep(rxp, ini_txt, value = TRUE))
-
-  # A vector of all the concentrations to check.
-  outvars <- c(
-    ATMOSPHERIC_CO2(),
-    ATMOSPHERIC_CH4(),
-    ATMOSPHERIC_N2O(),
-    paste0(halocarbs, "_concentration")
-  )
-
-  # Run Hector and save all of the concentrations.
-  hc <- rcp45()
-  invisible(run(hc))
-  yrs <- seq(startdate(hc), enddate(hc))
-  results <- fetchvars(hc, yrs, outvars)
-
-  # Format the data the data frame concentrations into a format that can be used as Hector input.
-  results_sub <- results[, c("year", "variable", "value")]
-  wide <- reshape(results_sub, v.names = "value", idvar = "year",
-                  timevar = "variable", direction = "wide")
-  names(wide) <- gsub("value\\.", "", names(wide))
-  names(wide)[names(wide) == "year"] <- "Date"
-  names(wide)[names(wide) == "Ca"] <- CO2_CONSTRAIN()
-  names(wide)[names(wide) == "CH4"] <- CH4_CONSTRAIN()
-  names(wide)[names(wide) == "N2O"] <- N2O_CONSTRAIN()
-  names(wide) <- gsub("_concentration$", "_constrain", names(wide))
-
-  # Save the concentration table, note that this must be written out
-  # so that the ini can read it in.
-  tmp_dir <- tempfile()
-  dir.create(tmp_dir, showWarnings = FALSE)
-  tmpfile <- file.path(tmp_dir, "test_conc.csv")
-  write.csv(wide, tmpfile, row.names = FALSE, quote = FALSE)
-
-  # Add lines of text to the ini that create the different
-  # concentration constraints. The constraints will use the
-  # concentration time series stored in the data files.
-  ini_txt <- append(
-    ini_txt,
-    paste0("N2O_constrain=csv:", tmpfile),
-    grep("\\[N2O\\]", ini_txt)
-  )
-
-  ini_txt <- append(
-    ini_txt,
-    paste0("CH4_constrain=csv:", tmpfile),
-    grep("\\[CH4\\]", ini_txt)
-  )
-
-  for (h in halocarbs) {
-    ini_txt <- append(
-      ini_txt,
-      paste0(h, "_constrain=csv:", tmpfile),
-      grep(paste0("\\[", h, "_halocarbon", "\\]"), ini_txt)
-    )
-  }
-
-
-  # Copy over the emission files from the input directory to the same location as the
-  # the concentration constraints csv file. This is required by the Hector core.
-  tmprcp45_dir <- file.path(dirname(tmp_dir), "emissions")
-  dir.create(tmprcp45_dir, showWarnings = FALSE, recursive = TRUE)
-  file.copy(system.file("input", "emissions", "RCP45_emissions.csv",
-                        package = "hector"), tmprcp45_dir)
-  file.copy(system.file("input", "emissions", "volcanic_RF.csv",
-                        package = "hector"), tmprcp45_dir)
-
-  # Write out the new ini file.
-  tmpini <- tempfile(fileext = ".ini")
-  writeLines(ini_txt, tmpini)
-
-  # Run Hector using the new ini file and extract the results.
-  hc2 <- newcore(tmpini)
-  invisible(run(hc2))
-  results2 <- fetchvars(hc2, yrs, outvars)
-
-  # The results should be equal.
-  expect_equivalent(results, results2)
+  expect_true(all(lowco2_out$value <= ssp245_out$value))
 })
 
 test_that("Discontinuous constraint works", {
 
   # Set up a Hector core.
-  hc <- rcp45()
+  hc <- ssp245()
   all_years <- seq(startdate(hc), enddate(hc))
 
   # Create two CO2 constraints for two different time chunks, since
   # the purpose of this test is to make sure that the constraints work
-  # if they are discontinuous so these two chuncks MUST be discontinuous.
+  # if they are discontinuous so these two chunks MUST be discontinuous.
   ca_years_1 <- 1850:1860
   ca_vals_1 <- rep(278, length(ca_years_1))
   ca_years_2 <- 1870:1880
@@ -313,9 +224,11 @@ test_that("Discontinuous constraint works", {
 
   # RFs and concentrations during the constraint period are constant,
   # they should be since we read in constant CO2 concentrations.
-  expect_equal(length(unique(out_rf[out_rf$year %in% ca_years_1, "value"])), 1)
-  expect_equal(length(unique(out_rf[out_rf$year %in% ca_years_2, "value"])), 1)
-
+  # Assume that if the year to year change is less than the threshold
+  # then the constant CO2 concentrations were held true.
+  threshold <- 1e-5
+  expect_true(all(abs(diff(out_rf[out_rf$year %in% ca_years_1, "value"])) <= threshold))
+  expect_true(all(abs(diff(out_rf[out_rf$year %in% ca_years_2, "value"])) <= threshold))
   expect_equal(out_ca[out_ca$year %in% ca_years_1, "value"], ca_vals_1)
   expect_equal(out_ca[out_ca$year %in% ca_years_2, "value"], ca_vals_2)
 

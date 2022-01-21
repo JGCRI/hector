@@ -115,19 +115,22 @@ void TemperatureComponent::init( Core* coreptr ) {
     core->registerCapability( D_FLUX_MIXED, getComponentName() );
     core->registerCapability( D_FLUX_INTERIOR, getComponentName() );
     core->registerCapability( D_HEAT_FLUX, getComponentName() );
+    core->registerCapability( D_QCO2, getComponentName() );
+
 
     // Register our dependencies
     core->registerDependency( D_RF_TOTAL, getComponentName() );
     core->registerDependency( D_RF_BC, getComponentName() );
     core->registerDependency( D_RF_OC, getComponentName() );
-    core->registerDependency( D_RF_SO2d, getComponentName() );
-    core->registerDependency( D_RF_SO2i, getComponentName() );
+    core->registerDependency( D_RF_NH3, getComponentName() );
+    core->registerDependency( D_RF_SO2, getComponentName() );
+    core->registerDependency( D_RF_ACI, getComponentName() );
     core->registerDependency( D_RF_VOL, getComponentName() );
-    core->registerDependency( D_ACO2, getComponentName() );
 
 
     // Register the inputs we can receive from outside
     core->registerInput(D_ECS, getComponentName());
+    core->registerInput(D_QCO2, getComponentName());
     core->registerInput(D_DIFFUSIVITY, getComponentName());
     core->registerInput(D_AERO_SCALE, getComponentName());
     core->registerInput(D_VOLCANIC_SCALE, getComponentName());
@@ -174,6 +177,9 @@ void TemperatureComponent::setData( const string& varName,
         } else if(varName == D_VOLCANIC_SCALE) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
             volscl = data.getUnitval(U_UNITLESS);
+        } else if(varName == D_QCO2) {
+            H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
+            q2co2 = data.getUnitval(U_UNDEFINED);
         } else if( varName == D_TGAV_CONSTRAIN ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
             tgav_constrain.set(data.date, data.getUnitval(U_DEGC));
@@ -233,18 +239,16 @@ void TemperatureComponent::prepareToRun() {
     // Constants & conversion factors
     kcon = secs_per_Year / 10000;               // conversion factor from cm2/s to m2/yr;
     ocean_area = (1.0 - flnd) * earth_area;    // m2
+    double qco2 = q2co2.value( U_UNDEFINED );
 
-    // Determine the radiative forcing for atmospheric CO2 doubling, based on the
-    // forcing efficiency for CO2 (W/m2) (see eq A36 of Meinshausen et al. 2011).
-    aCO2 = core->sendMessage( M_GETDATA, D_ACO2 );
-    q2co = aCO2 * log(2);
+ 
 
     // Calculate climate feedback parameterisation
     cnum = rlam * flnd + bsi * (1.0 - flnd);   // denominator used to calculate climate senstivity feedback parameters over land & sea
     cden = rlam * flnd - ak * (rlam - bsi);    // another denominator use to calculate climate senstivity feedback parameters over land & sea
-    cfl = flnd * cnum / cden * q2co / S - bk * (rlam - bsi) / cden;  // calculate the land climate feedback parameter (W/(m2K)) eq A.19 Kriegler 2005
-    cfs = (rlam * flnd - ak / (1.0 - flnd) * (rlam - bsi)) * cnum / cden * q2co / S + rlam * flnd / (1.0 - flnd) * bk * (rlam - bsi) / cden; // calculate the sea climate feedback parameter (W/(m2K)) eq A.20 Kriegler 2005
-    kls = bk * rlam * flnd / cden - ak * flnd * cnum / cden * q2co / S;  // land-sea heat exchange coefficient (W/(m2K)) eq A.21 Kriegler 2005
+    cfl = flnd * cnum / cden * qco2 / S - bk * (rlam - bsi) / cden;  // calculate the land climate feedback parameter (W/(m2K)) eq A.19 Kriegler 2005
+    cfs = (rlam * flnd - ak / (1.0 - flnd) * (rlam - bsi)) * cnum / cden * qco2 / S + rlam * flnd / (1.0 - flnd) * bk * (rlam - bsi) / cden; // calculate the sea climate feedback parameter (W/(m2K)) eq A.20 Kriegler 2005
+    kls = bk * rlam * flnd / cden - ak * flnd * cnum / cden * qco2 / S;  // land-sea heat exchange coefficient (W/(m2K)) eq A.21 Kriegler 2005
 
     // Calculate ocean heat flux parameters & conversion factors
     keff = kcon * diff;                                                  // covert units of ocean heat diffusivity (m2/yr)
@@ -365,11 +369,19 @@ void TemperatureComponent::run( const double runToDate ) {
 
     // Some needed inputs
     int tstep = runToDate - core->getStartDate();
-    double aero_forcing =
-        double(core->sendMessage( M_GETDATA, D_RF_BC ).value( U_W_M2 )) + double(core->sendMessage( M_GETDATA, D_RF_OC).value( U_W_M2 )) +
-        double(core->sendMessage( M_GETDATA, D_RF_SO2d ).value( U_W_M2 )) + double(core->sendMessage( M_GETDATA, D_RF_SO2i ).value( U_W_M2 ));
+
+    // Calculate the total aresol forcing from aerosol-radiation interactions and the
+    // aerosol-cloud interactions so that that total aerosol forcing can be adjusted
+    // by the aerosol forcing scaling factor.
+    double aero_forcing = core->sendMessage( M_GETDATA, D_RF_BC ).value( U_W_M2 ) +
+        core->sendMessage( M_GETDATA, D_RF_OC).value( U_W_M2 ) +
+        core->sendMessage( M_GETDATA, D_RF_NH3).value( U_W_M2 ) +
+        core->sendMessage( M_GETDATA, D_RF_SO2).value( U_W_M2 ) +
+        core->sendMessage( M_GETDATA, D_RF_ACI).value( U_W_M2 ) ;
+
     double volcanic_forcing = double(core->sendMessage(M_GETDATA, D_RF_VOL));
 
+    // Adjust total forcing to account for the aerosol and volcanic forcing scaling factor
     forcing[tstep] = double(core->sendMessage(M_GETDATA, D_RF_TOTAL).value(U_W_M2))
                       - (1.0 - alpha) * aero_forcing
                       - (1.0 - volscl) * volcanic_forcing;
@@ -494,6 +506,8 @@ unitval TemperatureComponent::getData( const std::string& varName,
             returnval = S;
         } else if(varName == D_VOLCANIC_SCALE) {
             returnval = volscl;
+        } else if(varName == D_QCO2) {
+            returnval = q2co2;
         } else {
             H_THROW( "Caller is requesting unknown variable: " + varName );
         }

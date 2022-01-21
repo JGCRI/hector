@@ -12,8 +12,12 @@
  *
  */
 
+// some boost headers generate warnings under clang; not our problem, ignore
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Weverything"
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string/trim.hpp>
+#pragma clang diagnostic pop
 
 #include "logger.hpp"
 #include "unitval.hpp"
@@ -94,6 +98,10 @@ string unitval::unitsName( const unit_types u ) {
     case U_W_M2: return "W/m2";
         break;
     case U_W_M2_PPTV: return "W/m2/pptv";
+        break;
+    case U_W_M2_TG: return "W/m2/Tg";
+        break;
+    case U_W_M2_GG: return "W/m2/Gg";
         break;
     case U_W_M2_K: return "W/m2/K";
         break;

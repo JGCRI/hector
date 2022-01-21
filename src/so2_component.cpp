@@ -10,6 +10,9 @@
  *
  *  Created by Corinne on 5/6/2013
  *
+ *  Note that the SO2 emissions are read in terms of S instead of SO2
+ *  values may need to be converted from g SO2 to g of S.
+ *
  */
 
 #include "so2_component.hpp"
@@ -53,11 +56,14 @@ void SulfurComponent::init( Core* coreptr ) {
     core = coreptr;
 
     // Inform core what data we can provide
-    core->registerCapability( D_NATURAL_SO2, getComponentName() );
-    core->registerCapability( D_2000_SO2, getComponentName() );
-    // accept anthro emissions and volcanic emissions as inputs
+    core->registerCapability( D_EMISSIONS_SO2, getComponentName() );
+    core->registerCapability( D_VOLCANIC_SO2, getComponentName() );
+
+
+    // accept anthro emissions, volcanic, and natural emissions as inputs
     core->registerInput(D_EMISSIONS_SO2, getComponentName());
     core->registerInput(D_VOLCANIC_SO2, getComponentName());
+
 }
 
 //------------------------------------------------------------------------------
@@ -95,14 +101,6 @@ void SulfurComponent::setData( const string& varName,
         if( varName ==  D_EMISSIONS_SO2 ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
             SO2_emissions.set(data.date, data.getUnitval(U_GG_S));
-        }
-		else if( varName ==  D_2000_SO2  ) {
-            H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            S0 = data.getUnitval(U_GG_S);
-        }
-		else if( varName ==  D_NATURAL_SO2  ) {
-            H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            SN = data.getUnitval(U_GG_S);
         }
 		else if( varName ==  D_VOLCANIC_SO2  ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
@@ -142,14 +140,6 @@ unitval SulfurComponent::getData( const std::string& varName,
     if( varName == D_EMISSIONS_SO2 ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for SO2 emissions" );
         returnval = SO2_emissions.get( date );
-    }
-	else if( varName == D_2000_SO2 ) {
-        H_ASSERT( date == Core::undefinedIndex(), "Date not supported for SO2 in 2000" );
-        returnval = S0;
-    }
-	else if( varName == D_NATURAL_SO2 ) {
-        H_ASSERT( date == Core::undefinedIndex(), "Date not supported for natural SO2" );
-        returnval = SN;
     }
 	else if( varName == D_VOLCANIC_SO2 ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for volcanic SO2" );

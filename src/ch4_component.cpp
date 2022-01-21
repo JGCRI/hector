@@ -59,6 +59,7 @@ void CH4Component::init( Core* coreptr ) {
     core->registerDependency( D_LIFETIME_OH, getComponentName() );
     // ...and what input data that we can accept
     core->registerInput(D_EMISSIONS_CH4, getComponentName());
+    core->registerInput(D_NATURAL_CH4, getComponentName());
     core->registerInput(D_CONSTRAINT_CH4, getComponentName());
     core->registerInput(D_PREINDUSTRIAL_CH4, getComponentName());
 }
@@ -188,8 +189,11 @@ unitval CH4Component::getData( const std::string& varName,
         H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for preindustrial CH4" );
         returnval = M0;
     } else if( varName == D_EMISSIONS_CH4 ) {
-        H_ASSERT(  date != Core::undefinedIndex(), "Date not allowed for CH4 emissions" );
+        H_ASSERT(  date != Core::undefinedIndex(), "Date required for CH4 emissions" );
         returnval = CH4_emissions.get( date );
+    } else if( varName == D_NATURAL_CH4 ) {
+        H_ASSERT(  date == Core::undefinedIndex(), "Date not allowed for natural CH4 emissions" );
+        returnval = CH4N;
     } else if( varName == D_CONSTRAINT_CH4 ) {
         H_ASSERT(  date != Core::undefinedIndex(), "Date not allowed for CH4 constraint" );
         if ( CH4_constrain.exists( date ) ) {

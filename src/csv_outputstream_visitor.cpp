@@ -26,6 +26,7 @@
 #include "temperature_component.hpp"
 #include "bc_component.hpp"
 #include "oc_component.hpp"
+#include "nh3_component.hpp"
 #include "slr_component.hpp"
 #include "o3_component.hpp"
 #include "oh_component.hpp"

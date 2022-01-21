@@ -1,7 +1,7 @@
 context("setvar/fetchvars")
 
 inputdir <- system.file("input", package = "hector")
-inifile <- file.path(inputdir, "hector_rcp45.ini")
+inifile <- file.path(inputdir, "hector_ssp245.ini")
 
 test_that("Invalid input variable returns error", {
 

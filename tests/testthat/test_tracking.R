@@ -4,7 +4,7 @@
 context("Carbon tracking")
 
 inputdir <- system.file("input", package = "hector")
-inifile <- file.path(inputdir, "hector_rcp45.ini")
+inifile <- file.path(inputdir, "hector_ssp245.ini")
 
 error_threshold <- 1e-6
 tunits <- getunits(TRACKING_DATE())

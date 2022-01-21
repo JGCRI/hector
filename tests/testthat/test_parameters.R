@@ -6,12 +6,12 @@ sampledir <- system.file("output", package = "hector")
 testvars <- c(ATMOSPHERIC_CO2(), RF_TOTAL(), GLOBAL_TEMP())
 
 dates <- 1750:2100
-rcp45 <- file.path(inputdir, "hector_rcp45.ini")
+ssp245 <- file.path(inputdir, "hector_ssp245.ini")
 
 
 test_that('All "fraction" parameters can be set and retrieved', {
   # Set up Hector core
-  hc <- newcore(rcp45)
+  hc <- newcore(ssp245)
 
   # All of the fraction parameters.
   params <- tolower(c("F_NPPV", "F_NPPD", "F_LITTERD", "F_LUCV", "F_LUCD"))
@@ -35,7 +35,7 @@ test_that('All "fraction" parameters can be set and retrieved', {
 test_that("Initial CO2 concentration equals preindustrial", {
 
   # Run default Hector RCP 45
-  hc <- newcore(rcp45, suppresslogging = TRUE)
+  hc <- newcore(ssp245, suppresslogging = TRUE)
   run(hc, 1800)
 
   # Extract the inital atmosphere CO2 from the output.
@@ -66,7 +66,7 @@ test_that("Initial CO2 concentration equals preindustrial", {
 test_that("Lowering initial CO2 lowers output CO2", {
 
   # Define Hector core.
-  hc <- newcore(rcp45, suppresslogging = TRUE)
+  hc <- newcore(ssp245, suppresslogging = TRUE)
 
   # Run and save results.
   run(hc, 2100)
@@ -94,7 +94,7 @@ tdates <- 2000:2100
 test_that("Lowering ECS lowers output Temperature", {
 
   # Define Hector core.
-  hc <- newcore(rcp45, suppresslogging = TRUE)
+  hc <- newcore(ssp245, suppresslogging = TRUE)
 
   # Run and save results
   run(hc, 2100)
@@ -120,7 +120,7 @@ test_that("Lowering ECS lowers output Temperature", {
 test_that("Raising Q10 increases CO2 concentration", {
 
   # Define Hector core.
-  hc <- newcore(rcp45, suppresslogging = TRUE)
+  hc <- newcore(ssp245, suppresslogging = TRUE)
 
   # Run and save results
   run(hc, 2100)
@@ -147,7 +147,7 @@ test_that("Raising Q10 increases CO2 concentration", {
 test_that("Lowering diffusivity increases temperature", {
 
   # Define Hector core.
-  hc <- newcore(rcp45, suppresslogging = TRUE)
+  hc <- newcore(ssp245, suppresslogging = TRUE)
   run(hc, 2100)
 
   # Extract results from the default run.
@@ -177,7 +177,7 @@ test_that("Lowering aerosol forcing scaling factor increases temperature", {
   vars <- c(GLOBAL_TEMP())
 
   # Define Hector core.
-  hc <- newcore(rcp45, suppresslogging = TRUE)
+  hc <- newcore(ssp245, suppresslogging = TRUE)
 
   # Run and fetch data.
   run(hc, 2100)
@@ -208,7 +208,7 @@ test_that("Increasing volcanic forcing scaling factor increases the effect of vo
   vars <- GLOBAL_TEMP()
 
   # Set up and run Hector
-  hc <- newcore(rcp45, suppresslogging = TRUE)
+  hc <- newcore(ssp245, suppresslogging = TRUE)
   run(hc, 1971)
   out <- fetchvars(hc, tdates, vars)
 
@@ -226,7 +226,7 @@ test_that("Increasing volcanic forcing scaling factor increases the effect of vo
 test_that("Decreasing vegetation NPP fraction has down stream impacts", {
 
   # Define Hector core.
-  hc <- newcore(rcp45, suppresslogging = TRUE)
+  hc <- newcore(ssp245, suppresslogging = TRUE)
   run(hc, 2100)
 
   # Extract results from the default run.
@@ -253,7 +253,7 @@ test_that("Decreasing vegetation NPP fraction has down stream impacts", {
 test_that("Decreasing detritus NPP fraction has down stream impacts", {
 
   # Define Hector core.
-  hc <- newcore(rcp45, suppresslogging = TRUE)
+  hc <- newcore(ssp245, suppresslogging = TRUE)
   run(hc, 2100)
 
   # Extract results from the default run.
@@ -280,7 +280,7 @@ test_that("Decreasing detritus NPP fraction has down stream impacts", {
 test_that("Decreasing litter flux to detritus has down stream impacts", {
 
   # Define Hector core.
-  hc <- newcore(rcp45, suppresslogging = TRUE)
+  hc <- newcore(ssp245, suppresslogging = TRUE)
   run(hc, 2100)
 
   # Extract results from the default run.
@@ -307,7 +307,7 @@ test_that("Decreasing litter flux to detritus has down stream impacts", {
 test_that("Increasing CO2 fertilization factor increases NPP", {
 
   # Define Hector core.
-  hc <- newcore(rcp45, suppresslogging = TRUE)
+  hc <- newcore(ssp245, suppresslogging = TRUE)
   run(hc, 2100)
 
   # Extract results from the default run.

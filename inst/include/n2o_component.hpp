@@ -59,7 +59,7 @@ private:
     virtual unitval getData( const std::string& varName,
                             const double date );
 
-    unitval N0;    //! preindustrial N2O, ppbv N2O
+    unitval N0;      //! preindustrial N2O, ppbv N2O
     unitval UC_N2O;  //! conversion from emissions to concentration
     tseries<unitval> N2O_emissions; //! annual anthropogenic emissions time series, TgN/yr
     tseries<unitval> N2O_natural_emissions; //! annual natural emissions time series, TgN/yr

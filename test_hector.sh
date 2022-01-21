@@ -25,55 +25,58 @@ if [ ! -d $INPUT ]; then
     exit 1
 fi
 
-# Run the basic RCPs
-echo "---------- Running: basic RCPs ----------"
-$HECTOR $INPUT/hector_rcp26.ini
-$HECTOR $INPUT/hector_rcp45.ini
-$HECTOR $INPUT/hector_rcp60.ini
-$HECTOR $INPUT/hector_rcp85.ini
+# Run the basic SSPs
+echo "---------- Running: basic SSPs ----------"
+$HECTOR $INPUT/hector_ssp119.ini
+$HECTOR $INPUT/hector_ssp126.ini
+$HECTOR $INPUT/hector_ssp370.ini
+$HECTOR $INPUT/hector_ssp434.ini
+$HECTOR $INPUT/hector_ssp460.ini
+$HECTOR $INPUT/hector_ssp534-over.ini
+$HECTOR $INPUT/hector_ssp585.ini
 
 # Make sure the model handles year changes
 echo "---------- Running: year changes ----------"
-sed 's/startDate=1745/startDate=1740/' $INPUT/hector_rcp45.ini > $INPUT/hector_rcp45_time.ini
-$HECTOR $INPUT/hector_rcp45_time.ini
-sed 's/endDate=2300/endDate=2250/' $INPUT/hector_rcp45.ini > $INPUT/hector_rcp45_time.ini
-$HECTOR $INPUT/hector_rcp45_time.ini
-rm $INPUT/hector_rcp45_time.ini
+sed 's/startDate=1745/startDate=1740/' $INPUT/hector_ssp245.ini > $INPUT/hector_ssp245_time.ini
+$HECTOR $INPUT/hector_ssp245_time.ini
+sed 's/endDate=2300/endDate=2250/' $INPUT/hector_ssp245.ini > $INPUT/hector_ssp245_time.ini
+$HECTOR $INPUT/hector_ssp245_time.ini
+rm $INPUT/hector_ssp245_time.ini
 
 # Turn on tracking
 echo "---------- Running: tracking ----------"
-sed 's/trackingDate=9999/trackingDate=1850/' $INPUT/hector_rcp45.ini > $INPUT/hector_rcp45_tracking.ini
-$HECTOR $INPUT/hector_rcp45_tracking.ini
+sed 's/trackingDate=9999/trackingDate=1850/' $INPUT/hector_ssp245.ini > $INPUT/hector_ssp245_tracking.ini
+$HECTOR $INPUT/hector_ssp245_tracking.ini
+
 echo "---------- Running: tracking & CO2 constraint ----------"
-sed 's/;CO2_constrain=csv:constraints\/lawdome_co2.csv/CO2_constrain=csv:constraints\/lawdome_co2.csv/' $INPUT/hector_rcp45_tracking.ini > $INPUT/hector_rcp45_tracking_co2.ini
-$HECTOR $INPUT/hector_rcp45_tracking_co2.ini
-rm $INPUT/hector_rcp45_tracking_co2.ini
-rm $INPUT/hector_rcp45_tracking.ini
+sed 's/;CO2_constrain=csv:tables\/ssp245_emiss-constraints_rf.csv/CO2_constrain=csv:tables\/ssp245_emiss-constraints_rf.csv/' $INPUT/hector_ssp245_tracking.ini > $INPUT/hector_ssp245_tracking_co2.ini
+$HECTOR $INPUT/hector_ssp245_tracking_co2.ini
+rm $INPUT/hector_ssp245_tracking_co2.ini
+rm $INPUT/hector_ssp245_tracking.ini
 
 # Turn off spinup
 echo "---------- Running: no spinup ----------"
-sed 's/do_spinup=1/do_spinup=0/' $INPUT/hector_rcp45.ini > $INPUT/hector_rcp45_spinup.ini
-$HECTOR $INPUT/hector_rcp45_spinup.ini
-rm $INPUT/hector_rcp45_spinup.ini
+sed 's/do_spinup=1/do_spinup=0/' $INPUT/hector_ssp245.ini > $INPUT/hector_ssp245_spinup.ini
+$HECTOR $INPUT/hector_ssp245_spinup.ini
+rm $INPUT/hector_ssp245_spinup.ini
 
-# Turn on the constraint settings one by one and run the model
-# CO2
+# Turn on the constraint settings one by one and run the model  CO2
 echo "---------- Running: CO2 constraint ----------"
-sed 's/;CO2_constrain=csv:constraints\/lawdome_co2.csv/CO2_constrain=csv:constraints\/lawdome_co2.csv/' $INPUT/hector_rcp45.ini > $INPUT/hector_rcp45_co2.ini
-$HECTOR $INPUT/hector_rcp45_co2.ini
-rm $INPUT/hector_rcp45_co2.ini
+sed 's/;CO2_constrain=csv:tables\/ssp245_emiss-constraints_rf.csv/CO2_constrain=csv:tables\/ssp245_emiss-constraints_rf.csv/' $INPUT/hector_ssp245.ini > $INPUT/hector_ssp245_co2.ini
+$HECTOR $INPUT/hector_ssp245_co2.ini
+rm $INPUT/hector_ssp245_co2.ini
 
 # Temperature
 echo "---------- Running: Tgav constraint ----------"
-sed 's/;tgav_constrain/tgav_constrain/' $INPUT/hector_rcp45.ini > $INPUT/hector_rcp45_tgav.ini
-$HECTOR $INPUT/hector_rcp45_tgav.ini
-rm $INPUT/hector_rcp45_tgav.ini
+sed 's/;tgav_constrain=csv:tables\/CONSTRAINT.csv/tgav_constrain=csv:tables\/tgav_historical.csv/' $INPUT/hector_ssp245.ini > $INPUT/hector_ssp245_tgav.ini
+$HECTOR $INPUT/hector_ssp245_tgav.ini
+rm $INPUT/hector_ssp245_tgav.ini
 
 # Radiative forcing
 echo "---------- Running: Ftot constraint ----------"
-sed 's/;Ftot_constrain/Ftot_constrain/' $INPUT/hector_rcp45.ini > $INPUT/hector_rcp45_ftot.ini
-$HECTOR $INPUT/hector_rcp45_ftot.ini
-rm $INPUT/hector_rcp45_ftot.ini
+sed 's/;Ftot_constrain=csv:tables\/CONSTRAINT.csv/Ftot_constrain=csv:tables\/ssp245_emiss-constraints_rf.csv/' $INPUT/hector_ssp245.ini > $INPUT/hector_ssp245_ftot.ini
+$HECTOR $INPUT/hector_ssp245_ftot.ini
+rm $INPUT/hector_ssp245_ftot.ini
 
 # Ocean-atmosphere C flux
 # Disabled as the relevant file doesn't seem to currently exist

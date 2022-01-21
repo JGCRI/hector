@@ -1,7 +1,7 @@
 context("Hector core-handling functions")
 
 inputdir <- system.file("input", package = "hector")
-inifile <- file.path(inputdir, "hector_rcp45.ini")
+inifile <- file.path(inputdir, "hector_ssp245.ini")
 
 test_that("Running a single scenario returns proper outputs", {
 
