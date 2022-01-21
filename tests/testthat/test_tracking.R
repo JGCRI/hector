@@ -33,6 +33,7 @@ test_that("Changing a parameter changes tracking data", {
     # Run core, get tracking data
     core <- newcore(inifile)
     setvar(core, NA, TRACKING_DATE(), 1900, tunits)
+    reset(core, core$reset_date)
     run(core, runtodate = 2000)
     df1 <- get_tracking_data(core)
 
@@ -57,7 +58,9 @@ test_that("Tracking run produces correct data", {
 
     # Run core and get tracking data, then test that the class is data.frame
     core <- newcore(inifile)
+    reset(core, core$reset_date)
     setvar(core, NA, TRACKING_DATE(), 1770, tunits)
+    reset(core, core$reset_date)
     run(core)
 
     df <- get_tracking_data(core)
@@ -115,9 +118,10 @@ test_that("Tracking works with a core reset", {
     # get_tracking_data data.frame is identical to an empty one.
     core <- newcore(inifile)
     setvar(core, NA, TRACKING_DATE(), 1760, tunits)
+    reset(core, core$reset_date)
     run(core, 1770)
 
-    reset(core)
+    reset(core, core$reset_date)
 
     df <- get_tracking_data(core)
     expect_identical(df, data.frame())
@@ -127,6 +131,7 @@ test_that("Tracking works with a core reset", {
     # Run a core, and assign the start, end, and track dates to variables.
     core1 <- newcore(inifile)
     setvar(core1, NA, TRACKING_DATE(), 1760, tunits)
+    reset(core1, core1$reset_date)
     run(core1, 1770)
 
     start_date <- core1$strtdate
@@ -149,6 +154,7 @@ test_that("Tracking works with a core reset", {
     # date is the same as the original core's.
     core1 <- newcore(inifile)
     setvar(core1, NA, TRACKING_DATE(), 1760, tunits)
+    reset(core1, core1$reset_date)
     run(core1, 1770)
     track_date <- fetchvars(core1, NA, TRACKING_DATE())$value
 
@@ -163,6 +169,7 @@ test_that("Pool names are valid", {
     error_threshold <- 1e-3
     core <- newcore(inifile)
     setvar(core, NA, TRACKING_DATE(), 1760, tunits)
+    reset(core, core$reset_date)
     run(core, 1770)
 
     # Check that pool_name and corresponding pool_units are the same values

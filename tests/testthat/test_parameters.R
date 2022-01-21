@@ -22,6 +22,7 @@ test_that('All "fraction" parameters can be set and retrieved', {
   mapply(function(p, v) {
     setvar(hc, dates = NA, var = p, values = v, unit = "(unitless)")
   }, p = params, v = new_values)
+  reset(hc)
   run(hc)
 
   # Extract the parameters and make sure they match the values read in.
@@ -105,6 +106,7 @@ test_that("Lowering ECS lowers output Temperature", {
 
   ## make sure this still works with automatic reset.
   setvar(hc, NA, ECS(), new_ECS, getunits(ECS()))
+  reset(hc, hc$reset_date)
   run(hc, 2100)
   dd2 <- fetchvars(hc, tdates, GLOBAL_TEMP())
 
@@ -158,6 +160,7 @@ test_that("Lowering diffusivity increases temperature", {
 
   # Set up and run Hector with the new kappa (ocean heat diffusivity)
   setvar(hc, NA, DIFFUSIVITY(), new_kappa, default_kappa$units)
+  reset(hc, hc$reset_date)
   run(hc, 2100)
   dd2 <- fetchvars(hc, tdates, vars)
 
@@ -186,6 +189,7 @@ test_that("Lowering aerosol forcing scaling factor increases temperature", {
 
   # Run with new alpha
   setvar(hc, NA, AERO_SCALE(), new_alpha, getunits(AERO_SCALE()))
+  reset(hc, hc$reset_date)
   run(hc, 2100)
   dd2 <- fetchvars(hc, tdates, GLOBAL_TEMP())
 
@@ -212,6 +216,7 @@ test_that("Increasing volcanic forcing scaling factor increases the effect of vo
   default_vol <- fetchvars(hc, NA, VOLCANIC_SCALE(), getunits(VOLCANIC_SCALE()))
   new_vol <- default_vol$value * 2
   setvar(hc, NA, VOLCANIC_SCALE(), new_vol, getunits(VOLCANIC_SCALE()))
+  reset(hc, hc$reset_date)
   run(hc)
   new_out <- fetchvars(hc, tdates, vars)
 
