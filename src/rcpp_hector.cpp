@@ -1,7 +1,6 @@
 #include <Rcpp.h>
 #include <fstream>
 #include <sstream>
-#include <boost/lexical_cast.hpp>
 
 #include "hector.hpp"
 #include "logger.hpp"
