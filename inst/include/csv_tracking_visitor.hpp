@@ -27,7 +27,7 @@ namespace Hector {
  */
 class CSVFluxPoolVisitor : public AVisitor {
 public:
-    CSVFluxPoolVisitor( ostream& outputStream, const bool printHeader = true );
+    CSVFluxPoolVisitor( std::ostream& outputStream, const bool printHeader = true );
     ~CSVFluxPoolVisitor();
 
     virtual bool shouldVisit( const bool in_spinup, const double date );
@@ -35,8 +35,8 @@ public:
     virtual void visit( SimpleNbox* c );
     virtual void visit( OceanComponent* c );
 
-    std::string get_buffer() const;
     void reset( const double reset_date );
+    virtual void outputTrackingData( std::ostream& tracking_out ) const;
     
 private:
     //! The file output stream in which the csv output will be written to.

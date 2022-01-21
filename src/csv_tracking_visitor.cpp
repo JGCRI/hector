@@ -132,20 +132,16 @@ void CSVFluxPoolVisitor::visit( OceanComponent* c ) {
 }
 
 //------------------------------------------------------------------------------
-/*! \brief Assemble the time series strings into a single string and return to core.
- *  \return The visitor output assembled into a single string.
- */
-std::string CSVFluxPoolVisitor::get_buffer() const {
-    stringstream output;
-    
+/*! \brief Assemble the time series strings into the given tracking output stream.
+ *  \param tracking_out The output stream to write results into.
+ */ 
+void CSVFluxPoolVisitor::outputTrackingData( ostream& tracking_out ) const {
     if(csvBuffer.size()) {
-        output << header; // the header (or an empty string)        
+        tracking_out << header; // the header (or an empty string)        
         for( double yr = csvBuffer.firstdate(); yr <= csvBuffer.lastdate(); yr++ ) {
-            output << csvBuffer.get(yr);
+            tracking_out << csvBuffer.get(yr);
         }
     }
-    
-    return output.str();
 }
 
 //------------------------------------------------------------------------------

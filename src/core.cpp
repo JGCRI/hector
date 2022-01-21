@@ -205,15 +205,12 @@ void Core::init() {
  */
 std::string Core::getTrackingData() const {
 
-    // I'm pretty sure I should be using a virtual function for this
+    // use a string output stream to collect the results
+    ostringstream tracking_out;
     for( auto visitorIt : modelVisitors ) {
-        const CSVFluxPoolVisitor* bad_idea = dynamic_cast<const CSVFluxPoolVisitor*>(visitorIt);
-        if(bad_idea != nullptr ) {
-            return(bad_idea->get_buffer());
-        }
-
+        visitorIt->outputTrackingData(tracking_out);
     }
-    return "";
+    return tracking_out.str();
 }
 
 //------------------------------------------------------------------------------
