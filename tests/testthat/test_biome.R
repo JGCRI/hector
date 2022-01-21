@@ -215,6 +215,7 @@ test_that("Split biomes, and modify parameters", {
   expect_equivalent(default_veg, (1 - fsplit) * global_veg2)
   expect_equivalent(permafrost_veg, fsplit * global_veg2)
   expect_equivalent(default_veg + permafrost_veg, global_veg2)
+  reset(core)
   invisible(run(core))
   r_biome <- fetchvars(core, 2000:2100)
   expect_equivalent(r_global, r_biome)
@@ -236,6 +237,7 @@ test_that("Split biomes, and modify parameters", {
   # Ramping up the warming factor for permafrost should decrease its
   # detritus and soil C pools (because respiration is much faster)
   setvar(core, NA, WARMINGFACTOR("permafrost"), 3.0, NA)
+  reset(core)
   invisible(run(core))
   r_warm_data <- fetchvars(core, 2000:2100, c(
     VEG_C("non-pf"), VEG_C("permafrost"),
@@ -277,6 +279,7 @@ test_that("Split biomes, and modify parameters", {
     # Check that only the one parameter was changed
     expect_equal(fetchvars(core, NA, var_f("a"))[["value"]], orig_val)
     expect_equal(fetchvars(core, NA, var_f("b"))[["value"]], value)
+    reset(core)
     invisible(run(core))
     # Check that the new result had higher CO2 than original one
     new <- fetchvars(core, 2000:2100, ATMOSPHERIC_CO2())
@@ -302,6 +305,7 @@ test_that("More than 2 biomes", {
   veg_c_biomes <- vapply(biomes, VEG_C, character(1))
   split_biome(core, "global", biomes)
   expect_equal(get_biome_list(core), biomes)
+  reset(core)
   invisible(run(core))
   invisible(reset(core))
   biome_vegc <- fetchvars(core, NA, veg_c_biomes)
