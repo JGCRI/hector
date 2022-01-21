@@ -58,6 +58,12 @@ public:
     virtual void reset( const double reset_date ) {}
 
     //------------------------------------------------------------------------------
+    /*! \brief Update the Tracking Data output if applicable.
+     *  \param tracking_out The Tracking Data output stream to place results into.
+     */
+    virtual void outputTrackingData( std::ostream& tracking_out ) const {}
+
+    //------------------------------------------------------------------------------
     // Add a visit for all visitable subclasses here.
     // TODO: should we create a .cpp for these?
     virtual void visit( Core* core ) {}
