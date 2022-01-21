@@ -177,7 +177,7 @@ format.hcore <- function(x, ...) {
     cdate <- getdate(x)
     sprintf(
       paste0("Hector core:\t%s\nStart date:\t%d\nEnd date:\t%d\n",
-      "Current date:\t%d\nInput file:\t%s"),
+      "Current date:\t%d\nInput file:\t%s\n"),
       x$name,
       as.integer(x$strtdate), as.integer(x$enddate), as.integer(cdate),
       x$inifile

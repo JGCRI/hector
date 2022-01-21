@@ -1,6 +1,7 @@
 #include <Rcpp.h>
 #include <fstream>
 #include <sstream>
+#include <boost/lexical_cast.hpp>
 
 #include "hector.hpp"
 #include "logger.hpp"
@@ -162,7 +163,9 @@ Environment reset(Environment core, double date=0)
 Environment run(Environment core, double runtodate = -1.0)
 {
     if(!core["clean"]) {
-        Rcout << "NOTE: auto-resetting core\n";
+        int resetDate = core["reset_date"];
+        std::string msg = "auto-resetting core to " + std::to_string(resetDate);
+        Rcpp::warning(msg);
         reset(core, core["reset_date"]);
     }
 
