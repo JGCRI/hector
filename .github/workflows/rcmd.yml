@@ -37,9 +37,9 @@ jobs:
           # test on one version of R for windows
           - {os: windows-latest, r: 'release'}
 
-          # latest stable version of R for ubuntu-16.04 is 3.5; ubuntu-latest is migrating to 20.04 by the end of 2020
-          - {os: ubuntu-16.04, r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
-          - {os: ubuntu-16.04, r: '3.6', rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
+          # (at the time of last edit) latest stable version of R for ubuntu-20.04 is 4.1 and 3.6 appears to still be available as well
+          - {os: ubuntu-20.04, r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest"}
+          - {os: ubuntu-latest, r: '3.6', rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest"}
 
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
@@ -75,7 +75,7 @@ jobs:
           while read -r cmd
           do
             eval sudo $cmd
-          done < <(Rscript -e 'writeLines(remotes::system_requirements("ubuntu", "16.04"))')
+          done < <(Rscript -e 'writeLines(remotes::system_requirements("ubuntu", "20.04"))')
 
       - name: Install XQuartz on MacOS
         if: runner.os == 'macOS'
