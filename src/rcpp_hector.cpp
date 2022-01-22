@@ -161,8 +161,12 @@ Environment reset(Environment core, double date=0)
 // [[Rcpp::export]]
 Environment run(Environment core, double runtodate = -1.0)
 {
-    if(!core["clean"])
+    if(!core["clean"]) {
+        int resetDate = core["reset_date"];
+        std::string msg = "auto-resetting core to " + std::to_string(resetDate);
+        Rcpp::warning(msg);
         reset(core, core["reset_date"]);
+    }
 
     Hector::Core *hcore = gethcore(core);
     if(runtodate > 0 && runtodate < hcore->getCurrentDate()) {

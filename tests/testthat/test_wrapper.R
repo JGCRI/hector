@@ -150,7 +150,9 @@ test_that("Automatic reset is performed if and only if core is not marked 'clean
   expect_error(run(hc, 2050), "is prior") # No reset
   hc$clean <- FALSE
   hc$reset_date <- 0
-  expect_silent(run(hc, 2050)) # reset performed
+  ## Reset performed - expect_output, not expect_silent, because the core
+  ## prints a message alerting user of reset
+  expect_warning(run(hc, 2050), "resetting")
   expect_true(hc$clean)
 
   hc$clean <- FALSE
@@ -179,22 +181,28 @@ test_that("Setting future values does not trigger a reset.", {
 })
 
 
-test_that("Setting past or parameter values does trigger a reset.", {
-  hc <- newcore(file.path(inputdir, "hector_ssp245.ini"), suppresslogging = TRUE)
+test_that("Setting parameter values or run date prior to current date does trigger a reset.", {
+  hc <- newcore(file.path(inputdir, "hector_ssp370.ini"), suppresslogging = TRUE)
   run(hc, 2100)
 
   setvar(hc, 2050:2150, FFI_EMISSIONS(), 0.0, "Pg C/yr")
   expect_false(hc$clean)
+  expect_warning(run(hc, 2100), "resetting")
+  expect_true(hc$clean) # reset gets run!
   expect_equal(hc$reset_date, 2049)
-  expect_error(run(hc, 2048), "is prior")
-  expect_true(hc$clean) # reset still gets run!
+
+  # requesting a prior date run raises an error BUT also resets
+  setvar(hc, 2050:2150, FFI_EMISSIONS(), 0.0, "Pg C/yr")
+  # suppress warnings - we know core will auto-reset
+  expect_error(suppressWarnings(run(hc, 2048)), "is prior")
   expect_silent(run(hc, 2050))
   expect_true(hc$clean)
 
   setvar(hc, 2050:2150, FFI_EMISSIONS(), 0.0, "Pg C/yr") # edge case
   expect_false(hc$clean)
   expect_equal(hc$reset_date, 2049)
-  expect_error(run(hc, 2048), "is prior")
+  # suppress warnings - we know core will auto-reset
+  expect_error(suppressWarnings(run(hc, 2048)), "is prior")
   expect_silent(run(hc, 2050))
   expect_true(hc$clean)
 
