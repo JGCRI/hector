@@ -1340,18 +1340,21 @@ F_LUCD <- function() {
 }
 
 #' @describeIn carboncycle Vegetation C pool (`"Pg C"`)
+#' @param biome Name of biome (leave empty for global)
 #' @export
 VEG_C <- function(biome = "") {
     .Call('_hector_VEG_C', PACKAGE = 'hector', biome)
 }
 
 #' @describeIn carboncycle Vegetation detritus C pool (`"Pg C"`)
+#' @param biome Name of biome (leave empty for global)
 #' @export
 DETRITUS_C <- function(biome = "") {
     .Call('_hector_DETRITUS_C', PACKAGE = 'hector', biome)
 }
 
 #' @describeIn carboncycle Soil C pool (`"Pg C"`)
+#' @param biome Name of biome (leave empty for global)
 #' @export
 SOIL_C <- function(biome = "") {
     .Call('_hector_SOIL_C', PACKAGE = 'hector', biome)
@@ -1365,6 +1368,7 @@ EARTH_C <- function() {
 
 #' @describeIn carboncycle Initial net primary productivity (NPP)
 #'   flux (`"Pg C year^-1"`)
+#' @param biome Name of biome (leave empty for global)
 #' @export
 NPP_FLUX0 <- function(biome = "") {
     .Call('_hector_NPP_FLUX0', PACKAGE = 'hector', biome)

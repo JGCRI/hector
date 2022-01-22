@@ -1655,6 +1655,7 @@ return D_F_LUCD;
 }
 
 //' @describeIn carboncycle Vegetation C pool (`"Pg C"`)
+//' @param biome Name of biome (leave empty for global)
 //' @export
 // [[Rcpp::export]]
 String VEG_C(String biome = "") {
@@ -1666,6 +1667,7 @@ String VEG_C(String biome = "") {
 }
 
 //' @describeIn carboncycle Vegetation detritus C pool (`"Pg C"`)
+//' @param biome Name of biome (leave empty for global)
 //' @export
 // [[Rcpp::export]]
 String DETRITUS_C(String biome = "") {
@@ -1677,6 +1679,7 @@ String DETRITUS_C(String biome = "") {
 }
 
 //' @describeIn carboncycle Soil C pool (`"Pg C"`)
+//' @param biome Name of biome (leave empty for global)
 //' @export
 // [[Rcpp::export]]
 String SOIL_C(String biome = "") {
@@ -1696,6 +1699,7 @@ String EARTH_C() {
 
 //' @describeIn carboncycle Initial net primary productivity (NPP)
 //'   flux (`"Pg C year^-1"`)
+//' @param biome Name of biome (leave empty for global)
 //' @export
 // [[Rcpp::export]]
 String NPP_FLUX0(String biome = "") {
