@@ -49,6 +49,9 @@ EARTH_C()
 
 NPP_FLUX0(biome = "")
 }
+\arguments{
+\item{biome}{Name of biome (leave empty for global)}
+}
 \description{
 These identifiers correspond to variables that can be read and/or set in the
 carbon cycle
