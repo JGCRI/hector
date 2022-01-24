@@ -18,6 +18,11 @@
  *
  *  Other References
  *
+ *  Hartin, C. A., Bond-Lamberty, B., Patel, P., and Mundra, A.: Ocean acidification over
+ *      the next three centuries using a simple global climate carbon-cycle model:
+ *      projections and sensitivities, Biogeosciences, 13, 4329–4342,
+ *      https://doi.org/10.5194/bg-13-4329-2016, 2016.
+ *
  *  Riley, J. P. and Tongudai, M.: The major cation/chlorinity ratios
  *      in sea water, Chem. Geol., 2, 263–269, doi:10.1016/0009-
  *      2541(67)90026-5, 1967.
@@ -263,13 +268,13 @@ void OceanComponent::prepareToRun() {
     surfaceHL.mychemistry.S             = 34.5; // Salinity Riley and Tongudai (1967)
     surfaceHL.mychemistry.volumeofbox   = HL_volume; // m3
     surfaceHL.mychemistry.As            = ocean_area * part_high ; // surface area m2
-    surfaceHL.mychemistry.U             = 6.7; // average wind speed m/s
+    surfaceHL.mychemistry.U             = 6.7; // average wind speed m/s Hartin et al. 2016
 
     surfaceLL.deltaT.set( 7.0, U_DEGC ); // delta T is added 288.15 to return the initial temperature value of the surface box
     surfaceLL.mychemistry.S             = 34.5;  // Salinity Riley and Tongudai (1967)
     surfaceLL.mychemistry.volumeofbox   = LL_volume; //m3
     surfaceLL.mychemistry.As            = ocean_area * part_low; // surface area m2
-    surfaceLL.mychemistry.U             = 6.7; // average wind speed m/s
+    surfaceLL.mychemistry.U             = 6.7; // average wind speed m/s Hartin et al. 2016
 
     // Log the state of all our boxes, so we know things are as they should be
     surfaceLL.log_state();
@@ -523,7 +528,7 @@ int OceanComponent::calcderivs( double t, const double c[], double dcdt[] ) cons
     // If the solver has adjusted the ocean and/or atmosphere pools,
     // need to be take into account in the flux computation
     const unitval cpooldiff = unitval( c[ SNBOX_OCEAN ], U_PGC ) - totalcpool();
-    const unitval surfacepools = surfaceLL.get_carbon() + surfaceHL. get_carbon();
+    const unitval surfacepools = surfaceLL.get_carbon() + surfaceHL.get_carbon();
     const double cpoolscale = ( surfacepools + cpooldiff ) / surfacepools;
     unitval Ca( c[ SNBOX_ATMOS ] * PGC_TO_PPMVCO2, U_PPMV_CO2 );
 
