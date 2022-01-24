@@ -180,11 +180,11 @@ AF_calc <- function(start, results, stop) {
 }
 ```
 
-Next, we will run our functions for the RCP 4.5 scenario between 1750 and 2050 with tracking beginning at the start of the run. We can then find the value of the airborne fraction in any year of the model run. Let's look at how the airborne fraction changes over time from 1950 to 2020 in ten year increments as well as the value in just the year 2020.
+Next, we will run our functions for the SSP245 scenario between 1750 and 2050 with tracking beginning at the start of the run. We can then find the value of the airborne fraction in any year of the model run. Let's look at how the airborne fraction changes over time from 1950 to 2020 in ten year increments as well as the value in just the year 2020.
 
 ``` {r hector.calculations}
-rcp45 <- system.file("input", "hector_rcp45.ini", package = "hector")
-results <- tracking_results(rcp45, 1750, 2050, 1750, "RCP 4.5")
+ssp245 <- system.file("input", "hector_ssp245.ini", package = "hector")
+results <- tracking_results(ssp245, 1750, 2050, 1750, "SSP245")
 
 years <- seq(1950, 2020, by = 10)
 airborne_frac <- cbind(make.row.names = years, lapply(years, AF_calc, results, 1750))
@@ -205,14 +205,14 @@ knorr_avg <- mean(knorr_values)
 knorr_minmax <- max(knorr_values) - min(knorr_values)
 
 
-names <- c("Knorr avg", years)
+vars <- c("Knorr avg", years)
 values <- c(knorr_avg, as.numeric(airborne_frac[,2]))
 error <- c(knorr_minmax, rep(0, times = 8))
 
-df <- data.frame(names, values, error)
+df <- data.frame(vars, values, error)
 
 ggplot(df) +
-  aes(x = names, y = values, fill = names) + 
+  aes(x = vars, y = values, fill = names) + 
   geom_bar(stat = "identity") +
   geom_errorbar(aes(ymin = values - error, ymax = values + error), width = 0.2)+
   scale_fill_manual(values = c("paleturquoise3", "paleturquoise2", "paleturquoise1", "darkslategray1", "darkslategray2", "darkslategray3", "darkslategray4", "darkslategray", "grey50")) +
