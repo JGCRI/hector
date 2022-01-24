@@ -25,7 +25,7 @@ various pools as the model runs. At the user-chosen start date, each pool is
 deemed to be composed of 100% carbon from itself, i.e. at that moment in time 
 the deep ocean pool is 100% composed of carbon from the deep pool. 
 
-As the model moves forward in time from the start date, Hector tracks each pool's fractional composition--i.e. the sources of its current carbon. 
+As the model moves forward in time from the start date, Hector tracks each pool's fractional composition -- i.e. the sources of its current carbon. 
 When the run is finished, this data can be read into R and then analyzed.
 
 ## Setup
@@ -65,6 +65,7 @@ each of its pools as originating in that pool: the atmosphere will be 100%
 setvar(core, NA, TRACKING_DATE(), 1750, "(unitless)")
 fetchvars(core, NA, TRACKING_DATE())
 
+invisible(reset(core))
 run(core)
 ```
 
@@ -89,7 +90,7 @@ and `pool_units`) differ from those used in the model's standard stream output
 
 ## Results
 
-By using ggplot, we can create time series graphs of how the origin of one
+By using `ggplot`, we can create time series graphs of how the origin of one
 or more carbon pools in the model changes over time. 
 
 ``` {r hector.plot1, fig.width = 7, fig.height = 5}
@@ -97,14 +98,14 @@ ggplot(tdata, aes(year, source_fraction, fill = source_name)) +
   geom_area() +
   facet_wrap(~pool_name) +
   theme(axis.text = element_text(size = 7)) +
-  ggtitle("Source Percentage Change Over Time") +
-  xlab("Year") +
-  ylab("Source Fraction")
+  labs(x = "Year",
+       y = "Source Fraction",
+       title = "Source Percentage Change Over Time")
 ```
 
 Let's take a look at these graphs. Note that the `earth_c` pool is always 100% 
 `earth_c`: there are no inflows to this pool in SSP245 (in contrast, in
-SSP245 there is direct-air carbon capture and storage, so the `earth_c` pool
+SSP19 there is direct-air carbon capture and storage, so the `earth_c` pool
 origins will change). We see that around 1800, human emissions (from `earth_c`) 
 begin to appear in pools such as `atmos_c` or `soil_c_global`. 
 Between 1900-2000, human emissions take off and become major sources by 2100. 
@@ -114,13 +115,12 @@ Let's examine just one pool:
 ``` {r hector.atm, fig.width = 6, fig.height = 4}
 atmos <- subset(tdata, pool_name == "atmos_c")
 
-ggplot(atmos,
-    aes(year, source_fraction, fill = source_name)) +
-    geom_area() +
-    facet_wrap(~pool_name) +
-    ggtitle("Source Percentage Change Over Time - Atmosphere") +
-    xlab("Year") +
-    ylab("Source Fraction")
+ggplot(atmos, aes(year, source_fraction, fill = source_name)) +
+  geom_area() +
+  facet_wrap(~pool_name) +
+  labs(x = "Year",
+       y = "Source Fraction",
+       title = "Source Percentage Change Over Time - Atmosphere")
 ```
 
 This allows us to better examine the contributions by source to the atmosphere. 
@@ -134,66 +134,63 @@ First, we can define two functions. The first will run a core and turn on tracki
 ``` {r hector.define_functions}
 
 tracking_results <- function(inifile, start, stop, tracking, scenarioName) {
-    # Establish core, turn on tracking, run core
-    core <- newcore(inifile)
-    setvar(core, NA, TRACKING_DATE(), tracking, "(unitless)")
-    run(core)
-    
-    # Get results, filter by correct years, add columns containing the amount of carbon by source and the given scenario name
-    results <- get_tracking_data(core)
-    results <- subset(results, year >= start)
-    results <- subset(results, year <= stop)
-    results$source_amount <- results$source_fraction * results$pool_value
-    results$scenario_name <- scenarioName
-    
-    return(results)
+  # Establish core, turn on tracking, run core
+  core <- newcore(inifile)
+  setvar(core, NA, TRACKING_DATE(), tracking, "(unitless)")
+  
+  reset(core)
+  run(core)
+  
+  # Get results, filter by correct years, add columns containing the amount of carbon by source and the given scenario name
+  results <- get_tracking_data(core)
+  results <- subset(results, year >= start)
+  results <- subset(results, year <= stop)
+  results$source_amount <- results$source_fraction * results$pool_value
+  results$scenario_name <- scenarioName
+  
+  return(results)
 }
 
-AF_calc <- function(results, start, stop) {
-
-    # Isolate the atmos_c pool and earth_c source in start/end years  
-    atm_c <- subset(results, results$pool_name == "atmos_c")
-    atm_c <- subset(atm_c, atm_c$source_name == "earth_c")
-    
-    atm_c1 <- subset(atm_c, year == start)
-    atm_c2 <- subset(atm_c, year == stop)
-    atm_c <- rbind(atm_c1, atm_c2)
-    
-    # Calculate atmospheric uptake of Earth carbon
-    atm_c <- tail(atm_c$source_amount, n = 1) - head(atm_c$source_amount, n = 1)
-    # Isolate earth_c pool and source in start/end years
-    earth_c_loss <- subset(results, results$pool_name == "earth_c")
-    earth_c_loss <- subset(earth_c_loss, earth_c_loss$source_name == "earth_c")
-    e_c1 <- subset(earth_c_loss, year == start)
-    e_c2 <- subset(earth_c_loss, year == stop)
-    earth_c_loss <- rbind(e_c1, e_c2)
-    
-    # Calculate change in Earth carbon
-    earth_c_loss <- head(earth_c_loss$source_amount, n = 1) - tail(earth_c_loss$source_amount, n = 1)
-    
-    # Airborne fraction calculation
-    AF <- atm_c / earth_c_loss
-    
-    return(AF)
+AF_calc <- function(start, results, stop) {
+  
+  # Isolate the atmos_c pool and earth_c source in start/end years  
+  atm_c <- subset(results, results$pool_name == "atmos_c")
+  atm_c <- subset(atm_c, atm_c$source_name == "earth_c")
+  
+  atm_c1 <- subset(atm_c, year == start)
+  atm_c2 <- subset(atm_c, year == stop)
+  atm_c <- rbind(atm_c1, atm_c2)
+  
+  # Calculate atmospheric uptake of Earth carbon
+  atm_c <- tail(atm_c$source_amount, n = 1) - head(atm_c$source_amount, n = 1)
+  # Isolate earth_c pool and source in start/end years
+  earth_c_loss <- subset(results, results$pool_name == "earth_c")
+  earth_c_loss <- subset(earth_c_loss, earth_c_loss$source_name == "earth_c")
+  e_c1 <- subset(earth_c_loss, year == start)
+  e_c2 <- subset(earth_c_loss, year == stop)
+  earth_c_loss <- rbind(e_c1, e_c2)
+  
+  # Calculate change in Earth carbon
+  earth_c_loss <- head(earth_c_loss$source_amount, n = 1) - tail(earth_c_loss$source_amount, n = 1)
+  
+  # Airborne fraction calculation
+  AF <- atm_c / earth_c_loss
+  
+  return(AF)
 }
 ```
 
-Next, we will run our functions for the SSP245 scenario between 1750 and 2050 with tracking beginning at the start of the run. We can then find the value of the airborne fraction in any year of the model run. Let's look at how the airborne fraction changes over time from 1950 to 2020 in ten year increments as well as the value in just the year 2020.
+Next, we will run our functions for the RCP 4.5 scenario between 1750 and 2050 with tracking beginning at the start of the run. We can then find the value of the airborne fraction in any year of the model run. Let's look at how the airborne fraction changes over time from 1950 to 2020 in ten year increments as well as the value in just the year 2020.
 
 ``` {r hector.calculations}
-ssp245 <- system.file("input", "hector_ssp245.ini", package = "hector")
-results <- tracking_results(ssp245, 1750, 2050, 1750, "SSP245")
+rcp45 <- system.file("input", "hector_rcp45.ini", package = "hector")
+results <- tracking_results(rcp45, 1750, 2050, 1750, "RCP 4.5")
 
-AF_1950 <- AF_calc(results, 1750, 1950)
-AF_1960 <- AF_calc(results, 1750, 1960)
-AF_1970 <- AF_calc(results, 1750, 1970)
-AF_1980 <- AF_calc(results, 1750, 1980)
-AF_1990 <- AF_calc(results, 1750, 1990)
-AF_2000 <- AF_calc(results, 1750, 2000)
-AF_2010 <- AF_calc(results, 1750, 2010)
-AF_2020 <- AF_calc(results, 1750, 2020)
+years <- seq(1950, 2020, by = 10)
+airborne_frac <- cbind(make.row.names = years, lapply(years, AF_calc, results, 1750))
+colnames(airborne_frac) <- c("year", "AF")
 
-AF_2020
+tail(airborne_frac, n = 1)
 
 ```
 
@@ -207,21 +204,22 @@ knorr_values <- c(0.45, 0.453, 0.518, 0.468, 0.468, 0.514, 0.449)
 knorr_avg <- mean(knorr_values)
 knorr_minmax <- max(knorr_values) - min(knorr_values)
 
-names <- c("Knorr avg", "1950", "1960", "1970", "1980", "1990", "2000", "2010", "2020")
-values <- c(knorr_avg, AF_1950, AF_1960, AF_1970, AF_1980, AF_1990, AF_2000, AF_2010, AF_2020)
-error <- c(knorr_minmax, 0, 0, 0, 0, 0, 0, 0, 0)
+
+names <- c("Knorr avg", years)
+values <- c(knorr_avg, as.numeric(airborne_frac[,2]))
+error <- c(knorr_minmax, rep(0, times = 8))
 
 df <- data.frame(names, values, error)
 
 ggplot(df) +
-    aes(x = names, y = values, fill = names) + 
-    geom_bar(stat="identity") +
-    geom_errorbar(aes(ymin=values-error, ymax=values+error), width=.2)+
-    scale_fill_manual(values=c("paleturquoise3", "paleturquoise2", "paleturquoise1", "darkslategray1", "darkslategray2", "darkslategray3", "darkslategray4", "darkslategray", "grey50")) +
-    theme(legend.position = "none") +
-    ggtitle("Airborne Fraction Comparison")+
-    ylab("Airborne fraction over time")+
-    xlab("Year")
+  aes(x = names, y = values, fill = names) + 
+  geom_bar(stat = "identity") +
+  geom_errorbar(aes(ymin = values - error, ymax = values + error), width = 0.2)+
+  scale_fill_manual(values = c("paleturquoise3", "paleturquoise2", "paleturquoise1", "darkslategray1", "darkslategray2", "darkslategray3", "darkslategray4", "darkslategray", "grey50")) +
+  theme(legend.position = "none") +
+  labs(x = "Year",
+       y = "Airborne fraction over time",
+       title = "Airborne Fraction Composition")
 
 ```
 
