@@ -66,13 +66,6 @@ namespace Hector {
 using namespace std;
 
 //------------------------------------------------------------------------------
-/*! \brief new oceanbox logger
- *  oceanbox logger may or may not be defined and therefore we check before logging
- */
-#define CS_LOG(log, level)  \
-if( log != NULL ) H_LOG( (*log), level )
-
-//------------------------------------------------------------------------------
 /*! \brief constructor
  */
 oceancsys::oceancsys() : ncoeffs(6), m_a(ncoeffs) {
@@ -157,12 +150,23 @@ void oceancsys::ocean_csys_run( unitval tbox, unitval carbon )
     const double Tc = tbox.value( U_DEGC );
     const double Tk = Tc + 273.15;
 
-	// Check that all is OK with input data
-	H_ASSERT( Tk > 265 && Tk < 308, "bad Tk value" ); // Kelvin
-    H_ASSERT( dic > 1000e-6 && dic < 3700e-6, "bad dic value" );  // mol/kg
+	// Using the recommended ranges Richard E. Zeebe and Dieter A. Wolf-Gladrow check the input
+	// values fro temperature, DIC, and alkalinity. If that is the case issue a warning,
+	// this may happen during idealized experiments or runs extending beyond 2100.
+	const bool questionable_Tk = !(Tk > 265 && Tk < 308);
+	const bool questionable_dic = !(dic > 1000e-6 && dic < 3700e-6);
+	const bool questionable_alk = !(alk >= 2000e-6 && alk <= 2750e-6);
 
-    // alk should be constant once spinup is done, but check anyway
-    H_ASSERT( alk >= 2000e-6 && alk <= 2750e-6, "bad alk value" );  // mol/kg
+	// TODO can this be written out to a Hector log file??
+	if (questionable_Tk) {
+	    std::cout << "Temp value outside of Zeebe & Wolf-Gladrow range \n";
+	}
+	if (questionable_dic) {
+	    std::cout << "DIC value outside of Zeebe & Wolf-Gladrow range \n";
+	}
+	if (questionable_alk) {
+	    std::cout << "Alk value outside of Zeebe & Wolf-Gladrow range \n";
+	}
 
 	/*---------------------------------------------------------------
      This section calculates the constants K0, Sc, K1, K2, Ksp, Ksi etc.
@@ -190,7 +194,6 @@ void oceancsys::ocean_csys_run( unitval tbox, unitval carbon )
 	tmp2 = + (118.67/Tk - 5.977 + 1.0495*log( Tk ) ) * sqrt( S ) - 0.01615 * S; // eq 1.10 Riebesell et al. 2011
 	const double lnKw =  tmp1 + tmp2;  // eq 1.10 Riebesell et al. 2011
 	Kw.set( exp(lnKw), U_MOL_KG);
-
 
 	//---------------------- Kh (K Henry) ----------------------------
 	// Solubility of CO2 calculated using Henry's law Weiss 1974 (moles * atm * kg-1)
