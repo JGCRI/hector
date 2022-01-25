@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		270FA7802791BF2F00E6A50B /* nh3_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 270FA77F2791BF2F00E6A50B /* nh3_component.cpp */; };
-		270FA7812791BF2F00E6A50B /* nh3_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 270FA77F2791BF2F00E6A50B /* nh3_component.cpp */; };
 		273FC39626A3570B00D5303E /* test_tseries.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 273FC38B26A3570B00D5303E /* test_tseries.cpp */; };
 		273FC39726A3570B00D5303E /* testing_main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 273FC38C26A3570B00D5303E /* testing_main.cpp */; };
 		273FC39926A3570B00D5303E /* test_tracking.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 273FC38E26A3570B00D5303E /* test_tracking.cpp */; };
@@ -85,6 +83,7 @@
 		27F2613726B55617004BDD47 /* csv_tracking_visitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27962904268F237200333AA3 /* csv_tracking_visitor.cpp */; };
 		954D62AE278E005500840656 /* nh3_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 954D62AD278E005500840656 /* nh3_component.cpp */; };
 		954D62AF278E005500840656 /* nh3_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 954D62AD278E005500840656 /* nh3_component.cpp */; };
+		95A150DF27A0541C00C30A78 /* h_util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95A150DE27A0541C00C30A78 /* h_util.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -222,6 +221,7 @@
 		27B2C24E261511C8005DE26D /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = ../../src/main.cpp; sourceTree = "<group>"; };
 		954D62AD278E005500840656 /* nh3_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = nh3_component.cpp; path = ../../src/nh3_component.cpp; sourceTree = "<group>"; };
 		954D62B0278E007500840656 /* nh3_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = nh3_component.hpp; path = ../../inst/include/nh3_component.hpp; sourceTree = "<group>"; };
+		95A150DE27A0541C00C30A78 /* h_util.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = h_util.cpp; path = ../../src/h_util.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -246,6 +246,7 @@
 		27585CEF26150F1A00BA1EF5 = {
 			isa = PBXGroup;
 			children = (
+				95A150DE27A0541C00C30A78 /* h_util.cpp */,
 				27B2C22B26151149005DE26D /* Headers */,
 				27B2C272261511CD005DE26D /* Source */,
 				27A02A452615CA7300AF9BFA /* unit-testing */,
@@ -468,6 +469,7 @@
 				27B2C257261511C8005DE26D /* csv_table_reader.cpp in Sources */,
 				27B2C25F261511C8005DE26D /* dependency_finder.cpp in Sources */,
 				27962908268F23CB00333AA3 /* simpleNbox-runtime.cpp in Sources */,
+				95A150DF27A0541C00C30A78 /* h_util.cpp in Sources */,
 				27B2C266261511C8005DE26D /* unitval.cpp in Sources */,
 				27B2C25A261511C8005DE26D /* ocean_component.cpp in Sources */,
 				27B2C26A261511C8005DE26D /* slr_component.cpp in Sources */,
@@ -670,6 +672,7 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				LIBRARY_SEARCH_PATHS = "${BOOSTLIB}";
+				"OTHER_LDFLAGS[arch=*]" = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
