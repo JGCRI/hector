@@ -137,13 +137,13 @@ private:
 
     /*****************************************************************
      * Derived quantities
-     * Unlike state varaibles, these can be calculated from other
+     * Unlike state variables, these can be calculated from other
      * information; therefore, they need not be stored over time, but
      * they do need to be recalculated whenever we reset.
      *****************************************************************/
 
     double_stringmap co2fert;           //!< CO2 fertilization effect (unitless)
-    tseries<double> Tgav_record;        //!< Record of global temperature values, for computing soil RH
+    tseries<double> Tland_record;       //!< Record of mean land surface/air temperature values, for computing soil RH
     bool in_spinup;                     //!< flag tracking spinup state
     double tcurrent;                    //!< Current time (last completed time step)
     double masstot;                     //!< tracker for mass conservation

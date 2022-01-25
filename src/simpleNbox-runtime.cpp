@@ -144,15 +144,15 @@ void SimpleNbox::run( const double runToDate )
 {
     in_spinup = core->inSpinup();
     sanitychecks();
-    
+
     // If we've hit the tracking start year, enagage!
     const double tdate = core->getTrackingDate();
     if(!in_spinup && runToDate == tdate){
         H_LOG( logger, Logger::NOTICE ) << "Tracking start" << std::endl;
         start_tracking();
     }
-    Tgav_record.set( runToDate, core->sendMessage( M_GETDATA, D_GLOBAL_TEMP ).value( U_DEGC ) );
-    
+    Tland_record.set( runToDate, core->sendMessage( M_GETDATA, D_LAND_AIR_TEMP ) );
+
     // TODO: this is a hack, because currently we can't pass fluxpools around via sendMessage
     omodel->set_atmosphere_sources( atmos_c );  // inform ocean model what our atmosphere looks like
 }
@@ -205,7 +205,7 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     // of the year we have advanced for use below
     const double yf = ( t - ODEstartdate );
     H_ASSERT( yf >= 0 && yf <= 1, "yearfraction out of bounds" );
-    
+
     H_LOG( logger,Logger::DEBUG ) << "Stashing at t=" << t << ", solver pools at " << t << ": " <<
         "  atm = " << c[ SNBOX_ATMOS ] <<
         "  veg = " << c[ SNBOX_VEG ] <<
@@ -214,7 +214,7 @@ void SimpleNbox::stashCValues( double t, const double c[] )
         "  ocean = " << c[ SNBOX_OCEAN ] <<
         "  earth = " << c[ SNBOX_EARTH ] << std::endl;
     log_pools( t );
-    
+
     // get the UNTRACKED earth emissions (ffi) and uptake (ccs)
     // We immediately adjust them for the year fraction (as the solver
     // may call stashCValues multiple times within a given year)
@@ -231,7 +231,7 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     // ...and now get those fluxes (and their source maps, if tracking)
     fluxpool oa_flux = omodel->get_oaflux();
     fluxpool ao_flux = omodel->get_aoflux();
-    
+
     // Land-use change emissions and uptake between atmosphere and veg/detritus/soil
     fluxpool luc_e_untracked = luc_emission(t, in_spinup) * yf;
     fluxpool luc_u_untracked = luc_uptake(t, in_spinup) * yf;
@@ -261,7 +261,7 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     const unitval newdet( c[ SNBOX_DET ], U_PGC );
     const unitval newsoil( c[ SNBOX_SOIL ], U_PGC );
     const double f_lucs = 1 - f_lucv - f_lucd; // LUC fraction to soil
-    
+
     for( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
         std::string biome = *it;
         const double wt = (npp( biome ) + rh( biome ) ) / npp_rh_total;
@@ -275,7 +275,7 @@ void SimpleNbox::stashCValues( double t, const double c[] )
         atmos_c = atmos_c + luc_fva_biome_flux - luc_fav_flux * wt;
         atmos_c = atmos_c + luc_fda_biome_flux - luc_fad_flux * wt;
         atmos_c = atmos_c + luc_fsa_biome_flux - luc_fas_flux * wt;
-        
+
         // Update veg_c, detritus_c, and soil_c with luc uptake from atmos per biome
         veg_c[ biome ] = veg_c[ biome ] + luc_fav_flux * wt - luc_fva_biome_flux;
         detritus_c[ biome ] = detritus_c[ biome ] + luc_fad_flux * wt - luc_fda_biome_flux;
@@ -680,7 +680,7 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
 void SimpleNbox::slowparameval( double t, const double c[] )
 {
     omodel->slowparameval( t, c );              // pass msg on to ocean model
-    
+
     // CO2 fertilization
     Ca.set( c[ SNBOX_ATMOS ] * PGC_TO_PPMVCO2, U_PPMV_CO2 );
 
@@ -697,8 +697,8 @@ void SimpleNbox::slowparameval( double t, const double c[] )
 
     // Compute temperature factor globally (and for each biome specified)
     // Heterotrophic respiration depends on the pool sizes (detritus and soil) and Q10 values
-    // The soil pool uses a lagged Tgav, i.e. we assume it takes time for heat to diffuse into soil
-    const double Tgav = core->sendMessage( M_GETDATA, D_GLOBAL_TEMP ).value( U_DEGC );
+    // The soil pool uses a lagged land air/surface temperature, i.e. we assume it takes time for heat to diffuse into soil
+    const double Tland = core->sendMessage( M_GETDATA, D_LAND_AIR_TEMP );
 
     /* set tempferts (soil) and tempfertd (detritus) for each biome */
 
@@ -727,24 +727,27 @@ void SimpleNbox::slowparameval( double t, const double c[] )
                 wf = 1.0;
             }
 
-            const double Tgav_biome = Tgav * wf;    // biome-specific temperature
+            const double Tland_biome = Tland * wf;    // biome-specific temperature
 
-            tempfertd[ biome ] = pow( q10_rh.at( biome ), ( Tgav_biome / 10.0 ) ); // detritus warms with air
+            tempfertd[ biome ] = pow( q10_rh.at( biome ), ( Tland_biome / 10.0 ) ); // detritus warms with air
 
 
             // Soil warm very slowly relative to the atmosphere
             // We use a mean temperature of a window (size Q10_TEMPN) of temperatures to scale Q10
             #define Q10_TEMPLAG 0 //125         // TODO: put lag in input files 150, 25
             #define Q10_TEMPN 200 //25
-            double Tgav_rm = 0.0;       /* window mean of Tgav */
+            double Tland_rm = 0.0;       /* window mean of Tland */
             if( t > core->getStartDate() + Q10_TEMPLAG ) {
                 for( int i=t-Q10_TEMPLAG-Q10_TEMPN; i<t-Q10_TEMPLAG; i++ ) {
-                    Tgav_rm += Tgav_record.get( i ) * wf;
+                    Tland_rm += Tland_record.get( i ) * wf;
+
                 }
-                Tgav_rm /= Q10_TEMPN;
+
+                Tland_rm /= Q10_TEMPN;
+
             }
 
-            tempferts[ biome ] = pow( q10_rh.at( biome ), ( Tgav_rm / 10.0 ) );
+            tempferts[ biome ] = pow( q10_rh.at( biome ), ( Tland_rm / 10.0 ) );
 
             // The soil Q10 effect is 'sticky' and can only increase, not decline
             double tempferts_last = tfs_last[ biome ]; // If tfs_last is empty, this will produce 0.0
@@ -752,8 +755,8 @@ void SimpleNbox::slowparameval( double t, const double c[] )
                 tempferts[ biome ] = tempferts_last;
             }
 
-            H_LOG( logger,Logger::DEBUG ) << biome << " Tgav=" << Tgav << ", Tgav_biome=" <<
-                Tgav_biome << ", tempfertd=" << tempfertd[ biome ] << ", tempferts=" <<
+            H_LOG( logger,Logger::DEBUG ) << biome << " Tland=" << Tland << ", Tland_biome=" <<
+                Tland_biome << ", tempfertd=" << tempfertd[ biome ] << ", tempferts=" <<
                 tempferts[ biome ] << std::endl;
         }
     } // loop over biomes
