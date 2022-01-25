@@ -53,7 +53,7 @@ private:
     unitval Tbox;           ///< box absolute temperature, degC
     unitval pco2_lastyear;  //
     unitval dic_lastyear;   //
-    unitval compute_tabsC( const unitval Tgav ) const;
+    unitval compute_tabsC( const unitval SST ) const;
     fluxpool ao_flux;           //!< atmosphere -> ocean flux
     fluxpool oa_flux;           //!< ocean -> atmosphere flux
 
@@ -67,9 +67,9 @@ public:
 	void compute_fluxes( const unitval current_Ca, const fluxpool atmosphere_cpool, const double yf, const bool do_circ=true );
     void log_state();
 	void update_state();
-	void new_year( const unitval Tgav );
+	void new_year( const unitval SST );
     void separate_surface_fluxes( fluxpool atmosphere_pool );
-    
+
 	void set_carbon( const unitval C );
 	fluxpool get_carbon() const { return carbon; };
     fluxpool get_oa_flux() const { return oa_flux; };
@@ -78,7 +78,7 @@ public:
 	void add_carbon( fluxpool C );
 
     void start_tracking();
-    
+
     // Functions to get internal box data
     unitval get_Tbox() const { return Tbox; };
     unitval calc_revelle();
@@ -95,7 +95,7 @@ public:
     double fmin( double alk, void *params );
 
     unitval atmosphere_flux;    //!< positive is atmosphere -> ocean flux, negative ocean -> atmosphere
-    
+
 	// logger
     Logger* logger;
 };

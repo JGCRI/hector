@@ -157,7 +157,7 @@ void oceancsys::ocean_csys_run( unitval tbox, unitval carbon )
 	const bool questionable_dic = !(dic > 1000e-6 && dic < 3700e-6);
 	const bool questionable_alk = !(alk >= 2000e-6 && alk <= 2750e-6);
 
-	// TODO can this be written out to a Hector log file??
+	// TODO should this be written out to a Hector log file??
 	if (questionable_Tk) {
 	    std::cout << "Temp value outside of Zeebe & Wolf-Gladrow range \n";
 	}
@@ -165,7 +165,7 @@ void oceancsys::ocean_csys_run( unitval tbox, unitval carbon )
 	    std::cout << "DIC value outside of Zeebe & Wolf-Gladrow range \n";
 	}
 	if (questionable_alk) {
-	    std::cout << "Alk value outside of Zeebe & Wolf-Gladrow range \n";
+	    std::cout <<"Alk value outside of Zeebe & Wolf-Gladrow range \n";
 	}
 
 	/*---------------------------------------------------------------

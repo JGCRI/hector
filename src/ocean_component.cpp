@@ -82,7 +82,7 @@ void OceanComponent::init( Core* coreptr ) {
 	oceanflux_constrain.allowInterp( true );
     oceanflux_constrain.name = "atm_ocean_constrain";
 
-    Tgav.set( 0.0, U_DEGC );
+    SST.set( 0.0, U_DEGC );
 
 	lastflux_annualized.set( 0.0, U_PGC );
 
@@ -331,7 +331,7 @@ void OceanComponent::run( const double runToDate ) {
     }
 
     Ca = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_CO2 );
-    Tgav = core->sendMessage( M_GETDATA, D_GLOBAL_TEMP );
+    SST.set(core->sendMessage( M_GETDATA, D_OCEAN_SURFACE_TEMP ), U_DEGC);
 
     in_spinup = core->inSpinup();
 
@@ -341,18 +341,18 @@ void OceanComponent::run( const double runToDate ) {
     timesteps = 0;
 
     // Initialize ocean box boundary conditions and inform them new year starting
-    H_LOG(logger, Logger::DEBUG) << "Starting new year: Tgav= " << Tgav << std::endl;
-    surfaceHL.new_year( Tgav );
-    surfaceLL.new_year( Tgav );
-    inter.new_year( Tgav );
-    deep.new_year( Tgav );
+    H_LOG(logger, Logger::DEBUG) << "Starting new year: SST= " << SST << std::endl;
+    surfaceHL.new_year( SST );
+    surfaceLL.new_year( SST );
+    inter.new_year( SST );
+    deep.new_year( SST );
 
     H_LOG( logger, Logger::DEBUG ) << "----------------------------------------------------" << std::endl;
     H_LOG( logger, Logger::DEBUG ) << "runToDate=" << runToDate << ", Ca=" << Ca << ", spinup=" << in_spinup << std::endl;
 
     // If chemistry models weren't turned on during spinup, do so now
     if( !spinup_chem && !in_spinup && !surfaceHL.active_chemistry ) {
-        H_LOG( logger, Logger::DEBUG ) << "*** Turning on chemistry models ***" << std::endl;
+        H_LOG( logger,  Logger::NOTICE ) << "*** Turning on chemistry models ***" << std::endl;
         surfaceHL.active_chemistry = true;
         surfaceLL.active_chemistry = true;
         surfaceHL.chem_equilibrate( Ca );
@@ -577,7 +577,7 @@ void OceanComponent::stashCValues( double t, const double c[] ) {
 	// At this point the solver has converged, going from ODEstartdate to t
     // Now we finalize calculations: circulate ocean, update carbon states, etc.
     const double yearfraction = ( t - ODEstartdate );
-    H_LOG( logger, Logger::NOTICE ) << "Solver has finished. Yearfraction = " << yearfraction << std::endl;
+    //H_LOG( logger, Logger::NOTICE ) << "Solver has finished. Yearfraction = " << yearfraction << std::endl;
     H_ASSERT( yearfraction >= 0 && yearfraction <= 1, "yearfraction out of bounds" );
 
     timesteps++;
@@ -672,7 +672,7 @@ void OceanComponent::reset(double time)
     inter = inter_tv.get(time);
     deep = deep_tv.get(time);
 
-    Tgav = Tgav_ts.get(time);
+    SST = SST_ts.get(time);
     Ca = Ca_ts.get(time);
 
     annualflux_sum = annualflux_sum_ts.get(time);
@@ -690,7 +690,7 @@ void OceanComponent::reset(double time)
     inter_tv.truncate(time);
     deep_tv.truncate(time);
 
-    Tgav_ts.truncate(time);
+    SST_ts.truncate(time);
     Ca_ts.truncate(time);
 
     annualflux_sum_ts.truncate(time);
@@ -718,7 +718,7 @@ void OceanComponent::record_state(double time)
     // Record the state of the various ocean boxes and variables at each time step
     // in a unitval time series so that the output can be output by the
     // R wrapper.
-    Tgav_ts.set(time, Tgav);
+    SST_ts.set(time, SST );
     Ca_ts.set(time, Ca);
     annualflux_sum_ts.set(time, annualflux_sum);
     annualflux_sumHL_ts.set(time, annualflux_sumHL);

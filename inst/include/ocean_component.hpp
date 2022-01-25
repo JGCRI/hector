@@ -95,10 +95,10 @@ private:
     oceanbox deep;      //!< deep box 3000m
 
     // Atmosphere conditions
-    unitval Tgav;           //!< Global temperature anomaly, degC
+    unitval SST;            //!< Ocean surface temperature anomaly, degC
     unitval Ca;             //!< Atmospheric CO2, ppm
     fluxpool atmosphere_cpool;
-    
+
     // Atmosphere-ocean flux
     unitval annualflux_sum, annualflux_sumHL, annualflux_sumLL;     //!< Running annual totals atm-ocean flux, for output reporting
     unitval lastflux_annualized;        //!< Last atm-ocean flux when solver ordered us to 'stash' C values
@@ -148,7 +148,7 @@ private:
     tvector<oceanbox> deep_tv;
 
     // Ocean conditions over time
-    tseries<unitval> Tgav_ts;
+    tseries<unitval> SST_ts;
     tseries<unitval> annualflux_sum_ts;
     tseries<unitval> annualflux_sumHL_ts;
     tseries<unitval> annualflux_sumLL_ts;
