@@ -36,7 +36,6 @@ oceanbox::oceanbox() {
     logger = NULL;
     deltaT.set( 0.0, U_DEGC );
     surfacebox = false;
-    warmingfactor = 1.0;      // by default warms exactly as global
     Tbox = unitval( -999, U_DEGC );
     atmosphere_flux.set( 0.0, U_PGC );
     preindustrial_flux.set( 0.0, U_PGC_YR );
@@ -90,7 +89,7 @@ void oceanbox::add_carbon( fluxpool carbon ) {
  *  \returns        Absolute temperature of box, C
  */
 unitval oceanbox::compute_tabsC( const unitval SST ) const {
-    return SST * warmingfactor + unitval( MEAN_GLOBAL_TEMP, U_DEGC ) + deltaT;
+    return SST + unitval( MEAN_GLOBAL_TEMP, U_DEGC ) + deltaT;
 }
 
 //------------------------------------------------------------------------------

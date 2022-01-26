@@ -86,8 +86,6 @@ public:
     unitval preindustrial_flux;
     bool surfacebox;
 
-    double warmingfactor;        //!< regional warming relative to global (1.0=same)
-
     // Ocean box chemistry
     oceancsys mychemistry;      ///< box chemistry
     bool active_chemistry;      ///< box has active chemistry model?
