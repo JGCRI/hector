@@ -13,6 +13,7 @@
  */
 
 #include <iostream>
+#include <fstream>
 
 #include "core.hpp"
 #include "logger.hpp"
