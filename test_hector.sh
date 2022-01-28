@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 # Run Hector through a bunch of tests
-# Intended for Travis-CI, but can be used locally too
-# BBL May 2020
+# Intended for GitHub Actions, but can be used locally too
+# BBL January 2022
 
 # exit when any command fails
 set -e
@@ -25,15 +25,9 @@ if [ ! -d $INPUT ]; then
     exit 1
 fi
 
-# Run the basic SSPs
+# Run all INI files (the basic SSPs)
 echo "---------- Running: basic SSPs ----------"
-$HECTOR $INPUT/hector_ssp119.ini
-$HECTOR $INPUT/hector_ssp126.ini
-$HECTOR $INPUT/hector_ssp370.ini
-$HECTOR $INPUT/hector_ssp434.ini
-$HECTOR $INPUT/hector_ssp460.ini
-$HECTOR $INPUT/hector_ssp534-over.ini
-$HECTOR $INPUT/hector_ssp585.ini
+find ./inst/input -name "*.ini" -exec $HECTOR {} +
 
 # Make sure the model handles year changes
 echo "---------- Running: year changes ----------"
@@ -47,6 +41,9 @@ rm $INPUT/hector_ssp245_time.ini
 echo "---------- Running: tracking ----------"
 sed 's/trackingDate=9999/trackingDate=1850/' $INPUT/hector_ssp245.ini > $INPUT/hector_ssp245_tracking.ini
 $HECTOR $INPUT/hector_ssp245_tracking.ini
+
+# Note that in the runs below, we're running the model with various constraints
+# turned on, but not actually verifying that the constraint actually *works*
 
 echo "---------- Running: tracking & CO2 constraint ----------"
 sed 's/;CO2_constrain=csv:tables\/ssp245_emiss-constraints_rf.csv/CO2_constrain=csv:tables\/ssp245_emiss-constraints_rf.csv/' $INPUT/hector_ssp245_tracking.ini > $INPUT/hector_ssp245_tracking_co2.ini
