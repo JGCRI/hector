@@ -43,7 +43,9 @@ sed 's/trackingDate=9999/trackingDate=1850/' $INPUT/hector_ssp245.ini > $INPUT/h
 $HECTOR $INPUT/hector_ssp245_tracking.ini
 
 # Note that in the runs below, we're running the model with various constraints
-# turned on, but not actually verifying that the constraint actually *works*
+# turned on, and verifying that it doesn't crash or anything like that.
+# We don't check that the constraint actually *works*, i.e. that the (for example)
+# Tgav outputs match the constraint input.
 
 echo "---------- Running: tracking & CO2 constraint ----------"
 sed 's/;CO2_constrain=csv:tables\/ssp245_emiss-constraints_rf.csv/CO2_constrain=csv:tables\/ssp245_emiss-constraints_rf.csv/' $INPUT/hector_ssp245_tracking.ini > $INPUT/hector_ssp245_tracking_co2.ini
