@@ -100,9 +100,9 @@
 
     
     
-<div class="section level1">
-<h1 id="general-information">General information<a class="anchor" aria-label="anchor" href="#general-information"></a>
-</h1>
+<div class="section level2">
+<h2 id="general-information">General information<a class="anchor" aria-label="anchor" href="#general-information"></a>
+</h2>
 <p>When Hector is invoked from the command line, it takes a single parameter: the name of the primary input file to read. This file, typically stored in the <code>input/</code> directory, contains configuration and parameter data controlling the model’s run, output, and behavior.</p>
 <p>The primary input file is a text <a href="http://en.wikipedia.org/wiki/INI_file" class="external-link">INI-style</a> file with <em>sections</em>, <em>properties</em>, and <em>values</em>. For example, the beginning of the RCP 4.5 file included in the repository looks like this:</p>
 <pre><code>; Config file for hector model: RCP45
@@ -117,9 +117,9 @@ run_name=rcp45</code></pre>
 <pre><code><span class="va">lucEmissions</span><span class="op">=</span><span class="va">csv</span><span class="op">:</span><span class="va">input</span><span class="op">/</span><span class="va">emissions</span><span class="op">/</span><span class="va">RCP45_emissions.csv</span></code></pre>
 <p>In this case, the <code>input/emissions/RCP45_emissions.csv</code> file is parsed and the data in column <code>lucEmissions</code> are assigned to the model variable, with a required <code>Date</code> column providing the time index.</p>
 </div>
-<div class="section level1">
-<h1 id="list-of-model-parameters">List of model parameters<a class="anchor" aria-label="anchor" href="#list-of-model-parameters"></a>
-</h1>
+<div class="section level2">
+<h2 id="list-of-model-parameters">List of model parameters<a class="anchor" aria-label="anchor" href="#list-of-model-parameters"></a>
+</h2>
 <p>Properties with asterisks (<code>*</code>) are optional.</p>
 <table class="table">
 <colgroup>
@@ -213,7 +213,7 @@ run_name=rcp45</code></pre>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>

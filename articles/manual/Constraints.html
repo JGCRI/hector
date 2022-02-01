@@ -101,40 +101,40 @@
     
     
 <p>The Hector model can be run subject to <em>constraints</em> that force the model to have certain behavior. Technically, this means that the model’s components output user-provided data as opposed to their own calculations, similar to the <a href="http://www.cesm.ucar.edu/models/cesm1.0/cesm/cesm_doc_1_0_4/x42.html" class="external-link">data mode</a> of a CESM sub-model. Currently the available constraints include:</p>
-<div class="section level1">
-<h1 id="temperature">Temperature<a class="anchor" aria-label="anchor" href="#temperature"></a>
-</h1>
+<div class="section level2">
+<h2 id="temperature">Temperature<a class="anchor" aria-label="anchor" href="#temperature"></a>
+</h2>
 <p>If the current <a href="InputFiles.html">input file</a> includes, in its <code>[temperature]</code> section, a line of form</p>
 <pre><code><span class="va">tgav_constrain</span><span class="op">=</span><span class="va">csv</span><span class="op">:</span><span class="va">path</span><span class="op">/</span><span class="va">to</span><span class="op">/</span><span class="va">constraint</span><span class="op">/</span><span class="va">file.csv</span></code></pre>
 <p>then the model’s global mean temperature <code>Tgav</code> will follow this contents of this file (which should have two columns, <code>Date</code> and <code>tgav_constrain</code>; a sample file is included in the repository). The model will extrapolate within this data as necessary, but not beyond its endpoints.</p>
 <p>Once Hector’s internal date passes the last date in the constraint file, the model’s temperature component becomes <em>unconstrained</em>, except that we do not permit it to suddenly jump to a new temperature. Instead, changes in global radiative forcing (from which temperature change is computed) are applied to the end-of-constraint temperature. For more details, see the detailed comments in the <code>TemperatureComponent::run</code> method.</p>
 </div>
-<div class="section level1">
-<h1 id="radiative-forcing">Radiative forcing<a class="anchor" aria-label="anchor" href="#radiative-forcing"></a>
-</h1>
+<div class="section level2">
+<h2 id="radiative-forcing">Radiative forcing<a class="anchor" aria-label="anchor" href="#radiative-forcing"></a>
+</h2>
 <p>If the current <a href="InputFiles.html">input file</a> includes, in its <code>[forcing]</code> section, a line of form</p>
 <pre><code><span class="va">Ftot_constrain</span><span class="op">=</span><span class="va">csv</span><span class="op">:</span><span class="va">path</span><span class="op">/</span><span class="va">to</span><span class="op">/</span><span class="va">constraint</span><span class="op">/</span><span class="va">file.csv</span></code></pre>
 <p>then the model’s global radiative forcing <code>Ftot</code>, that drives global temperature changes, will follow this contents of this file (which should have two columns, <code>Date</code> and <code>Ftot_constrain</code>). The model will extrapolate within this data as necessary, but not beyond its endpoints. Once Hector’s internal date passes the last date in the constraint file, the model’s forcing component becomes <em>unconstrained</em>.</p>
 </div>
-<div class="section level1">
-<h1 id="ocean-c-uptake">Ocean C uptake<a class="anchor" aria-label="anchor" href="#ocean-c-uptake"></a>
-</h1>
+<div class="section level2">
+<h2 id="ocean-c-uptake">Ocean C uptake<a class="anchor" aria-label="anchor" href="#ocean-c-uptake"></a>
+</h2>
 <p>If the current <a href="InputFiles.html">input file</a> includes, in its <code>[ocean]</code> section, a line of form</p>
 <pre><code><span class="va">oceanflux_constrain</span><span class="op">=</span><span class="va">csv</span><span class="op">:</span><span class="va">path</span><span class="op">/</span><span class="va">to</span><span class="op">/</span><span class="va">constraint</span><span class="op">/</span><span class="va">file.csv</span></code></pre>
 <p>then the model’s ocean carbon uptake (in Pg C) will follow this contents of this file (which should have two columns, <code>Date</code> and <code>oceanflux_constrain</code>). The model will extrapolate within this data as necessary, but not beyond its endpoints. Once Hector’s internal date passes the last date in the constraint file, the model’s ocean uptake becomes <em>unconstrained</em>.</p>
 </div>
-<div class="section level1">
-<h1 id="atmospheric-co2">Atmospheric CO2<a class="anchor" aria-label="anchor" href="#atmospheric-co2"></a>
-</h1>
+<div class="section level2">
+<h2 id="atmospheric-co2">Atmospheric CO2<a class="anchor" aria-label="anchor" href="#atmospheric-co2"></a>
+</h2>
 <p>If the current <a href="InputFiles">input file</a> includes, in its <code>[simpleNbox]</code> section, a line of form</p>
 <pre><code><span class="va">CO2_constrain</span><span class="op">=</span><span class="va">csv</span><span class="op">:</span><span class="va">path</span><span class="op">/</span><span class="va">to</span><span class="op">/</span><span class="va">constraint</span><span class="op">/</span><span class="va">file.csv</span></code></pre>
 <p>then the model’s atmospheric CO<span class="math inline">\(_2\)</span> concentration ([CO2], given in ppmv CO<span class="math inline">\(_2\)</span>) will follow the contents of this file (which should have two columns, <code>Date</code> and <code>CO2_constrain</code>). Alternatively, Hector’s atmospheric CO<span class="math inline">\(_2\)</span> concentration constraint can be set using the <code>setvars</code> function and <code>CO2_CONSTRAIN</code> variable.</p>
 <p>The CO<span class="math inline">\(_2\)</span> constraint is applied at the <em>end</em> of the current time step. The full sequence of events is as follows: First, the model solves the current time-step’s carbon cycle conditioned on the previous time step’s carbon pools, ignoring the CO<span class="math inline">\(_2\)</span> constraint. Then, if a CO<span class="math inline">\(_2\)</span> constraint is present, Hector calculates the difference between its calculated atmospheric CO<span class="math inline">\(_2\)</span> and the prescribed CO2 constraint. If the target atmospheric CO<span class="math inline">\(_2\)</span> concentration is lower than the calculated CO<span class="math inline">\(_2\)</span>, the excess carbon is transferred from the atmosphere to the deep ocean; conversely, if the target atmospheric CO<span class="math inline">\(_2\)</span> concentration is greater than the calculated value, the additional carbon is transferred from the deep ocean into the atmosphere. Finally, Hector records the current atmospheric CO<span class="math inline">\(_2\)</span> concentration (which is now equal to the constraint value); this is the value that is used in the next time step’s evaluation of carbon-climate feedbacks (e.g. CO<span class="math inline">\(_2\)</span> fertilization of net primary productivity, surface ocean carbonate chemistry). In other words, an atmospheric CO<span class="math inline">\(_2\)</span> constraint at time <span class="math inline">\(t\)</span> does not affect carbon-climate feedbacks until <span class="math inline">\(t+1\)</span>.</p>
 <p>The CO<span class="math inline">\(_2\)</span> constraint need not span the entirety of the Hector simulation, or even be continuous. At any given time step, Hector will check whether or not a CO<span class="math inline">\(_2\)</span> constraint exists at that time step and only apply the constraint if it is present. This means that “hybrid” runs are possible, where only some specific time ranges have CO<span class="math inline">\(_2\)</span> constraints while others calculate the atmospheric carbon pool and CO<span class="math inline">\(_2\)</span> concentrations according to Hector’s standard <a href="SimpleNBox">carbon cycle</a>.</p>
 </div>
-<div class="section level1">
-<h1 id="ch4-n2o-and-halocarbon-concentrations">CH4, N2O, and halocarbon concentrations<a class="anchor" aria-label="anchor" href="#ch4-n2o-and-halocarbon-concentrations"></a>
-</h1>
+<div class="section level2">
+<h2 id="ch4-n2o-and-halocarbon-concentrations">CH4, N2O, and halocarbon concentrations<a class="anchor" aria-label="anchor" href="#ch4-n2o-and-halocarbon-concentrations"></a>
+</h2>
 <p>These all work in more-or-less the same way, and are similar to the atmospheric CO<span class="math inline">\(_2\)</span> constraint (above), except that there is no equivalent to the carbon pool adjustment for these gases. In the <a href="InputFiles">input file</a>, they are triggered by a line like the following in their corresponding component section:</p>
 <pre><code><span class="va">CH4_constrain</span><span class="op">=</span><span class="va">csv</span><span class="op">:</span><span class="va">path</span><span class="op">/</span><span class="va">to</span><span class="op">/</span><span class="va">file.csv</span></code></pre>
 <p>As with other CSV inputs, the <code>/path/to/file.csv</code> above must have columns <code>Date</code> and <code>CH4_constrain</code>. Alternatively, constraints can be set from the R interface:</p>
@@ -145,9 +145,9 @@
 <p>Constraints are applied as follows: At any given time step, Hector will check if the constraint has a value for that time step (e.g. <code>CH4_constrain.exists(t)</code>). If the constraint exists, Hector will skip all atmospheric chemistry calculates and set the corresponding atmospheric concentration value to the constraint value (e.g. <code>CH4.set(t, CH4_constrain.get(t)</code>). If the constraint does not exist, Hector will proceed with its standard atmospheric chemistry routines for calculating the atmospheric concentration based on emissions and concentrations of other relevant species. This means that <em>concentration constraints always take precedence over emissions</em>; in other words, if a particular time step has both emissions and a concentration constraint, the emissions are ignored.</p>
 <p>Note that CH<span class="math inline">\(_4\)</span> and N<span class="math inline">\(_2\)</span>O have special variables for their pre-industrial concentration that could conflict with the constraint. In Hector, <em>concentration constraints take precedence over pre-industrial concentrations</em>; in other words, Hector assumes that if you provide a concentration constraint for the pre-industrial timestep, that is the concentration you want, regardless of the prescribed pre-industrial value.</p>
 </div>
-<div class="section level1">
-<h1 id="discontinuous-constraints">Discontinuous constraints<a class="anchor" aria-label="anchor" href="#discontinuous-constraints"></a>
-</h1>
+<div class="section level2">
+<h2 id="discontinuous-constraints">Discontinuous constraints<a class="anchor" aria-label="anchor" href="#discontinuous-constraints"></a>
+</h2>
 <p>Hector <em>does not perform any interpolation of constraints</em> – they are applied only in the exact years that they are provided by the user, and all other years are treated (including those immediately before or after constrained years) are treated as unconstrained (typically, emissions-driven). This means that constraints can abruptly force Hector’s climate system into state that is inconsistent with the previous time step. Concentrations for the first year of a constraint can be discontinuous compared to the previous year without a constraint. Concentrations after the last year of a constraint will not necessarily have a discontinuity, but the behavior of the corresponding component and any related components may change after this point. It is the user’s responsibility to make sure that constraints are continuous.</p>
 </div>
   </div>
@@ -169,7 +169,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>

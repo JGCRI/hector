@@ -108,12 +108,14 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">hector</span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></code></pre></div>
-<div class="section level1">
-<h1 id="example-1-accelerated-high-latitude-warming">Example 1: Accelerated high-latitude warming<a class="anchor" aria-label="anchor" href="#example-1-accelerated-high-latitude-warming"></a>
-</h1>
+<pre><code><span class="co">## Warning in register(): Can't find generic `scale_type` in package ggplot2 to</span>
+<span class="co">## register S3 method.</span></code></pre>
+<div class="section level2">
+<h2 id="example-1-accelerated-high-latitude-warming">Example 1: Accelerated high-latitude warming<a class="anchor" aria-label="anchor" href="#example-1-accelerated-high-latitude-warming"></a>
+</h2>
 <p>Observational and modeling studies have found that high-latitude ecosystems, particularly in the northern hemisphere, are warming significantly faster than the global average. In this example, we will explore the implications of this effect with Hector.</p>
 <p>First, let’s run a reference case.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">rcp45</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"input"</span>, <span class="st">"hector_rcp45.ini"</span>, package <span class="op">=</span> <span class="st">"hector"</span><span class="op">)</span>
 <span class="va">core</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/newcore.html">newcore</a></span><span class="op">(</span><span class="va">rcp45</span>, suppresslogging <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="fu"><a href="../reference/run.html">run</a></span><span class="op">(</span><span class="va">core</span>, <span class="fl">2100</span><span class="op">)</span><span class="op">)</span>
@@ -121,7 +123,7 @@
                  <span class="fu"><a href="../reference/carboncycle.html">VEG_C</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="../reference/carboncycle.html">SOIL_C</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="../reference/carboncycle.html">DETRITUS_C</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="va">reference_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetchvars.html">fetchvars</a></span><span class="op">(</span><span class="va">core</span>, <span class="fl">2000</span><span class="op">:</span><span class="fl">2100</span>, <span class="va">result_vars</span>, scenario <span class="op">=</span> <span class="st">"reference"</span><span class="op">)</span></code></pre></div>
 <p>Now, let’s redo the run, but accounting for accelerated high-latitude warming. To do this, we will use the <code><a href="../reference/split_biome.html">split_biome()</a></code> function, which takes an existing Hector biome and splits it up into an arbitrary number of new biomes, partitioning the C pools and initializing parameters accordingly. For the purposes of this example, let’s assume that high latitudes have ~10% of the world’s vegetation and detritus carbon and ~40% of world’s soil carbon, and that high-latitudes are warming 2.5x faster than the global average.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="fu"><a href="../reference/reset.html">reset</a></span><span class="op">(</span><span class="va">core</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="../reference/split_biome.html">split_biome</a></span><span class="op">(</span><span class="va">core</span>, <span class="st">"global"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"low-latitude"</span>, <span class="st">"high-latitude"</span><span class="op">)</span>,
             fveg_c <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.9</span>, <span class="fl">0.1</span><span class="op">)</span>,
@@ -131,7 +133,7 @@
 <span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="fu"><a href="../reference/run.html">run</a></span><span class="op">(</span><span class="va">core</span>, <span class="fl">2100</span><span class="op">)</span><span class="op">)</span>
 <span class="va">warming_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetchvars.html">fetchvars</a></span><span class="op">(</span><span class="va">core</span>, <span class="fl">2000</span><span class="op">:</span><span class="fl">2100</span>, <span class="va">result_vars</span>, scenario <span class="op">=</span> <span class="st">"warming"</span><span class="op">)</span></code></pre></div>
 <p>Now, let’s plot the results.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">plot_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">reference_results</span>, <span class="va">warming_results</span><span class="op">)</span>
 <span class="va">plot_data</span><span class="op">$</span><span class="va">variable</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">plot_data</span><span class="op">$</span><span class="va">variable</span>, <span class="va">result_vars</span><span class="op">)</span>
 <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">plot_data</span><span class="op">)</span> <span class="op">+</span>
@@ -146,7 +148,7 @@ Hector results with vs. without accelerated high-latitude warming.
 </div>
 <p>The results show that accelerated high-latitude warming induces a positive global feedback in Hector: the warmer high-latitudes respire carbon from soil and detritus at a faster rate, which leads to higher CO<sub>2</sub> concentrations and further warming.</p>
 <p>We can look at these results in more detail by examining the biome-specific pools and fluxes via the optional <code>biome</code> argument to Hector’s identifier functions (e.g. <code><a href="../reference/carboncycle.html">VEG_C()</a></code>).</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">warming_details</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetchvars.html">fetchvars</a></span><span class="op">(</span><span class="va">core</span>, <span class="fl">2000</span><span class="op">:</span><span class="fl">2100</span>,
                              <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="../reference/carboncycle.html">VEG_C</a></span><span class="op">(</span><span class="st">"low-latitude"</span><span class="op">)</span>, <span class="fu"><a href="../reference/carboncycle.html">VEG_C</a></span><span class="op">(</span><span class="st">"high-latitude"</span><span class="op">)</span>,
                                <span class="fu"><a href="../reference/carboncycle.html">DETRITUS_C</a></span><span class="op">(</span><span class="st">"low-latitude"</span><span class="op">)</span>, <span class="fu"><a href="../reference/carboncycle.html">DETRITUS_C</a></span><span class="op">(</span><span class="st">"high-latitude"</span><span class="op">)</span>,
@@ -161,7 +163,7 @@ Hector results with vs. without accelerated high-latitude warming.
 <span class="co">## 5  warming 2004 low-latitude.veg_c 476.8836  Pg C</span>
 <span class="co">## 6  warming 2005 low-latitude.veg_c 477.4029  Pg C</span></code></pre>
 <p>For plotting, let’s split up the <code>variable</code> column into its components – <code>biome</code> and <code>variable</code>.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">variable_split</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/strsplit.html" class="external-link">strsplit</a></span><span class="op">(</span><span class="va">warming_details</span><span class="op">$</span><span class="va">variable</span>, <span class="st">"."</span>, fixed <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="va">warming_details</span><span class="op">$</span><span class="va">biome</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">vapply</a></span><span class="op">(</span><span class="va">variable_split</span>, <span class="st">"[["</span>, <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>, <span class="fl">1</span><span class="op">)</span>,
                                 <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"low-latitude"</span>, <span class="st">"high-latitude"</span><span class="op">)</span><span class="op">)</span>
@@ -173,12 +175,12 @@ Hector results with vs. without accelerated high-latitude warming.
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p><img src="multiple-biomes_files/figure-html/warming-details-plot-1.png" width="700"></p>
 </div>
-<div class="section level1">
-<h1 id="example-2-c3-and-c4-plants">Example 2: C3 and C4 plants<a class="anchor" aria-label="anchor" href="#example-2-c3-and-c4-plants"></a>
-</h1>
+<div class="section level2">
+<h2 id="example-2-c3-and-c4-plants">Example 2: C3 and C4 plants<a class="anchor" aria-label="anchor" href="#example-2-c3-and-c4-plants"></a>
+</h2>
 <p>We can conduct a similar experiment to the one above by looking at the differential impact of CO<sub>2</sub> fertilization on C3 and C4 plants. Specifically, C4 plants possess a special mechanism for concentrating CO<sub>2</sub> inside their leaves, thereby reducing their sensitivity to changes in atmospheric CO<sub>2</sub>. Although this makes C4 plants more efficient (particularly in hot and dry environments), this also means that they should have a reduced CO<sub>2</sub> fertilization effect compared to C3 plants.</p>
 <p>In Hector, the CO<sub>2</sub> fertilization effect is controlled by the parameter <span class="math inline">\(\beta\)</span> (<code><a href="../reference/parameters.html">BETA()</a></code>). In this example, we will create two “biomes,” corresponding to C3 and C4 plants, each with different <code><a href="../reference/parameters.html">BETA()</a></code> values, and will compare model outputs from this special case against a reference case (which we can recycle from the <code>reference_results</code> object in the previous example). For the purposes of this example, we will assume that ~10% of the world’s terrestrial carbon is associated with C4 plants, and that the CO<sub>2</sub> fertilization effect for C4 plans is half as strong as that of C3 plants.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">core</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/newcore.html">newcore</a></span><span class="op">(</span><span class="va">rcp45</span>, suppresslogging <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="fu"><a href="../reference/split_biome.html">split_biome</a></span><span class="op">(</span><span class="va">core</span>, <span class="st">"global"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"C3"</span>, <span class="st">"C4"</span><span class="op">)</span>,
             fveg_c <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.9</span>, <span class="fl">0.1</span><span class="op">)</span>,
@@ -226,7 +228,7 @@ Hector results with vs. without accelerated high-latitude warming.
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.1.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.</p>
 </div>
 
       </footer>
