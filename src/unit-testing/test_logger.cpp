@@ -32,17 +32,21 @@ protected:
         // avoid stomping over someone else's files.
         H_ASSERT( !fileExists( testFile1.c_str() ), "testfile1 exists" );
         H_ASSERT( !fileExists( testFile2.c_str() ), "testfile2 exists" );
+
+        // swap out the cout buffer with a string stream so we can keep
+        // track of if messages get echoed when they should / should not
+        // be sure to keep a copy of the original so that we can restore
+        // it in TearDown
+        origCoutBuf = std::cout.rdbuf( &consoleTestBuff );
         
         loggerNoEcho.open( testFile1, false, true, Logger::WARNING );
-        std::streambuf* tmpBuff = std::cout.rdbuf( &consoleTestBuff );
         loggerEcho.open( testFile2, true, true, Logger::WARNING );
-        
-        // now that the logger has attached to our test buffer put the
-        // original back into cout
-        std::cout.rdbuf( tmpBuff );
     }
     
     virtual void TearDown() {
+        // restore the original cout buffer
+        std::cout.rdbuf( origCoutBuf );
+
         // close the loggers explicitly so that the temp files can be deleted.
         loggerNoEcho.close();
         loggerEcho.close();
@@ -75,6 +79,7 @@ protected:
     Logger loggerEcho;
     
     std::stringbuf consoleTestBuff;
+    std::streambuf* origCoutBuf;
 };
 
 TEST_F(LoggerTest, UninitializedLog) {
