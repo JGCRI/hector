@@ -12,6 +12,7 @@
  *
  */
 
+#include <fstream>
 #include "boost/algorithm/string.hpp"
 
 #include "imodel_component.hpp"
