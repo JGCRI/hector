@@ -89,7 +89,7 @@ void oceanbox::add_carbon( fluxpool carbon ) {
  *  \returns        Absolute temperature of box, C
  */
 unitval oceanbox::compute_tabsC( const unitval SST ) const {
-    return SST + unitval( MEAN_GLOBAL_TEMP, U_DEGC ) + deltaT;
+    return SST + unitval( MEAN_TOS_TEMP, U_DEGC ) + deltaT;
 }
 
 //------------------------------------------------------------------------------

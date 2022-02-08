@@ -27,9 +27,10 @@
 #include "ocean_csys.hpp"
 #include "fluxpool.hpp"
 
-// Mean absolute global temperature, preindustrial (deg C), this is used by the ocean component which, requires
-// absolute temperature to calculate ocean chemistry.
-#define MEAN_GLOBAL_TEMP 15
+// Mean absolute global tos temperature, preindustrial (deg C), this is used by the ocean component which, requires
+// absolute temperature to calculate ocean chemistry, the CMIP6 multi model mean from 1850 - 1860. See hector_cmip6data
+// for details. TODO tag a zenondo archive prior to Hector v 3 release.
+#define MEAN_TOS_TEMP 18
 
 namespace Hector {
 
