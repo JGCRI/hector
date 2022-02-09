@@ -212,7 +212,7 @@ error <- c(knorr_minmax, rep(0, times = 8))
 df <- data.frame(vars, values, error)
 
 ggplot(df) +
-  aes(x = vars, y = values, fill = names) + 
+  aes(x = vars, y = values, fill = vars) + 
   geom_bar(stat = "identity") +
   geom_errorbar(aes(ymin = values - error, ymax = values + error), width = 0.2)+
   scale_fill_manual(values = c("paleturquoise3", "paleturquoise2", "paleturquoise1", "darkslategray1", "darkslategray2", "darkslategray3", "darkslategray4", "darkslategray", "grey50")) +
@@ -233,5 +233,5 @@ by source of each pool in Hector. This is useful to, for example, calculate the 
 Remember to shut down the core.
 
 ```{r shutdown}
-shutdown(core)
+invisible(shutdown(core))
 ```
