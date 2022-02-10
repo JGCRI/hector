@@ -1429,6 +1429,14 @@ LAND_AIR_TEMP <- function() {
     .Call('_hector_LAND_AIR_TEMP', PACKAGE = 'hector')
 }
 
+#' @describeIn parameters Land-Ocean Warming Ratio (\code{"(unitless)"}), by default set to 9999 (NULL)
+#' meaning that the land ocean warming ratio is an emergent property of Hector's temperature
+#' component otherwise the user defined land ocean warming ratio will be used to determine
+#' @export
+LO_WARMING_RATIO <- function() {
+    .Call('_hector_LO_WARMING_RATIO', PACKAGE = 'hector')
+}
+
 #' @describeIn parameters Ocean heat diffusivity (\code{"cm2/s"})
 #' @export
 DIFFUSIVITY <- function() {

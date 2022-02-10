@@ -339,14 +339,14 @@ void OceanComponent::run( const double runToDate ) {
 	annualflux_sumHL.set( 0.0, U_PGC );
 	annualflux_sumLL.set( 0.0, U_PGC );
     timesteps = 0;
-
+    
     // Initialize ocean box boundary conditions and inform them new year starting
     H_LOG(logger, Logger::DEBUG) << "Starting new year: SST= " << SST << std::endl;
     surfaceHL.new_year( SST );
     surfaceLL.new_year( SST );
     inter.new_year( SST );
     deep.new_year( SST );
-
+    //double x = surfaceHL.get_Tbox();
     H_LOG( logger, Logger::DEBUG ) << "----------------------------------------------------" << std::endl;
     H_LOG( logger, Logger::DEBUG ) << "runToDate=" << runToDate << ", Ca=" << Ca << ", spinup=" << in_spinup << std::endl;
 
@@ -368,7 +368,7 @@ void OceanComponent::run( const double runToDate ) {
     // Call compute_fluxes with do_boxfluxes=false to run just chemistry
 	surfaceHL.compute_fluxes( Ca, atmosphere_cpool, 1.0, false );
 	surfaceLL.compute_fluxes( Ca, atmosphere_cpool, 1.0, false );
-
+    
     // Now wait for the solver to call us
 }
 
@@ -390,7 +390,7 @@ unitval OceanComponent::getData( const std::string& varName,
         // If no date, we're in spinup; just return the current value
 
         if( varName == D_OCEAN_CFLUX ){
-                returnval = annualflux_sum;
+            returnval = annualflux_sum;
         } else if( varName == D_TT ) {
             returnval = tt;
         } else if( varName == D_TU ) {
@@ -416,17 +416,17 @@ unitval OceanComponent::getData( const std::string& varName,
         } else if( varName == D_ATM_OCEAN_FLUX_LL ) {
             returnval = unitval( annualflux_sumLL.value( U_PGC ), U_PGC_YR );
         } else if( varName == D_CARBON_DO ) {
-               returnval = deep.get_carbon();
+            returnval = deep.get_carbon();
         } else if( varName == D_CARBON_HL ) {
             returnval = surfaceHL.get_carbon();
         } else if( varName == D_CARBON_LL ) {
             returnval = surfaceLL.get_carbon();
         } else if( varName == D_CARBON_IO ) {
-        returnval = inter.get_carbon();
+            returnval = inter.get_carbon();
         } else if( varName == D_DIC_HL ) {
             returnval = surfaceHL.mychemistry.convertToDIC( surfaceHL.get_carbon() );
         } else if( varName == D_DIC_LL ) {
-        returnval = surfaceLL.mychemistry.convertToDIC( surfaceLL.get_carbon() );
+            returnval = surfaceLL.mychemistry.convertToDIC( surfaceLL.get_carbon() );
         } else if( varName == D_HL_DO ) {
             returnval = surfaceHL.annual_box_fluxes[ &deep ] ;
         } else if( varName == D_PCO2_HL ) {
@@ -434,9 +434,9 @@ unitval OceanComponent::getData( const std::string& varName,
         } else if( varName == D_PCO2_LL ) {
             returnval = surfaceLL.mychemistry.PCO2o;
         } else if( varName == D_PH_HL ) {
-               returnval = surfaceHL.mychemistry.pH;
+            returnval = surfaceHL.mychemistry.pH;
         } else if( varName == D_PH_LL ) {
-               returnval = surfaceLL.mychemistry.pH;
+            returnval = surfaceLL.mychemistry.pH;
         } else if( varName == D_TEMP_HL ) {
             returnval = surfaceHL.get_Tbox();
         } else if( varName == D_TEMP_LL ) {
@@ -444,18 +444,18 @@ unitval OceanComponent::getData( const std::string& varName,
         } else if( varName == D_OCEAN_C ) {
             returnval = totalcpool();
         } else if( varName == D_CO3_HL ) {
-        returnval = surfaceHL.mychemistry.CO3;
+            returnval = surfaceHL.mychemistry.CO3;
         } else if( varName == D_CO3_LL ) {
             returnval = surfaceLL.mychemistry.CO3;
         } else if( varName == D_TIMESTEPS ) {
-             returnval = unitval( timesteps, U_UNITLESS );
+            returnval = unitval( timesteps, U_UNITLESS );
         } else {
             H_THROW( "Problem with user request for constant data: " + varName );
         }
 
     } else if(date != Core::undefinedIndex() ){
         if( varName == D_OCEAN_CFLUX ){
-                returnval = annualflux_sum_ts.get(date);
+            returnval = annualflux_sum_ts.get(date);
         } else if( varName == D_OCEAN_C ) {
             returnval = C_DO_ts.get( date ) +  C_IO_ts.get(date) + Ca_LL_ts.get(date) + Ca_HL_ts.get(date);
         } else if( varName == D_HL_DO ) {
@@ -477,11 +477,11 @@ unitval OceanComponent::getData( const std::string& varName,
         } else if( varName == D_DIC_LL ) {
             returnval = dic_LL_ts.get( date );
         } else if( varName == D_CARBON_HL ) {
-           returnval = Ca_HL_ts.get(date);
+            returnval = Ca_HL_ts.get(date);
         } else if( varName == D_CARBON_LL ) {
             returnval = Ca_LL_ts.get(date);
         } else if( varName == D_CARBON_IO ) {
-          returnval = C_IO_ts.get(date);
+            returnval = C_IO_ts.get(date);
         } else if( varName == D_CARBON_DO ) {
             returnval = C_DO_ts.get(date);
         } else if( varName == D_TEMP_HL ) {

@@ -12,7 +12,7 @@ hvars <- c(
   EMISSIONS_CH4(), PREINDUSTRIAL_CH4(), NATURAL_CH4(), LIFETIME_SOIL(), LIFETIME_STRAT(),
   EMISSIONS_SO2(), VOLCANIC_SO2(), CO2_CONSTRAIN(),
   CH4_CONSTRAIN(), N2O_CONSTRAIN(),
-  TRACKING_DATE(), RHO_BC()
+  TRACKING_DATE(), RHO_BC(), LO_WARMING_RATIO()
 )
 
 
@@ -24,7 +24,7 @@ hunits <- c(
   "Tg CH4", "ppbv CH4", "Tg CH4", "Years", "Years",
   "Gg S", "W/m2", "ppmv CO2",
   "ppbv CH4", "ppbv N2O",
-  "(unitless)", "W/m2/Tg"
+  "(unitless)", "W/m2/Tg", "(unitless)"
 )
 
 

@@ -1802,6 +1802,15 @@ String LAND_AIR_TEMP() {
 return D_LAND_AIR_TEMP;
 }
 
+//' @describeIn parameters Land-Ocean Warming Ratio (\code{"(unitless)"}), by default set to 9999 (NULL)
+//' meaning that the land ocean warming ratio is an emergent property of Hector's temperature
+//' component otherwise the user defined land ocean warming ratio will be used to determine
+//' @export
+// [[Rcpp::export]]
+String LO_WARMING_RATIO(){
+    return D_LO_WARMING_RATIO;
+}
+
 
 //' @describeIn parameters Ocean heat diffusivity (\code{"cm2/s"})
 //' @export

@@ -88,7 +88,7 @@ test_that("Lowering initial CO2 lowers output CO2", {
 })
 
 # Limit the test dates to the future, where the historical
-# variablity won't impact the temp.
+# variability won't impact the temp.
 tdates <- 2000:2100
 
 test_that("Lowering ECS lowers output Temperature", {
@@ -327,4 +327,58 @@ test_that("Increasing CO2 fertilization factor increases NPP", {
   expect_gt(min(diff), 0.0)
 
   shutdown(hc)
+})
+
+test_that("land ocean warming ratio", {
+
+    # Check the land ocean warming ratio function
+    expect_true(is.character(LO_WARMING_RATIO()))
+
+    # Set up the Hector core & determine the dates & variables to keep.
+    core <- newcore(ssp245)
+    keep <- floor(seq(from = 1850, to = 2100, length.out = 30))
+    vars <- c(GLOBAL_TEMP(), LAND_AIR_TEMP(), OCEAN_AIR_TEMP(), OCEAN_SURFACE_TEMP())
+
+    # The expected value for the lo warming ratio is 9999, meaning that the land ocean warming
+    # ratio is an emergent property of the doeclim.
+    defualt_lo <- fetchvars(core, NA, LO_WARMING_RATIO())
+    expect_equal(defualt_lo$value, 9999)
+
+    run(core, max(keep))
+    out1 <- fetchvars(core, keep, vars)
+
+    # Check to make sure that when running default Hector that the land ocean warming ratio is not
+    # held constant.
+    emergent_ratio <- out1[out1$variable == LAND_AIR_TEMP(), ][["value"]] / out1[out1$variable == OCEAN_AIR_TEMP(), ][["value"]]
+    expect_equal(length(unique(emergent_ratio)), length(emergent_ratio))
+
+    # Reset the land ocean warming ratio. Make sure that a value can be passed into the core,
+    # that is can be reset & have down stream effects.
+    new_ratio <- 3
+    setvar(core, NA, LO_WARMING_RATIO(), new_ratio, "(unitless)")
+    reset(core)
+
+    # Check to make sure the new land ocean warming ratio is read in.
+    new_lo <- fetchvars(core, NA, LO_WARMING_RATIO())
+    expect_true(defualt_lo$value != new_lo$value)
+    expect_true(new_ratio == new_lo$value)
+
+    # Run Hector with the new land ocean ratio, check the output.
+    run(core, max(keep))
+    out2 <- fetchvars(core, keep, vars)
+
+    # Start by checking that the ratio backed out of from Hector outputs is consistent with the ratio read in.
+    ratio_from_output <- out2[out2$variable == LAND_AIR_TEMP(), ][["value"]] / out2[out2$variable == OCEAN_AIR_TEMP(), ][["value"]]
+    expect_true(all(abs(new_ratio - unique(ratio_from_output)) <= 1e-5))
+
+    # Make sure that the change in the global mean temp is relatively small.
+    tgav_diff <- mean(abs(out1[out1$variable == GLOBAL_TEMP(), ][["value"]] - out2[out2$variable == GLOBAL_TEMP(), ][["value"]]))
+    expect_lt(tgav_diff, 1e-1)
+
+    land_diff <- mean(abs(out1[out1$variable == LAND_AIR_TEMP(), ][["value"]] - out2[out2$variable == LAND_AIR_TEMP(), ][["value"]]))
+    expect_gt(land_diff, 1e-1)
+
+    ocean_diff <- mean(abs(out1[out1$variable == OCEAN_AIR_TEMP(), ][["value"]] - out2[out2$variable == OCEAN_AIR_TEMP(), ][["value"]]))
+    expect_gt(ocean_diff, 1e-1)
+
 })

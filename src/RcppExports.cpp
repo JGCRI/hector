@@ -2390,6 +2390,16 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// LO_WARMING_RATIO
+String LO_WARMING_RATIO();
+RcppExport SEXP _hector_LO_WARMING_RATIO() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(LO_WARMING_RATIO());
+    return rcpp_result_gen;
+END_RCPP
+}
 // DIFFUSIVITY
 String DIFFUSIVITY();
 RcppExport SEXP _hector_DIFFUSIVITY() {
@@ -2815,6 +2825,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_OCEAN_SURFACE_TEMP", (DL_FUNC) &_hector_OCEAN_SURFACE_TEMP, 0},
     {"_hector_OCEAN_AIR_TEMP", (DL_FUNC) &_hector_OCEAN_AIR_TEMP, 0},
     {"_hector_LAND_AIR_TEMP", (DL_FUNC) &_hector_LAND_AIR_TEMP, 0},
+    {"_hector_LO_WARMING_RATIO", (DL_FUNC) &_hector_LO_WARMING_RATIO, 0},
     {"_hector_DIFFUSIVITY", (DL_FUNC) &_hector_DIFFUSIVITY, 0},
     {"_hector_FLUX_MIXED", (DL_FUNC) &_hector_FLUX_MIXED, 0},
     {"_hector_FLUX_INTERIOR", (DL_FUNC) &_hector_FLUX_INTERIOR, 0},

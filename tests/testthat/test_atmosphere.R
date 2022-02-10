@@ -1,5 +1,5 @@
 context("Atmosphere and radiative forcing")
-# Check some basic science to make sure Hector's atmosphere behaves as expected.
+# Check some basic science to make sure Hector's forcing & temperature componet behave as expectd.
 
 inputdir <- system.file("input", package = "hector")
 sampledir <- system.file("output", package = "hector")
@@ -43,3 +43,24 @@ test_that("Checking RF values", {
 
   expect_equal(total_rf$value, sum_individuals$value, tolerance = error_threshold)
   })
+
+test_that("Check Temp", {
+
+    # Define the comparison dates
+    t_dates <- 1850:2100
+
+    # Set and run Hector
+    hc <- newcore(ssp245)
+    run(hc, max(t_dates))
+
+    # Make sure that the weighted sum of the land and ocean air temps is equal to the
+    # global mean air temp. This is useful for preserving behavior of the temp component.
+    land  <- fetchvars(hc, t_dates, vars = LAND_AIR_TEMP())[["value"]]
+    ocean <- fetchvars(hc, t_dates, vars = OCEAN_AIR_TEMP())[["value"]]
+
+    flnd <- 0.29
+    weighted_sum <- flnd * land + ocean * (1-flnd)
+    expect_equal(fetchvars(hc, t_dates, vars = GLOBAL_TEMP())[["value"]], weighted_sum, tolerance = 1e-5)
+
+})
+
