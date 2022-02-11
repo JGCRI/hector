@@ -216,7 +216,7 @@ void TemperatureComponent::prepareToRun() {
         Logger& glog = core->getGlobalLogger();
         H_LOG( glog, Logger::WARNING ) << "Temperature will be overwritten by user-supplied values!" << std::endl;
     }
-    
+
     if( lo_warming_ratio != 9999.0) {
         Logger& glog = core->getGlobalLogger();
         H_LOG( glog, Logger::WARNING ) << "User supplied land-ocean warming ratio will be used to override air over land and air over ocean temperatures! User set land-ocean warming ratio: " << lo_warming_ratio << std::endl;
@@ -259,7 +259,7 @@ void TemperatureComponent::prepareToRun() {
     ocean_area = (1.0 - flnd) * earth_area;    // m2
     double qco2 = q2co2.value( U_UNDEFINED );
 
- 
+
 
     // Calculate climate feedback parameterisation
     cnum = rlam * flnd + bsi * (1.0 - flnd);   // denominator used to calculate climate senstivity feedback parameters over land & sea
@@ -558,7 +558,7 @@ unitval TemperatureComponent::getData( const std::string& varName,
             if ( lo_warming_ratio != 9999 ) {
                     returnval = unitval(lo_temp_landair[tstep], U_DEGC);
                   } else {
-                    returnval = returnval = unitval(temp_landair[tstep], U_DEGC);
+                    returnval =  unitval(temp_landair[tstep], U_DEGC);
                   }
         } else if( varName == D_OCEAN_SURFACE_TEMP ) {
             if ( lo_warming_ratio != 9999 ) {
@@ -628,27 +628,27 @@ void TemperatureComponent::setoutputs(int tstep)
     tgav_sst.set(temp_sst[tstep], U_DEGC, 0.0);
     temp_oceanair = bsi * temp_sst[tstep];
     tgav_oceanair.set(temp_oceanair, U_DEGC, 0.0);
-    
+
     // If a user provided land-ocean warming ratio is provided, use it to over write DOECLIM's
     // land & ocean temperature.
-    if ( lo_warming_ratio != 999 ) {
+    if ( lo_warming_ratio != 9999 ) {
 
         // Calculations using tgav weighted average and ratio (land warming/ocean warming = lo_warming_ratio)
         double temp_oceanair_constrain = temp[tstep] / ((lo_warming_ratio * flnd) + (1-flnd));
         double temp_landair_constrain = temp_oceanair_constrain * lo_warming_ratio;
         double temp_sst_constrain = temp_oceanair_constrain / bsi;
-        
+
         lo_temp_landair[tstep] = temp_landair_constrain;
         lo_temp_oceanair[tstep] = temp_oceanair_constrain;
         lo_sst[tstep] = temp_sst_constrain;
-        
+
         // Store these the values, notes these are values with non dates.
         lo_tgav_land.set(temp_landair_constrain, U_DEGC, 0.0);
         lo_tgav_sst.set(temp_sst_constrain, U_DEGC, 0.0);
         lo_tgav_oceanair.set(temp_oceanair_constrain, U_DEGC, 0.0);
-        
+
     }
-    
+
     H_LOG( logger, Logger::DEBUG) << "Land-ocean warming ratio: " << tgav_land/tgav_oceanair << std::endl;
     H_LOG( logger, Logger::DEBUG) << "Global: " << tgav << std::endl;
     H_LOG( logger, Logger::DEBUG) << "Land Temp: " << tgav_land << std::endl;

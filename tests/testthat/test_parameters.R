@@ -370,6 +370,8 @@ test_that("land ocean warming ratio", {
     # Start by checking that the ratio backed out of from Hector outputs is consistent with the ratio read in.
     ratio_from_output <- out2[out2$variable == LAND_AIR_TEMP(), ][["value"]] / out2[out2$variable == OCEAN_AIR_TEMP(), ][["value"]]
     expect_true(all(abs(new_ratio - unique(ratio_from_output)) <= 1e-5))
+    expect_equal(length(unique(round(ratio_from_output, digits = 3))), 1)
+
 
     # Make sure that the change in the global mean temp is relatively small.
     tgav_diff <- mean(abs(out1[out1$variable == GLOBAL_TEMP(), ][["value"]] - out2[out2$variable == GLOBAL_TEMP(), ][["value"]]))

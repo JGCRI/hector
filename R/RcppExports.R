@@ -1115,6 +1115,12 @@ OCEAN_C_LL <- function() {
     .Call('_hector_OCEAN_C_LL', PACKAGE = 'hector')
 }
 
+#' @describeIn ocean Ocean surface or mixed layer carbon pool
+#' @export
+OCEAN_C_ML <- function() {
+    .Call('_hector_OCEAN_C_ML', PACKAGE = 'hector')
+}
+
 #' @describeIn ocean Intermediate ocean carbon pool
 #' @export
 OCEAN_C_IO <- function() {
@@ -1163,6 +1169,12 @@ PH_LL <- function() {
     .Call('_hector_PH_LL', PACKAGE = 'hector')
 }
 
+#' @describeIn ocean Ocean surface Ph
+#' @export
+PH <- function() {
+    .Call('_hector_PH', PACKAGE = 'hector')
+}
+
 #' @describeIn ocean Atmosphere-ocean carbon flux, high-latitude
 #' @export
 ATM_OCEAN_FLUX_HL <- function() {
@@ -1187,10 +1199,22 @@ PCO2_LL <- function() {
     .Call('_hector_PCO2_LL', PACKAGE = 'hector')
 }
 
+#' @describeIn ocean Ocean surface partial pressure of CO2
+#' @export
+PCO2 <- function() {
+    .Call('_hector_PCO2', PACKAGE = 'hector')
+}
+
 #' @describeIn ocean Dissolved inorganic carbon, high-latitude
 #' @export
 DIC_HL <- function() {
     .Call('_hector_DIC_HL', PACKAGE = 'hector')
+}
+
+#' @describeIn ocean Ocean surface dissolved inorganic carbon
+#' @export
+DIC <- function() {
+    .Call('_hector_DIC', PACKAGE = 'hector')
 }
 
 #' @describeIn ocean Dissolved inorganic carbon, low-latitude
@@ -1221,6 +1245,12 @@ CO3_LL <- function() {
 #' @export
 CO3_HL <- function() {
     .Call('_hector_CO3_HL', PACKAGE = 'hector')
+}
+
+#' @describeIn ocean Ocean surface carbonate concentration
+#' @export
+CO3 <- function() {
+    .Call('_hector_CO3', PACKAGE = 'hector')
 }
 
 #' @rdname carboncycle

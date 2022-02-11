@@ -1359,6 +1359,13 @@ String OCEAN_C_LL() {
 return D_CARBON_LL;
 }
 
+//' @describeIn ocean Ocean surface or mixed layer carbon pool
+//' @export
+// [[Rcpp::export]]
+String OCEAN_C_ML() {
+    return D_CARBON_ML;
+}
+
 //' @describeIn ocean Intermediate ocean carbon pool
 //' @export
 // [[Rcpp::export]]
@@ -1418,6 +1425,13 @@ String PH_LL() {
 return D_PH_LL;
 }
 
+//' @describeIn ocean Ocean surface Ph
+//' @export
+// [[Rcpp::export]]
+String PH() {
+    return D_PH;
+}
+
 //' @describeIn ocean Atmosphere-ocean carbon flux, high-latitude
 //' @export
 // [[Rcpp::export]]
@@ -1446,11 +1460,25 @@ String PCO2_LL() {
 return D_PCO2_LL;
 }
 
+//' @describeIn ocean Ocean surface partial pressure of CO2
+//' @export
+// [[Rcpp::export]]
+String PCO2() {
+    return D_PCO2;
+}
+
 //' @describeIn ocean Dissolved inorganic carbon, high-latitude
 //' @export
 // [[Rcpp::export]]
 String DIC_HL() {
 return D_DIC_HL;
+}
+
+//' @describeIn ocean Ocean surface dissolved inorganic carbon
+//' @export
+// [[Rcpp::export]]
+String DIC() {
+    return D_DIC;
 }
 
 //' @describeIn ocean Dissolved inorganic carbon, low-latitude
@@ -1488,6 +1516,12 @@ String CO3_HL() {
 return D_CO3_HL;
 }
 
+//' @describeIn ocean Ocean surface carbonate concentration
+//' @export
+// [[Rcpp::export]]
+String CO3() {
+    return D_CO3;
+}
 
 
 /* Simple Nbox Component */

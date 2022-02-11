@@ -93,22 +93,28 @@ void OceanComponent::init( Core* coreptr ) {
     core->registerCapability( D_CARBON_LL, getComponentName() );
     core->registerCapability( D_CARBON_IO, getComponentName() );
     core->registerCapability( D_CARBON_DO, getComponentName() );
+    core->registerCapability( D_CARBON_ML, getComponentName() );
     core->registerCapability( D_TT, getComponentName() );
     core->registerCapability( D_TU, getComponentName() );
     core->registerCapability( D_TWI, getComponentName() );
     core->registerCapability( D_TID, getComponentName() );
     core->registerCapability( D_PH_HL, getComponentName() );
     core->registerCapability( D_PH_LL, getComponentName() );
+    core->registerCapability( D_PH, getComponentName() );
     core->registerCapability( D_ATM_OCEAN_FLUX_HL, getComponentName() );
     core->registerCapability( D_ATM_OCEAN_FLUX_LL, getComponentName() );
     core->registerCapability( D_PCO2_HL, getComponentName() );
     core->registerCapability( D_PCO2_LL, getComponentName() );
+    core->registerCapability( D_PCO2, getComponentName() );
     core->registerCapability( D_DIC_HL, getComponentName() );
     core->registerCapability( D_DIC_LL, getComponentName() );
+    core->registerCapability( D_DIC, getComponentName() );
     core->registerCapability( D_TEMP_HL, getComponentName() );
     core->registerCapability( D_TEMP_LL, getComponentName() );
     core->registerCapability( D_CO3_HL, getComponentName() );
     core->registerCapability( D_CO3_LL, getComponentName() );
+    core->registerCapability( D_CO3, getComponentName() );
+
 
     // Register the inputs we can receive from outside
     core->registerInput(D_TT, getComponentName());
@@ -231,8 +237,8 @@ void OceanComponent::prepareToRun() {
     // Define high and low latitude
     // The cold high-latitude surface box makes up 15% of the total ocean surface area and has latitude > 55
     // The warm low-latitude surface box makes up the rest.
-    const double part_high = 0.15;
-    const double part_low = 1-part_high;
+    //const double part_high = 0.15;
+    //const double part_low = 1-part_high;
 
     // ocean box volumes (m3)
     const double LL_volume = ocean_area * part_low * thick_LL;
@@ -281,7 +287,7 @@ void OceanComponent::prepareToRun() {
     surfaceHL.log_state();
     inter.log_state();
     deep.log_state();
-        
+
 }
 
 //------------------------------------------------------------------------------
@@ -333,11 +339,11 @@ void OceanComponent::run( const double runToDate ) {
 
     Ca = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_CO2 );
     SST.set(core->sendMessage( M_GETDATA, D_OCEAN_SURFACE_TEMP ), U_DEGC);
-    
+
 
 
     in_spinup = core->inSpinup();
-    
+
 	annualflux_sum.set( 0.0, U_PGC );
 	annualflux_sumHL.set( 0.0, U_PGC );
 	annualflux_sumLL.set( 0.0, U_PGC );
@@ -371,7 +377,7 @@ void OceanComponent::run( const double runToDate ) {
     // Call compute_fluxes with do_boxfluxes=false to run just chemistry
 	surfaceHL.compute_fluxes( Ca, atmosphere_cpool, 1.0, false );
 	surfaceLL.compute_fluxes( Ca, atmosphere_cpool, 1.0, false );
-    
+
     // Now wait for the solver to call us
 }
 
@@ -424,22 +430,33 @@ unitval OceanComponent::getData( const std::string& varName,
             returnval = surfaceHL.get_carbon();
         } else if( varName == D_CARBON_LL ) {
             returnval = surfaceLL.get_carbon();
+        } else if( varName == D_CARBON_ML ) {
+            returnval = surfaceLL.get_carbon() + surfaceHL.get_carbon();
         } else if( varName == D_CARBON_IO ) {
             returnval = inter.get_carbon();
         } else if( varName == D_DIC_HL ) {
             returnval = surfaceHL.mychemistry.convertToDIC( surfaceHL.get_carbon() );
         } else if( varName == D_DIC_LL ) {
             returnval = surfaceLL.mychemistry.convertToDIC( surfaceLL.get_carbon() );
+        } else if( varName == D_DIC ) {
+            double value = part_low * surfaceLL.mychemistry.convertToDIC( surfaceLL.get_carbon() ) + part_high *  surfaceHL.mychemistry.convertToDIC( surfaceHL.get_carbon() ) ;
+            returnval = unitval(value, U_UMOL_KG);
         } else if( varName == D_HL_DO ) {
             returnval = surfaceHL.annual_box_fluxes[ &deep ] ;
         } else if( varName == D_PCO2_HL ) {
             returnval = surfaceHL.mychemistry.PCO2o;
         } else if( varName == D_PCO2_LL ) {
             returnval = surfaceLL.mychemistry.PCO2o;
+        } else if( varName == D_PCO2 ) {
+            double value = part_low * surfaceLL.mychemistry.PCO2o + part_high * surfaceHL.mychemistry.PCO2o;
+            returnval = unitval(value, U_UATM);
         } else if( varName == D_PH_HL ) {
             returnval = surfaceHL.mychemistry.pH;
         } else if( varName == D_PH_LL ) {
             returnval = surfaceLL.mychemistry.pH;
+        } else if( varName == D_PH ) {
+            double value = part_low * surfaceLL.mychemistry.pH +  part_high * surfaceHL.mychemistry.pH;
+            returnval = unitval(value, U_PH);
         } else if( varName == D_TEMP_HL ) {
             returnval = surfaceHL.get_Tbox();
         } else if( varName == D_TEMP_LL ) {
@@ -450,6 +467,9 @@ unitval OceanComponent::getData( const std::string& varName,
             returnval = surfaceHL.mychemistry.CO3;
         } else if( varName == D_CO3_LL ) {
             returnval = surfaceLL.mychemistry.CO3;
+        } else if( varName == D_CO3 ) {
+            double value = part_low * surfaceLL.mychemistry.CO3 + part_high * surfaceHL.mychemistry.CO3;
+            returnval = unitval(value, U_UMOL_KG);
         } else if( varName == D_TIMESTEPS ) {
             returnval = unitval( timesteps, U_UNITLESS );
         } else {
@@ -467,6 +487,9 @@ unitval OceanComponent::getData( const std::string& varName,
             returnval = PH_HL_ts.get( date );
         } else if( varName == D_PH_LL ) {
             returnval = PH_LL_ts.get( date );
+        } else if( varName == D_PH ) {
+            double value = part_low * PH_LL_ts.get( date ) + part_high * PH_HL_ts.get( date ) ;
+            returnval = unitval(value, U_PH);
         } else if( varName == D_ATM_OCEAN_FLUX_HL ) {
             returnval = annualflux_sumHL_ts.get(date);
         } else if( varName == D_ATM_OCEAN_FLUX_LL ) {
@@ -475,14 +498,22 @@ unitval OceanComponent::getData( const std::string& varName,
             returnval = pco2_HL_ts.get( date );
         } else if( varName == D_PCO2_LL ) {
             returnval = pco2_LL_ts.get( date );
+        } else if( varName == D_PCO2 ) {
+            double value = part_low * pco2_LL_ts.get( date ) + part_high * pco2_HL_ts.get( date );
+            returnval = unitval(value, U_UATM);
         } else if( varName == D_DIC_HL ) {
             returnval = dic_HL_ts.get( date );
         } else if( varName == D_DIC_LL ) {
             returnval = dic_LL_ts.get( date );
+        } else if( varName == D_DIC ) {
+            double value = part_low * dic_LL_ts.get( date ) + part_high * dic_HL_ts.get( date );
+            returnval = unitval(value, U_UMOL_KG);
         } else if( varName == D_CARBON_HL ) {
             returnval = Ca_HL_ts.get(date);
         } else if( varName == D_CARBON_LL ) {
             returnval = Ca_LL_ts.get(date);
+        } else if( varName == D_CARBON_ML ) {
+            returnval = Ca_LL_ts.get(date) +  Ca_HL_ts.get(date);
         } else if( varName == D_CARBON_IO ) {
             returnval = C_IO_ts.get(date);
         } else if( varName == D_CARBON_DO ) {
@@ -495,6 +526,9 @@ unitval OceanComponent::getData( const std::string& varName,
             returnval = co3_LL_ts.get(date);
         } else if( varName == D_CO3_HL ) {
             returnval = co3_HL_ts.get(date);
+        } else if( varName == D_CO3 ) {
+            double value = part_high * co3_HL_ts.get(date) + part_low * co3_LL_ts.get(date);
+            returnval = unitval(value, U_UMOL_KG);
         } else {
             H_THROW( "Problem with user request for time series: " + varName );
         }
