@@ -1460,14 +1460,14 @@ String DIC_LL() {
 return D_DIC_LL;
 }
 
-//' @describeIn ocean Ocean temperature, high-latitude
+//' @describeIn ocean Absolute ocean surface temperature, high-latitude (deg C)
 //' @export
 // [[Rcpp::export]]
 String TEMP_HL() {
 return D_TEMP_HL;
 }
 
-//' @describeIn ocean Ocean temperature, low-latitude
+//' @describeIn ocean Absolute ocean surface temperature, low-latitude (deg C)
 //' @export
 // [[Rcpp::export]]
 String TEMP_LL() {

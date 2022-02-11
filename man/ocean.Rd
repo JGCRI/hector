@@ -112,9 +112,9 @@ component using the \code{\link{GETDATA}} message type.
 
 \item \code{DIC_LL}: Dissolved inorganic carbon, low-latitude
 
-\item \code{TEMP_HL}: Ocean temperature, high-latitude
+\item \code{TEMP_HL}: Absolute ocean surface temperature, high-latitude (deg C)
 
-\item \code{TEMP_LL}: Ocean temperature, low-latitude
+\item \code{TEMP_LL}: Absolute ocean surface temperature, low-latitude (deg C)
 
 \item \code{CO3_LL}: Carbonate concentration, low-latitude
 

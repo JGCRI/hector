@@ -281,6 +281,7 @@ void OceanComponent::prepareToRun() {
     surfaceHL.log_state();
     inter.log_state();
     deep.log_state();
+        
 }
 
 //------------------------------------------------------------------------------
@@ -332,14 +333,16 @@ void OceanComponent::run( const double runToDate ) {
 
     Ca = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_CO2 );
     SST.set(core->sendMessage( M_GETDATA, D_OCEAN_SURFACE_TEMP ), U_DEGC);
+    
+
 
     in_spinup = core->inSpinup();
-
+    
 	annualflux_sum.set( 0.0, U_PGC );
 	annualflux_sumHL.set( 0.0, U_PGC );
 	annualflux_sumLL.set( 0.0, U_PGC );
     timesteps = 0;
-    
+
     // Initialize ocean box boundary conditions and inform them new year starting
     H_LOG(logger, Logger::DEBUG) << "Starting new year: SST= " << SST << std::endl;
     surfaceHL.new_year( SST );

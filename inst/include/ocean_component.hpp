@@ -168,8 +168,6 @@ private:
     tseries<unitval> temp_LL_ts;
     tseries<unitval> co3_HL_ts;
     tseries<unitval> co3_LL_ts;
-    tseries<unitval> anomaly_HL_temp; //!< place to store HL temp anomaly, deg C
-    tseries<unitval> anomaly_LL_temp; //!<place to store LL temp anomaly, deg C
   
     // timestep control
     tseries<double> max_timestep_ts;

@@ -43,6 +43,7 @@ years_to_keep <- 1850:2100
 vars_to_keep <- c(GLOBAL_TEMP(), LAND_AIR_TEMP(), OCEAN_AIR_TEMP(), ATMOSPHERIC_CO2())
 
 inifile <- file.path(system.file('input', package = 'hector'), 'hector_ssp245.ini')
+
 core    <- newcore(inifile)
 run(core, max(years_to_keep))
 out1 <- fetchvars(core, years_to_keep, vars_to_keep)

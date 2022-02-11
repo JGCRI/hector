@@ -1199,13 +1199,13 @@ DIC_LL <- function() {
     .Call('_hector_DIC_LL', PACKAGE = 'hector')
 }
 
-#' @describeIn ocean Ocean temperature, high-latitude
+#' @describeIn ocean Absolute ocean surface temperature, high-latitude (deg C)
 #' @export
 TEMP_HL <- function() {
     .Call('_hector_TEMP_HL', PACKAGE = 'hector')
 }
 
-#' @describeIn ocean Ocean temperature, low-latitude
+#' @describeIn ocean Absolute ocean surface temperature, low-latitude (deg C)
 #' @export
 TEMP_LL <- function() {
     .Call('_hector_TEMP_LL', PACKAGE = 'hector')
