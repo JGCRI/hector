@@ -15,6 +15,7 @@
 		273FC39E26A3570B00D5303E /* test_ini_to_core_reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 273FC39326A3570B00D5303E /* test_ini_to_core_reader.cpp */; };
 		273FC39F26A3570B00D5303E /* test_unitval.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 273FC39426A3570B00D5303E /* test_unitval.cpp */; };
 		273FC3A026A3570B00D5303E /* test_logger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 273FC39526A3570B00D5303E /* test_logger.cpp */; };
+		275CBFF227AC7CC0009E2AF5 /* h_util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 275CBFF127AC7CC0009E2AF5 /* h_util.cpp */; };
 		27808CF12615CEFA00BE8B90 /* libgtest.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 27808CF02615CEFA00BE8B90 /* libgtest.dylib */; };
 		27962905268F237300333AA3 /* csv_tracking_visitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27962904268F237200333AA3 /* csv_tracking_visitor.cpp */; };
 		27962908268F23CB00333AA3 /* simpleNbox-runtime.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27962907268F23CB00333AA3 /* simpleNbox-runtime.cpp */; };
@@ -142,6 +143,7 @@
 		273FC39426A3570B00D5303E /* test_unitval.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_unitval.cpp; path = "../../../src/unit-testing/test_unitval.cpp"; sourceTree = "<group>"; };
 		273FC39526A3570B00D5303E /* test_logger.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_logger.cpp; path = "../../../src/unit-testing/test_logger.cpp"; sourceTree = "<group>"; };
 		27585CF826150F1A00BA1EF5 /* hector */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = hector; sourceTree = BUILT_PRODUCTS_DIR; };
+		275CBFF127AC7CC0009E2AF5 /* h_util.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = h_util.cpp; path = ../../src/h_util.cpp; sourceTree = "<group>"; };
 		27808CF02615CEFA00BE8B90 /* libgtest.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libgtest.dylib; path = ../../../../../../../../../usr/local/lib/libgtest.dylib; sourceTree = "<group>"; };
 		27962903268F235500333AA3 /* csv_tracking_visitor.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = csv_tracking_visitor.hpp; path = ../../inst/include/csv_tracking_visitor.hpp; sourceTree = "<group>"; };
 		27962904268F237200333AA3 /* csv_tracking_visitor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = csv_tracking_visitor.cpp; path = ../../src/csv_tracking_visitor.cpp; sourceTree = "<group>"; };
@@ -336,6 +338,7 @@
 		27B2C272261511CD005DE26D /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				275CBFF127AC7CC0009E2AF5 /* h_util.cpp */,
 				954D62AD278E005500840656 /* nh3_component.cpp */,
 				27B2C23B261511C6005DE26D /* bc_component.cpp */,
 				27B2C24B261511C8005DE26D /* carbon-cycle-model.cpp */,
@@ -469,7 +472,7 @@
 				27B2C257261511C8005DE26D /* csv_table_reader.cpp in Sources */,
 				27B2C25F261511C8005DE26D /* dependency_finder.cpp in Sources */,
 				27962908268F23CB00333AA3 /* simpleNbox-runtime.cpp in Sources */,
-				95A150DF27A0541C00C30A78 /* h_util.cpp in Sources */,
+				275CBFF227AC7CC0009E2AF5 /* h_util.cpp in Sources */,
 				27B2C266261511C8005DE26D /* unitval.cpp in Sources */,
 				27B2C25A261511C8005DE26D /* ocean_component.cpp in Sources */,
 				27B2C26A261511C8005DE26D /* slr_component.cpp in Sources */,
