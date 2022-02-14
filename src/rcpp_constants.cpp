@@ -1409,23 +1409,21 @@ String TID() {
 return D_TID;
 }
 
-// The rest of these aren't yet implemented, but we might want to have them some day
-
-//' @describeIn ocean High-latitude Ph
+//' @describeIn ocean High-latitude pH
 //' @export
 // [[Rcpp::export]]
 String PH_HL() {
 return D_PH_HL;
 }
 
-//' @describeIn ocean Low-latitude Ph
+//' @describeIn ocean Low-latitude pH
 //' @export
 // [[Rcpp::export]]
 String PH_LL() {
 return D_PH_LL;
 }
 
-//' @describeIn ocean Ocean surface Ph
+//' @describeIn ocean Ocean surface pH
 //' @export
 // [[Rcpp::export]]
 String PH() {

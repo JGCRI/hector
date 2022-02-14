@@ -1157,19 +1157,19 @@ TID <- function() {
     .Call('_hector_TID', PACKAGE = 'hector')
 }
 
-#' @describeIn ocean High-latitude Ph
+#' @describeIn ocean High-latitude pH
 #' @export
 PH_HL <- function() {
     .Call('_hector_PH_HL', PACKAGE = 'hector')
 }
 
-#' @describeIn ocean Low-latitude Ph
+#' @describeIn ocean Low-latitude pH
 #' @export
 PH_LL <- function() {
     .Call('_hector_PH_LL', PACKAGE = 'hector')
 }
 
-#' @describeIn ocean Ocean surface Ph
+#' @describeIn ocean Ocean surface pH
 #' @export
 PH <- function() {
     .Call('_hector_PH', PACKAGE = 'hector')

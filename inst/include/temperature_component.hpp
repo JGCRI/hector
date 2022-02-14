@@ -145,9 +145,9 @@ private:
     unitval flux_interior; //!< heat flux into interior layer of ocean, W/m2
     unitval heatflux;      //!< heat flux into ocean, W/m2
 
-    // Potenital user defined model parameters
-    unitval lo_warming_ratio; //!< user defined land ocean warming ratio, unitless
-    
+    // Potential user defined model parameters
+    unitval lo_warming_ratio; //!< user defined land ocean warming ratio, unit-less ratio defined as ΔTL/ΔTO; see https://agupubs.onlinelibrary.wiley.com/doi/full/10.1002/grl.50971
+
     // Create a place to store temp time series that are over written when
     // a user provided land ocean warming ratio is being used.
     unitval lo_tgav_land;     //!< place to store land temp when lo is provided by users, deg C
@@ -156,7 +156,7 @@ private:
     std::vector<double> lo_temp_landair;    //!< place to store land temp when lo is provided by users, deg C
     std::vector<double> lo_temp_oceanair;   //!< place to store land temp when lo is provided by users, deg C
     std::vector<double> lo_sst;             //!< place to store land temp when lo is provided by users, deg C
-    
+
     tseries<unitval> tgav_constrain;        //! Temperature change can be supplied (not currently)
 
     //! pointers to other components and stuff

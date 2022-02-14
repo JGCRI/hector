@@ -113,11 +113,11 @@ component using the \code{\link{GETDATA}} message type.
 
 \item \code{TID}: Intermediate-deep exchange
 
-\item \code{PH_HL}: High-latitude Ph
+\item \code{PH_HL}: High-latitude pH
 
-\item \code{PH_LL}: Low-latitude Ph
+\item \code{PH_LL}: Low-latitude pH
 
-\item \code{PH}: Ocean surface Ph
+\item \code{PH}: Ocean surface pH
 
 \item \code{ATM_OCEAN_FLUX_HL}: Atmosphere-ocean carbon flux, high-latitude
 
