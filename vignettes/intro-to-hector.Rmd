@@ -12,17 +12,14 @@ editor_options:
 ---
 
 ```{r setup, include=FALSE}
-# TODO figure out how to avoid this hack
-# see https://www.r-bloggers.com/2020/04/setting-the-graphics-device-in-a-rmarkdown-document/
-ragg_png = function(..., res = 192) {
-  ragg::agg_png(..., res = res, units = "in")
-}
-knitr::opts_chunk$set(dev = "ragg_png", fig.ext = "png", echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, dpi = 150)
 ```
 
 This vignette provides a basic introduction for running Hector with R.
 First, it shows how to do a simple Hector run with one of Hector's built-in scenarios.
 Then, it shows how to modify Hector parameters from within R and uses this functionality to perform a simple sensitivity analysis of how the CO$_2$ fertilization parameter $\beta$ affects several Hector output variables.
+
+If you do not yet have Hector installed, please reference the manual's instructions for [building and running Hector](https://jgcri.github.io/hector/articles/manual/BuildHector.html).
 
 # Basic run
 
@@ -36,10 +33,10 @@ Hector is configured via an INI file, which defines run metadata, inputs (e.g. e
 For details on this file, see [InputFiles](https://github.com/JGCRI/hector/wiki/InputFiles) on the Hector GitHub Wiki.
 
 These files ship with the Hector R package, in the `input` subdirectory, which allows them to be accessed via `system.file`.
-Below, we get the path of the input file corresponding to the scenario RCP 4.5.
+Below, we get the path of the input file corresponding to the scenario SPP245.
 
 ```{r  ini-file }
-ini_file <- system.file("input/hector_rcp45.ini", package = "hector") 
+ini_file <- system.file("input/hector_ssp245.ini", package = "hector") 
 ```
 
 
@@ -156,7 +153,7 @@ However, it is still possible to change the values of certain _drivers_ and _sta
 
 ***
 
-So, as a result of the `reset` command, the core's `Current Date` is now the model start date--1745.
+So, as a result of the `reset` command, the core's `Current Date` is now the model start date -- 1745.
 We can now perform another run with the new CO$_2$ fertilization value.
 
 ```{r  run-sim-2}
@@ -200,7 +197,7 @@ However, to save typing (and, in general, to be good programmers!), let's create
 #' @param value Parameter value
 #' @param dates Sequence of years for running simulation (default = #'
 #'   `2000:2300`)
-#' @param ini_file Hector parameter file (default = RCP 4.5 file)
+#' @param ini_file Hector parameter file (default = SSP245 file)
 #' @return Results, as data.frame, with additional `parameter_value`
 #'   column
 run_with_param <- function(core, parameter, value) {

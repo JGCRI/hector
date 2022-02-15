@@ -12,6 +12,7 @@
  *
  */
 
+#include <fstream>
 #include "boost/algorithm/string.hpp"
 
 #include "imodel_component.hpp"
@@ -21,6 +22,7 @@
 #include "n2o_component.hpp"
 #include "bc_component.hpp"
 #include "oc_component.hpp"
+#include "nh3_component.hpp"
 #include "so2_component.hpp"
 #include "forcing_component.hpp"
 #include "slr_component.hpp"
@@ -178,6 +180,8 @@ void Core::init() {
     modelComponents[ temp->getComponentName() ] = temp;
     temp = new OrganicCarbonComponent();
     modelComponents[ temp->getComponentName() ] = temp;
+    temp = new NH3Component();
+    modelComponents[ temp->getComponentName() ] = temp;
     temp = new SulfurComponent();
     modelComponents[ temp->getComponentName() ] = temp;
     temp = new OzoneComponent();
@@ -202,15 +206,12 @@ void Core::init() {
  */
 std::string Core::getTrackingData() const {
 
-    // I'm pretty sure I should be using a virtual function for this
+    // use a string output stream to collect the results
+    ostringstream tracking_out;
     for( auto visitorIt : modelVisitors ) {
-        const CSVFluxPoolVisitor* bad_idea = dynamic_cast<const CSVFluxPoolVisitor*>(visitorIt);
-        if(bad_idea != nullptr ) {
-            return(bad_idea->get_buffer());
-        }
-
+        visitorIt->outputTrackingData(tracking_out);
     }
-    return "";
+    return tracking_out.str();
 }
 
 //------------------------------------------------------------------------------

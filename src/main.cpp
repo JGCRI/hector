@@ -13,6 +13,7 @@
  */
 
 #include <iostream>
+#include <fstream>
 
 #include "core.hpp"
 #include "logger.hpp"
@@ -69,6 +70,11 @@ int main (int argc, char * const argv[]) {
         filebuf csvFluxPoolTrackingFile;
 
         // Open the stream output file, which has an optional run name (specified in the INI file) in it
+        // First ensure that OUTPUT_DIRECTORY exists so that we can place our outputs in there
+        // Note: this will attempt to create OUTPUT_DIRECTORY if it indeed did not exist
+        // and it will throw an exception if it couldn't create it
+        ensure_dir_exists( OUTPUT_DIRECTORY );
+
         string rn = core.getRun_name();
         if( rn == "" )
             csvoutputStreamFile.open( string( string( OUTPUT_DIRECTORY ) + "outputstream.csv" ).c_str(), ios::out );

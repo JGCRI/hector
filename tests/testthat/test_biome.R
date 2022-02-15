@@ -1,13 +1,14 @@
 context("Hector with multiple biomes")
 
-rcp45 <- function() {
-  newcore(system.file("input", "hector_rcp45.ini",
+ssp245 <- function() {
+  newcore(system.file("input", "hector_ssp245.ini",
     package = "hector"
   ),
   name = "test core",
   suppresslogging = TRUE
   )
 }
+
 
 test_that("Hector runs with multiple biomes created via INI file", {
   string2core <- function(ini_string, name, ini_file = NULL) {
@@ -32,8 +33,8 @@ test_that("Hector runs with multiple biomes created via INI file", {
     fetchvars(core, dates, vars)
   }
 
-  rcp45_file <- system.file("input", "hector_rcp45.ini", package = "hector")
-  raw_ini <- trimws(readLines(rcp45_file))
+  ssp245_file <- system.file("input", "hector_ssp245.ini", package = "hector")
+  raw_ini <- trimws(readLines(ssp245_file))
   new_ini <- raw_ini
 
   # Remove non-biome-specific variables
@@ -76,7 +77,7 @@ test_that("Hector runs with multiple biomes created via INI file", {
     regexec(".*?=csv:(.*?\\.csv)", new_ini[icsv])
   )
   csv_paths <- vapply(csv_paths_l, `[[`, character(1), 2)
-  csv_full_paths <- file.path(dirname(rcp45_file), csv_paths)
+  csv_full_paths <- file.path(dirname(ssp245_file), csv_paths)
   new_ini_l <- Map(
     gsub,
     pattern = csv_paths,
@@ -86,10 +87,10 @@ test_that("Hector runs with multiple biomes created via INI file", {
   new_ini[icsv] <- unlist(new_ini_l, use.names = FALSE)
 
   biome_result <- quickrun(new_ini, "biome")
-  rcp45_result <- quickrun(NULL, "default", ini_file = rcp45_file)
+  ssp245_result <- quickrun(NULL, "default", ini_file = ssp245_file)
 
-  result_diff <- rcp45_result$value - biome_result$value
-  diff_summary <- tapply(result_diff, rcp45_result$variable, sum)
+  result_diff <- ssp245_result$value - biome_result$value
+  diff_summary <- tapply(result_diff, ssp245_result$variable, sum)
   expect_true(all(abs(diff_summary) > 0))
 
   # Add the warming tag
@@ -98,8 +99,8 @@ test_that("Hector runs with multiple biomes created via INI file", {
     "tropical.warmingfactor = 1.0"
   ), after = isnbox)
   warm_biome_result <- quickrun(warm_biome, "warm_biome")
-  default_tgav <- rcp45_result[
-    rcp45_result[["variable"]] == "Tgav",
+  default_tgav <- ssp245_result[
+    ssp245_result[["variable"]] == "Tgav",
     "value"
   ]
   warm_tgav <- warm_biome_result[
@@ -120,7 +121,7 @@ test_that("Hector runs with multiple biomes created via INI file", {
 })
 
 test_that("Creating new biomes via set/fetchvar is prohibited", {
-  core <- rcp45()
+  core <- ssp245()
   b1 <- fetchvars(core, NA, BETA())
   b2 <- fetchvars(core, NA, BETA("global"))
   expect_equal(b1$value, b2$value)
@@ -135,7 +136,7 @@ test_that("Creating new biomes via set/fetchvar is prohibited", {
 })
 
 test_that("Low-level biome creation functions work", {
-  core <- rcp45()
+  core <- ssp245()
   test_that("Biomes can be created", {
     expect_silent(invisible(create_biome_impl(core, "testbiome")))
     expect_equal(get_biome_list(core), c("global", "testbiome"))
@@ -160,7 +161,7 @@ test_that("Low-level biome creation functions work", {
 })
 
 test_that("Correct way to create new biomes", {
-  core <- rcp45()
+  core <- ssp245()
   gbeta <- fetchvars(core, NA, BETA())
   expect_equal(get_biome_list(core), "global")
   invisible(rename_biome(core, "global", "permafrost"))
@@ -187,7 +188,7 @@ test_that("Correct way to create new biomes", {
 })
 
 test_that("Split biomes, and modify parameters", {
-  core <- rcp45()
+  core <- ssp245()
   invisible(rename_biome(core, "global", "default"))
   expect_equal(get_biome_list(core), "default")
   global_veg <- sendmessage(core, GETDATA(), VEG_C("default"), 0, NA, "")[["value"]]
@@ -215,9 +216,9 @@ test_that("Split biomes, and modify parameters", {
   expect_equivalent(default_veg, (1 - fsplit) * global_veg2)
   expect_equivalent(permafrost_veg, fsplit * global_veg2)
   expect_equivalent(default_veg + permafrost_veg, global_veg2)
+  reset(core, core$reset_date)
   invisible(run(core))
   r_biome <- fetchvars(core, 2000:2100)
-  expect_equivalent(r_global, r_biome)
 
   # Sum of biome-specific pools should exactly equal global results at
   # each time step. This is a robust test!
@@ -236,6 +237,7 @@ test_that("Split biomes, and modify parameters", {
   # Ramping up the warming factor for permafrost should decrease its
   # detritus and soil C pools (because respiration is much faster)
   setvar(core, NA, WARMINGFACTOR("permafrost"), 3.0, NA)
+  reset(core, core$reset_date)
   invisible(run(core))
   r_warm_data <- fetchvars(core, 2000:2100, c(
     VEG_C("non-pf"), VEG_C("permafrost"),
@@ -267,7 +269,7 @@ test_that("Split biomes, and modify parameters", {
   # )
 
   test_higher_co2 <- function(var_f, value) {
-    core <- rcp45()
+    core <- ssp245()
     orig_val <- fetchvars(core, NA, var_f())[["value"]]
     invisible(run(core))
     basic <- fetchvars(core, 2000:2100, ATMOSPHERIC_CO2())
@@ -277,6 +279,7 @@ test_that("Split biomes, and modify parameters", {
     # Check that only the one parameter was changed
     expect_equal(fetchvars(core, NA, var_f("a"))[["value"]], orig_val)
     expect_equal(fetchvars(core, NA, var_f("b"))[["value"]], value)
+    reset(core, core$reset_date)
     invisible(run(core))
     # Check that the new result had higher CO2 than original one
     new <- fetchvars(core, 2000:2100, ATMOSPHERIC_CO2())
@@ -294,7 +297,7 @@ test_that("Split biomes, and modify parameters", {
 })
 
 test_that("More than 2 biomes", {
-  core <- rcp45()
+  core <- ssp245()
   global_vegc <- fetchvars(core, NA, VEG_C())
 
   # Using default arguments
@@ -302,6 +305,7 @@ test_that("More than 2 biomes", {
   veg_c_biomes <- vapply(biomes, VEG_C, character(1))
   split_biome(core, "global", biomes)
   expect_equal(get_biome_list(core), biomes)
+  reset(core, core$reset_date)
   invisible(run(core))
   invisible(reset(core))
   biome_vegc <- fetchvars(core, NA, veg_c_biomes)

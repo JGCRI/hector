@@ -49,6 +49,9 @@ EARTH_C()
 
 NPP_FLUX0(biome = "")
 }
+\arguments{
+\item{biome}{Name of biome (leave empty for global)}
+}
 \description{
 These identifiers correspond to variables that can be read and/or set in the
 carbon cycle
@@ -108,6 +111,7 @@ instead of the more natural looking \code{GETDATA}.
 Other capability identifiers: 
 \code{\link{concentrations}},
 \code{\link{constraints}},
+\code{\link{delta}},
 \code{\link{emissions}},
 \code{\link{forcings}},
 \code{\link{haloconstrain}},
@@ -116,6 +120,7 @@ Other capability identifiers:
 \code{\link{methane}},
 \code{\link{ocean}},
 \code{\link{parameters}},
+\code{\link{rho}},
 \code{\link{so2}},
 \code{\link{temperature}}
 }

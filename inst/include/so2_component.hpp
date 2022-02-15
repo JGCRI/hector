@@ -55,8 +55,6 @@ public:
     // IVisitable methods
     virtual void accept( AVisitor* visitor );
 
-
-    unitval S0;    // historical value of sulfur  (YEAR?)
     unitval SN;
 
 private:

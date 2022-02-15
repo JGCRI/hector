@@ -103,7 +103,7 @@ private:
     double taudif;           // interior ocean heat uptake time scale, yr
     double tauksl;           // sea-land heat exchange time scale, yr
     double taukls;           // land-sea heat exchange time scale, yr
-    double q2co;       // radiative forcing for atmospheric CO2 doubling (W/m2)
+    unitval q2co2;           // radiative forcing for atmospheric CO2 doubling (W/m2)
 
     std::vector<double> KT0;
     std::vector<double> KTA1;
@@ -135,7 +135,6 @@ private:
     unitval diff;          //!< ocean heat diffusivity, cm2/s
     unitval alpha;	       //!< aerosol forcing factor, unitless
     unitval volscl;        //!< volcanic forcing scaling factor, unitless
-    unitval aCO2;          //! alpha CO2, forcing efficiency for CO2 (W/m2)
 
     // Model outputs
     unitval tgav;          //!< global average surface air temperature anomaly, deg C
@@ -145,6 +144,18 @@ private:
     unitval flux_mixed;    //!< heat flux into mixed layer of ocean, W/m2
     unitval flux_interior; //!< heat flux into interior layer of ocean, W/m2
     unitval heatflux;      //!< heat flux into ocean, W/m2
+
+    // Potential user defined model parameters
+    unitval lo_warming_ratio; //!< user defined land ocean warming ratio, unit-less ratio defined as ΔTL/ΔTO; see https://agupubs.onlinelibrary.wiley.com/doi/full/10.1002/grl.50971
+
+    // Create a place to store temp time series that are over written when
+    // a user provided land ocean warming ratio is being used.
+    unitval lo_tgav_land;     //!< place to store land temp when lo is provided by users, deg C
+    unitval lo_tgav_oceanair; //!< place to store ocean air temp when lo is provided by users, deg C
+    unitval lo_tgav_sst;      //!< place to store sst when lo is provided by users, deg C
+    std::vector<double> lo_temp_landair;    //!< place to store land temp when lo is provided by users, deg C
+    std::vector<double> lo_temp_oceanair;   //!< place to store land temp when lo is provided by users, deg C
+    std::vector<double> lo_sst;             //!< place to store land temp when lo is provided by users, deg C
 
     tseries<unitval> tgav_constrain;        //! Temperature change can be supplied (not currently)
 

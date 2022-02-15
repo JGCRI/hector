@@ -34,7 +34,7 @@ Let's load the packages we will need and run a scenario.
 library(hector)
 library(ggplot2)
 
-inifile <- file.path(system.file('input', package = 'hector'), 'hector_rcp45.ini')
+inifile <- file.path(system.file('input', package = 'hector'), 'hector_ssp245.ini')
 core <- newcore(inifile)
 invisible(run(core))
 ```

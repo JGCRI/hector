@@ -50,12 +50,21 @@
 #define D_RF_O3_TROP            D_RF_PREFIX "O3_trop"
 #define D_RF_BC                 D_RF_PREFIX "BC"
 #define D_RF_OC                 D_RF_PREFIX "OC"
-#define D_RF_SO2d               D_RF_PREFIX "SO2d"
-#define D_RF_SO2i               D_RF_PREFIX "SO2i"
+#define D_RF_NH3                D_RF_PREFIX "NH3"
 #define D_RF_SO2                D_RF_PREFIX "SO2"
+#define D_RF_ACI                D_RF_PREFIX "aci" // forcing from aerosol-cloud interactions
 #define D_RF_VOL                D_RF_PREFIX "vol" // forcing from volcanic so2
 #define D_RF_halocarbons        D_RF_PREFIX "halocarbons"
-#define D_ACO2                  "aco2"            // forcing efficiency for CO2
+#define D_RF_MISC               D_RF_PREFIX "misc" // miscellaneous radiative forcings
+#define D_QCO2                  "qco2"            // 2×CO2 RF
+#define D_DELTA_CH4             "delta_ch4"       // forcing ch4 adjustment
+#define D_DELTA_N2O             "delta_n2o"       // forcing n2o adjustment
+#define D_DELTA_CO2             "delta_co2"       // forcing co2 adjustment
+#define D_RHO_BC                "rho_bc"          // BC radiative efficiency
+#define D_RHO_OC                "rho_oc"          // BC radiative efficiency
+#define D_RHO_SO2               "rho_so2"         // SO2 radiative efficiency
+#define D_RHO_NH3               "rho_nh3"         // NH3 radiative efficiency
+
 
 
 // halocarbon components
@@ -180,8 +189,67 @@
 #define D_HC_CONCENTRATION      "hc_concentration"
 #define D_HC_EMISSION           "hc_emission"
 #define D_HC_TAU                "tau"
-#define D_HC_RHO                "rho"
 #define D_HC_MOLARMASS          "molarMass"
+
+// speficy the rho used by halocarbon component so that speicifc rhos can be adjusted using the R wrapper
+// rho used by halocarbon component
+#define D_HCRHO_PREFIX          "rho_"
+#define D_HCRHO_CF4              D_HCRHO_PREFIX CF4_COMPONENT_BASE
+#define D_HCRHO_C2F6             D_HCRHO_PREFIX C2F6_COMPONENT_BASE
+#define D_HCRHO_HFC23            D_HCRHO_PREFIX HFC23_COMPONENT_BASE
+#define D_HCRHO_HFC32            D_HCRHO_PREFIX HFC32_COMPONENT_BASE
+#define D_HCRHO_HFC4310          D_HCRHO_PREFIX HFC4310_COMPONENT_BASE
+#define D_HCRHO_HFC125           D_HCRHO_PREFIX HFC125_COMPONENT_BASE
+#define D_HCRHO_HFC134a          D_HCRHO_PREFIX HFC134a_COMPONENT_BASE
+#define D_HCRHO_HFC143a          D_HCRHO_PREFIX HFC143a_COMPONENT_BASE
+#define D_HCRHO_HFC227ea         D_HCRHO_PREFIX HFC227ea_COMPONENT_BASE
+#define D_HCRHO_HFC245fa         D_HCRHO_PREFIX HFC245fa_COMPONENT_BASE
+#define D_HCRHO_SF6              D_HCRHO_PREFIX SF6_COMPONENT_BASE
+#define D_HCRHO_CFC11            D_HCRHO_PREFIX CFC11_COMPONENT_BASE
+#define D_HCRHO_CFC12            D_HCRHO_PREFIX CFC12_COMPONENT_BASE
+#define D_HCRHO_CFC113           D_HCRHO_PREFIX CFC113_COMPONENT_BASE
+#define D_HCRHO_CFC114           D_HCRHO_PREFIX CFC114_COMPONENT_BASE
+#define D_HCRHO_CFC115           D_HCRHO_PREFIX CFC115_COMPONENT_BASE
+#define D_HCRHO_CCl4             D_HCRHO_PREFIX CCl4_COMPONENT_BASE
+#define D_HCRHO_CH3CCl3          D_HCRHO_PREFIX CH3CCl3_COMPONENT_BASE
+#define D_HCRHO_HCFC22           D_HCRHO_PREFIX HCFC22_COMPONENT_BASE
+#define D_HCRHO_HCFC141b         D_HCRHO_PREFIX HCFC141b_COMPONENT_BASE
+#define D_HCRHO_HCFC142b         D_HCRHO_PREFIX HCFC142b_COMPONENT_BASE
+#define D_HCRHO_halon1211        D_HCRHO_PREFIX halon1211_COMPONENT_BASE
+#define D_HCRHO_halon1301        D_HCRHO_PREFIX halon1301_COMPONENT_BASE
+#define D_HCRHO_halon2402        D_HCRHO_PREFIX halon2402_COMPONENT_BASE
+#define D_HCRHO_CH3Cl            D_HCRHO_PREFIX CH3Cl_COMPONENT_BASE
+#define D_HCRHO_CH3Br            D_HCRHO_PREFIX CH3Br_COMPONENT_BASE
+
+// speficy the DELTA used by halocarbon component by the tropospheric adjustments for
+// the stratospheric-temperature adjusted radiative forcing.
+#define D_HCDELTA_PREFIX          "delta_"
+#define D_HCDELTA_CF4              D_HCDELTA_PREFIX CF4_COMPONENT_BASE
+#define D_HCDELTA_C2F6             D_HCDELTA_PREFIX C2F6_COMPONENT_BASE
+#define D_HCDELTA_HFC23            D_HCDELTA_PREFIX HFC23_COMPONENT_BASE
+#define D_HCDELTA_HFC32            D_HCDELTA_PREFIX HFC32_COMPONENT_BASE
+#define D_HCDELTA_HFC4310          D_HCDELTA_PREFIX HFC4310_COMPONENT_BASE
+#define D_HCDELTA_HFC125           D_HCDELTA_PREFIX HFC125_COMPONENT_BASE
+#define D_HCDELTA_HFC134a          D_HCDELTA_PREFIX HFC134a_COMPONENT_BASE
+#define D_HCDELTA_HFC143a          D_HCDELTA_PREFIX HFC143a_COMPONENT_BASE
+#define D_HCDELTA_HFC227ea         D_HCDELTA_PREFIX HFC227ea_COMPONENT_BASE
+#define D_HCDELTA_HFC245fa         D_HCDELTA_PREFIX HFC245fa_COMPONENT_BASE
+#define D_HCDELTA_SF6              D_HCDELTA_PREFIX SF6_COMPONENT_BASE
+#define D_HCDELTA_CFC11            D_HCDELTA_PREFIX CFC11_COMPONENT_BASE
+#define D_HCDELTA_CFC12            D_HCDELTA_PREFIX CFC12_COMPONENT_BASE
+#define D_HCDELTA_CFC113           D_HCDELTA_PREFIX CFC113_COMPONENT_BASE
+#define D_HCDELTA_CFC114           D_HCDELTA_PREFIX CFC114_COMPONENT_BASE
+#define D_HCDELTA_CFC115           D_HCDELTA_PREFIX CFC115_COMPONENT_BASE
+#define D_HCDELTA_CCl4             D_HCDELTA_PREFIX CCl4_COMPONENT_BASE
+#define D_HCDELTA_CH3CCl3          D_HCDELTA_PREFIX CH3CCl3_COMPONENT_BASE
+#define D_HCDELTA_HCFC22           D_HCDELTA_PREFIX HCFC22_COMPONENT_BASE
+#define D_HCDELTA_HCFC141b         D_HCDELTA_PREFIX HCFC141b_COMPONENT_BASE
+#define D_HCDELTA_HCFC142b         D_HCDELTA_PREFIX HCFC142b_COMPONENT_BASE
+#define D_HCDELTA_halon1211        D_HCDELTA_PREFIX halon1211_COMPONENT_BASE
+#define D_HCDELTA_halon1301        D_HCDELTA_PREFIX halon1301_COMPONENT_BASE
+#define D_HCDELTA_halon2402        D_HCDELTA_PREFIX halon2402_COMPONENT_BASE
+#define D_HCDELTA_CH3Cl            D_HCDELTA_PREFIX CH3Cl_COMPONENT_BASE
+#define D_HCDELTA_CH3Br            D_HCDELTA_PREFIX CH3Br_COMPONENT_BASE
 
 // methane component
 #define D_ATMOSPHERIC_CH4       "CH4"
@@ -223,6 +291,9 @@
 // oc component
 #define D_EMISSIONS_OC          "OC_emissions"
 
+// nh3 component
+#define D_EMISSIONS_NH3          "NH3_emissions"
+
 // ocean component
 #define D_OCEAN_CFLUX           "atm_ocean_flux"
 #define D_OCEAN_C               "ocean_c"
@@ -230,21 +301,21 @@
 #define D_TU                    "tu"
 #define D_TWI                   "twi"
 #define D_TID                   "tid"
-#define D_CIRC_TOPT             "circ_Topt"
-#define D_CIRC_T50_HIGH         "circ_T50_high"
-#define D_CIRC_T50_LOW          "circ_T50_low"
 #define D_HL_DO                 "HL_DO_Cflux"
 #define D_PH_HL                 "pH_HL"
 #define D_PH_LL                 "pH_LL"
+#define D_PH                    "pH"
 #define D_ATM_OCEAN_FLUX_HL     "atm_ocean_flux_HL"
 #define D_ATM_OCEAN_FLUX_LL     "atm_ocean_flux_LL"
 #define D_PCO2_HL               "PCO2_HL"
 #define D_PCO2_LL               "PCO2_LL"
+#define D_PCO2                  "PCO2"
 #define D_DIC_HL                "DIC_HL"
 #define D_DIC_LL                "DIC_LL"
-#define D_P0_LL                 "p0_LL"
+#define D_DIC                   "DIC"
 #define D_CARBON_HL             "carbon_HL"
 #define D_CARBON_LL             "carbon_LL"
+#define D_CARBON_ML             "carbon_ML"
 #define D_CARBON_IO             "carbon_IO"
 #define D_CARBON_DO             "carbon_DO"
 #define D_OMEGACA_HL            "OmegaCa_HL"
@@ -254,11 +325,9 @@
 #define D_TEMP_HL               "Temp_HL"
 #define D_TEMP_LL               "Temp_LL"
 #define D_SPINUP_CHEM           "spinup_chem"
-
-//#define D_SPECIFIC_HEAT			"cp"
-
 #define D_CO3_LL				"CO3_LL"
 #define D_CO3_HL				"CO3_HL"
+#define D_CO3				    "CO3"
 #define D_ATM_OCEAN_CONSTRAIN   "atm_ocean_constrain"
 #define D_TIMESTEPS             "ocean_timesteps"
 #define D_REVELLE_HL            "Revelle_HL"
@@ -277,9 +346,8 @@
 #define D_FFI_EMISSIONS         "ffi_emissions"
 #define D_DACCS_UPTAKE          "daccs_uptake"
 #define D_LUC_EMISSIONS         "luc_emissions"
-#define D_CO2FERT               "co2fert"
-#define D_TEMPFERTD              "detritus_tempfert"
-#define D_TEMPFERTS              "soil_tempfert"
+#define D_TEMPFERTD             "detritus_tempfert"
+#define D_TEMPFERTS             "soil_tempfert"
 #define D_Q10_RH                "q10_rh"
 #define D_NPP                   "npp"
 #define D_RH                    "rh"
@@ -289,9 +357,8 @@
 #define D_F_LUCV                "f_lucv"
 #define D_F_LUCD                "f_lucd"
 #define D_NPP_FLUX0             "npp_flux0"
-#define D_CO2_CONSTRAIN          "CO2_constrain"
+#define D_CO2_CONSTRAIN         "CO2_constrain"
 #define D_BETA                  "beta"
-//#define D_SIGMA                 "sigma"
 #define D_WARMINGFACTOR         "warmingfactor"
 
 // slr component
@@ -301,8 +368,6 @@
 #define D_SLR_NO_ICE            "slr_no_ice"
 
 // so2 component
-#define D_NATURAL_SO2       "SN"
-#define D_2000_SO2     "S0"
 #define D_EMISSIONS_SO2         "SO2_emissions"
 #define D_VOLCANIC_SO2          "SV"
 
@@ -311,14 +376,9 @@
 #define D_GLOBAL_TEMP           "Tgav"
 #define D_LAND_AIR_TEMP         "Tgav_land"
 #define D_OCEAN_SURFACE_TEMP    "Tgav_ocean_ST"
-#define D_OCEAN_AIR_TEMP        "Tgav_ocean_air"
+#define D_OCEAN_AIR_TEMP        "Tgav_oceanair"
 #define D_TGAV_CONSTRAIN        "tgav_constrain"
-#define D_SO2D_B                "so2d_b"
-#define D_SO2I_B                "so2i_b"
-#define D_OC_B                  "oc_b"
-#define D_BC_B                  "bc_b"
-
-// temperature component
+#define D_LO_WARMING_RATIO      "lo_warming_ratio"
 #define D_DIFFUSIVITY           "diff"
 #define D_AERO_SCALE            "alpha"
 #define D_VOLCANIC_SCALE        "volscl"

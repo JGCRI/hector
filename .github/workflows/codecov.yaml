@@ -6,7 +6,7 @@ on:
     branches:
       - master
   schedule:
-   # * is a special character in YAML so you have to quote this string, it is set up to run at 6am 
+   # * is a special character in YAML so you have to quote this string, it is set up to run at 6am
    # on the first day of the month, this is helpful for periods of time when PRs are not being merged.
     - cron:  '0 6 1 * *'
   # Allows you to run this workflow manually from the Actions tab
@@ -16,7 +16,7 @@ name: test-coverage
 
 jobs:
   test-coverage:
-    runs-on: macOS-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
 

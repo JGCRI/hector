@@ -37,8 +37,8 @@ These variables can be read from the methane component.
 
 \section{Input variables}{
 
-These variables can be set in the methane component. The expected units string is given after
-each description.
+These variables can be set in the methane component. The expected units
+string is given after each description.
 \describe{
 \item{EMISSIONS_CH4}{Methane emissions (\code{"Tg CH4"})}
 \item{PREINDUSTRIAL_CH4}{Preindustrial methane concentration (\code{"ppbv CH4"})}
@@ -61,6 +61,7 @@ Other capability identifiers:
 \code{\link{carboncycle}},
 \code{\link{concentrations}},
 \code{\link{constraints}},
+\code{\link{delta}},
 \code{\link{emissions}},
 \code{\link{forcings}},
 \code{\link{haloconstrain}},
@@ -68,6 +69,7 @@ Other capability identifiers:
 \code{\link{haloforcings}},
 \code{\link{ocean}},
 \code{\link{parameters}},
+\code{\link{rho}},
 \code{\link{so2}},
 \code{\link{temperature}}
 }

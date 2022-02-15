@@ -4,17 +4,10 @@ name: C++ unit tests
 
 # Controls when the action will run.
 on:
-  push:
-    branches:
-      - master
-      - github_actions
-      - land_tracking
-      - tracking-vars
   pull_request:
     branches:
       - master
       - land_tracking
-      - tracking-vars
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:

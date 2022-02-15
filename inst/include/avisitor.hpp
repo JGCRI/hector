@@ -30,6 +30,7 @@ class N2OComponent;
 class TemperatureComponent;
 class BlackCarbonComponent;
 class OrganicCarbonComponent;
+class NH3Component;
 class OceanComponent;
 class SulfurComponent;
 class OzoneComponent;
@@ -57,6 +58,12 @@ public:
     virtual void reset( const double reset_date ) {}
 
     //------------------------------------------------------------------------------
+    /*! \brief Update the Tracking Data output if applicable.
+     *  \param tracking_out The Tracking Data output stream to place results into.
+     */
+    virtual void outputTrackingData( std::ostream& tracking_out ) const {}
+
+    //------------------------------------------------------------------------------
     // Add a visit for all visitable subclasses here.
     // TODO: should we create a .cpp for these?
     virtual void visit( Core* core ) {}
@@ -72,6 +79,7 @@ public:
     virtual void visit( TemperatureComponent* c ) {}
     virtual void visit( BlackCarbonComponent* c ) {}
     virtual void visit( OrganicCarbonComponent* c ) {}
+    virtual void visit( NH3Component* c ) {}
     virtual void visit( OceanComponent* c ) {}
 	virtual void visit( SulfurComponent* c ) {}
 	virtual void visit( OzoneComponent* c ) {}

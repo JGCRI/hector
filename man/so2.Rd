@@ -2,16 +2,10 @@
 % Please edit documentation in R/aadoc.R, R/RcppExports.R
 \name{so2}
 \alias{so2}
-\alias{NATURAL_SO2}
-\alias{Y2000_SO2}
 \alias{EMISSIONS_SO2}
 \alias{VOLCANIC_SO2}
 \title{Identifiers for quantities in the SO2 component}
 \usage{
-NATURAL_SO2()
-
-Y2000_SO2()
-
 EMISSIONS_SO2()
 
 VOLCANIC_SO2()
@@ -53,6 +47,7 @@ Other capability identifiers:
 \code{\link{carboncycle}},
 \code{\link{concentrations}},
 \code{\link{constraints}},
+\code{\link{delta}},
 \code{\link{emissions}},
 \code{\link{forcings}},
 \code{\link{haloconstrain}},
@@ -61,6 +56,7 @@ Other capability identifiers:
 \code{\link{methane}},
 \code{\link{ocean}},
 \code{\link{parameters}},
+\code{\link{rho}},
 \code{\link{temperature}}
 }
 \concept{capability identifiers}

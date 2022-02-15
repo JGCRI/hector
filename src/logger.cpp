@@ -16,30 +16,10 @@
 #include "logger.hpp"
 #include "h_util.hpp"
 #include <algorithm>
+#include <boost/iostreams/tee.hpp>
+#include <boost/iostreams/device/file.hpp>
+#include <boost/iostreams/device/null.hpp>
 
-
-// If using the R package, use Rcpp to call R's file processing
-// functions. Otherwise (e.g. if building standalone Hector),
-// use std::filesystem (which is available since the C++ 17 standard)
-// if available and finally fall back to boost::filesystem (which
-// needs to be installed).
-
-// Language feature detection (to use __cpp_lib_filesystem) isn't even
-// available unil the C++20 standard.  Luckily we can use boost to get
-// it in the meantime.
-#include <boost/config.hpp>
-
-#ifdef USE_RCPP
-#include <Rcpp.h>
-#elif __cpp_lib_filesystem || __has_include(<filesystem>)
-#include <filesystem>
-namespace fs = std::filesystem;
-typedef std::error_code fs_error_code;
-#else
-#include <boost/filesystem.hpp>
-namespace fs = boost::filesystem;
-typedef boost::system::error_code fs_error_code;
-#endif
 
 #ifdef USE_RCPP
 // This should be defined only if compiling as an R package
@@ -54,75 +34,6 @@ namespace Hector {
 using namespace std;
 
 //------------------------------------------------------------------------------
-// Methods for LoggerStreamBuf
-
-//------------------------------------------------------------------------------
-/*! \brief Constructor which will allow a user the option to echo output to a
- *         console buffer.
- *
- * \param echoToScreen Boolean to indicate whether output will be echoed.
- */
-Logger::LoggerStreamBuf::LoggerStreamBuf( const bool echoToScreen )
-:filebuf()
-{
-    consoleBuf = echoToScreen ? STDOUT_STREAM.rdbuf() : 0;
-}
-
-//------------------------------------------------------------------------------
-/*! \brief Destructor
- */
-Logger::LoggerStreamBuf::~LoggerStreamBuf() {
-}
-
-//------------------------------------------------------------------------------
-/*! \brief Synchronize stream buffer.
- *  \return 0 indicates success, any other value is an error code.
- */
-int Logger::LoggerStreamBuf::sync() {
-    // sync will force an overflow to write EOF so wait until that occurs
-    // before forward a flush to the console
-    int ret = filebuf::sync();
-    if(consoleBuf) {
-        ret = consoleBuf->pubsync();
-    }
-
-    return ret;
-}
-
-//------------------------------------------------------------------------------
-/*! \brief Write a character in the case of a buffer overflow.
- *  \param c Character to be written.
- *  \return Any value other than EOF indicates success.
- */
-int Logger::LoggerStreamBuf::overflow( int c ) {
-    if(consoleBuf && c == EOF ) {
-        // if this overflow was due to a sync then copy the current buffer
-        // to the console before it gets flushed
-        consoleBuf->sputn( pbase(), pptr() - pbase() );
-    }
-
-    return filebuf::overflow( c );
-}
-
-//------------------------------------------------------------------------------
-/*! \brief Write a sequence of characters.
- *  \param s Character sequence to be written.
- *  \param n Number of characters to be written.
- *  \return The actual number of characters written.
- */
-streamsize Logger::LoggerStreamBuf::xsputn( const char* s, streamsize n ) {
-    if( consoleBuf && ( n + pptr() > epptr() ) && ( epptr() - pptr() > 0 ) ) {
-        // if the size of the incoming string is greater than than the buffer
-        // then it will flush the buffer and flush the given string without
-        // giving an overflow so we will need to update the console buffer now
-        consoleBuf->sputn( pbase(), pptr() - pbase() );
-        consoleBuf->sputn( s, n );
-    }
-
-    return filebuf::xsputn( s, n );
-}
-
-//------------------------------------------------------------------------------
 // Methods for Logger
 
 //------------------------------------------------------------------------------
@@ -131,7 +42,7 @@ streamsize Logger::LoggerStreamBuf::xsputn( const char* s, streamsize n ) {
 Logger::Logger() :
 minLogLevel( WARNING ),
 isInitialized( false ),
-loggerStream( 0 )
+loggerStream()
 {
 }
 
@@ -171,18 +82,37 @@ void Logger::open( const string& logName, bool echoToScreen,
     this->minLogLevel = minLogLevel;
     this->echoToFile = echoToFile;
 
+    using namespace boost::iostreams;
+
+    if(echoToScreen) {
+        // if the user wants to echo to screen we can use a "tee" to
+        // duplicate the output to go to the screen as well as carry
+        // on to potentially a file
+        tee_filter<ostream> screenEcho(STDOUT_STREAM);
+        loggerStream.push(screenEcho);
+    }
+
     if (echoToFile) {
-        chk_logdir(LOG_DIRECTORY);
+        ensure_dir_exists(LOG_DIRECTORY);
 
         const string fqName = LOG_DIRECTORY + logName + LOG_EXTENSION;	// fully-qualified name
 
-        LoggerStreamBuf* buff = new LoggerStreamBuf( echoToScreen );
-        if( !buff->open( fqName.c_str(), ios::out ) )
+        
+        file_sink fileBuff(fqName);
+        if( !fileBuff.is_open() )
             H_THROW("Unable to open log file " + fqName);
 
-        loggerStream.rdbuf( buff );
+        // add the file sink to the output stream which will serve as an end point
+        // for the output data
+        loggerStream.push(fileBuff);
     } else {
-        loggerStream.rdbuf( STDOUT_STREAM.rdbuf() );
+        // if we are not going to echo to file explicitly set the end point to
+        // a null device
+        // doing it this way covers the cases:
+        //   1) that we are going to echo to screen but not file
+        //   2) If a user by passes shouldWrite / H_LOG this will ensure the output
+        //      still goes nowhere
+        loggerStream.push(null_sink());
     }
     enabled = echoToScreen || echoToFile;
 
@@ -227,15 +157,11 @@ ostream& Logger::write( const LogLevel writeLevel,
  */
 void Logger::close() {
     if( isInitialized ) {
-        if (echoToFile) {
-            LoggerStreamBuf *lsbuf = static_cast<LoggerStreamBuf*>( loggerStream.rdbuf() );
-            lsbuf->close();
-            delete lsbuf;
-        }
         /*! \note Setting isInitialized back to false will allow this logger to
          *        be reopened.
          */
         isInitialized = false;
+        loggerStream.reset();
     }
 }
 
@@ -276,44 +202,6 @@ const char* Logger::getDateTimeStamp() {
     }
 
     return ret;
-}
-
-/*!
- * \brief Checks if the given directory exists. If not it attempts to create
- *        it and if it was unable to do that it will raise an exception.
- * \param dir The directory to check/create.
- */
-void Logger::chk_logdir(std::string dir)
-{
-#ifdef USE_RCPP
-    // Load R functions for path management
-    Rcpp::Environment base("package:base");
-    Rcpp::Environment utils("package:utils");
-    Rcpp::Function dirCreate = base["dir.create"];
-    Rcpp::Function file_test = utils["file_test"];
-    // use file_test -d to see if dir exists and is a directory
-    if(!Rcpp::as<bool>(file_test("-d", dir))) {
-        // either does not exist or is a file
-        // we can try to create it and if it still fails it must
-        // have been a file or a permissions error
-        if(!Rcpp::as<bool>(dirCreate(dir))) {
-            // no luck, throw exception
-            H_THROW("Directory "+dir+" does not exist and could not create it.");
-        }
-    }
-#else
-    fs::path fs_dir(dir);
-    // first check to see if dir exists and is a directory
-    if(!fs::is_directory(fs_dir)) {
-        // either does not exist or is a file
-        // we can try to create it and if it still fails it must
-        // have been a file or a permissions error
-        fs_error_code status;
-        if(!fs::create_directory(fs_dir, status)) {
-            H_THROW("Directory "+dir+" does not exist and could not create it.");
-        }
-    }
-#endif
 }
 
 //------------------------------------------------------------------------------
