@@ -59,8 +59,7 @@ test_that("Check Temp", {
     ocean <- fetchvars(hc, t_dates, vars = OCEAN_AIR_TEMP())[["value"]]
 
     flnd <- 0.29
-    weighted_sum <- flnd * land + ocean * (1-flnd)
-    expect_equal(fetchvars(hc, t_dates, vars = GLOBAL_TEMP())[["value"]], weighted_sum, tolerance = 1e-5)
-
+    weighted_sum <- flnd * land + ocean * (1 - flnd)
+    global_temp_values <- fetchvars(hc, t_dates, vars = GLOBAL_TEMP())[["value"]]
+    expect_equal(global_temp_values, weighted_sum, tolerance = 1e-5)
 })
-

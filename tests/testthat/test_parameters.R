@@ -349,7 +349,9 @@ test_that("land ocean warming ratio", {
 
     # Check to make sure that when running default Hector that the land ocean warming ratio is not
     # held constant.
-    emergent_ratio <- out1[out1$variable == LAND_AIR_TEMP(), ][["value"]] / out1[out1$variable == OCEAN_AIR_TEMP(), ][["value"]]
+    land_temp_vals <- out1[out1$variable == LAND_AIR_TEMP(), ][["value"]]
+    ocean_temp_vals <- out1[out1$variable == OCEAN_AIR_TEMP(), ][["value"]]
+    emergent_ratio <- land_temp_vals / ocean_temp_vals
     expect_equal(length(unique(emergent_ratio)), length(emergent_ratio))
 
     # Reset the land ocean warming ratio. Make sure that a value can be passed into the core,
@@ -367,20 +369,28 @@ test_that("land ocean warming ratio", {
     run(core, max(keep))
     out2 <- fetchvars(core, keep, vars)
 
-    # Start by checking that the ratio backed out of from Hector outputs is consistent with the ratio read in.
-    ratio_from_output <- out2[out2$variable == LAND_AIR_TEMP(), ][["value"]] / out2[out2$variable == OCEAN_AIR_TEMP(), ][["value"]]
+    # Ensure ratio backed out of from Hector output equals user defined lo-ratio.
+    land_temp_vals <- out2[out2$variable == LAND_AIR_TEMP(), ][["value"]]
+    ocean_temp_vals <- out2[out2$variable == OCEAN_AIR_TEMP(), ][["value"]]
+    ratio_from_output <- land_temp_vals / ocean_temp_vals
     expect_true(all(abs(new_ratio - unique(ratio_from_output)) <= 1e-5))
     expect_equal(length(unique(round(ratio_from_output, digits = 3))), 1)
 
 
     # Make sure that the change in the global mean temp is relatively small.
-    tgav_diff <- mean(abs(out1[out1$variable == GLOBAL_TEMP(), ][["value"]] - out2[out2$variable == GLOBAL_TEMP(), ][["value"]]))
+    out1_global_vals <- out1[out1$variable == GLOBAL_TEMP(), ][["value"]]
+    out2_global_vals <- out2[out2$variable == GLOBAL_TEMP(), ][["value"]]
+    tgav_diff <- mean(abs(out1_global_vals - out2_global_vals))
     expect_lt(tgav_diff, 1e-1)
 
-    land_diff <- mean(abs(out1[out1$variable == LAND_AIR_TEMP(), ][["value"]] - out2[out2$variable == LAND_AIR_TEMP(), ][["value"]]))
+    out1_land_vals <- out1[out1$variable == LAND_AIR_TEMP(), ][["value"]]
+    out2_land_vals <- out2[out2$variable == LAND_AIR_TEMP(), ][["value"]]
+    land_diff <- mean(abs(out1_land_vals - out2_land_vals))
     expect_gt(land_diff, 1e-1)
 
-    ocean_diff <- mean(abs(out1[out1$variable == OCEAN_AIR_TEMP(), ][["value"]] - out2[out2$variable == OCEAN_AIR_TEMP(), ][["value"]]))
+    out1_ocean_vals <- out1[out1$variable == OCEAN_AIR_TEMP(), ][["value"]]
+    out2_ocean_vals <- out2[out2$variable == OCEAN_AIR_TEMP(), ][["value"]]
+    ocean_diff <- mean(abs(out1_ocean_vals - out2_ocean_vals))
     expect_gt(ocean_diff, 1e-1)
 
 })
