@@ -26,7 +26,7 @@ path <- file.path(BASE_DIR, "tests", "testthat", "compdata", "hector_comp.csv")
 comp_data <- read.csv(path)
 
 # Variables of interest
-vars <- c(ATMOSPHERIC_C(), GLOBAL_TEMP(), RF_TOTAL())
+vars <- c(ATMOSPHERIC_CO2(), RF_TOTAL(), RF_CO2(), GLOBAL_TEMP())
 
 # Organize data
 compdata <- comp_data %>% 
@@ -120,16 +120,19 @@ if(!SAME) {
                format.args = list(nsmall = 3, scientific = FALSE))
   
   # Plot of numerical differences between versions
-  units <- c(unique(differences$units))
+  
+  # Access units for legend
+  units <- differences %>% group_by(variable) %>% slice(1)
+  units <- units$units
   # Sort variables so that legend works
   vars <- sort(vars)
   
   diff_plot <- ggplot(differences, aes(year, diff, color = variable)) +
     geom_hline(yintercept = 0, alpha = 0.5) +
     geom_line() +
-    facet_grid(variable~scenario, scales = "free") +
+    facet_wrap(~variable, scales = "free") +
     scale_color_viridis_d(breaks = vars, labels = units) +
-    ggtitle(paste0("Differences relative to ", version, " (", commit, ")")) +
+    ggtitle(paste0("Differences relative to ", version, " (", commit, ")", " in ", differences$scenario)) +
     labs(x = "Year", y = "Difference in value", col = "Units") +
     theme_bw()
   
@@ -137,6 +140,6 @@ if(!SAME) {
   # by your workflow), you will need to use the cml-publish function to include 
   # it a CML report."  https://github.com/iterative/cml#cml-reports
   # So instead of printing the graph, we save it to a file
-  ggsave("diff_plot.png", plot = diff_plot)
+  ggsave("diff_plot.png", plot = diff_plot, height = 6, width = 9)
 }
 ```
