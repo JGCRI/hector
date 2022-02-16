@@ -131,7 +131,6 @@ if(!SAME) {
     scale_color_viridis_d(breaks = vars, labels = units) +
     ggtitle(paste0("Differences relative to ", version, " (", commit, ")")) +
     labs(x = "Year", y = "Difference in value", col = "Units") +
-    scale_y_continuous(labels = scales::label_scientific(digits = 2)) + 
     theme_bw()
   
   # "Note that if an image is an output of your ML workflow (i.e., it is produced
