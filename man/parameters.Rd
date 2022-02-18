@@ -92,9 +92,9 @@ conserve mass).
 
 \item \code{VOLCANIC_SCALE}: Volcanic forcing scaling factor (\code{"(unitless)"})
 
-\item \code{LO_WARMING_RATIO}: Land-Ocean Warming Ratio (\code{"(unitless)"}), by default set to 9999 (NULL)
+\item \code{LO_WARMING_RATIO}: Land-Ocean Warming Ratio (\code{"(unitless)"}), by default set to 0
 meaning that the land ocean warming ratio is an emergent property of Hector's temperature
-component otherwise the user defined land ocean warming ratio will be used to determine
+component otherwise the user defined land ocean warming ratio will be used.
 
 \item \code{DIFFUSIVITY}: Ocean heat diffusivity (\code{"cm2/s"})
 }}
