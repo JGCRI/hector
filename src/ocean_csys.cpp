@@ -128,9 +128,6 @@ double find_largest_root( const int ncoeffs, double* a ) {
     // arbitrarily solve unil 60% of the digits are correct.
     const int digits = numeric_limits<double>::digits;
     int get_digits = static_cast<int>(digits * 0.6);
-    std::cout << "max-0.001: " << max-0.001 << "\n";
-    std::cout << "max: " << max << "\n";
-    std::cout << "get_digits: " << get_digits << "\n";
     double h = newton_raphson_iterate(polyFunctor, max-0.001, 0.0, max, get_digits);
 
 	return h;
@@ -283,7 +280,6 @@ void oceancsys::ocean_csys_run( unitval tbox, unitval carbon )
         * bor * K1_val * K2_val;
 	const double p1 = tmp + ( Kw_val * Kb_val * K1_val + Kw_val * K1_val * K2_val );
 	const double p0 = Kw_val * Kb_val * K1_val * K2_val;
-    std::cout << "--------------\n";
 	m_a[ 0 ] = p0;
 	m_a[ 1 ] = p1;
 	m_a[ 2 ] = p2;
@@ -293,7 +289,6 @@ void oceancsys::ocean_csys_run( unitval tbox, unitval carbon )
 
 	// Find the solution to the polynomial of the carbonate system
 	const double h   = find_largest_root( ncoeffs, &m_a[0] );
-    std::cout << "h:" <<  h << "\n";
 
 	// Solve for the remiaing carbonate variables
 	const double co2st  = dic/( 1.0 + K1_val / h + K1_val * K2_val / h / h ); // co2st = CO2*

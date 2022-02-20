@@ -251,23 +251,18 @@ void OceanComponent::prepareToRun() {
 
     // Set up our ocean box model.
     H_LOG( logger, Logger::DEBUG ) << "Setting up ocean box model" << std::endl;
-   // surfaceHL.initbox( HL_preind_C, "HL" );
-       surfaceHL.initbox( unitval( 140, U_PGC ), "HL" );
+    surfaceHL.initbox( HL_preind_C, "HL" );
     surfaceHL.surfacebox = true;
     surfaceHL.preindustrial_flux.set( 1.000, U_PGC_YR );         // used if no spinup chemistry
     surfaceHL.active_chemistry = spinup_chem;
 
-   // surfaceLL.initbox( LL_preind_C, "LL" );
-    surfaceLL.initbox( unitval( 770, U_PGC ),  "LL" );
+    surfaceLL.initbox( LL_preind_C, "LL" );
     surfaceLL.surfacebox = true;
     surfaceLL.preindustrial_flux.set( -1.000, U_PGC_YR );        // used if no spinup chemistry
     surfaceLL.active_chemistry = spinup_chem;
 
-   // inter.initbox( I_preind_C, "intermediate" );
-   // deep.initbox( D_preind_C, "deep" );
-    inter.initbox( unitval( 8400, U_PGC ),  "intermediate" );
-       deep.initbox( unitval( 26000, U_PGC ),  "deep" );
-
+    inter.initbox( I_preind_C, "intermediate" );
+    deep.initbox( D_preind_C, "deep" );
 
     // transport * seconds / volume of box
     // Advection --> transport of carbon from one box to the next (k values, fraction/yr )
@@ -461,16 +456,10 @@ unitval OceanComponent::getData( const std::string& varName,
         } else if( varName == D_DIC_HL ) {
             returnval = surfaceHL.mychemistry.convertToDIC( surfaceHL.get_carbon() );
         } else if( varName == D_DIC_LL ) {
-<<<<<<< HEAD
-            returnval = surfaceLL.mychemistry.convertToDIC( surfaceLL.get_carbon() );
-||||||| 4e7cb9a
-        returnval = surfaceLL.mychemistry.convertToDIC( surfaceLL.get_carbon() );
-=======
             returnval = surfaceLL.mychemistry.convertToDIC( surfaceLL.get_carbon() );
         } else if( varName == D_DIC ) {
             double value = part_low * surfaceLL.mychemistry.convertToDIC( surfaceLL.get_carbon() ) + part_high *  surfaceHL.mychemistry.convertToDIC( surfaceHL.get_carbon() ) ;
             returnval = unitval(value, U_UMOL_KG);
->>>>>>> krd_doeclim_take2
         } else if( varName == D_HL_DO ) {
             returnval = surfaceHL.annual_box_fluxes[ &deep ] ;
         } else if( varName == D_PCO2_HL ) {
@@ -483,16 +472,10 @@ unitval OceanComponent::getData( const std::string& varName,
         } else if( varName == D_PH_HL ) {
             returnval = surfaceHL.mychemistry.pH;
         } else if( varName == D_PH_LL ) {
-<<<<<<< HEAD
-            returnval = surfaceLL.mychemistry.pH;
-||||||| 4e7cb9a
-               returnval = surfaceLL.mychemistry.pH;
-=======
             returnval = surfaceLL.mychemistry.pH;
         } else if( varName == D_PH ) {
             double value = part_low * surfaceLL.mychemistry.pH +  part_high * surfaceHL.mychemistry.pH;
             returnval = unitval(value, U_PH);
->>>>>>> krd_doeclim_take2
         } else if( varName == D_TEMP_HL ) {
             returnval = surfaceHL.get_Tbox();
         } else if( varName == D_TEMP_LL ) {
