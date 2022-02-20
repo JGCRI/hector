@@ -83,6 +83,12 @@ private:
     virtual unitval getData( const std::string& varName,
                             const double date );
 
+    // Define high and low latitude
+    // The cold high-latitude surface box makes up 15% of the total ocean surface area and has latitude > 55
+    // The warm low-latitude surface box makes up the rest.
+     double part_high = 0.15;
+     double part_low = 1-part_high;
+    
     /*****************************************************************
      * State variables for the component
      * All of these will need to be recorded at the end of a timestep,
@@ -95,10 +101,10 @@ private:
     oceanbox deep;      //!< deep box 3000m
 
     // Atmosphere conditions
-    unitval Tgav;           //!< Global temperature anomaly, degC
+    unitval SST;            //!< Ocean surface temperature anomaly, degC
     unitval Ca;             //!< Atmospheric CO2, ppm
     fluxpool atmosphere_cpool;
-    
+
     // Atmosphere-ocean flux
     unitval annualflux_sum, annualflux_sumHL, annualflux_sumLL;     //!< Running annual totals atm-ocean flux, for output reporting
     unitval lastflux_annualized;        //!< Last atm-ocean flux when solver ordered us to 'stash' C values
@@ -148,7 +154,7 @@ private:
     tvector<oceanbox> deep_tv;
 
     // Ocean conditions over time
-    tseries<unitval> Tgav_ts;
+    tseries<unitval> SST_ts;
     tseries<unitval> annualflux_sum_ts;
     tseries<unitval> annualflux_sumHL_ts;
     tseries<unitval> annualflux_sumLL_ts;
@@ -168,7 +174,7 @@ private:
     tseries<unitval> temp_LL_ts;
     tseries<unitval> co3_HL_ts;
     tseries<unitval> co3_LL_ts;
-
+  
     // timestep control
     tseries<double> max_timestep_ts;
     tseries<int> reduced_timestep_timeout_ts;

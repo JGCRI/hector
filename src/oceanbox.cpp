@@ -18,7 +18,7 @@
 #include "oceanbox.hpp"
 
 namespace Hector {
-  
+
 using namespace std;
 
 //------------------------------------------------------------------------------
@@ -36,7 +36,6 @@ oceanbox::oceanbox() {
     logger = NULL;
     deltaT.set( 0.0, U_DEGC );
     surfacebox = false;
-    warmingfactor = 1.0;      // by default warms exactly as global
     Tbox = unitval( -999, U_DEGC );
     atmosphere_flux.set( 0.0, U_PGC );
     preindustrial_flux.set( 0.0, U_PGC_YR );
@@ -49,7 +48,7 @@ oceanbox::oceanbox() {
  */
 void oceanbox::set_carbon( const unitval C) {
     carbon.adjust_pool_to_val( C.value( U_PGC ));
-	OB_LOG( logger, Logger::WARNING ) << Name << " box C has been set to " << carbon << endl;
+	//OB_LOG( logger, Logger::WARNING ) << Name << " box C has been set to " << carbon << endl;
 }
 
 //------------------------------------------------------------------------------
@@ -60,7 +59,7 @@ void oceanbox::initbox( double boxc, string name ) {
     connection_k.clear();
     connection_window.clear();
     annual_box_fluxes.clear();
-    
+
      // Each box is separate from each other, and we keep track of carbon in each box
     Name = name;
     carbon.set( boxc, U_PGC, false, name );
@@ -86,11 +85,11 @@ void oceanbox::add_carbon( fluxpool carbon ) {
 
 //------------------------------------------------------------------------------
 /*! \brief          Compute absolute temperature of box in C
- *  \param[in] Tgav Mean global temperature change from preindustrial, C
+ *  \param[in] SST Mean ocean temperature change from preindustrial, C
  *  \returns        Absolute temperature of box, C
  */
-unitval oceanbox::compute_tabsC( const unitval Tgav ) const {
-    return Tgav * warmingfactor + unitval( MEAN_GLOBAL_TEMP, U_DEGC ) + deltaT;
+unitval oceanbox::compute_tabsC( const unitval SST ) const {
+    return SST + unitval( MEAN_TOS_TEMP, U_DEGC ) + deltaT;
 }
 
 //------------------------------------------------------------------------------
@@ -106,10 +105,10 @@ unitval oceanbox::compute_tabsC( const unitval Tgav ) const {
  *  time step connections to use.
  */
 void oceanbox::make_connection( oceanbox* ob, const double k, const int ws ) { //, window=1 or whatever we are averaging over.  use curent state of 1 or will use what we tell it to use.
-    
+
 	H_ASSERT( ob != this, "can't make connection to same box" );
 	OB_LOG( logger, Logger::NOTICE) << "Adding connection " << Name << " to " << ob->Name << ", k=" << k << endl;
-    
+
 	// If a connection to this box already exists, replace it
 	for( unsigned i=0; i<connection_list.size(); i++ ) {
 		if( connection_list[ i ]==ob ) {
@@ -120,7 +119,7 @@ void oceanbox::make_connection( oceanbox* ob, const double k, const int ws ) { /
 			return;
 		}
 	}
-	
+
 	// Otherwise, make a new connection
 	connection_list.push_back( ob ); // add new element to vector
 	connection_k.push_back( k );
@@ -158,7 +157,7 @@ void oceanbox::log_state() {
     unitval K0 = mychemistry.get_K0();
     unitval Tr = mychemistry.get_Tr();
 	OB_LOG( logger, Logger::DEBUG) << "   K0 = " << K0 << " " << "Tr = " << Tr << endl;
-    
+
 	if( active_chemistry ) {
         unitval dic = mychemistry.convertToDIC( carbon );
 		OB_LOG( logger, Logger::DEBUG) << "   Surface DIC = " << dic << endl;
@@ -175,15 +174,15 @@ void oceanbox::log_state() {
  * \param[in] do_circ           flag: do circulation, or not?
  */
 void oceanbox::compute_fluxes( const unitval current_Ca, const fluxpool atmosphere_cpool, const double yf, const bool do_circ ) {
-    
+
     Ca = current_Ca;
-    
+
 	// Step 1 : run chemistry mode, if applicable
 	if( active_chemistry ) {
 		OB_LOG( logger, Logger::DEBUG) << Name << " running ocean_csys" << endl;
-        H_ASSERT( Tbox.value( U_DEGC ) > -999, "bad tbox value" );        // TODO: this isn't a good temperature check
+
 		mychemistry.ocean_csys_run( Tbox, carbon );
-        
+
         atmosphere_flux = unitval( mychemistry.calc_annual_surface_flux( Ca ).value( U_PGC_YR ), U_PGC );
 	} else  {
 		// No active chemistry, so atmosphere-box flux is simply a function of the
@@ -198,14 +197,14 @@ void oceanbox::compute_fluxes( const unitval current_Ca, const fluxpool atmosphe
     atmosphere_flux = atmosphere_flux * yf;
 
     separate_surface_fluxes( atmosphere_cpool );
-    
+
     // Step 3: check if this box is oscillating
     /*
     const bool osc = oscillating( 10, // over the last 10 states,
                                    1,   // has box C varied by >1%
                                    3 ); // while changing direction 3+ times?
     */
-    
+
 	// Step 4 : calculate the carbon transports between the boxes
     if( do_circ ) {
         fluxpool closs_total( 0.0, U_PGC, carbon.tracking );
@@ -215,14 +214,14 @@ void oceanbox::compute_fluxes( const unitval current_Ca, const fluxpool atmosphe
             fluxpool closs = carbon * connection_k[ i ] * yf;
 
             OB_LOG( logger, Logger::DEBUG) << Name << " conn " << i << " flux= " << closs << endl;
-                 
+
             connection_list[ i ]->add_carbon( closs );
             CarbonSubtractions = CarbonSubtractions + closs;  // PgC
             closs_total = closs_total + closs;
             annual_box_fluxes[ connection_list[ i ] ] = annual_box_fluxes[ connection_list[ i ] ] +
                 unitval( closs.value( U_PGC ), U_PGC_YR );
         } // for i
-                
+
     } // if do_circulation
 }
 
@@ -244,23 +243,23 @@ void oceanbox::separate_surface_fluxes( fluxpool atmosphere_pool ) {
 // keep track of last year pCO2 in the ocean and DIC
 unitval oceanbox::calc_revelle() {
     H_ASSERT( active_chemistry, "Active chemistry required");
-        
+
 //    unitval deltapco2 = Ca - pco2_lastyear;
     unitval deltadic = mychemistry.convertToDIC(carbon) - dic_lastyear;
-    
+
     H_ASSERT( deltadic.value( U_UMOL_KG) != 0, "DeltaDIC cannot be zero");
-    
+
     // Revelle Factor can be calculated multiple ways:
     // based on changing atmospheric conditions as well as approximated via DIC and CO3
-     return unitval ( mychemistry.convertToDIC( carbon ) / mychemistry.CO3, U_UNITLESS ); 
-    // under high CO2, the HL box numbers are potentially unrealistic. 
+     return unitval ( mychemistry.convertToDIC( carbon ) / mychemistry.CO3, U_UNITLESS );
+    // under high CO2, the HL box numbers are potentially unrealistic.
 }
 
 //------------------------------------------------------------------------------
 /*! \brief Update to a new carbon state
  */
 void oceanbox::update_state() {
-    
+
 	carbon = carbon + CarbonAdditions + ao_flux - oa_flux - CarbonSubtractions;
     // these start with 0 from themselves (this box)
     CarbonAdditions.set( 0.0, U_PGC, carbon.tracking, Name );
@@ -269,15 +268,15 @@ void oceanbox::update_state() {
 
 //------------------------------------------------------------------------------
 /*! \brief          A new year is starting. Zero flux variables.
- *  \param[in] Tgav    Mean global temperature this year
+ *  \param[in] SST    Mean ocean surface temperature this year
  */
-void oceanbox::new_year( const unitval Tgav ) {
-    
+void oceanbox::new_year( const unitval SST ) {
+
     for( unsigned i=0; i < connection_window.size(); i++ ){
         annual_box_fluxes[ connection_list[ i ] ] = unitval( 0.0, U_PGC_YR );
     }
     atmosphere_flux.set( 0.0, U_PGC );
-    Tbox = compute_tabsC( Tgav );
+    Tbox = compute_tabsC( SST );
 
     // save for Revelle Calc
     pco2_lastyear = Ca;
@@ -295,15 +294,15 @@ void oceanbox::new_year( const unitval Tgav ) {
  *  between csys's computed ocean-atmosphere flux and the target flux.
  */
 double oceanbox::fmin( double alk, void *params ) {
-    
+
 	// Call the chemistry model with new value for alk
 	mychemistry.set_alk( alk );
 	mychemistry.ocean_csys_run( Tbox, carbon );
-    
+
 	double f_target = *( double * )params;
 	double diff = fabs( mychemistry.calc_annual_surface_flux( Ca ).value( U_PGC_YR ) - f_target );
 	//    OB_LOG( logger, Logger::DEBUG) << "fmin at " << alk << ", f_target=" << f_target << ", returning " << diff << endl;
-    
+
 	return diff;
 }
 
@@ -341,30 +340,30 @@ struct FMinWrapper {
  *  in case the model was NOT spun up, need to set the box's internal tracking var.
  */
 void oceanbox::chem_equilibrate( const unitval current_Ca ) {
-    
+
 	using namespace std;
-    
+
     Ca = current_Ca;
-    
+
 	H_ASSERT( active_chemistry, "chemistry not turned on" );
 	OB_LOG( logger, Logger::DEBUG) << "Equilibrating chemistry for box " << Name << endl;
-    
+
 	// Initialize the box chemistry values: temperature, atmospheric CO2, DIC
-    
+
     unitval dic = mychemistry.convertToDIC( carbon );
 	OB_LOG( logger, Logger::DEBUG) << "Ca=" << Ca << ", DIC=" << dic <<  endl;
-    
+
 	// Tune the chemistry model's alkalinity parameter to produce a particular flux.
 	// This happens after the box model has been spun up with chemistry turned off, before the chemistry
 	// model is turned on (because we don't want it to suddenly produce a larger ocean-atmosphere flux).
-    
+
 	// Here we use the Brent algorithm
 	//      http://www.gnu.org/software/gsl/manual/html_node/Minimization-Algorithms.html
 	// to minimize abs(f-f0), where f is computed by the csys chemistry code and f0 passed in
-    
+
 	double alk_min = 2100e-6, alk_max = 2750e-6;
 	double f_target = preindustrial_flux.value( U_PGC_YR );
-    
+
 	// Find a best-guess point; the GSL algorithm seems to need it
 	OB_LOG( logger, Logger::DEBUG) << "Looking for best-guess alkalinity" << endl;
 	const int w = 12;
@@ -383,7 +382,7 @@ void oceanbox::chem_equilibrate( const unitval current_Ca ) {
 	}
 	double alk = min_point;        // this is our best guess
 	OB_LOG( logger, Logger::DEBUG) << "Best guess minimum is at " << alk << endl;
-    
+
     FMinWrapper fFunctor(this, f_target);
     // arbitrarily solve unil 60% of the digits are correct.
     const int digits = numeric_limits<double>::digits;

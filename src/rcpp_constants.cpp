@@ -1359,6 +1359,13 @@ String OCEAN_C_LL() {
 return D_CARBON_LL;
 }
 
+//' @describeIn ocean Ocean surface or mixed layer carbon pool
+//' @export
+// [[Rcpp::export]]
+String OCEAN_C_ML() {
+    return D_CARBON_ML;
+}
+
 //' @describeIn ocean Intermediate ocean carbon pool
 //' @export
 // [[Rcpp::export]]
@@ -1402,20 +1409,25 @@ String TID() {
 return D_TID;
 }
 
-// The rest of these aren't yet implemented, but we might want to have them some day
-
-//' @describeIn ocean High-latitude Ph
+//' @describeIn ocean High-latitude pH
 //' @export
 // [[Rcpp::export]]
 String PH_HL() {
 return D_PH_HL;
 }
 
-//' @describeIn ocean Low-latitude Ph
+//' @describeIn ocean Low-latitude pH
 //' @export
 // [[Rcpp::export]]
 String PH_LL() {
 return D_PH_LL;
+}
+
+//' @describeIn ocean Ocean surface pH
+//' @export
+// [[Rcpp::export]]
+String PH() {
+    return D_PH;
 }
 
 //' @describeIn ocean Atmosphere-ocean carbon flux, high-latitude
@@ -1446,11 +1458,25 @@ String PCO2_LL() {
 return D_PCO2_LL;
 }
 
+//' @describeIn ocean Ocean surface partial pressure of CO2
+//' @export
+// [[Rcpp::export]]
+String PCO2() {
+    return D_PCO2;
+}
+
 //' @describeIn ocean Dissolved inorganic carbon, high-latitude
 //' @export
 // [[Rcpp::export]]
 String DIC_HL() {
 return D_DIC_HL;
+}
+
+//' @describeIn ocean Ocean surface dissolved inorganic carbon
+//' @export
+// [[Rcpp::export]]
+String DIC() {
+    return D_DIC;
 }
 
 //' @describeIn ocean Dissolved inorganic carbon, low-latitude
@@ -1460,14 +1486,14 @@ String DIC_LL() {
 return D_DIC_LL;
 }
 
-//' @describeIn ocean Ocean temperature, high-latitude
+//' @describeIn ocean Absolute ocean surface temperature, high-latitude (deg C)
 //' @export
 // [[Rcpp::export]]
 String TEMP_HL() {
 return D_TEMP_HL;
 }
 
-//' @describeIn ocean Ocean temperature, low-latitude
+//' @describeIn ocean Absolute ocean surface temperature, low-latitude (deg C)
 //' @export
 // [[Rcpp::export]]
 String TEMP_LL() {
@@ -1488,6 +1514,12 @@ String CO3_HL() {
 return D_CO3_HL;
 }
 
+//' @describeIn ocean Ocean surface carbonate concentration
+//' @export
+// [[Rcpp::export]]
+String CO3() {
+    return D_CO3;
+}
 
 
 /* Simple Nbox Component */
@@ -1800,6 +1832,15 @@ return D_OCEAN_AIR_TEMP;
 // [[Rcpp::export]]
 String LAND_AIR_TEMP() {
 return D_LAND_AIR_TEMP;
+}
+
+//' @describeIn parameters Land-Ocean Warming Ratio (\code{"(unitless)"}), by default set to 0
+//' meaning that the land ocean warming ratio is an emergent property of Hector's temperature
+//' component otherwise the user defined land ocean warming ratio will be used.
+//' @export
+// [[Rcpp::export]]
+String LO_WARMING_RATIO(){
+    return D_LO_WARMING_RATIO;
 }
 
 
