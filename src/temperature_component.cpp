@@ -100,7 +100,7 @@ void TemperatureComponent::init( Core* coreptr ) {
     flux_mixed.set( 0.0, U_W_M2, 0.0 );
     flux_interior.set( 0.0, U_W_M2, 0.0 );
     heatflux.set( 0.0, U_W_M2, 0.0 );
-    lo_warming_ratio.set( 9999, U_W_M2, 0.0 );
+    lo_warming_ratio.set( 0.0, U_UNITLESS, 0.0 );
 
     core = coreptr;
 
@@ -189,9 +189,6 @@ void TemperatureComponent::setData( const string& varName,
             tgav_constrain.set(data.date, data.getUnitval(U_DEGC));
         } else if( varName == D_LO_WARMING_RATIO ) {
              H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
-             if(data.getUnitval(U_UNITLESS) == 0.0){
-                 H_THROW( "0.0 is not a valid input for land-ocean warming ratio.");
-             }
              lo_warming_ratio = data.getUnitval(U_UNITLESS);
         } else {
             H_THROW( "Unknown variable name while parsing " + getComponentName() + ": "
@@ -217,7 +214,7 @@ void TemperatureComponent::prepareToRun() {
         H_LOG( glog, Logger::WARNING ) << "Temperature will be overwritten by user-supplied values!" << std::endl;
     }
 
-    if( lo_warming_ratio != 9999.0) {
+    if( lo_warming_ratio != 0) {
         Logger& glog = core->getGlobalLogger();
         H_LOG( glog, Logger::WARNING ) << "User supplied land-ocean warming ratio will be used to override air over land and air over ocean temperatures! User set land-ocean warming ratio: " << lo_warming_ratio << std::endl;
     }
@@ -505,19 +502,19 @@ unitval TemperatureComponent::getData( const std::string& varName,
         if( varName == D_GLOBAL_TEMP ) {
             returnval = tgav;
         } else if( varName == D_LAND_AIR_TEMP ) {
-            if ( lo_warming_ratio != 9999 ) {
+            if ( lo_warming_ratio != 0 ) {
               returnval = lo_tgav_land;
             } else {
               returnval = tgav_land;
             }
         } else if( varName == D_OCEAN_SURFACE_TEMP ) {
-            if ( lo_warming_ratio != 9999 ) {
+            if ( lo_warming_ratio != 0 ) {
               returnval = lo_tgav_sst;
             } else {
               returnval = tgav_sst;
             }
         } else if( varName == D_OCEAN_AIR_TEMP ) {
-            if ( lo_warming_ratio != 9999 ) {
+            if ( lo_warming_ratio != 0 ) {
               returnval = lo_tgav_oceanair;
             } else {
               returnval = tgav_oceanair;
@@ -555,19 +552,19 @@ unitval TemperatureComponent::getData( const std::string& varName,
         if( varName == D_GLOBAL_TEMP ) {
             returnval = unitval(temp[tstep], U_DEGC);
         } else if( varName == D_LAND_AIR_TEMP ) {
-            if ( lo_warming_ratio != 9999 ) {
+            if ( lo_warming_ratio != 0 ) {
                     returnval = unitval(lo_temp_landair[tstep], U_DEGC);
                   } else {
                     returnval =  unitval(temp_landair[tstep], U_DEGC);
                   }
         } else if( varName == D_OCEAN_SURFACE_TEMP ) {
-            if ( lo_warming_ratio != 9999 ) {
+            if ( lo_warming_ratio != 0 ) {
                     returnval = unitval(lo_sst[tstep], U_DEGC);
                   } else {
                     returnval = unitval(temp_sst[tstep], U_DEGC);
                   }
         } else if( varName == D_OCEAN_AIR_TEMP ) {
-            if ( lo_warming_ratio != 9999 ) {
+            if ( lo_warming_ratio != 0 ) {
                     returnval = unitval(lo_temp_oceanair[tstep], U_DEGC);
                   } else {
                     returnval = bsi * unitval(temp_sst[tstep], U_DEGC);
@@ -631,7 +628,7 @@ void TemperatureComponent::setoutputs(int tstep)
 
     // If a user provided land-ocean warming ratio is provided, use it to over write DOECLIM's
     // land & ocean temperature.
-    if ( lo_warming_ratio != 9999 ) {
+    if ( lo_warming_ratio != 0 ) {
 
         // Calculations using tgav weighted average and ratio (land warming/ocean warming = lo_warming_ratio)
         double temp_oceanair_constrain = temp[tstep] / ((lo_warming_ratio * flnd) + (1-flnd));
@@ -653,6 +650,7 @@ void TemperatureComponent::setoutputs(int tstep)
     H_LOG( logger, Logger::DEBUG) << "Global: " << tgav << std::endl;
     H_LOG( logger, Logger::DEBUG) << "Land Temp: " << tgav_land << std::endl;
     H_LOG( logger, Logger::DEBUG) << "Ocean Temp: " << tgav_oceanair << std::endl;
+
 }
 
 }

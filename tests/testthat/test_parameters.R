@@ -339,10 +339,11 @@ test_that("land ocean warming ratio", {
     keep <- floor(seq(from = 1850, to = 2100, length.out = 30))
     vars <- c(GLOBAL_TEMP(), LAND_AIR_TEMP(), OCEAN_AIR_TEMP(), OCEAN_SURFACE_TEMP())
 
-    # The expected value for the lo warming ratio is 9999, meaning that the land ocean warming
-    # ratio is an emergent property of the doeclim.
+    # The expected value for the lo warming ratio is 0, meaning that no user defined
+    # land ocean warming ratio is being used. LO warming is an emergent property
+    # from deoclim.
     defualt_lo <- fetchvars(core, NA, LO_WARMING_RATIO())
-    expect_equal(defualt_lo$value, 9999)
+    expect_equal(defualt_lo$value, 0)
 
     run(core, max(keep))
     out1 <- fetchvars(core, keep, vars)
