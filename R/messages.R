@@ -26,7 +26,8 @@ default_fetchvars <- c(ATMOSPHERIC_CO2, RF_TOTAL, RF_CO2, GLOBAL_TEMP)
 #' @param core Hector core object
 #' @param dates Vector of dates to fetch; this will be automatically trimmed to
 #' dates that are between the start date and the latest date currently run.
-#' Set to \code{NA} to return all dates.
+#' Set to \code{NA} to return data with no associated dates such as
+#' model \link{parameters}.
 #' @param vars List (or vector) of capability strings defining the variables to
 #' be fetched in the result.
 #' @param scenario Optional scenario name.  If not specified, the name element
