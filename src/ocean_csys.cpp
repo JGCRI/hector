@@ -3,9 +3,9 @@
 
    Please see the accompanying file LICENSE.md for additional licensing
    information.
-*/
-// ocean_csys_class.cpp : Defines the entry point for the console application.
-/*  Ocean Carbon Chemistry CODE File:
+
+ ocean_csys_class.cpp : Defines the entry point for the console application.
+ *  Ocean Carbon Chemistry CODE File:
  *
  *  Created by Corinne Hartin  1/30/13.
 
@@ -119,6 +119,7 @@ double find_largest_root( const int ncoeffs, double* a ) {
     PolyDerivFunctor polyFunctor(a, degree);
     // Use Fujiwara's method to find an upper bound for the roots of the polynomial
     double max = pow(std::abs(a[0] / ( 2.0 * a[degree])), 1.0 / degree);
+
     for(int i = 1; i < degree; ++i) {
         max = std::max(max, pow(std::abs(a[i]/a[degree]), 1.0 / static_cast<double>(degree - i)));
     }
@@ -131,6 +132,7 @@ double find_largest_root( const int ncoeffs, double* a ) {
 
 	return h;
 }
+
 
 //------------------------------------------------------------------------------
 /*! \brief Run Ocean csys
@@ -278,7 +280,6 @@ void oceancsys::ocean_csys_run( unitval tbox, unitval carbon )
         * bor * K1_val * K2_val;
 	const double p1 = tmp + ( Kw_val * Kb_val * K1_val + Kw_val * K1_val * K2_val );
 	const double p0 = Kw_val * Kb_val * K1_val * K2_val;
-
 	m_a[ 0 ] = p0;
 	m_a[ 1 ] = p1;
 	m_a[ 2 ] = p2;
@@ -287,7 +288,7 @@ void oceancsys::ocean_csys_run( unitval tbox, unitval carbon )
 	m_a[ 5 ] = p5;
 
 	// Find the solution to the polynomial of the carbonate system
-	const double h      = find_largest_root( ncoeffs, &m_a[0] );
+	const double h   = find_largest_root( ncoeffs, &m_a[0] );
 
 	// Solve for the remiaing carbonate variables
 	const double co2st  = dic/( 1.0 + K1_val / h + K1_val * K2_val / h / h ); // co2st = CO2*

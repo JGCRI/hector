@@ -650,6 +650,7 @@ void TemperatureComponent::setoutputs(int tstep)
     H_LOG( logger, Logger::DEBUG) << "Global: " << tgav << std::endl;
     H_LOG( logger, Logger::DEBUG) << "Land Temp: " << tgav_land << std::endl;
     H_LOG( logger, Logger::DEBUG) << "Ocean Temp: " << tgav_oceanair << std::endl;
+
 }
 
 }

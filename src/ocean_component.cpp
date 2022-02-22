@@ -3,8 +3,6 @@
 
    Please see the accompanying file LICENSE.md for additional licensing
    information.
-*/
-/*
  *  ocean_component.cpp
  *  hector
  *
@@ -207,23 +205,8 @@ void OceanComponent::prepareToRun() {
 
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
 
-    // Set up our ocean box model. Carbon values here can be overridden by user input
-    H_LOG( logger, Logger::DEBUG ) << "Setting up ocean box model" << std::endl;
-    surfaceHL.initbox( 140, "HL" );
-    surfaceHL.surfacebox = true;
-    surfaceHL.preindustrial_flux.set( 1.000, U_PGC_YR );         // used if no spinup chemistry
-    surfaceHL.active_chemistry = spinup_chem;
-
-    surfaceLL.initbox( 770, "LL" );
-    surfaceLL.surfacebox = true;
-    surfaceLL.preindustrial_flux.set( -1.000, U_PGC_YR );        // used if no spinup chemistry
-    surfaceLL.active_chemistry = spinup_chem;
-
-    inter.initbox( 8400, "intermediate" );
-    deep.initbox( 26000, "deep" );
-
+    // Define constants used in ocean box set up.
     double spy = 60 * 60 * 24 * 365.25;  // seconds per year
-
 
     // ocean depth
     double thick_LL = 100;         // (m) Thickness of surface ocean from Knox and McElroy (1984)
@@ -245,6 +228,41 @@ void OceanComponent::prepareToRun() {
     const double HL_volume = ocean_area * part_high * thick_HL;
     const double I_volume = ocean_area * thick_inter;
     const double D_volume = ocean_area * thick_deep;
+
+    // Calculate the fraction of volume of the two surface boxes, the deep, and
+    // intermediate ocean boxes. The fraction of the volumes will be used to determine the
+    // inital size of the preindustrial carbon pools for Hector's ocean boxes.
+    const double LL_vol_frac = LL_volume / (LL_volume + HL_volume);
+    const double HL_vol_frac = 1 - LL_vol_frac;
+    const double I_vol_frac = I_volume / (I_volume + D_volume);
+    const double D_vol_frac = 1 - I_vol_frac;
+
+    // Define the size of the preindustrial ocean surface and intermediate-deep ocean carbon pools
+    // from IPCC AR6 Figure 5.12.
+    const double preind_C_surface = 900;   // (Pg C) IPCC AR6 Figure 5.12
+    const double preind_C_ID = 37100;      // (Pg C) IPCC AR6 Figure 5.12
+
+    // Partition the preindustrial ocean carbon pools by volume.
+    const double LL_preind_C = LL_vol_frac * preind_C_surface;
+    const double HL_preind_C = HL_vol_frac * preind_C_surface;
+    const double I_preind_C = I_vol_frac * preind_C_ID;
+    const double D_preind_C = D_vol_frac * preind_C_ID;
+
+
+    // Set up our ocean box model.
+    H_LOG( logger, Logger::DEBUG ) << "Setting up ocean box model" << std::endl;
+    surfaceHL.initbox( HL_preind_C, "HL" );
+    surfaceHL.surfacebox = true;
+    surfaceHL.preindustrial_flux.set( 1.000, U_PGC_YR );         // used if no spinup chemistry
+    surfaceHL.active_chemistry = spinup_chem;
+
+    surfaceLL.initbox( LL_preind_C, "LL" );
+    surfaceLL.surfacebox = true;
+    surfaceLL.preindustrial_flux.set( -1.000, U_PGC_YR );        // used if no spinup chemistry
+    surfaceLL.active_chemistry = spinup_chem;
+
+    inter.initbox( I_preind_C, "intermediate" );
+    deep.initbox( D_preind_C, "deep" );
 
     // transport * seconds / volume of box
     // Advection --> transport of carbon from one box to the next (k values, fraction/yr )
@@ -361,7 +379,10 @@ void OceanComponent::run( const double runToDate ) {
 
     // If chemistry models weren't turned on during spinup, do so now
     if( !spinup_chem && !in_spinup && !surfaceHL.active_chemistry ) {
-        H_LOG( logger,  Logger::NOTICE ) << "*** Turning on chemistry models ***" << std::endl;
+
+        H_LOG( logger, Logger::DEBUG ) << "*** Turning on chemistry models ***" << std::endl;
+        std::cout << "triggered when spinup_chem = 0";
+
         surfaceHL.active_chemistry = true;
         surfaceLL.active_chemistry = true;
         surfaceHL.chem_equilibrate( Ca );
