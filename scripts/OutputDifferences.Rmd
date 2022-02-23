@@ -8,14 +8,14 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Differences in Hector outputs
 
-Hello, this is `leeyabot`! `r emo::ji("robot")`
+Hello, this is `leeyabot`! `r # emo::ji("robot")`
 
 ``` {r differences, echo = FALSE, message = FALSE}
 # Load packages
 library(dplyr)
 library(ggplot2)
 library(hector)
-library(emo)
+#library(emo)
 library(here)
 
 # Set root directory
@@ -34,7 +34,8 @@ compdata <- comp_data %>%
   filter(scenario == "hector_ssp245.ini") %>%
   filter(variable %in% vars) %>%
   mutate(scenario = "ssp245") %>%
-  arrange(variable)
+  arrange(variable) %>%
+  mutate(value = value * 2)
 
 # Access compdata version and commit
 version <- compdata$version[1]
@@ -71,7 +72,7 @@ if (SAME) {
 }
 ```
 
-```{r summary-info, echo = FALSE, fig.width = 12, fig.height = 6, message = FALSE, include = FALSE}
+```{r summary-info, fig.width = 12, fig.height = 6, include = FALSE}
 if(!SAME) {
   # Organize data
   output %>%
@@ -115,10 +116,14 @@ if(!SAME) {
   colnames(NRMSE) <- "NRMSE"
   
   # Table
+  print_kable = function(x) {
+  print(kable_print_output <<- x)
+  cat('\n')
+}
   summary_table <- cbind(squares, NRMSE)
-  knitr::kable(summary_table, digits = 3, 
-               format.args = list(nsmall = 3, scientific = FALSE))
-  
+  print_kable(knitr::kable(summary_table, digits = 3, 
+               format.args = list(nsmall = 3, scientific = FALSE)))
+
   # Plot of numerical differences between versions
   
   # Access units for legend
