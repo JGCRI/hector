@@ -8,14 +8,14 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Differences in Hector outputs
 
-Hello, this is `leeyabot`! `r # emo::ji("robot")`
+Hello, this is `leeyabot`! `r emo::ji("robot")`
 
 ``` {r differences, echo = FALSE, message = FALSE}
 # Load packages
 library(dplyr)
 library(ggplot2)
 library(hector)
-#library(emo)
+library(emo)
 library(here)
 
 # Set root directory
@@ -72,7 +72,7 @@ if (SAME) {
 }
 ```
 
-```{r summary-info, fig.width = 12, fig.height = 6, include = FALSE}
+```{r summary-info, fig.width = 12, fig.height = 6, include = FALSE, results = 'asis'}
 if(!SAME) {
   # Organize data
   output %>%
