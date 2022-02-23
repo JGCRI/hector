@@ -2490,6 +2490,26 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// MLD_OCEAN_CARBON
+String MLD_OCEAN_CARBON();
+RcppExport SEXP _hector_MLD_OCEAN_CARBON() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(MLD_OCEAN_CARBON());
+    return rcpp_result_gen;
+END_RCPP
+}
+// MLD_THERMAL
+String MLD_THERMAL();
+RcppExport SEXP _hector_MLD_THERMAL() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(MLD_THERMAL());
+    return rcpp_result_gen;
+END_RCPP
+}
 // newcore_impl
 Environment newcore_impl(String inifile, int loglevel, bool suppresslogging, String name);
 RcppExport SEXP _hector_newcore_impl(SEXP inifileSEXP, SEXP loglevelSEXP, SEXP suppressloggingSEXP, SEXP nameSEXP) {
@@ -2885,6 +2905,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_FLUX_MIXED", (DL_FUNC) &_hector_FLUX_MIXED, 0},
     {"_hector_FLUX_INTERIOR", (DL_FUNC) &_hector_FLUX_INTERIOR, 0},
     {"_hector_HEAT_FLUX", (DL_FUNC) &_hector_HEAT_FLUX, 0},
+    {"_hector_MLD_OCEAN_CARBON", (DL_FUNC) &_hector_MLD_OCEAN_CARBON, 0},
+    {"_hector_MLD_THERMAL", (DL_FUNC) &_hector_MLD_THERMAL, 0},
     {"_hector_newcore_impl", (DL_FUNC) &_hector_newcore_impl, 4},
     {"_hector_shutdown", (DL_FUNC) &_hector_shutdown, 1},
     {"_hector_reset", (DL_FUNC) &_hector_reset, 2},

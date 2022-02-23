@@ -332,6 +332,8 @@
 #define D_TIMESTEPS             "ocean_timesteps"
 #define D_REVELLE_HL            "Revelle_HL"
 #define D_REVELLE_LL            "Revelle_LL"
+#define D_OC_MLD                "ocean_carbon_mld"
+
 
 // SimpleNbox component
 #define D_LAND_CFLUX            "atm_land_flux"
@@ -385,6 +387,8 @@
 #define D_FLUX_MIXED            "flux_mixed"
 #define D_FLUX_INTERIOR         "flux_interior"
 #define D_HEAT_FLUX             "heatflux"
+#define D_THERMAL_MLD            "thermal_mld"
+
 
 // ------------------- messages being passed between components -------------------------
 

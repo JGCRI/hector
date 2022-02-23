@@ -1871,3 +1871,18 @@ return D_FLUX_INTERIOR;
 String HEAT_FLUX() {
 return D_HEAT_FLUX;
 }
+
+
+//' @describeIn special Ocean carbon mixed layer depth
+//' @export
+// [[Rcpp::export]]
+String MLD_OCEAN_CARBON() {
+    return D_OC_MLD;
+}
+
+//' @describeIn special Thermal ocean mixed layer depth
+//' @export
+// [[Rcpp::export]]
+String MLD_THERMAL() {
+    return D_THERMAL_MLD;
+}

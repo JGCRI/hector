@@ -1491,6 +1491,18 @@ HEAT_FLUX <- function() {
     .Call('_hector_HEAT_FLUX', PACKAGE = 'hector')
 }
 
+#' @describeIn special Ocean carbon mixed layer depth
+#' @export
+MLD_OCEAN_CARBON <- function() {
+    .Call('_hector_MLD_OCEAN_CARBON', PACKAGE = 'hector')
+}
+
+#' @describeIn special Thermal ocean mixed layer depth
+#' @export
+MLD_THERMAL <- function() {
+    .Call('_hector_MLD_THERMAL', PACKAGE = 'hector')
+}
+
 newcore_impl <- function(inifile, loglevel, suppresslogging, name) {
     .Call('_hector_newcore_impl', PACKAGE = 'hector', inifile, loglevel, suppresslogging, name)
 }
