@@ -116,12 +116,8 @@ if(!SAME) {
   colnames(NRMSE) <- "NRMSE"
   
   # Table
-  print_kable = function(x) {
-  print(kable_print_output <<- x)
-  cat('\n')
-}
   summary_table <- cbind(squares, NRMSE)
-  print_kable(knitr::kable(summary_table, digits = 3, 
+  print(knitr::kable(summary_table, digits = 3, 
                format.args = list(nsmall = 3, scientific = FALSE)))
 
   # Plot of numerical differences between versions
