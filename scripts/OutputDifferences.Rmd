@@ -116,10 +116,14 @@ if(!SAME) {
   colnames(NRMSE) <- "NRMSE"
   
   # Table
-  summary_table <- cbind(squares, NRMSE)
-  print(knitr::kable(summary_table, digits = 3, 
+  make_table <- function(){
+    summary_table <- cbind(squares, NRMSE)
+    return(knitr::kable(summary_table, digits = 3, 
                format.args = list(nsmall = 3, scientific = FALSE)))
+}
 
+make_table()
+  
   # Plot of numerical differences between versions
   
   # Access units for legend
