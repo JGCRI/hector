@@ -10,7 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Hello, this is `leeyabot`! `r # emo::ji("robot")`
 
-``` {r differences, echo = FALSE, message = FALSE}
+``` {r differences, echo = FALSE, message = FALSE, include = FALSE}
 # Load packages
 library(dplyr)
 library(ggplot2)
@@ -71,7 +71,7 @@ if (SAME) {
 }
 ```
 
-```{r summary-info, fig.width = 12, fig.height = 6, echo = FALSE}
+```{r summary-info, fig.width = 12, fig.height = 6, echo = FALSE, results = 'asis'}
 if(!SAME) {
   # Organize data
   output %>%
