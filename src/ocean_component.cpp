@@ -373,7 +373,6 @@ void OceanComponent::run( const double runToDate ) {
     surfaceLL.new_year( SST );
     inter.new_year( SST );
     deep.new_year( SST );
-    //double x = surfaceHL.get_Tbox();
     H_LOG( logger, Logger::DEBUG ) << "----------------------------------------------------" << std::endl;
     H_LOG( logger, Logger::DEBUG ) << "runToDate=" << runToDate << ", Ca=" << Ca << ", spinup=" << in_spinup << std::endl;
 
