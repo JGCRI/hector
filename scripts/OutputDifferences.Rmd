@@ -2,7 +2,7 @@
 # This is the leeyabot Rmarkdown that generates the comment
 # and accompanying table and figure
 # It is run by the `leeyabot.yml` GitHub Action
-# Leeya Pressburger 2021
+# Leeya Pressburger 2022
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
@@ -41,13 +41,13 @@ compdata <- comp_data %>%
 version <- compdata$version[1]
 commit <- comp_data$commit[1]
 
-# Read in files for just RCP 4.5
+# Run core for just SSP 245 and retrieve outputs
 ssp245 <- file.path(BASE_DIR, "inst", "input", "hector_ssp245.ini")
-
-# Run core and retrieve variable
 core <- newcore(ssp245)
 invisible(run(core))
 output <- fetchvars(core, core$strtdate:core$enddate, vars, "ssp245")
+shutdown(core)
+
 output <- output %>% 
   mutate(version = "latest") %>%
   arrange(variable)
@@ -79,30 +79,27 @@ if(!SAME) {
     select(latest_version = value) -> new_values
   
   both_versions <- compdata %>%
-    select(year, variable, value) %>%
-    rename(comp_version = value) %>%
+    select(year, variable, comp_version = value) %>%
     cbind(new_values)
   
   # Define params
   years <- both_versions$year
   
   # Compute linear regression
-  linear <- by(both_versions, both_versions$variable, function(x) lm (both_versions$latest_version~both_versions$comp_version))
+  linear <- by(both_versions, both_versions$variable, 
+               function(x) lm (both_versions$latest_version ~ both_versions$comp_version))
   
   # Access r squared
   squares <- as.data.frame(sapply(linear, function(x) summary(x)$r.squared))
   colnames(squares) <- "R squared"
   
-  # Calculate RMSE
-  # Extract residuals
+  # Extract residuals...
   resid <- as.data.frame(sapply(linear, function(x) summary(x)$residuals))
   
-  # Define function
+  # ...and calculate RMSE
   RMSE <- function(res) {
     r <- sqrt(mean(res^2))
   }
-  
-  # Find RMSE
   error <- as.data.frame(lapply(resid, RMSE))
   error <- t(error)
   
