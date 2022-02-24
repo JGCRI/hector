@@ -53,16 +53,15 @@ output <- output %>%
   arrange(variable)
 
 # Find differences between versions
-differences <- compdata %>% 
-  mutate(diff = output$value - compdata$value) %>% 
-  select(scenario, year, variable, units, version, diff)
+compdata <- compdata %>% 
+  mutate(diff = output$value - compdata$value)
 ```
 
 ```{r, check-any-change, echo=FALSE, results='asis'}
 # If there are no differences in outputs, do nothing
 # Otherwise, run summary table and graph code
-zeros <- rep(0, length(differences$diff))
-SAME <- isTRUE(all.equal(zeros, differences$diff, tolerance = 1e-7))
+zeros <- rep(0, length(compdata$diff))
+SAME <- isTRUE(all.equal(zeros, compdata$diff, tolerance = 1e-7))
 if (SAME) {
   cat("The current pull request's outputs do not differ from ", 
       version, " (", commit, ").", sep = "")
@@ -124,17 +123,17 @@ if(!SAME) {
   # Plot of numerical differences between versions
   
   # Access units for legend
-  units <- differences %>% group_by(variable) %>% slice(1)
+  units <- compdata %>% group_by(variable) %>% slice(1)
   units <- units$units
   # Sort variables so that legend works
   vars <- sort(vars)
   
-  diff_plot <- ggplot(differences, aes(year, diff, color = variable)) +
+  diff_plot <- ggplot(compdata, aes(year, diff, color = variable)) +
     geom_hline(yintercept = 0, alpha = 0.5) +
     geom_line() +
     facet_wrap(~variable, scales = "free") +
     scale_color_viridis_d(breaks = vars, labels = units) +
-    ggtitle(paste0("Differences relative to ", version, " (", commit, ")", " in ", differences$scenario)) +
+    ggtitle(paste0("Differences relative to ", version, " (", commit, ")", " in ", compdata$scenario)) +
     labs(x = "Year", y = "Difference in value", col = "Units") +
     theme_bw()
   
