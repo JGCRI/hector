@@ -53,16 +53,15 @@ CSVOutputStreamVisitor::CSVOutputStreamVisitor( ostream& outputStream, const boo
 :csvFile( outputStream )
 {
     if( printHeader ) {
-        
+
         // Save the current time (real world not Hector current time) to write out in outputstream.
         std::time_t result = std::time(nullptr);
         const string real_time = std::ctime(&result);
         std::regex newlines_re("\n+");
         auto print_time = std::regex_replace(real_time, newlines_re, "");
-                
+
         // Print model version header
-        csvFile << "# Output from " << MODEL_NAME << " version " << MODEL_VERSION << endl;
-        csvFile << "# Created on " << print_time << endl;
+        csvFile << "# Output from " << MODEL_NAME << " version " << MODEL_VERSION << " on " << print_time << endl;
 
         // Print table header
         csvFile << "year" << DELIMITER << "run_name" << DELIMITER << "spinup" << DELIMITER
