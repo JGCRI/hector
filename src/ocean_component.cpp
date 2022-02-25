@@ -373,7 +373,6 @@ void OceanComponent::run( const double runToDate ) {
     surfaceLL.new_year( SST );
     inter.new_year( SST );
     deep.new_year( SST );
-    //double x = surfaceHL.get_Tbox();
     H_LOG( logger, Logger::DEBUG ) << "----------------------------------------------------" << std::endl;
     H_LOG( logger, Logger::DEBUG ) << "runToDate=" << runToDate << ", Ca=" << Ca << ", spinup=" << in_spinup << std::endl;
 
@@ -381,8 +380,6 @@ void OceanComponent::run( const double runToDate ) {
     if( !spinup_chem && !in_spinup && !surfaceHL.active_chemistry ) {
 
         H_LOG( logger, Logger::DEBUG ) << "*** Turning on chemistry models ***" << std::endl;
-        std::cout << "triggered when spinup_chem = 0";
-
         surfaceHL.active_chemistry = true;
         surfaceLL.active_chemistry = true;
         surfaceHL.chem_equilibrate( Ca );

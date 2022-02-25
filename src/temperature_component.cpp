@@ -191,8 +191,7 @@ void TemperatureComponent::setData( const string& varName,
              H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
              lo_warming_ratio = data.getUnitval(U_UNITLESS);
         } else {
-            H_THROW( "Unknown variable name while parsing " + getComponentName() + ": "
-                    + varName );
+            H_THROW( "Unknown variable name while parsing " + getComponentName() + ": " + varName );
         }
     } catch( bad_lexical_cast& castException ) {
         H_THROW( "Could not convert var: "+varName+", value: " + data.value_str + ", exception: "
