@@ -142,5 +142,23 @@ if(!SAME) {
   # it a CML report."  https://github.com/iterative/cml#cml-reports
   # So instead of printing the graph, we save it to a file
   ggsave("diff_plot.png", plot = diff_plot, height = 6, width = 9)
+  
+  # Plot of new commit values against comparison data
+  new_comp <- compdata %>%
+    mutate(new_value = output$value,
+           new_version = output$version,
+           new_units = output$units)
+  
+  comp_plot <- ggplot(new_comp) +
+    geom_line(aes(year, value, color = version, linetype = units)) +
+    geom_line(aes(year, new_value, color = new_version, linetype = units)) +
+    scale_linetype_manual(values = c(5, 4, 1)) +
+    facet_wrap(~variable, scales = "free_y") +
+    scale_color_viridis_d(end = 0.5) +
+    ggtitle(paste0("Differences in output values relative to ", version, " (", commit, ")", " in ", compdata$scenario)) +
+    labs(x = "Year", y = "Value", color = "Version", linetype = "Units") +
+    theme_bw()
+  
+    ggsave("comp_plot.png", plot = comp_plot, height = 6, width = 9)
 }
 ```
