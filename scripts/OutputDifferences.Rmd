@@ -71,7 +71,7 @@ if (SAME) {
 }
 ```
 
-```{r summary-info, fig.width = 12, fig.height = 6, echo = FALSE, results = 'asis'}
+```{r summary-info, echo = FALSE, message = FALSE}
 if(!SAME) {
   # Organize data
   output %>%
