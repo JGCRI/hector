@@ -11,7 +11,8 @@ fetchvars(core, dates, vars = NULL, scenario = NULL)
 
 \item{dates}{Vector of dates to fetch; this will be automatically trimmed to
 dates that are between the start date and the latest date currently run.
-Set to \code{NA} to return all dates.}
+Set to \code{NA} to return data with no associated dates such as
+model \link{parameters}.}
 
 \item{vars}{List (or vector) of capability strings defining the variables to
 be fetched in the result.}

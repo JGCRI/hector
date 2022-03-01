@@ -15,7 +15,7 @@
  */
 
 #include <iostream>
-#include <fstream>
+#include <boost/iostreams/filtering_stream.hpp>
 
 #include "h_exception.hpp"
 
@@ -62,38 +62,13 @@ private:
     bool enabled;
 
     //! The actual output stream which will handle the logging.
-    std::ostream loggerStream;
+    boost::iostreams::filtering_ostream loggerStream;
 
     static const std::string& logLevelToStr( const LogLevel logLevel );
 
     static const char* getDateTimeStamp();
 
-    static void chk_logdir(std::string dir);
-
     void printLogHeader( const LogLevel logLevel );
-
-    /*! \brief A customized file stream buffer to enable echoing to a console.
-     *
-     *  This subclass will override the virtual protected methods necessary for
-     *  output only.
-     */
-    class LoggerStreamBuf : public std::filebuf {
-    private:
-        //! A pointer to the streambuf of the console output stream, or null
-        //! if echoToScreen was set to false during construction.
-        std::streambuf* consoleBuf;
-    public:
-        LoggerStreamBuf( const bool echoToScreen );
-        virtual ~LoggerStreamBuf();
-
-    protected:
-        // std::streambuf methods
-        virtual int sync();
-
-        virtual int overflow( int c = EOF );
-
-        virtual std::streamsize xsputn( const char* s, std::streamsize n );
-    };
 
 public:
     Logger();

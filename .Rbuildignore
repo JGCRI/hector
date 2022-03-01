@@ -3,7 +3,7 @@
 ^hector.Rproj$
 ^\.Rproj\.user$
 
-## Github config, license, CI, etc.
+## GitHub config, license, CI, etc.
 ^CONTRIBUTING.md$
 ^LICENSE.md$
 ^changelog.txt$
@@ -25,12 +25,12 @@
 ^src/.*\.txt$
 ^src/.*\.a$
 ^src/.*\.d$
+^.*\.o$
 ^src/main.*$
 ^src/makefile.standalone$
 ^src/testing$
 ^misc$
 ^data-raw$
-^analysis$
 ^.vscode$
 
 # pkgdown config and output

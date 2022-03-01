@@ -1115,6 +1115,12 @@ OCEAN_C_LL <- function() {
     .Call('_hector_OCEAN_C_LL', PACKAGE = 'hector')
 }
 
+#' @describeIn ocean Ocean surface or mixed layer carbon pool
+#' @export
+OCEAN_C_ML <- function() {
+    .Call('_hector_OCEAN_C_ML', PACKAGE = 'hector')
+}
+
 #' @describeIn ocean Intermediate ocean carbon pool
 #' @export
 OCEAN_C_IO <- function() {
@@ -1151,16 +1157,22 @@ TID <- function() {
     .Call('_hector_TID', PACKAGE = 'hector')
 }
 
-#' @describeIn ocean High-latitude Ph
+#' @describeIn ocean High-latitude pH
 #' @export
 PH_HL <- function() {
     .Call('_hector_PH_HL', PACKAGE = 'hector')
 }
 
-#' @describeIn ocean Low-latitude Ph
+#' @describeIn ocean Low-latitude pH
 #' @export
 PH_LL <- function() {
     .Call('_hector_PH_LL', PACKAGE = 'hector')
+}
+
+#' @describeIn ocean Ocean surface pH
+#' @export
+PH <- function() {
+    .Call('_hector_PH', PACKAGE = 'hector')
 }
 
 #' @describeIn ocean Atmosphere-ocean carbon flux, high-latitude
@@ -1187,10 +1199,22 @@ PCO2_LL <- function() {
     .Call('_hector_PCO2_LL', PACKAGE = 'hector')
 }
 
+#' @describeIn ocean Ocean surface partial pressure of CO2
+#' @export
+PCO2 <- function() {
+    .Call('_hector_PCO2', PACKAGE = 'hector')
+}
+
 #' @describeIn ocean Dissolved inorganic carbon, high-latitude
 #' @export
 DIC_HL <- function() {
     .Call('_hector_DIC_HL', PACKAGE = 'hector')
+}
+
+#' @describeIn ocean Ocean surface dissolved inorganic carbon
+#' @export
+DIC <- function() {
+    .Call('_hector_DIC', PACKAGE = 'hector')
 }
 
 #' @describeIn ocean Dissolved inorganic carbon, low-latitude
@@ -1199,13 +1223,13 @@ DIC_LL <- function() {
     .Call('_hector_DIC_LL', PACKAGE = 'hector')
 }
 
-#' @describeIn ocean Ocean temperature, high-latitude
+#' @describeIn ocean Absolute ocean surface temperature, high-latitude (deg C)
 #' @export
 TEMP_HL <- function() {
     .Call('_hector_TEMP_HL', PACKAGE = 'hector')
 }
 
-#' @describeIn ocean Ocean temperature, low-latitude
+#' @describeIn ocean Absolute ocean surface temperature, low-latitude (deg C)
 #' @export
 TEMP_LL <- function() {
     .Call('_hector_TEMP_LL', PACKAGE = 'hector')
@@ -1221,6 +1245,12 @@ CO3_LL <- function() {
 #' @export
 CO3_HL <- function() {
     .Call('_hector_CO3_HL', PACKAGE = 'hector')
+}
+
+#' @describeIn ocean Ocean surface carbonate concentration
+#' @export
+CO3 <- function() {
+    .Call('_hector_CO3', PACKAGE = 'hector')
 }
 
 #' @rdname carboncycle
@@ -1340,18 +1370,21 @@ F_LUCD <- function() {
 }
 
 #' @describeIn carboncycle Vegetation C pool (`"Pg C"`)
+#' @param biome Name of biome (leave empty for global)
 #' @export
 VEG_C <- function(biome = "") {
     .Call('_hector_VEG_C', PACKAGE = 'hector', biome)
 }
 
 #' @describeIn carboncycle Vegetation detritus C pool (`"Pg C"`)
+#' @param biome Name of biome (leave empty for global)
 #' @export
 DETRITUS_C <- function(biome = "") {
     .Call('_hector_DETRITUS_C', PACKAGE = 'hector', biome)
 }
 
 #' @describeIn carboncycle Soil C pool (`"Pg C"`)
+#' @param biome Name of biome (leave empty for global)
 #' @export
 SOIL_C <- function(biome = "") {
     .Call('_hector_SOIL_C', PACKAGE = 'hector', biome)
@@ -1365,6 +1398,7 @@ EARTH_C <- function() {
 
 #' @describeIn carboncycle Initial net primary productivity (NPP)
 #'   flux (`"Pg C year^-1"`)
+#' @param biome Name of biome (leave empty for global)
 #' @export
 NPP_FLUX0 <- function(biome = "") {
     .Call('_hector_NPP_FLUX0', PACKAGE = 'hector', biome)
@@ -1423,6 +1457,14 @@ OCEAN_AIR_TEMP <- function() {
 #' @export
 LAND_AIR_TEMP <- function() {
     .Call('_hector_LAND_AIR_TEMP', PACKAGE = 'hector')
+}
+
+#' @describeIn parameters Land-Ocean Warming Ratio (\code{"(unitless)"}), by default set to 0
+#' meaning that the land ocean warming ratio is an emergent property of Hector's temperature
+#' component otherwise the user defined land ocean warming ratio will be used.
+#' @export
+LO_WARMING_RATIO <- function() {
+    .Call('_hector_LO_WARMING_RATIO', PACKAGE = 'hector')
 }
 
 #' @describeIn parameters Ocean heat diffusivity (\code{"cm2/s"})

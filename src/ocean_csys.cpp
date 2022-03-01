@@ -3,9 +3,9 @@
 
    Please see the accompanying file LICENSE.md for additional licensing
    information.
-*/
-// ocean_csys_class.cpp : Defines the entry point for the console application.
-/*  Ocean Carbon Chemistry CODE File:
+
+ ocean_csys_class.cpp : Defines the entry point for the console application.
+ *  Ocean Carbon Chemistry CODE File:
  *
  *  Created by Corinne Hartin  1/30/13.
 
@@ -66,13 +66,6 @@ namespace Hector {
 using namespace std;
 
 //------------------------------------------------------------------------------
-/*! \brief new oceanbox logger
- *  oceanbox logger may or may not be defined and therefore we check before logging
- */
-#define CS_LOG(log, level)  \
-if( log != NULL ) H_LOG( (*log), level )
-
-//------------------------------------------------------------------------------
 /*! \brief constructor
  */
 oceancsys::oceancsys() : ncoeffs(6), m_a(ncoeffs) {
@@ -126,6 +119,7 @@ double find_largest_root( const int ncoeffs, double* a ) {
     PolyDerivFunctor polyFunctor(a, degree);
     // Use Fujiwara's method to find an upper bound for the roots of the polynomial
     double max = pow(std::abs(a[0] / ( 2.0 * a[degree])), 1.0 / degree);
+
     for(int i = 1; i < degree; ++i) {
         max = std::max(max, pow(std::abs(a[i]/a[degree]), 1.0 / static_cast<double>(degree - i)));
     }
@@ -138,6 +132,7 @@ double find_largest_root( const int ncoeffs, double* a ) {
 
 	return h;
 }
+
 
 //------------------------------------------------------------------------------
 /*! \brief Run Ocean csys
@@ -157,12 +152,23 @@ void oceancsys::ocean_csys_run( unitval tbox, unitval carbon )
     const double Tc = tbox.value( U_DEGC );
     const double Tk = Tc + 273.15;
 
-	// Check that all is OK with input data
-	H_ASSERT( Tk > 265 && Tk < 308, "bad Tk value" ); // Kelvin
-    H_ASSERT( dic > 1000e-6 && dic < 3700e-6, "bad dic value" );  // mol/kg
+	// Using the recommended ranges Richard E. Zeebe and Dieter A. Wolf-Gladrow check the input
+	// values fro temperature, DIC, and alkalinity. If that is the case issue a warning,
+	// this may happen during idealized experiments or runs extending beyond 2100.
+	const bool questionable_Tk = !(Tk > 265 && Tk < 308);
+	const bool questionable_dic = !(dic > 1000e-6 && dic < 3700e-6);
+	const bool questionable_alk = !(alk >= 2000e-6 && alk <= 2750e-6);
 
-    // alk should be constant once spinup is done, but check anyway
-    H_ASSERT( alk >= 2000e-6 && alk <= 2750e-6, "bad alk value" );  // mol/kg
+	// TODO should this be written out to a Hector log file??
+	if (questionable_Tk) {
+	    std::cout << "Temp value outside of Zeebe & Wolf-Gladrow range \n";
+	}
+	if (questionable_dic) {
+	    std::cout << "DIC value outside of Zeebe & Wolf-Gladrow range \n";
+	}
+	if (questionable_alk) {
+	    std::cout <<"Alk value outside of Zeebe & Wolf-Gladrow range \n";
+	}
 
 	/*---------------------------------------------------------------
      This section calculates the constants K0, Sc, K1, K2, Ksp, Ksi etc.
@@ -190,7 +196,6 @@ void oceancsys::ocean_csys_run( unitval tbox, unitval carbon )
 	tmp2 = + (118.67/Tk - 5.977 + 1.0495*log( Tk ) ) * sqrt( S ) - 0.01615 * S; // eq 1.10 Riebesell et al. 2011
 	const double lnKw =  tmp1 + tmp2;  // eq 1.10 Riebesell et al. 2011
 	Kw.set( exp(lnKw), U_MOL_KG);
-
 
 	//---------------------- Kh (K Henry) ----------------------------
 	// Solubility of CO2 calculated using Henry's law Weiss 1974 (moles * atm * kg-1)
@@ -275,7 +280,6 @@ void oceancsys::ocean_csys_run( unitval tbox, unitval carbon )
         * bor * K1_val * K2_val;
 	const double p1 = tmp + ( Kw_val * Kb_val * K1_val + Kw_val * K1_val * K2_val );
 	const double p0 = Kw_val * Kb_val * K1_val * K2_val;
-
 	m_a[ 0 ] = p0;
 	m_a[ 1 ] = p1;
 	m_a[ 2 ] = p2;
@@ -284,7 +288,7 @@ void oceancsys::ocean_csys_run( unitval tbox, unitval carbon )
 	m_a[ 5 ] = p5;
 
 	// Find the solution to the polynomial of the carbonate system
-	const double h      = find_largest_root( ncoeffs, &m_a[0] );
+	const double h   = find_largest_root( ncoeffs, &m_a[0] );
 
 	// Solve for the remiaing carbonate variables
 	const double co2st  = dic/( 1.0 + K1_val / h + K1_val * K2_val / h / h ); // co2st = CO2*

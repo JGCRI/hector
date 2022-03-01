@@ -8,7 +8,7 @@ test_that("Concentration-forced runs work for halocarbons", {
   # for all of Hector's HFCs. But in the "concentration driven runs via INI file" test
   # we check all of the different halocarbons.
   # 1. Set up Hector to use HFC23 concentrations as a constraint to make sure
-  #       that the core can read in HFC constraints and produce identical restults
+  #       that the core can read in HFC constraints and produce identical results
   #       to test the functionality of the core.
   # 2. Perterb the concentrations to test that applying the constraint has downstream
   #       consequences, impacts global mean temperature.

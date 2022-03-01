@@ -1870,6 +1870,16 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// OCEAN_C_ML
+String OCEAN_C_ML();
+RcppExport SEXP _hector_OCEAN_C_ML() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(OCEAN_C_ML());
+    return rcpp_result_gen;
+END_RCPP
+}
 // OCEAN_C_IO
 String OCEAN_C_IO();
 RcppExport SEXP _hector_OCEAN_C_IO() {
@@ -1950,6 +1960,16 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// PH
+String PH();
+RcppExport SEXP _hector_PH() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(PH());
+    return rcpp_result_gen;
+END_RCPP
+}
 // ATM_OCEAN_FLUX_HL
 String ATM_OCEAN_FLUX_HL();
 RcppExport SEXP _hector_ATM_OCEAN_FLUX_HL() {
@@ -1990,6 +2010,16 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// PCO2
+String PCO2();
+RcppExport SEXP _hector_PCO2() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(PCO2());
+    return rcpp_result_gen;
+END_RCPP
+}
 // DIC_HL
 String DIC_HL();
 RcppExport SEXP _hector_DIC_HL() {
@@ -1997,6 +2027,16 @@ BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     rcpp_result_gen = Rcpp::wrap(DIC_HL());
+    return rcpp_result_gen;
+END_RCPP
+}
+// DIC
+String DIC();
+RcppExport SEXP _hector_DIC() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(DIC());
     return rcpp_result_gen;
 END_RCPP
 }
@@ -2047,6 +2087,16 @@ BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     rcpp_result_gen = Rcpp::wrap(CO3_HL());
+    return rcpp_result_gen;
+END_RCPP
+}
+// CO3
+String CO3();
+RcppExport SEXP _hector_CO3() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(CO3());
     return rcpp_result_gen;
 END_RCPP
 }
@@ -2387,6 +2437,16 @@ BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     rcpp_result_gen = Rcpp::wrap(LAND_AIR_TEMP());
+    return rcpp_result_gen;
+END_RCPP
+}
+// LO_WARMING_RATIO
+String LO_WARMING_RATIO();
+RcppExport SEXP _hector_LO_WARMING_RATIO() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(LO_WARMING_RATIO());
     return rcpp_result_gen;
 END_RCPP
 }
@@ -2764,6 +2824,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_OCEAN_C", (DL_FUNC) &_hector_OCEAN_C, 0},
     {"_hector_OCEAN_C_HL", (DL_FUNC) &_hector_OCEAN_C_HL, 0},
     {"_hector_OCEAN_C_LL", (DL_FUNC) &_hector_OCEAN_C_LL, 0},
+    {"_hector_OCEAN_C_ML", (DL_FUNC) &_hector_OCEAN_C_ML, 0},
     {"_hector_OCEAN_C_IO", (DL_FUNC) &_hector_OCEAN_C_IO, 0},
     {"_hector_OCEAN_C_DO", (DL_FUNC) &_hector_OCEAN_C_DO, 0},
     {"_hector_TT", (DL_FUNC) &_hector_TT, 0},
@@ -2772,16 +2833,20 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_TID", (DL_FUNC) &_hector_TID, 0},
     {"_hector_PH_HL", (DL_FUNC) &_hector_PH_HL, 0},
     {"_hector_PH_LL", (DL_FUNC) &_hector_PH_LL, 0},
+    {"_hector_PH", (DL_FUNC) &_hector_PH, 0},
     {"_hector_ATM_OCEAN_FLUX_HL", (DL_FUNC) &_hector_ATM_OCEAN_FLUX_HL, 0},
     {"_hector_ATM_OCEAN_FLUX_LL", (DL_FUNC) &_hector_ATM_OCEAN_FLUX_LL, 0},
     {"_hector_PCO2_HL", (DL_FUNC) &_hector_PCO2_HL, 0},
     {"_hector_PCO2_LL", (DL_FUNC) &_hector_PCO2_LL, 0},
+    {"_hector_PCO2", (DL_FUNC) &_hector_PCO2, 0},
     {"_hector_DIC_HL", (DL_FUNC) &_hector_DIC_HL, 0},
+    {"_hector_DIC", (DL_FUNC) &_hector_DIC, 0},
     {"_hector_DIC_LL", (DL_FUNC) &_hector_DIC_LL, 0},
     {"_hector_TEMP_HL", (DL_FUNC) &_hector_TEMP_HL, 0},
     {"_hector_TEMP_LL", (DL_FUNC) &_hector_TEMP_LL, 0},
     {"_hector_CO3_LL", (DL_FUNC) &_hector_CO3_LL, 0},
     {"_hector_CO3_HL", (DL_FUNC) &_hector_CO3_HL, 0},
+    {"_hector_CO3", (DL_FUNC) &_hector_CO3, 0},
     {"_hector_LAND_CFLUX", (DL_FUNC) &_hector_LAND_CFLUX, 0},
     {"_hector_NBP", (DL_FUNC) &_hector_NBP, 0},
     {"_hector_ATMOSPHERIC_CO2", (DL_FUNC) &_hector_ATMOSPHERIC_CO2, 0},
@@ -2815,6 +2880,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_OCEAN_SURFACE_TEMP", (DL_FUNC) &_hector_OCEAN_SURFACE_TEMP, 0},
     {"_hector_OCEAN_AIR_TEMP", (DL_FUNC) &_hector_OCEAN_AIR_TEMP, 0},
     {"_hector_LAND_AIR_TEMP", (DL_FUNC) &_hector_LAND_AIR_TEMP, 0},
+    {"_hector_LO_WARMING_RATIO", (DL_FUNC) &_hector_LO_WARMING_RATIO, 0},
     {"_hector_DIFFUSIVITY", (DL_FUNC) &_hector_DIFFUSIVITY, 0},
     {"_hector_FLUX_MIXED", (DL_FUNC) &_hector_FLUX_MIXED, 0},
     {"_hector_FLUX_INTERIOR", (DL_FUNC) &_hector_FLUX_INTERIOR, 0},

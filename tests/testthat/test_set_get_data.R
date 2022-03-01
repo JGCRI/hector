@@ -1,5 +1,9 @@
 context("Setting and getting data")
 
+# This test differs from the test_parameters in that these are variables that are a time series
+# whereas the test_parameters deals with parameters that have no time dimension.
+
+
 emissions <- c(
   EMISSIONS_BC(),
   EMISSIONS_C2F6(),
