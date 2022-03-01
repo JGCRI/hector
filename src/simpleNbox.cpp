@@ -49,7 +49,7 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
 
     // The actual atmos_c value will be filled in later by setData
     atmos_c.set(0.0, U_PGC, false, "atmos_c");
-    
+
     // earth_c keeps track of how much fossil C is pulled out
     // so that we can do a mass-balance check throughout the run
     // 2020-02-05 With the introduction of non-negative 'fluxpool' class
@@ -76,7 +76,7 @@ void SimpleNbox::init( Core* coreptr ) {
     // Initialize the `biome_list` with just "global"
     biome_list.push_back( SNBOX_DEFAULT_BIOME );
 
-    Tgav_record.allowInterp( true );
+    Tland_record.allowInterp( true );
 
     // Register the data we can provide
     core->registerCapability( D_ATMOSPHERIC_CO2, getComponentName() );
@@ -216,7 +216,7 @@ void SimpleNbox::setData( const std::string &varName,
             // interactive use, you will usually want to pass the date
             // -- otherwise, the current value will be overridden by a
             // `reset` (which includes code like `veg_c = veg_c_tv.get(t)`).
-            
+
             // Data are coming in as unitvals, but change to fluxpools
             veg_c[ biome ] = fluxpool(data.getUnitval( U_PGC ).value(U_PGC), U_PGC, false, varName);
             if (data.date != Core::undefinedIndex()) {
@@ -522,7 +522,7 @@ void SimpleNbox::reset(double time)
     veg_c = veg_c_tv.get(time);
     detritus_c = detritus_c_tv.get(time);
     soil_c = soil_c_tv.get(time);
-    
+
     residual = residual_ts.get(time);
 
     tempferts = tempferts_tv.get(time);
@@ -538,7 +538,7 @@ void SimpleNbox::reset(double time)
             co2fert[ biome ] = calc_co2fert(biome);
         }
     }
-    Tgav_record.truncate(time);
+    Tland_record.truncate(time);
     // No need to reset masstot; it's not supposed to change anyhow.
 
     // Truncate all of the state variable time series
@@ -549,7 +549,7 @@ void SimpleNbox::reset(double time)
     veg_c_tv.truncate(time);
     detritus_c_tv.truncate(time);
     soil_c_tv.truncate(time);
-    
+
     residual_ts.truncate(time);
 
     tempferts_tv.truncate(time);
@@ -587,7 +587,7 @@ void SimpleNbox::record_state(double t)
     veg_c_tv.set(t, veg_c);
     detritus_c_tv.set(t, detritus_c);
     soil_c_tv.set(t, soil_c);
-    
+
     residual_ts.set(t, residual);
 
     tempfertd_tv.set(t, tempfertd);
