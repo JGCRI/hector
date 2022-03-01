@@ -6,6 +6,7 @@
 \alias{OCEAN_C}
 \alias{OCEAN_C_HL}
 \alias{OCEAN_C_LL}
+\alias{OCEAN_C_ML}
 \alias{OCEAN_C_IO}
 \alias{OCEAN_C_DO}
 \alias{TT}
@@ -14,16 +15,20 @@
 \alias{TID}
 \alias{PH_HL}
 \alias{PH_LL}
+\alias{PH}
 \alias{ATM_OCEAN_FLUX_HL}
 \alias{ATM_OCEAN_FLUX_LL}
 \alias{PCO2_HL}
 \alias{PCO2_LL}
+\alias{PCO2}
 \alias{DIC_HL}
+\alias{DIC}
 \alias{DIC_LL}
 \alias{TEMP_HL}
 \alias{TEMP_LL}
 \alias{CO3_LL}
 \alias{CO3_HL}
+\alias{CO3}
 \title{Identifiers for quantities in the ocean component}
 \usage{
 OCEAN_CFLUX()
@@ -33,6 +38,8 @@ OCEAN_C()
 OCEAN_C_HL()
 
 OCEAN_C_LL()
+
+OCEAN_C_ML()
 
 OCEAN_C_IO()
 
@@ -50,6 +57,8 @@ PH_HL()
 
 PH_LL()
 
+PH()
+
 ATM_OCEAN_FLUX_HL()
 
 ATM_OCEAN_FLUX_LL()
@@ -58,7 +67,11 @@ PCO2_HL()
 
 PCO2_LL()
 
+PCO2()
+
 DIC_HL()
+
+DIC()
 
 DIC_LL()
 
@@ -69,6 +82,8 @@ TEMP_LL()
 CO3_LL()
 
 CO3_HL()
+
+CO3()
 }
 \description{
 These identifiers correspond to variables that can be read from the ocean
@@ -84,6 +99,8 @@ component using the \code{\link{GETDATA}} message type.
 
 \item \code{OCEAN_C_LL}: Ocean surface low-latitude carbon pool
 
+\item \code{OCEAN_C_ML}: Ocean surface or mixed layer carbon pool
+
 \item \code{OCEAN_C_IO}: Intermediate ocean carbon pool
 
 \item \code{OCEAN_C_DO}: Deep ocean carbon pool
@@ -96,9 +113,11 @@ component using the \code{\link{GETDATA}} message type.
 
 \item \code{TID}: Intermediate-deep exchange
 
-\item \code{PH_HL}: High-latitude Ph
+\item \code{PH_HL}: High-latitude pH
 
-\item \code{PH_LL}: Low-latitude Ph
+\item \code{PH_LL}: Low-latitude pH
+
+\item \code{PH}: Ocean surface pH
 
 \item \code{ATM_OCEAN_FLUX_HL}: Atmosphere-ocean carbon flux, high-latitude
 
@@ -108,17 +127,23 @@ component using the \code{\link{GETDATA}} message type.
 
 \item \code{PCO2_LL}: Partial pressure of CO2, low-latitude
 
+\item \code{PCO2}: Ocean surface partial pressure of CO2
+
 \item \code{DIC_HL}: Dissolved inorganic carbon, high-latitude
+
+\item \code{DIC}: Ocean surface dissolved inorganic carbon
 
 \item \code{DIC_LL}: Dissolved inorganic carbon, low-latitude
 
-\item \code{TEMP_HL}: Ocean temperature, high-latitude
+\item \code{TEMP_HL}: Absolute ocean surface temperature, high-latitude (deg C)
 
-\item \code{TEMP_LL}: Ocean temperature, low-latitude
+\item \code{TEMP_LL}: Absolute ocean surface temperature, low-latitude (deg C)
 
 \item \code{CO3_LL}: Carbonate concentration, low-latitude
 
 \item \code{CO3_HL}: Carbonate concentration, high-latitude
+
+\item \code{CO3}: Ocean surface carbonate concentration
 }}
 
 \section{Note}{

@@ -19,21 +19,9 @@ hector_version <- packageVersion("hector")
 hector_commit <- system("git rev-parse --short HEAD", intern = TRUE)
 
 
-vars_to_save <- c(ATMOSPHERIC_CO2(), GLOBAL_TEMP(), RF_TOTAL(), RF_CO2(), HEAT_FLUX(), OCEAN_C(), PH_HL(), ATMOSPHERIC_C())
+vars_to_save <- c(ATMOSPHERIC_CO2(), GLOBAL_TEMP(), RF_TOTAL(), RF_CO2(), HEAT_FLUX(), OCEAN_C(), PH_HL(), ATMOSPHERIC_C(), OCEAN_SURFACE_TEMP())
 dates_to_save <- 1745:2300
 
-
-# During this old new test we will look at results for two scenarios, a concentration and
-# emission driven runs.
-
-# # The first scenario to run is the constrained RCP 4.5
-# ini <- here::here("inst", "input", "hector_ssp245_constrained.ini")
-# hc <- newcore(ini)
-# run(hc, max(dates_to_save))
-# hector_ssp245_constrained <- fetchvars(hc, scenario = basename(ini), dates = dates_to_save, vars = vars_to_save)
-# hector_ssp245_constrained$version <- hector_version # Add the Hector version.
-# hector_ssp245_constrained$commit <- hector_commit
-hector_ssp245_constrained <- NULL
 # Second run.
 ini <- here::here("inst", "input", "hector_ssp245.ini")
 hc <- newcore(ini)
@@ -43,7 +31,7 @@ hector_ssp245$version <- hector_version # Add the Hector version.
 hector_ssp245$commit <- hector_commit
 
 # Save the comparison data for the unit tests.
-comp_data <- rbind(hector_ssp245_constrained, hector_ssp245)
+comp_data <- hector_ssp245
 out_file <- file.path(out_dir, "hector_comp.csv")
 write.csv(comp_data, file = out_file, row.names = FALSE)
 message("All done.")

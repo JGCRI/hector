@@ -15,6 +15,7 @@
 \alias{ECS}
 \alias{AERO_SCALE}
 \alias{VOLCANIC_SCALE}
+\alias{LO_WARMING_RATIO}
 \alias{DIFFUSIVITY}
 \title{Identifiers for model parameters}
 \usage{
@@ -43,6 +44,8 @@ ECS()
 AERO_SCALE()
 
 VOLCANIC_SCALE()
+
+LO_WARMING_RATIO()
 
 DIFFUSIVITY()
 }
@@ -88,6 +91,10 @@ conserve mass).
 \item \code{AERO_SCALE}: Aerosol forcing scaling factor (\code{"(unitless)"})
 
 \item \code{VOLCANIC_SCALE}: Volcanic forcing scaling factor (\code{"(unitless)"})
+
+\item \code{LO_WARMING_RATIO}: Land-Ocean Warming Ratio (\code{"(unitless)"}), by default set to 0
+meaning that the land ocean warming ratio is an emergent property of Hector's temperature
+component otherwise the user defined land ocean warming ratio will be used.
 
 \item \code{DIFFUSIVITY}: Ocean heat diffusivity (\code{"cm2/s"})
 }}
