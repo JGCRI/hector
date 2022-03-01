@@ -12,7 +12,6 @@ jobs:
       - uses: r-lib/actions/setup-r@master
         with:
           r-version: 'release'
-      - uses: r-lib/actions/setup-pandoc@master
 
       - name: Install libcurl
         run: sudo apt-get install libcurl4-openssl-dev
@@ -41,5 +40,6 @@ jobs:
          cd scripts/
          if [ -f "diff_plot.png" ]; then
           cml-publish "diff_plot.png" --md >> OutputDifferences.knit.md
+          cml-publish "comp_plot.png" --md >> OutputDifferences.knit.md
           fi
          cml-send-comment OutputDifferences.knit.md
