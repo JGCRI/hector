@@ -146,11 +146,9 @@
 <span class="co">## 6 unnamed hector core 2005       Ca 361.7058 ppmv CO2</span></code></pre>
 <p>The results are returned as a long <code>data.frame</code>. This makes it easy to plot them using <code>ggplot2</code>.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Warning in register(): Can't find generic `scale_type` in package ggplot2 to</span>
-<span class="co">## register S3 method.</span></code></pre>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span> <span class="op">+</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span>
+
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span>, y <span class="op">=</span> <span class="va">value</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">variable</span>, scales <span class="op">=</span> <span class="st">"free_y"</span><span class="op">)</span></code></pre></div>
@@ -161,26 +159,26 @@
 </h2>
 <p>The Hector R interface interacts with parameters and variables in the same way. Therefore, the variables can be set and checked via <code>setvar</code> and <code>fetchvars</code>, respectively.</p>
 <p>First, let’s get the current value of <span class="math inline">\(\beta\)</span> (beta), the CO<span class="math inline">\(_2\)</span> fertilization factor. Because variables and parameter names have to be retrieved from the Hector core, they are stored as R functions (e.g. <code><a href="../reference/parameters.html">BETA()</a></code>). However, these functions simply return a string corresponding to the variable name.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/parameters.html">BETA</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <pre><code><span class="co">## [1] "beta"</span></code></pre>
 <p>Just as we did to load results, we use <code>fetchvars</code> to query parameter values.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">beta</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetchvars.html">fetchvars</a></span><span class="op">(</span><span class="va">core</span>, <span class="cn">NA</span>, <span class="fu"><a href="../reference/parameters.html">BETA</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="va">beta</span> </code></pre></div>
 <pre><code><span class="co">##              scenario year variable value      units</span>
 <span class="co">## 1 unnamed hector core   NA     beta  0.36 (unitless)</span></code></pre>
 <p>The result of <code>fetchvars</code> is always a <code>data.frame</code> with the same columns, even when returning a parameter value. Note also the use of <code>NA</code> in the second argument (<code>dates</code>).</p>
 <p>The current value is set to 0.36 (note that it is a unitless quantity, hence the <code>(unitless)</code> unit). Let’s bump it up a little to 0.40.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/setvar.html">setvar</a></span><span class="op">(</span><span class="va">core</span>, <span class="cn">NA</span>, <span class="fu"><a href="../reference/parameters.html">BETA</a></span><span class="op">(</span><span class="op">)</span>, <span class="fl">0.40</span>, <span class="st">"(unitless)"</span><span class="op">)</span> </code></pre></div>
 <p>Similarly to <code>run</code>, this returns no output. Rather, the change is stored inside the Hector “core” object. We can confirm that our change took effect with another call to <code>fetchvars</code>.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/fetchvars.html">fetchvars</a></span><span class="op">(</span><span class="va">core</span>, <span class="cn">NA</span>, <span class="fu"><a href="../reference/parameters.html">BETA</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> </code></pre></div>
 <pre><code><span class="co">##              scenario year variable value      units</span>
 <span class="co">## 1 unnamed hector core   NA     beta   0.4 (unitless)</span></code></pre>
 <p>Now, let’s run the simulation again with a higher value for CO<span class="math inline">\(_2\)</span> fertilization. But, before we do, let’s look once again at the Hector <code>core</code> object.</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">core</span></code></pre></div>
 <pre><code><span class="co">## Hector core: unnamed hector core</span>
 <span class="co">## Start date:  1745</span>
@@ -188,7 +186,7 @@
 <span class="co">## Current date:    2300</span>
 <span class="co">## Input file:  /Users/runner/work/_temp/Library/hector/input/hector_rcp45.ini</span></code></pre>
 <p>Notice that <code>Current date</code> is set to 2300. This is because we have already run this core to its end date. The ability to stop and resume Hector runs with the same configuration, possibly with adjusting values of certain variables while stopped, is an essential part of the model’s functionality. But, it’s not something we’re interested in here. We have already stored the previous run’s output in <code>results</code> above, so we can safely reset the core here.</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/reset.html">reset</a></span><span class="op">(</span><span class="va">core</span><span class="op">)</span></code></pre></div>
 <pre><code><span class="co">## Hector core: unnamed hector core</span>
 <span class="co">## Start date:  1745</span>
@@ -202,14 +200,14 @@
 <p>Because changing Hector parameters can change the post-spinup equilibrium values of state variables, Hector will automatically run <code>reset(core, date = 0)</code> at the beginning of the next <code>run</code> call if it detects that any of its parameters have changed. This means that is not currently possible to change Hector <em>parameters</em> (such as <span class="math inline">\(\beta\)</span> or preindustrial CO<sub>2</sub>) part-way through a run. However, it is still possible to change the values of certain <em>drivers</em> and <em>state variables</em> (such as the CO<sub>2</sub> emissions) in the middle of a run.</p>
 <hr>
 <p>So, as a result of the <code>reset</code> command, the core’s <code>Current Date</code> is now the model start date–1745. We can now perform another run with the new CO<span class="math inline">\(_2\)</span> fertilization value.</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/run.html">run</a></span><span class="op">(</span><span class="va">core</span><span class="op">)</span></code></pre></div>
 <pre><code><span class="co">## Hector core: unnamed hector core</span>
 <span class="co">## Start date:  1745</span>
 <span class="co">## End date:    2300</span>
 <span class="co">## Current date:    2300</span>
 <span class="co">## Input file:  /Users/runner/work/_temp/Library/hector/input/hector_rcp45.ini</span></code></pre>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">results_40</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetchvars.html">fetchvars</a></span><span class="op">(</span><span class="va">core</span>, <span class="fl">2000</span><span class="op">:</span><span class="fl">2300</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">results_40</span><span class="op">)</span> </code></pre></div>
 <pre><code><span class="co">##              scenario year variable    value    units</span>
@@ -220,7 +218,7 @@
 <span class="co">## 5 unnamed hector core 2004       Ca 357.1007 ppmv CO2</span>
 <span class="co">## 6 unnamed hector core 2005       Ca 358.9513 ppmv CO2</span></code></pre>
 <p>Let’s see how changing the CO<span class="math inline">\(_2\)</span> fertilization affects our results.</p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">results</span><span class="op">[[</span><span class="st">"beta"</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">0.36</span>
 <span class="va">results_40</span><span class="op">[[</span><span class="st">"beta"</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">0.40</span>
 <span class="va">compare_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">results</span>, <span class="va">results_40</span><span class="op">)</span>
@@ -238,7 +236,7 @@
 </h2>
 <p>Hector runs fairly quickly, which makes it easy to run lots of simulations under slightly different configurations. One application of this is to explore the sensitivity of Hector to variability in its parameters.</p>
 <p>The basic procedure for this is the same as in the previous section. However, to save typing (and, in general, to be good programmers!), let’s create some functions.</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#' Run Hector with a parameter set to a particular value, and return results </span>
 <span class="co">#'</span>
 <span class="co">#' @param core Hector core to use for execution</span>
