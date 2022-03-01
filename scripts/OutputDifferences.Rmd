@@ -8,14 +8,14 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Differences in Hector outputs
 
-Hello, this is `leeyabot`! `r # emo::ji("robot")`
+Hello, this is `leeyabot`! `r #emo::ji("robot")`
 
 ``` {r differences, echo = FALSE, message = FALSE, include = FALSE}
 # Load packages
 library(dplyr)
 library(ggplot2)
 library(hector)
-# library(emo)
+#library(emo)
 library(here)
 
 # Set root directory
@@ -34,8 +34,8 @@ compdata <- comp_data %>%
   filter(scenario == "hector_ssp245.ini") %>%
   filter(variable %in% vars) %>%
   mutate(scenario = "ssp245") %>%
-  arrange(variable) %>%
-  mutate(value = value * 2)
+  arrange(variable) #%>%
+  #mutate(value = value)
 
 # Access compdata version and commit
 version <- compdata$version[1]
