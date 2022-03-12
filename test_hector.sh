@@ -27,7 +27,7 @@ fi
 
 # Run all INI files (the basic SSPs)
 echo "---------- Running: basic SSPs ----------"
-find ./inst/input -name "*.ini" -exec $HECTOR {} +
+find ./inst/input -name "*.ini" -print0 | xargs -0 -n1 $HECTOR
 
 # Make sure the model handles year changes
 echo "---------- Running: year changes ----------"
