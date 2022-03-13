@@ -32,14 +32,20 @@ find ./inst/input -name "*.ini" -print0 | xargs -0 -n1 $HECTOR
 # Make sure the model handles year changes
 echo "---------- Running: year changes ----------"
 sed 's/startDate=1745/startDate=1740/' $INPUT/hector_ssp245.ini > $INPUT/hector_ssp245_time.ini
+# Confirm that a change was made
+if [[ $(diff -q $INPUT/hector_ssp245.ini $INPUT/hector_ssp245_time.ini | wc -c) -eq 0 ]]; then exit 1; fi
+# ...and run
 $HECTOR $INPUT/hector_ssp245_time.ini
+
 sed 's/endDate=2300/endDate=2250/' $INPUT/hector_ssp245.ini > $INPUT/hector_ssp245_time.ini
+if [[ $(diff -q $INPUT/hector_ssp245.ini $INPUT/hector_ssp245_time.ini | wc -c) -eq 0 ]]; then exit 1; fi
 $HECTOR $INPUT/hector_ssp245_time.ini
 rm $INPUT/hector_ssp245_time.ini
 
 # Turn on tracking
 echo "---------- Running: tracking ----------"
 sed 's/trackingDate=9999/trackingDate=1850/' $INPUT/hector_ssp245.ini > $INPUT/hector_ssp245_tracking.ini
+if [[ $(diff -q $INPUT/hector_ssp245.ini $INPUT/hector_ssp245_tracking.ini | wc -c) -eq 0 ]]; then exit 1; fi
 $HECTOR $INPUT/hector_ssp245_tracking.ini
 
 # Note that in the runs below, we're running the model with various constraints
@@ -48,7 +54,8 @@ $HECTOR $INPUT/hector_ssp245_tracking.ini
 # Tgav outputs match the constraint input.
 
 echo "---------- Running: tracking & CO2 constraint ----------"
-sed 's/;CO2_constrain=csv:tables\/ssp245_emiss-constraints_rf.csv/CO2_constrain=csv:tables\/ssp245_emiss-constraints_rf.csv/' $INPUT/hector_ssp245_tracking.ini > $INPUT/hector_ssp245_tracking_co2.ini
+sed 's/;[[:space:]]*CO2_constrain=csv:tables\/ssp245_emiss-constraints_rf.csv/CO2_constrain=csv:tables\/ssp245_emiss-constraints_rf.csv/' $INPUT/hector_ssp245_tracking.ini > $INPUT/hector_ssp245_tracking_co2.ini
+if [[ $(diff -q $INPUT/hector_ssp245_tracking.ini $INPUT/hector_ssp245_tracking_co2.ini | wc -c) -eq 0 ]]; then exit 1; fi
 $HECTOR $INPUT/hector_ssp245_tracking_co2.ini
 rm $INPUT/hector_ssp245_tracking_co2.ini
 rm $INPUT/hector_ssp245_tracking.ini
@@ -56,24 +63,28 @@ rm $INPUT/hector_ssp245_tracking.ini
 # Turn off spinup
 echo "---------- Running: no spinup ----------"
 sed 's/do_spinup=1/do_spinup=0/' $INPUT/hector_ssp245.ini > $INPUT/hector_ssp245_spinup.ini
+if [[ $(diff -q $INPUT/hector_ssp245.ini $INPUT/hector_ssp245_spinup.ini | wc -c) -eq 0 ]]; then exit 1; fi
 $HECTOR $INPUT/hector_ssp245_spinup.ini
 rm $INPUT/hector_ssp245_spinup.ini
 
 # Turn on the constraint settings one by one and run the model  CO2
 echo "---------- Running: CO2 constraint ----------"
-sed 's/;CO2_constrain=csv:tables\/ssp245_emiss-constraints_rf.csv/CO2_constrain=csv:tables\/ssp245_emiss-constraints_rf.csv/' $INPUT/hector_ssp245.ini > $INPUT/hector_ssp245_co2.ini
+sed 's/;[[:space:]]*CO2_constrain=csv:tables\/ssp245_emiss-constraints_rf.csv/CO2_constrain=csv:tables\/ssp245_emiss-constraints_rf.csv/' $INPUT/hector_ssp245.ini > $INPUT/hector_ssp245_co2.ini
+if [[ $(diff -q $INPUT/hector_ssp245.ini $INPUT/hector_ssp245_co2.ini | wc -c) -eq 0 ]]; then exit 1; fi
 $HECTOR $INPUT/hector_ssp245_co2.ini
 rm $INPUT/hector_ssp245_co2.ini
 
 # Temperature
 echo "---------- Running: Tgav constraint ----------"
-sed 's/;tgav_constrain=csv:tables\/CONSTRAINT.csv/tgav_constrain=csv:tables\/tgav_historical.csv/' $INPUT/hector_ssp245.ini > $INPUT/hector_ssp245_tgav.ini
+sed 's/;[[:space:]]*tgav_constrain=csv:tables\/CONSTRAINT.csv/tgav_constrain=csv:tables\/tgav_historical.csv/' $INPUT/hector_ssp245.ini > $INPUT/hector_ssp245_tgav.ini
+if [[ $(diff -q $INPUT/hector_ssp245.ini $INPUT/hector_ssp245_tgav.ini | wc -c) -eq 0 ]]; then exit 1; fi
 $HECTOR $INPUT/hector_ssp245_tgav.ini
 rm $INPUT/hector_ssp245_tgav.ini
 
 # Radiative forcing
 echo "---------- Running: Ftot constraint ----------"
-sed 's/;Ftot_constrain=csv:tables\/CONSTRAINT.csv/Ftot_constrain=csv:tables\/ssp245_emiss-constraints_rf.csv/' $INPUT/hector_ssp245.ini > $INPUT/hector_ssp245_ftot.ini
+sed 's/;[[:space:]]*Ftot_constrain=csv:tables\/CONSTRAINT.csv/Ftot_constrain=csv:tables\/ssp245_emiss-constraints_rf.csv/' $INPUT/hector_ssp245.ini > $INPUT/hector_ssp245_ftot.ini
+if [[ $(diff -q $INPUT/hector_ssp245.ini $INPUT/hector_ssp245_ftot.ini | wc -c) -eq 0 ]]; then exit 1; fi
 $HECTOR $INPUT/hector_ssp245_ftot.ini
 rm $INPUT/hector_ssp245_ftot.ini
 
