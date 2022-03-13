@@ -204,7 +204,9 @@ void CSVOutputStreamVisitor::visit( TemperatureComponent* c ) {
     STREAM_MESSAGE( csvFile, c, D_GLOBAL_TEMP );
     STREAM_MESSAGE( csvFile, c, D_FLUX_MIXED );
     STREAM_MESSAGE( csvFile, c, D_FLUX_INTERIOR )
-	STREAM_MESSAGE(csvFile, c, D_HEAT_FLUX );
+	STREAM_MESSAGE( csvFile, c, D_HEAT_FLUX );
+    STREAM_MESSAGE( csvFile, c, D_LAND_AIR_TEMP );
+    STREAM_MESSAGE( csvFile, c, D_OCEAN_SURFACE_TEMP );
 }
 
 //------------------------------------------------------------------------------
