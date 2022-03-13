@@ -65,8 +65,6 @@
 #define D_RHO_SO2               "rho_so2"         // SO2 radiative efficiency
 #define D_RHO_NH3               "rho_nh3"         // NH3 radiative efficiency
 
-
-
 // halocarbon components
 #define D_RF_CF4                D_RF_PREFIX CF4_COMPONENT_BASE
 #define D_RF_C2F6               D_RF_PREFIX C2F6_COMPONENT_BASE
@@ -127,7 +125,6 @@
 #define D_RFADJ_CH3Cl            D_RFADJ_PREFIX CH3Cl_COMPONENT_BASE
 #define D_RFADJ_CH3Br            D_RFADJ_PREFIX CH3Br_COMPONENT_BASE
 #define N_HALO_FORCINGS          26
-
 
 // halocarbon emissions
 #define D_EMISSIONS_CF4                CF4_COMPONENT_BASE EMISSIONS_EXTENSION
@@ -191,7 +188,8 @@
 #define D_HC_TAU                "tau"
 #define D_HC_MOLARMASS          "molarMass"
 
-// speficy the rho used by halocarbon component so that speicifc rhos can be adjusted using the R wrapper
+// specify the rho used by halocarbon component so that speicifc rhos can be
+// adjusted using the R wrapper
 // rho used by halocarbon component
 #define D_HCRHO_PREFIX          "rho_"
 #define D_HCRHO_CF4              D_HCRHO_PREFIX CF4_COMPONENT_BASE
@@ -221,8 +219,8 @@
 #define D_HCRHO_CH3Cl            D_HCRHO_PREFIX CH3Cl_COMPONENT_BASE
 #define D_HCRHO_CH3Br            D_HCRHO_PREFIX CH3Br_COMPONENT_BASE
 
-// speficy the DELTA used by halocarbon component by the tropospheric adjustments for
-// the stratospheric-temperature adjusted radiative forcing.
+// specify the DELTA used by halocarbon component by the tropospheric adjustments
+// for the stratospheric-temperature adjusted radiative forcing.
 #define D_HCDELTA_PREFIX          "delta_"
 #define D_HCDELTA_CF4              D_HCDELTA_PREFIX CF4_COMPONENT_BASE
 #define D_HCDELTA_C2F6             D_HCDELTA_PREFIX C2F6_COMPONENT_BASE
