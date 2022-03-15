@@ -330,6 +330,8 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     // adjust non-biome pools to output from calcderivs
     earth_c.adjust_pool_to_val(c[SNBOX_EARTH], false);
     atmos_c.adjust_pool_to_val(c[SNBOX_ATMOS], false);
+    // Ca is a convenience--simply tracks atmos_c but in different units
+    Ca.set( c[ SNBOX_ATMOS ] * PGC_TO_PPMVCO2, U_PPMV_CO2 );
 
     log_pools( t );
 
@@ -680,9 +682,6 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
 void SimpleNbox::slowparameval( double t, const double c[] )
 {
     omodel->slowparameval( t, c );              // pass msg on to ocean model
-
-    // CO2 fertilization
-    Ca.set( c[ SNBOX_ATMOS ] * PGC_TO_PPMVCO2, U_PPMV_CO2 );
 
     // Compute CO2 fertilization factor globally (and for each biome specified)
     for( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
