@@ -317,6 +317,20 @@ void SimpleNbox::setData( const std::string &varName,
     }
 }
 
+
+//------------------------------------------------------------------------------
+/*! \brief      Convert current atmospheric C to [CO2]
+ *  \returns    Atmospheric CO2 concentration in ppmv
+ */
+fluxpool SimpleNbox::Ca( double time ) const
+{
+    double ca = atmos_c.value( U_PGC );
+    if( time != Core::undefinedIndex() ) {
+        ca = atmos_c_ts.get(time).value( U_PGC );
+    }
+    return fluxpool( ca * PGC_TO_PPMVCO2, U_PPMV_CO2);
+}
+
 //------------------------------------------------------------------------------
 /*! \brief      Sum a string->unitval map
  *  \param      pool to sum over
@@ -380,10 +394,7 @@ unitval SimpleNbox::getData(const std::string& varName,
         else
             returnval = atmos_c_ts.get(date);
     } else if( varNameParsed == D_ATMOSPHERIC_CO2 ) {
-        if(date == Core::undefinedIndex())
-            returnval = Ca;
-        else
-            returnval = Ca_ts.get(date);
+        returnval = Ca( date );
     } else if( varNameParsed == D_ATMOSPHERIC_C_RESIDUAL ) {
         if(date == Core::undefinedIndex())
             returnval = residual;
@@ -517,7 +528,6 @@ void SimpleNbox::reset(double time)
     // Reset all state variables to their values at the reset time
     earth_c = earth_c_ts.get(time);
     atmos_c = atmos_c_ts.get(time);
-    Ca = Ca_ts.get(time);
 
     veg_c = veg_c_tv.get(time);
     detritus_c = detritus_c_tv.get(time);
@@ -544,7 +554,6 @@ void SimpleNbox::reset(double time)
     // Truncate all of the state variable time series
     earth_c_ts.truncate(time);
     atmos_c_ts.truncate(time);
-    Ca_ts.truncate(time);
 
     veg_c_tv.truncate(time);
     detritus_c_tv.truncate(time);
@@ -582,7 +591,6 @@ void SimpleNbox::record_state(double t)
     tcurrent = t;
     earth_c_ts.set(t, earth_c);
     atmos_c_ts.set(t, atmos_c);
-    Ca_ts.set(t, Ca);
 
     veg_c_tv.set(t, veg_c);
     detritus_c_tv.set(t, detritus_c);
