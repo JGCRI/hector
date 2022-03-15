@@ -386,8 +386,7 @@ void SimpleNbox::stashCValues( double t, const double c[] )
 
 double SimpleNbox::calc_co2fert(std::string biome, double time) const
 {
-    fluxpool Ca_t = Ca( time );
-    return 1 + beta.at( biome ) * log( Ca_t / C0 );
+    return 1 + beta.at( biome ) * log( Ca( time ) / C0 );
 }
 
 //------------------------------------------------------------------------------
