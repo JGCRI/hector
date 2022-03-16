@@ -2450,6 +2450,16 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// TGAV_CONSTRAIN
+String TGAV_CONSTRAIN();
+RcppExport SEXP _hector_TGAV_CONSTRAIN() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(TGAV_CONSTRAIN());
+    return rcpp_result_gen;
+END_RCPP
+}
 // DIFFUSIVITY
 String DIFFUSIVITY();
 RcppExport SEXP _hector_DIFFUSIVITY() {
@@ -2881,6 +2891,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_OCEAN_AIR_TEMP", (DL_FUNC) &_hector_OCEAN_AIR_TEMP, 0},
     {"_hector_LAND_AIR_TEMP", (DL_FUNC) &_hector_LAND_AIR_TEMP, 0},
     {"_hector_LO_WARMING_RATIO", (DL_FUNC) &_hector_LO_WARMING_RATIO, 0},
+    {"_hector_TGAV_CONSTRAIN", (DL_FUNC) &_hector_TGAV_CONSTRAIN, 0},
     {"_hector_DIFFUSIVITY", (DL_FUNC) &_hector_DIFFUSIVITY, 0},
     {"_hector_FLUX_MIXED", (DL_FUNC) &_hector_FLUX_MIXED, 0},
     {"_hector_FLUX_INTERIOR", (DL_FUNC) &_hector_FLUX_INTERIOR, 0},

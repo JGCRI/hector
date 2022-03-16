@@ -1843,6 +1843,13 @@ String LO_WARMING_RATIO(){
     return D_LO_WARMING_RATIO;
 }
 
+//' @describeIn carboncycle Constrain global mean temperature  (\code{"(degC)"})
+//' @export
+// [[Rcpp::export]]
+String TGAV_CONSTRAIN() {
+    return D_TGAV_CONSTRAIN;
+}
+
 
 //' @describeIn parameters Ocean heat diffusivity (\code{"cm2/s"})
 //' @export

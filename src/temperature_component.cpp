@@ -107,7 +107,6 @@ void TemperatureComponent::init( Core* coreptr ) {
     tgav_constrain.allowInterp( true );
     tgav_constrain.name = D_TGAV_CONSTRAIN;
 
-
     // Register the data we can provide
     core->registerCapability( D_GLOBAL_TEMP, getComponentName() );
     core->registerCapability( D_LAND_AIR_TEMP, getComponentName() );
@@ -119,7 +118,6 @@ void TemperatureComponent::init( Core* coreptr ) {
     core->registerCapability( D_QCO2, getComponentName() );
     core->registerCapability( D_LO_WARMING_RATIO, getComponentName() );
 
-
     // Register our dependencies
     core->registerDependency( D_RF_TOTAL, getComponentName() );
     core->registerDependency( D_RF_BC, getComponentName() );
@@ -129,15 +127,14 @@ void TemperatureComponent::init( Core* coreptr ) {
     core->registerDependency( D_RF_ACI, getComponentName() );
     core->registerDependency( D_RF_VOL, getComponentName() );
 
-
     // Register the inputs we can receive from outside
-    core->registerInput(D_ECS, getComponentName());
-    core->registerInput(D_QCO2, getComponentName());
-    core->registerInput(D_DIFFUSIVITY, getComponentName());
-    core->registerInput(D_AERO_SCALE, getComponentName());
-    core->registerInput(D_VOLCANIC_SCALE, getComponentName());
-    core->registerInput(D_LO_WARMING_RATIO, getComponentName());
-
+    core->registerInput( D_ECS, getComponentName() );
+    core->registerInput( D_QCO2, getComponentName() );
+    core->registerInput( D_DIFFUSIVITY, getComponentName() );
+    core->registerInput( D_AERO_SCALE, getComponentName() );
+    core->registerInput( D_VOLCANIC_SCALE, getComponentName() );
+    core->registerInput( D_LO_WARMING_RATIO, getComponentName() );
+    core->registerInput( D_TGAV_CONSTRAIN, getComponentName() );
 }
 
 //------------------------------------------------------------------------------
@@ -459,7 +456,7 @@ void TemperatureComponent::run( const double runToDate ) {
     temp[tstep] = flnd * temp_landair[tstep] + (1.0 - flnd) * bsi * temp_sst[tstep];
 
     // If the user has supplied temperature data, use that instead
-    if( tgav_constrain.size() && runToDate <= tgav_constrain.lastdate() ) {
+    if( tgav_constrain.size() && runToDate >= tgav_constrain.firstdate() && runToDate <= tgav_constrain.lastdate() ) {
         H_LOG( logger, Logger::WARNING ) << "** Overwriting temperatures with user-supplied value" << std::endl;
         temp[tstep] = tgav_constrain.get( runToDate );
         temp_landair[tstep] = ( temp[tstep] - (1.0 - flnd) * bsi * temp_sst[tstep] ) / flnd;

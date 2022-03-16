@@ -160,7 +160,7 @@ test_that("Atmospheric CO2 concentrations can be constrained", {
   years <- 1850:2100
   vars <- c(ATMOSPHERIC_CO2(), GLOBAL_TEMP(), RF_TOTAL(), RF_CO2())
 
-  # Instate a Hector core and save results.
+  # Instantiate a Hector core and save results.
   hc <- ssp245()
   run(hc)
   ssp245_out <- fetchvars(hc, years, vars)
@@ -171,7 +171,7 @@ test_that("Atmospheric CO2 concentrations can be constrained", {
   reset(hc)
   run(hc)
 
-  # Make sure that the atmospheric CO2 maches the constraint.
+  # Make sure that the atmospheric CO2 matches the constraint.
   hico2_out <- fetchvars(hc, years, vars)
   hico2_conc <- subset(hico2_out, variable == ATMOSPHERIC_CO2())
   expect_equal(hico2_conc$value, constrained_values)
@@ -250,4 +250,16 @@ test_that("Discontinuous constraint works", {
   ca_before <- fetchvars(hc, baddates, CO2_CONSTRAIN())
   expect_true(all(is.na(ca_before$value)))
   expect_true(all(!is.nan(ca_before$value)))
+})
+
+test_that("Tgav constraint works", {
+    t2000 <- 2.0
+    hc <- ssp245()
+    setvar(hc, 2000, TGAV_CONSTRAIN(), t2000, getunits(TGAV_CONSTRAIN()))
+    invisible(run(hc))
+    x <- fetchvars(hc, 1999:2001, vars = GLOBAL_TEMP())
+
+    expect_lt(x$value[1], t2000) # Tgav should be nowhere near 2C the year before
+    expect_equal(x$value[2], t2000)
+    expect_lt(x$value[3], t2000) # Tgav should be nowhere near 2C the year after
 })

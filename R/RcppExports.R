@@ -1467,6 +1467,12 @@ LO_WARMING_RATIO <- function() {
     .Call('_hector_LO_WARMING_RATIO', PACKAGE = 'hector')
 }
 
+#' @describeIn carboncycle Constrain global mean temperature  (\code{"(degC)"})
+#' @export
+TGAV_CONSTRAIN <- function() {
+    .Call('_hector_TGAV_CONSTRAIN', PACKAGE = 'hector')
+}
+
 #' @describeIn parameters Ocean heat diffusivity (\code{"cm2/s"})
 #' @export
 DIFFUSIVITY <- function() {

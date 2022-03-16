@@ -355,9 +355,12 @@
 #define D_F_LUCV                "f_lucv"
 #define D_F_LUCD                "f_lucd"
 #define D_NPP_FLUX0             "npp_flux0"
-#define D_CO2_CONSTRAIN         "CO2_constrain"
 #define D_BETA                  "beta"
 #define D_WARMINGFACTOR         "warmingfactor"
+
+// Constraints
+#define D_CO2_CONSTRAIN         "CO2_constrain"
+#define D_TGAV_CONSTRAIN        "Tgav_constrain"
 
 // slr component
 #define D_SL_RC                 "sl_rc"
@@ -375,7 +378,6 @@
 #define D_LAND_AIR_TEMP         "Tgav_land"
 #define D_OCEAN_SURFACE_TEMP    "Tgav_ocean_ST"
 #define D_OCEAN_AIR_TEMP        "Tgav_oceanair"
-#define D_TGAV_CONSTRAIN        "tgav_constrain"
 #define D_LO_WARMING_RATIO      "lo_warming_ratio"
 #define D_DIFFUSIVITY           "diff"
 #define D_AERO_SCALE            "alpha"
