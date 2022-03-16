@@ -206,7 +206,7 @@ void OceanComponent::prepareToRun() {
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
 
     // Define constants used in ocean box set up.
-    double spy = 60 * 60 * 24 * 365.25;  // seconds per year
+    const double spy = 60 * 60 * 24 * 365.25;  // seconds per year
 
     // ocean depth
     double thick_LL = 100;         // (m) Thickness of surface ocean from Knox and McElroy (1984)
@@ -357,8 +357,6 @@ void OceanComponent::run( const double runToDate ) {
 
     Ca = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_CO2 );
     SST.set(core->sendMessage( M_GETDATA, D_OCEAN_SURFACE_TEMP ), U_DEGC);
-
-
 
     in_spinup = core->inSpinup();
 
