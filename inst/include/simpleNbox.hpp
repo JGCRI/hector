@@ -105,8 +105,7 @@ private:
     // Carbon pools -- global
     fluxpool earth_c;               //!< earth pool, Pg C; for mass-balance
     fluxpool atmos_c;                //!< atmosphere pool, Pg C
-    fluxpool    Ca;                  //!< current [CO2], ppmv
-
+    
     // Carbon pools -- biome-specific
     fluxpool_stringmap veg_c;        //!< vegetation pools, Pg C
     fluxpool_stringmap detritus_c;   //!< detritus pools, Pg C
@@ -124,7 +123,6 @@ private:
      *****************************************************************/
     tseries<fluxpool> earth_c_ts;  //!< Time series of earth carbon pool
     tseries<fluxpool> atmos_c_ts;  //!< Time series of atmosphere carbon pool
-    tseries<fluxpool> Ca_ts;       //!< Time series of atmosphere CO2 concentration
 
     tvector<fluxpool_stringmap> veg_c_tv;      //!< Time series of biome-specific vegetation carbon pools
     tvector<fluxpool_stringmap> detritus_c_tv; //!< Time series of biome-specific detritus carbon pools
@@ -193,6 +191,7 @@ private:
     /*****************************************************************
      * Functions computing sub-elements of the carbon cycle
      *****************************************************************/
+    fluxpool Ca(double time = Core::undefinedIndex()) const; //!< current [CO2], ppmv
     double calc_co2fert(std::string biome, double time = Core::undefinedIndex()) const; //!< calculates co2 fertilization factor.
     fluxpool npp(std::string biome, double time = Core::undefinedIndex()) const; //!< calculates NPP for a biome
     fluxpool sum_npp(double time = Core::undefinedIndex()) const; //!< calculates NPP, global total
@@ -212,7 +211,7 @@ private:
     fluxpool sum_map( fluxpool_stringmap pool ) const;    //!< sums a unitval map (collection of data)
     double sum_map( double_stringmap pool ) const;      //!< sums a double map (collection of data)
     void log_pools( const double t );                   //!< prints pool status to the log file
-    void set_c0(double newc0);                          //!< set initial co2 and adjust total carbon mass
+    void set_c0( double newc0 );                      //!< set initial co2 and adjust total carbon mass
 
     bool has_biome(const std::string& biome);
 

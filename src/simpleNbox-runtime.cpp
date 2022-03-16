@@ -116,9 +116,8 @@ void SimpleNbox::prepareToRun()
         Ftalbedo.set( core->getEndDate(), alb );
     }
 
-    double c0init = C0.value(U_PPMV_CO2);
-    Ca.set(c0init, U_PPMV_CO2);
-    atmos_c.set(c0init * PPMVCO2_TO_PGC, U_PGC, atmos_c.tracking, atmos_c.name);
+    // Set atmospheric C based on the requested preindustrial [CO2]
+    atmos_c.set(C0.value(U_PPMV_CO2) * PPMVCO2_TO_PGC, U_PGC, atmos_c.tracking, atmos_c.name);
 
     if( CO2_constrain.size() ) {
         Logger& glog = core->getGlobalLogger();
@@ -368,14 +367,13 @@ void SimpleNbox::stashCValues( double t, const double c[] )
         // Ugly: residual is a unitval, but calculated by subtracting two fluxpools, so extract value
         residual.set(atmos_c.value(U_PGC) - atmos_cpool_to_match.value(U_PGC), U_PGC);
 
-        H_LOG( logger,Logger::DEBUG ) << t << "- have " << Ca << " want " <<  atmppmv.value( U_PPMV_CO2 ) << std::endl;
+        H_LOG( logger,Logger::DEBUG ) << t << "- have " << Ca() << " want " <<  atmppmv.value( U_PPMV_CO2 ) << std::endl;
         H_LOG( logger,Logger::DEBUG ) << t << "- have " << atmos_c << " want " << atmos_cpool_to_match << "; residual = " << residual << std::endl;
 
         // Transfer C from atmosphere to deep ocean and update our C and Ca variables
         H_LOG( logger,Logger::DEBUG ) << "Sending residual of " << residual << " to deep ocean" << std::endl;
         core->sendMessage( M_DUMP_TO_DEEP_OCEAN, D_OCEAN_C, message_data( residual ) );
         atmos_c = atmos_c - residual;
-        Ca.set( atmos_c.value( U_PGC ) * PGC_TO_PPMVCO2, U_PPMV_CO2 );
     } else {
         residual.set( 0.0, U_PGC );
     }
@@ -388,13 +386,7 @@ void SimpleNbox::stashCValues( double t, const double c[] )
 
 double SimpleNbox::calc_co2fert(std::string biome, double time) const
 {
-    unitval Ca_t;
-    if(time == Core::undefinedIndex()) {
-        Ca_t = Ca;
-    } else {
-        Ca_t = Ca_ts.get(time);
-    }
-    return 1 + beta.at(biome) * log(Ca_t/C0);
+    return 1 + beta.at( biome ) * log( Ca( time ) / C0 );
 }
 
 //------------------------------------------------------------------------------
@@ -681,9 +673,6 @@ void SimpleNbox::slowparameval( double t, const double c[] )
 {
     omodel->slowparameval( t, c );              // pass msg on to ocean model
 
-    // CO2 fertilization
-    Ca.set( c[ SNBOX_ATMOS ] * PGC_TO_PPMVCO2, U_PPMV_CO2 );
-
     // Compute CO2 fertilization factor globally (and for each biome specified)
     for( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
         std::string biome = *it;
@@ -692,7 +681,7 @@ void SimpleNbox::slowparameval( double t, const double c[] )
         } else {
             co2fert[ biome ] = calc_co2fert( biome );
         }
-        H_LOG( logger,Logger::DEBUG ) << "co2fert[ " << biome << " ] at " << Ca << " = " << co2fert.at( biome ) << std::endl;
+        H_LOG( logger,Logger::DEBUG ) << "co2fert[ " << biome << " ] at " << Ca() << " = " << co2fert.at( biome ) << std::endl;
     }
 
     // Compute temperature factor globally (and for each biome specified)
@@ -766,4 +755,3 @@ void SimpleNbox::slowparameval( double t, const double c[] )
 }
 
 }
-
