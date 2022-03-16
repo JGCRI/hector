@@ -248,7 +248,6 @@ void OceanComponent::prepareToRun() {
     const double I_preind_C = I_vol_frac * preind_C_ID;
     const double D_preind_C = D_vol_frac * preind_C_ID;
 
-
     // Set up our ocean box model.
     H_LOG( logger, Logger::DEBUG ) << "Setting up ocean box model" << std::endl;
     surfaceHL.initbox( HL_preind_C, "HL" );
@@ -278,7 +277,7 @@ void OceanComponent::prepareToRun() {
     double DO_IOex = ( tid.value( U_M3_S) * spy ) / D_volume;
     double IO_DOex = ( tid.value( U_M3_S) * spy ) / I_volume;
 
-    // make_connection( box to connect to, k value, window size (0=present only) )
+    // Make_connection( box to connect to, k value, window size (0=present only) )
     surfaceLL.make_connection( &surfaceHL, LL_HL, 1 );
     surfaceLL.make_connection( &inter, LL_IOex, 1 );
     surfaceHL.make_connection( &deep, HL_DO, 1 );
@@ -287,7 +286,7 @@ void OceanComponent::prepareToRun() {
     inter.make_connection( &deep, IO_DOex, 1 );
     deep.make_connection( &inter, DO_IO + DO_IOex, 1 );
 
-    //inputs for surface chemistry boxes
+    // Inputs for surface chemistry boxes
     surfaceHL.deltaT.set( -16.4, U_DEGC );  // delta T to the absolute mean ocean tos to return the initial temperature value of the HL surface. See hector_cmip6data for details.
     surfaceHL.mychemistry.S             = 34.5; // Salinity Riley and Tongudai (1967)
     surfaceHL.mychemistry.volumeofbox   = HL_volume; // m3
@@ -305,7 +304,6 @@ void OceanComponent::prepareToRun() {
     surfaceHL.log_state();
     inter.log_state();
     deep.log_state();
-
 }
 
 //------------------------------------------------------------------------------
