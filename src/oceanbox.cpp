@@ -276,12 +276,15 @@ void oceanbox::new_year( const unitval SST ) {
     for( unsigned i=0; i < connection_window.size(); i++ ){
         annual_box_fluxes[ connection_list[ i ] ] = unitval( 0.0, U_PGC_YR );
     }
-    atmosphere_flux.set( 0.0, U_PGC );
     Tbox = compute_tabsC( SST );
 
     // save for Revelle Calc
     pco2_lastyear = Ca;
-    dic_lastyear = mychemistry.convertToDIC( carbon );
+
+    if( surfacebox ) {
+        atmosphere_flux.set( 0.0, U_PGC );
+        dic_lastyear = mychemistry.convertToDIC( carbon );
+    }
 }
 
 //------------------------------------------------------------------------------

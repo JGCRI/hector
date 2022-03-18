@@ -354,7 +354,7 @@ unitval oceancsys::calc_annual_surface_flux( const unitval& Ca, const double cpo
  * Uses carbon pool, mass of carbon, density of seawater and volume of the box
  */
 unitval oceancsys::convertToDIC( const unitval carbon ) {
-    // Carbon pool / (C atmoic mass * density of sea water * volume )
+    // Carbon pool / (C atomic mass * density of sea water * volume )
 	const double dic = ( ( carbon.value( U_PGC ) * 1e15 ) * ( 1.0/12.01 ) * (1.0/1027.0 ) * ( 1.0/volumeofbox ) ); // mol/kg
 	return unitval( dic * 1e6, U_UMOL_KG );
 }

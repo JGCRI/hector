@@ -111,9 +111,6 @@ void Core::init() {
     temp = new N2OComponent();
     modelComponents[ temp->getComponentName() ] = temp;
 
-    temp = new OzoneComponent();
-    modelComponents[ temp->getComponentName() ] = temp;
-
     temp = new ForcingComponent();
     modelComponents[ temp->getComponentName() ] = temp;
     temp = new slrComponent();
