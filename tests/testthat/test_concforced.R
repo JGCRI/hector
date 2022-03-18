@@ -259,7 +259,7 @@ test_that("Tgav constraint works", {
     invisible(run(hc))
     x <- fetchvars(hc, 1999:2001, vars = GLOBAL_TEMP())
 
-    expect_lt(x$value[1], t2000) # Tgav should be nowhere near 2C the year before
-    expect_equal(x$value[2], t2000)
-    expect_lt(x$value[3], t2000) # Tgav should be nowhere near 2C the year after
+    expect_lt(x$value[1], t2000)    # Tgav should be nowhere near 2C the year before,
+    expect_equal(x$value[2], t2000) # identical to the constraint in 2000,
+    expect_lt(x$value[3], t2000)    # and again lower the year after
 })
