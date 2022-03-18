@@ -459,6 +459,8 @@ void TemperatureComponent::run( const double runToDate ) {
     if( tgav_constrain.size() && runToDate >= tgav_constrain.firstdate() && runToDate <= tgav_constrain.lastdate() ) {
         H_LOG( logger, Logger::WARNING ) << "** Overwriting temperatures with user-supplied value" << std::endl;
         temp[tstep] = tgav_constrain.get( runToDate );
+        
+        // Now back-calculate the land and ocean values, overwriting what was computed above
         temp_landair[tstep] = ( temp[tstep] - (1.0 - flnd) * bsi * temp_sst[tstep] ) / flnd;
         temp_sst[tstep] = ( temp[tstep] - flnd * temp_landair[tstep] ) / ((1.0 - flnd) * bsi);
     }
