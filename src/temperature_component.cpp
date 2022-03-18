@@ -107,7 +107,6 @@ void TemperatureComponent::init( Core* coreptr ) {
     tgav_constrain.allowInterp( true );
     tgav_constrain.name = D_TGAV_CONSTRAIN;
 
-
     // Register the data we can provide
     core->registerCapability( D_GLOBAL_TEMP, getComponentName() );
     core->registerCapability( D_LAND_AIR_TEMP, getComponentName() );
@@ -119,7 +118,6 @@ void TemperatureComponent::init( Core* coreptr ) {
     core->registerCapability( D_QCO2, getComponentName() );
     core->registerCapability( D_LO_WARMING_RATIO, getComponentName() );
 
-
     // Register our dependencies
     core->registerDependency( D_RF_TOTAL, getComponentName() );
     core->registerDependency( D_RF_BC, getComponentName() );
@@ -129,15 +127,14 @@ void TemperatureComponent::init( Core* coreptr ) {
     core->registerDependency( D_RF_ACI, getComponentName() );
     core->registerDependency( D_RF_VOL, getComponentName() );
 
-
     // Register the inputs we can receive from outside
-    core->registerInput(D_ECS, getComponentName());
-    core->registerInput(D_QCO2, getComponentName());
-    core->registerInput(D_DIFFUSIVITY, getComponentName());
-    core->registerInput(D_AERO_SCALE, getComponentName());
-    core->registerInput(D_VOLCANIC_SCALE, getComponentName());
-    core->registerInput(D_LO_WARMING_RATIO, getComponentName());
-
+    core->registerInput( D_ECS, getComponentName() );
+    core->registerInput( D_QCO2, getComponentName() );
+    core->registerInput( D_DIFFUSIVITY, getComponentName() );
+    core->registerInput( D_AERO_SCALE, getComponentName() );
+    core->registerInput( D_VOLCANIC_SCALE, getComponentName() );
+    core->registerInput( D_LO_WARMING_RATIO, getComponentName() );
+    core->registerInput( D_TGAV_CONSTRAIN, getComponentName() );
 }
 
 //------------------------------------------------------------------------------
@@ -375,11 +372,6 @@ void TemperatureComponent::run( const double runToDate ) {
 
     // If we never had any temperature constraint, `internal_Ftot` will match `Ftot`.
     //
-    // If the user has supplied temperature data, use that (except if past its end)
-    if( tgav_constrain.size() && runToDate <= tgav_constrain.lastdate() ) {
-        H_LOG( logger, Logger::SEVERE ) << "** ERROR - Temperature can't currently handle user-supplied temperature" << std::endl;
-        H_THROW("User-supplied temperature not yet implemented.")
-    }
 
     // Some needed inputs
     int tstep = runToDate - core->getStartDate();
@@ -431,51 +423,60 @@ void TemperatureComponent::run( const double runToDate ) {
         DelQO = QO[tstep] - QO[tstep - 1];
 
         // Assume linear forcing change between tstep and tstep+1
-        QC1 = (DelQL/cal*(1.0/taucfl+1.0/taukls)-bsi*DelQO/cas/taukls);
-        QC2 = (DelQO/cas*(1.0/taucfs+bsi/tauksl)-DelQL/cal/tauksl);
-        QC1 = QC1 * pow(dt, 2.0)/12.0;
-        QC2 = QC2 * pow(dt, 2.0)/12.0;
+        QC1 = (DelQL / cal * (1.0 / taucfl + 1.0 / taukls) - bsi * DelQO / cas / taukls);
+        QC2 = (DelQO / cas * (1.0 / taucfs + bsi / tauksl) - DelQL / cal / tauksl);
+        QC1 = QC1 * pow(dt, 2.0) / 12.0;
+        QC2 = QC2 * pow(dt, 2.0) / 12.0;
 
         // ----------------- Initial Conditions --------------------
         // Initialization of temperature and forcing vector:
         // Factor 1/2 in front of Q in Equation A.27, EK05, and Equation 2.3.27, TK07 is a typo!
         // Assumption: linear forcing change between n and n+1
-        DQ1 = 0.5*dt/cal*(QL[tstep]+QL[tstep-1]);
-        DQ2 = 0.5*dt/cas*(QO[tstep]+QO[tstep-1]);
+        DQ1 = 0.5 * dt / cal * (QL[tstep] + QL[tstep - 1]);
+        DQ2 = 0.5 * dt / cas * (QO[tstep] + QO[tstep - 1]);
         DQ1 = DQ1 + QC1;
         DQ2 = DQ2 + QC2;
 
         // ---------- SOLVE MODEL ------------------
         // Calculate temperatures
         for(int i = 0; i <= tstep; i++) {
-            DPAST2 = DPAST2 + temp_sst[i] * Ker[ns-tstep+i-1];
+            DPAST2 = DPAST2 + temp_sst[i] * Ker[ns - tstep + i - 1];
         }
-        DPAST2 = DPAST2 * fso * pow((dt/taudif), 0.5);
+        DPAST2 = DPAST2 * fso * pow((dt / taudif), 0.5);
 
-        DTEAUX1 = A[0] * temp_landair[tstep-1] + A[1] * temp_sst[tstep-1];
-        DTEAUX2 = A[2] * temp_landair[tstep-1] + A[3] * temp_sst[tstep-1];
+        DTEAUX1 = A[0] * temp_landair[tstep - 1] + A[1] * temp_sst[tstep - 1];
+        DTEAUX2 = A[2] * temp_landair[tstep - 1] + A[3] * temp_sst[tstep - 1];
 
         temp_landair[tstep] = IB[0] * (DQ1 + DPAST1 + DTEAUX1) + IB[1] * (DQ2 + DPAST2 + DTEAUX2);
         temp_sst[tstep] = IB[2] * (DQ1 + DPAST1 + DTEAUX1) + IB[3] * (DQ2 + DPAST2 + DTEAUX2);
-    }
-    else {  // Handle the initial conditions
+    } else {  // Handle the initial conditions
         temp_landair[0] = 0.0;
         temp_sst[0] = 0.0;
     }
     temp[tstep] = flnd * temp_landair[tstep] + (1.0 - flnd) * bsi * temp_sst[tstep];
 
+    // If the user has supplied temperature data, use that instead
+    if( tgav_constrain.size() && runToDate >= tgav_constrain.firstdate() && runToDate <= tgav_constrain.lastdate() ) {
+        H_LOG( logger, Logger::WARNING ) << "** Overwriting temperatures with user-supplied value" << std::endl;
+        temp[tstep] = tgav_constrain.get( runToDate );
+        
+        // Now back-calculate the land and ocean values, overwriting what was computed above
+        temp_landair[tstep] = ( temp[tstep] - (1.0 - flnd) * bsi * temp_sst[tstep] ) / flnd;
+        temp_sst[tstep] = ( temp[tstep] - flnd * temp_landair[tstep] ) / ((1.0 - flnd) * bsi);
+    }
+    
     // Calculate ocean heat uptake [W/m^2]
     // heatflux[tstep] captures in the heat flux in the period between tstep-1 and tstep.
     // Numerical implementation of Equation 2.7, EK05, or Equation 2.3.13, TK07)
     // ------------------------------------------------------------------------
     if (tstep > 0) {
-        heatflux_mixed[tstep] = cas*(temp_sst[tstep] - temp_sst[tstep-1]);
+        heatflux_mixed[tstep] = cas*(temp_sst[tstep] - temp_sst[tstep - 1]);
         for (int i=0; i < tstep; i++) {
             heatflux_interior[tstep] = heatflux_interior[tstep] + temp_sst[i]*Ker[ns-tstep+i];
         }
-        heatflux_interior[tstep] = cas*fso/pow((taudif*dt), 0.5)*(2.0*temp_sst[tstep] - heatflux_interior[tstep]);
-        heat_mixed[tstep] = heat_mixed[tstep-1] + heatflux_mixed[tstep] * (powtoheat*dt);
-        heat_interior[tstep] = heat_interior[tstep-1] + heatflux_interior[tstep] * (fso*powtoheat*dt);
+        heatflux_interior[tstep] = cas * fso / pow((taudif * dt), 0.5) * (2.0 * temp_sst[tstep] - heatflux_interior[tstep]);
+        heat_mixed[tstep] = heat_mixed[tstep-1] + heatflux_mixed[tstep] * (powtoheat * dt);
+        heat_interior[tstep] = heat_interior[tstep-1] + heatflux_interior[tstep] * (fso * powtoheat * dt);
     }
 
     else {   // Handle the initial conditions
