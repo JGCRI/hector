@@ -53,6 +53,11 @@ fetchvars <- function(core, dates, vars = NULL, scenario = NULL) {
   valid <- dates >= strt & dates <= end
   dates <- dates[valid]
 
+  if(length(dates) == 0) {
+      stop("None of these dates are valid for this core (start=",
+           strt, ", end=", end, ")")
+  }
+
   rslt <- do.call(
     rbind,
     lapply(vars, function(v) {
