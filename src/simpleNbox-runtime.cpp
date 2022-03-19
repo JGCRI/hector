@@ -622,6 +622,35 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
     // Oxidized methane of fossil fuel origin
     fluxpool ch4ox_current( 0.0, U_PGC_YR );     //TODO: implement this
 
+    // If user has supplied NBP (net biome production) values, adjust NPP and RH to match
+      const int rounded_t = round(t);
+      if(!in_spinup && NBP_constrain.size() && NBP_constrain.exists(rounded_t) ) {
+          // Compute how different we are from the user-specified constraint
+          unitval nbp = npp_current - rh_current - luc_emission_current + luc_uptake_current;
+          const unitval diff = NBP_constrain.get(rounded_t) - nbp;
+//          std::cout << ODEstartdate << " nbp=" << nbp << "; constraint=" << NBP_constrain.get(rounded_t) << "; diff=" << diff << std::endl;
+
+          // Adjust total NPP and total RH equally (but not LUC, which is an input)
+          // so that the net total of all three fluxes will match the NBP constraint
+          fluxpool npp_current_old = npp_current;
+          npp_current = npp_current + diff / 2.0;
+          // ...also need to adjust their sub-components
+          const double npp_ratio = npp_current / npp_current_old;
+          npp_fav = npp_fav * npp_ratio;
+          npp_fad = npp_fad * npp_ratio;
+          npp_fas = npp_fas * npp_ratio;
+
+          // Do same thing for RH
+          fluxpool rh_current_old = rh_current;
+          rh_current = rh_current - diff / 2.0;
+          const double rh_ratio = rh_current / rh_current_old;
+          rh_fda_current = rh_fda_current * rh_ratio;
+          rh_fsa_current = rh_fsa_current * rh_ratio;
+          const double new_nbp = npp_current.value(U_PGC_YR) - rh_current.value(U_PGC_YR) - luc_emission_current.value(U_PGC_YR) + luc_uptake_current.value(U_PGC_YR);
+//          cout << "New NBP=" << new_nbp << endl;
+
+      }
+    
     // Compute fluxes
     dcdt[ SNBOX_ATMOS ] = // change in atmosphere pool
         ffi_flux_current.value( U_PGC_YR )
@@ -659,9 +688,6 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
         - ffi_flux_current.value( U_PGC_YR )
         + ccs_flux_current.value( U_PGC_YR );
 
-/*    printf( "%6.3f%8.3f%8.2f%8.2f%8.2f%8.2f%8.2f\n", t, dcdt[ SNBOX_ATMOS ],
-            dcdt[ SNBOX_VEG ], dcdt[ SNBOX_DET ], dcdt[ SNBOX_SOIL ], dcdt[ SNBOX_OCEAN ], dcdt[ SNBOX_EARTH ] );
-*/
     return omodel_err;
 }
 
