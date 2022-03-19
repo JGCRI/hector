@@ -163,8 +163,8 @@ void CSVOutputStreamVisitor::visit( SimpleNbox* c ) {
     // Global outputs
     // Note if there are multiple biomes, these values will be totals, summed across all biomes
     STREAM_MESSAGE( csvFile, c, D_NBP );
-    STREAM_MESSAGE( csvFile, c, D_NPP );
-    STREAM_MESSAGE( csvFile, c, D_RH );
+    STREAM_UNITVAL( csvFile, c, D_NPP, c->final_npp[ SNBOX_DEFAULT_BIOME ] );
+    STREAM_UNITVAL( csvFile, c, D_RH, c->final_rh[ SNBOX_DEFAULT_BIOME ] );
     STREAM_MESSAGE( csvFile, c, D_ATMOSPHERIC_CO2 );
     STREAM_MESSAGE( csvFile, c, D_ATMOSPHERIC_C );
     STREAM_MESSAGE( csvFile, c, D_ATMOSPHERIC_C_RESIDUAL );
@@ -178,8 +178,8 @@ void CSVOutputStreamVisitor::visit( SimpleNbox* c ) {
         SimpleNbox::fluxpool_stringmap::const_iterator it;
         for( it = c->veg_c.begin(); it != c->veg_c.end(); it++ ) {
             std::string biome = ( *it ).first;
-            STREAM_UNITVAL( csvFile, c, biome + SNBOX_PARSECHAR + D_NPP, c->npp( biome ) );
-            STREAM_UNITVAL( csvFile, c, biome + SNBOX_PARSECHAR + D_RH, c->rh( biome ) );
+            STREAM_UNITVAL( csvFile, c, biome + SNBOX_PARSECHAR + D_NPP, c->final_npp[ biome ] );
+            STREAM_UNITVAL( csvFile, c, biome + SNBOX_PARSECHAR + D_RH, c->final_rh[ biome ] );
             STREAM_UNITVAL( csvFile, c, biome + SNBOX_PARSECHAR + D_VEGC, c->veg_c[ biome ] );
             STREAM_UNITVAL( csvFile, c, biome + SNBOX_PARSECHAR + D_DETRITUSC, c->detritus_c[ biome ] );
             STREAM_UNITVAL( csvFile, c, biome + SNBOX_PARSECHAR + D_SOILC, c->soil_c[ biome ] );

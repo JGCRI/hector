@@ -111,6 +111,10 @@ private:
     fluxpool_stringmap detritus_c;   //!< detritus pools, Pg C
     fluxpool_stringmap soil_c;       //!< soil pool, Pg C
 
+    // Carbon fluxes -- biome-specific
+    fluxpool_stringmap final_npp;    //!< final NPP after any NBP constraint accounted for, Pg C/yr
+    fluxpool_stringmap final_rh;     //!< final NPP after any NBP constraint accounted for, Pg C/yr
+    
     unitval Ca_residual;               //!< residual (when constraining Ca) flux, Pg C
 
     double_stringmap tempfertd, tempferts; //!< temperature effect on respiration (unitless)

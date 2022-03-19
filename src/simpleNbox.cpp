@@ -791,4 +791,3 @@ void SimpleNbox::renameBiome(const std::string& oldname, const std::string& newn
 }
 
 }
-

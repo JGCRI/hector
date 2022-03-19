@@ -245,32 +245,72 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     fluxpool luc_fas_flux = atmos_c.flux_from_fluxpool(luc_u_untracked * ( 1 - f_lucv - f_lucd ));
 
     // Calculate net primary production and heterotrophic respiration
-    const fluxpool npp_total = sum_npp();
-    const fluxpool rh_total = sum_rh();
+    fluxpool npp_total = sum_npp();
+    fluxpool rh_total = sum_rh();
+    cout << "rh_total = " << rh_total << endl;
 
-    // BBL-TODO this is really "exchange" not a flux
-    // pull these values into doubles as we're constructing a unitval exchange from positive-only fluxpools
-    // TODO: this is missing LUC uptake from above!
-    const double alf = npp_total.value(U_PGC_YR)
+    // Calculate NBP *before* any constraint adjustment
+    double alf = npp_total.value(U_PGC_YR)
         - rh_total.value(U_PGC_YR)
         - luc_e_untracked.value(U_PGC_YR)
         + luc_u_untracked.value(U_PGC_YR);
+    
+    // Note: we calculate total NPP and RH and *don't* adjust it if there's an NBP
+    // constraint, because it's used for weighting with the npp(biome) and rh(biome) calls
+    // below. So we want it to keep its original total for proper weighting
+    fluxpool npp_rh_total = npp_total + rh_total; // these are both positive
+    
+    // Pre-NBP constraint new terrestrial pool values
+    unitval newveg( c[ SNBOX_VEG ], U_PGC );
+    unitval newdet( c[ SNBOX_DET ], U_PGC );
+    unitval newsoil( c[ SNBOX_SOIL ], U_PGC );
+    unitval newatmos( c[ SNBOX_ATMOS ], U_PGC );
+    const double f_lucs = 1 - f_lucv - f_lucd; // LUC fraction to soil
+
+    // If there an NBP constraint? If yes, at this point adjust npp_total, rh_total,
+    // and the newveg/newdet/newsoil variables
+    double rh_nbp_constraint_adjust = 1.0;
+    const int rounded_t = round(t);
+    if(!core->inSpinup() && NBP_constrain.size() && NBP_constrain.exists(rounded_t) ) {
+        const unitval nbp_constrained = NBP_constrain.get(rounded_t);
+        const unitval diff = nbp_constrained - unitval(alf, U_PGC_YR);
+        
+        // Adjust fluxes
+        cout << "npp_total = " << npp_total << " rh_total = " << rh_total << endl;
+        npp_total = npp_total + diff / 2.0;
+        rh_nbp_constraint_adjust = ( rh_total - diff / 2.0 ) / rh_total;
+        rh_total = rh_total - diff / 2.0;
+        cout << "npp_total = " << npp_total << " rh_total = " << rh_total << endl;
+
+        // Adjust pools
+        unitval pool_diff = unitval( diff.value( U_PGC_YR ), U_PGC );
+        const double total_land = c[ SNBOX_DET ] + c[ SNBOX_VEG ] + c[ SNBOX_SOIL ];
+        newdet = newdet + pool_diff * c[ SNBOX_DET ] / total_land;
+        newveg = newveg + pool_diff * c[ SNBOX_VEG ] / total_land;
+        newsoil = newsoil + pool_diff * c[ SNBOX_SOIL ] / total_land;
+        newatmos = newatmos - pool_diff;
+        
+        // Re-calculate atmosphere-land flux (NBP)
+        alf = npp_total.value(U_PGC_YR)
+            - rh_total.value(U_PGC_YR)
+            - luc_e_untracked.value(U_PGC_YR)
+            + luc_u_untracked.value(U_PGC_YR);
+        cout << "** NBP constraint " << nbp_constrained <<
+                " requested; final value was " << alf << " with final adjustment of " << diff << std::endl;
+        H_LOG( logger, Logger::NOTICE ) << "** NBP constraint " << nbp_constrained <<
+                " requested; final value was " << alf << " with final adjustment of " << diff << std::endl;
+    }
+    
     atmosland_flux.set(alf, U_PGC_YR);
     atmosland_flux_ts.set(t, atmosland_flux);
 
-    // Apportioning is done by NPP and RH
-    // i.e., biomes with higher values get more of any C change
-    fluxpool npp_rh_total = npp_total + rh_total; // these are both positive
-    const unitval newveg( c[ SNBOX_VEG ], U_PGC );
-    const unitval newdet( c[ SNBOX_DET ], U_PGC );
-    const unitval newsoil( c[ SNBOX_SOIL ], U_PGC );
-    const double f_lucs = 1 - f_lucv - f_lucd; // LUC fraction to soil
-
+    // Apportion NPP and RH among the biomes
+    // This is done by NPP and RH; biomes with higher values get more of any C change
     for( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
         std::string biome = *it;
+        cout << "--- " << biome << endl;
         const double wt = (npp( biome ) + rh( biome ) ) / npp_rh_total;
 
-        fluxpool npp_biome = yf * npp( biome );
 
         // Update atmosphere with luc emissons from all land pools and biomes
         fluxpool luc_fva_biome_flux = veg_c[ biome ].flux_from_fluxpool((luc_e_untracked * f_lucv) * wt);
@@ -280,31 +320,45 @@ void SimpleNbox::stashCValues( double t, const double c[] )
         atmos_c = atmos_c + luc_fda_biome_flux - luc_fad_flux * wt;
         atmos_c = atmos_c + luc_fsa_biome_flux - luc_fas_flux * wt;
 
-        // Update veg_c, detritus_c, and soil_c with luc uptake from atmos per biome
+        // Calculate NPP fluxes
+        fluxpool npp_biome = npp_total * wt; // this is already adjusted for any NBP constraint
+        final_npp[ biome ] = npp_biome;
+        cout << "npp_biome = " << npp_biome << endl;
+        fluxpool npp_fav_biome_flux = atmos_c.flux_from_fluxpool( npp_biome * f_nppv.at( biome ));
+        fluxpool npp_fad_biome_flux = atmos_c.flux_from_fluxpool( npp_biome * f_nppd.at( biome ));
+        fluxpool npp_fas_biome_flux = atmos_c.flux_from_fluxpool( npp_biome * ( 1 - f_nppv.at( biome ) - f_nppd.at( biome )));
+
+        if(t==2000) {
+            cout << "2000" << endl;
+        }
+
+        // Calculate and record the final RH values adjusted for any NBC constraint
+        cout << "sum_rh() = " << sum_rh() << endl;
+        fluxpool rh_fda_adj = rh_fda( biome ) * rh_nbp_constraint_adjust;
+        fluxpool rh_fsa_adj = rh_fsa( biome ) * rh_nbp_constraint_adjust;
+        final_rh[ biome ] = rh_fda_adj + rh_fsa_adj; // per year
+        cout << "rh_biome = " << final_rh[ biome ] << endl;
+        fluxpool rh_fda_flux = detritus_c[ biome ].flux_from_fluxpool( yf * rh_fda_adj );
+        fluxpool rh_fsa_flux = soil_c[ biome ].flux_from_fluxpool( yf * rh_fsa_adj );
+
+        // Update soil, detritus, and atmosphere pools - luc fluxes
         veg_c[ biome ] = veg_c[ biome ] + luc_fav_flux * wt - luc_fva_biome_flux;
         detritus_c[ biome ] = detritus_c[ biome ] + luc_fad_flux * wt - luc_fda_biome_flux;
         soil_c[ biome ] = soil_c[ biome ] + luc_fas_flux * wt - luc_fsa_biome_flux;
-
-        // Update all pools for NPP
-        fluxpool npp_fav_biome_flux = atmos_c.flux_from_fluxpool(npp_biome * f_nppv.at(biome));
-        fluxpool npp_fad_biome_flux = atmos_c.flux_from_fluxpool(npp_biome * f_nppd.at(biome));
-        fluxpool npp_fas_biome_flux = atmos_c.flux_from_fluxpool(npp_biome * ( 1 - f_nppv.at(biome) - f_nppd.at(biome)));
+        // Update soil, detritus, and atmosphere pools - npp fluxes
         veg_c[ biome ] = veg_c[ biome ] + npp_fav_biome_flux;
         detritus_c[ biome ] = detritus_c[ biome ] + npp_fad_biome_flux;
         soil_c[ biome ] = soil_c[ biome ] + npp_fas_biome_flux;
         atmos_c = atmos_c - npp_fav_biome_flux - npp_fad_biome_flux - npp_fas_biome_flux;
-
-        // Update soil, detritus, and atmosphere with RH fluxes
-        fluxpool rh_fda_flux = detritus_c[ biome ].flux_from_fluxpool(yf * rh_fda(biome));
-        fluxpool rh_fsa_flux = soil_c[ biome ].flux_from_fluxpool(yf * rh_fsa(biome));
+        // Update soil, detritus, and atmosphere pools - rh fluxes
         atmos_c = atmos_c + rh_fda_flux + rh_fsa_flux;
         detritus_c[ biome ] = detritus_c[ biome ] - rh_fda_flux;
         soil_c[ biome ] = soil_c[ biome ] - rh_fsa_flux;
 
         // Update litter from veg to soil and detritus
         fluxpool litter_flux = veg_c[ biome ] * (0.035 * yf);
-        fluxpool litter_fvd_flux = litter_flux * f_litterd.at(biome);
-        fluxpool litter_fvs_flux = litter_flux * (1 - f_litterd.at(biome));
+        fluxpool litter_fvd_flux = litter_flux * f_litterd.at( biome );
+        fluxpool litter_fvs_flux = litter_flux * (1 - f_litterd.at( biome ));
         detritus_c[ biome ] = detritus_c[ biome ] + litter_fvd_flux;
         soil_c[ biome ] = soil_c[ biome ] + litter_fvs_flux;
         veg_c[ biome ] = veg_c[ biome ] - litter_flux;
@@ -331,9 +385,9 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     atmos_c = (atmos_c + ffi_flux) - ccs_flux;
     atmos_c = atmos_c + oa_flux - ao_flux;
 
-    // adjust non-biome pools to output from calcderivs
-    earth_c.adjust_pool_to_val(c[SNBOX_EARTH], false);
-    atmos_c.adjust_pool_to_val(c[SNBOX_ATMOS], false);
+    // adjust non-biome pools to output from calcderivs (accounting for any NBP constraint)
+    earth_c.adjust_pool_to_val( c[SNBOX_EARTH], false );
+    atmos_c.adjust_pool_to_val( newatmos.value( U_PGC ), false );
 
     log_pools( t );
 
@@ -583,7 +637,6 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
     fluxpool rh_current = rh_fda_current + rh_fsa_current;
 
     // Detritus flux comes from the vegetation pool
-    // TODO: these values should use the c[] pools passed in by solver!
     fluxpool litter_flux( 0.0, U_PGC_YR );
     fluxpool litter_fvd( 0.0, U_PGC_YR );
     fluxpool litter_fvs( 0.0, U_PGC_YR );
