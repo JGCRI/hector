@@ -95,6 +95,7 @@ NULL
 #' \item{FFI_EMISSIONS}{Fossil fuel and industrial emissions (\code{"Pg C/yr"})}
 #' \item{LUC_EMISSIONS}{Land use change emissions (\code{"Pg C/yr"})}
 #' \item{CO2_CONSTRAIN}{Prescribed atmospheric CO2 concentration (\code{"ppmv CO2"})}
+#' \item{NBP_CONSTRAIN}{Prescribed net biome production (land-atmosphere C flux) (\code{"Pg C/yr"})}
 #' }
 #' @inheritSection msgtype Note
 #' @name carboncycle
