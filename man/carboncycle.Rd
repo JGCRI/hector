@@ -12,6 +12,7 @@
 \alias{DACCS_UPTAKE}
 \alias{LUC_EMISSIONS}
 \alias{CO2_CONSTRAIN}
+\alias{NBP_CONSTRAIN}
 \alias{VEG_C}
 \alias{DETRITUS_C}
 \alias{SOIL_C}
@@ -40,6 +41,8 @@ LUC_EMISSIONS()
 
 CO2_CONSTRAIN()
 
+NBP_CONSTRAIN()
+
 VEG_C(biome = "")
 
 DETRITUS_C(biome = "")
@@ -62,6 +65,8 @@ carbon cycle
 \section{Functions}{
 \itemize{
 \item \code{CO2_CONSTRAIN}: Constrain atmospheric CO2 concentration  (\code{"(ppmv CO2)"})
+
+\item \code{NBP_CONSTRAIN}: Constrain net biome production (land-atmosphere flux) (\code{"(PgC/yr)"})
 
 \item \code{VEG_C}: Vegetation C pool (`"Pg C"`)
 
@@ -98,6 +103,7 @@ These variables can be read using the \code{\link{GETDATA}} message type:
 \item{FFI_EMISSIONS}{Fossil fuel and industrial emissions (\code{"Pg C/yr"})}
 \item{LUC_EMISSIONS}{Land use change emissions (\code{"Pg C/yr"})}
 \item{CO2_CONSTRAIN}{Prescribed atmospheric CO2 concentration (\code{"ppmv CO2"})}
+\item{NBP_CONSTRAIN}{Prescribed net biome production (land-atmosphere C flux) (\code{"Pg C/yr"})}
 }
 }
 
