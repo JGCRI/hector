@@ -119,11 +119,16 @@ void SimpleNbox::prepareToRun()
     // Set atmospheric C based on the requested preindustrial [CO2]
     atmos_c.set(C0.value(U_PPMV_CO2) * PPMVCO2_TO_PGC, U_PGC, atmos_c.tracking, atmos_c.name);
 
+    // Constraint logging
     if( CO2_constrain.size() ) {
         Logger& glog = core->getGlobalLogger();
         H_LOG( glog, Logger::WARNING ) << "Atmospheric CO2 will be constrained to user-supplied values!" << std::endl;
     }
-
+    if( NBP_constrain.size() ) {
+        Logger& glog = core->getGlobalLogger();
+        H_LOG( glog, Logger::WARNING ) << "Land-atmosphere C exchange will be constrained to user-supplied values!" << std::endl;
+    }
+    
     // One-time checks
     for( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
         H_ASSERT( beta.at( *it ) >= 0.0, "beta < 0" );
@@ -365,17 +370,17 @@ void SimpleNbox::stashCValues( double t, const double c[] )
         }
 
         // Ugly: residual is a unitval, but calculated by subtracting two fluxpools, so extract value
-        residual.set(atmos_c.value(U_PGC) - atmos_cpool_to_match.value(U_PGC), U_PGC);
+        Ca_residual.set(atmos_c.value(U_PGC) - atmos_cpool_to_match.value(U_PGC), U_PGC);
 
         H_LOG( logger,Logger::DEBUG ) << t << "- have " << Ca() << " want " <<  atmppmv.value( U_PPMV_CO2 ) << std::endl;
-        H_LOG( logger,Logger::DEBUG ) << t << "- have " << atmos_c << " want " << atmos_cpool_to_match << "; residual = " << residual << std::endl;
+        H_LOG( logger,Logger::DEBUG ) << t << "- have " << atmos_c << " want " << atmos_cpool_to_match << "; residual = " << Ca_residual << std::endl;
 
         // Transfer C from atmosphere to deep ocean and update our C and Ca variables
-        H_LOG( logger,Logger::DEBUG ) << "Sending residual of " << residual << " to deep ocean" << std::endl;
-        core->sendMessage( M_DUMP_TO_DEEP_OCEAN, D_OCEAN_C, message_data( residual ) );
-        atmos_c = atmos_c - residual;
+        H_LOG( logger,Logger::DEBUG ) << "Sending residual of " << Ca_residual << " to deep ocean" << std::endl;
+        core->sendMessage( M_DUMP_TO_DEEP_OCEAN, D_OCEAN_C, message_data( Ca_residual ) );
+        atmos_c = atmos_c - Ca_residual;
     } else {
-        residual.set( 0.0, U_PGC );
+        Ca_residual.set( 0.0, U_PGC );
     }
 
     // All good! t will be the start of the next timestep, so

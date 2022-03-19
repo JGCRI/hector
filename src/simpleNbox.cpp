@@ -46,7 +46,8 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
     Ftalbedo.allowInterp( true );
     Ftalbedo.name = "albedo";
     CO2_constrain.name = "CO2_constrain";
-
+    NBP_constrain.name = "NBP_constrain";
+    
     // The actual atmos_c value will be filled in later by setData
     atmos_c.set(0.0, U_PGC, false, "atmos_c");
 
@@ -69,10 +70,12 @@ void SimpleNbox::init( Core* coreptr ) {
     // Defaults
     co2fert[ SNBOX_DEFAULT_BIOME ] = 1.0;
     warmingfactor[ SNBOX_DEFAULT_BIOME ] = 1.0;
-    residual.set( 0.0, U_PGC );
     tempfertd[ SNBOX_DEFAULT_BIOME ] = 1.0;
     tempferts[ SNBOX_DEFAULT_BIOME ] = 1.0;
 
+    // Constraint residuals
+    Ca_residual.set( 0.0, U_PGC );
+    
     // Initialize the `biome_list` with just "global"
     biome_list.push_back( SNBOX_DEFAULT_BIOME );
 
@@ -113,6 +116,7 @@ void SimpleNbox::init( Core* coreptr ) {
     core->registerInput(D_F_LUCV, getComponentName());
     core->registerInput(D_F_LUCD, getComponentName());
     core->registerInput(D_CO2_CONSTRAIN, getComponentName());
+    core->registerInput(D_NBP_CONSTRAIN, getComponentName());
 }
 
 //------------------------------------------------------------------------------
@@ -292,7 +296,13 @@ void SimpleNbox::setData( const std::string &varName,
             unitval co2c = data.getUnitval( U_PPMV_CO2 );
             CO2_constrain.set( data.date, fluxpool( co2c.value( U_PPMV_CO2 ), U_PPMV_CO2 ) );
         }
-
+        // Land-atmosphere change to constrain model to (optional)
+        else if( varNameParsed == D_NBP_CONSTRAIN ) {
+            H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
+            H_ASSERT( biome == SNBOX_DEFAULT_BIOME, "land-atmosphere constraint must be global" );
+            NBP_constrain.set( data.date, data.getUnitval( U_PGC_YR ) );
+        }
+        
         // Fertilization
         else if( varNameParsed == D_BETA ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
@@ -397,9 +407,9 @@ unitval SimpleNbox::getData(const std::string& varName,
         returnval = Ca( date );
     } else if( varNameParsed == D_ATMOSPHERIC_C_RESIDUAL ) {
         if(date == Core::undefinedIndex())
-            returnval = residual;
+            returnval = Ca_residual;
         else
-            returnval = residual_ts.get(date);
+            returnval = Ca_residual_ts.get(date);
     } else if( varNameParsed == D_PREINDUSTRIAL_CO2 ) {
         H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for preindustrial CO2" );
         returnval = C0;
@@ -505,6 +515,15 @@ unitval SimpleNbox::getData(const std::string& varName,
                 ". Returning missing value." << std::endl;
             returnval = unitval( MISSING_FLOAT, U_PPMV_CO2 );
         }
+    } else if( varNameParsed == D_NBP_CONSTRAIN ) {
+             H_ASSERT( date != Core::undefinedIndex(), "Date required for NBP constraint" );
+             if (NBP_constrain.exists(date)) {
+                 returnval = NBP_constrain.get( date );
+             } else {
+                 H_LOG( logger, Logger::DEBUG ) << "No NBP constraint for requested date " << date <<
+                     ". Returning missing value." << std::endl;
+                 returnval = unitval( MISSING_FLOAT, U_PGC );
+             }
     } else if( varNameParsed == D_NPP ) {
         // `sum_npp` works whether or not `date` is defined (if undefined, it
         // evaluates for the current date).
@@ -533,7 +552,7 @@ void SimpleNbox::reset(double time)
     detritus_c = detritus_c_tv.get(time);
     soil_c = soil_c_tv.get(time);
 
-    residual = residual_ts.get(time);
+    Ca_residual = Ca_residual_ts.get(time);
 
     tempferts = tempferts_tv.get(time);
     tempfertd = tempfertd_tv.get(time);
@@ -559,7 +578,7 @@ void SimpleNbox::reset(double time)
     detritus_c_tv.truncate(time);
     soil_c_tv.truncate(time);
 
-    residual_ts.truncate(time);
+    Ca_residual_ts.truncate(time);
 
     tempferts_tv.truncate(time);
     tempfertd_tv.truncate(time);
@@ -596,7 +615,7 @@ void SimpleNbox::record_state(double t)
     detritus_c_tv.set(t, detritus_c);
     soil_c_tv.set(t, soil_c);
 
-    residual_ts.set(t, residual);
+    Ca_residual_ts.set(t, Ca_residual);
 
     tempfertd_tv.set(t, tempfertd);
     tempferts_tv.set(t, tempferts);
@@ -772,3 +791,4 @@ void SimpleNbox::renameBiome(const std::string& oldname, const std::string& newn
 }
 
 }
+

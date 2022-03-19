@@ -111,7 +111,7 @@ private:
     fluxpool_stringmap detritus_c;   //!< detritus pools, Pg C
     fluxpool_stringmap soil_c;       //!< soil pool, Pg C
 
-    unitval residual;               //!< residual (when constraining Ca) flux, Pg C
+    unitval Ca_residual;               //!< residual (when constraining Ca) flux, Pg C
 
     double_stringmap tempfertd, tempferts; //!< temperature effect on respiration (unitless)
 
@@ -128,7 +128,7 @@ private:
     tvector<fluxpool_stringmap> detritus_c_tv; //!< Time series of biome-specific detritus carbon pools
     tvector<fluxpool_stringmap> soil_c_tv;     //!< Time series of biome-specific soil carbon pools
 
-    tseries<unitval> residual_ts; //!< Time series of residual flux values
+    tseries<unitval> Ca_residual_ts; //!< Time series of residual flux values
 
     tvector<double_stringmap> tempfertd_tv, tempferts_tv; //!< Time series of temperature effect on respiration
 
@@ -163,7 +163,8 @@ private:
     tseries<unitval> Ftalbedo;   //!< terrestrial albedo forcing, W/m2
 
     // Constraints
-    tseries<fluxpool> CO2_constrain;      //!< input [CO2] record to constrain model to
+    tseries<fluxpool> CO2_constrain; //!< input [CO2] record to constrain model to
+    tseries<unitval> NBP_constrain;  //!< input net biome production (atmosphere-land C flux, positive = flux to land) to constrain model to
 
     /*****************************************************************
      * Model parameters
