@@ -81,12 +81,12 @@ NULL
 #' \describe{
 #' \item{ATMOSPHERIC_CO2}{Atmospheric CO2 concentration}
 #' \item{ATMOSPHERIC_C}{Atmospheric carbon pool}
-#' \item{LAND_CFLUX}{Annual global C flux from atmosphere into the land. A
-#'   positive value means a net flux from atmosphere into land (i.e. land is a
-#'   net carbon sink), while a negative value means a net flux from land into
-#'   the atmosphere (i.e. land is a net carbon source)}
-#' \item{NBP}{Net biome production (synonymous with \code{LAND_CFLUX}). Note
-#'   that despite the name, this is currently a globally-averaged variable.}
+#' \item{NBP}{Net biome production. Annual global C flux from atmosphere into
+#'   the land. A positive value means a net flux from atmosphere into land
+#'   (i.e. land is a net carbon sink), while a negative value means a net flux
+#'   from land into the atmosphere (i.e. land is a net carbon source). Note
+#'   that despite the name--which follows disciplinary convention, see Chapin
+#'   et al. 2006--this is currently a globally-averaged variable.}
 #' \item{FFI_EMISSIONS}{Fossil fuel and industrial emissions}
 #' \item{LUC_EMISSIONS}{Land use change emissions}
 #' }

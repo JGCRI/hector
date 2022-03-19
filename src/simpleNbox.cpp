@@ -86,7 +86,7 @@ void SimpleNbox::init( Core* coreptr ) {
     core->registerCapability( D_ATMOSPHERIC_C, getComponentName() );
     core->registerCapability( D_PREINDUSTRIAL_CO2, getComponentName() );
     core->registerCapability( D_RF_T_ALBEDO, getComponentName() );
-    core->registerCapability( D_LAND_CFLUX, getComponentName() );
+    core->registerCapability( D_NBP, getComponentName() );
     core->registerCapability( D_VEGC, getComponentName() );
     core->registerCapability( D_DETRITUSC, getComponentName() );
     core->registerCapability( D_SOILC, getComponentName() );
@@ -424,7 +424,7 @@ unitval SimpleNbox::getData(const std::string& varName,
     } else if(varNameParsed == D_Q10_RH) {
         H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for Q10");
         returnval = unitval(q10_rh.at( biome ), U_UNITLESS);
-    } else if( varNameParsed == D_LAND_CFLUX ) {
+    } else if( varNameParsed == D_NBP ) {
         if(date == Core::undefinedIndex())
             returnval = atmosland_flux;
         else

@@ -2100,16 +2100,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// LAND_CFLUX
-String LAND_CFLUX();
-RcppExport SEXP _hector_LAND_CFLUX() {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(LAND_CFLUX());
-    return rcpp_result_gen;
-END_RCPP
-}
 // NBP
 String NBP();
 RcppExport SEXP _hector_NBP() {
@@ -2867,7 +2857,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_CO3_LL", (DL_FUNC) &_hector_CO3_LL, 0},
     {"_hector_CO3_HL", (DL_FUNC) &_hector_CO3_HL, 0},
     {"_hector_CO3", (DL_FUNC) &_hector_CO3, 0},
-    {"_hector_LAND_CFLUX", (DL_FUNC) &_hector_LAND_CFLUX, 0},
     {"_hector_NBP", (DL_FUNC) &_hector_NBP, 0},
     {"_hector_ATMOSPHERIC_CO2", (DL_FUNC) &_hector_ATMOSPHERIC_CO2, 0},
     {"_hector_NPP", (DL_FUNC) &_hector_NPP, 0},

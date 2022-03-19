@@ -1255,12 +1255,6 @@ CO3 <- function() {
 
 #' @rdname carboncycle
 #' @export
-LAND_CFLUX <- function() {
-    .Call('_hector_LAND_CFLUX', PACKAGE = 'hector')
-}
-
-#' @rdname carboncycle
-#' @export
 NBP <- function() {
     .Call('_hector_NBP', PACKAGE = 'hector')
 }

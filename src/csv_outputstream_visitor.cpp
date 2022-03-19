@@ -162,7 +162,7 @@ void CSVOutputStreamVisitor::visit( SimpleNbox* c ) {
 
     // Global outputs
     // Note if there are multiple biomes, these values will be totals, summed across all biomes
-    STREAM_MESSAGE( csvFile, c, D_LAND_CFLUX );
+    STREAM_MESSAGE( csvFile, c, D_NBP );
     STREAM_MESSAGE( csvFile, c, D_NPP );
     STREAM_MESSAGE( csvFile, c, D_RH );
     STREAM_MESSAGE( csvFile, c, D_ATMOSPHERIC_CO2 );

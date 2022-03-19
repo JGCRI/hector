@@ -126,7 +126,7 @@ void SimpleNbox::prepareToRun()
     }
     if( NBP_constrain.size() ) {
         Logger& glog = core->getGlobalLogger();
-        H_LOG( glog, Logger::WARNING ) << "Land-atmosphere C exchange will be constrained to user-supplied values!" << std::endl;
+        H_LOG( glog, Logger::WARNING ) << "NBP (land-atmosphere C exchange) will be constrained to user-supplied values!" << std::endl;
     }
     
     // One-time checks

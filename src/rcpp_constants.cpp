@@ -1526,16 +1526,8 @@ String CO3() {
 //' @rdname carboncycle
 //' @export
 // [[Rcpp::export]]
-String LAND_CFLUX() {
-return D_LAND_CFLUX;
-}
-
-// An alias for LAND_CFLUX that may be more familiar to carbon cycle people
-//' @rdname carboncycle
-//' @export
-// [[Rcpp::export]]
 String NBP() {
-return D_LAND_CFLUX;
+return D_NBP;
 }
 
 //' @rdname carboncycle
