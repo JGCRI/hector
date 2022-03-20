@@ -689,7 +689,6 @@ unitval Core::sendMessage( const std::string& message,
                           const std::string& datum,
                           const message_data& info )
 {
-
     std::vector<std::string> datum_split;
     boost::split( datum_split, datum, boost::is_any_of( SNBOX_PARSECHAR ) );
     H_ASSERT( datum_split.size() < 3, "max of one separator allowed in variable names" );

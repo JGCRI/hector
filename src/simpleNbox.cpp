@@ -72,8 +72,8 @@ void SimpleNbox::init( Core* coreptr ) {
     warmingfactor[ SNBOX_DEFAULT_BIOME ] = 1.0;
     tempfertd[ SNBOX_DEFAULT_BIOME ] = 1.0;
     tempferts[ SNBOX_DEFAULT_BIOME ] = 1.0;
-    final_npp[ SNBOX_DEFAULT_BIOME ] = fluxpool( 0.0, U_PGC_YR );
-    final_rh[ SNBOX_DEFAULT_BIOME ] = fluxpool( 0.0, U_PGC_YR );
+    final_npp[ SNBOX_DEFAULT_BIOME ] = fluxpool( 0.0, U_PGC_YR, false, "final_npp" );
+    final_rh[ SNBOX_DEFAULT_BIOME ] = fluxpool( 0.0, U_PGC_YR, false, "final_rh" );
     
     // Constraint residuals
     Ca_residual.set( 0.0, U_PGC );
@@ -301,7 +301,7 @@ void SimpleNbox::setData( const std::string &varName,
         // Land-atmosphere change to constrain model to (optional)
         else if( varNameParsed == D_NBP_CONSTRAIN ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            H_ASSERT( biome == SNBOX_DEFAULT_BIOME, "land-atmosphere constraint must be global" );
+            H_ASSERT( biome == SNBOX_DEFAULT_BIOME, "NBP (land-atmosphere) constraint must be global" );
             NBP_constrain.set( data.date, data.getUnitval( U_PGC_YR ) );
         }
         
@@ -519,14 +519,14 @@ unitval SimpleNbox::getData(const std::string& varName,
             returnval = unitval( MISSING_FLOAT, U_PPMV_CO2 );
         }
     } else if( varNameParsed == D_NBP_CONSTRAIN ) {
-             H_ASSERT( date != Core::undefinedIndex(), "Date required for NBP constraint" );
-             if (NBP_constrain.exists( date )) {
-                 returnval = NBP_constrain.get( date );
-             } else {
-                 H_LOG( logger, Logger::DEBUG ) << "No NBP constraint for requested date " << date <<
+        H_ASSERT( date != Core::undefinedIndex(), "Date required for NBP constraint" );
+        if (NBP_constrain.exists( date )) {
+            returnval = NBP_constrain.get( date );
+        } else {
+            H_LOG( logger, Logger::DEBUG ) << "No NBP constraint for requested date " << date <<
                      ". Returning missing value." << std::endl;
-                 returnval = unitval( MISSING_FLOAT, U_PGC );
-             }
+            returnval = unitval( MISSING_FLOAT, U_PGC_YR );
+        }
     } else if( varNameParsed == D_NPP ) {
         returnval = sum_fluxpool_biome_ts( varName, date, biome, final_npp, final_npp_tv );
     } else if( varNameParsed == D_RH ) {
