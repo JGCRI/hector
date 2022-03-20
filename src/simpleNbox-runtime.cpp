@@ -301,8 +301,8 @@ void SimpleNbox::stashCValues( double t, const double c[] )
                 " requested; final value was " << alf << " with final adjustment of " << diff << std::endl;
     }
     
-    atmosland_flux.set( alf, U_PGC_YR );
-    atmosland_flux_ts.set( t, atmosland_flux );
+    nbp.set( alf, U_PGC_YR );
+    nbp_ts.set( t, nbp );
 
     // Apportion NPP and RH among the biomes
     // This is done by NPP and RH; biomes with higher values get more of any C change

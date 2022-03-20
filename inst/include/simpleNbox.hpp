@@ -151,8 +151,8 @@ private:
     bool in_spinup;                     //!< flag tracking spinup state
     double tcurrent;                    //!< Current time (last completed time step)
     double masstot;                     //!< tracker for mass conservation
-    unitval atmosland_flux;             //!< Atmosphere -> land C flux (=net biome production, positive is to land)
-    tseries<unitval> atmosland_flux_ts; //!< Atmosphere -> land C flux (time series)
+    unitval nbp;                        //!< Atmosphere -> land C flux (=net biome production, positive is to land)
+    tseries<unitval> nbp_ts;            //!< Atmosphere -> land C flux (time series)
 
     /*****************************************************************
      * Input data

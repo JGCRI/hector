@@ -462,9 +462,9 @@ unitval SimpleNbox::getData(const std::string& varName,
         returnval = unitval(q10_rh.at( biome ), U_UNITLESS);
     } else if( varNameParsed == D_NBP ) {
         if(date == Core::undefinedIndex())
-            returnval = atmosland_flux;
+            returnval = nbp;
         else
-            returnval = atmosland_flux_ts.get( date );
+            returnval = nbp_ts.get( date );
     } else if( varNameParsed == D_RF_T_ALBEDO ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for albedo forcing" );
         returnval = Ftalbedo.get( date );
