@@ -342,8 +342,8 @@ fluxpool SimpleNbox::Ca( double time ) const
 }
 
 //------------------------------------------------------------------------------
-/*! \brief      Sum a string->unitval map
- *  \param      pool to sum over
+/*! \brief      Helper function: sum a string->unitval map
+ *  \param      pool Pool to sum over
  *  \returns    Sum of the unitvals in the map
  *  \exception  If the map is empty
  */
@@ -359,8 +359,8 @@ fluxpool SimpleNbox::sum_map( fluxpool_stringmap pool ) const
 }
 
 //------------------------------------------------------------------------------
-/*! \brief      Sum a string->double map
- *  \param      pool to sum over
+/*! \brief      Helper function: sum a string->double map
+ *  \param      pool Pool to sum over
  *  \returns    Sum of the unitvals in the map
  *  \exception  If the map is empty
  */
@@ -371,6 +371,40 @@ double SimpleNbox::sum_map( double_stringmap pool ) const
     for( double_stringmap::const_iterator it = pool.begin(); it != pool.end(); it++ )
         sum = sum + it->second;
     return sum;
+}
+
+//------------------------------------------------------------------------------
+/*! \brief      Helper function: extract a fluxpool from a time series, or return current fluxpool
+ *  \param      varName Variable name being requested in getData below
+ *  \param      date Date to extract from time series
+ *  \param      biome Biome to extract from time series
+ *  \param      pool The current pool
+ *  \param      pool_tv The time series of the pool
+ *  \returns    Sum of the unitvals in the map
+ *  \exception  If the biome doesn't exist
+ */
+fluxpool SimpleNbox::sum_fluxpool_biome_ts( const string varName,
+                                            const double date,
+                                            const string biome,
+                                            fluxpool_stringmap pool,
+                               tvector<fluxpool_stringmap> pool_tv ) {
+    fluxpool returnval;
+    std::string biome_error = "Biome '" + biome + "' missing from biome list. " +
+        "Hit this error while trying to retrieve variable: '" + varName + "'.";
+    
+    if(biome == SNBOX_DEFAULT_BIOME) {
+        if(date == Core::undefinedIndex())
+            returnval = sum_map( pool );
+        else
+            returnval = sum_map( pool_tv.get( date ));
+    } else {
+        H_ASSERT(has_biome( biome ), biome_error);
+        if(date == Core::undefinedIndex())
+            returnval = pool.at( biome );
+        else
+            returnval = pool_tv.get( date ).at( biome );
+    }
+    return returnval;
 }
 
 //------------------------------------------------------------------------------
@@ -455,44 +489,11 @@ unitval SimpleNbox::getData(const std::string& varName,
         else
             returnval = earth_c_ts.get(date);
     } else if( varNameParsed == D_VEGC ) {
-        if(biome == SNBOX_DEFAULT_BIOME) {
-            if(date == Core::undefinedIndex())
-                returnval = sum_map( veg_c );
-            else
-                returnval = sum_map(veg_c_tv.get(date));
-        } else {
-            H_ASSERT(has_biome( biome ), biome_error);
-            if(date == Core::undefinedIndex())
-                returnval = veg_c.at(biome) ;
-            else
-                returnval = veg_c_tv.get(date).at(biome);
-        }
+        returnval = sum_fluxpool_biome_ts( varName, date, biome, veg_c, veg_c_tv );
     } else if( varNameParsed == D_DETRITUSC ) {
-        if(biome == SNBOX_DEFAULT_BIOME) {
-            if(date == Core::undefinedIndex())
-                returnval = sum_map( detritus_c );
-            else
-                returnval = sum_map(detritus_c_tv.get(date));
-        } else {
-            H_ASSERT(has_biome( biome ), biome_error);
-            if(date == Core::undefinedIndex())
-                returnval = detritus_c.at(biome) ;
-            else
-                returnval = detritus_c_tv.get(date).at(biome);
-        }
+        returnval = sum_fluxpool_biome_ts( varName, date, biome, detritus_c, detritus_c_tv );
     } else if( varNameParsed == D_SOILC ) {
-        if(biome == SNBOX_DEFAULT_BIOME) {
-            if(date == Core::undefinedIndex())
-                returnval = sum_map( soil_c );
-            else
-                returnval = sum_map(soil_c_tv.get(date));
-        } else {
-            H_ASSERT(has_biome( biome ), biome_error);
-            if(date == Core::undefinedIndex())
-                returnval = soil_c.at(biome);
-            else
-                returnval = soil_c_tv.get(date).at(biome);
-        }
+        returnval = sum_fluxpool_biome_ts( varName, date, biome, soil_c, soil_c_tv );
     } else if( varNameParsed == D_NPP_FLUX0 ) {
       H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for npp_flux0" );
       H_ASSERT(has_biome( biome ), biome_error);
@@ -508,7 +509,7 @@ unitval SimpleNbox::getData(const std::string& varName,
         returnval = lucEmissions.get( date );
     } else if( varNameParsed == D_CO2_CONSTRAIN ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for atmospheric CO2 constraint" );
-        if (CO2_constrain.exists(date)) {
+        if (CO2_constrain.exists( date )) {
             returnval = CO2_constrain.get( date );
         } else {
             H_LOG( logger, Logger::DEBUG ) << "No CO2 constraint for requested date " << date <<
@@ -517,7 +518,7 @@ unitval SimpleNbox::getData(const std::string& varName,
         }
     } else if( varNameParsed == D_NBP_CONSTRAIN ) {
              H_ASSERT( date != Core::undefinedIndex(), "Date required for NBP constraint" );
-             if (NBP_constrain.exists(date)) {
+             if (NBP_constrain.exists( date )) {
                  returnval = NBP_constrain.get( date );
              } else {
                  H_LOG( logger, Logger::DEBUG ) << "No NBP constraint for requested date " << date <<
@@ -525,14 +526,10 @@ unitval SimpleNbox::getData(const std::string& varName,
                  returnval = unitval( MISSING_FLOAT, U_PGC );
              }
     } else if( varNameParsed == D_NPP ) {
-        // `sum_npp` works whether or not `date` is defined (if undefined, it
-        // evaluates for the current date).
-        returnval = sum_npp(date);
+        returnval = sum_fluxpool_biome_ts( varName, date, biome, final_npp, final_npp_tv );
     } else if( varNameParsed == D_RH ) {
-        // `sum_rh` works whether or not `date` is defined (if undefined, it
-        // evaluates for the current date).
-        returnval = sum_rh( date );
-    }else {
+        returnval = sum_fluxpool_biome_ts( varName, date, biome, final_rh, final_rh_tv );
+    } else {
         H_THROW( "Caller is requesting unknown variable: " + varName );
     }
 
@@ -551,6 +548,9 @@ void SimpleNbox::reset(double time)
     veg_c = veg_c_tv.get(time);
     detritus_c = detritus_c_tv.get(time);
     soil_c = soil_c_tv.get(time);
+    // I don't think we actually need to do the next two
+    final_npp = final_npp_tv.get(time);
+    final_rh = final_rh_tv.get(time);
 
     Ca_residual = Ca_residual_ts.get(time);
 
@@ -577,7 +577,9 @@ void SimpleNbox::reset(double time)
     veg_c_tv.truncate(time);
     detritus_c_tv.truncate(time);
     soil_c_tv.truncate(time);
-
+    final_npp_tv.truncate(time);
+    final_rh_tv.truncate(time);
+    
     Ca_residual_ts.truncate(time);
 
     tempferts_tv.truncate(time);
@@ -614,7 +616,9 @@ void SimpleNbox::record_state(double t)
     veg_c_tv.set(t, veg_c);
     detritus_c_tv.set(t, detritus_c);
     soil_c_tv.set(t, soil_c);
-
+    final_npp_tv.set(t, final_npp);
+    final_rh_tv.set(t, final_rh);
+    
     Ca_residual_ts.set(t, Ca_residual);
 
     tempfertd_tv.set(t, tempfertd);
@@ -663,6 +667,10 @@ void SimpleNbox::createBiome(const std::string& biome)
     add_biome_to_ts(detritus_c_tv, biome, detritus_c.at( biome ));
     soil_c[ biome ] = fluxpool(0, U_PGC, false, D_SOILC);
     add_biome_to_ts(soil_c_tv, biome, soil_c.at( biome ));
+    final_npp[ biome ] = fluxpool(0, U_PGC_YR, false, D_NPP);
+    add_biome_to_ts(final_npp_tv, biome, final_npp.at( biome ));
+    final_rh[ biome ] = fluxpool(0, U_PGC_YR, false, D_RH);
+    add_biome_to_ts(final_rh_tv, biome, final_rh.at( biome ));
 
     npp_flux0[ biome ] = fluxpool(0, U_PGC_YR);
 
@@ -715,7 +723,11 @@ void SimpleNbox::deleteBiome(const std::string& biome) // Throw an error if the 
     remove_biome_from_ts(detritus_c_tv, biome);
     soil_c.erase( biome );
     remove_biome_from_ts(soil_c_tv, biome);
-
+    final_npp.erase( biome );
+    remove_biome_from_ts(final_npp_tv, biome);
+    final_rh.erase( biome );
+    remove_biome_from_ts(final_rh_tv, biome);
+    
     // Others
     npp_flux0.erase( biome );
     tempfertd.erase( biome );
@@ -770,6 +782,12 @@ void SimpleNbox::renameBiome(const std::string& oldname, const std::string& newn
     soil_c[ newname ] = soil_c.at( oldname );
     soil_c.erase(oldname);
     rename_biome_in_ts(soil_c_tv, oldname, newname);
+    final_npp[ newname ] = final_npp.at( oldname );
+    final_npp.erase(oldname);
+    rename_biome_in_ts(final_npp_tv, oldname, newname);
+    final_rh[ newname ] = final_rh.at( oldname );
+    final_rh.erase(oldname);
+    rename_biome_in_ts(final_rh_tv, oldname, newname);
 
     npp_flux0[ newname ] = npp_flux0.at( oldname );
     npp_flux0.erase(oldname);

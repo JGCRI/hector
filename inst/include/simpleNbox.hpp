@@ -113,7 +113,7 @@ private:
 
     // Carbon fluxes -- biome-specific
     fluxpool_stringmap final_npp;    //!< final NPP after any NBP constraint accounted for, Pg C/yr
-    fluxpool_stringmap final_rh;     //!< final NPP after any NBP constraint accounted for, Pg C/yr
+    fluxpool_stringmap final_rh;     //!< final RH after any NBP constraint accounted for, Pg C/yr
     
     unitval Ca_residual;               //!< residual (when constraining Ca) flux, Pg C
 
@@ -131,6 +131,8 @@ private:
     tvector<fluxpool_stringmap> veg_c_tv;      //!< Time series of biome-specific vegetation carbon pools
     tvector<fluxpool_stringmap> detritus_c_tv; //!< Time series of biome-specific detritus carbon pools
     tvector<fluxpool_stringmap> soil_c_tv;     //!< Time series of biome-specific soil carbon pools
+    tvector<fluxpool_stringmap> final_npp_tv;  //!< Time series of biome-specific final NPP
+    tvector<fluxpool_stringmap> final_rh_tv;   //!< Time series of biome-specific final RH
 
     tseries<unitval> Ca_residual_ts; //!< Time series of residual flux values
 
@@ -217,7 +219,11 @@ private:
     double sum_map( double_stringmap pool ) const;      //!< sums a double map (collection of data)
     void log_pools( const double t );                   //!< prints pool status to the log file
     void set_c0( double newc0 );                      //!< set initial co2 and adjust total carbon mass
-
+    fluxpool sum_fluxpool_biome_ts( const string varName,
+                                    const double date,
+                                    const string biome,
+                                    fluxpool_stringmap pool,
+                                    tvector<fluxpool_stringmap> pool_tv );
     bool has_biome(const std::string& biome);
 
     OceanComponent *omodel;           //!< pointer to the ocean model in use
