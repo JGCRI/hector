@@ -72,7 +72,9 @@ void SimpleNbox::init( Core* coreptr ) {
     warmingfactor[ SNBOX_DEFAULT_BIOME ] = 1.0;
     tempfertd[ SNBOX_DEFAULT_BIOME ] = 1.0;
     tempferts[ SNBOX_DEFAULT_BIOME ] = 1.0;
-
+    final_npp[ SNBOX_DEFAULT_BIOME ] = fluxpool( 0.0, U_PGC_YR );
+    final_rh[ SNBOX_DEFAULT_BIOME ] = fluxpool( 0.0, U_PGC_YR );
+    
     // Constraint residuals
     Ca_residual.set( 0.0, U_PGC );
     
@@ -548,7 +550,6 @@ void SimpleNbox::reset(double time)
     veg_c = veg_c_tv.get(time);
     detritus_c = detritus_c_tv.get(time);
     soil_c = soil_c_tv.get(time);
-    // I don't think we actually need to do the next two
     final_npp = final_npp_tv.get(time);
     final_rh = final_rh_tv.get(time);
 
