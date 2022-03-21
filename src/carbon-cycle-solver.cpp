@@ -184,7 +184,7 @@ void CarbonCycleSolver::ODEEvalFunctor::operator()( const std::vector<double>& y
                                                     std::vector<double>& dydt,
                                                     double t )
 {
-    // Note the std garuntees vetors are contigous so we can convert to array by
+    // Note the std guarantees that vectors are contiguous, so we can convert to array by
     // taking the address of the first value.
     int status = modelptr->calcderivs( t, &y[0], &dydt[0] );
 

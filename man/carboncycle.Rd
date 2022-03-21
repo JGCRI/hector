@@ -2,7 +2,6 @@
 % Please edit documentation in R/aadoc.R, R/RcppExports.R
 \name{carboncycle}
 \alias{carboncycle}
-\alias{LAND_CFLUX}
 \alias{NBP}
 \alias{ATMOSPHERIC_CO2}
 \alias{NPP}
@@ -12,6 +11,7 @@
 \alias{DACCS_UPTAKE}
 \alias{LUC_EMISSIONS}
 \alias{CO2_CONSTRAIN}
+\alias{NBP_CONSTRAIN}
 \alias{VEG_C}
 \alias{DETRITUS_C}
 \alias{SOIL_C}
@@ -20,8 +20,6 @@
 \alias{TGAV_CONSTRAIN}
 \title{Identifiers for variables in the Hector carbon cycle component}
 \usage{
-LAND_CFLUX()
-
 NBP()
 
 ATMOSPHERIC_CO2()
@@ -39,6 +37,8 @@ DACCS_UPTAKE()
 LUC_EMISSIONS()
 
 CO2_CONSTRAIN()
+
+NBP_CONSTRAIN()
 
 VEG_C(biome = "")
 
@@ -63,6 +63,8 @@ carbon cycle
 \itemize{
 \item \code{CO2_CONSTRAIN}: Constrain atmospheric CO2 concentration  (\code{"(ppmv CO2)"})
 
+\item \code{NBP_CONSTRAIN}: Constrain net biome production (land-atmosphere flux) (\code{"(PgC/yr)"})
+
 \item \code{VEG_C}: Vegetation C pool (`"Pg C"`)
 
 \item \code{DETRITUS_C}: Vegetation detritus C pool (`"Pg C"`)
@@ -81,12 +83,12 @@ These variables can be read using the \code{\link{GETDATA}} message type:
 \describe{
 \item{ATMOSPHERIC_CO2}{Atmospheric CO2 concentration}
 \item{ATMOSPHERIC_C}{Atmospheric carbon pool}
-\item{LAND_CFLUX}{Annual global C flux from atmosphere into the land. A
-  positive value means a net flux from atmosphere into land (i.e. land is a
-  net carbon sink), while a negative value means a net flux from land into
-  the atmosphere (i.e. land is a net carbon source)}
-\item{NBP}{Net biome production (synonymous with \code{LAND_CFLUX}). Note
-  that despite the name, this is currently a globally-averaged variable.}
+\item{NBP}{Net biome production. Annual global C flux from atmosphere into
+  the land. A positive value means a net flux from atmosphere into land
+  (i.e. land is a net carbon sink), while a negative value means a net flux
+  from land into the atmosphere (i.e. land is a net carbon source). Note
+  that despite the name--which follows disciplinary convention, see Chapin
+  et al. 2006--this is currently a globally-averaged variable.}
 \item{FFI_EMISSIONS}{Fossil fuel and industrial emissions}
 \item{LUC_EMISSIONS}{Land use change emissions}
 }
@@ -98,6 +100,7 @@ These variables can be read using the \code{\link{GETDATA}} message type:
 \item{FFI_EMISSIONS}{Fossil fuel and industrial emissions (\code{"Pg C/yr"})}
 \item{LUC_EMISSIONS}{Land use change emissions (\code{"Pg C/yr"})}
 \item{CO2_CONSTRAIN}{Prescribed atmospheric CO2 concentration (\code{"ppmv CO2"})}
+\item{NBP_CONSTRAIN}{Prescribed net biome production (land-atmosphere C flux) (\code{"Pg C/yr"})}
 }
 }
 
