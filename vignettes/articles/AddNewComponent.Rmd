@@ -1,6 +1,7 @@
 ---
-title: Adding a new component
+title: "Add a new Hector component"
 ---
+
 Here are the steps to create a new component `X`.
 
 Step one:
@@ -55,7 +56,7 @@ For examples of `tseries` vs. `unitvals` in [Time Series](https://jgcri.github.i
 
 Within `X::prepareToRun`
 
-This code can vary but this can be where hard coded parameters are coded. 
+This code can vary but this can be where hard-coded parameters are coded. 
 
 Within `X::run`
 
@@ -67,7 +68,7 @@ H_LOG( logger, Logger::DEBUG ) << "Year " << runToDate << " X concentration = " 
 
 Within `X::getData`  
 
-These are data that the component can provide to another component, or the data that is being generated within the component. [[For examples of tseries vs. unitvals in getData|AddTSeries]].
+These are data that the component can provide to another component or the data that is being generated within the component. [[For examples of tseries vs. unitvals in getData|AddTSeries]].
 
 Within `X::shutDown`  
 

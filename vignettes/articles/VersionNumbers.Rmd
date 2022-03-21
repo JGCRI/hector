@@ -2,9 +2,10 @@
 title: Version numbering
 ---
 
+
 **Not a programmer?** You still need to be aware of what version of Hector you're using, and how it relates to previous versions.
 
-Generally Hector follows [Semantic Versioning](http://semver.org). Briefly, this means that given a version number MAJOR.MINOR.PATCH, we increment the:
+Generally, Hector follows [Semantic Versioning](http://semver.org). Briefly, this means that given a version number MAJOR.MINOR.PATCH, we increment the:
 
 - MAJOR version when we make incompatible API, input, or output format changes,
 - MINOR version when we add functionality in a backwards-compatible manner, and

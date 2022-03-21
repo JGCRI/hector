@@ -221,6 +221,7 @@ void ForcingComponent::init( Core* coreptr ) {
     core->registerInput( D_RHO_SO2, getComponentName());
     core->registerInput( D_RHO_NH3, getComponentName());
     core->registerInput( D_RF_MISC, getComponentName());
+    core->registerInput( D_FTOT_CONSTRAIN, getComponentName());
 
 }
 

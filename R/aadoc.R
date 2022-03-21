@@ -144,14 +144,15 @@ NULL
 #' @family capability identifiers
 NULL
 
-#' Identifiers for concentration constraints
+#' Identifiers for constraints
 #'
-#' These identifiers correspond to concentration constraints.
+#' These identifiers correspond to Hector's constraint capabilities
 #'
 #' @inheritSection msgtype Note
 #'
 #' @name constraints
 #' @family capability identifiers
+#' @seealso haloconstrains
 NULL
 
 #' Identifiers for quantities in the methane component

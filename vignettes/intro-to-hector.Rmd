@@ -16,10 +16,10 @@ knitr::opts_chunk$set(echo = TRUE, dpi = 150)
 ```
 
 This vignette provides a basic introduction for running Hector with R.
-First, it shows how to do a simple Hector run with one of Hector's built-in scenarios.
+First, it shows how to do a simple Hector run with a built-in scenario.
 Then, it shows how to modify Hector parameters from within R and uses this functionality to perform a simple sensitivity analysis of how the CO$_2$ fertilization parameter $\beta$ affects several Hector output variables.
 
-If you do not yet have Hector installed, please reference the manual's instructions for [building and running Hector](https://jgcri.github.io/hector/articles/manual/BuildHector.html).
+If you do not yet have Hector installed, please reference the manual's instructions for [building and running Hector](https://jgcri.github.io/hector/articles/manual/index.html#building-and-running-hector). 
 
 # Basic run
 
@@ -29,11 +29,11 @@ First, load the `hector` package.
 library(hector) 
 ```
 
-Hector is configured via an INI file, which defines run metadata, inputs (e.g. emissions scenarios), and parameters.
+Hector is configured via an INI file, which defines run metadata, inputs (e.g., emissions scenarios), and parameters.
 For details on this file, see [InputFiles](https://github.com/JGCRI/hector/wiki/InputFiles) on the Hector GitHub Wiki.
 
-These files ship with the Hector R package, in the `input` subdirectory, which allows them to be accessed via `system.file`.
-Below, we get the path of the input file corresponding to the scenario SPP245.
+These files ship with the Hector R package in the `input` subdirectory, which allows them to be accessed via `system.file`.
+First, determine the path of the input file (ini) corresponding to the scenario SPP245.
 
 ```{r  ini-file }
 ini_file <- system.file("input/hector_ssp245.ini", package = "hector") 
@@ -65,7 +65,7 @@ run(core)
 Notice that this itself returns no output.
 Instead, the output is stored inside the core object.
 To retrieve it, we use the `fetchvars` function.
-Below, we also specify that we want to retrieve results for the years 2000 to 2300.
+Below, we also specify that we want to retrieve results from 2000 to 2300.
 
 ```{r  get-results }
 results <- fetchvars(core, 2000:2300)
@@ -87,11 +87,11 @@ ggplot(results) +
 # Setting parameters
 
 The Hector R interface interacts with parameters and variables in the same way.
-Therefore, the variables can be set and checked via `setvar` and `fetchvars`, respectively.
+Therefore, the variables can be set and checked via `setvar` and `fetchvars`.
 
 First, let's get the current value of $\beta$ (beta), the CO$_2$ fertilization factor.
 Because variables and parameter names have to be retrieved from the Hector core, they are stored as R functions (e.g. `BETA()`).
-However, these functions simply return a string corresponding to the variable name.
+However, these functions return a string corresponding to the variable name.
 
 ```{r variable-example}
 BETA()
@@ -148,8 +148,8 @@ In addition, if the `date` argument is less than the model start date and spinup
 Prior to a normal run beginning in 1745, Hector has an optional "spinup" mode where it runs the carbon cycle with no perturbations until it stabilizes. Essentially, the model removes human emissions and runs until there are no more changes in the carbon pools and the system has reached equilibrium. 
 
 Because changing Hector parameters can change the post-spinup equilibrium values of state variables, Hector will automatically run `reset(core, date = 0)` at the beginning of the next `run` call if it detects that any of its parameters have changed.
-This means that is not currently possible to change Hector _parameters_ (such as $\beta$ or preindustrial CO~2~) part-way through a run.
-However, it is still possible to change the values of certain _drivers_ and _state variables_ (such as the CO~2~ emissions) in the middle of a run.
+This means that it is not currently possible to change Hector _parameters_ (such as $\beta$ or preindustrial CO~2~) part-way through a run.
+However, it is still possible to change the values of specific _drivers_ and _state variables_ (such as the CO~2~ emissions) in the middle of a run.
 
 ***
 
@@ -182,7 +182,7 @@ However, the effects only become pronounced in the latter half of the 21st Centu
 
 # Sensitivity analysis
 
-Hector runs fairly quickly, which makes it easy to run lots of simulations under slightly different configurations.
+Hector runs quickly, making it easy to run lots of simulations under slightly different configurations.
 One application of this is to explore the sensitivity of Hector to variability in its parameters.
 
 The basic procedure for this is the same as in the previous section.
@@ -217,7 +217,7 @@ run_with_param_range <- function(core, parameter, values) {
   Reduce(rbind, mapped)
 }
 
-sensitivity_beta <- run_with_param_range(core, BETA(), seq(0, 1, 0.05))
+sensitivity_beta <- run_with_param_range(core, BETA(), seq(0, 1, length.out = 5))
 
 ggplot(sensitivity_beta) +
   aes(x = year, y = value, color = parameter_value, group = parameter_value) +
@@ -227,4 +227,4 @@ ggplot(sensitivity_beta) +
   scale_color_viridis_c() 
 ```
 
-As we can see, the ability of CO$_2$ fertilization to offset carbon emissions is saturating -- at high values of $\beta$, the same increase in $\beta$ translates into a smaller decrease in atmospheric CO$_2$ and related climate effects.
+As we can see, the ability of CO$_2$ fertilization to offset carbon emissions saturates, at high values of $\beta$, the same increase in $\beta$ translates into a smaller decrease in atmospheric CO$_2$ and related climate effects.

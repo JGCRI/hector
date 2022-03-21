@@ -17,7 +17,6 @@
 \alias{SOIL_C}
 \alias{EARTH_C}
 \alias{NPP_FLUX0}
-\alias{TGAV_CONSTRAIN}
 \title{Identifiers for variables in the Hector carbon cycle component}
 \usage{
 LAND_CFLUX()
@@ -49,8 +48,6 @@ SOIL_C(biome = "")
 EARTH_C()
 
 NPP_FLUX0(biome = "")
-
-TGAV_CONSTRAIN()
 }
 \arguments{
 \item{biome}{Name of biome (leave empty for global)}
@@ -71,8 +68,6 @@ carbon cycle
 
 \item \code{NPP_FLUX0}: Initial net primary productivity (NPP)
 flux (`"Pg C year^-1"`)
-
-\item \code{TGAV_CONSTRAIN}: Constrain global mean temperature  (\code{"(degC)"})
 }}
 
 \section{Output variables}{

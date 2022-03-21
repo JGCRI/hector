@@ -1,12 +1,16 @@
 ---
-title: "Hector in the Wider World"
+title: "Hector Wider World"
 author: "Leeya Pressburger"
 date: "7/30/2021"
-output:
-  html_document:
-    toc: yes
-    toc_float: true
 ---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
 
 This page is meant to serve as a reference for places where Hector has been featured. This list will be updated with time.
   
@@ -17,7 +21,7 @@ There are three documentation manuscripts for Hector.
 ### Hector v1 
 > Hartin, C. A., Patel, P., Schwarber, A., Link, R. P., and Bond-Lamberty, B. P. (2015). A simple object-oriented and open-source model for scientific and policy analyses of the global climate system – Hector v1.0, Geosci. Model Dev., 8, 939–955. https://doi.org/10.5194/gmd-8-939-2015.
 
-The original manuscript for Hector v1.0, published in 2015. Hector is an open source, object-oriented simple global carbon cycle model. The model takes in  CO$_2$ and non-CO$_2$ emissions (e.g., CH$_4$, N$_2$O), converts emissions to concentrations where needed, and calculates the global radiative forcing and the global mean temperature change
+The original manuscript for Hector v1.0, was published in 2015. Hector is an open-source, object-oriented simple global carbon cycle model. The model takes in  CO$_2$ and non-CO$_2$ emissions (e.g., CH$_4$, N$_2$O), converting emissions to concentrations where needed and calculates the global radiative forcing and the global mean temperature change
  
 ### Hector v1.1
 > Hartin, C. A., Bond-Lamberty, B. P., Patel, P., and Mundra, A. (2016). Ocean acidification over the next three centuries using a simple global climate carbon-cycle model: projections and sensitivities, Biogeosciences, 13, 4329 – 4342. https://doi.org/10.5194/bg-13-4329-2016
@@ -27,7 +31,7 @@ Hector v1.1 contains an updated ocean temperature algorithm to better match the 
 ### Hector v2.0
 > Vega-Westhoff, B., Sriver, R. L., Hartin, C. A., Wong, T. E., & Keller, K. (2019). Impacts of observational constraints related to sea level on estimates of climate sensitivity. Earth's Future, 7, 677– 690. https://doi.org/10.1029/2018EF001082
 
-Hector v2.5 incorporates a one dimensional diffusive heat and energy balance model called [DOECLIM](https://pure.mpg.de/rest/items/item_994422_1/component/file_994421/content) and a global sea level module called [BRICK](https://doi.org/10.5194/gmd-10-2741-2017).
+Hector v2.5 incorporates a one-dimensional diffusive heat and energy balance model called [DOECLIM](https://pure.mpg.de/rest/items/item_994422_1/component/file_994421/content) and a global sea level module called [BRICK](https://doi.org/10.5194/gmd-10-2741-2017).
 
 ## Hector in Literature
 
@@ -48,7 +52,7 @@ This study adds permafrost into Hector as a separate land carbon pool which deco
 
 > Vega‐Westhoff, B., Sriver, R. L., Hartin, C., Wong, T. E., & Keller, K. (2020). The role of climate sensitivity in upper‐tail sea level rise projections. Geophysical Research Letters, 47, e2019GL085792. https://doi.org/10.1029/2019GL085792
 
-This study uses Hector-BRICK to investigate the effects of Earth's equilibrium climate sensitivity, or long-term temperature response to a doubling of atmospheric CO$_2$, on sea level rise with a focus on the high-impact upper tail. 
+This study uses Hector-BRICK to investigate the effects of Earth's equilibrium climate sensitivity, or long-term temperature response to a doubling of atmospheric CO$_2$, on sea-level rise with a focus on the high-impact upper tail. 
 
 --
 

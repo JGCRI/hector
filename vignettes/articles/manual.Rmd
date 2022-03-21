@@ -1,0 +1,37 @@
+---
+title: "Manual"
+---
+
+Model philosophy
+--------------------
+* Quick run time.
+* Complexity only where warranted.
+* Clean, modern, well-documented object-oriented code.
+* Open source - all code freely available & accessible.
+* Flexible - model components, outputs, inputs can be changed.
+* About Hector's [version numbering](VersionNumbers.html).
+
+Science
+--------------------
+* A [general summary](HectorSummary.html) of the science behind Hector.
+* The model's [terrestrial carbon cycle](SimpleNBox.html).
+
+Building and running Hector
+--------------------
+* How to [build Hector from source](BuildHector.html).
+* [Intro to Hector](intro-to-hector.html): basic run and sensitivity analysis 
+* [Constraints](Constraints.html): Running Hector under constraints
+
+
+Contributing to Hector
+--------------------
+* [Contribution guide](ContributionsGuide.html) 
+* [Authorship Guidelines](AuthorshipGuidelines.html) 
+* [Style Guide](StyleGuide.html)
+
+
+
+
+
+
+

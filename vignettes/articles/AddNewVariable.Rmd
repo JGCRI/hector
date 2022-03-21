@@ -1,5 +1,5 @@
 ---
-title: Adding a new variable
+title: "Add a new variable"
 ---
 
 Adding a new variable to a method using `getData` to obtain the information defined in the INI file.

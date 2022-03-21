@@ -2,22 +2,32 @@
 % Please edit documentation in R/aadoc.R, R/RcppExports.R
 \name{constraints}
 \alias{constraints}
+\alias{FTOT_CONSTRAIN}
 \alias{CH4_CONSTRAIN}
 \alias{N2O_CONSTRAIN}
-\title{Identifiers for concentration constraints}
+\alias{TGAV_CONSTRAIN}
+\title{Identifiers for constraints}
 \usage{
+FTOT_CONSTRAIN()
+
 CH4_CONSTRAIN()
 
 N2O_CONSTRAIN()
+
+TGAV_CONSTRAIN()
 }
 \description{
-These identifiers correspond to concentration constraints.
+These identifiers correspond to Hector's constraint capabilities
 }
 \section{Functions}{
 \itemize{
+\item \code{FTOT_CONSTRAIN}: Constrain total radiative forcing
+
 \item \code{CH4_CONSTRAIN}: CH4 concentration constraint \code{"ppbv CH4"}
 
 \item \code{N2O_CONSTRAIN}: N2O concentration constraint (\code{"pbbv N2O"})
+
+\item \code{TGAV_CONSTRAIN}: Constrain global mean temperature  (\code{"(degC)"})
 }}
 
 \section{Note}{
@@ -29,6 +39,8 @@ instead of the more natural looking \code{GETDATA}.
 }
 
 \seealso{
+haloconstrains
+
 Other capability identifiers: 
 \code{\link{carboncycle}},
 \code{\link{concentrations}},

@@ -63,6 +63,12 @@ RF_TOTAL <- function() {
     .Call('_hector_RF_TOTAL', PACKAGE = 'hector')
 }
 
+#' @describeIn constraints Constrain total radiative forcing
+#' @export
+FTOT_CONSTRAIN <- function() {
+    .Call('_hector_FTOT_CONSTRAIN', PACKAGE = 'hector')
+}
+
 #' @describeIn forcings Radiative forcing due to albedo
 #' @export
 RF_T_ALBEDO <- function() {
@@ -1467,7 +1473,7 @@ LO_WARMING_RATIO <- function() {
     .Call('_hector_LO_WARMING_RATIO', PACKAGE = 'hector')
 }
 
-#' @describeIn carboncycle Constrain global mean temperature  (\code{"(degC)"})
+#' @describeIn constraints Constrain global mean temperature  (\code{"(degC)"})
 #' @export
 TGAV_CONSTRAIN <- function() {
     .Call('_hector_TGAV_CONSTRAIN', PACKAGE = 'hector')

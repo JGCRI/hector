@@ -5,7 +5,7 @@ navbar:
       href: "index.html"
     - text: Manual
       href: "articles/manual/index.html"
-    - text: "Example"
+    - text: "Examples"
       menu:
         - text: "Example: Using Hector to solve for an emissions pathway"
           href: articles/hector_apply.html

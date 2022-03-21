@@ -100,6 +100,13 @@ String RF_TOTAL() {
 return D_RF_TOTAL;
 }
 
+//' @describeIn constraints Constrain total radiative forcing
+//' @export
+// [[Rcpp::export]]
+String FTOT_CONSTRAIN() {
+    return D_FTOT_CONSTRAIN;
+}
+
 //' @describeIn forcings Radiative forcing due to albedo
 //' @export
 // [[Rcpp::export]]
@@ -1843,7 +1850,7 @@ String LO_WARMING_RATIO(){
     return D_LO_WARMING_RATIO;
 }
 
-//' @describeIn carboncycle Constrain global mean temperature  (\code{"(degC)"})
+//' @describeIn constraints Constrain global mean temperature  (\code{"(degC)"})
 //' @export
 // [[Rcpp::export]]
 String TGAV_CONSTRAIN() {

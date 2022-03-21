@@ -4,12 +4,7 @@ resource_files:
     - hector_terrestrial_c.svg
 ---
 
-Contents:
-
-- [Scientific basis](#simplenbox-science) behind the terrestrial C cycle
-- [Implementation details](#simplenbox-implementation)
-
-# Science {#simplenbox-science}
+# Science
 
 Hector's land C sink is divided into three pools: vegetation ($C_v$), detritus ($C_d$), and soil ($C_s$).
 These sinks are global by default, but they can be divided into $n$ "biomes" with unique parameters and initial pool sizes.
@@ -59,7 +54,7 @@ knitr::include_graphics("hector_terrestrial_c.svg")
 # (Free LucidChart account required.)
 ```
 
-# Implementation {#simplenbox-implementation}
+# Implementation
 
 The state of the global C cycle in Hector is defined by a length 6 vector `c`, which describes the amount of C (in Pg C) in the atmosphere (0), vegetation (1), detritus (2), soil (3), ocean (4), and "Earth" (5) at the current time step.
 At each Hector time step, `c` is solved by the `CarbonCycleSolver::run()` function (defined in [`src/carbon-cycle-solver.cpp`][solver]) in the following general steps:
@@ -111,7 +106,7 @@ They will be applied to the actual NPP and RH estimates during the ODE solving l
 - Calculate NPP for each biome (`npp` function)
 - Partition NPP C gain into vegetation, detritus, and soil pools according to fractions
 - Calculate RH for detritus and soil
-- Partition C losses from RH accirding to fractions
+- Partition C losses from RH according to fractions
 - Calculate and partition litter flux
 - Store changes in pools in `dcdt` vector (same structure as `c`)
 
@@ -165,7 +160,7 @@ The following values related to the terrestrial C cycle can be set via `setData`
 ## Other routines
 
 - `init()` -- Initialize the C cycle model
-    - Set inital values for the default biome (`"global"`) for the following variables:
+    - Set initial values for the default biome (`"global"`) for the following variables:
         - `co2fert` (CO~2~ fertilization multiplier) -- 1.0
         - `warmingfactor` (biome warming multiplier relative to global average) -- 1.0
         - `residual` (difference between modeled atmospheric CO~2~ and constraint) -- 0
@@ -183,5 +178,5 @@ The following values related to the terrestrial C cycle can be set via `setData`
 - `prepareToRun()` -- Perform final checks and variable initialization before running a simulation
     - Check that all biome-specific pools, fluxes, and parameters have data for all biomes. (The only optional biome-specific parameter is `warmingfactor`, which is set to 1.0 if missing). Also check that biome-specific CO~2~ fertilization (`beta`) and Q10 (`q10_rh`) parameters are valid.
     - If no albedo forcing data are provided, set the value to the MAGICC default of -0.2
-    - Initialize the atmosphic CO~2~ concentration (`Ca`, ppm) and C pool (`atmos_c`, PgC) to the user-specified initial value (`C0`; converted accordingly to PgC for `atmos_c`)
+    - Initialize the atmospheric CO~2~ concentration (`Ca`, ppm) and C pool (`atmos_c`, PgC) to the user-specified initial value (`C0`; converted accordingly to PgC for `atmos_c`)
     - Run the checks in `sanitychecks()`
