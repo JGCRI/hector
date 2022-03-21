@@ -247,7 +247,6 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     // Calculate net primary production and heterotrophic respiration
     fluxpool npp_total = sum_npp();
     fluxpool rh_total = sum_rh();
-    //BBL cout << "rh_total = " << rh_total << endl;
 
     // Calculate NBP *before* any constraint adjustment
     double alf = npp_total.value(U_PGC_YR)
@@ -276,11 +275,9 @@ void SimpleNbox::stashCValues( double t, const double c[] )
         const unitval diff = nbp_constrained - unitval(alf, U_PGC_YR);
         
         // Adjust fluxes
-        //BBL cout << "npp_total = " << npp_total << " rh_total = " << rh_total << endl;
         npp_total = npp_total + diff / 2.0;
         rh_nbp_constraint_adjust = ( rh_total - diff / 2.0 ) / rh_total;
         rh_total = rh_total - diff / 2.0;
-        //BBL cout << "npp_total = " << npp_total << " rh_total = " << rh_total << endl;
 
         // Adjust pools
         unitval pool_diff = unitval( diff.value( U_PGC_YR ), U_PGC );
@@ -295,8 +292,6 @@ void SimpleNbox::stashCValues( double t, const double c[] )
             - rh_total.value(U_PGC_YR)
             - luc_e_untracked.value(U_PGC_YR)
             + luc_u_untracked.value(U_PGC_YR);
-        //BBL cout << "** NBP constraint " << nbp_constrained <<
-         //BBL        " requested; final value was " << alf << " with final adjustment of " << diff << //BBL std::endl;
         H_LOG( logger, Logger::NOTICE ) << "** NBP constraint " << nbp_constrained <<
                 " requested; final value was " << alf << " with final adjustment of " << diff << std::endl;
     }
@@ -308,9 +303,7 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     // This is done by NPP and RH; biomes with higher values get more of any C change
     for( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
         std::string biome = *it;
-        //BBL cout << "--- " << biome << endl;
         const double wt = (npp( biome ) + rh( biome ) ) / npp_rh_total;
-
 
         // Update atmosphere with luc emissons from all land pools and biomes
         fluxpool luc_fva_biome_flux = veg_c[ biome ].flux_from_fluxpool((luc_e_untracked * f_lucv) * wt);
@@ -323,17 +316,14 @@ void SimpleNbox::stashCValues( double t, const double c[] )
         // Calculate NPP fluxes
         fluxpool npp_biome = npp_total * wt; // this is already adjusted for any NBP constraint
         final_npp[ biome ] = npp_biome;
-        //BBL cout << "npp_biome = " << npp_biome << endl;
         fluxpool npp_fav_biome_flux = atmos_c.flux_from_fluxpool( npp_biome * f_nppv.at( biome ));
         fluxpool npp_fad_biome_flux = atmos_c.flux_from_fluxpool( npp_biome * f_nppd.at( biome ));
         fluxpool npp_fas_biome_flux = atmos_c.flux_from_fluxpool( npp_biome * ( 1 - f_nppv.at( biome ) - f_nppd.at( biome )));
 
         // Calculate and record the final RH values adjusted for any NBC constraint
-        //BBL cout << "sum_rh() = " << sum_rh() << endl;
         fluxpool rh_fda_adj = rh_fda( biome ) * rh_nbp_constraint_adjust;
         fluxpool rh_fsa_adj = rh_fsa( biome ) * rh_nbp_constraint_adjust;
         final_rh[ biome ] = rh_fda_adj + rh_fsa_adj; // per year
-        //BBL cout << "rh_biome = " << final_rh[ biome ] << endl;
         fluxpool rh_fda_flux = detritus_c[ biome ].flux_from_fluxpool( yf * rh_fda_adj );
         fluxpool rh_fsa_flux = soil_c[ biome ].flux_from_fluxpool( yf * rh_fsa_adj );
 
@@ -677,7 +667,6 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
           // Compute how different we are from the user-specified constraint
           unitval nbp = npp_current - rh_current - luc_emission_current + luc_uptake_current;
           const unitval diff = NBP_constrain.get(rounded_t) - nbp;
-//          std::cout << ODEstartdate << " nbp=" << nbp << "; constraint=" << NBP_constrain.get(rounded_t) << "; diff=" << diff << std::endl;
 
           // Adjust total NPP and total RH equally (but not LUC, which is an input)
           // so that the net total of all three fluxes will match the NBP constraint
@@ -695,9 +684,6 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
           const double rh_ratio = rh_current / rh_current_old;
           rh_fda_current = rh_fda_current * rh_ratio;
           rh_fsa_current = rh_fsa_current * rh_ratio;
-//const double new_nbp = npp_current.value(U_PGC_YR) - rh_current.value(U_PGC_YR) - luc_emission_current.value(U_PGC_YR) + luc_uptake_current.value(U_PGC_YR);
-//          cout << "New NBP=" << new_nbp << endl;
-
       }
     
     // Compute fluxes

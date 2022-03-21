@@ -1,4 +1,4 @@
-context("Concentration forced Hector")
+context("Hector running with constraints")
 
 ssp245 <- function() newcore(system.file("input", "hector_ssp245.ini", package = "hector"))
 
