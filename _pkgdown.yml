@@ -1,48 +1,123 @@
+url: https://jgcri.github.io/hector/
+
 navbar:
   type: default
   left:
     - icon: fa-home fa-lg
       href: "index.html"
     - text: Manual
-      href: "articles/manual/index.html"
-    - text: "Examples"
+      href: "articles/manual.html"
+    - text: Getting Started
       menu:
+       - text: "Building Hector"
+         href: articles/BuildHector.html
+       - text: "Intro to Hector R interface"
+         href: articles/intro-to-hector.html
+       - text: "Documentation manuscripts & tutorials"
+         href: articles/Hector-Wider-World.html
+    - text: Examples
+      menu:
+        - text: "Example: Basic run and simple sensitivity anlaysis"
+          href: articles/intro-to-hector.html
         - text: "Example: Using Hector to solve for an emissions pathway"
           href: articles/hector_apply.html
         - text: "Example: Running Hector with multiple biomes"
           href: articles/multiple-biomes.html
-    - text: "Getting Started"
-      menu:
-        - text: "A tour of the Hector R interface"
-          href: articles/intro-to-hector.html
+        - text: "Example: Carbon tracking with Hector"
+          href: articles/carbon_tracking.html
+        - text: "Example: Changing Hector's land ocean warming ratio parameter"
+          href: articles/land_ocean_warming.html
     - text: Reference
       href: "reference/index.html"
     - text: News
-      href: NEWS.md
+      href: "news/index.html"
   right:
     - icon: fa-github fa-lg
       href: "https://github.com/JGCRI/hector"
 
+# Organize reference index
 reference:
-  - title: Running Hector
-    contents:
-      - newcore
-      - methods
-      - run
-      - reset
-      - shutdown
-      - runscenario
-  - title: Setting and retrieving data
-    contents:
-      - fetchvars
-      - setvar
-      - sendmessage
-      - isactive
-      - getdate
-      - startdate
-      - enddate
-      - getname
-      - getunits
-  - title: Variable and component identifiers
-    contents:
-      - matches("[_A-Z]+")
+- title: Running Hector
+  contents:
+  - newcore
+  - methods
+  - run
+  - reset
+  - shutdown
+  - runscenario
+
+- title: Setting and retrieving data
+  contents:
+  - fetchvars
+  - setvar
+  - sendmessage
+  - isactive
+  - getdate
+  - startdate
+  - enddate
+  - getname
+  - getunits
+
+- title: Biome realted functions
+  contents:
+  - matches("biome")
+
+- title: Carbon tracking
+  contents:
+  - get_tracking_data
+  - get_tracking_data_impl
+
+- title: Constraints
+  contents:
+  - constraints
+  - haloconstrain
+
+- title: Emissions & concentrations
+  contents:
+  - emissions
+  - haloemiss
+  - concentrations
+  - so2
+
+- title: Forcing
+  contents:
+  - delta
+  - forcings
+  - haloforcings
+  - rho
+
+- title: Log levels
+  contents:
+  - LL_DEBUG
+  - LL_NOTICE
+  - LL_WARNING
+  - LL_SEVERE
+
+- title: Parameters
+  contents:
+  - parameters
+  - delta
+  - rho
+
+- title: Other parameters and variable identifiers
+  contents:
+  - carboncycle
+  - methane
+  - ocean
+  - temperature
+
+# Organize the articles index, set it up so that all of the vignettes are listed.
+articles:
+- title: Index
+  contents:
+  - matches("[a-z]")
+
+# Set up the serach nav bar
+search:
+    exclude: ['news/index.html']
+template:
+    params:
+    docsearch:
+    api_key: API_KEY
+index_name: INDEX_NAME
+

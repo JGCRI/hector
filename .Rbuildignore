@@ -42,3 +42,4 @@ _pkgdown.yml
 .lintr
 ^doc$
 ^Meta$
+^vignettes/articles$

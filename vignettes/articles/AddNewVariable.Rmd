@@ -1,11 +1,12 @@
 ---
 title: "Add a new variable"
+subtitle: C++ & R
 ---
 
-Adding a new variable to a method using `getData` to obtain the information defined in the INI file.
+Adding a new variable to Hector's C++ codebase using `getData` to obtain the information defined in the INI file and Rcpp to expose the variable to the R interface.
 
-Cpp Changes
----------
+# C++ Changes
+
 
 In _hector.ini_  
 
@@ -28,7 +29,7 @@ Under init, need to register the Capability
 
 Under `getData` and `setData`, add the new variables in before the Error message 
 
-[tseries](https://jgcri.github.io/hector/articles/manual/TimeSeries.html) documentation for more information on `getData`
+[tseries](TimeSeries.html) documentation for more information on `getData`
 
 **(getData)**
 ```
@@ -52,8 +53,9 @@ For example, if adding in a variable within the forcing component
 
 If this variable is a `unitval`, the relevant code file must include `unitval.hpp`.
 
-Expose to R bindings
----------
+
+# R changes {#R}
+
 
 In order to be able to use the R hector `setvar` and `fetchvars` functions add a helper function to `rcpp_constants.cpp`
 

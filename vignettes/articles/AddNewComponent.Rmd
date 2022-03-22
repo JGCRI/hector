@@ -1,8 +1,9 @@
 ---
 title: "Add a new Hector component"
+subtitle: C++
 ---
 
-Here are the steps to create a new component `X`.
+Here are the steps to create a new component `X` to Hector's C++ codebase. 
 
 Step one:
 -----------
@@ -18,10 +19,10 @@ Step two (within X.hpp):
 -----------
 
 Under `private` list the variables that are used in the component and their corresponding type. 
-Because of Hector's ability to [reset](https://jgcri.github.io/hector/reference/reset.html), 
+Because of Hector's ability to [reset](../reference/reset.html), 
 every state variable generally needs an associated time series history variable. For example: 
 
-* `tseries<unitval> x` to create a [time series](https://jgcri.github.io/hector/articles/manual/TimeSeries.html).
+* `tseries<unitval> x` to create a [time series](TimeSeries.html).
 * `unitval x` to declare a [value with associated units](Unitvals.html).
 * `double x` 
 
@@ -52,7 +53,7 @@ Inform the core what data the component can provide (*registerCapability*) and w
 Within `X::setData`
 
 Set the data that are used as inputs within this component, typically coming from the INI file.  
-For examples of `tseries` vs. `unitvals` in [Time Series](https://jgcri.github.io/hector/articles/manual/TimeSeries.html).
+For examples of `tseries` vs. `unitvals` in [Time Series](TimeSeries.html).
 
 Within `X::prepareToRun`
 

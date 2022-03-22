@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 
 This page is meant to serve as a reference for places where Hector has been featured. This list will be updated with time.
   
-## Hector Publications
+## Hector Publications {#hector_documenation}
 
 There are three documentation manuscripts for Hector. 
 
@@ -33,7 +33,7 @@ Hector v1.1 contains an updated ocean temperature algorithm to better match the 
 
 Hector v2.5 incorporates a one-dimensional diffusive heat and energy balance model called [DOECLIM](https://pure.mpg.de/rest/items/item_994422_1/component/file_994421/content) and a global sea level module called [BRICK](https://doi.org/10.5194/gmd-10-2741-2017).
 
-## Hector in Literature
+## Hector in Literature {#other_manuscripts}
 
 ### Journal articles
 Below are journal articles that use or reference Hector. 

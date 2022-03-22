@@ -1,5 +1,6 @@
 ---
 title: A tour of the Hector R interface
+subtitle: R
 author: Alexey Shiklomanov
 date: "2018-10-17"
 output: rmarkdown::html_vignette
@@ -19,7 +20,7 @@ This vignette provides a basic introduction for running Hector with R.
 First, it shows how to do a simple Hector run with a built-in scenario.
 Then, it shows how to modify Hector parameters from within R and uses this functionality to perform a simple sensitivity analysis of how the CO$_2$ fertilization parameter $\beta$ affects several Hector output variables.
 
-If you do not yet have Hector installed, please reference the manual's instructions for [building and running Hector](https://jgcri.github.io/hector/articles/manual/index.html#building-and-running-hector). 
+If you do not yet have Hector installed, please reference the manual's instructions for [building and running Hector](BuildHector.html). 
 
 # Basic run
 
@@ -30,7 +31,7 @@ library(hector)
 ```
 
 Hector is configured via an INI file, which defines run metadata, inputs (e.g., emissions scenarios), and parameters.
-For details on this file, see [InputFiles](https://github.com/JGCRI/hector/wiki/InputFiles) on the Hector GitHub Wiki.
+For details on this file, see [InputFiles](InputFiles.html).
 
 These files ship with the Hector R package in the `input` subdirectory, which allows them to be accessed via `system.file`.
 First, determine the path of the input file (ini) corresponding to the scenario SPP245.
@@ -40,7 +41,7 @@ ini_file <- system.file("input/hector_ssp245.ini", package = "hector")
 ```
 
 
-Alternatively, users may provide a path to an ini file external to the Hector package on their local machine. This ini file must comply with the Hector  [ini requirements](https://github.com/JGCRI/hector/wiki/InputFiles). 
+Alternatively, users may provide a path to an ini file external to the Hector package on their local machine. This ini file must comply with the Hector  [ini requirements](InputFiles.html). 
 
 ```{r}
 external_ini_file <- "/path/to/ini/on/local/machine/my_ini.ini"

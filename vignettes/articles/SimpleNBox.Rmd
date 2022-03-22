@@ -4,7 +4,7 @@ resource_files:
     - hector_terrestrial_c.svg
 ---
 
-# Science
+## Science
 
 Hector's land C sink is divided into three pools: vegetation ($C_v$), detritus ($C_d$), and soil ($C_s$).
 These sinks are global by default, but they can be divided into $n$ "biomes" with unique parameters and initial pool sizes.
@@ -54,7 +54,7 @@ knitr::include_graphics("hector_terrestrial_c.svg")
 # (Free LucidChart account required.)
 ```
 
-# Implementation
+## Implementation
 
 The state of the global C cycle in Hector is defined by a length 6 vector `c`, which describes the amount of C (in Pg C) in the atmosphere (0), vegetation (1), detritus (2), soil (3), ocean (4), and "Earth" (5) at the current time step.
 At each Hector time step, `c` is solved by the `CarbonCycleSolver::run()` function (defined in [`src/carbon-cycle-solver.cpp`][solver]) in the following general steps:
