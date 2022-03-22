@@ -111,7 +111,11 @@ private:
     fluxpool_stringmap detritus_c;   //!< detritus pools, Pg C
     fluxpool_stringmap soil_c;       //!< soil pool, Pg C
 
-    unitval residual;               //!< residual (when constraining Ca) flux, Pg C
+    // Carbon fluxes -- biome-specific
+    fluxpool_stringmap final_npp;    //!< final NPP after any NBP constraint accounted for, Pg C/yr
+    fluxpool_stringmap final_rh;     //!< final RH after any NBP constraint accounted for, Pg C/yr
+    
+    unitval Ca_residual;               //!< residual (when constraining Ca) flux, Pg C
 
     double_stringmap tempfertd, tempferts; //!< temperature effect on respiration (unitless)
 
@@ -127,8 +131,10 @@ private:
     tvector<fluxpool_stringmap> veg_c_tv;      //!< Time series of biome-specific vegetation carbon pools
     tvector<fluxpool_stringmap> detritus_c_tv; //!< Time series of biome-specific detritus carbon pools
     tvector<fluxpool_stringmap> soil_c_tv;     //!< Time series of biome-specific soil carbon pools
+    tvector<fluxpool_stringmap> final_npp_tv;  //!< Time series of biome-specific final NPP
+    tvector<fluxpool_stringmap> final_rh_tv;   //!< Time series of biome-specific final RH
 
-    tseries<unitval> residual_ts; //!< Time series of residual flux values
+    tseries<unitval> Ca_residual_ts; //!< Time series of residual flux values
 
     tvector<double_stringmap> tempfertd_tv, tempferts_tv; //!< Time series of temperature effect on respiration
 
@@ -145,8 +151,8 @@ private:
     bool in_spinup;                     //!< flag tracking spinup state
     double tcurrent;                    //!< Current time (last completed time step)
     double masstot;                     //!< tracker for mass conservation
-    unitval atmosland_flux;             //!< Atmosphere -> land C flux
-    tseries<unitval> atmosland_flux_ts; //!< Atmosphere -> land C flux (time series)
+    unitval nbp;                        //!< Atmosphere -> land C flux (=net biome production, positive is to land)
+    tseries<unitval> nbp_ts;            //!< Atmosphere -> land C flux (time series)
 
     /*****************************************************************
      * Input data
@@ -163,7 +169,8 @@ private:
     tseries<unitval> Ftalbedo;   //!< terrestrial albedo forcing, W/m2
 
     // Constraints
-    tseries<fluxpool> CO2_constrain;      //!< input [CO2] record to constrain model to
+    tseries<fluxpool> CO2_constrain; //!< input [CO2] record to constrain model to
+    tseries<unitval> NBP_constrain;  //!< input net biome production (atmosphere-land C flux, positive = flux to land) to constrain model to
 
     /*****************************************************************
      * Model parameters
@@ -212,7 +219,11 @@ private:
     double sum_map( double_stringmap pool ) const;      //!< sums a double map (collection of data)
     void log_pools( const double t );                   //!< prints pool status to the log file
     void set_c0( double newc0 );                      //!< set initial co2 and adjust total carbon mass
-
+    fluxpool sum_fluxpool_biome_ts( const string varName,
+                                    const double date,
+                                    const string biome,
+                                    fluxpool_stringmap pool,
+                                    tvector<fluxpool_stringmap> pool_tv );
     bool has_biome(const std::string& biome);
 
     OceanComponent *omodel;           //!< pointer to the ocean model in use

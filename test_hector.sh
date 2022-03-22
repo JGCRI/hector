@@ -67,7 +67,8 @@ if [[ $(diff -q $INPUT/hector_ssp245.ini $INPUT/hector_ssp245_spinup.ini | wc -c
 $HECTOR $INPUT/hector_ssp245_spinup.ini
 rm $INPUT/hector_ssp245_spinup.ini
 
-# Turn on the constraint settings one by one and run the model  CO2
+# Turn on the constraint settings one by one and run the model
+# CO2
 echo "---------- Running: CO2 constraint ----------"
 sed 's/;[[:space:]]*CO2_constrain=csv:tables\/ssp245_emiss-constraints_rf.csv/CO2_constrain=csv:tables\/ssp245_emiss-constraints_rf.csv/' $INPUT/hector_ssp245.ini > $INPUT/hector_ssp245_co2.ini
 if [[ $(diff -q $INPUT/hector_ssp245.ini $INPUT/hector_ssp245_co2.ini | wc -c) -eq 0 ]]; then exit 1; fi
@@ -87,6 +88,13 @@ sed 's/;[[:space:]]*Ftot_constrain=csv:tables\/CONSTRAINT.csv/Ftot_constrain=csv
 if [[ $(diff -q $INPUT/hector_ssp245.ini $INPUT/hector_ssp245_ftot.ini | wc -c) -eq 0 ]]; then exit 1; fi
 $HECTOR $INPUT/hector_ssp245_ftot.ini
 rm $INPUT/hector_ssp245_ftot.ini
+
+# Net biome production
+echo "---------- Running: NBP constraint ----------"
+sed 's/;[[:space:]]*NBP_constrain=csv:tables\/nbp_constraint.csv/NBP_constrain=csv:tables\/nbp_constraint.csv/' $INPUT/hector_ssp245.ini > $INPUT/hector_ssp245_nbp.ini
+if [[ $(diff -q $INPUT/hector_ssp245.ini $INPUT/hector_ssp245_nbp.ini | wc -c) -eq 0 ]]; then exit 1; fi
+$HECTOR $INPUT/hector_ssp245_nbp.ini
+rm $INPUT/hector_ssp245_nbp.ini
 
 # Ocean-atmosphere C flux
 # Disabled as the relevant file doesn't seem to currently exist

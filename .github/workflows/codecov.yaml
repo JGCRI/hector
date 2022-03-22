@@ -40,6 +40,9 @@ jobs:
           key: macOS-r-4.0-2-${{ hashFiles('.github/depends.Rds') }}
           restore-keys: macOS-r-4.0-2-
 
+      - name: Install libcurl
+        run: sudo apt-get install libcurl4-openssl-dev
+
       - name: Install dependencies
         run: |
           install.packages(c("remotes"))

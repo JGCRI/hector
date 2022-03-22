@@ -332,7 +332,7 @@
 #define D_REVELLE_LL            "Revelle_LL"
 
 // SimpleNbox component
-#define D_LAND_CFLUX            "atm_land_flux"
+#define D_NBP                   "NBP"
 #define D_ATMOSPHERIC_CO2       "Ca"
 #define D_PREINDUSTRIAL_CO2     "C0"
 #define D_ATMOSPHERIC_C         "atmos_c"
@@ -361,6 +361,7 @@
 // Constraints
 #define D_CO2_CONSTRAIN         "CO2_constrain"
 #define D_TGAV_CONSTRAIN        "Tgav_constrain"
+#define D_NBP_CONSTRAIN         "NBP_constrain"
 
 // slr component
 #define D_SL_RC                 "sl_rc"

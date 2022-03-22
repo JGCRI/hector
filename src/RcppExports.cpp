@@ -2110,16 +2110,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// LAND_CFLUX
-String LAND_CFLUX();
-RcppExport SEXP _hector_LAND_CFLUX() {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(LAND_CFLUX());
-    return rcpp_result_gen;
-END_RCPP
-}
 // NBP
 String NBP();
 RcppExport SEXP _hector_NBP() {
@@ -2250,6 +2240,16 @@ BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     rcpp_result_gen = Rcpp::wrap(CO2_CONSTRAIN());
+    return rcpp_result_gen;
+END_RCPP
+}
+// NBP_CONSTRAIN
+String NBP_CONSTRAIN();
+RcppExport SEXP _hector_NBP_CONSTRAIN() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(NBP_CONSTRAIN());
     return rcpp_result_gen;
 END_RCPP
 }
@@ -2868,7 +2868,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_CO3_LL", (DL_FUNC) &_hector_CO3_LL, 0},
     {"_hector_CO3_HL", (DL_FUNC) &_hector_CO3_HL, 0},
     {"_hector_CO3", (DL_FUNC) &_hector_CO3, 0},
-    {"_hector_LAND_CFLUX", (DL_FUNC) &_hector_LAND_CFLUX, 0},
     {"_hector_NBP", (DL_FUNC) &_hector_NBP, 0},
     {"_hector_ATMOSPHERIC_CO2", (DL_FUNC) &_hector_ATMOSPHERIC_CO2, 0},
     {"_hector_NPP", (DL_FUNC) &_hector_NPP, 0},
@@ -2882,6 +2881,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_Q10_RH", (DL_FUNC) &_hector_Q10_RH, 1},
     {"_hector_WARMINGFACTOR", (DL_FUNC) &_hector_WARMINGFACTOR, 1},
     {"_hector_CO2_CONSTRAIN", (DL_FUNC) &_hector_CO2_CONSTRAIN, 0},
+    {"_hector_NBP_CONSTRAIN", (DL_FUNC) &_hector_NBP_CONSTRAIN, 0},
     {"_hector_F_NPPV", (DL_FUNC) &_hector_F_NPPV, 1},
     {"_hector_F_NPPD", (DL_FUNC) &_hector_F_NPPD, 1},
     {"_hector_F_LITTERD", (DL_FUNC) &_hector_F_LITTERD, 1},

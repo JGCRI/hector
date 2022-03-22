@@ -157,7 +157,7 @@ private:
     std::vector<double> lo_temp_oceanair;   //!< place to store land temp when lo is provided by users, deg C
     std::vector<double> lo_sst;             //!< place to store land temp when lo is provided by users, deg C
 
-    tseries<unitval> tgav_constrain;        //! Temperature change can be supplied (not currently)
+    tseries<unitval> tgav_constrain;        //! Temperature change to constrain model to, degC
 
     //! pointers to other components and stuff
     Core*             core;

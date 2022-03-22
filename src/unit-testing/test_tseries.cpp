@@ -288,27 +288,6 @@ TEST(TSeriesTest, BigTimeSeries) {
         EXPECT_TRUE( co2.exists( x[ i ] ) );
         EXPECT_FALSE( co2.exists( -x[ i ] ) );
     }
-    
-	// Following code prints out values for graphing
-/*
-    cout << "Testing linear interpolation..." << endl;
-    co2.set_interp( true, true, LINEAR );
-    for( i=1950; i<2012; i++)
-        cout << i << ", ";
-    cout << endl;
-    for( i=1950; i<2012; i++)
-        cout << co2.get( i ) << ", ";
-    cout << endl;
-
-    cout << "Testing spline_forsythe interpolation..." << endl;
-    co2.set_interp( true, true, SPLINE_FORSYTHE );
-    for( i=1950; i<2012; i++)
-        cout << i << ", ";
-    cout << endl;
-    for( i=1950; i<2012; i++)
-        cout << co2.get( i ) << ", ";
-    cout << endl;
-*/
 }
 
 TEST(TSeriesTest, PartialInterp) {

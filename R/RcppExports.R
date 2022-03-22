@@ -1261,12 +1261,6 @@ CO3 <- function() {
 
 #' @rdname carboncycle
 #' @export
-LAND_CFLUX <- function() {
-    .Call('_hector_LAND_CFLUX', PACKAGE = 'hector')
-}
-
-#' @rdname carboncycle
-#' @export
 NBP <- function() {
     .Call('_hector_NBP', PACKAGE = 'hector')
 }
@@ -1343,6 +1337,12 @@ WARMINGFACTOR <- function(biome = "") {
 #' @export
 CO2_CONSTRAIN <- function() {
     .Call('_hector_CO2_CONSTRAIN', PACKAGE = 'hector')
+}
+
+#' @describeIn carboncycle Constrain net biome production (land-atmosphere flux) (\code{"(PgC/yr)"})
+#' @export
+NBP_CONSTRAIN <- function() {
+    .Call('_hector_NBP_CONSTRAIN', PACKAGE = 'hector')
 }
 
 #' @describeIn parameters NPP fraction to vegetation (\code{"(unitless)"})
