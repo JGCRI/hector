@@ -1,11 +1,14 @@
+
+Hector
+======
+
 ![R-CMD](https://github.com/JGCRI/hector/workflows/R-CMD/badge.svg) | 
 ![Command Line Hector](https://github.com/JGCRI/hector/workflows/Command%20Line%20Hector/badge.svg) | 
 ![test-coverage](https://github.com/JGCRI/hector/workflows/test-coverage/badge.svg) | 
 [![codecov](https://codecov.io/gh/JGCRI/hector/branch/master/graph/badge.svg?token=EGM0lXDxRv)](https://codecov.io/gh/JGCRI/hector) | 
 ![lint](https://github.com/JGCRI/hector/workflows/lint/badge.svg)
 
-Hector
-======
+
 
 This is the repository for **Hector**, an open source, object-oriented, simple global climate carbon-cycle model. It runs instantaneously while still representing the most critical global scale earth system processes. As a simple climate model (SCM) also known as a reduced-complexity climate models (RCMs) are a class of climate models that are extremely versatile with a wide range of applications. Due to their computational efficiency SCMs can easily be coupled to other models, used in scenario design; to emulate complex climate models; and conduct uncertainty analyses.
 
