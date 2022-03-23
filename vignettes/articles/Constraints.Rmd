@@ -1,6 +1,5 @@
 ---
 title: Constraints
-subtitle: R
 ---
 
 ```{r setup, include=FALSE}
@@ -15,9 +14,10 @@ theme_set(theme_bw())
 
 The Hector model can be run subject to *constraints* that force the model to have a certain behavior. Technically, this means that the model's components output user-provided data as opposed to their own calculations, similar to the [data mode](http://www.cesm.ucar.edu/models/cesm1.0/cesm/cesm_doc_1_0_4/x42.html) of a CESM sub-model. Currently, the available constraints include: 
 
-* Temperature
-* Radiative forcing
 * GHGs concentrations
+* Radiative forcing
+* Temperature
+* Net Biome Production (NBP)
 
 
 Constraints can be applied to Hector within the ini file (command-line & R) or using the `hector` package `setvar` function. 
@@ -45,101 +45,6 @@ It is the user's responsibility to make sure that constraints are continuous.
 
 
 ## Current Constraint Capabilities 
-
-### Temperature
-
-Uncommenting (removing the `;`) from the following line in the `[temperature]` section of the [input file](InputFiles.html) will turn the global mean constraint on. 
-
-```
-tgav_constrain=csv:path/to/constraint/file.csv
-```
-
-Then the model's global mean temperature `Tgav` will follow the contents of this file (which must contain columns titled `Date` and `Tgav_constrain`; a sample file is included in the repository (see `inst/input/tables/tgav_historical.csv`). The model will extrapolate within this data as necessary, but not beyond its endpoints.
-
-Once Hector's internal date passes the last date in the constraint file, the model's temperature component becomes *unconstrained*, except that we do not permit it to suddenly jump to a new temperature. Instead, changes in global radiative forcing (from which temperature change is computed) are applied to the end-of-constraint temperature. For more details, see the detailed comments in the `TemperatureComponent::run` (temperature_component.cpp).
-
-Here is an example of using the R package to implement the global average mean temperature (tgav) constraint. 
-
-```{r, message=FALSE, warning=FALSE}
-# Set up an instance of Hector & run 
-ini <- system.file("input/hector_ssp245.ini", package = "hector")
-core <- newcore(ini, name = "ssp245")
-invisible(run(core)) # the invisible call prevents hector core info from being printed out 
-
-# Extract the output. 
-dates_to_keep <- 1850:2100
-vars_to_keep <- c(GLOBAL_TEMP())
-free_out <- fetchvars(core, 1850:2100, vars = vars_to_keep)
-
-# Make a time series of new temperature values to use as the constraint. 
-new_tgav <- free_out[free_out$variable == GLOBAL_TEMP(), ]
-new_tgav$value <- new_tgav$value + new_tgav$value * 0.25 # increase global temp by 25%
-
-# Use setvar to set up the the constraint, run hector & fetch the results.  
-setvar(core, dates = new_tgav$year, var = TGAV_CONSTRAIN(), values = new_tgav$value, unit = getunits(TGAV_CONSTRAIN()))
-invisible(run(core))
-constrained_out <- fetchvars(core, 1850:2100, vars = vars_to_keep)
-```
-
-
-Plot the total radiative forcing and global mean temperature. Recall the constraint is only in effect between 1950 and 2050. 
-
-```{r, echo = FALSE, message = FALSE, warning=FALSE}
-ggplot() + 
-    geom_line(data = free_out, aes(year, value, color = "Free running"), size = 1) + 
-    geom_line(data = constrained_out, aes(year, value, color = "Constrained RF total"), size = 1,  linetype = 5) + 
-    facet_wrap("variable", scales = "free", nrow = 2) + 
-    theme(legend.title = element_blank()) + 
-    labs(y = NULL, x = "Year")
-```
-
-
-### Radiative forcing
-
-The model's global radiative forcing `Ftot` which drives global temperature changes can be constrained. Free running Hector calculates `Ftot` based on the radiative forcing contributions from GHG concentrations, aerosol emissions, and forcing inputs [UNSURE WORDING] (e.g. land albedo and solar forcing). Using the radiative forcing constraint `Ftot_constrain`, means any parameters and or variables that effect radiative forcing (such as carbon cycle feedback parameters or emissions) will not affect `Ftot` while the constraint is in effect. The model will extrapolate within the `Ftot_constrain` as necessary, but not beyond its endpoints. Once Hector's internal date passes the last date for `Ftot_constrain`, the model's forcing component becomes *unconstrained*.
-
-
-Uncommenting (removing the `;`) from the following line in the `[forcing]` section of the [input file](InputFiles.html) will turn the radiative forcing constraint on. 
-
-```
-;Ftot_constrain=csv:path/to/constraint/file.csv
-```
-
-Here is an example of using the R package to implement the radiative forcing constraint.  
-
-```{r, message=FALSE, warning=FALSE}
-# Set up an instance of Hector & run 
-ini <- system.file("input/hector_ssp245.ini", package = "hector")
-core <- newcore(ini, name = "ssp245")
-invisible(run(core)) # the invisible call prevents hector core info from being printed out 
-
-# Extract the output. 
-dates_to_keep <- 1850:2100
-vars_to_keep <- c(RF_TOTAL(), GLOBAL_TEMP())
-free_out <- fetchvars(core, 1850:2100, vars = vars_to_keep)
-
-# Make a time series of new RF values to use as the RF constraint. We are only 
-# going to change the RF for a subset of the years. 
-new_rf <- free_out[free_out$variable == RF_TOTAL() & free_out$year %in% 1950:2050, ]
-new_rf$value <- new_rf$value + 3 # increase the total RF
-
-# Use setvar to set up the the constraint, run hector & fetch the results.  
-setvar(core, dates = new_rf$year, var = FTOT_CONSTRAIN(), values = new_rf$value, unit = "W/m2")
-invisible(run(core))
-constrained_out <- fetchvars(core, 1850:2100, vars = vars_to_keep)
-```
-
-Plot the total radiative forcing and global mean temperature. Recall the constraint is only in effect between 1950 and 2050. 
-
-```{r, echo = FALSE, message = FALSE, warning=FALSE}
-ggplot() + 
-    geom_line(data = free_out, aes(year, value, color = "Free running"), size = 1) + 
-    geom_line(data = constrained_out, aes(year, value, color = "Constrained RF total"), size = 1,  linetype = 5) + 
-    facet_wrap("variable", scales = "free", nrow = 2) + 
-    theme(legend.title = element_blank()) + 
-    labs(y = NULL, x = "Year")
-```
-
 
 ### Atmospheric CO~2~
 
@@ -232,3 +137,151 @@ This means that _concentration constraints always take precedence over emissions
 
 Note that CH~4~ and N~2~O have special variables for their pre-industrial concentration that could conflict with the constraint. In Hector, _concentration constraints take precedence over pre-industrial concentrations_;
 in other words, Hector assumes that if you provide a concentration constraint for the pre-industrial timestep, that is the concentration you want, regardless of the prescribed pre-industrial value. The equations for CH~4~ and N~2~O concentrations to raditive forcing were parameterized with specific pre-industrial concentrations. Users must be cautions of changes to pre-industrial values and how it may affect the radiative forcinig calculations. 
+
+### Radiative forcing
+
+The model's global radiative forcing `Ftot` which drives global temperature changes can be constrained. Free running Hector calculates `Ftot` based on the radiative forcing contributions from GHG concentrations, aerosol emissions, and forcing inputs [UNSURE WORDING] (e.g. land albedo and solar forcing). Using the radiative forcing constraint `Ftot_constrain`, means any parameters and or variables that effect radiative forcing (such as carbon cycle feedback parameters or emissions) will not affect `Ftot` while the constraint is in effect. The model will extrapolate within the `Ftot_constrain` as necessary, but not beyond its endpoints. Once Hector's internal date passes the last date for `Ftot_constrain`, the model's forcing component becomes *unconstrained*.
+
+
+Uncommenting (removing the `;`) from the following line in the `[forcing]` section of the [input file](InputFiles.html) will turn the radiative forcing constraint on. 
+
+```
+;Ftot_constrain=csv:path/to/constraint/file.csv
+```
+
+Here is an example of using the R package to implement the radiative forcing constraint.  
+
+```{r, message=FALSE, warning=FALSE}
+# Set up an instance of Hector & run 
+ini <- system.file("input/hector_ssp245.ini", package = "hector")
+core <- newcore(ini, name = "ssp245")
+invisible(run(core)) # the invisible call prevents hector core info from being printed out 
+
+# Extract the output. 
+dates_to_keep <- 1850:2100
+vars_to_keep <- c(RF_TOTAL(), GLOBAL_TEMP())
+free_out <- fetchvars(core, 1850:2100, vars = vars_to_keep)
+
+# Make a time series of new RF values to use as the RF constraint. We are only 
+# going to change the RF for a subset of the years. 
+new_rf <- free_out[free_out$variable == RF_TOTAL() & free_out$year %in% 1950:2050, ]
+new_rf$value <- new_rf$value + 3 # increase the total RF
+
+# Use setvar to set up the the constraint, run hector & fetch the results.  
+setvar(core, dates = new_rf$year, var = FTOT_CONSTRAIN(), values = new_rf$value, unit = "W/m2")
+invisible(run(core))
+constrained_out <- fetchvars(core, 1850:2100, vars = vars_to_keep)
+```
+
+Plot the total radiative forcing and global mean temperature. Recall the constraint is only in effect between 1950 and 2050. 
+
+```{r, echo = FALSE, message = FALSE, warning=FALSE}
+ggplot() + 
+    geom_line(data = free_out, aes(year, value, color = "Free running"), size = 1) + 
+    geom_line(data = constrained_out, aes(year, value, color = "Constrained RF total"), size = 1,  linetype = 5) + 
+    facet_wrap("variable", scales = "free", nrow = 2) + 
+    theme(legend.title = element_blank()) + 
+    labs(y = NULL, x = "Year")
+```
+
+
+### Temperature
+
+Uncommenting (removing the `;`) from the following line in the `[temperature]` section of the [input file](InputFiles.html) will turn the global mean constraint on. 
+
+```
+tgav_constrain=csv:path/to/constraint/file.csv
+```
+
+Then the model's global mean temperature `Tgav` will follow the contents of this file (which must contain columns titled `Date` and `Tgav_constrain`; a sample file is included in the repository (see `inst/input/tables/tgav_historical.csv`). The model will extrapolate within this data as necessary, but not beyond its endpoints.
+
+Once Hector's internal date passes the last date in the constraint file, the model's temperature component becomes *unconstrained*, except that we do not permit it to suddenly jump to a new temperature. Instead, changes in global radiative forcing (from which temperature change is computed) are applied to the end-of-constraint temperature. For more details, see the detailed comments in the `TemperatureComponent::run` (temperature_component.cpp).
+
+Here is an example of using the R package to implement the global average mean temperature (tgav) constraint. 
+
+```{r, message=FALSE, warning=FALSE}
+# Set up an instance of Hector & run 
+ini <- system.file("input/hector_ssp245.ini", package = "hector")
+core <- newcore(ini, name = "ssp245")
+invisible(run(core)) # the invisible call prevents hector core info from being printed out 
+
+# Extract the output. 
+dates_to_keep <- 1850:2100
+vars_to_keep <- c(GLOBAL_TEMP())
+free_out <- fetchvars(core, 1850:2100, vars = vars_to_keep)
+
+# Make a time series of new temperature values to use as the constraint. 
+new_tgav <- free_out[free_out$variable == GLOBAL_TEMP(), ]
+new_tgav$value <- new_tgav$value + new_tgav$value * 0.25 # increase global temp by 25%
+
+# Use setvar to set up the the constraint, run hector & fetch the results.  
+setvar(core, dates = new_tgav$year, var = TGAV_CONSTRAIN(), values = new_tgav$value, unit = getunits(TGAV_CONSTRAIN()))
+invisible(run(core))
+constrained_out <- fetchvars(core, 1850:2100, vars = vars_to_keep)
+```
+
+
+Plot the total radiative forcing and global mean temperature. Recall the constraint is only in effect between 1950 and 2050. 
+
+```{r, echo = FALSE, message = FALSE, warning=FALSE}
+ggplot() + 
+    geom_line(data = free_out, aes(year, value, color = "Free running"), size = 1) + 
+    geom_line(data = constrained_out, aes(year, value, color = "Constrained RF total"), size = 1,  linetype = 5) + 
+    facet_wrap("variable", scales = "free", nrow = 2) + 
+    theme(legend.title = element_blank()) + 
+    labs(y = NULL, x = "Year")
+```
+
+
+
+### NBP
+
+The NBP constraint can be activated via the ini file by adding the line
+
+```
+NBP_constrain=csv:path/to/constraint/file.csv
+```
+
+to the `[simpleNbox]` section of the [input file](InputFiles.html). Where the constraint csv file has columns titled `Date` and `NBP_constrain` similar to the sample file is included in the repository (see `inst/input/tables/tgav_historical.csv`).
+
+Here is an example implemented in the R interface
+
+```{r}
+constraint_yrs <- 2001:2010
+constraint_values <- c(0.1, 0.2, 0.3, -0.4, -0.5, -0.6, 0.7, 0.8, 0.9, 1.0) 
+
+ini <- system.file("input/hector_ssp245.ini", package = "hector")
+core <- newcore(ini, name = "ssp245")
+invisible(run(core)) # the invisible call prevents hector core info from being printed out 
+
+# Extract the output. 
+dates_to_keep <- 1850:2100
+vars_to_keep <- c(ATMOSPHERIC_CO2(), NBP(), NPP(), RH())
+free_out <- fetchvars(core, 1850:2100, vars = vars_to_keep)
+
+# Use setvar to set up the the constraint, run hector & fetch the results.  
+setvar(core, dates = constraint_yrs, var = NBP_CONSTRAIN(), values = constraint_values, 
+       unit = getunits(NBP_CONSTRAIN()))
+invisible(run(core))
+constrained_out <- fetchvars(core, 1850:2100, vars = vars_to_keep)
+```
+
+Plot results from the free running Hector with the constrained Hector. 
+
+```{r, echo = FALSE, message = FALSE, warning=FALSE}
+ggplot() + 
+    geom_line(data = free_out, aes(year, value, color = "Free running"), size = 1) + 
+    geom_line(data = constrained_out, aes(year, value, color = "x"),
+              size = 1,  linetype = 5) + 
+    facet_wrap("variable", scales = "free", nrow = 2) + 
+    theme(legend.title = element_blank()) + 
+    scale_color_discrete(labels=c("Free running", expression(CO[2]~Constrained))) + 
+    labs(y = NULL, x = "Year")
+```
+
+The model hits the constraint exactly by raising RH and lowering NPP.
+Because of this, atmospheric CO~2~ rises rapidly during the constraint period, as we've basically shut down the land C sink. As a result, when the model exits the constraint period, NPP shoots up very high (because the atmosphere is saturated with CO~2~)
+In a similar vein, the suppressed NPP means, once outside of the constraint, that RH is low and thus the land becomes a large sink as it draws down the excess atmospheric CO~2~. 
+
+
+

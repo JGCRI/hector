@@ -326,7 +326,6 @@
 #define D_CO3_LL				"CO3_LL"
 #define D_CO3_HL				"CO3_HL"
 #define D_CO3				    "CO3"
-#define D_ATM_OCEAN_CONSTRAIN   "atm_ocean_constrain"
 #define D_TIMESTEPS             "ocean_timesteps"
 #define D_REVELLE_HL            "Revelle_HL"
 #define D_REVELLE_LL            "Revelle_LL"
