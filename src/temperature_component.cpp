@@ -497,99 +497,114 @@ unitval TemperatureComponent::getData( const std::string& varName,
     
     unitval returnval;
     
-    if(date == Core::undefinedIndex()) {
-        // If no date is supplied, return the current value
-        if( varName == D_GLOBAL_TEMP ) {
+    // If a date is supplied, get the needed value from the
+    // vectors.  Some values, such as model parameters, don't have
+    // time-indexed values, so asking for one of those with a date
+    // is an error.
+    H_ASSERT(date <= core->getCurrentDate(), "Date must be <= current date.");
+    int tstep = date - core->getStartDate();
+    
+    if( varName == D_GLOBAL_TEMP ) {
+        if(date == Core::undefinedIndex()) {
             returnval = tgav;
-        } else if( varName == D_LAND_AIR_TEMP ) {
-            if ( lo_warming_ratio != 0 ) {
+        } else {
+            returnval = unitval(temp[tstep], U_DEGC);
+        }
+    } else if ( varName == D_LAND_AIR_TEMP ){
+        if ( lo_warming_ratio != 0 ) {
+            if( date == Core::undefinedIndex() ) {
                 returnval = lo_tgav_land;
             } else {
+                returnval = unitval(lo_temp_landair[tstep], U_DEGC);
+            }
+        } else {
+            if( date == Core::undefinedIndex() ) {
                 returnval = tgav_land;
-            }
-        } else if( varName == D_OCEAN_SURFACE_TEMP ) {
-            if ( lo_warming_ratio != 0 ) {
-                returnval = lo_tgav_sst;
             } else {
-                returnval = tgav_sst;
+                returnval = unitval(temp_landair[tstep], U_DEGC);
             }
-        } else if( varName == D_OCEAN_AIR_TEMP ) {
-            if ( lo_warming_ratio != 0 ) {
+        }
+    } else if ( varName == D_OCEAN_AIR_TEMP ){
+        if ( lo_warming_ratio != 0 ) {
+            if( date == Core::undefinedIndex() ) {
                 returnval = lo_tgav_oceanair;
             } else {
-                returnval = tgav_oceanair;
-            }
-        } else if( varName == D_DIFFUSIVITY ) {
-            returnval = diff;
-        } else if( varName == D_AERO_SCALE ) {
-            returnval = alpha;
-        } else if( varName == D_FLUX_MIXED ) {
-            returnval = flux_mixed;
-        } else if( varName == D_FLUX_INTERIOR ) {
-            returnval = flux_interior;
-        } else if( varName == D_HEAT_FLUX) {
-            returnval = heatflux;
-        } else if( varName == D_ECS ) {
-            returnval = S;
-        } else if(varName == D_VOLCANIC_SCALE) {
-            returnval = volscl;
-        } else if(varName == D_QCO2) {
-            returnval = q2co2;
-        } else if(varName == D_LO_WARMING_RATIO) {
-            returnval = lo_warming_ratio;
-        } else {
-            H_THROW( "Caller is requesting unknown variable: " + varName );
-        }
-    } else {
-        // If a date is supplied, get the needed value from the
-        // vectors.  Some values, such as model parameters, don't have
-        // time-indexed values, so asking for one of those with a date
-        // is an error.
-        H_ASSERT(date <= core->getCurrentDate(), "Date must be <= current date.");
-        int tstep = date - core->getStartDate();
-        
-        if( varName == D_GLOBAL_TEMP ) {
-            returnval = unitval(temp[tstep], U_DEGC);
-        } else if( varName == D_LAND_AIR_TEMP ) {
-            if ( lo_warming_ratio != 0 ) {
-                returnval = unitval(lo_temp_landair[tstep], U_DEGC);
-            } else {
-                returnval =  unitval(temp_landair[tstep], U_DEGC);
-            }
-        } else if( varName == D_OCEAN_SURFACE_TEMP ) {
-            if ( lo_warming_ratio != 0 ) {
-                returnval = unitval(lo_sst[tstep], U_DEGC);
-            } else {
-                returnval = unitval(temp_sst[tstep], U_DEGC);
-            }
-        } else if( varName == D_OCEAN_AIR_TEMP ) {
-            if ( lo_warming_ratio != 0 ) {
                 returnval = unitval(lo_temp_oceanair[tstep], U_DEGC);
+            }
+        } else {
+            if( date == Core::undefinedIndex() ) {
+                returnval = tgav_oceanair;
             } else {
                 returnval = bsi * unitval(temp_sst[tstep], U_DEGC);
             }
-        } else if( varName == D_FLUX_MIXED ) {
-            returnval = unitval(heatflux_mixed[tstep], U_W_M2);
-        } else if( varName == D_FLUX_INTERIOR ) {
-            returnval = unitval(heatflux_interior[tstep], U_W_M2);
-        } else if( varName == D_HEAT_FLUX) {
-            double value = heatflux_mixed[tstep] + fso*heatflux_interior[tstep];
-            returnval = unitval(value, U_W_M2);
-        } else if( varName == D_TGAV_CONSTRAIN ) {
-            H_ASSERT( date != Core::undefinedIndex(), "Date required for Tgav constraint" );
-            if (tgav_constrain.exists( date )) {
-                returnval = tgav_constrain.get( date );
+        }
+    } else if( varName == D_OCEAN_SURFACE_TEMP ) {
+        if ( lo_warming_ratio != 0 ) {
+            if( date == Core::undefinedIndex() ) {
+                returnval = lo_tgav_sst;
             } else {
-                H_LOG( logger, Logger::DEBUG ) << "No Tgav constraint for requested date " << date <<
-                ". Returning missing value." << std::endl;
-                returnval = unitval( MISSING_FLOAT, U_DEGC );
+                returnval = unitval(lo_sst[tstep], U_DEGC);
+            }
+        } else {
+            if( date == Core::undefinedIndex() ) {
+                returnval = tgav_sst;
+            } else {
+                returnval = unitval(temp_sst[tstep], U_DEGC);
             }
         }
+    } else if( varName == D_FLUX_MIXED ) {
+        if( date == Core::undefinedIndex() ) {
+            returnval = flux_mixed;
+        } else {
+            returnval = unitval(heatflux_mixed[tstep], U_W_M2);
+        }
+    } else if( varName == D_FLUX_INTERIOR ) {
+        if( date == Core::undefinedIndex() ) {
+            returnval = flux_interior;
+        } else {
+            returnval = unitval(heatflux_interior[tstep], U_W_M2);
+        }
+    } else if( varName == D_HEAT_FLUX) {
+        if( date == Core::undefinedIndex() ) {
+            returnval = heatflux;
+        } else {
+            double value = heatflux_mixed[tstep] + fso*heatflux_interior[tstep];
+            returnval = unitval(value, U_W_M2);
+        }
+    } else if( varName == D_TGAV_CONSTRAIN ) {
+        H_ASSERT( date != Core::undefinedIndex(), "Date required for Tgav constraint" );
+        if (tgav_constrain.exists( date )) {
+            returnval = tgav_constrain.get( date );
+        } else {
+            H_LOG( logger, Logger::DEBUG ) << "No Tgav constraint for requested date " << date <<
+            ". Returning missing value." << std::endl;
+            returnval = unitval( MISSING_FLOAT, U_DEGC );
+        }
+    } else if( varName == D_DIFFUSIVITY ) {
+        H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for diffusivity" );
+        returnval = diff;
+    } else if( varName == D_AERO_SCALE ) {
+        H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for aero scaler" );
+        returnval = alpha;
+    } else if( varName == D_ECS ) {
+        H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for ECS" );
+        returnval = S;
+    } else if( varName == D_VOLCANIC_SCALE ) {
+        H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for volcanic scaler" );
+        returnval = volscl;
+    } else if( varName == D_QCO2 ) {
+        H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for q2co2" );
+        returnval = q2co2;
+    } else if( varName == D_LO_WARMING_RATIO ) {
+        H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for land ocean warming ratio" );
+        returnval = lo_warming_ratio;
+        return returnval;
+    } else {
+        H_THROW( "Caller is requesting unknown variable: " + varName );
     }
     
     return returnval;
 }
-
 //------------------------------------------------------------------------------
 // documentation is inherited
 void TemperatureComponent::reset(double time)
