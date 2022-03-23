@@ -103,7 +103,7 @@ private:
     double taudif;           // interior ocean heat uptake time scale, yr
     double tauksl;           // sea-land heat exchange time scale, yr
     double taukls;           // land-sea heat exchange time scale, yr
-    unitval q2co2;           // radiative forcing for atmospheric CO2 doubling (W/m2)
+    double qco2;             // radiative forcing for atmospheric CO2 doubling
 
     std::vector<double> KT0;
     std::vector<double> KTA1;

@@ -180,7 +180,7 @@ void TemperatureComponent::setData( const string& varName,
             volscl = data.getUnitval(U_UNITLESS);
         } else if(varName == D_QCO2) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
-            q2co2 = data.getUnitval(U_UNDEFINED);
+            qco2 = data.getUnitval(U_UNITLESS).value(U_UNITLESS);
         } else if( varName == D_TGAV_CONSTRAIN ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
             tgav_constrain.set(data.date, data.getUnitval(U_DEGC));
@@ -250,9 +250,6 @@ void TemperatureComponent::prepareToRun() {
     // Constants & conversion factors
     kcon = secs_per_Year / 10000;               // conversion factor from cm2/s to m2/yr;
     ocean_area = (1.0 - flnd) * earth_area;    // m2
-    double qco2 = q2co2.value( U_UNDEFINED );
-    
-    
     
     // Calculate climate feedback parameterisation
     cnum = rlam * flnd + bsi * (1.0 - flnd);   // denominator used to calculate climate senstivity feedback parameters over land & sea
@@ -594,7 +591,7 @@ unitval TemperatureComponent::getData( const std::string& varName,
         returnval = volscl;
     } else if( varName == D_QCO2 ) {
         H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for q2co2" );
-        returnval = q2co2;
+        returnval = unitval(qco2, U_DEGC);
     } else if( varName == D_LO_WARMING_RATIO ) {
         H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for land ocean warming ratio" );
         returnval = lo_warming_ratio;
