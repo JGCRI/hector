@@ -2,7 +2,10 @@
 title: "Installing and building Hector"
 ---
 
-There are lots of ways to use Hector: as a stand-alone executable, through the UI, and as an R package. Here we provide installation and building instructions for the R Hector package and the executable. 
+There are lots of ways to use Hector: as a stand-alone executable, through the 
+online [HectorUI](https://jgcri.shinyapps.io/HectorUI/), and as an R package. 
+Here we provide installation and 
+building instructions for the R Hector package and the executable. 
 
 # R Hector 
 
@@ -12,7 +15,10 @@ To install the version associated with the current `master` git branch on GitHub
 This will automatically install all of Hector's dependencies as well.
 (Note that because this requires compiling from source, you will need to have a C compiler installed and configured.
 
-On **Windows**, you will also need to install Rtools. Download and instructions can be found [here](https://cloud.r-project.org/bin/windows/Rtools/). After installation, there is another step to put the Rtools `make utilities` on the system PATH. This will allow you to compile R packages.
+On **Windows**, you will also need to install Rtools. Download and instructions
+can be found [here](https://cloud.r-project.org/bin/windows/Rtools/). After 
+installation, there is another step to put the Rtools `make utilities` on the 
+system PATH. This will allow you to compile R packages.
 
 To do so, create a text file `.Renviron` in your Documents folder with the following line:   `PATH="${RTOOLS40_HOME}\usr\bin;${PATH}"`. 
 
@@ -26,35 +32,8 @@ On **Mac OS** and **Linux**, the required tools should be included as part of a 
 # If the `remotes` package isn't installed, first run:
 # install.packages("remotes")
 remotes::install_github("jgcri/hector")
-
-# You can also install from specific git tags...
-remotes::install_github("jgcri/hector@2.2.2")
-# ...branches...
-remotes::install_github("jgcri/hector@krd-perscribe_co2Con")
-# ...or commit hashes.
-remotes::install_github("jgcri/hector@16c480a")
 ```
 
-Finally, to install from a local copy of the source code, you can use the following code:
-
-```r
-remotes::install("/path/to/hector")
-# For the current directory, use `"."` or run the function with no arguments.
-```
-
-If you do not want to install `remotes`, you can also install from a local copy by using the base-R `install.packages` function as follows:
-
-```r
-install.packages("/path/to/hector", repos = NULL)
-```
-
-...or by running the following shell command:
-
-```sh
-R CMD INSTALL /path/to/hector
-```
-
-However, note that neither of these commands will automatically install Hector's dependencies, so you will have to install them manually.
 Hector's mandatory dependencies are listed in the `DESCRIPTION` file under `Imports`, and are currently as follows:
 
 - [`Rcpp`](http://www.rcpp.org/) -- Facilitates integration of C++ code into R packages
@@ -64,12 +43,16 @@ Hector's mandatory dependencies are listed in the `DESCRIPTION` file under `Impo
 # Standalone Executable
 
 Hector can also be compiled as a standalone executable.
-Unlike the R package, this method of installation does not automatically pull in dependencies, so you will have to install them manually.
+Unlike the R package, this method of installation does not automatically pull 
+in dependencies, so you will have to install them manually.
 
 Hector's only external dependency, **Boost**, is a free, peer-reviewed portable
 C++ source library, available at http://www.boost.org/.
-Hector primarily uses Boost "header-only" libraries, which do not need to be compiled independently and only need to be extracted and included with the Hector source.
-Note, if your C++ compiler or standard library does [not support the C++ 17 standard](#no-stdfilesystem-support) then the Boost `system` and `filesystem` libraries will need to be compiled/installed.
+Hector primarily uses Boost "header-only" libraries, which do not need to be 
+compiled independently and only need to be extracted and included with the Hector source.
+Note that if your C++ compiler or standard library does 
+[not support the C++ 17 standard](#no-stdfilesystem-support) then the Boost
+`system` and `filesystem` libraries will need to be compiled/installed.
 
 ## Command Line (Linux & Mac OSX)
 
