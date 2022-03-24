@@ -59,7 +59,8 @@ representative at an online or offline event.
 ## Enforcement
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be
-reported to the project leads, Kalyn Dorheim and/or Ben Bond-Lamberty. 
+reported to the project leads, [Kalyn Dorheim](mailto:kalyn.dorheim@pnnl.gov) 
+and/or Ben Bond-Lamberty (mailto:bondlamberty@pnnl.gov). 
 All complaints will be reviewed and investigated promptly and fairly.
 
 Community leaders are obligated to respect the privacy and security of the
