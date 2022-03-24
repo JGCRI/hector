@@ -11,9 +11,10 @@ building instructions for the R Hector package and the executable.
 
 To install R, follow the [official instructions](https://cloud.r-project.org/) for your platform.
 
-To install the version associated with the current `master` git branch on GitHub, use the `remotes`::install_github` function.
+To install the version associated with the current `master` git branch on GitHub, 
+use the `remotes`::install_github` function.
 This will automatically install all of Hector's dependencies as well.
-(Note that because this requires compiling from source, you will need to have a C compiler installed and configured.
+(Note that because this requires compiling from source, you will need to have a C compiler installed and configured.)
 
 On **Windows**, you will also need to install Rtools. Download and instructions
 can be found [here](https://cloud.r-project.org/bin/windows/Rtools/). After 
@@ -22,9 +23,13 @@ system PATH. This will allow you to compile R packages.
 
 To do so, create a text file `.Renviron` in your Documents folder with the following line:   `PATH="${RTOOLS40_HOME}\usr\bin;${PATH}"`. 
 
-This can be done either with a text editor or in R like so:   `writeLines('PATH="${RTOOLS40_HOME}\\usr\\bin;${PATH}"', con = "~/.Renviron")`
+This can be done either with a text editor or in R itself:
+```r
+writeLines('PATH="${RTOOLS40_HOME}\\usr\\bin;${PATH}"', con = "~/.Renviron")
+```
 
-Remember to restart R (or Rstudio) and to verify that `make` can be found. Executing `Sys.which("make")` should show the path to your Rtools installation. 
+Remember to restart R (or Rstudio) and to verify that `make` can be found. 
+Executing `Sys.which("make")` should show the path to your Rtools installation. 
 
 On **Mac OS** and **Linux**, the required tools should be included as part of a standard R installation.
 
@@ -52,20 +57,21 @@ Hector primarily uses Boost "header-only" libraries, which do not need to be
 compiled independently and only need to be extracted and included with the Hector source.
 Note that if your C++ compiler or standard library does 
 [not support the C++ 17 standard](#no-stdfilesystem-support) then the Boost
-`system` and `filesystem` libraries will need to be compiled/installed.
+`system` and `filesystem` libraries will need to be compiled/installed (see below).
 
 ## Command Line (Linux & Mac OSX)
 
-The Hector makefiles look for Boost libraries and headers in certain default
-locations, but those defaults can be overridden by setting the
+The Hector makefiles look for Boost libraries and headers in certain
+locations; these defaults can be overridden by setting the
 following environment variables:
 
 * `BOOSTROOT` (default `/usr/local/`).
 This variable should contain the full name of a directory with `include/` and
 `lib/` subdirectories that contain, respectively, the Boost header and library 
 files. If you installed Boost using a package manager, this is likely where
-it is. If you built Boost from source or used [Homebrew](https://brew.sh/) to
-install Boost), then you will need to set this variable explicitly. 
+it is. If you built Boost from source or used a tool such as 
+[Homebrew](https://brew.sh/) to install Boost, 
+then you will need to set this variable explicitly. 
 
 Alternatively, if the header and library locations are not subdirectories of
 a single directory, you can set `BOOSTINC` and `BOOSTLIB` variables to their 
@@ -81,21 +87,17 @@ if you want to run the Hector unit tests.** It's not needed for running the mode
 
 **Shared Library Search Path**
 
-Compiled Boost libraries used by Hector will be
+If your C++ compiler or standard library does not support the C++ 17 standard
+(see below), then the Boost libraries used by Hector will be
 compiled into shared libraries that must be loaded at run time. It is
 best if these libraries are in directories that are part of your
 system's shared library search path. On many systems `/usr/local` is
-already in that path. If you install the libraries somewhere else,
-you may need to add the installation directories to the list given in
-`/etc/ld.so.conf`. Whether or not you install the GSL libraries in the default location, when you compile and install them 
-you may need to refresh the library cache by running
-`ldconfig` (which generally requires root privilege), or by rebooting your system 
-(which does not).
+already in that path.
 
-If you are unable to add your library installation directory to the
-library search path, you will need to add the installation directory
-to the environment variable `LD_LIBRARY_PATH`.  Try not to use this approach if you 
-can help it because it can cause some conflicts with other software on your system.
+If you are unable to add your library installation directory to the library
+search path, you will need to add the installation directory to the environment 
+variable `LD_LIBRARY_PATH`.  Try not to use this approach if you can help it, 
+because it can cause some conflicts with other software on your system.
 Instead, ask your system administrator if `ldconfig` is right for you.
 
 ### Build & Run Hector 
@@ -123,7 +125,9 @@ and rebuild when you are ready to go back to
 production runs.
 
 #### No std::filesystem Support
-If your C++ compiler or standard library is too old it will not have the C++ 17 standard / std::filesystem support. In which case you may recieve errors while building Hector such as the following:
+If your C++ compiler or standard library is too old, it will not support
+the C++ 17 `std::filesystem`. In this case you may receive errors while
+building Hector such as the following:
 
 ```
 g++  -L.  -o hector main.o -lhector -lm 
@@ -140,12 +144,13 @@ ini_to_core_reader.cpp:159:17: error: 'path' is unavailable: introduced in macOS
 
 ```
 
-In this case, you can set the environment variables:
+In this case, you can set an environment variable:
 ```
 export NO_CXX17=1
 ```
 
-In addition, you will need to [Compile Boost Libraries](https://www.boost.org/doc/libs/1_77_0/more/getting_started/unix-variants.html) at the minimum `system` and `filesystem`.  Finally, ensure that the environment variable `BOOSTROOT` or `BOOSTLIB` is set properly so that Hector is able to find the compiled Boost libraries.
+and will need to [Compile Boost Libraries](https://www.boost.org/doc/libs/1_77_0/more/getting_started/unix-variants.html) -- specifically, the `system` and `filesystem` libraries.  Finally, ensure 
+that the environment variable `BOOSTROOT` or `BOOSTLIB` is set properly (see above).
 
 #### Running Hector
 
@@ -166,7 +171,7 @@ and then
 
 These directions assume a basic familiarity with Xcode and Mac OS X software installation.
 
-* Install [Xcode](https://developer.apple.com/xcode/downloads/) if necessary. Hector has been built and tested with Mac OS >= 10.8.5. The project files are for Xcode 11.3.1.
+* Install [Xcode](https://developer.apple.com/xcode/downloads/) if necessary. Hector has been built and tested with Mac OS >= 10.8.5. The project files are for Xcode 11.5.
 * Download and install Boost, following the instructions above.
 * Download the [Hector zip file](https://github.com/JGCRI/hector/archive/master.zip) or check out the repository using Git.
 * From Xcode, open the project file in `project_files/Xcode/hector.xcodeproj`.
@@ -174,7 +179,7 @@ These directions assume a basic familiarity with Xcode and Mac OS X software ins
 The Xcode project file is configured to use constants defining custom paths, rather than hard-coded paths.
 This means that developers and users can set these paths without overwriting each other.
 
-* You will need to set several custom paths (Preferences -> Locations -> Custom Paths): `BOOSTROOT`, and `HECTORDIR`.
+* As a result, **you will need to set several custom paths** (Preferences -> Locations -> Custom Paths): `BOOSTROOT`, and `HECTORDIR`.
     * `BOOSTROOT` is the root directory where the Boost headers can be found in `boost/`.  
     * `HECTORDIR` should be set to root directory for the model (the repository root) Xcode will use this path to the ini files used by the various schemes and write the csv files to the output directory. 
 
@@ -193,6 +198,8 @@ Xcode Resources
 
 * [Xcode Schemes](https://developer.apple.com/library/archive/documentation/ToolsLanguages/Conceptual/Xcode_Overview/ManagingSchemes.html)
 * [Xcode Debugging](https://developer.apple.com/library/archive/documentation/DeveloperTools/Conceptual/debugging_with_xcode/chapters/debugging_tools.html)
+
+TODO: is the below material updated/correct? Should we remove?
 
 ## Visual Studio Code (Windows)
 
