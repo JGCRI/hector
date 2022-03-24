@@ -18,7 +18,7 @@ It is best to copy and modify the corresponding files from an already constructe
 Step two (within X.hpp):
 -----------
 
-Under `private` list the variables that are used in the component and their corresponding type. 
+Under `private`, list the variables that are used in the component and their corresponding type. 
 Because of Hector's ability to [reset](../reference/reset.html), 
 every state variable generally needs an associated time series history variable. For example: 
 
@@ -89,7 +89,7 @@ In `core.cpp`
 
 Add `#include "xcomponent.hpp" `  
 
-Under `Core::init()` section add code to create your new component:
+Under `core::init()` section add code to create your new component:
 
 ```cpp
 temp = new XComponent();

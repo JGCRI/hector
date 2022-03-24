@@ -58,7 +58,7 @@ reference:
   - getname
   - getunits
 
-- title: Biome realted functions
+- title: Biome related functions
   contents:
   - matches("biome")
 
@@ -112,7 +112,7 @@ articles:
   contents:
   - matches("[a-z]")
 
-# Set up the serach nav bar
+# Set up the search nav bar
 search:
     exclude: ['news/index.html']
 template:
