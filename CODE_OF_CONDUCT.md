@@ -59,11 +59,15 @@ representative at an online or offline event.
 ## Enforcement
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be
-reported to the community leaders responsible for enforcement at [INSERT CONTACT
-METHOD]. All complaints will be reviewed and investigated promptly and fairly.
+reported to the project leads, Kalyn Dorheim and/or Ben Bond-Lamberty. 
+All complaints will be reviewed and investigated promptly and fairly.
 
-All community leaders are obligated to respect the privacy and security of the
+Community leaders are obligated to respect the privacy and security of the
 reporter of any incident.
+
+This code of conduct, including the consequences laid out below, applies equally
+to the community leaders, of course. Any temporary or permanent ban will result
+in the person in question being removed from the leadership.
 
 ## Enforcement Guidelines
 
