@@ -43,3 +43,4 @@ _pkgdown.yml
 ^doc$
 ^Meta$
 ^vignettes/articles$
+^CODE_OF_CONDUCT\.md$
