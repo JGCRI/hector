@@ -2,7 +2,7 @@
 title: A tour of the Hector R interface
 subtitle: R
 author: Alexey Shiklomanov
-date: "2018-10-17"
+date: "2018-10-17 (updated 2022)"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{A tour of the Hector R interface}
@@ -18,9 +18,12 @@ knitr::opts_chunk$set(echo = TRUE, dpi = 150)
 
 This vignette provides a basic introduction for running Hector with R.
 First, it shows how to do a simple Hector run with a built-in scenario.
-Then, it shows how to modify Hector parameters from within R and uses this functionality to perform a simple sensitivity analysis of how the CO$_2$ fertilization parameter $\beta$ affects several Hector output variables.
+Then, it shows how to modify Hector parameters from within R and uses this 
+functionality to perform a simple sensitivity analysis of how the CO$_2$ 
+fertilization parameter $\beta$ affects several Hector output variables.
 
-If you do not yet have Hector installed, please reference the manual's instructions for [building and running Hector](BuildHector.html). 
+If you do not yet have Hector installed, please reference the manual's 
+instructions for [building and running Hector](BuildHector.html). 
 
 # Basic run
 
@@ -30,23 +33,25 @@ First, load the `hector` package.
 library(hector) 
 ```
 
-Hector is configured via an INI file, which defines run metadata, inputs (e.g., emissions scenarios), and parameters.
+Hector is configured via an INI file, which defines run metadata, inputs 
+(e.g., emissions scenarios), and parameters.
 For details on this file, see [InputFiles](InputFiles.html).
 
-These files ship with the Hector R package in the `input` subdirectory, which allows them to be accessed via `system.file`.
-First, determine the path of the input file (ini) corresponding to the scenario SPP245.
+These files ship with the Hector R package in the `input` subdirectory, 
+which allows them to be accessed via `system.file`.
+First, determine the path of the input file (ini) corresponding to the 
+scenario [SPP245](https://en.wikipedia.org/wiki/Shared_Socioeconomic_Pathways).
 
 ```{r  ini-file }
 ini_file <- system.file("input/hector_ssp245.ini", package = "hector") 
 ```
 
-
-Alternatively, users may provide a path to an ini file external to the Hector package on their local machine. This ini file must comply with the Hector  [ini requirements](InputFiles.html). 
+Alternatively, users may provide a path to an ini file external to the Hector 
+package on their local machine. This file must comply with the Hector [ini requirements](InputFiles.html). 
 
 ```{r}
 external_ini_file <- "/path/to/ini/on/local/machine/my_ini.ini"
 ```
-
 
 Next, we initialize a Hector instance, or "core", using this configuration.
 This core is a self-contained object that contains information about all of Hector's inputs and outputs.
@@ -85,13 +90,18 @@ ggplot(results) +
   facet_wrap(~variable, scales = "free_y")
 ```
 
+By default, `fetchvars` returns the four outputs shown above--atmospheric
+CO$_2$ concentration, CO$_2$ radiative forcing, total radiative forcing, and 
+temperature change--but any model output(s) can be specified.
+
 # Setting parameters
 
 The Hector R interface interacts with parameters and variables in the same way.
 Therefore, the variables can be set and checked via `setvar` and `fetchvars`.
 
 First, let's get the current value of $\beta$ (beta), the CO$_2$ fertilization factor.
-Because variables and parameter names have to be retrieved from the Hector core, they are stored as R functions (e.g. `BETA()`).
+Because variables and parameter names have to be retrieved from the Hector core, 
+they are stored as R functions (e.g. `BETA()`).
 However, these functions return a string corresponding to the variable name.
 
 ```{r variable-example}
@@ -134,14 +144,18 @@ Notice that `Current date` is set to 2300.
 This is because we have already run this core to its end date.
 The ability to stop and resume Hector runs with the same configuration, possibly with adjusting values of certain variables while stopped, is an essential part of the model's functionality.
 But, it's not something we're interested in here.
-We have already stored the previous run's output in `results` above, so we can safely reset the core here.
+We have already stored the previous run's output in `results` above, so we can safely reset the core:
 
 ```{r reset-core}
 reset(core)
 ```
 
-This will effectively "rewind" the core back to either the provided `date` (defaults to 0 if missing) or the model start date (set in the INI file; default is 1745), whichever is greater.
-In addition, if the `date` argument is less than the model start date and spinup is enabled (`do_spinup = 1` in the INI file), then the core will re-do its spinup process with the current set of parameters.
+This effectively 'rewinds' the core back to either the provided `date` 
+(defaults to 0 if missing) or the model start date (set in the INI file; 
+default is 1745), whichever is greater.
+In addition, if the `date` argument is less than the model start date and spinup 
+is enabled (`do_spinup = 1` in the INI file), then the core will re-do its 
+spinup process with the current set of parameters.
 
 ***
 **NOTE**
