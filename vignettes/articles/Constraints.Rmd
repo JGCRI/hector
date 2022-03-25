@@ -20,24 +20,23 @@ The Hector model can be run subject to *constraints* that force the model to hav
 * Net Biome Production (NBP)
 
 
-Constraints can be applied to Hector within the ini file (command-line & R) or using the `hector` package `setvar` function. 
+Constraints can be applied to Hector within the ini file (command-line & R) or using the Hector package `setvar` function. 
 
 ## Setting Constraints in Hector 
 
-There are two ways to activate a constraint in Hector, through an ini file or with the `setvar` function in R. Here is a generic overview of the two different approaches. See below for a more specific implementation of constraints. 
+There are two ways to activate a constraint in Hector: through an ini file or with the `setvar` function in R. Here is a generic overview of the two different approaches. See below for a more specific implementation of constraints. 
 
 ### Constraints via the ini file
 
-A Hector [input file](InputFiles.html) is broken up into sections such as `[core]`, `[temperature]`, `[carbon-cycle-solver]`, and so on. Within each section, users can define parameter values and pass in input variables including constraints. All of the constraint variables are named with the following pattern `variable_constrain` that points to the csv file where the variables' time series are defined. When the line starts the symbol `;` then the constraint is off, Hector is free running. When the constraint line beings without `;` then the Hector is using the constraint, the user-provided data is used in lieu of Hector's internal calculations. Changes to the constraints in the input files apply to Hector runs executed at the command line or with the R interface. 
-
+A Hector [input file](InputFiles.html) is broken up into sections such as `[core]`, `[temperature]`, `[carbon-cycle-solver]`, and so on. Within each section, users can define parameter values and pass in input variables -- including constraints. All of the constraint variables are named with the pattern `variable_constrain` that points to the csv file where the variables' time series are defined. When the line starts the symbol `;`, the constraint is off and Hector is free running. When the constraint line beings without `;`, then Hector is using the constraint and the user-provided data is used in lieu of Hector's internal calculations. Changes to the constraints in the input files apply to Hector runs executed at the command line or with the R interface. 
 
 ### Constraints via `setvar`
 
-With the `hector` R package the `setvar` function can be used to set constraints for a Hector instance. See below for specific examples or run `help("constraints")` or `help("haloconstrain")` for the static R help documentation. 
+With the Hector R package, the `setvar` function can be used to set constraints for a Hector instance. See below for specific examples or run `help("constraints")` or `help("haloconstrain")` for the static R help documentation. 
 
 ### Discontinuous constraints
 
-Hector _does not perform any interpolation of constraints_ -- they are applied only in the exact years that they are provided by the user, and all other years are treated (including those immediately before or after constrained years) are treated as unconstrained (typically, emissions-driven).
+Hector _does not perform any interpolation of constraints_ -- constraints are applied only in the exact years that they are provided by the user, and all other years (including those immediately before or after constrained years) are treated as unconstrained (typically, emissions-driven).
 This means that constraints can abruptly force Hector's climate system into a state that is inconsistent with the previous time step.
 Concentrations for the first year of a constraint can be discontinuous compared to the previous year without a constraint.
 Concentrations after the last year of a constraint will not necessarily have a discontinuity, but the behavior of the corresponding component and any related components may change after this point.
@@ -48,7 +47,7 @@ It is the user's responsibility to make sure that constraints are continuous.
 
 ### Atmospheric CO~2~
 
-CO$_2$ concentrations ([CO$_2$], given in ppmv CO$_2$) have the largest effect on total radiative forcing and is affected by carbon-cycle climate interactions. Running Hector with the CO$_2$ concentration constraint turned on not only mimics the default behavior of the Earth System Models which are GHG concentration driven. This capability is also helpful with debugging. With the atmospheric CO$_2$ constraint turned on carbon-cycle and climate feedback parameters ($Q_{10}$ and $\beta$) are essentially ignored.  
+CO$_2$ concentrations ([CO$_2$], given in ppmv CO$_2$) have the largest effect on total radiative forcing and is affected by carbon-cycle climate interactions. Running Hector with the CO$_2$ concentration constraint turned on mimics the default behavior of the Earth System Models which are GHG concentration driven. This capability is also helpful with debugging. With the atmospheric CO$_2$ constraint turned on, carbon-cycle and climate feedback parameters ($Q_{10}$ and $\beta$) are essentially ignored.  
 
 
 Uncommenting (removing the `;`) from the following line in the `[simpleNbox]`section of the [input file](InputFiles.html) will turn the atmospheric CO$_2$ concentration constraint on. 
@@ -57,15 +56,14 @@ Uncommenting (removing the `;`) from the following line in the `[simpleNbox]`sec
 ;CO2_constrain=csv:path/to/constraint/file.csv
 ```
 
+Then the model's atmospheric CO$_2$ concentration ([CO$_2$], given in ppmv CO$_2$) will follow the contents of this file (which must include at least two columns titled `Date` and `CO2_constrain`).
+Alternatively, Hector's atmospheric CO$_2$ concentration constraint can be set using the `setvar` function and `CO2_CONSTRAIN()`.
 
-then the model's atmospheric CO$_2$ concentration ([CO$_2$], given in ppmv CO$_2$) will follow the contents of this file (which must include at least two columns titled `Date` and `CO2_constrain`).
-Alternatively, Hector's atmospheric CO$_2$ concentration constraint can be set using the `setvars` function and `CO2_CONSTRAIN()`.
-
-Here is an example in R
+Here is an example in R.
 
 ```{r, message=FALSE, warning=FALSE}
-# Set up an instance of Hector & run, this is the free running Hector that to be 
-# use as a comparison to the constrained Hector. 
+# Set up an instance of Hector & run, this is the free running Hector to be 
+# used as a comparison to the constrained Hector. 
 ini <- system.file("input/hector_ssp245.ini", package = "hector")
 core <- newcore(ini, name = "ssp245")
 invisible(run(core)) # the invisible call prevents hector core info from being printed out 
@@ -103,10 +101,10 @@ ggplot() +
 The CO$_2$ constraint is applied at the _end_ of the current time step.
 The full sequence of events is as follows:
 First, the model solves the current time-step's carbon cycle conditioned on the previous time step's carbon pools, ignoring the CO$_2$ constraint.
-Then, if a CO$_2$ constraint is present, Hector calculates the difference between its calculated atmospheric CO$_2$ and the prescribed CO2 constraint.
+Then, if a CO$_2$ constraint is present, Hector calculates the difference between its calculated atmospheric CO$_2$ and the prescribed CO$_2$ constraint.
 If the target atmospheric CO$_2$ concentration is lower than the calculated CO$_2$, the excess carbon is transferred from the atmosphere to the deep ocean;
 conversely, if the target atmospheric CO$_2$ concentration is greater than the calculated value, the additional carbon is transferred from the deep ocean into the atmosphere.
-Finally, Hector records the current atmospheric CO$_2$ concentration (which is now equal to the constraint value); this is the value that is used in the next time step's evaluation of carbon-climate feedbacks (e.g. CO$_2$ fertilization of net primary productivity, surface ocean carbonate chemistry).
+Finally, Hector records the current atmospheric CO$_2$ concentration (which is now equal to the constraint value); this is the value that is used in the next time step's evaluation of carbon-climate feedbacks (e.g. CO$_2$ fertilization of net primary productivity, surface ocean carbonate chemistry...).
 In other words, an atmospheric CO$_2$ constraint at time $t$ does not affect carbon-climate feedbacks until $t+1$.
 
 The CO$_2$ constraint need not span the entirety of the Hector simulation, or even be continuous.
@@ -115,7 +113,7 @@ This means that "hybrid" runs are possible, where only some specific time ranges
 
 ### Non CO~2~ concentrations
 
-Hector can constrain non CO~2~ GHGs (N~2~O, CH~4, and halocarbons) concentrations. These all work in more-or-less the same way as the atmospheric CO$_2$ constraint (above), except that there is no equivalent to the carbon pool adjustment for these gases. 
+Hector can constrain non CO$_2$ GHGs (N$_2$O, CH$_4$, and halocarbons) concentrations. These all work in more-or-less the same way as the atmospheric CO$_2$ constraint (above), except that there is no equivalent to the carbon pool adjustment for these gases. 
 
 In the [input file](InputFiles), they are triggered by a line like the following in their corresponding component section:
 
@@ -125,22 +123,22 @@ X_constrain=csv:path/to/file.csv
 
 As with other CSV inputs, the `/path/to/file.csv` above must include columns for `Date` and `X_constrain`. 
 
-Alternatively, constraints can be set from the R interface using `setvars`. Because implementing these constraints follows the same pattern as the temperature, radiative forcing, and atmospheric CO~2~. Set up an active Hector core, use `setvars` to set the constraint, run, and fetch the output from the Hector core. 
+Alternatively, constraints can be set from the R interface using `setvars`. Implementing these constraints follows the same pattern as the temperature, radiative forcing, and atmospheric CO~2~: Set up an active Hector core, use `setvars` to set the constraint, run, and fetch the output from the Hector core. 
 
 
 **How the constraint is implemented in Hector (C++) using CH~4~ as an example**
 
 At any given time step, Hector will check if the constraint has a value for that time step (e.g. `CH4_constrain.exists(t)`).
-If the constraint exists, Hector will skip all atmospheric chemistry calculates and set the corresponding atmospheric concentration value to the constraint value (e.g. `CH4.set(t, CH4_constrain.get(t)`).
+If the constraint exists, Hector will skip all atmospheric chemistry calculations and set the corresponding atmospheric concentration value to the constraint value (e.g. `CH4.set(t, CH4_constrain.get(t)`).
 If the constraint does not exist, Hector will proceed with its standard atmospheric chemistry routines for calculating the atmospheric concentration based on emissions and concentrations of other relevant species.
-This means that _concentration constraints always take precedence over emissions_; in other words, if a particular time step has both emissions and a concentration constraint, the emissions are ignored.
+This means that _concentration constraints always take precedence over emissions_; in other words, if a particular time step has both an emissions and a concentration constraint, the emissions constraint is ignored.
 
 Note that CH~4~ and N~2~O have special variables for their pre-industrial concentration that could conflict with the constraint. In Hector, _concentration constraints take precedence over pre-industrial concentrations_;
-in other words, Hector assumes that if you provide a concentration constraint for the pre-industrial timestep, that is the concentration you want, regardless of the prescribed pre-industrial value. The equations for CH~4~ and N~2~O concentrations to raditive forcing were parameterized with specific pre-industrial concentrations. Users must be cautions of changes to pre-industrial values and how it may affect the radiative forcinig calculations. 
+in other words, Hector assumes that if you provide a concentration constraint for the pre-industrial timestep, that is the concentration you want, regardless of the prescribed pre-industrial value. The equations for CH~4~ and N~2~O concentrations to radiative forcing were parameterized with specific pre-industrial concentrations. Users must be cautions of changes to pre-industrial values and how it may affect the radiative forcing calculations. 
 
 ### Radiative forcing
 
-The model's global radiative forcing `Ftot` which drives global temperature changes can be constrained. Free running Hector calculates `Ftot` based on the radiative forcing contributions from GHG concentrations, aerosol emissions, and forcing inputs [UNSURE WORDING] (e.g. land albedo and solar forcing). Using the radiative forcing constraint `Ftot_constrain`, means any parameters and or variables that effect radiative forcing (such as carbon cycle feedback parameters or emissions) will not affect `Ftot` while the constraint is in effect. The model will extrapolate within the `Ftot_constrain` as necessary, but not beyond its endpoints. Once Hector's internal date passes the last date for `Ftot_constrain`, the model's forcing component becomes *unconstrained*.
+The model's global radiative forcing `Ftot` which drives global temperature changes can be constrained. Free running Hector calculates `Ftot` based on the radiative forcing contributions from GHG concentrations, aerosol emissions, and forcing inputs [UNSURE WORDING] (e.g. land albedo and solar forcing). Using the radiative forcing constraint `Ftot_constrain` means any parameters and/or variables that affect radiative forcing (such as carbon cycle feedback parameters or emissions) will not affect `Ftot` while the constraint is in effect. The model will extrapolate within the `Ftot_constrain` as necessary, but not beyond its endpoints. Once Hector's internal date passes the last date for `Ftot_constrain`, the model's forcing component becomes *unconstrained*.
 
 
 Uncommenting (removing the `;`) from the following line in the `[forcing]` section of the [input file](InputFiles.html) will turn the radiative forcing constraint on. 

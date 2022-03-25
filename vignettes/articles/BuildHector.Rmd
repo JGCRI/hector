@@ -2,15 +2,15 @@
 title: "Installing and building Hector"
 ---
 
-There are lots of ways to use Hector: as a stand-alone executable, through the UI, and as an R package. Here we provide installation and building instructions for the R Hector package and the executable. 
+There are many ways to use Hector: as a stand-alone executable, through the UI, and as an R package. Here we provide installation and building instructions for the R Hector package and the executable. 
 
 # R Hector 
 
 To install R, follow the [official instructions](https://cloud.r-project.org/) for your platform.
 
-To install the version associated with the current `master` git branch on GitHub, use the `remotes`::install_github` function.
+To install the version associated with the current `master` git branch on GitHub, use the `remotes::install_github` function.
 This will automatically install all of Hector's dependencies as well.
-(Note that because this requires compiling from source, you will need to have a C compiler installed and configured.
+(Note that because this requires compiling from source, you will need to have a C compiler installed and configured.)
 
 On **Windows**, you will also need to install Rtools. Download and instructions can be found [here](https://cloud.r-project.org/bin/windows/Rtools/). After installation, there is another step to put the Rtools `make utilities` on the system PATH. This will allow you to compile R packages.
 
