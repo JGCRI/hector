@@ -2,7 +2,7 @@
 title: Contribution Guide
 ---
 
-The Hector team welcomes and values community contributions to Hector, but there are a few things important to know. 
+The Hector team welcomes and values community contributions to Hector, but there are a few important things to know. 
 
 All contributions must pass through a pull request (PR) process before being merged into the master branch of Hector. Please note that opening a PR does **not** guarantee your work will be merged; we assess potential model changes for fit with Hector’s long-term strategic plan, compatibility, conformance to the model’s code style, and other factors.
 
