@@ -43,7 +43,9 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 LinkingTo: Rcpp, BH
-Imports: Rcpp (>= 0.12), BH (>= 1.69)
+Imports: 
+    Rcpp (>= 0.12), 
+    BH (>= 1.69)
 Suggests:
     testthat,
     nleqslv,
