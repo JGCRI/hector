@@ -1,5 +1,5 @@
 ---
-title: "Hector Wider World"
+title: "Hector in the Wider World"
 author: "Leeya Pressburger"
 date: "7/30/2021"
 ---
@@ -14,14 +14,14 @@ knitr::opts_chunk$set(
 
 This page is meant to serve as a reference for places where Hector has been featured. This list will be updated with time.
   
-## Hector Publications {#hector_documenation}
+## Hector Publications {#hector_documentation}
 
 There are three documentation manuscripts for Hector. 
 
 ### Hector v1 
 > Hartin, C. A., Patel, P., Schwarber, A., Link, R. P., and Bond-Lamberty, B. P. (2015). A simple object-oriented and open-source model for scientific and policy analyses of the global climate system – Hector v1.0, Geosci. Model Dev., 8, 939–955. https://doi.org/10.5194/gmd-8-939-2015.
 
-The original manuscript for Hector v1.0, was published in 2015. Hector is an open-source, object-oriented simple global carbon cycle model. The model takes in  CO$_2$ and non-CO$_2$ emissions (e.g., CH$_4$, N$_2$O), converting emissions to concentrations where needed and calculates the global radiative forcing and the global mean temperature change
+The original manuscript for Hector v1.0 was published in 2015. Hector is an open-source, object-oriented simple global carbon cycle model. The model takes in  CO$_2$ and non-CO$_2$ emissions (e.g., CH$_4$, N$_2$O), converting emissions to concentrations where needed, and calculates the global radiative forcing and the global mean temperature change
  
 ### Hector v1.1
 > Hartin, C. A., Bond-Lamberty, B. P., Patel, P., and Mundra, A. (2016). Ocean acidification over the next three centuries using a simple global climate carbon-cycle model: projections and sensitivities, Biogeosciences, 13, 4329 – 4342. https://doi.org/10.5194/bg-13-4329-2016
@@ -31,7 +31,7 @@ Hector v1.1 contains an updated ocean temperature algorithm to better match the 
 ### Hector v2.0
 > Vega-Westhoff, B., Sriver, R. L., Hartin, C. A., Wong, T. E., & Keller, K. (2019). Impacts of observational constraints related to sea level on estimates of climate sensitivity. Earth's Future, 7, 677– 690. https://doi.org/10.1029/2018EF001082
 
-Hector v2.5 incorporates a one-dimensional diffusive heat and energy balance model called [DOECLIM](https://pure.mpg.de/rest/items/item_994422_1/component/file_994421/content) and a global sea level module called [BRICK](https://doi.org/10.5194/gmd-10-2741-2017).
+Hector v2.0 incorporates a one-dimensional diffusive heat and energy balance model called [DOECLIM](https://pure.mpg.de/rest/items/item_994422_1/component/file_994421/content) and a global sea level module called [BRICK](https://doi.org/10.5194/gmd-10-2741-2017).
 
 ## Hector in Literature {#other_manuscripts}
 
@@ -73,7 +73,7 @@ The authors use fundamental impulse tests of CO$_2$, CH$_4$, and black carbon to
 ### RCMIP Project
 The Reduced Complexity Model Intercomparison Project ([RCMIP](https://www.rcmip.org/)) is the first systematic intercomparison project for reduced-complexity climate models (RCM) and provides a standard protocol for one-line models and simple and reduced-complexity models to perform experiments from a common set of assumptions. In short, this creates a standardized test of RCMs to reproduce Earth System Model projections. Hector is one such model being used in RCMIP. 
 
-[RCMIP Phase 1](https://gmd.copernicus.org/articles/13/5175/2020/) focuses on RCM's global mean temperature responses while [RCMIP Phase 2](https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2020EF001900) explores the extent to which different RCMs can be calibrated to reproduce knowledge from specialized research communities. 
+[RCMIP Phase 1](https://gmd.copernicus.org/articles/13/5175/2020/) focuses on RCMs' global mean temperature responses while [RCMIP Phase 2](https://agupubs.onlinelibrary.wiley.com/doi/10.1029/2020EF001900) explores the extent to which different RCMs can be calibrated to reproduce knowledge from specialized research communities. 
 
 ## Other Places
 
