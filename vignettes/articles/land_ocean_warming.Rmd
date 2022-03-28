@@ -8,6 +8,7 @@ Hector uses DOECLIM^[Kriegler, E. (2005). Imprecise probability analysis for int
 Potsdam. https://www.pik‐potsdam.de/members/edenh/theses/PhDKriegler.pdf], a diffusion ocean-energy balance, to calculate mean global air temperature from sea-surface and land-surface temperature anomalies. DOECLIM can simulate the different rates of warming over land and ocean surfaces, meaning that the land-ocean warming ratio is an emergent property of Hector. However, users do have the option to provide a land-ocean warming ratio to be used in place of DOECLIM’s internal calculations. This capability enables Hector to emulate the land-ocean warming dynamics of specific Earth System Models. 
 
 The purpose of this vignette is to demonstrate how providing a user-defined land-ocean warming ratio can affect Hector output. 
+  
 ## Setup
 
 ```{r setup}
@@ -17,7 +18,6 @@ library(magrittr)
 
 theme_set(theme_bw(base_size = 14))
 ```
-
 
 
 ## Run default Hector 
@@ -50,7 +50,7 @@ ggplot(data = out1) +
 
 ## Run Hector with different land ocean warming ratios 
 
-Start by writing a function to help us set the land ocean warming ratio, run hector, and fetch some results.  
+Start by writing a function to help us set the land ocean warming ratio, run Hector, and fetch some results.  
 
 
 ```{r}
@@ -64,6 +64,9 @@ run_with_lo <- function(hc, value){
     
     # Set the land ocean warming ratio. 
     setvar(hc, NA, LO_WARMING_RATIO(), value, getunits(LO_WARMING_RATIO()))
+    
+    # Reset core
+    reset(hc)
     
     # Run Hector
     run(hc)
@@ -88,7 +91,7 @@ lapply(lo_to_use, run_with_lo, hc = core) %>%
 ```
 
 
-Plot the results 
+Plot the results.   
 
 ```{r}
 ggplot(data = hector_lo_results) + 
@@ -105,7 +108,7 @@ ggplot(data = hector_lo_results) +
 
 
 ## Compare default Hector with user provided land ocean warming ratio
-
+  
 
 ```{r}
 ggplot() + 
