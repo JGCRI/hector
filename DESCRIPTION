@@ -9,6 +9,10 @@ Authors@R: c(person("Kalyn", "Dorheim",
 	        email = "bondlamberty@pnnl.gov", 
 	        role = "aut", 
 	        comment = c(ORCID = "0000-0001-9525-4633")),
+	     person("Skylar", "Gering",
+	        email = "sgering@g.hmc.edu",
+	        role = "ctb",
+	        comment = c(ORCID = "0000-0003-1974-3966")),
 	     person("Corinne", "Hartin", 
 	        email = "hartin.corinne@epa.gov", 
 	        role = "ctb",
@@ -39,7 +43,9 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 LinkingTo: Rcpp, BH
-Imports: Rcpp (>= 0.12), BH (>= 1.69)
+Imports: 
+    Rcpp (>= 0.12), 
+    BH (>= 1.69)
 Suggests:
     testthat,
     nleqslv,
