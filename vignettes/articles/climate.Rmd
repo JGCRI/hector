@@ -15,9 +15,3 @@ Potsdam. https://www.pik‐potsdam.de/members/edenh/theses/PhDKriegler.pdf], a d
 Potsdam. https://www.pik‐potsdam.de/members/edenh/theses/PhDKriegler.pdf], a diffusion ocean-energy balance model, determines how the change in Earth's radiative forcing budget manifests as changes in mean global air temperature from sea-surface and land-surface temperature anomalies. 
 
 Important note: for atmospheric CO~2~, the carbon cycle must be solved before Hector is able to calculate radiative forcing from CO~2~ because the temperature effects from CO~2~ are lagged in time. 
-
-
-
-
-
-

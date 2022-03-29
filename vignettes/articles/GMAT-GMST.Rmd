@@ -37,7 +37,7 @@ invisible(run(core))
 
 GMST can be calculated from Hector outputs by computing a weighted sum of the land air and ocean surface temperatures using the following equation:
 
-$\ GMST = (\text{land air temperature} * \text{fractional land area}) + (\text{ocean surface temperature} * (1 - \text{fractional land area})) $
+$\ \text{GMST} = (\text{land air temperature} * \text{fractional land area}) + (\text{ocean surface temperature} * (1 - \text{fractional land area})) $
 
 In Hector, land air temperature is represented by `Tgav_land` (`LAND_AIR_TEMP()`) and ocean surface temperature is represented by `Tgav_ocean_ST` (`OCEAN_SURFACE_TEMP()`). These components stem from the variable `Tgav` (`GLOBAL_TEMP()`), which is how Hector stores GMAT.
 

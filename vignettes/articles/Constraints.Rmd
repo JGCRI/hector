@@ -77,8 +77,9 @@ free_out <- fetchvars(core, 1850:2100, vars = vars_to_keep)
 constraint_yrs <- 1950:2050
 new_co2 <- seq(from  = 200, to = 400, length.out = length(constraint_yrs))
 
-# Use setvar() to set up the the constraint, run Hector & fetch the results.  
+# Use setvar() to set up the the constraint, reset and run Hector, and fetch the results.  
 setvar(core, dates = constraint_yrs, var = CO2_CONSTRAIN(), values = new_co2, unit = getunits(CO2_CONSTRAIN()))
+reset(core)
 invisible(run(core))
 constrained_out <- fetchvars(core, 1850:2100, vars = vars_to_keep)
 ```
@@ -165,8 +166,9 @@ free_out <- fetchvars(core, 1850:2100, vars = vars_to_keep)
 new_rf <- free_out[free_out$variable == RF_TOTAL() & free_out$year %in% 1950:2050, ]
 new_rf$value <- new_rf$value + 3 # increase the total RF
 
-# Use setvar() to set up the the constraint, run Hector & fetch the results.  
+# Use setvar() to set up the the constraint, reset and run Hector, and fetch the results.  
 setvar(core, dates = new_rf$year, var = FTOT_CONSTRAIN(), values = new_rf$value, unit = "W/m2")
+reset(core)
 invisible(run(core))
 constrained_out <- fetchvars(core, 1850:2100, vars = vars_to_keep)
 ```
@@ -201,7 +203,7 @@ Here is an example of using the R package to implement the global average mean t
 # Set up an instance of Hector & run 
 ini <- system.file("input/hector_ssp245.ini", package = "hector")
 core <- newcore(ini, name = "ssp245")
-invisible(run(core)) # the invisible call prevents hector core info from being printed out 
+invisible(run(core)) # the invisible call prevents Hector core info from being printed out 
 
 # Extract the output. 
 dates_to_keep <- 1850:2100
@@ -212,8 +214,9 @@ free_out <- fetchvars(core, 1850:2100, vars = vars_to_keep)
 new_tgav <- free_out[free_out$variable == GLOBAL_TEMP(), ]
 new_tgav$value <- new_tgav$value + new_tgav$value * 0.25 # increase global temp by 25%
 
-# Use setvar() to set up the the constraint, run Hector & fetch the results.  
+# Use setvar() to set up the the constraint, reset and run Hector, and fetch the results.  
 setvar(core, dates = new_tgav$year, var = TGAV_CONSTRAIN(), values = new_tgav$value, unit = getunits(TGAV_CONSTRAIN()))
+reset(core)
 invisible(run(core))
 constrained_out <- fetchvars(core, 1850:2100, vars = vars_to_keep)
 ```
@@ -250,16 +253,17 @@ constraint_values <- c(0.1, 0.2, 0.3, -0.4, -0.5, -0.6, 0.7, 0.8, 0.9, 1.0)
 
 ini <- system.file("input/hector_ssp245.ini", package = "hector")
 core <- newcore(ini, name = "ssp245")
-invisible(run(core)) # the invisible call prevents hector core info from being printed out 
+invisible(run(core)) # the invisible call prevents Hector core info from being printed out 
 
 # Extract the output. 
 dates_to_keep <- 1850:2100
 vars_to_keep <- c(ATMOSPHERIC_CO2(), NBP(), NPP(), RH())
 free_out <- fetchvars(core, 1850:2100, vars = vars_to_keep)
 
-# Use setvar() to set up the the constraint, run Hector & fetch the results.  
+# Use setvar() to set up the the constraint, reset and run Hector, and fetch the results.  
 setvar(core, dates = constraint_yrs, var = NBP_CONSTRAIN(), values = constraint_values, 
        unit = getunits(NBP_CONSTRAIN()))
+reset(core)
 invisible(run(core))
 constrained_out <- fetchvars(core, 1850:2100, vars = vars_to_keep)
 ```

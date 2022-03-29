@@ -34,7 +34,7 @@ library(ggplot2)
 
 ## Carbon tracking
 
-Now, we will read in an .ini file and create a new core. In this example, we 
+Now, we will read in an INI file and create a new core. In this example, we 
 will use SSP245.
 
 In order to use the carbon tracking feature, we must use `setvar` and `fetchvars`. ^[Command line users: to set a tracking start date, change the `trackingDate=9999` line in the `[core]` section of an INI scenario file.]

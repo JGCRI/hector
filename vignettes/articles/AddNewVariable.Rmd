@@ -46,7 +46,7 @@ See [tseries](TimeSeries.html) documentation for more information on `getData`
 
 _If the variable is used in other X_component.cpp_  
 
-For example, if adding in a variable within the forcing component  
+For example, if adding in a variable within the forcing component:  
 
 `unitval SN = core->getData( D_ATMOSPHERIC_SO2, runToDate);`
 

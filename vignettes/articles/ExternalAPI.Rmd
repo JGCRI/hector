@@ -34,7 +34,7 @@ You don't absolutely need any of the other files in the Hector directories, but 
 # hector-api: libhector.a main-api.o
 # 	$(CXX) $(LDFLAGS) -o hector-api main-api.o -lhector -lgsl -lgslcblas -lm
 ```
-Then run `make hector-api` to build the example. From the top-level Hector directory, run `hector-api input/api-example.ini` to run the example code. The example code reads emissions for several gases from the files in the `input/emissions` directory and loads those emissions into the Hector Core through the API. Emissions for the remaining gases are set from the input file, as in the stand-alone version of Hector.
+Then run `make hector-api` to build the example. From the top-level Hector directory, run `hector-api input/api-example.ini` to run the example code. The example code reads emissions for several gases from the files in the `input/emissions` directory and loads those emissions into the Hector core through the API. Emissions for the remaining gases are set from the input file, as in the stand-alone version of Hector.
 
 ## Using the API
 
@@ -48,7 +48,7 @@ Hector classes are (with one exception) contained in the `Hector::` namespace. T
 * `Hector::CSVOutputStreamVisitor` Class that formats and writes Hector's output. You will only need this if you want Hector to produce its native output. If you are planning on retrieving data from Hector and using your code's output mechanism, you can skip it.
 * `h_exception` Exception class. If something goes wrong Hector will throw this class as an exception.
 
-The Hector Core will be your interface for controlling and interacting with the simulation. To run the simulation, you use the core's run method. To get a component to do something, you tell the Hector Core to send the component a message. The type of the message determines what the component will do in response, and the contents of the message provide the input for whatever it is that the component will be doing. The core routes the message and returns the response, if any. 
+The Hector core will be your interface for controlling and interacting with the simulation. To run the simulation, you use the core's run method. To get a component to do something, you tell the Hector core to send the component a message. The type of the message determines what the component will do in response, and the contents of the message provide the input for whatever it is that the component will be doing. The core routes the message and returns the response, if any. 
 
 A message comprises three parts:  
 * A **type** that indicates what you want the component to do. The types you will encounter most frequently are *SETDATA* and *GETDATA*  
@@ -149,7 +149,7 @@ To stop the core and delete all Hector components, call the `shutdown()` method:
 ```C++
 hcore.shutdown();
 ```
-Once this method is called, all further calls to methods on the Hector Core will fail. If you have instantiated more than one Hector Core, then only the core on which `shutdown()` is called will be affected. Others will continue to operate normally.
+Once this method is called, all further calls to methods on the Hector core will fail. If you have instantiated more than one Hector core, then only the core on which `shutdown()` is called will be affected. Others will continue to operate normally.
 
 ### Exceptions
 If Hector encounters an unrecoverable error, it will throw an exception with `h_exception` as the exception argument. This object can be passed to an `ostream` to print the function, file, and line number where the problem was detected, along with a (hopefully) descriptive message.
@@ -178,5 +178,5 @@ The Hector library is statically linked, so you won't have to worry about librar
 If the build succeeds, then you should end up with an executable version of your model that you can run in your usual way. Input will be under your code's control, so it will be up to you to supply the Hector libraries with the name of an INI file (see instructions above). Unless you followed the instructions to create a Hector output stream, your code will also be responsible for producing whatever output you want from Hector.
 
 ## Limitations and Caveats
-* There is currently no way to rewind a Hector simulation to an earlier time. If you want to do that, you have to shut down the Hector Core and instantiate and initialize a whole new core. The new core won't know anything about the emissions you put into the old core, so if you want it to follow the same emissions pathway up to the rewind point, your code will have to store those emissions and add them to the new core after it is initialized. Then you can run Hector up to the point that you wanted to rewind to.
+* There is currently no way to rewind a Hector simulation to an earlier time. If you want to do that, you have to shut down the Hector core and instantiate and initialize a whole new core. The new core won't know anything about the emissions you put into the old core, so if you want it to follow the same emissions pathway up to the rewind point, your code will have to store those emissions and add them to the new core after it is initialized. Then you can run Hector up to the point that you wanted to rewind to.
 
