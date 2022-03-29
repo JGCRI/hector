@@ -73,6 +73,7 @@ Other contributors:
   \item Pralit Patel \email{pralit.patel@pnnl.gov} (\href{https://orcid.org/0000-0003-3992-1061}{ORCID}) [contributor]
   \item Leeya Pressburger \email{leeya.pressburger@pnnl.gov} (\href{https://orcid.org/0000-0002-6850-2504}{ORCID}) [contributor, data contributor]
   \item Alexey Shiklomanov \email{alexey.shiklomanov@nasa.gov} (\href{https://orcid.org/0000-0003-4022-5979}{ORCID}) [contributor]
+  \item Dawn Woodard \email{dawn.woodard@pnnl.gov} (\href{https://orcid.org/0000-0002-0468-4660}{ORCID}) [contributor]
 }
 
 }
