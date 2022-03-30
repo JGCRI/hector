@@ -168,7 +168,6 @@ void ForcingComponent::init( Core* coreptr ) {
     core->registerCapability( D_RHO_BC, getComponentName());
     core->registerCapability( D_RHO_OC, getComponentName());
     core->registerCapability( D_RHO_SO2, getComponentName());
-    core->registerCapability( D_RF_NH3, getComponentName());
     core->registerCapability( D_RF_SO2, getComponentName());
     core->registerCapability( D_RF_ACI, getComponentName());
     for(int i=0; i<N_HALO_FORCINGS; ++i) {
