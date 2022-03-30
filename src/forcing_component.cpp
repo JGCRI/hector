@@ -502,7 +502,6 @@ void ForcingComponent::run( const double runToDate ) {
         unitval Ftot( 0.0, U_W_M2 );  // W/m2
         for( forcingsIterator it = forcings.begin(); it != forcings.end(); ++it ) {
             Ftot = Ftot + ( *it ).second;
-            H_LOG( logger, Logger::DEBUG ) << "forcing " << ( *it).first << " in " << runToDate << " is " << ( *it ).second << std::endl;
         }
 
 
@@ -513,7 +512,6 @@ void ForcingComponent::run( const double runToDate ) {
         } else {
             forcings[ D_RF_TOTAL ] = Ftot;
         }
-        H_LOG( logger, Logger::DEBUG ) << "forcing total is " << forcings[ D_RF_TOTAL ] << std::endl;
 
         //---------- Change to relative forcing ----------
         // Note that the code below assumes model is always consistently run from base-year forward.
@@ -527,8 +525,11 @@ void ForcingComponent::run( const double runToDate ) {
         // Subtract base year forcing values from forcings, i.e. make them relative to base year
         for( forcingsIterator it = forcings.begin(); it != forcings.end(); ++it ) {
             forcings[ ( *it ).first ] = ( *it ).second - baseyear_forcings[ ( *it ).first ];
+            H_LOG( logger, Logger::DEBUG ) << "forcing " << ( *it).first << " in " << runToDate << " is " << ( *it ).second << std::endl;
 
         }
+        H_LOG( logger, Logger::DEBUG ) << "forcing total is " << forcings[ D_RF_TOTAL ] << std::endl;
+
 
         // Store the forcings that we have calculated
         forcings_ts.set(runToDate, forcings);
