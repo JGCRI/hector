@@ -18,7 +18,7 @@ Science
 --------------------
 * A [general summary](HectorSummary.html) of the science behind Hector
 * Introduction to Hector's [climate](climate.html), [terrestrial carbon cycle](SimpleNBox.html), and [ocean carbon cycle](ocean-carbon-cycle.html) 
-* [Model documentation manuscripts](Hector-Wider-World.html#hector_documenation) and [publications that feature Hector](Hector-Wider-World.html#other_manuscripts)
+* [Model documentation manuscripts](Hector-Wider-World.html#hector_documentation) and [publications that feature Hector](Hector-Wider-World.html#other_manuscripts)
 
 Building and Running Hector
 --------------------

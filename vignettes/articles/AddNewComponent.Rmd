@@ -89,7 +89,7 @@ In `core.cpp`
 
 Add `#include "xcomponent.hpp" `  
 
-Under `core::init()` section add code to create your new component:
+Under `Core::init()` section add code to create your new component:
 
 ```cpp
 temp = new XComponent();
