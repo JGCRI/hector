@@ -3,9 +3,10 @@ title: Unit values (`unitvals`)
 subtitle: C++
 ---
 
-Hector both *allows* (internally to each component, and when reading inputs) and *requires* (passing data between components, and writing outputs) values to have associated **units**. The internal unit system is simple, not providing [unit conversion](http://www.boost.org/doc/libs/1_57_0/doc/html/boost_units.html) for example, but also lightweight and easy. Our use of units is prompted primarily by safety–to avoid the "Mars Climate Orbiter" [problem](http://en.wikipedia.org/wiki/Mars_Climate_Orbiter#Cause_of_failure) of the mismatched unit–as well as having easy-to-interpret outputs.
+Hector both *allows* (internally to each component, and when reading inputs) and *requires* (passing data between components, and writing outputs) values to have associated **units**. The internal unit system is simple, not providing [unit conversion](http://www.boost.org/doc/libs/1_57_0/doc/html/boost_units.html) for example, but also lightweight and easy. Our use of units is prompted primarily by safety -- to avoid the "Mars Climate Orbiter" [problem](http://en.wikipedia.org/wiki/Mars_Climate_Orbiter#Cause_of_failure) of the mismatched unit -- as well as having easy-to-interpret outputs.
 
-The internal C++ type is called `unitval`, and its code is located in `inst/include/unitval.hpp`. (There is also a restricted type of `unitval` called a `fluxpool` that allows only non-negative values.)
+The internal C++ type is called `unitval`, and its code is located in `inst/include/unitval.hpp`.   
+(There is also a restricted type of `unitval` called a `fluxpool` that allows only non-negative values.)
 
 Creating a variable with associated unit
 --------------
@@ -51,8 +52,8 @@ Missing values
 Briefly, when you need to return a missing value, use the `MISSING_FLOAT` macro defined in `inst/include/unitval.hpp`.
 This macro will return `NA_REAL` (from `Rcpp`) if Hector is compiled as an R package (technically, if the `USE_RCPP` macro is defined) and `NAN` (from `std`) otherwise.
 
-Why this complexity?
-R (and, by extension, Rcpp) distinguish between two kinds of "placeholder" numeric values:
+Why this complexity?  
+R (and, by extension, Rcpp) distinguishes between two kinds of "placeholder" numeric values:
 A _missing_ value (`NA_real_` in R; often abbreviated to `NA`) represents an unobserved value; for instance, if you take annual observations from 1990 to 2000 but failed to make a measurement in 1996.
 On the other hand, _not a number_ (`NaN`) represents the result of an invalid mathematical operation, such as taking the square root of a negative number.
 

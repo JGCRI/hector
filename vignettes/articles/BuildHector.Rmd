@@ -2,7 +2,7 @@
 title: "Installing and building Hector"
 ---
 
-There are lots of ways to use Hector: as a stand-alone executable, through the 
+There are many ways to use Hector: as a stand-alone executable, through the 
 online [HectorUI](https://jgcri.shinyapps.io/HectorUI/), and as an R package. 
 Here we provide installation and 
 building instructions for the R Hector package and the executable. 
@@ -103,7 +103,7 @@ Instead, ask your system administrator if `ldconfig` is right for you.
 ### Build & Run Hector 
 
 Once the necessary libraries are installed, change to the top-level
-Hector directory and type `make hector`. The hector executable will
+Hector directory and type `make hector`. The Hector executable will
 be built in the `source/` subdirectory. If you ever need to rebuild,
 you can type `make clean` to clear away the executable and all of the
 intermediate files.
@@ -205,9 +205,9 @@ Xcode Resources
 * Download and install [Boost](https://www.boost.org).
 * Set the environment variables:
   * `BOOSTROOT` to the location to which you installed Boost (e.g. `C:\boost_1_75_0`)
-* Open the Visual Studio project file which is located in your hector repository under `project_files/VS/hector.sln`
+* Open the Visual Studio project file which is located in your Hector repository under `project_files/VS/hector.sln`
 * Build the `hector` target
-* To run hector:
+* To run Hector:
   * From the CMD prompt: `project_files/VS/x64/Release/hector.exe ./inst/input/name-of-ini.ini`
   * From with in the Visual Studio debugger (the working directory will default to `project_files/VS`): `x64/Release/hector.exe ../../inst/input/name-of-ini.ini`
 

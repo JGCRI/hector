@@ -8,9 +8,9 @@ date: "2018-10-17"
 
 This tutorial shows how to use the Hector climate model in R to answer a simple science 
 question.  In this case, we'll be looking at solving for the methane emissions required 
-overtime to produce a constant atmospheric methane concentration from 2000 through 2100.
+over time to produce a constant atmospheric methane concentration from 2000 through 2100.
 
-To run this experiment, you will need to have the `nleqslv` package installed.  This package
+To run this experiment, you will need to have the `nleqslv` package installed. This package
 will be used to generate successive guesses in the search for an emissions pathway that produces
 the target concentration.
 
@@ -23,15 +23,15 @@ set up an interface to Hector.  Since all of our calculations are going to invol
 and beyond, we will run up through 1999.
 
 ```{r hector.init}
-library('ggplot2')
-library('hector')
-hector_inifile <- file.path(system.file('input', package='hector'), 'hector_ssp245.ini')
+library(ggplot2)
+library(hector)
+hector_inifile <- file.path(system.file('input', package = 'hector'), 'hector_ssp245.ini')
 hcore <- newcore(hector_inifile, suppresslogging=TRUE)
 run(hcore, 1999)
 ```
 
 Our target function will take a vector of emission values as input and return a vector of 
-discrepancies between the hector outputs and the target output.  We'll make the target concentration
+discrepancies between the Hector outputs and the target output.  We'll make the target concentration
 value 1820 ppbv CH$_4$ (a bit higher than the year 2000 value in the baseline scenario).
 
 ```{r targfn.init}
@@ -59,21 +59,22 @@ slv <- nleqslv::nleqslv(x, f, method="Broyden")
 
 We should check to see if the algorithm really converged.  The discrepancy values from the last iteration
 are stored in the `fvec` entry.
+
 ```{r chkf}
 max(abs(slv$fvec))
 ```
 
 ## Results
 
-The convergence looks ok, so let's plot the results:
+The convergence looks okay, so let's plot the results:
 
 ```{r plt}
  df <- data.frame(year = 2000:2100,
             value = slv[['x']])
 
- ggplot2::ggplot(data = df, aes(year, value)) +
+ggplot(data = df, aes(year, value)) +
      geom_point() +
-     labs(y = "Emissions (Tg CH4)", x = 'year')
+     labs(x = 'year', y = "Emissions (Tg CH4)")
 ```
 
 The concentration target of 1820 ppbv CH$_4$ that we specified in 2000 is a bit of a jump from what was in the 
@@ -82,6 +83,7 @@ that, the emissions settle down into something smoother.
 
 Once we're done with our Hector instance, we need to make sure to shut it down, so that the memory it is using 
 will be freed.
+
 ```{r shutdown}
 shutdown(hcore)
 ```

@@ -6,7 +6,11 @@
 \alias{hector-package}
 \title{hector: The Hector Simple Climate Model}
 \description{
-Provides an R interface for the Hector Simple Climate Model. Using this interface you can set up and initialize the model, change model parameters and emissions inputs, run Hector, and retrieve model outputs. Note that the package authors are not identical to the C++ model authors.
+Provides an R interface for the Hector Simple Climate
+    Model. Using this interface you can set up and initialize the model,
+    change model parameters and emissions inputs, run Hector, and
+    retrieve model outputs. Note that the package authors are not
+    identical to the C++ model authors.
 }
 \details{
 This package allows you to run the Hector Simple Climate Model (SCM) from R
@@ -58,16 +62,18 @@ carbon-cycle model: projections and sensitivities, Biogeosciences, 13,
 
 Authors:
 \itemize{
-  \item Robert Link \email{robert.link@pnnl.gov} (\href{https://orcid.org/0000-0002-7071-248X}{ORCID})
+  \item Ben Bond-Lamberty \email{bondlamberty@pnnl.gov} (\href{https://orcid.org/0000-0001-9525-4633}{ORCID})
 }
 
 Other contributors:
 \itemize{
+  \item Skylar Gering \email{sgering@g.hmc.edu} (\href{https://orcid.org/0000-0003-1974-3966}{ORCID}) [contributor]
   \item Corinne Hartin \email{hartin.corinne@epa.gov} (\href{https://orcid.org/0000-0003-1834-6539}{ORCID}) [contributor]
-  \item Ben Bond-Lamberty \email{bondlamberty@pnnl.gov} (\href{https://orcid.org/0000-0001-9525-4633}{ORCID}) [contributor]
+  \item Robert Link \email{robert.link@pnnl.gov} (\href{https://orcid.org/0000-0002-7071-248X}{ORCID}) [contributor]
   \item Pralit Patel \email{pralit.patel@pnnl.gov} (\href{https://orcid.org/0000-0003-3992-1061}{ORCID}) [contributor]
-  \item Leeya Pressburger \email{leeya.pressburger@pnnl.gov} (\href{https://orcid.org/0000-0002-6850-2504}{ORCID}) [contributor]
+  \item Leeya Pressburger \email{leeya.pressburger@pnnl.gov} (\href{https://orcid.org/0000-0002-6850-2504}{ORCID}) [contributor, data contributor]
   \item Alexey Shiklomanov \email{alexey.shiklomanov@nasa.gov} (\href{https://orcid.org/0000-0003-4022-5979}{ORCID}) [contributor]
+  \item Dawn Woodard \email{dawn.woodard@pnnl.gov} (\href{https://orcid.org/0000-0002-0468-4660}{ORCID}) [contributor]
 }
 
 }

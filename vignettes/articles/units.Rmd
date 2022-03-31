@@ -22,7 +22,7 @@ halocarbons | Gg/yr | `U_GG` | All halocarbons use the same unit.
 
 ## Units for Hector outputs
 
-Hector outputs are returned as `unitval` structures, so if there is any doubt, you can always dump the return value to an output stream to see what the unit is (or test the units field against likely candidates).  What follows is a non-exhaustive list of some of the commonly-used outputs
+Hector outputs are returned as `unitval` structures, so if there is any doubt, you can always dump the return value to an output stream to see what the unit is (or test the units field against likely candidates).  What follows is a non-exhaustive list of some of the commonly-used outputs.
 
 
 Value     |  Units    |    Unit Symbol |   Notes

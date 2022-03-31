@@ -37,7 +37,7 @@ invisible(run(core))
 
 GMST can be calculated from Hector outputs by computing a weighted sum of the land air and ocean surface temperatures using the following equation:
 
-$ GMST = (land air temperature * fractional land area) + (ocean surface temperature * (1 - fractional land area)) $
+$\ \text{GMST} = (\text{land air temperature} * \text{fractional land area}) + (\text{ocean surface temperature} * (1 - \text{fractional land area})) $
 
 In Hector, land air temperature is represented by `Tgav_land` (`LAND_AIR_TEMP()`) and ocean surface temperature is represented by `Tgav_ocean_ST` (`OCEAN_SURFACE_TEMP()`). These components stem from the variable `Tgav` (`GLOBAL_TEMP()`), which is how Hector stores GMAT.
 
@@ -46,7 +46,8 @@ Note that the reason that the same variable is represented in two different ways
 ``` {r find.GMST}
 flnd = 0.29;     # fractional land area, a constant in Hector
 
-hector_output <- fetchvars(core, 1745:2300, vars = c(LAND_AIR_TEMP(), OCEAN_SURFACE_TEMP(), GLOBAL_TEMP()))
+variables <- c(LAND_AIR_TEMP(), OCEAN_SURFACE_TEMP(), GLOBAL_TEMP())
+hector_output <- fetchvars(core, 1745:2300, variables)
 
 # Get the variables we want and corresponding years/value
 output <- subset(hector_output, variable %in% c(LAND_AIR_TEMP(), OCEAN_SURFACE_TEMP()))

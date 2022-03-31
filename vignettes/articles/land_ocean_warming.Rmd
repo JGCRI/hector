@@ -4,21 +4,21 @@ title: "Land Ocean Warming"
 
 ## Introduction
 
-Hector uses DOECLIM^[Kriegler, E. (2005). Imprecise probability analysis for integrated assessment of climate change. Ph.D. thesis. Potsdam URL: Universit t
-Potsdam. https://www.pik‐potsdam.de/members/edenh/theses/PhDKriegler.pdf], a diffusion ocean-energy balance, to calculate mean global air temperature from sea-surface and land-surface temperature anomalies. DOECLIM can simulate the different rates of warming over land and ocean surfaces, meaning that the land-ocean warming ratio is an emergent property of Hector. However, users do have the option to provide a land-ocean warming ratio to be used in place of DOECLIM’s internal calculations. This capability enables Hector to emulate the land-ocean warming dynamics of specific Earth System Models. 
+Hector uses DOECLIM^[Kriegler, E. (2005). Imprecise probability analysis for integrated assessment of climate change. Ph.D. thesis. Potsdam URL: Universität Potsdam. https://www.pik‐potsdam.de/members/edenh/theses/PhDKriegler.pdf], a diffusion ocean-energy balance, to calculate mean global air temperature from sea-surface and land-surface temperature anomalies. 
+DOECLIM can simulate the different rates of warming over land and ocean surfaces, meaning that the land-ocean warming ratio is an emergent property of Hector. 
+However, users also have the option to provide a land-ocean warming ratio to be used in place of DOECLIM’s internal calculations. 
+This enables Hector to emulate the land-ocean warming dynamics of specific Earth System Models. 
 
-The purpose of this vignette is to demonstrate how providing a user-defined land-ocean warming ratio can affect Hector output. 
+This vignette demonstrates how providing a user-defined land-ocean warming ratio can affect Hector output. 
+
 ## Setup
 
 ```{r setup}
 library(ggplot2)
-library(hector)
-library(magrittr)
-
 theme_set(theme_bw(base_size = 14))
+
+library(hector)
 ```
-
-
 
 ## Run default Hector 
 
@@ -47,10 +47,9 @@ ggplot(data = out1) +
     theme(axis.text.x = element_text(angle = 90))
 ```
 
-
 ## Run Hector with different land ocean warming ratios 
 
-Start by writing a function to help us set the land ocean warming ratio, run hector, and fetch some results.  
+Start by writing a function to help us set the land ocean warming ratio, run hector, and fetch some results.
 
 
 ```{r}
@@ -65,7 +64,8 @@ run_with_lo <- function(hc, value){
     # Set the land ocean warming ratio. 
     setvar(hc, NA, LO_WARMING_RATIO(), value, getunits(LO_WARMING_RATIO()))
     
-    # Run Hector
+    # Reset and run Hector
+    reset(hc)
     run(hc)
     
     # Fetch and format the output. 
@@ -76,19 +76,17 @@ run_with_lo <- function(hc, value){
     return(out)
 }
 
-
 # Make a vector of the land ocean warming ratios to test out. 
 lo_to_use <- seq(from = 1, to = 2.5, length.out = 20)
 
 # Apply our helper function to the various land ocean warming ratio values & concatenate the results into a single data frame.
-lapply(lo_to_use, run_with_lo, hc = core) %>%
-    do.call(what = "rbind") -> 
-    hector_lo_results
-
+results_list <- lapply(lo_to_use, run_with_lo, hc = core)
+hector_lo_results <- do.call(results_list, what = "rbind") 
 ```
 
 
-Plot the results 
+## Plot the results 
+
 
 ```{r}
 ggplot(data = hector_lo_results) + 
@@ -99,25 +97,14 @@ ggplot(data = hector_lo_results) +
          x = NULL, 
          y = NULL) +
     theme(axis.text.x = element_text(angle = 90)) + 
-    guides(color=guide_legend(title = "lo ratio"))
+    guides(color = guide_legend(title = "lo ratio"))
 ```
 
 
-
-## Compare default Hector with user provided land ocean warming ratio
+## Compare with default Hector
 
 
 ```{r}
-ggplot() + 
-    geom_line(data = hector_lo_results, aes(year, value, color = scenario, group = scenario)) + 
-    geom_line(data = out1, aes(year, value), color = "orange", size = 1) + 
-    facet_wrap("variable", scales = "free") + 
-    labs(title = "User provided land-ocean warming ratio", 
-         subtitle = "ssp245", 
-         x = NULL, 
-         y = NULL) +
-    theme(axis.text.x = element_text(angle = 90)) + 
-    guides(color=guide_legend(title = "lo ratio"))
-
+last_plot() + 
+    geom_line(data = out1, aes(year, value), color = "orange", size = 1)
 ```
-
