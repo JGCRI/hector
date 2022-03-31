@@ -199,16 +199,6 @@ Xcode Resources
 * [Xcode Schemes](https://developer.apple.com/library/archive/documentation/ToolsLanguages/Conceptual/Xcode_Overview/ManagingSchemes.html)
 * [Xcode Debugging](https://developer.apple.com/library/archive/documentation/DeveloperTools/Conceptual/debugging_with_xcode/chapters/debugging_tools.html)
 
-TODO: is the below material updated/correct? Should we remove?
-
-## Visual Studio Code (Windows)
-
-* Install [Visual Studio Code](https://code.visualstudio.com/download), if necessary.
-* Download and install *Boost*, following the instructions above.
-* Download the [Hector zip file](https://github.com/JGCRI/hector/archive/master.zip) or check out the repository using Git.
-* Open Hector in the visual studio code IDE, build Hector with Terminal --> Run Build Task or with a `make hector` call in VSC terminal window. 
-* Run --> Start Debugging or Run Without Debugging or with `./src/hector ./inst/input/name-of-ini.ini` in the VSC terminal window. 
-
 ## Visual Studio / Microsoft Visual C++
 
 * Install [Visual Studio](https://visualstudio.microsoft.com/vs/community/) and be sure to the Visual C++ add-on as well.
