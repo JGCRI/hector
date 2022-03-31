@@ -2,11 +2,11 @@ section,parameter,biome-specific,time-variant,required,default,units,description
 core,run_name,n,n,y,,(unitless),
 core,startDate,n,n,y,1745,year,
 core,endDate,n,n,y,2300,year,
-core,trackingDate,n,n,y,9999,year,
-core,do_spinup,n,n,y,1,(unitless),
-core,max_spinup,n,n,y,2000,(unitless),
-ocean,enabled,n,n,y,1,(unitless),
-ocean,spinup_chem,n,n,y,0,(unitless),
+core,trackingDate,n,n,y,9999,year,year to start tracking (only carbon currently)
+core,do_spinup,n,n,y,1,(unitless),"if 1, spin up model before running (default=1)"
+core,max_spinup,n,n,y,2000,(unitless),maximum steps allowed for spinup (default=2000)
+ocean,enabled,n,n,y,1,(unitless),putting 'enabled=0' will disable any component
+ocean,spinup_chem,n,n,y,0,(unitless),run surface chemistry during spinup phase?
 ocean,tt,n,n,y,7.20E+07,m3/s,thermohaline circulation
 ocean,tu,n,n,y,4.90E+07,m3/s,high latitude overturning
 ocean,twi,n,n,y,1.25E+07,m3/s,warm-intermediate exchange
