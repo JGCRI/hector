@@ -37,7 +37,7 @@ Hector is configured via an INI file, which defines run metadata, inputs
 (e.g., emissions scenarios), and parameters.
 For details on this file, see [InputFiles](InputFiles.html).
 
-These files ship with the Hector R package in the `input` subdirectory, 
+These files ship with the Hector R package in the `input/` subdirectory, 
 which allows them to be accessed via `system.file`.
 First, determine the path of the input file (ini) corresponding to the 
 scenario [SPP245](https://en.wikipedia.org/wiki/Shared_Socioeconomic_Pathways).
@@ -70,7 +70,7 @@ run(core)
 
 Notice that this itself returns no output.
 Instead, the output is stored inside the core object.
-To retrieve it, we use the `fetchvars` function.
+To retrieve it, we use the `fetchvars()` function.
 Below, we also specify that we want to retrieve results from 2000 to 2300.
 
 ```{r  get-results }
@@ -90,14 +90,14 @@ ggplot(results) +
   facet_wrap(~variable, scales = "free_y")
 ```
 
-By default, `fetchvars` returns the four outputs shown above--atmospheric
+By default, `fetchvars()` returns the four outputs shown above -- atmospheric
 CO$_2$ concentration, CO$_2$ radiative forcing, total radiative forcing, and 
-temperature change--but any model output(s) can be specified.
+temperature change -- but any model output(s) can be specified.
 
 # Setting parameters
 
 The Hector R interface interacts with parameters and variables in the same way.
-Therefore, the variables can be set and checked via `setvar` and `fetchvars`.
+Therefore, the variables can be set and checked via `setvar()` and `fetchvars()`.
 
 First, let's get the current value of $\beta$ (beta), the CO$_2$ fertilization factor.
 Because variables and parameter names have to be retrieved from the Hector core, 
@@ -108,14 +108,14 @@ However, these functions return a string corresponding to the variable name.
 BETA()
 ```
 
-Just as we did to load results, we use `fetchvars` to query parameter values.
+Just as we did to load results, we use `fetchvars()` to query parameter values.
 
 ```{r  get-beta}
 beta <- fetchvars(core, NA, BETA())
 beta 
 ```
 
-The result of `fetchvars` is always a `data.frame` with the same columns, even when returning a parameter value.
+The result of `fetchvars()` is always a `data.frame` with the same columns, even when returning a parameter value.
 Note also the use of `NA` in the second argument (`dates`).
 
 The current value is set to 0.36 (note that it is a unitless quantity, hence the `(unitless)` unit).
@@ -127,7 +127,7 @@ setvar(core, NA, BETA(), 0.40, "(unitless)")
 
 Similarly to `run`, this returns no output.
 Rather, the change is stored inside the Hector "core" object.
-We can confirm that our change took effect with another call to `fetchvars`.
+We can confirm that our change took effect with another call to `fetchvars()`.
 
 ```{r check-set-beta}
 fetchvars(core, NA, BETA()) 
@@ -197,7 +197,7 @@ However, the effects only become pronounced in the latter half of the 21st Centu
 
 # Sensitivity analysis
 
-Hector runs quickly, making it easy to run lots of simulations under slightly different configurations.
+Hector runs quickly, making it easy to run many simulations under slightly different configurations.
 One application of this is to explore the sensitivity of Hector to variability in its parameters.
 
 The basic procedure for this is the same as in the previous section.
@@ -216,13 +216,12 @@ However, to save typing (and, in general, to be good programmers!), let's create
 #' @return Results, as data.frame, with additional `parameter_value`
 #'   column
 run_with_param <- function(core, parameter, value) {
-  old_value <- fetchvars(core, NA, parameter)
-  unit <- as.character(old_value[["units"]])
-  setvar(core, NA, parameter, value, unit)
+  setvar(core, NA, parameter, value, getunits(parameter))
   reset(core)
   run(core)
   result <- fetchvars(core, 2000:2300)
   result[["parameter_value"]] <- value
+  result[["parameter_units"]] <- getunits(parameter)
   result
 }
 

@@ -2,15 +2,15 @@
 title: "Installing and building Hector"
 ---
 
-There are lots of ways to use Hector: as a stand-alone executable, through the UI, and as an R package. Here we provide installation and building instructions for the R Hector package and the executable. 
+There are many ways to use Hector: as a stand-alone executable, through the UI, and as an R package. Here we provide installation and building instructions for the R Hector package and the executable. 
 
 # R Hector 
 
 To install R, follow the [official instructions](https://cloud.r-project.org/) for your platform.
 
-To install the version associated with the current `master` git branch on GitHub, use the `remotes`::install_github` function.
+To install the version associated with the current `master` git branch on GitHub, use the `remotes::install_github` function.
 This will automatically install all of Hector's dependencies as well.
-(Note that because this requires compiling from source, you will need to have a C compiler installed and configured.
+(Note that because this requires compiling from source, you will need to have a C compiler installed and configured.)
 
 On **Windows**, you will also need to install Rtools. Download and instructions can be found [here](https://cloud.r-project.org/bin/windows/Rtools/). After installation, there is another step to put the Rtools `make utilities` on the system PATH. This will allow you to compile R packages.
 
@@ -118,7 +118,7 @@ Instead, ask your system administrator if `ldconfig` is right for you.
 ### Build & Run Hector 
 
 Once the necessary libraries are installed, change to the top-level
-Hector directory and type `make hector`. The hector executable will
+Hector directory and type `make hector`. The Hector executable will
 be built in the `source/` subdirectory. If you ever need to rebuild,
 you can type `make clean` to clear away the executable and all of the
 intermediate files.
@@ -140,7 +140,7 @@ and rebuild when you are ready to go back to
 production runs.
 
 #### No std::filesystem Support
-If your C++ compiler or standard library is too old it will not have the C++ 17 standard / std::filesystem support. In which case you may recieve errors while building Hector such as the following:
+If your C++ compiler or standard library is too old, it will not have the C++ 17 standard / std::filesystem support. In which case you may receive errors while building Hector such as the following:
 
 ```
 g++  -L.  -o hector main.o -lhector -lm 
@@ -157,7 +157,7 @@ ini_to_core_reader.cpp:159:17: error: 'path' is unavailable: introduced in macOS
 
 ```
 
-In this case, you can set the environment variables:
+In this case, you can set the environment variable:
 ```
 export NO_CXX17=1
 ```
@@ -225,9 +225,9 @@ Xcode Resources
 * Download and install [Boost](https://www.boost.org).
 * Set the environment variables:
   * `BOOSTROOT` to the location to which you installed Boost (e.g. `C:\boost_1_75_0`)
-* Open the Visual Studio project file which is located in your hector repository under `project_files/VS/hector.sln`
+* Open the Visual Studio project file which is located in your Hector repository under `project_files/VS/hector.sln`
 * Build the `hector` target
-* To run hector:
+* To run Hector:
   * From the CMD prompt: `project_files/VS/x64/Release/hector.exe ./inst/input/name-of-ini.ini`
   * From with in the Visual Studio debugger (the working directory will default to `project_files/VS`): `x64/Release/hector.exe ../../inst/input/name-of-ini.ini`
 

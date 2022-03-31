@@ -7,10 +7,9 @@ Adding a new variable to Hector's C++ codebase using `getData` to obtain the inf
 
 # C++ Changes
 
-
 In _hector.ini_  
 
-Under the corresponding component add variable
+Under the corresponding component add the variable  
 	Ex: `SN = 42000;`
 
 In _component_data.hpp_   
@@ -18,18 +17,18 @@ In _component_data.hpp_
 Add variable as `tseries`, `unitval`, `double`, etc. and add its associated time series (when necessary; see above).
 
 Define the variables that are being added  
-Ex: `#define D_ATMOSPHERIC_SO2 "SN"`
+Ex: `# define D_ATMOSPHERIC_SO2 "SN"`
 	
-These names do *not* have to match internal component variables but the INI definition *has to* match what appears in quotes
+These names do *not* have to match internal component variables but the INI definition *has to* match what appears in quotes.
 
 In _X_component.cpp_ 
 
-Under init, need to register the Capability
+Under `init`, need to register the capability
 	`core->registerCapability( D_ATMOSPHERIC_SO2, getComponentName() );`
 
-Under `getData` and `setData`, add the new variables in before the Error message 
+Under `getData` and `setData`, add the new variables before the Error message.  
 
-[tseries](TimeSeries.html) documentation for more information on `getData`
+See [tseries](TimeSeries.html) documentation for more information on `getData`
 
 **(getData)**
 ```
@@ -47,7 +46,7 @@ Under `getData` and `setData`, add the new variables in before the Error message
 
 _If the variable is used in other X_component.cpp_  
 
-For example, if adding in a variable within the forcing component  
+For example, if adding in a variable within the forcing component:  
 
 `unitval SN = core->getData( D_ATMOSPHERIC_SO2, runToDate);`
 
@@ -57,7 +56,7 @@ If this variable is a `unitval`, the relevant code file must include `unitval.hp
 # R changes {#R}
 
 
-In order to be able to use the R hector `setvar` and `fetchvars` functions add a helper function to `rcpp_constants.cpp`
+In order to be able to use the R Hector `setvar` and `fetchvars` functions, add a helper function to `rcpp_constants.cpp`
 
 ```
 //' @describeIn DocumentationGroupName A description of the variable name. 

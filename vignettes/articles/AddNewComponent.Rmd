@@ -3,7 +3,7 @@ title: "Add a new Hector component"
 subtitle: C++
 ---
 
-Here are the steps to create a new component `X` to Hector's C++ codebase. 
+Here are the steps to create a new component `X` in Hector's C++ codebase. 
 
 Step one:
 -----------
@@ -18,7 +18,7 @@ It is best to copy and modify the corresponding files from an already constructe
 Step two (within X.hpp):
 -----------
 
-Under `private` list the variables that are used in the component and their corresponding type. 
+Under `private`, list the variables that are used in the component and their corresponding type. 
 Because of Hector's ability to [reset](../reference/reset.html), 
 every state variable generally needs an associated time series history variable. For example: 
 

@@ -11,11 +11,11 @@ Hector
 This is the repository for **Hector**, an open source, object-oriented, simple 
 global climate carbon-cycle model that runs very quickly while still
 representing the most critical global scale earth system processes. 
-Hector is a simple climate model (SCM), also known as a reduced-complexity 
-climate model, a class of models that are extremely versatile with a wide
+Hector is a simple climate model (SCM, also known as a reduced-complexity 
+climate model), a class of models that are extremely versatile with a wide
 range of applications. Due to their computational efficiency, SCMs can easily
 be coupled to other models and used to design scenarios, emulate more complex 
-climate models, conduct uncertainty analyses.
+climate models, and conduct uncertainty analyses.
 
 <add an image here, Hector results? figure from v3 manuscript? Hector logo?>
 
@@ -44,12 +44,12 @@ library(hector)
 
 ## Contributing to Hector
 
- The Hector team welcomes and values community contributions but please see 
+ The Hector team welcomes and values community contributions, but please see 
  our [Contribution Guide](articles/ContributionsGuide.html).
 
 ## Code of Conduct
   
-Please note that the hector project is released with a [Contributor Code of Conduct](https://jgcri.github.io/hector/CODE_OF_CONDUCT.html). By contributing 
+Please note that the Hector project is released with a [Contributor Code of Conduct](https://jgcri.github.io/hector/CODE_OF_CONDUCT.html). By contributing 
 to this project, you agree to abide by its terms.
 
  *** 

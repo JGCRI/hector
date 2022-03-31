@@ -14,7 +14,7 @@ The total C flux from atmosphere to land at time $t$ ($F_{L}(t)$; also known as 
 
 $$ F_{L}(t) = \sum_{i=1}^{n} \left( NPP_i(t) - RH_i(t) \right) - LUC(t)  $$
 
-NPP is calculated as the product of a user-specified pre-industrial value ($NPP_0$, default is 50 PgC/year) and a CO~2~ fertilization multiplier ($f(C_{atm}, \beta)$), which in turn is a function of the current atmospheric CO~2~ concentration ($C_{atm}$), the initial ("pre-industrial") CO~2~ concentration ($C_0$), and biome-specific CO~2~ fertilization parameter $\beta_i$ (default = 0.36):
+NPP is calculated as the product of a user-specified pre-industrial value ($NPP_0$, default is 56.2 Pg C/year) and a CO~2~ fertilization multiplier ($f(C_{atm}, \beta)$), which in turn is a function of the current atmospheric CO~2~ concentration ($C_{atm}$), the initial ("pre-industrial") CO~2~ concentration ($C_0$), and biome-specific CO~2~ fertilization parameter $\beta_i$ (default = 0.36):
 
 $$ NPP_i(t) = NPP_{0,i} \times f(C_{atm}, \beta_i) $$
 $$ f(C_{atm}, \beta_i) = 1 + \beta_i \left( \log(\frac{C_{atm}}{C_0})\right) $$
@@ -25,9 +25,9 @@ $$ T_i(t) = \delta \, T_G(t) $$
 $$ RH_s = \frac{1}{50} C_s Q_{10}^{T_{i}(t) / 10}$$
 $$ RH_d = \frac{1}{4} C_d Q_{10}^{T_{i}(t) / 10}$$
 
-Note that the residence times of soil and detritus C pools---50 and 4 years, respectively---are currently hard-coded values in Hector.
+Note that the residence times of soil and detritus C pools -- 50 and 4 years, respectively -- are currently hard-coded values in Hector.
 
-Fluxes associated with land use change ($LUC$) are prescribed via the `luc_emissions` variable in the INI value.
+Fluxes associated with land use change ($LUC$) are prescribed via the `luc_emissions` variable in the INI file.
 Example time series associated with shared socioeconomic pathways (SSPs) are included with Hector in the corresponding `inst/input/tables/ssp**_emiss-constraints_rf.csv` files.
 
 In each biome at each time step, the vegetation pools change as follows (biome, $i$ and time, $t$ subscripts omitted for clarity):

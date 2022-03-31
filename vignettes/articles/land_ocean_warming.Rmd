@@ -51,6 +51,7 @@ ggplot(data = out1) +
 
 Start by writing a function to help us set the land ocean warming ratio, run hector, and fetch some results.
 
+
 ```{r}
 # Helper function that runs a Hector core with a new land-ocean warming ratio. 
 # 
@@ -83,7 +84,9 @@ results_list <- lapply(lo_to_use, run_with_lo, hc = core)
 hector_lo_results <- do.call(results_list, what = "rbind") 
 ```
 
+
 ## Plot the results 
+
 
 ```{r}
 ggplot(data = hector_lo_results) + 
@@ -97,7 +100,9 @@ ggplot(data = hector_lo_results) +
     guides(color = guide_legend(title = "lo ratio"))
 ```
 
+
 ## Compare with default Hector
+
 
 ```{r}
 last_plot() + 

@@ -3,9 +3,9 @@ title: Time series (`tseries`) variables
 subtitle: C++
 ---
 
-Steps to creating a tseries variable within the Hector C++ codebase.
+Steps to creating a `tseries` variable within the Hector C++ codebase.
 
-tseries - the basic time series data type  
+`tseries` -- the basic time series data type.  
 
 
 Step One (X.hpp):
@@ -14,7 +14,7 @@ Step One (X.hpp):
 
 Step Two (X.cpp):
 ---------  
-_In X::init or X::conctructor:_  
+_In X::init or X::constructor:_  
 
 	Allow for interpolation  
 	`X.allowInterp(true); ` 
@@ -35,13 +35,13 @@ If setting a new variable, see [AddNewVariable](AddNewVariable.html)
 
 _In X::run:_  
 
-set the variable to a tseries in this order - (runToDate, unitval)  
+Set the variable to a `tseries` in this order -- (runToDate, unitval)  
    `X.set( runToDate, unitval( previous_x + dx, U_GG_X ) );`  
 
-in order to print to the log file:   
+In order to print to the log file:   
 ` H_LOG( logger, Logger::DEBUG ) << "Year " << runToDate << " X concentraion = " << X.get( runToDate ) << std::endl;`
 
 Step three
 ----------
-If another component calls this new tseries variable:  
+If another component calls this new `tseries` variable:  
 `X = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_X, message_data( runToDate ) ).value( U_X);`

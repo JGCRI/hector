@@ -26,7 +26,7 @@ library(ggplot2)
 
 # Example 1: Accelerated high-latitude warming
 
-Observational and modeling studies have found that high-latitude ecosystems, particularly in the northern hemisphere, are warming significantly faster than the global average.
+Observational and modeling studies have found that high-latitude ecosystems, particularly in the Northern Hemisphere, are warming significantly faster than the global average.
 In this example, we will explore the implications of this effect with Hector.
 
 First, let's run a reference case.
@@ -45,12 +45,12 @@ To do this, we will use the `split_biome()` function, which takes an existing He
 For the purposes of this example, let's assume that high latitudes have ~10% of the world's vegetation and detritus carbon and ~40% of world's soil carbon, and that high-latitudes are warming 2.5x faster than the global average.
 
 ```{r warming-arctic}
-invisible(reset(core))
 split_biome(core, "global", c("low-latitude", "high-latitude"),
             fveg_c = c(0.9, 0.1),
             fdetritus_c = c(0.9, 0.1),
             fsoil_c = c(0.6, 0.4),
             warmingfactor = c(1, 2.5))
+invisible(reset(core))
 invisible(run(core, 2100))
 warming_results <- fetchvars(core, 2000:2100, result_vars, scenario = "warming")
 ```
@@ -110,6 +110,7 @@ core <- newcore(ssp245, suppresslogging = TRUE)
 split_biome(core, "global", c("C3", "C4"),
             fveg_c = c(0.9, 0.1),
             beta = c(0.36, 0.18))
+invisible(reset(core))
 invisible(run(core, 2100))
 c4_results <- fetchvars(core, 2000:2100, result_vars, scenario = "c3 vs c4")
 c4_results_biome <- fetchvars(core, 2000:2100,
