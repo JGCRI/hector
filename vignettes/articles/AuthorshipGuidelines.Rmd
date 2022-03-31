@@ -2,11 +2,11 @@
 title: "Authorship Guidelines"
 ---
 
-As mentioned in our [contribution guide](ContributionsGuide.html), “the Hector team welcomes and values community contributions to Hector” and would like to acknowledge these contributions. To be fully transparent here are the guidelines we use to determine authorship for the Hector model. 
+As mentioned in our [contribution guide](ContributionsGuide.html), “the Hector team welcomes and values community contributions to Hector” and would like to acknowledge these contributions. To be fully transparent, here are the guidelines we use to determine authorship for the Hector model. 
 
 * The author list reflects individuals that contributed code (either R code in support of the R Hector package and/or C++ Hector source code) to a specific version of Hector. 
 * The author list is not a running list of all Hector contributors over the years. In general, individuals on the author list have made major code contributions to either the current or the immediately previous version of the model. 
-* We recognize contributors to older versions of the model via the table of past contributors (see below) 
+* We recognize contributors to older versions of the model via the table of past contributors (see below). 
 This author list does not include contributors to other Hector-related software such as HectorUI or Hectordata. The list also does not credit authorship for generating model development ideas, analysis, and so on. This category of credit occurs in manuscripts focused on model documentation or analyses using Hector. 
 
 **Past Contributors**
