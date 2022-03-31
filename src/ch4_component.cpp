@@ -153,13 +153,11 @@ void CH4Component::run( const double runToDate ) {
 
         const double ch4n =  CH4N.value( U_TG_CH4 );
         const double emisTocon = ( current_ch4em + ch4n ) / UC_CH4.value( U_TG_PPBV );
-        double previous_ch4 = M0.value( U_PPBV_CH4 );
+        const double previous_ch4 = CH4.get( oldDate );
+
 
         H_LOG( logger, Logger::DEBUG ) << "Year " << runToDate << " previous CH4 = " << previous_ch4 << std::endl;
 
-        if (runToDate!=oldDate) {
-            previous_ch4 = CH4.get( oldDate );
-        }
 
         const double soil_sink = previous_ch4 / Tsoil.value( U_YRS );
         const double strat_sink = previous_ch4 / Tstrat.value( U_YRS );
