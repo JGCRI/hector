@@ -64,8 +64,8 @@ public:
     unitval M0;     // preindustrial methane, ppbv CH4
     unitval UC_CH4;  // conversion factor between emissions and concentration
     unitval CH4N;   // annual natural emissions, Tg CH4/yr
-    unitval Tsoil;  // annual CH4 loss to soil, Tg CH4/yr
-    unitval Tstrat; //  annual CH4 loss to stratosphere, Tg CH4/yr
+    unitval Tsoil;  // lifetime of soil sink, yr
+    unitval Tstrat; // lifetime of tropospheric sink, yr
 
     // logger
     Logger logger;
