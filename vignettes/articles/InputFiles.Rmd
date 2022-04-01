@@ -41,10 +41,8 @@ kbl(params) %>%
                   bootstrap_options = "hover") %>%
       scroll_box(height = "400px")
 
-
 ```
   
-
 There are two Hector-specific wrinkles to the INI property-value assignment scheme. First, some properties have a time index that's required when assigning:
 
 ```
