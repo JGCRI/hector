@@ -41,6 +41,9 @@ fetchvars <- function(core, dates, vars = NULL, scenario = NULL) {
         f()
       })
     )
+    if (anyNA(dates)) {
+        stop("The default vars (", paste(vars, collapse = ", "), ") all require dates")
+    }
   }
 
   if (is.null(scenario)) {

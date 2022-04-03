@@ -68,11 +68,11 @@ test_that("Write out logs", {
   # Check that errors on shutdown cores get caught
   expect_error(getdate(hc_log), "Invalid or inactive")
   expect_error(run(hc_log), "Invalid or inactive")
-  expect_error(fetchvars(hc_log), "Invalid or inactive")
+  expect_error(fetchvars(hc_log, hc_log$strtdate), "Invalid or inactive")
 })
 
 
-## Make sure that that when the Hector core is shut downsys
+## Make sure that that when the Hector core is shut down
 ## everything is tidied up.
 test_that("Garbage collection shuts down hector cores", {
   ## This test makes use of some knowledge about the structure of the hector

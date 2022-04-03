@@ -10,5 +10,12 @@ test_that("Invalid input variable returns error", {
     expect_error(setvar(core, NA, "global.permafrost.beta", 10, ""),
                  regexp = "Invalid input variable: '")
     shutdown(core)
+})
 
+test_that("Default fetchvar without dates returns error", {
+
+    # Test that fetchvars errors if neither dates nor vars is supplied
+    core <- newcore(inifile)
+    expect_error(fetchvars(core, NA), regexp = "all require dates")
+    shutdown(core)
 })
