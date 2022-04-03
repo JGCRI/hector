@@ -499,10 +499,9 @@ void ForcingComponent::run( const double runToDate ) {
         // Calculate based as the sum of the different radiative forcings or as the user
         // supplied constraint.
         unitval Ftot( 0.0, U_W_M2 );  // W/m2
-        for( forcingsIterator it = forcings.begin(); it != forcings.end(); ++it ) {
-            Ftot = Ftot + ( *it ).second;
+        for( auto it : forcings ) {
+            Ftot = Ftot + it.second;
         }
-
 
         // Otherwise if the user has supplied total forcing data, use that instead.
         if( Ftot_constrain.size() && runToDate <= Ftot_constrain.lastdate() ) {
@@ -522,9 +521,9 @@ void ForcingComponent::run( const double runToDate ) {
         }
 
         // Subtract base year forcing values from forcings, i.e. make them relative to base year
-        for( forcingsIterator it = forcings.begin(); it != forcings.end(); ++it ) {
-            forcings[ ( *it ).first ] = ( *it ).second - baseyear_forcings[ ( *it ).first ];
-            H_LOG( logger, Logger::DEBUG ) << "forcing " << ( *it).first << " in " << runToDate << " is " << ( *it ).second << std::endl;
+        for( auto it : forcings ) {
+            forcings[ it.first ] = it.second - baseyear_forcings[ it.first ];
+            H_LOG( logger, Logger::DEBUG ) << "forcing " << it.first << " in " << runToDate << " is " << it.second << std::endl;
 
         }
         H_LOG( logger, Logger::DEBUG ) << "forcing total is " << forcings[ D_RF_TOTAL ] << std::endl;

@@ -89,9 +89,9 @@ struct interp_helper {
 
             typename std::map<double,T_data>::const_iterator itr;    // ...and fill
             int i=0;
-            for ( itr=userData.begin(); itr != userData.end(); itr++ ) {
-                x[ i ] = (*itr).first;
-                y[ i ] = (*itr).second;
+            for ( auto itr : userData ) {
+                x[ i ] = itr.first;
+                y[ i ] = itr.second;
                 i++;
             }
 
@@ -147,9 +147,9 @@ struct interp_helper<unitval> {
 
             std::map<double,T_unit_type>::const_iterator itr;    // ...and fill
             int i=0;
-            for ( itr=userData.begin(); itr != userData.end(); itr++ ) {
-                x[ i ] = (*itr).first;
-                y[ i ] = (*itr).second.value( (*itr).second.units() );
+            for ( auto itr : userData ) {
+                x[ i ] = itr.first;
+                y[ i ] = itr.second.value( itr.second.units() );
                 i++;
             }
 
@@ -205,9 +205,9 @@ struct interp_helper<fluxpool> {
 
             std::map<double,T_unit_type>::const_iterator itr;    // ...and fill
             int i=0;
-            for ( itr=userData.begin(); itr != userData.end(); itr++ ) {
-                x[ i ] = (*itr).first;
-                y[ i ] = (*itr).second.value( (*itr).second.units() );
+            for ( auto itr : userData ) {
+                x[ i ] = itr.first;
+                y[ i ] = itr.second.value( itr.second.units() );
                 i++;
             }
 
@@ -324,8 +324,9 @@ bool tseries<T_data>::exists( double t ) const {
  */
 template <class T_data>
 T_data tseries<T_data>::get( double t ) const {
-    if(mapdata.size() == 1)
+    if(mapdata.size() == 1) {
         return mapdata.begin()->second;
+    }
     typename std::map<double,T_data>::const_iterator itr = mapdata.find( t );
     if( itr != mapdata.end() )
         return (*itr).second;

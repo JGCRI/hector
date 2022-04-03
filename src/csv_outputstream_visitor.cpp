@@ -148,8 +148,8 @@ void CSVOutputStreamVisitor::visit( ForcingComponent* c ) {
     ForcingComponent::forcings_t  forcings = c->forcings_ts.get(c->currentYear);
 
     // Walk through the forcings map, outputting everything
-    for( ForcingComponent::forcingsIterator it = forcings.begin(); it != forcings.end(); ++it ) {
-        STREAM_UNITVAL( csvFile, c, ( *it ).first, ( *it ).second );
+    for( auto it : forcings ) {
+        STREAM_UNITVAL( csvFile, c, it.first, it.second );
     }
 
     csvFile.precision( oldPrecision );
@@ -176,8 +176,8 @@ void CSVOutputStreamVisitor::visit( SimpleNbox* c ) {
     // Biome-specific outputs: <biome>.<variable>
     if( c->veg_c.size() > 1 ) {
         SimpleNbox::fluxpool_stringmap::const_iterator it;
-        for( it = c->veg_c.begin(); it != c->veg_c.end(); it++ ) {
-            std::string biome = ( *it ).first;
+        for( auto it : c->veg_c ) {
+            std::string biome = it.first;
             STREAM_UNITVAL( csvFile, c, biome + SNBOX_PARSECHAR + D_NPP, c->final_npp[ biome ] );
             STREAM_UNITVAL( csvFile, c, biome + SNBOX_PARSECHAR + D_RH, c->final_rh[ biome ] );
             STREAM_UNITVAL( csvFile, c, biome + SNBOX_PARSECHAR + D_VEGC, c->veg_c[ biome ] );

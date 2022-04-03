@@ -70,8 +70,8 @@ Core::Core(Logger::LogLevel loglvl, bool echotoscreen, bool echotofile) :
  *  \note Memory for visitors is not handled by the core.
  */
 Core::~Core() {
-    for( CNameComponentIterator it = modelComponents.begin(); it != modelComponents.end(); ++it ) {
-        delete( *it ).second;
+    for( auto it : modelComponents ) {
+        delete it.second;
     }
 }
 
@@ -184,12 +184,12 @@ void Core::init() {
     temp = new OzoneComponent();
     modelComponents[ temp->getComponentName() ] = temp;
 
-    for( NameComponentIterator it = modelComponents.begin(); it != modelComponents.end(); ++it ) {
+    for( auto it : modelComponents ) {
         try {
-            ( *it ).second->init( this );
+            it.second->init( this );
         }
         catch(h_exception e) {
-            H_LOG(glog, Logger::SEVERE) << "error initializing component " << it->first;
+            H_LOG(glog, Logger::SEVERE) << "error initializing component " << it.first;
             throw;
         }
     }
@@ -315,16 +315,16 @@ void Core::prepareToRun(void)
         // 1. Go through the list of components that have been disabled and remove them
         // from the capability and component lists
 
-        for( vector<string>::iterator it=disabledComponents.begin(); it != disabledComponents.end(); ++it ) {
-            H_LOG( glog, Logger::WARNING ) << "Disabling " << *it << endl;
-            IModelComponent * mcomp = getComponentByName( *it );
+        for( auto it : disabledComponents ) {
+            H_LOG( glog, Logger::WARNING ) << "Disabling " << it << endl;
+            IModelComponent * mcomp = getComponentByName( it );
             mcomp->shutDown();
             delete mcomp;
-            modelComponents.erase( *it );
+            modelComponents.erase( it );
 
             componentMapIterator it2 = componentCapabilities.begin();
             while( it2 != componentCapabilities.end() ) {
-                if( it2->second==*it ) {
+                if( it2->second == it ) {
                     H_LOG( glog, Logger::DEBUG) << "--erasing " << it2->first << " " << it2->second << endl;
                     componentCapabilities.erase( it2++ );
                 } else {
@@ -340,12 +340,11 @@ void Core::prepareToRun(void)
         // component, and register the link with depFinder.
         DependencyFinder depFinder;
         H_LOG( glog, Logger::NOTICE ) << "Computing dependencies and re-ordering components..." << endl;
-        for( componentMapIterator it = componentDependencies.begin(); it != componentDependencies.end(); ++it ) {
-            //        H_LOG( glog, Logger::DEBUG) << it->first << " " << it->second << endl;
-            if( checkCapability( it->second ) ) {
-                depFinder.addDependency( it->first, getComponentByCapability( it->second )->getComponentName() );
+        for( auto it : componentDependencies ) {
+            if( checkCapability( it.second ) ) {
+                depFinder.addDependency( it.first, getComponentByCapability( it.second )->getComponentName() );
             } else {
-                H_LOG( glog, Logger::SEVERE) << "Capability " << it->second << " not found but requested by " << it->first << endl;
+                H_LOG( glog, Logger::SEVERE) << "Capability " << it.second << " not found but requested by " << it.first << endl;
                 H_LOG( glog, Logger::WARNING) << "The model will almost certainly not run successfully!" << endl;
             }
         }
@@ -365,9 +364,8 @@ void Core::prepareToRun(void)
     // ------------------------------------
     // 4. Tell model components we are finished sending data and about to start running.
     H_LOG( glog, Logger::NOTICE) << "Preparing to run..." << endl;
-    for( NameComponentIterator it = modelComponents.begin(); it != modelComponents.end(); ++it ) {
-        //       H_LOG( glog, Logger::DEBUG) << "Preparing " << (*it).second->getComponentName() << " to run" << endl;
-        ( *it ).second->prepareToRun();
+    for( auto it : modelComponents ) {
+        it.second->prepareToRun();
     }
 
     // ------------------------------------
@@ -393,12 +391,12 @@ bool Core::run_spinup()
     int step = 0;
     while( !spunup && ++step<max_spinup ) {
         spunup = true;
-        for( NameComponentIterator it = modelComponents.begin(); it != modelComponents.end(); ++it )
-            spunup = spunup && ( *it ).second->run_spinup( step );
+        for( auto it : modelComponents )
+            spunup = spunup && it.second->run_spinup( step );
         // Let visitors attempt to collect data if necessary
-        for( VisitorIterator visitorIt = modelVisitors.begin(); visitorIt != modelVisitors.end(); ++visitorIt ) {
-            if( ( *visitorIt )->shouldVisit( in_spinup, step ) ) {
-                accept( *visitorIt );
+        for( auto visitorIt : modelVisitors ) {
+            if( visitorIt->shouldVisit( in_spinup, step ) ) {
+                accept( visitorIt );
             }
         } // for
     } // while
@@ -468,14 +466,14 @@ void Core::run(double runtodate) {
             // nb components are responsible for checking and acting on this
         }
 
-        for( NameComponentIterator it = modelComponents.begin(); it != modelComponents.end(); ++it ) {
-            ( *it ).second->run( currDate );
+        for( auto it : modelComponents ) {
+            it.second->run( currDate );
         }
 
         // Let visitors attempt to collect data if necessary
-        for( VisitorIterator visitorIt = modelVisitors.begin(); visitorIt != modelVisitors.end(); ++visitorIt ) {
-            if( ( *visitorIt )->shouldVisit( in_spinup, currDate ) ) {
-                accept( *visitorIt );
+        for( auto visitorIt : modelVisitors ) {
+            if( visitorIt->shouldVisit( in_spinup, currDate ) ) {
+                accept( visitorIt );
             }
         }
     }
@@ -537,8 +535,8 @@ void Core::shutDown()
 {
     // ------------------------------------
     // 7. Tell model components we are finished.
-    for( NameComponentIterator it = modelComponents.begin(); it != modelComponents.end(); ++it ) {
-        ( *it ).second->shutDown();
+    for( auto it : modelComponents ) {
+        it.second->shutDown();
     }
 }
 
@@ -771,8 +769,8 @@ void Core::accept( AVisitor* visitor ) {
     visitor->visit( this );
 
     // forward the accept to the contained model components
-    for( NameComponentIterator it = modelComponents.begin(); it != modelComponents.end(); ++it ) {
-        ( *it ).second->accept( visitor );
+    for( auto it : modelComponents ) {
+        it.second->accept( visitor );
     }
 }
 
