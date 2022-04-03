@@ -395,9 +395,9 @@ bool Core::run_spinup()
         for( NameComponentIterator it = modelComponents.begin(); it != modelComponents.end(); ++it )
             spunup = spunup && ( *it ).second->run_spinup( step );
         // Let visitors attempt to collect data if necessary
-        for( VisitorIterator visitorIt = modelVisitors.begin(); visitorIt != modelVisitors.end(); ++visitorIt ) {
-            if( ( *visitorIt )->shouldVisit( in_spinup, step ) ) {
-                accept( *visitorIt );
+        for( auto visitorIt : modelVisitors ) {
+            if( visitorIt->shouldVisit( in_spinup, step ) ) {
+                accept( visitorIt );
             }
         } // for
     } // while
@@ -467,9 +467,9 @@ void Core::run(double runtodate) {
     // component hasn't had a chance to initialize its active chemistry yet, and without that
     // calc_revelle() will throw an error. Kind of hacky; but the only alternative I see is
     // to create a whole new done_with_spinup() signal to the components--a lot of work.
-    for( VisitorIterator visitorIt = modelVisitors.begin(); visitorIt != modelVisitors.end(); ++visitorIt ) {
-        if( ( *visitorIt )->shouldVisit( true, lastDate ) ) {
-            accept( *visitorIt );
+    for( auto visitorIt : modelVisitors ) {
+        if( visitorIt->shouldVisit( true, lastDate ) ) {
+            accept( visitorIt );
         }
     }
     
@@ -488,9 +488,9 @@ void Core::run(double runtodate) {
         }
         
         // Let visitors attempt to collect data if necessary
-        for( VisitorIterator visitorIt = modelVisitors.begin(); visitorIt != modelVisitors.end(); ++visitorIt ) {
-            if( ( *visitorIt )->shouldVisit( in_spinup, currDate ) ) {
-                accept( *visitorIt );
+        for( auto visitorIt : modelVisitors ) {
+            if( visitorIt->shouldVisit( in_spinup, currDate ) ) {
+                accept( visitorIt );
             }
         }
     }
