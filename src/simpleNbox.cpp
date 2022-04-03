@@ -50,7 +50,9 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
     
     // The actual atmos_c value will be filled in later by setData
     atmos_c.set(0.0, U_PGC, false, "atmos_c");
-
+    atmos_c_ts.allowInterp( true );
+    atmos_c_ts.name = "atmos_c_ts";
+    
     // earth_c keeps track of how much fossil C is pulled out
     // so that we can do a mass-balance check throughout the run
     // 2020-02-05 With the introduction of non-negative 'fluxpool' class
@@ -440,6 +442,7 @@ unitval SimpleNbox::getData(const std::string& varName,
         else
             returnval = atmos_c_ts.get(date);
     } else if( varNameParsed == D_ATMOSPHERIC_CO2 ) {
+        H_ASSERT( date != Core::undefinedIndex(), "Date required for atmospheric CO2" );
         returnval = Ca( date );
     } else if( varNameParsed == D_ATMOSPHERIC_C_RESIDUAL ) {
         if(date == Core::undefinedIndex())

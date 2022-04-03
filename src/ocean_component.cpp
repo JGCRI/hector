@@ -353,7 +353,7 @@ void OceanComponent::run( const double runToDate ) {
         deep.start_tracking();
     }
 
-    Ca = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_CO2 );
+    Ca = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_CO2, message_data( runToDate ) );
     SST.set(core->sendMessage( M_GETDATA, D_OCEAN_SURFACE_TEMP ), U_DEGC);
 
     in_spinup = core->inSpinup();
