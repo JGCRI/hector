@@ -40,6 +40,10 @@ test_that("Basic hcore functionality works", {
   expect_silent(run(hc, 2100))
   expect_silent(run(hc))
 
+  # All years should appear in the output
+  out <- fetchvars(hc, dates = 1745:2300)
+  expect_equivalent(sort(unique(out$year)), 1745:2300)
+
   hc <- shutdown(hc)
   expect_false(isactive(hc))
 })
