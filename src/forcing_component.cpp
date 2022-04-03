@@ -499,10 +499,9 @@ void ForcingComponent::run( const double runToDate ) {
         // Calculate based as the sum of the different radiative forcings or as the user
         // supplied constraint.
         unitval Ftot( 0.0, U_W_M2 );  // W/m2
-        for( forcingsIterator it = forcings.begin(); it != forcings.end(); ++it ) {
-            Ftot = Ftot + ( *it ).second;
+        for( auto it : forcings ) {
+            Ftot = Ftot + it.second;
         }
-
 
         // Otherwise if the user has supplied total forcing data, use that instead.
         if( Ftot_constrain.size() && runToDate <= Ftot_constrain.lastdate() ) {
@@ -544,84 +543,52 @@ unitval ForcingComponent::getData( const std::string& varName,
     unitval returnval;
     double getdate = date;             // This is why I hate declaring PBV args as const!
 
-
-    if(getdate == Core::undefinedIndex()) {
-        // If no date specified, provide the current date
-        getdate = currentYear;
-    }
-
-    if(getdate < baseyear) {
-        // Forcing component hasn't run yet, so there is no data to get.
-        returnval.set(0.0, U_W_M2);
-
-        // If requesting data not associated with a date aka a parameter,
-        // return the parameter value.
-        if(varName == D_DELTA_CH4){
-                      returnval = delta_ch4;
-        } else if (varName == D_DELTA_N2O){
-            returnval = delta_n2o;
-        } else if (varName == D_DELTA_CO2){
-            returnval = delta_co2;
-        } else if (varName == D_RHO_BC){
-            returnval = rho_bc;
-        } else if (varName == D_RHO_OC){
-            returnval = rho_oc;
-        } else if (varName == D_RHO_SO2){
-            returnval = rho_so2;
-        } else if (varName == D_RHO_NH3){
-            returnval = rho_nh3;
-        }
-
-        return returnval;
-    }
-
-    H_LOG(logger, Logger::DEBUG) << "getData request, time= "
-                                 << getdate
-                                 << "  baseyear = "
-                                 << baseyear
-                                 << std::endl;
-
-    forcings_t forcings(forcings_ts.get(getdate));
-
-    // Return values associated with date information.
-    if( varName == D_RF_BASEYEAR ) {
+    // If requesting data not associated with a date aka a parameter,
+    // return the parameter value.
+    if(varName == D_DELTA_CH4){
+        returnval = delta_ch4;
+    } else if (varName == D_DELTA_N2O){
+        returnval = delta_n2o;
+    } else if (varName == D_DELTA_CO2){
+        returnval = delta_co2;
+    } else if (varName == D_RHO_BC){
+        returnval = rho_bc;
+    } else if (varName == D_RHO_OC){
+        returnval = rho_oc;
+    } else if (varName == D_RHO_SO2){
+        returnval = rho_so2;
+    } else if (varName == D_RHO_NH3){
+        returnval = rho_nh3;
+    } else if (varName == D_RF_BASEYEAR){
         returnval.set( baseyear, U_UNITLESS );
     } else {
+        // All other data require a date
+        H_ASSERT( date != Core::undefinedIndex(), "Date required for " + varName );
+
+        // If before RF base year, return zero
+        if(getdate < baseyear) {
+            returnval.set( 0.0, U_W_M2 );
+            return returnval;
+       }
+        
+        // Look up the forcing name and value
+        forcings_t forcings( forcings_ts.get( getdate ));
+
         std::string forcing_name;
-        auto forcit = forcing_name_map.find(varName);
+        auto forcit = forcing_name_map.find( varName );
         if(forcit != forcing_name_map.end()) {
             forcing_name = forcing_name_map[varName];
-        }
-        else {
+        } else {
             forcing_name = varName;
         }
         std::map<std::string, unitval>::const_iterator forcing = forcings.find(forcing_name);
         if ( forcing != forcings.end() ) {
-            // from the forcing map
-            returnval = forcing->second;
+            returnval = forcing->second;            // from the forcing map
         } else {
-            if (currentYear < baseyear) {
-                returnval.set( 0.0, U_W_M2 );
-            } else if (varName == D_DELTA_CH4){
-                returnval = delta_ch4;
-            } else if (varName == D_DELTA_N2O){
-                returnval = delta_n2o;
-            } else if (varName == D_DELTA_CO2){
-                returnval = delta_co2;
-            } else if (varName == D_RHO_BC){
-                returnval = rho_bc;
-            } else if (varName == D_RHO_OC){
-                returnval = rho_oc;
-            } else if (varName == D_RHO_SO2){
-                returnval = rho_so2;
-            } else if (varName == D_RHO_NH3){
-                returnval = rho_nh3;
-            } else {
-                H_THROW( "Caller is requesting unknown variable: " + varName );
-            }
+            H_THROW( "Caller is requesting unknown variable: " + varName );
         }
     }
-
+    
     return returnval;
 }
 
