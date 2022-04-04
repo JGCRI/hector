@@ -340,8 +340,8 @@ ostream& operator<<(ostream &out, fluxpool &rhs ) {
     if(rhs.tracking) {
         out << endl;
         std::vector<std::string> sources = rhs.get_sources();
-        for (int i = 0; i < sources.size(); i++) {
-            out << "\t" << sources[i] << ": " << rhs.get_fraction(sources[i]) << endl;
+        for ( auto src : sources ) {
+            out << "\t" << src << ": " << rhs.get_fraction( src ) << endl;
         }
     }
     return out;

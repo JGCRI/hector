@@ -434,10 +434,10 @@ void ForcingComponent::run( const double runToDate ) {
         };
 
         // Halocarbons can be disabled individually via the input file, so we run through all possible ones
-         for (unsigned hc=0; hc<halos.size(); ++hc) {
-            if( core->checkCapability( halos[hc] ) ) {
+         for ( auto hc : halos ) {
+            if( core->checkCapability( hc ) ) {
                 // Forcing values are actually computed by the halocarbon itself
-                forcings[ halos[hc] ] = core->sendMessage( M_GETDATA, halos[hc], message_data( runToDate ) );
+                forcings[ hc ] = core->sendMessage( M_GETDATA, hc, message_data( runToDate ) );
                 }
         }
 
