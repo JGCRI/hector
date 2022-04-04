@@ -18,9 +18,7 @@ run_name=ssp245
 Here, comments start with a semicolon (`;`); *section names* (`core`) are enclosed in square brackets; and a *property* (`run_name`) is assigned a *value* (`ssp245`). Properties are guaranteed to be unique within a particular section, and all sections match one-to-one with a model [component](ComponentAPI.html).
 
 
-**Table of model parameters**
-
-Properties with asterisks (`*`) are optional.
+## Table of model parameters
 
 ``` {r table, echo = FALSE, warning = FALSE}
 library(knitr)
@@ -32,9 +30,12 @@ colnames(input) <- c("Section", "Parameter", "Biome specific", "Time variant",
 
 params <- subset(input, input$`Time variant` == "n")
 v_params <- subset(input, input$`Time variant` == "y")
+biome_spec <- subset(input, input$`Biome specific` == "y")
+colnames(v_params)[2] <- "Input variable"
 
 rownames(params) = NULL
 rownames(v_params) = NULL
+rownames(biome_spec) = NULL
 
 kbl(params) %>%
     kable_styling(fixed_thead = T, 
@@ -43,6 +44,22 @@ kbl(params) %>%
 
 ```
   
+## Table of biome-specific inputs
+
+It is possible to run Hector with multiple distinct [biomes](multiple-biomes.html).
+The following parameters are specific to a particular biome.
+
+``` {r biomes, echo = FALSE}
+kbl(biome_spec) %>%
+    kable_styling(fixed_thead = T, 
+                  bootstrap_options = "hover") %>%
+      scroll_box(height = "400px")
+
+```
+  
+
+## Table of variable inputs (with a time index)
+
 There are two Hector-specific wrinkles to the INI property-value assignment scheme. First, some properties have a time index that's required when assigning:
 
 ```
@@ -58,8 +75,6 @@ lucEmissions=csv:input/emissions/ssp245_emissions.csv
 
 In this case, the `input/emissions/ssp245_emissions.csv` file is parsed and the data in column `lucEmissions` are assigned to the model variable, with a required `Date` column providing the time index.
 
-**Table of variable inputs (with a time index)**
-
 ``` {r timetable, echo = FALSE}
 kbl(v_params) %>%
     kable_styling(fixed_thead = T, 
@@ -67,6 +82,8 @@ kbl(v_params) %>%
       scroll_box(height = "400px")
 
 ```
+  
+
   
 [gsl-ode]: https://www.gnu.org/software/gsl/manual/html_node/Ordinary-Differential-Equations.html#Ordinary-Differential-Equations   
 
