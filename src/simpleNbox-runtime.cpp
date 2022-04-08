@@ -40,8 +40,7 @@ void SimpleNbox::sanitychecks()
     // A few sanity checks
     // Note that with the addition of the fluxpool class (which guarantees
     // non-negative numbers) many of these checks went away
-    for ( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
-        std::string biome = *it;
+    for ( auto biome : biome_list ) {
         H_ASSERT( f_nppv.at(biome) >= 0.0, "f_nppv <0" );
         H_ASSERT( f_nppd.at(biome) >= 0.0, "f_nppd <0" );
         H_ASSERT( f_nppv.at(biome) + f_nppd.at(biome) <= 1.0, "f_nppv + f_nppd >1" );
@@ -63,8 +62,7 @@ void SimpleNbox::log_pools( const double t )
     H_LOG( logger,Logger::DEBUG ) << "---- simpleNbox pool states at t=" << t << " ----" << std::endl;
     H_LOG( logger,Logger::DEBUG ) << "Atmos = " << atmos_c << std::endl;
     H_LOG( logger,Logger::DEBUG ) << "Biome \tveg_c \t\tdetritus_c \tsoil_c" << std::endl;
-    for ( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
-        std::string biome = *it;
+    for ( auto biome : biome_list ) {
         H_LOG( logger,Logger::DEBUG ) << biome << "\t" << veg_c[ biome ] << "\t" <<
         detritus_c[ biome ] << "\t\t" << soil_c[ biome ] << std::endl;
     }
@@ -89,8 +87,7 @@ void SimpleNbox::prepareToRun()
     H_ASSERT( biome_list.size() == soil_c.size(), "soil_c and biome_list not same size" );
     H_ASSERT( biome_list.size() == npp_flux0.size(), "npp_flux0 and biome_list not same size" );
 
-    for ( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
-        std::string biome = *it;
+    for ( auto biome : biome_list ) {
         H_LOG( logger, Logger::DEBUG ) << "Checking that data for biome '" << biome << "' is complete" << std::endl;
         H_ASSERT( detritus_c.count( biome ), "no biome data for detritus_c" );
         H_ASSERT( soil_c.count( biome ), "no biome data for soil_c" );
@@ -131,9 +128,9 @@ void SimpleNbox::prepareToRun()
     }
     
     // One-time checks
-    for( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
-        H_ASSERT( beta.at( *it ) >= 0.0, "beta < 0" );
-        H_ASSERT( q10_rh.at( *it )>0.0, "q10_rh <= 0.0" );
+    for( auto biome : biome_list ) {
+        H_ASSERT( beta.at( biome ) >= 0.0, "beta < 0" );
+        H_ASSERT( q10_rh.at( biome )>0.0, "q10_rh <= 0.0" );
     }
     sanitychecks();
 }
@@ -302,8 +299,7 @@ void SimpleNbox::stashCValues( double t, const double c[] )
 
     // Apportion NPP and RH among the biomes
     // This is done by NPP and RH; biomes with higher values get more of any C change
-    for( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
-        std::string biome = *it;
+    for( auto biome : biome_list ) {
         const double wt = (npp( biome ) + rh( biome ) ) / npp_rh_total;
 
         // Update atmosphere with luc emissons from all land pools and biomes
@@ -458,8 +454,8 @@ fluxpool SimpleNbox::npp(std::string biome, double time) const
 fluxpool SimpleNbox::sum_npp(double time) const
 {
     fluxpool total( 0.0, U_PGC_YR );
-    for( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
-        total = total + npp( *it, time );}
+    for( auto biome : biome_list ) {
+        total = total + npp( biome, time );}
     return total;
 }
 
@@ -518,8 +514,8 @@ fluxpool SimpleNbox::rh( std::string biome, double time ) const
 fluxpool SimpleNbox::sum_rh( double time ) const
 {
     fluxpool total( 0.0, U_PGC_YR);
-    for( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
-        total = total + rh( *it, time );
+    for( auto biome : biome_list ) {
+        total = total + rh( biome, time );
     }
     return total;
 }
@@ -610,8 +606,7 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
     fluxpool rh_fda_current( 0.0, U_PGC_YR );
     fluxpool rh_fsa_current( 0.0, U_PGC_YR );
 
-    for( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
-        std::string biome = *it;
+    for( auto biome : biome_list ) {
         // NPP is scaled by CO2 from preindustrial value
         npp_biome = npp( biome );
         npp_current = npp_current + npp_biome;
@@ -627,8 +622,7 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
     fluxpool litter_flux( 0.0, U_PGC_YR );
     fluxpool litter_fvd( 0.0, U_PGC_YR );
     fluxpool litter_fvs( 0.0, U_PGC_YR );
-    for( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
-        std::string biome = *it;
+    for( auto biome : biome_list ) {
         fluxpool v = fluxpool( veg_c.at( biome ).value( U_PGC ) * 0.035, U_PGC_YR );
         litter_flux = litter_flux + v;
         litter_fvd = litter_fvd + v * f_litterd.at( biome );
@@ -637,8 +631,7 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
 
     // Some detritus goes to soil
     fluxpool detsoil_flux( 0.0, U_PGC_YR );
-    for( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
-        std::string biome = *it;
+    for( auto biome : biome_list ) {
         detsoil_flux = detsoil_flux + fluxpool( detritus_c.at( biome ).value( U_PGC ) * 0.6, U_PGC_YR );
     }
 
@@ -741,8 +734,7 @@ void SimpleNbox::slowparameval( double t, const double c[] )
     omodel->slowparameval( t, c );              // pass msg on to ocean model
 
     // Compute CO2 fertilization factor globally (and for each biome specified)
-    for( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
-        std::string biome = *it;
+    for( auto biome : biome_list ) {
         if( in_spinup ) {
             co2fert[ biome ] = 1.0;  // no perturbation allowed if in spinup
         } else {
@@ -768,8 +760,7 @@ void SimpleNbox::slowparameval( double t, const double c[] )
     }
 
     // Loop over biomes
-    for( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
-        std::string biome = *it;
+    for( auto biome : biome_list ) {
         if( in_spinup ) {
             tempfertd[ biome ] = 1.0;  // no perturbation allowed in spinup
             tempferts[ biome ] = 1.0;  // no perturbation allowed in spinup

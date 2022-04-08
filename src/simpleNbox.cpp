@@ -355,9 +355,9 @@ fluxpool SimpleNbox::sum_map( fluxpool_stringmap pool ) const
 {
     H_ASSERT( pool.size(), "can't sum an empty map" );
     fluxpool sum( 0.0, pool.begin()->second.units(), pool.begin()->second.tracking);
-    for( fluxpool_stringmap::const_iterator it = pool.begin(); it != pool.end(); it++ ) {
-        H_ASSERT(sum.tracking == (it->second).tracking, "tracking mismatch in sum_map function");
-        sum = sum + it->second;
+    for( auto p : pool ) {
+        H_ASSERT(sum.tracking == (p.second).tracking, "tracking mismatch in sum_map function");
+        sum = sum + p.second;
     }
     return sum;
 }
@@ -372,8 +372,9 @@ double SimpleNbox::sum_map( double_stringmap pool ) const
 {
     H_ASSERT( pool.size(), "can't sum an empty map" );
     double sum = 0.0;
-    for( double_stringmap::const_iterator it = pool.begin(); it != pool.end(); it++ )
-        sum = sum + it->second;
+    for( auto p : pool ) {
+        sum = sum + p.second;
+    }
     return sum;
 }
 
@@ -562,8 +563,7 @@ void SimpleNbox::reset(double time)
     tempfertd = tempfertd_tv.get(time);
 
     // Calculate derived quantities
-    for( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
-        std::string biome = *it;
+    for( auto biome : biome_list ) {
         if(in_spinup) {
             co2fert[ biome ] = 1.0; // co2fert fixed if in spinup.  Placeholder in case we decide to allow resetting into spinup
         }
