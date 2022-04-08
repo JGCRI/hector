@@ -434,10 +434,10 @@ void ForcingComponent::run( const double runToDate ) {
         };
 
         // Halocarbons can be disabled individually via the input file, so we run through all possible ones
-         for (unsigned hc=0; hc<halos.size(); ++hc) {
-            if( core->checkCapability( halos[hc] ) ) {
+         for ( auto hc : halos ) {
+            if( core->checkCapability( hc ) ) {
                 // Forcing values are actually computed by the halocarbon itself
-                forcings[ halos[hc] ] = core->sendMessage( M_GETDATA, halos[hc], message_data( runToDate ) );
+                forcings[ hc ] = core->sendMessage( M_GETDATA, hc, message_data( runToDate ) );
                 }
         }
 
@@ -499,10 +499,9 @@ void ForcingComponent::run( const double runToDate ) {
         // Calculate based as the sum of the different radiative forcings or as the user
         // supplied constraint.
         unitval Ftot( 0.0, U_W_M2 );  // W/m2
-        for( forcingsIterator it = forcings.begin(); it != forcings.end(); ++it ) {
-            Ftot = Ftot + ( *it ).second;
+        for( auto f : forcings ) {
+            Ftot = Ftot + f.second;
         }
-
 
         // Otherwise if the user has supplied total forcing data, use that instead.
         if( Ftot_constrain.size() && runToDate <= Ftot_constrain.lastdate() ) {
@@ -522,13 +521,12 @@ void ForcingComponent::run( const double runToDate ) {
         }
 
         // Subtract base year forcing values from forcings, i.e. make them relative to base year
-        for( forcingsIterator it = forcings.begin(); it != forcings.end(); ++it ) {
-            forcings[ ( *it ).first ] = ( *it ).second - baseyear_forcings[ ( *it ).first ];
-            H_LOG( logger, Logger::DEBUG ) << "forcing " << ( *it).first << " in " << runToDate << " is " << ( *it ).second << std::endl;
+        for( auto f : forcings ) {
+            forcings[ f.first ] = f.second - baseyear_forcings[ f.first ];
+            H_LOG( logger, Logger::DEBUG ) << "forcing " << f.first << " in " << runToDate << " is " << f.second << std::endl;
 
         }
         H_LOG( logger, Logger::DEBUG ) << "forcing total is " << forcings[ D_RF_TOTAL ] << std::endl;
-
 
         // Store the forcings that we have calculated
         forcings_ts.set(runToDate, forcings);
