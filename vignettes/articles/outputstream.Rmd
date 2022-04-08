@@ -2,15 +2,24 @@
 title: "Command line Hector's outputstream"
 ---
 
-The `outputstream.csv` is created and saved to the `output` when Hector is executed from the command line, Xcode, or VS. The `outputstream.csv` is **not** created when using the R interface. Using the R interface users should use [fetchvars](../reference/fetchvars.html). 
-
+The `outputstream.csv` is created and saved to the `output` directory when
+Hector is executed from the command line or Xcode (but _not_ when running 
+from R; R users should use [fetchvars](../reference/fetchvars.html)). 
 
 # Output stream categories:
 
-**An important note about time**: The outputstream code currently writes the _end date_ of the current timestep in the outputstream.csv file; e.g., when we're running 1 January 1745 - 31 December 1745, what gets written is "1746". This is not intuitive (most people think of "1746" denoting January 1-December 31) but numerically correct: the date is 1746.0, i.e. midnight on December 31 1745.
+**An important note about time**: The outputstream code currently writes the
+_end date_ of the current timestep in the outputstream.csv file; e.g., when
+we're running 1 January 1745 - 31 December 1745, what gets written is "1746". 
+This is not intuitive (most people think of "1746" denoting January 1-December 31) 
+but numerically correct: the date is 1746.0, i.e. midnight on December 31 1745.
 
-This is going to change in version 2.0 (https://github.com/JGCRI/hector/issues/177)
+The first line of this file is a timestamp and version number line, and should
+be skipped by any CSV-reading code.
 
+The variables that appear in the outputstream table include:
+
+TODO: this should be auto-generated from @leeyap output table?
 
 | Component     | Variable      | Units | Definition
 | :----------- |:-------------| -----|:----------|
