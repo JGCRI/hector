@@ -89,9 +89,9 @@ struct interp_helper {
 
             typename std::map<double,T_data>::const_iterator itr;    // ...and fill
             int i=0;
-            for ( auto itr : userData ) {
-                x[ i ] = itr.first;
-                y[ i ] = itr.second;
+            for ( auto datum : userData ) {
+                x[ i ] = datum.first;
+                y[ i ] = datum.second;
                 i++;
             }
 
@@ -145,11 +145,10 @@ struct interp_helper<unitval> {
             double *x = new double[ userData.size() ];   // allocate
             double *y = new double[ userData.size() ];
 
-            std::map<double,T_unit_type>::const_iterator itr;    // ...and fill
             int i=0;
-            for ( auto itr : userData ) {
-                x[ i ] = itr.first;
-                y[ i ] = itr.second.value( itr.second.units() );
+            for ( auto datum : userData ) {
+                x[ i ] = datum.first;
+                y[ i ] = datum.second.value( datum.second.units() );
                 i++;
             }
 
@@ -203,11 +202,10 @@ struct interp_helper<fluxpool> {
             double *x = new double[ userData.size() ];   // allocate
             double *y = new double[ userData.size() ];
 
-            std::map<double,T_unit_type>::const_iterator itr;    // ...and fill
             int i=0;
-            for ( auto itr : userData ) {
-                x[ i ] = itr.first;
-                y[ i ] = itr.second.value( itr.second.units() );
+            for ( auto datum : userData ) {
+                x[ i ] = datum.first;
+                y[ i ] = datum.second.value( datum.second.units() );
                 i++;
             }
 

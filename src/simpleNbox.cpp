@@ -353,9 +353,9 @@ fluxpool SimpleNbox::sum_map( fluxpool_stringmap pool ) const
 {
     H_ASSERT( pool.size(), "can't sum an empty map" );
     fluxpool sum( 0.0, pool.begin()->second.units(), pool.begin()->second.tracking);
-    for( auto it : pool ) {
-        H_ASSERT(sum.tracking == (it.second).tracking, "tracking mismatch in sum_map function");
-        sum = sum + it.second;
+    for( auto p : pool ) {
+        H_ASSERT(sum.tracking == (p.second).tracking, "tracking mismatch in sum_map function");
+        sum = sum + p.second;
     }
     return sum;
 }
@@ -370,8 +370,9 @@ double SimpleNbox::sum_map( double_stringmap pool ) const
 {
     H_ASSERT( pool.size(), "can't sum an empty map" );
     double sum = 0.0;
-    for( auto it : pool )
-        sum = sum + it.second;
+    for( auto p : pool ) {
+        sum = sum + p.second;
+    }
     return sum;
 }
 

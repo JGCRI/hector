@@ -298,10 +298,10 @@ private:
     void start_tracking(){
         earth_c.tracking = true;
         atmos_c.tracking = true;
-        for( auto it : biome_list ) {
-            veg_c[ it ].tracking = true;
-            soil_c[ it ].tracking = true;
-            detritus_c[ it ].tracking = true;
+        for( auto biome : biome_list ) {
+            veg_c[ biome ].tracking = true;
+            soil_c[ biome ].tracking = true;
+            detritus_c[ biome ].tracking = true;
         }
     }
 
