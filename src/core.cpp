@@ -458,8 +458,24 @@ void Core::run(double runtodate) {
     // ------------------------------------
     // 6. Run all model dates.
     H_LOG( glog, Logger::NOTICE) << "Running..." << endl;
+    
+    
+    // Let visitors record initial model state
+    // Note that just for this initial output, in calling shouldVisit below, we're telling
+    // visitors that spinup is 'true' (which it's not). This is necessary because the ocean
+    // component hasn't had a chance to initialize its active chemistry yet, and without that
+    // calc_revelle() will throw an error. Kind of hacky; but the only alternative I see is
+    // to create a whole new done_with_spinup() signal to the components--a lot of work.
+    for( auto visitorIt : modelVisitors ) {
+        if( visitorIt->shouldVisit( true, lastDate ) ) {
+            accept( visitorIt );
+        }
+    }
+    
+    // Main model run loop
     for(double currDate = lastDate+1.0; currDate <= runtodate; currDate += 1.0 ) {
         H_LOG( glog, Logger::NOTICE) << currDate << endl;
+        
         // If we've hit the tracking start year, note this in the log
         if(currDate == trackingDate) {
             H_LOG(glog, Logger::NOTICE) << "Starting tracking in " << currDate << endl;
@@ -469,7 +485,7 @@ void Core::run(double runtodate) {
         for( auto it : modelComponents ) {
             it.second->run( currDate );
         }
-
+        
         // Let visitors attempt to collect data if necessary
         for( auto vis : modelVisitors ) {
             if( vis->shouldVisit( in_spinup, currDate ) ) {
@@ -478,7 +494,7 @@ void Core::run(double runtodate) {
         }
     }
 
-    // Record the last finished date.  We will resume here the next time run is called
+    // Record the last finished date; we will resume here the next time run is called
     lastDate = runtodate;
 }
 
