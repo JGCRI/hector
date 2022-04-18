@@ -299,6 +299,11 @@ void OceanComponent::prepareToRun() {
     surfaceLL.mychemistry.As            = ocean_area * part_low; // surface area m2
     surfaceLL.mychemistry.U             = 6.7; // average wind speed m/s Hartin et al. 2016
 
+    // Initialize surface flux tracking variables
+    annualflux_sum.set( 0.0, U_PGC );
+    annualflux_sumHL.set( 0.0, U_PGC );
+    annualflux_sumLL.set( 0.0, U_PGC );
+
     // Log the state of all our boxes, so we know things are as they should be
     surfaceLL.log_state();
     surfaceHL.log_state();
