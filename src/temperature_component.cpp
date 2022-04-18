@@ -368,7 +368,6 @@ void TemperatureComponent::run( const double runToDate ) {
     //// will rise in parallel with the value reported by ForcingComponent.
 
     // If we never had any temperature constraint, `internal_Ftot` will match `Ftot`.
-    //
 
     // Some needed inputs
     int tstep = runToDate - core->getStartDate();
@@ -376,16 +375,16 @@ void TemperatureComponent::run( const double runToDate ) {
     // Calculate the total aresol forcing from aerosol-radiation interactions and the
     // aerosol-cloud interactions so that that total aerosol forcing can be adjusted
     // by the aerosol forcing scaling factor.
-    double aero_forcing = core->sendMessage( M_GETDATA, D_RF_BC ).value( U_W_M2 ) +
-    core->sendMessage( M_GETDATA, D_RF_OC).value( U_W_M2 ) +
-    core->sendMessage( M_GETDATA, D_RF_NH3).value( U_W_M2 ) +
-    core->sendMessage( M_GETDATA, D_RF_SO2).value( U_W_M2 ) +
-    core->sendMessage( M_GETDATA, D_RF_ACI).value( U_W_M2 ) ;
+    double aero_forcing = core->sendMessage( M_GETDATA, D_RF_BC, message_data( runToDate )).value( U_W_M2 ) +
+    core->sendMessage( M_GETDATA, D_RF_OC, message_data( runToDate )).value( U_W_M2 ) +
+    core->sendMessage( M_GETDATA, D_RF_NH3, message_data( runToDate )).value( U_W_M2 ) +
+    core->sendMessage( M_GETDATA, D_RF_SO2, message_data( runToDate )).value( U_W_M2 ) +
+    core->sendMessage( M_GETDATA, D_RF_ACI, message_data( runToDate )).value( U_W_M2 ) ;
 
-    double volcanic_forcing = double(core->sendMessage(M_GETDATA, D_RF_VOL));
+    double volcanic_forcing = double(core->sendMessage( M_GETDATA, D_RF_VOL, message_data( runToDate )));
 
     // Adjust total forcing to account for the aerosol and volcanic forcing scaling factor
-    forcing[tstep] = double(core->sendMessage(M_GETDATA, D_RF_TOTAL).value(U_W_M2))
+    forcing[tstep] = double(core->sendMessage(M_GETDATA, D_RF_TOTAL, message_data( runToDate)).value(U_W_M2))
     - (1.0 - alpha) * aero_forcing
     - (1.0 - volscl) * volcanic_forcing;
 

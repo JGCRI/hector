@@ -114,8 +114,9 @@ void SimpleNbox::prepareToRun()
     }
 
     // Set atmospheric C based on the requested preindustrial [CO2]
-    atmos_c.set(C0.value(U_PPMV_CO2) * PPMVCO2_TO_PGC, U_PGC, atmos_c.tracking, atmos_c.name);
-
+    atmos_c.set( C0.value( U_PPMV_CO2 ) * PPMVCO2_TO_PGC, U_PGC, atmos_c.tracking, atmos_c.name );
+    atmos_c_ts.set( core->getStartDate(), atmos_c );
+    
     // Constraint logging
     if( CO2_constrain.size() ) {
         Logger& glog = core->getGlobalLogger();
