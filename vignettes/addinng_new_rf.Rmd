@@ -1,0 +1,41 @@
+---
+title: "Adding a new forcer to Hector"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{addinng_new_rf}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+# Objective 
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(hector)
+```
+
+Here are some notes about how to add a new species that will effect Hector's radiative forcing budget in order to answer the question "how much impact does this newly discovered forcer X have". 
+
+Here are some notes as to how to do this 
+
+* option 1: add the estimated radiative forcing values to the miscellaneous radiative forcing variable
+* option 2: add a new component to Hector and pass the appropriate information to Hector's forcing components 
+
+
+# Option 1 
+
+Use Hector's miscellaneous radiative forcing variable to read additional radiative forcing values. This approach requires little to no code experience but does require that the users have radiative forcing values readily available. Users can read in the new radiative forcing values via the ini file with the `Fmisc` variable. `Fmisc` is a column in the hector csv input tables named something like `ssp434_emiss-constraints_rf.csv`. Depending on the user configuration Fmisc may have numeric values or equal to all zeros. If `Fmisc` is non-zero then the user should add the new values to the exisiting values. Alternatively using the R hector package, users can read in miscellaneous forcing to a hector core with `RF_MISC()` and the `setvar()` functions. 
+
+# Option 2
+
+Adding a new component to Hector will require changes to the cpp code. Start by creating a new Hector component, using the `dummy_model_component` as the template. Use this component to read in the emissions. If the forcer being added is a GHG then use the appropriate method to convent from emissions to concentrations and expose the concentrations (via getData) so that they may be passed to other Hector components, the new model component cpp file will return the new emissions or concentrations (whichever one is appropriate). 
+
+Next modify the `forcing_compoent.cpp`, add the equation that to convert the emissions or concentration time series to radiative forcing values. The new values should be added into the forcing map ("forcings" see where the N2O RF is set for an [example](https://github.com/JGCRI/hector/blob/a75702ba5a3ab9684a4eae1e49ef221172b6a494/src/forcing_component.cpp#L310)) so that these new values will be incorporated into the total radiative forcing calculation. 
+
+
