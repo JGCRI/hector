@@ -1307,6 +1307,12 @@ LUC_EMISSIONS <- function() {
     .Call('_hector_LUC_EMISSIONS', PACKAGE = 'hector')
 }
 
+#' @rdname carboncycle
+#' @export
+LUC_UPTAKE <- function() {
+    .Call('_hector_LUC_UPTAKE', PACKAGE = 'hector')
+}
+
 #' @describeIn parameters CO2 fertilization factor (\code{"(unitless)"})
 #' @param biome Biome for which to retrieve parameter. If missing or
 #'   `""`, default to `"global"`.

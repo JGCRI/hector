@@ -2190,6 +2190,16 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// LUC_UPTAKE
+String LUC_UPTAKE();
+RcppExport SEXP _hector_LUC_UPTAKE() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(LUC_UPTAKE());
+    return rcpp_result_gen;
+END_RCPP
+}
 // BETA
 String BETA(String biome);
 RcppExport SEXP _hector_BETA(SEXP biomeSEXP) {
@@ -2866,6 +2876,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_FFI_EMISSIONS", (DL_FUNC) &_hector_FFI_EMISSIONS, 0},
     {"_hector_DACCS_UPTAKE", (DL_FUNC) &_hector_DACCS_UPTAKE, 0},
     {"_hector_LUC_EMISSIONS", (DL_FUNC) &_hector_LUC_EMISSIONS, 0},
+    {"_hector_LUC_UPTAKE", (DL_FUNC) &_hector_LUC_UPTAKE, 0},
     {"_hector_BETA", (DL_FUNC) &_hector_BETA, 1},
     {"_hector_Q10_RH", (DL_FUNC) &_hector_Q10_RH, 1},
     {"_hector_WARMINGFACTOR", (DL_FUNC) &_hector_WARMINGFACTOR, 1},

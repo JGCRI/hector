@@ -1586,6 +1586,13 @@ String LUC_EMISSIONS() {
 return D_LUC_EMISSIONS;
 }
 
+//' @rdname carboncycle
+//' @export
+// [[Rcpp::export]]
+String LUC_UPTAKE() {
+    return D_LUC_UPTAKE;
+}
+
 //' @describeIn parameters CO2 fertilization factor (\code{"(unitless)"})
 //' @param biome Biome for which to retrieve parameter. If missing or
 //'   `""`, default to `"global"`.
