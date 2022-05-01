@@ -38,18 +38,20 @@ void identity_tests(bool trk) {
  */
 SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
     ffiEmissions.allowInterp( true );
-    ffiEmissions.name = "ffiEmissions";
+    ffiEmissions.name = D_FFI_EMISSIONS;
     daccsUptake.allowInterp( true );
-    daccsUptake.name = "daccsUptake";
+    daccsUptake.name = D_DACCS_UPTAKE;
     lucEmissions.allowInterp( true );
-    lucEmissions.name = "lucEmissions";
+    lucEmissions.name = D_LUC_EMISSIONS;
+    lucUptake.allowInterp( true );
+    lucUptake.name = D_LUC_UPTAKE;
     Ftalbedo.allowInterp( true );
-    Ftalbedo.name = "albedo";
-    CO2_constrain.name = "CO2_constrain";
-    NBP_constrain.name = "NBP_constrain";
+    Ftalbedo.name = D_RF_T_ALBEDO;
+    CO2_constrain.name = D_CO2_CONSTRAIN;
+    NBP_constrain.name = D_NBP_CONSTRAIN;
     
     // The actual atmos_c value will be filled in later by setData
-    atmos_c.set(0.0, U_PGC, false, "atmos_c");
+    atmos_c.set(0.0, U_PGC, false, D_ATMOSPHERIC_C);
     atmos_c_ts.allowInterp( true );
     atmos_c_ts.name = "atmos_c_ts";
     
@@ -58,7 +60,7 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
     // 2020-02-05 With the introduction of non-negative 'fluxpool' class
     // we can't start earth_c at zero. Value of 5500 is set to avoid
     // overdrawing in RCP 8.5
-    earth_c.set( 5500, U_PGC, false, "earth_c" );
+    earth_c.set( 5500, U_PGC, false, D_EARTHC );
 }
 
 
@@ -293,6 +295,10 @@ void SimpleNbox::setData( const std::string &varName,
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
             lucEmissions.set( data.date, data.getUnitval( U_PGC_YR ) );
         }
+        else if( varNameParsed == D_LUC_UPTAKE ) {
+            H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
+            lucUptake.set( data.date, data.getUnitval( U_PGC_YR ) );
+        }
         // Atmospheric CO2 record to constrain model to (optional)
         else if( varNameParsed == D_CO2_CONSTRAIN ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
@@ -513,6 +519,9 @@ unitval SimpleNbox::getData(const std::string& varName,
     } else if( varNameParsed == D_LUC_EMISSIONS ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for luc emissions" );
         returnval = lucEmissions.get( date );
+    } else if( varNameParsed == D_LUC_UPTAKE ) {
+        H_ASSERT( date != Core::undefinedIndex(), "Date required for luc uptake" );
+        returnval = lucUptake.get( date );
     } else if( varNameParsed == D_CO2_CONSTRAIN ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for atmospheric CO2 constraint" );
         if (CO2_constrain.exists( date )) {

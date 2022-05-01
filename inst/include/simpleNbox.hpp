@@ -164,6 +164,7 @@ private:
     tseries<unitval> ffiEmissions;      //!< fossil fuels and industry emissions, Pg C/yr
     tseries<unitval> daccsUptake;       //!< direct air carbon capture and storage, Pg C/yr
     tseries<unitval> lucEmissions;      //!< land use change emissions, Pg C/yr
+    tseries<unitval> lucUptake;         //!< land use change uptake, Pg C/yr
 
     // Albedo
     tseries<unitval> Ftalbedo;   //!< terrestrial albedo forcing, W/m2

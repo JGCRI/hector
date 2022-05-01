@@ -344,6 +344,7 @@
 #define D_FFI_EMISSIONS         "ffi_emissions"
 #define D_DACCS_UPTAKE          "daccs_uptake"
 #define D_LUC_EMISSIONS         "luc_emissions"
+#define D_LUC_UPTAKE            "luc_uptake"
 #define D_TEMPFERTD             "detritus_tempfert"
 #define D_TEMPFERTS             "soil_tempfert"
 #define D_Q10_RH                "q10_rh"
