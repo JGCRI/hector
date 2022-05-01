@@ -293,11 +293,13 @@ void SimpleNbox::setData( const std::string &varName,
         }
         else if( varNameParsed == D_LUC_EMISSIONS ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            lucEmissions.set( data.date, data.getUnitval( U_PGC_YR ) );
+            unitval luc = data.getUnitval( U_PGC_YR );
+            lucEmissions.set( data.date, fluxpool( luc.value( U_PGC_YR ), U_PGC_YR ) );
         }
         else if( varNameParsed == D_LUC_UPTAKE ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            lucUptake.set( data.date, data.getUnitval( U_PGC_YR ) );
+            unitval luc = data.getUnitval( U_PGC_YR );
+            lucUptake.set( data.date, fluxpool( luc.value( U_PGC_YR ), U_PGC_YR ) );
         }
         // Atmospheric CO2 record to constrain model to (optional)
         else if( varNameParsed == D_CO2_CONSTRAIN ) {
