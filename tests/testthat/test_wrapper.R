@@ -156,7 +156,7 @@ test_that("Automatic reset is performed if and only if core is not marked 'clean
   hc$reset_date <- 0
   ## Reset performed - expect_output, not expect_silent, because the core
   ## prints a message alerting user of reset
-  expect_warning(run(hc, 2050), "resetting")
+  expect_message(run(hc, 2050), "resetting")
   expect_true(hc$clean)
 
   hc$clean <- FALSE
@@ -191,22 +191,22 @@ test_that("Setting parameter values or run date prior to current date does trigg
 
   setvar(hc, 2050:2150, FFI_EMISSIONS(), 0.0, "Pg C/yr")
   expect_false(hc$clean)
-  expect_warning(run(hc, 2100), "resetting")
+  expect_message(run(hc, 2100), "resetting")
   expect_true(hc$clean) # reset gets run!
   expect_equal(hc$reset_date, 2049)
 
   # requesting a prior date run raises an error BUT also resets
   setvar(hc, 2050:2150, FFI_EMISSIONS(), 0.0, "Pg C/yr")
-  # suppress warnings - we know core will auto-reset
-  expect_error(suppressWarnings(run(hc, 2048)), "is prior")
+  # suppress message - we know core will auto-reset
+  expect_error(suppressMessages(run(hc, 2048)), "is prior")
   expect_silent(run(hc, 2050))
   expect_true(hc$clean)
 
   setvar(hc, 2050:2150, FFI_EMISSIONS(), 0.0, "Pg C/yr") # edge case
   expect_false(hc$clean)
   expect_equal(hc$reset_date, 2049)
-  # suppress warnings - we know core will auto-reset
-  expect_error(suppressWarnings(run(hc, 2048)), "is prior")
+  # suppress message - we know core will auto-reset
+  expect_error(suppressMessages(run(hc, 2048)), "is prior")
   expect_silent(run(hc, 2050))
   expect_true(hc$clean)
 
