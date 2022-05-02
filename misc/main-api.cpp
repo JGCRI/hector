@@ -191,6 +191,8 @@ void read_and_set_co2(double tstrt, double tend, Core &core, istream &sim_gcam_e
                              message_data(t, unitval(daccs, U_PGC_YR)));
             core.sendMessage(M_SETDATA, D_LUC_EMISSIONS,
                              message_data(t, unitval(luc, U_PGC_YR)));
+            core.sendMessage(M_SETDATA, D_LUC_UPTAKE,
+                             message_data(t, unitval(luc, U_PGC_YR)));
             core.sendMessage(M_SETDATA, D_EMISSIONS_SO2,
                              message_data(t, unitval(so2, U_GG_S)));
             core.sendMessage(M_SETDATA, D_EMISSIONS_BC,

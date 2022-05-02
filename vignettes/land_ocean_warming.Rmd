@@ -33,7 +33,6 @@ theme_set(theme_bw(base_size = 14))
 ```
 
 
-
 ## Run default Hector 
 
 Complete a default run of Hector, one that uses DOECLIM to calculate land and ocean air temperature. 
@@ -66,7 +65,6 @@ ggplot(data = out1) +
 
 Start by writing a function to help us set the land ocean warming ratio, run hector, and fetch some results.  
 
-
 ```{r}
 # Helper function that runs a Hector core with a new land-ocean warming ratio. 
 # 
@@ -79,7 +77,8 @@ run_with_lo <- function(hc, value){
     # Set the land ocean warming ratio. 
     setvar(hc, NA, LO_WARMING_RATIO(), value, getunits(LO_WARMING_RATIO()))
     
-    # Run Hector
+    # Reset and run Hector
+    reset(hc)
     run(hc)
     
     # Fetch and format the output. 
@@ -117,9 +116,7 @@ ggplot(data = hector_lo_results) +
 ```
 
 
-
 ## Compare default Hector with user provided land ocean warming ratio
-
 
 ```{r}
 ggplot() + 
@@ -134,4 +131,3 @@ ggplot() +
     guides(color=guide_legend(title = "lo ratio"))
 
 ```
-

@@ -551,10 +551,7 @@ fluxpool SimpleNbox::ccs(double t, bool in_spinup) const
 fluxpool SimpleNbox::luc_emission(double t, bool in_spinup) const
 {
     if( !in_spinup ) {   // no perturbation allowed if in spinup
-        double totflux = lucEmissions.get( t ).value(U_PGC_YR);
-        if(totflux >= 0.0) {
-            return fluxpool(totflux, U_PGC_YR);
-        }
+        return lucEmissions.get( t );
     }
     return fluxpool(0.0, U_PGC_YR);
 }
@@ -566,10 +563,7 @@ fluxpool SimpleNbox::luc_emission(double t, bool in_spinup) const
 fluxpool SimpleNbox::luc_uptake(double t, bool in_spinup) const
 {
     if( !in_spinup ) {   // no perturbation allowed if in spinup
-        double totflux = lucEmissions.get( t ).value(U_PGC_YR);
-        if(totflux < 0.0) {
-            return fluxpool(-totflux, U_PGC_YR);
-        }
+        return lucUptake.get( t );
     }
     return fluxpool(0.0, U_PGC_YR);
 }
