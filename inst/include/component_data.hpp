@@ -45,7 +45,7 @@
 #define D_FTOT_CONSTRAIN        D_RF_PREFIX "tot_constrain"
 #define D_RF_BASEYEAR           "baseyear"
 #define D_RF_CO2                D_RF_PREFIX "CO2"
-#define D_RF_N2O                D_RF_PREFIX "N2O_conc"
+#define D_RF_N2O                D_RF_PREFIX "N2O"
 #define D_RF_H2O_STRAT          D_RF_PREFIX "H2O_strat"
 #define D_RF_O3_TROP            D_RF_PREFIX "O3_trop"
 #define D_RF_BC                 D_RF_PREFIX "BC"
@@ -261,7 +261,7 @@
 #define D_LIFETIME_STRAT        "Tstrat"
 
 // n2o component
-#define D_ATMOSPHERIC_N2O       "N2O"
+#define D_ATMOSPHERIC_N2O       "N2O_conc"
 #define D_PREINDUSTRIAL_N2O     "N0"
 #define D_EMISSIONS_N2O         "N2O_emissions"
 #define D_CONSTRAINT_N2O        "N2O_constrain"
@@ -334,8 +334,8 @@
 #define D_NBP                   "NBP"
 #define D_ATMOSPHERIC_CO2       "CO2_conc"
 #define D_PREINDUSTRIAL_CO2     "C0"
-#define D_ATMOSPHERIC_C         "atmos_c"
-#define D_ATMOSPHERIC_C_RESIDUAL "atmos_c_residual"
+#define D_ATMOSPHERIC_C         "atmos_co2"
+#define D_ATMOSPHERIC_C_RESIDUAL "atmos_co2_residual"
 #define D_EARTHC                "earth_c"
 #define D_VEGC                  "veg_c"
 #define D_DETRITUSC             "detritus_c"
