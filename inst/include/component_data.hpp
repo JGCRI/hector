@@ -45,7 +45,7 @@
 #define D_FTOT_CONSTRAIN        D_RF_PREFIX "tot_constrain"
 #define D_RF_BASEYEAR           "baseyear"
 #define D_RF_CO2                D_RF_PREFIX "CO2"
-#define D_RF_N2O                D_RF_PREFIX "N2O"
+#define D_RF_N2O                D_RF_PREFIX "N2O_conc"
 #define D_RF_H2O_STRAT          D_RF_PREFIX "H2O_strat"
 #define D_RF_O3_TROP            D_RF_PREFIX "O3_trop"
 #define D_RF_BC                 D_RF_PREFIX "BC"
@@ -250,7 +250,7 @@
 #define D_HCDELTA_CH3Br            D_HCDELTA_PREFIX CH3Br_COMPONENT_BASE
 
 // methane component
-#define D_ATMOSPHERIC_CH4       "CH4"
+#define D_ATMOSPHERIC_CH4       "CH4_conc"
 #define D_PREINDUSTRIAL_CH4     "M0"
 #define D_RF_CH4                "FCH4"
 #define D_EMISSIONS_CH4         "CH4_emissions"
@@ -280,7 +280,7 @@
 
 //o3 component
 #define D_PREINDUSTRIAL_O3	      "PO3"
-#define D_ATMOSPHERIC_O3	      "O3"
+#define D_ATMOSPHERIC_O3	      "O3_conc"
 #define D_ATMOSPHERIC_EM_CH4      "CH4"
 #define D_EMISSIONS_NOX           "NOX_emissions"
 #define D_EMISSIONS_CO            "CO_emissions"
@@ -326,14 +326,13 @@
 #define D_CO3_LL				"CO3_LL"
 #define D_CO3_HL				"CO3_HL"
 #define D_CO3				    "CO3"
-#define D_ATM_OCEAN_CONSTRAIN   "atm_ocean_constrain"
 #define D_TIMESTEPS             "ocean_timesteps"
 #define D_REVELLE_HL            "Revelle_HL"
 #define D_REVELLE_LL            "Revelle_LL"
 
 // SimpleNbox component
 #define D_NBP                   "NBP"
-#define D_ATMOSPHERIC_CO2       "Ca"
+#define D_ATMOSPHERIC_CO2       "CO2_conc"
 #define D_PREINDUSTRIAL_CO2     "C0"
 #define D_ATMOSPHERIC_C         "atmos_c"
 #define D_ATMOSPHERIC_C_RESIDUAL "atmos_c_residual"

@@ -58,10 +58,10 @@ void CH4Component::init( Core* coreptr ) {
     core->registerCapability( D_PREINDUSTRIAL_CH4, getComponentName() );
     core->registerDependency( D_LIFETIME_OH, getComponentName() );
     // ...and what input data that we can accept
-    core->registerInput(D_EMISSIONS_CH4, getComponentName());
-    core->registerInput(D_NATURAL_CH4, getComponentName());
-    core->registerInput(D_CONSTRAINT_CH4, getComponentName());
-    core->registerInput(D_PREINDUSTRIAL_CH4, getComponentName());
+    core->registerInput( D_EMISSIONS_CH4, getComponentName() );
+    core->registerInput( D_NATURAL_CH4, getComponentName() );
+    core->registerInput( D_CONSTRAINT_CH4, getComponentName() );
+    core->registerInput( D_PREINDUSTRIAL_CH4, getComponentName() );
 }
 
 //------------------------------------------------------------------------------
