@@ -85,7 +85,7 @@ void OceanComponent::init( Core* coreptr ) {
 	lastflux_annualized.set( 0.0, U_PGC );
 
     // Register the data we can provide
-    core->registerCapability( D_OCEAN_CFLUX, getComponentName() );
+    core->registerCapability( D_OCEAN_C_UPTAKE, getComponentName() );
     core->registerCapability( D_OCEAN_C, getComponentName() );
     core->registerCapability( D_CARBON_HL, getComponentName() );
     core->registerCapability( D_CARBON_LL, getComponentName() );
@@ -415,7 +415,7 @@ unitval OceanComponent::getData( const std::string& varName,
     if(date == Core::undefinedIndex() ){
         // If no date, we're in spinup; just return the current value
 
-        if( varName == D_OCEAN_CFLUX ){
+        if( varName == D_OCEAN_C_UPTAKE ){
             returnval = annualflux_sum;
         } else if( varName == D_TT ) {
             returnval = tt;
@@ -494,7 +494,7 @@ unitval OceanComponent::getData( const std::string& varName,
         }
 
     } else if(date != Core::undefinedIndex() ){
-        if( varName == D_OCEAN_CFLUX ){
+        if( varName == D_OCEAN_C_UPTAKE ){
             returnval = annualflux_sum_ts.get(date);
         } else if( varName == D_OCEAN_C ) {
             returnval = C_DO_ts.get( date ) +  C_IO_ts.get(date) + Ca_LL_ts.get(date) + Ca_HL_ts.get(date);

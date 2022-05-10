@@ -1093,8 +1093,8 @@ EMISSIONS_NH3 <- function() {
 
 #' @describeIn ocean Atmosphere-ocean carbon flux
 #' @export
-OCEAN_CFLUX <- function() {
-    .Call('_hector_OCEAN_CFLUX', PACKAGE = 'hector')
+OCEAN_UPTAKE <- function() {
+    .Call('_hector_OCEAN_UPTAKE', PACKAGE = 'hector')
 }
 
 #' @describeIn ocean Ocean total carbon pool
@@ -1225,14 +1225,14 @@ DIC_LL <- function() {
 
 #' @describeIn ocean Absolute ocean surface temperature, high-latitude (deg C)
 #' @export
-TEMP_HL <- function() {
-    .Call('_hector_TEMP_HL', PACKAGE = 'hector')
+SST_HL <- function() {
+    .Call('_hector_SST_HL', PACKAGE = 'hector')
 }
 
 #' @describeIn ocean Absolute ocean surface temperature, low-latitude (deg C)
 #' @export
-TEMP_LL <- function() {
-    .Call('_hector_TEMP_LL', PACKAGE = 'hector')
+SST_LL <- function() {
+    .Call('_hector_SST_LL', PACKAGE = 'hector')
 }
 
 #' @describeIn ocean Carbonate concentration, low-latitude

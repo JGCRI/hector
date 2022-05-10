@@ -1334,8 +1334,8 @@ String EMISSIONS_NH3() {
 //' @describeIn ocean Atmosphere-ocean carbon flux
 //' @export
 // [[Rcpp::export]]
-String OCEAN_CFLUX() {
-return D_OCEAN_CFLUX;
+String OCEAN_UPTAKE() {
+return D_OCEAN_C_UPTAKE;
 }
 
 //' @describeIn ocean Ocean total carbon pool
@@ -1489,14 +1489,14 @@ return D_DIC_LL;
 //' @describeIn ocean Absolute ocean surface temperature, high-latitude (deg C)
 //' @export
 // [[Rcpp::export]]
-String TEMP_HL() {
+String SST_HL() {
 return D_TEMP_HL;
 }
 
 //' @describeIn ocean Absolute ocean surface temperature, low-latitude (deg C)
 //' @export
 // [[Rcpp::export]]
-String TEMP_LL() {
+String SST_LL() {
 return D_TEMP_LL;
 }
 
