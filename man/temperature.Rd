@@ -2,7 +2,7 @@
 % Please edit documentation in R/aadoc.R, R/RcppExports.R
 \name{temperature}
 \alias{temperature}
-\alias{GLOBAL_TEMP}
+\alias{GLOBAL_TAS}
 \alias{OCEAN_SURFACE_TEMP}
 \alias{OCEAN_AIR_TEMP}
 \alias{LAND_AIR_TEMP}
@@ -11,7 +11,7 @@
 \alias{HEAT_FLUX}
 \title{Identifiers for variables associated with the temperature component}
 \usage{
-GLOBAL_TEMP()
+GLOBAL_TAS()
 
 OCEAN_SURFACE_TEMP()
 
@@ -31,7 +31,7 @@ type.
 }
 \section{Functions}{
 \itemize{
-\item \code{GLOBAL_TEMP}: Global mean air temperature anomaly
+\item \code{GLOBAL_TAS}: Global mean air temperature anomaly
 
 \item \code{OCEAN_SURFACE_TEMP}: Average ocean surface temperature anomaly
 

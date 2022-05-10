@@ -53,7 +53,7 @@ Note that the reason that the same variable is represented in two different ways
 ``` {r find.GMST}
 flnd = 0.29;     # fractional land area, a constant in Hector
 
-hector_output <- fetchvars(core, 1745:2300, vars = c(LAND_AIR_TEMP(), OCEAN_SURFACE_TEMP(), GLOBAL_TEMP()))
+hector_output <- fetchvars(core, 1745:2300, vars = c(LAND_AIR_TEMP(), OCEAN_SURFACE_TEMP(), GLOBAL_TAS()))
 
 # Get the variables we want and corresponding years/value
 output <- subset(hector_output, variable %in% c(LAND_AIR_TEMP(), OCEAN_SURFACE_TEMP()))
@@ -76,7 +76,7 @@ variable <- as.data.frame(variable)
 global_surface_temp <- cbind(global_surface_temp, variable)
 
 # Rename Hector's variable for GMAT
-global_air_temp <- subset(hector_output, variable == "Tgav")
+global_air_temp <- subset(hector_output, variable == GLOBAL_TAS())
 global_air_temp <- subset(global_air_temp, select = c(variable, year, value))
 global_air_temp$variable <- "GMAT"
 

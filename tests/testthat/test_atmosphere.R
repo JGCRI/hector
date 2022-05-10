@@ -60,6 +60,6 @@ test_that("Check Temp", {
 
     flnd <- 0.29
     weighted_sum <- flnd * land + ocean * (1 - flnd)
-    global_temp_values <- fetchvars(hc, t_dates, vars = GLOBAL_TEMP())[["value"]]
+    global_temp_values <- fetchvars(hc, t_dates, vars = GLOBAL_TAS())[["value"]]
     expect_equal(global_temp_values, weighted_sum, tolerance = 1e-5)
 })

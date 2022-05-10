@@ -1442,8 +1442,8 @@ VOLCANIC_SCALE <- function() {
 
 #' @describeIn temperature Global mean air temperature anomaly
 #' @export
-GLOBAL_TEMP <- function() {
-    .Call('_hector_GLOBAL_TEMP', PACKAGE = 'hector')
+GLOBAL_TAS <- function() {
+    .Call('_hector_GLOBAL_TAS', PACKAGE = 'hector')
 }
 
 #' @describeIn temperature Average ocean surface temperature anomaly
@@ -1475,8 +1475,8 @@ LO_WARMING_RATIO <- function() {
 
 #' @describeIn carboncycle Constrain global mean temperature  (\code{"(degC)"})
 #' @export
-TGAV_CONSTRAIN <- function() {
-    .Call('_hector_TGAV_CONSTRAIN', PACKAGE = 'hector')
+TAS_CONSTRAIN <- function() {
+    .Call('_hector_TAS_CONSTRAIN', PACKAGE = 'hector')
 }
 
 #' @describeIn parameters Ocean heat diffusivity (\code{"cm2/s"})

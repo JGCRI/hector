@@ -3,7 +3,7 @@ context("Hector parameter changes")
 # Make sure that changing parameters has the desired impact on Hector output.
 inputdir <- system.file("input", package = "hector")
 sampledir <- system.file("output", package = "hector")
-testvars <- c(ATMOSPHERIC_CO2(), RF_TOTAL(), GLOBAL_TEMP())
+testvars <- c(ATMOSPHERIC_CO2(), RF_TOTAL(), GLOBAL_TAS())
 
 dates <- 1750:2100
 ssp245 <- file.path(inputdir, "hector_ssp245.ini")
@@ -98,7 +98,7 @@ test_that("Lowering ECS lowers output Temperature", {
 
   # Run and save results
   run(hc, 2100)
-  dd1 <- fetchvars(hc, tdates, GLOBAL_TEMP())
+  dd1 <- fetchvars(hc, tdates, GLOBAL_TAS())
 
   # Decrease the ECS by half.
   default_ECS <- fetchvars(hc, NA, ECS())
@@ -108,7 +108,7 @@ test_that("Lowering ECS lowers output Temperature", {
   setvar(hc, NA, ECS(), new_ECS, getunits(ECS()))
   reset(hc, hc$reset_date)
   run(hc, 2100)
-  dd2 <- fetchvars(hc, tdates, GLOBAL_TEMP())
+  dd2 <- fetchvars(hc, tdates, GLOBAL_TAS())
 
   ## Check that temperature is lower
   diff <- dd2$value - dd1$value
@@ -124,7 +124,7 @@ test_that("Raising Q10 increases CO2 concentration", {
 
   # Run and save results
   run(hc, 2100)
-  vars <- c(ATMOSPHERIC_CO2(), GLOBAL_TEMP())
+  vars <- c(ATMOSPHERIC_CO2(), GLOBAL_TAS())
   dd1 <- fetchvars(hc, tdates, vars)
 
   # Save the default Q10 value.
@@ -151,7 +151,7 @@ test_that("Lowering diffusivity increases temperature", {
   run(hc, 2100)
 
   # Extract results from the default run.
-  vars <- GLOBAL_TEMP()
+  vars <- GLOBAL_TAS()
   dd1 <- fetchvars(hc, tdates, vars)
 
   # Extract and change the default value.
@@ -174,7 +174,7 @@ test_that("Lowering diffusivity increases temperature", {
 test_that("Lowering aerosol forcing scaling factor increases temperature", {
 
   # Relevant vars to save and test.
-  vars <- c(GLOBAL_TEMP())
+  vars <- c(GLOBAL_TAS())
 
   # Define Hector core.
   hc <- newcore(ssp245, suppresslogging = TRUE)
@@ -191,7 +191,7 @@ test_that("Lowering aerosol forcing scaling factor increases temperature", {
   setvar(hc, NA, AERO_SCALE(), new_alpha, getunits(AERO_SCALE()))
   reset(hc, hc$reset_date)
   run(hc, 2100)
-  dd2 <- fetchvars(hc, tdates, GLOBAL_TEMP())
+  dd2 <- fetchvars(hc, tdates, GLOBAL_TAS())
 
   # Check to make sure that the temp and RF have changed.
   diff <- dd2$value - dd1$value
@@ -205,7 +205,7 @@ test_that("Increasing volcanic forcing scaling factor increases the effect of vo
   ## Because the volcanic forcing scaling factor only has an impact during the
   ## the volcanic events. Only check the temp during those years.
   tdates <- c(1960, 1965)
-  vars <- GLOBAL_TEMP()
+  vars <- GLOBAL_TAS()
 
   # Set up and run Hector
   hc <- newcore(ssp245, suppresslogging = TRUE)
@@ -230,7 +230,7 @@ test_that("Decreasing vegetation NPP fraction has down stream impacts", {
   run(hc, 2100)
 
   # Extract results from the default run.
-  vars <- c(GLOBAL_TEMP(), ATMOSPHERIC_CO2())
+  vars <- c(GLOBAL_TAS(), ATMOSPHERIC_CO2())
   dd1 <- fetchvars(hc, tdates, vars)
 
   # Set up the Hector core with a lower NPP fraction.
@@ -257,7 +257,7 @@ test_that("Decreasing detritus NPP fraction has down stream impacts", {
   run(hc, 2100)
 
   # Extract results from the default run.
-  vars <- c(GLOBAL_TEMP(), ATMOSPHERIC_CO2())
+  vars <- c(GLOBAL_TAS(), ATMOSPHERIC_CO2())
   dd1 <- fetchvars(hc, tdates, vars)
 
   # Change the fraction of NPP that contributes to detrius
@@ -284,7 +284,7 @@ test_that("Decreasing litter flux to detritus has down stream impacts", {
   run(hc, 2100)
 
   # Extract results from the default run.
-  vars <- c(GLOBAL_TEMP(), ATMOSPHERIC_CO2())
+  vars <- c(GLOBAL_TAS(), ATMOSPHERIC_CO2())
   dd1 <- fetchvars(hc, tdates, vars)
 
   # Change the litter fraction to detritus.
@@ -337,7 +337,7 @@ test_that("land ocean warming ratio", {
     # Set up the Hector core & determine the dates & variables to keep.
     core <- newcore(ssp245)
     keep <- floor(seq(from = 1850, to = 2100, length.out = 30))
-    vars <- c(GLOBAL_TEMP(), LAND_AIR_TEMP(), OCEAN_AIR_TEMP(), OCEAN_SURFACE_TEMP())
+    vars <- c(GLOBAL_TAS(), LAND_AIR_TEMP(), OCEAN_AIR_TEMP(), OCEAN_SURFACE_TEMP())
 
     # The expected value for the lo warming ratio is 0, meaning that no user defined
     # land ocean warming ratio is being used. LO warming is an emergent property
@@ -379,10 +379,10 @@ test_that("land ocean warming ratio", {
 
 
     # Make sure that the change in the global mean temp is relatively small.
-    out1_global_vals <- out1[out1$variable == GLOBAL_TEMP(), ][["value"]]
-    out2_global_vals <- out2[out2$variable == GLOBAL_TEMP(), ][["value"]]
-    tgav_diff <- mean(abs(out1_global_vals - out2_global_vals))
-    expect_lt(tgav_diff, 1e-1)
+    out1_global_vals <- out1[out1$variable == GLOBAL_TAS(), ][["value"]]
+    out2_global_vals <- out2[out2$variable == GLOBAL_TAS(), ][["value"]]
+    tas_diff <- mean(abs(out1_global_vals - out2_global_vals))
+    expect_lt(tas_diff, 1e-1)
 
     out1_land_vals <- out1[out1$variable == LAND_AIR_TEMP(), ][["value"]]
     out2_land_vals <- out2[out2$variable == LAND_AIR_TEMP(), ][["value"]]

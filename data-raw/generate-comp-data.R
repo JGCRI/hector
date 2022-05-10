@@ -19,7 +19,7 @@ hector_version <- packageVersion("hector")
 hector_commit <- system("git rev-parse --short HEAD", intern = TRUE)
 
 
-vars_to_save <- c(ATMOSPHERIC_CO2(), GLOBAL_TEMP(), RF_TOTAL(), RF_CO2(), HEAT_FLUX(), OCEAN_C(), PH_HL(), ATMOSPHERIC_C(), OCEAN_SURFACE_TEMP())
+vars_to_save <- c(ATMOSPHERIC_CO2(), GLOBAL_TAS(), RF_TOTAL(), RF_CO2(), HEAT_FLUX(), OCEAN_C(), PH_HL(), ATMOSPHERIC_C(), OCEAN_SURFACE_TEMP())
 dates_to_save <- 1745:2300
 
 # Second run.

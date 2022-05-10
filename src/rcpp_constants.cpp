@@ -1814,7 +1814,7 @@ return D_VOLCANIC_SCALE;
 //' @describeIn temperature Global mean air temperature anomaly
 //' @export
 // [[Rcpp::export]]
-String GLOBAL_TEMP() {
+String GLOBAL_TAS() {
 return D_GLOBAL_TEMP;
 }
 
@@ -1852,7 +1852,7 @@ String LO_WARMING_RATIO(){
 //' @describeIn carboncycle Constrain global mean temperature  (\code{"(degC)"})
 //' @export
 // [[Rcpp::export]]
-String TGAV_CONSTRAIN() {
+String TAS_CONSTRAIN() {
     return D_TGAV_CONSTRAIN;
 }
 

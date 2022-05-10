@@ -20,7 +20,7 @@ test_that("Concentration-forced runs work for halocarbons", {
 
   # Save the dates and output variables to test.
   dates <- seq(startdate(hc), getdate(hc))
-  outvars <- c(GLOBAL_TEMP(), "HFC23_concentration", EMISSIONS_HFC23())
+  outvars <- c(GLOBAL_TAS(), "HFC23_concentration", EMISSIONS_HFC23())
 
   # Extract the emission driven results, saving a copy of the HFC23
   # concentrations and emission separately to manipulate.
@@ -66,7 +66,7 @@ test_that("Concentration-forced runs work for CH4", {
 
   # Save the dates and output variables to test.
   dates <- seq(startdate(hc), getdate(hc))
-  outvars <- c(GLOBAL_TEMP(), ATMOSPHERIC_CH4(), EMISSIONS_CH4(), RF_CH4())
+  outvars <- c(GLOBAL_TAS(), ATMOSPHERIC_CH4(), EMISSIONS_CH4(), RF_CH4())
 
   # Extract the emission driven results, saving a copy of the CH4
   # concentrations and emission separately to manipulate.
@@ -115,7 +115,7 @@ test_that("Concentration-forced runs work for N2O", {
 
   # Save the dates and output variables to test.
   dates <- seq(startdate(hc), getdate(hc))
-  outvars <- c(GLOBAL_TEMP(), ATMOSPHERIC_N2O(), EMISSIONS_N2O(), RF_N2O())
+  outvars <- c(GLOBAL_TAS(), ATMOSPHERIC_N2O(), EMISSIONS_N2O(), RF_N2O())
 
   # Extract the emission driven results, saving a copy of the N2O
   # concentrations and emission separately to manipulate.
@@ -158,7 +158,7 @@ test_that("Atmospheric CO2 concentrations can be constrained", {
 
   # Variables and years to save.
   years <- 1850:2100
-  vars <- c(ATMOSPHERIC_CO2(), GLOBAL_TEMP(), RF_TOTAL(), RF_CO2())
+  vars <- c(ATMOSPHERIC_CO2(), GLOBAL_TAS(), RF_TOTAL(), RF_CO2())
 
   # Instantiate a Hector core and save results.
   hc <- ssp245()
@@ -252,22 +252,22 @@ test_that("Discontinuous constraint works", {
   expect_true(all(!is.nan(ca_before$value)))
 })
 
-test_that("Tgav constraint works", {
+test_that("tas constraint works", {
     t2000 <- 2.0
     hc <- ssp245()
-    setvar(hc, 2000, TGAV_CONSTRAIN(), t2000, getunits(TGAV_CONSTRAIN()))
+    setvar(hc, 2000, TAS_CONSTRAIN(), t2000, getunits(TAS_CONSTRAIN()))
     invisible(run(hc))
 
     # constraint returns NA for non-set years
-    constraint_otheryear <- fetchvars(hc, 1999, vars = TGAV_CONSTRAIN())
+    constraint_otheryear <- fetchvars(hc, 1999, vars = TAS_CONSTRAIN())
     expect_true(is.na(constraint_otheryear$value))
     # constraint returns correct value for set year
-    constraint_year <- fetchvars(hc, 2000, vars = TGAV_CONSTRAIN())
+    constraint_year <- fetchvars(hc, 2000, vars = TAS_CONSTRAIN())
     expect_equal(constraint_year$value, t2000)
 
-    x <- fetchvars(hc, 1999:2001, vars = GLOBAL_TEMP())
+    x <- fetchvars(hc, 1999:2001, vars = GLOBAL_TAS())
 
-    expect_lt(x$value[1], t2000)    # Tgav should be nowhere near 2C the year before,
+    expect_lt(x$value[1], t2000)    # global tas should be nowhere near 2C the year before,
     expect_equal(x$value[2], t2000) # identical to the constraint in 2000,
     expect_lt(x$value[3], t2000)    # and again lower the year after
 })

@@ -28,7 +28,7 @@ test_that("Hector runs with multiple biomes created via INI file", {
     vars <- c(
       ATMOSPHERIC_CO2(),
       RF_TOTAL(),
-      GLOBAL_TEMP()
+      GLOBAL_TAS()
     )
     fetchvars(core, dates, vars)
   }
@@ -99,15 +99,15 @@ test_that("Hector runs with multiple biomes created via INI file", {
     "tropical.warmingfactor = 1.0"
   ), after = isnbox)
   warm_biome_result <- quickrun(warm_biome, "warm_biome")
-  default_tgav <- ssp245_result[
-    ssp245_result[["variable"]] == "Tgav",
+  default_tas <- ssp245_result[
+    ssp245_result[["variable"]] == GLOBAL_TAS(),
     "value"
   ]
-  warm_tgav <- warm_biome_result[
-    warm_biome_result[["variable"]] == "Tgav",
+  warm_tas <- warm_biome_result[
+    warm_biome_result[["variable"]] == GLOBAL_TAS(),
     "value"
   ]
-  expect_true(mean(default_tgav) < mean(warm_tgav))
+  expect_true(mean(default_tas) < mean(warm_tas))
 
   # Try to add a fake biome. This should fail because other variables
   # haven't been initialized.
