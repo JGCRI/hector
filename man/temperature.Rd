@@ -3,9 +3,9 @@
 \name{temperature}
 \alias{temperature}
 \alias{GLOBAL_TAS}
-\alias{OCEAN_SURFACE_TEMP}
-\alias{OCEAN_AIR_TEMP}
-\alias{LAND_AIR_TEMP}
+\alias{SST}
+\alias{OCEAN_TAS}
+\alias{LAND_TAS}
 \alias{FLUX_MIXED}
 \alias{FLUX_INTERIOR}
 \alias{HEAT_FLUX}
@@ -13,11 +13,11 @@
 \usage{
 GLOBAL_TAS()
 
-OCEAN_SURFACE_TEMP()
+SST()
 
-OCEAN_AIR_TEMP()
+OCEAN_TAS()
 
-LAND_AIR_TEMP()
+LAND_TAS()
 
 FLUX_MIXED()
 
@@ -33,11 +33,11 @@ type.
 \itemize{
 \item \code{GLOBAL_TAS}: Global mean air temperature anomaly
 
-\item \code{OCEAN_SURFACE_TEMP}: Average ocean surface temperature anomaly
+\item \code{SST}: Average sea surface temperature anomaly
 
-\item \code{OCEAN_AIR_TEMP}: Average ocean air temperature anomaly
+\item \code{OCEAN_TAS}: Average air temperature anomaly over the ocean
 
-\item \code{LAND_AIR_TEMP}: Average land temperature anomaly, land surface temperature and air temperature
+\item \code{LAND_TAS}: Average air temperature anomaly over land, land surface temperature and air temperature
 over land are assumed to be equivalent.
 
 \item \code{FLUX_MIXED}: Heat flux into the mixed layer of the ocean

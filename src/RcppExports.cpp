@@ -2420,33 +2420,33 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// OCEAN_SURFACE_TEMP
-String OCEAN_SURFACE_TEMP();
-RcppExport SEXP _hector_OCEAN_SURFACE_TEMP() {
+// SST
+String SST();
+RcppExport SEXP _hector_SST() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(OCEAN_SURFACE_TEMP());
+    rcpp_result_gen = Rcpp::wrap(SST());
     return rcpp_result_gen;
 END_RCPP
 }
-// OCEAN_AIR_TEMP
-String OCEAN_AIR_TEMP();
-RcppExport SEXP _hector_OCEAN_AIR_TEMP() {
+// OCEAN_TAS
+String OCEAN_TAS();
+RcppExport SEXP _hector_OCEAN_TAS() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(OCEAN_AIR_TEMP());
+    rcpp_result_gen = Rcpp::wrap(OCEAN_TAS());
     return rcpp_result_gen;
 END_RCPP
 }
-// LAND_AIR_TEMP
-String LAND_AIR_TEMP();
-RcppExport SEXP _hector_LAND_AIR_TEMP() {
+// LAND_TAS
+String LAND_TAS();
+RcppExport SEXP _hector_LAND_TAS() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(LAND_AIR_TEMP());
+    rcpp_result_gen = Rcpp::wrap(LAND_TAS());
     return rcpp_result_gen;
 END_RCPP
 }
@@ -2898,9 +2898,9 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_AERO_SCALE", (DL_FUNC) &_hector_AERO_SCALE, 0},
     {"_hector_VOLCANIC_SCALE", (DL_FUNC) &_hector_VOLCANIC_SCALE, 0},
     {"_hector_GLOBAL_TAS", (DL_FUNC) &_hector_GLOBAL_TAS, 0},
-    {"_hector_OCEAN_SURFACE_TEMP", (DL_FUNC) &_hector_OCEAN_SURFACE_TEMP, 0},
-    {"_hector_OCEAN_AIR_TEMP", (DL_FUNC) &_hector_OCEAN_AIR_TEMP, 0},
-    {"_hector_LAND_AIR_TEMP", (DL_FUNC) &_hector_LAND_AIR_TEMP, 0},
+    {"_hector_SST", (DL_FUNC) &_hector_SST, 0},
+    {"_hector_OCEAN_TAS", (DL_FUNC) &_hector_OCEAN_TAS, 0},
+    {"_hector_LAND_TAS", (DL_FUNC) &_hector_LAND_TAS, 0},
     {"_hector_LO_WARMING_RATIO", (DL_FUNC) &_hector_LO_WARMING_RATIO, 0},
     {"_hector_TAS_CONSTRAIN", (DL_FUNC) &_hector_TAS_CONSTRAIN, 0},
     {"_hector_DIFFUSIVITY", (DL_FUNC) &_hector_DIFFUSIVITY, 0},

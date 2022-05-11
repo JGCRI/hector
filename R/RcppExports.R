@@ -1446,23 +1446,23 @@ GLOBAL_TAS <- function() {
     .Call('_hector_GLOBAL_TAS', PACKAGE = 'hector')
 }
 
-#' @describeIn temperature Average ocean surface temperature anomaly
+#' @describeIn temperature Average sea surface temperature anomaly
 #' @export
-OCEAN_SURFACE_TEMP <- function() {
-    .Call('_hector_OCEAN_SURFACE_TEMP', PACKAGE = 'hector')
+SST <- function() {
+    .Call('_hector_SST', PACKAGE = 'hector')
 }
 
-#' @describeIn temperature Average ocean air temperature anomaly
+#' @describeIn temperature Average air temperature anomaly over the ocean
 #' @export
-OCEAN_AIR_TEMP <- function() {
-    .Call('_hector_OCEAN_AIR_TEMP', PACKAGE = 'hector')
+OCEAN_TAS <- function() {
+    .Call('_hector_OCEAN_TAS', PACKAGE = 'hector')
 }
 
-#' @describeIn temperature Average land temperature anomaly, land surface temperature and air temperature
+#' @describeIn temperature Average air temperature anomaly over land, land surface temperature and air temperature
 #' over land are assumed to be equivalent.
 #' @export
-LAND_AIR_TEMP <- function() {
-    .Call('_hector_LAND_AIR_TEMP', PACKAGE = 'hector')
+LAND_TAS <- function() {
+    .Call('_hector_LAND_TAS', PACKAGE = 'hector')
 }
 
 #' @describeIn parameters Land-Ocean Warming Ratio (\code{"(unitless)"}), by default set to 0

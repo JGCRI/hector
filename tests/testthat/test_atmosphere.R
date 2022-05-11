@@ -55,8 +55,8 @@ test_that("Check Temp", {
 
     # Make sure that the weighted sum of the land and ocean air temps is equal to the
     # global mean air temp. This is useful for preserving behavior of the temp component.
-    land  <- fetchvars(hc, t_dates, vars = LAND_AIR_TEMP())[["value"]]
-    ocean <- fetchvars(hc, t_dates, vars = OCEAN_AIR_TEMP())[["value"]]
+    land  <- fetchvars(hc, t_dates, vars = LAND_TAS())[["value"]]
+    ocean <- fetchvars(hc, t_dates, vars = OCEAN_TAS())[["value"]]
 
     flnd <- 0.29
     weighted_sum <- flnd * land + ocean * (1 - flnd)

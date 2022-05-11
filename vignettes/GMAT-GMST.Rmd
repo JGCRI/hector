@@ -46,17 +46,17 @@ GMST can be calculated from Hector outputs by computing a weighted sum of the la
 
 $ GMST = (land air temperature * fractional land area) + (ocean surface temperature * (1 - fractional land area)) $
 
-In Hector, land air temperature is represented by `Tgav_land` (`LAND_AIR_TEMP()`) and ocean surface temperature is represented by `Tgav_ocean_ST` (`OCEAN_SURFACE_TEMP()`). These components stem from the variable `Tgav` (`GLOBAL_TEMP()`), which is how Hector stores GMAT.
+In Hector, land air temperature is represented by `land_tas` (`LAND_TAS()`) and ocean surface temperature is represented by `sst` (`SST()`). These components stem from the variable `tas` (`GLOBAL_TAS()`), which is how Hector stores GMAT.
 
-Note that the reason that the same variable is represented in two different ways is due to the interaction between the R interface and the underlying C++ model. For example, `LAND_AIR_TEMP()` is the function in R that returns a string message such as `Tgav_land`, which is then passed into the base C++ Hector model. This method is user-friendly as spelling/capitalization is not an issue and developer-friendly as string in C++ can be changed without changing the R user interface.
+Note that the reason that the same variable is represented in two different ways is due to the interaction between the R interface and the underlying C++ model. For example, `LAND_TAS()` is the function in R that returns a string message such as `land_tas`, which is then passed into the base C++ Hector model. This method is user-friendly as spelling/capitalization is not an issue and developer-friendly as string in C++ can be changed without changing the R user interface.
 
 ``` {r find.GMST}
 flnd = 0.29;     # fractional land area, a constant in Hector
 
-hector_output <- fetchvars(core, 1745:2300, vars = c(LAND_AIR_TEMP(), OCEAN_SURFACE_TEMP(), GLOBAL_TAS()))
+hector_output <- fetchvars(core, 1745:2300, vars = c(LAND_TAS(), SST(), GLOBAL_TAS()))
 
 # Get the variables we want and corresponding years/value
-output <- subset(hector_output, variable %in% c(LAND_AIR_TEMP(), OCEAN_SURFACE_TEMP()))
+output <- subset(hector_output, variable %in% c(LAND_TAS(), SST()))
 output <- subset(output, select = c(year, variable, value))
 
 # Reorder and clean up data
@@ -64,7 +64,7 @@ output <- reshape(output, direction = "wide", idvar = "year", timevar = "variabl
 names(output) <- gsub("value.", "", names(output))
 
 # Conversion equation
-output$GMST <- with(output, (Tgav_land * flnd + Tgav_ocean_ST * (1-flnd)))
+output$GMST <- with(output, (land_tas * flnd + sst * (1-flnd)))
 global_surface_temp <- subset(output, select = c(year, GMST))
 
 # Organize final data, year and corresponding GMST
