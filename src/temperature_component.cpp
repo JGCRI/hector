@@ -104,8 +104,8 @@ void TemperatureComponent::init( Core* coreptr ) {
 
     core = coreptr;
 
-    tgav_constrain.allowInterp( true );
-    tgav_constrain.name = D_TGAV_CONSTRAIN;
+    tas_constrain.allowInterp( true );
+    tas_constrain.name = D_TAS_CONSTRAIN;
 
     // Register the data we can provide
     core->registerCapability( D_GLOBAL_TEMP, getComponentName() );
@@ -134,7 +134,7 @@ void TemperatureComponent::init( Core* coreptr ) {
     core->registerInput( D_AERO_SCALE, getComponentName() );
     core->registerInput( D_VOLCANIC_SCALE, getComponentName() );
     core->registerInput( D_LO_WARMING_RATIO, getComponentName() );
-    core->registerInput( D_TGAV_CONSTRAIN, getComponentName() );
+    core->registerInput( D_TAS_CONSTRAIN, getComponentName() );
 }
 
 //------------------------------------------------------------------------------
@@ -181,9 +181,9 @@ void TemperatureComponent::setData( const string& varName,
         } else if(varName == D_QCO2) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
             qco2 = data.getUnitval(U_UNITLESS).value(U_UNITLESS);
-        } else if( varName == D_TGAV_CONSTRAIN ) {
+        } else if( varName == D_TAS_CONSTRAIN ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            tgav_constrain.set(data.date, data.getUnitval(U_DEGC));
+            tas_constrain.set(data.date, data.getUnitval(U_DEGC));
         } else if( varName == D_LO_WARMING_RATIO ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
             lo_warming_ratio = data.getUnitval(U_UNITLESS);
@@ -205,7 +205,7 @@ void TemperatureComponent::prepareToRun() {
 
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
 
-    if( tgav_constrain.size() ) {
+    if( tas_constrain.size() ) {
         Logger& glog = core->getGlobalLogger();
         H_LOG( glog, Logger::WARNING ) << "Temperature will be overwritten by user-supplied values!" << std::endl;
     }
@@ -452,9 +452,9 @@ void TemperatureComponent::run( const double runToDate ) {
     temp[tstep] = flnd * temp_landair[tstep] + (1.0 - flnd) * bsi * temp_sst[tstep];
 
     // If the user has supplied temperature data, use that instead
-    if( tgav_constrain.size() && runToDate >= tgav_constrain.firstdate() && runToDate <= tgav_constrain.lastdate() ) {
+    if( tas_constrain.size() && runToDate >= tas_constrain.firstdate() && runToDate <= tas_constrain.lastdate() ) {
         H_LOG( logger, Logger::WARNING ) << "** Overwriting temperatures with user-supplied value" << std::endl;
-        temp[tstep] = tgav_constrain.get( runToDate );
+        temp[tstep] = tas_constrain.get( runToDate );
 
         // Now back-calculate the land and ocean values, overwriting what was computed above
         temp_landair[tstep] = ( temp[tstep] - (1.0 - flnd) * bsi * temp_sst[tstep] ) / flnd;
@@ -567,12 +567,12 @@ unitval TemperatureComponent::getData( const std::string& varName,
             double value = heatflux_mixed[tstep] + fso*heatflux_interior[tstep];
             returnval = unitval(value, U_W_M2);
         }
-    } else if( varName == D_TGAV_CONSTRAIN ) {
-        H_ASSERT( date != Core::undefinedIndex(), "Date required for Tgav constraint" );
-        if (tgav_constrain.exists( date )) {
-            returnval = tgav_constrain.get( date );
+    } else if( varName == D_TAS_CONSTRAIN ) {
+        H_ASSERT( date != Core::undefinedIndex(), "Date required for tas constraint" );
+        if (tas_constrain.exists( date )) {
+            returnval = tas_constrain.get( date );
         } else {
-            H_LOG( logger, Logger::DEBUG ) << "No Tgav constraint for requested date " << date <<
+            H_LOG( logger, Logger::DEBUG ) << "No tas constraint for requested date " << date <<
             ". Returning missing value." << std::endl;
             returnval = unitval( MISSING_FLOAT, U_DEGC );
         }

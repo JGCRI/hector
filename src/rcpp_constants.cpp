@@ -1853,7 +1853,7 @@ String LO_WARMING_RATIO(){
 //' @export
 // [[Rcpp::export]]
 String TAS_CONSTRAIN() {
-    return D_TGAV_CONSTRAIN;
+    return D_TAS_CONSTRAIN;
 }
 
 
