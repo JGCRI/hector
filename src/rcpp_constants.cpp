@@ -1815,7 +1815,7 @@ return D_VOLCANIC_SCALE;
 //' @export
 // [[Rcpp::export]]
 String GLOBAL_TAS() {
-return D_GLOBAL_TEMP;
+return D_GLOBAL_TAS;
 }
 
 //' @describeIn temperature Average ocean surface temperature anomaly
@@ -1832,12 +1832,12 @@ String OCEAN_AIR_TEMP() {
 return D_OCEAN_AIR_TEMP;
 }
 
-//' @describeIn temperature Average land temperature anomaly, land surface temperature and air temperature
+//' @describeIn temperature Average air temperature anomaly over land, land surface temperature and air temperature
 //' over land are assumed to be equivalent.
 //' @export
 // [[Rcpp::export]]
-String LAND_AIR_TEMP() {
-return D_LAND_AIR_TEMP;
+String LAND_TAS() {
+return D_LAND_TAS;
 }
 
 //' @describeIn parameters Land-Ocean Warming Ratio (\code{"(unitless)"}), by default set to 0

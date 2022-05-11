@@ -375,8 +375,8 @@
 
 // temperature component
 #define D_ECS                   "S"
-#define D_GLOBAL_TEMP           "global_tas"
-#define D_LAND_AIR_TEMP         "land_tas"
+#define D_GLOBAL_TAS            "global_tas"
+#define D_LAND_TAS              "land_tas"
 #define D_OCEAN_SURFACE_TEMP    "sst"
 #define D_OCEAN_AIR_TEMP        "ocean_tas"
 #define D_LO_WARMING_RATIO      "lo_warming_ratio"

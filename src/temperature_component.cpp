@@ -96,7 +96,7 @@ void TemperatureComponent::init( Core* coreptr ) {
     logger.open( getComponentName(), false, coreptr->getGlobalLogger().getEchoToFile(), coreptr->getGlobalLogger().getMinLogLevel() );
     H_LOG( logger, Logger::DEBUG ) << "hello " << getComponentName() << std::endl;
 
-    tgav.set( 0.0, U_DEGC, 0.0 );
+    tas.set( 0.0, U_DEGC, 0.0 );
     flux_mixed.set( 0.0, U_W_M2, 0.0 );
     flux_interior.set( 0.0, U_W_M2, 0.0 );
     heatflux.set( 0.0, U_W_M2, 0.0 );
@@ -108,8 +108,8 @@ void TemperatureComponent::init( Core* coreptr ) {
     tas_constrain.name = D_TAS_CONSTRAIN;
 
     // Register the data we can provide
-    core->registerCapability( D_GLOBAL_TEMP, getComponentName() );
-    core->registerCapability( D_LAND_AIR_TEMP, getComponentName() );
+    core->registerCapability( D_GLOBAL_TAS, getComponentName() );
+    core->registerCapability( D_LAND_TAS, getComponentName() );
     core->registerCapability( D_OCEAN_AIR_TEMP, getComponentName() );
     core->registerCapability( D_OCEAN_SURFACE_TEMP, getComponentName() );
     core->registerCapability( D_FLUX_MIXED, getComponentName() );
@@ -483,7 +483,7 @@ void TemperatureComponent::run( const double runToDate ) {
     }
 
     setoutputs(tstep);
-    H_LOG( logger, Logger::DEBUG ) << " tgav=" << tgav << " in " << runToDate << std::endl;
+    H_LOG( logger, Logger::DEBUG ) << " tas=" << tas << " in " << runToDate << std::endl;
 }
 
 //------------------------------------------------------------------------------
@@ -500,22 +500,22 @@ unitval TemperatureComponent::getData( const std::string& varName,
     H_ASSERT(date <= core->getCurrentDate(), "Date must be <= current date.");
     int tstep = date - core->getStartDate();
 
-    if( varName == D_GLOBAL_TEMP ) {
+    if( varName == D_GLOBAL_TAS ) {
         if(date == Core::undefinedIndex()) {
-            returnval = tgav;
+            returnval = tas;
         } else {
             returnval = unitval(temp[tstep], U_DEGC);
         }
-    } else if ( varName == D_LAND_AIR_TEMP ){
+    } else if ( varName == D_LAND_TAS ){
         if ( lo_warming_ratio != 0 ) {
             if( date == Core::undefinedIndex() ) {
-                returnval = lo_tgav_land;
+                returnval = lo_tas_land;
             } else {
                 returnval = unitval(lo_temp_landair[tstep], U_DEGC);
             }
         } else {
             if( date == Core::undefinedIndex() ) {
-                returnval = tgav_land;
+                returnval = tas_land;
             } else {
                 returnval = unitval(temp_landair[tstep], U_DEGC);
             }
@@ -639,8 +639,8 @@ void TemperatureComponent::setoutputs(int tstep)
     flux_mixed.set( heatflux_mixed[tstep], U_W_M2, 0.0 );
     flux_interior.set( heatflux_interior[tstep], U_W_M2, 0.0 );
     heatflux.set( heatflux_mixed[tstep] + fso * heatflux_interior[tstep], U_W_M2, 0.0 );
-    tgav.set(temp[tstep], U_DEGC, 0.0);
-    tgav_land.set(temp_landair[tstep], U_DEGC, 0.0);
+    tas.set(temp[tstep], U_DEGC, 0.0);
+    tas_land.set(temp_landair[tstep], U_DEGC, 0.0);
     tgav_sst.set(temp_sst[tstep], U_DEGC, 0.0);
     temp_oceanair = bsi * temp_sst[tstep];
     tgav_oceanair.set(temp_oceanair, U_DEGC, 0.0);
@@ -649,7 +649,7 @@ void TemperatureComponent::setoutputs(int tstep)
     // land & ocean temperature.
     if ( lo_warming_ratio != 0 ) {
 
-        // Calculations using tgav weighted average and ratio (land warming/ocean warming = lo_warming_ratio)
+        // Calculations using tas weighted average and ratio (land warming/ocean warming = lo_warming_ratio)
         double temp_oceanair_constrain = temp[tstep] / ((lo_warming_ratio * flnd) + (1-flnd));
         double temp_landair_constrain = temp_oceanair_constrain * lo_warming_ratio;
         double temp_sst_constrain = temp_oceanair_constrain / bsi;
@@ -659,15 +659,15 @@ void TemperatureComponent::setoutputs(int tstep)
         lo_sst[tstep] = temp_sst_constrain;
 
         // Store these the values, notes these are values with non dates.
-        lo_tgav_land.set(temp_landair_constrain, U_DEGC, 0.0);
+        lo_tas_land.set(temp_landair_constrain, U_DEGC, 0.0);
         lo_tgav_sst.set(temp_sst_constrain, U_DEGC, 0.0);
         lo_tgav_oceanair.set(temp_oceanair_constrain, U_DEGC, 0.0);
 
     }
 
-    H_LOG( logger, Logger::DEBUG) << "Land-ocean warming ratio: " << tgav_land/tgav_oceanair << std::endl;
-    H_LOG( logger, Logger::DEBUG) << "Global: " << tgav << std::endl;
-    H_LOG( logger, Logger::DEBUG) << "Land Temp: " << tgav_land << std::endl;
+    H_LOG( logger, Logger::DEBUG) << "Land-ocean warming ratio: " << tas_land/tgav_oceanair << std::endl;
+    H_LOG( logger, Logger::DEBUG) << "Global: " << tas << std::endl;
+    H_LOG( logger, Logger::DEBUG) << "Land Temp: " << tas_land << std::endl;
     H_LOG( logger, Logger::DEBUG) << "Ocean Temp: " << tgav_oceanair << std::endl;
 
 }
