@@ -139,8 +139,8 @@ private:
     // Model outputs
     unitval tas;          //!< global average surface air temperature anomaly, deg C
     unitval tas_land;     //!< average air temperature anomaly over land, deg C
-    unitval tgav_oceanair; //!< global average ocean surface air temperature anomaly, deg C
-    unitval tgav_sst;      //!< global average ocean surface (water) temperature anomaly, deg C
+    unitval tas_ocean; //!< global average ocean surface air temperature anomaly, deg C
+    unitval sst;      //!< global average ocean surface (water) temperature anomaly, deg C
     unitval flux_mixed;    //!< heat flux into mixed layer of ocean, W/m2
     unitval flux_interior; //!< heat flux into interior layer of ocean, W/m2
     unitval heatflux;      //!< heat flux into ocean, W/m2
@@ -150,8 +150,8 @@ private:
 
     // Create a place to store temp time series that are over written when
     // a user provided land ocean warming ratio is being used.
-    unitval lo_tas_land;     //!< place to store land temp when lo is provided by users, deg C
-    unitval lo_tgav_oceanair; //!< place to store ocean air temp when lo is provided by users, deg C
+    unitval lo_tas_land;      //!< place to store land temp when lo is provided by users, deg C
+    unitval lo_tas_ocean;     //!< place to store ocean air temp when lo is provided by users, deg C
     unitval lo_tgav_sst;      //!< place to store sst when lo is provided by users, deg C
     std::vector<double> lo_temp_landair;    //!< place to store land temp when lo is provided by users, deg C
     std::vector<double> lo_temp_oceanair;   //!< place to store land temp when lo is provided by users, deg C

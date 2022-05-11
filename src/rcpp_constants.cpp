@@ -1818,18 +1818,18 @@ String GLOBAL_TAS() {
 return D_GLOBAL_TAS;
 }
 
-//' @describeIn temperature Average ocean surface temperature anomaly
+//' @describeIn temperature Average sea surface temperature anomaly
 //' @export
 // [[Rcpp::export]]
-String OCEAN_SURFACE_TEMP() {
-return D_OCEAN_SURFACE_TEMP;
+String SST() {
+return D_SST;
 }
 
-//' @describeIn temperature Average ocean air temperature anomaly
+//' @describeIn temperature Average air temperature anomaly over the ocean
 //' @export
 // [[Rcpp::export]]
-String OCEAN_AIR_TEMP() {
-return D_OCEAN_AIR_TEMP;
+String OCEAN_TAS() {
+return D_OCEAN_TAS;
 }
 
 //' @describeIn temperature Average air temperature anomaly over land, land surface temperature and air temperature
