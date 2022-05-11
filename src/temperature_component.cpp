@@ -537,7 +537,7 @@ unitval TemperatureComponent::getData( const std::string& varName,
     } else if( varName == D_SST ) {
         if ( lo_warming_ratio != 0 ) {
             if( date == Core::undefinedIndex() ) {
-                returnval = lo_tgav_sst;
+                returnval = lo_seast;
             } else {
                 returnval = unitval(lo_sst[tstep], U_DEGC);
             }
@@ -660,7 +660,7 @@ void TemperatureComponent::setoutputs(int tstep)
 
         // Store these the values, notes these are values with non dates.
         lo_tas_land.set(temp_landair_constrain, U_DEGC, 0.0);
-        lo_tgav_sst.set(temp_sst_constrain, U_DEGC, 0.0);
+        lo_seast.set(temp_sst_constrain, U_DEGC, 0.0);
         lo_tas_ocean.set(temp_oceanair_constrain, U_DEGC, 0.0);
 
     }
