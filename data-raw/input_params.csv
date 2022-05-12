@@ -175,10 +175,10 @@ CC14_halocarbon,delta_CFC115,n,n,y,0,(unitless),tropospheric adjustments scalar 
 CC14_halocarbon,molarMass,n,n,y,153.8,g,molar mass
 CC14_halocarbon,CFC115_emissions,n,y,y,"""(csv)""",,
 CH3CC13_halocarbon,tau,n,n,y,5,years,lifetime in years (Table 7.SM.7 IPPC AR6)
-CH3CC13_halocarbon,rho_CH3CC13,n,n,y,6.50E-05,W m-2 ppt-1,radiative efficiencies (Table 7.SM.7 IPPC AR6)
-CH3CC13_halocarbon,delta_CH3CC13,n,n,y,0,(unitless),tropospheric adjustments scalar (7.3.2.4 IPCC AR6)
+CH3CC13_halocarbon,rho_CH3CCl3,n,n,y,6.50E-05,W m-2 ppt-1,radiative efficiencies (Table 7.SM.7 IPPC AR6)
+CH3CC13_halocarbon,delta_CH3CCl3,n,n,y,0,(unitless),tropospheric adjustments scalar (7.3.2.4 IPCC AR6)
 CH3CC13_halocarbon,molarMass,n,n,y,133.35,g,molar mass
-CH3CC13_halocarbon,CH3CC13_emissions,n,y,y,"""(csv)""",,
+CH3CC13_halocarbon,CH3CCl3_emissions,n,y,y,"""(csv)""",,
 halon1211_halocarbon,tau,n,n,y,16,years,lifetime in years (Table 7.SM.7 IPPC AR6)
 halon1211_halocarbon,rho_halon1211,n,n,y,3.00E-04,W m-2 ppt-1,radiative efficiencies (Table 7.SM.7 IPPC AR6)
 halon1211_halocarbon,delta_halon1211,n,n,y,0,(unitless),tropospheric adjustments scalar (7.3.2.4 IPCC AR6)
@@ -195,10 +195,10 @@ halon2402_halocarbon,delta_halon2402,n,n,y,0,(unitless),tropospheric adjustments
 halon2402_halocarbon,molarMass,n,n,y,259.8,g,molar mass
 halon2402_halocarbon,halon2402_emissions,n,y,y,"""(csv)""",,
 HCF22_halocarbon,tau,n,n,y,11.9,years,lifetime in years (Table 7.SM.7 IPPC AR6)
-HCF22_halocarbon,rho_HCF22,n,n,y,2.14E-04,W m-2 ppt-1,radiative efficiencies (Table 7.SM.7 IPPC AR6)
-HCF22_halocarbon,delta_HCF22,n,n,y,0,(unitless),tropospheric adjustments scalar (7.3.2.4 IPCC AR6)
+HCF22_halocarbon,rho_HCFC22,n,n,y,2.14E-04,W m-2 ppt-1,radiative efficiencies (Table 7.SM.7 IPPC AR6)
+HCF22_halocarbon,delta_HCFC22,n,n,y,0,(unitless),tropospheric adjustments scalar (7.3.2.4 IPCC AR6)
 HCF22_halocarbon,molarMass,n,n,y,86.45,g,molar mass
-HCF22_halocarbon,HCF22_emissions,n,y,y,"""(csv)""",,
+HCF22_halocarbon,HCFC22_emissions,n,y,y,"""(csv)""",,
 HCFC141b_halocarbon,tau,n,n,y,9.4,years,lifetime in years (Table 7.SM.7 IPPC AR6)
 HCFC141b_halocarbon,rho_HCFC141b,n,n,y,1.61E-04,W m-2 ppt-1,radiative efficiencies (Table 7.SM.7 IPPC AR6)
 HCFC141b_halocarbon,delta_HCFC141b,n,n,y,0,(unitless),tropospheric adjustments scalar (7.3.2.4 IPCC AR6)
