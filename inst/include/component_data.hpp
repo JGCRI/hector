@@ -299,7 +299,7 @@
 #define D_TU                    "tu"
 #define D_TWI                   "twi"
 #define D_TID                   "tid"
-#define D_HL_DO                 "HL_DO_Cflux"
+#define D_HL_DO                 "HL.downwelling"
 #define D_PH_HL                 "HL.pH"
 #define D_PH_LL                 "LL.pH"
 #define D_PH                    "pH"
