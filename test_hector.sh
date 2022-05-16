@@ -77,7 +77,7 @@ rm $INPUT/hector_ssp245_co2.ini
 
 # Temperature
 echo "---------- Running: Tgav constraint ----------"
-sed 's/;[[:space:]]*tas_constrain=csv:tables\/tas_historical.csv/tas_constrain=csv:tables\/tas_historical.csv/' $INPUT/hector_ssp245.ini > $INPUT/hector_ssp245_tgav.ini
+sed 's/;[[:space:]]*tas_constrain=csv:tables\/tas_historical.csv/tas_constrain=csv:tables\/tas_historical.csv/' $INPUT/hector_ssp245.ini > $INPUT/hector_ssp245_tas.ini
 if [[ $(diff -q $INPUT/hector_ssp245.ini $INPUT/hector_ssp245_tas.ini | wc -c) -eq 0 ]]; then exit 1; fi
 $HECTOR $INPUT/hector_ssp245_tas.ini
 rm $INPUT/hector_ssp245_tas.ini
