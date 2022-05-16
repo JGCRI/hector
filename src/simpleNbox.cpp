@@ -45,16 +45,16 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
     lucEmissions.name = D_LUC_EMISSIONS;
     lucUptake.allowInterp( true );
     lucUptake.name = D_LUC_UPTAKE;
-    Ftalbedo.allowInterp( true );
-    Ftalbedo.name = D_RF_T_ALBEDO;
+    Falbedo.allowInterp( true );
+    Falbedo.name = D_RF_T_ALBEDO;
     CO2_constrain.name = D_CO2_CONSTRAIN;
     NBP_constrain.name = D_NBP_CONSTRAIN;
-    
+
     // The actual atmos_c value will be filled in later by setData
     atmos_c.set(0.0, U_PGC, false, D_ATMOSPHERIC_C);
     atmos_c_ts.allowInterp( true );
     atmos_c_ts.name = "atmos_c_ts";
-    
+
     // earth_c keeps track of how much fossil C is pulled out
     // so that we can do a mass-balance check throughout the run
     // 2020-02-05 With the introduction of non-negative 'fluxpool' class
@@ -78,10 +78,10 @@ void SimpleNbox::init( Core* coreptr ) {
     tempferts[ SNBOX_DEFAULT_BIOME ] = 1.0;
     final_npp[ SNBOX_DEFAULT_BIOME ] = fluxpool( 0.0, U_PGC_YR, false, "final_npp" );
     final_rh[ SNBOX_DEFAULT_BIOME ] = fluxpool( 0.0, U_PGC_YR, false, "final_rh" );
-    
+
     // Constraint residuals
     Ca_residual.set( 0.0, U_PGC );
-    
+
     // Initialize the `biome_list` with just "global"
     biome_list.push_back( SNBOX_DEFAULT_BIOME );
 
@@ -249,7 +249,7 @@ void SimpleNbox::setData( const std::string &varName,
         // Albedo effect
         else if( varNameParsed == D_RF_T_ALBEDO ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            Ftalbedo.set( data.date, data.getUnitval( U_W_M2 ) );
+            Falbedo.set( data.date, data.getUnitval( U_W_M2 ) );
         }
 
         // Partitioning
@@ -314,7 +314,7 @@ void SimpleNbox::setData( const std::string &varName,
             H_ASSERT( biome == SNBOX_DEFAULT_BIOME, "NBP (land-atmosphere) constraint must be global" );
             NBP_constrain.set( data.date, data.getUnitval( U_PGC_YR ) );
         }
-        
+
         // Fertilization
         else if( varNameParsed == D_BETA ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
@@ -404,7 +404,7 @@ fluxpool SimpleNbox::sum_fluxpool_biome_ts( const string varName,
     fluxpool returnval;
     std::string biome_error = "Biome '" + biome + "' missing from biome list. " +
         "Hit this error while trying to retrieve variable: '" + varName + "'.";
-    
+
     if(biome == SNBOX_DEFAULT_BIOME) {
         if(date == Core::undefinedIndex())
             returnval = sum_map( pool );
@@ -479,7 +479,7 @@ unitval SimpleNbox::getData(const std::string& varName,
             returnval = nbp_ts.get( date );
     } else if( varNameParsed == D_RF_T_ALBEDO ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for albedo forcing" );
-        returnval = Ftalbedo.get( date );
+        returnval = Falbedo.get( date );
 
         // Partitioning parameters.
     } else if(varNameParsed == D_F_NPPV) {
@@ -594,7 +594,7 @@ void SimpleNbox::reset(double time)
     soil_c_tv.truncate(time);
     final_npp_tv.truncate(time);
     final_rh_tv.truncate(time);
-    
+
     Ca_residual_ts.truncate(time);
 
     tempferts_tv.truncate(time);
@@ -633,7 +633,7 @@ void SimpleNbox::record_state(double t)
     soil_c_tv.set(t, soil_c);
     final_npp_tv.set(t, final_npp);
     final_rh_tv.set(t, final_rh);
-    
+
     Ca_residual_ts.set(t, Ca_residual);
 
     tempfertd_tv.set(t, tempfertd);
@@ -742,7 +742,7 @@ void SimpleNbox::deleteBiome(const std::string& biome) // Throw an error if the 
     remove_biome_from_ts(final_npp_tv, biome);
     final_rh.erase( biome );
     remove_biome_from_ts(final_rh_tv, biome);
-    
+
     // Others
     npp_flux0.erase( biome );
     tempfertd.erase( biome );

@@ -20,8 +20,8 @@ Here, comments start with a semicolon (`;`); *section names* (`core`) are enclos
 There are two Hector-specific wrinkles to the INI property-value assignment scheme. First, some properties have a time index that's required when assigning:
 
 ```
-Ftalbedo[1750]=0.0
-Ftalbedo[1950]=-0.2
+Falbedo[1750]=0.0
+Falbedo[1950]=-0.2
 ```
 
 More commonly, such [time series](TimeSeries.html) are assigned by reading data in from a comma-separated value text file:

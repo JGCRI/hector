@@ -39,9 +39,9 @@
 #define D_EPS_SPINUP            "eps_spinup"
 
 // forcing component
-#define D_RF_PREFIX             "F"
+#define D_RF_PREFIX             "RF_"
 #define D_RF_TOTAL              D_RF_PREFIX "tot"
-#define D_RF_T_ALBEDO           D_RF_PREFIX "talbedo"
+#define D_RF_T_ALBEDO           D_RF_PREFIX "albedo"
 #define D_FTOT_CONSTRAIN        D_RF_PREFIX "tot_constrain"
 #define D_RF_BASEYEAR           "baseyear"
 #define D_RF_CO2                D_RF_PREFIX "CO2"
