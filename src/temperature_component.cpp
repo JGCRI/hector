@@ -96,7 +96,7 @@ void TemperatureComponent::init( Core* coreptr ) {
     logger.open( getComponentName(), false, coreptr->getGlobalLogger().getEchoToFile(), coreptr->getGlobalLogger().getMinLogLevel() );
     H_LOG( logger, Logger::DEBUG ) << "hello " << getComponentName() << std::endl;
 
-    tgav.set( 0.0, U_DEGC, 0.0 );
+    tas.set( 0.0, U_DEGC, 0.0 );
     flux_mixed.set( 0.0, U_W_M2, 0.0 );
     flux_interior.set( 0.0, U_W_M2, 0.0 );
     heatflux.set( 0.0, U_W_M2, 0.0 );
@@ -104,14 +104,14 @@ void TemperatureComponent::init( Core* coreptr ) {
 
     core = coreptr;
 
-    tgav_constrain.allowInterp( true );
-    tgav_constrain.name = D_TGAV_CONSTRAIN;
+    tas_constrain.allowInterp( true );
+    tas_constrain.name = D_TAS_CONSTRAIN;
 
     // Register the data we can provide
-    core->registerCapability( D_GLOBAL_TEMP, getComponentName() );
-    core->registerCapability( D_LAND_AIR_TEMP, getComponentName() );
-    core->registerCapability( D_OCEAN_AIR_TEMP, getComponentName() );
-    core->registerCapability( D_OCEAN_SURFACE_TEMP, getComponentName() );
+    core->registerCapability( D_GLOBAL_TAS, getComponentName() );
+    core->registerCapability( D_LAND_TAS, getComponentName() );
+    core->registerCapability( D_OCEAN_TAS, getComponentName() );
+    core->registerCapability( D_SST, getComponentName() );
     core->registerCapability( D_FLUX_MIXED, getComponentName() );
     core->registerCapability( D_FLUX_INTERIOR, getComponentName() );
     core->registerCapability( D_HEAT_FLUX, getComponentName() );
@@ -134,7 +134,7 @@ void TemperatureComponent::init( Core* coreptr ) {
     core->registerInput( D_AERO_SCALE, getComponentName() );
     core->registerInput( D_VOLCANIC_SCALE, getComponentName() );
     core->registerInput( D_LO_WARMING_RATIO, getComponentName() );
-    core->registerInput( D_TGAV_CONSTRAIN, getComponentName() );
+    core->registerInput( D_TAS_CONSTRAIN, getComponentName() );
 }
 
 //------------------------------------------------------------------------------
@@ -181,9 +181,9 @@ void TemperatureComponent::setData( const string& varName,
         } else if(varName == D_QCO2) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
             qco2 = data.getUnitval(U_UNITLESS).value(U_UNITLESS);
-        } else if( varName == D_TGAV_CONSTRAIN ) {
+        } else if( varName == D_TAS_CONSTRAIN ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            tgav_constrain.set(data.date, data.getUnitval(U_DEGC));
+            tas_constrain.set(data.date, data.getUnitval(U_DEGC));
         } else if( varName == D_LO_WARMING_RATIO ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
             lo_warming_ratio = data.getUnitval(U_UNITLESS);
@@ -205,7 +205,7 @@ void TemperatureComponent::prepareToRun() {
 
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
 
-    if( tgav_constrain.size() ) {
+    if( tas_constrain.size() ) {
         Logger& glog = core->getGlobalLogger();
         H_LOG( glog, Logger::WARNING ) << "Temperature will be overwritten by user-supplied values!" << std::endl;
     }
@@ -452,9 +452,9 @@ void TemperatureComponent::run( const double runToDate ) {
     temp[tstep] = flnd * temp_landair[tstep] + (1.0 - flnd) * bsi * temp_sst[tstep];
 
     // If the user has supplied temperature data, use that instead
-    if( tgav_constrain.size() && runToDate >= tgav_constrain.firstdate() && runToDate <= tgav_constrain.lastdate() ) {
+    if( tas_constrain.size() && runToDate >= tas_constrain.firstdate() && runToDate <= tas_constrain.lastdate() ) {
         H_LOG( logger, Logger::WARNING ) << "** Overwriting temperatures with user-supplied value" << std::endl;
-        temp[tstep] = tgav_constrain.get( runToDate );
+        temp[tstep] = tas_constrain.get( runToDate );
 
         // Now back-calculate the land and ocean values, overwriting what was computed above
         temp_landair[tstep] = ( temp[tstep] - (1.0 - flnd) * bsi * temp_sst[tstep] ) / flnd;
@@ -483,7 +483,7 @@ void TemperatureComponent::run( const double runToDate ) {
     }
 
     setoutputs(tstep);
-    H_LOG( logger, Logger::DEBUG ) << " tgav=" << tgav << " in " << runToDate << std::endl;
+    H_LOG( logger, Logger::DEBUG ) << " tas=" << tas << " in " << runToDate << std::endl;
 }
 
 //------------------------------------------------------------------------------
@@ -500,50 +500,50 @@ unitval TemperatureComponent::getData( const std::string& varName,
     H_ASSERT(date <= core->getCurrentDate(), "Date must be <= current date.");
     int tstep = date - core->getStartDate();
 
-    if( varName == D_GLOBAL_TEMP ) {
+    if( varName == D_GLOBAL_TAS ) {
         if(date == Core::undefinedIndex()) {
-            returnval = tgav;
+            returnval = tas;
         } else {
             returnval = unitval(temp[tstep], U_DEGC);
         }
-    } else if ( varName == D_LAND_AIR_TEMP ){
+    } else if ( varName == D_LAND_TAS ){
         if ( lo_warming_ratio != 0 ) {
             if( date == Core::undefinedIndex() ) {
-                returnval = lo_tgav_land;
+                returnval = lo_tas_land;
             } else {
                 returnval = unitval(lo_temp_landair[tstep], U_DEGC);
             }
         } else {
             if( date == Core::undefinedIndex() ) {
-                returnval = tgav_land;
+                returnval = tas_land;
             } else {
                 returnval = unitval(temp_landair[tstep], U_DEGC);
             }
         }
-    } else if ( varName == D_OCEAN_AIR_TEMP ){
+    } else if ( varName == D_OCEAN_TAS ){
         if ( lo_warming_ratio != 0 ) {
             if( date == Core::undefinedIndex() ) {
-                returnval = lo_tgav_oceanair;
+                returnval = lo_tas_ocean;
             } else {
                 returnval = unitval(lo_temp_oceanair[tstep], U_DEGC);
             }
         } else {
             if( date == Core::undefinedIndex() ) {
-                returnval = tgav_oceanair;
+                returnval = tas_ocean;
             } else {
                 returnval = bsi * unitval(temp_sst[tstep], U_DEGC);
             }
         }
-    } else if( varName == D_OCEAN_SURFACE_TEMP ) {
+    } else if( varName == D_SST ) {
         if ( lo_warming_ratio != 0 ) {
             if( date == Core::undefinedIndex() ) {
-                returnval = lo_tgav_sst;
+                returnval = lo_seast;
             } else {
                 returnval = unitval(lo_sst[tstep], U_DEGC);
             }
         } else {
             if( date == Core::undefinedIndex() ) {
-                returnval = tgav_sst;
+                returnval = sst;
             } else {
                 returnval = unitval(temp_sst[tstep], U_DEGC);
             }
@@ -567,12 +567,12 @@ unitval TemperatureComponent::getData( const std::string& varName,
             double value = heatflux_mixed[tstep] + fso*heatflux_interior[tstep];
             returnval = unitval(value, U_W_M2);
         }
-    } else if( varName == D_TGAV_CONSTRAIN ) {
-        H_ASSERT( date != Core::undefinedIndex(), "Date required for Tgav constraint" );
-        if (tgav_constrain.exists( date )) {
-            returnval = tgav_constrain.get( date );
+    } else if( varName == D_TAS_CONSTRAIN ) {
+        H_ASSERT( date != Core::undefinedIndex(), "Date required for tas constraint" );
+        if (tas_constrain.exists( date )) {
+            returnval = tas_constrain.get( date );
         } else {
-            H_LOG( logger, Logger::DEBUG ) << "No Tgav constraint for requested date " << date <<
+            H_LOG( logger, Logger::DEBUG ) << "No tas constraint for requested date " << date <<
             ". Returning missing value." << std::endl;
             returnval = unitval( MISSING_FLOAT, U_DEGC );
         }
@@ -639,17 +639,17 @@ void TemperatureComponent::setoutputs(int tstep)
     flux_mixed.set( heatflux_mixed[tstep], U_W_M2, 0.0 );
     flux_interior.set( heatflux_interior[tstep], U_W_M2, 0.0 );
     heatflux.set( heatflux_mixed[tstep] + fso * heatflux_interior[tstep], U_W_M2, 0.0 );
-    tgav.set(temp[tstep], U_DEGC, 0.0);
-    tgav_land.set(temp_landair[tstep], U_DEGC, 0.0);
-    tgav_sst.set(temp_sst[tstep], U_DEGC, 0.0);
+    tas.set(temp[tstep], U_DEGC, 0.0);
+    tas_land.set(temp_landair[tstep], U_DEGC, 0.0);
+    sst.set(temp_sst[tstep], U_DEGC, 0.0);
     temp_oceanair = bsi * temp_sst[tstep];
-    tgav_oceanair.set(temp_oceanair, U_DEGC, 0.0);
+    tas_ocean.set(temp_oceanair, U_DEGC, 0.0);
 
     // If a user provided land-ocean warming ratio is provided, use it to over write DOECLIM's
     // land & ocean temperature.
     if ( lo_warming_ratio != 0 ) {
 
-        // Calculations using tgav weighted average and ratio (land warming/ocean warming = lo_warming_ratio)
+        // Calculations using tas weighted average and ratio (land warming/ocean warming = lo_warming_ratio)
         double temp_oceanair_constrain = temp[tstep] / ((lo_warming_ratio * flnd) + (1-flnd));
         double temp_landair_constrain = temp_oceanair_constrain * lo_warming_ratio;
         double temp_sst_constrain = temp_oceanair_constrain / bsi;
@@ -659,16 +659,16 @@ void TemperatureComponent::setoutputs(int tstep)
         lo_sst[tstep] = temp_sst_constrain;
 
         // Store these the values, notes these are values with non dates.
-        lo_tgav_land.set(temp_landair_constrain, U_DEGC, 0.0);
-        lo_tgav_sst.set(temp_sst_constrain, U_DEGC, 0.0);
-        lo_tgav_oceanair.set(temp_oceanair_constrain, U_DEGC, 0.0);
+        lo_tas_land.set(temp_landair_constrain, U_DEGC, 0.0);
+        lo_seast.set(temp_sst_constrain, U_DEGC, 0.0);
+        lo_tas_ocean.set(temp_oceanair_constrain, U_DEGC, 0.0);
 
     }
 
-    H_LOG( logger, Logger::DEBUG) << "Land-ocean warming ratio: " << tgav_land/tgav_oceanair << std::endl;
-    H_LOG( logger, Logger::DEBUG) << "Global: " << tgav << std::endl;
-    H_LOG( logger, Logger::DEBUG) << "Land Temp: " << tgav_land << std::endl;
-    H_LOG( logger, Logger::DEBUG) << "Ocean Temp: " << tgav_oceanair << std::endl;
+    H_LOG( logger, Logger::DEBUG) << "Land-ocean warming ratio: " << tas_land/tas_ocean << std::endl;
+    H_LOG( logger, Logger::DEBUG) << "Global: " << tas << std::endl;
+    H_LOG( logger, Logger::DEBUG) << "Land Temp: " << tas_land << std::endl;
+    H_LOG( logger, Logger::DEBUG) << "Ocean Temp: " << tas_ocean << std::endl;
 
 }
 

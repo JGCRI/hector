@@ -9,10 +9,10 @@ The Hector model can be run subject to *constraints* that force the model to hav
 If the current [input file](InputFiles.html) includes, in its `[temperature]` section, a line of form
 
 ```
-tgav_constrain=csv:path/to/constraint/file.csv
+tas_constrain=csv:path/to/constraint/file.csv
 ```
 
-then the model's global mean temperature `Tgav` will follow this contents of this file (which should have two columns, `Date` and `tgav_constrain`; a sample file is included in the repository). The model will extrapolate within this data as necessary, but not beyond its endpoints.
+then the model's global mean temperature `global_tas` will follow this contents of this file (which should have two columns, `Date` and `tas_constrain`; a sample file is included in the repository). The model will extrapolate within this data as necessary, but not beyond its endpoints.
 
 Once Hector's internal date passes the last date in the constraint file, the model's temperature component becomes *unconstrained*, except that we do not permit it to suddenly jump to a new temperature. Instead, changes in global radiative forcing (from which temperature change is computed) are applied to the end-of-constraint temperature. For more details, see the detailed comments in the `TemperatureComponent::run` method.
 

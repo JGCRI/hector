@@ -108,7 +108,7 @@ int main (int argc, char * const argv[]) {
             // from components.  Note you don't need to get the name
             // of the component; you just need to say what kind of
             // data you want, and the core takes care of the rest.
-            unitval temp = core.sendMessage(M_GETDATA, D_GLOBAL_TEMP);
+            unitval temp = core.sendMessage(M_GETDATA, D_GLOBAL_TAS);
             unitval ca   = core.sendMessage(M_GETDATA, D_ATMOSPHERIC_CO2);
             unitval forc = core.sendMessage(M_GETDATA, D_RF_TOTAL);
             H_LOG(glog, Logger::NOTICE)
@@ -133,7 +133,7 @@ int main (int argc, char * const argv[]) {
         core.reset(0);          // reset to start and rerun spinup.
         for(double newt = core.getStartDate()+5.0; newt<=core.getEndDate(); newt+=5.0) {
             core.run(newt);
-            unitval temp = core.sendMessage(M_GETDATA, D_GLOBAL_TEMP);
+            unitval temp = core.sendMessage(M_GETDATA, D_GLOBAL_TAS);
             unitval ca   = core.sendMessage(M_GETDATA, D_ATMOSPHERIC_CO2);
             unitval forc = core.sendMessage(M_GETDATA, D_RF_TOTAL);
 

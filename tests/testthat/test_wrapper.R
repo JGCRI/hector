@@ -1,7 +1,7 @@
 context("R wrapper functionality")
 
 inputdir <- system.file("input", package = "hector")
-testvars <- c(ATMOSPHERIC_CO2(), RF_TOTAL(), GLOBAL_TEMP())
+testvars <- c(ATMOSPHERIC_CO2(), RF_TOTAL(), GLOBAL_TAS())
 dates <- 2000:2300
 
 

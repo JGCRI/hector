@@ -1814,30 +1814,30 @@ return D_VOLCANIC_SCALE;
 //' @describeIn temperature Global mean air temperature anomaly
 //' @export
 // [[Rcpp::export]]
-String GLOBAL_TEMP() {
-return D_GLOBAL_TEMP;
+String GLOBAL_TAS() {
+return D_GLOBAL_TAS;
 }
 
-//' @describeIn temperature Average ocean surface temperature anomaly
+//' @describeIn temperature Average sea surface temperature anomaly
 //' @export
 // [[Rcpp::export]]
-String OCEAN_SURFACE_TEMP() {
-return D_OCEAN_SURFACE_TEMP;
+String SST() {
+return D_SST;
 }
 
-//' @describeIn temperature Average ocean air temperature anomaly
+//' @describeIn temperature Average air temperature anomaly over the ocean
 //' @export
 // [[Rcpp::export]]
-String OCEAN_AIR_TEMP() {
-return D_OCEAN_AIR_TEMP;
+String OCEAN_TAS() {
+return D_OCEAN_TAS;
 }
 
-//' @describeIn temperature Average land temperature anomaly, land surface temperature and air temperature
+//' @describeIn temperature Average air temperature anomaly over land, land surface temperature and air temperature
 //' over land are assumed to be equivalent.
 //' @export
 // [[Rcpp::export]]
-String LAND_AIR_TEMP() {
-return D_LAND_AIR_TEMP;
+String LAND_TAS() {
+return D_LAND_TAS;
 }
 
 //' @describeIn parameters Land-Ocean Warming Ratio (\code{"(unitless)"}), by default set to 0
@@ -1852,8 +1852,8 @@ String LO_WARMING_RATIO(){
 //' @describeIn carboncycle Constrain global mean temperature  (\code{"(degC)"})
 //' @export
 // [[Rcpp::export]]
-String TGAV_CONSTRAIN() {
-    return D_TGAV_CONSTRAIN;
+String TAS_CONSTRAIN() {
+    return D_TAS_CONSTRAIN;
 }
 
 

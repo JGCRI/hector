@@ -360,7 +360,7 @@
 
 // Constraints
 #define D_CO2_CONSTRAIN         "CO2_constrain"
-#define D_TGAV_CONSTRAIN        "Tgav_constrain"
+#define D_TAS_CONSTRAIN        "tas_constrain"
 #define D_NBP_CONSTRAIN         "NBP_constrain"
 
 // slr component
@@ -375,16 +375,16 @@
 
 // temperature component
 #define D_ECS                   "S"
-#define D_GLOBAL_TEMP           "Tgav"
-#define D_LAND_AIR_TEMP         "Tgav_land"
-#define D_OCEAN_SURFACE_TEMP    "Tgav_ocean_ST"
-#define D_OCEAN_AIR_TEMP        "Tgav_oceanair"
+#define D_GLOBAL_TAS            "global_tas"
+#define D_LAND_TAS              "land_tas"
+#define D_SST                   "sst"
+#define D_OCEAN_TAS             "ocean_tas"
 #define D_LO_WARMING_RATIO      "lo_warming_ratio"
 #define D_DIFFUSIVITY           "diff"
 #define D_AERO_SCALE            "alpha"
 #define D_VOLCANIC_SCALE        "volscl"
-#define D_FLUX_MIXED            "flux_mixed"
-#define D_FLUX_INTERIOR         "flux_interior"
+#define D_FLUX_MIXED            "heatflux_mixed"
+#define D_FLUX_INTERIOR         "heatflux_interior"
 #define D_HEAT_FLUX             "heatflux"
 
 // ------------------- messages being passed between components -------------------------

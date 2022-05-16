@@ -116,7 +116,7 @@ void SimpleNbox::prepareToRun()
     // Set atmospheric C based on the requested preindustrial [CO2]
     atmos_c.set( C0.value( U_PPMV_CO2 ) * PPMVCO2_TO_PGC, U_PGC, atmos_c.tracking, atmos_c.name );
     atmos_c_ts.set( core->getStartDate(), atmos_c );
-    
+
     // Constraint logging
     if( CO2_constrain.size() ) {
         Logger& glog = core->getGlobalLogger();
@@ -126,7 +126,7 @@ void SimpleNbox::prepareToRun()
         Logger& glog = core->getGlobalLogger();
         H_LOG( glog, Logger::WARNING ) << "NBP (land-atmosphere C exchange) will be constrained to user-supplied values!" << std::endl;
     }
-    
+
     // One-time checks
     for( auto biome : biome_list ) {
         H_ASSERT( beta.at( biome ) >= 0.0, "beta < 0" );
@@ -153,7 +153,7 @@ void SimpleNbox::run( const double runToDate )
         H_LOG( logger, Logger::NOTICE ) << "Tracking start" << std::endl;
         start_tracking();
     }
-    Tland_record.set( runToDate, core->sendMessage( M_GETDATA, D_LAND_AIR_TEMP ) );
+    Tland_record.set( runToDate, core->sendMessage( M_GETDATA, D_LAND_TAS) );
 
     // TODO: this is a hack, because currently we can't pass fluxpools around via sendMessage
     omodel->set_atmosphere_sources( atmos_c );  // inform ocean model what our atmosphere looks like
@@ -251,12 +251,12 @@ void SimpleNbox::stashCValues( double t, const double c[] )
         - rh_total.value(U_PGC_YR)
         - luc_e_untracked.value(U_PGC_YR)
         + luc_u_untracked.value(U_PGC_YR);
-    
+
     // Note: we calculate total NPP and RH and *don't* adjust it if there's an NBP
     // constraint, because it's used for weighting with the npp(biome) and rh(biome) calls
     // below. So we want it to keep its original total for proper weighting
     fluxpool npp_rh_total = npp_total + rh_total; // these are both positive
-    
+
     // Pre-NBP constraint new terrestrial pool values
     unitval newveg( c[ SNBOX_VEG ], U_PGC );
     unitval newdet( c[ SNBOX_DET ], U_PGC );
@@ -271,7 +271,7 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     if(!core->inSpinup() && NBP_constrain.size() && NBP_constrain.exists(rounded_t) ) {
         const unitval nbp_constrained = NBP_constrain.get(rounded_t);
         const unitval diff = nbp_constrained - unitval(alf, U_PGC_YR);
-        
+
         // Adjust fluxes
         npp_total = npp_total + diff / 2.0;
         rh_nbp_constraint_adjust = ( rh_total - diff / 2.0 ) / rh_total;
@@ -284,7 +284,7 @@ void SimpleNbox::stashCValues( double t, const double c[] )
         newveg = newveg + pool_diff * c[ SNBOX_VEG ] / total_land;
         newsoil = newsoil + pool_diff * c[ SNBOX_SOIL ] / total_land;
         newatmos = newatmos - pool_diff;
-        
+
         // Re-calculate atmosphere-land flux (NBP)
         alf = npp_total.value(U_PGC_YR)
             - rh_total.value(U_PGC_YR)
@@ -293,7 +293,7 @@ void SimpleNbox::stashCValues( double t, const double c[] )
         H_LOG( logger, Logger::NOTICE ) << "** NBP constraint " << nbp_constrained <<
                 " requested; final value was " << alf << " with final adjustment of " << diff << std::endl;
     }
-    
+
     nbp.set( alf, U_PGC_YR );
     nbp_ts.set( t, nbp );
 
@@ -673,7 +673,7 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
           rh_fda_current = rh_fda_current * rh_ratio;
           rh_fsa_current = rh_fsa_current * rh_ratio;
       }
-    
+
     // Compute fluxes
     dcdt[ SNBOX_ATMOS ] = // change in atmosphere pool
         ffi_flux_current.value( U_PGC_YR )
@@ -740,7 +740,7 @@ void SimpleNbox::slowparameval( double t, const double c[] )
     // Compute temperature factor globally (and for each biome specified)
     // Heterotrophic respiration depends on the pool sizes (detritus and soil) and Q10 values
     // The soil pool uses a lagged land air/surface temperature, i.e. we assume it takes time for heat to diffuse into soil
-    const double Tland = core->sendMessage( M_GETDATA, D_LAND_AIR_TEMP );
+    const double Tland = core->sendMessage( M_GETDATA, D_LAND_TAS );
 
     /* set tempferts (soil) and tempfertd (detritus) for each biome */
 
