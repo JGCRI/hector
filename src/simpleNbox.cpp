@@ -102,7 +102,7 @@ void SimpleNbox::init( Core* coreptr ) {
     core->registerCapability( D_RH, getComponentName() );
 
     // Register our dependencies
-    core->registerDependency( D_OCEAN_CFLUX, getComponentName() );
+    core->registerDependency( D_OCEAN_C_UPTAKE, getComponentName() );
 
     // Register the inputs we can receive from outside
     core->registerInput(D_FFI_EMISSIONS, getComponentName());

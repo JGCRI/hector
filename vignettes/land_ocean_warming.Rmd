@@ -39,7 +39,7 @@ Complete a default run of Hector, one that uses DOECLIM to calculate land and oc
 
 ```{r}
 years_to_keep <- 1850:2100
-vars_to_keep <- c(GLOBAL_TEMP(), LAND_AIR_TEMP(), OCEAN_AIR_TEMP(), ATMOSPHERIC_CO2())
+vars_to_keep <- c(GLOBAL_TAS(), LAND_TAS(), OCEAN_TAS(), ATMOSPHERIC_CO2())
 
 inifile <- file.path(system.file('input', package = 'hector'), 'hector_ssp245.ini')
 

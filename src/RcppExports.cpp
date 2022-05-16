@@ -1830,13 +1830,13 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// OCEAN_CFLUX
-String OCEAN_CFLUX();
-RcppExport SEXP _hector_OCEAN_CFLUX() {
+// OCEAN_UPTAKE
+String OCEAN_UPTAKE();
+RcppExport SEXP _hector_OCEAN_UPTAKE() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(OCEAN_CFLUX());
+    rcpp_result_gen = Rcpp::wrap(OCEAN_UPTAKE());
     return rcpp_result_gen;
 END_RCPP
 }
@@ -2050,23 +2050,23 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// TEMP_HL
-String TEMP_HL();
-RcppExport SEXP _hector_TEMP_HL() {
+// SST_HL
+String SST_HL();
+RcppExport SEXP _hector_SST_HL() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(TEMP_HL());
+    rcpp_result_gen = Rcpp::wrap(SST_HL());
     return rcpp_result_gen;
 END_RCPP
 }
-// TEMP_LL
-String TEMP_LL();
-RcppExport SEXP _hector_TEMP_LL() {
+// SST_LL
+String SST_LL();
+RcppExport SEXP _hector_SST_LL() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(TEMP_LL());
+    rcpp_result_gen = Rcpp::wrap(SST_LL());
     return rcpp_result_gen;
 END_RCPP
 }
@@ -2410,43 +2410,43 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// GLOBAL_TEMP
-String GLOBAL_TEMP();
-RcppExport SEXP _hector_GLOBAL_TEMP() {
+// GLOBAL_TAS
+String GLOBAL_TAS();
+RcppExport SEXP _hector_GLOBAL_TAS() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(GLOBAL_TEMP());
+    rcpp_result_gen = Rcpp::wrap(GLOBAL_TAS());
     return rcpp_result_gen;
 END_RCPP
 }
-// OCEAN_SURFACE_TEMP
-String OCEAN_SURFACE_TEMP();
-RcppExport SEXP _hector_OCEAN_SURFACE_TEMP() {
+// SST
+String SST();
+RcppExport SEXP _hector_SST() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(OCEAN_SURFACE_TEMP());
+    rcpp_result_gen = Rcpp::wrap(SST());
     return rcpp_result_gen;
 END_RCPP
 }
-// OCEAN_AIR_TEMP
-String OCEAN_AIR_TEMP();
-RcppExport SEXP _hector_OCEAN_AIR_TEMP() {
+// OCEAN_TAS
+String OCEAN_TAS();
+RcppExport SEXP _hector_OCEAN_TAS() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(OCEAN_AIR_TEMP());
+    rcpp_result_gen = Rcpp::wrap(OCEAN_TAS());
     return rcpp_result_gen;
 END_RCPP
 }
-// LAND_AIR_TEMP
-String LAND_AIR_TEMP();
-RcppExport SEXP _hector_LAND_AIR_TEMP() {
+// LAND_TAS
+String LAND_TAS();
+RcppExport SEXP _hector_LAND_TAS() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(LAND_AIR_TEMP());
+    rcpp_result_gen = Rcpp::wrap(LAND_TAS());
     return rcpp_result_gen;
 END_RCPP
 }
@@ -2460,13 +2460,13 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// TGAV_CONSTRAIN
-String TGAV_CONSTRAIN();
-RcppExport SEXP _hector_TGAV_CONSTRAIN() {
+// TAS_CONSTRAIN
+String TAS_CONSTRAIN();
+RcppExport SEXP _hector_TAS_CONSTRAIN() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(TGAV_CONSTRAIN());
+    rcpp_result_gen = Rcpp::wrap(TAS_CONSTRAIN());
     return rcpp_result_gen;
 END_RCPP
 }
@@ -2840,7 +2840,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_EMISSIONS_NMVOC", (DL_FUNC) &_hector_EMISSIONS_NMVOC, 0},
     {"_hector_EMISSIONS_OC", (DL_FUNC) &_hector_EMISSIONS_OC, 0},
     {"_hector_EMISSIONS_NH3", (DL_FUNC) &_hector_EMISSIONS_NH3, 0},
-    {"_hector_OCEAN_CFLUX", (DL_FUNC) &_hector_OCEAN_CFLUX, 0},
+    {"_hector_OCEAN_UPTAKE", (DL_FUNC) &_hector_OCEAN_UPTAKE, 0},
     {"_hector_OCEAN_C", (DL_FUNC) &_hector_OCEAN_C, 0},
     {"_hector_OCEAN_C_HL", (DL_FUNC) &_hector_OCEAN_C_HL, 0},
     {"_hector_OCEAN_C_LL", (DL_FUNC) &_hector_OCEAN_C_LL, 0},
@@ -2862,8 +2862,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_DIC_HL", (DL_FUNC) &_hector_DIC_HL, 0},
     {"_hector_DIC", (DL_FUNC) &_hector_DIC, 0},
     {"_hector_DIC_LL", (DL_FUNC) &_hector_DIC_LL, 0},
-    {"_hector_TEMP_HL", (DL_FUNC) &_hector_TEMP_HL, 0},
-    {"_hector_TEMP_LL", (DL_FUNC) &_hector_TEMP_LL, 0},
+    {"_hector_SST_HL", (DL_FUNC) &_hector_SST_HL, 0},
+    {"_hector_SST_LL", (DL_FUNC) &_hector_SST_LL, 0},
     {"_hector_CO3_LL", (DL_FUNC) &_hector_CO3_LL, 0},
     {"_hector_CO3_HL", (DL_FUNC) &_hector_CO3_HL, 0},
     {"_hector_CO3", (DL_FUNC) &_hector_CO3, 0},
@@ -2897,12 +2897,12 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_ECS", (DL_FUNC) &_hector_ECS, 0},
     {"_hector_AERO_SCALE", (DL_FUNC) &_hector_AERO_SCALE, 0},
     {"_hector_VOLCANIC_SCALE", (DL_FUNC) &_hector_VOLCANIC_SCALE, 0},
-    {"_hector_GLOBAL_TEMP", (DL_FUNC) &_hector_GLOBAL_TEMP, 0},
-    {"_hector_OCEAN_SURFACE_TEMP", (DL_FUNC) &_hector_OCEAN_SURFACE_TEMP, 0},
-    {"_hector_OCEAN_AIR_TEMP", (DL_FUNC) &_hector_OCEAN_AIR_TEMP, 0},
-    {"_hector_LAND_AIR_TEMP", (DL_FUNC) &_hector_LAND_AIR_TEMP, 0},
+    {"_hector_GLOBAL_TAS", (DL_FUNC) &_hector_GLOBAL_TAS, 0},
+    {"_hector_SST", (DL_FUNC) &_hector_SST, 0},
+    {"_hector_OCEAN_TAS", (DL_FUNC) &_hector_OCEAN_TAS, 0},
+    {"_hector_LAND_TAS", (DL_FUNC) &_hector_LAND_TAS, 0},
     {"_hector_LO_WARMING_RATIO", (DL_FUNC) &_hector_LO_WARMING_RATIO, 0},
-    {"_hector_TGAV_CONSTRAIN", (DL_FUNC) &_hector_TGAV_CONSTRAIN, 0},
+    {"_hector_TAS_CONSTRAIN", (DL_FUNC) &_hector_TAS_CONSTRAIN, 0},
     {"_hector_DIFFUSIVITY", (DL_FUNC) &_hector_DIFFUSIVITY, 0},
     {"_hector_FLUX_MIXED", (DL_FUNC) &_hector_FLUX_MIXED, 0},
     {"_hector_FLUX_INTERIOR", (DL_FUNC) &_hector_FLUX_INTERIOR, 0},

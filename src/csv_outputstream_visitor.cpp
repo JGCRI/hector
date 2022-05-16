@@ -201,12 +201,12 @@ void CSVOutputStreamVisitor::visit( HalocarbonComponent* c ) {
 // documentation is inherited
 void CSVOutputStreamVisitor::visit( TemperatureComponent* c ) {
     if( !core->outputEnabled( c->getComponentName() ) ) return;
-    STREAM_MESSAGE( csvFile, c, D_GLOBAL_TEMP );
+    STREAM_MESSAGE( csvFile, c, D_GLOBAL_TAS );
     STREAM_MESSAGE( csvFile, c, D_FLUX_MIXED );
     STREAM_MESSAGE( csvFile, c, D_FLUX_INTERIOR )
 	STREAM_MESSAGE( csvFile, c, D_HEAT_FLUX );
-    STREAM_MESSAGE( csvFile, c, D_LAND_AIR_TEMP );
-    STREAM_MESSAGE( csvFile, c, D_OCEAN_SURFACE_TEMP );
+    STREAM_MESSAGE( csvFile, c, D_LAND_TAS );
+    STREAM_MESSAGE( csvFile, c, D_SST );
 }
 
 //------------------------------------------------------------------------------
@@ -222,7 +222,7 @@ void CSVOutputStreamVisitor::visit( OceanComponent* c ) {
     STREAM_MESSAGE( csvFile, c, D_DIC_HL );
     STREAM_MESSAGE( csvFile, c, D_DIC_LL );
     STREAM_MESSAGE( csvFile, c, D_HL_DO );
-    STREAM_MESSAGE( csvFile, c, D_OCEAN_CFLUX );
+    STREAM_MESSAGE( csvFile, c, D_OCEAN_C_UPTAKE );
     STREAM_MESSAGE( csvFile, c, D_OMEGAAR_HL );
     STREAM_MESSAGE( csvFile, c, D_OMEGAAR_LL );
     STREAM_MESSAGE( csvFile, c, D_OMEGACA_HL );
@@ -236,7 +236,6 @@ void CSVOutputStreamVisitor::visit( OceanComponent* c ) {
     STREAM_MESSAGE( csvFile, c, D_OCEAN_C );
     STREAM_MESSAGE( csvFile, c, D_CO3_HL );
     STREAM_MESSAGE( csvFile, c, D_CO3_LL );
-    STREAM_MESSAGE( csvFile, c, D_TIMESTEPS );
     if( !in_spinup ) {
         STREAM_MESSAGE( csvFile, c, D_REVELLE_HL );
         STREAM_MESSAGE( csvFile, c, D_REVELLE_LL );

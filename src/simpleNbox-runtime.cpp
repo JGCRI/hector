@@ -153,7 +153,7 @@ void SimpleNbox::run( const double runToDate )
         H_LOG( logger, Logger::NOTICE ) << "Tracking start" << std::endl;
         start_tracking();
     }
-    Tland_record.set( runToDate, core->sendMessage( M_GETDATA, D_LAND_AIR_TEMP ) );
+    Tland_record.set( runToDate, core->sendMessage( M_GETDATA, D_LAND_TAS) );
 
     // TODO: this is a hack, because currently we can't pass fluxpools around via sendMessage
     omodel->set_atmosphere_sources( atmos_c );  // inform ocean model what our atmosphere looks like
@@ -740,7 +740,7 @@ void SimpleNbox::slowparameval( double t, const double c[] )
     // Compute temperature factor globally (and for each biome specified)
     // Heterotrophic respiration depends on the pool sizes (detritus and soil) and Q10 values
     // The soil pool uses a lagged land air/surface temperature, i.e. we assume it takes time for heat to diffuse into soil
-    const double Tland = core->sendMessage( M_GETDATA, D_LAND_AIR_TEMP );
+    const double Tland = core->sendMessage( M_GETDATA, D_LAND_TAS );
 
     /* set tempferts (soil) and tempfertd (detritus) for each biome */
 

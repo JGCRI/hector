@@ -54,7 +54,7 @@ void slrComponent::init( Core* coreptr ) {
 
     // Mean global temperature is the only thing used to calculate sea level rise
     // Register our dependencies
-    core->registerDependency( D_GLOBAL_TEMP, getComponentName() );
+    core->registerDependency( D_GLOBAL_TAS, getComponentName() );
 
 	refperiod_low = 1951;
 	refperiod_high = 1980;
@@ -191,7 +191,7 @@ void slrComponent::run( const double runToDate ) {
     // Sea level rise is different from some of the other model outputs, because the formula used here to compute it
     // depends on knowing a reference period temperature
 
-    tgav.set( runToDate, core->sendMessage( M_GETDATA, D_GLOBAL_TEMP ) );	// store global temperature
+    tgav.set( runToDate, core->sendMessage( M_GETDATA, D_GLOBAL_TAS ) );	// store global temperature
 
     if( runToDate==refperiod_high ) {	// then compute reference period temperature
         H_LOG( logger, Logger::DEBUG ) << "Computing reference temperature" << std::endl;

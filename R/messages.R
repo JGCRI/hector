@@ -1,7 +1,7 @@
 #### Code for interacting with the hector messaging system
 
 
-default_fetchvars <- c(ATMOSPHERIC_CO2, RF_TOTAL, RF_CO2, GLOBAL_TEMP)
+default_fetchvars <- c(ATMOSPHERIC_CO2, RF_TOTAL, RF_CO2, GLOBAL_TAS)
 
 #' Fetch results from a running Hector core
 #'
