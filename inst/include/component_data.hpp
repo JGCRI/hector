@@ -46,6 +46,7 @@
 #define D_RF_BASEYEAR           "baseyear"
 #define D_RF_CO2                D_RF_PREFIX "CO2"
 #define D_RF_N2O                D_RF_PREFIX "N2O"
+#define D_RF_CH4                D_RF_PREFIX "CH4"
 #define D_RF_H2O_STRAT          D_RF_PREFIX "H2O_strat"
 #define D_RF_O3_TROP            D_RF_PREFIX "O3_trop"
 #define D_RF_BC                 D_RF_PREFIX "BC"
@@ -97,7 +98,7 @@
 // Forcings are tracked relative to the base year forcings, but the
 // halocarbon components don't know that.  These capabilities allow
 // a caller to fetch the adjusted values from the forcing component.
-#define D_RFADJ_PREFIX          "Fadj"
+#define D_RFADJ_PREFIX          "RF_adj"
 #define D_RFADJ_CF4              D_RFADJ_PREFIX CF4_COMPONENT_BASE
 #define D_RFADJ_C2F6             D_RFADJ_PREFIX C2F6_COMPONENT_BASE
 #define D_RFADJ_HFC23            D_RFADJ_PREFIX HFC23_COMPONENT_BASE
@@ -188,7 +189,7 @@
 #define D_HC_TAU                "tau"
 #define D_HC_MOLARMASS          "molarMass"
 
-// specify the rho used by halocarbon component so that speicifc rhos can be
+// specify the rho used by halocarbon component so that specific rhos can be
 // adjusted using the R wrapper
 // rho used by halocarbon component
 #define D_HCRHO_PREFIX          "rho_"
@@ -252,7 +253,6 @@
 // methane component
 #define D_ATMOSPHERIC_CH4       "CH4"
 #define D_PREINDUSTRIAL_CH4     "M0"
-#define D_RF_CH4                "FCH4"
 #define D_EMISSIONS_CH4         "CH4_emissions"
 #define D_CONSTRAINT_CH4        "CH4_constrain"
 #define D_NATURAL_CH4           "CH4N"
@@ -348,8 +348,8 @@
 #define D_TEMPFERTD             "detritus_tempfert"
 #define D_TEMPFERTS             "soil_tempfert"
 #define D_Q10_RH                "q10_rh"
-#define D_NPP                   "npp"
-#define D_RH                    "rh"
+#define D_NPP                   "NPP"
+#define D_RH                    "RH"
 #define D_F_NPPV                "f_nppv"
 #define D_F_NPPD                "f_nppd"
 #define D_F_LITTERD             "f_litterd"
