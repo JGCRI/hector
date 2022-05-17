@@ -169,11 +169,11 @@ CFC115_halocarbon,rho_CFC115,n,n,y,2.46E-04,W m-2 ppt-1,radiative efficiencies (
 CFC115_halocarbon,delta_CFC115,n,n,y,0,(unitless),tropospheric adjustments scalar (7.3.2.4 IPCC AR6)
 CFC115_halocarbon,molarMass,n,n,y,154.45,g,molar mass
 CFC115_halocarbon,CFC115_emissions,n,y,y,"""(csv)""",,
-CC14_halocarbon,tau,n,n,y,32,years,lifetime in years (Table 7.SM.7 IPPC AR6)
-CC14_halocarbon,rho_CFC115,n,n,y,1.66E-04,W m-2 ppt-1,radiative efficiencies (Table 7.SM.7 IPPC AR6)
-CC14_halocarbon,delta_CFC115,n,n,y,0,(unitless),tropospheric adjustments scalar (7.3.2.4 IPCC AR6)
-CC14_halocarbon,molarMass,n,n,y,153.8,g,molar mass
-CC14_halocarbon,CFC115_emissions,n,y,y,"""(csv)""",,
+CCl4_halocarbon,tau,n,n,y,32,years,lifetime in years (Table 7.SM.7 IPPC AR6)
+CCl4_halocarbon,rho_CFC115,n,n,y,1.66E-04,W m-2 ppt-1,radiative efficiencies (Table 7.SM.7 IPPC AR6)
+CCl4_halocarbon,delta_CFC115,n,n,y,0,(unitless),tropospheric adjustments scalar (7.3.2.4 IPCC AR6)
+CCl4_halocarbon,molarMass,n,n,y,153.8,g,molar mass
+CCl4_halocarbon,CFC115_emissions,n,y,y,"""(csv)""",,
 CH3CC13_halocarbon,tau,n,n,y,5,years,lifetime in years (Table 7.SM.7 IPPC AR6)
 CH3CC13_halocarbon,rho_CH3CCl3,n,n,y,6.50E-05,W m-2 ppt-1,radiative efficiencies (Table 7.SM.7 IPPC AR6)
 CH3CC13_halocarbon,delta_CH3CCl3,n,n,y,0,(unitless),tropospheric adjustments scalar (7.3.2.4 IPCC AR6)
