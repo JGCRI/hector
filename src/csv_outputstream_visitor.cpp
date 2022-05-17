@@ -192,7 +192,6 @@ void CSVOutputStreamVisitor::visit( SimpleNbox* c ) {
 //------------------------------------------------------------------------------
 // documentation is inherited
 void CSVOutputStreamVisitor::visit( HalocarbonComponent* c ) {
-    // TODO: how to get emissions in the gas specific units?
     if( !core->outputEnabled( c->getComponentName() ) ) return;
     STREAM_MESSAGE( csvFile, c, D_HC_CONCENTRATION );
 }
