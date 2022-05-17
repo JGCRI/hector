@@ -1285,8 +1285,8 @@ PREINDUSTRIAL_CO2 <- function() {
 
 #' @rdname carboncycle
 #' @export
-ATMOSPHERIC_C <- function() {
-    .Call('_hector_ATMOSPHERIC_C', PACKAGE = 'hector')
+ATMOSPHERIC_CO2 <- function() {
+    .Call('_hector_ATMOSPHERIC_CO2', PACKAGE = 'hector')
 }
 
 #' @rdname carboncycle

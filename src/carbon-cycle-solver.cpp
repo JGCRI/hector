@@ -57,7 +57,7 @@ void CarbonCycleSolver::init( Core* coreptr ) {
     in_spinup = false;
 
     // We want to run after the carbon box models, to give them a chance to initialize
-    core->registerDependency( D_ATMOSPHERIC_C, getComponentName() );
+    core->registerDependency( D_ATMOSPHERIC_CO2, getComponentName() );
 }
 
 //------------------------------------------------------------------------------
@@ -125,7 +125,7 @@ void CarbonCycleSolver::prepareToRun()
 {
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
 
-    cmodel = dynamic_cast<CarbonCycleModel*>( core->getComponentByCapability( D_ATMOSPHERIC_C ) );
+    cmodel = dynamic_cast<CarbonCycleModel*>( core->getComponentByCapability( D_ATMOSPHERIC_CO2 ) );
 
     // initialize the solver's internal data
     t = core->getStartDate();

@@ -51,7 +51,7 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
     NBP_constrain.name = D_NBP_CONSTRAIN;
 
     // The actual atmos_c value will be filled in later by setData
-    atmos_c.set(0.0, U_PGC, false, D_ATMOSPHERIC_C);
+    atmos_c.set(0.0, U_PGC, false, D_ATMOSPHERIC_CO2);
     atmos_c_ts.allowInterp( true );
     atmos_c_ts.name = "atmos_c_ts";
 
@@ -89,7 +89,7 @@ void SimpleNbox::init( Core* coreptr ) {
 
     // Register the data we can provide
     core->registerCapability( D_CO2_CONC, getComponentName() );
-    core->registerCapability( D_ATMOSPHERIC_C, getComponentName() );
+    core->registerCapability( D_ATMOSPHERIC_CO2, getComponentName() );
     core->registerCapability( D_PREINDUSTRIAL_CO2, getComponentName() );
     core->registerCapability( D_RF_T_ALBEDO, getComponentName() );
     core->registerCapability( D_NBP, getComponentName() );
@@ -202,7 +202,7 @@ void SimpleNbox::setData( const std::string &varName,
     }
     try {
         // Initial pools
-        if( varNameParsed == D_ATMOSPHERIC_C ) {
+        if( varNameParsed == D_ATMOSPHERIC_CO2 ) {
             // Hector input files specify initial atmospheric CO2 in terms of
             // the carbon pool, rather than the CO2 concentration.  Since we
             // don't have a place to store the initial carbon pool, we convert
@@ -445,7 +445,7 @@ unitval SimpleNbox::getData(const std::string& varName,
             "Hit this error while trying to retrieve variable: '" + varName + "'.";
     }
 
-    if( varNameParsed == D_ATMOSPHERIC_C ) {
+    if( varNameParsed == D_ATMOSPHERIC_CO2 ) {
         if(date == Core::undefinedIndex())
             returnval = atmos_c;
         else

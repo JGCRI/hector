@@ -214,12 +214,12 @@ test_that("Pool names are valid", {
     expect_equal(d$value, deep_value, tolerance = error_threshold)
     expect_identical(d$units, deep_units)
 
-    # atmos_c
-    atm <- subset(tdata, tdata$pool_name == "atmos_c")
+    # atmos_co2
+    atm <- subset(tdata, tdata$pool_name == "atmos_co2")
     atm_value <- unique(atm$pool_value)
     atm_units <- unique(atm$pool_units)
 
-    a <- fetchvars(core, 1760, ATMOSPHERIC_C())
+    a <- fetchvars(core, 1760, ATMOSPHERIC_CO2())
     expect_equal(a$value, atm_value, tolerance = error_threshold)
     expect_identical(a$units, atm_units)
 

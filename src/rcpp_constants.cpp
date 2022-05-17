@@ -1561,8 +1561,8 @@ return D_PREINDUSTRIAL_CO2;
 //' @rdname carboncycle
 //' @export
 // [[Rcpp::export]]
-String ATMOSPHERIC_C() {
-return D_ATMOSPHERIC_C;
+String ATMOSPHERIC_CO2() {
+return D_ATMOSPHERIC_CO2;
 }
 
 //' @rdname carboncycle

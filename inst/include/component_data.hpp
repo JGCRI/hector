@@ -334,7 +334,7 @@
 #define D_NBP                   "NBP"
 #define D_CO2_CONC              "CO2_conc"
 #define D_PREINDUSTRIAL_CO2     "C0"
-#define D_ATMOSPHERIC_C         "atmos_c"
+#define D_ATMOSPHERIC_CO2       "atmos_co2"
 #define D_ATMOSPHERIC_C_RESIDUAL "atmos_c_residual"
 #define D_EARTHC                "earth_c"
 #define D_VEGC                  "veg_c"
