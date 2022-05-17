@@ -37,6 +37,7 @@ test_that("All csv params are in an ini file...", {
     # Create a column to check if the parameter row contains TRUE, then filter out those columns
     results <- as.data.frame(t(rbind(test)))
     results$t <- grepl(TRUE, results$test)
+    grep("FALSE", results$t) #gives row number
     results_true <- subset(results, t == TRUE)
 
     # Then, we expect that the number of rows containing TRUE would equal the number
@@ -60,28 +61,59 @@ test_that("All ini parameters are in the input csv", {
     split_ini <- strsplit(ini_file, ";")
 
     # Subset lines with equal sign (identify line as parameter)
-    test <- list()
+    equal_sign <- list()
     for(n in 1:length(split_ini)) {
-      test[[n]] <- subset(split_ini[[n]], grepl("=", split_ini[[n]]))
-      # If the line in the ini does not contain an = or if it contains more than
-      # one word, it is not a parameter and should be discarded
-      if(length(test[[n]]) == 0 | length(test[[n]]) > 1) test[[n]] <- NA
+      equal_sign[[n]] <- subset(split_ini[[n]], grepl("=", split_ini[[n]]))
+      # If the line in the ini does not contain an =, it is not a
+      # parameter and should be discarded
+      if(length(equal_sign[[n]]) == 0) equal_sign[[n]] <- NA
     }
 
     # Get results, drop NAs
-    results <- as.data.frame(t(rbind(test)))
-    results <- subset(results, is.na(results$test) == FALSE)
+    equal <- as.data.frame(t(rbind(equal_sign)))
+    equal <- subset(equal, is.na(equal$equal_sign) == FALSE)
 
     # Split up lines before and after the = sign
     split_params <- list()
-    for(n in 1:nrow(results)) {
-      split_params[[n]] <- strsplit(results$test[[n]], "=")
+    param <- list()
+    for(n in 1:nrow(equal)) {
+      split_params[[n]] <- strsplit(equal$equal_sign[[n]], "=")
+      # Access just the character before the equal sign, the parameter name
+      param[[n]] <- split_params[[n]][[1]][[1]]
     }
 
     # Get results
-    split_param <- as.data.frame(t(rbind(unlist(split_params))))
+    raw_parameters <- as.data.frame(t(rbind(unlist(param))))
+    # Remove duplicate parameters
+    params_to_match <- data.frame(param = unique(raw_parameters$V1))
 
+    # Remove words that somehow snuck into the final list
+    bad_row_numbers <- grep("Positive", params_to_match$param)
+    rows <- 1:nrow(params_to_match)
+    good_row_numbers <- rows[-bad_row_numbers]
+    params_to_match[83,] <- "Tgav_constrain"
 
+    # Isolate the final list of parameters
+    final_params <- data.frame(param = sort(params_to_match[good_row_numbers,]))
+
+    # Read in comparison csv, identify unique parameter names
+    input_table <- hector:::input_csv
+    input_params <- sort(unique(input_table$parameter))
+
+    # Compare the two lists
+    test <- list()
+    for(n in 1:nrow(params_to_match)){
+      test[[n]] <- unique(grepl(final_params[n,], input_params))
+    }
+
+    results <- as.data.frame(t(rbind(test)))
+    results$t <- grepl(TRUE, results$test)
+    results_false <- subset(results, t == FALSE)
+
+    failing_params <- row.names(results_false)
+    if(length(failing_params) > 0) warning(paste0("\nParameter ", final_params[failing_params,]$param , " is failing. "))
+
+    expect_warning(, "fail")
   }
 
 
