@@ -23,26 +23,34 @@ test_that("All csv params are in an ini file...", {
 
     # Read in comparison csv, identify unique parameter names
     input_table <- hector:::input_csv
-    input_params <- unique(input_table$parameter)
+    input_params <- sort(unique(input_table$parameter))
 
     # For each parameter, loop over the line-by-line file to check for a match
     # Store unique results - if variable is present somewhere, we expect c(FALSE, TRUE)
     # If the variable is not present, we expect just FALSE
     test <- list()
     for(n in seq_len(length(input_params))){
-      test[[n]] <- unique(grepl(input_params[[n]], split_ini))
+      test[[n]] <- sort(unique(grepl(input_params[[n]], split_ini)))
     }
 
     # Extract results, store as data frame
     # Create a column to check if the parameter row contains TRUE, then filter out those columns
     results <- as.data.frame(t(rbind(test)))
     results$t <- grepl(TRUE, results$test)
-    grep("FALSE", results$t) #gives row number
-    results_true <- subset(results, t == TRUE)
+    results_false <- subset(results, t == FALSE)
+
+    failing_params <- row.names(results_false)
+    for(p in failing_params){
+      p <- as.numeric(p)
+      if(length(failing_params) > 0) warning(paste0("Parameter ", input_params[p] , " is failing. "))
+    }
+
+    ## What test?
+
 
     # Then, we expect that the number of rows containing TRUE would equal the number
     # of parameters we are checking against
-    expect_equal(nrow(results_true), length(input_params))
+    # expect_equal(nrow(results_true), length(input_params))
 
   }
 
@@ -111,9 +119,9 @@ test_that("All ini parameters are in the input csv", {
     results_false <- subset(results, t == FALSE)
 
     failing_params <- row.names(results_false)
-    if(length(failing_params) > 0) warning(paste0("\nParameter ", final_params[failing_params,]$param , " is failing. "))
+    if(length(failing_params) > 0) warning(paste0("\nParameter ", final_params[failing_params,] , " is failing. "))
 
-    expect_warning(, "fail")
+    ## What test
   }
 
 
