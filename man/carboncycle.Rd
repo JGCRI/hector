@@ -3,7 +3,7 @@
 \name{carboncycle}
 \alias{carboncycle}
 \alias{NBP}
-\alias{ATMOSPHERIC_CO2}
+\alias{CONCENTRATIONS_CO2}
 \alias{NPP}
 \alias{RH}
 \alias{ATMOSPHERIC_C}
@@ -23,7 +23,7 @@
 \usage{
 NBP()
 
-ATMOSPHERIC_CO2()
+CONCENTRATIONS_CO2()
 
 NPP()
 
@@ -84,7 +84,7 @@ flux (`"Pg C year^-1"`)
 
 These variables can be read using the \code{\link{GETDATA}} message type:
 \describe{
-\item{ATMOSPHERIC_CO2}{Atmospheric CO2 concentration}
+\item{CONCENTRATIONS_CO2}{Atmospheric CO2 concentration}
 \item{ATMOSPHERIC_C}{Atmospheric carbon pool}
 \item{NBP}{Net biome production. Annual global C flux from atmosphere into
   the land. A positive value means a net flux from atmosphere into land

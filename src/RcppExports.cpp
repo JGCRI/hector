@@ -2110,13 +2110,13 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// ATMOSPHERIC_CO2
-String ATMOSPHERIC_CO2();
-RcppExport SEXP _hector_ATMOSPHERIC_CO2() {
+// CONCENTRATIONS_CO2
+String CONCENTRATIONS_CO2();
+RcppExport SEXP _hector_CONCENTRATIONS_CO2() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(ATMOSPHERIC_CO2());
+    rcpp_result_gen = Rcpp::wrap(CONCENTRATIONS_CO2());
     return rcpp_result_gen;
 END_RCPP
 }
@@ -2868,7 +2868,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_CO3_HL", (DL_FUNC) &_hector_CO3_HL, 0},
     {"_hector_CO3", (DL_FUNC) &_hector_CO3, 0},
     {"_hector_NBP", (DL_FUNC) &_hector_NBP, 0},
-    {"_hector_ATMOSPHERIC_CO2", (DL_FUNC) &_hector_ATMOSPHERIC_CO2, 0},
+    {"_hector_CONCENTRATIONS_CO2", (DL_FUNC) &_hector_CONCENTRATIONS_CO2, 0},
     {"_hector_NPP", (DL_FUNC) &_hector_NPP, 0},
     {"_hector_RH", (DL_FUNC) &_hector_RH, 0},
     {"_hector_PREINDUSTRIAL_CO2", (DL_FUNC) &_hector_PREINDUSTRIAL_CO2, 0},

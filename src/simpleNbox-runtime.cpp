@@ -389,7 +389,7 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     }
     masstot = sum;
 
-    // If user has supplied Ca values, adjust atmospheric C to match
+    // If user has supplied [CO2] values, adjust atmospheric C to match
     if(core->inSpinup() ||
        ( CO2_constrain.size() && CO2_constrain.exists(t) )) {
 
@@ -409,10 +409,10 @@ void SimpleNbox::stashCValues( double t, const double c[] )
         // Ugly: residual is a unitval, but calculated by subtracting two fluxpools, so extract value
         Ca_residual.set(atmos_c.value(U_PGC) - atmos_cpool_to_match.value(U_PGC), U_PGC);
 
-        H_LOG( logger,Logger::DEBUG ) << t << "- have " << Ca() << " want " <<  atmppmv.value( U_PPMV_CO2 ) << std::endl;
+        H_LOG( logger,Logger::DEBUG ) << t << "- have " << CO2_conc() << " want " <<  atmppmv.value( U_PPMV_CO2 ) << std::endl;
         H_LOG( logger,Logger::DEBUG ) << t << "- have " << atmos_c << " want " << atmos_cpool_to_match << "; residual = " << Ca_residual << std::endl;
 
-        // Transfer C from atmosphere to deep ocean and update our C and Ca variables
+        // Transfer C from atmosphere to deep ocean and update our C and [CO2] variables
         H_LOG( logger,Logger::DEBUG ) << "Sending residual of " << Ca_residual << " to deep ocean" << std::endl;
         core->sendMessage( M_DUMP_TO_DEEP_OCEAN, D_OCEAN_C, message_data( Ca_residual ) );
         atmos_c = atmos_c - Ca_residual;
@@ -428,7 +428,7 @@ void SimpleNbox::stashCValues( double t, const double c[] )
 
 double SimpleNbox::calc_co2fert(std::string biome, double time) const
 {
-    return 1 + beta.at( biome ) * log( Ca( time ) / C0 );
+    return 1 + beta.at( biome ) * log( CO2_conc( time ) / C0 );
 }
 
 //------------------------------------------------------------------------------
@@ -734,7 +734,7 @@ void SimpleNbox::slowparameval( double t, const double c[] )
         } else {
             co2fert[ biome ] = calc_co2fert( biome );
         }
-        H_LOG( logger,Logger::DEBUG ) << "co2fert[ " << biome << " ] at " << Ca() << " = " << co2fert.at( biome ) << std::endl;
+        H_LOG( logger,Logger::DEBUG ) << "co2fert[ " << biome << " ] at " << CO2_conc() << " = " << co2fert.at( biome ) << std::endl;
     }
 
     // Compute temperature factor globally (and for each biome specified)

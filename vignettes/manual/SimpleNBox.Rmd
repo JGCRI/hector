@@ -183,5 +183,5 @@ The following values related to the terrestrial C cycle can be set via `setData`
 - `prepareToRun()` -- Perform final checks and variable initialization before running a simulation
     - Check that all biome-specific pools, fluxes, and parameters have data for all biomes. (The only optional biome-specific parameter is `warmingfactor`, which is set to 1.0 if missing). Also check that biome-specific CO~2~ fertilization (`beta`) and Q10 (`q10_rh`) parameters are valid.
     - If no albedo forcing data are provided, set the value to the MAGICC default of -0.2
-    - Initialize the atmosphic CO~2~ concentration (`Ca`, ppm) and C pool (`atmos_c`, PgC) to the user-specified initial value (`C0`; converted accordingly to PgC for `atmos_c`)
+    - Initialize the atmospheric CO~2~ concentration (`conc_CO2`, ppm) and C pool (`atmos_c`, PgC) to the user-specified initial value (`C0`; converted accordingly to PgC for `atmos_c`)
     - Run the checks in `sanitychecks()`

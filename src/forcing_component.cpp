@@ -177,7 +177,7 @@ void ForcingComponent::init( Core* coreptr ) {
 
     // Register our dependencies
     core->registerDependency( D_ATMOSPHERIC_CH4, getComponentName() );
-    core->registerDependency( D_ATMOSPHERIC_CO2, getComponentName() );
+    core->registerDependency( D_CO2_CONC, getComponentName() );
     core->registerDependency( D_ATMOSPHERIC_O3, getComponentName() );
     core->registerDependency( D_EMISSIONS_BC, getComponentName() );
     core->registerDependency( D_EMISSIONS_OC, getComponentName() );
@@ -333,13 +333,13 @@ void ForcingComponent::run( const double runToDate ) {
         forcings_t forcings;
 
         //  ---------- Major GHGs ----------
-        if( core->checkCapability( D_ATMOSPHERIC_CH4 ) && core->checkCapability( D_ATMOSPHERIC_N2O ) && core->checkCapability( D_ATMOSPHERIC_CO2) ) {
+        if( core->checkCapability( D_ATMOSPHERIC_CH4 ) && core->checkCapability( D_ATMOSPHERIC_N2O ) && core->checkCapability( D_CO2_CONC) ) {
 
             // Parse our the pre industrial and concentrations to use in RF calculations
             double C0 = core->sendMessage( M_GETDATA, D_PREINDUSTRIAL_CO2 ).value( U_PPMV_CO2 );
             double M0 = core->sendMessage( M_GETDATA, D_PREINDUSTRIAL_CH4 ).value( U_PPBV_CH4 );
             double N0 = core->sendMessage( M_GETDATA, D_PREINDUSTRIAL_N2O ).value( U_PPBV_N2O );
-            double Ca = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_CO2, message_data( runToDate ) ).value( U_PPMV_CO2 );
+            double CO2_conc = core->sendMessage( M_GETDATA, D_CO2_CONC, message_data( runToDate ) ).value( U_PPMV_CO2 );
             double Ma = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_CH4, message_data( runToDate ) ).value( U_PPBV_CH4 );
             double Na = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_N2O, message_data( runToDate ) ).value( U_PPBV_N2O );
 
@@ -353,16 +353,16 @@ void ForcingComponent::run( const double runToDate ) {
             double C_alpha_max = C0 - (b1/(2*a1));
             double n2o_alpha = c1 * sqrt(Na);
             double alpha_prime;
-            if (Ca  > C_alpha_max){
+            if (CO2_conc  > C_alpha_max){
                 alpha_prime = d1 - (pow(b1, 2) / (4 * a1));
-            } else if (C0 < Ca && Ca < C_alpha_max){
-                alpha_prime = d1 + a1 * pow((Ca-C0), 2) + b1 * (Ca-C0);
-            } else if (Ca < C0){
+            } else if (C0 < CO2_conc && CO2_conc < C_alpha_max){
+                alpha_prime = d1 + a1 * pow((CO2_conc-C0), 2) + b1 * (CO2_conc-C0);
+            } else if (CO2_conc < C0){
                 alpha_prime = d1;
             } else {
                 H_THROW( "Caller is requesting unknown condition for CO2 SARF ");
             }
-            double sarf_co2 = (alpha_prime + n2o_alpha) * log(Ca/C0);
+            double sarf_co2 = (alpha_prime + n2o_alpha) * log(CO2_conc/C0);
             double fco2 = (sarf_co2 * delta_co2) + sarf_co2;
             forcings[D_RF_CO2 ].set( fco2, U_W_M2 );
 
@@ -372,7 +372,7 @@ void ForcingComponent::run( const double runToDate ) {
             // value to account for tropospheric interactions see 7.3.2.3.
             // Note that this simplified expression for radiative forcing was calibrated with a
             // preindustrial N20 value of 273.87 ppb.
-            double sarf_n2o = ( a2 * sqrt(Ca) + b2 * sqrt(Na) + c2 * sqrt(Ma) + d2) * (sqrt(Na) - sqrt(N0));
+            double sarf_n2o = ( a2 * sqrt(CO2_conc) + b2 * sqrt(Na) + c2 * sqrt(Ma) + d2) * (sqrt(Na) - sqrt(N0));
             double fn2o = (delta_n2o * sarf_n2o) + sarf_n2o;
             forcings[D_RF_N2O].set( fn2o, U_W_M2 );
 
@@ -569,7 +569,7 @@ unitval ForcingComponent::getData( const std::string& varName,
             returnval.set( 0.0, U_W_M2 );
             return returnval;
        }
-        
+
         // Look up the forcing name and value
         forcings_t forcings( forcings_ts.get( getdate ));
 
@@ -587,7 +587,7 @@ unitval ForcingComponent::getData( const std::string& varName,
             H_THROW( "Caller is requesting unknown variable: " + varName );
         }
     }
-    
+
     return returnval;
 }
 

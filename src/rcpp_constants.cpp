@@ -1533,8 +1533,8 @@ return D_NBP;
 //' @rdname carboncycle
 //' @export
 // [[Rcpp::export]]
-String ATMOSPHERIC_CO2() {
-return D_ATMOSPHERIC_CO2;
+String CONCENTRATIONS_CO2() {
+return D_CO2_CONC;
 }
 
 //' @rdname carboncycle

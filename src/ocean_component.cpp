@@ -320,19 +320,19 @@ fluxpool OceanComponent::totalcpool() const {
 //------------------------------------------------------------------------------
 /*! \brief                  Internal function to calculate atmosphere-ocean C flux
  *  \param[in] date         double, date of calculation (in case constraint used)
- *  \param[in] Ca           unitval, atmospheric CO2
+ *  \param[in] CO2_conc     unitval, atmospheric CO2 concentration
  *  \param[in] cpoolscale   double, how much to scale surface C pools by
  *  \returns                unitval, annual atmosphere-ocean C flux
  */
-unitval OceanComponent::annual_totalcflux( const double date, const unitval& Ca, const double cpoolscale ) const {
+unitval OceanComponent::annual_totalcflux( const double date, const unitval& CO2_conc, const double cpoolscale ) const {
 
     unitval flux( 0.0, U_PGC_YR );
 
     if( in_spinup && !spinup_chem ) {
         flux = surfaceHL.preindustrial_flux + surfaceLL.preindustrial_flux;
     } else {
-        flux = surfaceHL.mychemistry.calc_annual_surface_flux( Ca, cpoolscale )
-                            + surfaceLL.mychemistry.calc_annual_surface_flux( Ca, cpoolscale );
+        flux = surfaceHL.mychemistry.calc_annual_surface_flux( CO2_conc, cpoolscale )
+                            + surfaceLL.mychemistry.calc_annual_surface_flux( CO2_conc, cpoolscale );
     }
 
     if( !in_spinup && oceanflux_constrain.size() && date <= oceanflux_constrain.lastdate() ) {
@@ -356,7 +356,7 @@ void OceanComponent::run( const double runToDate ) {
         deep.start_tracking();
     }
 
-    Ca = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_CO2, message_data( runToDate ) );
+    CO2_conc = core->sendMessage( M_GETDATA, D_CO2_CONC, message_data( runToDate ) );
     SST.set(core->sendMessage( M_GETDATA, D_SST ), U_DEGC);
 
     in_spinup = core->inSpinup();
@@ -373,7 +373,7 @@ void OceanComponent::run( const double runToDate ) {
     inter.new_year( SST );
     deep.new_year( SST );
     H_LOG( logger, Logger::DEBUG ) << "----------------------------------------------------" << std::endl;
-    H_LOG( logger, Logger::DEBUG ) << "runToDate=" << runToDate << ", Ca=" << Ca << ", spinup=" << in_spinup << std::endl;
+    H_LOG( logger, Logger::DEBUG ) << "runToDate=" << runToDate << ", [CO2]=" << CO2_conc << ", spinup=" << in_spinup << std::endl;
 
     // If chemistry models weren't turned on during spinup, do so now
     if( !spinup_chem && !in_spinup && !surfaceHL.active_chemistry ) {
@@ -381,8 +381,8 @@ void OceanComponent::run( const double runToDate ) {
         H_LOG( logger, Logger::DEBUG ) << "*** Turning on chemistry models ***" << std::endl;
         surfaceHL.active_chemistry = true;
         surfaceLL.active_chemistry = true;
-        surfaceHL.chem_equilibrate( Ca );
-        surfaceLL.chem_equilibrate( Ca );
+        surfaceHL.chem_equilibrate( CO2_conc );
+        surfaceLL.chem_equilibrate( CO2_conc );
 
         // Warn if the user has supplied an atmosphere-ocean C flux constraint
         if( oceanflux_constrain.size() ) {
@@ -392,8 +392,8 @@ void OceanComponent::run( const double runToDate ) {
    }
 
     // Call compute_fluxes with do_boxfluxes=false to run just chemistry
-	surfaceHL.compute_fluxes( Ca, atmosphere_cpool, 1.0, false );
-	surfaceLL.compute_fluxes( Ca, atmosphere_cpool, 1.0, false );
+	surfaceHL.compute_fluxes( CO2_conc, atmosphere_cpool, 1.0, false );
+	surfaceLL.compute_fluxes( CO2_conc, atmosphere_cpool, 1.0, false );
 
     // Now wait for the solver to call us
 }
@@ -584,9 +584,9 @@ int OceanComponent::calcderivs( double t, const double c[], double dcdt[] ) cons
     const unitval cpooldiff = unitval( c[ SNBOX_OCEAN ], U_PGC ) - totalcpool();
     const unitval surfacepools = surfaceLL.get_carbon() + surfaceHL.get_carbon();
     const double cpoolscale = ( surfacepools + cpooldiff ) / surfacepools;
-    unitval Ca( c[ SNBOX_ATMOS ] * PGC_TO_PPMVCO2, U_PPMV_CO2 );
+    unitval CO2_conc( c[ SNBOX_ATMOS ] * PGC_TO_PPMVCO2, U_PPMV_CO2 );
 
-    dcdt[ SNBOX_OCEAN ] = annual_totalcflux( t, Ca, cpoolscale ).value( U_PGC_YR );
+    dcdt[ SNBOX_OCEAN ] = annual_totalcflux( t, CO2_conc, cpoolscale ).value( U_PGC_YR );
 
     // If too big a timestep--i.e., stashCvalues below has signalled a reduced step
     // that we're exceeding--signal to the solver that this won't work for us.
@@ -637,13 +637,13 @@ void OceanComponent::stashCValues( double t, const double c[] ) {
     timesteps++;
     const bool in_partial_year = ( t != int( t ) );
 
-    unitval Ca( c[ SNBOX_ATMOS ] * PGC_TO_PPMVCO2, U_PPMV_CO2 );
+    unitval CO2_conc( c[ SNBOX_ATMOS ] * PGC_TO_PPMVCO2, U_PPMV_CO2 );
 
     // Compute fluxes between the boxes (advection of carbon)
-    surfaceHL.compute_fluxes( Ca, atmosphere_cpool, yearfraction );
-	surfaceLL.compute_fluxes( Ca, atmosphere_cpool, yearfraction );
-	inter.compute_fluxes( Ca, atmosphere_cpool, yearfraction );
-	deep.compute_fluxes( Ca, atmosphere_cpool, yearfraction );
+    surfaceHL.compute_fluxes( CO2_conc, atmosphere_cpool, yearfraction );
+	surfaceLL.compute_fluxes( CO2_conc, atmosphere_cpool, yearfraction );
+	inter.compute_fluxes( CO2_conc, atmosphere_cpool, yearfraction );
+	deep.compute_fluxes( CO2_conc, atmosphere_cpool, yearfraction );
 
     // At this point, compute_fluxes has (by calling the chemistry model) computed atmosphere-
     // ocean fluxes for the surface boxes. But these are end-of-timestep values, and we need to
@@ -727,7 +727,7 @@ void OceanComponent::reset(double time)
     deep = deep_tv.get(time);
 
     SST = SST_ts.get(time);
-    Ca = Ca_ts.get(time);
+    CO2_conc = Ca_ts.get(time);
 
     annualflux_sum = annualflux_sum_ts.get(time);
     annualflux_sumHL = annualflux_sumHL_ts.get(time);
@@ -773,7 +773,7 @@ void OceanComponent::record_state(double time)
     // in a unitval time series so that the output can be output by the
     // R wrapper.
     SST_ts.set(time, SST );
-    Ca_ts.set(time, Ca);
+    Ca_ts.set(time, CO2_conc);
     annualflux_sum_ts.set(time, annualflux_sum);
     annualflux_sumHL_ts.set(time, annualflux_sumHL);
     annualflux_sumLL_ts.set(time, annualflux_sumLL);

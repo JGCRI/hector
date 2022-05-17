@@ -109,17 +109,17 @@ int main (int argc, char * const argv[]) {
             // of the component; you just need to say what kind of
             // data you want, and the core takes care of the rest.
             unitval temp = core.sendMessage(M_GETDATA, D_GLOBAL_TAS);
-            unitval ca   = core.sendMessage(M_GETDATA, D_ATMOSPHERIC_CO2);
+            unitval CO2_conc   = core.sendMessage(M_GETDATA, D_CO2_CONC);
             unitval forc = core.sendMessage(M_GETDATA, D_RF_TOTAL);
             H_LOG(glog, Logger::NOTICE)
                 << "t= " << t << "\t"
                 << "temp= " << temp << "\t"
-                << "atmos. C= " << ca << "\t"
+                << "atmos. C= " <<  CO2_conc << "\t"
                 << "RF= " << forc << endl;
 
             // Record the values we retrieved above for future reference
             tempts.set(t, temp);
-            cats.set(t, ca);
+            cats.set(t, CO2_conc);
             forcts.set(t, forc);
 
             tlast = t;
@@ -134,13 +134,13 @@ int main (int argc, char * const argv[]) {
         for(double newt = core.getStartDate()+5.0; newt<=core.getEndDate(); newt+=5.0) {
             core.run(newt);
             unitval temp = core.sendMessage(M_GETDATA, D_GLOBAL_TAS);
-            unitval ca   = core.sendMessage(M_GETDATA, D_ATMOSPHERIC_CO2);
+            unitval CO2_conc   = core.sendMessage(M_GETDATA, D_CO2_CONC);
             unitval forc = core.sendMessage(M_GETDATA, D_RF_TOTAL);
 
             H_LOG(glog, Logger::NOTICE)
                 << "t= " << newt << ":\n"
                 << "\ttemp old= " << tempts.get(newt) << "\ttemp new= " << temp << "\tdiff= " << temp-tempts.get(newt) << "\n"
-                << "\tca old= " << cats.get(newt) << "\tca new= " << ca << "\tdiff= " << ca-cats.get(newt) << "\n"
+                << "\tca old= " << cats.get(newt) << "\tca new= " << CO2_conc << "\tdiff= " << CO2_conc-cats.get(newt) << "\n"
                 << "\tforc old= " << forcts.get(newt) << "\tforc new= " << forc << "\tdiff= " << forc-forcts.get(newt) << "\n";
         }
 

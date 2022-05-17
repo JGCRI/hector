@@ -88,7 +88,7 @@ void SimpleNbox::init( Core* coreptr ) {
     Tland_record.allowInterp( true );
 
     // Register the data we can provide
-    core->registerCapability( D_ATMOSPHERIC_CO2, getComponentName() );
+    core->registerCapability( D_CO2_CONC, getComponentName() );
     core->registerCapability( D_ATMOSPHERIC_C, getComponentName() );
     core->registerCapability( D_PREINDUSTRIAL_CO2, getComponentName() );
     core->registerCapability( D_RF_T_ALBEDO, getComponentName() );
@@ -344,13 +344,13 @@ void SimpleNbox::setData( const std::string &varName,
 /*! \brief      Convert current atmospheric C to [CO2]
  *  \returns    Atmospheric CO2 concentration in ppmv
  */
-fluxpool SimpleNbox::Ca( double time ) const
+fluxpool SimpleNbox::CO2_conc( double time ) const
 {
-    double ca = atmos_c.value( U_PGC );
+    double CO2_conc = atmos_c.value( U_PGC );
     if( time != Core::undefinedIndex() ) {
-        ca = atmos_c_ts.get(time).value( U_PGC );
+        CO2_conc = atmos_c_ts.get(time).value( U_PGC );
     }
-    return fluxpool( ca * PGC_TO_PPMVCO2, U_PPMV_CO2);
+    return fluxpool( CO2_conc * PGC_TO_PPMVCO2, U_PPMV_CO2);
 }
 
 //------------------------------------------------------------------------------
@@ -450,9 +450,9 @@ unitval SimpleNbox::getData(const std::string& varName,
             returnval = atmos_c;
         else
             returnval = atmos_c_ts.get(date);
-    } else if( varNameParsed == D_ATMOSPHERIC_CO2 ) {
+    } else if( varNameParsed == D_CO2_CONC ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for atmospheric CO2" );
-        returnval = Ca( date );
+        returnval = CO2_conc( date );
     } else if( varNameParsed == D_ATMOSPHERIC_C_RESIDUAL ) {
         if(date == Core::undefinedIndex())
             returnval = Ca_residual;

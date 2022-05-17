@@ -1261,8 +1261,8 @@ NBP <- function() {
 
 #' @rdname carboncycle
 #' @export
-ATMOSPHERIC_CO2 <- function() {
-    .Call('_hector_ATMOSPHERIC_CO2', PACKAGE = 'hector')
+CONCENTRATIONS_CO2 <- function() {
+    .Call('_hector_CONCENTRATIONS_CO2', PACKAGE = 'hector')
 }
 
 #' @rdname carboncycle

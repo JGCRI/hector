@@ -115,7 +115,7 @@ private:
     fluxpool_stringmap final_npp;    //!< final NPP after any NBP constraint accounted for, Pg C/yr
     fluxpool_stringmap final_rh;     //!< final RH after any NBP constraint accounted for, Pg C/yr
 
-    unitval Ca_residual;               //!< residual (when constraining Ca) flux, Pg C
+    unitval Ca_residual;               //!< residual (when constraining [CO2]) flux, Pg C
 
     double_stringmap tempfertd, tempferts; //!< temperature effect on respiration (unitless)
 
@@ -199,7 +199,7 @@ private:
     /*****************************************************************
      * Functions computing sub-elements of the carbon cycle
      *****************************************************************/
-    fluxpool Ca(double time = Core::undefinedIndex()) const; //!< current [CO2], ppmv
+    fluxpool CO2_conc(double time = Core::undefinedIndex()) const; //!< current [CO2], ppmv
     double calc_co2fert(std::string biome, double time = Core::undefinedIndex()) const; //!< calculates co2 fertilization factor.
     fluxpool npp(std::string biome, double time = Core::undefinedIndex()) const; //!< calculates NPP for a biome
     fluxpool sum_npp(double time = Core::undefinedIndex()) const; //!< calculates NPP, global total

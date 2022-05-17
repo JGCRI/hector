@@ -3,7 +3,7 @@ context("Hector parameter changes")
 # Make sure that changing parameters has the desired impact on Hector output.
 inputdir <- system.file("input", package = "hector")
 sampledir <- system.file("output", package = "hector")
-testvars <- c(ATMOSPHERIC_CO2(), RF_TOTAL(), GLOBAL_TAS())
+testvars <- c(CONCENTRATIONS_CO2(), RF_TOTAL(), GLOBAL_TAS())
 
 dates <- 1750:2100
 ssp245 <- file.path(inputdir, "hector_ssp245.ini")
@@ -39,7 +39,7 @@ test_that("Initial CO2 concentration equals preindustrial", {
   run(hc, 1800)
 
   # Extract the inital atmosphere CO2 from the output.
-  initcval <- fetchvars(hc, 1745, ATMOSPHERIC_CO2())
+  initcval <- fetchvars(hc, 1745, CONCENTRATIONS_CO2())
 
   # Extract the preindustrial value, this Hector is a parameter.
   preind <- fetchvars(hc, NA, PREINDUSTRIAL_CO2())
@@ -54,7 +54,7 @@ test_that("Initial CO2 concentration equals preindustrial", {
 
   # The new value parameter and initial CO2 concentration should
   # be the same.
-  initcval_new <- fetchvars(hc, 1745, ATMOSPHERIC_CO2())
+  initcval_new <- fetchvars(hc, 1745, CONCENTRATIONS_CO2())
   preind_new <- fetchvars(hc, NA, PREINDUSTRIAL_CO2())
   expect_equal(initcval_new$value, preind_new$value)
 
@@ -70,13 +70,13 @@ test_that("Lowering initial CO2 lowers output CO2", {
 
   # Run and save results.
   run(hc, 2100)
-  dd1 <- fetchvars(hc, dates, ATMOSPHERIC_CO2())
+  dd1 <- fetchvars(hc, dates, CONCENTRATIONS_CO2())
 
   ## Change the preindustrial CO2
   setvar(hc, NA, PREINDUSTRIAL_CO2(), 250, "ppmv CO2")
   reset(hc, 0.0)
   run(hc, 2100)
-  dd2 <- fetchvars(hc, dates, ATMOSPHERIC_CO2())
+  dd2 <- fetchvars(hc, dates, CONCENTRATIONS_CO2())
 
   ## The concentrations should start off lower than the reference run by
   ## approximately the change in initial concentration, and the deficit
@@ -124,7 +124,7 @@ test_that("Raising Q10 increases CO2 concentration", {
 
   # Run and save results
   run(hc, 2100)
-  vars <- c(ATMOSPHERIC_CO2(), GLOBAL_TAS())
+  vars <- c(CONCENTRATIONS_CO2(), GLOBAL_TAS())
   dd1 <- fetchvars(hc, tdates, vars)
 
   # Save the default Q10 value.
@@ -230,7 +230,7 @@ test_that("Decreasing vegetation NPP fraction has down stream impacts", {
   run(hc, 2100)
 
   # Extract results from the default run.
-  vars <- c(GLOBAL_TAS(), ATMOSPHERIC_CO2())
+  vars <- c(GLOBAL_TAS(), CONCENTRATIONS_CO2())
   dd1 <- fetchvars(hc, tdates, vars)
 
   # Set up the Hector core with a lower NPP fraction.
@@ -257,10 +257,10 @@ test_that("Decreasing detritus NPP fraction has down stream impacts", {
   run(hc, 2100)
 
   # Extract results from the default run.
-  vars <- c(GLOBAL_TAS(), ATMOSPHERIC_CO2())
+  vars <- c(GLOBAL_TAS(), CONCENTRATIONS_CO2())
   dd1 <- fetchvars(hc, tdates, vars)
 
-  # Change the fraction of NPP that contributes to detrius
+  # Change the fraction of NPP that contributes to detritus
   default_vals <- fetchvars(hc, NA, F_NPPD(), NA)
   new_val <- default_vals$value / 2
   setvar(hc, NA, F_NPPD(), new_val, NA)
@@ -284,7 +284,7 @@ test_that("Decreasing litter flux to detritus has down stream impacts", {
   run(hc, 2100)
 
   # Extract results from the default run.
-  vars <- c(GLOBAL_TAS(), ATMOSPHERIC_CO2())
+  vars <- c(GLOBAL_TAS(), CONCENTRATIONS_CO2())
   dd1 <- fetchvars(hc, tdates, vars)
 
   # Change the litter fraction to detritus.

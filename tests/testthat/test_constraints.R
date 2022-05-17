@@ -158,13 +158,13 @@ test_that("Atmospheric CO2 concentrations can be constrained", {
 
   # Variables and years to save.
   years <- 1850:2100
-  vars <- c(ATMOSPHERIC_CO2(), GLOBAL_TAS(), RF_TOTAL(), RF_CO2())
+  vars <- c(CONCENTRATIONS_CO2(), GLOBAL_TAS(), RF_TOTAL(), RF_CO2())
 
   # Instantiate a Hector core and save results.
   hc <- ssp245()
   run(hc)
   ssp245_out <- fetchvars(hc, years, vars)
-  ssp245_conc <- subset(ssp245_out, variable == ATMOSPHERIC_CO2())
+  ssp245_conc <- subset(ssp245_out, variable == CONCENTRATIONS_CO2())
 
   constrained_values <- ssp245_conc$value * 3
   setvar(hc, years, CO2_CONSTRAIN(), constrained_values, getunits(CO2_CONSTRAIN()))
@@ -173,7 +173,7 @@ test_that("Atmospheric CO2 concentrations can be constrained", {
 
   # Make sure that the atmospheric CO2 matches the constraint.
   hico2_out <- fetchvars(hc, years, vars)
-  hico2_conc <- subset(hico2_out, variable == ATMOSPHERIC_CO2())
+  hico2_conc <- subset(hico2_out, variable == CONCENTRATIONS_CO2())
   expect_equal(hico2_conc$value, constrained_values)
 
   # The run with the higher CO2 should be warmer, with a higher total and CO2 RF.
@@ -187,7 +187,7 @@ test_that("Atmospheric CO2 concentrations can be constrained", {
 
   # Extract the results from the low CO2 run
   lowco2_out <- fetchvars(hc, years, vars)
-  lowco2_conc <- subset(lowco2_out, variable == ATMOSPHERIC_CO2())
+  lowco2_conc <- subset(lowco2_out, variable == CONCENTRATIONS_CO2())
   expect_equal(lowco2_conc$value, constrained_values)
 
   # The run with the higher CO2 should be warmer, with a higher total and CO2 RF.
@@ -220,7 +220,7 @@ test_that("Discontinuous constraint works", {
 
   # Make sure we can retrieve all these values.
   out_rf <- fetchvars(hc, all_years, RF_CO2())
-  out_ca <- fetchvars(hc, all_years, ATMOSPHERIC_CO2())
+  out_ca <- fetchvars(hc, all_years, CONCENTRATIONS_CO2())
 
   # RFs and concentrations during the constraint period are constant,
   # they should be since we read in constant CO2 concentrations.
@@ -239,10 +239,10 @@ test_that("Discontinuous constraint works", {
 
   # Make sure that the CO2 concentration matches the constraints read in during the two
   # different constraint periods.
-  expect_equal(fetchvars(hc, min(ca_years_1), ATMOSPHERIC_CO2())$value, ca_vals_1[1])
-  expect_equal(fetchvars(hc, max(ca_years_1), ATMOSPHERIC_CO2())$value, ca_vals_1[1])
-  expect_equal(fetchvars(hc, min(ca_years_2), ATMOSPHERIC_CO2())$value, ca_vals_2[1])
-  expect_equal(fetchvars(hc, max(ca_years_2), ATMOSPHERIC_CO2())$value, ca_vals_2[1])
+  expect_equal(fetchvars(hc, min(ca_years_1), CONCENTRATIONS_CO2())$value, ca_vals_1[1])
+  expect_equal(fetchvars(hc, max(ca_years_1), CONCENTRATIONS_CO2())$value, ca_vals_1[1])
+  expect_equal(fetchvars(hc, min(ca_years_2), CONCENTRATIONS_CO2())$value, ca_vals_2[1])
+  expect_equal(fetchvars(hc, max(ca_years_2), CONCENTRATIONS_CO2())$value, ca_vals_2[1])
 
   # You should NOT be able to retrieve constraints before, between, or after
   # user-specified values.

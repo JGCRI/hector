@@ -88,7 +88,7 @@ private:
     // The warm low-latitude surface box makes up the rest.
      double part_high = 0.15;
      double part_low = 1-part_high;
-    
+
     /*****************************************************************
      * State variables for the component
      * All of these will need to be recorded at the end of a timestep,
@@ -102,7 +102,7 @@ private:
 
     // Atmosphere conditions
     unitval SST;            //!< Ocean surface temperature anomaly, degC
-    unitval Ca;             //!< Atmospheric CO2, ppm
+    unitval CO2_conc;             //!< Atmospheric CO2, ppm
     fluxpool atmosphere_cpool;
 
     // Atmosphere-ocean flux
@@ -131,7 +131,7 @@ private:
      * Private helper functions
      *****************************************************************/
     fluxpool totalcpool() const;
-    unitval annual_totalcflux( const double date, const unitval& Ca, const double cpoolscale=1.0 ) const;
+    unitval annual_totalcflux( const double date, const unitval& CO2_conc, const double cpoolscale=1.0 ) const;
 
     /*****************************************************************
      * Adaptive timestep control
@@ -174,7 +174,7 @@ private:
     tseries<unitval> temp_LL_ts;
     tseries<unitval> co3_HL_ts;
     tseries<unitval> co3_LL_ts;
-  
+
     // timestep control
     tseries<double> max_timestep_ts;
     tseries<int> reduced_timestep_timeout_ts;

@@ -26,7 +26,7 @@ path <- file.path(BASE_DIR, "tests", "testthat", "compdata", "hector_comp.csv")
 comp_data <- read.csv(path)
 
 # Variables of interest
-vars <- c(ATMOSPHERIC_CO2(), RF_TOTAL(), RF_CO2(), GLOBAL_TAS())
+vars <- c(CONCENTRATIONS_CO2(), RF_TOTAL(), RF_CO2(), GLOBAL_TAS())
 
 # Organize data
 compdata <- comp_data %>% 
