@@ -176,13 +176,13 @@ void ForcingComponent::init( Core* coreptr ) {
     }
 
     // Register our dependencies
-    core->registerDependency( D_ATMOSPHERIC_CH4, getComponentName() );
+    core->registerDependency( D_CH4_CONC, getComponentName() );
     core->registerDependency( D_CO2_CONC, getComponentName() );
     core->registerDependency( D_ATMOSPHERIC_O3, getComponentName() );
     core->registerDependency( D_EMISSIONS_BC, getComponentName() );
     core->registerDependency( D_EMISSIONS_OC, getComponentName() );
     core->registerDependency( D_EMISSIONS_NH3, getComponentName() );
-    core->registerDependency( D_ATMOSPHERIC_N2O, getComponentName() );
+    core->registerDependency( D_N2O_CONC, getComponentName() );
     core->registerDependency( D_RF_CF4, getComponentName() );
     core->registerDependency( D_RF_C2F6, getComponentName() );
     core->registerDependency( D_RF_HFC23, getComponentName() );
@@ -333,15 +333,15 @@ void ForcingComponent::run( const double runToDate ) {
         forcings_t forcings;
 
         //  ---------- Major GHGs ----------
-        if( core->checkCapability( D_ATMOSPHERIC_CH4 ) && core->checkCapability( D_ATMOSPHERIC_N2O ) && core->checkCapability( D_CO2_CONC) ) {
+        if( core->checkCapability( D_CH4_CONC ) && core->checkCapability( D_N2O_CONC ) && core->checkCapability( D_CO2_CONC) ) {
 
             // Parse our the pre industrial and concentrations to use in RF calculations
             double C0 = core->sendMessage( M_GETDATA, D_PREINDUSTRIAL_CO2 ).value( U_PPMV_CO2 );
             double M0 = core->sendMessage( M_GETDATA, D_PREINDUSTRIAL_CH4 ).value( U_PPBV_CH4 );
             double N0 = core->sendMessage( M_GETDATA, D_PREINDUSTRIAL_N2O ).value( U_PPBV_N2O );
             double CO2_conc = core->sendMessage( M_GETDATA, D_CO2_CONC, message_data( runToDate ) ).value( U_PPMV_CO2 );
-            double Ma = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_CH4, message_data( runToDate ) ).value( U_PPBV_CH4 );
-            double Na = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_N2O, message_data( runToDate ) ).value( U_PPBV_N2O );
+            double Ma = core->sendMessage( M_GETDATA, D_CH4_CONC, message_data( runToDate ) ).value( U_PPBV_CH4 );
+            double Na = core->sendMessage( M_GETDATA, D_N2O_CONC, message_data( runToDate ) ).value( U_PPBV_N2O );
 
 
             // ---------- CO2 ----------

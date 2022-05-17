@@ -1178,8 +1178,8 @@ return D_CONSTRAINT_CH3Br;
 //' @rdname methane
 //' @export
 // [[Rcpp::export]]
-String ATMOSPHERIC_CH4() {
-return D_ATMOSPHERIC_CH4;
+String CONCENTRATIONS_CH4() {
+return D_CH4_CONC;
 }
 
 //' @describeIn constraints CH4 concentration constraint \code{"ppbv CH4"}
@@ -1244,8 +1244,8 @@ return D_LIFETIME_STRAT;
 //' @describeIn concentrations Atmospheric N2O concentration
 //' @export
 // [[Rcpp::export]]
-String ATMOSPHERIC_N2O() {
-return D_ATMOSPHERIC_N2O;
+String CONCENTRATIONS_N2O() {
+return D_N2O_CONC;
 }
 
 //' @describeIn concentrations Preindustrial atmospheric N2O concentration

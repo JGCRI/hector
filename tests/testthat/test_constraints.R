@@ -66,12 +66,12 @@ test_that("Concentration-forced runs work for CH4", {
 
   # Save the dates and output variables to test.
   dates <- seq(startdate(hc), getdate(hc))
-  outvars <- c(GLOBAL_TAS(), ATMOSPHERIC_CH4(), EMISSIONS_CH4(), RF_CH4())
+  outvars <- c(GLOBAL_TAS(), CONCENTRATIONS_CH4(), EMISSIONS_CH4(), RF_CH4())
 
   # Extract the emission driven results, saving a copy of the CH4
   # concentrations and emission separately to manipulate.
   emissOut <- fetchvars(hc, dates, outvars)
-  emissOut_CH4conc <- subset(emissOut, variable == ATMOSPHERIC_CH4())
+  emissOut_CH4conc <- subset(emissOut, variable == CONCENTRATIONS_CH4())
   emissOut_CH4emiss <- subset(emissOut, variable == EMISSIONS_CH4())
 
   # Set up and run Hector with constrained CH4 concentrations.
@@ -94,7 +94,7 @@ test_that("Concentration-forced runs work for CH4", {
   invisible(run(hc))
 
   # The CH4 concentrations should equal the constraint read in.
-  expect_equal(fetchvars(hc, dates, ATMOSPHERIC_CH4())$value, new_CH4_con)
+  expect_equal(fetchvars(hc, dates, CONCENTRATIONS_CH4())$value, new_CH4_con)
 
   # Compare the outputs from the emission driven and the perturbed
   # concentration driven runs. Since the CH4 concentration was increased and
@@ -115,12 +115,12 @@ test_that("Concentration-forced runs work for N2O", {
 
   # Save the dates and output variables to test.
   dates <- seq(startdate(hc), getdate(hc))
-  outvars <- c(GLOBAL_TAS(), ATMOSPHERIC_N2O(), EMISSIONS_N2O(), RF_N2O())
+  outvars <- c(GLOBAL_TAS(), CONCENTRATIONS_N2O(), EMISSIONS_N2O(), RF_N2O())
 
   # Extract the emission driven results, saving a copy of the N2O
   # concentrations and emission separately to manipulate.
   emissOut <- fetchvars(hc, dates, outvars)
-  emissOut_N2Oconc <- subset(emissOut, variable == ATMOSPHERIC_N2O())
+  emissOut_N2Oconc <- subset(emissOut, variable == CONCENTRATIONS_N2O())
   emissOut_N2Oemiss <- subset(emissOut, variable == EMISSIONS_N2O())
 
   # Set up and run Hector with constrained N2O concentrations.
@@ -143,7 +143,7 @@ test_that("Concentration-forced runs work for N2O", {
   invisible(run(hc))
 
   # The N2O concentrations should equal the constrainnt read in.
-  expect_equal(fetchvars(hc, dates, ATMOSPHERIC_N2O())$value, new_N2O_con)
+  expect_equal(fetchvars(hc, dates, CONCENTRATIONS_N2O())$value, new_N2O_con)
 
   # Compare the outputs from the emission driven and the perturbed
   # concentration driven runs. Since the N2O concentration was increased and

@@ -2,13 +2,13 @@
 % Please edit documentation in R/aadoc.R, R/RcppExports.R
 \name{concentrations}
 \alias{concentrations}
-\alias{ATMOSPHERIC_N2O}
+\alias{CONCENTRATIONS_N2O}
 \alias{PREINDUSTRIAL_N2O}
 \alias{PREINDUSTRIAL_O3}
 \alias{ATMOSPHERIC_O3}
 \title{Identifiers for miscellaneous concentrations not elsewhere described}
 \usage{
-ATMOSPHERIC_N2O()
+CONCENTRATIONS_N2O()
 
 PREINDUSTRIAL_N2O()
 
@@ -22,7 +22,7 @@ type.
 }
 \section{Functions}{
 \itemize{
-\item \code{ATMOSPHERIC_N2O}: Atmospheric N2O concentration
+\item \code{CONCENTRATIONS_N2O}: Atmospheric N2O concentration
 
 \item \code{PREINDUSTRIAL_N2O}: Preindustrial atmospheric N2O concentration
 

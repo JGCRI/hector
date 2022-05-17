@@ -2,7 +2,7 @@
 % Please edit documentation in R/aadoc.R, R/RcppExports.R
 \name{methane}
 \alias{methane}
-\alias{ATMOSPHERIC_CH4}
+\alias{CONCENTRATIONS_CH4}
 \alias{PREINDUSTRIAL_CH4}
 \alias{EMISSIONS_CH4}
 \alias{NATURAL_CH4}
@@ -10,7 +10,7 @@
 \alias{LIFETIME_STRAT}
 \title{Identifiers for quantities in the methane component}
 \usage{
-ATMOSPHERIC_CH4()
+CONCENTRATIONS_CH4()
 
 PREINDUSTRIAL_CH4()
 
@@ -30,7 +30,7 @@ methane component.
 
 These variables can be read from the methane component.
 \describe{
-\item{ATMOSPHERIC_CH4}{Atmospheric methane concentration}
+\item{CONCENTRATIONS_CH4}{Atmospheric methane concentration}
 \item{PREINDUSTRIAL_CH4}{Preindustrial methane concentration}
 }
 }

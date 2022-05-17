@@ -296,14 +296,14 @@ void CSVOutputStreamVisitor::visit( OHComponent* c ) {
 // documentation is inherited
 void CSVOutputStreamVisitor::visit( CH4Component* c ) {
    if( !core->outputEnabled( c->getComponentName() ) ) return;
- STREAM_MESSAGE_DATE( csvFile, c, D_ATMOSPHERIC_CH4, current_date );
+ STREAM_MESSAGE_DATE( csvFile, c, D_CH4_CONC, current_date );
 }
 
 //------------------------------------------------------------------------------
 // documentation is inherited
 void CSVOutputStreamVisitor::visit( N2OComponent* c ) {
    if( !core->outputEnabled( c->getComponentName() ) ) return;
-STREAM_MESSAGE_DATE( csvFile, c, D_ATMOSPHERIC_N2O, current_date );
+STREAM_MESSAGE_DATE( csvFile, c, D_N2O_CONC, current_date );
 }
 
 }

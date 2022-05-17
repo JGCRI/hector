@@ -163,7 +163,7 @@ NULL
 #' @section Output variables:
 #' These variables can be read from the methane component.
 #' \describe{
-#' \item{ATMOSPHERIC_CH4}{Atmospheric methane concentration}
+#' \item{CONCENTRATIONS_CH4}{Atmospheric methane concentration}
 #' \item{PREINDUSTRIAL_CH4}{Preindustrial methane concentration}
 #' }
 #'

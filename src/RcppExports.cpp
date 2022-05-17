@@ -1620,13 +1620,13 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// ATMOSPHERIC_CH4
-String ATMOSPHERIC_CH4();
-RcppExport SEXP _hector_ATMOSPHERIC_CH4() {
+// CONCENTRATIONS_CH4
+String CONCENTRATIONS_CH4();
+RcppExport SEXP _hector_CONCENTRATIONS_CH4() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(ATMOSPHERIC_CH4());
+    rcpp_result_gen = Rcpp::wrap(CONCENTRATIONS_CH4());
     return rcpp_result_gen;
 END_RCPP
 }
@@ -1710,13 +1710,13 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// ATMOSPHERIC_N2O
-String ATMOSPHERIC_N2O();
-RcppExport SEXP _hector_ATMOSPHERIC_N2O() {
+// CONCENTRATIONS_N2O
+String CONCENTRATIONS_N2O();
+RcppExport SEXP _hector_CONCENTRATIONS_N2O() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(ATMOSPHERIC_N2O());
+    rcpp_result_gen = Rcpp::wrap(CONCENTRATIONS_N2O());
     return rcpp_result_gen;
 END_RCPP
 }
@@ -2819,7 +2819,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_HALON2402_CONSTRAIN", (DL_FUNC) &_hector_HALON2402_CONSTRAIN, 0},
     {"_hector_CH3CL_CONSTRAIN", (DL_FUNC) &_hector_CH3CL_CONSTRAIN, 0},
     {"_hector_CH3BR_CONSTRAIN", (DL_FUNC) &_hector_CH3BR_CONSTRAIN, 0},
-    {"_hector_ATMOSPHERIC_CH4", (DL_FUNC) &_hector_ATMOSPHERIC_CH4, 0},
+    {"_hector_CONCENTRATIONS_CH4", (DL_FUNC) &_hector_CONCENTRATIONS_CH4, 0},
     {"_hector_CH4_CONSTRAIN", (DL_FUNC) &_hector_CH4_CONSTRAIN, 0},
     {"_hector_PREINDUSTRIAL_CH4", (DL_FUNC) &_hector_PREINDUSTRIAL_CH4, 0},
     {"_hector_RF_CH4", (DL_FUNC) &_hector_RF_CH4, 0},
@@ -2828,7 +2828,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_NATURAL_CH4", (DL_FUNC) &_hector_NATURAL_CH4, 0},
     {"_hector_LIFETIME_SOIL", (DL_FUNC) &_hector_LIFETIME_SOIL, 0},
     {"_hector_LIFETIME_STRAT", (DL_FUNC) &_hector_LIFETIME_STRAT, 0},
-    {"_hector_ATMOSPHERIC_N2O", (DL_FUNC) &_hector_ATMOSPHERIC_N2O, 0},
+    {"_hector_CONCENTRATIONS_N2O", (DL_FUNC) &_hector_CONCENTRATIONS_N2O, 0},
     {"_hector_PREINDUSTRIAL_N2O", (DL_FUNC) &_hector_PREINDUSTRIAL_N2O, 0},
     {"_hector_EMISSIONS_N2O", (DL_FUNC) &_hector_EMISSIONS_N2O, 0},
     {"_hector_NAT_EMISSIONS_N2O", (DL_FUNC) &_hector_NAT_EMISSIONS_N2O, 0},

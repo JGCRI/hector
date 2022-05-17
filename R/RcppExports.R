@@ -967,8 +967,8 @@ CH3BR_CONSTRAIN <- function() {
 
 #' @rdname methane
 #' @export
-ATMOSPHERIC_CH4 <- function() {
-    .Call('_hector_ATMOSPHERIC_CH4', PACKAGE = 'hector')
+CONCENTRATIONS_CH4 <- function() {
+    .Call('_hector_CONCENTRATIONS_CH4', PACKAGE = 'hector')
 }
 
 #' @describeIn constraints CH4 concentration constraint \code{"ppbv CH4"}
@@ -1021,8 +1021,8 @@ LIFETIME_STRAT <- function() {
 
 #' @describeIn concentrations Atmospheric N2O concentration
 #' @export
-ATMOSPHERIC_N2O <- function() {
-    .Call('_hector_ATMOSPHERIC_N2O', PACKAGE = 'hector')
+CONCENTRATIONS_N2O <- function() {
+    .Call('_hector_CONCENTRATIONS_N2O', PACKAGE = 'hector')
 }
 
 #' @describeIn concentrations Preindustrial atmospheric N2O concentration

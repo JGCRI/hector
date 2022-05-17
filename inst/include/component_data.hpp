@@ -250,7 +250,7 @@
 #define D_HCDELTA_CH3Br            D_HCDELTA_PREFIX CH3Br_COMPONENT_BASE
 
 // methane component
-#define D_ATMOSPHERIC_CH4       "CH4_conc"
+#define D_CH4_CONC              "CH4_conc"
 #define D_PREINDUSTRIAL_CH4     "M0"
 #define D_RF_CH4                "FCH4"
 #define D_EMISSIONS_CH4         "CH4_emissions"
@@ -261,7 +261,7 @@
 #define D_LIFETIME_STRAT        "Tstrat"
 
 // n2o component
-#define D_ATMOSPHERIC_N2O       "N2O_conc"
+#define D_N2O_CONC              "N2O_conc"
 #define D_PREINDUSTRIAL_N2O     "N0"
 #define D_EMISSIONS_N2O         "N2O_emissions"
 #define D_CONSTRAINT_N2O        "N2O_constrain"
