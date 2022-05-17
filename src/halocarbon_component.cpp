@@ -1,9 +1,9 @@
 /* Hector -- A Simple Climate Model
-   Copyright (C) 2014-2015  Battelle Memorial Institute
+ Copyright (C) 2014-2015  Battelle Memorial Institute
 
-   Please see the accompanying file LICENSE.md for additional licensing
-   information.
-*/
+ Please see the accompanying file LICENSE.md for additional licensing
+ information.
+ */
 /*
  *  halocarbon_component.cpp
  *  hector
@@ -32,7 +32,7 @@ using namespace std;
 /*! \brief Constructor
  */
 HalocarbonComponent::HalocarbonComponent( std::string g )
-:tau( -1 )
+    :tau( -1 )
 {
     myGasName = g;
 }
@@ -66,21 +66,21 @@ void HalocarbonComponent::init( Core* coreptr ) {
     core->registerCapability( myGasName+CONCENTRATION_EXTENSION, getComponentName() );    // can provide concentrations
     core->registerCapability( myGasName+CONC_CONSTRAINT_EXTENSION, getComponentName() );  // can provide concentration constraints
     core->registerCapability( D_HCRHO_PREFIX+myGasName, getComponentName() );             // can provide rho
-    core->registerCapability( D_HCDELTA_PREFIX+myGasName, getComponentName() );                  // can provide rho
+    core->registerCapability( D_HCDELTA_PREFIX+myGasName, getComponentName() );           // can provide rho
 
     // Register the inputs we can receive from outside
     core->registerInput( myGasName+CONC_CONSTRAINT_EXTENSION, getComponentName());   // inform core that we can accept concentration constraints for this gas
     core->registerInput( myGasName+EMISSIONS_EXTENSION, getComponentName());         // inform core that we can accept emissions for this gas
     core->registerInput( myGasName+CONC_CONSTRAINT_EXTENSION, getComponentName() );  // inform the core we can accept provide concentration constraints
-    core->registerInput( D_HCRHO_PREFIX+myGasName, getComponentName() );             // nform the core we can accept rho for each HC.
-    core->registerInput( D_HCDELTA_PREFIX+myGasName, getComponentName());                             // inform the core we can accept delta
+    core->registerInput( D_HCRHO_PREFIX+myGasName, getComponentName() );             // inform the core we can accept rho for each HC.
+    core->registerInput( D_HCDELTA_PREFIX+myGasName, getComponentName());            // inform the core we can accept delta
 }
 
 //------------------------------------------------------------------------------
 // documentation is inherited
 unitval HalocarbonComponent::sendMessage( const std::string& message,
-                                         const std::string& datum,
-                                         const message_data info )
+                                          const std::string& datum,
+                                          const message_data info )
 {
     unitval returnval;
 
@@ -116,7 +116,7 @@ void HalocarbonComponent::setData( const string& varName,
         } else if( varName == D_HCRHO_PREFIX + myGasName ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
             rho = data.getUnitval(U_W_M2_PPTV);
-        } else if( varName == D_HCDELTA_PREFIX+myGasName ) {
+        } else if( varName == D_HCDELTA_PREFIX + myGasName ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
             delta = data.getUnitval(U_UNITLESS);
         } else if( varName == D_HC_MOLARMASS ) {
@@ -134,7 +134,7 @@ void HalocarbonComponent::setData( const string& varName,
         } else {
             H_LOG( logger, Logger::DEBUG ) << "Unknown variable " << varName << std::endl;
             H_THROW( "Unknown variable name while parsing "+ getComponentName() + ": "
-                    + varName );
+                         + varName );
         }
     } catch( h_exception& parseException ) {
         H_RETHROW( parseException, "Could not parse var: "+varName );
@@ -162,8 +162,8 @@ void HalocarbonComponent::prepareToRun() {
 //------------------------------------------------------------------------------
 // documentation is inherited
 void HalocarbonComponent::run( const double runToDate ) {
-	H_ASSERT( !core->inSpinup() && runToDate-oldDate == 1, "timestep must equal 1" );
-    #define AtmosphereDryAirConstant 1.8
+    H_ASSERT( !core->inSpinup() && runToDate-oldDate == 1, "timestep must equal 1" );
+#define AtmosphereDryAirConstant 1.8
 
     unitval Ha(Ha_ts.get(oldDate));
 
@@ -209,7 +209,7 @@ void HalocarbonComponent::run( const double runToDate ) {
 //------------------------------------------------------------------------------
 // documentation is inherited
 unitval HalocarbonComponent::getData( const std::string& varName,
-                                     const double date ) {
+                                      const double date ) {
 
     unitval returnval;
     double getdate = date;      // will be used for any variable where a date is allowed.
@@ -218,7 +218,7 @@ unitval HalocarbonComponent::getData( const std::string& varName,
         getdate = oldDate;
     }
 
-    if( varName == D_RF_PREFIX+myGasName ) {
+    if( varName == D_RF_PREFIX + myGasName ) {
         returnval = hc_forcing.get( getdate );
     }
     else if( varName == D_PREINDUSTRIAL_HC ) {
@@ -236,25 +236,27 @@ unitval HalocarbonComponent::getData( const std::string& varName,
         H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for delta" );
         returnval = delta;
     }
-    else if( varName == myGasName+CONCENTRATION_EXTENSION ) {
+    else if( varName == myGasName + CONCENTRATION_EXTENSION ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for halocarbon concentration" );
         returnval = Ha_ts.get( getdate );
     }
-    else if( varName == myGasName+EMISSIONS_EXTENSION ) {
+    else if( varName == myGasName + EMISSIONS_EXTENSION ) {
         if( emissions.exists( getdate ) )
             returnval = emissions.get( getdate );
         else
             returnval.set( 0.0, U_GG );
     }
     else if( varName == D_HC_CONCENTRATION ) {
-            returnval = Ha_ts.get(getdate);
+        // the generic halocarbon concentration varName is used to send the halocarbon
+        // concentrations to the csv outputstream.
+        returnval = Ha_ts.get(getdate);
     }
-    else if( varName == myGasName+CONC_CONSTRAINT_EXTENSION ) {
+    else if( varName == myGasName + CONC_CONSTRAINT_EXTENSION ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for halocarbon constraint" );
         if ( Ha_constrain.exists( getdate ) ) {
             returnval = Ha_constrain.get( getdate );
         } else {
-            H_LOG( logger, Logger::DEBUG ) << "No CH4 constraint for requested date " << date <<
+            H_LOG( logger, Logger::DEBUG ) << "No " << myGasName << " constraint for requested date " << date <<
                 ". Returning missing value." << std::endl;
             returnval.set( MISSING_FLOAT, U_PPTV );
         }
@@ -281,7 +283,7 @@ void HalocarbonComponent::reset(double time)
 //------------------------------------------------------------------------------
 // documentation is inherited
 void HalocarbonComponent::shutDown() {
-	H_LOG( logger, Logger::DEBUG ) << "goodbye " << getComponentName() << std::endl;
+    H_LOG( logger, Logger::DEBUG ) << "goodbye " << getComponentName() << std::endl;
     logger.close();
 }
 
