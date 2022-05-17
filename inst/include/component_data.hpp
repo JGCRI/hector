@@ -250,7 +250,7 @@
 #define D_HCDELTA_CH3Br            D_HCDELTA_PREFIX CH3Br_COMPONENT_BASE
 
 // methane component
-#define D_CH4_CONC              "CH4_conc"
+#define D_CH4_CONC              "CH4" CONCENTRATION_EXTENSION
 #define D_PREINDUSTRIAL_CH4     "M0"
 #define D_RF_CH4                "FCH4"
 #define D_EMISSIONS_CH4         "CH4_emissions"
@@ -261,7 +261,7 @@
 #define D_LIFETIME_STRAT        "Tstrat"
 
 // n2o component
-#define D_N2O_CONC              "N2O_conc"
+#define D_N2O_CONC              "N2O" CONCENTRATION_EXTENSION
 #define D_PREINDUSTRIAL_N2O     "N0"
 #define D_EMISSIONS_N2O         "N2O_emissions"
 #define D_CONSTRAINT_N2O        "N2O_constrain"
@@ -280,7 +280,7 @@
 
 //o3 component
 #define D_PREINDUSTRIAL_O3	      "PO3"
-#define D_ATMOSPHERIC_O3	      "O3_conc"
+#define D_ATMOSPHERIC_O3	      "O3" CONCENTRATION_EXTENSION
 #define D_ATMOSPHERIC_EM_CH4      "CH4"
 #define D_EMISSIONS_NOX           "NOX_emissions"
 #define D_EMISSIONS_CO            "CO_emissions"
@@ -332,7 +332,7 @@
 
 // SimpleNbox component
 #define D_NBP                   "NBP"
-#define D_CO2_CONC              "CO2_conc"
+#define D_CO2_CONC              "CO2" CONCENTRATION_EXTENSION
 #define D_PREINDUSTRIAL_CO2     "C0"
 #define D_ATMOSPHERIC_CO2       "atmos_co2"
 #define D_ATMOSPHERIC_C_RESIDUAL "atmos_c_residual"
