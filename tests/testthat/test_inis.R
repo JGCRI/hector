@@ -99,6 +99,7 @@ test_that("All ini parameters are in the input csv", {
     bad_row_numbers <- grep("Positive", params_to_match$param)
     rows <- 1:nrow(params_to_match)
     good_row_numbers <- rows[-bad_row_numbers]
+    # Rename parameter that has an extra space in front
     params_to_match[83,] <- "Tgav_constrain"
 
     # Isolate the final list of parameters
