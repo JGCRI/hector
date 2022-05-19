@@ -103,9 +103,9 @@ fluxpool::fluxpool(unitval v, unordered_map<string, double> pool_map, bool track
 
      // check pool_map data
     double frac = 0.0;
-    for (auto itr = ctmap.begin(); itr != ctmap.end(); itr++) {
-        H_ASSERT(itr->second >= 0 && itr->second <= 1, "fractions must be 0-1 for " + pool_name);
-        frac += itr->second;
+    for ( auto src : ctmap ) {
+        H_ASSERT(src.second >= 0 && src.second <= 1, "fractions must be 0-1 for " + pool_name);
+        frac += src.second;
     }
     H_ASSERT(frac - 1.0 < 1e-6, "pool_map must sum to ~1.0 for " + pool_name)
 }
@@ -130,8 +130,8 @@ inline
 vector<string> fluxpool::get_sources() const {
     H_ASSERT(tracking, "get_sources() requires tracking to be on in " + name);
     vector<string> sources;
-    for (auto itr = ctmap.begin(); itr != ctmap.end(); itr++) {
-        sources.push_back(itr->first);
+    for ( auto src : ctmap ) {
+        sources.push_back(src.first);
     }
     return sources;
 }
@@ -340,8 +340,8 @@ ostream& operator<<(ostream &out, fluxpool &rhs ) {
     if(rhs.tracking) {
         out << endl;
         std::vector<std::string> sources = rhs.get_sources();
-        for (int i = 0; i < sources.size(); i++) {
-            out << "\t" << sources[i] << ": " << rhs.get_fraction(sources[i]) << endl;
+        for ( auto src : sources ) {
+            out << "\t" << src << ": " << rhs.get_fraction( src ) << endl;
         }
     }
     return out;

@@ -141,7 +141,7 @@ There is a bit of inconsistency about the use of dates in these calls. Generally
 The return value is a `unitval` structure. These can be manipulated directly, or if they are assigned to a double, the units will be stripped off, leaving only the value:
 ```C++
 double globaltemp = hcore.sendMessage(M_GETDATA, D_GLOBAL_TEMP);
-double ocean_c_flux = hcore.sendMessage(M_GETDATA, D_OCEAN_CFLUX);
+double ocean_c_flux = hcore.sendMessage(M_GETDATA, D_OCEAN_C_UPTAKE);
 ```
 
 ### Shutdown
@@ -178,5 +178,6 @@ The Hector library is statically linked, so you won't have to worry about librar
 If the build succeeds, then you should end up with an executable version of your model that you can run in your usual way. Input will be under your code's control, so it will be up to you to supply the Hector libraries with the name of an INI file (see instructions above). Unless you followed the instructions to create a Hector output stream, your code will also be responsible for producing whatever output you want from Hector.
 
 ## Limitations and Caveats
-* There is currently no way to rewind a Hector simulation to an earlier time. If you want to do that, you have to shut down the Hector core and instantiate and initialize a whole new core. The new core won't know anything about the emissions you put into the old core, so if you want it to follow the same emissions pathway up to the rewind point, your code will have to store those emissions and add them to the new core after it is initialized. Then you can run Hector up to the point that you wanted to rewind to.
 
+* If you're using a Hector output stream, and the code can't create the output file (e.g., because the directory doesn't exist), then the output will be silently discarded. The same is true of the Hector log files.
+* There is currently no way to rewind a Hector simulation to an earlier time. If you want to do that, you have to shut down the Hector core and instantiate and initialize a whole new core. The new core won't know anything about the emissions you put into the old core, so if you want it to follow the same emissions pathway up to the rewind point, your code will have to store those emissions and add them to the new core after it is initialized. Then you can run Hector up to the point that you wanted to rewind to.

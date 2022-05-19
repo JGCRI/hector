@@ -34,7 +34,7 @@ test_that("Checking ocean flux", {
     # at the high and low latitudes.
 
     # Get the total ocean to atmosphere flux.
-    total_flux <- fetchvars(core = hc, dates = t_dates, vars = OCEAN_CFLUX())
+    total_flux <- fetchvars(core = hc, dates = t_dates, vars = OCEAN_UPTAKE())
 
     # Parse out the fluxes from the high and low latitude pools and calculate the sum
     # to compare with the total.
@@ -52,12 +52,12 @@ test_that("Checking high and low latitude difference", {
     # results, they should have different temperature, carbon fluxes, co3, and ph values.
 
     # Calculate the sum of the high latitude variables.
-    hl_vars <- c(OCEAN_C_HL(), PH_HL(), ATM_OCEAN_FLUX_HL(), PCO2_HL(), TEMP_HL(), CO3_HL())
+    hl_vars <- c(OCEAN_C_HL(), PH_HL(), ATM_OCEAN_FLUX_HL(), PCO2_HL(), SST_HL(), CO3_HL())
     hl_results <- fetchvars(core = hc, dates = t_dates, vars = hl_vars)
     mean_hl <- aggregate(value ~ variable, data = hl_results, mean)
 
     # Calculate the sum of the low latitude variables.
-    ll_vars <- c(OCEAN_C_LL(), PH_LL(), ATM_OCEAN_FLUX_LL(), PCO2_LL(), TEMP_LL(), CO3_LL())
+    ll_vars <- c(OCEAN_C_LL(), PH_LL(), ATM_OCEAN_FLUX_LL(), PCO2_LL(), SST_LL(), CO3_LL())
     ll_results <- fetchvars(core = hc, dates = t_dates, vars = ll_vars)
     mean_ll <- aggregate(value ~ variable, data = ll_results, mean)
 
@@ -80,7 +80,7 @@ test_that("Read and writing ocean parameters", {
 
     # Save a copy of the default Hector ocean variables, only check the values from the total ocean
     # box or one of the surface boxes.
-    ocean_vars <- c(OCEAN_CFLUX(), OCEAN_C(), PH_HL(), PCO2_HL(), DIC_HL(), TEMP_HL(), CO3_HL())
+    ocean_vars <- c(OCEAN_UPTAKE(), OCEAN_C(), PH_HL(), PCO2_HL(), DIC_HL(), SST_HL(), CO3_HL())
     default_ocean_results <- fetchvars(hc, t_dates, vars = ocean_vars)
     default_mean <- aggregate(value ~ variable, data = default_ocean_results, mean)
 

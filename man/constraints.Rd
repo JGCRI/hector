@@ -5,7 +5,7 @@
 \alias{FTOT_CONSTRAIN}
 \alias{CH4_CONSTRAIN}
 \alias{N2O_CONSTRAIN}
-\alias{TGAV_CONSTRAIN}
+\alias{TAS_CONSTRAIN}
 \title{Identifiers for constraints}
 \usage{
 FTOT_CONSTRAIN()
@@ -14,7 +14,7 @@ CH4_CONSTRAIN()
 
 N2O_CONSTRAIN()
 
-TGAV_CONSTRAIN()
+TAS_CONSTRAIN()
 }
 \description{
 These identifiers correspond to Hector's constraint capabilities
@@ -27,7 +27,7 @@ These identifiers correspond to Hector's constraint capabilities
 
 \item \code{N2O_CONSTRAIN}: N2O concentration constraint (\code{"pbbv N2O"})
 
-\item \code{TGAV_CONSTRAIN}: Constrain global mean temperature  (\code{"(degC)"})
+\item \code{TAS_CONSTRAIN}: Constrain global mean temperature  (\code{"(degC)"})
 }}
 
 \section{Note}{

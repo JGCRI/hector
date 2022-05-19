@@ -1,7 +1,7 @@
 context("R wrapper functionality")
 
 inputdir <- system.file("input", package = "hector")
-testvars <- c(ATMOSPHERIC_CO2(), RF_TOTAL(), GLOBAL_TEMP())
+testvars <- c(CONCENTRATIONS_CO2(), RF_TOTAL(), GLOBAL_TAS())
 dates <- 2000:2300
 
 
@@ -40,6 +40,10 @@ test_that("Basic hcore functionality works", {
   expect_silent(run(hc, 2100))
   expect_silent(run(hc))
 
+  # All years should appear in the output
+  out <- fetchvars(hc, dates = 1745:2300)
+  expect_equivalent(sort(unique(out$year)), 1745:2300)
+
   hc <- shutdown(hc)
   expect_false(isactive(hc))
 })
@@ -68,11 +72,11 @@ test_that("Write out logs", {
   # Check that errors on shutdown cores get caught
   expect_error(getdate(hc_log), "Invalid or inactive")
   expect_error(run(hc_log), "Invalid or inactive")
-  expect_error(fetchvars(hc_log), "Invalid or inactive")
+  expect_error(fetchvars(hc_log, hc_log$strtdate), "Invalid or inactive")
 })
 
 
-## Make sure that that when the Hector core is shut downsys
+## Make sure that that when the Hector core is shut down
 ## everything is tidied up.
 test_that("Garbage collection shuts down hector cores", {
   ## This test makes use of some knowledge about the structure of the hector
@@ -152,7 +156,7 @@ test_that("Automatic reset is performed if and only if core is not marked 'clean
   hc$reset_date <- 0
   ## Reset performed - expect_output, not expect_silent, because the core
   ## prints a message alerting user of reset
-  expect_warning(run(hc, 2050), "resetting")
+  expect_message(run(hc, 2050), "resetting")
   expect_true(hc$clean)
 
   hc$clean <- FALSE
@@ -187,22 +191,22 @@ test_that("Setting parameter values or run date prior to current date does trigg
 
   setvar(hc, 2050:2150, FFI_EMISSIONS(), 0.0, "Pg C/yr")
   expect_false(hc$clean)
-  expect_warning(run(hc, 2100), "resetting")
+  expect_message(run(hc, 2100), "resetting")
   expect_true(hc$clean) # reset gets run!
   expect_equal(hc$reset_date, 2049)
 
   # requesting a prior date run raises an error BUT also resets
   setvar(hc, 2050:2150, FFI_EMISSIONS(), 0.0, "Pg C/yr")
-  # suppress warnings - we know core will auto-reset
-  expect_error(suppressWarnings(run(hc, 2048)), "is prior")
+  # suppress message - we know core will auto-reset
+  expect_error(suppressMessages(run(hc, 2048)), "is prior")
   expect_silent(run(hc, 2050))
   expect_true(hc$clean)
 
   setvar(hc, 2050:2150, FFI_EMISSIONS(), 0.0, "Pg C/yr") # edge case
   expect_false(hc$clean)
   expect_equal(hc$reset_date, 2049)
-  # suppress warnings - we know core will auto-reset
-  expect_error(suppressWarnings(run(hc, 2048)), "is prior")
+  # suppress message - we know core will auto-reset
+  expect_error(suppressMessages(run(hc, 2048)), "is prior")
   expect_silent(run(hc, 2050))
   expect_true(hc$clean)
 

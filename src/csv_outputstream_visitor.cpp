@@ -148,8 +148,8 @@ void CSVOutputStreamVisitor::visit( ForcingComponent* c ) {
     ForcingComponent::forcings_t  forcings = c->forcings_ts.get(c->currentYear);
 
     // Walk through the forcings map, outputting everything
-    for( ForcingComponent::forcingsIterator it = forcings.begin(); it != forcings.end(); ++it ) {
-        STREAM_UNITVAL( csvFile, c, ( *it ).first, ( *it ).second );
+    for( auto f : forcings ) {
+        STREAM_UNITVAL( csvFile, c, f.first, f.second );
     }
 
     csvFile.precision( oldPrecision );
@@ -165,8 +165,8 @@ void CSVOutputStreamVisitor::visit( SimpleNbox* c ) {
     STREAM_MESSAGE( csvFile, c, D_NBP );
     STREAM_UNITVAL( csvFile, c, D_NPP, c->final_npp[ SNBOX_DEFAULT_BIOME ] );
     STREAM_UNITVAL( csvFile, c, D_RH, c->final_rh[ SNBOX_DEFAULT_BIOME ] );
+    STREAM_MESSAGE_DATE( csvFile, c, D_CO2_CONC, current_date );
     STREAM_MESSAGE( csvFile, c, D_ATMOSPHERIC_CO2 );
-    STREAM_MESSAGE( csvFile, c, D_ATMOSPHERIC_C );
     STREAM_MESSAGE( csvFile, c, D_ATMOSPHERIC_C_RESIDUAL );
     STREAM_MESSAGE( csvFile, c, D_VEGC );
     STREAM_MESSAGE( csvFile, c, D_DETRITUSC );
@@ -176,8 +176,8 @@ void CSVOutputStreamVisitor::visit( SimpleNbox* c ) {
     // Biome-specific outputs: <biome>.<variable>
     if( c->veg_c.size() > 1 ) {
         SimpleNbox::fluxpool_stringmap::const_iterator it;
-        for( it = c->veg_c.begin(); it != c->veg_c.end(); it++ ) {
-            std::string biome = ( *it ).first;
+        for( auto b : c->veg_c ) {
+            std::string biome = b.first;
             STREAM_UNITVAL( csvFile, c, biome + SNBOX_PARSECHAR + D_NPP, c->final_npp[ biome ] );
             STREAM_UNITVAL( csvFile, c, biome + SNBOX_PARSECHAR + D_RH, c->final_rh[ biome ] );
             STREAM_UNITVAL( csvFile, c, biome + SNBOX_PARSECHAR + D_VEGC, c->veg_c[ biome ] );
@@ -201,12 +201,12 @@ void CSVOutputStreamVisitor::visit( HalocarbonComponent* c ) {
 // documentation is inherited
 void CSVOutputStreamVisitor::visit( TemperatureComponent* c ) {
     if( !core->outputEnabled( c->getComponentName() ) ) return;
-    STREAM_MESSAGE( csvFile, c, D_GLOBAL_TEMP );
+    STREAM_MESSAGE( csvFile, c, D_GLOBAL_TAS );
     STREAM_MESSAGE( csvFile, c, D_FLUX_MIXED );
     STREAM_MESSAGE( csvFile, c, D_FLUX_INTERIOR )
 	STREAM_MESSAGE( csvFile, c, D_HEAT_FLUX );
-    STREAM_MESSAGE( csvFile, c, D_LAND_AIR_TEMP );
-    STREAM_MESSAGE( csvFile, c, D_OCEAN_SURFACE_TEMP );
+    STREAM_MESSAGE( csvFile, c, D_LAND_TAS );
+    STREAM_MESSAGE( csvFile, c, D_SST );
 }
 
 //------------------------------------------------------------------------------
@@ -222,7 +222,7 @@ void CSVOutputStreamVisitor::visit( OceanComponent* c ) {
     STREAM_MESSAGE( csvFile, c, D_DIC_HL );
     STREAM_MESSAGE( csvFile, c, D_DIC_LL );
     STREAM_MESSAGE( csvFile, c, D_HL_DO );
-    STREAM_MESSAGE( csvFile, c, D_OCEAN_CFLUX );
+    STREAM_MESSAGE( csvFile, c, D_OCEAN_C_UPTAKE );
     STREAM_MESSAGE( csvFile, c, D_OMEGAAR_HL );
     STREAM_MESSAGE( csvFile, c, D_OMEGAAR_LL );
     STREAM_MESSAGE( csvFile, c, D_OMEGACA_HL );
@@ -236,7 +236,6 @@ void CSVOutputStreamVisitor::visit( OceanComponent* c ) {
     STREAM_MESSAGE( csvFile, c, D_OCEAN_C );
     STREAM_MESSAGE( csvFile, c, D_CO3_HL );
     STREAM_MESSAGE( csvFile, c, D_CO3_LL );
-    STREAM_MESSAGE( csvFile, c, D_TIMESTEPS );
     if( !in_spinup ) {
         STREAM_MESSAGE( csvFile, c, D_REVELLE_HL );
         STREAM_MESSAGE( csvFile, c, D_REVELLE_LL );
@@ -249,7 +248,7 @@ void CSVOutputStreamVisitor::visit( slrComponent* c ) {
     if( !core->outputEnabled( c->getComponentName() ) ) return;
     if( current_date == max( c->refperiod_high, c->normalize_year ) ) {
         std::string olddatestring = datestring;
-        for( int i=core->getStartDate()+1; i<current_date; i++ ) {
+        for( int i = core->getStartDate()+1; i < current_date; i++ ) {
             // TODO: this is a hack; need to fool the linestamp routine above
             datestring = boost::lexical_cast<string>( i );      // convert to string and store
             STREAM_MESSAGE_DATE( csvFile, c, D_SL_RC, i );
@@ -297,14 +296,14 @@ void CSVOutputStreamVisitor::visit( OHComponent* c ) {
 // documentation is inherited
 void CSVOutputStreamVisitor::visit( CH4Component* c ) {
    if( !core->outputEnabled( c->getComponentName() ) ) return;
- STREAM_MESSAGE_DATE( csvFile, c, D_ATMOSPHERIC_CH4, current_date );
+ STREAM_MESSAGE_DATE( csvFile, c, D_CH4_CONC, current_date );
 }
 
 //------------------------------------------------------------------------------
 // documentation is inherited
 void CSVOutputStreamVisitor::visit( N2OComponent* c ) {
    if( !core->outputEnabled( c->getComponentName() ) ) return;
-STREAM_MESSAGE_DATE( csvFile, c, D_ATMOSPHERIC_N2O, current_date );
+STREAM_MESSAGE_DATE( csvFile, c, D_N2O_CONC, current_date );
 }
 
 }

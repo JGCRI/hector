@@ -89,9 +89,9 @@ struct interp_helper {
 
             typename std::map<double,T_data>::const_iterator itr;    // ...and fill
             int i=0;
-            for ( itr=userData.begin(); itr != userData.end(); itr++ ) {
-                x[ i ] = (*itr).first;
-                y[ i ] = (*itr).second;
+            for ( auto datum : userData ) {
+                x[ i ] = datum.first;
+                y[ i ] = datum.second;
                 i++;
             }
 
@@ -145,11 +145,10 @@ struct interp_helper<unitval> {
             double *x = new double[ userData.size() ];   // allocate
             double *y = new double[ userData.size() ];
 
-            std::map<double,T_unit_type>::const_iterator itr;    // ...and fill
             int i=0;
-            for ( itr=userData.begin(); itr != userData.end(); itr++ ) {
-                x[ i ] = (*itr).first;
-                y[ i ] = (*itr).second.value( (*itr).second.units() );
+            for ( auto datum : userData ) {
+                x[ i ] = datum.first;
+                y[ i ] = datum.second.value( datum.second.units() );
                 i++;
             }
 
@@ -203,11 +202,10 @@ struct interp_helper<fluxpool> {
             double *x = new double[ userData.size() ];   // allocate
             double *y = new double[ userData.size() ];
 
-            std::map<double,T_unit_type>::const_iterator itr;    // ...and fill
             int i=0;
-            for ( itr=userData.begin(); itr != userData.end(); itr++ ) {
-                x[ i ] = (*itr).first;
-                y[ i ] = (*itr).second.value( (*itr).second.units() );
+            for ( auto datum : userData ) {
+                x[ i ] = datum.first;
+                y[ i ] = datum.second.value( datum.second.units() );
                 i++;
             }
 
@@ -324,8 +322,9 @@ bool tseries<T_data>::exists( double t ) const {
  */
 template <class T_data>
 T_data tseries<T_data>::get( double t ) const {
-    if(mapdata.size() == 1)
+    if(mapdata.size() == 1) {
         return mapdata.begin()->second;
+    }
     typename std::map<double,T_data>::const_iterator itr = mapdata.find( t );
     if( itr != mapdata.end() )
         return (*itr).second;

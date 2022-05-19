@@ -137,7 +137,7 @@ void OzoneComponent::run( const double runToDate ) {
     unitval current_nox = NOX_emissions.get( runToDate );
 	unitval current_co = CO_emissions.get( runToDate );
 	unitval current_nmvoc = NMVOC_emissions.get( runToDate );
-	unitval current_ch4 = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_CH4, runToDate );
+	unitval current_ch4 = core->sendMessage( M_GETDATA, D_CH4_CONC, runToDate );
 
     O3.set( runToDate, unitval( ( 5*log( current_ch4 ) ) + ( 0.125*current_nox ) + ( 0.0011*current_co )
                + ( 0.0033*current_nmvoc ), U_DU_O3 ) );

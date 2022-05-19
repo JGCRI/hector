@@ -79,8 +79,8 @@ NULL
 #' @section Output variables:
 #' These variables can be read using the \code{\link{GETDATA}} message type:
 #' \describe{
-#' \item{ATMOSPHERIC_CO2}{Atmospheric CO2 concentration}
-#' \item{ATMOSPHERIC_C}{Atmospheric carbon pool}
+#' \item{CONCENTRATIONS_CO2}{Atmospheric CO2 concentration}
+#' \item{D_ATMOSPHERIC_CO2}{Atmospheric CO2 in units of C}
 #' \item{NBP}{Net biome production. Annual global C flux from atmosphere into
 #'   the land. A positive value means a net flux from atmosphere into land
 #'   (i.e. land is a net carbon sink), while a negative value means a net flux
@@ -164,7 +164,7 @@ NULL
 #' @section Output variables:
 #' These variables can be read from the methane component.
 #' \describe{
-#' \item{ATMOSPHERIC_CH4}{Atmospheric methane concentration}
+#' \item{CONCENTRATIONS_CH4}{Atmospheric methane concentration}
 #' \item{PREINDUSTRIAL_CH4}{Preindustrial methane concentration}
 #' }
 #'
