@@ -15,44 +15,36 @@ test_that("All csv params are in an ini file...", {
   # Read in ini files
   ini_list <- list.files(system.file(package = "hector", "input"), pattern = "ini")
 
-  for(ini in ini_list){
-    ini_file <- readLines(system.file("input", ini, package = "hector"))
+  expect_warning(
+    for(ini in ini_list){
+      ini_file <- readLines(system.file("input", ini, package = "hector"))
 
-    # Break up file line-by-line
-    split_ini <- strsplit(ini_file, ";")
+      # Read in comparison csv, identify unique parameter names
+      input_table <- hector:::input_csv
+      input_params <- sort(unique(input_table$parameter))
 
-    # Read in comparison csv, identify unique parameter names
-    input_table <- hector:::input_csv
-    input_params <- sort(unique(input_table$parameter))
+      # Pull out lines with = sign, meaning parameters and definitions
+      eq <- ini_file[grepl("=", ini_file)]
 
-    # For each parameter, loop over the line-by-line file to check for a match
-    # Store unique results - if variable is present somewhere, we expect c(FALSE, TRUE)
-    # If the variable is not present, we expect just FALSE
-    test <- list()
-    for(n in seq_len(length(input_params))){
-      test[[n]] <- sort(unique(grepl(input_params[[n]], split_ini)))
-    }
+      # Function to extract the string before the equal sign, the parameter name
+      split_equal <- function(str) {
+        x <- strsplit(str, "=")
+        unlist(x)[[1]]
+      }
 
-    # Extract results, store as data frame
-    # Create a column to check if the parameter row contains TRUE, then filter out those columns
-    results <- as.data.frame(t(rbind(test)))
-    results$t <- grepl(TRUE, results$test)
-    results_false <- subset(results, t == FALSE)
+      param <- unlist(lapply(eq, split_equal))
 
-    failing_params <- row.names(results_false)
-    for(p in failing_params){
-      p <- as.numeric(p)
-      if(length(failing_params) > 0) warning(paste0("Parameter ", input_params[p] , " is failing. "))
-    }
+      # Remove symbols
+      ini_params <- gsub(";|\\[1750]| ", "", x = param)
 
-    ## What test?
+      # Compare the two lists of parameters
+      missing_param <- setdiff(input_params, ini_params)
+
+      # If there are extra or missing parameters, issue a warning
+      if(length(missing_param) > 0) warning(paste0("\nParameter ", missing_param, " is failing in ", ini, "."))
 
 
-    # Then, we expect that the number of rows containing TRUE would equal the number
-    # of parameters we are checking against
-    # expect_equal(nrow(results_true), length(input_params))
-
-  }
+    }, regexp = NA)
 
 })
 
@@ -62,68 +54,35 @@ test_that("All ini parameters are in the input csv", {
   # Read in ini files
   ini_list <- list.files(system.file(package = "hector", "input"), pattern = "ini")
 
-  for(ini in ini_list){
-    ini_file <- readLines(system.file("input", ini, package = "hector"))
+  expect_warning(
+    for(ini in ini_list){
+      ini_file <- readLines(system.file("input", ini, package = "hector"))
 
-    # Break up file line-by-line
-    split_ini <- strsplit(ini_file, ";")
+      # Read in comparison csv, identify unique parameter names
+      input_table <- hector:::input_csv
+      input_params <- sort(unique(input_table$parameter))
 
-    # Subset lines with equal sign (identify line as parameter)
-    equal_sign <- list()
-    for(n in 1:length(split_ini)) {
-      equal_sign[[n]] <- subset(split_ini[[n]], grepl("=", split_ini[[n]]))
-      # If the line in the ini does not contain an =, it is not a
-      # parameter and should be discarded
-      if(length(equal_sign[[n]]) == 0) equal_sign[[n]] <- NA
-    }
+      # Pull out lines with = sign, meaning parameters and definitions
+      eq <- ini_file[grepl("=", ini_file)]
 
-    # Get results, drop NAs
-    equal <- as.data.frame(t(rbind(equal_sign)))
-    equal <- subset(equal, is.na(equal$equal_sign) == FALSE)
+      # Function to extract the string before the equal sign, the parameter name
+      split_equal <- function(str) {
+        x <- strsplit(str, "=")
+        unlist(x)[[1]]
+      }
 
-    # Split up lines before and after the = sign
-    split_params <- list()
-    param <- list()
-    for(n in 1:nrow(equal)) {
-      split_params[[n]] <- strsplit(equal$equal_sign[[n]], "=")
-      # Access just the character before the equal sign, the parameter name
-      param[[n]] <- split_params[[n]][[1]][[1]]
-    }
+      param <- unlist(lapply(eq, split_equal))
 
-    # Get results
-    raw_parameters <- as.data.frame(t(rbind(unlist(param))))
-    # Remove duplicate parameters
-    params_to_match <- data.frame(param = unique(raw_parameters$V1))
+      # Remove symbols
+      ini_params <- gsub(";|\\[1750]| ", "", x = param)
 
-    # Remove words that somehow snuck into the final list
-    bad_row_numbers <- grep("Positive", params_to_match$param)
-    rows <- 1:nrow(params_to_match)
-    good_row_numbers <- rows[-bad_row_numbers]
-    # Rename parameter that has an extra space in front
-    params_to_match[83,] <- "Tgav_constrain"
+      # Compare the two lists of parameters
+      missing_param <- setdiff(ini_params, input_params)
 
-    # Isolate the final list of parameters
-    final_params <- data.frame(param = sort(params_to_match[good_row_numbers,]))
+      # If there are extra or missing parameters, issue a warning
+      if(length(missing_param) > 0) warning(paste0("\nParameter ", missing_param, " is failing in ", ini, "."))
 
-    # Read in comparison csv, identify unique parameter names
-    input_table <- hector:::input_csv
-    input_params <- sort(unique(input_table$parameter))
-
-    # Compare the two lists
-    test <- list()
-    for(n in 1:nrow(params_to_match)){
-      test[[n]] <- unique(grepl(final_params[n,], input_params))
-    }
-
-    results <- as.data.frame(t(rbind(test)))
-    results$t <- grepl(TRUE, results$test)
-    results_false <- subset(results, t == FALSE)
-
-    failing_params <- row.names(results_false)
-    if(length(failing_params) > 0) warning(paste0("\nParameter ", final_params[failing_params,] , " is failing. "))
-
-    ## What test
-  }
+    }, regexp = NA)
 
 
 })
