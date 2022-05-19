@@ -11,7 +11,7 @@ ocean,tt,n,n,y,7.20E+07,m3 s-1,thermohaline circulation
 ocean,tu,n,n,y,4.90E+07,m3 s-1,high latitude overturning
 ocean,twi,n,n,y,1.25E+07,m3 s-1,warm-intermediate exchange
 ocean,tid,n,n,y,2.00E+08,m3 s-1,intermediate-deep exchange
-simpleNbox,atmos_c,n,n,y,588.071,Pg C,
+simpleNbox,atmos_co2,n,n,y,588.071,Pg C,
 simpleNbox,C0,n,n,y,277.15,Pg C,preindustrial CO2 from table 7.SM.1 IPCC AR6
 simpleNbox,boreal.veg_c,y,n,y,100,Pg C,
 simpleNbox,tropical.veg_c,y,n,y,450,Pg C,
@@ -38,7 +38,7 @@ simpleNbox,NBP_constrain,n,y,n,"""(csv)""",Pg C yr-1,net biome production (land-
 simpleNbox,beta,n,n,y,0.36,(unitless),
 simpleNbox,q10_rh,n,n,y,2,(unitless),respiration response Q10
 simpleNbox,boreal.warmingfactor,y,n,n,1.2,(unitless),biome-specific warming factors
-simpleNbox,Ftalbedo,n,n,y,"""(csv)""",W m-2,albedo effect
+simpleNbox,RF_albedo,n,n,y,"""(csv)""",W m-2,albedo effect
 carbon-cycle-solver,eps_abs,n,n,y,1.00E-06,(unitless),solution tolerance
 carbon-cycle-solver,eps_rel,n,n,y,1.00E-06,(unitless),solution tolerance
 carbon-cycle-solver,dt,n,n,y,0.25,(unitless),default time step
@@ -66,10 +66,10 @@ ozone,NMVOC_emissions,n,y,y,"""(csv)""",,emissions time series
 N2O,N0,n,n,y,273.87,ppb,preindustrial nitrous oxide from IPCC AR6 table 7.SM.1
 N2O,UC_N2O,n,n,y,4.8,TgN ppbv-1,unit conversion between emissions and concentrations
 N2O,TN2O0,n,n,y,132,years,initial lifetime of N2O
-N2O,N2O_natural_emissions[1750],n,y,y,9.5,,default natural emissions based on a best fit to IPCC AR6 N2O RF
+N2O,N2O_natural_emissions,n,y,y,9.5,,default natural emissions based on a best fit to IPCC AR6 N2O RF
 N2O,N2O_emissions,n,y,y,"""(csv)""",,emissions time series
 forcing,baseyear,n,n,y,1750,,"when to start reporting; by definition, all F=0 in this year"
-forcing,Ftot_constrain,n,y,n,"""(csv)""",,"If supplied, the model will use these data, ignoring what it calculates"
+forcing,RF_tot_constrain,n,y,n,"""(csv)""",,"If supplied, the model will use these data, ignoring what it calculates"
 forcing,delta_co2,n,n,y,0.05,(unitless),forcing tropospheric adjustments for CO2 (7.3.2.1 of IPCC AR6)
 forcing,delta_ch4,n,n,y,-0.14,(unitless),forcing tropospheric adjustments for CH4 (7.3.2.2 of IPCC AR6)
 forcing,delta_n2o,n,n,y,0.07,(unitless),forcing tropospheric adjustments for N2O (7.3.2.3 of IPCC AR6)
@@ -77,14 +77,13 @@ forcing,rho_bc,n,n,y,0.0508,W yr m–2 C Tg–1,IPCC AR6 radiative efficiency BC (7.
 forcing,rho_oc,n,n,y,-0.00621,W yr m–2 C Tg–1,IPCC AR6 radiative efficiency OC (7.SM.1.3.1 of IPCC AR6)
 forcing,rho_so2,n,n,y,-7.24E-06,W yr m–2 S Gg-1,IPCC AR6 radiative efficiency SO2 (7.SM.1.3.1 of IPCC AR6)
 forcing,rho_nh3,n,n,y,-0.00208,W yr m–2 NH3 Tg–1,IPCC AR6 radiative efficiency NH3 (7.SM.1.3.1 of IPCC AR6)
-forcing,Fmisc,n,n,n,"""(csv)""",,"Miscellaneous radiative forcings default set to 0, or read in from a input table, may be used to read in additional forcings not modeled by Hector (i.e. solar, bc on snow , contrails from)"
-forcing,Fmisc[1750],n,y,n,0,,
+forcing,RF_misc,n,n,n,"""(csv)""",,"Miscellaneous radiative forcings default set to 0, or read in from a input table, may be used to read in additional forcings not modeled by Hector (i.e. solar, bc on snow , contrails from)"
 temperature,S,n,n,y,3,degC,equilibrium climate sensitivity for 2xCO2
 temperature,diff,n,n,y,2.3,cm2 s-1,ocean heat diffusivity
 temperature,alpha,n,n,y,1,(unitless),scaling factor for aerosol forcing
 temperature,volscl,n,n,y,1,(unitless),scaling factor for volcanic forcing
 temperature,qco2,n,n,y,3.75,,2×CO2 RF (7.3.2 of IPCC AR6)
-temperature,Tgav_constrain,n,y,n,"""(csv)""",,"Optional global temperature constraint; If supplied, the model will use these data, ignoring what it calculates"
+temperature,tas_constrain,n,y,n,"""(csv)""",,"Optional global temperature constraint; If supplied, the model will use these data, ignoring what it calculates"
 bc,BC_emissions,n,y,y,"""(csv)""",,
 oc,OC_emissions,n,y,y,"""(csv)""",,
 nh3,NH3_emissions,n,y,y,"""(csv)""",,
