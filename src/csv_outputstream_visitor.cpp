@@ -251,9 +251,7 @@ void CSVOutputStreamVisitor::visit( slrComponent* c ) {
         for( int i = core->getStartDate()+1; i < current_date; i++ ) {
             // TODO: this is a hack; need to fool the linestamp routine above
             datestring = boost::lexical_cast<string>( i );      // convert to string and store
-            STREAM_MESSAGE_DATE( csvFile, c, D_SL_RC, i );
             STREAM_MESSAGE_DATE( csvFile, c, D_SLR, i );
-            STREAM_MESSAGE_DATE( csvFile, c, D_SL_RC_NO_ICE, i );
             STREAM_MESSAGE_DATE( csvFile, c, D_SLR_NO_ICE, i );
         }
         datestring = olddatestring;
