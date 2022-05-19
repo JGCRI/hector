@@ -80,6 +80,9 @@
     <ClInclude Include="..\..\inst\include\n2o_component.hpp">
       <Filter>Header Files\components</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\inst\include\nh3_component.hpp">
+      <Filter>Header Files\components</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\inst\include\o3_component.hpp">
       <Filter>Header Files\components</Filter>
     </ClInclude>
@@ -196,6 +199,9 @@
     <ClCompile Include="..\..\src\n2o_component.cpp">
       <Filter>Source Files\components</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\nh3_component.cpp">
+      <Filter>Source Files\components</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\o3_component.cpp">
       <Filter>Source Files\components</Filter>
     </ClCompile>
@@ -273,6 +279,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\simpleNbox-runtime.cpp">
       <Filter>Source Files\models</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\h_util.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

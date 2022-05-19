@@ -108,18 +108,18 @@ int main (int argc, char * const argv[]) {
             // from components.  Note you don't need to get the name
             // of the component; you just need to say what kind of
             // data you want, and the core takes care of the rest.
-            unitval temp = core.sendMessage(M_GETDATA, D_GLOBAL_TEMP);
-            unitval ca   = core.sendMessage(M_GETDATA, D_ATMOSPHERIC_CO2);
+            unitval temp = core.sendMessage(M_GETDATA, D_GLOBAL_TAS);
+            unitval CO2_conc   = core.sendMessage(M_GETDATA, D_CO2_CONC);
             unitval forc = core.sendMessage(M_GETDATA, D_RF_TOTAL);
             H_LOG(glog, Logger::NOTICE)
                 << "t= " << t << "\t"
                 << "temp= " << temp << "\t"
-                << "atmos. C= " << ca << "\t"
+                << "atmos. C= " <<  CO2_conc << "\t"
                 << "RF= " << forc << endl;
 
             // Record the values we retrieved above for future reference
             tempts.set(t, temp);
-            cats.set(t, ca);
+            cats.set(t, CO2_conc);
             forcts.set(t, forc);
 
             tlast = t;
@@ -133,14 +133,14 @@ int main (int argc, char * const argv[]) {
         core.reset(0);          // reset to start and rerun spinup.
         for(double newt = core.getStartDate()+5.0; newt<=core.getEndDate(); newt+=5.0) {
             core.run(newt);
-            unitval temp = core.sendMessage(M_GETDATA, D_GLOBAL_TEMP);
-            unitval ca   = core.sendMessage(M_GETDATA, D_ATMOSPHERIC_CO2);
+            unitval temp = core.sendMessage(M_GETDATA, D_GLOBAL_TAS);
+            unitval CO2_conc   = core.sendMessage(M_GETDATA, D_CO2_CONC);
             unitval forc = core.sendMessage(M_GETDATA, D_RF_TOTAL);
 
             H_LOG(glog, Logger::NOTICE)
                 << "t= " << newt << ":\n"
                 << "\ttemp old= " << tempts.get(newt) << "\ttemp new= " << temp << "\tdiff= " << temp-tempts.get(newt) << "\n"
-                << "\tca old= " << cats.get(newt) << "\tca new= " << ca << "\tdiff= " << ca-cats.get(newt) << "\n"
+                << "\tca old= " << cats.get(newt) << "\tca new= " << CO2_conc << "\tdiff= " << CO2_conc-cats.get(newt) << "\n"
                 << "\tforc old= " << forcts.get(newt) << "\tforc new= " << forc << "\tdiff= " << forc-forcts.get(newt) << "\n";
         }
 
@@ -190,6 +190,8 @@ void read_and_set_co2(double tstrt, double tend, Core &core, istream &sim_gcam_e
             core.sendMessage(M_SETDATA, D_DACCS_UPTAKE,
                              message_data(t, unitval(daccs, U_PGC_YR)));
             core.sendMessage(M_SETDATA, D_LUC_EMISSIONS,
+                             message_data(t, unitval(luc, U_PGC_YR)));
+            core.sendMessage(M_SETDATA, D_LUC_UPTAKE,
                              message_data(t, unitval(luc, U_PGC_YR)));
             core.sendMessage(M_SETDATA, D_EMISSIONS_SO2,
                              message_data(t, unitval(so2, U_GG_S)));

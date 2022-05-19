@@ -102,7 +102,7 @@ private:
 
     // Atmosphere conditions
     unitval SST;            //!< Ocean surface temperature anomaly, degC
-    unitval Ca;             //!< Atmospheric CO2, ppm
+    unitval CO2_conc;             //!< Atmospheric CO2, ppm
     fluxpool atmosphere_cpool;
 
     // Atmosphere-ocean flux
@@ -130,7 +130,7 @@ private:
      * Private helper functions
      *****************************************************************/
     fluxpool totalcpool() const;
-    unitval annual_totalcflux( const double date, const unitval& Ca, const double cpoolscale=1.0 ) const;
+    unitval annual_totalcflux( const double date, const unitval& CO2_conc, const double cpoolscale=1.0 ) const;
 
     /*****************************************************************
      * Adaptive timestep control

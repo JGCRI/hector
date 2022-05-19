@@ -39,9 +39,9 @@
 #define D_EPS_SPINUP            "eps_spinup"
 
 // forcing component
-#define D_RF_PREFIX             "F"
+#define D_RF_PREFIX             "RF_"
 #define D_RF_TOTAL              D_RF_PREFIX "tot"
-#define D_RF_T_ALBEDO           D_RF_PREFIX "talbedo"
+#define D_RF_T_ALBEDO           D_RF_PREFIX "albedo"
 #define D_FTOT_CONSTRAIN        D_RF_PREFIX "tot_constrain"
 #define D_RF_BASEYEAR           "baseyear"
 #define D_RF_CO2                D_RF_PREFIX "CO2"
@@ -250,7 +250,7 @@
 #define D_HCDELTA_CH3Br            D_HCDELTA_PREFIX CH3Br_COMPONENT_BASE
 
 // methane component
-#define D_ATMOSPHERIC_CH4       "CH4"
+#define D_CH4_CONC              "CH4" CONCENTRATION_EXTENSION
 #define D_PREINDUSTRIAL_CH4     "M0"
 #define D_RF_CH4                "FCH4"
 #define D_EMISSIONS_CH4         "CH4_emissions"
@@ -261,7 +261,7 @@
 #define D_LIFETIME_STRAT        "Tstrat"
 
 // n2o component
-#define D_ATMOSPHERIC_N2O       "N2O"
+#define D_N2O_CONC              "N2O" CONCENTRATION_EXTENSION
 #define D_PREINDUSTRIAL_N2O     "N0"
 #define D_EMISSIONS_N2O         "N2O_emissions"
 #define D_CONSTRAINT_N2O        "N2O_constrain"
@@ -280,7 +280,7 @@
 
 //o3 component
 #define D_PREINDUSTRIAL_O3	      "PO3"
-#define D_ATMOSPHERIC_O3	      "O3"
+#define D_ATMOSPHERIC_O3	      "O3" CONCENTRATION_EXTENSION
 #define D_ATMOSPHERIC_EM_CH4      "CH4"
 #define D_EMISSIONS_NOX           "NOX_emissions"
 #define D_EMISSIONS_CO            "CO_emissions"
@@ -293,48 +293,48 @@
 #define D_EMISSIONS_NH3          "NH3_emissions"
 
 // ocean component
-#define D_OCEAN_CFLUX           "atm_ocean_flux"
+#define D_OCEAN_C_UPTAKE        "ocean_uptake"
 #define D_OCEAN_C               "ocean_c"
 #define D_TT                    "tt"
 #define D_TU                    "tu"
 #define D_TWI                   "twi"
 #define D_TID                   "tid"
-#define D_HL_DO                 "HL_DO_Cflux"
-#define D_PH_HL                 "pH_HL"
-#define D_PH_LL                 "pH_LL"
+#define D_HL_DO                 "HL_downwelling"
+#define D_PH_HL                 "HL_pH"
+#define D_PH_LL                 "LL_pH"
 #define D_PH                    "pH"
-#define D_ATM_OCEAN_FLUX_HL     "atm_ocean_flux_HL"
-#define D_ATM_OCEAN_FLUX_LL     "atm_ocean_flux_LL"
-#define D_PCO2_HL               "PCO2_HL"
-#define D_PCO2_LL               "PCO2_LL"
+#define D_ATM_OCEAN_FLUX_HL     "HL_ocean_uptake"
+#define D_ATM_OCEAN_FLUX_LL     "LL_ocean_uptake"
+#define D_PCO2_HL               "HL_PCO2"
+#define D_PCO2_LL               "LL_PCO2"
 #define D_PCO2                  "PCO2"
-#define D_DIC_HL                "DIC_HL"
-#define D_DIC_LL                "DIC_LL"
+#define D_DIC_HL                "HL_DIC"
+#define D_DIC_LL                "LL_DIC"
 #define D_DIC                   "DIC"
-#define D_CARBON_HL             "carbon_HL"
-#define D_CARBON_LL             "carbon_LL"
-#define D_CARBON_ML             "carbon_ML"
-#define D_CARBON_IO             "carbon_IO"
-#define D_CARBON_DO             "carbon_DO"
-#define D_OMEGACA_HL            "OmegaCa_HL"
-#define D_OMEGACA_LL            "OmegaCa_LL"
-#define D_OMEGAAR_HL            "OmegaAr_HL"
-#define D_OMEGAAR_LL            "OmegaAr_LL"
-#define D_TEMP_HL               "Temp_HL"
-#define D_TEMP_LL               "Temp_LL"
+#define D_CARBON_HL             "HL_ocean_c"
+#define D_CARBON_LL             "LL_ocean_c"
+#define D_CARBON_ML             "ML_ocean_c"
+#define D_CARBON_IO             "IO_ocean_c"
+#define D_CARBON_DO             "DO_ocean_c"
+#define D_OMEGACA_HL            "HL_OmegaCa"
+#define D_OMEGACA_LL            "LL_OmegaCa"
+#define D_OMEGAAR_HL            "HL_OmegaAr"
+#define D_OMEGAAR_LL            "LL_OmegaAr"
+#define D_TEMP_HL               "HL_sst"
+#define D_TEMP_LL               "LL_sst"
 #define D_SPINUP_CHEM           "spinup_chem"
-#define D_CO3_LL				"CO3_LL"
-#define D_CO3_HL				"CO3_HL"
+#define D_CO3_LL				"LL_CO3"
+#define D_CO3_HL				"HL_CO3"
 #define D_CO3				    "CO3"
 #define D_TIMESTEPS             "ocean_timesteps"
-#define D_REVELLE_HL            "Revelle_HL"
-#define D_REVELLE_LL            "Revelle_LL"
+#define D_REVELLE_HL            "HL_Revelle"
+#define D_REVELLE_LL            "LL_Revelle"
 
 // SimpleNbox component
 #define D_NBP                   "NBP"
-#define D_ATMOSPHERIC_CO2       "Ca"
+#define D_CO2_CONC              "CO2" CONCENTRATION_EXTENSION
 #define D_PREINDUSTRIAL_CO2     "C0"
-#define D_ATMOSPHERIC_C         "atmos_c"
+#define D_ATMOSPHERIC_CO2       "atmos_co2"
 #define D_ATMOSPHERIC_C_RESIDUAL "atmos_c_residual"
 #define D_EARTHC                "earth_c"
 #define D_VEGC                  "veg_c"
@@ -343,6 +343,7 @@
 #define D_FFI_EMISSIONS         "ffi_emissions"
 #define D_DACCS_UPTAKE          "daccs_uptake"
 #define D_LUC_EMISSIONS         "luc_emissions"
+#define D_LUC_UPTAKE            "luc_uptake"
 #define D_TEMPFERTD             "detritus_tempfert"
 #define D_TEMPFERTS             "soil_tempfert"
 #define D_Q10_RH                "q10_rh"
@@ -359,7 +360,7 @@
 
 // Constraints
 #define D_CO2_CONSTRAIN         "CO2_constrain"
-#define D_TGAV_CONSTRAIN        "Tgav_constrain"
+#define D_TAS_CONSTRAIN        "tas_constrain"
 #define D_NBP_CONSTRAIN         "NBP_constrain"
 
 // slr component
@@ -374,16 +375,16 @@
 
 // temperature component
 #define D_ECS                   "S"
-#define D_GLOBAL_TEMP           "Tgav"
-#define D_LAND_AIR_TEMP         "Tgav_land"
-#define D_OCEAN_SURFACE_TEMP    "Tgav_ocean_ST"
-#define D_OCEAN_AIR_TEMP        "Tgav_oceanair"
+#define D_GLOBAL_TAS            "global_tas"
+#define D_LAND_TAS              "land_tas"
+#define D_SST                   "sst"
+#define D_OCEAN_TAS             "ocean_tas"
 #define D_LO_WARMING_RATIO      "lo_warming_ratio"
 #define D_DIFFUSIVITY           "diff"
 #define D_AERO_SCALE            "alpha"
 #define D_VOLCANIC_SCALE        "volscl"
-#define D_FLUX_MIXED            "flux_mixed"
-#define D_FLUX_INTERIOR         "flux_interior"
+#define D_FLUX_MIXED            "heatflux_mixed"
+#define D_FLUX_INTERIOR         "heatflux_interior"
 #define D_HEAT_FLUX             "heatflux"
 
 // ------------------- messages being passed between components -------------------------

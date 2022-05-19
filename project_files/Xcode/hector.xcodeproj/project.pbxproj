@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2713596E27DD143A00FA222A /* h_util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 95A150DE27A0541C00C30A78 /* h_util.cpp */; };
 		273FC39626A3570B00D5303E /* test_tseries.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 273FC38B26A3570B00D5303E /* test_tseries.cpp */; };
 		273FC39726A3570B00D5303E /* testing_main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 273FC38C26A3570B00D5303E /* testing_main.cpp */; };
 		273FC39926A3570B00D5303E /* test_tracking.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 273FC38E26A3570B00D5303E /* test_tracking.cpp */; };
@@ -223,7 +222,6 @@
 		27B2C24E261511C8005DE26D /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = ../../src/main.cpp; sourceTree = "<group>"; };
 		954D62AD278E005500840656 /* nh3_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = nh3_component.cpp; path = ../../src/nh3_component.cpp; sourceTree = "<group>"; };
 		954D62B0278E007500840656 /* nh3_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = nh3_component.hpp; path = ../../inst/include/nh3_component.hpp; sourceTree = "<group>"; };
-		95A150DE27A0541C00C30A78 /* h_util.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = h_util.cpp; path = ../../src/h_util.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -248,7 +246,6 @@
 		27585CEF26150F1A00BA1EF5 = {
 			isa = PBXGroup;
 			children = (
-				95A150DE27A0541C00C30A78 /* h_util.cpp */,
 				27B2C22B26151149005DE26D /* Headers */,
 				27B2C272261511CD005DE26D /* Source */,
 				27A02A452615CA7300AF9BFA /* unit-testing */,
@@ -521,7 +518,6 @@
 				273FC39626A3570B00D5303E /* test_tseries.cpp in Sources */,
 				273FC39926A3570B00D5303E /* test_tracking.cpp in Sources */,
 				27A02A682615CBB800AF9BFA /* ocean_component.cpp in Sources */,
-				2713596E27DD143A00FA222A /* h_util.cpp in Sources */,
 				27A02A692615CBB800AF9BFA /* slr_component.cpp in Sources */,
 				27A02A6A2615CBB800AF9BFA /* spline_forsythe.cpp in Sources */,
 				27A02A6B2615CBB800AF9BFA /* oh_component.cpp in Sources */,
@@ -604,6 +600,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "${BOOSTROOT}";
+				"HEADER_SEARCH_PATHS[arch=*]" = "${BOOSTROOT}";
 				LIBRARY_SEARCH_PATHS = "${BOOSTLIB}";
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;

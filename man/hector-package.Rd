@@ -6,11 +6,7 @@
 \alias{hector-package}
 \title{hector: The Hector Simple Climate Model}
 \description{
-Provides an R interface for the Hector Simple Climate
-    Model. Using this interface you can set up and initialize the model,
-    change model parameters and emissions inputs, run Hector, and
-    retrieve model outputs. Note that the package authors are not
-    identical to the C++ model authors.
+Provides an R interface for the Hector Simple Climate Model. Using this interface you can set up and initialize the model, change model parameters and emissions inputs, run Hector, and retrieve model outputs. Note that the package authors are not identical to the C++ model authors.
 }
 \details{
 This package allows you to run the Hector Simple Climate Model (SCM) from R

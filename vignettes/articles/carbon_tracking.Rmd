@@ -102,13 +102,13 @@ Let's take a look at these graphs. Note that the `earth_c` pool is always 100%
 `earth_c`: there are no inflows to this pool in SSP245 (in contrast, in
 SSP19 there is direct-air carbon capture and storage, so the `earth_c` pool
 origins will change). We see that around 1800, human emissions (from `earth_c`) 
-begin to appear in pools such as `atmos_c` or `soil_c_global`. 
+begin to appear in pools such as `atmos_co2` or `soil_c_global`. 
 Between 1900-2000, human emissions take off and become major sources by 2100. 
 
 Let's examine just one pool: 
 
 ``` {r hector.atm, fig.width = 6, fig.height = 4}
-atmos <- subset(tdata, pool_name == "atmos_c")
+atmos <- subset(tdata, pool_name == "atmos_co2")
 
 ggplot(atmos, aes(year, source_fraction, fill = source_name)) +
   geom_area() +
@@ -124,7 +124,7 @@ This allows us to better examine the contributions by source to the atmosphere.
 
 We can also use the tracking feature to calculate the airborne fraction for a given point in time, or how much carbon emitted by humans remains in the atmosphere as a fraction of total emissions as opposed to being absorbed by the land or ocean. 
 
-First, we can define two functions. The first will run a core and turn on tracking to return a data frame with results, including a column for the source amount by pool (as opposed to the source fraction). The second function will perform the airborne fraction calculation by finding the amount of `earth_c` (human emissions) in the `atmos_c` (atmosphere) pool at the start and end date of the run and dividing the difference by the difference in the `earth_c` pool from the start of the run to the end, i.e. how much carbon has left the `earth_c` pool.
+First, we can define two functions. The first will run a core and turn on tracking to return a data frame with results, including a column for the source amount by pool (as opposed to the source fraction). The second function will perform the airborne fraction calculation by finding the amount of `earth_c` (human emissions) in the `atmos_co2` (atmosphere) pool at the start and end date of the run and dividing the difference by the difference in the `earth_c` pool from the start of the run to the end, i.e. how much carbon has left the `earth_c` pool.
 
 ``` {r hector.define_functions}
 
@@ -149,11 +149,13 @@ tracking_results <- function(inifile, start, stop, tracking, scenarioName) {
 
 AF_calc <- function(start, results, stop) {
   
-  # Isolate the atmos_c pool and earth_c source in start/end years
-  atm_c <- subset(results, 
-                  results$pool_name == "atmos_c" &
-                    results$source_name == "earth_c" &
-                    results$year %in% c(start, stop))
+  # Isolate the atmos_co2 pool and earth_c source in start/end years  
+  atm_c <- subset(results, results$pool_name == "atmos_co2")
+  atm_c <- subset(atm_c, atm_c$source_name == "earth_c")
+  
+  atm_c1 <- subset(atm_c, year == start)
+  atm_c2 <- subset(atm_c, year == stop)
+  atm_c <- rbind(atm_c1, atm_c2)
   
   # Calculate atmospheric uptake of Earth carbon
   atm_c <- tail(atm_c$source_amount, n = 1) - head(atm_c$source_amount, n = 1)

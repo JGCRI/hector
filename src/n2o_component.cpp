@@ -31,7 +31,7 @@ N2OComponent::N2OComponent() {
     N2O_natural_emissions.allowInterp( true );
     N2O_natural_emissions.name = D_NAT_EMISSIONS_N2O;
     N2O.allowInterp( true );
-    N2O.name = D_ATMOSPHERIC_N2O;
+    N2O.name = D_N2O_CONC;
     TAU_N2O.allowInterp( true );
     TAU_N2O.name = D_TAU_N2O;
   }
@@ -59,7 +59,7 @@ void N2OComponent::init( Core* coreptr ) {
     oldDate = core->getStartDate();
 
     // Inform core what data we can provide
-    core->registerCapability( D_ATMOSPHERIC_N2O, getComponentName() );
+    core->registerCapability( D_N2O_CONC, getComponentName() );
     core->registerCapability( D_PREINDUSTRIAL_N2O, getComponentName() );
     core->registerCapability( D_EMISSIONS_N2O, getComponentName() );
     core->registerCapability( D_CONSTRAINT_N2O, getComponentName() );
@@ -114,7 +114,7 @@ void N2OComponent::setData( const string& varName,
         } else if( varName == D_INITIAL_LIFETIME_N2O ) {
             H_ASSERT( data.date == Core::undefinedIndex(), "date not allowed" );
             TN2O0 = data.getUnitval( U_YRS );
-        } else if( varName == D_ATMOSPHERIC_N2O ) {
+        } else if( varName == D_N2O_CONC ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
             N2O.set( data.date, data.getUnitval( U_PPBV_N2O ) );
         } else if( varName == D_CONSTRAINT_N2O ) {
@@ -135,7 +135,7 @@ void N2OComponent::prepareToRun() {
 
     H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
     oldDate = core->getStartDate();
-    
+
     if ( N2O_constrain.size() && N2O_constrain.exists( oldDate ) ) {
         H_LOG( logger, Logger::WARNING ) << "Overwriting preindustrial N2O value with N2O constraint value" << std::endl;
         N0 = N2O_constrain.get( oldDate );
@@ -162,10 +162,10 @@ void N2OComponent::run( const double runToDate ) {
         // Decay constant varies based on N2O concentrations
         // This is Eq. B8 in Ward and Mahowald, 2014
         TAU_N2O.set( runToDate, unitval( TN2O0.value( U_YRS ) * ( pow( previous_n2o /N0.value( U_PPBV_N2O ), -0.05 ) ), U_YRS ) );
-    
+
         // Current emissions are the sum of natural and anthropogenic sources
         const double current_n2oem = N2O_emissions.get( runToDate ).value( U_TG_N ) + N2O_natural_emissions.get( runToDate ).value( U_TG_N );
-    
+
         // This calculation follows Eq. B7 in Ward and Mahowald 2014
         const double dN2O = current_n2oem / UC_N2O - previous_n2o / TAU_N2O.get( runToDate ).value( U_YRS );
 
@@ -184,7 +184,7 @@ unitval N2OComponent::getData( const std::string& varName,
 
     unitval returnval;
 
-    if( varName == D_ATMOSPHERIC_N2O ) {
+    if( varName == D_N2O_CONC ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for atmospheric N2O" );
         returnval = N2O.get( date );
     } else if( varName == D_PREINDUSTRIAL_N2O ) {

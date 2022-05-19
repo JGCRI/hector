@@ -168,7 +168,6 @@ void ForcingComponent::init( Core* coreptr ) {
     core->registerCapability( D_RHO_BC, getComponentName());
     core->registerCapability( D_RHO_OC, getComponentName());
     core->registerCapability( D_RHO_SO2, getComponentName());
-    core->registerCapability( D_RF_NH3, getComponentName());
     core->registerCapability( D_RF_SO2, getComponentName());
     core->registerCapability( D_RF_ACI, getComponentName());
     for(int i=0; i<N_HALO_FORCINGS; ++i) {
@@ -177,13 +176,13 @@ void ForcingComponent::init( Core* coreptr ) {
     }
 
     // Register our dependencies
-    core->registerDependency( D_ATMOSPHERIC_CH4, getComponentName() );
-    core->registerDependency( D_ATMOSPHERIC_CO2, getComponentName() );
+    core->registerDependency( D_CH4_CONC, getComponentName() );
+    core->registerDependency( D_CO2_CONC, getComponentName() );
     core->registerDependency( D_ATMOSPHERIC_O3, getComponentName() );
     core->registerDependency( D_EMISSIONS_BC, getComponentName() );
     core->registerDependency( D_EMISSIONS_OC, getComponentName() );
     core->registerDependency( D_EMISSIONS_NH3, getComponentName() );
-    core->registerDependency( D_ATMOSPHERIC_N2O, getComponentName() );
+    core->registerDependency( D_N2O_CONC, getComponentName() );
     core->registerDependency( D_RF_CF4, getComponentName() );
     core->registerDependency( D_RF_C2F6, getComponentName() );
     core->registerDependency( D_RF_HFC23, getComponentName() );
@@ -335,15 +334,15 @@ void ForcingComponent::run( const double runToDate ) {
         forcings_t forcings;
 
         //  ---------- Major GHGs ----------
-        if( core->checkCapability( D_ATMOSPHERIC_CH4 ) && core->checkCapability( D_ATMOSPHERIC_N2O ) && core->checkCapability( D_ATMOSPHERIC_CO2) ) {
+        if( core->checkCapability( D_CH4_CONC ) && core->checkCapability( D_N2O_CONC ) && core->checkCapability( D_CO2_CONC) ) {
 
             // Parse our the pre industrial and concentrations to use in RF calculations
             double C0 = core->sendMessage( M_GETDATA, D_PREINDUSTRIAL_CO2 ).value( U_PPMV_CO2 );
             double M0 = core->sendMessage( M_GETDATA, D_PREINDUSTRIAL_CH4 ).value( U_PPBV_CH4 );
             double N0 = core->sendMessage( M_GETDATA, D_PREINDUSTRIAL_N2O ).value( U_PPBV_N2O );
-            double Ca = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_CO2, message_data( runToDate ) ).value( U_PPMV_CO2 );
-            double Ma = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_CH4, message_data( runToDate ) ).value( U_PPBV_CH4 );
-            double Na = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_N2O, message_data( runToDate ) ).value( U_PPBV_N2O );
+            double CO2_conc = core->sendMessage( M_GETDATA, D_CO2_CONC, message_data( runToDate ) ).value( U_PPMV_CO2 );
+            double Ma = core->sendMessage( M_GETDATA, D_CH4_CONC, message_data( runToDate ) ).value( U_PPBV_CH4 );
+            double Na = core->sendMessage( M_GETDATA, D_N2O_CONC, message_data( runToDate ) ).value( U_PPBV_N2O );
 
 
             // ---------- CO2 ----------
@@ -355,16 +354,16 @@ void ForcingComponent::run( const double runToDate ) {
             double C_alpha_max = C0 - (b1/(2*a1));
             double n2o_alpha = c1 * sqrt(Na);
             double alpha_prime;
-            if (Ca  > C_alpha_max){
+            if (CO2_conc  > C_alpha_max){
                 alpha_prime = d1 - (pow(b1, 2) / (4 * a1));
-            } else if (C0 < Ca && Ca < C_alpha_max){
-                alpha_prime = d1 + a1 * pow((Ca-C0), 2) + b1 * (Ca-C0);
-            } else if (Ca < C0){
+            } else if (C0 < CO2_conc && CO2_conc < C_alpha_max){
+                alpha_prime = d1 + a1 * pow((CO2_conc-C0), 2) + b1 * (CO2_conc-C0);
+            } else if (CO2_conc < C0){
                 alpha_prime = d1;
             } else {
                 H_THROW( "Caller is requesting unknown condition for CO2 SARF ");
             }
-            double sarf_co2 = (alpha_prime + n2o_alpha) * log(Ca/C0);
+            double sarf_co2 = (alpha_prime + n2o_alpha) * log(CO2_conc/C0);
             double fco2 = (sarf_co2 * delta_co2) + sarf_co2;
             forcings[D_RF_CO2 ].set( fco2, U_W_M2 );
 
@@ -374,7 +373,7 @@ void ForcingComponent::run( const double runToDate ) {
             // value to account for tropospheric interactions see 7.3.2.3.
             // Note that this simplified expression for radiative forcing was calibrated with a
             // preindustrial N20 value of 273.87 ppb.
-            double sarf_n2o = ( a2 * sqrt(Ca) + b2 * sqrt(Na) + c2 * sqrt(Ma) + d2) * (sqrt(Na) - sqrt(N0));
+            double sarf_n2o = ( a2 * sqrt(CO2_conc) + b2 * sqrt(Na) + c2 * sqrt(Ma) + d2) * (sqrt(Na) - sqrt(N0));
             double fn2o = (delta_n2o * sarf_n2o) + sarf_n2o;
             forcings[D_RF_N2O].set( fn2o, U_W_M2 );
 
@@ -436,10 +435,10 @@ void ForcingComponent::run( const double runToDate ) {
         };
 
         // Halocarbons can be disabled individually via the input file, so we run through all possible ones
-         for (unsigned hc=0; hc<halos.size(); ++hc) {
-            if( core->checkCapability( halos[hc] ) ) {
+         for ( auto hc : halos ) {
+            if( core->checkCapability( hc ) ) {
                 // Forcing values are actually computed by the halocarbon itself
-                forcings[ halos[hc] ] = core->sendMessage( M_GETDATA, halos[hc], message_data( runToDate ) );
+                forcings[ hc ] = core->sendMessage( M_GETDATA, hc, message_data( runToDate ) );
                 }
         }
 
@@ -501,11 +500,9 @@ void ForcingComponent::run( const double runToDate ) {
         // Calculate based as the sum of the different radiative forcings or as the user
         // supplied constraint.
         unitval Ftot( 0.0, U_W_M2 );  // W/m2
-        for( forcingsIterator it = forcings.begin(); it != forcings.end(); ++it ) {
-            Ftot = Ftot + ( *it ).second;
-            H_LOG( logger, Logger::DEBUG ) << "forcing " << ( *it).first << " in " << runToDate << " is " << ( *it ).second << std::endl;
+        for( auto f : forcings ) {
+            Ftot = Ftot + f.second;
         }
-
 
         // Otherwise if the user has supplied total forcing data, use that instead.
         if( Ftot_constrain.size() && runToDate <= Ftot_constrain.lastdate() ) {
@@ -514,7 +511,6 @@ void ForcingComponent::run( const double runToDate ) {
         } else {
             forcings[ D_RF_TOTAL ] = Ftot;
         }
-        H_LOG( logger, Logger::DEBUG ) << "forcing total is " << forcings[ D_RF_TOTAL ] << std::endl;
 
         //---------- Change to relative forcing ----------
         // Note that the code below assumes model is always consistently run from base-year forward.
@@ -526,10 +522,12 @@ void ForcingComponent::run( const double runToDate ) {
         }
 
         // Subtract base year forcing values from forcings, i.e. make them relative to base year
-        for( forcingsIterator it = forcings.begin(); it != forcings.end(); ++it ) {
-            forcings[ ( *it ).first ] = ( *it ).second - baseyear_forcings[ ( *it ).first ];
+        for( auto f : forcings ) {
+            forcings[ f.first ] = f.second - baseyear_forcings[ f.first ];
+            H_LOG( logger, Logger::DEBUG ) << "forcing " << f.first << " in " << runToDate << " is " << f.second << std::endl;
 
         }
+        H_LOG( logger, Logger::DEBUG ) << "forcing total is " << forcings[ D_RF_TOTAL ] << std::endl;
 
         // Store the forcings that we have calculated
         forcings_ts.set(runToDate, forcings);
@@ -545,81 +543,49 @@ unitval ForcingComponent::getData( const std::string& varName,
     unitval returnval;
     double getdate = date;             // This is why I hate declaring PBV args as const!
 
-
-    if(getdate == Core::undefinedIndex()) {
-        // If no date specified, provide the current date
-        getdate = currentYear;
-    }
-
-    if(getdate < baseyear) {
-        // Forcing component hasn't run yet, so there is no data to get.
-        returnval.set(0.0, U_W_M2);
-
-        // If requesting data not associated with a date aka a parameter,
-        // return the parameter value.
-        if(varName == D_DELTA_CH4){
-                      returnval = delta_ch4;
-        } else if (varName == D_DELTA_N2O){
-            returnval = delta_n2o;
-        } else if (varName == D_DELTA_CO2){
-            returnval = delta_co2;
-        } else if (varName == D_RHO_BC){
-            returnval = rho_bc;
-        } else if (varName == D_RHO_OC){
-            returnval = rho_oc;
-        } else if (varName == D_RHO_SO2){
-            returnval = rho_so2;
-        } else if (varName == D_RHO_NH3){
-            returnval = rho_nh3;
-        }
-
-        return returnval;
-    }
-
-    H_LOG(logger, Logger::DEBUG) << "getData request, time= "
-                                 << getdate
-                                 << "  baseyear = "
-                                 << baseyear
-                                 << std::endl;
-
-    forcings_t forcings(forcings_ts.get(getdate));
-
-    // Return values associated with date information.
-    if( varName == D_RF_BASEYEAR ) {
+    // If requesting data not associated with a date aka a parameter,
+    // return the parameter value.
+    if(varName == D_DELTA_CH4){
+        returnval = delta_ch4;
+    } else if (varName == D_DELTA_N2O){
+        returnval = delta_n2o;
+    } else if (varName == D_DELTA_CO2){
+        returnval = delta_co2;
+    } else if (varName == D_RHO_BC){
+        returnval = rho_bc;
+    } else if (varName == D_RHO_OC){
+        returnval = rho_oc;
+    } else if (varName == D_RHO_SO2){
+        returnval = rho_so2;
+    } else if (varName == D_RHO_NH3){
+        returnval = rho_nh3;
+    } else if (varName == D_RF_BASEYEAR){
         returnval.set( baseyear, U_UNITLESS );
     } else {
+        // All other data require a date
+        H_ASSERT( date != Core::undefinedIndex(), "Date required for " + varName );
+
+        // If before RF base year, return zero
+        if(getdate < baseyear) {
+            returnval.set( 0.0, U_W_M2 );
+            return returnval;
+       }
+
+        // Look up the forcing name and value
+        forcings_t forcings( forcings_ts.get( getdate ));
+
         std::string forcing_name;
-        auto forcit = forcing_name_map.find(varName);
+        auto forcit = forcing_name_map.find( varName );
         if(forcit != forcing_name_map.end()) {
             forcing_name = forcing_name_map[varName];
-        }
-        else {
+        } else {
             forcing_name = varName;
         }
         std::map<std::string, unitval>::const_iterator forcing = forcings.find(forcing_name);
         if ( forcing != forcings.end() ) {
-            // from the forcing map
-            returnval = forcing->second;
+            returnval = forcing->second;            // from the forcing map
         } else {
-            if (currentYear < baseyear) {
-                returnval.set( 0.0, U_W_M2 );
-            } else if (varName == D_DELTA_CH4){
-                returnval = delta_ch4;
-            } else if (varName == D_DELTA_N2O){
-                returnval = delta_n2o;
-            } else if (varName == D_DELTA_CO2){
-                returnval = delta_co2;
-            } else if (varName == D_RHO_BC){
-                returnval = rho_bc;
-            } else if (varName == D_RHO_OC){
-                returnval = rho_oc;
-            } else if (varName == D_RHO_SO2){
-                returnval = rho_so2;
-            } else if (varName == D_RHO_NH3){
-                returnval = rho_nh3;
-            } else {
-                H_THROW( "Caller is requesting unknown variable: " + varName );
-            }
+            H_THROW( "Caller is requesting unknown variable: " + varName );
         }
     }
 

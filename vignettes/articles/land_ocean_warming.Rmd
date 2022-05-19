@@ -16,9 +16,9 @@ This vignette demonstrates how providing a user-defined land-ocean warming ratio
 ```{r setup}
 library(ggplot2)
 theme_set(theme_bw(base_size = 14))
-
 library(hector)
 ```
+
 
 ## Run default Hector 
 
@@ -26,7 +26,7 @@ Complete a default run of Hector, one that uses DOECLIM to calculate land and oc
 
 ```{r}
 years_to_keep <- 1850:2100
-vars_to_keep <- c(GLOBAL_TEMP(), LAND_AIR_TEMP(), OCEAN_AIR_TEMP(), ATMOSPHERIC_CO2())
+vars_to_keep <- c(GLOBAL_TAS(), LAND_TAS(), OCEAN_TAS(), CONCENTRATIONS_CO2())
 
 inifile <- file.path(system.file('input', package = 'hector'), 'hector_ssp245.ini')
 
@@ -50,7 +50,6 @@ ggplot(data = out1) +
 ## Run Hector with different land ocean warming ratios 
 
 Start by writing a function to help us set the land ocean warming ratio, run hector, and fetch some results.
-
 
 ```{r}
 # Helper function that runs a Hector core with a new land-ocean warming ratio. 
@@ -101,8 +100,7 @@ ggplot(data = hector_lo_results) +
 ```
 
 
-## Compare with default Hector
-
+## Compare default Hector with user provided land ocean warming ratio
 
 ```{r}
 last_plot() + 

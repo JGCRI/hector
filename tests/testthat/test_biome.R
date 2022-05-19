@@ -26,9 +26,9 @@ test_that("Hector runs with multiple biomes created via INI file", {
     on.exit(shutdown(core), add = TRUE)
     dates <- seq(2000, 2100)
     vars <- c(
-      ATMOSPHERIC_CO2(),
+      CONCENTRATIONS_CO2(),
       RF_TOTAL(),
-      GLOBAL_TEMP()
+      GLOBAL_TAS()
     )
     fetchvars(core, dates, vars)
   }
@@ -99,15 +99,15 @@ test_that("Hector runs with multiple biomes created via INI file", {
     "tropical.warmingfactor = 1.0"
   ), after = isnbox)
   warm_biome_result <- quickrun(warm_biome, "warm_biome")
-  default_tgav <- ssp245_result[
-    ssp245_result[["variable"]] == "Tgav",
+  default_tas <- ssp245_result[
+    ssp245_result[["variable"]] == GLOBAL_TAS(),
     "value"
   ]
-  warm_tgav <- warm_biome_result[
-    warm_biome_result[["variable"]] == "Tgav",
+  warm_tas <- warm_biome_result[
+    warm_biome_result[["variable"]] == GLOBAL_TAS(),
     "value"
   ]
-  expect_true(mean(default_tgav) < mean(warm_tgav))
+  expect_true(mean(default_tas) < mean(warm_tas))
 
   # Try to add a fake biome. This should fail because other variables
   # haven't been initialized.
@@ -272,7 +272,7 @@ test_that("Split biomes, and modify parameters", {
     core <- ssp245()
     orig_val <- fetchvars(core, NA, var_f())[["value"]]
     invisible(run(core))
-    basic <- fetchvars(core, 2000:2100, ATMOSPHERIC_CO2())
+    basic <- fetchvars(core, 2000:2100, CONCENTRATIONS_CO2())
     # Create two biomes, change one of the parameters
     invisible(split_biome(core, "global", c("a", "b")))
     setvar(core, NA, var_f("b"), value, NA)
@@ -282,7 +282,7 @@ test_that("Split biomes, and modify parameters", {
     reset(core, core$reset_date)
     invisible(run(core))
     # Check that the new result had higher CO2 than original one
-    new <- fetchvars(core, 2000:2100, ATMOSPHERIC_CO2())
+    new <- fetchvars(core, 2000:2100, CONCENTRATIONS_CO2())
     expect_true(all(basic[["value"]] < new[["value"]]))
   }
 

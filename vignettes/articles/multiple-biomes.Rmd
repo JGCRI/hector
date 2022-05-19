@@ -35,7 +35,7 @@ First, let's run a reference case.
 ssp245 <- system.file("input", "hector_ssp245.ini", package = "hector")
 core <- newcore(ssp245, suppresslogging = TRUE)
 invisible(run(core, 2100))
-result_vars <- c(ATMOSPHERIC_CO2(), RF_TOTAL(), GLOBAL_TEMP(),
+result_vars <- c(CONCENTRATIONS_CO2(), RF_TOTAL(), GLOBAL_TAS(),
                  VEG_C(), SOIL_C(), DETRITUS_C())
 reference_results <- fetchvars(core, 2000:2100, result_vars, scenario = "reference")
 ```

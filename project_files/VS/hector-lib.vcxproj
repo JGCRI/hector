@@ -30,6 +30,7 @@
     <ClInclude Include="..\..\inst\include\halocarbon_component.hpp" />
     <ClInclude Include="..\..\inst\include\imodel_component.hpp" />
     <ClInclude Include="..\..\inst\include\n2o_component.hpp" />
+    <ClInclude Include="..\..\inst\include\nh3_component.hpp" />
     <ClInclude Include="..\..\inst\include\o3_component.hpp" />
     <ClInclude Include="..\..\inst\include\ocean_component.hpp" />
     <ClInclude Include="..\..\inst\include\oc_component.hpp" />
@@ -68,7 +69,9 @@
     <ClCompile Include="..\..\src\dummy_model_component.cpp" />
     <ClCompile Include="..\..\src\forcing_component.cpp" />
     <ClCompile Include="..\..\src\halocarbon_component.cpp" />
+    <ClCompile Include="..\..\src\h_util.cpp" />
     <ClCompile Include="..\..\src\n2o_component.cpp" />
+    <ClCompile Include="..\..\src\nh3_component.cpp" />
     <ClCompile Include="..\..\src\o3_component.cpp" />
     <ClCompile Include="..\..\src\ocean_component.cpp" />
     <ClCompile Include="..\..\src\oc_component.cpp" />

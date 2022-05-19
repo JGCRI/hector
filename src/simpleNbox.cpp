@@ -38,25 +38,29 @@ void identity_tests(bool trk) {
  */
 SimpleNbox::SimpleNbox() : CarbonCycleModel( 6 ), masstot(0.0) {
     ffiEmissions.allowInterp( true );
-    ffiEmissions.name = "ffiEmissions";
+    ffiEmissions.name = D_FFI_EMISSIONS;
     daccsUptake.allowInterp( true );
-    daccsUptake.name = "daccsUptake";
+    daccsUptake.name = D_DACCS_UPTAKE;
     lucEmissions.allowInterp( true );
-    lucEmissions.name = "lucEmissions";
-    Ftalbedo.allowInterp( true );
-    Ftalbedo.name = "albedo";
-    CO2_constrain.name = "CO2_constrain";
-    NBP_constrain.name = "NBP_constrain";
-    
+    lucEmissions.name = D_LUC_EMISSIONS;
+    lucUptake.allowInterp( true );
+    lucUptake.name = D_LUC_UPTAKE;
+    Falbedo.allowInterp( true );
+    Falbedo.name = D_RF_T_ALBEDO;
+    CO2_constrain.name = D_CO2_CONSTRAIN;
+    NBP_constrain.name = D_NBP_CONSTRAIN;
+
     // The actual atmos_c value will be filled in later by setData
-    atmos_c.set(0.0, U_PGC, false, "atmos_c");
+    atmos_c.set(0.0, U_PGC, false, D_ATMOSPHERIC_CO2);
+    atmos_c_ts.allowInterp( true );
+    atmos_c_ts.name = "atmos_c_ts";
 
     // earth_c keeps track of how much fossil C is pulled out
     // so that we can do a mass-balance check throughout the run
     // 2020-02-05 With the introduction of non-negative 'fluxpool' class
     // we can't start earth_c at zero. Value of 5500 is set to avoid
     // overdrawing in RCP 8.5
-    earth_c.set( 5500, U_PGC, false, "earth_c" );
+    earth_c.set( 5500, U_PGC, false, D_EARTHC );
 }
 
 
@@ -74,18 +78,18 @@ void SimpleNbox::init( Core* coreptr ) {
     tempferts[ SNBOX_DEFAULT_BIOME ] = 1.0;
     final_npp[ SNBOX_DEFAULT_BIOME ] = fluxpool( 0.0, U_PGC_YR, false, "final_npp" );
     final_rh[ SNBOX_DEFAULT_BIOME ] = fluxpool( 0.0, U_PGC_YR, false, "final_rh" );
-    
+
     // Constraint residuals
     Ca_residual.set( 0.0, U_PGC );
-    
+
     // Initialize the `biome_list` with just "global"
     biome_list.push_back( SNBOX_DEFAULT_BIOME );
 
     Tland_record.allowInterp( true );
 
     // Register the data we can provide
+    core->registerCapability( D_CO2_CONC, getComponentName() );
     core->registerCapability( D_ATMOSPHERIC_CO2, getComponentName() );
-    core->registerCapability( D_ATMOSPHERIC_C, getComponentName() );
     core->registerCapability( D_PREINDUSTRIAL_CO2, getComponentName() );
     core->registerCapability( D_RF_T_ALBEDO, getComponentName() );
     core->registerCapability( D_NBP, getComponentName() );
@@ -98,7 +102,7 @@ void SimpleNbox::init( Core* coreptr ) {
     core->registerCapability( D_RH, getComponentName() );
 
     // Register our dependencies
-    core->registerDependency( D_OCEAN_CFLUX, getComponentName() );
+    core->registerDependency( D_OCEAN_C_UPTAKE, getComponentName() );
 
     // Register the inputs we can receive from outside
     core->registerInput(D_FFI_EMISSIONS, getComponentName());
@@ -198,7 +202,7 @@ void SimpleNbox::setData( const std::string &varName,
     }
     try {
         // Initial pools
-        if( varNameParsed == D_ATMOSPHERIC_C ) {
+        if( varNameParsed == D_ATMOSPHERIC_CO2 ) {
             // Hector input files specify initial atmospheric CO2 in terms of
             // the carbon pool, rather than the CO2 concentration.  Since we
             // don't have a place to store the initial carbon pool, we convert
@@ -245,7 +249,7 @@ void SimpleNbox::setData( const std::string &varName,
         // Albedo effect
         else if( varNameParsed == D_RF_T_ALBEDO ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            Ftalbedo.set( data.date, data.getUnitval( U_W_M2 ) );
+            Falbedo.set( data.date, data.getUnitval( U_W_M2 ) );
         }
 
         // Partitioning
@@ -289,7 +293,13 @@ void SimpleNbox::setData( const std::string &varName,
         }
         else if( varNameParsed == D_LUC_EMISSIONS ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
-            lucEmissions.set( data.date, data.getUnitval( U_PGC_YR ) );
+            unitval luc = data.getUnitval( U_PGC_YR );
+            lucEmissions.set( data.date, fluxpool( luc.value( U_PGC_YR ), U_PGC_YR ) );
+        }
+        else if( varNameParsed == D_LUC_UPTAKE ) {
+            H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
+            unitval luc = data.getUnitval( U_PGC_YR );
+            lucUptake.set( data.date, fluxpool( luc.value( U_PGC_YR ), U_PGC_YR ) );
         }
         // Atmospheric CO2 record to constrain model to (optional)
         else if( varNameParsed == D_CO2_CONSTRAIN ) {
@@ -304,7 +314,7 @@ void SimpleNbox::setData( const std::string &varName,
             H_ASSERT( biome == SNBOX_DEFAULT_BIOME, "NBP (land-atmosphere) constraint must be global" );
             NBP_constrain.set( data.date, data.getUnitval( U_PGC_YR ) );
         }
-        
+
         // Fertilization
         else if( varNameParsed == D_BETA ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
@@ -334,13 +344,13 @@ void SimpleNbox::setData( const std::string &varName,
 /*! \brief      Convert current atmospheric C to [CO2]
  *  \returns    Atmospheric CO2 concentration in ppmv
  */
-fluxpool SimpleNbox::Ca( double time ) const
+fluxpool SimpleNbox::CO2_conc( double time ) const
 {
-    double ca = atmos_c.value( U_PGC );
+    double CO2_conc = atmos_c.value( U_PGC );
     if( time != Core::undefinedIndex() ) {
-        ca = atmos_c_ts.get(time).value( U_PGC );
+        CO2_conc = atmos_c_ts.get(time).value( U_PGC );
     }
-    return fluxpool( ca * PGC_TO_PPMVCO2, U_PPMV_CO2);
+    return fluxpool( CO2_conc * PGC_TO_PPMVCO2, U_PPMV_CO2);
 }
 
 //------------------------------------------------------------------------------
@@ -353,9 +363,9 @@ fluxpool SimpleNbox::sum_map( fluxpool_stringmap pool ) const
 {
     H_ASSERT( pool.size(), "can't sum an empty map" );
     fluxpool sum( 0.0, pool.begin()->second.units(), pool.begin()->second.tracking);
-    for( fluxpool_stringmap::const_iterator it = pool.begin(); it != pool.end(); it++ ) {
-        H_ASSERT(sum.tracking == (it->second).tracking, "tracking mismatch in sum_map function");
-        sum = sum + it->second;
+    for( auto p : pool ) {
+        H_ASSERT(sum.tracking == (p.second).tracking, "tracking mismatch in sum_map function");
+        sum = sum + p.second;
     }
     return sum;
 }
@@ -370,8 +380,9 @@ double SimpleNbox::sum_map( double_stringmap pool ) const
 {
     H_ASSERT( pool.size(), "can't sum an empty map" );
     double sum = 0.0;
-    for( double_stringmap::const_iterator it = pool.begin(); it != pool.end(); it++ )
-        sum = sum + it->second;
+    for( auto p : pool ) {
+        sum = sum + p.second;
+    }
     return sum;
 }
 
@@ -393,7 +404,7 @@ fluxpool SimpleNbox::sum_fluxpool_biome_ts( const string varName,
     fluxpool returnval;
     std::string biome_error = "Biome '" + biome + "' missing from biome list. " +
         "Hit this error while trying to retrieve variable: '" + varName + "'.";
-    
+
     if(biome == SNBOX_DEFAULT_BIOME) {
         if(date == Core::undefinedIndex())
             returnval = sum_map( pool );
@@ -434,13 +445,14 @@ unitval SimpleNbox::getData(const std::string& varName,
             "Hit this error while trying to retrieve variable: '" + varName + "'.";
     }
 
-    if( varNameParsed == D_ATMOSPHERIC_C ) {
+    if( varNameParsed == D_ATMOSPHERIC_CO2 ) {
         if(date == Core::undefinedIndex())
             returnval = atmos_c;
         else
             returnval = atmos_c_ts.get(date);
-    } else if( varNameParsed == D_ATMOSPHERIC_CO2 ) {
-        returnval = Ca( date );
+    } else if( varNameParsed == D_CO2_CONC ) {
+        H_ASSERT( date != Core::undefinedIndex(), "Date required for atmospheric CO2" );
+        returnval = CO2_conc( date );
     } else if( varNameParsed == D_ATMOSPHERIC_C_RESIDUAL ) {
         if(date == Core::undefinedIndex())
             returnval = Ca_residual;
@@ -467,7 +479,7 @@ unitval SimpleNbox::getData(const std::string& varName,
             returnval = nbp_ts.get( date );
     } else if( varNameParsed == D_RF_T_ALBEDO ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for albedo forcing" );
-        returnval = Ftalbedo.get( date );
+        returnval = Falbedo.get( date );
 
         // Partitioning parameters.
     } else if(varNameParsed == D_F_NPPV) {
@@ -509,6 +521,9 @@ unitval SimpleNbox::getData(const std::string& varName,
     } else if( varNameParsed == D_LUC_EMISSIONS ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for luc emissions" );
         returnval = lucEmissions.get( date );
+    } else if( varNameParsed == D_LUC_UPTAKE ) {
+        H_ASSERT( date != Core::undefinedIndex(), "Date required for luc uptake" );
+        returnval = lucUptake.get( date );
     } else if( varNameParsed == D_CO2_CONSTRAIN ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for atmospheric CO2 constraint" );
         if (CO2_constrain.exists( date )) {
@@ -559,8 +574,7 @@ void SimpleNbox::reset(double time)
     tempfertd = tempfertd_tv.get(time);
 
     // Calculate derived quantities
-    for( auto it = biome_list.begin(); it != biome_list.end(); it++ ) {
-        std::string biome = *it;
+    for( auto biome : biome_list ) {
         if(in_spinup) {
             co2fert[ biome ] = 1.0; // co2fert fixed if in spinup.  Placeholder in case we decide to allow resetting into spinup
         }
@@ -580,7 +594,7 @@ void SimpleNbox::reset(double time)
     soil_c_tv.truncate(time);
     final_npp_tv.truncate(time);
     final_rh_tv.truncate(time);
-    
+
     Ca_residual_ts.truncate(time);
 
     tempferts_tv.truncate(time);
@@ -619,7 +633,7 @@ void SimpleNbox::record_state(double t)
     soil_c_tv.set(t, soil_c);
     final_npp_tv.set(t, final_npp);
     final_rh_tv.set(t, final_rh);
-    
+
     Ca_residual_ts.set(t, Ca_residual);
 
     tempfertd_tv.set(t, tempfertd);
@@ -728,7 +742,7 @@ void SimpleNbox::deleteBiome(const std::string& biome) // Throw an error if the 
     remove_biome_from_ts(final_npp_tv, biome);
     final_rh.erase( biome );
     remove_biome_from_ts(final_rh_tv, biome);
-    
+
     // Others
     npp_flux0.erase( biome );
     tempfertd.erase( biome );

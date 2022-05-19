@@ -148,7 +148,7 @@ void OHComponent::run( const double runToDate )
     unitval current_nmvoc = NMVOC_emissions.get( runToDate );
 
     //get this from CH4 component, this is last year's value
-   const double previous_ch4 = core->sendMessage( M_GETDATA, D_ATMOSPHERIC_CH4, oldDate ).value( U_PPBV_CH4 );
+   const double previous_ch4 = core->sendMessage( M_GETDATA, D_CH4_CONC, oldDate ).value( U_PPBV_CH4 );
 
    double toh = 0.0;
    if ( previous_ch4 != M0 ) // if we are not at the first time

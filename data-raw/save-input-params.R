@@ -5,6 +5,6 @@ devtools::load_all()
 # Read in the input parameter csv file
 input_csv <- read.csv("./data-raw/input_params.csv")
 
-usethis::use_data(input_csv, internal = TRUE, overwrite = TRUE)
 # Save as an object in the package
-usethis::use_data(input_csv, overwrite = TRUE)
+usethis::use_data(input_csv, internal = TRUE, overwrite = TRUE)
+

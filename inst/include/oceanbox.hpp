@@ -50,7 +50,7 @@ private:
 
 	std::string Name;
 
-    unitval Ca;             ///< Atmospheric CO2, ppm
+    unitval CO2_conc;             ///< Atmospheric [CO2], ppm
     unitval Tbox;           ///< box absolute temperature, degC
     unitval pco2_lastyear;  //
     unitval dic_lastyear;   //

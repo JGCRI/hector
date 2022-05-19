@@ -13,7 +13,7 @@ test_that("Units retrieval works.", {
 })
 
 test_that("Invalid units retrieval warns.", {
-  vars <- c(ECS(), EMISSIONS_SO2(), ATMOSPHERIC_C(), BETA())
+  vars <- c(ECS(), EMISSIONS_SO2(), ATMOSPHERIC_CO2(), BETA())
   units_true <- c("degC", "Gg S", NA, "(unitless)")
   expect_warning(
     units <- getunits(vars),

@@ -175,7 +175,7 @@ void oceanbox::log_state() {
  */
 void oceanbox::compute_fluxes( const unitval current_Ca, const fluxpool atmosphere_cpool, const double yf, const bool do_circ ) {
 
-    Ca = current_Ca;
+    CO2_conc = current_Ca;
 
 	// Step 1 : run chemistry mode, if applicable
 	if( active_chemistry ) {
@@ -183,7 +183,7 @@ void oceanbox::compute_fluxes( const unitval current_Ca, const fluxpool atmosphe
 		OB_LOG( logger, Logger::DEBUG) << Name << " running ocean_csys" << endl;
 
 		mychemistry.ocean_csys_run( Tbox, carbon );
-        atmosphere_flux = unitval( mychemistry.calc_annual_surface_flux( Ca ).value( U_PGC_YR ), U_PGC );
+        atmosphere_flux = unitval( mychemistry.calc_annual_surface_flux( CO2_conc ).value( U_PGC_YR ), U_PGC );
 
 	} else  {
 		// No active chemistry, so atmosphere-box flux is simply a function of the
@@ -279,7 +279,7 @@ void oceanbox::new_year( const unitval SST ) {
     Tbox = compute_tabsC( SST );
 
     // save for Revelle Calc
-    pco2_lastyear = Ca;
+    pco2_lastyear = CO2_conc;
 
     if( surfacebox ) {
         atmosphere_flux.set( 0.0, U_PGC );
@@ -304,7 +304,7 @@ double oceanbox::fmin( double alk, void *params ) {
 	mychemistry.ocean_csys_run( Tbox, carbon );
 
 	double f_target = *( double * )params;
-	double diff = fabs( mychemistry.calc_annual_surface_flux( Ca ).value( U_PGC_YR ) - f_target );
+	double diff = fabs( mychemistry.calc_annual_surface_flux( CO2_conc ).value( U_PGC_YR ) - f_target );
 	//    OB_LOG( logger, Logger::DEBUG) << "fmin at " << alk << ", f_target=" << f_target << ", returning " << diff << endl;
 
 	return diff;
@@ -347,7 +347,7 @@ void oceanbox::chem_equilibrate( const unitval current_Ca ) {
 
 	using namespace std;
 
-    Ca = current_Ca;
+    CO2_conc = current_Ca;
 
 	H_ASSERT( active_chemistry, "chemistry not turned on" );
 	OB_LOG( logger, Logger::DEBUG) << "Equilibrating chemistry for box " << Name << endl;
@@ -355,7 +355,7 @@ void oceanbox::chem_equilibrate( const unitval current_Ca ) {
 	// Initialize the box chemistry values: temperature, atmospheric CO2, DIC
 
     unitval dic = mychemistry.convertToDIC( carbon );
-	OB_LOG( logger, Logger::DEBUG) << "Ca=" << Ca << ", DIC=" << dic <<  endl;
+	OB_LOG( logger, Logger::DEBUG) << "[CO2]=" << CO2_conc << ", DIC=" << dic <<  endl;
 
 	// Tune the chemistry model's alkalinity parameter to produce a particular flux.
 	// This happens after the box model has been spun up with chemistry turned off, before the chemistry
