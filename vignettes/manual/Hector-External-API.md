@@ -138,7 +138,7 @@ There is a bit of inconsistency about the use of dates in these calls. Generally
 The return value is a `unitval` structure. These can be manipulated directly, or if they are assigned to a double, the units will be stripped off leaving only the value:
 ```C++
 double globaltemp = hcore.sendMessage(M_GETDATA, D_GLOBAL_TEMP);
-double ocean_c_flux = hcore.sendMessage(M_GETDATA, D_OCEAN_CFLUX);
+double ocean_c_flux = hcore.sendMessage(M_GETDATA, D_OCEAN_C_UPTAKE);
 ```
 
 ### Shutdown

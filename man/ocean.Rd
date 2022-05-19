@@ -2,7 +2,7 @@
 % Please edit documentation in R/aadoc.R, R/RcppExports.R
 \name{ocean}
 \alias{ocean}
-\alias{OCEAN_CFLUX}
+\alias{OCEAN_UPTAKE}
 \alias{OCEAN_C}
 \alias{OCEAN_C_HL}
 \alias{OCEAN_C_LL}
@@ -24,14 +24,14 @@
 \alias{DIC_HL}
 \alias{DIC}
 \alias{DIC_LL}
-\alias{TEMP_HL}
-\alias{TEMP_LL}
+\alias{SST_HL}
+\alias{SST_LL}
 \alias{CO3_LL}
 \alias{CO3_HL}
 \alias{CO3}
 \title{Identifiers for quantities in the ocean component}
 \usage{
-OCEAN_CFLUX()
+OCEAN_UPTAKE()
 
 OCEAN_C()
 
@@ -75,9 +75,9 @@ DIC()
 
 DIC_LL()
 
-TEMP_HL()
+SST_HL()
 
-TEMP_LL()
+SST_LL()
 
 CO3_LL()
 
@@ -91,7 +91,7 @@ component using the \code{\link{GETDATA}} message type.
 }
 \section{Functions}{
 \itemize{
-\item \code{OCEAN_CFLUX}: Atmosphere-ocean carbon flux
+\item \code{OCEAN_UPTAKE}: Atmosphere-ocean carbon flux
 
 \item \code{OCEAN_C}: Ocean total carbon pool
 
@@ -135,9 +135,9 @@ component using the \code{\link{GETDATA}} message type.
 
 \item \code{DIC_LL}: Dissolved inorganic carbon, low-latitude
 
-\item \code{TEMP_HL}: Absolute ocean surface temperature, high-latitude (deg C)
+\item \code{SST_HL}: Absolute ocean surface temperature, high-latitude (deg C)
 
-\item \code{TEMP_LL}: Absolute ocean surface temperature, low-latitude (deg C)
+\item \code{SST_LL}: Absolute ocean surface temperature, low-latitude (deg C)
 
 \item \code{CO3_LL}: Carbonate concentration, low-latitude
 

@@ -53,7 +53,7 @@ public:
 
 	unitval convertToDIC( const unitval carbon );
 	void ocean_csys_run( unitval tbox, unitval carbon );
-    unitval calc_annual_surface_flux( const unitval& Ca, const double cpoolscale=1.0 ) const;
+    unitval calc_annual_surface_flux( const unitval& CO2_conc, const double cpoolscale=1.0 ) const;
     unitval get_K0() const { return K0; };
     unitval get_Tr() const { return Tr; };
 
@@ -61,7 +61,7 @@ public:
     double get_alk() const { return alk; };
 
 private:
-    double calc_monthly_surface_flux( const unitval& Ca, const double cpoolscale=1.0 ) const;
+    double calc_monthly_surface_flux( const unitval& CO2_conc, const double cpoolscale=1.0 ) const;
 
     unitval K0;     ///< solubility of CO2 calculated from Weiss 1974 (mol * L-1 * atm-1)
     unitval Tr;     ///< gas transfer coefficient (gC m-2 month-1 uatm-1)

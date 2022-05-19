@@ -1178,8 +1178,8 @@ return D_CONSTRAINT_CH3Br;
 //' @rdname methane
 //' @export
 // [[Rcpp::export]]
-String ATMOSPHERIC_CH4() {
-return D_ATMOSPHERIC_CH4;
+String CONCENTRATIONS_CH4() {
+return D_CH4_CONC;
 }
 
 //' @describeIn constraints CH4 concentration constraint \code{"ppbv CH4"}
@@ -1244,8 +1244,8 @@ return D_LIFETIME_STRAT;
 //' @describeIn concentrations Atmospheric N2O concentration
 //' @export
 // [[Rcpp::export]]
-String ATMOSPHERIC_N2O() {
-return D_ATMOSPHERIC_N2O;
+String CONCENTRATIONS_N2O() {
+return D_N2O_CONC;
 }
 
 //' @describeIn concentrations Preindustrial atmospheric N2O concentration
@@ -1334,8 +1334,8 @@ String EMISSIONS_NH3() {
 //' @describeIn ocean Atmosphere-ocean carbon flux
 //' @export
 // [[Rcpp::export]]
-String OCEAN_CFLUX() {
-return D_OCEAN_CFLUX;
+String OCEAN_UPTAKE() {
+return D_OCEAN_C_UPTAKE;
 }
 
 //' @describeIn ocean Ocean total carbon pool
@@ -1489,14 +1489,14 @@ return D_DIC_LL;
 //' @describeIn ocean Absolute ocean surface temperature, high-latitude (deg C)
 //' @export
 // [[Rcpp::export]]
-String TEMP_HL() {
+String SST_HL() {
 return D_TEMP_HL;
 }
 
 //' @describeIn ocean Absolute ocean surface temperature, low-latitude (deg C)
 //' @export
 // [[Rcpp::export]]
-String TEMP_LL() {
+String SST_LL() {
 return D_TEMP_LL;
 }
 
@@ -1533,8 +1533,8 @@ return D_NBP;
 //' @rdname carboncycle
 //' @export
 // [[Rcpp::export]]
-String ATMOSPHERIC_CO2() {
-return D_ATMOSPHERIC_CO2;
+String CONCENTRATIONS_CO2() {
+return D_CO2_CONC;
 }
 
 //' @rdname carboncycle
@@ -1561,8 +1561,8 @@ return D_PREINDUSTRIAL_CO2;
 //' @rdname carboncycle
 //' @export
 // [[Rcpp::export]]
-String ATMOSPHERIC_C() {
-return D_ATMOSPHERIC_C;
+String ATMOSPHERIC_CO2() {
+return D_ATMOSPHERIC_CO2;
 }
 
 //' @rdname carboncycle
@@ -1814,30 +1814,30 @@ return D_VOLCANIC_SCALE;
 //' @describeIn temperature Global mean air temperature anomaly
 //' @export
 // [[Rcpp::export]]
-String GLOBAL_TEMP() {
-return D_GLOBAL_TEMP;
+String GLOBAL_TAS() {
+return D_GLOBAL_TAS;
 }
 
-//' @describeIn temperature Average ocean surface temperature anomaly
+//' @describeIn temperature Average sea surface temperature anomaly
 //' @export
 // [[Rcpp::export]]
-String OCEAN_SURFACE_TEMP() {
-return D_OCEAN_SURFACE_TEMP;
+String SST() {
+return D_SST;
 }
 
-//' @describeIn temperature Average ocean air temperature anomaly
+//' @describeIn temperature Average air temperature anomaly over the ocean
 //' @export
 // [[Rcpp::export]]
-String OCEAN_AIR_TEMP() {
-return D_OCEAN_AIR_TEMP;
+String OCEAN_TAS() {
+return D_OCEAN_TAS;
 }
 
-//' @describeIn temperature Average land temperature anomaly, land surface temperature and air temperature
+//' @describeIn temperature Average air temperature anomaly over land, land surface temperature and air temperature
 //' over land are assumed to be equivalent.
 //' @export
 // [[Rcpp::export]]
-String LAND_AIR_TEMP() {
-return D_LAND_AIR_TEMP;
+String LAND_TAS() {
+return D_LAND_TAS;
 }
 
 //' @describeIn parameters Land-Ocean Warming Ratio (\code{"(unitless)"}), by default set to 0
@@ -1852,8 +1852,8 @@ String LO_WARMING_RATIO(){
 //' @describeIn carboncycle Constrain global mean temperature  (\code{"(degC)"})
 //' @export
 // [[Rcpp::export]]
-String TGAV_CONSTRAIN() {
-    return D_TGAV_CONSTRAIN;
+String TAS_CONSTRAIN() {
+    return D_TAS_CONSTRAIN;
 }
 
 

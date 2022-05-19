@@ -107,16 +107,16 @@ void SimpleNbox::prepareToRun()
     // TODO: this is a hack, because currently we can't pass fluxpools around via sendMessage
     omodel->set_atmosphere_sources( atmos_c );  // inform ocean model what our atmosphere looks like
 
-    if( !Ftalbedo.size() ) {          // if no albedo data, assume constant
+    if( !Falbedo.size() ) {          // if no albedo data, assume constant
         unitval alb( -0.2, U_W_M2 ); // default is MAGICC value
-        Ftalbedo.set( core->getStartDate(), alb );
-        Ftalbedo.set( core->getEndDate(), alb );
+        Falbedo.set( core->getStartDate(), alb );
+        Falbedo.set( core->getEndDate(), alb );
     }
 
     // Set atmospheric C based on the requested preindustrial [CO2]
     atmos_c.set( C0.value( U_PPMV_CO2 ) * PPMVCO2_TO_PGC, U_PGC, atmos_c.tracking, atmos_c.name );
     atmos_c_ts.set( core->getStartDate(), atmos_c );
-    
+
     // Constraint logging
     if( CO2_constrain.size() ) {
         Logger& glog = core->getGlobalLogger();
@@ -126,7 +126,7 @@ void SimpleNbox::prepareToRun()
         Logger& glog = core->getGlobalLogger();
         H_LOG( glog, Logger::WARNING ) << "NBP (land-atmosphere C exchange) will be constrained to user-supplied values!" << std::endl;
     }
-    
+
     // One-time checks
     for( auto biome : biome_list ) {
         H_ASSERT( beta.at( biome ) >= 0.0, "beta < 0" );
@@ -153,7 +153,7 @@ void SimpleNbox::run( const double runToDate )
         H_LOG( logger, Logger::NOTICE ) << "Tracking start" << std::endl;
         start_tracking();
     }
-    Tland_record.set( runToDate, core->sendMessage( M_GETDATA, D_LAND_AIR_TEMP ) );
+    Tland_record.set( runToDate, core->sendMessage( M_GETDATA, D_LAND_TAS) );
 
     // TODO: this is a hack, because currently we can't pass fluxpools around via sendMessage
     omodel->set_atmosphere_sources( atmos_c );  // inform ocean model what our atmosphere looks like
@@ -251,12 +251,12 @@ void SimpleNbox::stashCValues( double t, const double c[] )
         - rh_total.value(U_PGC_YR)
         - luc_e_untracked.value(U_PGC_YR)
         + luc_u_untracked.value(U_PGC_YR);
-    
+
     // Note: we calculate total NPP and RH and *don't* adjust it if there's an NBP
     // constraint, because it's used for weighting with the npp(biome) and rh(biome) calls
     // below. So we want it to keep its original total for proper weighting
     fluxpool npp_rh_total = npp_total + rh_total; // these are both positive
-    
+
     // Pre-NBP constraint new terrestrial pool values
     unitval newveg( c[ SNBOX_VEG ], U_PGC );
     unitval newdet( c[ SNBOX_DET ], U_PGC );
@@ -271,7 +271,7 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     if(!core->inSpinup() && NBP_constrain.size() && NBP_constrain.exists(rounded_t) ) {
         const unitval nbp_constrained = NBP_constrain.get(rounded_t);
         const unitval diff = nbp_constrained - unitval(alf, U_PGC_YR);
-        
+
         // Adjust fluxes
         npp_total = npp_total + diff / 2.0;
         rh_nbp_constraint_adjust = ( rh_total - diff / 2.0 ) / rh_total;
@@ -284,7 +284,7 @@ void SimpleNbox::stashCValues( double t, const double c[] )
         newveg = newveg + pool_diff * c[ SNBOX_VEG ] / total_land;
         newsoil = newsoil + pool_diff * c[ SNBOX_SOIL ] / total_land;
         newatmos = newatmos - pool_diff;
-        
+
         // Re-calculate atmosphere-land flux (NBP)
         alf = npp_total.value(U_PGC_YR)
             - rh_total.value(U_PGC_YR)
@@ -293,7 +293,7 @@ void SimpleNbox::stashCValues( double t, const double c[] )
         H_LOG( logger, Logger::NOTICE ) << "** NBP constraint " << nbp_constrained <<
                 " requested; final value was " << alf << " with final adjustment of " << diff << std::endl;
     }
-    
+
     nbp.set( alf, U_PGC_YR );
     nbp_ts.set( t, nbp );
 
@@ -389,7 +389,7 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     }
     masstot = sum;
 
-    // If user has supplied Ca values, adjust atmospheric C to match
+    // If user has supplied [CO2] values, adjust atmospheric C to match
     if(core->inSpinup() ||
        ( CO2_constrain.size() && CO2_constrain.exists(t) )) {
 
@@ -409,10 +409,10 @@ void SimpleNbox::stashCValues( double t, const double c[] )
         // Ugly: residual is a unitval, but calculated by subtracting two fluxpools, so extract value
         Ca_residual.set(atmos_c.value(U_PGC) - atmos_cpool_to_match.value(U_PGC), U_PGC);
 
-        H_LOG( logger,Logger::DEBUG ) << t << "- have " << Ca() << " want " <<  atmppmv.value( U_PPMV_CO2 ) << std::endl;
+        H_LOG( logger,Logger::DEBUG ) << t << "- have " << CO2_conc() << " want " <<  atmppmv.value( U_PPMV_CO2 ) << std::endl;
         H_LOG( logger,Logger::DEBUG ) << t << "- have " << atmos_c << " want " << atmos_cpool_to_match << "; residual = " << Ca_residual << std::endl;
 
-        // Transfer C from atmosphere to deep ocean and update our C and Ca variables
+        // Transfer C from atmosphere to deep ocean and update our C and [CO2] variables
         H_LOG( logger,Logger::DEBUG ) << "Sending residual of " << Ca_residual << " to deep ocean" << std::endl;
         core->sendMessage( M_DUMP_TO_DEEP_OCEAN, D_OCEAN_C, message_data( Ca_residual ) );
         atmos_c = atmos_c - Ca_residual;
@@ -428,7 +428,7 @@ void SimpleNbox::stashCValues( double t, const double c[] )
 
 double SimpleNbox::calc_co2fert(std::string biome, double time) const
 {
-    return 1 + beta.at( biome ) * log( Ca( time ) / C0 );
+    return 1 + beta.at( biome ) * log( CO2_conc( time ) / C0 );
 }
 
 //------------------------------------------------------------------------------
@@ -673,7 +673,7 @@ int SimpleNbox::calcderivs( double t, const double c[], double dcdt[] ) const
           rh_fda_current = rh_fda_current * rh_ratio;
           rh_fsa_current = rh_fsa_current * rh_ratio;
       }
-    
+
     // Compute fluxes
     dcdt[ SNBOX_ATMOS ] = // change in atmosphere pool
         ffi_flux_current.value( U_PGC_YR )
@@ -734,13 +734,13 @@ void SimpleNbox::slowparameval( double t, const double c[] )
         } else {
             co2fert[ biome ] = calc_co2fert( biome );
         }
-        H_LOG( logger,Logger::DEBUG ) << "co2fert[ " << biome << " ] at " << Ca() << " = " << co2fert.at( biome ) << std::endl;
+        H_LOG( logger,Logger::DEBUG ) << "co2fert[ " << biome << " ] at " << CO2_conc() << " = " << co2fert.at( biome ) << std::endl;
     }
 
     // Compute temperature factor globally (and for each biome specified)
     // Heterotrophic respiration depends on the pool sizes (detritus and soil) and Q10 values
     // The soil pool uses a lagged land air/surface temperature, i.e. we assume it takes time for heat to diffuse into soil
-    const double Tland = core->sendMessage( M_GETDATA, D_LAND_AIR_TEMP );
+    const double Tland = core->sendMessage( M_GETDATA, D_LAND_TAS );
 
     /* set tempferts (soil) and tempfertd (detritus) for each biome */
 

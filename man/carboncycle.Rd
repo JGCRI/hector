@@ -3,10 +3,10 @@
 \name{carboncycle}
 \alias{carboncycle}
 \alias{NBP}
-\alias{ATMOSPHERIC_CO2}
+\alias{CONCENTRATIONS_CO2}
 \alias{NPP}
 \alias{RH}
-\alias{ATMOSPHERIC_C}
+\alias{ATMOSPHERIC_CO2}
 \alias{FFI_EMISSIONS}
 \alias{DACCS_UPTAKE}
 \alias{LUC_EMISSIONS}
@@ -18,18 +18,18 @@
 \alias{SOIL_C}
 \alias{EARTH_C}
 \alias{NPP_FLUX0}
-\alias{TGAV_CONSTRAIN}
+\alias{TAS_CONSTRAIN}
 \title{Identifiers for variables in the Hector carbon cycle component}
 \usage{
 NBP()
 
-ATMOSPHERIC_CO2()
+CONCENTRATIONS_CO2()
 
 NPP()
 
 RH()
 
-ATMOSPHERIC_C()
+ATMOSPHERIC_CO2()
 
 FFI_EMISSIONS()
 
@@ -53,7 +53,7 @@ EARTH_C()
 
 NPP_FLUX0(biome = "")
 
-TGAV_CONSTRAIN()
+TAS_CONSTRAIN()
 }
 \arguments{
 \item{biome}{Name of biome (leave empty for global)}
@@ -77,15 +77,15 @@ carbon cycle
 \item \code{NPP_FLUX0}: Initial net primary productivity (NPP)
 flux (`"Pg C year^-1"`)
 
-\item \code{TGAV_CONSTRAIN}: Constrain global mean temperature  (\code{"(degC)"})
+\item \code{TAS_CONSTRAIN}: Constrain global mean temperature  (\code{"(degC)"})
 }}
 
 \section{Output variables}{
 
 These variables can be read using the \code{\link{GETDATA}} message type:
 \describe{
-\item{ATMOSPHERIC_CO2}{Atmospheric CO2 concentration}
-\item{ATMOSPHERIC_C}{Atmospheric carbon pool}
+\item{CONCENTRATIONS_CO2}{Atmospheric CO2 concentration}
+\item{D_ATMOSPHERIC_CO2}{Atmospheric CO2 in units of C}
 \item{NBP}{Net biome production. Annual global C flux from atmosphere into
   the land. A positive value means a net flux from atmosphere into land
   (i.e. land is a net carbon sink), while a negative value means a net flux

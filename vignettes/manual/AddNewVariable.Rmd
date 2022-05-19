@@ -66,13 +66,13 @@ return D_VARIABLE_NAME;
 }
 ```
 
-Here is an example for `GLOBAL_TEMP()` which is used to get global mean temperature data. 
+Here is an example for `GLOBAL_TAS()` which is used to get global mean temperature data. 
 
 ```
 //' @describeIn temperature Global mean temperature anomaly
 //' @export
 // [[Rcpp::export]]
-String GLOBAL_TEMP() {
+String GLOBAL_TAS() {
 return D_GLOBAL_TEMP;
 }
 ```

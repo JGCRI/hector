@@ -29,7 +29,7 @@ CH4Component::CH4Component() {
     CH4_emissions.allowInterp( true );
     CH4_emissions.name = CH4_COMPONENT_NAME;
     CH4.allowInterp( true );
-    CH4.name = D_ATMOSPHERIC_CH4;
+    CH4.name = D_CH4_CONC;
 }
 
 //------------------------------------------------------------------------------
@@ -54,14 +54,14 @@ void CH4Component::init( Core* coreptr ) {
     core = coreptr;
 
     // Inform core what data we can provide
-    core->registerCapability( D_ATMOSPHERIC_CH4, getComponentName() );
+    core->registerCapability( D_CH4_CONC, getComponentName() );
     core->registerCapability( D_PREINDUSTRIAL_CH4, getComponentName() );
     core->registerDependency( D_LIFETIME_OH, getComponentName() );
     // ...and what input data that we can accept
-    core->registerInput(D_EMISSIONS_CH4, getComponentName());
-    core->registerInput(D_NATURAL_CH4, getComponentName());
-    core->registerInput(D_CONSTRAINT_CH4, getComponentName());
-    core->registerInput(D_PREINDUSTRIAL_CH4, getComponentName());
+    core->registerInput( D_EMISSIONS_CH4, getComponentName() );
+    core->registerInput( D_NATURAL_CH4, getComponentName() );
+    core->registerInput( D_CONSTRAINT_CH4, getComponentName() );
+    core->registerInput( D_PREINDUSTRIAL_CH4, getComponentName() );
 }
 
 //------------------------------------------------------------------------------
@@ -180,7 +180,7 @@ unitval CH4Component::getData( const std::string& varName,
 
     unitval returnval;
 
-    if( varName == D_ATMOSPHERIC_CH4 ) {
+    if( varName == D_CH4_CONC ) {
         H_ASSERT( date != Core::undefinedIndex(), "Date required for atmospheric CH4" );
         returnval = CH4.get( date );
     } else if( varName == D_PREINDUSTRIAL_CH4 ) {

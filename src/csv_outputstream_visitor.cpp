@@ -165,8 +165,8 @@ void CSVOutputStreamVisitor::visit( SimpleNbox* c ) {
     STREAM_MESSAGE( csvFile, c, D_NBP );
     STREAM_UNITVAL( csvFile, c, D_NPP, c->final_npp[ SNBOX_DEFAULT_BIOME ] );
     STREAM_UNITVAL( csvFile, c, D_RH, c->final_rh[ SNBOX_DEFAULT_BIOME ] );
-    STREAM_MESSAGE_DATE( csvFile, c, D_ATMOSPHERIC_CO2, current_date );
-    STREAM_MESSAGE( csvFile, c, D_ATMOSPHERIC_C );
+    STREAM_MESSAGE_DATE( csvFile, c, D_CO2_CONC, current_date );
+    STREAM_MESSAGE( csvFile, c, D_ATMOSPHERIC_CO2 );
     STREAM_MESSAGE( csvFile, c, D_ATMOSPHERIC_C_RESIDUAL );
     STREAM_MESSAGE( csvFile, c, D_VEGC );
     STREAM_MESSAGE( csvFile, c, D_DETRITUSC );
@@ -201,12 +201,12 @@ void CSVOutputStreamVisitor::visit( HalocarbonComponent* c ) {
 // documentation is inherited
 void CSVOutputStreamVisitor::visit( TemperatureComponent* c ) {
     if( !core->outputEnabled( c->getComponentName() ) ) return;
-    STREAM_MESSAGE( csvFile, c, D_GLOBAL_TEMP );
+    STREAM_MESSAGE( csvFile, c, D_GLOBAL_TAS );
     STREAM_MESSAGE( csvFile, c, D_FLUX_MIXED );
     STREAM_MESSAGE( csvFile, c, D_FLUX_INTERIOR )
 	STREAM_MESSAGE( csvFile, c, D_HEAT_FLUX );
-    STREAM_MESSAGE( csvFile, c, D_LAND_AIR_TEMP );
-    STREAM_MESSAGE( csvFile, c, D_OCEAN_SURFACE_TEMP );
+    STREAM_MESSAGE( csvFile, c, D_LAND_TAS );
+    STREAM_MESSAGE( csvFile, c, D_SST );
 }
 
 //------------------------------------------------------------------------------
@@ -222,7 +222,7 @@ void CSVOutputStreamVisitor::visit( OceanComponent* c ) {
     STREAM_MESSAGE( csvFile, c, D_DIC_HL );
     STREAM_MESSAGE( csvFile, c, D_DIC_LL );
     STREAM_MESSAGE( csvFile, c, D_HL_DO );
-    STREAM_MESSAGE( csvFile, c, D_OCEAN_CFLUX );
+    STREAM_MESSAGE( csvFile, c, D_OCEAN_C_UPTAKE );
     STREAM_MESSAGE( csvFile, c, D_OMEGAAR_HL );
     STREAM_MESSAGE( csvFile, c, D_OMEGAAR_LL );
     STREAM_MESSAGE( csvFile, c, D_OMEGACA_HL );
@@ -236,7 +236,6 @@ void CSVOutputStreamVisitor::visit( OceanComponent* c ) {
     STREAM_MESSAGE( csvFile, c, D_OCEAN_C );
     STREAM_MESSAGE( csvFile, c, D_CO3_HL );
     STREAM_MESSAGE( csvFile, c, D_CO3_LL );
-    STREAM_MESSAGE( csvFile, c, D_TIMESTEPS );
     if( !in_spinup ) {
         STREAM_MESSAGE( csvFile, c, D_REVELLE_HL );
         STREAM_MESSAGE( csvFile, c, D_REVELLE_LL );
@@ -297,14 +296,14 @@ void CSVOutputStreamVisitor::visit( OHComponent* c ) {
 // documentation is inherited
 void CSVOutputStreamVisitor::visit( CH4Component* c ) {
    if( !core->outputEnabled( c->getComponentName() ) ) return;
- STREAM_MESSAGE_DATE( csvFile, c, D_ATMOSPHERIC_CH4, current_date );
+ STREAM_MESSAGE_DATE( csvFile, c, D_CH4_CONC, current_date );
 }
 
 //------------------------------------------------------------------------------
 // documentation is inherited
 void CSVOutputStreamVisitor::visit( N2OComponent* c ) {
    if( !core->outputEnabled( c->getComponentName() ) ) return;
-STREAM_MESSAGE_DATE( csvFile, c, D_ATMOSPHERIC_N2O, current_date );
+STREAM_MESSAGE_DATE( csvFile, c, D_N2O_CONC, current_date );
 }
 
 }

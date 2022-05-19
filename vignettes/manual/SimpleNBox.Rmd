@@ -81,7 +81,7 @@ The complete code for the terrestrial C cycle lives in [`src/simpleNbox.cpp`][cp
 
 This function sets the values of the `c` vector to the corresponding state variables in the C cycle model.
 
-- The atmospheric C pool for the current time step is defined by `atmos_c`, which is always a scalar unit quantity (because CO~2~ is assumed to be well-mixed in the atmosphere).
+- The atmospheric C pool for the current time step is defined by `atmos_co2`, which is always a scalar unit quantity (because CO~2~ is assumed to be well-mixed in the atmosphere).
 
 - Vegetation, detritus, and soil pools at the current time step are stored in `veg_c`, `detritus_c`, and `soil_c`, respectively.
 These are vector quantities ("stringmaps"), with one value for each biome (the default biome name is "global"), so the value stored in the corresponding slot in `c` is the sum across all biomes.
@@ -117,7 +117,7 @@ They will be applied to the actual NPP and RH estimates during the ODE solving l
 
 ## Storing the results (`stashCValues`)
 
-- Reset the atmospheric CO~2~ state variable (`atmos_c`) to the current value from `c`
+- Reset the atmospheric CO~2~ state variable (`atmos_co2`) to the current value from `c`
 - Calculate the difference between vegetation, detritus, and soil C calculated by the ODE solver (i.e. in `c`) and what was stored in the current state variables (`veg_c`, `detritus_c`, `soil_c`). Store these differences in `veg_delta`, `det_delta`, `soil_delta`.
 - Apply these additional fluxes to each biome, weighing by the biome's current gross primary productivity (`NPP + RH`). I.e.:
     - Calculate the total GPP across all biomes (`npp_rh_total = sum_npp() + sum_rh()`)
@@ -141,7 +141,7 @@ The following values related to the terrestrial C cycle can be set via `setData`
 
 | Description                        | Unit       | C++ macro                  | R function            | C++ variable    | Needs date | Biome-specific | Set | Get |
 |------------------------------------|------------|----------------------------|-----------------------|-----------------|------------|----------------|-----|-----|
-| Initial atmospheric CO~2~ pool     | PgC        | `D_ATMOSPHERIC_C`          | `ATMOSPHERIC_C()`     | `C0`            | No         | No             | Yes | Yes |
+| Initial atmospheric CO~2~ pool     | PgC        | `D_ATMOSPHERIC_CO2`          | `ATMOSPHERIC_CO2()`     | `C0`            | No         | No             | Yes | Yes |
 | Pre-industrial CO~2~ concentration | ppmv CO~2~ | `D_PREINDUSTRIAL_C02`      | `PREINDUSTRIAL_CO2()` | `C0`            | No         | No             | Yes | Yes |
 | Atmospheric C constraint residual  | ppmv CO~2~ | `D_ATMOSPHERIC_C_RESIDUAL` |                       | `residual`      | No         | No             | No  | Yes |
 | Vegetation C pool                  | PgC        | `D_VEGC`                   |                       | `veg_c`         | No         | Yes            | Yes | Yes |
@@ -173,7 +173,7 @@ The following values related to the terrestrial C cycle can be set via `setData`
     - Add `"global"` to the biome list
     - Register C cycle model capabilities, dependencies, and inputs
 - `reset(time)` -- Resets the state of the C model to time `time`.
-    - Set the values of all current-time state variables (e.g. `atmos_c`, `veg_c`, `tempfertd`) to their time-series values at time `time` (e.g. `atmos_c_ts.get(time)`, `veg_c_tv.get(time)`, `tempfertd_tv.get(time)`)
+    - Set the values of all current-time state variables (e.g. `atmos_co2`, `veg_c`, `tempfertd`) to their time-series values at time `time` (e.g. `atmos_c_ts.get(time)`, `veg_c_tv.get(time)`, `tempfertd_tv.get(time)`)
     - Re-calculate the CO~2~ fertilization effect for each biome (`co2fert`). If in spinup, force this to 1.0.
     - "Truncate" all time series variables up to the current time; i.e. `erase` all of the values after `time`
     - Set `tcurrent` to `time`
@@ -183,5 +183,5 @@ The following values related to the terrestrial C cycle can be set via `setData`
 - `prepareToRun()` -- Perform final checks and variable initialization before running a simulation
     - Check that all biome-specific pools, fluxes, and parameters have data for all biomes. (The only optional biome-specific parameter is `warmingfactor`, which is set to 1.0 if missing). Also check that biome-specific CO~2~ fertilization (`beta`) and Q10 (`q10_rh`) parameters are valid.
     - If no albedo forcing data are provided, set the value to the MAGICC default of -0.2
-    - Initialize the atmosphic CO~2~ concentration (`Ca`, ppm) and C pool (`atmos_c`, PgC) to the user-specified initial value (`C0`; converted accordingly to PgC for `atmos_c`)
+    - Initialize the atmospheric CO~2~ concentration (`conc_CO2`, ppm) and C pool (`atmos_co2`, PgC) to the user-specified initial value (`C0`; converted accordingly to PgC for `CO2_conc`)
     - Run the checks in `sanitychecks()`

@@ -105,7 +105,7 @@ private:
     // Carbon pools -- global
     fluxpool earth_c;               //!< earth pool, Pg C; for mass-balance
     fluxpool atmos_c;                //!< atmosphere pool, Pg C
-    
+
     // Carbon pools -- biome-specific
     fluxpool_stringmap veg_c;        //!< vegetation pools, Pg C
     fluxpool_stringmap detritus_c;   //!< detritus pools, Pg C
@@ -114,8 +114,8 @@ private:
     // Carbon fluxes -- biome-specific
     fluxpool_stringmap final_npp;    //!< final NPP after any NBP constraint accounted for, Pg C/yr
     fluxpool_stringmap final_rh;     //!< final RH after any NBP constraint accounted for, Pg C/yr
-    
-    unitval Ca_residual;               //!< residual (when constraining Ca) flux, Pg C
+
+    unitval Ca_residual;               //!< residual (when constraining [CO2]) flux, Pg C
 
     double_stringmap tempfertd, tempferts; //!< temperature effect on respiration (unitless)
 
@@ -167,7 +167,7 @@ private:
     tseries<fluxpool> lucUptake;         //!< land use change uptake, Pg C/yr
 
     // Albedo
-    tseries<unitval> Ftalbedo;   //!< terrestrial albedo forcing, W/m2
+    tseries<unitval> Falbedo;   //!< terrestrial albedo forcing, W/m2
 
     // Constraints
     tseries<fluxpool> CO2_constrain; //!< input [CO2] record to constrain model to
@@ -199,7 +199,7 @@ private:
     /*****************************************************************
      * Functions computing sub-elements of the carbon cycle
      *****************************************************************/
-    fluxpool Ca(double time = Core::undefinedIndex()) const; //!< current [CO2], ppmv
+    fluxpool CO2_conc(double time = Core::undefinedIndex()) const; //!< current [CO2], ppmv
     double calc_co2fert(std::string biome, double time = Core::undefinedIndex()) const; //!< calculates co2 fertilization factor.
     fluxpool npp(std::string biome, double time = Core::undefinedIndex()) const; //!< calculates NPP for a biome
     fluxpool sum_npp(double time = Core::undefinedIndex()) const; //!< calculates NPP, global total

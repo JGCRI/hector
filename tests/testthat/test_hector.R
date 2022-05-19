@@ -20,7 +20,7 @@ test_that("Running a single scenario returns proper outputs", {
     expect_equal(data_years, years)
 
     # Test that all variables are present
-    vars <- c("Ca", "Ftot", "FCO2", "Tgav")
+    vars <- c("CO2_concentration", "RF_tot", "RF_CO2", "global_tas")
     expect_identical(unique(sce$variable), vars)
 
     # Test that units are correct
