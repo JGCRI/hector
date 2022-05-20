@@ -1289,7 +1289,7 @@ return D_PREINDUSTRIAL_O3;
 //' @describeIn concentrations Atmospheric ozone concentration
 //' @export
 // [[Rcpp::export]]
-String ATMOSPHERIC_O3() {
+String CONCENTRATIONS_O3() {
 return D_ATMOSPHERIC_O3;
 }
 
@@ -1433,14 +1433,14 @@ String PH() {
 //' @describeIn ocean Atmosphere-ocean carbon flux, high-latitude
 //' @export
 // [[Rcpp::export]]
-String ATM_OCEAN_FLUX_HL() {
+String HL_OCEAN_UPTAKE() {
 return D_ATM_OCEAN_FLUX_HL;
 }
 
 //' @describeIn ocean Atmosphere-ocean carbon flux, low-latitude
 //' @export
 // [[Rcpp::export]]
-String ATM_OCEAN_FLUX_LL() {
+String LL_OCEAN_UPTAKE() {
 return D_ATM_OCEAN_FLUX_LL;
 }
 
