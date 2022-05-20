@@ -8,12 +8,11 @@ hvars <- c(
   ECS(), PREINDUSTRIAL_CO2(), Q10_RH(), BETA(), AERO_SCALE(), VOLCANIC_SCALE(), DIFFUSIVITY(),
   FFI_EMISSIONS(), LUC_EMISSIONS(),
   EMISSIONS_BC(), EMISSIONS_N2O(), EMISSIONS_NOX(), EMISSIONS_CO(),
-  EMISSIONS_NMVOC(), EMISSIONS_OC(), NAT_EMISSIONS_N2O(),
+  EMISSIONS_NMVOC(), EMISSIONS_OC(), NAT_EMISSIONS_N2O(), EMISSIONS_NH3(),
   EMISSIONS_CH4(), PREINDUSTRIAL_CH4(), NATURAL_CH4(), LIFETIME_SOIL(), LIFETIME_STRAT(),
-  EMISSIONS_SO2(), VOLCANIC_SO2(), CO2_CONSTRAIN(), TGAV_CONSTRAIN(),
+  EMISSIONS_SO2(), VOLCANIC_SO2(), CO2_CONSTRAIN(), TAS_CONSTRAIN(),
   CH4_CONSTRAIN(), N2O_CONSTRAIN(), NBP_CONSTRAIN(),
-  TRACKING_DATE(), RHO_BC(), LO_WARMING_RATIO(), EMISSIONS_NH3()
-
+  TRACKING_DATE(), RHO_BC(), LO_WARMING_RATIO(), Q_CO2()
 )
 
 
@@ -21,12 +20,11 @@ hunits <- c(
   "degC", "ppmv CO2", "(unitless)", "(unitless)", "(unitless)", "(unitless)", "cm2/s",
   "Pg C/yr", "Pg C/yr",
   "Tg", "Tg N", "Tg N", "Tg CO",
-  "Tg NMVOC", "Tg", "Tg N",
+  "Tg NMVOC", "Tg", "Tg N", "Tg",
   "Tg CH4", "ppbv CH4", "Tg CH4", "Years", "Years",
   "Gg S", "W/m2", "ppmv CO2", "degC",
   "ppbv CH4", "ppbv N2O", "Pg C/yr",
-  "(unitless)", "W/m2/Tg", "(unitless)", "Tg"
-
+  "(unitless)", "W/m2/Tg", "(unitless)", "W/m2"
 )
 
 

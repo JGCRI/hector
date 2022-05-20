@@ -70,8 +70,8 @@ Core::Core(Logger::LogLevel loglvl, bool echotoscreen, bool echotofile) :
  *  \note Memory for visitors is not handled by the core.
  */
 Core::~Core() {
-    for( CNameComponentIterator it = modelComponents.begin(); it != modelComponents.end(); ++it ) {
-        delete( *it ).second;
+    for( auto mc : modelComponents ) {
+        delete mc.second;
     }
 }
 
@@ -184,12 +184,12 @@ void Core::init() {
     temp = new OzoneComponent();
     modelComponents[ temp->getComponentName() ] = temp;
 
-    for( NameComponentIterator it = modelComponents.begin(); it != modelComponents.end(); ++it ) {
+    for( auto mc : modelComponents ) {
         try {
-            ( *it ).second->init( this );
+            mc.second->init( this );
         }
         catch(h_exception e) {
-            H_LOG(glog, Logger::SEVERE) << "error initializing component " << it->first;
+            H_LOG(glog, Logger::SEVERE) << "error initializing component " << mc.first;
             throw;
         }
     }
@@ -315,16 +315,16 @@ void Core::prepareToRun(void)
         // 1. Go through the list of components that have been disabled and remove them
         // from the capability and component lists
 
-        for( vector<string>::iterator it=disabledComponents.begin(); it != disabledComponents.end(); ++it ) {
-            H_LOG( glog, Logger::WARNING ) << "Disabling " << *it << endl;
-            IModelComponent * mcomp = getComponentByName( *it );
+        for( auto dc : disabledComponents ) {
+            H_LOG( glog, Logger::WARNING ) << "Disabling " << dc << endl;
+            IModelComponent * mcomp = getComponentByName( dc );
             mcomp->shutDown();
             delete mcomp;
-            modelComponents.erase( *it );
+            modelComponents.erase( dc );
 
             componentMapIterator it2 = componentCapabilities.begin();
             while( it2 != componentCapabilities.end() ) {
-                if( it2->second==*it ) {
+                if( it2->second == dc ) {
                     H_LOG( glog, Logger::DEBUG) << "--erasing " << it2->first << " " << it2->second << endl;
                     componentCapabilities.erase( it2++ );
                 } else {
@@ -340,12 +340,11 @@ void Core::prepareToRun(void)
         // component, and register the link with depFinder.
         DependencyFinder depFinder;
         H_LOG( glog, Logger::NOTICE ) << "Computing dependencies and re-ordering components..." << endl;
-        for( componentMapIterator it = componentDependencies.begin(); it != componentDependencies.end(); ++it ) {
-            //        H_LOG( glog, Logger::DEBUG) << it->first << " " << it->second << endl;
-            if( checkCapability( it->second ) ) {
-                depFinder.addDependency( it->first, getComponentByCapability( it->second )->getComponentName() );
+        for( auto dep : componentDependencies ) {
+            if( checkCapability( dep.second ) ) {
+                depFinder.addDependency( dep.first, getComponentByCapability( dep.second )->getComponentName() );
             } else {
-                H_LOG( glog, Logger::SEVERE) << "Capability " << it->second << " not found but requested by " << it->first << endl;
+                H_LOG( glog, Logger::SEVERE) << "Capability " << dep.second << " not found but requested by " << dep.first << endl;
                 H_LOG( glog, Logger::WARNING) << "The model will almost certainly not run successfully!" << endl;
             }
         }
@@ -365,15 +364,14 @@ void Core::prepareToRun(void)
     // ------------------------------------
     // 4. Tell model components we are finished sending data and about to start running.
     H_LOG( glog, Logger::NOTICE) << "Preparing to run..." << endl;
-    for( NameComponentIterator it = modelComponents.begin(); it != modelComponents.end(); ++it ) {
-        //       H_LOG( glog, Logger::DEBUG) << "Preparing " << (*it).second->getComponentName() << " to run" << endl;
-        ( *it ).second->prepareToRun();
+    for( auto mc : modelComponents ) {
+        mc.second->prepareToRun();
     }
 
     // ------------------------------------
     // Visit all the visitors; this lets them record the core pointer, tracking date, etc.
-    for( auto visitorIt : modelVisitors ) {
-        visitorIt->visit( this );
+    for( auto vis : modelVisitors ) {
+        vis->visit( this );
     } // for
 
     // ------------------------------------
@@ -393,12 +391,12 @@ bool Core::run_spinup()
     int step = 0;
     while( !spunup && ++step<max_spinup ) {
         spunup = true;
-        for( NameComponentIterator it = modelComponents.begin(); it != modelComponents.end(); ++it )
-            spunup = spunup && ( *it ).second->run_spinup( step );
+        for( auto mc : modelComponents )
+            spunup = spunup && mc.second->run_spinup( step );
         // Let visitors attempt to collect data if necessary
-        for( VisitorIterator visitorIt = modelVisitors.begin(); visitorIt != modelVisitors.end(); ++visitorIt ) {
-            if( ( *visitorIt )->shouldVisit( in_spinup, step ) ) {
-                accept( *visitorIt );
+        for( auto vis : modelVisitors ) {
+            if( vis->shouldVisit( in_spinup, step ) ) {
+                accept( vis );
             }
         } // for
     } // while
@@ -460,27 +458,43 @@ void Core::run(double runtodate) {
     // ------------------------------------
     // 6. Run all model dates.
     H_LOG( glog, Logger::NOTICE) << "Running..." << endl;
+    
+    
+    // Let visitors record initial model state
+    // Note that just for this initial output, in calling shouldVisit below, we're telling
+    // visitors that spinup is 'true' (which it's not). This is necessary because the ocean
+    // component hasn't had a chance to initialize its active chemistry yet, and without that
+    // calc_revelle() will throw an error. Kind of hacky; but the only alternative I see is
+    // to create a whole new done_with_spinup() signal to the components--a lot of work.
+    for( auto visitorIt : modelVisitors ) {
+        if( visitorIt->shouldVisit( true, lastDate ) ) {
+            accept( visitorIt );
+        }
+    }
+    
+    // Main model run loop
     for(double currDate = lastDate+1.0; currDate <= runtodate; currDate += 1.0 ) {
         H_LOG( glog, Logger::NOTICE) << currDate << endl;
+        
         // If we've hit the tracking start year, note this in the log
         if(currDate == trackingDate) {
             H_LOG(glog, Logger::NOTICE) << "Starting tracking in " << currDate << endl;
             // nb components are responsible for checking and acting on this
         }
 
-        for( NameComponentIterator it = modelComponents.begin(); it != modelComponents.end(); ++it ) {
-            ( *it ).second->run( currDate );
+        for( auto it : modelComponents ) {
+            it.second->run( currDate );
         }
-
+        
         // Let visitors attempt to collect data if necessary
-        for( VisitorIterator visitorIt = modelVisitors.begin(); visitorIt != modelVisitors.end(); ++visitorIt ) {
-            if( ( *visitorIt )->shouldVisit( in_spinup, currDate ) ) {
-                accept( *visitorIt );
+        for( auto vis : modelVisitors ) {
+            if( vis->shouldVisit( in_spinup, currDate ) ) {
+                accept( vis );
             }
         }
     }
 
-    // Record the last finished date.  We will resume here the next time run is called
+    // Record the last finished date; we will resume here the next time run is called
     lastDate = runtodate;
 }
 
@@ -503,16 +517,16 @@ void Core::reset(double resetdate)
     }
 
     // Order all components to reset
-    for( auto it : modelComponents ) {
-        H_LOG(glog, Logger::DEBUG) << "Resetting component: " << it.first << endl;
-        it.second->reset(resetdate);
+    for( auto mc : modelComponents ) {
+        H_LOG(glog, Logger::DEBUG) << "Resetting component: " << mc.first << endl;
+        mc.second->reset(resetdate);
     }
 
     // Inform all visitors of the reset as well
     // Currently (2021) only csvFluxPoolVisitor implements this
-    for( auto it: modelVisitors ) {
+    for( auto vis: modelVisitors ) {
         H_LOG(glog, Logger::DEBUG) << "Resetting visitor" << endl;
-        it->reset(resetdate);
+        vis->reset(resetdate);
     }
 
     // The prepareToRun function reruns all of the initial setup, including the
@@ -537,8 +551,8 @@ void Core::shutDown()
 {
     // ------------------------------------
     // 7. Tell model components we are finished.
-    for( NameComponentIterator it = modelComponents.begin(); it != modelComponents.end(); ++it ) {
-        ( *it ).second->shutDown();
+    for( auto mc : modelComponents ) {
+        mc.second->shutDown();
     }
 }
 
@@ -771,8 +785,8 @@ void Core::accept( AVisitor* visitor ) {
     visitor->visit( this );
 
     // forward the accept to the contained model components
-    for( NameComponentIterator it = modelComponents.begin(); it != modelComponents.end(); ++it ) {
-        ( *it ).second->accept( visitor );
+    for( auto mc : modelComponents ) {
+        mc.second->accept( visitor );
     }
 }
 

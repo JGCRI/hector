@@ -79,8 +79,8 @@ NULL
 #' @section Output variables:
 #' These variables can be read using the \code{\link{GETDATA}} message type:
 #' \describe{
-#' \item{ATMOSPHERIC_CO2}{Atmospheric CO2 concentration}
-#' \item{ATMOSPHERIC_C}{Atmospheric carbon pool}
+#' \item{CONCENTRATIONS_CO2}{Atmospheric CO2 concentration}
+#' \item{D_ATMOSPHERIC_CO2}{Atmospheric CO2 in units of C}
 #' \item{NBP}{Net biome production. Annual global C flux from atmosphere into
 #'   the land. A positive value means a net flux from atmosphere into land
 #'   (i.e. land is a net carbon sink), while a negative value means a net flux
@@ -164,7 +164,7 @@ NULL
 #' @section Output variables:
 #' These variables can be read from the methane component.
 #' \describe{
-#' \item{ATMOSPHERIC_CH4}{Atmospheric methane concentration}
+#' \item{CONCENTRATIONS_CH4}{Atmospheric methane concentration}
 #' \item{PREINDUSTRIAL_CH4}{Preindustrial methane concentration}
 #' }
 #'
@@ -270,3 +270,20 @@ NULL
 #' @name temperature
 #' @family capability identifiers
 NULL
+
+#' A data.frame containing information on all of the Hector inputs listed in
+#' an ini file created by save-input-params.R.
+#'
+#' @format A data.frame of 8 columns and 222 rows.
+#' \describe{
+#'  \item{section}{String character of the section of the ini file of a parameter}
+#'  \item{parameter}{String character of the parameter name}
+#'  \item{biome.specific}{String character of whether or not the parameter is biome-specific}
+#'  \item{time.variant}{String character of whether or not the parameter is time-variant}
+#'  \item{required}{String character of wheterh or not the parameter is required}
+#'  \item{default}{String character of the default value of the parameter}
+#'  \item{units}{String character of the parameter units}
+#'  \item{description}{String character of a brief description of the parameter from the ini file}
+#' }
+#'
+'input_csv'

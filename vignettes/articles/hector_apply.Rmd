@@ -40,7 +40,7 @@ f <- function(emiss)
     setvar(hcore, 2000:2100, EMISSIONS_CH4(), emiss, "Tg CH4")
     reset(hcore, 1999)
     run(hcore, 2100)
-    hout <- fetchvars(hcore, 2000:2100, ATMOSPHERIC_CH4())
+    hout <- fetchvars(hcore, 2000:2100, CONCENTRATIONS_CH4())
     ## return the difference between the target of 1820 (constant) and the actual
     hout$value - 1820
 }

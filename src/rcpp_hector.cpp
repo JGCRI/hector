@@ -163,8 +163,10 @@ Environment run(Environment core, double runtodate = -1.0)
 {
     if(!core["clean"]) {
         int resetDate = core["reset_date"];
-        std::string msg = "auto-resetting core to " + std::to_string(resetDate);
-        Rcpp::warning(msg);
+        Function f("message");
+
+        std::string msg = "Auto-resetting core to " + std::to_string(resetDate);
+        f(msg);
         reset(core, core["reset_date"]);
     }
 

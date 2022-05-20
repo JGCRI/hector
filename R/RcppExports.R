@@ -973,8 +973,8 @@ CH3BR_CONSTRAIN <- function() {
 
 #' @rdname methane
 #' @export
-ATMOSPHERIC_CH4 <- function() {
-    .Call('_hector_ATMOSPHERIC_CH4', PACKAGE = 'hector')
+CONCENTRATIONS_CH4 <- function() {
+    .Call('_hector_CONCENTRATIONS_CH4', PACKAGE = 'hector')
 }
 
 #' @describeIn constraints CH4 concentration constraint \code{"ppbv CH4"}
@@ -1027,8 +1027,8 @@ LIFETIME_STRAT <- function() {
 
 #' @describeIn concentrations Atmospheric N2O concentration
 #' @export
-ATMOSPHERIC_N2O <- function() {
-    .Call('_hector_ATMOSPHERIC_N2O', PACKAGE = 'hector')
+CONCENTRATIONS_N2O <- function() {
+    .Call('_hector_CONCENTRATIONS_N2O', PACKAGE = 'hector')
 }
 
 #' @describeIn concentrations Preindustrial atmospheric N2O concentration
@@ -1099,8 +1099,8 @@ EMISSIONS_NH3 <- function() {
 
 #' @describeIn ocean Atmosphere-ocean carbon flux
 #' @export
-OCEAN_CFLUX <- function() {
-    .Call('_hector_OCEAN_CFLUX', PACKAGE = 'hector')
+OCEAN_UPTAKE <- function() {
+    .Call('_hector_OCEAN_UPTAKE', PACKAGE = 'hector')
 }
 
 #' @describeIn ocean Ocean total carbon pool
@@ -1231,14 +1231,14 @@ DIC_LL <- function() {
 
 #' @describeIn ocean Absolute ocean surface temperature, high-latitude (deg C)
 #' @export
-TEMP_HL <- function() {
-    .Call('_hector_TEMP_HL', PACKAGE = 'hector')
+SST_HL <- function() {
+    .Call('_hector_SST_HL', PACKAGE = 'hector')
 }
 
 #' @describeIn ocean Absolute ocean surface temperature, low-latitude (deg C)
 #' @export
-TEMP_LL <- function() {
-    .Call('_hector_TEMP_LL', PACKAGE = 'hector')
+SST_LL <- function() {
+    .Call('_hector_SST_LL', PACKAGE = 'hector')
 }
 
 #' @describeIn ocean Carbonate concentration, low-latitude
@@ -1267,8 +1267,8 @@ NBP <- function() {
 
 #' @rdname carboncycle
 #' @export
-ATMOSPHERIC_CO2 <- function() {
-    .Call('_hector_ATMOSPHERIC_CO2', PACKAGE = 'hector')
+CONCENTRATIONS_CO2 <- function() {
+    .Call('_hector_CONCENTRATIONS_CO2', PACKAGE = 'hector')
 }
 
 #' @rdname carboncycle
@@ -1291,8 +1291,8 @@ PREINDUSTRIAL_CO2 <- function() {
 
 #' @rdname carboncycle
 #' @export
-ATMOSPHERIC_C <- function() {
-    .Call('_hector_ATMOSPHERIC_C', PACKAGE = 'hector')
+ATMOSPHERIC_CO2 <- function() {
+    .Call('_hector_ATMOSPHERIC_CO2', PACKAGE = 'hector')
 }
 
 #' @rdname carboncycle
@@ -1311,6 +1311,12 @@ DACCS_UPTAKE <- function() {
 #' @export
 LUC_EMISSIONS <- function() {
     .Call('_hector_LUC_EMISSIONS', PACKAGE = 'hector')
+}
+
+#' @rdname carboncycle
+#' @export
+LUC_UPTAKE <- function() {
+    .Call('_hector_LUC_UPTAKE', PACKAGE = 'hector')
 }
 
 #' @describeIn parameters CO2 fertilization factor (\code{"(unitless)"})
@@ -1442,27 +1448,27 @@ VOLCANIC_SCALE <- function() {
 
 #' @describeIn temperature Global mean air temperature anomaly
 #' @export
-GLOBAL_TEMP <- function() {
-    .Call('_hector_GLOBAL_TEMP', PACKAGE = 'hector')
+GLOBAL_TAS <- function() {
+    .Call('_hector_GLOBAL_TAS', PACKAGE = 'hector')
 }
 
-#' @describeIn temperature Average ocean surface temperature anomaly
+#' @describeIn temperature Average sea surface temperature anomaly
 #' @export
-OCEAN_SURFACE_TEMP <- function() {
-    .Call('_hector_OCEAN_SURFACE_TEMP', PACKAGE = 'hector')
+SST <- function() {
+    .Call('_hector_SST', PACKAGE = 'hector')
 }
 
-#' @describeIn temperature Average ocean air temperature anomaly
+#' @describeIn temperature Average air temperature anomaly over the ocean
 #' @export
-OCEAN_AIR_TEMP <- function() {
-    .Call('_hector_OCEAN_AIR_TEMP', PACKAGE = 'hector')
+OCEAN_TAS <- function() {
+    .Call('_hector_OCEAN_TAS', PACKAGE = 'hector')
 }
 
-#' @describeIn temperature Average land temperature anomaly, land surface temperature and air temperature
+#' @describeIn temperature Average air temperature anomaly over land, land surface temperature and air temperature
 #' over land are assumed to be equivalent.
 #' @export
-LAND_AIR_TEMP <- function() {
-    .Call('_hector_LAND_AIR_TEMP', PACKAGE = 'hector')
+LAND_TAS <- function() {
+    .Call('_hector_LAND_TAS', PACKAGE = 'hector')
 }
 
 #' @describeIn parameters Land-Ocean Warming Ratio (\code{"(unitless)"}), by default set to 0
@@ -1475,8 +1481,8 @@ LO_WARMING_RATIO <- function() {
 
 #' @describeIn constraints Constrain global mean temperature  (\code{"(degC)"})
 #' @export
-TGAV_CONSTRAIN <- function() {
-    .Call('_hector_TGAV_CONSTRAIN', PACKAGE = 'hector')
+TAS_CONSTRAIN <- function() {
+    .Call('_hector_TAS_CONSTRAIN', PACKAGE = 'hector')
 }
 
 #' @describeIn parameters Ocean heat diffusivity (\code{"cm2/s"})

@@ -76,15 +76,15 @@ $HECTOR $INPUT/hector_ssp245_co2.ini
 rm $INPUT/hector_ssp245_co2.ini
 
 # Temperature
-echo "---------- Running: Tgav constraint ----------"
-sed 's/;[[:space:]]*Tgav_constrain=csv:tables\/tgav_historical.csv/Tgav_constrain=csv:tables\/tgav_historical.csv/' $INPUT/hector_ssp245.ini > $INPUT/hector_ssp245_tgav.ini
-if [[ $(diff -q $INPUT/hector_ssp245.ini $INPUT/hector_ssp245_tgav.ini | wc -c) -eq 0 ]]; then exit 1; fi
-$HECTOR $INPUT/hector_ssp245_tgav.ini
-rm $INPUT/hector_ssp245_tgav.ini
+echo "---------- Running: tas constraint ----------"
+sed 's/;[[:space:]]*tas_constrain=csv:tables\/tas_historical.csv/tas_constrain=csv:tables\/tas_historical.csv/' $INPUT/hector_ssp245.ini > $INPUT/hector_ssp245_tas.ini
+if [[ $(diff -q $INPUT/hector_ssp245.ini $INPUT/hector_ssp245_tas.ini | wc -c) -eq 0 ]]; then exit 1; fi
+$HECTOR $INPUT/hector_ssp245_tas.ini
+rm $INPUT/hector_ssp245_tas.ini
 
 # Radiative forcing
-echo "---------- Running: Ftot constraint ----------"
-sed 's/;[[:space:]]*Ftot_constrain=csv:tables\/CONSTRAINT.csv/Ftot_constrain=csv:tables\/ssp245_emiss-constraints_rf.csv/' $INPUT/hector_ssp245.ini > $INPUT/hector_ssp245_ftot.ini
+echo "---------- Running: RF tot constraint ----------"
+sed 's/;[[:space:]]*RF_tot_constrain=csv:tables\/CONSTRAINT.csv/RF_tot_constrain=csv:tables\/ssp245_emiss-constraints_rf.csv/' $INPUT/hector_ssp245.ini > $INPUT/hector_ssp245_ftot.ini
 if [[ $(diff -q $INPUT/hector_ssp245.ini $INPUT/hector_ssp245_ftot.ini | wc -c) -eq 0 ]]; then exit 1; fi
 $HECTOR $INPUT/hector_ssp245_ftot.ini
 rm $INPUT/hector_ssp245_ftot.ini

@@ -20,7 +20,7 @@ test_that("Concentration-forced runs work for halocarbons", {
 
   # Save the dates and output variables to test.
   dates <- seq(startdate(hc), getdate(hc))
-  outvars <- c(GLOBAL_TEMP(), "HFC23_concentration", EMISSIONS_HFC23())
+  outvars <- c(GLOBAL_TAS(), "HFC23_concentration", EMISSIONS_HFC23())
 
   # Extract the emission driven results, saving a copy of the HFC23
   # concentrations and emission separately to manipulate.
@@ -66,12 +66,12 @@ test_that("Concentration-forced runs work for CH4", {
 
   # Save the dates and output variables to test.
   dates <- seq(startdate(hc), getdate(hc))
-  outvars <- c(GLOBAL_TEMP(), ATMOSPHERIC_CH4(), EMISSIONS_CH4(), RF_CH4())
+  outvars <- c(GLOBAL_TAS(), CONCENTRATIONS_CH4(), EMISSIONS_CH4(), RF_CH4())
 
   # Extract the emission driven results, saving a copy of the CH4
   # concentrations and emission separately to manipulate.
   emissOut <- fetchvars(hc, dates, outvars)
-  emissOut_CH4conc <- subset(emissOut, variable == ATMOSPHERIC_CH4())
+  emissOut_CH4conc <- subset(emissOut, variable == CONCENTRATIONS_CH4())
   emissOut_CH4emiss <- subset(emissOut, variable == EMISSIONS_CH4())
 
   # Set up and run Hector with constrained CH4 concentrations.
@@ -94,7 +94,7 @@ test_that("Concentration-forced runs work for CH4", {
   invisible(run(hc))
 
   # The CH4 concentrations should equal the constraint read in.
-  expect_equal(fetchvars(hc, dates, ATMOSPHERIC_CH4())$value, new_CH4_con)
+  expect_equal(fetchvars(hc, dates, CONCENTRATIONS_CH4())$value, new_CH4_con)
 
   # Compare the outputs from the emission driven and the perturbed
   # concentration driven runs. Since the CH4 concentration was increased and
@@ -115,12 +115,12 @@ test_that("Concentration-forced runs work for N2O", {
 
   # Save the dates and output variables to test.
   dates <- seq(startdate(hc), getdate(hc))
-  outvars <- c(GLOBAL_TEMP(), ATMOSPHERIC_N2O(), EMISSIONS_N2O(), RF_N2O())
+  outvars <- c(GLOBAL_TAS(), CONCENTRATIONS_N2O(), EMISSIONS_N2O(), RF_N2O())
 
   # Extract the emission driven results, saving a copy of the N2O
   # concentrations and emission separately to manipulate.
   emissOut <- fetchvars(hc, dates, outvars)
-  emissOut_N2Oconc <- subset(emissOut, variable == ATMOSPHERIC_N2O())
+  emissOut_N2Oconc <- subset(emissOut, variable == CONCENTRATIONS_N2O())
   emissOut_N2Oemiss <- subset(emissOut, variable == EMISSIONS_N2O())
 
   # Set up and run Hector with constrained N2O concentrations.
@@ -143,7 +143,7 @@ test_that("Concentration-forced runs work for N2O", {
   invisible(run(hc))
 
   # The N2O concentrations should equal the constrainnt read in.
-  expect_equal(fetchvars(hc, dates, ATMOSPHERIC_N2O())$value, new_N2O_con)
+  expect_equal(fetchvars(hc, dates, CONCENTRATIONS_N2O())$value, new_N2O_con)
 
   # Compare the outputs from the emission driven and the perturbed
   # concentration driven runs. Since the N2O concentration was increased and
@@ -158,13 +158,13 @@ test_that("Atmospheric CO2 concentrations can be constrained", {
 
   # Variables and years to save.
   years <- 1850:2100
-  vars <- c(ATMOSPHERIC_CO2(), GLOBAL_TEMP(), RF_TOTAL(), RF_CO2())
+  vars <- c(CONCENTRATIONS_CO2(), GLOBAL_TAS(), RF_TOTAL(), RF_CO2())
 
   # Instantiate a Hector core and save results.
   hc <- ssp245()
   run(hc)
   ssp245_out <- fetchvars(hc, years, vars)
-  ssp245_conc <- subset(ssp245_out, variable == ATMOSPHERIC_CO2())
+  ssp245_conc <- subset(ssp245_out, variable == CONCENTRATIONS_CO2())
 
   constrained_values <- ssp245_conc$value * 3
   setvar(hc, years, CO2_CONSTRAIN(), constrained_values, getunits(CO2_CONSTRAIN()))
@@ -173,7 +173,7 @@ test_that("Atmospheric CO2 concentrations can be constrained", {
 
   # Make sure that the atmospheric CO2 matches the constraint.
   hico2_out <- fetchvars(hc, years, vars)
-  hico2_conc <- subset(hico2_out, variable == ATMOSPHERIC_CO2())
+  hico2_conc <- subset(hico2_out, variable == CONCENTRATIONS_CO2())
   expect_equal(hico2_conc$value, constrained_values)
 
   # The run with the higher CO2 should be warmer, with a higher total and CO2 RF.
@@ -187,7 +187,7 @@ test_that("Atmospheric CO2 concentrations can be constrained", {
 
   # Extract the results from the low CO2 run
   lowco2_out <- fetchvars(hc, years, vars)
-  lowco2_conc <- subset(lowco2_out, variable == ATMOSPHERIC_CO2())
+  lowco2_conc <- subset(lowco2_out, variable == CONCENTRATIONS_CO2())
   expect_equal(lowco2_conc$value, constrained_values)
 
   # The run with the higher CO2 should be warmer, with a higher total and CO2 RF.
@@ -220,7 +220,7 @@ test_that("Discontinuous constraint works", {
 
   # Make sure we can retrieve all these values.
   out_rf <- fetchvars(hc, all_years, RF_CO2())
-  out_ca <- fetchvars(hc, all_years, ATMOSPHERIC_CO2())
+  out_ca <- fetchvars(hc, all_years, CONCENTRATIONS_CO2())
 
   # RFs and concentrations during the constraint period are constant,
   # they should be since we read in constant CO2 concentrations.
@@ -239,10 +239,10 @@ test_that("Discontinuous constraint works", {
 
   # Make sure that the CO2 concentration matches the constraints read in during the two
   # different constraint periods.
-  expect_equal(fetchvars(hc, min(ca_years_1), ATMOSPHERIC_CO2())$value, ca_vals_1[1])
-  expect_equal(fetchvars(hc, max(ca_years_1), ATMOSPHERIC_CO2())$value, ca_vals_1[1])
-  expect_equal(fetchvars(hc, min(ca_years_2), ATMOSPHERIC_CO2())$value, ca_vals_2[1])
-  expect_equal(fetchvars(hc, max(ca_years_2), ATMOSPHERIC_CO2())$value, ca_vals_2[1])
+  expect_equal(fetchvars(hc, min(ca_years_1), CONCENTRATIONS_CO2())$value, ca_vals_1[1])
+  expect_equal(fetchvars(hc, max(ca_years_1), CONCENTRATIONS_CO2())$value, ca_vals_1[1])
+  expect_equal(fetchvars(hc, min(ca_years_2), CONCENTRATIONS_CO2())$value, ca_vals_2[1])
+  expect_equal(fetchvars(hc, max(ca_years_2), CONCENTRATIONS_CO2())$value, ca_vals_2[1])
 
   # You should NOT be able to retrieve constraints before, between, or after
   # user-specified values.
@@ -252,22 +252,22 @@ test_that("Discontinuous constraint works", {
   expect_true(all(!is.nan(ca_before$value)))
 })
 
-test_that("Tgav constraint works", {
+test_that("tas constraint works", {
     t2000 <- 2.0
     hc <- ssp245()
-    setvar(hc, 2000, TGAV_CONSTRAIN(), t2000, getunits(TGAV_CONSTRAIN()))
+    setvar(hc, 2000, TAS_CONSTRAIN(), t2000, getunits(TAS_CONSTRAIN()))
     invisible(run(hc))
 
     # constraint returns NA for non-set years
-    constraint_otheryear <- fetchvars(hc, 1999, vars = TGAV_CONSTRAIN())
+    constraint_otheryear <- fetchvars(hc, 1999, vars = TAS_CONSTRAIN())
     expect_true(is.na(constraint_otheryear$value))
     # constraint returns correct value for set year
-    constraint_year <- fetchvars(hc, 2000, vars = TGAV_CONSTRAIN())
+    constraint_year <- fetchvars(hc, 2000, vars = TAS_CONSTRAIN())
     expect_equal(constraint_year$value, t2000)
 
-    x <- fetchvars(hc, 1999:2001, vars = GLOBAL_TEMP())
+    x <- fetchvars(hc, 1999:2001, vars = GLOBAL_TAS())
 
-    expect_lt(x$value[1], t2000)    # Tgav should be nowhere near 2C the year before,
+    expect_lt(x$value[1], t2000)    # global tas should be nowhere near 2C the year before,
     expect_equal(x$value[2], t2000) # identical to the constraint in 2000,
     expect_lt(x$value[3], t2000)    # and again lower the year after
 })
