@@ -16,8 +16,8 @@
 \alias{PH_HL}
 \alias{PH_LL}
 \alias{PH}
-\alias{ATM_OCEAN_FLUX_HL}
-\alias{ATM_OCEAN_FLUX_LL}
+\alias{HL_OCEAN_UPTAKE}
+\alias{LL_OCEAN_UPTAKE}
 \alias{PCO2_HL}
 \alias{PCO2_LL}
 \alias{PCO2}
@@ -59,9 +59,9 @@ PH_LL()
 
 PH()
 
-ATM_OCEAN_FLUX_HL()
+HL_OCEAN_UPTAKE()
 
-ATM_OCEAN_FLUX_LL()
+LL_OCEAN_UPTAKE()
 
 PCO2_HL()
 
@@ -119,9 +119,9 @@ component using the \code{\link{GETDATA}} message type.
 
 \item \code{PH}: Ocean surface pH
 
-\item \code{ATM_OCEAN_FLUX_HL}: Atmosphere-ocean carbon flux, high-latitude
+\item \code{HL_OCEAN_UPTAKE}: Atmosphere-ocean carbon flux, high-latitude
 
-\item \code{ATM_OCEAN_FLUX_LL}: Atmosphere-ocean carbon flux, low-latitude
+\item \code{LL_OCEAN_UPTAKE}: Atmosphere-ocean carbon flux, low-latitude
 
 \item \code{PCO2_HL}: Partial pressure of CO2, high-latitude
 
