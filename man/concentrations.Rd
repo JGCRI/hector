@@ -5,7 +5,7 @@
 \alias{CONCENTRATIONS_N2O}
 \alias{PREINDUSTRIAL_N2O}
 \alias{PREINDUSTRIAL_O3}
-\alias{ATMOSPHERIC_O3}
+\alias{CONCENTRATIONS_O3}
 \title{Identifiers for miscellaneous concentrations not elsewhere described}
 \usage{
 CONCENTRATIONS_N2O()
@@ -14,7 +14,7 @@ PREINDUSTRIAL_N2O()
 
 PREINDUSTRIAL_O3()
 
-ATMOSPHERIC_O3()
+CONCENTRATIONS_O3()
 }
 \description{
 All of these variables can be read using the \code{\link{GETDATA}} message
@@ -28,7 +28,7 @@ type.
 
 \item \code{PREINDUSTRIAL_O3}: Preindustrial ozone concentration
 
-\item \code{ATMOSPHERIC_O3}: Atmospheric ozone concentration
+\item \code{CONCENTRATIONS_O3}: Atmospheric ozone concentration
 }}
 
 \section{Note}{

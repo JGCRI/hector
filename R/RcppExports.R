@@ -1063,8 +1063,8 @@ PREINDUSTRIAL_O3 <- function() {
 
 #' @describeIn concentrations Atmospheric ozone concentration
 #' @export
-ATMOSPHERIC_O3 <- function() {
-    .Call('_hector_ATMOSPHERIC_O3', PACKAGE = 'hector')
+CONCENTRATIONS_O3 <- function() {
+    .Call('_hector_CONCENTRATIONS_O3', PACKAGE = 'hector')
 }
 
 #' @describeIn emissions Emissions for NOx compounds (\code{"Tg N"})
@@ -1183,14 +1183,14 @@ PH <- function() {
 
 #' @describeIn ocean Atmosphere-ocean carbon flux, high-latitude
 #' @export
-ATM_OCEAN_FLUX_HL <- function() {
-    .Call('_hector_ATM_OCEAN_FLUX_HL', PACKAGE = 'hector')
+HL_OCEAN_UPTAKE <- function() {
+    .Call('_hector_HL_OCEAN_UPTAKE', PACKAGE = 'hector')
 }
 
 #' @describeIn ocean Atmosphere-ocean carbon flux, low-latitude
 #' @export
-ATM_OCEAN_FLUX_LL <- function() {
-    .Call('_hector_ATM_OCEAN_FLUX_LL', PACKAGE = 'hector')
+LL_OCEAN_UPTAKE <- function() {
+    .Call('_hector_LL_OCEAN_UPTAKE', PACKAGE = 'hector')
 }
 
 #' @describeIn ocean Partial pressure of CO2, high-latitude

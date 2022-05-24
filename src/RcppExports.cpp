@@ -1780,13 +1780,13 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// ATMOSPHERIC_O3
-String ATMOSPHERIC_O3();
-RcppExport SEXP _hector_ATMOSPHERIC_O3() {
+// CONCENTRATIONS_O3
+String CONCENTRATIONS_O3();
+RcppExport SEXP _hector_CONCENTRATIONS_O3() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(ATMOSPHERIC_O3());
+    rcpp_result_gen = Rcpp::wrap(CONCENTRATIONS_O3());
     return rcpp_result_gen;
 END_RCPP
 }
@@ -1980,23 +1980,23 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// ATM_OCEAN_FLUX_HL
-String ATM_OCEAN_FLUX_HL();
-RcppExport SEXP _hector_ATM_OCEAN_FLUX_HL() {
+// HL_OCEAN_UPTAKE
+String HL_OCEAN_UPTAKE();
+RcppExport SEXP _hector_HL_OCEAN_UPTAKE() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(ATM_OCEAN_FLUX_HL());
+    rcpp_result_gen = Rcpp::wrap(HL_OCEAN_UPTAKE());
     return rcpp_result_gen;
 END_RCPP
 }
-// ATM_OCEAN_FLUX_LL
-String ATM_OCEAN_FLUX_LL();
-RcppExport SEXP _hector_ATM_OCEAN_FLUX_LL() {
+// LL_OCEAN_UPTAKE
+String LL_OCEAN_UPTAKE();
+RcppExport SEXP _hector_LL_OCEAN_UPTAKE() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(ATM_OCEAN_FLUX_LL());
+    rcpp_result_gen = Rcpp::wrap(LL_OCEAN_UPTAKE());
     return rcpp_result_gen;
 END_RCPP
 }
@@ -2845,7 +2845,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_NAT_EMISSIONS_N2O", (DL_FUNC) &_hector_NAT_EMISSIONS_N2O, 0},
     {"_hector_N2O_CONSTRAIN", (DL_FUNC) &_hector_N2O_CONSTRAIN, 0},
     {"_hector_PREINDUSTRIAL_O3", (DL_FUNC) &_hector_PREINDUSTRIAL_O3, 0},
-    {"_hector_ATMOSPHERIC_O3", (DL_FUNC) &_hector_ATMOSPHERIC_O3, 0},
+    {"_hector_CONCENTRATIONS_O3", (DL_FUNC) &_hector_CONCENTRATIONS_O3, 0},
     {"_hector_EMISSIONS_NOX", (DL_FUNC) &_hector_EMISSIONS_NOX, 0},
     {"_hector_EMISSIONS_CO", (DL_FUNC) &_hector_EMISSIONS_CO, 0},
     {"_hector_EMISSIONS_NMVOC", (DL_FUNC) &_hector_EMISSIONS_NMVOC, 0},
@@ -2865,8 +2865,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_PH_HL", (DL_FUNC) &_hector_PH_HL, 0},
     {"_hector_PH_LL", (DL_FUNC) &_hector_PH_LL, 0},
     {"_hector_PH", (DL_FUNC) &_hector_PH, 0},
-    {"_hector_ATM_OCEAN_FLUX_HL", (DL_FUNC) &_hector_ATM_OCEAN_FLUX_HL, 0},
-    {"_hector_ATM_OCEAN_FLUX_LL", (DL_FUNC) &_hector_ATM_OCEAN_FLUX_LL, 0},
+    {"_hector_HL_OCEAN_UPTAKE", (DL_FUNC) &_hector_HL_OCEAN_UPTAKE, 0},
+    {"_hector_LL_OCEAN_UPTAKE", (DL_FUNC) &_hector_LL_OCEAN_UPTAKE, 0},
     {"_hector_PCO2_HL", (DL_FUNC) &_hector_PCO2_HL, 0},
     {"_hector_PCO2_LL", (DL_FUNC) &_hector_PCO2_LL, 0},
     {"_hector_PCO2", (DL_FUNC) &_hector_PCO2, 0},

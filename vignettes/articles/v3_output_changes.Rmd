@@ -1,0 +1,82 @@
+---
+title: "V3 Output Name Changes"
+---
+
+As part of the V3 update a number of output names have changed and a handful have been removed. This table lists the old variable names reported in the csv output stream under the column `variable_v2` and the new variable name under `variable_v3` column. 
+
+
+|component   |variable_v2       |variable_v3       |
+|:-----------|:-----------------|:-----------------|
+|CH4         |CH4               |CH4_concentration |
+|ozone       |O3                |O3_concentration  |
+|N2O         |N2O               |N2O_concentration |
+|ocean       |atm_ocean_flux_HL |HL_ocean_uptake   |
+|ocean       |atm_ocean_flux_LL |LL_ocean_uptake   |
+|ocean       |carbon_DO         |DO_ocean_c        |
+|ocean       |carbon_HL         |HL_ocean_c        |
+|ocean       |carbon_IO         |IO_ocean_c        |
+|ocean       |carbon_LL         |LL_ocean_c        |
+|ocean       |DIC_HL            |HL_DIC            |
+|ocean       |DIC_LL            |HL_DIC            |
+|ocean       |HL_DO_Cflux       |HL_downwelling    |
+|ocean       |atm_ocean_flux    |ocean_uptake      |
+|ocean       |OmegaAr_HL        |HL_OmegaAr        |
+|ocean       |OmegaAr_LL        |LL_OmegaAr        |
+|ocean       |OmegaCa_HL        |HL_OmegaCa        |
+|ocean       |OmegaCa_LL        |LL_OmegaCa        |
+|ocean       |PCO2_HL           |HL_PCO2           |
+|ocean       |PCO2_LL           |LL_PCO2           |
+|ocean       |pH_HL             |HL_pH             |
+|ocean       |pH_LL             |LL_pH             |
+|ocean       |Temp_HL           |HL_sst            |
+|ocean       |Temp_LL           |LL_sst            |
+|ocean       |CO3_HL            |HL_CO3            |
+|ocean       |CO3_LL            |LL_CO3            |
+|simpleNbox  |atm_land_flux     |NBP               |
+|simpleNbox  |npp               |NPP               |
+|simpleNbox  |rh                |RH                |
+|simpleNbox  |Ca                |CO2_concentration |
+|simpleNbox  |atmos_c           |atmos_co2         |
+|temperature |Tgav              |global_tas        |
+|temperature |flux_mixed        |heatflux_mixed    |
+|temperature |flux_interior     |heatflux_interior |
+|forcing     |FBC               |RF_BC             |
+|forcing     |FC2F6             |RF_C2F6           |
+|forcing     |FCCl4             |RF_CCl4           |
+|forcing     |FCF4              |RF_CF4            |
+|forcing     |FCFC11            |RF_CFC11          |
+|forcing     |FCFC113           |RF_CFC113         |
+|forcing     |FCFC114           |RF_CFC114         |
+|forcing     |FCFC115           |RF_CFC115         |
+|forcing     |FCFC12            |RF_CFC12          |
+|forcing     |FCH3Br            |RF_CH3Br          |
+|forcing     |FCH3CCl3          |RF_CH3CCl3        |
+|forcing     |FCH3Cl            |RF_CH3Cl          |
+|forcing     |FCH4              |RF_CH4            |
+|forcing     |FCO2              |RF_CO2            |
+|forcing     |FH2O              |RF_H2O            |
+|forcing     |FHCF141b          |RF_HCF141b        |
+|forcing     |FHCF142b          |RF_HCF142b        |
+|forcing     |FHCF22            |RF_HCF22          |
+|forcing     |FHFC125           |RF_HFC125         |
+|forcing     |FHFC134a          |RF_HFC134a        |
+|forcing     |FHFC143a          |RF_HFC143a        |
+|forcing     |FHFC227ea         |RF_HFC227ea       |
+|forcing     |FHFC23            |RF_HFC23          |
+|forcing     |FHFC245fa         |RF_HFC245fa       |
+|forcing     |FHFC32            |RF_HFC32          |
+|forcing     |FHFC4310          |RF_HFC4310        |
+|forcing     |FN2O              |RF_N2O            |
+|forcing     |FO3               |RF_O3             |
+|forcing     |FOC               |RF_OC             |
+|forcing     |FSF6              |RF_SF6            |
+|forcing     |FSO2d             |Removed           |
+|forcing     |FSO2i             |Removed           |
+|forcing     |Fhalon1211        |Fhalon1211        |
+|forcing     |Fhalon1301        |Fhalon1301        |
+|forcing     |Fhalon2402        |RF_halon2402      |
+|forcing     |Ftalbedo          |RF_albedo         |
+|forcing     |Ftot              |RF_tot            |
+|forcing     |Fvol              |RF_vol            |
+
+

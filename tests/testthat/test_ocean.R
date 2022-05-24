@@ -38,8 +38,8 @@ test_that("Checking ocean flux", {
 
     # Parse out the fluxes from the high and low latitude pools and calculate the sum
     # to compare with the total.
-    pool_fluxes <- fetchvars(core = hc, dates = t_dates, vars = c(ATM_OCEAN_FLUX_HL(),
-                                                                  ATM_OCEAN_FLUX_LL()))
+    pool_fluxes <- fetchvars(core = hc, dates = t_dates, vars = c(HL_OCEAN_UPTAKE(),
+                                                                  LL_OCEAN_UPTAKE()))
     sum_pool_flux <- aggregate(value ~ year, data = pool_fluxes, sum)
 
     expect_equal(total_flux$value, sum_pool_flux$value)
@@ -52,12 +52,12 @@ test_that("Checking high and low latitude difference", {
     # results, they should have different temperature, carbon fluxes, co3, and ph values.
 
     # Calculate the sum of the high latitude variables.
-    hl_vars <- c(OCEAN_C_HL(), PH_HL(), ATM_OCEAN_FLUX_HL(), PCO2_HL(), SST_HL(), CO3_HL())
+    hl_vars <- c(OCEAN_C_HL(), PH_HL(), HL_OCEAN_UPTAKE(), PCO2_HL(), SST_HL(), CO3_HL())
     hl_results <- fetchvars(core = hc, dates = t_dates, vars = hl_vars)
     mean_hl <- aggregate(value ~ variable, data = hl_results, mean)
 
     # Calculate the sum of the low latitude variables.
-    ll_vars <- c(OCEAN_C_LL(), PH_LL(), ATM_OCEAN_FLUX_LL(), PCO2_LL(), SST_LL(), CO3_LL())
+    ll_vars <- c(OCEAN_C_LL(), PH_LL(), LL_OCEAN_UPTAKE(), PCO2_LL(), SST_LL(), CO3_LL())
     ll_results <- fetchvars(core = hc, dates = t_dates, vars = ll_vars)
     mean_ll <- aggregate(value ~ variable, data = ll_results, mean)
 
