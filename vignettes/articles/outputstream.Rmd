@@ -123,4 +123,4 @@ TODO: this should be auto-generated from @leeyap output table?
 | simpleNbox	|earth_c	|Pg C		|total carbon pool - used a mass balance check 
 | forcing	|FCO2	|W/m2		|radiative forcing from CO2
 | forcing	|Ftot	|W/m2		|total global radiative forcing
-| temperature	|Tgav	|degC		|global atmospheric temperature anomaly
+| temperature	|global_tas	|degC		|global atmospheric temperature anomaly

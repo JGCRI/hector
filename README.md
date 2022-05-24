@@ -17,12 +17,6 @@ range of applications. Due to their computational efficiency, SCMs can easily
 be coupled to other models and used to design scenarios, emulate more complex 
 climate models, and conduct uncertainty analyses.
 
-<add an image here, Hector results? figure from v3 manuscript? Hector logo?>
-
-* TODO add text about C++ & R code bases how R
-
-* TODO add text about documentation and examples 
-
 ## Installation 
 
 The `hector` R package can be installed using the `remotes::install_github` 
@@ -45,12 +39,8 @@ library(hector)
 ## Contributing to Hector
 
  The Hector team welcomes and values community contributions, but please see 
- our [Contribution Guide](articles/ContributionsGuide.html).
-
-## Code of Conduct
-  
-Please note that the Hector project is released with a [Contributor Code of Conduct](https://jgcri.github.io/hector/CODE_OF_CONDUCT.html). By contributing 
-to this project, you agree to abide by its terms.
+ our [Contribution Guide](articles/ContributionsGuide.html) and note by  contributing 
+to this project, you agree to abide to our [Contributor Code of Conduct](CODE_OF_CONDUCT.html)
 
  *** 
 This research was supported by the U.S. Department of Energy, Office of Science, as part of research in Multi-Sector Dynamics, Earth and Environmental System Modeling Program. The Pacific Northwest National Laboratory is operated for DOE by Battelle Memorial Institute under contract DE-AC05-76RL01830.

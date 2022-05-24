@@ -70,7 +70,7 @@ invisible(run(core)) # the invisible call prevents Hector core info from being p
 
 # Extract the output. 
 dates_to_keep <- 1850:2100
-vars_to_keep <- c(ATMOSPHERIC_CO2(), RF_TOTAL(), GLOBAL_TEMP())
+vars_to_keep <- c(ATMOSPHERIC_CO2(), RF_TOTAL(), GLOBAL_TAS())
 free_out <- fetchvars(core, 1850:2100, vars = vars_to_keep)
 
 # Make a time series of new CO2 values to use as the constraint. 
@@ -158,7 +158,7 @@ invisible(run(core)) # the invisible call prevents Hector core info from being p
 
 # Extract the output. 
 dates_to_keep <- 1850:2100
-vars_to_keep <- c(RF_TOTAL(), GLOBAL_TEMP())
+vars_to_keep <- c(RF_TOTAL(), GLOBAL_TAS())
 free_out <- fetchvars(core, 1850:2100, vars = vars_to_keep)
 
 # Make a time series of new RF values to use as the RF constraint. We are only 
@@ -190,14 +190,14 @@ ggplot() +
 Uncommenting (removing the `;`) from the following line in the `[temperature]` section of the [input file](InputFiles.html) will turn the global mean constraint on. 
 
 ```
-tgav_constrain=csv:path/to/constraint/file.csv
+tas_constrain=csv:path/to/constraint/file.csv
 ```
 
-Then the model's global mean temperature `Tgav` will follow the contents of this file (which must contain columns titled `Date` and `Tgav_constrain`; a sample file is included in the repository (see `inst/input/tables/tgav_historical.csv`). The model will extrapolate within this data as necessary, but not beyond its endpoints.
+Then the model's global mean temperature `global_tas` will follow the contents of this file (which must contain columns titled `Date` and `tas_constrain`; a sample file is included in the repository (see `inst/input/tables/tgav_historical.csv`). The model will extrapolate within this data as necessary, but not beyond its endpoints.
 
 Once Hector's internal date passes the last date in the constraint file, the model's temperature component becomes *unconstrained*, except that we do not permit it to suddenly jump to a new temperature. Instead, changes in global radiative forcing (from which temperature change is computed) are applied to the end-of-constraint temperature. For more details, see the detailed comments in the `TemperatureComponent::run` (temperature_component.cpp).
 
-Here is an example of using the R package to implement the global average mean temperature (`Tgav`) constraint. 
+Here is an example of using the R package to implement the global average mean temperature (`global_tas`) constraint. 
 
 ```{r, message=FALSE, warning=FALSE}
 # Set up an instance of Hector & run 
@@ -207,15 +207,15 @@ invisible(run(core)) # the invisible call prevents Hector core info from being p
 
 # Extract the output. 
 dates_to_keep <- 1850:2100
-vars_to_keep <- c(GLOBAL_TEMP())
+vars_to_keep <- c(GLOBAL_TAS())
 free_out <- fetchvars(core, 1850:2100, vars = vars_to_keep)
 
 # Make a time series of new temperature values to use as the constraint. 
-new_tgav <- free_out[free_out$variable == GLOBAL_TEMP(), ]
+new_tgav <- free_out[free_out$variable == GLOBAL_TAS(), ]
 new_tgav$value <- new_tgav$value + new_tgav$value * 0.25 # increase global temp by 25%
 
 # Use setvar() to set up the the constraint, reset and run Hector, and fetch the results.  
-setvar(core, dates = new_tgav$year, var = TGAV_CONSTRAIN(), values = new_tgav$value, unit = getunits(TGAV_CONSTRAIN()))
+setvar(core, dates = new_tgav$year, var = TAS_CONSTRAIN(), values = new_tgav$value, unit = getunits(TAS_CONSTRAIN()))
 reset(core)
 invisible(run(core))
 constrained_out <- fetchvars(core, 1850:2100, vars = vars_to_keep)

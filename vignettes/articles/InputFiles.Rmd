@@ -24,7 +24,7 @@ Here, comments start with a semicolon (`;`); *section names* (`core`) are enclos
 library(knitr)
 library(kableExtra)
 
-input <- hector:::input_csv
+input <- hector::input_csv
 colnames(input) <- c("Section", "Parameter", "Biome specific", "Time variant",
                      "Required", "Default", "Units", "Description")
 

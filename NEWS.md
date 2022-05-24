@@ -1,6 +1,8 @@
 # hector 3.0.0
 
-<TODO need to add text! there will be a lot of this >
+<TODO add zenodo ini & addd the list of all the changes, link to the new output name>
+
+
 
 
 # hector 2.5.0
