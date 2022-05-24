@@ -69,7 +69,7 @@
 * Bugfix: re-enabled CO~2~ concentration constraint (PR #163)
 * Various changes to internals to support calling Hector from external code like `pyhector`
 * Component loggers are now optional (PR #218)
-* Renamed anthro emissions to ffi emisisons (fossil fuel industrial) (PR #116)
+* Renamed anthro emissions to ffi emissions (fossil fuel industrial) (PR #116)
 
 # hector 1.1.2
 
