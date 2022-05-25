@@ -8,8 +8,8 @@ used within the getunits function.}
 \format{
 A data.frame of 2 columns and 114 rows.
 \describe{
- \item{variable}{String character of the hector variable}
- \item{units}{String character of the unit value}
+ \item{variable}{String of the hector variable}
+ \item{units}{String of the unit value}
 }
 }
 \usage{
