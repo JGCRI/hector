@@ -105,7 +105,6 @@ reference:
   - methane
   - ocean
   - temperature
-  - input_csv
 
 # Organize the articles index, set it up so that all of the vignettes are listed.
 articles:

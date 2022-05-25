@@ -285,5 +285,14 @@ NULL
 #'  \item{units}{String character of the parameter units}
 #'  \item{description}{String character of a brief description of the parameter from the ini file}
 #' }
+"inputstable"
+
+#' A data.frame containing information on all of the Hector variable created by units-data.R
+#' used within the getunits function.
 #'
-'input_csv'
+#' @format A data.frame of 2 columns and 114 rows.
+#' \describe{
+#'  \item{variable}{String character of the hector variable}
+#'  \item{units}{String character of the unit value}
+#' }
+"unitstable"

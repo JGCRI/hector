@@ -69,4 +69,4 @@ unitstable <- rbind(
   data.frame(variable = hdeltas, units = hdeltas_units)
 )
 
-usethis::use_data(unitstable, internal = TRUE, overwrite = TRUE)
+usethis::use_data(unitstable, internal = FALSE, overwrite = TRUE)

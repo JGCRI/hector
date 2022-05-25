@@ -3,8 +3,8 @@
 devtools::load_all()
 
 # Read in the input parameter csv file
-input_csv <- read.csv("./data-raw/input_params.csv")
+inputstable <- read.csv("./data-raw/input_params.csv")
 
 # Save as an object in the package
-usethis::use_data(input_csv, internal = TRUE, overwrite = TRUE)
+usethis::use_data(inputstable, internal = FALSE, overwrite = TRUE)
 

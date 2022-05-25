@@ -66,6 +66,14 @@ namespace Hector {
 using namespace std;
 
 //------------------------------------------------------------------------------
+/*! \brief a new ocean csys logger
+ *
+ * The ocean csys logger may or may not be defined and therefore we check before logging
+ */
+#define OC_LOG(log, level)  \
+if( log != NULL ) H_LOG( (*log), level )                       \
+
+//------------------------------------------------------------------------------
 /*! \brief constructor
  */
 oceancsys::oceancsys() : ncoeffs(6), m_a(ncoeffs) {
@@ -159,16 +167,15 @@ void oceancsys::ocean_csys_run( unitval tbox, unitval carbon )
 	const bool questionable_dic = !(dic > 1000e-6 && dic < 3700e-6);
 	const bool questionable_alk = !(alk >= 2000e-6 && alk <= 2750e-6);
 
-	// TODO should this be written out to a Hector log file??
 	if (questionable_Tk) {
-	    std::cout << "Temp value outside of Zeebe & Wolf-Gladrow range \n";
-	}
+	    OC_LOG( logger, Logger::NOTICE) << "Temp value outside of Zeebe & Wolf-Gladrow range" << endl;
+	    }
 	if (questionable_dic) {
-	    std::cout << "DIC value outside of Zeebe & Wolf-Gladrow range \n";
-	}
+	    OC_LOG( logger, Logger::NOTICE) << "DIC value outside of Zeebe & Wolf-Gladrow range" << endl;
+	    }
 	if (questionable_alk) {
-	    std::cout <<"Alk value outside of Zeebe & Wolf-Gladrow range \n";
-	}
+	    OC_LOG( logger, Logger::NOTICE) << "Alk value outside of Zeebe & Wolf-Gladrow range" << endl;
+	    }
 
 	/*---------------------------------------------------------------
      This section calculates the constants K0, Sc, K1, K2, Ksp, Ksi etc.

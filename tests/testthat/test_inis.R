@@ -16,11 +16,11 @@ test_that("All csv params are in an ini file...", {
   ini_list <- list.files(system.file(package = "hector", "input"), pattern = "ini")
 
   expect_warning(
-    for(ini in ini_list){
+    for (ini in ini_list) {
       ini_file <- readLines(system.file("input", ini, package = "hector"))
 
       # Read in comparison csv, identify unique parameter names
-      input_table <- hector:::input_csv
+      input_table <- hector::inputstable
       input_params <- sort(unique(input_table$parameter))
 
       # Pull out lines with = sign, meaning parameters and definitions
@@ -41,7 +41,8 @@ test_that("All csv params are in an ini file...", {
       missing_param <- setdiff(input_params, ini_params)
 
       # If there are extra or missing parameters, issue a warning
-      if(length(missing_param) > 0) warning(paste0("\nParameter ", missing_param, " is failing in ", ini, "."))
+      if (length(missing_param) > 0) warning(paste0("\nParameter ",
+                                                   missing_param, " is failing in ", ini, "."))
 
 
     }, regexp = NA)
@@ -55,11 +56,11 @@ test_that("All ini parameters are in the input csv", {
   ini_list <- list.files(system.file(package = "hector", "input"), pattern = "ini")
 
   expect_warning(
-    for(ini in ini_list){
+    for (ini in ini_list) {
       ini_file <- readLines(system.file("input", ini, package = "hector"))
 
       # Read in comparison csv, identify unique parameter names
-      input_table <- hector:::input_csv
+      input_table <- hector::inputstable
       input_params <- sort(unique(input_table$parameter))
 
       # Pull out lines with = sign, meaning parameters and definitions
@@ -80,7 +81,8 @@ test_that("All ini parameters are in the input csv", {
       missing_param <- setdiff(ini_params, input_params)
 
       # If there are extra or missing parameters, issue a warning
-      if(length(missing_param) > 0) warning(paste0("\nParameter ", missing_param, " is failing in ", ini, "."))
+      if (length(missing_param) > 0) warning(paste0("\nParameter ",
+                                                   missing_param, " is failing in ", ini, "."))
 
     }, regexp = NA)
 
