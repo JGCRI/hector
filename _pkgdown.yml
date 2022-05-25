@@ -106,18 +106,10 @@ reference:
   - ocean
   - temperature
 
+
 # Organize the articles index, set it up so that all of the vignettes are listed.
 articles:
 - title: Index
   contents:
-  - matches("[a-z]")
-
-# Set up the search nav bar
-search:
-    exclude: ['news/index.html']
-template:
-    params:
-    docsearch:
-    api_key: API_KEY
-index_name: INDEX_NAME
+  - matches("(.*?)")
 
