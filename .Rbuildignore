@@ -42,3 +42,5 @@ _pkgdown.yml
 .lintr
 ^doc$
 ^Meta$
+^vignettes/articles$
+^CODE_OF_CONDUCT\.md$

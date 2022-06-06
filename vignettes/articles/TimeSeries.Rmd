@@ -1,0 +1,99 @@
+---
+title: Time series (`tseries`) variables
+subtitle: C++
+---
+
+
+`tseries` -- the basic time series data type.  
+
+# How to add a new `tseries`
+
+Steps to creating a new `tseries` variable within the Hector C++ codebase are as follows. In this example we will be adding a `tseries` variable   called NewVar_ts to 
+
+example the variable being added will be called
+
+
+## 1. Add to X_component.hpp:
+
+Add the tseries to the appropriate hpp file in this example within the dummy_model_component.hpp file. 
+
+```
+tseries<unitval> NewVar_ts
+```
+
+## 2. Add to component_names.hpp
+
+Add a string variable name to the `component_names.hpp` this it is the message that will be between passed between components. All of the string message names should start with the prefix `D_`. 
+
+```
+#define D_NEWVAR          "example variable"
+
+```
+
+
+## 3. Changes to to X_component.cpp:
+
+Add the tseries to the init or constructor, setData, and getData sections of the cpp file. 
+
+**In DummyModelComponent::init or DummyModelComponent::constructor:**  
+
+	Allow for interpolation  
+
+```
+NewVar_ts.allowInterp(true);
+```
+
+**In DummyModelComponent::setData:**
+
+The `U_unitval` value is listed in the unitval.hpp, adding the new variable in this section reads in the data into the component. 
+
+```
+if( varName == D_NEWVAR ) {
+            H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
+            NewVar_ts.set( data.date, unitval::parse_unitval( data.value_str, data.units_str, U_unitval ) );
+```
+        
+**In DummyModelComponent::getData:**
+
+Adding to the new variable to the getData section lets the the values be passed to other Hector components. 
+
+```
+if( varName == D_NEWVAR ) {
+        H_ASSERT( date != Core::undefinedIndex(), "Date required for variable name" );
+        returnval = NewVar_ts.get( date );
+```
+
+If setting a new variable, see [AddNewVariable](AddNewVariable.html)
+
+**In DummyModelComponent::run:**
+
+Set the variable to a `tseries` in this order -- (runToDate, unitval)  
+
+```
+NewVar_ts.set( runToDate, unitval( previous_x + dx, U_unitval ) );
+```
+
+In order to print to the log file:   
+
+```
+H_LOG( logger, Logger::DEBUG ) << "Year " << runToDate << " variable = " << NewVar_ts.get( runToDate ) << std::endl;
+```
+
+
+
+## 4. Pass to other components 
+
+If another component needs this variable add it to the appropriate hpp and cpp files. For this example lets say X_component needs this the new variable 
+
+**In the X_component.hpp file add**
+
+```
+unitval NewVar;
+```
+
+
+**In X::run: of the X_component.cpp add**
+
+```
+NewVar = core->sendMessage( M_GETDATA, D_NEWVAR, message_data( runToDate ) ).value( U_unitval);
+```

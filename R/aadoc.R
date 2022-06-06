@@ -145,14 +145,15 @@ NULL
 #' @family capability identifiers
 NULL
 
-#' Identifiers for concentration constraints
+#' Identifiers for constraints
 #'
-#' These identifiers correspond to concentration constraints.
+#' These identifiers correspond to Hector's constraint capabilities
 #'
 #' @inheritSection msgtype Note
 #'
 #' @name constraints
 #' @family capability identifiers
+#' @seealso haloconstrains
 NULL
 
 #' Identifiers for quantities in the methane component
@@ -269,3 +270,29 @@ NULL
 #' @name temperature
 #' @family capability identifiers
 NULL
+
+#' A data.frame containing information on all of the Hector inputs listed in
+#' an ini file created by save-input-params.R.
+#'
+#' @format A data.frame of 8 columns and 222 rows.
+#' \describe{
+#'  \item{section}{String of the section of the ini file of a parameter}
+#'  \item{parameter}{String of the parameter name}
+#'  \item{biome.specific}{String of whether or not the parameter is biome-specific}
+#'  \item{time.variant}{String of whether or not the parameter is time-variant}
+#'  \item{required}{String of wheterh or not the parameter is required}
+#'  \item{default}{String of the default value of the parameter}
+#'  \item{units}{String of the parameter units}
+#'  \item{description}{String of a brief description of the parameter from the ini file}
+#' }
+"inputstable"
+
+#' A data.frame containing information on all of the Hector variable created by units-data.R
+#' used within the getunits function.
+#'
+#' @format A data.frame of 2 columns and 114 rows.
+#' \describe{
+#'  \item{variable}{String of the hector variable}
+#'  \item{units}{String of the unit value}
+#' }
+"unitstable"

@@ -125,7 +125,6 @@ private:
      * Input data
      *****************************************************************/
     bool spinup_chem;       //!< run chemistry during spinup?
-    tseries<unitval> oceanflux_constrain;      //!< atmosphere->ocean C flux data to constrain to
 
     /*****************************************************************
      * Private helper functions

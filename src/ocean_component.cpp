@@ -77,9 +77,6 @@ void OceanComponent::init( Core* coreptr ) {
 
     core = coreptr;
 
-	oceanflux_constrain.allowInterp( true );
-    oceanflux_constrain.name = "atm_ocean_constrain";
-
     SST.set( 0.0, U_DEGC );
 
 	lastflux_annualized.set( 0.0, U_PGC );
@@ -335,10 +332,6 @@ unitval OceanComponent::annual_totalcflux( const double date, const unitval& CO2
                             + surfaceLL.mychemistry.calc_annual_surface_flux( CO2_conc, cpoolscale );
     }
 
-    if( !in_spinup && oceanflux_constrain.size() && date <= oceanflux_constrain.lastdate() ) {
-        flux = oceanflux_constrain.get( date );
-    }
-
     return flux;
 }
 
@@ -384,11 +377,6 @@ void OceanComponent::run( const double runToDate ) {
         surfaceHL.chem_equilibrate( CO2_conc );
         surfaceLL.chem_equilibrate( CO2_conc );
 
-        // Warn if the user has supplied an atmosphere-ocean C flux constraint
-        if( oceanflux_constrain.size() ) {
-            unitval constrained_flux = oceanflux_constrain.get( runToDate );
-            H_LOG( logger, Logger::WARNING ) << "Atm-ocean C fluxes will be constrained to " << constrained_flux << std::endl;
-        }
    }
 
     // Call compute_fluxes with do_boxfluxes=false to run just chemistry

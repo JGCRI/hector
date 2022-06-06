@@ -1,0 +1,43 @@
+---
+title: "Manual"
+---
+
+[Index](index.html) 
+
+
+Model Philosophy
+--------------------
+* Quick run time
+* Complexity only where warranted
+* Clean, modern, well-documented object-oriented code
+* Open source - all code freely available & accessible
+* Flexible - model components, outputs, inputs can be changed
+* About Hector's [version numbering](VersionNumbers.html)
+
+Science
+--------------------
+* A [general summary](HectorSummary.html) of the science behind Hector
+* Introduction to Hector's [climate](climate.html), [terrestrial carbon cycle](SimpleNBox.html), and [ocean carbon cycle](ocean-carbon-cycle.html) 
+* [Model documentation manuscripts](Hector-Wider-World.html#hector_documentation) and [publications that feature Hector](Hector-Wider-World.html#other_manuscripts)
+
+Building and Running Hector
+--------------------
+* How to [build Hector from source](BuildHector.html)       
+* How to [do a basic run and sensitivity analysis](intro-to-hector.html)
+* How to [run Hector under constraints](Constraints.html)
+* How to [run Hector with multiple biomes](multiple-biomes.html)
+
+For Developers
+--------------------
+A mixture of notes related to C++ and R Hector code bases
+
+* [External API](ExternalAPI.html) and [Component API](ComponentAPI.html)
+* [Add a new component](AddNewComponent.html)
+* [Add a new variable](AddNewVariable.html)
+* [Add a new forcer](addnewforcer.html)
+
+Contributing to Hector
+--------------------
+* [Contribution guide](ContributionsGuide.html) 
+* [Authorship Guidelines](AuthorshipGuidelines.html) 
+* [Style Guide](StyleGuide.html)

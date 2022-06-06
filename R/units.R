@@ -9,8 +9,8 @@
 #' @export
 getunits <- function(vars) {
   ## NB the unitstable data structure is included as internal package data.
-  rows <- match(vars, unitstable$variable)
-  units <- unitstable$units[rows]
+  rows <- match(vars, hector::unitstable$variable)
+  units <- hector::unitstable$units[rows]
   if (any(is.na(units))) {
     warning(
       "Units entries for the following variables not found: ",
