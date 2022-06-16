@@ -8,8 +8,7 @@ on:
     branches:
       - master
       - main
-      - land_tracking
-      - tracking-vars
+      - v3_dev
 
   schedule:
     # * is a special character in YAML so you have to quote this string

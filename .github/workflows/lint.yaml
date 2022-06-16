@@ -3,7 +3,7 @@ on:
     branches:
       - main
       - master
-      - land_tracking
+      - v3_dev
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
