@@ -15,7 +15,10 @@
  *
  */
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Weverything"
 #include "boost/algorithm/string.hpp"
+#pragma clang diagnostic pop
 
 #include "dependency_finder.hpp"
 #include "simpleNbox.hpp"
