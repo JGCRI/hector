@@ -136,6 +136,14 @@ TEST_F( UnitvalTest, Math ) {
     EXPECT_THROW(ybad / x, h_exception);
 }
 
+TEST_F( UnitvalTest, unitsName ) {
+    // Make sure unitsName() has a string all the enumerated units
+    for( int i = 0; i <= U_UNDEFINED; ++i ) {
+        const unit_types u = static_cast<unit_types>( i );
+        EXPECT_NO_THROW( Hector::unitval::unitsName( u ) );
+    }
+}
+
 TEST_F( UnitvalTest, Output ) {
     stringstream out;
     unitval x(1.0, U_M3_S);
