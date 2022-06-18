@@ -137,7 +137,7 @@ TEST_F( UnitvalTest, Math ) {
 }
 
 TEST_F( UnitvalTest, unitsName ) {
-    // Make sure unitsName() has a string all the enumerated units
+    // Make sure unitsName() has a string for all the enumerated units
     for( int i = 0; i <= U_UNDEFINED; ++i ) {
         const unit_types u = static_cast<unit_types>( i );
         EXPECT_NO_THROW( Hector::unitval::unitsName( u ) );
