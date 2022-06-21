@@ -56,12 +56,16 @@ void CH4Component::init( Core* coreptr ) {
     // Inform core what data we can provide
     core->registerCapability( D_CH4_CONC, getComponentName() );
     core->registerCapability( D_PREINDUSTRIAL_CH4, getComponentName() );
+    core->registerCapability( D_LIFETIME_STRAT, getComponentName() );
+    core->registerCapability( D_LIFETIME_SOIL, getComponentName() );
     core->registerDependency( D_LIFETIME_OH, getComponentName() );
     // ...and what input data that we can accept
     core->registerInput( D_EMISSIONS_CH4, getComponentName() );
     core->registerInput( D_NATURAL_CH4, getComponentName() );
     core->registerInput( D_CONSTRAINT_CH4, getComponentName() );
     core->registerInput( D_PREINDUSTRIAL_CH4, getComponentName() );
+    core->registerInput( D_LIFETIME_STRAT, getComponentName() );
+    core->registerInput( D_LIFETIME_SOIL, getComponentName() );
 }
 
 //------------------------------------------------------------------------------
@@ -192,6 +196,12 @@ unitval CH4Component::getData( const std::string& varName,
     } else if( varName == D_NATURAL_CH4 ) {
         H_ASSERT(  date == Core::undefinedIndex(), "Date not allowed for natural CH4 emissions" );
         returnval = CH4N;
+    } else if( varName == D_LIFETIME_SOIL ) {
+        H_ASSERT(  date == Core::undefinedIndex(), "Date not allowed for CH4 soil lifetime" );
+        returnval = Tsoil;
+    } else if( varName == D_LIFETIME_STRAT ) {
+        H_ASSERT(  date == Core::undefinedIndex(), "Date not allowed for CH4 tropospheric lifetime" );
+        returnval = Tstrat;
     } else if( varName == D_CONSTRAINT_CH4 ) {
         H_ASSERT(  date != Core::undefinedIndex(), "Date not allowed for CH4 constraint" );
         if ( CH4_constrain.exists( date ) ) {

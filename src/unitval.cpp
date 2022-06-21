@@ -119,14 +119,18 @@ string unitval::unitsName( const unit_types u ) {
         break;
     case U_MOL_KG_ATM: return "mol/kg/atm";
         break;
+    case U_J_KG_C: return"J/kg/degC";
+        break;
     case U_DOBSON: return "dobson";
         break;
     case U_YRS: return "Years";
         break;
-    case U_M3_S: return  "m3/s";
+    case U_M3_S: return "m3/s";
         break;
 
-    default: H_THROW( "Unhandled unit!" );
+    default:
+        string msg = "Unhandled unit " + std::to_string( u ) + " in unitval::unitsName!";
+        H_THROW( msg );
     }
 }
 
