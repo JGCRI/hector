@@ -82,6 +82,7 @@
 		27B2C270261511C8005DE26D /* spline_forsythe.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C24D261511C8005DE26D /* spline_forsythe.cpp */; };
 		27B2C271261511C8005DE26D /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C24E261511C8005DE26D /* main.cpp */; };
 		27F2613726B55617004BDD47 /* csv_tracking_visitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27962904268F237200333AA3 /* csv_tracking_visitor.cpp */; };
+		35ACB833285E4F4E0025928F /* h_util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 275CBFF127AC7CC0009E2AF5 /* h_util.cpp */; };
 		954D62AE278E005500840656 /* nh3_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 954D62AD278E005500840656 /* nh3_component.cpp */; };
 		954D62AF278E005500840656 /* nh3_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 954D62AD278E005500840656 /* nh3_component.cpp */; };
 /* End PBXBuildFile section */
@@ -335,7 +336,6 @@
 		27B2C272261511CD005DE26D /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				275CBFF127AC7CC0009E2AF5 /* h_util.cpp */,
 				954D62AD278E005500840656 /* nh3_component.cpp */,
 				27B2C23B261511C6005DE26D /* bc_component.cpp */,
 				27B2C24B261511C8005DE26D /* carbon-cycle-model.cpp */,
@@ -350,6 +350,7 @@
 				27B2C230261511C5005DE26D /* forcing_component.cpp */,
 				27B2C239261511C6005DE26D /* h_interpolator.cpp */,
 				27B2C22D261511C5005DE26D /* h_reader.cpp */,
+				275CBFF127AC7CC0009E2AF5 /* h_util.cpp */,
 				27B2C231261511C5005DE26D /* halocarbon_component.cpp */,
 				27B2C240261511C7005DE26D /* ini_to_core_reader.cpp */,
 				27B2C22E261511C5005DE26D /* ini.c */,
@@ -518,6 +519,7 @@
 				273FC39626A3570B00D5303E /* test_tseries.cpp in Sources */,
 				273FC39926A3570B00D5303E /* test_tracking.cpp in Sources */,
 				27A02A682615CBB800AF9BFA /* ocean_component.cpp in Sources */,
+				35ACB833285E4F4E0025928F /* h_util.cpp in Sources */,
 				27A02A692615CBB800AF9BFA /* slr_component.cpp in Sources */,
 				27A02A6A2615CBB800AF9BFA /* spline_forsythe.cpp in Sources */,
 				27A02A6B2615CBB800AF9BFA /* oh_component.cpp in Sources */,
@@ -661,6 +663,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				SDKROOT = macosx;
@@ -698,6 +701,7 @@
 					"${GTEST}",
 				);
 				LIBRARY_SEARCH_PATHS = "${GTESTLIB}";
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-lgtest";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -713,6 +717,7 @@
 					"${GTEST}",
 				);
 				LIBRARY_SEARCH_PATHS = "${GTESTLIB}";
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-lgtest";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
