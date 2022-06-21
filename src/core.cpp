@@ -13,7 +13,10 @@
  */
 
 #include <fstream>
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Weverything"
 #include "boost/algorithm/string.hpp"
+#pragma clang diagnostic pop
 
 #include "imodel_component.hpp"
 #include "halocarbon_component.hpp"

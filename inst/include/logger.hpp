@@ -15,7 +15,10 @@
  */
 
 #include <iostream>
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Weverything"
 #include <boost/iostreams/filtering_stream.hpp>
+#pragma clang diagnostic pop
 
 #include "h_exception.hpp"
 
