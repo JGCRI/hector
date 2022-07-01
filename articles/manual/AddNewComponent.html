@@ -124,8 +124,8 @@ If the variable is a <code>tseries</code>, add all of the variables allowing for
     X_emissions.name = X_COMPONENT_NAME; </code></pre>
 <p><em>In X::init</em><br>
 Inform the core what data the component can provide (<em>registerCapability</em>) and what data the component depends on (<em>registerDependency</em>)</p>
-<pre><code><span class="va">core</span><span class="op">-&gt;</span><span class="fu">registerCapability</span><span class="op">(</span> <span class="va">D_ATMOSPHERIC_X</span>, <span class="fu">getComponentName</span><span class="op">(</span><span class="op">)</span> <span class="op">)</span>;
-<span class="va">core</span><span class="op">-&gt;</span><span class="fu">registerDependency</span><span class="op">(</span> <span class="va">D_LIFETIME_X</span>, <span class="fu">getComponentName</span><span class="op">(</span><span class="op">)</span> <span class="op">)</span>;</code></pre>
+<pre><code><span><span class="va">core</span><span class="op">-&gt;</span><span class="fu">registerCapability</span><span class="op">(</span> <span class="va">D_ATMOSPHERIC_X</span>, <span class="fu">getComponentName</span><span class="op">(</span><span class="op">)</span> <span class="op">)</span>;</span>
+<span><span class="va">core</span><span class="op">-&gt;</span><span class="fu">registerDependency</span><span class="op">(</span> <span class="va">D_LIFETIME_X</span>, <span class="fu">getComponentName</span><span class="op">(</span><span class="op">)</span> <span class="op">)</span>;</span></code></pre>
 <p><em>In X::setData</em><br>
 Set the data that are used as inputs within this component, typically coming from the INI file.<br>
 [[For examples of <code>tseries</code> vs. <code>unitvals</code> in <a href="https://jgcri.github.io/hector/articles/manual/TimeSeries.html" class="external-link">Time Series</a>]].</p>
@@ -177,7 +177,7 @@ under public<br><code>virtual void visit( XComponent* c);</code></p>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer>

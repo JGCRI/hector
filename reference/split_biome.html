@@ -77,43 +77,58 @@ from an existing biome across multiple new biomes.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">split_biome</span><span class="op">(</span>
-  <span class="va">core</span>,
-  <span class="va">old_biome</span>,
-  <span class="va">new_biomes</span>,
-  fveg_c <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">new_biomes</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">new_biomes</span><span class="op">)</span><span class="op">)</span>,
-  fdetritus_c <span class="op">=</span> <span class="va">fveg_c</span>,
-  fsoil_c <span class="op">=</span> <span class="va">fveg_c</span>,
-  fnpp_flux0 <span class="op">=</span> <span class="va">fveg_c</span>,
-  <span class="va">...</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">split_biome</span><span class="op">(</span></span>
+<span>  <span class="va">core</span>,</span>
+<span>  <span class="va">old_biome</span>,</span>
+<span>  <span class="va">new_biomes</span>,</span>
+<span>  fveg_c <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">new_biomes</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">new_biomes</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  fdetritus_c <span class="op">=</span> <span class="va">fveg_c</span>,</span>
+<span>  fsoil_c <span class="op">=</span> <span class="va">fveg_c</span>,</span>
+<span>  fnpp_flux0 <span class="op">=</span> <span class="va">fveg_c</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>core</dt>
 <dd><p>Hector core</p></dd>
+
+
 <dt>old_biome</dt>
 <dd><p>Name of biome that will be split up</p></dd>
+
+
 <dt>new_biomes</dt>
 <dd><p>Names of biomes to be created</p></dd>
+
+
 <dt>fveg_c</dt>
 <dd><p>Fractions of vegetation C distributed to each biome
 in `new_biomes`. Must be the same length as `new_biomes`. Default
 is to split vegetation C evenly between all biomes.</p></dd>
+
+
 <dt>fdetritus_c</dt>
 <dd><p>Fractions of detritus C distributed to each
 biome. Defaults to the same value as `fveg_c`.</p></dd>
+
+
 <dt>fsoil_c</dt>
 <dd><p>Fractions of soil C distributed to each biome.
 Defaults to the same value as `fveg_c`.</p></dd>
+
+
 <dt>fnpp_flux0</dt>
 <dd><p>Fraction of initial NPP flux distributed to each
 biome. Defaults to the same value as `fveg_c`.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>Additional biome-specific parameters, as set by
 [create_biome()]. Note that these are passed to [create_biome()]
 via [base::mapply()], so they can be vectorized across biomes.</p></dd>
+
 </dl></div>
 
   </div>
@@ -128,7 +143,7 @@ via [base::mapply()], so they can be vectorized across biomes.</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

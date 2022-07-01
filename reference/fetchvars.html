@@ -79,22 +79,29 @@ core that has been shut down will cause an error.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">fetchvars</span><span class="op">(</span><span class="va">core</span>, <span class="va">dates</span>, vars <span class="op">=</span> <span class="cn">NULL</span>, scenario <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">fetchvars</span><span class="op">(</span><span class="va">core</span>, <span class="va">dates</span>, vars <span class="op">=</span> <span class="cn">NULL</span>, scenario <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>core</dt>
 <dd><p>Hector core object</p></dd>
+
+
 <dt>dates</dt>
 <dd><p>Vector of dates to fetch.  This will be automatically trimmed to
 dates that are between the start date and the latest date currently run.</p></dd>
+
+
 <dt>vars</dt>
 <dd><p>List (or vector) of capability strings defining the variables to
 be fetched in the result.</p></dd>
+
+
 <dt>scenario</dt>
 <dd><p>Optional scenario name.  If not specified, the name element
 of the Hector core object will be used.</p></dd>
+
 </dl></div>
     <div id="details">
     <h2>Details</h2>
@@ -132,7 +139,7 @@ forcing, and global mean temperature.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

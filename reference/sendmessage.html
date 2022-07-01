@@ -77,27 +77,38 @@ to set values within components.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">sendmessage</span><span class="op">(</span><span class="va">core</span>, <span class="va">msgtype</span>, <span class="va">capability</span>, <span class="va">date</span>, <span class="va">value</span>, <span class="va">unit</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">sendmessage</span><span class="op">(</span><span class="va">core</span>, <span class="va">msgtype</span>, <span class="va">capability</span>, <span class="va">date</span>, <span class="va">value</span>, <span class="va">unit</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>core</dt>
 <dd><p>a Hector instance</p></dd>
+
+
 <dt>msgtype</dt>
 <dd><p>(String) type of message. Usually either GETDATA or SETDATA</p></dd>
+
+
 <dt>capability</dt>
 <dd><p>(String) capability being targeted by the message.  The core will use
 this information to look up the component to route the message to.</p></dd>
+
+
 <dt>date</dt>
 <dd><p>(NumericVector) Date for which to set/get the variable.  Use NA if there is
 no applicable date.</p></dd>
+
+
 <dt>value</dt>
 <dd><p>(NumericVector) Numeric portion of the optional data (in case of setting
 a value this will be the value to set).  The length of this vector should match that of
 the time, or it should be length 1 (in which case it will be recycled).</p></dd>
+
+
 <dt>unit</dt>
 <dd><p>(String) Unit for the value vector.</p></dd>
+
 </dl></div>
     <div id="details">
     <h2>Details</h2>
@@ -128,7 +139,7 @@ the optional data will be ignored.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer></div>

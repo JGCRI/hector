@@ -111,10 +111,10 @@
 run_name=rcp45</code></pre>
 <p>Here, comments start with a semicolon (<code>;</code>); <em>section names</em> (<code>core</code>) are enclosed in square brackets; and a <em>property</em> (<code>run_name</code>) is assigned a <em>value</em> (<code>rcp45</code>). Properties are guaranteed to be unique within a particular section, and all sections match one-to-one with a model <a href="ComponentAPI.html">component</a>.</p>
 <p>There are two Hector-specific wrinkles to the INI property-value assignment scheme. First, some properties have a time index that’s required when assigning:</p>
-<pre><code><span class="va">Ftalbedo</span><span class="op">[</span><span class="fl">1750</span><span class="op">]</span><span class="op">=</span><span class="fl">0.0</span>
-<span class="va">Ftalbedo</span><span class="op">[</span><span class="fl">1950</span><span class="op">]</span><span class="op">=</span><span class="op">-</span><span class="fl">0.2</span></code></pre>
+<pre><code><span><span class="va">Ftalbedo</span><span class="op">[</span><span class="fl">1750</span><span class="op">]</span><span class="op">=</span><span class="fl">0.0</span></span>
+<span><span class="va">Ftalbedo</span><span class="op">[</span><span class="fl">1950</span><span class="op">]</span><span class="op">=</span><span class="op">-</span><span class="fl">0.2</span></span></code></pre>
 <p>More commonly, such <a href="TimeSeries.html">time series</a> are assigned by reading data in from a comma-separated value text file:</p>
-<pre><code><span class="va">lucEmissions</span><span class="op">=</span><span class="va">csv</span><span class="op">:</span><span class="va">input</span><span class="op">/</span><span class="va">emissions</span><span class="op">/</span><span class="va">RCP45_emissions.csv</span></code></pre>
+<pre><code><span><span class="va">lucEmissions</span><span class="op">=</span><span class="va">csv</span><span class="op">:</span><span class="va">input</span><span class="op">/</span><span class="va">emissions</span><span class="op">/</span><span class="va">RCP45_emissions.csv</span> </span></code></pre>
 <p>In this case, the <code>input/emissions/RCP45_emissions.csv</code> file is parsed and the data in column <code>lucEmissions</code> are assigned to the model variable, with a required <code>Date</code> column providing the time index.</p>
 </div>
 <div class="section level2">
@@ -213,7 +213,7 @@ run_name=rcp45</code></pre>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
 </div>
 
       </footer>
