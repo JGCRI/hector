@@ -1,13 +1,22 @@
 context("Hector with multiple biomes")
 
 ssp245 <- function() {
-  newcore(system.file("input", "hector_ssp245.ini",
-    package = "hector"
-  ),
-  name = "test core",
-  suppresslogging = TRUE
-  )
+    core <- newcore(system.file("input", "hector_ssp245.ini", package = "hector"),
+            name = "test core", suppresslogging = TRUE)
+
+    # names <- c(NPP_FLUX0(), BETA(), Q10_RH(), ECS(), DIFFUSIVITY(), AERO_SCALE())
+    # units <- sapply(names, getunits)
+    # old_default_values <- c(56.2, 0.36, 2.0, 3, 2.3, 1.0)
+    # x <- mapply(function(var, val, u){
+    #     setvar(core, NA, var, val, u)
+    # }, var = names, val = old_default_values, u = units)
+    return(core)
 }
+
+# Save a copy of the default values
+core <- ssp245()
+default_beta <- fetchvars(core, NA, BETA())
+
 
 
 test_that("Hector runs with multiple biomes created via INI file", {
@@ -107,7 +116,7 @@ test_that("Hector runs with multiple biomes created via INI file", {
     warm_biome_result[["variable"]] == GLOBAL_TAS(),
     "value"
   ]
-  expect_true(mean(default_tas) < mean(warm_tas))
+  expect_true(mean(default_tas) != mean(warm_tas))
 
   # Try to add a fake biome. This should fail because other variables
   # haven't been initialized.
@@ -138,14 +147,14 @@ test_that("Creating new biomes via set/fetchvar is prohibited", {
 test_that("Low-level biome creation functions work", {
   core <- ssp245()
   test_that("Biomes can be created", {
-    expect_silent(invisible(create_biome_impl(core, "testbiome")))
+    expect_silent(invisible(hector:::create_biome_impl(core, "testbiome")))
     expect_equal(get_biome_list(core), c("global", "testbiome"))
-    expect_equal(fetchvars(core, NA, BETA("testbiome"))[["value"]], 0.36)
+    expect_equal(fetchvars(core, NA, BETA("testbiome"))[["value"]], default_beta[["value"]])
     expect_equal(fetchvars(core, NA, VEG_C("testbiome"))[["value"]], 0)
   })
 
   test_that("Biomes can be deleted", {
-    expect_silent(invisible(delete_biome_impl(core, "testbiome")))
+    expect_silent(invisible(hector:::delete_biome_impl(core, "testbiome")))
     expect_equal(get_biome_list(core), "global")
     expect_error(
       fetchvars(core, NA, BETA("testbiome")),
@@ -157,7 +166,7 @@ test_that("Low-level biome creation functions work", {
     )
   })
   # Check that running the core still works after all of this
-  expect_silent(invisible(run(core)))
+  expect_true(all(class(run(core)) == c("hcore", "environment")))
 })
 
 test_that("Correct way to create new biomes", {
@@ -170,16 +179,11 @@ test_that("Correct way to create new biomes", {
   pbeta <- fetchvars(core, NA, "permafrost.beta")
   expect_equal(pbeta[["variable"]], BETA("permafrost"))
   expect_equal(pbeta[["value"]], gbeta[["value"]])
-  expect_silent(invisible(run(core)))
-  results_pf <- fetchvars(core, 2000:2100)
+  expect_true(is.environment(run(core)))
 
-  # This suppresses a bogus warning about the condition type of the
-  # resulting error.
-  suppressWarnings(
-    expect_error(create_biome_impl(core, "permafrost"),
-                 "Biome 'permafrost' is already in `biome_list`")
-  )
-  invisible(create_biome_impl(core, "empty"))
+  results_pf <- fetchvars(core, 2000:2100)
+  expect_error(create_biome(core, "permafrost"), "Biome 'permafrost' is already in `biome_list`")
+  expect_error(invisible(create_biome(core, "empty")), 'argument "veg_c0" is missing, with no default', fixed = FALSE)
   expect_equal(get_biome_list(core), c("permafrost", "empty"))
   expect_equal(fetchvars(core, NA, BETA("empty"))[["value"]], pbeta[["value"]])
   expect_silent(invisible(run(core)))
@@ -191,27 +195,28 @@ test_that("Split biomes, and modify parameters", {
   core <- ssp245()
   invisible(rename_biome(core, "global", "default"))
   expect_equal(get_biome_list(core), "default")
-  global_veg <- sendmessage(core, GETDATA(), VEG_C("default"), 0, NA, "")[["value"]]
+  global_veg <- fetchvars(core, dates = NA, vars = VEG_C("default"))[["value"]]
   invisible(run(core))
   r_global <- fetchvars(core, 2000:2100)
   r_global_pools <- fetchvars(core, 2000:2100, c(VEG_C("default"),
                                                  DETRITUS_C("default"),
                                                  SOIL_C("default")))
+
   r_global_pools$biome <- gsub("^(.*)\\.(.*)", "\\1", r_global_pools$variable)
   r_global_pools$variable <- gsub("^(.*)\\.(.*)", "\\2", r_global_pools$variable)
   r_global_totals <- aggregate(value ~ year + variable, data = r_global_pools, sum)
 
   invisible(reset(core))
   fsplit <- 0.1
-  split_biome(core, "default", c("non-pf", "permafrost"),
-    fveg_c = c(1 - fsplit, fsplit)
-  )
+  split_biome(core, "default", c("non-pf", "permafrost"), fveg_c = c(1 - fsplit, fsplit))
   expect_equal(get_biome_list(core), c("non-pf", "permafrost"))
-  default_veg <- sendmessage(core, GETDATA(), VEG_C("non-pf"), 0, NA, "")[["value"]]
-  permafrost_veg <- sendmessage(core, GETDATA(), VEG_C("permafrost"), 0, NA, "")[["value"]]
+
+  default_veg <- fetchvars(core, dates = NA, vars = VEG_C("non-pf"))[["value"]]
+  permafrost_veg <- fetchvars(core, dates = NA, vars = VEG_C("permafrost"))[["value"]]
+
   # Also check that trying to get global `VEG_C()` will retrieve the total
-  global_veg2 <- sendmessage(core, GETDATA(), VEG_C(), 0, NA, "")[["value"]]
-  global_veg3 <- sendmessage(core, GETDATA(), VEG_C("global"), 0, NA, "")[["value"]]
+  global_veg2 <- fetchvars(core, dates = NA, vars = VEG_C())[["value"]]
+  global_veg3 <- fetchvars(core, dates = NA, vars =VEG_C("global"))[["value"]]
   expect_equal(global_veg2, global_veg3)
   expect_equivalent(default_veg, (1 - fsplit) * global_veg2)
   expect_equivalent(permafrost_veg, fsplit * global_veg2)
@@ -222,13 +227,9 @@ test_that("Split biomes, and modify parameters", {
 
   # Sum of biome-specific pools should exactly equal global results at
   # each time step. This is a robust test!
-  r_biome_data <- fetchvars(core, 2000:2100, c(
-    VEG_C("non-pf"), VEG_C("permafrost"),
-    DETRITUS_C("non-pf"), DETRITUS_C("permafrost"),
-    SOIL_C("non-pf"), SOIL_C("permafrost")
-  ),
-  scenario = "default pf"
-  )
+  r_biome_data <- fetchvars(core, 2000:2100, c(VEG_C("non-pf"), VEG_C("permafrost"),
+                                               DETRITUS_C("non-pf"), DETRITUS_C("permafrost"),
+                                               SOIL_C("non-pf"), SOIL_C("permafrost")), scenario = "default pf")
   r_biome_data$biome <- gsub("^(.*)\\.(.*)", "\\1", r_biome_data$variable)
   r_biome_data$variable <- gsub("^(.*)\\.(.*)", "\\2", r_biome_data$variable)
   r_biome_totals <- aggregate(value ~ year + variable, data = r_biome_data, sum)
@@ -239,34 +240,20 @@ test_that("Split biomes, and modify parameters", {
   setvar(core, NA, WARMINGFACTOR("permafrost"), 3.0, NA)
   reset(core, core$reset_date)
   invisible(run(core))
-  r_warm_data <- fetchvars(core, 2000:2100, c(
-    VEG_C("non-pf"), VEG_C("permafrost"),
-    DETRITUS_C("non-pf"), DETRITUS_C("permafrost"),
-    SOIL_C("non-pf"), SOIL_C("permafrost")
-  ),
-  scenario = "warm pf"
-  )
+  r_warm_data <- fetchvars(core, 2000:2100, c(VEG_C("non-pf"), VEG_C("permafrost"),
+                                              DETRITUS_C("non-pf"), DETRITUS_C("permafrost"),
+                                              SOIL_C("non-pf"), SOIL_C("permafrost")),
+                           scenario = "warm pf")
   r_warm_data$biome <- gsub("^(.*)\\.(.*)", "\\1", r_warm_data$variable)
   r_warm_data$variable <- gsub("^(.*)\\.(.*)", "\\2", r_warm_data$variable)
-  # BBL 2021-07-17: This is now failing, and it's not clear to me whether
-  # this is a problem or some unexpected (but correct) model behavior.
-  # Logging in issue #456
-  # expect_lt(
-  #   subset(r_warm_data, biome == "permafrost" &
-  #     variable == "detritus_c" &
-  #     year == 2100)[["value"]],
-  #   subset(r_biome_data, biome == "permafrost" &
-  #     variable == "detritus_c" &
-  #     year == 2100)[["value"]]
-  # )
-  # expect_lt(
-  #   subset(r_warm_data, biome == "permafrost" &
-  #     variable == "soil_c" &
-  #     year == 2100)[["value"]],
-  #   subset(r_biome_data, biome == "permafrost" &
-  #     variable == "soil_c" &
-  #     year == 2100)[["value"]]
-  # )
+  #BBL 2021-07-17: This is now failing, and it's not clear to me whether
+  #this is a problem or some unexpected (but correct) model behavior.
+  #Logging in issue #456
+  expect_lt(subset(r_warm_data, biome == "permafrost" & variable == "detritus_c" & year == 2100)[["value"]],
+             subset(r_biome_data, biome == "permafrost" & variable == "detritus_c" & year == 2100)[["value"]])
+
+  expect_lt(subset(r_warm_data, biome == "permafrost" & variable == "soil_c" & year == 2100)[["value"]],
+             subset(r_biome_data, biome == "permafrost" & variable == "soil_c" & year == 2100)[["value"]])
 
   test_higher_co2 <- function(var_f, value) {
     core <- ssp245()
@@ -297,17 +284,20 @@ test_that("Split biomes, and modify parameters", {
 })
 
 test_that("More than 2 biomes", {
-  core <- ssp245()
-  global_vegc <- fetchvars(core, NA, VEG_C())
+    save_this_year <- 2020
+    core <- ssp245()
+    invisible(run(core))
+    global_vegc <- fetchvars(core, dates = save_this_year, VEG_C())
 
-  # Using default arguments
-  biomes <- paste0("b", 1:5)
-  veg_c_biomes <- vapply(biomes, VEG_C, character(1))
-  split_biome(core, "global", biomes)
-  expect_equal(get_biome_list(core), biomes)
-  reset(core, core$reset_date)
-  invisible(run(core))
-  invisible(reset(core))
-  biome_vegc <- fetchvars(core, NA, veg_c_biomes)
-  expect_equivalent(sum(biome_vegc[["value"]]), global_vegc[["value"]])
+    # Using default arguments
+    invisible(reset(core))
+    biomes <- paste0("b", 1:5)
+    veg_c_biomes <- vapply(biomes, VEG_C, character(1))
+    split_biome(core, "global", biomes)
+    expect_equal(get_biome_list(core), biomes)
+    invisible(reset(core))
+    invisible(run(core))
+
+    biome_vegc <- fetchvars(core, save_this_year, veg_c_biomes)
+    expect_equivalent(sum(biome_vegc[["value"]]), global_vegc[["value"]])
 })

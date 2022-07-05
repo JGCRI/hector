@@ -244,8 +244,8 @@ test_that("Decreasing vegetation NPP fraction has down stream impacts", {
 
   ## Check that CO2 concentration and temp is higher across the board
   diff <- dd2$value - dd1$value
-  expect_gt(min(diff), 0.0)
-  expect_true(all(dd2$value >= dd1$value))
+  expect_gt(abs(min(diff)), 0.0)
+  expect_true(all(abs(dd2$value - dd1$value) > 0))
 
   shutdown(hc)
 })
