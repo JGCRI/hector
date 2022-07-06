@@ -1,177 +1,177 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>/404.html</loc>
+    <loc>https://jgcri.github.io/hector/404.html</loc>
   </url>
   <url>
-    <loc>/CONTRIBUTING.html</loc>
+    <loc>https://jgcri.github.io/hector/CONTRIBUTING.html</loc>
   </url>
   <url>
-    <loc>/LICENSE.html</loc>
+    <loc>https://jgcri.github.io/hector/LICENSE.html</loc>
   </url>
   <url>
-    <loc>/articles/hector_apply.html</loc>
+    <loc>https://jgcri.github.io/hector/articles/hector_apply.html</loc>
   </url>
   <url>
-    <loc>/articles/index.html</loc>
+    <loc>https://jgcri.github.io/hector/articles/index.html</loc>
   </url>
   <url>
-    <loc>/articles/intro-to-hector.html</loc>
+    <loc>https://jgcri.github.io/hector/articles/intro-to-hector.html</loc>
   </url>
   <url>
-    <loc>/articles/manual/AddNewComponent.html</loc>
+    <loc>https://jgcri.github.io/hector/articles/manual/AddNewComponent.html</loc>
   </url>
   <url>
-    <loc>/articles/manual/AddNewVariable.html</loc>
+    <loc>https://jgcri.github.io/hector/articles/manual/AddNewVariable.html</loc>
   </url>
   <url>
-    <loc>/articles/manual/BuildHector.html</loc>
+    <loc>https://jgcri.github.io/hector/articles/manual/BuildHector.html</loc>
   </url>
   <url>
-    <loc>/articles/manual/ComponentAPI.html</loc>
+    <loc>https://jgcri.github.io/hector/articles/manual/ComponentAPI.html</loc>
   </url>
   <url>
-    <loc>/articles/manual/Constraints.html</loc>
+    <loc>https://jgcri.github.io/hector/articles/manual/Constraints.html</loc>
   </url>
   <url>
-    <loc>/articles/manual/ContributionsGuide.html</loc>
+    <loc>https://jgcri.github.io/hector/articles/manual/ContributionsGuide.html</loc>
   </url>
   <url>
-    <loc>/articles/manual/Hector-Wider-World.html</loc>
+    <loc>https://jgcri.github.io/hector/articles/manual/Hector-Wider-World.html</loc>
   </url>
   <url>
-    <loc>/articles/manual/InputFiles.html</loc>
+    <loc>https://jgcri.github.io/hector/articles/manual/InputFiles.html</loc>
   </url>
   <url>
-    <loc>/articles/manual/SimpleNBox.html</loc>
+    <loc>https://jgcri.github.io/hector/articles/manual/SimpleNBox.html</loc>
   </url>
   <url>
-    <loc>/articles/manual/StyleGuide.html</loc>
+    <loc>https://jgcri.github.io/hector/articles/manual/StyleGuide.html</loc>
   </url>
   <url>
-    <loc>/articles/manual/TimeSeries.html</loc>
+    <loc>https://jgcri.github.io/hector/articles/manual/TimeSeries.html</loc>
   </url>
   <url>
-    <loc>/articles/manual/Unitvals.html</loc>
+    <loc>https://jgcri.github.io/hector/articles/manual/Unitvals.html</loc>
   </url>
   <url>
-    <loc>/articles/manual/VersionNumbers.html</loc>
+    <loc>https://jgcri.github.io/hector/articles/manual/VersionNumbers.html</loc>
   </url>
   <url>
-    <loc>/articles/manual/index.html</loc>
+    <loc>https://jgcri.github.io/hector/articles/manual/index.html</loc>
   </url>
   <url>
-    <loc>/articles/multiple-biomes.html</loc>
+    <loc>https://jgcri.github.io/hector/articles/multiple-biomes.html</loc>
   </url>
   <url>
-    <loc>/authors.html</loc>
+    <loc>https://jgcri.github.io/hector/authors.html</loc>
   </url>
   <url>
-    <loc>/index.html</loc>
+    <loc>https://jgcri.github.io/hector/index.html</loc>
   </url>
   <url>
-    <loc>/reference/carboncycle.html</loc>
+    <loc>https://jgcri.github.io/hector/reference/carboncycle.html</loc>
   </url>
   <url>
-    <loc>/reference/concentrations.html</loc>
+    <loc>https://jgcri.github.io/hector/reference/concentrations.html</loc>
   </url>
   <url>
-    <loc>/reference/constraints.html</loc>
+    <loc>https://jgcri.github.io/hector/reference/constraints.html</loc>
   </url>
   <url>
-    <loc>/reference/create_biome.html</loc>
+    <loc>https://jgcri.github.io/hector/reference/create_biome.html</loc>
   </url>
   <url>
-    <loc>/reference/create_biome_impl.html</loc>
+    <loc>https://jgcri.github.io/hector/reference/create_biome_impl.html</loc>
   </url>
   <url>
-    <loc>/reference/delete_biome_impl.html</loc>
+    <loc>https://jgcri.github.io/hector/reference/delete_biome_impl.html</loc>
   </url>
   <url>
-    <loc>/reference/emissions.html</loc>
+    <loc>https://jgcri.github.io/hector/reference/emissions.html</loc>
   </url>
   <url>
-    <loc>/reference/fetchvars.html</loc>
+    <loc>https://jgcri.github.io/hector/reference/fetchvars.html</loc>
   </url>
   <url>
-    <loc>/reference/forcings.html</loc>
+    <loc>https://jgcri.github.io/hector/reference/forcings.html</loc>
   </url>
   <url>
-    <loc>/reference/get_biome_inits.html</loc>
+    <loc>https://jgcri.github.io/hector/reference/get_biome_inits.html</loc>
   </url>
   <url>
-    <loc>/reference/get_biome_list.html</loc>
+    <loc>https://jgcri.github.io/hector/reference/get_biome_list.html</loc>
   </url>
   <url>
-    <loc>/reference/getunits.html</loc>
+    <loc>https://jgcri.github.io/hector/reference/getunits.html</loc>
   </url>
   <url>
-    <loc>/reference/haloconstrain.html</loc>
+    <loc>https://jgcri.github.io/hector/reference/haloconstrain.html</loc>
   </url>
   <url>
-    <loc>/reference/haloemiss.html</loc>
+    <loc>https://jgcri.github.io/hector/reference/haloemiss.html</loc>
   </url>
   <url>
-    <loc>/reference/haloforcings.html</loc>
+    <loc>https://jgcri.github.io/hector/reference/haloforcings.html</loc>
   </url>
   <url>
-    <loc>/reference/hector-package.html</loc>
+    <loc>https://jgcri.github.io/hector/reference/hector-package.html</loc>
   </url>
   <url>
-    <loc>/reference/hectorutil.html</loc>
+    <loc>https://jgcri.github.io/hector/reference/hectorutil.html</loc>
   </url>
   <url>
-    <loc>/reference/index.html</loc>
+    <loc>https://jgcri.github.io/hector/reference/index.html</loc>
   </url>
   <url>
-    <loc>/reference/loglevels.html</loc>
+    <loc>https://jgcri.github.io/hector/reference/loglevels.html</loc>
   </url>
   <url>
-    <loc>/reference/methane.html</loc>
+    <loc>https://jgcri.github.io/hector/reference/methane.html</loc>
   </url>
   <url>
-    <loc>/reference/methods.html</loc>
+    <loc>https://jgcri.github.io/hector/reference/methods.html</loc>
   </url>
   <url>
-    <loc>/reference/msgtype.html</loc>
+    <loc>https://jgcri.github.io/hector/reference/msgtype.html</loc>
   </url>
   <url>
-    <loc>/reference/newcore.html</loc>
+    <loc>https://jgcri.github.io/hector/reference/newcore.html</loc>
   </url>
   <url>
-    <loc>/reference/ocean.html</loc>
+    <loc>https://jgcri.github.io/hector/reference/ocean.html</loc>
   </url>
   <url>
-    <loc>/reference/parameters.html</loc>
+    <loc>https://jgcri.github.io/hector/reference/parameters.html</loc>
   </url>
   <url>
-    <loc>/reference/rename_biome.html</loc>
+    <loc>https://jgcri.github.io/hector/reference/rename_biome.html</loc>
   </url>
   <url>
-    <loc>/reference/reset.html</loc>
+    <loc>https://jgcri.github.io/hector/reference/reset.html</loc>
   </url>
   <url>
-    <loc>/reference/run.html</loc>
+    <loc>https://jgcri.github.io/hector/reference/run.html</loc>
   </url>
   <url>
-    <loc>/reference/runscenario.html</loc>
+    <loc>https://jgcri.github.io/hector/reference/runscenario.html</loc>
   </url>
   <url>
-    <loc>/reference/sendmessage.html</loc>
+    <loc>https://jgcri.github.io/hector/reference/sendmessage.html</loc>
   </url>
   <url>
-    <loc>/reference/setvar.html</loc>
+    <loc>https://jgcri.github.io/hector/reference/setvar.html</loc>
   </url>
   <url>
-    <loc>/reference/shutdown.html</loc>
+    <loc>https://jgcri.github.io/hector/reference/shutdown.html</loc>
   </url>
   <url>
-    <loc>/reference/so2.html</loc>
+    <loc>https://jgcri.github.io/hector/reference/so2.html</loc>
   </url>
   <url>
-    <loc>/reference/split_biome.html</loc>
+    <loc>https://jgcri.github.io/hector/reference/split_biome.html</loc>
   </url>
   <url>
-    <loc>/reference/temperature.html</loc>
+    <loc>https://jgcri.github.io/hector/reference/temperature.html</loc>
   </url>
 </urlset>

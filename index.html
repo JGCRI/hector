@@ -11,7 +11,9 @@
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script><meta property="og:title" content="The Hector Simple Climate Model">
+<script src="pkgdown.js"></script><!-- docsearch --><script src="docsearch.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous">
+<link href="docsearch.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="The Hector Simple Climate Model">
 <meta property="og:description" content="Provides an R interface for the Hector Simple Climate
     Model. Using this interface you can set up and initialize the model,
     change model parameters and emissions inputs, run Hector, and
@@ -82,7 +84,13 @@
   </a>
 </li>
       </ul>
+<form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
+        <div class="form-group">
+          <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
 </div>
+      </form>
+      
+    </div>
 <!--/.nav-collapse -->
   </div>
 <!--/.container -->
@@ -100,7 +108,7 @@
 </h1></div>
 <p>This is the repository for <strong>Hector</strong>, an open source, object-oriented, simple global climate carbon-cycle model. It runs essentially instantaneously while still representing the most critical global scale earth system processes, and is one of a class of models heavily used for for emulating complex climate models and uncertainty analyses. For example, Hector’s global temperature rise for the RCP 8.5 scenario, compared to observations and other model results, looks like this:</p>
 <p><img src="https://github.com/JGCRI/hector/wiki/rcp85.png"></p>
-<p>The primary link to Hector model documentation is the <a href="https://jgcri.github.io/hector/articles/manual" class="external-link">online manual</a>, which is included in the repository in the <code>vignettes/manual</code> directory. The code is also documented with <a href="http://doxygen.org" class="external-link">Doxygen</a>-style comments. A formal model description paper (<a href="http://www.geosci-model-dev.net/8/939/2015/gmd-8-939-2015.html" class="external-link">Hartin et al. 2015</a>) documents its science internals and performance relative to observed data, the <a href="http://cmip-pcmdi.llnl.gov/cmip5/" class="external-link">CMIP5</a> archive, and the reduced-complexity <a href="http://www.magicc.org" class="external-link">MAGICC</a> model (as of <a href="https://github.com/JGCRI/hector/tree/v1.0" class="external-link">version 1.0</a>). In addition, we have developed two package vignettes demonstrating the <a href="http://jgcri.github.io/hector/articles/intro-to-hector.html" class="external-link">basics of the Hector R interface</a> and an example application of <a href="http://jgcri.github.io/hector/articles/hector_apply.html" class="external-link">solving for an emissions pathway</a>.</p>
+<p>The primary link to Hector model documentation is the <a href="https://jgcri.github.io/hector/articles/manual">online manual</a>, which is included in the repository in the <code>vignettes/manual</code> directory. The code is also documented with <a href="http://doxygen.org" class="external-link">Doxygen</a>-style comments. A formal model description paper (<a href="http://www.geosci-model-dev.net/8/939/2015/gmd-8-939-2015.html" class="external-link">Hartin et al. 2015</a>) documents its science internals and performance relative to observed data, the <a href="http://cmip-pcmdi.llnl.gov/cmip5/" class="external-link">CMIP5</a> archive, and the reduced-complexity <a href="http://www.magicc.org" class="external-link">MAGICC</a> model (as of <a href="https://github.com/JGCRI/hector/tree/v1.0" class="external-link">version 1.0</a>). In addition, we have developed two package vignettes demonstrating the <a href="http://jgcri.github.io/hector/articles/intro-to-hector.html" class="external-link">basics of the Hector R interface</a> and an example application of <a href="http://jgcri.github.io/hector/articles/hector_apply.html" class="external-link">solving for an emissions pathway</a>.</p>
 <p>This research was supported by the U.S. Department of Energy, Office of Science, as part of research in Multi-Sector Dynamics, Earth and Environmental System Modeling Program. The Pacific Northwest National Laboratory is operated for DOE by Battelle Memorial Institute under contract DE-AC05-76RL01830.</p>
 <div class="section level2">
 <h2 id="tools-and-software-that-work-with-hector">Tools and Software That Work with Hector<a class="anchor" aria-label="anchor" href="#tools-and-software-that-work-with-hector"></a>
@@ -177,9 +185,20 @@
 </div>
 
   
-
-
-  
-
-  </body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script><script>
+  docsearch({
+    
+    
+    apiKey: 'b2aa343d0c9e9ed33c9582908f3acaf8',
+    indexName: 'hector',
+    inputSelector: 'input#search-input.form-control',
+    transformData: function(hits) {
+      return hits.map(function (hit) {
+        hit.url = updateHitURL(hit);
+        return hit;
+      });
+    }
+  });
+</script>
+</body>
 </html>

@@ -11,7 +11,9 @@
 <script src="../../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../../pkgdown.css" rel="stylesheet">
-<script src="../../pkgdown.js"></script><meta property="og:title" content="Adding a new component">
+<script src="../../pkgdown.js"></script><!-- docsearch --><script src="../../docsearch.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous">
+<link href="../../docsearch.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Adding a new component">
 <meta property="og:description" content="hector">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -78,7 +80,13 @@
   </a>
 </li>
       </ul>
+<form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
+        <div class="form-group">
+          <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
 </div>
+      </form>
+      
+    </div>
 <!--/.nav-collapse -->
   </div>
 <!--/.container -->
@@ -111,7 +119,7 @@
 <div class="section level2">
 <h2 id="step-two-within-x-hpp">Step two (within X.hpp):<a class="anchor" aria-label="anchor" href="#step-two-within-x-hpp"></a>
 </h2>
-<p>Under <code>private</code> list the variables that are used in the component and their corresponding type. Because of Hector’s ability to <a href="https://jgcri.github.io/hector/reference/reset.html" class="external-link">reset</a>, every state variable generally needs an associated time series history variable. E.g. * <code>tseries&lt;unitval&gt; x</code> to create a <a href="https://jgcri.github.io/hector/articles/manual/TimeSeries.html" class="external-link">time series</a>. * <code>unitval x</code> to declare a <a href="Unitvals.html">value with associated units</a>. * <code>double x</code></p>
+<p>Under <code>private</code> list the variables that are used in the component and their corresponding type. Because of Hector’s ability to <a href="https://jgcri.github.io/hector/reference/reset.html">reset</a>, every state variable generally needs an associated time series history variable. E.g. * <code>tseries&lt;unitval&gt; x</code> to create a <a href="https://jgcri.github.io/hector/articles/manual/TimeSeries.html">time series</a>. * <code>unitval x</code> to declare a <a href="Unitvals.html">value with associated units</a>. * <code>double x</code></p>
 </div>
 <div class="section level2">
 <h2 id="step-three-within-x-cpp">Step three (within X.cpp):<a class="anchor" aria-label="anchor" href="#step-three-within-x-cpp"></a>
@@ -128,7 +136,7 @@ Inform the core what data the component can provide (<em>registerCapability</em>
 <span><span class="va">core</span><span class="op">-&gt;</span><span class="fu">registerDependency</span><span class="op">(</span> <span class="va">D_LIFETIME_X</span>, <span class="fu">getComponentName</span><span class="op">(</span><span class="op">)</span> <span class="op">)</span>;</span></code></pre>
 <p><em>In X::setData</em><br>
 Set the data that are used as inputs within this component, typically coming from the INI file.<br>
-[[For examples of <code>tseries</code> vs. <code>unitvals</code> in <a href="https://jgcri.github.io/hector/articles/manual/TimeSeries.html" class="external-link">Time Series</a>]].</p>
+[[For examples of <code>tseries</code> vs. <code>unitvals</code> in <a href="https://jgcri.github.io/hector/articles/manual/TimeSeries.html">Time Series</a>]].</p>
 <p><em>In X::prepareToRun</em> TODO: describe</p>
 <p><em>In X::run</em> The run method contains the equations and code used in this component. Here is where you would want a log statement, written out to the component’s log.</p>
 <p><code>H_LOG( logger, Logger::DEBUG ) &lt;&lt; "Year " &lt;&lt; runToDate &lt;&lt; " X concentration = " &lt;&lt; X.get( runToDate ) &lt;&lt; std::endl;</code></p>
@@ -184,9 +192,20 @@ under public<br><code>virtual void visit( XComponent* c);</code></p>
 </div>
 
   
-
-
-  
-
-  </body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script><script>
+  docsearch({
+    
+    
+    apiKey: 'b2aa343d0c9e9ed33c9582908f3acaf8',
+    indexName: 'hector',
+    inputSelector: 'input#search-input.form-control',
+    transformData: function(hits) {
+      return hits.map(function (hit) {
+        hit.url = updateHitURL(hit);
+        return hit;
+      });
+    }
+  });
+</script>
+</body>
 </html>
