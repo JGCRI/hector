@@ -137,10 +137,11 @@ test_that("Creating new biomes via set/fetchvar is prohibited", {
 
 test_that("Low-level biome creation functions work", {
   core <- ssp245()
+  default_beta <- fetchvars(core, NA, BETA())
   test_that("Biomes can be created", {
     expect_silent(invisible(create_biome_impl(core, "testbiome")))
     expect_equal(get_biome_list(core), c("global", "testbiome"))
-    expect_equal(fetchvars(core, NA, BETA("testbiome"))[["value"]], 0.36)
+    expect_equal(fetchvars(core, NA, BETA("testbiome"))[["value"]], default_beta[["value"]])
     expect_equal(fetchvars(core, NA, VEG_C("testbiome"))[["value"]], 0)
   })
 
@@ -173,13 +174,8 @@ test_that("Correct way to create new biomes", {
   expect_silent(invisible(run(core)))
   results_pf <- fetchvars(core, 2000:2100)
 
-  # This suppresses a bogus warning about the condition type of the
-  # resulting error.
-  suppressWarnings(
-    expect_error(create_biome_impl(core, "permafrost"),
-                 "Biome 'permafrost' is already in `biome_list`")
-  )
-  invisible(create_biome_impl(core, "empty"))
+  expect_error(create_biome(core, "permafrost"), "Biome 'permafrost' is already in `biome_list`")
+  expect_error(invisible(create_biome(core, "empty")), 'argument "veg_c0" is missing, with no default', fixed = FALSE)
   expect_equal(get_biome_list(core), c("permafrost", "empty"))
   expect_equal(fetchvars(core, NA, BETA("empty"))[["value"]], pbeta[["value"]])
   expect_silent(invisible(run(core)))
@@ -191,7 +187,7 @@ test_that("Split biomes, and modify parameters", {
   core <- ssp245()
   invisible(rename_biome(core, "global", "default"))
   expect_equal(get_biome_list(core), "default")
-  global_veg <- sendmessage(core, GETDATA(), VEG_C("default"), 0, NA, "")[["value"]]
+  global_veg <- fetchvars(core, dates = NA, vars = VEG_C("default"))[["value"]]
   invisible(run(core))
   r_global <- fetchvars(core, 2000:2100)
   r_global_pools <- fetchvars(core, 2000:2100, c(VEG_C("default"),
@@ -222,8 +218,8 @@ test_that("Split biomes, and modify parameters", {
   permafrost_veg <- fetchvars(core, dates = NA, vars = VEG_C("permafrost"))[["value"]]
 
   # Also check that trying to get global `VEG_C()` will retrieve the total
-  global_veg2 <- sendmessage(core, GETDATA(), VEG_C(), 0, NA, "")[["value"]]
-  global_veg3 <- sendmessage(core, GETDATA(), VEG_C("global"), 0, NA, "")[["value"]]
+  global_veg2 <- fetchvars(core, dates = NA, vars = VEG_C())[["value"]]
+  global_veg3 <- fetchvars(core, dates = NA, vars =VEG_C("global"))[["value"]]
   expect_equal(global_veg2, global_veg3)
   expect_equivalent(default_veg, (1 - fsplit) * global_veg2)
   expect_equivalent(permafrost_veg, fsplit * global_veg2)
