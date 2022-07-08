@@ -207,8 +207,20 @@ test_that("Split biomes, and modify parameters", {
     fveg_c = c(1 - fsplit, fsplit)
   )
   expect_equal(get_biome_list(core), c("non-pf", "permafrost"))
-  default_veg <- sendmessage(core, GETDATA(), VEG_C("non-pf"), 0, NA, "")[["value"]]
-  permafrost_veg <- sendmessage(core, GETDATA(), VEG_C("permafrost"), 0, NA, "")[["value"]]
+
+  # The non-pool settings should be identical for the biomes
+  x <- hector:::get_biome_inits(core, "non-pf")
+  y <- hector:::get_biome_inits(core, "permafrost")
+  expect_identical(x[F_NPPD()], y[F_NPPD()])
+  expect_identical(x[F_NPPV()], y[F_NPPV()])
+  expect_identical(x[F_LITTERD()], y[F_LITTERD()])
+  expect_identical(x[BETA()], y[BETA()])
+  expect_identical(x[Q10_RH()], y[Q10_RH()])
+  expect_identical(x[WARMINGFACTOR()], y[WARMINGFACTOR()])
+
+  default_veg <- fetchvars(core, dates = NA, vars = VEG_C("non-pf"))[["value"]]
+  permafrost_veg <- fetchvars(core, dates = NA, vars = VEG_C("permafrost"))[["value"]]
+
   # Also check that trying to get global `VEG_C()` will retrieve the total
   global_veg2 <- sendmessage(core, GETDATA(), VEG_C(), 0, NA, "")[["value"]]
   global_veg3 <- sendmessage(core, GETDATA(), VEG_C("global"), 0, NA, "")[["value"]]
@@ -216,26 +228,25 @@ test_that("Split biomes, and modify parameters", {
   expect_equivalent(default_veg, (1 - fsplit) * global_veg2)
   expect_equivalent(permafrost_veg, fsplit * global_veg2)
   expect_equivalent(default_veg + permafrost_veg, global_veg2)
+
+  # Sum of biome-specific pools should exactly equal global results at
+  # each time step. This is a stringent test!
   reset(core, core$reset_date)
   invisible(run(core))
   r_biome <- fetchvars(core, 2000:2100)
-
-  # Sum of biome-specific pools should exactly equal global results at
-  # each time step. This is a robust test!
-  r_biome_data <- fetchvars(core, 2000:2100, c(
-    VEG_C("non-pf"), VEG_C("permafrost"),
-    DETRITUS_C("non-pf"), DETRITUS_C("permafrost"),
-    SOIL_C("non-pf"), SOIL_C("permafrost")
-  ),
-  scenario = "default pf"
-  )
+  # Climate should be the same
+  expect_equivalent(r_global, r_biome)
+  # Summed pools should be the same
+  r_biome_data <- fetchvars(core, 2000:2100, c(VEG_C("non-pf"), VEG_C("permafrost"),
+                                               DETRITUS_C("non-pf"), DETRITUS_C("permafrost"),
+                                               SOIL_C("non-pf"), SOIL_C("permafrost")), scenario = "default pf")
   r_biome_data$biome <- gsub("^(.*)\\.(.*)", "\\1", r_biome_data$variable)
   r_biome_data$variable <- gsub("^(.*)\\.(.*)", "\\2", r_biome_data$variable)
   r_biome_totals <- aggregate(value ~ year + variable, data = r_biome_data, sum)
   expect_equivalent(r_global_totals, r_biome_totals)
 
-  # Some changes should always produce higher atmospheric CO2
-  
+  # Certain changes should always produce higher atmospheric CO2
+
   test_higher_co2 <- function(var_f, value) {
     core <- ssp245()
     orig_val <- fetchvars(core, NA, var_f())[["value"]]
@@ -254,10 +265,10 @@ test_that("Split biomes, and modify parameters", {
     expect_true(all(basic[["value"]] < new[["value"]]))
   }
 
+  # Lower beta means higher CO2
+  test_higher_co2(BETA, 0.1)
   # Higher Q10 means higher CO2
   test_higher_co2(Q10_RH, 4)
-  # Lower f_nppv means higher CO2
-  test_higher_co2(F_NPPV, 0.2)
   # Higher f_nppd means higher CO2 (because detritus respires faster than soil)
   test_higher_co2(F_NPPD, 0.64)
   # Higher f_litterd means higher CO2 (same reason)
