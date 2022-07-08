@@ -33,11 +33,12 @@ using namespace boost;
 //------------------------------------------------------------------------------
 /*! \brief      Log pool states
  *  \param      t date
+ *  \param      msg message
  */
-void SimpleNbox::log_pools( const double t )
+void SimpleNbox::log_pools( const double t, const string msg )
 {
     // Log pool states
-    H_LOG( logger, Logger::DEBUG ) << "---- simpleNbox pool states at t=" << t << " ----" << std::endl;
+    H_LOG( logger, Logger::DEBUG ) << "---- pool states at t=" << t << " " << msg << " ----" << std::endl;
     H_LOG( logger, Logger::DEBUG ) << "Atmos = " << atmos_c << std::endl;
     H_LOG( logger, Logger::DEBUG ) << "Biome \tveg_c \t\tdetritus_c \tsoil_c" << std::endl;
     for ( auto biome : biome_list ) {
@@ -203,7 +204,7 @@ void SimpleNbox::stashCValues( double t, const double c[] )
         "  soil = " << c[ SNBOX_SOIL ] <<
         "  ocean = " << c[ SNBOX_OCEAN ] <<
         "  earth = " << c[ SNBOX_EARTH ] << std::endl;
-    log_pools( t );
+    log_pools( t, "BEFORE update" );
 
     // get the UNTRACKED earth emissions (ffi) and uptake (ccs)
     // We immediately adjust them for the year fraction (as the solver
@@ -360,7 +361,7 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     earth_c.adjust_pool_to_val( c[SNBOX_EARTH], false );
     atmos_c.adjust_pool_to_val( newatmos.value( U_PGC ), false );
 
-    log_pools( t );
+    log_pools( t, "AFTER update" );
 
     // Each time the model pools are updated, check that mass has been conserved
     double sum=0.0;
@@ -408,6 +409,8 @@ void SimpleNbox::stashCValues( double t, const double c[] )
         Ca_residual.set( 0.0, U_PGC );
     }
 
+    log_pools( t, "FINAL" );
+    
     // All good! t will be the start of the next timestep, so
     ODEstartdate = t;
 }
