@@ -215,7 +215,6 @@ private:
     /*****************************************************************
      * Private helper functions
      *****************************************************************/
-    void sanitychecks();                                //!< performs mass-balance and other checks
     fluxpool sum_map( fluxpool_stringmap pool ) const;    //!< sums a unitval map (collection of data)
     double sum_map( double_stringmap pool ) const;      //!< sums a double map (collection of data)
     void log_pools( const double t );                   //!< prints pool status to the log file

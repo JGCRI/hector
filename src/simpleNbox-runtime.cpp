@@ -31,31 +31,6 @@ namespace Hector {
 using namespace boost;
 
 //------------------------------------------------------------------------------
-/*! \brief      Sanity checks
- *  \exception  If any of the sanity checks fails
- *
- *  This is called internally throughout the model run and performs sanity checks.
- *  For example, the main carbon pools (except earth) should always be positive;
- *  partitioning coefficients should not exceed 1; etc.
- */
-void SimpleNbox::sanitychecks()
-{
-    // A few sanity checks
-    // Note that with the addition of the fluxpool class (which guarantees
-    // non-negative numbers) many of these checks went away
-    for ( auto biome : biome_list ) {
-        H_ASSERT( f_nppv.at(biome) >= 0.0, "f_nppv <0" );
-        H_ASSERT( f_nppd.at(biome) >= 0.0, "f_nppd <0" );
-        H_ASSERT( f_nppv.at(biome) + f_nppd.at(biome) <= 1.0, "f_nppv + f_nppd >1" );
-        H_ASSERT( f_litterd.at(biome) >= 0.0 && f_litterd.at(biome) <= 1.0, "f_litterd <0 or >1" );
-    }
-
-    H_ASSERT( f_lucv >= 0.0, "f_lucv <0" );
-    H_ASSERT( f_lucd >= 0.0, "f_lucd <0" );
-    H_ASSERT( f_lucv + f_lucd <= 1.0, "f_lucv + f_lucd >1" );
-}
-
-//------------------------------------------------------------------------------
 /*! \brief      Log pool states
  *  \param      t date
  */
@@ -92,9 +67,9 @@ void SimpleNbox::prepareToRun()
 
     for ( auto biome : biome_list ) {
         H_LOG( logger, Logger::DEBUG ) << "Checking that data for biome '" << biome << "' is complete" << std::endl;
-        H_ASSERT( detritus_c.count( biome ), "no biome data for detritus_c" );
-        H_ASSERT( soil_c.count( biome ), "no biome data for soil_c" );
-        H_ASSERT( npp_flux0.count( biome ), "no biome data for npp_flux0" );
+        H_ASSERT( detritus_c.count( biome ), "no detritus_c data for " + biome );
+        H_ASSERT( soil_c.count( biome ), "no soil_c data for " + biome );
+        H_ASSERT( npp_flux0.count( biome ), "no npp_flux0 data for " + biome );
 
         H_ASSERT( beta.count( biome ), "no biome value for beta" );
 
@@ -130,12 +105,26 @@ void SimpleNbox::prepareToRun()
         H_LOG( glog, Logger::WARNING ) << "NBP (land-atmosphere C exchange) will be constrained to user-supplied values!" << std::endl;
     }
 
-    // One-time checks
+    // One-time sanity checks for beta, Q10, and flux partitioning
     for( auto biome : biome_list ) {
+        H_ASSERT( beta.count( biome ), "No beta entry for " + biome );
         H_ASSERT( beta.at( biome ) >= 0.0, "beta < 0" );
-        H_ASSERT( q10_rh.at( biome )>0.0, "q10_rh <= 0.0" );
+        H_ASSERT( q10_rh.count( biome ), "No Q10 entry for " + biome );
+        H_ASSERT( q10_rh.at( biome ) > 0.0, "q10_rh <= 0.0" );
+        H_ASSERT( f_nppv.count( biome ), "No f_nppv entry for " + biome );
+        H_ASSERT( f_nppv.at( biome ) >= 0.0, "f_nppv <0" );
+        H_ASSERT( f_nppd.count( biome ), "No f_nppd entry for " + biome );
+        H_ASSERT( f_nppd.at( biome ) >= 0.0, "f_nppd <0" );
+        H_ASSERT( f_nppv.count( biome ), "No f_nppv entry for " + biome );
+        H_ASSERT( f_nppv.at( biome ) + f_nppd.at(biome) <= 1.0, "f_nppv + f_nppd >1" );
+        H_ASSERT( f_litterd.count( biome ), "No f_litterd entry for " + biome );
+        H_ASSERT( f_litterd.at( biome ) >= 0.0 && f_litterd.at(biome) <= 1.0, "f_litterd <0 or >1" );
     }
-    sanitychecks();
+
+    // LUC partitioning
+    H_ASSERT( f_lucv >= 0.0, "f_lucv <0" );
+    H_ASSERT( f_lucd >= 0.0, "f_lucd <0" );
+    H_ASSERT( f_lucv + f_lucd <= 1.0, "f_lucv + f_lucd >1" );
 }
 
 //------------------------------------------------------------------------------
@@ -148,7 +137,6 @@ void SimpleNbox::prepareToRun()
 void SimpleNbox::run( const double runToDate )
 {
     in_spinup = core->inSpinup();
-    sanitychecks();
 
     // If we've hit the tracking start year, enagage!
     const double tdate = core->getTrackingDate();
@@ -171,7 +159,6 @@ void SimpleNbox::run( const double runToDate )
  */
 bool SimpleNbox::run_spinup( const int step )
 {
-    sanitychecks();
     in_spinup = true;
     return true;        // solver will really be the one signalling
 }
@@ -358,7 +345,7 @@ void SimpleNbox::stashCValues( double t, const double c[] )
         // want is to pass the carbon-tracking information around if it's being used.
         detritus_c[ biome ] = detritus_c[ biome ] - detsoil_flux;
 
-        // Adjust biome pools to final values from calcDerives
+        // Adjust biome pools to final values from calcDerivs
         veg_c[ biome ].adjust_pool_to_val(newveg.value(U_PGC) * wt, false);
         detritus_c[ biome ].adjust_pool_to_val(newdet.value(U_PGC) * wt, false);
         soil_c[ biome ].adjust_pool_to_val(newsoil.value(U_PGC) * wt, false);
