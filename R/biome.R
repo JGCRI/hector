@@ -99,6 +99,12 @@ split_biome <- function(core,
     detritus_c0 = current_values[["detritus_c"]] * fdetritus_c,
     soil_c0 = current_values[["soil_c"]] * fsoil_c,
     npp_flux0 = current_values[["npp_flux0"]] * fnpp_flux0,
+    warmingfactor = current_values[["warmingfactor"]],
+    beta = current_values[["beta"]],
+    q10_rh = current_values[["q10_rh"]],
+    f_nppv = current_values[["f_nppv"]],
+    f_nppd = current_values[["f_nppd"]],
+    f_litterd = current_values[["f_litterd"]],
     ...,
     MoreArgs = list(core = core)
   )
@@ -127,7 +133,11 @@ get_biome_inits <- function(core, biome) {
   )
   current_data_2 <- fetchvars(core, NA, c(
     NPP_FLUX0(biome),
+    F_LITTERD(biome),
+    F_NPPD(biome),
+    F_NPPV(biome),
     BETA(biome),
+    Q10_RH(biome),
     WARMINGFACTOR(biome)
   ))[, -1]
   current_data <- rbind.data.frame(current_data_1, current_data_2)
