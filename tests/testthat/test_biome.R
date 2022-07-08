@@ -234,40 +234,8 @@ test_that("Split biomes, and modify parameters", {
   r_biome_totals <- aggregate(value ~ year + variable, data = r_biome_data, sum)
   expect_equivalent(r_global_totals, r_biome_totals)
 
-  # Ramping up the warming factor for permafrost should decrease its
-  # detritus and soil C pools (because respiration is much faster)
-  setvar(core, NA, WARMINGFACTOR("permafrost"), 3.0, NA)
-  reset(core, core$reset_date)
-  invisible(run(core))
-  r_warm_data <- fetchvars(core, 2000:2100, c(
-    VEG_C("non-pf"), VEG_C("permafrost"),
-    DETRITUS_C("non-pf"), DETRITUS_C("permafrost"),
-    SOIL_C("non-pf"), SOIL_C("permafrost")
-  ),
-  scenario = "warm pf"
-  )
-  r_warm_data$biome <- gsub("^(.*)\\.(.*)", "\\1", r_warm_data$variable)
-  r_warm_data$variable <- gsub("^(.*)\\.(.*)", "\\2", r_warm_data$variable)
-  # BBL 2021-07-17: This is now failing, and it's not clear to me whether
-  # this is a problem or some unexpected (but correct) model behavior.
-  # Logging in issue #456
-  # expect_lt(
-  #   subset(r_warm_data, biome == "permafrost" &
-  #     variable == "detritus_c" &
-  #     year == 2100)[["value"]],
-  #   subset(r_biome_data, biome == "permafrost" &
-  #     variable == "detritus_c" &
-  #     year == 2100)[["value"]]
-  # )
-  # expect_lt(
-  #   subset(r_warm_data, biome == "permafrost" &
-  #     variable == "soil_c" &
-  #     year == 2100)[["value"]],
-  #   subset(r_biome_data, biome == "permafrost" &
-  #     variable == "soil_c" &
-  #     year == 2100)[["value"]]
-  # )
-
+  # Some changes should always produce higher atmospheric CO2
+  
   test_higher_co2 <- function(var_f, value) {
     core <- ssp245()
     orig_val <- fetchvars(core, NA, var_f())[["value"]]
