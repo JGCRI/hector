@@ -612,7 +612,7 @@ fluxpool OceanComponent::get_aoflux() const {
 // documentation is inherited
 void OceanComponent::stashCValues( double t, const double c[] ) {
 
-    H_LOG( logger,Logger::DEBUG ) << "Stashing at t=" << t << ", model pools at " << t << ": " <<
+    H_LOG( logger, Logger::DEBUG ) << "Stashing at t=" << t << ", model pools at " << t << ": " <<
     c[ 0 ] << " " << c[ 1 ] << " " << c[ 2 ] << " " << c[ 3 ] << " " << c[ 4 ] << " " <<
     c[ 5 ] << std::endl;
 
