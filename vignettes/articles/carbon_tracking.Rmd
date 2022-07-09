@@ -237,7 +237,7 @@ df <- data.frame(vars, values, error)
 ggplot(df) +
   aes(x = vars, y = values, fill = vars) +
   geom_bar(stat = "identity") +
-  geom_errorbar(aes(ymin = values - error, ymax = values + error), width = 0.2)+
+  geom_errorbar(aes(ymin = values - error, ymax = values + error), width = 0.2) +
   scale_fill_manual(values = c("paleturquoise3", "paleturquoise2", "paleturquoise1",
                                "darkslategray1", "darkslategray2", "darkslategray3",
                                "darkslategray4", "darkslategray", "grey50")) +

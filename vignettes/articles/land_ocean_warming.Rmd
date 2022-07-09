@@ -68,7 +68,7 @@ run Hector, and fetch some results.
 #   hc: an active Hector core
 #   value: the land ocean warming ratio to use
 # Return: data frame of Hector results
-run_with_lo <- function(hc, value){
+run_with_lo <- function(hc, value) {
 
     # Set the land ocean warming ratio
     setvar(hc, NA, LO_WARMING_RATIO(), value, getunits(LO_WARMING_RATIO()))

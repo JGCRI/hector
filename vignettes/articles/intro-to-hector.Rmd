@@ -218,14 +218,9 @@ save typing (and, in general, to be good programmers!), let's create some functi
 #' Run Hector with a parameter set to a particular value, and return results
 #'
 #' @param core Hector core to use for execution
-#' @param parameter Hector parameter name, as a function call (e.g.
-#'   `BETA()`)
+#' @param parameter Hector parameter name, as a function call (e.g. `BETA()`)
 #' @param value Parameter value
-#' @param dates Sequence of years for running simulation (default = #'
-#'   `2000:2300`)
-#' @param ini_file Hector parameter file (default = SSP245 file)
-#' @return Results, as data.frame, with additional `parameter_value`
-#'   column
+#' @return Results, as data.frame, with additional `parameter_value` column
 run_with_param <- function(core, parameter, value) {
   setvar(core, NA, parameter, value, getunits(parameter))
   reset(core)

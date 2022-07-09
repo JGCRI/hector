@@ -84,7 +84,6 @@ kbl(v_params) %>%
     kable_styling(fixed_thead = TRUE,
                   bootstrap_options = "hover") %>%
       scroll_box(height = "400px")
-
 ```
 
 [gsl-ode]: https://www.gnu.org/software/gsl/manual/html_node/Ordinary-Differential-Equations.html#Ordinary-Differential-Equations

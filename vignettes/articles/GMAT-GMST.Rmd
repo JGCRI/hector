@@ -67,7 +67,7 @@ user-friendly as spelling/capitalization is not an issue and developer-friendly
 as string in C++ can be changed without changing the R user interface.
 
 ``` {r find.GMST}
-flnd = 0.29;     # fractional land area, a constant in Hector
+flnd  <- 0.29     # fractional land area, a constant in Hector
 hector_output <- fetchvars(core, 1745:2300, vars = c(LAND_TAS(), SST(), GLOBAL_TAS()))
 
 # Get the variables we want and corresponding years/value
