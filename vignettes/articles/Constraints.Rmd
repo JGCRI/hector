@@ -371,7 +371,7 @@ ggplot() +
               size = 1,  linetype = 5) +
     facet_wrap("variable", scales = "free", nrow = 2) +
     theme(legend.title = element_blank()) +
-    scale_color_discrete(labels = c("Free running", expression(CO[2]~Constrained))) +
+    scale_color_discrete(labels = c("Free running", expression(CO[2] ~ Constrained))) +
     labs(y = NULL, x = "Year")
 ```
 
