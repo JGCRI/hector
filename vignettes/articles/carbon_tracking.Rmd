@@ -13,14 +13,17 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Introduction
 
 This vignette will walk through Hector's carbon tracking feature and show how to
-turn on tracking, retrieve the tracking data, and display the results. Additionally, the vignette demonstrates an application of the carbon tracking feature and shows how to calculate the model's airborne fraction.
+turn on tracking, retrieve the tracking data, and display the results. Additionally,
+the vignette demonstrates an application of the carbon tracking feature and shows
+how to calculate the model's airborne fraction.
 
 Hector's carbon tracking feature helps to trace the movement of carbon between 
 various pools as the model runs. At the user-chosen start date, each pool is
 deemed to be composed of 100% carbon from itself, i.e. at that moment in time 
 the deep ocean pool is 100% composed of carbon from the deep pool. 
 
-As the model moves forward in time from the start date, Hector tracks each pool's fractional composition -- i.e. the sources of its current carbon. 
+As the model moves forward in time from the start date, Hector tracks each pool's 
+fractional composition -- i.e. the sources of its current carbon. 
 When the run is finished, this data can be read into R and then analyzed.
 
 ## Setup
@@ -37,7 +40,9 @@ library(ggplot2)
 Now, we will read in an INI file and create a new core. In this example, we 
 will use SSP245.
 
-In order to use the carbon tracking feature, we must use `setvar` and `fetchvars`. ^[Command line users: to set a tracking start date, change the `trackingDate=9999` line in the `[core]` section of an INI scenario file.]
+In order to use the carbon tracking feature, we must use `setvar` and `fetchvars`.
+^[Command line users: to set a tracking start date, change the `trackingDate=9999` 
+line in the `[core]` section of an INI scenario file.]
 First, let's look at the `trackingDate` prior to setting it to any value. 
 
 ``` {r setup.core}
@@ -74,14 +79,16 @@ tdata <- get_tracking_data(core)
 head(tdata)
 ```
 
-The `tdata` dataset now contains information on year (note that the first year is the start-tracking date we asked for), the model component,
+The `tdata` dataset now contains information on year (note that the first year 
+is the start-tracking date we asked for), the model component,
 the name of the pool within that component, the amount of 
 carbon in the pool, and the fraction (0-1) of each source for that pool. 
 Importantly, the source fractions for a given pool and year will always sum to 1.
 
 Side note: the names in the carbon tracking data (`pool_name`, `pool_value`,
 and `pool_units`) differ from those used in the model's standard stream output
-(which are `variable`, `value`, and `units` respectively). In contrast, `year` and `component` are named identically in the two output datasets.
+(which are `variable`, `value`, and `units` respectively). In contrast, `year` 
+and `component` are named identically in the two output datasets.
 
 ## Results
 
@@ -122,9 +129,17 @@ This allows us to better examine the contributions by source to the atmosphere.
 
 ## Example: Airborne fraction calculation
 
-We can also use the tracking feature to calculate the airborne fraction for a given point in time, or how much carbon emitted by humans remains in the atmosphere as a fraction of total emissions as opposed to being absorbed by the land or ocean. 
+We can also use the tracking feature to calculate the airborne fraction for a
+given point in time, or how much carbon emitted by humans remains in the atmosphere
+as a fraction of total emissions as opposed to being absorbed by the land or ocean.
 
-First, we can define two functions. The first will run a core and turn on tracking to return a data frame with results, including a column for the source amount by pool (as opposed to the source fraction). The second function will perform the airborne fraction calculation by finding the amount of `earth_c` (human emissions) in the `atmos_co2` (atmosphere) pool at the start and end date of the run and dividing the difference by the difference in the `earth_c` pool from the start of the run to the end, i.e. how much carbon has left the `earth_c` pool.
+First, we can define two functions. The first will run a core and turn on tracking
+to return a data frame with results, including a column for the source amount by
+pool (as opposed to the source fraction). The second function will perform the
+airborne fraction calculation by finding the amount of `earth_c` (human emissions)
+in the `atmos_co2` (atmosphere) pool at the start and end date of the run and
+dividing the difference by the difference in the `earth_c` pool from the start
+of the run to the end, i.e. how much carbon has left the `earth_c` pool.
 
 ``` {r hector.define_functions}
 
@@ -132,11 +147,11 @@ tracking_results <- function(inifile, start, stop, tracking, scenarioName) {
   # Establish core, turn on tracking, run core
   core <- newcore(inifile)
   setvar(core, NA, TRACKING_DATE(), tracking, "(unitless)")
-  
   reset(core)
   run(core)
   
-  # Get results, filter by correct years, add columns containing the amount of carbon by source and the given scenario name
+  # Get results, filter by correct years, add columns containing the amount
+  # of carbon by source and the given scenario name
   results <- get_tracking_data(core)
   results <- subset(results, 
                     results$year >= start &
@@ -153,8 +168,8 @@ AF_calc <- function(start, results, stop) {
   atm_c <- subset(results, results$pool_name == "atmos_co2")
   atm_c <- subset(atm_c, atm_c$source_name == "earth_c")
   
-  atm_c1 <- subset(atm_c, year == start)
-  atm_c2 <- subset(atm_c, year == stop)
+  atm_c1 <- subset(atm_c, atm_c$year == start)
+  atm_c2 <- subset(atm_c, atm_c$year == stop)
   atm_c <- rbind(atm_c1, atm_c2)
 
   # Calculate atmospheric uptake of Earth carbon
@@ -167,7 +182,8 @@ AF_calc <- function(start, results, stop) {
                            results$year %in% c(start, stop))
   
   # Calculate change in Earth carbon
-  earth_c_loss <- head(earth_c_loss$source_amount, n = 1) - tail(earth_c_loss$source_amount, n = 1)
+  earth_c_loss <- head(earth_c_loss$source_amount, n = 1) -
+      tail(earth_c_loss$source_amount, n = 1)
   
   # Airborne fraction calculation
   AF <- atm_c / earth_c_loss
@@ -176,7 +192,11 @@ AF_calc <- function(start, results, stop) {
 }
 ```
 
-Next, we will run our functions for the SSP245 scenario between 1750 and 2050 with tracking beginning at the start of the run. We can then find the value of the airborne fraction in any year of the model run. Let's look at how the airborne fraction changes over time from 1950 to 2020 in ten year increments as well as the value in just the year 2020.
+Next, we will run our functions for the SSP245 scenario between 1750 and 2050 with 
+tracking beginning at the start of the run. We can then find the value of the 
+airborne fraction in any year of the model run. Let's look at how the airborne 
+fraction changes over time from 1950 to 2020 in ten year increments as well as 
+the value in just the year 2020.
 
 ``` {r hector.calculations}
 ssp245 <- system.file("input", "hector_ssp245.ini", package = "hector")
@@ -190,9 +210,16 @@ tail(airborne_frac, n = 1)
 
 ```
 
-We see that the airborne fraction in 2020 is about `r round(as.numeric(airborne_frac[8,2]) * 100, 0)`%. In other words, `r round(as.numeric(airborne_frac[8,2]) * 100, 0)`% of anthropogenic emissions remain in the atmosphere. 
+We see that the airborne fraction in 2020 is about 
+`r round(as.numeric(airborne_frac[8,2]) * 100, 0)`%. In other words, 
+`r round(as.numeric(airborne_frac[8,2]) * 100, 0)`% of anthropogenic emissions 
+remain in the atmosphere. 
 
-We can compare these values to a study published by W. Knorr in 2009.^[Knorr, W. "Is the airborne fraction of anthropogenic CO$_2$ emissions increasing?" Geophysical Research Letters 36 (21). November 7, 2009. http://dx.doi.org/10.1029/2009GL040613] Knorr computes seven values of airborne fractions in 2000 which we can average. We can compute the difference between the maximum value and the minimum to give an error range.
+We can compare these values to a study published by W. Knorr in 2009.^[Knorr, W. 
+"Is the airborne fraction of anthropogenic CO$_2$ emissions increasing?" Geophysical 
+Research Letters 36 (21). November 7, 2009. http://dx.doi.org/10.1029/2009GL040613]
+Knorr computes seven values of airborne fractions in 2000 which we can average.
+We can compute the difference between the maximum value and the minimum to give an error range.
 
 ``` {r hector.plot_AF, fig.width = 6, fig.height = 4}
 # Knorr avg - values from Knorr 2009
@@ -211,7 +238,9 @@ ggplot(df) +
   aes(x = vars, y = values, fill = vars) + 
   geom_bar(stat = "identity") +
   geom_errorbar(aes(ymin = values - error, ymax = values + error), width = 0.2)+
-  scale_fill_manual(values = c("paleturquoise3", "paleturquoise2", "paleturquoise1", "darkslategray1", "darkslategray2", "darkslategray3", "darkslategray4", "darkslategray", "grey50")) +
+  scale_fill_manual(values = c("paleturquoise3", "paleturquoise2", "paleturquoise1",
+                               "darkslategray1", "darkslategray2", "darkslategray3", 
+                               "darkslategray4", "darkslategray", "grey50")) +
   theme(legend.position = "none") +
   labs(x = "Year",
        y = "Airborne fraction over time",
@@ -219,12 +248,22 @@ ggplot(df) +
 
 ```
 
-The airborne fraction found in Hector is towards the lower end of the range of values found by Knorr 2009, which varied from about 45% - 52%. However, we see that the airborne fraction value from Hector remains relatively constant over time at around 40%. This aligns with Knorr's conclusion that the airborne fraction shows no clear trend of increasing or decreasing. Additionally, Hector's value falls within the range of CMIP models, as seen in Jones et al. 2013.^[Jones, C., Robertson, E., Arora, V., Friedlingstein, P., Shevliakova, E., Bopp, L., Brovkin, V., Hajima, T., Kato, E., Kawamiya, M., Liddicoat, S., Lindsay, K., Reick, C. H., Roelandt, C., Segschneider, J., and Tjiputra, J. "Twenty-First-Century Compatible CO2 Emissions and Airborne Fraction Simulated by CMIP5 Earth System Models under Four Representative Concentration Pathways." Journal of Climate, 26 (13) p4398-4413. September 2021. https://doi.org/10.1175/JCLI-D-12-00554.1]
+The airborne fraction found in Hector is towards the lower end of the range of 
+values found by Knorr 2009, which varied from about 45% - 52%. However, we see 
+that the airborne fraction value from Hector remains relatively constant over 
+time at around 40%. This aligns with Knorr's conclusion that the airborne fraction
+shows no clear trend of increasing or decreasing. Additionally, Hector's value 
+falls within the range of CMIP models, as seen in Jones et al. 2013.^[Jones et al.
+"Twenty-First-Century Compatible CO2 Emissions and Airborne Fraction Simulated by
+CMIP5 Earth System Models under Four Representative Concentration Pathways." 
+Journal of Climate, 26 (13) p4398-4413. September 2021. 
+https://doi.org/10.1175/JCLI-D-12-00554.1]
 
 ## Conclusion
 
 The carbon tracking feature allows users to identify and trace the composition 
-by source of each pool in Hector. This is useful to, for example, calculate the model's airborne fraction. 
+by source of each pool in Hector. This is useful to, for example, calculate the 
+model's airborne fraction. 
 
 Remember to shut down the core.
 

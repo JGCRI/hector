@@ -30,7 +30,7 @@ instructions for [building and running Hector](BuildHector.html).
 First, load the `hector` package.
 
 ```{r  load-packages}
-library(hector) 
+library(hector)
 ```
 
 Hector is configured via an INI file, which defines run metadata, inputs 
@@ -59,13 +59,13 @@ The core is initialized via the `newcore` function:
 
 ```{r  init-core}
 core <- newcore(ini_file)
-core 
+core
 ```
 
 Now that we have configured a Hector core, we can run it with the `run` function.
 
 ```{r  run-core }
-run(core) 
+run(core)
 ```
 
 Notice that this itself returns no output.
@@ -75,7 +75,7 @@ Below, we also specify that we want to retrieve results from 2000 to 2300.
 
 ```{r  get-results }
 results <- fetchvars(core, 2000:2300)
-head(results) 
+head(results)
 ```
 
 The results are returned as a long `data.frame`.
@@ -112,7 +112,7 @@ Just as we did to load results, we use `fetchvars()` to query parameter values.
 
 ```{r  get-beta}
 beta <- fetchvars(core, NA, BETA())
-beta 
+beta
 ```
 
 The result of `fetchvars()` is always a `data.frame` with the same columns, even when returning a parameter value.
@@ -122,7 +122,7 @@ The current value is set to 0.36 (note that it is a unitless quantity, hence the
 Let's bump it up a little to 0.40.
 
 ```{r set-beta }
-setvar(core, NA, BETA(), 0.40, "(unitless)") 
+setvar(core, NA, BETA(), 0.40, "(unitless)")
 ```
 
 Similarly to `run`, this returns no output.
@@ -130,7 +130,7 @@ Rather, the change is stored inside the Hector "core" object.
 We can confirm that our change took effect with another call to `fetchvars()`.
 
 ```{r check-set-beta}
-fetchvars(core, NA, BETA()) 
+fetchvars(core, NA, BETA())
 ```
 
 Now, let's run the simulation again with a higher value for CO$_2$ fertilization.
@@ -174,7 +174,7 @@ We can now perform another run with the new CO$_2$ fertilization value.
 ```{r  run-sim-2}
 run(core)
 results_40 <- fetchvars(core, 2000:2300)
-head(results_40) 
+head(results_40)
 ```
 
 Let's see how changing the CO$_2$ fertilization affects our results.
@@ -238,7 +238,7 @@ ggplot(sensitivity_beta) +
   geom_line() +
   facet_wrap(~variable, scales = "free_y") +
   guides(color = guide_colorbar(title = expression(beta))) +
-  scale_color_viridis_c() 
+  scale_color_viridis_c()
 ```
 
 As we can see, the ability of CO$_2$ fertilization to offset carbon emissions saturates, at high values of $\beta$, the same increase in $\beta$ translates into a smaller decrease in atmospheric CO$_2$ and related climate effects.
