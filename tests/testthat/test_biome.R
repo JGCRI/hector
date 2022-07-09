@@ -175,7 +175,8 @@ test_that("Correct way to create new biomes", {
   results_pf <- fetchvars(core, 2000:2100)
 
   expect_error(create_biome(core, "permafrost"), "Biome 'permafrost' is already in `biome_list`")
-  expect_error(invisible(create_biome(core, "empty")), 'argument "veg_c0" is missing, with no default', fixed = FALSE)
+  expect_error(invisible(create_biome(core, "empty")),
+               'argument "veg_c0" is missing, with no default', fixed = FALSE)
   expect_equal(get_biome_list(core), c("permafrost", "empty"))
   expect_equal(fetchvars(core, NA, BETA("empty"))[["value"]], pbeta[["value"]])
   expect_silent(invisible(run(core)))
@@ -219,7 +220,7 @@ test_that("Split biomes, and modify parameters", {
 
   # Also check that trying to get global `VEG_C()` will retrieve the total
   global_veg2 <- fetchvars(core, dates = NA, vars = VEG_C())[["value"]]
-  global_veg3 <- fetchvars(core, dates = NA, vars =VEG_C("global"))[["value"]]
+  global_veg3 <- fetchvars(core, dates = NA, vars = VEG_C("global"))[["value"]]
   expect_equal(global_veg2, global_veg3)
   expect_equivalent(default_veg, (1 - fsplit) * global_veg2)
   expect_equivalent(permafrost_veg, fsplit * global_veg2)
@@ -235,7 +236,8 @@ test_that("Split biomes, and modify parameters", {
   # Summed pools should be the same
   r_biome_data <- fetchvars(core, 2000:2100, c(VEG_C("non-pf"), VEG_C("permafrost"),
                                                DETRITUS_C("non-pf"), DETRITUS_C("permafrost"),
-                                               SOIL_C("non-pf"), SOIL_C("permafrost")), scenario = "default pf")
+                                               SOIL_C("non-pf"), SOIL_C("permafrost")),
+                            scenario = "default pf")
   r_biome_data$biome <- gsub("^(.*)\\.(.*)", "\\1", r_biome_data$variable)
   r_biome_data$variable <- gsub("^(.*)\\.(.*)", "\\2", r_biome_data$variable)
   r_biome_totals <- aggregate(value ~ year + variable, data = r_biome_data, sum)
