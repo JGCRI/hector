@@ -8,7 +8,7 @@ vignette: >
   %\VignetteIndexEntry{A tour of the Hector R interface}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
-editor_options: 
+editor_options:
   chunk_output_type: console
 ---
 
@@ -18,12 +18,12 @@ knitr::opts_chunk$set(echo = TRUE, dpi = 150)
 
 This vignette provides a basic introduction for running Hector with R.
 First, it shows how to do a simple Hector run with a built-in scenario.
-Then, it shows how to modify Hector parameters from within R and uses this 
-functionality to perform a simple sensitivity analysis of how the CO$_2$ 
+Then, it shows how to modify Hector parameters from within R and uses this
+functionality to perform a simple sensitivity analysis of how the CO$_2$
 fertilization parameter $\beta$ affects several Hector output variables.
 
-If you do not yet have Hector installed, please reference the manual's 
-instructions for [building and running Hector](BuildHector.html). 
+If you do not yet have Hector installed, please reference the manual's
+instructions for [building and running Hector](BuildHector.html).
 
 # Basic run
 
@@ -33,21 +33,21 @@ First, load the `hector` package.
 library(hector)
 ```
 
-Hector is configured via an INI file, which defines run metadata, inputs 
+Hector is configured via an INI file, which defines run metadata, inputs
 (e.g., emissions scenarios), and parameters.
 For details on this file, see [InputFiles](InputFiles.html).
 
-These files ship with the Hector R package in the `input/` subdirectory, 
+These files ship with the Hector R package in the `input/` subdirectory,
 which allows them to be accessed via `system.file`.
-First, determine the path of the input file (ini) corresponding to the 
+First, determine the path of the input file (ini) corresponding to the
 scenario [SPP245](https://en.wikipedia.org/wiki/Shared_Socioeconomic_Pathways).
 
 ```{r  ini-file }
-ini_file <- system.file("input/hector_ssp245.ini", package = "hector") 
+ini_file <- system.file("input/hector_ssp245.ini", package = "hector")
 ```
 
-Alternatively, users may provide a path to an ini file external to the Hector 
-package on their local machine. This file must comply with the Hector [ini requirements](InputFiles.html). 
+Alternatively, users may provide a path to an ini file external to the Hector
+package on their local machine. This file must comply with the Hector [ini requirements](InputFiles.html).
 
 ```{r}
 external_ini_file <- "/path/to/ini/on/local/machine/my_ini.ini"
@@ -91,7 +91,7 @@ ggplot(results) +
 ```
 
 By default, `fetchvars()` returns the four outputs shown above -- atmospheric
-CO$_2$ concentration, CO$_2$ radiative forcing, total radiative forcing, and 
+CO$_2$ concentration, CO$_2$ radiative forcing, total radiative forcing, and
 temperature change -- but any model output(s) can be specified.
 
 # Setting parameters
@@ -100,7 +100,7 @@ The Hector R interface interacts with parameters and variables in the same way.
 Therefore, the variables can be set and checked via `setvar()` and `fetchvars()`.
 
 First, let's get the current value of $\beta$ (beta), the CO$_2$ fertilization factor.
-Because variables and parameter names have to be retrieved from the Hector core, 
+Because variables and parameter names have to be retrieved from the Hector core,
 they are stored as R functions (e.g. `BETA()`).
 However, these functions return a string corresponding to the variable name.
 
@@ -150,25 +150,33 @@ We have already stored the previous run's output in `results` above, so we can s
 reset(core)
 ```
 
-This effectively 'rewinds' the core back to either the provided `date` 
-(defaults to 0 if missing) or the model start date (set in the INI file; 
+This effectively 'rewinds' the core back to either the provided `date`
+(defaults to 0 if missing) or the model start date (set in the INI file;
 default is 1745), whichever is greater.
-In addition, if the `date` argument is less than the model start date and spinup 
-is enabled (`do_spinup = 1` in the INI file), then the core will re-do its 
+In addition, if the `date` argument is less than the model start date and spinup
+is enabled (`do_spinup = 1` in the INI file), then the core will re-do its
 spinup process with the current set of parameters.
 
 ***
 **NOTE**
 
-Prior to a normal run beginning in 1745, Hector has an optional "spinup" mode where it runs the carbon cycle with no perturbations until it stabilizes. Essentially, the model removes human emissions and runs until there are no more changes in the carbon pools and the system has reached equilibrium. 
+Prior to a normal run beginning in 1745, Hector has an optional "spinup" mode
+where it runs the carbon cycle with no perturbations until it stabilizes.
+Essentially, the model removes human emissions and runs until there are no more
+changes in the carbon pools and the system has reached equilibrium.
 
-Because changing Hector parameters can change the post-spinup equilibrium values of state variables, Hector will automatically run `reset(core, date = 0)` at the beginning of the next `run` call if it detects that any of its parameters have changed.
-This means that it is not currently possible to change Hector _parameters_ (such as $\beta$ or preindustrial CO~2~) part-way through a run.
-However, it is still possible to change the values of specific _drivers_ and _state variables_ (such as the CO~2~ emissions) in the middle of a run.
+Because changing Hector parameters can change the post-spinup equilibrium values
+of state variables, Hector will automatically run `reset(core, date = 0)` at the
+beginning of the next `run` call if it detects that any of its parameters have changed.
+This means that it is not currently possible to change Hector _parameters_
+(such as $\beta$ or preindustrial CO~2~) part-way through a run.
+However, it is still possible to change the values of specific _drivers_ and
+_state variables_ (such as the CO~2~ emissions) in the middle of a run.
 
 ***
 
-So, as a result of the `reset` command, the core's `Current Date` is now the model start date -- 1745.
+So, as a result of the `reset` command, the core's `Current Date` is now the model
+start date -- 1745.
 We can now perform another run with the new CO$_2$ fertilization value.
 
 ```{r  run-sim-2}
@@ -191,20 +199,23 @@ ggplot(compare_results) +
   guides(color = guide_legend(title = expression(beta)))
 ```
 
-As expected, increasing CO$_2$ fertilization increases the strength of the terrestrial carbon sink and therefore reduces atmospheric CO$_2$, radiative forcing, and global temperature.
-However, the effects only become pronounced in the latter half of the 21st Century.
+As expected, increasing CO$_2$ fertilization increases the strength of the
+terrestrial carbon sink and therefore reduces atmospheric CO$_2$, radiative forcing,
+and global temperature.
+However, the effects only become pronounced in the latter half of the 21st century.
 
 
 # Sensitivity analysis
 
-Hector runs quickly, making it easy to run many simulations under slightly different configurations.
-One application of this is to explore the sensitivity of Hector to variability in its parameters.
+Hector runs quickly, making it easy to run many simulations under slightly different
+configurations. One application of this is to explore the sensitivity of Hector
+to variability in its parameters.
 
-The basic procedure for this is the same as in the previous section.
-However, to save typing (and, in general, to be good programmers!), let's create some functions.
+The basic procedure for this is the same as in the previous section. However, to
+save typing (and, in general, to be good programmers!), let's create some functions.
 
 ```{r  functions }
-#' Run Hector with a parameter set to a particular value, and return results 
+#' Run Hector with a parameter set to a particular value, and return results
 #'
 #' @param core Hector core to use for execution
 #' @param parameter Hector parameter name, as a function call (e.g.
@@ -241,4 +252,6 @@ ggplot(sensitivity_beta) +
   scale_color_viridis_c()
 ```
 
-As we can see, the ability of CO$_2$ fertilization to offset carbon emissions saturates, at high values of $\beta$, the same increase in $\beta$ translates into a smaller decrease in atmospheric CO$_2$ and related climate effects.
+As we can see, the ability of CO$_2$ fertilization to offset carbon emissions
+saturates, at high values of $\beta$, the same increase in $\beta$ translates
+into a smaller decrease in atmospheric CO$_2$ and related climate effects.
