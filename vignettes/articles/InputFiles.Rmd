@@ -33,17 +33,16 @@ v_params <- subset(input, input$`Time variant` == "y")
 biome_spec <- subset(input, input$`Biome specific` == "y")
 colnames(v_params)[2] <- "Input variable"
 
-rownames(params) = NULL
-rownames(v_params) = NULL
-rownames(biome_spec) = NULL
+rownames(params) <- NULL
+rownames(v_params) <- NULL
+rownames(biome_spec) <-  NULL
 
 kbl(params) %>%
-    kable_styling(fixed_thead = T, 
+    kable_styling(fixed_thead = TRUE,
                   bootstrap_options = "hover") %>%
       scroll_box(height = "400px")
-
 ```
-  
+
 ## Table of biome-specific inputs
 
 It is possible to run Hector with multiple distinct [biomes](multiple-biomes.html).
@@ -51,39 +50,40 @@ The following parameters are specific to a particular biome.
 
 ``` {r biomes, echo = FALSE}
 kbl(biome_spec) %>%
-    kable_styling(fixed_thead = T, 
+    kable_styling(fixed_thead = TRUE,
                   bootstrap_options = "hover") %>%
       scroll_box(height = "400px")
 
 ```
-  
+
 
 ## Table of variable inputs (with a time index)
 
-There are two Hector-specific wrinkles to the INI property-value assignment scheme. First, some properties have a time index that's required when assigning:
+There are two Hector-specific wrinkles to the INI property-value assignment scheme.
+First, some properties have a time index that's required when assigning:
 
 ```
 Ftalbedo[1750]=0.0
 Ftalbedo[1950]=-0.2
 ```
 
-More commonly, such [time series](TimeSeries.html) are assigned by reading data in from a comma-separated value text file:
+More commonly, such [time series](TimeSeries.html) are assigned by reading data
+in from a comma-separated value text file:
 
 ```
-lucEmissions=csv:input/emissions/ssp245_emissions.csv 
+lucEmissions=csv:input/emissions/ssp245_emissions.csv
 ```
 
-In this case, the `input/emissions/ssp245_emissions.csv` file is parsed and the data in column `lucEmissions` are assigned to the model variable, with a required `Date` column providing the time index. Note that a "(csv)" entry in the "default" column indicates that the values are passed in via a path to a csv file. 
+In this case, the `input/emissions/ssp245_emissions.csv` file is parsed and the
+data in column `lucEmissions` are assigned to the model variable, with a required
+`Date` column providing the time index. Note that a "(csv)" entry in the `default`
+column indicates that the values are passed in via a path to a csv file.
 
 ``` {r timetable, echo = FALSE}
 kbl(v_params) %>%
-    kable_styling(fixed_thead = T, 
+    kable_styling(fixed_thead = TRUE,
                   bootstrap_options = "hover") %>%
       scroll_box(height = "400px")
-
 ```
-  
 
-  
-[gsl-ode]: https://www.gnu.org/software/gsl/manual/html_node/Ordinary-Differential-Equations.html#Ordinary-Differential-Equations   
-
+[gsl-ode]: https://www.gnu.org/software/gsl/manual/html_node/Ordinary-Differential-Equations.html#Ordinary-Differential-Equations

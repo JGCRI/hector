@@ -16,6 +16,8 @@ jobs:
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
+      - name: apt update
+        run: sudo apt-get update
       - name: Install libcurl
         run: sudo apt-get install libcurl4-openssl-dev
 
