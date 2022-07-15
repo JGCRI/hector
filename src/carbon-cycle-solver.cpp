@@ -221,8 +221,8 @@ void CarbonCycleSolver::failure( int stat, double t0, double tmid ) {
     t0 << "  tinit= " << t << "  tmid = " << tmid << "  last dt= " <<
     dt << "\nError code: " << stat << "\ncvals:\n";
     for( int i=0; i<nc; ++i )
-        H_LOG( logger,Logger::SEVERE ) << c[ i ] << "  ";
-    H_LOG( logger,Logger::SEVERE ) << std::endl;
+        H_LOG( logger, Logger::SEVERE ) << c[ i ] << "  ";
+    H_LOG( logger, Logger::SEVERE ) << std::endl;
     H_THROW( "gsl_ode_evolve_apply failed." );
 }
 

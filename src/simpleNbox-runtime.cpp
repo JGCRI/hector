@@ -31,45 +31,21 @@ namespace Hector {
 using namespace boost;
 
 //------------------------------------------------------------------------------
-/*! \brief      Sanity checks
- *  \exception  If any of the sanity checks fails
- *
- *  This is called internally throughout the model run and performs sanity checks.
- *  For example, the main carbon pools (except earth) should always be positive;
- *  partitioning coefficients should not exceed 1; etc.
- */
-void SimpleNbox::sanitychecks()
-{
-    // A few sanity checks
-    // Note that with the addition of the fluxpool class (which guarantees
-    // non-negative numbers) many of these checks went away
-    for ( auto biome : biome_list ) {
-        H_ASSERT( f_nppv.at(biome) >= 0.0, "f_nppv <0" );
-        H_ASSERT( f_nppd.at(biome) >= 0.0, "f_nppd <0" );
-        H_ASSERT( f_nppv.at(biome) + f_nppd.at(biome) <= 1.0, "f_nppv + f_nppd >1" );
-        H_ASSERT( f_litterd.at(biome) >= 0.0 && f_litterd.at(biome) <= 1.0, "f_litterd <0 or >1" );
-    }
-
-    H_ASSERT( f_lucv >= 0.0, "f_lucv <0" );
-    H_ASSERT( f_lucd >= 0.0, "f_lucd <0" );
-    H_ASSERT( f_lucv + f_lucd <= 1.0, "f_lucv + f_lucd >1" );
-}
-
-//------------------------------------------------------------------------------
 /*! \brief      Log pool states
  *  \param      t date
+ *  \param      msg message
  */
-void SimpleNbox::log_pools( const double t )
+void SimpleNbox::log_pools( const double t, const string msg )
 {
     // Log pool states
-    H_LOG( logger,Logger::DEBUG ) << "---- simpleNbox pool states at t=" << t << " ----" << std::endl;
-    H_LOG( logger,Logger::DEBUG ) << "Atmos = " << atmos_c << std::endl;
-    H_LOG( logger,Logger::DEBUG ) << "Biome \tveg_c \t\tdetritus_c \tsoil_c" << std::endl;
+    H_LOG( logger, Logger::DEBUG ) << "---- pool states at t=" << t << " " << msg << " ----" << std::endl;
+    H_LOG( logger, Logger::DEBUG ) << "Atmos = " << atmos_c << std::endl;
+    H_LOG( logger, Logger::DEBUG ) << "Biome \tveg_c \t\tdetritus_c \tsoil_c" << std::endl;
     for ( auto biome : biome_list ) {
-        H_LOG( logger,Logger::DEBUG ) << biome << "\t" << veg_c[ biome ] << "\t" <<
+        H_LOG( logger, Logger::DEBUG ) << biome << "\t" << veg_c[ biome ] << "\t" <<
         detritus_c[ biome ] << "\t\t" << soil_c[ biome ] << std::endl;
     }
-    H_LOG( logger,Logger::DEBUG ) << "Earth = " << earth_c << std::endl;
+    H_LOG( logger, Logger::DEBUG ) << "Earth = " << earth_c << std::endl;
 }
 
 //------------------------------------------------------------------------------
@@ -92,12 +68,25 @@ void SimpleNbox::prepareToRun()
 
     for ( auto biome : biome_list ) {
         H_LOG( logger, Logger::DEBUG ) << "Checking that data for biome '" << biome << "' is complete" << std::endl;
-        H_ASSERT( detritus_c.count( biome ), "no biome data for detritus_c" );
-        H_ASSERT( soil_c.count( biome ), "no biome data for soil_c" );
-        H_ASSERT( npp_flux0.count( biome ), "no biome data for npp_flux0" );
-
-        H_ASSERT( beta.count( biome ), "no biome value for beta" );
-
+        // Carbon pools
+        H_ASSERT( detritus_c.count( biome ), "no detritus_c data for " + biome );
+        H_ASSERT( soil_c.count( biome ), "no soil_c data for " + biome );
+        H_ASSERT( npp_flux0.count( biome ), "no npp_flux0 data for " + biome );
+        // Beta and Q10
+        H_ASSERT( beta.count( biome ), "No beta entry for " + biome );
+        H_ASSERT( beta.at( biome ) >= 0.0, "beta < 0" );
+        H_ASSERT( q10_rh.count( biome ), "No Q10 entry for " + biome );
+        H_ASSERT( q10_rh.at( biome ) > 0.0, "q10_rh <= 0.0" );
+        // Partitioning
+        H_ASSERT( f_nppv.count( biome ), "No f_nppv entry for " + biome );
+        H_ASSERT( f_nppv.at( biome ) >= 0.0, "f_nppv <0" );
+        H_ASSERT( f_nppd.count( biome ), "No f_nppd entry for " + biome );
+        H_ASSERT( f_nppd.at( biome ) >= 0.0, "f_nppd <0" );
+        H_ASSERT( f_nppv.count( biome ), "No f_nppv entry for " + biome );
+        H_ASSERT( f_nppv.at( biome ) + f_nppd.at( biome ) <= 1.0, "f_nppv + f_nppd >1" );
+        H_ASSERT( f_litterd.count( biome ), "No f_litterd entry for " + biome );
+        H_ASSERT( f_litterd.at( biome ) >= 0.0 && f_litterd.at( biome ) <= 1.0, "f_litterd <0 or >1" );
+        // Warming factor
         if ( !warmingfactor.count( biome )) {
             H_LOG( logger, Logger::NOTICE ) << "No warmingfactor set for biome '" << biome << "'. " <<
                 "Setting to default value = 1.0" << std::endl;
@@ -105,12 +94,13 @@ void SimpleNbox::prepareToRun()
         }
     }
 
-    // Save a pointer to the ocean model in use
-    omodel = dynamic_cast<OceanComponent*>( core->getComponentByCapability( D_OCEAN_C ) );
-    // TODO: this is a hack, because currently we can't pass fluxpools around via sendMessage
-    omodel->set_atmosphere_sources( atmos_c );  // inform ocean model what our atmosphere looks like
+    // LUC partitioning
+    H_ASSERT( f_lucv >= 0.0, "f_lucv <0" );
+    H_ASSERT( f_lucd >= 0.0, "f_lucd <0" );
+    H_ASSERT( f_lucv + f_lucd <= 1.0, "f_lucv + f_lucd >1" );
 
-    if( !Falbedo.size() ) {          // if no albedo data, assume constant
+    // If no albedo data, assume constant
+    if( !Falbedo.size() ) {
         unitval alb( -0.2, U_W_M2 ); // default is MAGICC value
         Falbedo.set( core->getStartDate(), alb );
         Falbedo.set( core->getEndDate(), alb );
@@ -129,13 +119,11 @@ void SimpleNbox::prepareToRun()
         Logger& glog = core->getGlobalLogger();
         H_LOG( glog, Logger::WARNING ) << "NBP (land-atmosphere C exchange) will be constrained to user-supplied values!" << std::endl;
     }
-
-    // One-time checks
-    for( auto biome : biome_list ) {
-        H_ASSERT( beta.at( biome ) >= 0.0, "beta < 0" );
-        H_ASSERT( q10_rh.at( biome )>0.0, "q10_rh <= 0.0" );
-    }
-    sanitychecks();
+    
+    // Save a pointer to the ocean model in use
+    omodel = dynamic_cast<OceanComponent*>( core->getComponentByCapability( D_OCEAN_C ) );
+    // TODO: this is a hack, because currently we can't pass fluxpools around via sendMessage
+    omodel->set_atmosphere_sources( atmos_c );  // inform ocean model what our atmosphere looks like
 }
 
 //------------------------------------------------------------------------------
@@ -148,7 +136,6 @@ void SimpleNbox::prepareToRun()
 void SimpleNbox::run( const double runToDate )
 {
     in_spinup = core->inSpinup();
-    sanitychecks();
 
     // If we've hit the tracking start year, enagage!
     const double tdate = core->getTrackingDate();
@@ -171,7 +158,6 @@ void SimpleNbox::run( const double runToDate )
  */
 bool SimpleNbox::run_spinup( const int step )
 {
-    sanitychecks();
     in_spinup = true;
     return true;        // solver will really be the one signalling
 }
@@ -211,14 +197,14 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     const double yf = ( t - ODEstartdate );
     H_ASSERT( yf >= 0 && yf <= 1, "yearfraction out of bounds" );
 
-    H_LOG( logger,Logger::DEBUG ) << "Stashing at t=" << t << ", solver pools at " << t << ": " <<
+    H_LOG( logger, Logger::DEBUG ) << "Stashing at t=" << t << ", solver pools at " << t << ": " <<
         "  atm = " << c[ SNBOX_ATMOS ] <<
         "  veg = " << c[ SNBOX_VEG ] <<
         "  det = " << c[ SNBOX_DET ] <<
         "  soil = " << c[ SNBOX_SOIL ] <<
         "  ocean = " << c[ SNBOX_OCEAN ] <<
         "  earth = " << c[ SNBOX_EARTH ] << std::endl;
-    log_pools( t );
+    log_pools( t, "BEFORE update" );
 
     // get the UNTRACKED earth emissions (ffi) and uptake (ccs)
     // We immediately adjust them for the year fraction (as the solver
@@ -358,12 +344,12 @@ void SimpleNbox::stashCValues( double t, const double c[] )
         // want is to pass the carbon-tracking information around if it's being used.
         detritus_c[ biome ] = detritus_c[ biome ] - detsoil_flux;
 
-        // Adjust biome pools to final values from calcDerives
+        // Adjust biome pools to final values from calcDerivs
         veg_c[ biome ].adjust_pool_to_val(newveg.value(U_PGC) * wt, false);
         detritus_c[ biome ].adjust_pool_to_val(newdet.value(U_PGC) * wt, false);
         soil_c[ biome ].adjust_pool_to_val(newsoil.value(U_PGC) * wt, false);
 
-        H_LOG( logger,Logger::DEBUG ) << "Biome " << biome << " weight = " << wt << std::endl;
+        H_LOG( logger, Logger::DEBUG ) << "Biome " << biome << " weight = " << wt << std::endl;
     }
 
     // Update earth_c and atmos_c with fossil fuel and ocean fluxes
@@ -375,7 +361,7 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     earth_c.adjust_pool_to_val( c[SNBOX_EARTH], false );
     atmos_c.adjust_pool_to_val( newatmos.value( U_PGC ), false );
 
-    log_pools( t );
+    log_pools( t, "AFTER update" );
 
     // Each time the model pools are updated, check that mass has been conserved
     double sum=0.0;
@@ -384,10 +370,10 @@ void SimpleNbox::stashCValues( double t, const double c[] )
     }
 
     const double diff = fabs( sum - masstot );
-    H_LOG( logger,Logger::DEBUG ) << "masstot = " << masstot << ", sum = " << sum << ", diff = " << diff << std::endl;
+    H_LOG( logger, Logger::DEBUG ) << "masstot = " << masstot << ", sum = " << sum << ", diff = " << diff << std::endl;
     if(masstot > 0.0 && diff > MB_EPSILON) {
-        H_LOG( logger,Logger::SEVERE ) << "Mass not conserved in " << getComponentName() << std::endl;
-        H_LOG( logger,Logger::SEVERE ) << "masstot = " << masstot << ", sum = " << sum << ", diff = " << diff << std::endl;
+        H_LOG( logger, Logger::SEVERE ) << "Mass not conserved in " << getComponentName() << std::endl;
+        H_LOG( logger, Logger::SEVERE ) << "masstot = " << masstot << ", sum = " << sum << ", diff = " << diff << std::endl;
         H_THROW( "Mass not conserved! (See log.)" );
     }
     masstot = sum;
@@ -412,17 +398,19 @@ void SimpleNbox::stashCValues( double t, const double c[] )
         // Ugly: residual is a unitval, but calculated by subtracting two fluxpools, so extract value
         Ca_residual.set(atmos_c.value(U_PGC) - atmos_cpool_to_match.value(U_PGC), U_PGC);
 
-        H_LOG( logger,Logger::DEBUG ) << t << "- have " << CO2_conc() << " want " <<  atmppmv.value( U_PPMV_CO2 ) << std::endl;
-        H_LOG( logger,Logger::DEBUG ) << t << "- have " << atmos_c << " want " << atmos_cpool_to_match << "; residual = " << Ca_residual << std::endl;
+        H_LOG( logger, Logger::DEBUG ) << t << "- have " << CO2_conc() << " want " <<  atmppmv.value( U_PPMV_CO2 ) << std::endl;
+        H_LOG( logger, Logger::DEBUG ) << t << "- have " << atmos_c << " want " << atmos_cpool_to_match << "; residual = " << Ca_residual << std::endl;
 
         // Transfer C from atmosphere to deep ocean and update our C and [CO2] variables
-        H_LOG( logger,Logger::DEBUG ) << "Sending residual of " << Ca_residual << " to deep ocean" << std::endl;
+        H_LOG( logger, Logger::DEBUG ) << "Sending residual of " << Ca_residual << " to deep ocean" << std::endl;
         core->sendMessage( M_DUMP_TO_DEEP_OCEAN, D_OCEAN_C, message_data( Ca_residual ) );
         atmos_c = atmos_c - Ca_residual;
     } else {
         Ca_residual.set( 0.0, U_PGC );
     }
 
+    log_pools( t, "FINAL" );
+    
     // All good! t will be the start of the next timestep, so
     ODEstartdate = t;
 }
@@ -737,7 +725,7 @@ void SimpleNbox::slowparameval( double t, const double c[] )
         } else {
             co2fert[ biome ] = calc_co2fert( biome );
         }
-        H_LOG( logger,Logger::DEBUG ) << "co2fert[ " << biome << " ] at " << CO2_conc() << " = " << co2fert.at( biome ) << std::endl;
+        H_LOG( logger, Logger::DEBUG ) << "co2fert[ " << biome << " ] at " << CO2_conc() << " = " << co2fert.at( biome ) << std::endl;
     }
 
     // Compute temperature factor globally (and for each biome specified)
@@ -798,7 +786,7 @@ void SimpleNbox::slowparameval( double t, const double c[] )
                 tempferts[ biome ] = tempferts_last;
             }
 
-            H_LOG( logger,Logger::DEBUG ) << biome << " Tland=" << Tland << ", Tland_biome=" <<
+            H_LOG( logger, Logger::DEBUG ) << biome << " Tland=" << Tland << ", Tland_biome=" <<
                 Tland_biome << ", tempfertd=" << tempfertd[ biome ] << ", tempferts=" <<
                 tempferts[ biome ] << std::endl;
         }

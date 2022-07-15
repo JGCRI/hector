@@ -7,4 +7,3 @@ inputstable <- read.csv("./data-raw/input_params.csv")
 
 # Save as an object in the package
 usethis::use_data(inputstable, internal = FALSE, overwrite = TRUE)
-
