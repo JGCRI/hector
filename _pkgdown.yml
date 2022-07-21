@@ -8,8 +8,6 @@ navbar:
     left:  [reference, articles]
     right: [search, github]
 
-#navbar:
-#  type: default
   left:
     - icon: fa-home fa-lg
       href: "index.html"
