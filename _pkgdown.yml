@@ -1,7 +1,13 @@
 url: https://jgcri.github.io/hector/
 
+template:
+  bootstrap: 5
+
 navbar:
-  type: default
+  structure:
+    left:  [reference, articles]
+    right: [search, github]
+
   left:
     - icon: fa-home fa-lg
       href: "index.html"
