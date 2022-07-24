@@ -11,9 +11,7 @@ on:
       - github_actions
   pull_request:
     branches:
-      - master
-      - v3_dev
-      - update_ini
+      - '**' # matches every branch
 
   schedule:
     # * is a special character in YAML so you have to quote this string
