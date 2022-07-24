@@ -6,7 +6,7 @@
 ## Build settings
 ifeq ($(strip $(CXX)),)
 	CXX  = g++
-endif 
+endif
 
 ## Check if the user has the c++17 standard library which
 ## is mostly just so that we do not have to bother linking any
@@ -81,7 +81,7 @@ CXXSRCS	= $(wildcard *.cpp)
 MAINS   = main.cpp main-api.cpp
 RCPPS   = $(wildcard rcpp_*.cpp) RcppExports.cpp
 ## Remove the mains, as well as Rcpp files, from source list
-## The main file will be added later; *which* main depends on the target 
+## The main file will be added later; *which* main depends on the target
 CXXSRCS := $(filter-out $(MAINS), $(CXXSRCS))
 CXXSRCS := $(filter-out $(RCPPS), $(CXXSRCS))
 CSRCS   = $(wildcard *.c)
@@ -98,7 +98,7 @@ testing: libhector.a
 
 ## Alternate version that uses the capabilities needed for driving
 ## Hector from an external source (e.g., an IAM)
-## DO NOT BUILD THIS TARGET UNLESS YOU ARE TESTING HECTOR'S API FUNCTIONALITY. 
+## DO NOT BUILD THIS TARGET UNLESS YOU ARE TESTING HECTOR'S API FUNCTIONALITY.
 ## It uses some hard-coded emissions for testing and likely
 ## will not do what you want it to under all circumstances.
 # hector-api: libhector.a main-api.o
@@ -112,7 +112,7 @@ libhector.a: $(OBJS)
 
 clean:
 	-$(MAKE) -C unit-testing clean
-	-rm hector *.o *.d
+	-rm -f hector *.o *.d
 	-rm -rf build
 
 chkvar:

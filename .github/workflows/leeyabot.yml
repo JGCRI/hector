@@ -2,7 +2,9 @@ name: leeyabot
 on:
   pull_request:
     branches:
-      - '**' # matches every branch
+      - master
+      - v3_dev
+
 jobs:
   run:
     runs-on: [ubuntu-latest]

@@ -11,8 +11,7 @@ on:
       - github_actions
   pull_request:
     branches:
-      - master
-      - v3_dev
+      - '**' # matches every branch
 
   schedule:
     # * is a special character in YAML so you have to quote this string
@@ -35,6 +34,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: build and run
         run: |
+          sudo apt-get update
           sudo apt install libboost-dev
           make hector
           bash ./test_hector.sh ./src/hector
