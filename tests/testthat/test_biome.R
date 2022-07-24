@@ -1,16 +1,8 @@
 context("Hector with multiple biomes")
 
 ssp245 <- function() {
-    core <- newcore(system.file("input", "hector_ssp245.ini", package = "hector"),
+    newcore(system.file("input", "hector_ssp245.ini", package = "hector"),
             name = "test core", suppresslogging = TRUE)
-
-    # names <- c(NPP_FLUX0(), BETA(), Q10_RH(), ECS(), DIFFUSIVITY(), AERO_SCALE())
-    # units <- sapply(names, getunits)
-    # old_default_values <- c(56.2, 0.36, 2.0, 3, 2.3, 1.0)
-    # x <- mapply(function(var, val, u){
-    #     setvar(core, NA, var, val, u)
-    # }, var = names, val = old_default_values, u = units)
-    return(core)
 }
 
 # Save a copy of the default values

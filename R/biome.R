@@ -81,7 +81,7 @@ split_biome <- function(core,
     cv <- get_biome_inits(core, old_biome) # current values
     dots <- list(...)
     # We can't use ifelse for this because return shape may differ
-    pick <- function(x, y) { if(is.null(x)) y else x }
+    pick <- function(x, y) { if (is.null(x)) y else x } # nolint
     warmingfactor <- pick(dots$warmingfactor, cv[["warmingfactor"]])
     beta <- pick(dots$beta, cv[["beta"]])
     q10_rh <- pick(dots$q10_rh, cv[["q10_rh"]])
