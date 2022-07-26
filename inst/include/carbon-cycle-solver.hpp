@@ -16,14 +16,14 @@
 
 #include <string>
 
-#include "logger.hpp"
 #include "carbon-cycle-model.hpp"
 #include "h_util.hpp"
+#include "logger.hpp"
 
 #define MAX_CARBON_MODEL_RETRIES 8
 
 namespace Hector {
-  
+
 /*! \brief The carbon cycle solver component
  *
  * The strategy in this solver is to write the carbon cycle as
@@ -45,93 +45,93 @@ namespace Hector {
  *
  */
 class CarbonCycleSolver : public IModelComponent {
-    
+
 public:
-    CarbonCycleSolver();
-    virtual ~CarbonCycleSolver();
-    
-    //! Return a carbon pool value. Components will know which one they want.
-    double cpool( int i ) const { return c[ i ]; }
-    
-    
-    // IModelComponent methods
-    std::string getComponentName() const { return std::string( CCS_COMPONENT_NAME ); }
-    
-    virtual void init( Core* core );
-    
-    virtual unitval sendMessage( const std::string& message,
-                                const std::string& datum,
-                                const message_data info=message_data() );
-    
-    virtual void setData( const std::string& varName,
-                          const message_data& data );
-    
-    virtual void prepareToRun();
-    
-    virtual void run( const double runToDate );
-    
-    virtual bool run_spinup( const int step );
-    
-    virtual void reset(double date);
+  CarbonCycleSolver();
+  virtual ~CarbonCycleSolver();
 
-    virtual void shutDown();
-    
-    
-    // IVisitable methods
-    virtual void accept( AVisitor* visitor );
-    
+  //! Return a carbon pool value. Components will know which one they want.
+  double cpool(int i) const { return c[i]; }
+
+  // IModelComponent methods
+  std::string getComponentName() const {
+    return std::string(CCS_COMPONENT_NAME);
+  }
+
+  virtual void init(Core *core);
+
+  virtual unitval sendMessage(const std::string &message,
+                              const std::string &datum,
+                              const message_data info = message_data());
+
+  virtual void setData(const std::string &varName, const message_data &data);
+
+  virtual void prepareToRun();
+
+  virtual void run(const double runToDate);
+
+  virtual bool run_spinup(const int step);
+
+  virtual void reset(double date);
+
+  virtual void shutDown();
+
+  // IVisitable methods
+  virtual void accept(AVisitor *visitor);
+
 private:
-    virtual unitval getData( const std::string& varName,
-                            const double valueIndex );
-    
-    //! Number of variables to integrate
-    int nc;
-    //! Array of carbon pools (and such other vars as need to be integrated)
-    std::vector<double> c;
-    //! time counter
-    double t;
-    
-    //settable parameters
-    //! Absolute error tolerance for integration
-    double eps_abs;
-    //! Relative error tolerance for integration
-    double eps_rel;
-    //! Default stepsize (years) -- the integrator will adjust this as required
-    double dt;
-    
-    unitval eps_spinup;     //! spinup epsilon (drift/tolerance), Pg C
-    
-    struct bad_derivative_exception {
-        bad_derivative_exception(const int status):errorFlag(status) { }
-        int errorFlag;
-    };
-    // A functor to provide callbacks for the ODE solver. 
-    struct ODEEvalFunctor {
-        ODEEvalFunctor( CarbonCycleModel* cmodel, double* time ):modelptr(cmodel), t(time) { }
-        void operator()( const std::vector<double>& y, std::vector<double>& dydt, double t );
-        void operator()( const std::vector<double>& y, double t );
-        CarbonCycleModel* modelptr;
-        double* t;
-    };
-    
-    void failure( int stat, double t0, double tmid );
-    
-    bool in_spinup;
-    
-    // Pointers to other components
-    Core *core;
-    CarbonCycleModel *cmodel;
-    
-    //! Logger for solver
-    Logger logger;
+  virtual unitval getData(const std::string &varName, const double valueIndex);
 
-    //! Internal working space
-    std::vector<double> c_original;
-    std::vector<double> c_old;
-    std::vector<double> c_new;
-    std::vector<double> dcdt;
+  //! Number of variables to integrate
+  int nc;
+  //! Array of carbon pools (and such other vars as need to be integrated)
+  std::vector<double> c;
+  //! time counter
+  double t;
+
+  // settable parameters
+  //! Absolute error tolerance for integration
+  double eps_abs;
+  //! Relative error tolerance for integration
+  double eps_rel;
+  //! Default stepsize (years) -- the integrator will adjust this as required
+  double dt;
+
+  unitval eps_spinup; //! spinup epsilon (drift/tolerance), Pg C
+
+  struct bad_derivative_exception {
+    bad_derivative_exception(const int status) : errorFlag(status) {}
+    int errorFlag;
+  };
+  // A functor to provide callbacks for the ODE solver.
+  struct ODEEvalFunctor {
+    ODEEvalFunctor(CarbonCycleModel *cmodel, double *time)
+        : modelptr(cmodel), t(time) {}
+    void operator()(const std::vector<double> &y, std::vector<double> &dydt,
+                    double t);
+    void operator()(const std::vector<double> &y, double t);
+    CarbonCycleModel *modelptr;
+    double *t;
+  };
+
+  void failure(int stat, double t0, double tmid);
+
+  bool in_spinup;
+
+  // Pointers to other components
+  Core *core;
+  CarbonCycleModel *cmodel;
+
+  //! Logger for solver
+  Logger logger;
+
+  //! Internal working space
+  std::vector<double> c_original;
+  std::vector<double> c_old;
+  std::vector<double> c_new;
+  std::vector<double> dcdt;
 };
 
-}
+} // namespace Hector
 
 #endif

@@ -43,54 +43,53 @@ class OzoneComponent;
  */
 class AVisitor {
 public:
-    inline virtual ~AVisitor();
+  inline virtual ~AVisitor();
 
-    //------------------------------------------------------------------------------
-    /*! \brief Determine if the visitor needs to collect data at the given model
-     *         date.
-     *  \param date The model date which just finished solving.
-     *  \return True if the visitor wants to visit at date.
-     */
-    virtual bool shouldVisit( const bool in_spinup, const double date ) = 0;
+  //------------------------------------------------------------------------------
+  /*! \brief Determine if the visitor needs to collect data at the given model
+   *         date.
+   *  \param date The model date which just finished solving.
+   *  \return True if the visitor wants to visit at date.
+   */
+  virtual bool shouldVisit(const bool in_spinup, const double date) = 0;
 
-    //------------------------------------------------------------------------------
-    /*! \brief Allow visitors to reset their data upon a core reset.
-     *  \param reset_date The date to reset to.
-     */
-    virtual void reset( const double reset_date ) {}
+  //------------------------------------------------------------------------------
+  /*! \brief Allow visitors to reset their data upon a core reset.
+   *  \param reset_date The date to reset to.
+   */
+  virtual void reset(const double reset_date) {}
 
-    //------------------------------------------------------------------------------
-    /*! \brief Update the Tracking Data output if applicable.
-     *  \param tracking_out The Tracking Data output stream to place results into.
-     */
-    virtual void outputTrackingData( std::ostream& tracking_out ) const {}
+  //------------------------------------------------------------------------------
+  /*! \brief Update the Tracking Data output if applicable.
+   *  \param tracking_out The Tracking Data output stream to place results into.
+   */
+  virtual void outputTrackingData(std::ostream &tracking_out) const {}
 
-    //------------------------------------------------------------------------------
-    // Add a visit for all visitable subclasses here.
-    // TODO: should we create a .cpp for these?
-    virtual void visit( Core* core ) {}
-    virtual void visit( DummyModelComponent* c ) {}
-    virtual void visit( ForcingComponent* c ) {}
-    virtual void visit( slrComponent* c ) {}
-    virtual void visit( CarbonCycleSolver* c ) {}
-    virtual void visit( SimpleNbox* c ) {}
-    virtual void visit( HalocarbonComponent* c ) {}
-    virtual void visit( OHComponent* c ) {}
-    virtual void visit( CH4Component* c ) {}
-    virtual void visit( N2OComponent* c ) {}
-    virtual void visit( TemperatureComponent* c ) {}
-    virtual void visit( BlackCarbonComponent* c ) {}
-    virtual void visit( OrganicCarbonComponent* c ) {}
-    virtual void visit( NH3Component* c ) {}
-    virtual void visit( OceanComponent* c ) {}
-	virtual void visit( SulfurComponent* c ) {}
-	virtual void visit( OzoneComponent* c ) {}
+  //------------------------------------------------------------------------------
+  // Add a visit for all visitable subclasses here.
+  // TODO: should we create a .cpp for these?
+  virtual void visit(Core *core) {}
+  virtual void visit(DummyModelComponent *c) {}
+  virtual void visit(ForcingComponent *c) {}
+  virtual void visit(slrComponent *c) {}
+  virtual void visit(CarbonCycleSolver *c) {}
+  virtual void visit(SimpleNbox *c) {}
+  virtual void visit(HalocarbonComponent *c) {}
+  virtual void visit(OHComponent *c) {}
+  virtual void visit(CH4Component *c) {}
+  virtual void visit(N2OComponent *c) {}
+  virtual void visit(TemperatureComponent *c) {}
+  virtual void visit(BlackCarbonComponent *c) {}
+  virtual void visit(OrganicCarbonComponent *c) {}
+  virtual void visit(NH3Component *c) {}
+  virtual void visit(OceanComponent *c) {}
+  virtual void visit(SulfurComponent *c) {}
+  virtual void visit(OzoneComponent *c) {}
 };
 
 // Inline methods
-AVisitor::~AVisitor() {
-}
+AVisitor::~AVisitor() {}
 
-}
+} // namespace Hector
 
 #endif // AVISITOR_H

@@ -23,7 +23,7 @@
 #define SIMPLENBOX_COMPONENT_NAME "simpleNbox"
 
 #define CH4_COMPONENT_NAME "CH4"
-#define OH_COMPONENT_NAME   "OH"
+#define OH_COMPONENT_NAME "OH"
 #define N2O_COMPONENT_NAME "N2O"
 #define TEMPERATURE_COMPONENT_NAME "temperature"
 
@@ -34,9 +34,9 @@
  * The name of a HC emissions var is X_COMPONENT_BASE + EMISSIONS_EXTENSION
  ***/
 #define HALOCARBON_EXTENSION "_halocarbon"
-#define EMISSIONS_EXTENSION  "_emissions"
-#define CONCENTRATION_EXTENSION  "_concentration"
-#define CONC_CONSTRAINT_EXTENSION  "_constrain"
+#define EMISSIONS_EXTENSION "_emissions"
+#define CONCENTRATION_EXTENSION "_concentration"
+#define CONC_CONSTRAINT_EXTENSION "_constrain"
 #define CF4_COMPONENT_BASE "CF4"
 #define C2F6_COMPONENT_BASE "C2F6"
 #define HFC23_COMPONENT_BASE "HFC23"
@@ -96,7 +96,7 @@
 #define NH3_COMPONENT_NAME "nh3"
 #define SULFUR_COMPONENT_NAME "so2"
 
-#define FORCING_COMPONENT_NAME	"forcing"
+#define FORCING_COMPONENT_NAME "forcing"
 #define SLR_COMPONENT_NAME "slr"
 #define OZONE_COMPONENT_NAME "ozone"
 

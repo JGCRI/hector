@@ -24,9 +24,9 @@
 
 /* Data types and constants */
 #include "component_data.hpp"
-#include "unitval.hpp"
-#include "message_data.hpp"
 #include "h_exception.hpp"
+#include "message_data.hpp"
+#include "unitval.hpp"
 
 /* Core functions */
 #include "core.hpp"
@@ -36,6 +36,5 @@
 
 /* Output functions */
 #include "csv_outputstream_visitor.hpp"
-
 
 #endif

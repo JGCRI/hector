@@ -4,7 +4,7 @@
    Please see the accompanying file LICENSE.md for additional licensing
    information.
 */
- /*
+/*
  * carbon-cycle-solver.cpp
  *
  * ODE solver for integrating the carbon cycle in hector.
@@ -22,155 +22,148 @@
 #include <boost/numeric/odeint.hpp>
 #pragma clang diagnostic pop
 
-#include "carbon-cycle-solver.hpp"
 #include "avisitor.hpp"
+#include "carbon-cycle-solver.hpp"
 
 namespace Hector {
 
 //------------------------------------------------------------------------------
 /*! \brief Constructor
  */
-CarbonCycleSolver::CarbonCycleSolver() : nc( 0 ),
-eps_abs( 1.0e-6 ),eps_rel( 1.0e-6 ),
-dt( 0.3 )
-{
-}
+CarbonCycleSolver::CarbonCycleSolver()
+    : nc(0), eps_abs(1.0e-6), eps_rel(1.0e-6), dt(0.3) {}
 
 //------------------------------------------------------------------------------
 /*! \brief Deconstructor
  */
-CarbonCycleSolver::~CarbonCycleSolver()
-{
+CarbonCycleSolver::~CarbonCycleSolver() {}
+
+//------------------------------------------------------------------------------
+// documentation is inherited
+void CarbonCycleSolver::init(Core *coreptr) {
+  // This component is very verbose at the debug and notice levels, so limit
+  // output to the warning level, even if the rest of the model is configured
+  // for something lower.
+  logger.open(getComponentName(), false,
+              coreptr->getGlobalLogger().getEchoToFile(), Logger::WARNING);
+  H_LOG(logger, Logger::DEBUG)
+      << getComponentName() << " initialized." << std::endl;
+
+  core = coreptr;
+
+  in_spinup = false;
+
+  // We want to run after the carbon box models, to give them a chance to
+  // initialize
+  core->registerDependency(D_ATMOSPHERIC_CO2, getComponentName());
 }
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-void CarbonCycleSolver::init( Core* coreptr ) {
-    // This component is very verbose at the debug and notice levels, so limit
-    // output to the warning level, even if the rest of the model is configured
-    // for something lower.
-    logger.open(getComponentName(), false, coreptr->getGlobalLogger().getEchoToFile(), Logger::WARNING);
-    H_LOG( logger, Logger::DEBUG ) << getComponentName() << " initialized." << std::endl;
+unitval CarbonCycleSolver::sendMessage(const std::string &message,
+                                       const std::string &datum,
+                                       const message_data info) {
+  unitval returnval;
 
-    core = coreptr;
+  if (message == M_GETDATA) { //! Caller is requesting data
+    return getData(datum, info.date);
 
-    in_spinup = false;
+  } else if (message == M_SETDATA) { //! Caller is requesting to set data
+                                     // TODO: call setData below
+    // TODO: change core so that parsing is routed through sendMessage
+    // TODO: make setData private
 
-    // We want to run after the carbon box models, to give them a chance to initialize
-    core->registerDependency( D_ATMOSPHERIC_CO2, getComponentName() );
+  } else { //! We don't handle any other messages
+    H_THROW("Caller sent unknown message: " + message);
+  }
+
+  return returnval;
 }
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-unitval CarbonCycleSolver::sendMessage( const std::string& message,
-                                       const std::string& datum,
-                                       const message_data info )
-{
-    unitval returnval;
+void CarbonCycleSolver::setData(const std::string &varName,
+                                const message_data &data) {
+  H_LOG(logger, Logger::DEBUG) << "Setting " << varName << "[" << data.date
+                               << "]=" << data.value_str << std::endl;
 
-    if( message==M_GETDATA ) {          //! Caller is requesting data
-        return getData( datum, info.date );
-
-    } else if( message==M_SETDATA ) {   //! Caller is requesting to set data
-        //TODO: call setData below
-        //TODO: change core so that parsing is routed through sendMessage
-        //TODO: make setData private
-
-    } else {                        //! We don't handle any other messages
-        H_THROW( "Caller sent unknown message: "+message );
+  try {
+    if (varName == D_CCS_EPS_ABS) {
+      H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
+      eps_abs = data.getUnitval(U_UNDEFINED);
+      ;
+    } else if (varName == D_CCS_EPS_REL) {
+      H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
+      eps_rel = data.getUnitval(U_UNDEFINED);
+      ;
+    } else if (varName == D_CCS_DT) {
+      H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
+      dt = data.getUnitval(U_UNDEFINED);
+    } else if (varName == D_EPS_SPINUP) {
+      H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
+      eps_spinup = data.getUnitval(U_PGC);
+    } else {
+      H_LOG(logger, Logger::SEVERE)
+          << "Unknown variable " << varName << std::endl;
+      H_THROW("Unknown variable name while parsing " + getComponentName() +
+              ": " + varName);
     }
+  } catch (h_exception &parseException) {
+    H_RETHROW(parseException, "Could not parse var: " + varName);
+  }
 
-    return returnval;
+  return;
 }
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-void CarbonCycleSolver::setData( const std::string &varName,
-                                 const message_data& data )
-{
-    H_LOG( logger, Logger::DEBUG ) << "Setting " << varName << "[" << data.date << "]=" << data.value_str << std::endl;
+void CarbonCycleSolver::prepareToRun() {
+  H_LOG(logger, Logger::DEBUG) << "prepareToRun " << std::endl;
 
-    try {
-        if( varName == D_CCS_EPS_ABS ) {
-            H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            eps_abs = data.getUnitval(U_UNDEFINED);;
-        }
-        else if( varName == D_CCS_EPS_REL ) {
-            H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            eps_rel = data.getUnitval(U_UNDEFINED);;
-        }
-        else if( varName == D_CCS_DT ) {
-            H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            dt = data.getUnitval(U_UNDEFINED);
-        }
-        else if( varName == D_EPS_SPINUP ) {
-            H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
-            eps_spinup = data.getUnitval(U_PGC);
-        }
-        else {
-            H_LOG( logger, Logger::SEVERE ) << "Unknown variable " << varName << std::endl;
-            H_THROW( "Unknown variable name while parsing "+ getComponentName() + ": "
-                    + varName );
-        }
-    } catch( h_exception& parseException ) {
-        H_RETHROW( parseException, "Could not parse var: "+varName );
-    }
+  cmodel = dynamic_cast<CarbonCycleModel *>(
+      core->getComponentByCapability(D_ATMOSPHERIC_CO2));
 
-    return;
+  // initialize the solver's internal data
+  t = core->getStartDate();
+  nc = cmodel->ncpool();
+  H_LOG(logger, Logger::DEBUG)
+      << "Carbon model in use is " << cmodel->getComponentName() << std::endl;
+  H_LOG(logger, Logger::DEBUG) << "Carbon model pools: " << nc << std::endl;
+  H_ASSERT(nc > 0, "nc must be > 0");
+  // resize the array of carbon pool values
+  c.resize(nc);
 }
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-void CarbonCycleSolver::prepareToRun()
-{
-    H_LOG( logger, Logger::DEBUG ) << "prepareToRun " << std::endl;
+unitval CarbonCycleSolver::getData(const std::string &varName,
+                                   const double date) {
 
-    cmodel = dynamic_cast<CarbonCycleModel*>( core->getComponentByCapability( D_ATMOSPHERIC_CO2 ) );
+  unitval returnval;
 
-    // initialize the solver's internal data
-    t = core->getStartDate();
-    nc = cmodel->ncpool();
-    H_LOG( logger, Logger::DEBUG ) << "Carbon model in use is " << cmodel->getComponentName() << std::endl;
-    H_LOG( logger, Logger::DEBUG ) << "Carbon model pools: " << nc << std::endl;
-    H_ASSERT( nc > 0, "nc must be > 0" );
-    // resize the array of carbon pool values
-    c.resize(nc);
+  H_ASSERT(date == Core::undefinedIndex(),
+           "Date not allowed for CarbonCycleSolver");
 
+  H_THROW("Caller is requesting unknown variable: " + varName);
+
+  return returnval;
+}
+
+void CarbonCycleSolver::reset(double time) {
+  // Only state maintained by this component is the time counter
+  t = time;
+  in_spinup =
+      false; // reset this in case we will be expected to rerun the spinup.
+  H_LOG(logger, Logger::NOTICE)
+      << getComponentName() << " reset to time= " << time << "\n";
 }
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-unitval CarbonCycleSolver::getData( const std::string& varName,
-                                   const double date ) {
-
-    unitval returnval;
-
-    H_ASSERT( date == Core::undefinedIndex(), "Date not allowed for CarbonCycleSolver" );
-
-    H_THROW( "Caller is requesting unknown variable: " + varName );
-
-    return returnval;
+void CarbonCycleSolver::shutDown() {
+  H_LOG(logger, Logger::DEBUG) << "goodbye " << getComponentName() << std::endl;
+  logger.close();
 }
-
-void CarbonCycleSolver::reset(double time)
-{
-    // Only state maintained by this component is the time counter
-    t = time;
-    in_spinup = false;          // reset this in case we will be expected to rerun the spinup.
-    H_LOG(logger, Logger::NOTICE)
-        << getComponentName() << " reset to time= " << time << "\n";
-}
-
-
-
-//------------------------------------------------------------------------------
-// documentation is inherited
-void CarbonCycleSolver::shutDown()
-{
-	H_LOG( logger, Logger::DEBUG ) << "goodbye " << getComponentName() << std::endl;
-    logger.close();
-}
-
 
 //------------------------------------------------------------------------------
 /*! \brief              Dispatch function called by ODE solver
@@ -180,33 +173,31 @@ void CarbonCycleSolver::shutDown()
  *  \exception          If the carbon model returned failure flag we must throw
  *                      an exception to stop the ODE solver.
  */
-void CarbonCycleSolver::ODEEvalFunctor::operator()( const std::vector<double>& y,
-                                                    std::vector<double>& dydt,
-                                                    double t )
-{
-    // Note the std guarantees that vectors are contiguous, so we can convert to array by
-    // taking the address of the first value.
-    int status = modelptr->calcderivs( t, &y[0], &dydt[0] );
+void CarbonCycleSolver::ODEEvalFunctor::operator()(const std::vector<double> &y,
+                                                   std::vector<double> &dydt,
+                                                   double t) {
+  // Note the std guarantees that vectors are contiguous, so we can convert to
+  // array by taking the address of the first value.
+  int status = modelptr->calcderivs(t, &y[0], &dydt[0]);
 
-    if( status != ODE_SUCCESS ) {
-        bad_derivative_exception e(status);
-        throw e;
-    }
+  if (status != ODE_SUCCESS) {
+    bad_derivative_exception e(status);
+    throw e;
+  }
 }
 
 //------------------------------------------------------------------------------
 /*! \brief              Observer callback called by ODE solver when a successful
  *                      step has been taken.
- *  \details            We use this callback to update our state variable time (t)
- *                      and in principle carbon pools (c) however the later is
- *                      already updated by the solver (pass by reference) so we will
- *                      skip copying here.
- *  \param[in] y        pools
- *  \param[in] t        time
+ *  \details            We use this callback to update our state variable time
+ * (t) and in principle carbon pools (c) however the later is already updated by
+ * the solver (pass by reference) so we will skip copying here. \param[in] y
+ * pools \param[in] t        time
  */
-void CarbonCycleSolver::ODEEvalFunctor::operator()( const std::vector<double>& y, double t ) {
-    // copy the current time to the original in CarbonCycleSolver
-    (*this->t) = t;
+void CarbonCycleSolver::ODEEvalFunctor::operator()(const std::vector<double> &y,
+                                                   double t) {
+  // copy the current time to the original in CarbonCycleSolver
+  (*this->t) = t;
 }
 
 //------------------------------------------------------------------------------
@@ -216,160 +207,172 @@ void CarbonCycleSolver::ODEEvalFunctor::operator()( const std::vector<double>& y
  *  \param[in] tmid     middle of time step
  *  \exception          will always happen; gsl solver has failed
  */
-void CarbonCycleSolver::failure( int stat, double t0, double tmid ) {
-    H_LOG( logger, Logger::SEVERE ) << "gsl_ode_evolve_apply failed at t= " <<
-    t0 << "  tinit= " << t << "  tmid = " << tmid << "  last dt= " <<
-    dt << "\nError code: " << stat << "\ncvals:\n";
-    for( int i=0; i<nc; ++i )
-        H_LOG( logger, Logger::SEVERE ) << c[ i ] << "  ";
-    H_LOG( logger, Logger::SEVERE ) << std::endl;
-    H_THROW( "gsl_ode_evolve_apply failed." );
+void CarbonCycleSolver::failure(int stat, double t0, double tmid) {
+  H_LOG(logger, Logger::SEVERE)
+      << "gsl_ode_evolve_apply failed at t= " << t0 << "  tinit= " << t
+      << "  tmid = " << tmid << "  last dt= " << dt << "\nError code: " << stat
+      << "\ncvals:\n";
+  for (int i = 0; i < nc; ++i)
+    H_LOG(logger, Logger::SEVERE) << c[i] << "  ";
+  H_LOG(logger, Logger::SEVERE) << std::endl;
+  H_THROW("gsl_ode_evolve_apply failed.");
 }
 
 //------------------------------------------------------------------------------
 // documentation is inherited
-void CarbonCycleSolver::run( const double tnew )
-{
-    if(tnew <= t) {
-        H_LOG(logger, Logger::SEVERE) << "run(): tnew= " << tnew << "   t= " << t << std::endl;
+void CarbonCycleSolver::run(const double tnew) {
+  if (tnew <= t) {
+    H_LOG(logger, Logger::SEVERE)
+        << "run(): tnew= " << tnew << "   t= " << t << std::endl;
+  }
+  H_ASSERT(tnew > t, "solver tnew is not greater than t");
+
+  // Get the initial state data from the box model. c will be filled in
+  // Note that we rely on the box model to handle the units.  Inside the
+  // solver we strip the unit values and work with raw numbers.
+  cmodel->getCValues(t, &c[0]);
+
+  double t0 = t; // stash this in case we need to report & diagnose an error
+  // Now integrate from the beginning of the time step using the updated
+  // slow params.  Note we can discard t0 and the values in cc
+  cmodel->slowparameval(t, &c[0]);
+  int retry = 0;
+
+  H_LOG(logger, Logger::DEBUG)
+      << "Entering ODE solver " << t << "->" << tnew << std::endl;
+  while (t < tnew && retry < MAX_CARBON_MODEL_RETRIES) {
+
+    H_LOG(logger, Logger::DEBUG)
+        << "Resetting evolver and stepper" << std::endl;
+    double t_start = t;
+    double t_target = tnew;
+
+    while (t < t_target && retry < MAX_CARBON_MODEL_RETRIES) {
+      H_LOG(logger, Logger::NOTICE)
+          << "Attempting ODE solver " << t << "->" << t_target << " (" << t0
+          << "->" << tnew << ")" << std::endl;
+
+      int stat = ODE_SUCCESS;
+      ODEEvalFunctor odeFunctor(cmodel, &t);
+      try {
+        using namespace boost::numeric::odeint;
+        typedef runge_kutta_dopri5<std::vector<double>> error_stepper_type;
+        integrate_adaptive(
+            make_controlled<error_stepper_type>(eps_abs, eps_rel), odeFunctor,
+            c, t_start, t_target, dt, odeFunctor);
+      } catch (bad_derivative_exception &e) {
+        stat = e.errorFlag;
+      }
+
+      if (stat == CARBON_CYCLE_RETRY) {
+        H_LOG(logger, Logger::NOTICE) << "Carbon model requests retry #"
+                                      << ++retry << " at t= " << t << std::endl;
+        t_target = t_start + (t_target - t_start) / 2.0;
+        t = t_start;
+
+        dt = t_target - t;
+        cmodel->getCValues(
+            t, &c[0]); // reset pools and inform model of new starting point
+        H_LOG(logger, Logger::NOTICE)
+            << "New target is " << t_target << std::endl;
+      } else if (stat != ODE_SUCCESS)
+        failure(stat, t_start, t_target);
     }
-    H_ASSERT( tnew > t, "solver tnew is not greater than t" );
 
-    // Get the initial state data from the box model. c will be filled in
-    // Note that we rely on the box model to handle the units.  Inside the
-    // solver we strip the unit values and work with raw numbers.
-    cmodel->getCValues( t, &c[0] );
+    // We have exited GSL solver loop, but did we make it?
+    if (retry < MAX_CARBON_MODEL_RETRIES) {
+      H_LOG(logger, Logger::NOTICE)
+          << "Success: we have reached " << t_target << std::endl;
 
-    double t0   = t;  // stash this in case we need to report & diagnose an error
-    // Now integrate from the beginning of the time step using the updated
-    // slow params.  Note we can discard t0 and the values in cc
-    cmodel->slowparameval( t, &c[0] );
-    int retry = 0;
-
-    H_LOG( logger, Logger::DEBUG ) << "Entering ODE solver " << t << "->" << tnew << std::endl;
-    while( t < tnew && retry < MAX_CARBON_MODEL_RETRIES ) {
-
-        H_LOG( logger, Logger::DEBUG ) << "Resetting evolver and stepper" << std::endl;
-        double t_start = t;
-        double t_target = tnew;
-
-        while( t < t_target && retry < MAX_CARBON_MODEL_RETRIES ) {
-            H_LOG( logger, Logger::NOTICE ) << "Attempting ODE solver " << t << "->" << t_target << " (" << t0 << "->" << tnew << ")" << std::endl;
-
-            int stat = ODE_SUCCESS;
-            ODEEvalFunctor odeFunctor( cmodel, &t );
-            try {
-                using namespace boost::numeric::odeint;
-                typedef runge_kutta_dopri5<std::vector<double> > error_stepper_type;
-                integrate_adaptive( make_controlled<error_stepper_type>( eps_abs, eps_rel ),
-                         odeFunctor, c, t_start, t_target, dt, odeFunctor );
-            } catch( bad_derivative_exception& e ) {
-                stat = e.errorFlag;
-            }
-
-            if( stat == CARBON_CYCLE_RETRY ) {
-                H_LOG( logger, Logger::NOTICE ) << "Carbon model requests retry #" << ++retry << " at t= " << t << std::endl;
-                t_target = t_start + ( t_target - t_start ) / 2.0;
-                t = t_start;
-
-                dt = t_target - t;
-                cmodel->getCValues( t, &c[0] );     // reset pools and inform model of new starting point
-                H_LOG( logger, Logger::NOTICE ) << "New target is " << t_target << std::endl;
-            } else if( stat != ODE_SUCCESS )
-                failure( stat, t_start, t_target );
-        }
-
-        // We have exited GSL solver loop, but did we make it?
-        if( retry < MAX_CARBON_MODEL_RETRIES ) {
-            H_LOG( logger, Logger::NOTICE ) << "Success: we have reached " << t_target << std::endl;
-
-            retry = 0;
-            cmodel->stashCValues( t, &c[0] );   // update state
-        } else {
-            H_LOG( logger, Logger::SEVERE ) << "Failure after failure: t is " << t << "; we have not reached " << t_target << std::endl;
-
-        }
+      retry = 0;
+      cmodel->stashCValues(t, &c[0]); // update state
+    } else {
+      H_LOG(logger, Logger::SEVERE)
+          << "Failure after failure: t is " << t << "; we have not reached "
+          << t_target << std::endl;
     }
-    H_ASSERT( t == tnew, "solver failure: t != tnew" );
+  }
+  H_ASSERT(t == tnew, "solver failure: t != tnew");
 
-    H_LOG( logger, Logger::NOTICE ) << "ODE solver success at t= " << t <<
-    "  last dt= " << dt << std::endl;
-    H_LOG( logger, Logger::DEBUG ) << "cvals\terrors\n";
+  H_LOG(logger, Logger::NOTICE)
+      << "ODE solver success at t= " << t << "  last dt= " << dt << std::endl;
+  H_LOG(logger, Logger::DEBUG) << "cvals\terrors\n";
 
-    cmodel->record_state(tnew);
+  cmodel->record_state(tnew);
 
-    H_LOG( logger, Logger::NOTICE ) << std::endl;
+  H_LOG(logger, Logger::NOTICE) << std::endl;
 }
 
 //------------------------------------------------------------------------------
 /*! \brief      Run the carbon cycle to steady state, if possible
  *  \exception  epsilon must be >0
  *
- *  We normally want the carbon model to be in steady state, i.e. with unchanging
- *  carbon pools, at the end of the preindustrial period before the main run.
- *  To reach this point, run the carbon model until all dc/dt are ~0.
+ *  We normally want the carbon model to be in steady state, i.e. with
+ * unchanging carbon pools, at the end of the preindustrial period before the
+ * main run. To reach this point, run the carbon model until all dc/dt are ~0.
  */
-bool CarbonCycleSolver::run_spinup( const int step )
-{
+bool CarbonCycleSolver::run_spinup(const int step) {
 
-    if( !in_spinup ) {  // first time
-        in_spinup = true;
-        t = step-1;
-        c_original.resize(nc);
-        c_old.resize(nc);
-        c_new.resize(nc);
-        dcdt.resize(nc);
-        // initialize to zero
-        for(int i=0; i<nc; ++i)
-          c_original[i] = c_old[i] = c_new[i] = dcdt[i] = 0.0;
+  if (!in_spinup) { // first time
+    in_spinup = true;
+    t = step - 1;
+    c_original.resize(nc);
+    c_old.resize(nc);
+    c_new.resize(nc);
+    dcdt.resize(nc);
+    // initialize to zero
+    for (int i = 0; i < nc; ++i)
+      c_original[i] = c_old[i] = c_new[i] = dcdt[i] = 0.0;
 
-        cmodel->getCValues( t, &c_original[0] );
-        cmodel->record_state(t);
+    cmodel->getCValues(t, &c_original[0]);
+    cmodel->record_state(t);
+  }
+
+  cmodel->getCValues(t, &c_old[0]);
+  run(step);
+  cmodel->getCValues(step, &c_new[0]);
+
+  int max_dcdt_pool = 0;
+  double max_dcdt = 0.0;
+
+  for (int i = 0; i < nc; i++) { // find the biggest difference
+    dcdt[i] = fabs(c_new[i] - c_old[i]);
+    c_old[i] = c_new[i];
+    if (dcdt[i] > max_dcdt) {
+      max_dcdt = dcdt[i];
     }
+  }
 
-    cmodel->getCValues( t, &c_old[0] );
-    run( step );
-    cmodel->getCValues( step, &c_new[0] );
+  bool spunup = (max_dcdt < eps_spinup.value(U_PGC));
 
-    int max_dcdt_pool = 0;
-    double max_dcdt = 0.0;
-
-    for( int i=0; i<nc; i++ ) {     // find the biggest difference
-        dcdt[ i ] = fabs( c_new[ i ] - c_old[ i ] );
-        c_old[ i ] = c_new[ i ];
-        if (dcdt[ i ] > max_dcdt) {
-            max_dcdt = dcdt[i];
-        }
+  if (spunup) {
+    Logger &glog = core->getGlobalLogger();
+    H_LOG(glog, Logger::NOTICE)
+        << "Carbon model is spun up after " << step << " steps" << std::endl;
+    H_LOG(logger, Logger::NOTICE)
+        << "Carbon model spun up after " << step
+        << " steps. Max residual dc/dt=" << max_dcdt << " (pool "
+        << max_dcdt_pool << ")" << std::endl;
+    for (int i = 0; i < nc; i++) {
+      H_LOG(logger, Logger::NOTICE)
+          << "New pool " << i << ":" << c_new[i]
+          << " (delta=" << c_new[i] - c_original[i] << ")" << std::endl;
     }
+    t = core->getStartDate();
+    H_LOG(logger, Logger::NOTICE)
+        << "Resetting solver time counter to t= " << t << std::endl;
+  }
 
-    bool spunup = ( max_dcdt < eps_spinup.value( U_PGC ) );
+  // Record the state as the state at the model start time.  This
+  // will be repeatedly overwritten until the spinup is complete.
+  cmodel->record_state(core->getStartDate());
 
-    if( spunup ) {
-        Logger& glog = core->getGlobalLogger();
-        H_LOG( glog, Logger::NOTICE ) << "Carbon model is spun up after " << step << " steps" << std::endl;
-        H_LOG( logger, Logger::NOTICE ) << "Carbon model spun up after " << step << " steps. Max residual dc/dt="
-        << max_dcdt << " (pool " << max_dcdt_pool << ")" << std::endl;
-        for( int i=0; i<nc; i++ ) {
-            H_LOG( logger, Logger::NOTICE ) << "New pool " << i << ":" << c_new[ i ]
-            << " (delta=" << c_new[ i ]-c_original[ i ] << ")" << std::endl;
-        }
-        t = core->getStartDate();
-        H_LOG( logger, Logger::NOTICE ) << "Resetting solver time counter to t= " << t << std::endl;
-    }
-
-    // Record the state as the state at the model start time.  This
-    // will be repeatedly overwritten until the spinup is complete.
-    cmodel->record_state(core->getStartDate());
-
-    return spunup;
+  return spunup;
 }
 
 //------------------------------------------------------------------------------
 /*! \brief visitor accept code
  */
-void CarbonCycleSolver::accept( AVisitor* visitor )
-{
-    visitor->visit( this );
-}
+void CarbonCycleSolver::accept(AVisitor *visitor) { visitor->visit(this); }
 
-}
+} // namespace Hector
