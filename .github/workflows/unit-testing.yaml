@@ -6,8 +6,7 @@ name: C++ unit tests
 on:
   pull_request:
     branches:
-      - master
-      - v3_dev
+      - '**' # matches every branch
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:

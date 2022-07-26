@@ -11,12 +11,12 @@ create_biome(
   detritus_c0,
   soil_c0,
   npp_flux0,
-  warmingfactor = 1,
-  beta = 0.36,
-  q10_rh = 2,
-  f_nppv = 0.35,
-  f_nppd = 0.6,
-  f_litterd = 0.98
+  warmingfactor,
+  beta,
+  q10_rh,
+  f_nppv,
+  f_nppd,
+  f_litterd
 )
 }
 \arguments{

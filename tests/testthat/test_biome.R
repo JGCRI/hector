@@ -1,13 +1,14 @@
 context("Hector with multiple biomes")
 
 ssp245 <- function() {
-  newcore(system.file("input", "hector_ssp245.ini",
-    package = "hector"
-  ),
-  name = "test core",
-  suppresslogging = TRUE
-  )
+    newcore(system.file("input", "hector_ssp245.ini", package = "hector"),
+            name = "test core", suppresslogging = TRUE)
 }
+
+# Save a copy of the default values
+core <- ssp245()
+default_beta <- fetchvars(core, NA, BETA())
+
 
 
 test_that("Hector runs with multiple biomes created via INI file", {
@@ -107,7 +108,7 @@ test_that("Hector runs with multiple biomes created via INI file", {
     warm_biome_result[["variable"]] == GLOBAL_TAS(),
     "value"
   ]
-  expect_true(mean(default_tas) < mean(warm_tas))
+  expect_true(mean(default_tas) != mean(warm_tas))
 
   # Try to add a fake biome. This should fail because other variables
   # haven't been initialized.
@@ -139,14 +140,14 @@ test_that("Low-level biome creation functions work", {
   core <- ssp245()
   default_beta <- fetchvars(core, NA, BETA())
   test_that("Biomes can be created", {
-    expect_silent(invisible(create_biome_impl(core, "testbiome")))
+    expect_silent(invisible(hector:::create_biome_impl(core, "testbiome")))
     expect_equal(get_biome_list(core), c("global", "testbiome"))
     expect_equal(fetchvars(core, NA, BETA("testbiome"))[["value"]], default_beta[["value"]])
     expect_equal(fetchvars(core, NA, VEG_C("testbiome"))[["value"]], 0)
   })
 
   test_that("Biomes can be deleted", {
-    expect_silent(invisible(delete_biome_impl(core, "testbiome")))
+    expect_silent(invisible(hector:::delete_biome_impl(core, "testbiome")))
     expect_equal(get_biome_list(core), "global")
     expect_error(
       fetchvars(core, NA, BETA("testbiome")),
@@ -158,7 +159,7 @@ test_that("Low-level biome creation functions work", {
     )
   })
   # Check that running the core still works after all of this
-  expect_silent(invisible(run(core)))
+  expect_true(all(class(run(core)) == c("hcore", "environment")))
 })
 
 test_that("Correct way to create new biomes", {
@@ -171,9 +172,9 @@ test_that("Correct way to create new biomes", {
   pbeta <- fetchvars(core, NA, "permafrost.beta")
   expect_equal(pbeta[["variable"]], BETA("permafrost"))
   expect_equal(pbeta[["value"]], gbeta[["value"]])
-  expect_silent(invisible(run(core)))
-  results_pf <- fetchvars(core, 2000:2100)
+  expect_true(is.environment(run(core)))
 
+  results_pf <- fetchvars(core, 2000:2100)
   expect_error(create_biome(core, "permafrost"), "Biome 'permafrost' is already in `biome_list`")
   expect_error(invisible(create_biome(core, "empty")),
                'argument "veg_c0" is missing, with no default', fixed = FALSE)
@@ -194,15 +195,14 @@ test_that("Split biomes, and modify parameters", {
   r_global_pools <- fetchvars(core, 2000:2100, c(VEG_C("default"),
                                                  DETRITUS_C("default"),
                                                  SOIL_C("default")))
+
   r_global_pools$biome <- gsub("^(.*)\\.(.*)", "\\1", r_global_pools$variable)
   r_global_pools$variable <- gsub("^(.*)\\.(.*)", "\\2", r_global_pools$variable)
   r_global_totals <- aggregate(value ~ year + variable, data = r_global_pools, sum)
 
   invisible(reset(core))
   fsplit <- 0.1
-  split_biome(core, "default", c("non-pf", "permafrost"),
-    fveg_c = c(1 - fsplit, fsplit)
-  )
+  split_biome(core, "default", c("non-pf", "permafrost"), fveg_c = c(1 - fsplit, fsplit))
   expect_equal(get_biome_list(core), c("non-pf", "permafrost"))
 
   # The non-pool settings should be identical for the biomes
@@ -274,17 +274,20 @@ test_that("Split biomes, and modify parameters", {
 })
 
 test_that("More than 2 biomes", {
-  core <- ssp245()
-  global_vegc <- fetchvars(core, NA, VEG_C())
+    save_this_year <- 2020
+    core <- ssp245()
+    invisible(run(core))
+    global_vegc <- fetchvars(core, dates = save_this_year, VEG_C())
 
-  # Using default arguments
-  biomes <- paste0("b", 1:5)
-  veg_c_biomes <- vapply(biomes, VEG_C, character(1))
-  split_biome(core, "global", biomes)
-  expect_equal(get_biome_list(core), biomes)
-  reset(core, core$reset_date)
-  invisible(run(core))
-  invisible(reset(core))
-  biome_vegc <- fetchvars(core, NA, veg_c_biomes)
-  expect_equivalent(sum(biome_vegc[["value"]]), global_vegc[["value"]])
+    # Using default arguments
+    invisible(reset(core))
+    biomes <- paste0("b", 1:5)
+    veg_c_biomes <- vapply(biomes, VEG_C, character(1))
+    split_biome(core, "global", biomes)
+    expect_equal(get_biome_list(core), biomes)
+    invisible(reset(core))
+    invisible(run(core))
+
+    biome_vegc <- fetchvars(core, save_this_year, veg_c_biomes)
+    expect_equivalent(sum(biome_vegc[["value"]]), global_vegc[["value"]])
 })

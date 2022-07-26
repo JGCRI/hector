@@ -20,8 +20,8 @@ hector-unit-tests: $(OBJS)
 .PHONY: clean chkvar
 
 clean:
-	-rm *.o *.d
-	-rm hector-unit-tests
+	-rm -f *.o *.d
+	-rm -f hector-unit-tests
 
 chkvar:
 	@echo "------- Testing"

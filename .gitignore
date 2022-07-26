@@ -27,6 +27,8 @@
 src/hector
 src/hector-ext
 src/hector-api
+src/unit-testing/hector-unit-tests
+src/unit-testing/hector-unit-tests.dSYM/
 
 # Hector logs
 logs/*.*
