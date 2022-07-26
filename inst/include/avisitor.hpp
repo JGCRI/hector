@@ -14,6 +14,8 @@
  *
  */
 
+#include <iostream>
+
 namespace Hector {
 
 // Forward declare all visitable subclasses.

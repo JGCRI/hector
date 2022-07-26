@@ -16,6 +16,7 @@
  *  Provides utility services
  */
 
+#include <iostream>
 
 #define H_STRINGIFY_VAR(var) \
     #var
