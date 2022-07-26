@@ -60,6 +60,7 @@ Suggests:
     testthat,
     nleqslv,
     knitr,
+    lintr (>= 3.0),
     rmarkdown,
     ggplot2,
     magrittr (>= 1.5), 
