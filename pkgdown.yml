@@ -1,5 +1,5 @@
 pandoc: 2.7.3
-pkgdown: 2.0.5
+pkgdown: 2.0.6
 pkgdown_sha: ~
 articles:
   hector_apply: hector_apply.html
@@ -19,7 +19,7 @@ articles:
   VersionNumbers: manual/VersionNumbers.html
   index: manual/index.html
   multiple-biomes: multiple-biomes.html
-last_built: 2022-07-06T15:40Z
+last_built: 2022-08-01T06:20Z
 urls:
   reference: https://jgcri.github.io/hector/reference
   article: https://jgcri.github.io/hector/articles
