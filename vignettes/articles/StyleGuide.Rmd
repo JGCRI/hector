@@ -10,14 +10,15 @@ The Hector package contains both R and C++ code. Hector's model components are w
 
 - New C++ code should follow the [LLVL coding standards](https://llvm.org/docs/CodingStandards.html)
 
-The Hector codebase is periodically reformatted using [clang-format](https://clang.llvm.org/docs/ClangFormat.html):
+The Hector codebase is periodically reformatted using [clang-format](https://clang.llvm.org/docs/ClangFormat.html).
+For example, assuming that the working directory is the repository root:
 
 ```
-brew install clang-format  # (if needed)
-clang-format -i src/*.cpp
-clang-format -i src/ini.c
-clang-format -i inst/include/*.h
-clang-format -i inst/include/*.hpp
+# First, if needed:
+brew install clang-format
+
+clang-format -i src/*.c*
+clang-format -i inst/include/*.h*
 ```
 
 Other general principles:
