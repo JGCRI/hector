@@ -29,38 +29,37 @@ class Core;
  *      - The first row is header information which corresponds to the actual
  *        variable name to be set.
  *      - The first column is the date index to use when setting the variable.
- *      - If first column is UNITS then the row is assumed to be the units labels
- *        for the table.  This units string will then be passed along with the data
- *        processed form subsequent rows to provide units checking.
+ *      - If first column is UNITS then the row is assumed to be the units
+ * labels for the table.  This units string will then be passed along with the
+ * data processed form subsequent rows to provide units checking.
  *
  *  When instructed to process the class requires routing information including
- *  the variable to set so that it can identify which column to process.  It will
- *  then route data as each row is read.  Note that the file will remain open
- *  and available for reprocessing until it is destructed.
+ *  the variable to set so that it can identify which column to process.  It
+ * will then route data as each row is read.  Note that the file will remain
+ * open and available for reprocessing until it is destructed.
  */
 class CSVTableReader {
 public:
-    CSVTableReader( const std::string& fileName );
-    ~CSVTableReader();
+  CSVTableReader(const std::string &fileName);
+  ~CSVTableReader();
 
-    void process( Core* core, const std::string& componentName,
-                  const std::string& varName );
+  void process(Core *core, const std::string &componentName,
+               const std::string &varName);
 
 private:
-    //! The file name to read data from.  Kept around for error reporting.
-    const std::string fileName;
+  //! The file name to read data from.  Kept around for error reporting.
+  const std::string fileName;
 
-    //! Input stream to read data from.
-    std::ifstream tableInputStream;
+  //! Input stream to read data from.
+  std::ifstream tableInputStream;
 
-    //! Current line (that has just been read)
-    int lineNum;
+  //! Current line (that has just been read)
+  int lineNum;
 
-    // Helper function to find next non-commented line
-    std::string csv_getline();
-
+  // Helper function to find next non-commented line
+  std::string csv_getline();
 };
 
-}
+} // namespace Hector
 
 #endif // CSV_TABLE_READER_H

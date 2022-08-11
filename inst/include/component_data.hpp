@@ -15,384 +15,388 @@
  */
 
 #include "component_names.hpp"
-// ------------------- names of data being passed between components -------------------------
+// ------------------- names of data being passed between components
+// -------------------------
 
 // Note names in INI input need to match these.
 
 // core
-#define D_RUN_NAME              "run_name"
-#define D_START_DATE            "startDate"
-#define D_END_DATE              "endDate"
-#define D_TRACKING_DATE         "trackingDate"
-#define D_DO_SPINUP             "do_spinup"
-#define D_MAX_SPINUP            "max_spinup"
-#define D_ENABLED               "enabled"
-#define D_OUTPUT_ENABLED        "output"
+#define D_RUN_NAME "run_name"
+#define D_START_DATE "startDate"
+#define D_END_DATE "endDate"
+#define D_TRACKING_DATE "trackingDate"
+#define D_DO_SPINUP "do_spinup"
+#define D_MAX_SPINUP "max_spinup"
+#define D_ENABLED "enabled"
+#define D_OUTPUT_ENABLED "output"
 
 // bc component
-#define D_EMISSIONS_BC          "BC_emissions"
+#define D_EMISSIONS_BC "BC_emissions"
 
 // carbon cycle solver
-#define D_CCS_EPS_ABS           "eps_abs"
-#define D_CCS_EPS_REL           "eps_rel"
-#define D_CCS_DT                "dt"
-#define D_EPS_SPINUP            "eps_spinup"
+#define D_CCS_EPS_ABS "eps_abs"
+#define D_CCS_EPS_REL "eps_rel"
+#define D_CCS_DT "dt"
+#define D_EPS_SPINUP "eps_spinup"
 
 // forcing component
-#define D_RF_PREFIX             "RF_"
-#define D_RF_TOTAL              D_RF_PREFIX "tot"
-#define D_RF_T_ALBEDO           D_RF_PREFIX "albedo"
-#define D_FTOT_CONSTRAIN        D_RF_PREFIX "tot_constrain"
-#define D_RF_BASEYEAR           "baseyear"
-#define D_RF_CO2                D_RF_PREFIX "CO2"
-#define D_RF_N2O                D_RF_PREFIX "N2O"
-#define D_RF_H2O_STRAT          D_RF_PREFIX "H2O_strat"
-#define D_RF_O3_TROP            D_RF_PREFIX "O3_trop"
-#define D_RF_BC                 D_RF_PREFIX "BC"
-#define D_RF_OC                 D_RF_PREFIX "OC"
-#define D_RF_NH3                D_RF_PREFIX "NH3"
-#define D_RF_SO2                D_RF_PREFIX "SO2"
-#define D_RF_ACI                D_RF_PREFIX "aci" // forcing from aerosol-cloud interactions
-#define D_RF_VOL                D_RF_PREFIX "vol" // forcing from volcanic so2
-#define D_RF_halocarbons        D_RF_PREFIX "halocarbons"
-#define D_RF_MISC               D_RF_PREFIX "misc" // miscellaneous radiative forcings
-#define D_QCO2                  "qco2"            // 2×CO2 RF
-#define D_DELTA_CH4             "delta_ch4"       // forcing ch4 adjustment
-#define D_DELTA_N2O             "delta_n2o"       // forcing n2o adjustment
-#define D_DELTA_CO2             "delta_co2"       // forcing co2 adjustment
-#define D_RHO_BC                "rho_bc"          // BC radiative efficiency
-#define D_RHO_OC                "rho_oc"          // BC radiative efficiency
-#define D_RHO_SO2               "rho_so2"         // SO2 radiative efficiency
-#define D_RHO_NH3               "rho_nh3"         // NH3 radiative efficiency
+#define D_RF_PREFIX "RF_"
+#define D_RF_TOTAL D_RF_PREFIX "tot"
+#define D_RF_T_ALBEDO D_RF_PREFIX "albedo"
+#define D_FTOT_CONSTRAIN D_RF_PREFIX "tot_constrain"
+#define D_RF_BASEYEAR "baseyear"
+#define D_RF_CO2 D_RF_PREFIX "CO2"
+#define D_RF_N2O D_RF_PREFIX "N2O"
+#define D_RF_H2O_STRAT D_RF_PREFIX "H2O_strat"
+#define D_RF_O3_TROP D_RF_PREFIX "O3_trop"
+#define D_RF_BC D_RF_PREFIX "BC"
+#define D_RF_OC D_RF_PREFIX "OC"
+#define D_RF_NH3 D_RF_PREFIX "NH3"
+#define D_RF_SO2 D_RF_PREFIX "SO2"
+#define D_RF_ACI D_RF_PREFIX "aci" // forcing from aerosol-cloud interactions
+#define D_RF_VOL D_RF_PREFIX "vol" // forcing from volcanic so2
+#define D_RF_halocarbons D_RF_PREFIX "halocarbons"
+#define D_RF_MISC D_RF_PREFIX "misc" // miscellaneous radiative forcings
+#define D_QCO2 "qco2"                // 2×CO2 RF
+#define D_DELTA_CH4 "delta_ch4"      // forcing ch4 adjustment
+#define D_DELTA_N2O "delta_n2o"      // forcing n2o adjustment
+#define D_DELTA_CO2 "delta_co2"      // forcing co2 adjustment
+#define D_RHO_BC "rho_bc"            // BC radiative efficiency
+#define D_RHO_OC "rho_oc"            // BC radiative efficiency
+#define D_RHO_SO2 "rho_so2"          // SO2 radiative efficiency
+#define D_RHO_NH3 "rho_nh3"          // NH3 radiative efficiency
 
 // halocarbon components
-#define D_RF_CF4                D_RF_PREFIX CF4_COMPONENT_BASE
-#define D_RF_C2F6               D_RF_PREFIX C2F6_COMPONENT_BASE
-#define D_RF_HFC23              D_RF_PREFIX HFC23_COMPONENT_BASE
-#define D_RF_HFC32              D_RF_PREFIX HFC32_COMPONENT_BASE
-#define D_RF_HFC4310            D_RF_PREFIX HFC4310_COMPONENT_BASE
-#define D_RF_HFC125             D_RF_PREFIX HFC125_COMPONENT_BASE
-#define D_RF_HFC134a            D_RF_PREFIX HFC134a_COMPONENT_BASE
-#define D_RF_HFC143a            D_RF_PREFIX HFC143a_COMPONENT_BASE
-#define D_RF_HFC227ea           D_RF_PREFIX HFC227ea_COMPONENT_BASE
-#define D_RF_HFC245fa           D_RF_PREFIX HFC245fa_COMPONENT_BASE
-#define D_RF_SF6                D_RF_PREFIX SF6_COMPONENT_BASE
-#define D_RF_CFC11              D_RF_PREFIX CFC11_COMPONENT_BASE
-#define D_RF_CFC12              D_RF_PREFIX CFC12_COMPONENT_BASE
-#define D_RF_CFC113             D_RF_PREFIX CFC113_COMPONENT_BASE
-#define D_RF_CFC114             D_RF_PREFIX CFC114_COMPONENT_BASE
-#define D_RF_CFC115             D_RF_PREFIX CFC115_COMPONENT_BASE
-#define D_RF_CCl4               D_RF_PREFIX CCl4_COMPONENT_BASE
-#define D_RF_CH3CCl3            D_RF_PREFIX CH3CCl3_COMPONENT_BASE
-#define D_RF_HCFC22             D_RF_PREFIX HCFC22_COMPONENT_BASE
-#define D_RF_HCFC141b           D_RF_PREFIX HCFC141b_COMPONENT_BASE
-#define D_RF_HCFC142b           D_RF_PREFIX HCFC142b_COMPONENT_BASE
-#define D_RF_halon1211          D_RF_PREFIX halon1211_COMPONENT_BASE
-#define D_RF_halon1301          D_RF_PREFIX halon1301_COMPONENT_BASE
-#define D_RF_halon2402          D_RF_PREFIX halon2402_COMPONENT_BASE
-#define D_RF_CH3Cl              D_RF_PREFIX CH3Cl_COMPONENT_BASE
-#define D_RF_CH3Br              D_RF_PREFIX CH3Br_COMPONENT_BASE
+#define D_RF_CF4 D_RF_PREFIX CF4_COMPONENT_BASE
+#define D_RF_C2F6 D_RF_PREFIX C2F6_COMPONENT_BASE
+#define D_RF_HFC23 D_RF_PREFIX HFC23_COMPONENT_BASE
+#define D_RF_HFC32 D_RF_PREFIX HFC32_COMPONENT_BASE
+#define D_RF_HFC4310 D_RF_PREFIX HFC4310_COMPONENT_BASE
+#define D_RF_HFC125 D_RF_PREFIX HFC125_COMPONENT_BASE
+#define D_RF_HFC134a D_RF_PREFIX HFC134a_COMPONENT_BASE
+#define D_RF_HFC143a D_RF_PREFIX HFC143a_COMPONENT_BASE
+#define D_RF_HFC227ea D_RF_PREFIX HFC227ea_COMPONENT_BASE
+#define D_RF_HFC245fa D_RF_PREFIX HFC245fa_COMPONENT_BASE
+#define D_RF_SF6 D_RF_PREFIX SF6_COMPONENT_BASE
+#define D_RF_CFC11 D_RF_PREFIX CFC11_COMPONENT_BASE
+#define D_RF_CFC12 D_RF_PREFIX CFC12_COMPONENT_BASE
+#define D_RF_CFC113 D_RF_PREFIX CFC113_COMPONENT_BASE
+#define D_RF_CFC114 D_RF_PREFIX CFC114_COMPONENT_BASE
+#define D_RF_CFC115 D_RF_PREFIX CFC115_COMPONENT_BASE
+#define D_RF_CCl4 D_RF_PREFIX CCl4_COMPONENT_BASE
+#define D_RF_CH3CCl3 D_RF_PREFIX CH3CCl3_COMPONENT_BASE
+#define D_RF_HCFC22 D_RF_PREFIX HCFC22_COMPONENT_BASE
+#define D_RF_HCFC141b D_RF_PREFIX HCFC141b_COMPONENT_BASE
+#define D_RF_HCFC142b D_RF_PREFIX HCFC142b_COMPONENT_BASE
+#define D_RF_halon1211 D_RF_PREFIX halon1211_COMPONENT_BASE
+#define D_RF_halon1301 D_RF_PREFIX halon1301_COMPONENT_BASE
+#define D_RF_halon2402 D_RF_PREFIX halon2402_COMPONENT_BASE
+#define D_RF_CH3Cl D_RF_PREFIX CH3Cl_COMPONENT_BASE
+#define D_RF_CH3Br D_RF_PREFIX CH3Br_COMPONENT_BASE
 
 // Adjusted (i.e., relative) halocarbon forcings
 // Forcings are tracked relative to the base year forcings, but the
 // halocarbon components don't know that.  These capabilities allow
 // a caller to fetch the adjusted values from the forcing component.
-#define D_RFADJ_PREFIX          "Fadj"
-#define D_RFADJ_CF4              D_RFADJ_PREFIX CF4_COMPONENT_BASE
-#define D_RFADJ_C2F6             D_RFADJ_PREFIX C2F6_COMPONENT_BASE
-#define D_RFADJ_HFC23            D_RFADJ_PREFIX HFC23_COMPONENT_BASE
-#define D_RFADJ_HFC32            D_RFADJ_PREFIX HFC32_COMPONENT_BASE
-#define D_RFADJ_HFC4310          D_RFADJ_PREFIX HFC4310_COMPONENT_BASE
-#define D_RFADJ_HFC125           D_RFADJ_PREFIX HFC125_COMPONENT_BASE
-#define D_RFADJ_HFC134a          D_RFADJ_PREFIX HFC134a_COMPONENT_BASE
-#define D_RFADJ_HFC143a          D_RFADJ_PREFIX HFC143a_COMPONENT_BASE
-#define D_RFADJ_HFC227ea         D_RFADJ_PREFIX HFC227ea_COMPONENT_BASE
-#define D_RFADJ_HFC245fa         D_RFADJ_PREFIX HFC245fa_COMPONENT_BASE
-#define D_RFADJ_SF6              D_RFADJ_PREFIX SF6_COMPONENT_BASE
-#define D_RFADJ_CFC11            D_RFADJ_PREFIX CFC11_COMPONENT_BASE
-#define D_RFADJ_CFC12            D_RFADJ_PREFIX CFC12_COMPONENT_BASE
-#define D_RFADJ_CFC113           D_RFADJ_PREFIX CFC113_COMPONENT_BASE
-#define D_RFADJ_CFC114           D_RFADJ_PREFIX CFC114_COMPONENT_BASE
-#define D_RFADJ_CFC115           D_RFADJ_PREFIX CFC115_COMPONENT_BASE
-#define D_RFADJ_CCl4             D_RFADJ_PREFIX CCl4_COMPONENT_BASE
-#define D_RFADJ_CH3CCl3          D_RFADJ_PREFIX CH3CCl3_COMPONENT_BASE
-#define D_RFADJ_HCFC22           D_RFADJ_PREFIX HCFC22_COMPONENT_BASE
-#define D_RFADJ_HCFC141b         D_RFADJ_PREFIX HCFC141b_COMPONENT_BASE
-#define D_RFADJ_HCFC142b         D_RFADJ_PREFIX HCFC142b_COMPONENT_BASE
-#define D_RFADJ_halon1211        D_RFADJ_PREFIX halon1211_COMPONENT_BASE
-#define D_RFADJ_halon1301        D_RFADJ_PREFIX halon1301_COMPONENT_BASE
-#define D_RFADJ_halon2402        D_RFADJ_PREFIX halon2402_COMPONENT_BASE
-#define D_RFADJ_CH3Cl            D_RFADJ_PREFIX CH3Cl_COMPONENT_BASE
-#define D_RFADJ_CH3Br            D_RFADJ_PREFIX CH3Br_COMPONENT_BASE
-#define N_HALO_FORCINGS          26
+#define D_RFADJ_PREFIX "Fadj"
+#define D_RFADJ_CF4 D_RFADJ_PREFIX CF4_COMPONENT_BASE
+#define D_RFADJ_C2F6 D_RFADJ_PREFIX C2F6_COMPONENT_BASE
+#define D_RFADJ_HFC23 D_RFADJ_PREFIX HFC23_COMPONENT_BASE
+#define D_RFADJ_HFC32 D_RFADJ_PREFIX HFC32_COMPONENT_BASE
+#define D_RFADJ_HFC4310 D_RFADJ_PREFIX HFC4310_COMPONENT_BASE
+#define D_RFADJ_HFC125 D_RFADJ_PREFIX HFC125_COMPONENT_BASE
+#define D_RFADJ_HFC134a D_RFADJ_PREFIX HFC134a_COMPONENT_BASE
+#define D_RFADJ_HFC143a D_RFADJ_PREFIX HFC143a_COMPONENT_BASE
+#define D_RFADJ_HFC227ea D_RFADJ_PREFIX HFC227ea_COMPONENT_BASE
+#define D_RFADJ_HFC245fa D_RFADJ_PREFIX HFC245fa_COMPONENT_BASE
+#define D_RFADJ_SF6 D_RFADJ_PREFIX SF6_COMPONENT_BASE
+#define D_RFADJ_CFC11 D_RFADJ_PREFIX CFC11_COMPONENT_BASE
+#define D_RFADJ_CFC12 D_RFADJ_PREFIX CFC12_COMPONENT_BASE
+#define D_RFADJ_CFC113 D_RFADJ_PREFIX CFC113_COMPONENT_BASE
+#define D_RFADJ_CFC114 D_RFADJ_PREFIX CFC114_COMPONENT_BASE
+#define D_RFADJ_CFC115 D_RFADJ_PREFIX CFC115_COMPONENT_BASE
+#define D_RFADJ_CCl4 D_RFADJ_PREFIX CCl4_COMPONENT_BASE
+#define D_RFADJ_CH3CCl3 D_RFADJ_PREFIX CH3CCl3_COMPONENT_BASE
+#define D_RFADJ_HCFC22 D_RFADJ_PREFIX HCFC22_COMPONENT_BASE
+#define D_RFADJ_HCFC141b D_RFADJ_PREFIX HCFC141b_COMPONENT_BASE
+#define D_RFADJ_HCFC142b D_RFADJ_PREFIX HCFC142b_COMPONENT_BASE
+#define D_RFADJ_halon1211 D_RFADJ_PREFIX halon1211_COMPONENT_BASE
+#define D_RFADJ_halon1301 D_RFADJ_PREFIX halon1301_COMPONENT_BASE
+#define D_RFADJ_halon2402 D_RFADJ_PREFIX halon2402_COMPONENT_BASE
+#define D_RFADJ_CH3Cl D_RFADJ_PREFIX CH3Cl_COMPONENT_BASE
+#define D_RFADJ_CH3Br D_RFADJ_PREFIX CH3Br_COMPONENT_BASE
+#define N_HALO_FORCINGS 26
 
 // halocarbon emissions
-#define D_EMISSIONS_CF4                CF4_COMPONENT_BASE EMISSIONS_EXTENSION
-#define D_EMISSIONS_C2F6               C2F6_COMPONENT_BASE EMISSIONS_EXTENSION
-#define D_EMISSIONS_HFC23              HFC23_COMPONENT_BASE EMISSIONS_EXTENSION
-#define D_EMISSIONS_HFC32              HFC32_COMPONENT_BASE EMISSIONS_EXTENSION
-#define D_EMISSIONS_HFC4310            HFC4310_COMPONENT_BASE EMISSIONS_EXTENSION
-#define D_EMISSIONS_HFC125             HFC125_COMPONENT_BASE EMISSIONS_EXTENSION
-#define D_EMISSIONS_HFC134a            HFC134a_COMPONENT_BASE EMISSIONS_EXTENSION
-#define D_EMISSIONS_HFC143a            HFC143a_COMPONENT_BASE EMISSIONS_EXTENSION
-#define D_EMISSIONS_HFC227ea           HFC227ea_COMPONENT_BASE EMISSIONS_EXTENSION
-#define D_EMISSIONS_HFC245fa           HFC245fa_COMPONENT_BASE EMISSIONS_EXTENSION
-#define D_EMISSIONS_SF6                SF6_COMPONENT_BASE EMISSIONS_EXTENSION
-#define D_EMISSIONS_CFC11              CFC11_COMPONENT_BASE EMISSIONS_EXTENSION
-#define D_EMISSIONS_CFC12              CFC12_COMPONENT_BASE EMISSIONS_EXTENSION
-#define D_EMISSIONS_CFC113             CFC113_COMPONENT_BASE EMISSIONS_EXTENSION
-#define D_EMISSIONS_CFC114             CFC114_COMPONENT_BASE EMISSIONS_EXTENSION
-#define D_EMISSIONS_CFC115             CFC115_COMPONENT_BASE EMISSIONS_EXTENSION
-#define D_EMISSIONS_CCl4               CCl4_COMPONENT_BASE EMISSIONS_EXTENSION
-#define D_EMISSIONS_CH3CCl3            CH3CCl3_COMPONENT_BASE EMISSIONS_EXTENSION
-#define D_EMISSIONS_HCFC22             HCFC22_COMPONENT_BASE EMISSIONS_EXTENSION
-#define D_EMISSIONS_HCFC141b           HCFC141b_COMPONENT_BASE EMISSIONS_EXTENSION
-#define D_EMISSIONS_HCFC142b           HCFC142b_COMPONENT_BASE EMISSIONS_EXTENSION
-#define D_EMISSIONS_halon1211          halon1211_COMPONENT_BASE EMISSIONS_EXTENSION
-#define D_EMISSIONS_halon1301          halon1301_COMPONENT_BASE EMISSIONS_EXTENSION
-#define D_EMISSIONS_halon2402          halon2402_COMPONENT_BASE EMISSIONS_EXTENSION
-#define D_EMISSIONS_CH3Cl              CH3Cl_COMPONENT_BASE EMISSIONS_EXTENSION
-#define D_EMISSIONS_CH3Br              CH3Br_COMPONENT_BASE EMISSIONS_EXTENSION
+#define D_EMISSIONS_CF4 CF4_COMPONENT_BASE EMISSIONS_EXTENSION
+#define D_EMISSIONS_C2F6 C2F6_COMPONENT_BASE EMISSIONS_EXTENSION
+#define D_EMISSIONS_HFC23 HFC23_COMPONENT_BASE EMISSIONS_EXTENSION
+#define D_EMISSIONS_HFC32 HFC32_COMPONENT_BASE EMISSIONS_EXTENSION
+#define D_EMISSIONS_HFC4310 HFC4310_COMPONENT_BASE EMISSIONS_EXTENSION
+#define D_EMISSIONS_HFC125 HFC125_COMPONENT_BASE EMISSIONS_EXTENSION
+#define D_EMISSIONS_HFC134a HFC134a_COMPONENT_BASE EMISSIONS_EXTENSION
+#define D_EMISSIONS_HFC143a HFC143a_COMPONENT_BASE EMISSIONS_EXTENSION
+#define D_EMISSIONS_HFC227ea HFC227ea_COMPONENT_BASE EMISSIONS_EXTENSION
+#define D_EMISSIONS_HFC245fa HFC245fa_COMPONENT_BASE EMISSIONS_EXTENSION
+#define D_EMISSIONS_SF6 SF6_COMPONENT_BASE EMISSIONS_EXTENSION
+#define D_EMISSIONS_CFC11 CFC11_COMPONENT_BASE EMISSIONS_EXTENSION
+#define D_EMISSIONS_CFC12 CFC12_COMPONENT_BASE EMISSIONS_EXTENSION
+#define D_EMISSIONS_CFC113 CFC113_COMPONENT_BASE EMISSIONS_EXTENSION
+#define D_EMISSIONS_CFC114 CFC114_COMPONENT_BASE EMISSIONS_EXTENSION
+#define D_EMISSIONS_CFC115 CFC115_COMPONENT_BASE EMISSIONS_EXTENSION
+#define D_EMISSIONS_CCl4 CCl4_COMPONENT_BASE EMISSIONS_EXTENSION
+#define D_EMISSIONS_CH3CCl3 CH3CCl3_COMPONENT_BASE EMISSIONS_EXTENSION
+#define D_EMISSIONS_HCFC22 HCFC22_COMPONENT_BASE EMISSIONS_EXTENSION
+#define D_EMISSIONS_HCFC141b HCFC141b_COMPONENT_BASE EMISSIONS_EXTENSION
+#define D_EMISSIONS_HCFC142b HCFC142b_COMPONENT_BASE EMISSIONS_EXTENSION
+#define D_EMISSIONS_halon1211 halon1211_COMPONENT_BASE EMISSIONS_EXTENSION
+#define D_EMISSIONS_halon1301 halon1301_COMPONENT_BASE EMISSIONS_EXTENSION
+#define D_EMISSIONS_halon2402 halon2402_COMPONENT_BASE EMISSIONS_EXTENSION
+#define D_EMISSIONS_CH3Cl CH3Cl_COMPONENT_BASE EMISSIONS_EXTENSION
+#define D_EMISSIONS_CH3Br CH3Br_COMPONENT_BASE EMISSIONS_EXTENSION
 
 // halocarbon concentration constraints
-#define D_CONSTRAINT_CF4                CF4_COMPONENT_BASE CONC_CONSTRAINT_EXTENSION
-#define D_CONSTRAINT_C2F6               C2F6_COMPONENT_BASE CONC_CONSTRAINT_EXTENSION
-#define D_CONSTRAINT_HFC23              HFC23_COMPONENT_BASE CONC_CONSTRAINT_EXTENSION
-#define D_CONSTRAINT_HFC32              HFC32_COMPONENT_BASE CONC_CONSTRAINT_EXTENSION
-#define D_CONSTRAINT_HFC4310            HFC4310_COMPONENT_BASE CONC_CONSTRAINT_EXTENSION
-#define D_CONSTRAINT_HFC125             HFC125_COMPONENT_BASE CONC_CONSTRAINT_EXTENSION
-#define D_CONSTRAINT_HFC134a            HFC134a_COMPONENT_BASE CONC_CONSTRAINT_EXTENSION
-#define D_CONSTRAINT_HFC143a            HFC143a_COMPONENT_BASE CONC_CONSTRAINT_EXTENSION
-#define D_CONSTRAINT_HFC227ea           HFC227ea_COMPONENT_BASE CONC_CONSTRAINT_EXTENSION
-#define D_CONSTRAINT_HFC245fa           HFC245fa_COMPONENT_BASE CONC_CONSTRAINT_EXTENSION
-#define D_CONSTRAINT_SF6                SF6_COMPONENT_BASE CONC_CONSTRAINT_EXTENSION
-#define D_CONSTRAINT_CFC11              CFC11_COMPONENT_BASE CONC_CONSTRAINT_EXTENSION
-#define D_CONSTRAINT_CFC12              CFC12_COMPONENT_BASE CONC_CONSTRAINT_EXTENSION
-#define D_CONSTRAINT_CFC113             CFC113_COMPONENT_BASE CONC_CONSTRAINT_EXTENSION
-#define D_CONSTRAINT_CFC114             CFC114_COMPONENT_BASE CONC_CONSTRAINT_EXTENSION
-#define D_CONSTRAINT_CFC115             CFC115_COMPONENT_BASE CONC_CONSTRAINT_EXTENSION
-#define D_CONSTRAINT_CCl4               CCl4_COMPONENT_BASE CONC_CONSTRAINT_EXTENSION
-#define D_CONSTRAINT_CH3CCl3            CH3CCl3_COMPONENT_BASE CONC_CONSTRAINT_EXTENSION
-#define D_CONSTRAINT_HCFC22             HCFC22_COMPONENT_BASE CONC_CONSTRAINT_EXTENSION
-#define D_CONSTRAINT_HCFC141b           HCFC141b_COMPONENT_BASE CONC_CONSTRAINT_EXTENSION
-#define D_CONSTRAINT_HCFC142b           HCFC142b_COMPONENT_BASE CONC_CONSTRAINT_EXTENSION
-#define D_CONSTRAINT_halon1211          halon1211_COMPONENT_BASE CONC_CONSTRAINT_EXTENSION
-#define D_CONSTRAINT_halon1301          halon1301_COMPONENT_BASE CONC_CONSTRAINT_EXTENSION
-#define D_CONSTRAINT_halon2402          halon2402_COMPONENT_BASE CONC_CONSTRAINT_EXTENSION
-#define D_CONSTRAINT_CH3Cl              CH3Cl_COMPONENT_BASE CONC_CONSTRAINT_EXTENSION
-#define D_CONSTRAINT_CH3Br              CH3Br_COMPONENT_BASE CONC_CONSTRAINT_EXTENSION
+#define D_CONSTRAINT_CF4 CF4_COMPONENT_BASE CONC_CONSTRAINT_EXTENSION
+#define D_CONSTRAINT_C2F6 C2F6_COMPONENT_BASE CONC_CONSTRAINT_EXTENSION
+#define D_CONSTRAINT_HFC23 HFC23_COMPONENT_BASE CONC_CONSTRAINT_EXTENSION
+#define D_CONSTRAINT_HFC32 HFC32_COMPONENT_BASE CONC_CONSTRAINT_EXTENSION
+#define D_CONSTRAINT_HFC4310 HFC4310_COMPONENT_BASE CONC_CONSTRAINT_EXTENSION
+#define D_CONSTRAINT_HFC125 HFC125_COMPONENT_BASE CONC_CONSTRAINT_EXTENSION
+#define D_CONSTRAINT_HFC134a HFC134a_COMPONENT_BASE CONC_CONSTRAINT_EXTENSION
+#define D_CONSTRAINT_HFC143a HFC143a_COMPONENT_BASE CONC_CONSTRAINT_EXTENSION
+#define D_CONSTRAINT_HFC227ea HFC227ea_COMPONENT_BASE CONC_CONSTRAINT_EXTENSION
+#define D_CONSTRAINT_HFC245fa HFC245fa_COMPONENT_BASE CONC_CONSTRAINT_EXTENSION
+#define D_CONSTRAINT_SF6 SF6_COMPONENT_BASE CONC_CONSTRAINT_EXTENSION
+#define D_CONSTRAINT_CFC11 CFC11_COMPONENT_BASE CONC_CONSTRAINT_EXTENSION
+#define D_CONSTRAINT_CFC12 CFC12_COMPONENT_BASE CONC_CONSTRAINT_EXTENSION
+#define D_CONSTRAINT_CFC113 CFC113_COMPONENT_BASE CONC_CONSTRAINT_EXTENSION
+#define D_CONSTRAINT_CFC114 CFC114_COMPONENT_BASE CONC_CONSTRAINT_EXTENSION
+#define D_CONSTRAINT_CFC115 CFC115_COMPONENT_BASE CONC_CONSTRAINT_EXTENSION
+#define D_CONSTRAINT_CCl4 CCl4_COMPONENT_BASE CONC_CONSTRAINT_EXTENSION
+#define D_CONSTRAINT_CH3CCl3 CH3CCl3_COMPONENT_BASE CONC_CONSTRAINT_EXTENSION
+#define D_CONSTRAINT_HCFC22 HCFC22_COMPONENT_BASE CONC_CONSTRAINT_EXTENSION
+#define D_CONSTRAINT_HCFC141b HCFC141b_COMPONENT_BASE CONC_CONSTRAINT_EXTENSION
+#define D_CONSTRAINT_HCFC142b HCFC142b_COMPONENT_BASE CONC_CONSTRAINT_EXTENSION
+#define D_CONSTRAINT_halon1211                                                 \
+  halon1211_COMPONENT_BASE CONC_CONSTRAINT_EXTENSION
+#define D_CONSTRAINT_halon1301                                                 \
+  halon1301_COMPONENT_BASE CONC_CONSTRAINT_EXTENSION
+#define D_CONSTRAINT_halon2402                                                 \
+  halon2402_COMPONENT_BASE CONC_CONSTRAINT_EXTENSION
+#define D_CONSTRAINT_CH3Cl CH3Cl_COMPONENT_BASE CONC_CONSTRAINT_EXTENSION
+#define D_CONSTRAINT_CH3Br CH3Br_COMPONENT_BASE CONC_CONSTRAINT_EXTENSION
 
-#define D_PREINDUSTRIAL_HC      "H0"
-#define D_HC_CONCENTRATION      "hc_concentration"
-#define D_HC_EMISSION           "hc_emission"
-#define D_HC_TAU                "tau"
-#define D_HC_MOLARMASS          "molarMass"
+#define D_PREINDUSTRIAL_HC "H0"
+#define D_HC_CONCENTRATION "hc_concentration"
+#define D_HC_EMISSION "hc_emission"
+#define D_HC_TAU "tau"
+#define D_HC_MOLARMASS "molarMass"
 
 // specify the rho used by halocarbon component so that speicifc rhos can be
 // adjusted using the R wrapper
 // rho used by halocarbon component
-#define D_HCRHO_PREFIX          "rho_"
-#define D_HCRHO_CF4              D_HCRHO_PREFIX CF4_COMPONENT_BASE
-#define D_HCRHO_C2F6             D_HCRHO_PREFIX C2F6_COMPONENT_BASE
-#define D_HCRHO_HFC23            D_HCRHO_PREFIX HFC23_COMPONENT_BASE
-#define D_HCRHO_HFC32            D_HCRHO_PREFIX HFC32_COMPONENT_BASE
-#define D_HCRHO_HFC4310          D_HCRHO_PREFIX HFC4310_COMPONENT_BASE
-#define D_HCRHO_HFC125           D_HCRHO_PREFIX HFC125_COMPONENT_BASE
-#define D_HCRHO_HFC134a          D_HCRHO_PREFIX HFC134a_COMPONENT_BASE
-#define D_HCRHO_HFC143a          D_HCRHO_PREFIX HFC143a_COMPONENT_BASE
-#define D_HCRHO_HFC227ea         D_HCRHO_PREFIX HFC227ea_COMPONENT_BASE
-#define D_HCRHO_HFC245fa         D_HCRHO_PREFIX HFC245fa_COMPONENT_BASE
-#define D_HCRHO_SF6              D_HCRHO_PREFIX SF6_COMPONENT_BASE
-#define D_HCRHO_CFC11            D_HCRHO_PREFIX CFC11_COMPONENT_BASE
-#define D_HCRHO_CFC12            D_HCRHO_PREFIX CFC12_COMPONENT_BASE
-#define D_HCRHO_CFC113           D_HCRHO_PREFIX CFC113_COMPONENT_BASE
-#define D_HCRHO_CFC114           D_HCRHO_PREFIX CFC114_COMPONENT_BASE
-#define D_HCRHO_CFC115           D_HCRHO_PREFIX CFC115_COMPONENT_BASE
-#define D_HCRHO_CCl4             D_HCRHO_PREFIX CCl4_COMPONENT_BASE
-#define D_HCRHO_CH3CCl3          D_HCRHO_PREFIX CH3CCl3_COMPONENT_BASE
-#define D_HCRHO_HCFC22           D_HCRHO_PREFIX HCFC22_COMPONENT_BASE
-#define D_HCRHO_HCFC141b         D_HCRHO_PREFIX HCFC141b_COMPONENT_BASE
-#define D_HCRHO_HCFC142b         D_HCRHO_PREFIX HCFC142b_COMPONENT_BASE
-#define D_HCRHO_halon1211        D_HCRHO_PREFIX halon1211_COMPONENT_BASE
-#define D_HCRHO_halon1301        D_HCRHO_PREFIX halon1301_COMPONENT_BASE
-#define D_HCRHO_halon2402        D_HCRHO_PREFIX halon2402_COMPONENT_BASE
-#define D_HCRHO_CH3Cl            D_HCRHO_PREFIX CH3Cl_COMPONENT_BASE
-#define D_HCRHO_CH3Br            D_HCRHO_PREFIX CH3Br_COMPONENT_BASE
+#define D_HCRHO_PREFIX "rho_"
+#define D_HCRHO_CF4 D_HCRHO_PREFIX CF4_COMPONENT_BASE
+#define D_HCRHO_C2F6 D_HCRHO_PREFIX C2F6_COMPONENT_BASE
+#define D_HCRHO_HFC23 D_HCRHO_PREFIX HFC23_COMPONENT_BASE
+#define D_HCRHO_HFC32 D_HCRHO_PREFIX HFC32_COMPONENT_BASE
+#define D_HCRHO_HFC4310 D_HCRHO_PREFIX HFC4310_COMPONENT_BASE
+#define D_HCRHO_HFC125 D_HCRHO_PREFIX HFC125_COMPONENT_BASE
+#define D_HCRHO_HFC134a D_HCRHO_PREFIX HFC134a_COMPONENT_BASE
+#define D_HCRHO_HFC143a D_HCRHO_PREFIX HFC143a_COMPONENT_BASE
+#define D_HCRHO_HFC227ea D_HCRHO_PREFIX HFC227ea_COMPONENT_BASE
+#define D_HCRHO_HFC245fa D_HCRHO_PREFIX HFC245fa_COMPONENT_BASE
+#define D_HCRHO_SF6 D_HCRHO_PREFIX SF6_COMPONENT_BASE
+#define D_HCRHO_CFC11 D_HCRHO_PREFIX CFC11_COMPONENT_BASE
+#define D_HCRHO_CFC12 D_HCRHO_PREFIX CFC12_COMPONENT_BASE
+#define D_HCRHO_CFC113 D_HCRHO_PREFIX CFC113_COMPONENT_BASE
+#define D_HCRHO_CFC114 D_HCRHO_PREFIX CFC114_COMPONENT_BASE
+#define D_HCRHO_CFC115 D_HCRHO_PREFIX CFC115_COMPONENT_BASE
+#define D_HCRHO_CCl4 D_HCRHO_PREFIX CCl4_COMPONENT_BASE
+#define D_HCRHO_CH3CCl3 D_HCRHO_PREFIX CH3CCl3_COMPONENT_BASE
+#define D_HCRHO_HCFC22 D_HCRHO_PREFIX HCFC22_COMPONENT_BASE
+#define D_HCRHO_HCFC141b D_HCRHO_PREFIX HCFC141b_COMPONENT_BASE
+#define D_HCRHO_HCFC142b D_HCRHO_PREFIX HCFC142b_COMPONENT_BASE
+#define D_HCRHO_halon1211 D_HCRHO_PREFIX halon1211_COMPONENT_BASE
+#define D_HCRHO_halon1301 D_HCRHO_PREFIX halon1301_COMPONENT_BASE
+#define D_HCRHO_halon2402 D_HCRHO_PREFIX halon2402_COMPONENT_BASE
+#define D_HCRHO_CH3Cl D_HCRHO_PREFIX CH3Cl_COMPONENT_BASE
+#define D_HCRHO_CH3Br D_HCRHO_PREFIX CH3Br_COMPONENT_BASE
 
-// specify the DELTA used by halocarbon component by the tropospheric adjustments
-// for the stratospheric-temperature adjusted radiative forcing.
-#define D_HCDELTA_PREFIX          "delta_"
-#define D_HCDELTA_CF4              D_HCDELTA_PREFIX CF4_COMPONENT_BASE
-#define D_HCDELTA_C2F6             D_HCDELTA_PREFIX C2F6_COMPONENT_BASE
-#define D_HCDELTA_HFC23            D_HCDELTA_PREFIX HFC23_COMPONENT_BASE
-#define D_HCDELTA_HFC32            D_HCDELTA_PREFIX HFC32_COMPONENT_BASE
-#define D_HCDELTA_HFC4310          D_HCDELTA_PREFIX HFC4310_COMPONENT_BASE
-#define D_HCDELTA_HFC125           D_HCDELTA_PREFIX HFC125_COMPONENT_BASE
-#define D_HCDELTA_HFC134a          D_HCDELTA_PREFIX HFC134a_COMPONENT_BASE
-#define D_HCDELTA_HFC143a          D_HCDELTA_PREFIX HFC143a_COMPONENT_BASE
-#define D_HCDELTA_HFC227ea         D_HCDELTA_PREFIX HFC227ea_COMPONENT_BASE
-#define D_HCDELTA_HFC245fa         D_HCDELTA_PREFIX HFC245fa_COMPONENT_BASE
-#define D_HCDELTA_SF6              D_HCDELTA_PREFIX SF6_COMPONENT_BASE
-#define D_HCDELTA_CFC11            D_HCDELTA_PREFIX CFC11_COMPONENT_BASE
-#define D_HCDELTA_CFC12            D_HCDELTA_PREFIX CFC12_COMPONENT_BASE
-#define D_HCDELTA_CFC113           D_HCDELTA_PREFIX CFC113_COMPONENT_BASE
-#define D_HCDELTA_CFC114           D_HCDELTA_PREFIX CFC114_COMPONENT_BASE
-#define D_HCDELTA_CFC115           D_HCDELTA_PREFIX CFC115_COMPONENT_BASE
-#define D_HCDELTA_CCl4             D_HCDELTA_PREFIX CCl4_COMPONENT_BASE
-#define D_HCDELTA_CH3CCl3          D_HCDELTA_PREFIX CH3CCl3_COMPONENT_BASE
-#define D_HCDELTA_HCFC22           D_HCDELTA_PREFIX HCFC22_COMPONENT_BASE
-#define D_HCDELTA_HCFC141b         D_HCDELTA_PREFIX HCFC141b_COMPONENT_BASE
-#define D_HCDELTA_HCFC142b         D_HCDELTA_PREFIX HCFC142b_COMPONENT_BASE
-#define D_HCDELTA_halon1211        D_HCDELTA_PREFIX halon1211_COMPONENT_BASE
-#define D_HCDELTA_halon1301        D_HCDELTA_PREFIX halon1301_COMPONENT_BASE
-#define D_HCDELTA_halon2402        D_HCDELTA_PREFIX halon2402_COMPONENT_BASE
-#define D_HCDELTA_CH3Cl            D_HCDELTA_PREFIX CH3Cl_COMPONENT_BASE
-#define D_HCDELTA_CH3Br            D_HCDELTA_PREFIX CH3Br_COMPONENT_BASE
+// specify the DELTA used by halocarbon component by the tropospheric
+// adjustments for the stratospheric-temperature adjusted radiative forcing.
+#define D_HCDELTA_PREFIX "delta_"
+#define D_HCDELTA_CF4 D_HCDELTA_PREFIX CF4_COMPONENT_BASE
+#define D_HCDELTA_C2F6 D_HCDELTA_PREFIX C2F6_COMPONENT_BASE
+#define D_HCDELTA_HFC23 D_HCDELTA_PREFIX HFC23_COMPONENT_BASE
+#define D_HCDELTA_HFC32 D_HCDELTA_PREFIX HFC32_COMPONENT_BASE
+#define D_HCDELTA_HFC4310 D_HCDELTA_PREFIX HFC4310_COMPONENT_BASE
+#define D_HCDELTA_HFC125 D_HCDELTA_PREFIX HFC125_COMPONENT_BASE
+#define D_HCDELTA_HFC134a D_HCDELTA_PREFIX HFC134a_COMPONENT_BASE
+#define D_HCDELTA_HFC143a D_HCDELTA_PREFIX HFC143a_COMPONENT_BASE
+#define D_HCDELTA_HFC227ea D_HCDELTA_PREFIX HFC227ea_COMPONENT_BASE
+#define D_HCDELTA_HFC245fa D_HCDELTA_PREFIX HFC245fa_COMPONENT_BASE
+#define D_HCDELTA_SF6 D_HCDELTA_PREFIX SF6_COMPONENT_BASE
+#define D_HCDELTA_CFC11 D_HCDELTA_PREFIX CFC11_COMPONENT_BASE
+#define D_HCDELTA_CFC12 D_HCDELTA_PREFIX CFC12_COMPONENT_BASE
+#define D_HCDELTA_CFC113 D_HCDELTA_PREFIX CFC113_COMPONENT_BASE
+#define D_HCDELTA_CFC114 D_HCDELTA_PREFIX CFC114_COMPONENT_BASE
+#define D_HCDELTA_CFC115 D_HCDELTA_PREFIX CFC115_COMPONENT_BASE
+#define D_HCDELTA_CCl4 D_HCDELTA_PREFIX CCl4_COMPONENT_BASE
+#define D_HCDELTA_CH3CCl3 D_HCDELTA_PREFIX CH3CCl3_COMPONENT_BASE
+#define D_HCDELTA_HCFC22 D_HCDELTA_PREFIX HCFC22_COMPONENT_BASE
+#define D_HCDELTA_HCFC141b D_HCDELTA_PREFIX HCFC141b_COMPONENT_BASE
+#define D_HCDELTA_HCFC142b D_HCDELTA_PREFIX HCFC142b_COMPONENT_BASE
+#define D_HCDELTA_halon1211 D_HCDELTA_PREFIX halon1211_COMPONENT_BASE
+#define D_HCDELTA_halon1301 D_HCDELTA_PREFIX halon1301_COMPONENT_BASE
+#define D_HCDELTA_halon2402 D_HCDELTA_PREFIX halon2402_COMPONENT_BASE
+#define D_HCDELTA_CH3Cl D_HCDELTA_PREFIX CH3Cl_COMPONENT_BASE
+#define D_HCDELTA_CH3Br D_HCDELTA_PREFIX CH3Br_COMPONENT_BASE
 
 // methane component
-#define D_CH4_CONC              "CH4" CONCENTRATION_EXTENSION
-#define D_PREINDUSTRIAL_CH4     "M0"
-#define D_RF_CH4                "FCH4"
-#define D_EMISSIONS_CH4         "CH4_emissions"
-#define D_CONSTRAINT_CH4        "CH4_constrain"
-#define D_NATURAL_CH4           "CH4N"
-#define D_CONVERSION_CH4        "UC_CH4"
-#define D_LIFETIME_SOIL         "Tsoil"
-#define D_LIFETIME_STRAT        "Tstrat"
+#define D_CH4_CONC "CH4" CONCENTRATION_EXTENSION
+#define D_PREINDUSTRIAL_CH4 "M0"
+#define D_RF_CH4 "FCH4"
+#define D_EMISSIONS_CH4 "CH4_emissions"
+#define D_CONSTRAINT_CH4 "CH4_constrain"
+#define D_NATURAL_CH4 "CH4N"
+#define D_CONVERSION_CH4 "UC_CH4"
+#define D_LIFETIME_SOIL "Tsoil"
+#define D_LIFETIME_STRAT "Tstrat"
 
 // n2o component
-#define D_N2O_CONC              "N2O" CONCENTRATION_EXTENSION
-#define D_PREINDUSTRIAL_N2O     "N0"
-#define D_EMISSIONS_N2O         "N2O_emissions"
-#define D_CONSTRAINT_N2O        "N2O_constrain"
-#define D_CONVERSION_N2O        "UC_N2O"
-#define D_INITIAL_LIFETIME_N2O  "TN2O0"
-#define D_NAT_EMISSIONS_N2O     "N2O_natural_emissions"
-#define D_TAU_N2O               "TAU_N2O"
+#define D_N2O_CONC "N2O" CONCENTRATION_EXTENSION
+#define D_PREINDUSTRIAL_N2O "N0"
+#define D_EMISSIONS_N2O "N2O_emissions"
+#define D_CONSTRAINT_N2O "N2O_constrain"
+#define D_CONVERSION_N2O "UC_N2O"
+#define D_INITIAL_LIFETIME_N2O "TN2O0"
+#define D_NAT_EMISSIONS_N2O "N2O_natural_emissions"
+#define D_TAU_N2O "TAU_N2O"
 
 // oh component
-#define D_LIFETIME_OH           "TAU_OH"
-#define D_INITIAL_LIFETIME_OH   "TOH0"
-#define D_COEFFICENT_NOX        "CNOX"
-#define D_COEFFICENT_CH4        "CCH4"
-#define D_COEFFICENT_NMVOC      "CNMVOC"
-#define D_COEFFICENT_CO         "CCO"
+#define D_LIFETIME_OH "TAU_OH"
+#define D_INITIAL_LIFETIME_OH "TOH0"
+#define D_COEFFICENT_NOX "CNOX"
+#define D_COEFFICENT_CH4 "CCH4"
+#define D_COEFFICENT_NMVOC "CNMVOC"
+#define D_COEFFICENT_CO "CCO"
 
-//o3 component
-#define D_PREINDUSTRIAL_O3	      "PO3"
-#define D_ATMOSPHERIC_O3	      "O3" CONCENTRATION_EXTENSION
-#define D_ATMOSPHERIC_EM_CH4      "CH4"
-#define D_EMISSIONS_NOX           "NOX_emissions"
-#define D_EMISSIONS_CO            "CO_emissions"
-#define D_EMISSIONS_NMVOC         "NMVOC_emissions"
+// o3 component
+#define D_PREINDUSTRIAL_O3 "PO3"
+#define D_ATMOSPHERIC_O3 "O3" CONCENTRATION_EXTENSION
+#define D_ATMOSPHERIC_EM_CH4 "CH4"
+#define D_EMISSIONS_NOX "NOX_emissions"
+#define D_EMISSIONS_CO "CO_emissions"
+#define D_EMISSIONS_NMVOC "NMVOC_emissions"
 
 // oc component
-#define D_EMISSIONS_OC          "OC_emissions"
+#define D_EMISSIONS_OC "OC_emissions"
 
 // nh3 component
-#define D_EMISSIONS_NH3          "NH3_emissions"
+#define D_EMISSIONS_NH3 "NH3_emissions"
 
 // ocean component
-#define D_OCEAN_C_UPTAKE        "ocean_uptake"
-#define D_OCEAN_C               "ocean_c"
-#define D_TT                    "tt"
-#define D_TU                    "tu"
-#define D_TWI                   "twi"
-#define D_TID                   "tid"
-#define D_HL_DO                 "HL_downwelling"
-#define D_PH_HL                 "HL_pH"
-#define D_PH_LL                 "LL_pH"
-#define D_PH                    "pH"
-#define D_ATM_OCEAN_FLUX_HL     "HL_ocean_uptake"
-#define D_ATM_OCEAN_FLUX_LL     "LL_ocean_uptake"
-#define D_PCO2_HL               "HL_PCO2"
-#define D_PCO2_LL               "LL_PCO2"
-#define D_PCO2                  "PCO2"
-#define D_DIC_HL                "HL_DIC"
-#define D_DIC_LL                "LL_DIC"
-#define D_DIC                   "DIC"
-#define D_CARBON_HL             "HL_ocean_c"
-#define D_CARBON_LL             "LL_ocean_c"
-#define D_CARBON_ML             "ML_ocean_c"
-#define D_CARBON_IO             "IO_ocean_c"
-#define D_CARBON_DO             "DO_ocean_c"
-#define D_OMEGACA_HL            "HL_OmegaCa"
-#define D_OMEGACA_LL            "LL_OmegaCa"
-#define D_OMEGAAR_HL            "HL_OmegaAr"
-#define D_OMEGAAR_LL            "LL_OmegaAr"
-#define D_TEMP_HL               "HL_sst"
-#define D_TEMP_LL               "LL_sst"
-#define D_SPINUP_CHEM           "spinup_chem"
-#define D_CO3_LL				"LL_CO3"
-#define D_CO3_HL				"HL_CO3"
-#define D_CO3				    "CO3"
-#define D_TIMESTEPS             "ocean_timesteps"
-#define D_REVELLE_HL            "HL_Revelle"
-#define D_REVELLE_LL            "LL_Revelle"
+#define D_OCEAN_C_UPTAKE "ocean_uptake"
+#define D_OCEAN_C "ocean_c"
+#define D_TT "tt"
+#define D_TU "tu"
+#define D_TWI "twi"
+#define D_TID "tid"
+#define D_HL_DO "HL_downwelling"
+#define D_PH_HL "HL_pH"
+#define D_PH_LL "LL_pH"
+#define D_PH "pH"
+#define D_ATM_OCEAN_FLUX_HL "HL_ocean_uptake"
+#define D_ATM_OCEAN_FLUX_LL "LL_ocean_uptake"
+#define D_PCO2_HL "HL_PCO2"
+#define D_PCO2_LL "LL_PCO2"
+#define D_PCO2 "PCO2"
+#define D_DIC_HL "HL_DIC"
+#define D_DIC_LL "LL_DIC"
+#define D_DIC "DIC"
+#define D_CARBON_HL "HL_ocean_c"
+#define D_CARBON_LL "LL_ocean_c"
+#define D_CARBON_ML "ML_ocean_c"
+#define D_CARBON_IO "IO_ocean_c"
+#define D_CARBON_DO "DO_ocean_c"
+#define D_OMEGACA_HL "HL_OmegaCa"
+#define D_OMEGACA_LL "LL_OmegaCa"
+#define D_OMEGAAR_HL "HL_OmegaAr"
+#define D_OMEGAAR_LL "LL_OmegaAr"
+#define D_TEMP_HL "HL_sst"
+#define D_TEMP_LL "LL_sst"
+#define D_SPINUP_CHEM "spinup_chem"
+#define D_CO3_LL "LL_CO3"
+#define D_CO3_HL "HL_CO3"
+#define D_CO3 "CO3"
+#define D_TIMESTEPS "ocean_timesteps"
+#define D_REVELLE_HL "HL_Revelle"
+#define D_REVELLE_LL "LL_Revelle"
 
 // SimpleNbox component
-#define D_NBP                   "NBP"
-#define D_CO2_CONC              "CO2" CONCENTRATION_EXTENSION
-#define D_PREINDUSTRIAL_CO2     "C0"
-#define D_ATMOSPHERIC_CO2       "atmos_co2"
+#define D_NBP "NBP"
+#define D_CO2_CONC "CO2" CONCENTRATION_EXTENSION
+#define D_PREINDUSTRIAL_CO2 "C0"
+#define D_ATMOSPHERIC_CO2 "atmos_co2"
 #define D_ATMOSPHERIC_C_RESIDUAL "atmos_c_residual"
-#define D_EARTHC                "earth_c"
-#define D_VEGC                  "veg_c"
-#define D_DETRITUSC             "detritus_c"
-#define D_SOILC                 "soil_c"
-#define D_FFI_EMISSIONS         "ffi_emissions"
-#define D_DACCS_UPTAKE          "daccs_uptake"
-#define D_LUC_EMISSIONS         "luc_emissions"
-#define D_LUC_UPTAKE            "luc_uptake"
-#define D_TEMPFERTD             "detritus_tempfert"
-#define D_TEMPFERTS             "soil_tempfert"
-#define D_Q10_RH                "q10_rh"
-#define D_NPP                   "NPP"
-#define D_RH                    "RH"
-#define D_F_NPPV                "f_nppv"
-#define D_F_NPPD                "f_nppd"
-#define D_F_LITTERD             "f_litterd"
-#define D_F_LUCV                "f_lucv"
-#define D_F_LUCD                "f_lucd"
-#define D_NPP_FLUX0             "npp_flux0"
-#define D_BETA                  "beta"
-#define D_WARMINGFACTOR         "warmingfactor"
+#define D_EARTHC "earth_c"
+#define D_VEGC "veg_c"
+#define D_DETRITUSC "detritus_c"
+#define D_SOILC "soil_c"
+#define D_FFI_EMISSIONS "ffi_emissions"
+#define D_DACCS_UPTAKE "daccs_uptake"
+#define D_LUC_EMISSIONS "luc_emissions"
+#define D_LUC_UPTAKE "luc_uptake"
+#define D_TEMPFERTD "detritus_tempfert"
+#define D_TEMPFERTS "soil_tempfert"
+#define D_Q10_RH "q10_rh"
+#define D_NPP "NPP"
+#define D_RH "RH"
+#define D_F_NPPV "f_nppv"
+#define D_F_NPPD "f_nppd"
+#define D_F_LITTERD "f_litterd"
+#define D_F_LUCV "f_lucv"
+#define D_F_LUCD "f_lucd"
+#define D_NPP_FLUX0 "npp_flux0"
+#define D_BETA "beta"
+#define D_WARMINGFACTOR "warmingfactor"
 
 // Constraints
-#define D_CO2_CONSTRAIN         "CO2_constrain"
-#define D_TAS_CONSTRAIN        "tas_constrain"
-#define D_NBP_CONSTRAIN         "NBP_constrain"
+#define D_CO2_CONSTRAIN "CO2_constrain"
+#define D_TAS_CONSTRAIN "tas_constrain"
+#define D_NBP_CONSTRAIN "NBP_constrain"
 
 // slr component
-#define D_SL_RC                 "sl_rc"
-#define D_SLR                   "slr"
-#define D_SL_RC_NO_ICE          "sl_rc_no_ice"
-#define D_SLR_NO_ICE            "slr_no_ice"
+#define D_SL_RC "sl_rc"
+#define D_SLR "slr"
+#define D_SL_RC_NO_ICE "sl_rc_no_ice"
+#define D_SLR_NO_ICE "slr_no_ice"
 
 // so2 component
-#define D_EMISSIONS_SO2         "SO2_emissions"
-#define D_VOLCANIC_SO2          "SV"
+#define D_EMISSIONS_SO2 "SO2_emissions"
+#define D_VOLCANIC_SO2 "SV"
 
 // temperature component
-#define D_ECS                   "S"
-#define D_GLOBAL_TAS            "global_tas"
-#define D_LAND_TAS              "land_tas"
-#define D_SST                   "sst"
-#define D_OCEAN_TAS             "ocean_tas"
-#define D_LO_WARMING_RATIO      "lo_warming_ratio"
-#define D_DIFFUSIVITY           "diff"
-#define D_AERO_SCALE            "alpha"
-#define D_VOLCANIC_SCALE        "volscl"
-#define D_FLUX_MIXED            "heatflux_mixed"
-#define D_FLUX_INTERIOR         "heatflux_interior"
-#define D_HEAT_FLUX             "heatflux"
+#define D_ECS "S"
+#define D_GLOBAL_TAS "global_tas"
+#define D_LAND_TAS "land_tas"
+#define D_SST "sst"
+#define D_OCEAN_TAS "ocean_tas"
+#define D_LO_WARMING_RATIO "lo_warming_ratio"
+#define D_DIFFUSIVITY "diff"
+#define D_AERO_SCALE "alpha"
+#define D_VOLCANIC_SCALE "volscl"
+#define D_FLUX_MIXED "heatflux_mixed"
+#define D_FLUX_INTERIOR "heatflux_interior"
+#define D_HEAT_FLUX "heatflux"
 
-// ------------------- messages being passed between components -------------------------
+// ------------------- messages being passed between components
+// -------------------------
 
-#define M_GETDATA               "getData"
-#define M_SETDATA               "setData"
+#define M_GETDATA "getData"
+#define M_SETDATA "setData"
 
-#define M_DUMP_TO_DEEP_OCEAN    "deepOceanCarbonDump"
-
+#define M_DUMP_TO_DEEP_OCEAN "deepOceanCarbonDump"
 
 #endif

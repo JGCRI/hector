@@ -16,9 +16,9 @@
  *  Provides utility services
  */
 
+#include <iostream>
 
-#define H_STRINGIFY_VAR(var) \
-    #var
+#define H_STRINGIFY_VAR(var) #var
 
 #define MODEL_NAME "hector"
 
@@ -32,7 +32,7 @@
 
 namespace Hector {
 
-void ensure_dir_exists(const std::string& dir);
+void ensure_dir_exists(const std::string &dir);
 
 }
 

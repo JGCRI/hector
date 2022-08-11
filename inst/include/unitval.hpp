@@ -16,8 +16,8 @@
 
 #include <sstream>
 
-#include "logger.hpp"
 #include "h_exception.hpp"
+#include "logger.hpp"
 
 // What to use for missing values? If Rcpp is available, use R's more precise
 // NA, which is a true missing value. Otherwise, fall back on std::NAN
@@ -66,123 +66,121 @@ namespace Hector {
  */
 
 enum unit_types {
-                    U_UNITLESS,         // No units
+  U_UNITLESS, // No units
 
-                    U_PPMV_CO2,         // Atmospheric
-                    U_PPBV,
-                    U_PPTV,
-                    U_PPBV_CH4,
-                    U_PPTV_CH4,
-                    U_PPBV_N2O,
-                    U_PPTV_N2O,
-                    U_MOL_YR,
-                    U_TG_CO,
-                    U_TG_CH4,
-                    U_TG_N,
-                    U_TG_NMVOC,
-                    U_DU_O3,
-                    U_GG_S,             // SO2 emissions in Gg-S/yr
+  U_PPMV_CO2, // Atmospheric
+  U_PPBV,
+  U_PPTV,
+  U_PPBV_CH4,
+  U_PPTV_CH4,
+  U_PPBV_N2O,
+  U_PPTV_N2O,
+  U_MOL_YR,
+  U_TG_CO,
+  U_TG_CH4,
+  U_TG_N,
+  U_TG_NMVOC,
+  U_DU_O3,
+  U_GG_S, // SO2 emissions in Gg-S/yr
 
-                    U_TG_PPBV,          // Conversion for CH4 and N2O emission to concentrations
+  U_TG_PPBV, // Conversion for CH4 and N2O emission to concentrations
 
-                    U_DEGC,             // Temperature
-                    U_K,				// Temperature
-                    U_1_K,               // Inverse Temperature
+  U_DEGC, // Temperature
+  U_K,    // Temperature
+  U_1_K,  // Inverse Temperature
 
-                    U_CM2_S,             // Diffusivity
+  U_CM2_S, // Diffusivity
 
-                    U_CM,               // Length-related
-                    U_CM_YR,
+  U_CM, // Length-related
+  U_CM_YR,
 
-                    U_G,
-                    U_TG,               // Mass-related
-                    U_GG,				// Giga-grams
-                    U_MOL,
-                    U_GMOL,
-                    U_GT,
+  U_G,
+  U_TG, // Mass-related
+  U_GG, // Giga-grams
+  U_MOL,
+  U_GMOL,
+  U_GT,
 
-                    U_PGC,              // Carbon pools and fluxes
-                    U_PGC_YR,
+  U_PGC, // Carbon pools and fluxes
+  U_PGC_YR,
 
-                    U_W_M2,               // Forcing
-                    U_W_M2_PPTV,          // Forcing efficiency
-                    U_W_M2_TG,            // Forcing efficiency
-                    U_W_M2_GG,            // Forcing efficiency
-                    U_W_M2_K,             // ocean heat uptake efficiency
+  U_W_M2,      // Forcing
+  U_W_M2_PPTV, // Forcing efficiency
+  U_W_M2_TG,   // Forcing efficiency
+  U_W_M2_GG,   // Forcing efficiency
+  U_W_M2_K,    // ocean heat uptake efficiency
 
-                    U_M3_S,                // sverdrop (volume transport)
-                    U_PH,                  // pH
-                    U_UATM,
-                    U_UMOL_KG,			   // umol/kg
-                    U_MOL_KG,			   // mol/kg
-                    U_gC_m2_month_uatm,    //Tr variable for testing
-                    U_MOL_L_ATM,		   // mol l-1 atm-1
-                    U_MOL_KG_ATM,		   // mol kg-1 atm-1
-                    U_J_KG_C,              // specific heat capacity
+  U_M3_S, // sverdrop (volume transport)
+  U_PH,   // pH
+  U_UATM,
+  U_UMOL_KG,          // umol/kg
+  U_MOL_KG,           // mol/kg
+  U_gC_m2_month_uatm, // Tr variable for testing
+  U_MOL_L_ATM,        // mol l-1 atm-1
+  U_MOL_KG_ATM,       // mol kg-1 atm-1
+  U_J_KG_C,           // specific heat capacity
 
-                    U_DOBSON,               // Dobson units (ozone)
+  U_DOBSON, // Dobson units (ozone)
 
-                    U_YRS,                  // Years
+  U_YRS, // Years
 
-                    U_UNDEFINED             // Undefined units,
-                                            // Warning: all units should be defined
-                                            // before U_UNDEFINED
-                };
+  U_UNDEFINED // Undefined units,
+              // Warning: all units should be defined
+              // before U_UNDEFINED
+};
 
 class unitval {
 
 protected:
-    double      val;
-    double      valErr;
-    unit_types  valUnits;
+  double val;
+  double valErr;
+  unit_types valUnits;
 
 public:
-    static std::string unitsName( const unit_types );
-    static unit_types parseUnitsName( const std::string& );
+  static std::string unitsName(const unit_types);
+  static unit_types parseUnitsName(const std::string &);
 
-    unitval();
-    unitval( double, unit_types );
+  unitval();
+  unitval(double, unit_types);
 
-    void set( double, unit_types, double );
+  void set(double, unit_types, double);
 
-    double value( unit_types ) const;
-    unit_types units() const { return valUnits; };
-    std::string unitsName() const { return unitsName( valUnits ); };
-    void expecting_unit( const unit_types& );
+  double value(unit_types) const;
+  unit_types units() const { return valUnits; };
+  std::string unitsName() const { return unitsName(valUnits); };
+  void expecting_unit(const unit_types &);
 
-    static unitval parse_unitval( const std::string&, const unit_types& );
-    static unitval parse_unitval( const std::string&, const std::string&, const unit_types& );
+  static unitval parse_unitval(const std::string &, const unit_types &);
+  static unitval parse_unitval(const std::string &, const std::string &,
+                               const unit_types &);
 
-    /*! Allow us to assign a unitval to a double.
-     *  \note    Do not use this in Hector.  It is intended for other
-     *           codes that use libhector and don't want to carry
-     *           around units.
-     */
-    operator double() const { return val; }
+  /*! Allow us to assign a unitval to a double.
+   *  \note    Do not use this in Hector.  It is intended for other
+   *           codes that use libhector and don't want to carry
+   *           around units.
+   */
+  operator double() const { return val; }
 
-    friend unitval operator+ ( const unitval&, const unitval& );
-    friend unitval operator- ( const unitval&, const unitval& );
-    friend unitval operator- ( const unitval& );
-    friend unitval operator* ( const unitval&, const double );
-    friend unitval operator* ( const double, const unitval& );
-    friend unitval operator/ ( const unitval&, const double );
-    friend unitval operator/ ( const double, const unitval& );
-    friend double operator/ ( const unitval&, const unitval&  );
-    friend std::ostream& operator<<( std::ostream &out, const unitval &x );
-
+  friend unitval operator+(const unitval &, const unitval &);
+  friend unitval operator-(const unitval &, const unitval &);
+  friend unitval operator-(const unitval &);
+  friend unitval operator*(const unitval &, const double);
+  friend unitval operator*(const double, const unitval &);
+  friend unitval operator/(const unitval &, const double);
+  friend unitval operator/(const double, const unitval &);
+  friend double operator/(const unitval &, const unitval &);
+  friend std::ostream &operator<<(std::ostream &out, const unitval &x);
 };
-
 
 //-----------------------------------------------------------------------
 /*! \brief Constructor for units data type.
  *
  *  Initializes internal variables.
  */
-inline
-unitval::unitval() {
-    val = 0.0;
-    valErr = 0.0;
-    valUnits = U_UNDEFINED;
+inline unitval::unitval() {
+  val = 0.0;
+  valErr = 0.0;
+  valUnits = U_UNDEFINED;
 }
 
 //-----------------------------------------------------------------------
@@ -190,10 +188,9 @@ unitval::unitval() {
  *
  *  Initializes internal variables and sets value and units.
  */
-inline
-unitval::unitval( double v, unit_types u ) {
-    val = v;
-    valUnits = u;
+inline unitval::unitval(double v, unit_types u) {
+  val = v;
+  valUnits = u;
 }
 
 //-----------------------------------------------------------------------
@@ -205,31 +202,28 @@ unitval::unitval( double v, unit_types u ) {
  *  exception.  If the change in units was intentional, you must catch
  *  this exception to continue normally.
  */
-inline
-void unitval::set( double v, unit_types u, double err=0.0 ) {
-    unit_types old_units(valUnits);
-    val = v;
-    valErr = err;
-    valUnits = u;
-    if( old_units != U_UNDEFINED && u != old_units ) {
-        std::ostringstream errmsg;
-        errmsg << "Variable units have been redefined.  Old unit = "
-               << old_units << "  New unit = " << u << "\n";
-        H_THROW(errmsg.str());
-    }
+inline void unitval::set(double v, unit_types u, double err = 0.0) {
+  unit_types old_units(valUnits);
+  val = v;
+  valErr = err;
+  valUnits = u;
+  if (old_units != U_UNDEFINED && u != old_units) {
+    std::ostringstream errmsg;
+    errmsg << "Variable units have been redefined.  Old unit = " << old_units
+           << "  New unit = " << u << "\n";
+    H_THROW(errmsg.str());
+  }
 }
-
 
 //-----------------------------------------------------------------------
 /*! \brief Get the variable's value.
  *
  *  Get value. Caller has to provide assumed units, as a check.
  */
-inline
-double unitval::value( unit_types u ) const {
-    H_ASSERT( u==valUnits, "variable is not of this type.  Expected: " + unitsName(valUnits) +
-             "; got: " + unitsName(u) );
-    return( val );
+inline double unitval::value(unit_types u) const {
+  H_ASSERT(u == valUnits, "variable is not of this type.  Expected: " +
+                              unitsName(valUnits) + "; got: " + unitsName(u));
+  return (val);
 }
 
 //-----------------------------------------------------------------------
@@ -238,10 +232,9 @@ double unitval::value( unit_types u ) const {
  *  Add two unitvals. Must be of the same type.
  *  TODO: should we add the errors?
  */
-inline
-unitval operator+ ( const unitval& lhs, const unitval& rhs ) {
-	H_ASSERT( lhs.valUnits==rhs.valUnits, "units mismatch" );
-    return unitval( lhs.val+rhs.val, lhs.valUnits );
+inline unitval operator+(const unitval &lhs, const unitval &rhs) {
+  H_ASSERT(lhs.valUnits == rhs.valUnits, "units mismatch");
+  return unitval(lhs.val + rhs.val, lhs.valUnits);
 }
 
 //-----------------------------------------------------------------------
@@ -250,10 +243,9 @@ unitval operator+ ( const unitval& lhs, const unitval& rhs ) {
  *  Subtract two unitvals. Must be of the same type.
  *  TODO: should we add the errors?
  */
-inline
-unitval operator- ( const unitval& lhs, const unitval& rhs ) {
-	H_ASSERT( lhs.valUnits==rhs.valUnits, "units mismatch" );
-    return unitval( lhs.val-rhs.val, lhs.valUnits );
+inline unitval operator-(const unitval &lhs, const unitval &rhs) {
+  H_ASSERT(lhs.valUnits == rhs.valUnits, "units mismatch");
+  return unitval(lhs.val - rhs.val, lhs.valUnits);
 }
 
 //-----------------------------------------------------------------------
@@ -261,9 +253,8 @@ unitval operator- ( const unitval& lhs, const unitval& rhs ) {
  *
  *  Unary minus.
  */
-inline
-unitval operator- ( const unitval& rhs ) {
-    return unitval( -rhs.val, rhs.valUnits );
+inline unitval operator-(const unitval &rhs) {
+  return unitval(-rhs.val, rhs.valUnits);
 }
 
 //-----------------------------------------------------------------------
@@ -272,9 +263,8 @@ unitval operator- ( const unitval& rhs ) {
  *  Multiply a unitval by a double.
  *  TODO: should we multiply error as well?
  */
-inline
-unitval operator* ( const unitval& lhs, const double rhs ) {
-    return unitval( lhs.val*rhs, lhs.valUnits );
+inline unitval operator*(const unitval &lhs, const double rhs) {
+  return unitval(lhs.val * rhs, lhs.valUnits);
 }
 
 //-----------------------------------------------------------------------
@@ -283,9 +273,8 @@ unitval operator* ( const unitval& lhs, const double rhs ) {
  *  Multiply a unitval by a double.
  *  TODO: should we multiply error as well?
  */
-inline
-unitval operator* ( const double lhs, const unitval& rhs ) {
-    return unitval( lhs*rhs.val, rhs.valUnits );
+inline unitval operator*(const double lhs, const unitval &rhs) {
+  return unitval(lhs * rhs.val, rhs.valUnits);
 }
 
 //-----------------------------------------------------------------------
@@ -294,9 +283,8 @@ unitval operator* ( const double lhs, const unitval& rhs ) {
  *  Divide a unitval by a double.
  *  TODO: should we divide error as well?
  */
-inline
-unitval operator/ ( const unitval& lhs, const double rhs ) {
-    return unitval( lhs.val/rhs, lhs.valUnits );
+inline unitval operator/(const unitval &lhs, const double rhs) {
+  return unitval(lhs.val / rhs, lhs.valUnits);
 }
 
 //-----------------------------------------------------------------------
@@ -305,9 +293,8 @@ unitval operator/ ( const unitval& lhs, const double rhs ) {
  *  Divide a unitval by a double.
  *  TODO: should we divide error as well?
  */
-inline
-unitval operator/ ( const double lhs, const unitval& rhs ) {
-    return unitval( lhs/rhs.val, rhs.valUnits );
+inline unitval operator/(const double lhs, const unitval &rhs) {
+  return unitval(lhs / rhs.val, rhs.valUnits);
 }
 
 //-----------------------------------------------------------------------
@@ -315,10 +302,9 @@ unitval operator/ ( const double lhs, const unitval& rhs ) {
  *
  *  Divide two unitvals. Must be of the same type, returning double.
  */
-inline
-double operator/ ( const unitval& lhs, const unitval& rhs ) {
-	H_ASSERT( lhs.valUnits==rhs.valUnits, "units mismatch" );
-    return lhs.val/rhs.val;
+inline double operator/(const unitval &lhs, const unitval &rhs) {
+  H_ASSERT(lhs.valUnits == rhs.valUnits, "units mismatch");
+  return lhs.val / rhs.val;
 }
 
 //-----------------------------------------------------------------------
@@ -326,12 +312,11 @@ double operator/ ( const unitval& lhs, const unitval& rhs ) {
  *
  *  Print a unitval.
  */
-inline
-std::ostream& operator<<( std::ostream &out, const unitval &x ) {
-    out << x.value( x.units() ) << " " << x.unitsName();
-    return out;
+inline std::ostream &operator<<(std::ostream &out, const unitval &x) {
+  out << x.value(x.units()) << " " << x.unitsName();
+  return out;
 }
 
-}
+} // namespace Hector
 
 #endif
