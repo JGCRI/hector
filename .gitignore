@@ -68,8 +68,6 @@ output/*.csv
 
 # R
 .Rhistory
-R/batchrunner/*.pdf
-R/batchrunner/*.csv
 .Rapp.history
 .Rproj.user
 .RData
