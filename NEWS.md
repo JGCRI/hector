@@ -1,8 +1,16 @@
 # hector 3.0.0
 
-<TODO add zenodo ini & addd the list of all the changes, link to the new output name>
+TODO add zenodo
 
-
+* Updated parameterization, incorporating latest consensus science and for best model performance relative to historical observations
+* New radiative forcing calculations for consistency with AR6
+* Better and more complete software tests; many bug fixes
+* Updated from RCPs to SSPs as the default included scenarios
+* New net biome production (land-atmosphere carbon exchange) constraint
+* New [online documentation](LINK-TODO)
+* New permafrost implementation: models permafrost thaw as well as CO2 and CH4 release; optional and currently off by default. See [Woodard et al. 2021](https://gmd.copernicus.org/articles/14/4751/2021/gmd-14-4751-2021.pdf)
+* New carbon tracking: lets users trace the origin and fate of CO2-C within Hector’s carbon cycle; optional and currently off by default. See [Pressburger et al. 2022](LINK-TODO)
+* All changes are documented in [Dorheim et al. 2022](LINK-TODO)
 
 
 # hector 2.5.0
