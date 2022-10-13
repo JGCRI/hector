@@ -174,6 +174,11 @@ void SimpleNbox::run(const double runToDate) {
  */
 bool SimpleNbox::run_spinup(const int step) {
   in_spinup = true;
+  
+  // Track latest value of veg_c; used later in NPP adjustment for LUC
+  // TODO: this in efficient; we only need latest (end of spinup) value
+  end_of_spinup_vegc = sum_map(veg_c);
+  
   return true; // solver will really be the one signalling
 }
 
@@ -243,7 +248,11 @@ void SimpleNbox::stashCValues(double t, const double c[]) {
   // veg/detritus/soil
   fluxpool luc_e_untracked = luc_emission(t, in_spinup) * yf;
   fluxpool luc_u_untracked = luc_uptake(t, in_spinup) * yf;
-
+  // Track (as a unitval) the cumulative vegetation-derived LUC flux
+  const double luc_e = luc_e_untracked.value(U_PGC_YR);
+  const double luc_u = luc_u_untracked.value(U_PGC_YR);
+  cum_luc_va = cum_luc_va + unitval((luc_e - luc_u) * f_lucv, U_PGC);
+  
   fluxpool luc_fav_flux = atmos_c.flux_from_fluxpool(luc_u_untracked * f_lucv);
   fluxpool luc_fad_flux = atmos_c.flux_from_fluxpool(luc_u_untracked * f_lucd);
   fluxpool luc_fas_flux =
@@ -479,6 +488,10 @@ fluxpool SimpleNbox::npp(std::string biome, double time) const {
   } else {
     npp = npp * calc_co2fert(biome, time);
   }
+  
+  // LUC causes loss (or gains) to vegetation; account for this
+  npp = npp * npp_luc_adjust;
+  
   return npp;
 }
 
@@ -742,6 +755,12 @@ int SimpleNbox::calcderivs(double t, const double c[], double dcdt[]) const {
 void SimpleNbox::slowparameval(double t, const double c[]) {
   omodel->slowparameval(t, c); // pass msg on to ocean model
 
+  // Compute loss (or gain) of vegetation to LUC
+  npp_luc_adjust = (end_of_spinup_vegc - cum_luc_va) / end_of_spinup_vegc;
+  H_LOG(logger, Logger::DEBUG) << "slowparameval: npp_luc_adjust = " <<
+      npp_luc_adjust << std::endl;
+//  cout << "xxx," << t << "," << cum_luc_va << "," << end_of_spinup_vegc << "," << npp_luc_adjust << endl;
+  
   // Compute CO2 fertilization factor globally (and for each biome specified)
   for (auto biome : biome_list) {
     if (in_spinup) {

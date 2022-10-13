@@ -205,6 +205,11 @@ private:
   // Initial fluxes
   fluxpool_stringmap npp_flux0; //!< preindustrial NPP
 
+  // Variables needed to adjust NPP for LUC
+  unitval cum_luc_va;
+  fluxpool end_of_spinup_vegc;
+  double npp_luc_adjust;
+  
   // Atmospheric CO2, temperature, and their effects
   fluxpool C0; //!< preindustrial [CO2], ppmv
 
