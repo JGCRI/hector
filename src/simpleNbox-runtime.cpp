@@ -169,6 +169,11 @@ void SimpleNbox::run(const double runToDate) {
  */
 bool SimpleNbox::run_spinup(const int step) {
   in_spinup = true;
+  
+  // Track latest value of veg_c; used later in NPP adjustment for LUC
+  // TODO: this in efficient; we only need latest (end of spinup) value
+  end_of_spinup_vegc = sum_map(veg_c);
+  
   return true; // solver will really be the one signalling
 }
 
@@ -236,7 +241,7 @@ void SimpleNbox::stashCValues(double t, const double c[]) {
   // Land-use change emissions and uptake
   fluxpool luc_e_untracked = current_luc_e;
   fluxpool luc_u_untracked = current_luc_u;
-
+  
   // Calculate net primary production and heterotrophic respiration
   fluxpool npp_total = sum_npp();
   fluxpool rh_total = sum_rh();
@@ -292,11 +297,16 @@ void SimpleNbox::stashCValues(double t, const double c[]) {
   nbp.set(alf, U_PGC_YR);
   nbp_ts.set(t, nbp);
 
+  // Track (as a unitval) the cumulative vegetation-derived LUC flux
+  const double total = c[SNBOX_VEG] + c[SNBOX_DET] + c[SNBOX_SOIL];
+  const double luc_e = luc_e_untracked.value(U_PGC_YR);
+  const double luc_u = luc_u_untracked.value(U_PGC_YR);
+  cum_luc_va = cum_luc_va + unitval((luc_e - luc_u) * c[SNBOX_VEG] / total, U_PGC);
+  
   // Apportion NPP and RH among the biomes
   // This is done by NPP and RH; biomes with higher values get more of any C
   // change
-  const double total = c[SNBOX_VEG] + c[SNBOX_DET] + c[SNBOX_SOIL];
-
+  
   for (auto biome : biome_list) {
     // `wt` is the biome share of major C fluxes; used for apportionment below
     const double wt = (npp(biome) + rh(biome)) / npp_rh_total;
@@ -475,6 +485,10 @@ fluxpool SimpleNbox::npp(std::string biome, double time) const {
   } else {
     npp = npp * calc_co2fert(biome, time);
   }
+  
+  // LUC causes loss (or gains) to vegetation; account for this
+  npp = npp * npp_luc_adjust;
+  
   return npp;
 }
 
@@ -693,6 +707,12 @@ void SimpleNbox::slowparameval(double t, const double c[]) {
   current_ffi_e = in_spinup ? zero_flux : ffiEmissions.get(t);
   current_daccs_u = in_spinup ? zero_flux : daccsUptake.get(t);
 
+  // Compute loss (or gain) of vegetation to LUC
+  npp_luc_adjust = (end_of_spinup_vegc - cum_luc_va) / end_of_spinup_vegc;
+  H_LOG(logger, Logger::DEBUG) << "slowparameval: npp_luc_adjust = " <<
+      npp_luc_adjust << std::endl;
+//  cout << "xxx," << t << "," << cum_luc_va << "," << end_of_spinup_vegc << "," << npp_luc_adjust << endl;
+  
   // Compute CO2 fertilization factor globally (and for each biome specified)
   for (auto biome : biome_list) {
     if (in_spinup) {

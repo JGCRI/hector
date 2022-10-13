@@ -70,6 +70,11 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel(6), masstot(0.0) {
   // we can't start earth_c at zero. Value of 5500 is set to avoid
   // overdrawing in RCP 8.5
   earth_c.set(5500, U_PGC, false, D_EARTHC);
+    
+  // We keep a running total of LUC emissions from (and uptake to) vegetation
+  // This is used in slowparameval() to calculate npp_luc_adjust
+  cum_luc_va.set(0.0, U_PGC);
+  npp_luc_adjust = 1.0;
 }
 
 //------------------------------------------------------------------------------
