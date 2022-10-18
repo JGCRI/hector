@@ -308,14 +308,15 @@ void SimpleNbox::stashCValues(double t, const double c[]) {
     const double wt = (npp(biome) + rh(biome)) / npp_rh_total;
 
     // Update atmosphere with luc emissons from all land pools and biomes
-    const double f_lucs = 1 - f_lucv - f_lucd; // LUC fraction to soil
+    const double total = c[SNBOX_VEG] + c[SNBOX_DET] + c[SNBOX_SOIL];
+
     // Note that the following fluxes ARE weighted by 'yf' (year fraction)
     fluxpool luc_fva_biome_flux = yf *
-        veg_c[biome].flux_from_fluxpool((luc_e_untracked * f_lucv) * wt);
+        veg_c[biome].flux_from_fluxpool((luc_e_untracked * c[SNBOX_VEG]/total) * wt);
     fluxpool luc_fda_biome_flux = yf *
-        detritus_c[biome].flux_from_fluxpool((luc_e_untracked * f_lucd) * wt);
+        detritus_c[biome].flux_from_fluxpool((luc_e_untracked * c[SNBOX_DET]/total) * wt);
     fluxpool luc_fsa_biome_flux = yf *
-        soil_c[biome].flux_from_fluxpool((luc_e_untracked * f_lucs) * wt);
+        soil_c[biome].flux_from_fluxpool((luc_e_untracked * c[SNBOX_SOIL]/total) * wt);
     atmos_c = atmos_c + luc_fva_biome_flux - luc_fav_flux * wt;
     atmos_c = atmos_c + luc_fda_biome_flux - luc_fad_flux * wt;
     atmos_c = atmos_c + luc_fsa_biome_flux - luc_fas_flux * wt;
@@ -615,13 +616,13 @@ int SimpleNbox::calcderivs(double t, const double c[], double dcdt[]) const {
   }
 
   // Land-use change emissions come from veg, detritus, and soil
-  fluxpool luc_fva = current_luc_e * f_lucv;
-  fluxpool luc_fda = current_luc_e * f_lucd;
-  fluxpool luc_fsa = current_luc_e * (1 - f_lucv - f_lucd);
+  fluxpool luc_fva = current_luc_e * c[SNBOX_VEG] / total;
+  fluxpool luc_fda = current_luc_e * c[SNBOX_DET] / total;
+  fluxpool luc_fsa = current_luc_e * c[SNBOX_SOIL] / total;
   // ...treat uptake the same way
-  fluxpool luc_fav = current_luc_u * f_lucv;
-  fluxpool luc_fad = current_luc_u * f_lucd;
-  fluxpool luc_fas = current_luc_u * (1 - f_lucv - f_lucd);
+  fluxpool luc_fav = current_luc_u * c[SNBOX_VEG] / total;
+  fluxpool luc_fad = current_luc_u * c[SNBOX_DET] / total;
+  fluxpool luc_fas = current_luc_u * c[SNBOX_SOIL] / total;
 
   // Oxidized methane of fossil fuel origin
   fluxpool ch4ox_current(0.0, U_PGC_YR); // TODO: implement this
