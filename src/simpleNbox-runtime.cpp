@@ -70,6 +70,9 @@ void SimpleNbox::prepareToRun() {
   H_ASSERT(biome_list.size() == npp_flux0.size(),
            "npp_flux0 and biome_list not same size");
 
+  // Set end-of-spinup vegc (in case no spinup requested)
+  end_of_spinup_vegc = sum_map(veg_c);
+
   for (auto biome : biome_list) {
     H_LOG(logger, Logger::DEBUG) << "Checking that data for biome '" << biome
                                  << "' is complete" << std::endl;
@@ -146,6 +149,12 @@ void SimpleNbox::prepareToRun() {
 void SimpleNbox::run(const double runToDate) {
   in_spinup = core->inSpinup();
 
+  if(!has_been_run_before) {
+    // Remember starting value of veg_c; used later in NPP adjustment for LUC
+    end_of_spinup_vegc = sum_map(veg_c);
+    has_been_run_before = true;
+  }
+  
   // If we've hit the tracking start year, enagage!
   const double tdate = core->getTrackingDate();
   if (!in_spinup && runToDate == tdate) {
@@ -169,11 +178,7 @@ void SimpleNbox::run(const double runToDate) {
  */
 bool SimpleNbox::run_spinup(const int step) {
   in_spinup = true;
-  
-  // Track latest value of veg_c; used later in NPP adjustment for LUC
-  // TODO: this in efficient; we only need latest (end of spinup) value
-  end_of_spinup_vegc = sum_map(veg_c);
-  
+    
   return true; // solver will really be the one signalling
 }
 

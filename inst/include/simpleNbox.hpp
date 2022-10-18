@@ -94,6 +94,8 @@ private:
   typedef std::map<std::string, fluxpool> fluxpool_stringmap;
   typedef std::map<std::string, double> double_stringmap;
 
+  bool has_been_run_before; //!<  Has run() been called once already?
+  
   /*****************************************************************
    * Component state
    * All of this information will be saved at the end of each time
