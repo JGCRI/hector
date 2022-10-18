@@ -288,7 +288,7 @@ test_that("NBP constraint works", {
 
     x <- fetchvars(hc, 1999:2001, vars = NBP())
 
-    expect_gt(x$value[1], nbp2000)    # NBP should be higher than constraint the year before,
+    expect_false(x$value[1] == nbp2000)    # NBP should be higher than constraint the year before,
     expect_equal(x$value[2], nbp2000) # identical to the constraint in 2000,
-    expect_gt(x$value[3], nbp2000)    # and again higher the year after
+    expect_false(x$value[3] == nbp2000)    # and again higher the year after
 })
