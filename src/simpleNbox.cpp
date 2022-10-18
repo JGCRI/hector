@@ -70,6 +70,9 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel(6), masstot(0.0) {
   // This is used in slowparameval() to calculate npp_luc_adjust
   cum_luc_va.set(0.0, U_PGC);
   npp_luc_adjust = 1.0;
+  
+  // A flag that lets run() know the very first time it's called
+  has_been_run_before = false;
 }
 
 //------------------------------------------------------------------------------
