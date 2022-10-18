@@ -223,17 +223,16 @@ void SimpleNbox::stashCValues(double t, const double c[]) {
       << std::endl;
   log_pools(t, "BEFORE update");
 
+  // IMPORTANT NOTE ABOUT YEAR FRACTION
+  // In general we keep fluxes as per year throughout stashCValues
+  // This changes only when we start to apportion NPP and RH to biomes
+  
   // get the UNTRACKED earth emissions (ffi) and uptake (ccs)
-  // We immediately adjust them for the year fraction (as the solver
-  // may call stashCValues multiple times within a given year)
-  fluxpool ffi_untracked =
-      ffi(t, in_spinup) * yf; // function also used by calcDerivs()
-  fluxpool ccs_untracked =
-      ccs(t, in_spinup) * yf; // function also used by calcDerivs()
-
+  fluxpool ffi_untracked = ffi(t, in_spinup);
+  fluxpool ccs_untracked = ccs(t, in_spinup);
   // now construct the TRACKED versions
-  // because earth_c is tracked, ffi and ccs automatically become tracked as
-  // well
+  // because earth_c is tracked, ffi_flux and ccs_flux automatically
+  // become tracked as well
   fluxpool ffi_flux = earth_c.flux_from_fluxpool(ffi_untracked);
   fluxpool ccs_flux = atmos_c.flux_from_fluxpool(ccs_untracked);
 
@@ -244,10 +243,9 @@ void SimpleNbox::stashCValues(double t, const double c[]) {
   fluxpool oa_flux = omodel->get_oaflux();
   fluxpool ao_flux = omodel->get_aoflux();
 
-  // Land-use change emissions and uptake between atmosphere and
-  // veg/detritus/soil
-  fluxpool luc_e_untracked = luc_emission(t, in_spinup) * yf;
-  fluxpool luc_u_untracked = luc_uptake(t, in_spinup) * yf;
+  // Land-use change emissions and uptake
+  fluxpool luc_e_untracked = luc_emission(t, in_spinup);
+  fluxpool luc_u_untracked = luc_uptake(t, in_spinup);
   // Track (as a unitval) the cumulative vegetation-derived LUC flux
   const double luc_e = luc_e_untracked.value(U_PGC_YR);
   const double luc_u = luc_u_untracked.value(U_PGC_YR);
@@ -278,7 +276,6 @@ void SimpleNbox::stashCValues(double t, const double c[]) {
   unitval newdet(c[SNBOX_DET], U_PGC);
   unitval newsoil(c[SNBOX_SOIL], U_PGC);
   unitval newatmos(c[SNBOX_ATMOS], U_PGC);
-  const double f_lucs = 1 - f_lucv - f_lucd; // LUC fraction to soil
 
   // If there an NBP constraint? If yes, at this point adjust npp_total,
   // rh_total, and the newveg/newdet/newsoil variables
@@ -287,15 +284,16 @@ void SimpleNbox::stashCValues(double t, const double c[]) {
   if (!core->inSpinup() && NBP_constrain.size() &&
       NBP_constrain.exists(rounded_t)) {
     const unitval nbp_constrained = NBP_constrain.get(rounded_t);
-    const unitval diff = nbp_constrained - unitval(alf, U_PGC_YR);
+    const unitval diff = (nbp_constrained - unitval(alf, U_PGC_YR));
 
-    // Adjust fluxes
+    // Adjust fluxes equally
     npp_total = npp_total + diff / 2.0;
     rh_nbp_constraint_adjust = (rh_total - diff / 2.0) / rh_total;
     rh_total = rh_total - diff / 2.0;
-
+    
     // Adjust pools
-    unitval pool_diff = unitval(diff.value(U_PGC_YR), U_PGC);
+    // NOTE we only adjust for whatever year fraction we're currently stashing
+    unitval pool_diff = unitval(diff.value(U_PGC_YR), U_PGC) * yf;
     const double total_land = c[SNBOX_DET] + c[SNBOX_VEG] + c[SNBOX_SOIL];
     newdet = newdet + pool_diff * c[SNBOX_DET] / total_land;
     newveg = newveg + pool_diff * c[SNBOX_VEG] / total_land;
@@ -305,8 +303,7 @@ void SimpleNbox::stashCValues(double t, const double c[]) {
     // Re-calculate atmosphere-land flux (NBP)
     alf = npp_total.value(U_PGC_YR) - rh_total.value(U_PGC_YR) -
           luc_e_untracked.value(U_PGC_YR) + luc_u_untracked.value(U_PGC_YR);
-    H_LOG(logger, Logger::NOTICE)
-        << "** NBP constraint " << nbp_constrained
+    H_LOG(logger, Logger::NOTICE) << "** NBP constraint " << nbp_constrained
         << " requested; final value was " << alf << " with final adjustment of "
         << diff << std::endl;
   }
@@ -321,11 +318,13 @@ void SimpleNbox::stashCValues(double t, const double c[]) {
     const double wt = (npp(biome) + rh(biome)) / npp_rh_total;
 
     // Update atmosphere with luc emissons from all land pools and biomes
-    fluxpool luc_fva_biome_flux =
+    const double f_lucs = 1 - f_lucv - f_lucd; // LUC fraction to soil
+    // Note that the following fluxes ARE weighted by 'yf' (year fraction)
+    fluxpool luc_fva_biome_flux = yf *
         veg_c[biome].flux_from_fluxpool((luc_e_untracked * f_lucv) * wt);
-    fluxpool luc_fda_biome_flux =
+    fluxpool luc_fda_biome_flux = yf *
         detritus_c[biome].flux_from_fluxpool((luc_e_untracked * f_lucd) * wt);
-    fluxpool luc_fsa_biome_flux =
+    fluxpool luc_fsa_biome_flux = yf *
         soil_c[biome].flux_from_fluxpool((luc_e_untracked * f_lucs) * wt);
     atmos_c = atmos_c + luc_fva_biome_flux - luc_fav_flux * wt;
     atmos_c = atmos_c + luc_fda_biome_flux - luc_fad_flux * wt;
@@ -335,26 +334,30 @@ void SimpleNbox::stashCValues(double t, const double c[]) {
     fluxpool npp_biome =
         npp_total * wt; // this is already adjusted for any NBP constraint
     final_npp[biome] = npp_biome;
-    fluxpool npp_fav_biome_flux =
+    // Note that the following fluxes are weighted by 'yf' (year fraction)
+    fluxpool npp_fav_biome_flux = yf *
         atmos_c.flux_from_fluxpool(npp_biome * f_nppv.at(biome));
-    fluxpool npp_fad_biome_flux =
+    fluxpool npp_fad_biome_flux = yf *
         atmos_c.flux_from_fluxpool(npp_biome * f_nppd.at(biome));
-    fluxpool npp_fas_biome_flux = atmos_c.flux_from_fluxpool(
-        npp_biome * (1 - f_nppv.at(biome) - f_nppd.at(biome)));
+    fluxpool npp_fas_biome_flux = yf *
+        atmos_c.flux_from_fluxpool(npp_biome * (1 - f_nppv.at(biome) - f_nppd.at(biome)));
 
     // Calculate and record the final RH values adjusted for any NBC constraint
     fluxpool rh_fda_adj = rh_fda(biome) * rh_nbp_constraint_adjust;
     fluxpool rh_fsa_adj = rh_fsa(biome) * rh_nbp_constraint_adjust;
     final_rh[biome] = rh_fda_adj + rh_fsa_adj; // per year
-    fluxpool rh_fda_flux =
-        detritus_c[biome].flux_from_fluxpool(yf * rh_fda_adj);
-    fluxpool rh_fsa_flux = soil_c[biome].flux_from_fluxpool(yf * rh_fsa_adj);
+    // Note that the following fluxes are weighted by 'yf' (year fraction)
+    fluxpool rh_fda_flux = yf *
+        detritus_c[biome].flux_from_fluxpool(rh_fda_adj);
+    fluxpool rh_fsa_flux = yf *
+        soil_c[biome].flux_from_fluxpool(rh_fsa_adj);
 
     // Update soil, detritus, and atmosphere pools - luc fluxes
-    veg_c[biome] = veg_c[biome] + luc_fav_flux * wt - luc_fva_biome_flux;
+    // Note that the luc_fa*_flux variables are annual at this point
+    veg_c[biome] = veg_c[biome] + luc_fav_flux * yf * wt - luc_fva_biome_flux;
     detritus_c[biome] =
-        detritus_c[biome] + luc_fad_flux * wt - luc_fda_biome_flux;
-    soil_c[biome] = soil_c[biome] + luc_fas_flux * wt - luc_fsa_biome_flux;
+        detritus_c[biome] + luc_fad_flux * yf * wt - luc_fda_biome_flux;
+    soil_c[biome] = soil_c[biome] + luc_fas_flux * yf * wt - luc_fsa_biome_flux;
     // Update soil, detritus, and atmosphere pools - npp fluxes
     veg_c[biome] = veg_c[biome] + npp_fav_biome_flux;
     detritus_c[biome] = detritus_c[biome] + npp_fad_biome_flux;
@@ -695,9 +698,9 @@ int SimpleNbox::calcderivs(double t, const double c[], double dcdt[]) const {
   const int rounded_t = round(t);
   if (!in_spinup && NBP_constrain.size() && NBP_constrain.exists(rounded_t)) {
     // Compute how different we are from the user-specified constraint
-    unitval nbp =
-        npp_current - rh_current - luc_emission_current + luc_uptake_current;
-    const unitval diff = NBP_constrain.get(rounded_t) - nbp;
+    const double nbp = npp_current.value(U_PGC_YR) - rh_current.value(U_PGC_YR) -
+      luc_emission_current.value(U_PGC_YR) + luc_uptake_current.value(U_PGC_YR);
+    const unitval diff = NBP_constrain.get(rounded_t) - unitval(nbp, U_PGC_YR);
 
     // Adjust total NPP and total RH equally (but not LUC, which is an input)
     // so that the net total of all three fluxes will match the NBP constraint
