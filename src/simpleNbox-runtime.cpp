@@ -103,6 +103,9 @@ void SimpleNbox::prepareToRun() {
       warmingfactor[biome] = 1.0;
     }
   }
+  
+  // A flag that lets run() know the very first time it's called
+  has_been_run_before = false;
 
   // If no albedo data, assume constant
   if (!Falbedo.size()) {
@@ -178,7 +181,7 @@ void SimpleNbox::run(const double runToDate) {
  */
 bool SimpleNbox::run_spinup(const int step) {
   in_spinup = true;
-    
+  
   return true; // solver will really be the one signalling
 }
 
