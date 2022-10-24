@@ -108,6 +108,9 @@ void SimpleNbox::prepareToRun() {
   H_ASSERT(f_lucv >= 0.0, "f_lucv <0");
   H_ASSERT(f_lucd >= 0.0, "f_lucd <0");
   H_ASSERT(f_lucv + f_lucd <= 1.0, "f_lucv + f_lucd >1");
+  
+  // A flag that lets run() know the very first time it's called
+  has_been_run_before = false;
 
   // If no albedo data, assume constant
   if (!Falbedo.size()) {
@@ -183,7 +186,7 @@ void SimpleNbox::run(const double runToDate) {
  */
 bool SimpleNbox::run_spinup(const int step) {
   in_spinup = true;
-    
+  
   return true; // solver will really be the one signalling
 }
 

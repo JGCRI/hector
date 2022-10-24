@@ -209,6 +209,7 @@ private:
 
   // Variables needed to adjust NPP for LUC
   unitval cum_luc_va;
+  tseries<unitval> cum_luc_va_ts;
   fluxpool end_of_spinup_vegc;
   double npp_luc_adjust;
   

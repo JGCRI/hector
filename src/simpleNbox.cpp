@@ -69,10 +69,9 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel(6), masstot(0.0) {
   // We keep a running total of LUC emissions from (and uptake to) vegetation
   // This is used in slowparameval() to calculate npp_luc_adjust
   cum_luc_va.set(0.0, U_PGC);
+  cum_luc_va_ts.allowInterp(true);
+  cum_luc_va_ts.name = "cum_luc_va_ts";
   npp_luc_adjust = 1.0;
-  
-  // A flag that lets run() know the very first time it's called
-  has_been_run_before = false;
 }
 
 //------------------------------------------------------------------------------
@@ -596,7 +595,8 @@ void SimpleNbox::reset(double time) {
 
   tempferts = tempferts_tv.get(time);
   tempfertd = tempfertd_tv.get(time);
-
+  cum_luc_va = cum_luc_va_ts.get(time);
+  
   // Calculate derived quantities
   for (auto biome : biome_list) {
     if (in_spinup) {
@@ -623,7 +623,8 @@ void SimpleNbox::reset(double time) {
 
   tempferts_tv.truncate(time);
   tempfertd_tv.truncate(time);
-
+  cum_luc_va_ts.truncate(time);
+  
   tcurrent = time;
 
   H_LOG(logger, Logger::NOTICE)
@@ -658,6 +659,8 @@ void SimpleNbox::record_state(double t) {
 
   tempfertd_tv.set(t, tempfertd);
   tempferts_tv.set(t, tempferts);
+  cum_luc_va_ts.set(t, cum_luc_va);
+  
   H_LOG(logger, Logger::DEBUG)
       << "record_state: recorded tempferts = " << tempferts[SNBOX_DEFAULT_BIOME]
       << " at time= " << t << std::endl;

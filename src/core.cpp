@@ -536,16 +536,15 @@ void Core::reset(double resetdate) {
   }
 
   // The prepareToRun function reruns all of the initial setup, including the
-  // spinup.  This is necessary because we may have changed some of the model
+  // spinup. This is necessary because we may have changed some of the model
   // parameters, and for many components the parameters produce their effect
   // by influencing the initial state.
-  if (rerun_spinup)
+  if (rerun_spinup) {
     prepareToRun();
-
-  if (rerun_spinup)
     lastDate = getStartDate();
-  else
+  }  else {
     lastDate = resetdate;
+  }
 }
 
 /*! \brief Shut down all model components
