@@ -299,7 +299,9 @@ test_that("Decreasing litter flux to detritus has down stream impacts", {
   # Less detritus C means more soil C, which decomposes slower
   diff <- dd2$value - dd1$value
   expect_lt(min(diff), 0.0)
-  expect_true(all(dd2$value <= dd1$value))
+  # At this point, we used to check that *every* value was lower.
+  # But after d1af1b7, adjusting NPP to account for vegetation losses due to
+  # LUC, this is no longer true--a few values at the beginning are positive.
 
   shutdown(hc)
 })
