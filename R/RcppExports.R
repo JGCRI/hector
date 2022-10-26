@@ -269,8 +269,8 @@ FTOT_CONSTRAIN <- function() {
 
 #' @describeIn forcings Radiative forcing due to albedo
 #' @export
-RF_T_ALBEDO <- function() {
-    .Call('_hector_RF_T_ALBEDO', PACKAGE = 'hector')
+RF_ALBEDO <- function() {
+    .Call('_hector_RF_ALBEDO', PACKAGE = 'hector')
 }
 
 #' @describeIn forcings Radiative forcing due to CO2
