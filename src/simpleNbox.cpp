@@ -65,7 +65,7 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel(6), masstot(0.0) {
   // we can't start earth_c at zero. Value of 5500 is set to avoid
   // overdrawing in RCP 8.5
   earth_c.set(5500, U_PGC, false, D_EARTHC);
-    
+
   // We keep a running total of LUC emissions from (and uptake to) vegetation
   // This is used in slowparameval() to calculate npp_luc_adjust
   cum_luc_va.set(0.0, U_PGC);
@@ -118,6 +118,7 @@ void SimpleNbox::init(Core *coreptr) {
   core->registerInput(D_FFI_EMISSIONS, getComponentName());
   core->registerInput(D_DACCS_UPTAKE, getComponentName());
   core->registerInput(D_LUC_EMISSIONS, getComponentName());
+  core->registerInput(D_LUC_UPTAKE, getComponentName());
   core->registerInput(D_PREINDUSTRIAL_CO2, getComponentName());
   core->registerInput(D_VEGC, getComponentName());
   core->registerInput(D_DETRITUSC, getComponentName());
@@ -596,7 +597,7 @@ void SimpleNbox::reset(double time) {
   tempferts = tempferts_tv.get(time);
   tempfertd = tempfertd_tv.get(time);
   cum_luc_va = cum_luc_va_ts.get(time);
-  
+
   // Calculate derived quantities
   for (auto biome : biome_list) {
     if (in_spinup) {
@@ -624,7 +625,7 @@ void SimpleNbox::reset(double time) {
   tempferts_tv.truncate(time);
   tempfertd_tv.truncate(time);
   cum_luc_va_ts.truncate(time);
-  
+
   tcurrent = time;
 
   H_LOG(logger, Logger::NOTICE)
@@ -660,7 +661,7 @@ void SimpleNbox::record_state(double t) {
   tempfertd_tv.set(t, tempfertd);
   tempferts_tv.set(t, tempferts);
   cum_luc_va_ts.set(t, cum_luc_va);
-  
+
   H_LOG(logger, Logger::DEBUG)
       << "record_state: recorded tempferts = " << tempferts[SNBOX_DEFAULT_BIOME]
       << " at time= " << t << std::endl;

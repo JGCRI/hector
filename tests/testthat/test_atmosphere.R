@@ -25,7 +25,7 @@ test_that("Checking RF values", {
 
   # Extract all of the other RF values and calculate the total value.
   rf_list <- c(
-    RF_T_ALBEDO(), RF_CO2(), RF_N2O(), RF_H2O_STRAT(), RF_O3_TROP(), RF_BC(),
+    RF_ALBEDO(), RF_CO2(), RF_N2O(), RF_H2O_STRAT(), RF_O3_TROP(), RF_BC(),
     RF_OC(), RF_SO2(), RF_VOL(), RF_CH4(), RF_CF4(), RF_C2F6(),
     RF_HFC23(), RF_HFC32(), RF_HFC4310(), RF_HFC125(), RF_HFC134A(),
     RF_HFC143A(), RF_HFC227EA(), RF_HFC245FA(), RF_SF6(), RF_CFC11(),

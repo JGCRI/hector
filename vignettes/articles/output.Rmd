@@ -14,8 +14,8 @@ The [fetchvars](../reference/fetchvars.html) function is used to get results fro
 
 ### R function table
 
-|R_function             |name              |units    |
-|:----------------------|:-----------------|:--------|
+|R_function           |name              |units    |
+|:--------------------|:-----------------|:--------|
 |RF_TOTAL()           |RF_tot            |W/m2     |
 |RF_CO2()             |RF_CO2            |W/m2     |
 |RF_N2O()             |RF_N2O            |W/m2     |

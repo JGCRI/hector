@@ -11,7 +11,7 @@ input_params <- read.csv(here::here("data-raw", "input_params.csv"))
 lines <- readLines(here::here("src", "rcpp_constants.cpp"))
 
 # Identify the lines of the script where the R function names are defined.
-conditions <- (grepl("String ", x = lines) & !grepl(";", x = lines) & !grepl("// ", x = lines))
+conditions <- (grepl("String ", x = lines) &  !grepl("// ", x = lines))
 string_names <- lines[conditions]
 
 # Clean up the selected lines of the cpp code so that the vector fxn_names only contains the names of
@@ -25,7 +25,7 @@ fxn_vals <- sapply(fxn_names, function(n){tryCatch({match.fun(n)()}, error = fun
 func_df <- na.omit(data.frame(R_function = fxn_names, name = fxn_vals))
 func_df <- func_df[!(func_df$name %in% input_params$parameter), ]
 outputs <- func_df[!grepl(pattern = "constrain|uptake|emissionns|getData|setData", x = func_df$name), ]
-outputs <- outputs[!grepl(pattern = "PREFIX|BIOME_SPLIT|GET|SET|WARMINGFACTOR|LO_WARMING_RATIO", x = outputs$R_function), ]
+outputs <- outputs[!grepl(pattern = "PREFIX|BIOME_SPLIT|GET|SET|WARMINGFACTOR|LO_WARMING_RATIO|TRACKING_DATE", x = outputs$R_function), ]
 
 # Format the R function name to look more like the R function.
 outputs$R_function <- unlist(lapply(outputs$R_function, function(s){paste0(s, "()")}))

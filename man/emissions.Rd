@@ -7,7 +7,6 @@
 \alias{NAT_EMISSIONS_N2O}
 \alias{EMISSIONS_NOX}
 \alias{EMISSIONS_CO}
-\alias{EMISSIONS_NMVOC}
 \alias{EMISSIONS_OC}
 \alias{EMISSIONS_NH3}
 \title{Identifiers for miscellaneous emissions not elsewhere described}
@@ -21,8 +20,6 @@ NAT_EMISSIONS_N2O()
 EMISSIONS_NOX()
 
 EMISSIONS_CO()
-
-EMISSIONS_NMVOC()
 
 EMISSIONS_OC()
 
@@ -43,8 +40,6 @@ type.
 \item \code{EMISSIONS_NOX}: Emissions for NOx compounds (\code{"Tg N"})
 
 \item \code{EMISSIONS_CO}: Emissions for carbon monoxide (\code{"Tg CO"})
-
-\item \code{EMISSIONS_NMVOC}: Emissions for non-methane volatile organic compounds (NMVOC) (\code{"Tg NMVOC"})
 
 \item \code{EMISSIONS_OC}: Emissions for organic carbon (\code{"Tg"})
 
