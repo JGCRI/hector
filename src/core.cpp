@@ -542,7 +542,7 @@ void Core::reset(double resetdate) {
   if (rerun_spinup) {
     prepareToRun();
     lastDate = getStartDate();
-  }  else {
+  } else {
     lastDate = resetdate;
   }
 }
