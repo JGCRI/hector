@@ -436,11 +436,11 @@ void TemperatureComponent::run(const double runToDate) {
 
   //// We track total radiative forcing using internal variable `internal_Ftot`
   //// Need to do this because if we're subject to a user constraint (being
-  ///forced / to match a temperature record), need to track the Ftot that
+  /// forced / to match a temperature record), need to track the Ftot that
   ///*would* have / produced the observed temperature record. This way there's a
-  ///smooth / transition when we exit the constraint period, after which
-  ///internal_Ftot / will rise in parallel with the value reported by
-  ///ForcingComponent.
+  /// smooth / transition when we exit the constraint period, after which
+  /// internal_Ftot / will rise in parallel with the value reported by
+  /// ForcingComponent.
 
   // If we never had any temperature constraint, `internal_Ftot` will match
   // `Ftot`.

@@ -95,7 +95,7 @@ private:
   typedef std::map<std::string, double> double_stringmap;
 
   bool has_been_run_before; //!<  Has run() been called once already?
-  
+
   /*****************************************************************
    * Component state
    * All of this information will be saved at the end of each time
@@ -212,19 +212,20 @@ private:
   tseries<unitval> cum_luc_va_ts;
   fluxpool end_of_spinup_vegc;
   double npp_luc_adjust;
-  
+
   fluxpool C0; //!< preindustrial [CO2], ppmv
 
   // Slowly-changing variables
   // These get computed only once per year, in slowparameval()
-  fluxpool current_luc_e,  //!< Current year LUC emissions (/yr)
-    current_luc_u,         //!< Current year LUC uptake (/yr)
-    current_ffi_e,         //!< Current year FFI emissions (/yr)
-    current_daccs_u;       //!< Current year DACCS uptake (/yr)
-  double_stringmap beta;   //!< shape of CO2 response
+  fluxpool current_luc_e, //!< Current year LUC emissions (/yr)
+      current_luc_u,      //!< Current year LUC uptake (/yr)
+      current_ffi_e,      //!< Current year FFI emissions (/yr)
+      current_daccs_u;    //!< Current year DACCS uptake (/yr)
+  double_stringmap beta;  //!< shape of CO2 response
   double_stringmap
-      warmingfactor;       //!< regional warming relative to global (1.0=same)
-  double_stringmap q10_rh; //!< Q10 for heterotrophic respiration (1.0=no response, unitless)
+      warmingfactor; //!< regional warming relative to global (1.0=same)
+  double_stringmap
+      q10_rh; //!< Q10 for heterotrophic respiration (1.0=no response, unitless)
 
   /*****************************************************************
    * Functions computing sub-elements of the carbon cycle

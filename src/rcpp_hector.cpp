@@ -88,12 +88,12 @@ Environment newcore_impl(String inifile, int loglevel, bool suppresslogging,
 //' Shut down a hector instance
 //'
 //' Shutting down an instance will free the instance itself and all of the
-//objects it created. Any attempted ' operation on the instance after that will
-//raise an error.
+// objects it created. Any attempted ' operation on the instance after that will
+// raise an error.
 //'
 //' @section Caution:
 //' This function should be called as \code{mycore <- shutdown(mycore)} so that
-//the change ' from active to inactive will be recorded in the caller.
+// the change ' from active to inactive will be recorded in the caller.
 //'
 //' @param core Handle to a Hector instance
 //' @return The Hector instance handle
@@ -258,33 +258,33 @@ Environment rename_biome(Environment core, std::string oldname,
 //' to set values within components.
 //'
 //' A message comprises a type (e.g. GETDATA to retrieve data from a component,
-//or SETDATA to ' set data in a component), a capability, which identifies the
-//information to be operated ' on (e.g. Atmospheric CO2 concentration, or global
-//total radiative forcing), and an optional ' structure of extra data
+// or SETDATA to ' set data in a component), a capability, which identifies the
+// information to be operated ' on (e.g. Atmospheric CO2 concentration, or
+// global total radiative forcing), and an optional ' structure of extra data
 //(comprising a date and a numerical value with units).
 //'
 //' The arguments to this function are organized in a slightly more R-friendly
-//way.  The message ' type and capability are each passed as a single string.
-//The date portion of the extra ' data is passed as a numeric vector (one
-//message will be generated for each date).  The value ' portion of the extra
-//data is a numeric vector with a length of either 1 or the same length ' as the
-//date vector.  The units portion is a single string (we don't support sending a
-//vector ' of values with heterogeneous units in a single call.
+// way.  The message ' type and capability are each passed as a single string.
+// The date portion of the extra ' data is passed as a numeric vector (one
+// message will be generated for each date).  The value ' portion of the extra
+// data is a numeric vector with a length of either 1 or the same length ' as
+// the date vector.  The units portion is a single string (we don't support
+// sending a vector ' of values with heterogeneous units in a single call.
 //'
 //' Either the date or the value (or both) may be NA.  The date should be NA in
-//cases where the ' parameter being referenced doesn't change with time.  The
-//value should be NA in cases where ' the optional data will be ignored.
+// cases where the ' parameter being referenced doesn't change with time.  The
+// value should be NA in cases where ' the optional data will be ignored.
 //'
 //' @param core a Hector instance
 //' @param msgtype (String) type of message. Usually either GETDATA or SETDATA
 //' @param capability (String) capability being targeted by the message.  The
-//core will use ' this information to look up the component to route the message
-//to. ' @param date (NumericVector) Date for which to set/get the variable.  Use
-//NA if there is ' no applicable date. ' @param value (NumericVector) Numeric
-//portion of the optional data (in case of setting ' a value this will be the
-//value to set).  The length of this vector should match that of ' the time, or
-//it should be length 1 (in which case it will be recycled). ' @param unit
-//(String) Unit for the value vector. ' @export
+// core will use ' this information to look up the component to route the
+// message to. ' @param date (NumericVector) Date for which to set/get the
+// variable.  Use NA if there is ' no applicable date. ' @param value
+// (NumericVector) Numeric portion of the optional data (in case of setting ' a
+// value this will be the value to set).  The length of this vector should match
+// that of ' the time, or it should be length 1 (in which case it will be
+// recycled). ' @param unit (String) Unit for the value vector. ' @export
 // [[Rcpp::export]]
 DataFrame sendmessage(Environment core, String msgtype, String capability,
                       NumericVector date, NumericVector value, String unit) {

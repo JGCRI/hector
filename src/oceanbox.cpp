@@ -114,7 +114,7 @@ unitval oceanbox::compute_tabsC(const unitval SST) const {
 void oceanbox::make_connection(
     oceanbox *ob, const double k,
     const int ws) { //, window=1 or whatever we are averaging over.  use curent
-                    //state of 1 or will use what we tell it to use.
+                    // state of 1 or will use what we tell it to use.
 
   H_ASSERT(ob != this, "can't make connection to same box");
   OB_LOG(logger, Logger::NOTICE) << "Adding connection " << Name << " to "

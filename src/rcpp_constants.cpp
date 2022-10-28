@@ -119,42 +119,42 @@ String RF_H2O_STRAT() { return D_RF_H2O_STRAT; }
 String RF_O3_TROP() { return D_RF_O3_TROP; }
 
 //' @describeIn forcings Radiative forcing due to black carbon aerosol-radiation
-//interactions ' @export
+// interactions ' @export
 // [[Rcpp::export]]
 String RF_BC() { return D_RF_BC; }
 
 //' @describeIn rho a radiative forcing efficiency for BC aerosol-radiation
-//interactions ' @export
+// interactions ' @export
 // [[Rcpp::export]]
 String RHO_BC() { return D_RHO_BC; }
 
 //' @describeIn forcings Radiative forcing due to organic carbon
-//aerosol-radiation interactions ' @export
+// aerosol-radiation interactions ' @export
 // [[Rcpp::export]]
 String RF_OC() { return D_RF_OC; }
 
 //' @describeIn rho a radiative forcing efficiency for OC aerosol-radiation
-//interactions ' @export
+// interactions ' @export
 // [[Rcpp::export]]
 String RHO_OC() { return D_RHO_OC; }
 
 //' @describeIn forcings Radiative forcing due to NH3 aerosol-radiation
-//interactions ' @export
+// interactions ' @export
 // [[Rcpp::export]]
 String RF_NH3() { return D_RF_NH3; }
 
 //' @describeIn rho a radiative forcing efficiency for NH3 aerosol-radiation
-//interactions ' @export
+// interactions ' @export
 // [[Rcpp::export]]
 String RHO_NH3() { return D_RHO_NH3; }
 
 //' @describeIn forcings Radiative forcing due to SO2 aerosol-radiation
-//interactions ' @export
+// interactions ' @export
 // [[Rcpp::export]]
 String RF_SO2() { return D_RF_SO2; }
 
 //' @describeIn forcings aerosol-cloud interactions, includes contributions from
-//SO2, BC and OC ' @export
+// SO2, BC and OC ' @export
 // [[Rcpp::export]]
 String RF_ACI() { return D_RF_ACI; }
 
@@ -326,290 +326,290 @@ String RF_CH3BR() { return D_RFADJ_CH3Br; }
 
 /* halocarbon rho (radiative forcing efficiency) */
 //' @describeIn rho a radiative forcing efficiency for user-specified
-//preindustrial concentration (Wm-2 pptv-1) for CF4 ' @export
+// preindustrial concentration (Wm-2 pptv-1) for CF4 ' @export
 // [[Rcpp::export]]
 String RHO_CF4() { return D_HCRHO_CF4; }
 
 //' @describeIn rho a radiative forcing efficiency for user-specified
-//preindustrial concentration (Wm-2 pptv-1) for C2F6 ' @export
+// preindustrial concentration (Wm-2 pptv-1) for C2F6 ' @export
 // [[Rcpp::export]]
 String RHO_C2F6() { return D_HCRHO_C2F6; }
 
 //' @describeIn rho a radiative forcing efficiency for user-specified
-//preindustrial concentration (Wm-2 pptv-1) for HFC-23 ' @export
+// preindustrial concentration (Wm-2 pptv-1) for HFC-23 ' @export
 // [[Rcpp::export]]
 String RHO_HFC23() { return D_HCRHO_HFC23; }
 
 //' @describeIn rho a radiative forcing efficiency for user-specified
-//preindustrial concentration (Wm-2 pptv-1) for HFC-32 ' @export
+// preindustrial concentration (Wm-2 pptv-1) for HFC-32 ' @export
 // [[Rcpp::export]]
 String RHO_HFC32() { return D_HCRHO_HFC32; }
 
 //' @describeIn rho a radiative forcing efficiency for user-specified
-//preindustrial concentration (Wm-2 pptv-1) for HFC-4310 ' @export
+// preindustrial concentration (Wm-2 pptv-1) for HFC-4310 ' @export
 // [[Rcpp::export]]
 String RHO_HFC4310() { return D_HCRHO_HFC4310; }
 
 //' @describeIn rho a radiative forcing efficiency for user-specified
-//preindustrial concentration (Wm-2 pptv-1) for HFC-125 ' @export
+// preindustrial concentration (Wm-2 pptv-1) for HFC-125 ' @export
 // [[Rcpp::export]]
 String RHO_HFC125() { return D_HCRHO_HFC125; }
 
 //' @describeIn rho a radiative forcing efficiency for user-specified
-//preindustrial concentration (Wm-2 pptv-1) for HFC-134a ' @export
+// preindustrial concentration (Wm-2 pptv-1) for HFC-134a ' @export
 // [[Rcpp::export]]
 String RHO_HFC134A() { return D_HCRHO_HFC134a; }
 
 //' @describeIn rho a radiative forcing efficiency for user-specified
-//preindustrial concentration (Wm-2 pptv-1) for HFC-143a ' @export
+// preindustrial concentration (Wm-2 pptv-1) for HFC-143a ' @export
 // [[Rcpp::export]]
 String RHO_HFC143A() { return D_HCRHO_HFC143a; }
 
 //' @describeIn rho a radiative forcing efficiency for user-specified
-//preindustrial concentration (Wm-2 pptv-1) for HFC-227ea ' @export
+// preindustrial concentration (Wm-2 pptv-1) for HFC-227ea ' @export
 // [[Rcpp::export]]
 String RHO_HFC227EA() { return D_HCRHO_HFC227ea; }
 
 //' @describeIn rho a radiative forcing efficiency for user-specified
-//preindustrial concentration (Wm-2 pptv-1) for HFC-254fa ' @export
+// preindustrial concentration (Wm-2 pptv-1) for HFC-254fa ' @export
 // [[Rcpp::export]]
 String RHO_HFC245FA() { return D_HCRHO_HFC245fa; }
 
 //' @describeIn rho a radiative forcing efficiency for user-specified
-//preindustrial concentration (Wm-2 pptv-1) for sulfur hexafluoride ' @export
+// preindustrial concentration (Wm-2 pptv-1) for sulfur hexafluoride ' @export
 // [[Rcpp::export]]
 String RHO_SF6() { return D_HCRHO_SF6; }
 
 //' @describeIn rho a radiative forcing efficiency for user-specified
-//preindustrial concentration (Wm-2 pptv-1) for CFC-11 ' @export
+// preindustrial concentration (Wm-2 pptv-1) for CFC-11 ' @export
 // [[Rcpp::export]]
 String RHO_CFC11() { return D_HCRHO_CFC11; }
 
 //' @describeIn rho a radiative forcing efficiency for user-specified
-//preindustrial concentration (Wm-2 pptv-1) for CFC-12 ' @export
+// preindustrial concentration (Wm-2 pptv-1) for CFC-12 ' @export
 // [[Rcpp::export]]
 String RHO_CFC12() { return D_HCRHO_CFC12; }
 
 //' @describeIn rho a radiative forcing efficiency for user-specified
-//preindustrial concentration (Wm-2 pptv-1) for CFC-113 ' @export
+// preindustrial concentration (Wm-2 pptv-1) for CFC-113 ' @export
 // [[Rcpp::export]]
 String RHO_CFC113() { return D_HCRHO_CFC113; }
 
 //' @describeIn rho a radiative forcing efficiency for user-specified
-//preindustrial concentration (Wm-2 pptv-1) for CFC-114 ' @export
+// preindustrial concentration (Wm-2 pptv-1) for CFC-114 ' @export
 // [[Rcpp::export]]
 String RHO_CFC114() { return D_HCRHO_CFC114; }
 
 //' @describeIn rho a radiative forcing efficiency for user-specified
-//preindustrial concentration (Wm-2 pptv-1) for CFC-115 ' @export
+// preindustrial concentration (Wm-2 pptv-1) for CFC-115 ' @export
 // [[Rcpp::export]]
 String RHO_CFC115() { return D_HCRHO_CFC115; }
 
 //' @describeIn rho a radiative forcing efficiency for user-specified
-//preindustrial concentration (Wm-2 pptv-1) for carbon tetrachloride ' @export
+// preindustrial concentration (Wm-2 pptv-1) for carbon tetrachloride ' @export
 // [[Rcpp::export]]
 String RHO_CCL4() { return D_HCRHO_CCl4; }
 
 //' @describeIn rho a radiative forcing efficiency for user-specified
-//preindustrial concentration (Wm-2 pptv-1) for trichloroethane ' @export
+// preindustrial concentration (Wm-2 pptv-1) for trichloroethane ' @export
 // [[Rcpp::export]]
 String RHO_CH3CCL3() { return D_HCRHO_CH3CCl3; }
 
 //' @describeIn rho a radiative forcing efficiency for user-specified
-//preindustrial concentration (Wm-2 pptv-1) for HFC-22 ' @export
+// preindustrial concentration (Wm-2 pptv-1) for HFC-22 ' @export
 // [[Rcpp::export]]
 String RHO_HCFC22() { return D_HCRHO_HCFC22; }
 
 //' @describeIn rho a radiative forcing efficiency for user-specified
-//preindustrial concentration (Wm-2 pptv-1) for HFC-141b ' @export
+// preindustrial concentration (Wm-2 pptv-1) for HFC-141b ' @export
 // [[Rcpp::export]]
 String RHO_HCFC141B() { return D_HCRHO_HCFC141b; }
 
 //' @describeIn rho a radiative forcing efficiency for user-specified
-//preindustrial concentration (Wm-2 pptv-1) for HCFC-142b ' @export
+// preindustrial concentration (Wm-2 pptv-1) for HCFC-142b ' @export
 // [[Rcpp::export]]
 String RHO_HCFC142B() { return D_HCRHO_HCFC142b; }
 
 //' @describeIn rho a radiative forcing efficiency for user-specified
-//preindustrial concentration (Wm-2 pptv-1) for halon-1211 ' @export
+// preindustrial concentration (Wm-2 pptv-1) for halon-1211 ' @export
 // [[Rcpp::export]]
 String RHO_HALON1211() { return D_HCRHO_halon1211; }
 
 //' @describeIn rho a radiative forcing efficiency for user-specified
-//preindustrial concentration (Wm-2 pptv-1) for halon-1301 ' @export
+// preindustrial concentration (Wm-2 pptv-1) for halon-1301 ' @export
 // [[Rcpp::export]]
 String RHO_HALON1301() { return D_HCRHO_halon1301; }
 
 //' @describeIn rho a radiative forcing efficiency for user-specified
-//preindustrial concentration (Wm-2 pptv-1) for halon-2402 ' @export
+// preindustrial concentration (Wm-2 pptv-1) for halon-2402 ' @export
 // [[Rcpp::export]]
 String RHO_HALON2402() { return D_HCRHO_halon2402; }
 
 //' @describeIn rho a radiative forcing efficiency for user-specified
-//preindustrial concentration (Wm-2 pptv-1) for chloromethane ' @export
+// preindustrial concentration (Wm-2 pptv-1) for chloromethane ' @export
 // [[Rcpp::export]]
 String RHO_CH3CL() { return D_HCRHO_CH3Cl; }
 
 //' @describeIn rho a radiative forcing efficiency for user-specified
-//preindustrial concentration (Wm-2 pptv-1) for bromomethane ' @export
+// preindustrial concentration (Wm-2 pptv-1) for bromomethane ' @export
 // [[Rcpp::export]]
 String RHO_CH3BR() { return D_HCRHO_CH3Br; }
 
 /* halocarbon delta (tropospheric adjustments for stratospheric-temperature
  * adjusted radiative forcing) */
 //' @describeIn delta the tropospheric adjustments used to convert from
-//stratospheric-temperature adjusted radiative forcing to effective radiative
-//forcing ' @export
+// stratospheric-temperature adjusted radiative forcing to effective radiative
+// forcing ' @export
 // [[Rcpp::export]]
 String DELTA_CF4() { return D_HCDELTA_CF4; }
 
 //' @describeIn delta the tropospheric adjustments used to convert from
-//stratospheric-temperature adjusted radiative forcing to effective radiative
-//forcing ' @export
+// stratospheric-temperature adjusted radiative forcing to effective radiative
+// forcing ' @export
 // [[Rcpp::export]]
 String DELTA_C2F6() { return D_HCDELTA_C2F6; }
 
 //' @describeIn delta the tropospheric adjustments used to convert from
-//stratospheric-temperature adjusted radiative forcing to effective radiative
-//forcing ' @export
+// stratospheric-temperature adjusted radiative forcing to effective radiative
+// forcing ' @export
 // [[Rcpp::export]]
 String DELTA_HFC23() { return D_HCDELTA_HFC23; }
 
 //' @describeIn delta the tropospheric adjustments used to convert from
-//stratospheric-temperature adjusted radiative forcing to effective radiative
-//forcing ' @export
+// stratospheric-temperature adjusted radiative forcing to effective radiative
+// forcing ' @export
 // [[Rcpp::export]]
 String DELTA_HFC32() { return D_HCDELTA_HFC32; }
 
 //' @describeIn delta the tropospheric adjustments used to convert from
-//stratospheric-temperature adjusted radiative forcing to effective radiative
-//forcing ' @export
+// stratospheric-temperature adjusted radiative forcing to effective radiative
+// forcing ' @export
 // [[Rcpp::export]]
 String DELTA_HFC4310() { return D_HCDELTA_HFC4310; }
 
 //' @describeIn delta the tropospheric adjustments used to convert from
-//stratospheric-temperature adjusted radiative forcing to effective radiative
-//forcing ' @export
+// stratospheric-temperature adjusted radiative forcing to effective radiative
+// forcing ' @export
 // [[Rcpp::export]]
 String DELTA_HFC125() { return D_HCDELTA_HFC125; }
 
 //' @describeIn delta the tropospheric adjustments used to convert from
-//stratospheric-temperature adjusted radiative forcing to effective radiative
-//forcing ' @export
+// stratospheric-temperature adjusted radiative forcing to effective radiative
+// forcing ' @export
 // [[Rcpp::export]]
 String DELTA_HFC134A() { return D_HCDELTA_HFC134a; }
 
 //' @describeIn delta the tropospheric adjustments used to convert from
-//stratospheric-temperature adjusted radiative forcing to effective radiative
-//forcing ' @export
+// stratospheric-temperature adjusted radiative forcing to effective radiative
+// forcing ' @export
 // [[Rcpp::export]]
 String DELTA_HFC143A() { return D_HCDELTA_HFC143a; }
 
 //' @describeIn delta the tropospheric adjustments used to convert from
-//stratospheric-temperature adjusted radiative forcing to effective radiative
-//forcing ' @export
+// stratospheric-temperature adjusted radiative forcing to effective radiative
+// forcing ' @export
 // [[Rcpp::export]]
 String DELTA_HFC227EA() { return D_HCDELTA_HFC227ea; }
 
 //' @describeIn delta the tropospheric adjustments used to convert from
-//stratospheric-temperature adjusted radiative forcing to effective radiative
-//forcing ' @export
+// stratospheric-temperature adjusted radiative forcing to effective radiative
+// forcing ' @export
 // [[Rcpp::export]]
 String DELTA_HFC245FA() { return D_HCDELTA_HFC245fa; }
 
 //' @describeIn delta the tropospheric adjustments used to convert from
-//stratospheric-temperature adjusted radiative forcing to effective radiative
-//forcing ' @export
+// stratospheric-temperature adjusted radiative forcing to effective radiative
+// forcing ' @export
 // [[Rcpp::export]]
 String DELTA_SF6() { return D_HCDELTA_SF6; }
 
 //' @describeIn delta the tropospheric adjustments used to convert from
-//stratospheric-temperature adjusted radiative forcing to effective radiative
-//forcing ' @export
+// stratospheric-temperature adjusted radiative forcing to effective radiative
+// forcing ' @export
 // [[Rcpp::export]]
 String DELTA_CFC11() { return D_HCDELTA_CFC11; }
 
 //' @describeIn delta the tropospheric adjustments used to convert from
-//stratospheric-temperature adjusted radiative forcing to effective radiative
-//forcing ' @export
+// stratospheric-temperature adjusted radiative forcing to effective radiative
+// forcing ' @export
 // [[Rcpp::export]]
 String DELTA_CFC12() { return D_HCDELTA_CFC12; }
 
 //' @describeIn delta the tropospheric adjustments used to convert from
-//stratospheric-temperature adjusted radiative forcing to effective radiative
-//forcing ' @export
+// stratospheric-temperature adjusted radiative forcing to effective radiative
+// forcing ' @export
 // [[Rcpp::export]]
 String DELTA_CFC113() { return D_HCDELTA_CFC113; }
 
 //' @describeIn delta the tropospheric adjustments used to convert from
-//stratospheric-temperature adjusted radiative forcing to effective radiative
-//forcing ' @export
+// stratospheric-temperature adjusted radiative forcing to effective radiative
+// forcing ' @export
 // [[Rcpp::export]]
 String DELTA_CFC114() { return D_HCDELTA_CFC114; }
 
 //' @describeIn delta the tropospheric adjustments used to convert from
-//stratospheric-temperature adjusted radiative forcing to effective radiative
-//forcing ' @export
+// stratospheric-temperature adjusted radiative forcing to effective radiative
+// forcing ' @export
 // [[Rcpp::export]]
 String DELTA_CFC115() { return D_HCDELTA_CFC115; }
 
 //' @describeIn delta the tropospheric adjustments used to convert from
-//stratospheric-temperature adjusted radiative forcing to effective radiative
-//forcing ' @export
+// stratospheric-temperature adjusted radiative forcing to effective radiative
+// forcing ' @export
 // [[Rcpp::export]]
 String DELTA_CCL4() { return D_HCDELTA_CCl4; }
 
 //' @describeIn delta the tropospheric adjustments used to convert from
-//stratospheric-temperature adjusted radiative forcing to effective radiative
-//forcing ' @export
+// stratospheric-temperature adjusted radiative forcing to effective radiative
+// forcing ' @export
 // [[Rcpp::export]]
 String DELTA_CH3CCL3() { return D_HCDELTA_CH3CCl3; }
 
 //' @describeIn delta the tropospheric adjustments used to convert from
-//stratospheric-temperature adjusted radiative forcing to effective radiative
-//forcing ' @export
+// stratospheric-temperature adjusted radiative forcing to effective radiative
+// forcing ' @export
 // [[Rcpp::export]]
 String DELTA_HCFC22() { return D_HCDELTA_HCFC22; }
 
 //' @describeIn delta the tropospheric adjustments used to convert from
-//stratospheric-temperature adjusted radiative forcing to effective radiative
-//forcing ' @export
+// stratospheric-temperature adjusted radiative forcing to effective radiative
+// forcing ' @export
 // [[Rcpp::export]]
 String DELTA_HCFC141B() { return D_HCDELTA_HCFC141b; }
 
 //' @describeIn delta the tropospheric adjustments used to convert from
-//stratospheric-temperature adjusted radiative forcing to effective radiative
-//forcing ' @export
+// stratospheric-temperature adjusted radiative forcing to effective radiative
+// forcing ' @export
 // [[Rcpp::export]]
 String DELTA_HCFC142B() { return D_HCDELTA_HCFC142b; }
 
 //' @describeIn delta the tropospheric adjustments used to convert from
-//stratospheric-temperature adjusted radiative forcing to effective radiative
-//forcing ' @export
+// stratospheric-temperature adjusted radiative forcing to effective radiative
+// forcing ' @export
 // [[Rcpp::export]]
 String DELTA_HALON1211() { return D_HCDELTA_halon1211; }
 
 //' @describeIn delta the tropospheric adjustments used to convert from
-//stratospheric-temperature adjusted radiative forcing to effective radiative
-//forcing ' @export
+// stratospheric-temperature adjusted radiative forcing to effective radiative
+// forcing ' @export
 // [[Rcpp::export]]
 String DELTA_HALON1301() { return D_HCDELTA_halon1301; }
 
 //' @describeIn delta the tropospheric adjustments used to convert from
-//stratospheric-temperature adjusted radiative forcing to effective radiative
-//forcing ' @export
+// stratospheric-temperature adjusted radiative forcing to effective radiative
+// forcing ' @export
 // [[Rcpp::export]]
 String DELTA_HALON2402() { return D_HCDELTA_halon2402; }
 
 //' @describeIn delta the tropospheric adjustments used to convert from
-//stratospheric-temperature adjusted radiative forcing to effective radiative
-//forcing ' @export
+// stratospheric-temperature adjusted radiative forcing to effective radiative
+// forcing ' @export
 // [[Rcpp::export]]
 String DELTA_CH3CL() { return D_HCDELTA_CH3Cl; }
 
 //' @describeIn delta the tropospheric adjustments used to convert from
-//stratospheric-temperature adjusted radiative forcing to effective radiative
-//forcing ' @export
+// stratospheric-temperature adjusted radiative forcing to effective radiative
+// forcing ' @export
 // [[Rcpp::export]]
 String DELTA_CH3BR() { return D_HCDELTA_CH3Br; }
 
@@ -1194,7 +1194,7 @@ String BETA(String biome = "") {
 }
 
 //' @describeIn parameters Heterotrophic respiration temperature sensitivity
-//factor (\code{"(unitless)"}) ' @export
+// factor (\code{"(unitless)"}) ' @export
 // [[Rcpp::export]]
 String Q10_RH(String biome = "") {
   if (biome == "")
@@ -1223,7 +1223,7 @@ String WARMINGFACTOR(String biome = "") {
 String CO2_CONSTRAIN() { return D_CO2_CONSTRAIN; }
 
 //' @describeIn carboncycle Constrain net biome production (land-atmosphere
-//flux) (\code{"(PgC/yr)"}) ' @export
+// flux) (\code{"(PgC/yr)"}) ' @export
 // [[Rcpp::export]]
 String NBP_CONSTRAIN() { return D_NBP_CONSTRAIN; }
 
@@ -1400,15 +1400,15 @@ String SST() { return D_SST; }
 String OCEAN_TAS() { return D_OCEAN_TAS; }
 
 //' @describeIn temperature Average air temperature anomaly over land, land
-//surface temperature and air temperature ' over land are assumed to be
-//equivalent. ' @export
+// surface temperature and air temperature ' over land are assumed to be
+// equivalent. ' @export
 // [[Rcpp::export]]
 String LAND_TAS() { return D_LAND_TAS; }
 
 //' @describeIn parameters Land-Ocean Warming Ratio (\code{"(unitless)"}), by
-//default set to 0 ' meaning that the land ocean warming ratio is an emergent
-//property of Hector's temperature ' component otherwise the user defined land
-//ocean warming ratio will be used. ' @export
+// default set to 0 ' meaning that the land ocean warming ratio is an emergent
+// property of Hector's temperature ' component otherwise the user defined land
+// ocean warming ratio will be used. ' @export
 // [[Rcpp::export]]
 String LO_WARMING_RATIO() { return D_LO_WARMING_RATIO; }
 
