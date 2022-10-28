@@ -41,16 +41,21 @@ void identity_tests(bool trk) {
 /*! \brief constructor
  */
 SimpleNbox::SimpleNbox() : CarbonCycleModel(6), masstot(0.0) {
-  ffiEmissions.allowInterp(true);
+  // Don't allow interpolation of the emissions time series; we use
+  // constant annualized values throughout the year so e.g. pulse tests
+  // work correctly. See #643
+  ffiEmissions.allowInterp(false);
   ffiEmissions.name = D_FFI_EMISSIONS;
-  daccsUptake.allowInterp(true);
+  daccsUptake.allowInterp(false);
   daccsUptake.name = D_DACCS_UPTAKE;
-  lucEmissions.allowInterp(true);
+  lucEmissions.allowInterp(false);
   lucEmissions.name = D_LUC_EMISSIONS;
-  lucUptake.allowInterp(true);
+  lucUptake.allowInterp(false);
   lucUptake.name = D_LUC_UPTAKE;
+
   Falbedo.allowInterp(true);
   Falbedo.name = D_RF_T_ALBEDO;
+
   CO2_constrain.name = D_CO2_CONSTRAIN;
   NBP_constrain.name = D_NBP_CONSTRAIN;
 
