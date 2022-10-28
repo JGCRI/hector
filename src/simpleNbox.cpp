@@ -295,12 +295,14 @@ void SimpleNbox::setData(const std::string &varName, const message_data &data) {
       H_ASSERT(data.date != Core::undefinedIndex(), "date required");
       H_ASSERT(biome == SNBOX_DEFAULT_BIOME,
                "fossil fuels and industry emissions must be global");
-      ffiEmissions.set(data.date, data.getUnitval(U_PGC_YR));
+      unitval ffi = data.getUnitval(U_PGC_YR);
+      ffiEmissions.set(data.date, fluxpool(ffi.value(U_PGC_YR), U_PGC_YR));
     } else if (varNameParsed == D_DACCS_UPTAKE) {
       H_ASSERT(data.date != Core::undefinedIndex(), "date required");
       H_ASSERT(biome == SNBOX_DEFAULT_BIOME,
                "direct air carbon capture and storage must be global");
-      daccsUptake.set(data.date, data.getUnitval(U_PGC_YR));
+      unitval daccs = data.getUnitval(U_PGC_YR);
+      daccsUptake.set(data.date, fluxpool(daccs.value(U_PGC_YR), U_PGC_YR));
     } else if (varNameParsed == D_LUC_EMISSIONS) {
       H_ASSERT(data.date != Core::undefinedIndex(), "date required");
       unitval luc = data.getUnitval(U_PGC_YR);

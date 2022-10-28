@@ -174,9 +174,9 @@ private:
    *****************************************************************/
 
   // Carbon fluxes
-  tseries<unitval>
+  tseries<fluxpool>
       ffiEmissions; //!< fossil fuels and industry emissions, Pg C/yr
-  tseries<unitval>
+  tseries<fluxpool>
       daccsUptake; //!< direct air carbon capture and storage, Pg C/yr
   tseries<fluxpool> lucEmissions; //!< land use change emissions, Pg C/yr
   tseries<fluxpool> lucUptake;    //!< land use change uptake, Pg C/yr
@@ -213,14 +213,18 @@ private:
   fluxpool end_of_spinup_vegc;
   double npp_luc_adjust;
   
-  // Atmospheric CO2, temperature, and their effects
   fluxpool C0; //!< preindustrial [CO2], ppmv
 
-  double_stringmap beta; //!< shape of CO2 response
+  // Slowly-changing variables
+  // These get computed only once per year, in slowparameval()
+  fluxpool current_luc_e,  //!< Current year LUC emissions (/yr)
+    current_luc_u,         //!< Current year LUC uptake (/yr)
+    current_ffi_e,         //!< Current year FFI emissions (/yr)
+    current_daccs_u;       //!< Current year DACCS uptake (/yr)
+  double_stringmap beta;   //!< shape of CO2 response
   double_stringmap
-      warmingfactor; //!< regional warming relative to global (1.0=same)
-  double_stringmap
-      q10_rh; //!< Q10 for heterotrophic respiration (1.0=no response, unitless)
+      warmingfactor;       //!< regional warming relative to global (1.0=same)
+  double_stringmap q10_rh; //!< Q10 for heterotrophic respiration (1.0=no response, unitless)
 
   /*****************************************************************
    * Functions computing sub-elements of the carbon cycle
@@ -242,10 +246,6 @@ private:
      double time = Core::undefinedIndex()) const; //!< calculates RH for a biome
   fluxpool sum_rh(double time = Core::undefinedIndex())
       const; //!< calculates RH, global total
-  fluxpool ffi(double t, bool in_spinup) const;
-  fluxpool ccs(double t, bool in_spinup) const;
-  fluxpool luc_emission(double t, bool in_spinip) const;
-  fluxpool luc_uptake(double t, bool in_spinip) const;
 
   /*****************************************************************
    * Private helper functions
