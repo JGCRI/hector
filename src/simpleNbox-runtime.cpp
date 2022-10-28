@@ -257,7 +257,6 @@ void SimpleNbox::stashCValues(double t, const double c[]) {
   // Track (as a unitval) the cumulative vegetation-derived LUC flux
   const double luc_e = luc_e_untracked.value(U_PGC_YR);
   const double luc_u = luc_u_untracked.value(U_PGC_YR);
-  cum_luc_va = cum_luc_va + unitval((luc_e - luc_u) * f_lucv, U_PGC);
   
   fluxpool luc_fav_flux = atmos_c.flux_from_fluxpool(luc_u_untracked * f_lucv);
   fluxpool luc_fad_flux = atmos_c.flux_from_fluxpool(luc_u_untracked * f_lucd);
@@ -319,6 +318,10 @@ void SimpleNbox::stashCValues(double t, const double c[]) {
   nbp.set(alf, U_PGC_YR);
   nbp_ts.set(t, nbp);
 
+  // Update cumulative veg->atmosphere LUC flux
+  const double total = c[SNBOX_VEG] + c[SNBOX_DET] + c[SNBOX_SOIL];
+  cum_luc_va = cum_luc_va + unitval(luc_e - luc_u, U_PGC) * c[SNBOX_VEG] / total;
+
   // Apportion NPP and RH among the biomes
   // This is done by NPP and RH; biomes with higher values get more of any C
   // change
@@ -326,7 +329,6 @@ void SimpleNbox::stashCValues(double t, const double c[]) {
     const double wt = (npp(biome) + rh(biome)) / npp_rh_total;
 
     // Update atmosphere with luc emissons from all land pools and biomes
-    const double total = c[SNBOX_VEG] + c[SNBOX_DET] + c[SNBOX_SOIL];
 
     // Note that the following fluxes ARE weighted by 'yf' (year fraction)
     fluxpool luc_fva_biome_flux = yf *
@@ -719,6 +721,7 @@ void SimpleNbox::slowparameval(double t, const double c[]) {
   // Set this year's LUC and FFI/DACCS emissions and uptake
   // We do this here, and not allow interpolation of their time series,
   // so that pulse tests work correctly (see #643)
+  // No perturbation is allowed if the model is in spinup
   fluxpool zero_flux(0.0, U_PGC_YR);
   current_luc_e = in_spinup ? zero_flux : lucEmissions.get(t);
   current_luc_u = in_spinup ? zero_flux : lucUptake.get(t);
