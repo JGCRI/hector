@@ -91,61 +91,61 @@ component using the \code{\link{GETDATA}} message type.
 }
 \section{Functions}{
 \itemize{
-\item \code{OCEAN_UPTAKE}: Atmosphere-ocean carbon flux
+\item \code{OCEAN_UPTAKE()}: Atmosphere-ocean carbon flux
 
-\item \code{OCEAN_C}: Ocean total carbon pool
+\item \code{OCEAN_C()}: Ocean total carbon pool
 
-\item \code{OCEAN_C_HL}: Ocean surface high-latitude carbon pool
+\item \code{OCEAN_C_HL()}: Ocean surface high-latitude carbon pool
 
-\item \code{OCEAN_C_LL}: Ocean surface low-latitude carbon pool
+\item \code{OCEAN_C_LL()}: Ocean surface low-latitude carbon pool
 
-\item \code{OCEAN_C_ML}: Ocean surface or mixed layer carbon pool
+\item \code{OCEAN_C_ML()}: Ocean surface or mixed layer carbon pool
 
-\item \code{OCEAN_C_IO}: Intermediate ocean carbon pool
+\item \code{OCEAN_C_IO()}: Intermediate ocean carbon pool
 
-\item \code{OCEAN_C_DO}: Deep ocean carbon pool
+\item \code{OCEAN_C_DO()}: Deep ocean carbon pool
 
-\item \code{TT}: Thermohaline overturning
+\item \code{TT()}: Thermohaline overturning
 
-\item \code{TU}: High-latitude overturning
+\item \code{TU()}: High-latitude overturning
 
-\item \code{TWI}: Warm-intermediate exchange
+\item \code{TWI()}: Warm-intermediate exchange
 
-\item \code{TID}: Intermediate-deep exchange
+\item \code{TID()}: Intermediate-deep exchange
 
-\item \code{PH_HL}: High-latitude pH
+\item \code{PH_HL()}: High-latitude pH
 
-\item \code{PH_LL}: Low-latitude pH
+\item \code{PH_LL()}: Low-latitude pH
 
-\item \code{PH}: Ocean surface pH
+\item \code{PH()}: Ocean surface pH
 
-\item \code{HL_OCEAN_UPTAKE}: Atmosphere-ocean carbon flux, high-latitude
+\item \code{HL_OCEAN_UPTAKE()}: Atmosphere-ocean carbon flux, high-latitude
 
-\item \code{LL_OCEAN_UPTAKE}: Atmosphere-ocean carbon flux, low-latitude
+\item \code{LL_OCEAN_UPTAKE()}: Atmosphere-ocean carbon flux, low-latitude
 
-\item \code{PCO2_HL}: Partial pressure of CO2, high-latitude
+\item \code{PCO2_HL()}: Partial pressure of CO2, high-latitude
 
-\item \code{PCO2_LL}: Partial pressure of CO2, low-latitude
+\item \code{PCO2_LL()}: Partial pressure of CO2, low-latitude
 
-\item \code{PCO2}: Ocean surface partial pressure of CO2
+\item \code{PCO2()}: Ocean surface partial pressure of CO2
 
-\item \code{DIC_HL}: Dissolved inorganic carbon, high-latitude
+\item \code{DIC_HL()}: Dissolved inorganic carbon, high-latitude
 
-\item \code{DIC}: Ocean surface dissolved inorganic carbon
+\item \code{DIC()}: Ocean surface dissolved inorganic carbon
 
-\item \code{DIC_LL}: Dissolved inorganic carbon, low-latitude
+\item \code{DIC_LL()}: Dissolved inorganic carbon, low-latitude
 
-\item \code{SST_HL}: Absolute ocean surface temperature, high-latitude (deg C)
+\item \code{SST_HL()}: Absolute ocean surface temperature, high-latitude (deg C)
 
-\item \code{SST_LL}: Absolute ocean surface temperature, low-latitude (deg C)
+\item \code{SST_LL()}: Absolute ocean surface temperature, low-latitude (deg C)
 
-\item \code{CO3_LL}: Carbonate concentration, low-latitude
+\item \code{CO3_LL()}: Carbonate concentration, low-latitude
 
-\item \code{CO3_HL}: Carbonate concentration, high-latitude
+\item \code{CO3_HL()}: Carbonate concentration, high-latitude
 
-\item \code{CO3}: Ocean surface carbonate concentration
+\item \code{CO3()}: Ocean surface carbonate concentration
+
 }}
-
 \section{Note}{
 
 Because these identifiers are provided as \code{#define} macros in the hector code,

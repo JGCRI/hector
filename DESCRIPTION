@@ -74,7 +74,7 @@ Collate:
     'messages.R'
     'units.R'
 VignetteBuilder: knitr
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.1
 SystemRequirements: GNU make
 URL: https://github.com/JGCRI/hector
 BugReports: https://github.com/JGCRI/hector/issues

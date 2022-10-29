@@ -55,16 +55,16 @@ carbon cycle
 }
 \section{Functions}{
 \itemize{
-\item \code{VEG_C}: Vegetation C pool (`"Pg C"`)
+\item \code{VEG_C()}: Vegetation C pool (`"Pg C"`)
 
-\item \code{DETRITUS_C}: Vegetation detritus C pool (`"Pg C"`)
+\item \code{DETRITUS_C()}: Vegetation detritus C pool (`"Pg C"`)
 
-\item \code{SOIL_C}: Soil C pool (`"Pg C"`)
+\item \code{SOIL_C()}: Soil C pool (`"Pg C"`)
 
-\item \code{NPP_FLUX0}: Initial net primary productivity (NPP)
+\item \code{NPP_FLUX0()}: Initial net primary productivity (NPP)
 flux (`"Pg C year^-1"`)
-}}
 
+}}
 \section{Output variables}{
 
 These variables can be read using the \code{\link{GETDATA}} message type:

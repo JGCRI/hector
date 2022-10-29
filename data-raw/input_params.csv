@@ -28,8 +28,6 @@ simpleNbox,npp_flux0,n,n,y,56.2,Pg C yr-1,net primary production
 simpleNbox,f_nppv,n,n,y,0.35,(unitless),Fraction of NPP to vegetation
 simpleNbox,f_nppd,n,n,y,0.6,(unitless),Fraction of NPP to detritus (balance to soil)
 simpleNbox,f_litterd,n,n,y,0.98,(unitless),Fraction of litter flux to detritus (balance to soil)
-simpleNbox,f_lucv,n,n,y,0.1,(unitless),Fraction of land use change flux from vegetation
-simpleNbox,f_lucd,n,n,y,0.01,(unitless),Fraction of land use change flux from detritus (balance from soil)
 simpleNbox,ffi_emissions,n,y,y,"""(csv)""",Pg C yr-1,Anthropogenic contributions: emissions
 simpleNbox,daccs_uptake,n,y,y,"""(csv)""",Pg C yr-1,Anthropogenic contributions: direct air carbon capture and storage
 simpleNbox,luc_emissions,n,y,y,"""(csv)""",Pg C yr-1,Anthropogenic contributions: land use change

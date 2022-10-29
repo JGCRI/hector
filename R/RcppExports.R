@@ -1439,18 +1439,6 @@ F_LITTERD <- function(biome = "") {
     .Call('_hector_F_LITTERD', PACKAGE = 'hector', biome)
 }
 
-#' @describeIn parameters LUC fraction to vegetation (\code{"(unitless)"})
-#' @export
-F_LUCV <- function() {
-    .Call('_hector_F_LUCV', PACKAGE = 'hector')
-}
-
-#' @describeIn parameters LUC fraction to detritus (\code{"(unitless)"})
-#' @export
-F_LUCD <- function() {
-    .Call('_hector_F_LUCD', PACKAGE = 'hector')
-}
-
 #' @describeIn carboncycle Vegetation C pool (`"Pg C"`)
 #' @param biome Name of biome (leave empty for global)
 #' @export

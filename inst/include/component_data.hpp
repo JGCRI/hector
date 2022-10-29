@@ -356,8 +356,6 @@
 #define D_F_NPPV "f_nppv"
 #define D_F_NPPD "f_nppd"
 #define D_F_LITTERD "f_litterd"
-#define D_F_LUCV "f_lucv"
-#define D_F_LUCD "f_lucd"
 #define D_NPP_FLUX0 "npp_flux0"
 #define D_BETA "beta"
 #define D_WARMINGFACTOR "warmingfactor"

@@ -24,15 +24,15 @@ can be read and/or set by hectors forcing and halocarbon components.
 }
 \section{Functions}{
 \itemize{
-\item \code{DELTA_CO2}: the foring tropospheric adjustments for N2O
+\item \code{DELTA_CO2()}: the foring tropospheric adjustments for N2O
 
-\item \code{RF_N2O}: the foring tropospheric adjustments for N2O
+\item \code{RF_N2O()}: the foring tropospheric adjustments for N2O
 
-\item \code{DELTA_N2O}: Radiative forcing due to N2O
+\item \code{DELTA_N2O()}: Radiative forcing due to N2O
 
-\item \code{DELTA_CH4}: Radiative forcing tropospheric adjustment for CH4
+\item \code{DELTA_CH4()}: Radiative forcing tropospheric adjustment for CH4
+
 }}
-
 \section{Note}{
 
 Because these identifiers are provided as \code{#define} macros in the hector code,

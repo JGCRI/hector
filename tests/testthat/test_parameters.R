@@ -14,7 +14,7 @@ test_that('All "fraction" parameters can be set and retrieved', {
   hc <- newcore(ssp245)
 
   # All of the fraction parameters.
-  params <- tolower(c("F_NPPV", "F_NPPD", "F_LITTERD", "F_LUCV", "F_LUCD"))
+  params <- tolower(c("F_NPPV", "F_NPPD", "F_LITTERD"))
   default_params <- fetchvars(hc, NA, tolower(params))
   new_values <- default_params$value * 0.5
 

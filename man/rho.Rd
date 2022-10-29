@@ -14,9 +14,9 @@ the forcing component.
 }
 \section{Functions}{
 \itemize{
-\item \code{RHO_SO2}: a radiative forcing efficiency for SO2
-}}
+\item \code{RHO_SO2()}: a radiative forcing efficiency for SO2
 
+}}
 \section{Note}{
 
 Because these identifiers are provided as \code{#define} macros in the hector code,

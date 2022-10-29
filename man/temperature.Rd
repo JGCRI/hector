@@ -28,19 +28,19 @@ type.
 }
 \section{Functions}{
 \itemize{
-\item \code{GLOBAL_TAS}: Global mean air temperature anomaly
+\item \code{GLOBAL_TAS()}: Global mean air temperature anomaly
 
-\item \code{SST}: Average sea surface temperature anomaly
+\item \code{SST()}: Average sea surface temperature anomaly
 
-\item \code{OCEAN_TAS}: Average air temperature anomaly over the ocean
+\item \code{OCEAN_TAS()}: Average air temperature anomaly over the ocean
 
-\item \code{FLUX_MIXED}: Heat flux into the mixed layer of the ocean
+\item \code{FLUX_MIXED()}: Heat flux into the mixed layer of the ocean
 
-\item \code{FLUX_INTERIOR}: Heat flux into the interior layer of the ocean
+\item \code{FLUX_INTERIOR()}: Heat flux into the interior layer of the ocean
 
-\item \code{HEAT_FLUX}: Total heat flux into the ocean
+\item \code{HEAT_FLUX()}: Total heat flux into the ocean
+
 }}
-
 \section{Note}{
 
 Because these identifiers are provided as \code{#define} macros in the hector code,

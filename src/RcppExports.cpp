@@ -2296,26 +2296,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// F_LUCV
-String F_LUCV();
-RcppExport SEXP _hector_F_LUCV() {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(F_LUCV());
-    return rcpp_result_gen;
-END_RCPP
-}
-// F_LUCD
-String F_LUCD();
-RcppExport SEXP _hector_F_LUCD() {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(F_LUCD());
-    return rcpp_result_gen;
-END_RCPP
-}
 // VEG_C
 String VEG_C(String biome);
 RcppExport SEXP _hector_VEG_C(SEXP biomeSEXP) {
@@ -2896,8 +2876,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_F_NPPV", (DL_FUNC) &_hector_F_NPPV, 1},
     {"_hector_F_NPPD", (DL_FUNC) &_hector_F_NPPD, 1},
     {"_hector_F_LITTERD", (DL_FUNC) &_hector_F_LITTERD, 1},
-    {"_hector_F_LUCV", (DL_FUNC) &_hector_F_LUCV, 0},
-    {"_hector_F_LUCD", (DL_FUNC) &_hector_F_LUCD, 0},
     {"_hector_VEG_C", (DL_FUNC) &_hector_VEG_C, 1},
     {"_hector_DETRITUS_C", (DL_FUNC) &_hector_DETRITUS_C, 1},
     {"_hector_SOIL_C", (DL_FUNC) &_hector_SOIL_C, 1},
