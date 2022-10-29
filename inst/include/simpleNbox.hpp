@@ -200,8 +200,6 @@ private:
       f_nppd;                 //!< fraction NPP into vegetation and detritus
   double_stringmap f_litterd; //!< fraction of litter to detritus
 
-  double f_lucv, f_lucd; //!< fraction LUC from vegetation and detritus
-
   // Initial fluxes
   fluxpool_stringmap npp_flux0; //!< preindustrial NPP
 

@@ -88,12 +88,12 @@ Environment newcore_impl(String inifile, int loglevel, bool suppresslogging,
 //' Shut down a hector instance
 //'
 //' Shutting down an instance will free the instance itself and all of the
-//objects it created. Any attempted ' operation on the instance after that will
-//raise an error.
+//' objects it created. Any attempted operation on the instance after that will
+//' raise an error.
 //'
 //' @section Caution:
 //' This function should be called as \code{mycore <- shutdown(mycore)} so that
-//the change ' from active to inactive will be recorded in the caller.
+//' the change from active to inactive will be recorded in the caller.
 //'
 //' @param core Handle to a Hector instance
 //' @return The Hector instance handle

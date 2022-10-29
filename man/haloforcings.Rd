@@ -92,59 +92,59 @@ subtracted off.
 }
 \section{Functions}{
 \itemize{
-\item \code{RF_CF4}: Radiative forcing due to CF4
+\item \code{RF_CF4()}: Radiative forcing due to CF4
 
-\item \code{RF_C2F6}: Radiative forcing due to C2F6
+\item \code{RF_C2F6()}: Radiative forcing due to C2F6
 
-\item \code{RF_HFC23}: Radiative forcing due to HFC-23
+\item \code{RF_HFC23()}: Radiative forcing due to HFC-23
 
-\item \code{RF_HFC32}: Radiative forcing due to HFC-32
+\item \code{RF_HFC32()}: Radiative forcing due to HFC-32
 
-\item \code{RF_HFC4310}: Radiative forcing due to HFC-4310
+\item \code{RF_HFC4310()}: Radiative forcing due to HFC-4310
 
-\item \code{RF_HFC125}: Radiative forcing due to HFC-125
+\item \code{RF_HFC125()}: Radiative forcing due to HFC-125
 
-\item \code{RF_HFC134A}: Radiative forcing due to HFC-134a
+\item \code{RF_HFC134A()}: Radiative forcing due to HFC-134a
 
-\item \code{RF_HFC143A}: Radiative forcing due to HFC-143a
+\item \code{RF_HFC143A()}: Radiative forcing due to HFC-143a
 
-\item \code{RF_HFC227EA}: Radiative forcing due to HFC227ea
+\item \code{RF_HFC227EA()}: Radiative forcing due to HFC227ea
 
-\item \code{RF_HFC245FA}: Radiative forcing due to HFC-245fa
+\item \code{RF_HFC245FA()}: Radiative forcing due to HFC-245fa
 
-\item \code{RF_SF6}: Radiative forcing due to sulfur hexafluoride
+\item \code{RF_SF6()}: Radiative forcing due to sulfur hexafluoride
 
-\item \code{RF_CFC11}: Radiative forcing due to CFC-11
+\item \code{RF_CFC11()}: Radiative forcing due to CFC-11
 
-\item \code{RF_CFC12}: Radiative forcing due to CFC-12
+\item \code{RF_CFC12()}: Radiative forcing due to CFC-12
 
-\item \code{RF_CFC113}: Radiative forcing due to CFC-113
+\item \code{RF_CFC113()}: Radiative forcing due to CFC-113
 
-\item \code{RF_CFC114}: Radiative forcing due to CFC-114
+\item \code{RF_CFC114()}: Radiative forcing due to CFC-114
 
-\item \code{RF_CFC115}: Radiative forcing due to CFC-115
+\item \code{RF_CFC115()}: Radiative forcing due to CFC-115
 
-\item \code{RF_CCL4}: Radiative forcing due to carbon tetrachloride
+\item \code{RF_CCL4()}: Radiative forcing due to carbon tetrachloride
 
-\item \code{RF_CH3CCL3}: Radiative forcing due to trichloroethane
+\item \code{RF_CH3CCL3()}: Radiative forcing due to trichloroethane
 
-\item \code{RF_HCFC22}: Radiative forcing due to HCFC-22
+\item \code{RF_HCFC22()}: Radiative forcing due to HCFC-22
 
-\item \code{RF_HCFC141B}: Radiative forcing due to HCFC-141b
+\item \code{RF_HCFC141B()}: Radiative forcing due to HCFC-141b
 
-\item \code{RF_HCFC142B}: Radiative forcing due to HCCFC-142b
+\item \code{RF_HCFC142B()}: Radiative forcing due to HCCFC-142b
 
-\item \code{RF_HALON1211}: Radiative forcing due to halon-1211
+\item \code{RF_HALON1211()}: Radiative forcing due to halon-1211
 
-\item \code{RF_HALON1301}: Radiative forcing due to halon-1301
+\item \code{RF_HALON1301()}: Radiative forcing due to halon-1301
 
-\item \code{RF_HALON2402}: Radiative forcing due to halon-2402
+\item \code{RF_HALON2402()}: Radiative forcing due to halon-2402
 
-\item \code{RF_CH3CL}: Radiative forcing due to chloromethane
+\item \code{RF_CH3CL()}: Radiative forcing due to chloromethane
 
-\item \code{RF_CH3BR}: Radiative forcing due to bromomethane
+\item \code{RF_CH3BR()}: Radiative forcing due to bromomethane
+
 }}
-
 \section{Note}{
 
 Because these identifiers are provided as \code{#define} macros in the hector code,

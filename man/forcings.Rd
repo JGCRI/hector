@@ -7,11 +7,6 @@
 \alias{RF_CO2}
 \alias{RF_H2O_STRAT}
 \alias{RF_O3_TROP}
-\alias{RF_BC}
-\alias{RF_OC}
-\alias{RF_NH3}
-\alias{RF_SO2}
-\alias{RF_ACI}
 \alias{RF_VOL}
 \alias{RF_MISC}
 \alias{Q_CO2}
@@ -27,16 +22,6 @@ RF_CO2()
 RF_H2O_STRAT()
 
 RF_O3_TROP()
-
-RF_BC()
-
-RF_OC()
-
-RF_NH3()
-
-RF_SO2()
-
-RF_ACI()
 
 RF_VOL()
 
@@ -54,35 +39,25 @@ messages.)
 }
 \section{Functions}{
 \itemize{
-\item \code{RF_TOTAL}: Total radiative forcing
+\item \code{RF_TOTAL()}: Total radiative forcing
 
-\item \code{RF_T_ALBEDO}: Radiative forcing due to albedo
+\item \code{RF_T_ALBEDO()}: Radiative forcing due to albedo
 
-\item \code{RF_CO2}: Radiative forcing due to CO2
+\item \code{RF_CO2()}: Radiative forcing due to CO2
 
-\item \code{RF_H2O_STRAT}: Radiative forcing due to stratospheric water vapor
+\item \code{RF_H2O_STRAT()}: Radiative forcing due to stratospheric water vapor
 
-\item \code{RF_O3_TROP}: Radiative forcing due to tropospheric ozone
+\item \code{RF_O3_TROP()}: Radiative forcing due to tropospheric ozone
 
-\item \code{RF_BC}: Radiative forcing due to black carbon aerosol-radiation interactions
+\item \code{RF_VOL()}: Radiative forcing due to volcanic activity
 
-\item \code{RF_OC}: Radiative forcing due to organic carbon aerosol-radiation interactions
+\item \code{RF_MISC()}: Radiative miscellaneous forcing read in from ini.
 
-\item \code{RF_NH3}: Radiative forcing due to NH3 aerosol-radiation interactions
+\item \code{Q_CO2()}: Radiative forcing efficiency for doubling of CO2
 
-\item \code{RF_SO2}: Radiative forcing due to SO2 aerosol-radiation interactions
+\item \code{RF_CH4()}: Radiative forcing due to methane
 
-\item \code{RF_ACI}: aerosol-cloud interactions, includes contributions from SO2, BC and OC
-
-\item \code{RF_VOL}: Radiative forcing due to volcanic activity
-
-\item \code{RF_MISC}: Radiative miscellaneous forcing read in from ini.
-
-\item \code{Q_CO2}: Radiative forcing efficiency for doubling of CO2
-
-\item \code{RF_CH4}: Radiative forcing due to methane
 }}
-
 \section{Note}{
 
 Because these identifiers are provided as \code{#define} macros in the hector code,

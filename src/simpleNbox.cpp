@@ -127,8 +127,6 @@ void SimpleNbox::init(Core *coreptr) {
   core->registerInput(D_F_NPPV, getComponentName());
   core->registerInput(D_F_NPPD, getComponentName());
   core->registerInput(D_F_LITTERD, getComponentName());
-  core->registerInput(D_F_LUCV, getComponentName());
-  core->registerInput(D_F_LUCD, getComponentName());
   core->registerInput(D_CO2_CONSTRAIN, getComponentName());
   core->registerInput(D_NBP_CONSTRAIN, getComponentName());
 }
@@ -272,12 +270,6 @@ void SimpleNbox::setData(const std::string &varName, const message_data &data) {
     } else if (varNameParsed == D_F_LITTERD) {
       H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
       f_litterd[biome] = data.getUnitval(U_UNITLESS);
-    } else if (varNameParsed == D_F_LUCV) {
-      H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
-      f_lucv = data.getUnitval(U_UNITLESS);
-    } else if (varNameParsed == D_F_LUCD) {
-      H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
-      f_lucd = data.getUnitval(U_UNITLESS);
     }
 
     // Initial fluxes
@@ -506,14 +498,6 @@ unitval SimpleNbox::getData(const std::string &varName, const double date) {
     H_ASSERT(date == Core::undefinedIndex(),
              "Date not allowed for litter-detritus fraction");
     returnval = unitval(f_litterd.at(biome), U_UNITLESS);
-  } else if (varNameParsed == D_F_LUCV) {
-    H_ASSERT(date == Core::undefinedIndex(),
-             "Date not allowed for LUC vegetation fraction");
-    returnval = unitval(f_lucv, U_UNITLESS);
-  } else if (varNameParsed == D_F_LUCD) {
-    H_ASSERT(date == Core::undefinedIndex(),
-             "Date not allowed for LUC detritus fraction");
-    returnval = unitval(f_lucd, U_UNITLESS);
   } else if (varNameParsed == D_EARTHC) {
     if (date == Core::undefinedIndex())
       returnval = earth_c;

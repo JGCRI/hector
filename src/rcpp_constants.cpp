@@ -1263,16 +1263,6 @@ String F_LITTERD(String biome = "") {
   return out;
 }
 
-//' @describeIn parameters LUC fraction to vegetation (\code{"(unitless)"})
-//' @export
-// [[Rcpp::export]]
-String F_LUCV() { return D_F_LUCV; }
-
-//' @describeIn parameters LUC fraction to detritus (\code{"(unitless)"})
-//' @export
-// [[Rcpp::export]]
-String F_LUCD() { return D_F_LUCD; }
-
 //' @describeIn carboncycle Vegetation C pool (`"Pg C"`)
 //' @param biome Name of biome (leave empty for global)
 //' @export

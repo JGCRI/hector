@@ -101,11 +101,6 @@ void SimpleNbox::prepareToRun() {
     }
   }
 
-  // LUC partitioning
-  H_ASSERT(f_lucv >= 0.0, "f_lucv <0");
-  H_ASSERT(f_lucd >= 0.0, "f_lucd <0");
-  H_ASSERT(f_lucv + f_lucd <= 1.0, "f_lucv + f_lucd >1");
-
   // If no albedo data, assume constant
   if (!Falbedo.size()) {
     unitval alb(-0.2, U_W_M2); // default is MAGICC value
@@ -305,8 +300,6 @@ void SimpleNbox::stashCValues(double t, const double c[]) {
   for (auto biome : biome_list) {
     const double wt = (npp(biome) + rh(biome)) / npp_rh_total;
 
-    // Update atmosphere with luc emissons from all land pools and biomes
-
     // Calculate luc emissons
     const double veg_frac = veg_c[biome].value(U_PGC) / total;
     const double det_frac = detritus_c[biome].value(U_PGC) / total;
@@ -320,7 +313,7 @@ void SimpleNbox::stashCValues(double t, const double c[]) {
     fluxpool luc_fav_biome_flux = yf * atmos_c.flux_from_fluxpool(luc_u_untracked * veg_frac);
     fluxpool luc_fad_biome_flux = yf * atmos_c.flux_from_fluxpool(luc_u_untracked * det_frac);
     fluxpool luc_fas_biome_flux = yf * atmos_c.flux_from_fluxpool(luc_u_untracked * soil_frac);
-    
+
     // Calculate NPP fluxes
     fluxpool npp_biome =
         npp_total * wt; // this is already adjusted for any NBP constraint
@@ -357,6 +350,7 @@ void SimpleNbox::stashCValues(double t, const double c[]) {
     soil_c[biome] = soil_c[biome] + npp_fas_biome_flux;
     atmos_c =
         atmos_c - npp_fav_biome_flux - npp_fad_biome_flux - npp_fas_biome_flux;
+    
     // Update soil, detritus, and atmosphere pools - rh fluxes
     atmos_c = atmos_c + rh_fda_flux + rh_fsa_flux;
     detritus_c[biome] = detritus_c[biome] - rh_fda_flux;

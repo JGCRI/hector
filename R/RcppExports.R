@@ -1439,18 +1439,6 @@ F_LITTERD <- function(biome = "") {
     .Call('_hector_F_LITTERD', PACKAGE = 'hector', biome)
 }
 
-#' @describeIn parameters LUC fraction to vegetation (\code{"(unitless)"})
-#' @export
-F_LUCV <- function() {
-    .Call('_hector_F_LUCV', PACKAGE = 'hector')
-}
-
-#' @describeIn parameters LUC fraction to detritus (\code{"(unitless)"})
-#' @export
-F_LUCD <- function() {
-    .Call('_hector_F_LUCD', PACKAGE = 'hector')
-}
-
 #' @describeIn carboncycle Vegetation C pool (`"Pg C"`)
 #' @param biome Name of biome (leave empty for global)
 #' @export
@@ -1572,16 +1560,6 @@ HEAT_FLUX <- function() {
     .Call('_hector_HEAT_FLUX', PACKAGE = 'hector')
 }
 
-#' Shut down a hector instance
-#'
-#' Shutting down an instance will free the instance itself and all of the
-NULL
-
-#'
-#' @section Caution:
-#' This function should be called as \code{mycore <- shutdown(mycore)} so that
-NULL
-
 #' Send a message to a Hector instance
 #'
 #' Messages are the mechanism used to get data from Hector model components and
@@ -1608,6 +1586,15 @@ newcore_impl <- function(inifile, loglevel, suppresslogging, name) {
     .Call('_hector_newcore_impl', PACKAGE = 'hector', inifile, loglevel, suppresslogging, name)
 }
 
+#' Shut down a hector instance
+#'
+#' Shutting down an instance will free the instance itself and all of the
+#' objects it created. Any attempted operation on the instance after that will
+#' raise an error.
+#'
+#' @section Caution:
+#' This function should be called as \code{mycore <- shutdown(mycore)} so that
+#' the change from active to inactive will be recorded in the caller.
 #'
 #' @param core Handle to a Hector instance
 #' @return The Hector instance handle

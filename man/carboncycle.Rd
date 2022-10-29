@@ -11,8 +11,6 @@
 \alias{DACCS_UPTAKE}
 \alias{LUC_EMISSIONS}
 \alias{LUC_UPTAKE}
-\alias{CO2_CONSTRAIN}
-\alias{NBP_CONSTRAIN}
 \alias{VEG_C}
 \alias{DETRITUS_C}
 \alias{SOIL_C}
@@ -38,10 +36,6 @@ LUC_EMISSIONS()
 
 LUC_UPTAKE()
 
-CO2_CONSTRAIN()
-
-NBP_CONSTRAIN()
-
 VEG_C(biome = "")
 
 DETRITUS_C(biome = "")
@@ -61,20 +55,16 @@ carbon cycle
 }
 \section{Functions}{
 \itemize{
-\item \code{CO2_CONSTRAIN}: Constrain atmospheric CO2 concentration  (\code{"(ppmv CO2)"})
+\item \code{VEG_C()}: Vegetation C pool (`"Pg C"`)
 
-\item \code{NBP_CONSTRAIN}: Constrain net biome production (land-atmosphere flux) (\code{"(PgC/yr)"})
+\item \code{DETRITUS_C()}: Vegetation detritus C pool (`"Pg C"`)
 
-\item \code{VEG_C}: Vegetation C pool (`"Pg C"`)
+\item \code{SOIL_C()}: Soil C pool (`"Pg C"`)
 
-\item \code{DETRITUS_C}: Vegetation detritus C pool (`"Pg C"`)
-
-\item \code{SOIL_C}: Soil C pool (`"Pg C"`)
-
-\item \code{NPP_FLUX0}: Initial net primary productivity (NPP)
+\item \code{NPP_FLUX0()}: Initial net primary productivity (NPP)
 flux (`"Pg C year^-1"`)
-}}
 
+}}
 \section{Output variables}{
 
 These variables can be read using the \code{\link{GETDATA}} message type:

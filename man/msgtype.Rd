@@ -19,13 +19,13 @@ it to the correct method in the recipient.
 }
 \section{Functions}{
 \itemize{
-\item \code{GETDATA}: Message type for retrieving data from a component
+\item \code{GETDATA()}: Message type for retrieving data from a component
 
-\item \code{SETDATA}: Message type for setting data in a component
+\item \code{SETDATA()}: Message type for setting data in a component
 
-\item \code{BIOME_SPLIT_CHAR}: Character used to separate biome from variable name
+\item \code{BIOME_SPLIT_CHAR()}: Character used to separate biome from variable name
+
 }}
-
 \section{Note}{
 
 Because these identifiers are provided as \code{#define} macros in the hector code,

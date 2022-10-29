@@ -5,17 +5,13 @@
 \alias{TRACKING_DATE}
 \alias{PREINDUSTRIAL_CO2}
 \alias{BETA}
-\alias{Q10_RH}
 \alias{WARMINGFACTOR}
 \alias{F_NPPV}
 \alias{F_NPPD}
 \alias{F_LITTERD}
-\alias{F_LUCV}
-\alias{F_LUCD}
 \alias{ECS}
 \alias{AERO_SCALE}
 \alias{VOLCANIC_SCALE}
-\alias{LO_WARMING_RATIO}
 \alias{DIFFUSIVITY}
 \title{Identifiers for model parameters}
 \usage{
@@ -25,8 +21,6 @@ PREINDUSTRIAL_CO2()
 
 BETA(biome = "")
 
-Q10_RH(biome = "")
-
 WARMINGFACTOR(biome = "")
 
 F_NPPV(biome = "")
@@ -35,17 +29,11 @@ F_NPPD(biome = "")
 
 F_LITTERD(biome = "")
 
-F_LUCV()
-
-F_LUCD()
-
 ECS()
 
 AERO_SCALE()
 
 VOLCANIC_SCALE()
-
-LO_WARMING_RATIO()
 
 DIFFUSIVITY()
 }
@@ -66,39 +54,29 @@ conserve mass).
 }
 \section{Functions}{
 \itemize{
-\item \code{TRACKING_DATE}: Start of carbon tracking (Year)
+\item \code{TRACKING_DATE()}: Start of carbon tracking (Year)
 
-\item \code{PREINDUSTRIAL_CO2}: Preindustrial CO2 concentration (\code{"ppmv CO2"})
+\item \code{PREINDUSTRIAL_CO2()}: Preindustrial CO2 concentration (\code{"ppmv CO2"})
 
-\item \code{BETA}: CO2 fertilization factor (\code{"(unitless)"})
+\item \code{BETA()}: CO2 fertilization factor (\code{"(unitless)"})
 
-\item \code{Q10_RH}: Heterotrophic respiration temperature sensitivity factor (\code{"(unitless)"})
+\item \code{WARMINGFACTOR()}: Biome-specific warming factor (`(unitless)`)
 
-\item \code{WARMINGFACTOR}: Biome-specific warming factor (`(unitless)`)
+\item \code{F_NPPV()}: NPP fraction to vegetation (\code{"(unitless)"})
 
-\item \code{F_NPPV}: NPP fraction to vegetation (\code{"(unitless)"})
+\item \code{F_NPPD()}: NPP fraction to detritus (\code{"(unitless)"})
 
-\item \code{F_NPPD}: NPP fraction to detritus (\code{"(unitless)"})
+\item \code{F_LITTERD()}: Litter fraction to detritus (\code{"(unitless)"})
 
-\item \code{F_LITTERD}: Litter fraction to detritus (\code{"(unitless)"})
+\item \code{ECS()}: Equilibrium Climate Sensitivity (\code{"degC"})
 
-\item \code{F_LUCV}: LUC fraction to vegetation (\code{"(unitless)"})
+\item \code{AERO_SCALE()}: Aerosol forcing scaling factor (\code{"(unitless)"})
 
-\item \code{F_LUCD}: LUC fraction to detritus (\code{"(unitless)"})
+\item \code{VOLCANIC_SCALE()}: Volcanic forcing scaling factor (\code{"(unitless)"})
 
-\item \code{ECS}: Equilibrium Climate Sensitivity (\code{"degC"})
+\item \code{DIFFUSIVITY()}: Ocean heat diffusivity (\code{"cm2/s"})
 
-\item \code{AERO_SCALE}: Aerosol forcing scaling factor (\code{"(unitless)"})
-
-\item \code{VOLCANIC_SCALE}: Volcanic forcing scaling factor (\code{"(unitless)"})
-
-\item \code{LO_WARMING_RATIO}: Land-Ocean Warming Ratio (\code{"(unitless)"}), by default set to 0
-meaning that the land ocean warming ratio is an emergent property of Hector's temperature
-component otherwise the user defined land ocean warming ratio will be used.
-
-\item \code{DIFFUSIVITY}: Ocean heat diffusivity (\code{"cm2/s"})
 }}
-
 \section{Note}{
 
 Because these identifiers are provided as \code{#define} macros in the hector code,
