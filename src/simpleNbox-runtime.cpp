@@ -615,13 +615,13 @@ int SimpleNbox::calcderivs(double t, const double c[], double dcdt[]) const {
   }
 
   // Land-use change emissions come from veg, detritus, and soil
-  fluxpool luc_fva = luc_emission_current * f_lucv;
-  fluxpool luc_fda = luc_emission_current * f_lucd;
-  fluxpool luc_fsa = luc_emission_current * (1 - f_lucv - f_lucd);
+  fluxpool luc_fva = current_luc_e * f_lucv;
+  fluxpool luc_fda = current_luc_e * f_lucd;
+  fluxpool luc_fsa = current_luc_e * (1 - f_lucv - f_lucd);
   // ...treat uptake the same way
-  fluxpool luc_fav = luc_uptake_current * f_lucv;
-  fluxpool luc_fad = luc_uptake_current * f_lucd;
-  fluxpool luc_fas = luc_uptake_current * (1 - f_lucv - f_lucd);
+  fluxpool luc_fav = current_luc_u * f_lucv;
+  fluxpool luc_fad = current_luc_u * f_lucd;
+  fluxpool luc_fas = current_luc_u * (1 - f_lucv - f_lucd);
 
   // Oxidized methane of fossil fuel origin
   fluxpool ch4ox_current(0.0, U_PGC_YR); // TODO: implement this
