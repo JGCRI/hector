@@ -6,7 +6,6 @@ context("Old new tests")
 # need to be updated by running data-raw/generate-comp-data.R
 
 test_that("Hector output passes old new test", {
-  testthat::skip("Temporarily skipping")
 
   # In order to pass the old new test the mean absolute difference between
   # the old and new hector output must be less than the defined threshold.
