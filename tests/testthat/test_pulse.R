@@ -16,7 +16,8 @@ test_that("Hector responds correctly to a LUC pulse", {
     expect_true(all(diff(x$value) < 1e-6))
 
     # The LUC pulse is at 1800 in this test file
-    # As long as LUC is proportional to pool sizes (see PR #647),
+    # As long as LUC losses are proportional to pool sizes (see PR #647),
+    # and NPP is reduced by LUC veg losses (see #638 and #639),
     # there should be no trend in subsequent years
     x <- fetchvars(hc, 1801:1850, VEG_C())
 #    expect_true(all(diff(x$value) < 1e-6))
