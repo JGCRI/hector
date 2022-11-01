@@ -31,7 +31,7 @@ find ./inst/input -name "*.ini" -print0 | xargs -0 -n1 $HECTOR
 
 # Make sure the model handles year changes
 echo "---------- Running: year changes ----------"
-sed 's/startDate=1745/startDate=1740/' $INPUT/hector_ssp245.ini > $INPUT/hector_ssp245_time.ini
+sed 's/startDate=1745/startDate=1746/' $INPUT/hector_ssp245.ini > $INPUT/hector_ssp245_time.ini
 # Confirm that a change was made
 if [[ $(diff -q $INPUT/hector_ssp245.ini $INPUT/hector_ssp245_time.ini | wc -c) -eq 0 ]]; then exit 1; fi
 # ...and run

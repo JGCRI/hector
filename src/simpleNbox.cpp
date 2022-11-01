@@ -41,16 +41,21 @@ void identity_tests(bool trk) {
 /*! \brief constructor
  */
 SimpleNbox::SimpleNbox() : CarbonCycleModel(6), masstot(0.0) {
-  ffiEmissions.allowInterp(true);
+  // Don't allow interpolation of the emissions time series; we use
+  // constant annualized values throughout the year so e.g. pulse tests
+  // work correctly. See #643
+  ffiEmissions.allowInterp(false);
   ffiEmissions.name = D_FFI_EMISSIONS;
-  daccsUptake.allowInterp(true);
+  daccsUptake.allowInterp(false);
   daccsUptake.name = D_DACCS_UPTAKE;
-  lucEmissions.allowInterp(true);
+  lucEmissions.allowInterp(false);
   lucEmissions.name = D_LUC_EMISSIONS;
-  lucUptake.allowInterp(true);
+  lucUptake.allowInterp(false);
   lucUptake.name = D_LUC_UPTAKE;
+
   Falbedo.allowInterp(true);
   Falbedo.name = D_RF_T_ALBEDO;
+
   CO2_constrain.name = D_CO2_CONSTRAIN;
   NBP_constrain.name = D_NBP_CONSTRAIN;
 
@@ -287,12 +292,14 @@ void SimpleNbox::setData(const std::string &varName, const message_data &data) {
       H_ASSERT(data.date != Core::undefinedIndex(), "date required");
       H_ASSERT(biome == SNBOX_DEFAULT_BIOME,
                "fossil fuels and industry emissions must be global");
-      ffiEmissions.set(data.date, data.getUnitval(U_PGC_YR));
+      unitval ffi = data.getUnitval(U_PGC_YR);
+      ffiEmissions.set(data.date, fluxpool(ffi.value(U_PGC_YR), U_PGC_YR));
     } else if (varNameParsed == D_DACCS_UPTAKE) {
       H_ASSERT(data.date != Core::undefinedIndex(), "date required");
       H_ASSERT(biome == SNBOX_DEFAULT_BIOME,
                "direct air carbon capture and storage must be global");
-      daccsUptake.set(data.date, data.getUnitval(U_PGC_YR));
+      unitval daccs = data.getUnitval(U_PGC_YR);
+      daccsUptake.set(data.date, fluxpool(daccs.value(U_PGC_YR), U_PGC_YR));
     } else if (varNameParsed == D_LUC_EMISSIONS) {
       H_ASSERT(data.date != Core::undefinedIndex(), "date required");
       unitval luc = data.getUnitval(U_PGC_YR);
