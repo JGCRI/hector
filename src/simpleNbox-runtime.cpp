@@ -221,7 +221,7 @@ void SimpleNbox::stashCValues(double t, const double c[]) {
   // IMPORTANT NOTE ABOUT YEAR FRACTION
   // In general we keep fluxes as per year throughout stashCValues
   // This changes only when we start to apportion NPP and RH to biomes
-  
+
   // get the UNTRACKED earth emissions (ffi) and uptake (ccs)
   fluxpool ffi_untracked = current_ffi_e;
   fluxpool ccs_untracked = current_daccs_u;
@@ -276,7 +276,7 @@ void SimpleNbox::stashCValues(double t, const double c[]) {
     npp_total = npp_total + diff / 2.0;
     rh_nbp_constraint_adjust = (rh_total - diff / 2.0) / rh_total;
     rh_total = rh_total - diff / 2.0;
-    
+
     // Adjust pools
     // NOTE we only adjust for whatever year fraction we're currently stashing
     unitval pool_diff = unitval(diff.value(U_PGC_YR), U_PGC) * yf;
@@ -316,11 +316,9 @@ void SimpleNbox::stashCValues(double t, const double c[]) {
     fluxpool luc_fva_biome_flux = yf * veg_c[biome].flux_from_fluxpool(luc_e_untracked * veg_frac);
     fluxpool luc_fda_biome_flux = yf * detritus_c[biome].flux_from_fluxpool(luc_e_untracked * det_frac);
     fluxpool luc_fsa_biome_flux = yf * soil_c[biome].flux_from_fluxpool(luc_e_untracked * soil_frac);
-    // Calculate luc uptake
-    fluxpool luc_fav_biome_flux = yf * atmos_c.flux_from_fluxpool(luc_u_untracked * veg_frac);
-    fluxpool luc_fad_biome_flux = yf * atmos_c.flux_from_fluxpool(luc_u_untracked * det_frac);
-    fluxpool luc_fas_biome_flux = yf * atmos_c.flux_from_fluxpool(luc_u_untracked * soil_frac);
-    
+    // Calculate luc uptake; it all goes to vegetation
+    fluxpool luc_fav_biome_flux = yf * atmos_c.flux_from_fluxpool(luc_u_untracked);
+
     // Calculate NPP fluxes
     fluxpool npp_biome =
         npp_total * wt; // this is already adjusted for any NBP constraint
@@ -344,12 +342,10 @@ void SimpleNbox::stashCValues(double t, const double c[]) {
         soil_c[biome].flux_from_fluxpool(rh_fsa_adj);
 
     // Update soil, detritus, and atmosphere pools - luc fluxes
-    atmos_c = atmos_c + luc_fva_biome_flux - luc_fav_biome_flux;
-    atmos_c = atmos_c + luc_fda_biome_flux - luc_fad_biome_flux;
-    atmos_c = atmos_c + luc_fsa_biome_flux - luc_fas_biome_flux;
+    atmos_c = atmos_c + luc_fva_biome_flux - luc_fav_biome_flux + luc_fda_biome_flux + luc_fsa_biome_flux;
     veg_c[biome] = veg_c[biome] + luc_fav_biome_flux - luc_fva_biome_flux;
-    detritus_c[biome] + luc_fad_biome_flux - luc_fda_biome_flux;
-    soil_c[biome] = soil_c[biome] + luc_fas_biome_flux - luc_fsa_biome_flux;
+    detritus_c[biome] - luc_fda_biome_flux;
+    soil_c[biome] = soil_c[biome] - luc_fsa_biome_flux;
 
     // Update soil, detritus, and atmosphere pools - npp fluxes
     veg_c[biome] = veg_c[biome] + npp_fav_biome_flux;
@@ -622,10 +618,8 @@ int SimpleNbox::calcderivs(double t, const double c[], double dcdt[]) const {
   fluxpool luc_fva = current_luc_e * c[SNBOX_VEG] / total;
   fluxpool luc_fda = current_luc_e * c[SNBOX_DET] / total;
   fluxpool luc_fsa = current_luc_e * c[SNBOX_SOIL] / total;
-  // ...treat uptake the same way
-  fluxpool luc_fav = current_luc_u * c[SNBOX_VEG] / total;
-  fluxpool luc_fad = current_luc_u * c[SNBOX_DET] / total;
-  fluxpool luc_fas = current_luc_u * c[SNBOX_SOIL] / total;
+  // ...whereas uptake goes entirely to vegetation
+  fluxpool luc_fav = current_luc_u;
   /*
   // Land-use change emissions come from veg, detritus, and soil
   fluxpool luc_fva = current_luc_e * f_lucv;
@@ -680,11 +674,11 @@ int SimpleNbox::calcderivs(double t, const double c[], double dcdt[]) const {
   dcdt[SNBOX_DET] = // change in detritus pool
       npp_fad.value(U_PGC_YR) + litter_fvd.value(U_PGC_YR) -
       detsoil_flux.value(U_PGC_YR) - rh_fda_current.value(U_PGC_YR) -
-      luc_fda.value(U_PGC_YR) + luc_fad.value(U_PGC_YR);
+      luc_fda.value(U_PGC_YR);
   dcdt[SNBOX_SOIL] = // change in soil pool
       npp_fas.value(U_PGC_YR) + litter_fvs.value(U_PGC_YR) +
       detsoil_flux.value(U_PGC_YR) - rh_fsa_current.value(U_PGC_YR) -
-      luc_fsa.value(U_PGC_YR) + luc_fas.value(U_PGC_YR);
+      luc_fsa.value(U_PGC_YR);
   dcdt[SNBOX_OCEAN] = // change in ocean pool
       ocean_uptake.value(U_PGC_YR) - ocean_release.value(U_PGC_YR);
   dcdt[SNBOX_EARTH] = // change in earth pool
