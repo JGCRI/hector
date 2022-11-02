@@ -303,6 +303,7 @@ void SimpleNbox::stashCValues(double t, const double c[]) {
   const double total = c[SNBOX_VEG] + c[SNBOX_DET] + c[SNBOX_SOIL];
 
   for (auto biome : biome_list) {
+    // `wt` is the biome share of major C fluxes; used for apportionment below
     const double wt = (npp(biome) + rh(biome)) / npp_rh_total;
 
     // Update atmosphere with luc emissons from all land pools and biomes
