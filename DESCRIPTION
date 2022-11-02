@@ -67,8 +67,8 @@ Suggests:
     ragg,
     here
 Collate:
-    'aadoc.R'
     'RcppExports.R'
+    'aadoc.R'
     'biome.R'
     'hector.R'
     'messages.R'
