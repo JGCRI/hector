@@ -67,14 +67,14 @@ Suggests:
     ragg,
     here
 Collate:
-    'aadoc.R'
     'RcppExports.R'
+    'aadoc.R'
     'biome.R'
     'hector.R'
     'messages.R'
     'units.R'
 VignetteBuilder: knitr
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.1
 SystemRequirements: GNU make
 URL: https://github.com/JGCRI/hector
 BugReports: https://github.com/JGCRI/hector/issues

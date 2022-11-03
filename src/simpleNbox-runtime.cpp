@@ -101,11 +101,6 @@ void SimpleNbox::prepareToRun() {
     }
   }
 
-  // LUC partitioning
-  H_ASSERT(f_lucv >= 0.0, "f_lucv <0");
-  H_ASSERT(f_lucd >= 0.0, "f_lucd <0");
-  H_ASSERT(f_lucv + f_lucd <= 1.0, "f_lucv + f_lucd >1");
-
   // If no albedo data, assume constant
   if (!Falbedo.size()) {
     unitval alb(-0.2, U_W_M2); // default is MAGICC value
@@ -306,8 +301,6 @@ void SimpleNbox::stashCValues(double t, const double c[]) {
     // `wt` is the biome share of major C fluxes; used for apportionment below
     const double wt = (npp(biome) + rh(biome)) / npp_rh_total;
 
-    // Update atmosphere with luc emissons from all land pools and biomes
-
     // Calculate luc emissons
     const double veg_frac = veg_c[biome].value(U_PGC) / total;
     const double det_frac = detritus_c[biome].value(U_PGC) / total;
@@ -354,6 +347,7 @@ void SimpleNbox::stashCValues(double t, const double c[]) {
     soil_c[biome] = soil_c[biome] + npp_fas_biome_flux;
     atmos_c =
         atmos_c - npp_fav_biome_flux - npp_fad_biome_flux - npp_fas_biome_flux;
+    
     // Update soil, detritus, and atmosphere pools - rh fluxes
     atmos_c = atmos_c + rh_fda_flux + rh_fsa_flux;
     detritus_c[biome] = detritus_c[biome] - rh_fda_flux;
@@ -621,16 +615,6 @@ int SimpleNbox::calcderivs(double t, const double c[], double dcdt[]) const {
   fluxpool luc_fsa = current_luc_e * c[SNBOX_SOIL] / total;
   // ...whereas uptake goes entirely to vegetation
   fluxpool luc_fav = current_luc_u;
-  /*
-  // Land-use change emissions come from veg, detritus, and soil
-  fluxpool luc_fva = current_luc_e * f_lucv;
-  fluxpool luc_fda = current_luc_e * f_lucd;
-  fluxpool luc_fsa = current_luc_e * (1 - f_lucv - f_lucd);
-  // ...treat uptake the same way
-  fluxpool luc_fav = current_luc_u * f_lucv;
-  fluxpool luc_fad = current_luc_u * f_lucd;
-  fluxpool luc_fas = current_luc_u * (1 - f_lucv - f_lucd);
-   */
 
   // Oxidized methane of fossil fuel origin
   fluxpool ch4ox_current(0.0, U_PGC_YR); // TODO: implement this

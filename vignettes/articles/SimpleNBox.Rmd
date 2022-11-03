@@ -146,8 +146,6 @@ The following values related to the terrestrial C cycle can be set via `setData`
 | Frac. NPP to vegetation            | unitless   | `D_F_NPPV`                 | `F_NPPV()`            | `f_nppv`        | No         | Yes            | Yes | Yes |
 | Frac. NPP to detritus              | unitless   | `D_F_NPPD`                 | `F_NPPD()`            | `f_nppd`        | No         | Yes            | Yes | Yes |
 | Frac. veg. C to litter             | unitless   | `D_F_LITTERD`              | `F_LITTERD()`         | `f_litterd`     | No         | Yes            | Yes | Yes |
-| Frac. LUC from vegetation          | unitless   | `D_F_LUCV`                 | `F_LUCV()`            | `f_lucv`        | No         | No             | Yes | Yes |
-| Frac. LUC from detritus            | unitless   | `D_F_LUCD`                 | `F_LUCD()`            | `f_lucd`        | No         | No             | Yes | Yes |
 | Initial NPP flux                   | PgC / year | `D_NPP_FLUX0`              |                       | `npp_flux0`     | No         | Yes            | Yes | Yes |
 | Fossil fuel CO~2~ emissions        | PgC / year | `D_FFI_EMISSIONS`          | `FFI_EMISSIONS()`     | `ffiEmissions`  | Yes        | No             | Yes | Yes |
 | Direct air carbon capture and storage | PgC / year | `D_DACCS_UPTAKE`          | `DACCS_UPTAKE()`     | `daccsUptake`  | Yes        | No             | Yes | Yes |

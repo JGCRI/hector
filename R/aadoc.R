@@ -37,8 +37,7 @@ NULL
 #' @inheritSection msgtype Note
 #'
 #' @name forcings
-#' @seealso \link{haloforcings} for forcings from halocarbons and \link{rho} for parameters
-#' related to radiative forcing efficiency.
+#' @seealso \link{haloforcings} for forcings from halocarbons and \link{rho} for parameters related to radiative forcing efficiency.
 #' @family capability identifiers
 NULL
 
@@ -51,8 +50,7 @@ NULL
 #' @inheritSection msgtype Note
 #'
 #' @name rho
-#' @seealso \link{haloforcings} for forcings from halocarbons and \link{forcings}
-#' forcing values provided from the hector forcing component.
+#' @seealso \link{haloforcings} for forcings from halocarbons and \link{forcings} forcing values provided from the hector forcing component.
 #' @family capability identifiers
 NULL
 
@@ -66,8 +64,7 @@ NULL
 #' @inheritSection msgtype Note
 #'
 #' @name delta
-#' @seealso \link{haloforcings} for forcings from halocarbons and \link{forcings}
-#' forcing values provided from the hector forcing component.
+#' @seealso \link{haloforcings} for forcings from halocarbons and \link{forcings} forcing values provided from the hector forcing component.
 #' @family capability identifiers
 NULL
 
@@ -80,7 +77,7 @@ NULL
 #' These variables can be read using the \code{\link{GETDATA}} message type:
 #' \describe{
 #' \item{CONCENTRATIONS_CO2}{Atmospheric CO2 concentration}
-#' \item{D_ATMOSPHERIC_CO2}{Atmospheric CO2 in units of C}
+#' \item{ATMOSPHERIC_CO2}{Atmospheric CO2 in units of C}
 #' \item{NBP}{Net biome production. Annual global C flux from atmosphere into
 #'   the land. A positive value means a net flux from atmosphere into land
 #'   (i.e. land is a net carbon sink), while a negative value means a net flux
@@ -89,6 +86,9 @@ NULL
 #'   et al. 2006--this is currently a globally-averaged variable.}
 #' \item{FFI_EMISSIONS}{Fossil fuel and industrial emissions}
 #' \item{LUC_EMISSIONS}{Land use change emissions}
+#' \item{NPP}{Net primary production}
+#' \item{RH}{Heterotrophic respiration}
+#' \item{EARTH_C}{Earth pool}
 #' }
 #' @section Input variables:
 #' \describe{
@@ -96,6 +96,8 @@ NULL
 #' \item{LUC_EMISSIONS}{Land use change emissions (\code{"Pg C/yr"})}
 #' \item{CO2_CONSTRAIN}{Prescribed atmospheric CO2 concentration (\code{"ppmv CO2"})}
 #' \item{NBP_CONSTRAIN}{Prescribed net biome production (land-atmosphere C flux) (\code{"Pg C/yr"})}
+#' \item{DACCS_UPTAKE}{Direct air carbon capture and storage}
+#' \item{LUC_UPTAKE}{Land use change uptake}
 #' }
 #' @inheritSection msgtype Note
 #' @name carboncycle
@@ -175,6 +177,7 @@ NULL
 #' \describe{
 #' \item{EMISSIONS_CH4}{Methane emissions (\code{"Tg CH4"})}
 #' \item{PREINDUSTRIAL_CH4}{Preindustrial methane concentration (\code{"ppbv CH4"})}
+#' \item{CH4_CONSTRAIN}{N2O concentration constraint (\code{"ppbv CH4"})}
 #' \item{NATURAL_CH4}{Natural methane emissions (\code{"Tg CH4"})}
 #' \item{LIFETIME_SOIL}{Time scale for methane loss into soil (\code{"Years"})}
 #' \item{LIFETIME_STRAT}{Time scale for methane loss into stratosphere (\code{"Years"})}
