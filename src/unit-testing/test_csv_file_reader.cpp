@@ -76,6 +76,7 @@ public:
      testVarName("c")
     {
         // Use the DummyModelComponent for testing
+        Core core(Logger::SEVERE, false, false);
         core.addModelComponent( new DummyModelComponent );
         core.init();
     }
@@ -109,7 +110,7 @@ protected:
         {
         }
         
-        virtual bool shouldVisitAtDate( const double date ) {
+        virtual bool shouldVisit( const bool in_spinup, const double date ) {
             return true;
         }
         
@@ -161,6 +162,8 @@ TEST_F(TestCSVTableReader, OkWithJustHeaderNoData) {
 }
 
 TEST_F(TestCSVTableReader, IgnoreWhitespaceHeader) {
+    Core core(Logger::SEVERE, false, false);
+    core.addModelComponent( new DummyModelComponent );
     testFile << "Date,  " << testVarName << "  , Other" << std::endl;
     testFile << "2,6,1" << std::endl;
     testFile.close();
@@ -171,6 +174,8 @@ TEST_F(TestCSVTableReader, IgnoreWhitespaceHeader) {
 }
 
 TEST_F(TestCSVTableReader, IgnoreWhitespaceRow) {
+    Core core(Logger::SEVERE, false, false);
+    core.addModelComponent( new DummyModelComponent );
     testFile << "Date," << testVarName << ",Other" << std::endl;
     testFile << "2,  6,   1" << std::endl;
     testFile.close();
@@ -202,6 +207,8 @@ TEST_F(TestCSVTableReader, NumColumnsDoNotChange) {
 }
 
 TEST_F(TestCSVTableReader, CanReRead) {
+    Core core(Logger::SEVERE, false, false);
+    core.addModelComponent( new DummyModelComponent );
     testFile << "Date," << testVarName << ",Other" << std::endl;
     testFile << "2,6,1" << std::endl;
     testFile.close();
@@ -216,6 +223,8 @@ TEST_F(TestCSVTableReader, CanReRead) {
 }
 
 TEST_F(TestCSVTableReader, CanMixNewlineHeader) {
+    Core core(Logger::SEVERE, false, false);
+    core.addModelComponent( new DummyModelComponent );
     testFile << "Date," << testVarName << "\r\n";
     testFile << "2,6\n";
     testFile.close();
@@ -226,6 +235,8 @@ TEST_F(TestCSVTableReader, CanMixNewlineHeader) {
 }
 
 TEST_F(TestCSVTableReader, CanMixNewlineData) {
+    Core core(Logger::SEVERE, false, false);
+    core.addModelComponent( new DummyModelComponent );
     testFile << "Date," << testVarName << "\n";
     testFile << "2,6\r\n";
     testFile.close();
@@ -236,6 +247,8 @@ TEST_F(TestCSVTableReader, CanMixNewlineData) {
 }
 
 TEST_F(TestCSVTableReader, CanIgnoreExtraline) {
+    Core core(Logger::SEVERE, false, false);
+    core.addModelComponent( new DummyModelComponent );
     testFile << "Date," << testVarName << ",Other" << std::endl;
     testFile << "2,6,1" << std::endl;
     testFile << "\n";
@@ -247,6 +260,8 @@ TEST_F(TestCSVTableReader, CanIgnoreExtraline) {
 }
 
 TEST_F(TestCSVTableReader, CanIgnoreExtralineCR) {
+    Core core(Logger::SEVERE, false, false);
+    core.addModelComponent( new DummyModelComponent );
     testFile << "Date," << testVarName << ",Other" << std::endl;
     testFile << "2,6,1" << std::endl;
     testFile << "\r\n";

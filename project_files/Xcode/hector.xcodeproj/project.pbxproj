@@ -82,6 +82,7 @@
 		27B2C270261511C8005DE26D /* spline_forsythe.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C24D261511C8005DE26D /* spline_forsythe.cpp */; };
 		27B2C271261511C8005DE26D /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C24E261511C8005DE26D /* main.cpp */; };
 		27F2613726B55617004BDD47 /* csv_tracking_visitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27962904268F237200333AA3 /* csv_tracking_visitor.cpp */; };
+		354045FB2913CF6600CA297D /* test_csv_file_reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 273FC39126A3570B00D5303E /* test_csv_file_reader.cpp */; };
 		35ACB833285E4F4E0025928F /* h_util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 275CBFF127AC7CC0009E2AF5 /* h_util.cpp */; };
 		954D62AE278E005500840656 /* nh3_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 954D62AD278E005500840656 /* nh3_component.cpp */; };
 		954D62AF278E005500840656 /* nh3_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 954D62AD278E005500840656 /* nh3_component.cpp */; };
@@ -511,6 +512,7 @@
 				27A02A632615CBB800AF9BFA /* so2_component.cpp in Sources */,
 				27A02A642615CBB800AF9BFA /* oc_component.cpp in Sources */,
 				273FC39F26A3570B00D5303E /* test_unitval.cpp in Sources */,
+				354045FB2913CF6600CA297D /* test_csv_file_reader.cpp in Sources */,
 				27962909268F241100333AA3 /* simpleNbox-runtime.cpp in Sources */,
 				273FC39D26A3570B00D5303E /* test_hreader.cpp in Sources */,
 				27A02A652615CBB800AF9BFA /* csv_table_reader.cpp in Sources */,
