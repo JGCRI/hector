@@ -105,10 +105,9 @@ TEST_F(TestDependencyFinder, TwoSeperate) {
     EXPECT_NE( dIt, ordering.end() );
 
     // expect that b is before a
-    EXPECT_LT( bIt - ordering.begin(), aIt - ordering.begin() ) << "Ordering: " << ordering << endl;
+    EXPECT_LT( bIt - ordering.begin(), aIt - ordering.begin() );
     // expect that d is before c
-    EXPECT_LT( dIt - ordering.begin(), cIt - ordering.begin() ) << "Ordering: " << ordering << endl;
-    
+    EXPECT_LT( dIt - ordering.begin(), cIt - ordering.begin() );
     // can't say anything about the other relationships
 }
 
@@ -144,13 +143,13 @@ TEST_F(TestDependencyFinder, MultipleDependencies) {
     EXPECT_NE( dIt, ordering.end() );
     
     // expect that b is before a
-    EXPECT_LT( bIt - ordering.begin(), aIt - ordering.begin() ) << "Ordering: " << ordering << endl;
+    EXPECT_LT( bIt - ordering.begin(), aIt - ordering.begin() );
     // expect that c is before a
-    EXPECT_LT( cIt - ordering.begin(), aIt - ordering.begin() ) << "Ordering: " << ordering << endl;
+    EXPECT_LT( cIt - ordering.begin(), aIt - ordering.begin() );
     // expect that d is before b
-    EXPECT_LT( dIt - ordering.begin(), bIt - ordering.begin() ) << "Ordering: " << ordering << endl;
+    EXPECT_LT( dIt - ordering.begin(), bIt - ordering.begin() );
     // expect that d is before c
-    EXPECT_LT( dIt - ordering.begin(), cIt - ordering.begin() ) << "Ordering: " << ordering << endl;
+    EXPECT_LT( dIt - ordering.begin(), cIt - ordering.begin() );
 }
 
 ostream& operator<<( ostream& out, const vector<string>& vec ) {
