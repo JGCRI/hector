@@ -43,15 +43,13 @@ protected:
     // only define TearDown if it is needed
     /*virtual void TearDown() {
     }*/
-    
-    Core core;
-    
+        
     class CheckDummyVisitor: public AVisitor {
     public:
         CheckDummyVisitor():sawDummy( 0 ), sawY( -100 ) {
         }
         
-        virtual bool shouldVisitAtDate( const double date ) {
+        virtual bool shouldVisit( const bool in_spinup, const double date ) {
             return true;
         }
         
@@ -61,7 +59,6 @@ protected:
         }
         
         int sawDummy;
-        
         double sawY;
     };
     
@@ -70,7 +67,7 @@ protected:
         CheckDoesRespectShouldVisit():didVisit( false ) {
         }
         
-        virtual bool shouldVisitAtDate( const double date ) {
+        virtual bool shouldVisit( const bool in_spinup, const double date ) {
             return false;
         }
         
@@ -80,36 +77,12 @@ protected:
         
         bool didVisit;
     };
-    
-    // Note this assumes that forcing is indeed dependent on Simple3Box
-    class CheckDoesAtmosVisitBeforeForcing: public AVisitor {
-    public:
-        CheckDoesAtmosVisitBeforeForcing():didVisitAtmos( false ),didVisitForcing( false )
-        {
-        }
-        
-        virtual bool shouldVisitAtDate( const double date ) {
-            return true;
-        }
-        
-        virtual void visit( SimpleNbox* a) {
-            EXPECT_FALSE( didVisitForcing );
-            didVisitAtmos = true;
-        }
-        
-        virtual void visit( ForcingComponent* f) {
-            EXPECT_TRUE( didVisitAtmos );
-            didVisitForcing = true;
-        }
-        
-        bool didVisitAtmos;
-        bool didVisitForcing;
-    };
 };
 
 TEST_F(TestCore, InitCreatesComponents) {
     // no init yet
     CheckDummyVisitor checkVisitor;
+    Core core(Logger::SEVERE, false, false);
     core.accept( &checkVisitor );
     
     EXPECT_FALSE( checkVisitor.sawDummy );
@@ -123,33 +96,40 @@ TEST_F(TestCore, InitCreatesComponents) {
 
 TEST_F(TestCore, CheckSetData) {
     // Use the DummyModelComponent for testing
+    Core core(Logger::SEVERE, false, false);
     core.addModelComponent( new DummyModelComponent );
     core.init();
-    EXPECT_THROW(core.setData("does-not-exisit", "slope", "1"), h_exception);
-    
-    EXPECT_NO_THROW(core.setData("dummy-component", "slope", "1"));
-    EXPECT_NO_THROW(core.setData("dummy-component", "y", "1"));
+    message_data msg(unitval(1, U_UNDEFINED));
+    EXPECT_THROW(core.setData("does-not-exist", "slope", msg), h_exception);
+    EXPECT_THROW(core.setData("does-not-exist", "slope", msg), h_exception);
+
+    EXPECT_NO_THROW(core.setData("dummy-component", "slope", msg));
+    EXPECT_NO_THROW(core.setData("dummy-component", "y", msg));
     CheckDummyVisitor checkVisitor;
     core.accept( &checkVisitor );
     EXPECT_EQ( checkVisitor.sawY, 1 );
 }
 
 TEST_F(TestCore, CanParseStartAndEndDates) {
-    EXPECT_NO_THROW(core.setData("core", "startDate", "1"));
-    EXPECT_NO_THROW(core.setData("core", "endDate", "10"));
+    Core core(Logger::SEVERE, false, false);
+    message_data msg(unitval(1, U_UNDEFINED));
+    EXPECT_NO_THROW(core.setData("core", "startDate", msg));
+    EXPECT_NO_THROW(core.setData("core", "endDate", msg));
 }
 
 TEST_F(TestCore, DoAddedVisitorsGetCalled) {
     // Use the DummyModelComponent for testing
+    Core core(Logger::WARNING, false, false);
     core.addModelComponent( new DummyModelComponent );
     core.init();
     // note this should have already been tested to not throw
-    core.setData("dummy-component", "slope", "1");
-    core.setData("dummy-component", "y", "1");
-    core.setData("dummy-component", "c", "1", 1);
-    core.setData("dummy-component", "c", "1", 2);
-    core.setData("core", "startDate", "1");
-    core.setData("core", "endDate", "10");
+    message_data msg(unitval(1, U_UNDEFINED));
+    core.setData("dummy-component", "slope", msg);
+    core.setData("dummy-component", "y", msg);
+    core.setData("dummy-component", "c", msg);
+    core.setData("dummy-component", "c", unitval(2, U_UNDEFINED));
+    core.setData("core", "startDate", msg);
+    core.setData("core", "endDate", unitval(10, U_UNDEFINED));
     
     CheckDummyVisitor checkVisitor;
     core.addVisitor( &checkVisitor );
@@ -165,21 +145,15 @@ TEST_F(TestCore, DoAddedVisitorsGetCalled) {
 TEST_F(TestCore, DoesCheckShouldVisit) {
     // note no init, we don't need any components to check this
     CheckDoesRespectShouldVisit checkVisitor;
+    Core core(Logger::SEVERE, false, false);
     core.addVisitor( &checkVisitor );
     core.run();
     
     ASSERT_FALSE( checkVisitor.didVisit );
 }
 
-TEST_F(TestCore, DoesReorderComponents) {
-    core.init();
-    
-    CheckDoesAtmosVisitBeforeForcing orderChecker;
-    core.accept( &orderChecker );
-    // actual tests are within CheckDoesAtmosVisitBeforeForcing above
-}
-
 TEST_F(TestCore, CanNotAddCompAfterInit) {
+    Core core(Logger::SEVERE, false, false);
     core.init();
     ASSERT_THROW( core.addModelComponent( new DummyModelComponent ), h_exception );
 }
