@@ -93,9 +93,7 @@ protected:
     // only define TearDown if it is needed
     /*virtual void TearDown() {
     }*/
-    
-    Core core;
-    
+        
     const std::string testComponentName;
     const std::string testVarName;
     
@@ -135,6 +133,7 @@ TEST_F(TestCSVTableReader, InvalidHeaderLine) {
     testFile << "Date,Wrong" << std::endl;
     testFile << "2,6" << std::endl;
     testFile.close();
+    Core core(Logger::SEVERE, false, false);
     ASSERT_THROW(reader.process(&core, testComponentName, testVarName), h_exception);
 }
 
@@ -142,6 +141,7 @@ TEST_F(TestCSVTableReader, WrongSeparatorInHeader) {
     testFile << "Date;" << testVarName << std::endl;
     testFile << "2,6" << std::endl;
     testFile.close();
+    Core core(Logger::SEVERE, false, false);
     ASSERT_THROW(reader.process(&core, testComponentName, testVarName), h_exception);
 }
 
@@ -149,12 +149,14 @@ TEST_F(TestCSVTableReader, WrongSeparatorInRow) {
     testFile << "Date," << testVarName << std::endl;
     testFile << "2;6" << std::endl;
     testFile.close();
+    Core core(Logger::SEVERE, false, false);
     ASSERT_THROW(reader.process(&core, testComponentName, testVarName), h_exception);
 }
 
 TEST_F(TestCSVTableReader, OkWithJustHeaderNoData) {
     testFile << "Date," << testVarName << std::endl;
     testFile.close();
+    Core core(Logger::SEVERE, false, false);
     ASSERT_NO_THROW(reader.process(&core, testComponentName, testVarName));
     CheckDummyVisitor check( -1 );
     core.accept( &check );
@@ -189,6 +191,7 @@ TEST_F(TestCSVTableReader, InvalidDateIndex) {
     testFile << "Date," << testVarName << std::endl;
     testFile << "Oops,6" << std::endl;
     testFile.close();
+    Core core(Logger::SEVERE, false, false);
     ASSERT_THROW(reader.process(&core, testComponentName, testVarName), h_exception);
 }
 
@@ -196,6 +199,7 @@ TEST_F(TestCSVTableReader, NeedIndexColumn) {
     testFile << testVarName << ",other" << std::endl;
     testFile << "2,6" << std::endl;
     testFile.close();
+    Core core(Logger::SEVERE, false, false);
     ASSERT_THROW(reader.process(&core, testComponentName, testVarName), h_exception);
 }
 
@@ -203,6 +207,7 @@ TEST_F(TestCSVTableReader, NumColumnsDoNotChange) {
     testFile << "Date," << testVarName << ",Other" << std::endl;
     testFile << "2,6" << std::endl;
     testFile.close();
+    Core core(Logger::SEVERE, false, false);
     ASSERT_THROW(reader.process(&core, testComponentName, testVarName), h_exception);
 }
 
