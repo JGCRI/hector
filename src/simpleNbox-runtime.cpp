@@ -103,7 +103,7 @@ void SimpleNbox::prepareToRun() {
       warmingfactor[biome] = 1.0;
     }
   }
-  
+
   // A flag that lets run() know the very first time it's called
   has_been_run_before = false;
 
@@ -157,7 +157,7 @@ void SimpleNbox::run(const double runToDate) {
     end_of_spinup_vegc = sum_map(veg_c);
     has_been_run_before = true;
   }
-  
+
   // If we've hit the tracking start year, enagage!
   const double tdate = core->getTrackingDate();
   if (!in_spinup && runToDate == tdate) {
@@ -181,7 +181,7 @@ void SimpleNbox::run(const double runToDate) {
  */
 bool SimpleNbox::run_spinup(const int step) {
   in_spinup = true;
-  
+
   return true; // solver will really be the one signalling
 }
 
@@ -249,7 +249,7 @@ void SimpleNbox::stashCValues(double t, const double c[]) {
   // Land-use change emissions and uptake
   fluxpool luc_e_untracked = current_luc_e;
   fluxpool luc_u_untracked = current_luc_u;
-  
+
   // Calculate net primary production and heterotrophic respiration
   fluxpool npp_total = sum_npp();
   fluxpool rh_total = sum_rh();
@@ -310,11 +310,11 @@ void SimpleNbox::stashCValues(double t, const double c[]) {
   const double luc_e = luc_e_untracked.value(U_PGC_YR);
   const double luc_u = luc_u_untracked.value(U_PGC_YR);
   cum_luc_va = cum_luc_va + unitval((luc_e - luc_u) * c[SNBOX_VEG] / total, U_PGC);
-  
+
   // Apportion NPP and RH among the biomes
   // This is done by NPP and RH; biomes with higher values get more of any C
   // change
-  
+
   for (auto biome : biome_list) {
     // `wt` is the biome share of major C fluxes; used for apportionment below
     const double wt = (npp(biome) + rh(biome)) / npp_rh_total;
@@ -365,7 +365,7 @@ void SimpleNbox::stashCValues(double t, const double c[]) {
     soil_c[biome] = soil_c[biome] + npp_fas_biome_flux;
     atmos_c =
         atmos_c - npp_fav_biome_flux - npp_fad_biome_flux - npp_fas_biome_flux;
-    
+
     // Update soil, detritus, and atmosphere pools - rh fluxes
     atmos_c = atmos_c + rh_fda_flux + rh_fsa_flux;
     detritus_c[biome] = detritus_c[biome] - rh_fda_flux;
@@ -493,10 +493,10 @@ fluxpool SimpleNbox::npp(std::string biome, double time) const {
   } else {
     npp = npp * calc_co2fert(biome, time);
   }
-  
+
   // LUC causes loss (or gains) to vegetation; account for this
   npp = npp * npp_luc_adjust;
-  
+
   return npp;
 }
 
@@ -720,7 +720,7 @@ void SimpleNbox::slowparameval(double t, const double c[]) {
   H_LOG(logger, Logger::DEBUG) << "slowparameval: npp_luc_adjust = " <<
       npp_luc_adjust << std::endl;
 //  cout << "xxx," << t << "," << cum_luc_va << "," << end_of_spinup_vegc << "," << npp_luc_adjust << endl;
-  
+
   // Compute CO2 fertilization factor globally (and for each biome specified)
   for (auto biome : biome_list) {
     if (in_spinup) {
