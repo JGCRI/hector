@@ -2,12 +2,6 @@
 
 ## This (SRCS) will include testing_main.cpp
 SRCS	= $(wildcard *.cpp)
-
-## ** TEMPORARY **
-## the following files aren't working yet; remove them
-UNDONE = test_dependency_finder.cpp
-SRCS := $(filter-out $(UNDONE), $(SRCS))
-
 OBJS	= $(SRCS:.cpp=.o)
 LDFLAGS += -L$(GTLIB) -Wl,-L../
 INCLUDES += -I$(GTINC)
