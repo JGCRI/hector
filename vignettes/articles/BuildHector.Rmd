@@ -160,11 +160,11 @@ Run Hector from the terminal:
 ./src/hector ./inst/input/name-of-ini.ini
 ```
 
-To run build and run the Hector unit tests, type `make testing`
+To build and run the Hector unit tests, type `make testing`
 and then
 
 ```
-./src/Testing/hector-unit-tests
+./src/unit-testing/hector-unit-tests
 ```
 
 ## Xcode (Mac OS X)
