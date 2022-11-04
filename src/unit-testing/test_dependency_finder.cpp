@@ -108,7 +108,6 @@ TEST_F(TestDependencyFinder, TwoSeperate) {
     EXPECT_LT( bIt - ordering.begin(), aIt - ordering.begin() ) << "Ordering: " << ordering << endl;
     // expect that d is before c
     EXPECT_LT( dIt - ordering.begin(), cIt - ordering.begin() ) << "Ordering: " << ordering << endl;
-    
     // can't say anything about the other relationships
 }
 
