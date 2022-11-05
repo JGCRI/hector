@@ -26,6 +26,9 @@
 #define SNBOX_SOIL 3
 #define SNBOX_OCEAN 4
 #define SNBOX_EARTH 5
+#define SNBOX_PERMAFROST 6
+#define SNBOX_THAWEDP 7
+
 #define MB_EPSILON 0.001    //!< allowed tolerance for mass-balance checks, Pg C
 #define SNBOX_PARSECHAR "." //!< input separator between <biome> and <pool>
 #define SNBOX_DEFAULT_BIOME "global" //!< value if no biome supplied
@@ -95,7 +98,7 @@ private:
   typedef std::map<std::string, double> double_stringmap;
 
   bool has_been_run_before; //!<  Has run() been called once already?
-  
+
   /*****************************************************************
    * Component state
    * All of this information will be saved at the end of each time
@@ -110,9 +113,21 @@ private:
   fluxpool atmos_c; //!< atmosphere pool, Pg C
 
   // Carbon pools -- biome-specific
-  fluxpool_stringmap veg_c;      //!< vegetation pools, Pg C
-  fluxpool_stringmap detritus_c; //!< detritus pools, Pg C
-  fluxpool_stringmap soil_c;     //!< soil pool, Pg C
+  fluxpool_stringmap veg_c;        //!< vegetation pools, Pg C
+  fluxpool_stringmap detritus_c;   //!< detritus pools, Pg C
+  fluxpool_stringmap soil_c;       //!< soil pool, Pg C
+  fluxpool_stringmap permafrost_c; //!< permafrost C pool, Pg C
+  // Track thawed peramfrost separately from soil, so that
+  // we can apply rh_ch4_frac (the CH4:CO2 ratio) to it
+  fluxpool_stringmap thawed_permafrost_c; //!< thawed permafrost pool, Pg C
+  fluxpool_stringmap
+      static_c; //!< static carbon total in thawed permafrost pool
+
+  fluxpool_stringmap NPP_veg; //!< Net primary productivity of vegetation;
+  fluxpool_stringmap RH_det,
+      RH_soil; //!< Heterotrophic CO2 respiration of detritus and soil
+  fluxpool_stringmap RH_thawed_permafrost,
+      RH_ch4; //!<  Heterotrophic CO2 and CH4 respiration of thawed permafrost
 
   // Carbon fluxes -- biome-specific
   fluxpool_stringmap
@@ -124,6 +139,8 @@ private:
 
   double_stringmap tempfertd,
       tempferts; //!< temperature effect on respiration (unitless)
+  double_stringmap f_frozen,
+      new_thaw; //!< relative amounts and changes in permafrost
 
   /*****************************************************************
    * Records of component state
@@ -141,6 +158,18 @@ private:
   tvector<fluxpool_stringmap>
       soil_c_tv; //!< Time series of biome-specific soil carbon pools
   tvector<fluxpool_stringmap>
+      permafrost_c_tv; //!< Time series of biome-specific permafrost carbon
+                       //!< pools
+  tvector<fluxpool_stringmap>
+      thawed_permafrost_c_tv; //!< Time series of biome-specific thawed
+                              //!< permafrost
+  tvector<fluxpool_stringmap>
+      static_c_tv; //!< Time series of biome-specific thawed permafrost
+
+  // Time series versions of flux variables
+  tvector<fluxpool_stringmap> NPP_veg_tv, RH_det_tv, RH_soil_tv,
+      RH_thawed_permafrost_tv, RH_ch4_tv;
+  tvector<fluxpool_stringmap>
       final_npp_tv; //!< Time series of biome-specific final NPP
   tvector<fluxpool_stringmap>
       final_rh_tv; //!< Time series of biome-specific final RH
@@ -149,6 +178,8 @@ private:
 
   tvector<double_stringmap> tempfertd_tv,
       tempferts_tv; //!< Time series of temperature effect on respiration
+  tvector<double_stringmap>
+      f_frozen_tv; //!< Time series of frozen permafrost fraction
 
   /*****************************************************************
    * Derived quantities
@@ -210,20 +241,27 @@ private:
   tseries<unitval> cum_luc_va_ts;
   fluxpool end_of_spinup_vegc;
   double npp_luc_adjust;
-  
+
   // Atmospheric CO2, temperature, and their effects
   fluxpool C0; //!< preindustrial [CO2], ppmv
 
   // Slowly-changing variables
   // These get computed only once per year, in slowparameval()
-  fluxpool current_luc_e,  //!< Current year LUC emissions (/yr)
-    current_luc_u,         //!< Current year LUC uptake (/yr)
-    current_ffi_e,         //!< Current year FFI emissions (/yr)
-    current_daccs_u;       //!< Current year DACCS uptake (/yr)
-  double_stringmap beta;   //!< shape of CO2 response
+  fluxpool current_luc_e, //!< Current year LUC emissions (/yr)
+      current_luc_u,      //!< Current year LUC uptake (/yr)
+      current_ffi_e,      //!< Current year FFI emissions (/yr)
+      current_daccs_u;    //!< Current year DACCS uptake (/yr)
+  double_stringmap beta;  //!< shape of CO2 response
   double_stringmap
-      warmingfactor;       //!< regional warming relative to global (1.0=same)
-  double_stringmap q10_rh; //!< Q10 for heterotrophic respiration (1.0=no response, unitless)
+      warmingfactor; //!< regional warming relative to global (1.0=same)
+  double_stringmap
+      q10_rh; //!< Q10 for heterotrophic respiration (1.0=no response, unitless)
+  double_stringmap
+      rh_ch4_frac; //!< Fraction of RH from thawed permafrost that is CH4
+  double_stringmap
+      pf_sigma;           //!< Standard deviation for permafrost-temp model fit
+  double_stringmap pf_mu; //!< Mean for permafrost-temp model fit
+  double_stringmap fpf_static; //!< Permafrost C non-labile fraction
 
   /*****************************************************************
    * Functions computing sub-elements of the carbon cycle
@@ -240,6 +278,10 @@ private:
       const; //!< calculates RH from detritus for a biome
   fluxpool rh_fsa(std::string biome, double time = Core::undefinedIndex())
       const; //!< calculates RH from soil for a biome
+  fluxpool rh_ftpa_co2(std::string biome)
+      const; //!< calculates current CO2 RH from thawed permafrost for a biome
+  fluxpool rh_ftpa_ch4(std::string biome)
+      const; //!< calculates current CH4 RH from thawed permafrost for a biome
   fluxpool
   rh(std::string biome,
      double time = Core::undefinedIndex()) const; //!< calculates RH for a biome
@@ -332,8 +374,10 @@ private:
     atmos_c.tracking = true;
     for (auto biome : biome_list) {
       veg_c[biome].tracking = true;
-      soil_c[biome].tracking = true;
       detritus_c[biome].tracking = true;
+      soil_c[biome].tracking = true;
+      permafrost_c[biome].tracking = true;
+      thawed_permafrost_c[biome].tracking = true;
     }
   }
 };

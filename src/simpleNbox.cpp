@@ -70,7 +70,7 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel(6), masstot(0.0) {
   // we can't start earth_c at zero. Value of 5500 is set to avoid
   // overdrawing in RCP 8.5
   earth_c.set(5500, U_PGC, false, D_EARTHC);
-    
+
   // We keep a running total of LUC emissions from (and uptake to) vegetation
   // This is used in slowparameval() to calculate npp_luc_adjust
   cum_luc_va.set(0.0, U_PGC);
@@ -91,6 +91,17 @@ void SimpleNbox::init(Core *coreptr) {
   warmingfactor[SNBOX_DEFAULT_BIOME] = 1.0;
   tempfertd[SNBOX_DEFAULT_BIOME] = 1.0;
   tempferts[SNBOX_DEFAULT_BIOME] = 1.0;
+  f_frozen[SNBOX_DEFAULT_BIOME] = 1.0;
+  new_thaw[SNBOX_DEFAULT_BIOME] = 0.0;
+
+  permafrost_c[SNBOX_DEFAULT_BIOME].set(0.0, U_PGC);
+  static_c[SNBOX_DEFAULT_BIOME].set(0.0, U_PGC);
+  thawed_permafrost_c[SNBOX_DEFAULT_BIOME].set(0.0, U_PGC);
+
+  rh_ch4_frac[SNBOX_DEFAULT_BIOME] = 0.0;
+  pf_sigma[SNBOX_DEFAULT_BIOME] = 0.986;
+  pf_mu[SNBOX_DEFAULT_BIOME] = 1.67;
+  fpf_static[SNBOX_DEFAULT_BIOME] = 0.74;
   final_npp[SNBOX_DEFAULT_BIOME] = fluxpool(0.0, U_PGC_YR, false, "final_npp");
   final_rh[SNBOX_DEFAULT_BIOME] = fluxpool(0.0, U_PGC_YR, false, "final_rh");
 
@@ -115,6 +126,14 @@ void SimpleNbox::init(Core *coreptr) {
   core->registerCapability(D_NPP_FLUX0, getComponentName());
   core->registerCapability(D_NPP, getComponentName());
   core->registerCapability(D_RH, getComponentName());
+  core->registerCapability(D_RH_DETRITUS, getComponentName());
+  core->registerCapability(D_RH_SOIL, getComponentName());
+  core->registerCapability(D_RH_THAWEDP, getComponentName());
+  core->registerCapability(D_RH_CH4, getComponentName());
+  core->registerCapability(D_PF_SIGMA, getComponentName());
+  core->registerCapability(D_PF_MU, getComponentName());
+  core->registerCapability(D_FPF_STATIC, getComponentName());
+  core->registerCapability(D_F_FROZEN, getComponentName());
 
   // Register our dependencies
   core->registerDependency(D_OCEAN_C_UPTAKE, getComponentName());
@@ -135,6 +154,10 @@ void SimpleNbox::init(Core *coreptr) {
   core->registerInput(D_F_NPPD, getComponentName());
   core->registerInput(D_F_LITTERD, getComponentName());
   core->registerInput(D_CO2_CONSTRAIN, getComponentName());
+  core->registerInput(D_RH_CH4_FRAC, getComponentName());
+  core->registerInput(D_PF_SIGMA, getComponentName());
+  core->registerInput(D_PF_MU, getComponentName());
+  core->registerInput(D_FPF_STATIC, getComponentName());
   core->registerInput(D_NBP_CONSTRAIN, getComponentName());
 }
 
@@ -259,8 +282,13 @@ void SimpleNbox::setData(const std::string &varName, const message_data &data) {
       if (data.date != Core::undefinedIndex()) {
         soil_c_tv.set(data.date, soil_c);
       }
+    } else if (varNameParsed == D_PERMAFROSTC) {
+      permafrost_c[biome] = fluxpool(data.getUnitval(U_PGC).value(U_PGC), U_PGC,
+                                     false, D_PERMAFROSTC + biome);
+      if (data.date != Core::undefinedIndex()) {
+        permafrost_c_tv.set(data.date, permafrost_c);
+      }
     }
-
     // Albedo effect
     else if (varNameParsed == D_RF_T_ALBEDO) {
       H_ASSERT(data.date != Core::undefinedIndex(), "date required");
@@ -335,6 +363,20 @@ void SimpleNbox::setData(const std::string &varName, const message_data &data) {
     } else if (varNameParsed == D_Q10_RH) {
       H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
       q10_rh[biome] = data.getUnitval(U_UNITLESS);
+    }
+    // Permafrost thaw parameters
+    else if (varNameParsed == D_PF_SIGMA) {
+      H_ASSERT(data.date == Core::undefinedIndex(),
+               "date not allowed for permafrost sigma");
+      pf_sigma[biome] = data.getUnitval(U_DEGC);
+    } else if (varNameParsed == D_PF_MU) {
+      H_ASSERT(data.date == Core::undefinedIndex(),
+               "date not allowed for permafrost mu");
+      pf_mu[biome] = data.getUnitval(U_DEGC);
+    } else if (varNameParsed == D_FPF_STATIC) {
+      H_ASSERT(data.date == Core::undefinedIndex(),
+               "date not allowed for static permafrost fraction");
+      fpf_static[biome] = data.getUnitval(U_UNITLESS);
     }
 
     else {
@@ -482,6 +524,26 @@ unitval SimpleNbox::getData(const std::string &varName, const double date) {
   } else if (varNameParsed == D_Q10_RH) {
     H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for Q10");
     returnval = unitval(q10_rh.at(biome), U_UNITLESS);
+  } else if (varNameParsed == D_PF_SIGMA) {
+    H_ASSERT(date == Core::undefinedIndex(),
+             "Date not allowed for permafrost parameter sigma");
+    H_ASSERT(has_biome(biome), biome_error);
+    returnval = unitval(pf_sigma.at(biome), U_DEGC);
+  } else if (varNameParsed == D_PF_MU) {
+    H_ASSERT(date == Core::undefinedIndex(),
+             "Date not allowed for permafrost parameter mu");
+    H_ASSERT(has_biome(biome), biome_error);
+    returnval = unitval(pf_mu.at(biome), U_DEGC);
+  } else if (varNameParsed == D_FPF_STATIC) {
+    H_ASSERT(date == Core::undefinedIndex(),
+             "Date not allowed for permafrost C non-labile fraction");
+    H_ASSERT(has_biome(biome), biome_error);
+    returnval = unitval(fpf_static.at(biome), U_UNITLESS);
+  } else if (varNameParsed == D_RH_CH4_FRAC) {
+    H_ASSERT(date == Core::undefinedIndex(),
+             "Date not allowed for methane respiration fraction");
+    H_ASSERT(has_biome(biome), biome_error);
+    returnval = unitval(rh_ch4_frac.at(biome), U_UNITLESS);
   } else if (varNameParsed == D_NBP) {
     if (date == Core::undefinedIndex())
       returnval = nbp;
@@ -517,7 +579,15 @@ unitval SimpleNbox::getData(const std::string &varName, const double date) {
         sum_fluxpool_biome_ts(varName, date, biome, detritus_c, detritus_c_tv);
   } else if (varNameParsed == D_SOILC) {
     returnval = sum_fluxpool_biome_ts(varName, date, biome, soil_c, soil_c_tv);
-  } else if (varNameParsed == D_NPP_FLUX0) {
+  } else if (varNameParsed == D_THAWEDPC) {
+    returnval = sum_fluxpool_biome_ts(varName, date, biome, thawed_permafrost_c, thawed_permafrost_c_tv);
+  } else if (varNameParsed == D_PERMAFROSTC) {
+    returnval = sum_fluxpool_biome_ts(varName, date, biome, permafrost_c, permafrost_c_tv);
+  } else if (varNameParsed == D_F_FROZEN) {
+    //BBL this is super ugly in the permafrost code
+    // TODO: see lines 550- of
+    // https://github.com/JGCRI/hector/commit/2d6f867d73bdd7e7d4f863b861d7d951afd28bf9
+ } else if (varNameParsed == D_NPP_FLUX0) {
     H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for npp_flux0");
     H_ASSERT(has_biome(biome), biome_error);
     returnval = npp_flux0.at(biome);
@@ -579,6 +649,9 @@ void SimpleNbox::reset(double time) {
   veg_c = veg_c_tv.get(time);
   detritus_c = detritus_c_tv.get(time);
   soil_c = soil_c_tv.get(time);
+  permafrost_c = permafrost_c_tv.get(time);
+  thawed_permafrost_c = thawed_permafrost_c_tv.get(time);
+  static_c = static_c_tv.get(time);
   final_npp = final_npp_tv.get(time);
   final_rh = final_rh_tv.get(time);
 
@@ -586,8 +659,10 @@ void SimpleNbox::reset(double time) {
 
   tempferts = tempferts_tv.get(time);
   tempfertd = tempfertd_tv.get(time);
+  f_frozen = f_frozen_tv.get(time);
+
   cum_luc_va = cum_luc_va_ts.get(time);
-  
+
   // Calculate derived quantities
   for (auto biome : biome_list) {
     if (in_spinup) {
@@ -607,6 +682,10 @@ void SimpleNbox::reset(double time) {
   veg_c_tv.truncate(time);
   detritus_c_tv.truncate(time);
   soil_c_tv.truncate(time);
+  permafrost_c_tv.truncate(time);
+  thawed_permafrost_c_tv.truncate(time);
+  static_c_tv.truncate(time);
+
   final_npp_tv.truncate(time);
   final_rh_tv.truncate(time);
 
@@ -614,8 +693,10 @@ void SimpleNbox::reset(double time) {
 
   tempferts_tv.truncate(time);
   tempfertd_tv.truncate(time);
+  f_frozen_tv.truncate(time);
+
   cum_luc_va_ts.truncate(time);
-  
+
   tcurrent = time;
 
   H_LOG(logger, Logger::NOTICE)
@@ -643,6 +724,32 @@ void SimpleNbox::record_state(double t) {
   veg_c_tv.set(t, veg_c);
   detritus_c_tv.set(t, detritus_c);
   soil_c_tv.set(t, soil_c);
+  permafrost_c_tv.set(t, permafrost_c);
+  thawed_permafrost_c_tv.set(t, thawed_permafrost_c);
+  static_c_tv.set(t, static_c);
+
+  for (auto it = biome_list.begin(); it != biome_list.end(); it++) {
+    std::string biome = *it;
+    if (!in_spinup) {
+      NPP_veg[biome] = npp(biome);
+      RH_det[biome] = rh_fda(biome);
+      RH_soil[biome] = rh_fsa(biome);
+      RH_thawed_permafrost[biome] = rh_ftpa_co2(biome);
+      RH_ch4[biome] = rh_ftpa_ch4(biome);
+    } else {
+      NPP_veg[biome] = fluxpool(0.0, U_PGC_YR);
+      RH_det[biome] = fluxpool(0.0, U_PGC_YR);
+      RH_soil[biome] = fluxpool(0.0, U_PGC_YR);
+      RH_thawed_permafrost[biome] = fluxpool(0.0, U_PGC_YR);
+      RH_ch4[biome] = fluxpool(0.0, U_PGC_YR);
+    }
+  }
+  NPP_veg_tv.set(t, NPP_veg);
+  RH_det_tv.set(t, RH_det);
+  RH_soil_tv.set(t, RH_soil);
+  RH_thawed_permafrost_tv.set(t, RH_thawed_permafrost);
+  RH_ch4_tv.set(t, RH_ch4);
+
   final_npp_tv.set(t, final_npp);
   final_rh_tv.set(t, final_rh);
 
@@ -650,8 +757,10 @@ void SimpleNbox::record_state(double t) {
 
   tempfertd_tv.set(t, tempfertd);
   tempferts_tv.set(t, tempferts);
+  f_frozen_tv.set(t, f_frozen);
+
   cum_luc_va_ts.set(t, cum_luc_va);
-  
+
   H_LOG(logger, Logger::DEBUG)
       << "record_state: recorded tempferts = " << tempferts[SNBOX_DEFAULT_BIOME]
       << " at time= " << t << std::endl;
@@ -696,6 +805,26 @@ void SimpleNbox::createBiome(const std::string &biome) {
   add_biome_to_ts(detritus_c_tv, biome, detritus_c.at(biome));
   soil_c[biome] = fluxpool(0, U_PGC, false, D_SOILC);
   add_biome_to_ts(soil_c_tv, biome, soil_c.at(biome));
+  permafrost_c[biome] = fluxpool(0, U_PGC, false, "permafrost_c_" + biome);
+  add_biome_to_ts(permafrost_c_tv, biome, permafrost_c.at(biome));
+  thawed_permafrost_c[biome] = fluxpool(0, U_PGC, false, "thawedpf_c_" + biome);
+  add_biome_to_ts(thawed_permafrost_c_tv, biome, thawed_permafrost_c.at(biome));
+  static_c[biome] = fluxpool(0, U_PGC, false, "static_c_" + biome);
+  add_biome_to_ts(static_c_tv, biome, static_c.at(biome));
+
+  NPP_veg[biome] = fluxpool(0, U_PGC, false, "npp_veg_" + biome);
+  add_biome_to_ts(NPP_veg_tv, biome, NPP_veg.at(biome));
+  RH_det[biome] = fluxpool(0, U_PGC, false, "rh_det_" + biome);
+  add_biome_to_ts(RH_det_tv, biome, RH_det.at(biome));
+  RH_soil[biome] = fluxpool(0, U_PGC, false, "rh_soil_" + biome);
+  add_biome_to_ts(RH_soil_tv, biome, RH_soil.at(biome));
+  RH_thawed_permafrost[biome] =
+      fluxpool(0, U_PGC, false, "rh_thawedpf_" + biome);
+  add_biome_to_ts(RH_thawed_permafrost_tv, biome,
+                  RH_thawed_permafrost.at(biome));
+  RH_ch4[biome] = fluxpool(0, U_PGC, false, "rh_ch4" + biome);
+  add_biome_to_ts(RH_ch4_tv, biome, RH_ch4.at(biome));
+
   final_npp[biome] = fluxpool(0, U_PGC_YR, false, D_NPP);
   add_biome_to_ts(final_npp_tv, biome, final_npp.at(biome));
   final_rh[biome] = fluxpool(0, U_PGC_YR, false, D_RH);
@@ -719,6 +848,10 @@ void SimpleNbox::createBiome(const std::string &biome) {
   f_nppv[biome] = f_nppv[last_biome];
   f_nppd[biome] = f_nppd[last_biome];
   f_litterd[biome] = f_litterd[last_biome];
+  rh_ch4_frac[biome] = rh_ch4_frac[last_biome];
+  pf_sigma[biome] = pf_sigma[last_biome];
+  pf_mu[biome] = pf_mu[last_biome];
+  fpf_static[biome] = fpf_static[last_biome];
 
   // Add to end of biome list
   biome_list.push_back(biome);
@@ -749,6 +882,10 @@ void SimpleNbox::deleteBiome(
   f_nppv.erase(biome);
   f_nppd.erase(biome);
   f_litterd.erase(biome);
+  rh_ch4_frac.erase(biome);
+  pf_sigma.erase(biome);
+  pf_mu.erase(biome);
+  fpf_static.erase(biome);
 
   // C pools
   veg_c.erase(biome);
@@ -757,6 +894,25 @@ void SimpleNbox::deleteBiome(
   remove_biome_from_ts(detritus_c_tv, biome);
   soil_c.erase(biome);
   remove_biome_from_ts(soil_c_tv, biome);
+  permafrost_c.erase(biome);
+  remove_biome_from_ts(permafrost_c_tv, biome);
+  thawed_permafrost_c.erase(biome);
+  remove_biome_from_ts(thawed_permafrost_c_tv, biome);
+  static_c.erase(biome);
+  remove_biome_from_ts(static_c_tv, biome);
+
+  // C fluxes
+  NPP_veg.erase(biome);
+  remove_biome_from_ts(NPP_veg_tv, biome);
+  RH_det.erase(biome);
+  remove_biome_from_ts(RH_det_tv, biome);
+  RH_soil.erase(biome);
+  remove_biome_from_ts(RH_soil_tv, biome);
+  RH_thawed_permafrost.erase(biome);
+  remove_biome_from_ts(RH_thawed_permafrost_tv, biome);
+  RH_ch4.erase(biome);
+  remove_biome_from_ts(RH_ch4_tv, biome);
+
   final_npp.erase(biome);
   remove_biome_from_ts(final_npp_tv, biome);
   final_rh.erase(biome);
@@ -802,6 +958,14 @@ void SimpleNbox::renameBiome(const std::string &oldname,
   f_nppd.erase(oldname);
   f_litterd[newname] = f_litterd.at(oldname);
   f_litterd.erase(oldname);
+  rh_ch4_frac[newname] = rh_ch4_frac.at(oldname);
+  rh_ch4_frac.erase(oldname);
+  pf_sigma[newname] = pf_sigma.at(oldname);
+  pf_sigma.erase(oldname);
+  pf_mu[newname] = pf_mu.at(oldname);
+  pf_mu.erase(oldname);
+  fpf_static[newname] = fpf_static.at(oldname);
+  fpf_static.erase(oldname);
 
   H_LOG(logger, Logger::DEBUG) << "Transferring C from biome '" << oldname
                                << "' to '" << newname << "'." << std::endl;
@@ -816,6 +980,32 @@ void SimpleNbox::renameBiome(const std::string &oldname,
   soil_c[newname] = soil_c.at(oldname);
   soil_c.erase(oldname);
   rename_biome_in_ts(soil_c_tv, oldname, newname);
+  permafrost_c[newname] = permafrost_c.at(oldname);
+  permafrost_c.erase(oldname);
+  rename_biome_in_ts(permafrost_c_tv, oldname, newname);
+  thawed_permafrost_c[newname] = thawed_permafrost_c.at(oldname);
+  thawed_permafrost_c.erase(oldname);
+  rename_biome_in_ts(thawed_permafrost_c_tv, oldname, newname);
+  static_c[newname] = static_c.at(oldname);
+  static_c.erase(oldname);
+  rename_biome_in_ts(static_c_tv, oldname, newname);
+
+  NPP_veg[newname] = NPP_veg.at(oldname);
+  NPP_veg.erase(oldname);
+  rename_biome_in_ts(NPP_veg_tv, oldname, newname);
+  RH_det[newname] = RH_det.at(oldname);
+  RH_det.erase(oldname);
+  rename_biome_in_ts(RH_det_tv, oldname, newname);
+  RH_soil[newname] = RH_soil.at(oldname);
+  RH_soil.erase(oldname);
+  rename_biome_in_ts(RH_soil_tv, oldname, newname);
+  RH_thawed_permafrost[newname] = RH_thawed_permafrost.at(oldname);
+  RH_thawed_permafrost.erase(oldname);
+  rename_biome_in_ts(RH_thawed_permafrost_tv, oldname, newname);
+  RH_ch4[newname] = RH_ch4.at(oldname);
+  RH_ch4.erase(oldname);
+  rename_biome_in_ts(RH_ch4_tv, oldname, newname);
+
   final_npp[newname] = final_npp.at(oldname);
   final_npp.erase(oldname);
   rename_biome_in_ts(final_npp_tv, oldname, newname);

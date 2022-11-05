@@ -178,6 +178,8 @@ void CSVOutputStreamVisitor::visit(SimpleNbox *c) {
   STREAM_MESSAGE(csvFile, c, D_VEGC);
   STREAM_MESSAGE(csvFile, c, D_DETRITUSC);
   STREAM_MESSAGE(csvFile, c, D_SOILC);
+  STREAM_MESSAGE(csvFile, c, D_PERMAFROSTC);
+  STREAM_MESSAGE(csvFile, c, D_THAWEDPC);
   STREAM_MESSAGE(csvFile, c, D_EARTHC);
 
   // Biome-specific outputs: <biome>.<variable>
@@ -195,6 +197,8 @@ void CSVOutputStreamVisitor::visit(SimpleNbox *c) {
                      c->detritus_c[biome]);
       STREAM_UNITVAL(csvFile, c, biome + SNBOX_PARSECHAR + D_SOILC,
                      c->soil_c[biome]);
+      STREAM_UNITVAL( csvFile, c, biome + SNBOX_PARSECHAR + D_PERMAFROSTC, c->permafrost_c[ biome ] );
+      STREAM_UNITVAL( csvFile, c, biome + SNBOX_PARSECHAR + D_THAWEDPC, c->thawed_permafrost_c[ biome ] );
       STREAM_UNITVAL(csvFile, c, biome + SNBOX_PARSECHAR + D_TEMPFERTD,
                      unitval(c->tempfertd[biome], U_UNITLESS));
       STREAM_UNITVAL(csvFile, c, biome + SNBOX_PARSECHAR + D_TEMPFERTS,

@@ -44,7 +44,8 @@ void SimpleNbox::log_pools(const double t, const string msg) {
   for (auto biome : biome_list) {
     H_LOG(logger, Logger::DEBUG)
         << biome << "\t" << veg_c[biome] << "\t" << detritus_c[biome] << "\t\t"
-        << soil_c[biome] << std::endl;
+        << soil_c[biome] << thawed_permafrost_c[biome] << "\t"
+        << static_c[biome] << "\t" << permafrost_c[biome] << std::endl;
   }
   H_LOG(logger, Logger::DEBUG) << "Earth = " << earth_c << std::endl;
 }
@@ -67,6 +68,12 @@ void SimpleNbox::prepareToRun() {
            "detritus_c and biome_list not same size");
   H_ASSERT(biome_list.size() == soil_c.size(),
            "soil_c and biome_list not same size");
+  H_ASSERT(biome_list.size() == permafrost_c.size(),
+           "permafrost_c and biome_list not same size");
+  H_ASSERT(biome_list.size() == thawed_permafrost_c.size(),
+           "thawed_permafrost_c and biome_list not same size");
+  H_ASSERT(biome_list.size() == static_c.size(),
+           "thawed_permafrost_c and biome_list not same size");
   H_ASSERT(biome_list.size() == npp_flux0.size(),
            "npp_flux0 and biome_list not same size");
 
@@ -79,6 +86,10 @@ void SimpleNbox::prepareToRun() {
     // Carbon pools
     H_ASSERT(detritus_c.count(biome), "no detritus_c data for " + biome);
     H_ASSERT(soil_c.count(biome), "no soil_c data for " + biome);
+    H_ASSERT(permafrost_c.count(biome), "no biome data for permafrost_c");
+    H_ASSERT(thawed_permafrost_c.count(biome),
+             "no biome data for thawed_permafrost_c");
+    H_ASSERT(static_c.count(biome), "no biome data for static_c");
     H_ASSERT(npp_flux0.count(biome), "no npp_flux0 data for " + biome);
     // Beta and Q10
     H_ASSERT(beta.count(biome), "No beta entry for " + biome);
@@ -102,6 +113,31 @@ void SimpleNbox::prepareToRun() {
           << "Setting to default value = 1.0" << std::endl;
       warmingfactor[biome] = 1.0;
     }
+
+    if (!rh_ch4_frac.count(biome)) {
+      H_LOG(logger, Logger::NOTICE)
+          << "No RH CH4 fraction set for biome '" << biome << "'. "
+          << "Setting to default value = 0.0" << std::endl;
+      rh_ch4_frac[biome] = 0.0;
+    }
+
+    if (!pf_mu.count(biome)) {
+      H_LOG(logger, Logger::NOTICE)
+          << "No permafrost mu parameter set for biome '" << biome << "'. "
+          << "Setting to default value = 1.67" << std::endl;
+      pf_sigma[biome] = 1.67;
+    }
+
+    if (!pf_sigma.count(biome)) {
+      H_LOG(logger, Logger::NOTICE)
+          << "No permafrost sigma parameter set for biome '" << biome << "'. "
+          << "Setting to default value = 0.986" << std::endl;
+      pf_sigma[biome] = 0.986;
+    }
+
+    // Thawed and static permafrost C start at zero
+    thawed_permafrost_c[biome].set(0.0, U_PGC);
+    static_c[biome].set(0.0, U_PGC);
   }
 
   // A flag that lets run() know the very first time it's called
@@ -152,7 +188,7 @@ void SimpleNbox::prepareToRun() {
 void SimpleNbox::run(const double runToDate) {
   in_spinup = core->inSpinup();
 
-  if(!has_been_run_before) {
+  if (!has_been_run_before) {
     // Remember starting value of veg_c; used later in NPP adjustment for LUC
     end_of_spinup_vegc = sum_map(veg_c);
     has_been_run_before = true;
@@ -297,7 +333,8 @@ void SimpleNbox::stashCValues(double t, const double c[]) {
     // Re-calculate atmosphere-land flux (NBP)
     alf = npp_total.value(U_PGC_YR) - rh_total.value(U_PGC_YR) -
           luc_e_untracked.value(U_PGC_YR) + luc_u_untracked.value(U_PGC_YR);
-    H_LOG(logger, Logger::NOTICE) << "** NBP constraint " << nbp_constrained
+    H_LOG(logger, Logger::NOTICE)
+        << "** NBP constraint " << nbp_constrained
         << " requested; final value was " << alf << " with final adjustment of "
         << diff << std::endl;
   }
@@ -309,7 +346,8 @@ void SimpleNbox::stashCValues(double t, const double c[]) {
   const double total = c[SNBOX_VEG] + c[SNBOX_DET] + c[SNBOX_SOIL];
   const double luc_e = luc_e_untracked.value(U_PGC_YR);
   const double luc_u = luc_u_untracked.value(U_PGC_YR);
-  cum_luc_va = cum_luc_va + unitval((luc_e - luc_u) * c[SNBOX_VEG] / total, U_PGC);
+  cum_luc_va =
+      cum_luc_va + unitval((luc_e - luc_u) * c[SNBOX_VEG] / total, U_PGC);
 
   // Apportion NPP and RH among the biomes
   // This is done by NPP and RH; biomes with higher values get more of any C
@@ -325,36 +363,41 @@ void SimpleNbox::stashCValues(double t, const double c[]) {
     const double soil_frac = soil_c[biome].value(U_PGC) / total;
     // Note we don't need to include 'wt' here because the veg_frac, det_frac,
     // and soil_frac fractions calculated above handle that
-    fluxpool luc_fva_biome_flux = yf * veg_c[biome].flux_from_fluxpool(luc_e_untracked * veg_frac);
-    fluxpool luc_fda_biome_flux = yf * detritus_c[biome].flux_from_fluxpool(luc_e_untracked * det_frac);
-    fluxpool luc_fsa_biome_flux = yf * soil_c[biome].flux_from_fluxpool(luc_e_untracked * soil_frac);
+    fluxpool luc_fva_biome_flux =
+        yf * veg_c[biome].flux_from_fluxpool(luc_e_untracked * veg_frac);
+    fluxpool luc_fda_biome_flux =
+        yf * detritus_c[biome].flux_from_fluxpool(luc_e_untracked * det_frac);
+    fluxpool luc_fsa_biome_flux =
+        yf * soil_c[biome].flux_from_fluxpool(luc_e_untracked * soil_frac);
     // Calculate luc uptake; it all goes to vegetation
-    fluxpool luc_fav_biome_flux = yf * atmos_c.flux_from_fluxpool(luc_u_untracked);
+    fluxpool luc_fav_biome_flux =
+        yf * atmos_c.flux_from_fluxpool(luc_u_untracked);
 
     // Calculate NPP fluxes
     fluxpool npp_biome =
         npp_total * wt; // this is already adjusted for any NBP constraint
     final_npp[biome] = npp_biome;
     // Note that the following fluxes are weighted by 'yf' (year fraction)
-    fluxpool npp_fav_biome_flux = yf *
-        atmos_c.flux_from_fluxpool(npp_biome * f_nppv.at(biome));
-    fluxpool npp_fad_biome_flux = yf *
-        atmos_c.flux_from_fluxpool(npp_biome * f_nppd.at(biome));
-    fluxpool npp_fas_biome_flux = yf *
-        atmos_c.flux_from_fluxpool(npp_biome * (1 - f_nppv.at(biome) - f_nppd.at(biome)));
+    fluxpool npp_fav_biome_flux =
+        yf * atmos_c.flux_from_fluxpool(npp_biome * f_nppv.at(biome));
+    fluxpool npp_fad_biome_flux =
+        yf * atmos_c.flux_from_fluxpool(npp_biome * f_nppd.at(biome));
+    fluxpool npp_fas_biome_flux =
+        yf * atmos_c.flux_from_fluxpool(
+                 npp_biome * (1 - f_nppv.at(biome) - f_nppd.at(biome)));
 
     // Calculate and record the final RH values adjusted for any NBC constraint
     fluxpool rh_fda_adj = rh_fda(biome) * rh_nbp_constraint_adjust;
     fluxpool rh_fsa_adj = rh_fsa(biome) * rh_nbp_constraint_adjust;
     final_rh[biome] = rh_fda_adj + rh_fsa_adj; // per year
     // Note that the following fluxes are weighted by 'yf' (year fraction)
-    fluxpool rh_fda_flux = yf *
-        detritus_c[biome].flux_from_fluxpool(rh_fda_adj);
-    fluxpool rh_fsa_flux = yf *
-        soil_c[biome].flux_from_fluxpool(rh_fsa_adj);
+    fluxpool rh_fda_flux =
+        yf * detritus_c[biome].flux_from_fluxpool(rh_fda_adj);
+    fluxpool rh_fsa_flux = yf * soil_c[biome].flux_from_fluxpool(rh_fsa_adj);
 
     // Update soil, detritus, and atmosphere pools - luc fluxes
-    atmos_c = atmos_c + luc_fva_biome_flux - luc_fav_biome_flux + luc_fda_biome_flux + luc_fsa_biome_flux;
+    atmos_c = atmos_c + luc_fva_biome_flux - luc_fav_biome_flux +
+              luc_fda_biome_flux + luc_fsa_biome_flux;
     veg_c[biome] = veg_c[biome] + luc_fav_biome_flux - luc_fva_biome_flux;
     detritus_c[biome] - luc_fda_biome_flux;
     soil_c[biome] = soil_c[biome] - luc_fsa_biome_flux;
@@ -549,6 +592,33 @@ fluxpool SimpleNbox::rh_fsa(std::string biome, double time) const {
 }
 
 //------------------------------------------------------------------------------
+/*! \brief      Compute thawed permafrost component of annual heterotrophic
+ * respiration \returns    current thawed permafrost component of annual
+ * heterotrophic respiration
+ */
+fluxpool SimpleNbox::rh_ftpa_co2(std::string biome) const {
+  fluxpool tpflux((thawed_permafrost_c.at(biome).value(U_PGC) -
+                   static_c.at(biome).value(U_PGC)) *
+                      0.02,
+                  U_PGC_YR);
+  return tpflux * tempferts.at(biome) * (1.0 - rh_ch4_frac.at(biome));
+}
+
+//------------------------------------------------------------------------------
+/*! \brief      Compute thawed permafrost component of annual heterotrophic
+ * respiration \returns    current thawed permafrost  component of annual
+ * heterotrophic respiration
+ */
+fluxpool SimpleNbox::rh_ftpa_ch4(std::string biome) const {
+  // This behaves exactly like the soil pool above
+  fluxpool tpflux((thawed_permafrost_c.at(biome).value(U_PGC) -
+                   static_c.at(biome).value(U_PGC)) *
+                      0.02,
+                  U_PGC_YR);
+  return tpflux * tempferts.at(biome) * rh_ch4_frac.at(biome);
+}
+
+//------------------------------------------------------------------------------
 /*! \brief      Compute total annual heterotrophic respiration
  *  \returns    current annual heterotrophic respiration
  */
@@ -646,8 +716,9 @@ int SimpleNbox::calcderivs(double t, const double c[], double dcdt[]) const {
   const int rounded_t = round(t);
   if (!in_spinup && NBP_constrain.size() && NBP_constrain.exists(rounded_t)) {
     // Compute how different we are from the user-specified constraint
-    const double nbp = npp_current.value(U_PGC_YR) - rh_current.value(U_PGC_YR) -
-      current_luc_e.value(U_PGC_YR) + current_luc_u.value(U_PGC_YR);
+    const double nbp =
+        npp_current.value(U_PGC_YR) - rh_current.value(U_PGC_YR) -
+        current_luc_e.value(U_PGC_YR) + current_luc_u.value(U_PGC_YR);
     const unitval diff = NBP_constrain.get(rounded_t) - unitval(nbp, U_PGC_YR);
 
     // Adjust total NPP and total RH equally (but not LUC, which is an input)
@@ -672,9 +743,9 @@ int SimpleNbox::calcderivs(double t, const double c[], double dcdt[]) const {
   dcdt[SNBOX_ATMOS] = // change in atmosphere pool
       current_ffi_e.value(U_PGC_YR) - current_daccs_u.value(U_PGC_YR) +
       current_luc_e.value(U_PGC_YR) - current_luc_u.value(U_PGC_YR) +
-      ch4ox_current.value(U_PGC_YR) -
-      ocean_uptake.value(U_PGC_YR) + ocean_release.value(U_PGC_YR) -
-      npp_current.value(U_PGC_YR) + rh_current.value(U_PGC_YR);
+      ch4ox_current.value(U_PGC_YR) - ocean_uptake.value(U_PGC_YR) +
+      ocean_release.value(U_PGC_YR) - npp_current.value(U_PGC_YR) +
+      rh_current.value(U_PGC_YR);
   dcdt[SNBOX_VEG] = // change in vegetation pool
       npp_fav.value(U_PGC_YR) - litter_flux.value(U_PGC_YR) -
       luc_fva.value(U_PGC_YR) + luc_fav.value(U_PGC_YR);
@@ -717,9 +788,10 @@ void SimpleNbox::slowparameval(double t, const double c[]) {
 
   // Compute loss (or gain) of vegetation to LUC
   npp_luc_adjust = (end_of_spinup_vegc - cum_luc_va) / end_of_spinup_vegc;
-  H_LOG(logger, Logger::DEBUG) << "slowparameval: npp_luc_adjust = " <<
-      npp_luc_adjust << std::endl;
-//  cout << "xxx," << t << "," << cum_luc_va << "," << end_of_spinup_vegc << "," << npp_luc_adjust << endl;
+  H_LOG(logger, Logger::DEBUG)
+      << "slowparameval: npp_luc_adjust = " << npp_luc_adjust << std::endl;
+  //  cout << "xxx," << t << "," << cum_luc_va << "," << end_of_spinup_vegc <<
+  //  "," << npp_luc_adjust << endl;
 
   // Compute CO2 fertilization factor globally (and for each biome specified)
   for (auto biome : biome_list) {
