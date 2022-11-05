@@ -131,8 +131,8 @@ void SimpleNbox::prepareToRun() {
     }
 
     // Thawed and static permafrost C start at zero
-    thawed_permafrost_c[biome].set(0.0, U_PGC);
-    static_c[biome].set(0.0, U_PGC);
+    thawed_permafrost_c[ biome ].set( 0.0, U_PGC, permafrost_c[ biome ].tracking, D_THAWEDPC );
+    static_c[ biome ].set( 0.0, U_PGC, permafrost_c[ biome ].tracking, "static_c" );
   }
 
   // A flag that lets run() know the very first time it's called

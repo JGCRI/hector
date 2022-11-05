@@ -22,15 +22,15 @@ type.
 }
 \section{Functions}{
 \itemize{
-\item \code{CONCENTRATIONS_N2O}: Atmospheric N2O concentration
+\item \code{CONCENTRATIONS_N2O()}: Atmospheric N2O concentration
 
-\item \code{PREINDUSTRIAL_N2O}: Preindustrial atmospheric N2O concentration
+\item \code{PREINDUSTRIAL_N2O()}: Preindustrial atmospheric N2O concentration
 
-\item \code{PREINDUSTRIAL_O3}: Preindustrial ozone concentration
+\item \code{PREINDUSTRIAL_O3()}: Preindustrial ozone concentration
 
-\item \code{CONCENTRATIONS_O3}: Atmospheric ozone concentration
+\item \code{CONCENTRATIONS_O3()}: Atmospheric ozone concentration
+
 }}
-
 \section{Note}{
 
 Because these identifiers are provided as \code{#define} macros in the hector code,

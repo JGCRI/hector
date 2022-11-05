@@ -94,10 +94,6 @@ void SimpleNbox::init(Core *coreptr) {
   f_frozen[SNBOX_DEFAULT_BIOME] = 1.0;
   new_thaw[SNBOX_DEFAULT_BIOME] = 0.0;
 
-  permafrost_c[SNBOX_DEFAULT_BIOME].set(0.0, U_PGC);
-  static_c[SNBOX_DEFAULT_BIOME].set(0.0, U_PGC);
-  thawed_permafrost_c[SNBOX_DEFAULT_BIOME].set(0.0, U_PGC);
-
   rh_ch4_frac[SNBOX_DEFAULT_BIOME] = 0.0;
   pf_sigma[SNBOX_DEFAULT_BIOME] = 0.986;
   pf_mu[SNBOX_DEFAULT_BIOME] = 1.67;
@@ -122,6 +118,8 @@ void SimpleNbox::init(Core *coreptr) {
   core->registerCapability(D_VEGC, getComponentName());
   core->registerCapability(D_DETRITUSC, getComponentName());
   core->registerCapability(D_SOILC, getComponentName());
+  core->registerCapability(D_PERMAFROSTC, getComponentName());
+  core->registerCapability(D_THAWEDPC, getComponentName());
   core->registerCapability(D_EARTHC, getComponentName());
   core->registerCapability(D_NPP_FLUX0, getComponentName());
   core->registerCapability(D_NPP, getComponentName());
@@ -146,6 +144,7 @@ void SimpleNbox::init(Core *coreptr) {
   core->registerInput(D_VEGC, getComponentName());
   core->registerInput(D_DETRITUSC, getComponentName());
   core->registerInput(D_SOILC, getComponentName());
+  core->registerInput(D_PERMAFROSTC, getComponentName());
   core->registerInput(D_NPP_FLUX0, getComponentName());
   core->registerInput(D_WARMINGFACTOR, getComponentName());
   core->registerInput(D_BETA, getComponentName());
@@ -256,9 +255,9 @@ void SimpleNbox::setData(const std::string &varName, const message_data &data) {
       H_ASSERT(biome == SNBOX_DEFAULT_BIOME, "preindustrial C must be global");
       set_c0(data.getUnitval(U_PPMV_CO2).value(U_PPMV_CO2));
     } else if (varNameParsed == D_VEGC) {
-      // For `veg_c`, `detritus_c`, and `soil_c`, if date is not
-      // provided, set only the "current" model pool, without
-      // touching the time series variable. This is to
+      // For `veg_c`, `detritus_c`, `soil_c`, and `permafrost_c`,
+      // if date is not provided, set only the "current" model pool,
+      // without touching the time series variable. This is to
       // accommodate the way the INI file is parsed. For
       // interactive use, you will usually want to pass the date
       // -- otherwise, the current value will be overridden by a
@@ -284,7 +283,7 @@ void SimpleNbox::setData(const std::string &varName, const message_data &data) {
       }
     } else if (varNameParsed == D_PERMAFROSTC) {
       permafrost_c[biome] = fluxpool(data.getUnitval(U_PGC).value(U_PGC), U_PGC,
-                                     false, D_PERMAFROSTC + biome);
+                                     false, varName);
       if (data.date != Core::undefinedIndex()) {
         permafrost_c_tv.set(data.date, permafrost_c);
       }
@@ -805,9 +804,9 @@ void SimpleNbox::createBiome(const std::string &biome) {
   add_biome_to_ts(detritus_c_tv, biome, detritus_c.at(biome));
   soil_c[biome] = fluxpool(0, U_PGC, false, D_SOILC);
   add_biome_to_ts(soil_c_tv, biome, soil_c.at(biome));
-  permafrost_c[biome] = fluxpool(0, U_PGC, false, "permafrost_c_" + biome);
+  permafrost_c[biome] = fluxpool(0, U_PGC, false, D_PERMAFROSTC);
   add_biome_to_ts(permafrost_c_tv, biome, permafrost_c.at(biome));
-  thawed_permafrost_c[biome] = fluxpool(0, U_PGC, false, "thawedpf_c_" + biome);
+  thawed_permafrost_c[biome] = fluxpool(0, U_PGC, false, D_THAWEDPC);
   add_biome_to_ts(thawed_permafrost_c_tv, biome, thawed_permafrost_c.at(biome));
   static_c[biome] = fluxpool(0, U_PGC, false, "static_c_" + biome);
   add_biome_to_ts(static_c_tv, biome, static_c.at(biome));

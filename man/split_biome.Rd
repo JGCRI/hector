@@ -11,6 +11,7 @@ split_biome(
   fveg_c = rep(1/length(new_biomes), length(new_biomes)),
   fdetritus_c = fveg_c,
   fsoil_c = fveg_c,
+  fpermafrost_c = fveg_c,
   fnpp_flux0 = fveg_c,
   ...
 )

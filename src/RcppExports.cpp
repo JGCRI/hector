@@ -2329,6 +2329,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// PERMAFROST_C
+String PERMAFROST_C(String biome);
+RcppExport SEXP _hector_PERMAFROST_C(SEXP biomeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< String >::type biome(biomeSEXP);
+    rcpp_result_gen = Rcpp::wrap(PERMAFROST_C(biome));
+    return rcpp_result_gen;
+END_RCPP
+}
 // EARTH_C
 String EARTH_C();
 RcppExport SEXP _hector_EARTH_C() {
@@ -2879,6 +2890,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_VEG_C", (DL_FUNC) &_hector_VEG_C, 1},
     {"_hector_DETRITUS_C", (DL_FUNC) &_hector_DETRITUS_C, 1},
     {"_hector_SOIL_C", (DL_FUNC) &_hector_SOIL_C, 1},
+    {"_hector_PERMAFROST_C", (DL_FUNC) &_hector_PERMAFROST_C, 1},
     {"_hector_EARTH_C", (DL_FUNC) &_hector_EARTH_C, 0},
     {"_hector_NPP_FLUX0", (DL_FUNC) &_hector_NPP_FLUX0, 1},
     {"_hector_EMISSIONS_SO2", (DL_FUNC) &_hector_EMISSIONS_SO2, 0},

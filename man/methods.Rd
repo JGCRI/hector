@@ -18,10 +18,10 @@
 \description{
 Hector instance object methods
 }
-\section{Methods (by generic)}{
+\section{Functions}{
 \itemize{
-\item \code{format}: Format method
+\item \code{format(hcore)}: Format method
 
-\item \code{print}: Print method
+\item \code{print(hcore)}: Print method
+
 }}
-

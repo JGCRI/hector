@@ -22,12 +22,12 @@ These functions return constants that can be used in
 }
 \section{Functions}{
 \itemize{
-\item \code{LL_DEBUG}: Set logging at 'debug' level.
+\item \code{LL_DEBUG()}: Set logging at 'debug' level.
 
-\item \code{LL_NOTICE}: Set logging at 'notice' level.
+\item \code{LL_NOTICE()}: Set logging at 'notice' level.
 
-\item \code{LL_WARNING}: Set logging at 'warning' level.
+\item \code{LL_WARNING()}: Set logging at 'warning' level.
 
-\item \code{LL_SEVERE}: Set logging at 'severe' level.
+\item \code{LL_SEVERE()}: Set logging at 'severe' level.
+
 }}
-

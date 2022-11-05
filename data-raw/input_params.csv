@@ -22,6 +22,7 @@ simpleNbox,detritus_c,n,n,y,55,Pg C,detritus
 simpleNbox,boreal.soil_c,y,n,y,1200,Pg C,
 simpleNbox,tropical.soil_c,y,n,y,578,Pg C,
 simpleNbox,soil_c,n,n,y,1782,Pg C,soil
+simpleNbox,permafrost_c,n,n,n,0,Pg C,permafrost
 simpleNbox,boreal.npp_flux0,y,n,y,5,Pg C yr-1,
 simpleNbox,tropical.npp_flux0,y,n,y,45,Pg C yr-1,
 simpleNbox,npp_flux0,n,n,y,56.2,Pg C yr-1,net primary production

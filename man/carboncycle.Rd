@@ -15,6 +15,7 @@
 \alias{VEG_C}
 \alias{DETRITUS_C}
 \alias{SOIL_C}
+\alias{PERMAFROST_C}
 \alias{EARTH_C}
 \alias{NPP_FLUX0}
 \alias{carboncycle}
@@ -48,6 +49,8 @@ DETRITUS_C(biome = "")
 
 SOIL_C(biome = "")
 
+PERMAFROST_C(biome = "")
+
 EARTH_C()
 
 NPP_FLUX0(biome = "")
@@ -61,19 +64,21 @@ carbon cycle
 }
 \section{Functions}{
 \itemize{
-\item \code{CO2_CONSTRAIN}: Constrain atmospheric CO2 concentration (\code{"(ppmv CO2)"})
+\item \code{CO2_CONSTRAIN()}: Constrain atmospheric CO2 concentration (\code{"(ppmv CO2)"})
 
-\item \code{NBP_CONSTRAIN}: Constrain net biome production (land-atmosphere flux) (\code{"(PgC/yr)"})
+\item \code{NBP_CONSTRAIN()}: Constrain net biome production (land-atmosphere flux) (\code{"(PgC/yr)"})
 
-\item \code{VEG_C}: Vegetation C pool (`"Pg C"`)
+\item \code{VEG_C()}: Vegetation C pool (`"Pg C"`)
 
-\item \code{DETRITUS_C}: Vegetation detritus C pool (`"Pg C"`)
+\item \code{DETRITUS_C()}: Vegetation detritus C pool (`"Pg C"`)
 
-\item \code{SOIL_C}: Soil C pool (`"Pg C"`)
+\item \code{SOIL_C()}: Soil C pool (`"Pg C"`)
 
-\item \code{NPP_FLUX0}: Initial net primary productivity (NPP)flux (`"Pg C year^-1"`)
+\item \code{PERMAFROST_C()}: Permafrost C pool (`"Pg C"`)
+
+\item \code{NPP_FLUX0()}: Initial net primary productivity (NPP)flux (`"Pg C year^-1"`)
+
 }}
-
 \section{Output variables}{
 
 These variables can be read using the \code{\link{GETDATA}} message type:

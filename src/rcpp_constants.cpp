@@ -1272,6 +1272,18 @@ String SOIL_C(String biome = "") {
   return out;
 }
 
+//' @describeIn carboncycle Permafrost C pool (`"Pg C"`)
+//' @inheritParams BETA
+//' @export
+// [[Rcpp::export]]
+String PERMAFROST_C(String biome = "") {
+    if (biome == "") return D_PERMAFROSTC;
+    String out = biome;
+    out += BIOME_SPLIT_CHAR();
+    out += D_PERMAFROSTC;
+    return out;
+}
+
 //' @rdname carboncycle
 //' @export
 // [[Rcpp::export]]
