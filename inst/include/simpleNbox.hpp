@@ -113,9 +113,14 @@ private:
   fluxpool atmos_c; //!< atmosphere pool, Pg C
 
   // Carbon pools -- biome-specific
-  fluxpool_stringmap veg_c;        //!< vegetation pools, Pg C
-  fluxpool_stringmap detritus_c;   //!< detritus pools, Pg C
-  fluxpool_stringmap soil_c;       //!< soil pool, Pg C
+  fluxpool_stringmap veg_c;      //!< vegetation pools, Pg C
+  fluxpool_stringmap detritus_c; //!< detritus pools, Pg C
+  fluxpool_stringmap soil_c;     //!< soil pool, Pg C
+  // Permafrost functionality is documented in:
+  // Woodard, D. L., Shiklomanov, A. N., Kravitz, B., Hartin, C., and
+  // Bond-Lamberty, B.: A permafrost implementation in the simple carbon–climate
+  // model Hector v.2.3pf, GMD 14:4751–4767, 2021.
+  // http://dx.doi.org/10.5194/gmd-14-4751-2021
   fluxpool_stringmap permafrost_c; //!< permafrost C pool, Pg C
   // Track thawed peramfrost separately from soil, so that
   // we can apply rh_ch4_frac (the CH4:CO2 ratio) to it
@@ -123,20 +128,19 @@ private:
   fluxpool_stringmap
       static_c; //!< static carbon total in thawed permafrost pool
 
+  // Carbon fluxes -- biome-specific
   fluxpool_stringmap NPP_veg; //!< Net primary productivity of vegetation;
   fluxpool_stringmap RH_det,
       RH_soil; //!< Heterotrophic CO2 respiration of detritus and soil
   fluxpool_stringmap RH_thawed_permafrost,
-      RH_ch4; //!<  Heterotrophic CO2 and CH4 respiration of thawed permafrost
-
-  // Carbon fluxes -- biome-specific
+      RH_ch4; //!<  Heterotrophic CH4 respiration of thawed permafrost
   fluxpool_stringmap
       final_npp; //!< final NPP after any NBP constraint accounted for, Pg C/yr
   fluxpool_stringmap
       final_rh; //!< final RH after any NBP constraint accounted for, Pg C/yr
 
-  unitval Ca_residual; //!< residual (when constraining [CO2]) flux, Pg C
-
+  // Other state variables
+  unitval Ca_residual; //!< residual (when constraining [CO2]), Pg C
   double_stringmap tempfertd,
       tempferts; //!< temperature effect on respiration (unitless)
   double_stringmap f_frozen,
@@ -148,17 +152,16 @@ private:
    * a reset, we will retrieve the state at the reset time from these
    * arrays.
    *****************************************************************/
-  tseries<fluxpool> earth_c_ts; //!< Time series of earth carbon pool
-  tseries<fluxpool> atmos_c_ts; //!< Time series of atmosphere carbon pool
-
+  tseries<fluxpool> earth_c_ts; //!< Time series of earth C pool
+  tseries<fluxpool> atmos_c_ts; //!< Time series of atmosphere C pool
   tvector<fluxpool_stringmap>
-      veg_c_tv; //!< Time series of biome-specific vegetation carbon pools
+      veg_c_tv; //!< Time series of biome-specific vegetation C pools
   tvector<fluxpool_stringmap>
-      detritus_c_tv; //!< Time series of biome-specific detritus carbon pools
+      detritus_c_tv; //!< Time series of biome-specific detritus C pools
   tvector<fluxpool_stringmap>
-      soil_c_tv; //!< Time series of biome-specific soil carbon pools
+      soil_c_tv; //!< Time series of biome-specific soil C pools
   tvector<fluxpool_stringmap>
-      permafrost_c_tv; //!< Time series of biome-specific permafrost carbon
+      permafrost_c_tv; //!< Time series of biome-specific permafrost C
                        //!< pools
   tvector<fluxpool_stringmap>
       thawed_permafrost_c_tv; //!< Time series of biome-specific thawed
@@ -247,10 +250,10 @@ private:
 
   // Slowly-changing variables
   // These get computed only once per year, in slowparameval()
-  fluxpool current_luc_e, //!< Current year LUC emissions (/yr)
-      current_luc_u,      //!< Current year LUC uptake (/yr)
-      current_ffi_e,      //!< Current year FFI emissions (/yr)
-      current_daccs_u;    //!< Current year DACCS uptake (/yr)
+  fluxpool current_luc_e, //!< Current year LUC emissions (Pg C/yr)
+      current_luc_u,      //!< Current year LUC uptake (Pg C/yr)
+      current_ffi_e,      //!< Current year FFI emissions (Pg C/yr)
+      current_daccs_u;    //!< Current year DACCS uptake (Pg C/yr)
   double_stringmap beta;  //!< shape of CO2 response
   double_stringmap
       warmingfactor; //!< regional warming relative to global (1.0=same)
@@ -378,7 +381,7 @@ private:
       soil_c[biome].tracking = true;
       permafrost_c[biome].tracking = true;
       thawed_permafrost_c[biome].tracking = true;
-      static_c[ biome ].tracking = true;
+      static_c[biome].tracking = true;
     }
   }
 };
