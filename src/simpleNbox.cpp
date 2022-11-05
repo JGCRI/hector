@@ -40,7 +40,7 @@ void identity_tests(bool trk) {
 //------------------------------------------------------------------------------
 /*! \brief constructor
  */
-SimpleNbox::SimpleNbox() : CarbonCycleModel(6), masstot(0.0) {
+SimpleNbox::SimpleNbox() : CarbonCycleModel(8), masstot(0.0) {
   // Don't allow interpolation of the emissions time series; we use
   // constant annualized values throughout the year so e.g. pulse tests
   // work correctly. See #643
@@ -201,7 +201,7 @@ void SimpleNbox::setData(const std::string &varName, const message_data &data) {
     biome = splitvec[0];
     varNameParsed = splitvec[1];
     if (has_biome(SNBOX_DEFAULT_BIOME)) {
-      H_LOG(logger, Logger::DEBUG)
+      H_LOG(logger, Logger::NOTICE)
           << "Removing biome '" << SNBOX_DEFAULT_BIOME
           << "' because you cannot have both 'global' and biome data. "
           << std::endl;
@@ -223,7 +223,7 @@ void SimpleNbox::setData(const std::string &varName, const message_data &data) {
   // If the biome is not currently in the `biome_list`, and it's not
   // the "global" biome, add it to `biome_list`
   if (biome != SNBOX_DEFAULT_BIOME && !has_biome(biome)) {
-    H_LOG(logger, Logger::DEBUG)
+    H_LOG(logger, Logger::NOTICE)
         << "Adding biome '" << biome << "' to `biome_list`." << std::endl;
     // We don't use `createBiome` here for the same reasons as above.
     biome_list.push_back(biome);

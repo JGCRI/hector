@@ -19,6 +19,8 @@
 #include "boost/algorithm/string.hpp"
 #pragma clang diagnostic pop
 
+#include <boost/math/distributions/lognormal.hpp>
+
 #include "avisitor.hpp"
 #include "dependency_finder.hpp"
 #include "simpleNbox.hpp"
@@ -40,14 +42,17 @@ void SimpleNbox::log_pools(const double t, const string msg) {
       << "---- pool states at t=" << t << " " << msg << " ----" << std::endl;
   H_LOG(logger, Logger::DEBUG) << "Atmos = " << atmos_c << std::endl;
   H_LOG(logger, Logger::DEBUG)
-      << "Biome \tveg_c \t\tdetritus_c \tsoil_c \tpermafrost_c \tthawed_permafrost_c \tstatic_c" << std::endl;
+      << "Biome \tveg_c \t\tdetritus_c \tsoil_c \tpermafrost_c "
+         "\tthawed_permafrost_c \tstatic_c"
+      << std::endl;
   for (auto biome : biome_list) {
-    H_LOG(logger, Logger::DEBUG) << biome
-    << "\t" << veg_c[biome].value(U_PGC)
-    << "\t\t" << detritus_c[biome].value(U_PGC) << "\t\t" << soil_c[biome].value(U_PGC)
-    << "\t\t" << permafrost_c[biome].value(U_PGC)
-    << "\t\t" << thawed_permafrost_c[biome].value(U_PGC)
-    << "\t\t" << static_c[biome].value(U_PGC) << std::endl;
+    H_LOG(logger, Logger::DEBUG)
+        << biome << "\t" << veg_c[biome].value(U_PGC) << "\t\t"
+        << detritus_c[biome].value(U_PGC) << "\t\t"
+        << soil_c[biome].value(U_PGC) << "\t\t"
+        << permafrost_c[biome].value(U_PGC) << "\t\t"
+        << thawed_permafrost_c[biome].value(U_PGC) << "\t\t"
+        << static_c[biome].value(U_PGC) << std::endl;
   }
   H_LOG(logger, Logger::DEBUG) << "Earth = " << earth_c << std::endl;
 }
@@ -131,8 +136,9 @@ void SimpleNbox::prepareToRun() {
     }
 
     // Thawed and static permafrost C start at zero
-    thawed_permafrost_c[ biome ].set( 0.0, U_PGC, permafrost_c[ biome ].tracking, D_THAWEDPC );
-    static_c[ biome ].set( 0.0, U_PGC, permafrost_c[ biome ].tracking, "static_c" );
+    thawed_permafrost_c[biome].set(0.0, U_PGC, permafrost_c[biome].tracking,
+                                   D_THAWEDPC);
+    static_c[biome].set(0.0, U_PGC, permafrost_c[biome].tracking, "static_c");
   }
 
   // A flag that lets run() know the very first time it's called
@@ -226,6 +232,8 @@ void SimpleNbox::getCValues(double t, double c[]) {
   c[SNBOX_VEG] = sum_map(veg_c).value(U_PGC);
   c[SNBOX_DET] = sum_map(detritus_c).value(U_PGC);
   c[SNBOX_SOIL] = sum_map(soil_c).value(U_PGC);
+  c[SNBOX_PERMAFROST] = sum_map(permafrost_c).value(U_PGC);
+  c[SNBOX_THAWEDP] = sum_map(thawed_permafrost_c).value(U_PGC);
   omodel->getCValues(t, c);
   c[SNBOX_EARTH] = earth_c.value(U_PGC);
 
@@ -253,9 +261,9 @@ void SimpleNbox::stashCValues(double t, const double c[]) {
       << "Stashing at t=" << t << ", solver pools at " << t << ": "
       << "  atm = " << c[SNBOX_ATMOS] << "  veg = " << c[SNBOX_VEG]
       << "  det = " << c[SNBOX_DET] << "  soil = " << c[SNBOX_SOIL]
-      << "  permafrost = " << c[SNBOX_PERMAFROST] << "  thawed_p = " << c[SNBOX_THAWEDP]
-      << "  ocean = " << c[SNBOX_OCEAN] << "  earth = " << c[SNBOX_EARTH]
-      << std::endl;
+      << "  permafrost = " << c[SNBOX_PERMAFROST]
+      << "  thawed_p = " << c[SNBOX_THAWEDP] << "  ocean = " << c[SNBOX_OCEAN]
+      << "  earth = " << c[SNBOX_EARTH] << std::endl;
   log_pools(t, "BEFORE update");
 
   // IMPORTANT NOTE ABOUT YEAR FRACTION
@@ -662,9 +670,12 @@ int SimpleNbox::calcderivs(double t, const double c[], double dcdt[]) const {
   fluxpool npp_fad(0.0, U_PGC_YR);
   fluxpool npp_fas(0.0, U_PGC_YR);
 
-  // RH: heterotrophic respiration
+  // RH: heterotrophic respiration from detritus and soil
   fluxpool rh_fda_current(0.0, U_PGC_YR);
   fluxpool rh_fsa_current(0.0, U_PGC_YR);
+  // Heterotrophic respiration (CO2 and CH4) from thawed permafrost
+  fluxpool rh_ftpa_co2_current(0.0, U_PGC_YR);
+  fluxpool rh_ftpa_ch4_current(0.0, U_PGC_YR);
 
   for (auto biome : biome_list) {
     // NPP is scaled by CO2 from preindustrial value
@@ -675,8 +686,11 @@ int SimpleNbox::calcderivs(double t, const double c[], double dcdt[]) const {
     npp_fas = npp_fas + npp_biome * (1 - f_nppv.at(biome) - f_nppd.at(biome));
     rh_fda_current = rh_fda_current + rh_fda(biome);
     rh_fsa_current = rh_fsa_current + rh_fsa(biome);
+    rh_ftpa_co2_current = rh_ftpa_co2_current + rh_ftpa_co2(biome);
+    rh_ftpa_ch4_current = rh_ftpa_ch4_current + rh_ftpa_ch4(biome);
   }
-  fluxpool rh_current = rh_fda_current + rh_fsa_current;
+  fluxpool rh_current = rh_fda_current + rh_fsa_current + rh_ftpa_co2_current;
+  fluxpool rh_ch4_current = rh_ftpa_ch4_current;
 
   // Detritus flux comes from the vegetation pool
   fluxpool litter_flux(0.0, U_PGC_YR);
@@ -706,6 +720,34 @@ int SimpleNbox::calcderivs(double t, const double c[], double dcdt[]) const {
 
   // Oxidized methane of fossil fuel origin
   fluxpool ch4ox_current(0.0, U_PGC_YR); // TODO: implement this
+
+  // As permafrost thaws, the C is mobilized into the thawed permafrost pool.
+  fluxpool permafrost_thaw_c(0.0, U_PGC_YR);
+  fluxpool permafrost_refreeze_tp(0.0, U_PGC_YR);
+  fluxpool permafrost_refreeze_soil(0.0, U_PGC_YR);
+  if (!in_spinup) { // No permafrost thaw during spinup
+    // Sum permafrost thaw in all biomes
+    for (auto biome : biome_list) {
+      double biome_c_thaw =
+          permafrost_c.at(biome).value(U_PGC) * new_thaw.at(biome);
+
+      if (biome_c_thaw >= 0) {
+        permafrost_thaw_c =
+            permafrost_thaw_c + fluxpool(biome_c_thaw, U_PGC_YR);
+      } else {
+        // If the permafrost thaw is negative, that means refreezing
+        // (preferentially from the thawed permafrost pool, otherwise from soil
+        // pool)
+        double thawed_remaining = thawed_permafrost_c.at(biome).value(U_PGC) -
+                                  rh_ftpa_co2_current.value(U_PGC_YR) -
+                                  rh_ch4_current.value(U_PGC_YR);
+        permafrost_refreeze_tp =
+            fluxpool(std::min(biome_c_thaw, thawed_remaining), U_PGC_YR);
+        permafrost_refreeze_soil =
+            fluxpool(-biome_c_thaw, U_PGC_YR) - permafrost_refreeze_tp;
+      }
+    }
+  }
 
   // If user has supplied NBP (net biome production) values, adjust NPP and RH
   // to match
@@ -740,8 +782,14 @@ int SimpleNbox::calcderivs(double t, const double c[], double dcdt[]) const {
       current_ffi_e.value(U_PGC_YR) - current_daccs_u.value(U_PGC_YR) +
       current_luc_e.value(U_PGC_YR) - current_luc_u.value(U_PGC_YR) +
       ch4ox_current.value(U_PGC_YR) - ocean_uptake.value(U_PGC_YR) +
-      ocean_release.value(U_PGC_YR) - npp_current.value(U_PGC_YR) +
-      rh_current.value(U_PGC_YR);
+      ocean_release.value(U_PGC_YR) -
+      npp_current.value(U_PGC_YR)
+      // HACK: For mass balance purposes, dump both RH{CO2} and RH{CH4} into
+      // the atmosphere. Effectively, this means that CH4 is emitted on top of
+      // existing CO2 -- i.e. more CH4 emissions does not mean less CO2
+      // emissions from RH). The correct solution is to have a separate, 8th
+      // naturally-emitted CH4 box.
+      + rh_ch4_current.value(U_PGC_YR) + rh_current.value(U_PGC_YR);
   dcdt[SNBOX_VEG] = // change in vegetation pool
       npp_fav.value(U_PGC_YR) - litter_flux.value(U_PGC_YR) -
       luc_fva.value(U_PGC_YR) + luc_fav.value(U_PGC_YR);
@@ -752,7 +800,15 @@ int SimpleNbox::calcderivs(double t, const double c[], double dcdt[]) const {
   dcdt[SNBOX_SOIL] = // change in soil pool
       npp_fas.value(U_PGC_YR) + litter_fvs.value(U_PGC_YR) +
       detsoil_flux.value(U_PGC_YR) - rh_fsa_current.value(U_PGC_YR) -
-      luc_fsa.value(U_PGC_YR);
+      permafrost_refreeze_soil.value(U_PGC_YR) - luc_fsa.value(U_PGC_YR);
+  dcdt[SNBOX_PERMAFROST] = // change in permafrost pool
+      -permafrost_thaw_c.value(U_PGC_YR) +
+      permafrost_refreeze_soil.value(U_PGC_YR) +
+      permafrost_refreeze_tp.value(U_PGC_YR);
+  dcdt[SNBOX_THAWEDP] = // change in thawed permafrost pool
+      permafrost_thaw_c.value(U_PGC_YR) -
+      permafrost_refreeze_tp.value(U_PGC_YR) -
+      rh_ftpa_ch4_current.value(U_PGC_YR) - rh_ftpa_co2_current.value(U_PGC_YR);
   dcdt[SNBOX_OCEAN] = // change in ocean pool
       ocean_uptake.value(U_PGC_YR) - ocean_release.value(U_PGC_YR);
   dcdt[SNBOX_EARTH] = // change in earth pool
@@ -824,6 +880,8 @@ void SimpleNbox::slowparameval(double t, const double c[]) {
     if (in_spinup) {
       tempfertd[biome] = 1.0; // no perturbation allowed in spinup
       tempferts[biome] = 1.0; // no perturbation allowed in spinup
+      f_frozen[biome] = 1.0;  // no perturbation allowed in spinup
+      new_thaw[biome] = 0.0;  // no perturbation allowed in spinup
     } else {
       double wf;
       if (warmingfactor.count(biome)) {
@@ -839,6 +897,22 @@ void SimpleNbox::slowparameval(double t, const double c[]) {
       tempfertd[biome] = pow(q10_rh.at(biome),
                              (Tland_biome / 10.0)); // detritus warms with air
 
+      // Permafrost thaw
+      // Currently, these are calibrated to produce a 0.172 / year slope from
+      // 0.8 to 4 degrees C, which was the linear form of this in Kessler.
+
+      new_thaw[biome] = 0.0;
+      if (permafrost_c[ biome ] > unitval(0.0, U_PGC)) {
+        // Lognormal distribution for current biome's mu and sigma
+        // TODO: this doesn't need to be computed each time; put in prepareToRun()
+        // This is equation 10 in Woodard et al. 2021
+        boost::math::lognormal s(pf_mu.at( biome ), pf_sigma.at( biome ));
+        double f_frozen_current = cdf(s, Tland_biome);
+        
+          new_thaw[ biome ] = f_frozen[ biome ] - f_frozen_current;
+          f_frozen[ biome ] = f_frozen_current;
+      }
+      
 // Soil warm very slowly relative to the atmosphere
 // We use a mean temperature of a window (size Q10_TEMPN) of temperatures to
 // scale Q10
