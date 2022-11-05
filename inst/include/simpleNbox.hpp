@@ -378,6 +378,7 @@ private:
       soil_c[biome].tracking = true;
       permafrost_c[biome].tracking = true;
       thawed_permafrost_c[biome].tracking = true;
+      static_c[ biome ].tracking = true;
     }
   }
 };

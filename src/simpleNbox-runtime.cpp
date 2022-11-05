@@ -40,12 +40,14 @@ void SimpleNbox::log_pools(const double t, const string msg) {
       << "---- pool states at t=" << t << " " << msg << " ----" << std::endl;
   H_LOG(logger, Logger::DEBUG) << "Atmos = " << atmos_c << std::endl;
   H_LOG(logger, Logger::DEBUG)
-      << "Biome \tveg_c \t\tdetritus_c \tsoil_c" << std::endl;
+      << "Biome \tveg_c \t\tdetritus_c \tsoil_c \tpermafrost_c \tthawed_permafrost_c \tstatic_c" << std::endl;
   for (auto biome : biome_list) {
-    H_LOG(logger, Logger::DEBUG)
-        << biome << "\t" << veg_c[biome] << "\t" << detritus_c[biome] << "\t\t"
-        << soil_c[biome] << thawed_permafrost_c[biome] << "\t"
-        << static_c[biome] << "\t" << permafrost_c[biome] << std::endl;
+    H_LOG(logger, Logger::DEBUG) << biome
+    << "\t" << veg_c[biome].value(U_PGC)
+    << "\t\t" << detritus_c[biome].value(U_PGC) << "\t\t" << soil_c[biome].value(U_PGC)
+    << "\t\t" << permafrost_c[biome].value(U_PGC)
+    << "\t\t" << thawed_permafrost_c[biome].value(U_PGC)
+    << "\t\t" << static_c[biome].value(U_PGC) << std::endl;
   }
   H_LOG(logger, Logger::DEBUG) << "Earth = " << earth_c << std::endl;
 }
@@ -70,10 +72,6 @@ void SimpleNbox::prepareToRun() {
            "soil_c and biome_list not same size");
   H_ASSERT(biome_list.size() == permafrost_c.size(),
            "permafrost_c and biome_list not same size");
-  H_ASSERT(biome_list.size() == thawed_permafrost_c.size(),
-           "thawed_permafrost_c and biome_list not same size");
-  H_ASSERT(biome_list.size() == static_c.size(),
-           "thawed_permafrost_c and biome_list not same size");
   H_ASSERT(biome_list.size() == npp_flux0.size(),
            "npp_flux0 and biome_list not same size");
 
@@ -87,9 +85,6 @@ void SimpleNbox::prepareToRun() {
     H_ASSERT(detritus_c.count(biome), "no detritus_c data for " + biome);
     H_ASSERT(soil_c.count(biome), "no soil_c data for " + biome);
     H_ASSERT(permafrost_c.count(biome), "no biome data for permafrost_c");
-    H_ASSERT(thawed_permafrost_c.count(biome),
-             "no biome data for thawed_permafrost_c");
-    H_ASSERT(static_c.count(biome), "no biome data for static_c");
     H_ASSERT(npp_flux0.count(biome), "no npp_flux0 data for " + biome);
     // Beta and Q10
     H_ASSERT(beta.count(biome), "No beta entry for " + biome);
@@ -258,6 +253,7 @@ void SimpleNbox::stashCValues(double t, const double c[]) {
       << "Stashing at t=" << t << ", solver pools at " << t << ": "
       << "  atm = " << c[SNBOX_ATMOS] << "  veg = " << c[SNBOX_VEG]
       << "  det = " << c[SNBOX_DET] << "  soil = " << c[SNBOX_SOIL]
+      << "  permafrost = " << c[SNBOX_PERMAFROST] << "  thawed_p = " << c[SNBOX_THAWEDP]
       << "  ocean = " << c[SNBOX_OCEAN] << "  earth = " << c[SNBOX_EARTH]
       << std::endl;
   log_pools(t, "BEFORE update");
