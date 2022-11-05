@@ -282,8 +282,8 @@ void SimpleNbox::setData(const std::string &varName, const message_data &data) {
         soil_c_tv.set(data.date, soil_c);
       }
     } else if (varNameParsed == D_PERMAFROSTC) {
-      permafrost_c[biome] = fluxpool(data.getUnitval(U_PGC).value(U_PGC), U_PGC,
-                                     false, varName);
+      permafrost_c[biome] =
+          fluxpool(data.getUnitval(U_PGC).value(U_PGC), U_PGC, false, varName);
       if (data.date != Core::undefinedIndex()) {
         permafrost_c_tv.set(data.date, permafrost_c);
       }
@@ -579,14 +579,25 @@ unitval SimpleNbox::getData(const std::string &varName, const double date) {
   } else if (varNameParsed == D_SOILC) {
     returnval = sum_fluxpool_biome_ts(varName, date, biome, soil_c, soil_c_tv);
   } else if (varNameParsed == D_THAWEDPC) {
-    returnval = sum_fluxpool_biome_ts(varName, date, biome, thawed_permafrost_c, thawed_permafrost_c_tv);
+    returnval = sum_fluxpool_biome_ts(varName, date, biome, thawed_permafrost_c,
+                                      thawed_permafrost_c_tv);
   } else if (varNameParsed == D_PERMAFROSTC) {
-    returnval = sum_fluxpool_biome_ts(varName, date, biome, permafrost_c, permafrost_c_tv);
+    returnval = sum_fluxpool_biome_ts(varName, date, biome, permafrost_c,
+                                      permafrost_c_tv);
   } else if (varNameParsed == D_F_FROZEN) {
-    //BBL this is super ugly in the permafrost code
-    // TODO: see lines 550- of
-    // https://github.com/JGCRI/hector/commit/2d6f867d73bdd7e7d4f863b861d7d951afd28bf9
- } else if (varNameParsed == D_NPP_FLUX0) {
+    // BBL this is super ugly in the permafrost code
+    //  TODO: see lines 550- of
+    //  https://github.com/JGCRI/hector/commit/2d6f867d73bdd7e7d4f863b861d7d951afd28bf9
+    //  For now we require a biome
+    H_ASSERT(biome != SNBOX_DEFAULT_BIOME, "Biome required for frozen_c");
+    double tempval;
+    if (date == Core::undefinedIndex())
+      tempval = f_frozen.at(biome);
+    else
+      tempval = f_frozen_tv.get(date).at(biome);
+    returnval = unitval(tempval, U_UNITLESS);
+
+  } else if (varNameParsed == D_NPP_FLUX0) {
     H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for npp_flux0");
     H_ASSERT(has_biome(biome), biome_error);
     returnval = npp_flux0.at(biome);
