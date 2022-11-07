@@ -4,6 +4,10 @@
 #' @param strstr String name to find the Hector function for
 #' @return Hector function name
 #' @export
+#' @seealso getunits
+#' @examples
+#' getfxn("beta")
+#' getfxn("q10_rh")
 getfxn <- function(str) {
 
     rows <- match(str, hector::fxntable$string)

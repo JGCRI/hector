@@ -15,3 +15,10 @@ Hector function name
 \description{
 This function provides the Hector function that returns a the Hector string
 }
+\examples{
+getfxn("beta")
+getfxn("q10_rh")
+}
+\seealso{
+getunits
+}
