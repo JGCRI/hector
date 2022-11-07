@@ -92,7 +92,8 @@ instead of the more natural looking \code{GETDATA}.
 }
 
 \seealso{
-\link{haloforcings} for forcings from halocarbons and \link{rho} for parameters related to radiative forcing efficiency.
+\link{haloforcings} for forcings from halocarbons and \link{rho} for
+parameters related to radiative forcing efficiency.
 
 Other capability identifiers: 
 \code{\link{CF4_CONSTRAIN}()},

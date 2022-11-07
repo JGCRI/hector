@@ -70,6 +70,7 @@ Collate:
     'RcppExports.R'
     'aadoc.R'
     'biome.R'
+    'fxns.R'
     'hector.R'
     'messages.R'
     'units.R'
