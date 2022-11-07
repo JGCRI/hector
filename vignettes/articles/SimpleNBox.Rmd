@@ -142,7 +142,7 @@ The following values related to the terrestrial C cycle can be set via `setData`
 | Vegetation C pool                  | PgC        | `D_VEGC`                   |                       | `veg_c`         | No         | Yes            | Yes | Yes |
 | Detritus C pool                    | PgC        | `D_DETRITUSC`              |                       | `detritus_c`    | Yes        | Yes            | Yes | Yes |
 | Soil C pool                        | PgC        | `D_SOILC`                  |                       | `soil_c`        | No         | Yes            | Yes | Yes |
-| Radiative forcing from albedo      | unitless   | `D_RF_T_ALBEDO`            | `RF_T_ALBEDO()`       | `Ftalbedo`      | Yes        | No             | Yes | Yes |
+| Radiative forcing from albedo      | unitless   | `D_RF_ALBEDO`            | `RF_ALBEDO()`       | `RF_albedo`      | Yes        | No             | Yes | Yes |
 | Frac. NPP to vegetation            | unitless   | `D_F_NPPV`                 | `F_NPPV()`            | `f_nppv`        | No         | Yes            | Yes | Yes |
 | Frac. NPP to detritus              | unitless   | `D_F_NPPD`                 | `F_NPPD()`            | `f_nppd`        | No         | Yes            | Yes | Yes |
 | Frac. veg. C to litter             | unitless   | `D_F_LITTERD`              | `F_LITTERD()`         | `f_litterd`     | No         | Yes            | Yes | Yes |
