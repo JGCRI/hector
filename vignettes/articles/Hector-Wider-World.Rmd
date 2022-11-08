@@ -1,7 +1,7 @@
 ---
 title: "Hector in the Wider World"
 author: "Leeya Pressburger"
-date: "7/30/2021"
+date: "11/7/2022"
 ---
 
 ```{r, include = FALSE}
@@ -37,6 +37,15 @@ Hector v2.0 incorporates a one-dimensional diffusive heat and energy balance mod
 
 ### Journal articles
 Below are journal articles that use or reference Hector. 
+
+
+--
+
+[Climate module disparities explain inconsistent estimates of the social cost of carbon in integrated assessment models]()
+
+
+> Wang, Tianpeng, Fei Teng, Xu Deng, and Jun Xie. 2022. “Climate Module Disparities Explain Inconsistent Estimates of the Social Cost of Carbon in Integrated Assessment Models.” One Earth 5 (7): 767–78.
+
 
 --
 
