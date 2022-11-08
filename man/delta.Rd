@@ -173,7 +173,8 @@ instead of the more natural looking \code{GETDATA}.
 }
 
 \seealso{
-\link{haloforcings} for forcings from halocarbons and \link{forcings} forcing values provided from the hector forcing component.
+\link{haloforcings} for forcings from halocarbons and \link{forcings} forcing
+values provided from the hector forcing component.
 
 Other capability identifiers: 
 \code{\link{CF4_CONSTRAIN}()},

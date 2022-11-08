@@ -37,7 +37,8 @@ NULL
 #' @inheritSection msgtype Note
 #'
 #' @name forcings
-#' @seealso \link{haloforcings} for forcings from halocarbons and \link{rho} for parameters related to radiative forcing efficiency.
+#' @seealso \link{haloforcings} for forcings from halocarbons and \link{rho} for
+#' parameters related to radiative forcing efficiency.
 #' @family capability identifiers
 NULL
 
@@ -50,7 +51,8 @@ NULL
 #' @inheritSection msgtype Note
 #'
 #' @name rho
-#' @seealso \link{haloforcings} for forcings from halocarbons and \link{forcings} forcing values provided from the hector forcing component.
+#' @seealso \link{haloforcings} for forcings from halocarbons and \link{forcings} forcing
+#' values provided from the hector forcing component.
 #' @family capability identifiers
 NULL
 
@@ -64,7 +66,8 @@ NULL
 #' @inheritSection msgtype Note
 #'
 #' @name delta
-#' @seealso \link{haloforcings} for forcings from halocarbons and \link{forcings} forcing values provided from the hector forcing component.
+#' @seealso \link{haloforcings} for forcings from halocarbons and \link{forcings} forcing
+#' values provided from the hector forcing component.
 #' @family capability identifiers
 NULL
 

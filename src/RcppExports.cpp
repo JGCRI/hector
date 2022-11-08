@@ -120,13 +120,13 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// RF_T_ALBEDO
-String RF_T_ALBEDO();
-RcppExport SEXP _hector_RF_T_ALBEDO() {
+// RF_ALBEDO
+String RF_ALBEDO();
+RcppExport SEXP _hector_RF_ALBEDO() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(RF_T_ALBEDO());
+    rcpp_result_gen = Rcpp::wrap(RF_ALBEDO());
     return rcpp_result_gen;
 END_RCPP
 }
@@ -2670,7 +2670,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_EMISSIONS_BC", (DL_FUNC) &_hector_EMISSIONS_BC, 0},
     {"_hector_RF_TOTAL", (DL_FUNC) &_hector_RF_TOTAL, 0},
     {"_hector_FTOT_CONSTRAIN", (DL_FUNC) &_hector_FTOT_CONSTRAIN, 0},
-    {"_hector_RF_T_ALBEDO", (DL_FUNC) &_hector_RF_T_ALBEDO, 0},
+    {"_hector_RF_ALBEDO", (DL_FUNC) &_hector_RF_ALBEDO, 0},
     {"_hector_RF_CO2", (DL_FUNC) &_hector_RF_CO2, 0},
     {"_hector_DELTA_CO2", (DL_FUNC) &_hector_DELTA_CO2, 0},
     {"_hector_RF_N2O", (DL_FUNC) &_hector_RF_N2O, 0},

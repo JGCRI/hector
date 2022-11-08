@@ -140,6 +140,7 @@ void SimpleNbox::init(Core *coreptr) {
   core->registerInput(D_FFI_EMISSIONS, getComponentName());
   core->registerInput(D_DACCS_UPTAKE, getComponentName());
   core->registerInput(D_LUC_EMISSIONS, getComponentName());
+  core->registerInput(D_LUC_UPTAKE, getComponentName());
   core->registerInput(D_PREINDUSTRIAL_CO2, getComponentName());
   core->registerInput(D_VEGC, getComponentName());
   core->registerInput(D_DETRITUSC, getComponentName());

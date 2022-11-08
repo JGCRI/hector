@@ -83,7 +83,7 @@ String FTOT_CONSTRAIN() { return D_FTOT_CONSTRAIN; }
 //' @describeIn forcings Radiative forcing due to albedo
 //' @export
 // [[Rcpp::export]]
-String RF_T_ALBEDO() { return D_RF_T_ALBEDO; }
+String RF_ALBEDO() { return D_RF_T_ALBEDO; }
 
 //' @describeIn forcings Radiative forcing due to CO2
 //' @export
