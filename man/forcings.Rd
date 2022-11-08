@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R, R/aadoc.R
 \name{RF_TOTAL}
 \alias{RF_TOTAL}
-\alias{RF_T_ALBEDO}
+\alias{RF_ALBEDO}
 \alias{RF_CO2}
 \alias{RF_H2O_STRAT}
 \alias{RF_O3_TROP}
@@ -20,7 +20,7 @@
 \usage{
 RF_TOTAL()
 
-RF_T_ALBEDO()
+RF_ALBEDO()
 
 RF_CO2()
 
@@ -56,7 +56,7 @@ messages.)
 \itemize{
 \item \code{RF_TOTAL}: Total radiative forcing
 
-\item \code{RF_T_ALBEDO}: Radiative forcing due to albedo
+\item \code{RF_ALBEDO}: Radiative forcing due to albedo
 
 \item \code{RF_CO2}: Radiative forcing due to CO2
 
@@ -92,7 +92,8 @@ instead of the more natural looking \code{GETDATA}.
 }
 
 \seealso{
-\link{haloforcings} for forcings from halocarbons and \link{rho} for parameters related to radiative forcing efficiency.
+\link{haloforcings} for forcings from halocarbons and \link{rho} for
+parameters related to radiative forcing efficiency.
 
 Other capability identifiers: 
 \code{\link{CF4_CONSTRAIN}()},

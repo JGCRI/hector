@@ -94,6 +94,8 @@ private:
   typedef std::map<std::string, fluxpool> fluxpool_stringmap;
   typedef std::map<std::string, double> double_stringmap;
 
+  bool has_been_run_before; //!<  Has run() been called once already?
+  
   /*****************************************************************
    * Component state
    * All of this information will be saved at the end of each time
@@ -203,7 +205,13 @@ private:
   // Initial fluxes
   fluxpool_stringmap npp_flux0; //!< preindustrial NPP
 
-  // Atmospheric CO2, temperature, and their effects  
+  // Variables needed to adjust NPP for LUC
+  unitval cum_luc_va;
+  tseries<unitval> cum_luc_va_ts;
+  fluxpool end_of_spinup_vegc;
+  double npp_luc_adjust;
+  
+  // Atmospheric CO2, temperature, and their effects
   fluxpool C0; //!< preindustrial [CO2], ppmv
 
   // Slowly-changing variables
