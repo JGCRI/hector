@@ -41,7 +41,7 @@ jobs:
         run: |
          cd scripts/
          if [ -f "diff_plot.png" ]; then
-          cml-publish "diff_plot.png" --md >> OutputDifferences.knit.md
-          cml-publish "comp_plot.png" --md >> OutputDifferences.knit.md
+          cml asset publish "diff_plot.png" --md >> OutputDifferences.knit.md
+          cml asset publish "comp_plot.png" --md >> OutputDifferences.knit.md
           fi
-         cml-send-comment OutputDifferences.knit.md
+         cml comment create OutputDifferences.knit.md
