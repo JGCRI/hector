@@ -1,15 +1,11 @@
 name: leeyabot
-on:
-  pull_request:
-    branches:
-      - master
-      - v3_dev
+on: [push]
 
 jobs:
   run:
-    runs-on: [ubuntu-latest]
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: iterative/setup-cml@v1
       - uses: r-lib/actions/setup-r@v2
         with:
@@ -39,9 +35,9 @@ jobs:
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-         cd scripts/
-         if [ -f "diff_plot.png" ]; then
-          cml asset publish "diff_plot.png" --md >> OutputDifferences.knit.md
-          cml asset publish "comp_plot.png" --md >> OutputDifferences.knit.md
-          fi
-         cml comment create OutputDifferences.knit.md
+            # Post reports as comments in GitHub PRs
+            cd scripts/
+            cat OutputDifferences.knit.md >> report.md
+            echo "![](./diff_plot.png)" >> report.md
+            echo "![](./comp_plot.png)" >> report.md
+            cml comment create report.md
