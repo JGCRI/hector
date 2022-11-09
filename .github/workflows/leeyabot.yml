@@ -40,4 +40,4 @@ jobs:
             cat OutputDifferences.knit.md >> report.md
             echo "![](./diff_plot.png)" >> report.md
             echo "![](./comp_plot.png)" >> report.md
-            cml comment create report.md
+            cml comment update --pr report.md
