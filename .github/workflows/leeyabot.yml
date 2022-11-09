@@ -1,5 +1,9 @@
 name: leeyabot
-on: [push]
+on:
+  pull_request:
+    branches:
+      - master
+      - v3_dev
 
 jobs:
   run:
@@ -37,7 +41,12 @@ jobs:
         run: |
             # Post reports as comments in GitHub PRs
             cd scripts/
-            cat OutputDifferences.knit.md >> report.md
-            echo "![](./diff_plot.png)" >> report.md
-            echo "![](./comp_plot.png)" >> report.md
-            cml comment update --pr report.md
+            if [ -f "diff_plot.png" ]
+            then
+                cat OutputDifferences.knit.md >> report.md
+                echo "![](./diff_plot.png)" >> report.md
+                echo "![](./comp_plot.png)" >> report.md
+            else
+                echo “leeyabot down“ > report.md
+            fi
+            cml comment create report.md
