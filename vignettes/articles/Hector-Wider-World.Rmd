@@ -1,7 +1,7 @@
 ---
 title: "Hector in the Wider World"
 author: "Leeya Pressburger"
-date: "11/7/2022"
+date: "2022-11-07"
 ---
 
 ```{r, include = FALSE}
