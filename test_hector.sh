@@ -54,9 +54,9 @@ $HECTOR $INPUT/hector_ssp245_tracking.ini
 # Tgav outputs match the constraint input.
 
 echo "---------- Running: tracking & CO2 constraint ----------"
-sed 's/;[[:space:]]*CO2_constrain=csv:tables\/ssp245_emiss-constraints_rf.csv/CO2_constrain=csv:tables\/ssp245_emiss-constraints_rf.csv/' $INPUT/hector_ssp245_tracking.ini > $INPUT/hector_ssp245_tracking_co2.ini
+sed 's/;[[:space:]]*CO2_constrain=csv:tables\/rcmip_ssp245_emiss-constraints_rf.csv/CO2_constrain=csv:tables\/rcmip_ssp245_emiss-constraints_rf.csv/' $INPUT/hector_ssp245_tracking.ini > $INPUT/hector_ssp245_tracking_co2.ini
 if [[ $(diff -q $INPUT/hector_ssp245_tracking.ini $INPUT/hector_ssp245_tracking_co2.ini | wc -c) -eq 0 ]]; then exit 1; fi
-#$HECTOR $INPUT/hector_ssp245_tracking_co2.ini
+$HECTOR $INPUT/hector_ssp245_tracking_co2.ini
 rm $INPUT/hector_ssp245_tracking_co2.ini
 rm $INPUT/hector_ssp245_tracking.ini
 
@@ -70,28 +70,28 @@ rm $INPUT/hector_ssp245_spinup.ini
 # Turn on the constraint settings one by one and run the model
 # CO2
 echo "---------- Running: CO2 constraint ----------"
-sed 's/;[[:space:]]*CO2_constrain=csv:tables\/ssp245_emiss-constraints_rf.csv/CO2_constrain=csv:tables\/ssp245_emiss-constraints_rf.csv/' $INPUT/hector_ssp245.ini > $INPUT/hector_ssp245_co2.ini
+sed 's/;[[:space:]]*CO2_constrain=csv:tables\/rcmip_ssp245_emiss-constraints_rf.csv/CO2_constrain=csv:tables\/rcmip_ssp245_emiss-constraints_rf.csv/' $INPUT/hector_ssp245.ini > $INPUT/hector_ssp245_co2.ini
 if [[ $(diff -q $INPUT/hector_ssp245.ini $INPUT/hector_ssp245_co2.ini | wc -c) -eq 0 ]]; then exit 1; fi
 $HECTOR $INPUT/hector_ssp245_co2.ini
 rm $INPUT/hector_ssp245_co2.ini
 
 # Temperature
 echo "---------- Running: tas constraint ----------"
-sed 's/;[[:space:]]*tas_constrain=csv:tables\/tas_historical.csv/tas_constrain=csv:tables\/tas_historical.csv/' $INPUT/hector_ssp245.ini > $INPUT/hector_ssp245_tas.ini
+sed 's/;[[:space:]]*tas_constrain=csv:tables\/rcmip_ssp245_emiss-constraints_rf.csv/tas_constrain=csv:tables\/rcmip_ssp245_emiss-constraints_rf.csv/' $INPUT/hector_ssp245.ini > $INPUT/hector_ssp245_tas.ini
 if [[ $(diff -q $INPUT/hector_ssp245.ini $INPUT/hector_ssp245_tas.ini | wc -c) -eq 0 ]]; then exit 1; fi
 $HECTOR $INPUT/hector_ssp245_tas.ini
 rm $INPUT/hector_ssp245_tas.ini
 
 # Radiative forcing
 echo "---------- Running: RF tot constraint ----------"
-sed 's/;[[:space:]]*RF_tot_constrain=csv:tables\/CONSTRAINT.csv/RF_tot_constrain=csv:tables\/ssp245_emiss-constraints_rf.csv/' $INPUT/hector_ssp245.ini > $INPUT/hector_ssp245_ftot.ini
+sed 's/;[[:space:]]*RF_tot_constrain=csv:tables\/rcmip_ssp245_emiss-constraints_rf.csv/RF_tot_constrain=csv:tables\/rcmip_ssp245_emiss-constraints_rf.csv/' $INPUT/hector_ssp245.ini > $INPUT/hector_ssp245_ftot.ini
 if [[ $(diff -q $INPUT/hector_ssp245.ini $INPUT/hector_ssp245_ftot.ini | wc -c) -eq 0 ]]; then exit 1; fi
 $HECTOR $INPUT/hector_ssp245_ftot.ini
 rm $INPUT/hector_ssp245_ftot.ini
 
 # Net biome production
 echo "---------- Running: NBP constraint ----------"
-sed 's/;[[:space:]]*NBP_constrain=csv:tables\/nbp_output.csv/NBP_constrain=csv:tables\/nbp_output.csv/' $INPUT/hector_ssp245.ini > $INPUT/hector_ssp245_nbp.ini
+sed 's/;[[:space:]]*NBP_constrain=csv:tables\/rcmip_ssp245_emiss-constraints_rf.csv/NBP_constrain=csv:tables\/rcmip_ssp245_emiss-constraints_rf.csv/' $INPUT/hector_ssp245.ini > $INPUT/hector_ssp245_nbp.ini
 if [[ $(diff -q $INPUT/hector_ssp245.ini $INPUT/hector_ssp245_nbp.ini | wc -c) -eq 0 ]]; then exit 1; fi
 $HECTOR $INPUT/hector_ssp245_nbp.ini
 rm $INPUT/hector_ssp245_nbp.ini
