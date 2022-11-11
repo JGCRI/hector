@@ -56,7 +56,7 @@ $HECTOR $INPUT/hector_ssp245_tracking.ini
 echo "---------- Running: tracking & CO2 constraint ----------"
 sed 's/;[[:space:]]*CO2_constrain=csv:tables\/ssp245_emiss-constraints_rf.csv/CO2_constrain=csv:tables\/ssp245_emiss-constraints_rf.csv/' $INPUT/hector_ssp245_tracking.ini > $INPUT/hector_ssp245_tracking_co2.ini
 if [[ $(diff -q $INPUT/hector_ssp245_tracking.ini $INPUT/hector_ssp245_tracking_co2.ini | wc -c) -eq 0 ]]; then exit 1; fi
-$HECTOR $INPUT/hector_ssp245_tracking_co2.ini
+#$HECTOR $INPUT/hector_ssp245_tracking_co2.ini
 rm $INPUT/hector_ssp245_tracking_co2.ini
 rm $INPUT/hector_ssp245_tracking.ini
 
