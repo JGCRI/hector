@@ -77,7 +77,7 @@ rm $INPUT/hector_ssp245_co2.ini
 
 # Temperature
 echo "---------- Running: tas constraint ----------"
-sed 's/;[[:space:]]*tas_constrain=csv:tables\/ssp245_emiss-constraints_rf.csv/tas_constrain=csv:tables\/ssp245_emiss-constraints_rf.csv/' $INPUT/hector_ssp245.ini > $INPUT/hector_ssp245_tas.ini
+sed 's/;[[:space:]]*tas_constrain=csv:tables\/ssp245_emiss-constraints_rf.csv/tas_constrain=csv:tables\/tas_historical.csv/' $INPUT/hector_ssp245.ini > $INPUT/hector_ssp245_tas.ini
 if [[ $(diff -q $INPUT/hector_ssp245.ini $INPUT/hector_ssp245_tas.ini | wc -c) -eq 0 ]]; then exit 1; fi
 $HECTOR $INPUT/hector_ssp245_tas.ini
 rm $INPUT/hector_ssp245_tas.ini
@@ -91,15 +91,9 @@ rm $INPUT/hector_ssp245_ftot.ini
 
 # Net biome production
 echo "---------- Running: NBP constraint ----------"
-sed 's/;[[:space:]]*NBP_constrain=csv:tables\/ssp245_emiss-constraints_rf.csv/NBP_constrain=csv:tables\/ssp245_emiss-constraints_rf.csv/' $INPUT/hector_ssp245.ini > $INPUT/hector_ssp245_nbp.ini
+sed 's/;[[:space:]]*NBP_constrain=csv:tables\/ssp245_emiss-constraints_rf.csv/NBP_constrain=csv:tables\/nbp_output.csv/' $INPUT/hector_ssp245.ini > $INPUT/hector_ssp245_nbp.ini
 if [[ $(diff -q $INPUT/hector_ssp245.ini $INPUT/hector_ssp245_nbp.ini | wc -c) -eq 0 ]]; then exit 1; fi
 $HECTOR $INPUT/hector_ssp245_nbp.ini
 rm $INPUT/hector_ssp245_nbp.ini
-
-# Ocean-atmosphere C flux
-# Disabled as the relevant file doesn't seem to currently exist
-#sed 's/;atm_ocean_constrain/atm_ocean_constrain/' input/hector_rcp45.ini > input/hector_rcp45_ocean.ini
-#$HECTOR input/hector_rcp45_ocean.ini
-#rm input/hector_rcp45_ocean.ini
 
 echo "All done."
