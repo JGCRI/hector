@@ -137,6 +137,7 @@ void SimpleNbox::init(Core *coreptr) {
   core->registerInput(D_F_LITTERD, getComponentName());
   core->registerInput(D_CO2_CONSTRAIN, getComponentName());
   core->registerInput(D_NBP_CONSTRAIN, getComponentName());
+  core->registerInput(D_RF_T_ALBEDO, getComponentName());
 }
 
 //------------------------------------------------------------------------------
