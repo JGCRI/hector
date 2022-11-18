@@ -40,7 +40,7 @@ find ./inst/input -name "*.ini" -print0 | xargs -0 -n1 $HECTOR
 echo "---------- Running: year changes ----------"
 sed 's/startDate=1745/startDate=1746/' $INPUT/hector_ssp245.ini > $INPUT/hector_ssp245_time.ini
 # Confirm that a change was made
-if [[ $(diff -q $INPUT/hector_ssp245.ini $INPUT/hector_ssp245_time.ini | wc -c) -eq 0 ]]; then exit_loudy "startDate"; fi
+if [[ $(diff -q $INPUT/hector_ssp245.ini $INPUT/hector_ssp245_time.ini | wc -c) -eq 0 ]]; then exit_loudly "startDate"; fi
 # ...and run
 $HECTOR $INPUT/hector_ssp245_time.ini
 
@@ -52,7 +52,7 @@ rm $INPUT/hector_ssp245_time.ini
 # Turn on tracking
 echo "---------- Running: tracking ----------"
 sed 's/trackingDate=9999/trackingDate=1850/' $INPUT/hector_ssp245.ini > $INPUT/hector_ssp245_tracking.ini
-if [[ $(diff -q $INPUT/hector_ssp245.ini $INPUT/hector_ssp245_tracking.ini | wc -c) -eq 0 ]]; then exit_loudy "trackingDate"; fi
+if [[ $(diff -q $INPUT/hector_ssp245.ini $INPUT/hector_ssp245_tracking.ini | wc -c) -eq 0 ]]; then exit_loudly "trackingDate"; fi
 $HECTOR $INPUT/hector_ssp245_tracking.ini
 
 # Note that in the runs below, we're running the model with various constraints
@@ -62,7 +62,7 @@ $HECTOR $INPUT/hector_ssp245_tracking.ini
 
 echo "---------- Running: tracking & CO2 constraint ----------"
 sed 's/;[[:space:]]*CO2_constrain=csv:tables\/ssp245_emiss-constraints_rf.csv/CO2_constrain=csv:tables\/ssp245_emiss-constraints_rf.csv/' $INPUT/hector_ssp245_tracking.ini > $INPUT/hector_ssp245_tracking_co2.ini
-if [[ $(diff -q $INPUT/hector_ssp245_tracking.ini $INPUT/hector_ssp245_tracking_co2.ini | wc -c) -eq 0 ]]; then exit_loudy "CO2_constrain"; fi
+if [[ $(diff -q $INPUT/hector_ssp245_tracking.ini $INPUT/hector_ssp245_tracking_co2.ini | wc -c) -eq 0 ]]; then exit_loudly "CO2_constrain"; fi
 $HECTOR $INPUT/hector_ssp245_tracking_co2.ini
 rm $INPUT/hector_ssp245_tracking_co2.ini
 rm $INPUT/hector_ssp245_tracking.ini
@@ -70,7 +70,7 @@ rm $INPUT/hector_ssp245_tracking.ini
 # Turn off spinup
 echo "---------- Running: no spinup ----------"
 sed 's/do_spinup=1/do_spinup=0/' $INPUT/hector_ssp245.ini > $INPUT/hector_ssp245_spinup.ini
-if [[ $(diff -q $INPUT/hector_ssp245.ini $INPUT/hector_ssp245_spinup.ini | wc -c) -eq 0 ]]; then exit_loudy "do_spinup"; fi
+if [[ $(diff -q $INPUT/hector_ssp245.ini $INPUT/hector_ssp245_spinup.ini | wc -c) -eq 0 ]]; then exit_loudly "do_spinup"; fi
 $HECTOR $INPUT/hector_ssp245_spinup.ini
 rm $INPUT/hector_ssp245_spinup.ini
 
@@ -78,14 +78,14 @@ rm $INPUT/hector_ssp245_spinup.ini
 # CO2
 echo "---------- Running: CO2 constraint ----------"
 sed 's/;[[:space:]]*CO2_constrain=csv:tables\/ssp245_emiss-constraints_rf.csv/CO2_constrain=csv:tables\/ssp245_emiss-constraints_rf.csv/' $INPUT/hector_ssp245.ini > $INPUT/hector_ssp245_co2.ini
-if [[ $(diff -q $INPUT/hector_ssp245.ini $INPUT/hector_ssp245_co2.ini | wc -c) -eq 0 ]]; then exit_loudy "CO2_constrain"; fi
+if [[ $(diff -q $INPUT/hector_ssp245.ini $INPUT/hector_ssp245_co2.ini | wc -c) -eq 0 ]]; then exit_loudly "CO2_constrain"; fi
 $HECTOR $INPUT/hector_ssp245_co2.ini
 rm $INPUT/hector_ssp245_co2.ini
 
 # Temperature
 echo "---------- Running: tas constraint ----------"
 sed 's/;[[:space:]]*tas_constrain=csv:tables\/ssp245_emiss-constraints_rf.csv/tas_constrain=csv:tables\/tas_historical.csv/' $INPUT/hector_ssp245.ini > $INPUT/hector_ssp245_tas.ini
-if [[ $(diff -q $INPUT/hector_ssp245.ini $INPUT/hector_ssp245_tas.ini | wc -c) -eq 0 ]]; then exit_loudy "tas_constrain"; fi
+if [[ $(diff -q $INPUT/hector_ssp245.ini $INPUT/hector_ssp245_tas.ini | wc -c) -eq 0 ]]; then exit_loudly "tas_constrain"; fi
 $HECTOR $INPUT/hector_ssp245_tas.ini
 rm $INPUT/hector_ssp245_tas.ini
 
@@ -99,7 +99,7 @@ rm $INPUT/hector_ssp245_ftot.ini
 # Net biome production
 echo "---------- Running: NBP constraint ----------"
 sed 's/;[[:space:]]*NBP_constrain=csv:tables\/ssp245_emiss-constraints_rf.csv/NBP_constrain=csv:tables\/nbp_output.csv/' $INPUT/hector_ssp245.ini > $INPUT/hector_ssp245_nbp.ini
-if [[ $(diff -q $INPUT/hector_ssp245.ini $INPUT/hector_ssp245_nbp.ini | wc -c) -eq 0 ]]; then exit_loudy "NBP_constrain"; fi
+if [[ $(diff -q $INPUT/hector_ssp245.ini $INPUT/hector_ssp245_nbp.ini | wc -c) -eq 0 ]]; then exit_loudly "NBP_constrain"; fi
 $HECTOR $INPUT/hector_ssp245_nbp.ini
 rm $INPUT/hector_ssp245_nbp.ini
 
