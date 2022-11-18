@@ -91,7 +91,7 @@ rm $INPUT/hector_ssp245_tas.ini
 
 # Radiative forcing
 echo "---------- Running: RF tot constraint ----------"
-sed 's/;[[:space:]]*RF_tot_constrain=csv:tables\/ssp245_emiss-constraints_rf.csv/RF_tot_constrain=csv:tables\/ar6_historical_constraint.csv/' $INPUT/hector_ssp245.ini > $INPUT/hector_ssp245_ftot.ini
+sed 's/;[[:space:]]*RF_tot_constrain=csv:tables\/CONSTRAINT.csv/RF_tot_constrain=csv:tables\/ar6_historical_constraint.csv/' $INPUT/hector_ssp245.ini > $INPUT/hector_ssp245_ftot.ini
 if [[ $(diff -q $INPUT/hector_ssp245.ini $INPUT/hector_ssp245_ftot.ini | wc -c) -eq 0 ]]; then exit_loudly "RF_tot_constrain"; fi
 $HECTOR $INPUT/hector_ssp245_ftot.ini
 rm $INPUT/hector_ssp245_ftot.ini
