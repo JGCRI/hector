@@ -334,7 +334,7 @@ void ForcingComponent::run(const double runToDate) {
         alpha_prime = d1 - (pow(b1, 2) / (4 * a1));
       } else if (C0 < CO2_conc && CO2_conc < C_alpha_max) {
         alpha_prime = d1 + a1 * pow((CO2_conc - C0), 2) + b1 * (CO2_conc - C0);
-      } else if (CO2_conc < C0) {
+      } else if (CO2_conc <= C0) {
         alpha_prime = d1;
       } else {
         H_THROW("Caller is requesting unknown condition for CO2 SARF ");
