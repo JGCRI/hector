@@ -14,7 +14,7 @@ we're running 1 January 1745 - 31 December 1745, what gets written is "1746".
 This is not intuitive (most people think of "1746" denoting January 1-December 31) 
 but numerically correct: the date is 1746.0, i.e. midnight on December 31 1745.
 A consequence is that carbon fluxes logged at this timepoint are
-effectively for the calendar year 1745 (1/1/1745-12/31/1746).
+effectively for the calendar year 1745 (1745-01-01 to 1745-12-31).
 
 The first line of this file is a timestamp and version number line, and should
 be skipped by any CSV-reading code.
