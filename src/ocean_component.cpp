@@ -76,16 +76,13 @@ void OceanComponent::init(Core *coreptr) {
   max_timestep = OCEAN_MAX_TIMESTEP;
   reduced_timestep_timeout = 0;
 
+  // Pointers to logs and the core
   surfaceHL.logger = &logger;
   surfaceLL.logger = &logger;
   inter.logger = &logger;
   deep.logger = &logger;
 
   core = coreptr;
-
-  SST.set(0.0, U_DEGC);
-
-  lastflux_annualized.set(0.0, U_PGC);
 
   // Defaults
   // Define the size of the preindustrial ocean surface and intermediate-deep
@@ -212,25 +209,18 @@ void OceanComponent::prepareToRun() {
   const double spy = 60 * 60 * 24 * 365.25; // seconds per year
 
   // ocean depth
-  double thick_LL =
+  const double thick_LL =
       100; // (m) Thickness of surface ocean from Knox and McElroy (1984)
-  double thick_HL =
+  const double thick_HL =
       100; // (m) Thickness of surface ocean from Knox and McElroy (1984)
-  double thick_inter = 1000 - thick_LL; // (m) Thickness of of intermediate
+  const double thick_inter = 1000 - thick_LL; // (m) Thickness of of intermediate
                                         // ocean from Knox and McElroy (1984)
-  double thick_deep =
+  const double thick_deep =
       3777 - thick_inter -
       thick_LL; // (m) Thickness of deep ocean from Knox and McElroy (1984)
 
   // ocean area
   const double ocean_area = 3.6e14; // (m2) Knox and McElroy (1984);
-
-  // Define high and low latitude
-  // The cold high-latitude surface box makes up 15% of the total ocean surface
-  // area and has latitude > 55 The warm low-latitude surface box makes up the
-  // rest.
-  // const double part_high = 0.15;
-  // const double part_low = 1-part_high;
 
   // ocean box volumes (m3)
   const double LL_volume = ocean_area * part_low * thick_LL;
@@ -285,7 +275,7 @@ void OceanComponent::prepareToRun() {
   double DO_IOex = (tid.value(U_M3_S) * spy) / D_volume;
   double IO_DOex = (tid.value(U_M3_S) * spy) / I_volume;
 
-  // Make_connection( box to connect to, k value, window size (0=present only) )
+  // Set up the flow connections between the boxes
   surfaceLL.make_connection(&surfaceHL, LL_HL, 1);
   surfaceLL.make_connection(&inter, LL_IOex, 1);
   surfaceHL.make_connection(&deep, HL_DO, 1);
@@ -313,10 +303,14 @@ void OceanComponent::prepareToRun() {
   surfaceLL.mychemistry.As = ocean_area * part_low; // surface area m2
   surfaceLL.mychemistry.U = 6.7; // average wind speed m/s Hartin et al. 2016
 
-  // Initialize surface flux tracking variables
+  // Initialize surface flux tracking variables and other things
   annualflux_sum.set(0.0, U_PGC);
   annualflux_sumHL.set(0.0, U_PGC);
   annualflux_sumLL.set(0.0, U_PGC);
+
+  SST.set(0.0, U_DEGC);
+
+  lastflux_annualized.set(0.0, U_PGC);
 
   // Log the state of all our boxes, so we know things are as they should be
   surfaceLL.log_state();
