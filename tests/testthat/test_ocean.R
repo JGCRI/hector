@@ -69,7 +69,7 @@ test_that("Checking high and low latitude difference", {
 test_that("Read and writing ocean parameters", {
 
     # The ocean parameters
-    params <- c(TT(), TU(), TWI(), TID())
+    params <- c(TT(), TU(), TWI(), TID(), OCEAN_PREIND_C_SURF(), OCEAN_PREIND_C_ID())
 
     # Should throw an error if a date is passed in.
     expect_error(fetchvars(hc, dates = t_dates, vars = params))
