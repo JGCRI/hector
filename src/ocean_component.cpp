@@ -101,6 +101,8 @@ void OceanComponent::init(Core *coreptr) {
   core->registerCapability(D_CARBON_IO, getComponentName());
   core->registerCapability(D_CARBON_DO, getComponentName());
   core->registerCapability(D_CARBON_ML, getComponentName());
+  core->registerCapability(D_CARBON_PRE_SURF, getComponentName());
+  core->registerCapability(D_CARBON_PRE_ID, getComponentName());
   core->registerCapability(D_TT, getComponentName());
   core->registerCapability(D_TU, getComponentName());
   core->registerCapability(D_TWI, getComponentName());
@@ -127,8 +129,8 @@ void OceanComponent::init(Core *coreptr) {
   core->registerInput(D_TU, getComponentName());
   core->registerInput(D_TWI, getComponentName());
   core->registerInput(D_TID, getComponentName());
-  core->registerInput(D_CARBON_SURF, getComponentName());
-  core->registerInput(D_CARBON_ID, getComponentName());
+  core->registerInput(D_CARBON_PRE_SURF, getComponentName());
+  core->registerInput(D_CARBON_PRE_ID, getComponentName());
 }
 
 //------------------------------------------------------------------------------
@@ -170,10 +172,10 @@ void OceanComponent::setData(const string &varName, const message_data &data) {
                                << "]=" << data.value_str << std::endl;
 
   try {
-    if (varName == D_CARBON_SURF) {
+    if (varName == D_CARBON_PRE_SURF) {
       H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
       preind_C_surface = data.getUnitval(U_PGC);
-    } else if (varName == D_CARBON_ID) {
+    } else if (varName == D_CARBON_PRE_ID) {
       H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
       preind_C_ID = data.getUnitval(U_PGC);
     } else if (varName == D_TT) {
@@ -453,6 +455,10 @@ unitval OceanComponent::getData(const std::string &varName, const double date) {
       returnval = unitval(annualflux_sumHL.value(U_PGC), U_PGC_YR);
     } else if (varName == D_ATM_OCEAN_FLUX_LL) {
       returnval = unitval(annualflux_sumLL.value(U_PGC), U_PGC_YR);
+    } else if (varName == D_CARBON_PRE_SURF) {
+      returnval = preind_C_surface;
+    } else if (varName == D_CARBON_PRE_ID) {
+      returnval = preind_C_ID;
     } else if (varName == D_CARBON_DO) {
       returnval = deep.get_carbon();
     } else if (varName == D_CARBON_HL) {
