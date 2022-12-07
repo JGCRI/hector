@@ -101,67 +101,67 @@ the forcing component.
 }
 \section{Functions}{
 \itemize{
-\item \code{RHO_BC}: a radiative forcing efficiency for BC aerosol-radiation interactions
+\item \code{RHO_BC()}: a radiative forcing efficiency for BC aerosol-radiation interactions
 
-\item \code{RHO_OC}: a radiative forcing efficiency for OC aerosol-radiation interactions
+\item \code{RHO_OC()}: a radiative forcing efficiency for OC aerosol-radiation interactions
 
-\item \code{RHO_NH3}: a radiative forcing efficiency for NH3 aerosol-radiation interactions
+\item \code{RHO_NH3()}: a radiative forcing efficiency for NH3 aerosol-radiation interactions
 
-\item \code{RHO_SO2}: a radiative forcing efficiency for SO2
+\item \code{RHO_SO2()}: a radiative forcing efficiency for SO2
 
-\item \code{RHO_CF4}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for CF4
+\item \code{RHO_CF4()}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for CF4
 
-\item \code{RHO_C2F6}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for C2F6
+\item \code{RHO_C2F6()}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for C2F6
 
-\item \code{RHO_HFC23}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for HFC-23
+\item \code{RHO_HFC23()}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for HFC-23
 
-\item \code{RHO_HFC32}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for HFC-32
+\item \code{RHO_HFC32()}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for HFC-32
 
-\item \code{RHO_HFC4310}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for HFC-4310
+\item \code{RHO_HFC4310()}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for HFC-4310
 
-\item \code{RHO_HFC125}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for HFC-125
+\item \code{RHO_HFC125()}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for HFC-125
 
-\item \code{RHO_HFC134A}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for HFC-134a
+\item \code{RHO_HFC134A()}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for HFC-134a
 
-\item \code{RHO_HFC143A}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for HFC-143a
+\item \code{RHO_HFC143A()}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for HFC-143a
 
-\item \code{RHO_HFC227EA}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for HFC-227ea
+\item \code{RHO_HFC227EA()}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for HFC-227ea
 
-\item \code{RHO_HFC245FA}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for HFC-254fa
+\item \code{RHO_HFC245FA()}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for HFC-254fa
 
-\item \code{RHO_SF6}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for sulfur hexafluoride
+\item \code{RHO_SF6()}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for sulfur hexafluoride
 
-\item \code{RHO_CFC11}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for CFC-11
+\item \code{RHO_CFC11()}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for CFC-11
 
-\item \code{RHO_CFC12}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for CFC-12
+\item \code{RHO_CFC12()}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for CFC-12
 
-\item \code{RHO_CFC113}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for CFC-113
+\item \code{RHO_CFC113()}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for CFC-113
 
-\item \code{RHO_CFC114}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for CFC-114
+\item \code{RHO_CFC114()}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for CFC-114
 
-\item \code{RHO_CFC115}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for CFC-115
+\item \code{RHO_CFC115()}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for CFC-115
 
-\item \code{RHO_CCL4}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for carbon tetrachloride
+\item \code{RHO_CCL4()}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for carbon tetrachloride
 
-\item \code{RHO_CH3CCL3}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for trichloroethane '
+\item \code{RHO_CH3CCL3()}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for trichloroethane '
 
-\item \code{RHO_HCFC22}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for HFC-22
+\item \code{RHO_HCFC22()}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for HFC-22
 
-\item \code{RHO_HCFC141B}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for HFC-141b
+\item \code{RHO_HCFC141B()}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for HFC-141b
 
-\item \code{RHO_HCFC142B}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for HCFC-142b
+\item \code{RHO_HCFC142B()}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for HCFC-142b
 
-\item \code{RHO_HALON1211}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for halon-1211 '
+\item \code{RHO_HALON1211()}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for halon-1211 '
 
-\item \code{RHO_HALON1301}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for halon-1301
+\item \code{RHO_HALON1301()}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for halon-1301
 
-\item \code{RHO_HALON2402}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for halon-2402 '
+\item \code{RHO_HALON2402()}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for halon-2402 '
 
-\item \code{RHO_CH3CL}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for chloromethane
+\item \code{RHO_CH3CL()}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for chloromethane
 
-\item \code{RHO_CH3BR}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for bromomethane
+\item \code{RHO_CH3BR()}: a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for bromomethane
+
 }}
-
 \section{Note}{
 
 Because these identifiers are provided as \code{#define} macros in the hector code,

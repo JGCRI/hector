@@ -102,68 +102,68 @@ can be read and/or set by hectors forcing and halocarbon components.
 }
 \section{Functions}{
 \itemize{
-\item \code{DELTA_CO2}: the foring tropospheric adjustments for N2O
+\item \code{DELTA_CO2()}: the foring tropospheric adjustments for N2O
 
-\item \code{RF_N2O}: the foring tropospheric adjustments for N2O
+\item \code{RF_N2O()}: the foring tropospheric adjustments for N2O
 
-\item \code{DELTA_N2O}: Radiative forcing due to N2O
+\item \code{DELTA_N2O()}: Radiative forcing due to N2O
 
-\item \code{DELTA_CF4}: the tropospheric adjustments used to convert from stratospheric-temperature adjusted radiative forcing to effective radiative forcing
+\item \code{DELTA_CF4()}: the tropospheric adjustments used to convert from stratospheric-temperature adjusted radiative forcing to effective radiative forcing
 
-\item \code{DELTA_C2F6}: the tropospheric adjustments used to convert from stratospheric-temperature adjusted radiative forcing to effective radiative forcing
+\item \code{DELTA_C2F6()}: the tropospheric adjustments used to convert from stratospheric-temperature adjusted radiative forcing to effective radiative forcing
 
-\item \code{DELTA_HFC23}: the tropospheric adjustments used to convert from stratospheric-temperature adjusted radiative forcing to effective radiative forcing
+\item \code{DELTA_HFC23()}: the tropospheric adjustments used to convert from stratospheric-temperature adjusted radiative forcing to effective radiative forcing
 
-\item \code{DELTA_HFC32}: the tropospheric adjustments used to convert from stratospheric-temperature adjusted radiative forcing to effective radiative forcing '
+\item \code{DELTA_HFC32()}: the tropospheric adjustments used to convert from stratospheric-temperature adjusted radiative forcing to effective radiative forcing '
 @export
 
-\item \code{DELTA_HFC4310}: the tropospheric adjustments used to convert from stratospheric-temperature adjusted radiative forcing to effective radiative forcing
+\item \code{DELTA_HFC4310()}: the tropospheric adjustments used to convert from stratospheric-temperature adjusted radiative forcing to effective radiative forcing
 
-\item \code{DELTA_HFC125}: the tropospheric adjustments used to convert from stratospheric-temperature adjusted radiative forcing to effective radiative forcing
+\item \code{DELTA_HFC125()}: the tropospheric adjustments used to convert from stratospheric-temperature adjusted radiative forcing to effective radiative forcing
 
-\item \code{DELTA_HFC134A}: the tropospheric adjustments used to convert from tratospheric-temperature adjusted radiative forcing to effective radiative forcing
+\item \code{DELTA_HFC134A()}: the tropospheric adjustments used to convert from tratospheric-temperature adjusted radiative forcing to effective radiative forcing
 
-\item \code{DELTA_HFC143A}: the tropospheric adjustments used to convert from stratospheric-temperature adjusted radiative forcing to effective radiative forcing
+\item \code{DELTA_HFC143A()}: the tropospheric adjustments used to convert from stratospheric-temperature adjusted radiative forcing to effective radiative forcing
 
-\item \code{DELTA_HFC227EA}: the tropospheric adjustments used to convert from stratospheric-temperature adjusted radiative forcing to effective radiative forcing
+\item \code{DELTA_HFC227EA()}: the tropospheric adjustments used to convert from stratospheric-temperature adjusted radiative forcing to effective radiative forcing
 
-\item \code{DELTA_HFC245FA}: the tropospheric adjustments used to convert from stratospheric-temperature adjusted radiative forcing to effective radiative forcing
+\item \code{DELTA_HFC245FA()}: the tropospheric adjustments used to convert from stratospheric-temperature adjusted radiative forcing to effective radiative forcing
 
-\item \code{DELTA_SF6}: the tropospheric adjustments used to convert from stratospheric-temperature adjusted radiative forcing to effective radiative forcing
+\item \code{DELTA_SF6()}: the tropospheric adjustments used to convert from stratospheric-temperature adjusted radiative forcing to effective radiative forcing
 
-\item \code{DELTA_CFC11}: the tropospheric adjustments used to convert from stratospheric-temperature adjusted radiative forcing to effective radiative forcing
+\item \code{DELTA_CFC11()}: the tropospheric adjustments used to convert from stratospheric-temperature adjusted radiative forcing to effective radiative forcing
 
-\item \code{DELTA_CFC12}: the tropospheric adjustments used to convert from stratospheric-temperature adjusted radiative forcing to effective radiative forcing
+\item \code{DELTA_CFC12()}: the tropospheric adjustments used to convert from stratospheric-temperature adjusted radiative forcing to effective radiative forcing
 
-\item \code{DELTA_CFC113}: the tropospheric adjustments used to convert from stratospheric-temperature adjusted radiative forcing to effective radiative forcing
+\item \code{DELTA_CFC113()}: the tropospheric adjustments used to convert from stratospheric-temperature adjusted radiative forcing to effective radiative forcing
 
-\item \code{DELTA_CFC114}: the tropospheric adjustments used to convert from stratospheric-temperature adjusted radiative forcing to effective radiative forcing
+\item \code{DELTA_CFC114()}: the tropospheric adjustments used to convert from stratospheric-temperature adjusted radiative forcing to effective radiative forcing
 
-\item \code{DELTA_CFC115}: the tropospheric adjustments used to convert from stratospheric-temperature adjusted radiative forcing to effective radiative forcing
+\item \code{DELTA_CFC115()}: the tropospheric adjustments used to convert from stratospheric-temperature adjusted radiative forcing to effective radiative forcing
 
-\item \code{DELTA_CCL4}: the tropospheric adjustments used to convert from stratospheric-temperature adjusted radiative forcing to effective radiative forcing
+\item \code{DELTA_CCL4()}: the tropospheric adjustments used to convert from stratospheric-temperature adjusted radiative forcing to effective radiative forcing
 
-\item \code{DELTA_CH3CCL3}: the tropospheric adjustments used to convert from stratospheric-temperature adjusted radiative forcing to effective radiative forcing
+\item \code{DELTA_CH3CCL3()}: the tropospheric adjustments used to convert from stratospheric-temperature adjusted radiative forcing to effective radiative forcing
 
-\item \code{DELTA_HCFC22}: the tropospheric adjustments used to convert from stratospheric-temperature adjusted radiative forcing to effective radiative forcing
+\item \code{DELTA_HCFC22()}: the tropospheric adjustments used to convert from stratospheric-temperature adjusted radiative forcing to effective radiative forcing
 
-\item \code{DELTA_HCFC141B}: the tropospheric adjustments used to convert from stratospheric-temperature adjusted radiative forcing to effective radiative forcing
+\item \code{DELTA_HCFC141B()}: the tropospheric adjustments used to convert from stratospheric-temperature adjusted radiative forcing to effective radiative forcing
 
-\item \code{DELTA_HCFC142B}: the tropospheric adjustments used to convert from stratospheric-temperature adjusted radiative forcing to effective radiative forcing
+\item \code{DELTA_HCFC142B()}: the tropospheric adjustments used to convert from stratospheric-temperature adjusted radiative forcing to effective radiative forcing
 
-\item \code{DELTA_HALON1211}: the tropospheric adjustments used to convert from stratospheric-temperature adjusted radiative forcing to effective radiative forcing
+\item \code{DELTA_HALON1211()}: the tropospheric adjustments used to convert from stratospheric-temperature adjusted radiative forcing to effective radiative forcing
 
-\item \code{DELTA_HALON1301}: the tropospheric adjustments used to convert from stratospheric-temperature adjusted radiative forcing to effective radiative forcing
+\item \code{DELTA_HALON1301()}: the tropospheric adjustments used to convert from stratospheric-temperature adjusted radiative forcing to effective radiative forcing
 
-\item \code{DELTA_HALON2402}: the tropospheric adjustments used to convert from stratospheric-temperature adjusted radiative forcing to effective radiative forcing
+\item \code{DELTA_HALON2402()}: the tropospheric adjustments used to convert from stratospheric-temperature adjusted radiative forcing to effective radiative forcing
 
-\item \code{DELTA_CH3CL}: the tropospheric adjustments used to convert from stratospheric-temperature adjusted radiative forcing to effective radiative forcing
+\item \code{DELTA_CH3CL()}: the tropospheric adjustments used to convert from stratospheric-temperature adjusted radiative forcing to effective radiative forcing
 
-\item \code{DELTA_CH3BR}: the tropospheric adjustments used to convert from stratospheric-temperature adjusted radiative forcing to effective radiative forcing
+\item \code{DELTA_CH3BR()}: the tropospheric adjustments used to convert from stratospheric-temperature adjusted radiative forcing to effective radiative forcing
 
-\item \code{DELTA_CH4}: Radiative forcing tropospheric adjustment for CH4
+\item \code{DELTA_CH4()}: Radiative forcing tropospheric adjustment for CH4
+
 }}
-
 \section{Note}{
 
 Because these identifiers are provided as \code{#define} macros in the hector code,

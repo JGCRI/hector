@@ -34,23 +34,23 @@ type.
 }
 \section{Functions}{
 \itemize{
-\item \code{EMISSIONS_BC}: Black carbon emissions
+\item \code{EMISSIONS_BC()}: Black carbon emissions
 
-\item \code{EMISSIONS_N2O}: N2O emissions (\code{"Tg N"})
+\item \code{EMISSIONS_N2O()}: N2O emissions (\code{"Tg N"})
 
-\item \code{NAT_EMISSIONS_N2O}: Natural N2O emissions (\code{"Tg N"})
+\item \code{NAT_EMISSIONS_N2O()}: Natural N2O emissions (\code{"Tg N"})
 
-\item \code{EMISSIONS_NOX}: Emissions for NOx compounds (\code{"Tg N"})
+\item \code{EMISSIONS_NOX()}: Emissions for NOx compounds (\code{"Tg N"})
 
-\item \code{EMISSIONS_CO}: Emissions for carbon monoxide (\code{"Tg CO"})
+\item \code{EMISSIONS_CO()}: Emissions for carbon monoxide (\code{"Tg CO"})
 
-\item \code{EMISSIONS_NMVOC}: Emissions for non-methane volatile organic compounds (NMVOC) (\code{"Tg NMVOC"})
+\item \code{EMISSIONS_NMVOC()}: Emissions for non-methane volatile organic compounds (NMVOC) (\code{"Tg NMVOC"})
 
-\item \code{EMISSIONS_OC}: Emissions for organic carbon (\code{"Tg"})
+\item \code{EMISSIONS_OC()}: Emissions for organic carbon (\code{"Tg"})
 
-\item \code{EMISSIONS_NH3}: Emissions for NH3 (\code{"Tg"})
+\item \code{EMISSIONS_NH3()}: Emissions for NH3 (\code{"Tg"})
+
 }}
-
 \section{Note}{
 
 Because these identifiers are provided as \code{#define} macros in the hector code,
