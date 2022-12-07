@@ -13,15 +13,20 @@ and Toggweiler (1984)^[Sarmiento, J. L. and Toggweiler, J. R.: A new model for t
 of the oceans in determining atmospheric PCO2, Nature, 308,
 621–624, 1984], Hector's implementation of the ocean carbon cycle was documented in Hartin et al. (2016).^[Hartin, C. A., Bond-Lamberty, B., Patel, P., and Mundra, A.: Ocean acidification over the next three centuries using a simple global climate carbon-cycle model: projections and sensitivities, Biogeosciences, 13, 4329–4342, https://doi.org/10.5194/bg-13-4329-2016, 2016.] Hector's ocean is a four box model with two surface level boxes (high latitude and low latitude), an intermediate, and deep ocean boxes. Within the surface boxes Hector solves for pCO~2~, pH, [HCO${_3}^{-1}$ ], [CO$_{3}^{-2}$], aragonite $\Omega_{Ar}$ and calcite $\Omega_{Ca}$. The chemistry of carbon in the surface boxes depends on salinity, dissolved inorganic carbon (DIC), and temperature. 
 
+## Parameters
+
+Four parameters may be set from the INI file or R interface:
+
+* `tt` (`TT()` in R), thermohaline overturning (m3/s)
+* `tu` (`TU()`), high latitude overturning (m3/s)
+* `twi` (`TWI()`), warm-intermediate exchange (m3/s)
+* `tid` (`TID()`), intermediate-deep exchange (m3/s)
+* `preind_surface_c` (`OCEAN_PREIND_C_SURF()`), preindustrial carbon in the surface ocean (Pg C) 
+* `preind_interdeep_c` (`OCEAN_PREIND_C_ID()`), preindustrial carbon in the intermediate and deep ocean (Pg C)
 
 ## Implementation 
 
 1. The `oceanbox` cpp and hpp files set up the four ocean boxes and determine connections between one another. How carbon, energy, and volume will move between the four ocean boxes. 
 2. The `ocean_csys` cpp and hpp files define the solver for the temperature dependent system of equations that determine solubility and equilibrium constants. 
 3. Within the `ocean_component` 
-
-
-
-
-
 

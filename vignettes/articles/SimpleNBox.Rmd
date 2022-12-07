@@ -29,6 +29,9 @@ Note that the residence times of soil and detritus C pools -- 50 and 4 years, re
 
 Fluxes associated with land use change ($LUC$) are prescribed via the `luc_emissions` variable in the INI file.
 Example time series associated with shared socioeconomic pathways (SSPs) are included with Hector in the corresponding `inst/input/tables/ssp**_emiss-constraints_rf.csv` files.
+There are two LUC fluxes, land uptake and loss, and both add or remove carbon
+to the land pools in proportion to those pools' size. (Note that this behavior
+is new as of version 3 of the model.)
 
 In each biome at each time step, the vegetation pools change as follows (biome, $i$ and time, $t$ subscripts omitted for clarity):
 C gain from NPP is distributed to vegetation, detritus, and soil according to fraction parameters $f_{nv}$, $f_{nd}$, and $f_{ns}$, respectively.
