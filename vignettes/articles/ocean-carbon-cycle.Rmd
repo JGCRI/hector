@@ -15,7 +15,7 @@ of the oceans in determining atmospheric PCO2, Nature, 308,
 
 ## Parameters
 
-Four parameters may be set from the INI file or R interface:
+Six parameters may be set from the INI file or R interface:
 
 * `tt` (`TT()` in R), thermohaline overturning (m3/s)
 * `tu` (`TU()`), high latitude overturning (m3/s)
