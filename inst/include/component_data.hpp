@@ -320,6 +320,8 @@
 #define D_CARBON_ML "ML_ocean_c"
 #define D_CARBON_IO "IO_ocean_c"
 #define D_CARBON_DO "DO_ocean_c"
+#define D_CARBON_SURF "surface_c"
+#define D_CARBON_ID "interdeep_c"
 #define D_OMEGACA_HL "HL_OmegaCa"
 #define D_OMEGACA_LL "LL_OmegaCa"
 #define D_OMEGAAR_HL "HL_OmegaAr"

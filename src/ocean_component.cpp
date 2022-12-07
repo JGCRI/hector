@@ -87,6 +87,12 @@ void OceanComponent::init(Core *coreptr) {
 
   lastflux_annualized.set(0.0, U_PGC);
 
+  // Defaults
+  // Define the size of the preindustrial ocean surface and intermediate-deep
+  // ocean carbon pools from IPCC AR6 Figure 5.12.
+  preind_C_surface.set(900, U_PGC); // (Pg C) IPCC AR6 Figure 5.12
+  preind_C_ID.set(37100, U_PGC);    // (Pg C) IPCC AR6 Figure 5.12
+  
   // Register the data we can provide
   core->registerCapability(D_OCEAN_C_UPTAKE, getComponentName());
   core->registerCapability(D_OCEAN_C, getComponentName());
@@ -121,6 +127,8 @@ void OceanComponent::init(Core *coreptr) {
   core->registerInput(D_TU, getComponentName());
   core->registerInput(D_TWI, getComponentName());
   core->registerInput(D_TID, getComponentName());
+  core->registerInput(D_CARBON_SURF, getComponentName());
+  core->registerInput(D_CARBON_ID, getComponentName());
 }
 
 //------------------------------------------------------------------------------
@@ -162,18 +170,12 @@ void OceanComponent::setData(const string &varName, const message_data &data) {
                                << "]=" << data.value_str << std::endl;
 
   try {
-    if (varName == D_CARBON_HL) {
+    if (varName == D_CARBON_SURF) {
       H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
-      surfaceHL.set_carbon(data.getUnitval(U_PGC));
-    } else if (varName == D_CARBON_LL) {
+      preind_C_surface = data.getUnitval(U_PGC);
+    } else if (varName == D_CARBON_ID) {
       H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
-      surfaceLL.set_carbon(data.getUnitval(U_PGC));
-    } else if (varName == D_CARBON_IO) {
-      H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
-      inter.set_carbon(data.getUnitval(U_PGC));
-    } else if (varName == D_CARBON_DO) {
-      H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
-      deep.set_carbon(data.getUnitval(U_PGC));
+      preind_C_ID = data.getUnitval(U_PGC);
     } else if (varName == D_TT) {
       H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
       tt.set(data.getUnitval(U_M3_S), U_M3_S);
@@ -243,16 +245,11 @@ void OceanComponent::prepareToRun() {
   const double I_vol_frac = I_volume / (I_volume + D_volume);
   const double D_vol_frac = 1 - I_vol_frac;
 
-  // Define the size of the preindustrial ocean surface and intermediate-deep
-  // ocean carbon pools from IPCC AR6 Figure 5.12.
-  const double preind_C_surface = 900; // (Pg C) IPCC AR6 Figure 5.12
-  const double preind_C_ID = 37100;    // (Pg C) IPCC AR6 Figure 5.12
-
   // Partition the preindustrial ocean carbon pools by volume.
-  const double LL_preind_C = LL_vol_frac * preind_C_surface;
-  const double HL_preind_C = HL_vol_frac * preind_C_surface;
-  const double I_preind_C = I_vol_frac * preind_C_ID;
-  const double D_preind_C = D_vol_frac * preind_C_ID;
+  const double LL_preind_C = LL_vol_frac * preind_C_surface.value(U_PGC);
+  const double HL_preind_C = HL_vol_frac * preind_C_surface.value(U_PGC);
+  const double I_preind_C = I_vol_frac * preind_C_ID.value(U_PGC);
+  const double D_preind_C = D_vol_frac * preind_C_ID.value(U_PGC);
 
   // Set up our ocean box model.
   H_LOG(logger, Logger::DEBUG) << "Setting up ocean box model" << std::endl;
