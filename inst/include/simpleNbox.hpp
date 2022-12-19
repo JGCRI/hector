@@ -20,6 +20,11 @@
 #include "tseries.hpp"
 #include "unitval.hpp"
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Weverything"
+#include <boost/math/distributions/lognormal.hpp>
+#pragma clang diagnostic pop
+
 #define SNBOX_ATMOS 0
 #define SNBOX_VEG 1
 #define SNBOX_DET 2
@@ -265,7 +270,9 @@ private:
       pf_sigma;           //!< Standard deviation for permafrost-temp model fit
   double_stringmap pf_mu; //!< Mean for permafrost-temp model fit
   double_stringmap fpf_static; //!< Permafrost C non-labile fraction
-
+  typedef std::map<std::string, boost::math::lognormal> lognormal_stringmap;
+  lognormal_stringmap pf_s;//!< Permafrost lognormal distribution
+  
   /*****************************************************************
    * Functions computing sub-elements of the carbon cycle
    *****************************************************************/

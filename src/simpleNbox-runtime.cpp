@@ -19,8 +19,6 @@
 #include "boost/algorithm/string.hpp"
 #pragma clang diagnostic pop
 
-#include <boost/math/distributions/lognormal.hpp>
-
 #include "avisitor.hpp"
 #include "dependency_finder.hpp"
 #include "simpleNbox.hpp"
@@ -139,6 +137,13 @@ void SimpleNbox::prepareToRun() {
     thawed_permafrost_c[biome].set(0.0, U_PGC, permafrost_c[biome].tracking,
                                    D_THAWEDPC);
     static_c[biome].set(0.0, U_PGC, permafrost_c[biome].tracking, "static_c");
+  }
+  // Lognormal distribution for current biome's mu and sigma
+  // We precompute all of these (one for each biome) since they don't change over time
+  // This is equation 10 in Woodard et al. 2021
+  for(auto biome : biome_list) {
+    boost::math::lognormal s(pf_mu.at( biome ), pf_sigma.at( biome ));
+    pf_s[biome] = s;
   }
 
   // A flag that lets run() know the very first time it's called
@@ -906,17 +911,14 @@ void SimpleNbox::slowparameval(double t, const double c[]) {
       // Permafrost thaw
       // Currently, these are calibrated to produce a 0.172 / year slope from
       // 0.8 to 4 degrees C, which was the linear form of this in Kessler.
-
       new_thaw[biome] = 0.0;
       if (permafrost_c[ biome ] > unitval(0.0, U_PGC)) {
-        // Lognormal distribution for current biome's mu and sigma
-        // TODO: this doesn't need to be computed each time; put in prepareToRun()
-        // This is equation 10 in Woodard et al. 2021
-        boost::math::lognormal s(pf_mu.at( biome ), pf_sigma.at( biome ));
-        double f_frozen_current = cdf(s, Tland_biome);
+        // This uses the biome's lognormal distribution, based on its mu and sigma,
+        // which is precomputed in prepareToRun()
+        double f_frozen_current = cdf(pf_s[biome], Tland_biome);
         
-          new_thaw[ biome ] = f_frozen[ biome ] - f_frozen_current;
-          f_frozen[ biome ] = f_frozen_current;
+        new_thaw[ biome ] = f_frozen[ biome ] - f_frozen_current;
+        f_frozen[ biome ] = f_frozen_current;
       }
       
 // Soil warm very slowly relative to the atmosphere
