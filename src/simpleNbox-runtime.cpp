@@ -1,5 +1,5 @@
 /* Hector -- A Simple Climate Model
-   Copyright (C) 2014-2015  Battelle Memorial Institute
+   Copyright (C) 2022  Battelle Memorial Institute
 
    Please see the accompanying file LICENSE.md for additional licensing
    information.
@@ -332,7 +332,13 @@ void SimpleNbox::stashCValues(double t, const double c[]) {
     newdet = newdet + pool_diff * c[SNBOX_DET] / total_land;
     newveg = newveg + pool_diff * c[SNBOX_VEG] / total_land;
     newsoil = newsoil + pool_diff * c[SNBOX_SOIL] / total_land;
-    newatmos = newatmos - pool_diff;
+    // We do NOT adjust the `newatmos` variable, because doing so can put the
+    // model into an atmos_C feedback; see https://github.com/JGCRI/hector/issues/659
+    // Instead, follow the CO2 constraint behavior and transfer any
+    // difference to the deep ocean
+    H_LOG(logger, Logger::DEBUG) << "Sending NBP_constrain residual of " << pool_diff
+                                 << " to deep ocean" << std::endl;
+    core->sendMessage(M_DUMP_TO_DEEP_OCEAN, D_OCEAN_C, message_data(-pool_diff));
 
     // Re-calculate atmosphere-land flux (NBP)
     alf = npp_total.value(U_PGC_YR) - rh_total.value(U_PGC_YR) -

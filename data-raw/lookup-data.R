@@ -20,7 +20,9 @@ lines <- readLines("./src/rcpp_constants.cpp")
 
 # Specific functions to exclude
 # TODO is there a way to make this not hard coded?
-lines <- lines[!grepl(pattern = "GETDATA|SETDATA|BIOME_SPLIT_CHAR|RFADJ_PREFIX|RF_PREFIX", x = lines)]
+lines <- lines[!grepl(
+    pattern = "GETDATA|SETDATA|BIOME_SPLIT_CHAR|RFADJ_PREFIX|RF_PREFIX",
+    x = lines)]
 
 # Identify the lines of the code where the R function names are defined.
 conditions <- (grepl("^String ", x = lines) & !grepl("^ ", x = lines))

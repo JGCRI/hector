@@ -1,5 +1,5 @@
 /* Hector -- A Simple Climate Model
-   Copyright (C) 2014-2015  Battelle Memorial Institute
+   Copyright (C) 2022  Battelle Memorial Institute
 
    Please see the accompanying file LICENSE.md for additional licensing
    information.
@@ -105,9 +105,9 @@ TEST_F(TestDependencyFinder, TwoSeperate) {
     EXPECT_NE( dIt, ordering.end() );
 
     // expect that b is before a
-    EXPECT_LT( bIt - ordering.begin(), aIt - ordering.begin() ) << "Ordering: " << ordering << endl;
+  EXPECT_LT( bIt - ordering.begin(), aIt - ordering.begin() ); // << "Ordering: " << ordering << endl;
     // expect that d is before c
-    EXPECT_LT( dIt - ordering.begin(), cIt - ordering.begin() ) << "Ordering: " << ordering << endl;
+  EXPECT_LT( dIt - ordering.begin(), cIt - ordering.begin() ); // << "Ordering: " << ordering << endl;
     // can't say anything about the other relationships
 }
 
@@ -143,13 +143,13 @@ TEST_F(TestDependencyFinder, MultipleDependencies) {
     EXPECT_NE( dIt, ordering.end() );
     
     // expect that b is before a
-    EXPECT_LT( bIt - ordering.begin(), aIt - ordering.begin() ) << "Ordering: " << ordering << endl;
+    EXPECT_LT( bIt - ordering.begin(), aIt - ordering.begin() ); // << "Ordering: " << ordering << endl;
     // expect that c is before a
-    EXPECT_LT( cIt - ordering.begin(), aIt - ordering.begin() ) << "Ordering: " << ordering << endl;
+    EXPECT_LT( cIt - ordering.begin(), aIt - ordering.begin() ); // << "Ordering: " << ordering << endl;
     // expect that d is before b
-    EXPECT_LT( dIt - ordering.begin(), bIt - ordering.begin() ) << "Ordering: " << ordering << endl;
+    EXPECT_LT( dIt - ordering.begin(), bIt - ordering.begin() ); // << "Ordering: " << ordering << endl;
     // expect that d is before c
-    EXPECT_LT( dIt - ordering.begin(), cIt - ordering.begin() ) << "Ordering: " << ordering << endl;
+    EXPECT_LT( dIt - ordering.begin(), cIt - ordering.begin() ); // << "Ordering: " << ordering << endl;
 }
 
 ostream& operator<<( ostream& out, const vector<string>& vec ) {

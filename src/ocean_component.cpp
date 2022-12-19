@@ -1,5 +1,5 @@
 /* Hector -- A Simple Climate Model
-   Copyright (C) 2014-2015  Battelle Memorial Institute
+   Copyright (C) 2022  Battelle Memorial Institute
 
    Please see the accompanying file LICENSE.md for additional licensing
    information.
@@ -27,6 +27,10 @@
  *  Riley, J. P. and Tongudai, M.: The major cation/chlorinity ratios
  *      in sea water, Chem. Geol., 2, 263–269, doi:10.1016/0009-
  *      2541(67)90026-5, 1967.
+ *
+ *  Leeya Pressburger, & Kalyn R. Dorheim. (2022).
+ *  JGCRI/hector_cmip6data: v1.0 (v1.0). Zenodo.
+ *  https://doi.org/10.5281/zenodo.7304553
  */
 
 #include <cmath>
@@ -295,7 +299,7 @@ void OceanComponent::prepareToRun() {
   surfaceHL.deltaT.set(-16.4,
                        U_DEGC); // delta T to the absolute mean ocean tos to
                                 // return the initial temperature value of the
-                                // HL surface. See hector_cmip6data for details.
+                                // HL surface. Pressburger & Dorheim (2022)
   surfaceHL.mychemistry.S = 34.5; // Salinity Riley and Tongudai (1967)
   surfaceHL.mychemistry.volumeofbox = HL_volume;     // m3
   surfaceHL.mychemistry.As = ocean_area * part_high; // surface area m2
@@ -304,7 +308,7 @@ void OceanComponent::prepareToRun() {
   surfaceLL.deltaT.set(2.9,
                        U_DEGC); // delta T to the absolute mean ocean tos to
                                 // return the initial temperature value of the
-                                // LL surface. See hector_cmip6data for details.
+                                // LL surface. Pressburger & Dorheim (2022)
   surfaceLL.mychemistry.S = 34.5; // Salinity Riley and Tongudai (1967)
   surfaceLL.mychemistry.volumeofbox = LL_volume;    // m3
   surfaceLL.mychemistry.As = ocean_area * part_low; // surface area m2

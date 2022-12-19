@@ -24,9 +24,9 @@ n2o_vars <- c(EMISSIONS_N2O(), N2O_CONSTRAIN(), NAT_EMISSIONS_N2O())
 n2o_uni <- c("Tg N", "ppbv N2O", "Tg N")
 
 forcing_vars <- c(DELTA_CO2(), DELTA_CH4(), DELTA_N2O(), RHO_BC(),
-                  RHO_OC(), RHO_SO2(), RHO_NH3())
+                  RHO_OC(), RHO_SO2(), RHO_NH3(), RF_ALBEDO())
 forcing_uni <- c("(unitless)", "(unitless)", "(unitless)", "W/m2/Tg",
-                 "W/m2/Tg", "W/m2/Gg", "W/m2/Tg")
+                 "W/m2/Tg", "W/m2/Gg", "W/m2/Tg", "W/m2")
 
 temp_vars <- c(ECS(), DIFFUSIVITY(), AERO_SCALE(), VOLCANIC_SCALE(),
                Q_CO2(), TAS_CONSTRAIN(), LO_WARMING_RATIO())
