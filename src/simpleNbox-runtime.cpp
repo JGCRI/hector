@@ -655,6 +655,35 @@ fluxpool SimpleNbox::sum_rh(double time) const {
   return total;
 }
 
+//------------------------------------------------------------------------------
+/*! \brief      Compute permafrost thaw and refreeze
+ *  \param biome Name of the biome, a string
+ *  \returns    A tuple of pf_thaw_c, pf_refreeze_tp, pf_refreeze_soil (Pg C, but all doubles for speed)
+ */
+tuple<double, double, double> SimpleNbox::compute_pf_thaw_refreeze( string biome ) const {
+  
+  double biome_c_thaw =
+      permafrost_c.at(biome).value(U_PGC) * new_thaw.at(biome);
+  double pf_refreeze_tp = 0.0;
+  double pf_refreeze_soil = 0.0;
+  
+  if (biome_c_thaw < 0) {
+    // If the permafrost thaw is negative, that means refreezing.
+    // This occurs preferentially from the thawed permafrost pool,
+    // and secondarily from the soil pool
+    const double pf_refreeze = -biome_c_thaw;
+    biome_c_thaw = 0.0;
+    const double thawed_remaining = thawed_permafrost_c.at(biome).value(U_PGC)
+      - rh_ftpa_co2(biome).value(U_PGC_YR)
+      - rh_ftpa_ch4(biome).value(U_PGC_YR);
+    pf_refreeze_tp = std::min(pf_refreeze, thawed_remaining);
+    pf_refreeze_soil = pf_refreeze - pf_refreeze_tp;
+  }
+  
+  return {biome_c_thaw, pf_refreeze_tp, pf_refreeze_soil};
+}
+
+
 ///------------------------------------------------------------------------------
 /*! \brief              Compute model fluxes for a time step
  *  \param[in]  t       time
@@ -734,33 +763,19 @@ int SimpleNbox::calcderivs(double t, const double c[], double dcdt[]) const {
   fluxpool ch4ox_current(0.0, U_PGC_YR); // TODO: implement this
 
   // As permafrost thaws, the C is mobilized into the thawed permafrost pool.
-  fluxpool permafrost_thaw_c(0.0, U_PGC_YR);
-  fluxpool permafrost_refreeze_tp(0.0, U_PGC_YR);
-  fluxpool permafrost_refreeze_soil(0.0, U_PGC_YR);
+  fluxpool pf_thaw_c(0.0, U_PGC_YR);
+  fluxpool pf_refreeze_tp(0.0, U_PGC_YR);
+  fluxpool pf_refreeze_soil(0.0, U_PGC_YR);
   if (!in_spinup) { // No permafrost thaw during spinup
-    // Sum permafrost thaw in all biomes
+    // Sum permafrost thaw and refreeze across all biomes
     for (auto biome : biome_list) {
-      const double biome_c_thaw =
-          permafrost_c.at(biome).value(U_PGC) * new_thaw.at(biome);
-
-      if (biome_c_thaw >= 0) {
-        permafrost_thaw_c =
-            permafrost_thaw_c + fluxpool(biome_c_thaw, U_PGC_YR);
-      } else {
-        // If the permafrost thaw is negative, that means refreezing.
-        // This occurs preferentially from the thawed permafrost pool,
-        // and secondarily from the soil pool
-        const double thawed_remaining = thawed_permafrost_c.at(biome).value(U_PGC) -
-                                  rh_ftpa_co2_current.value(U_PGC_YR) -
-                                  rh_ch4_current.value(U_PGC_YR);
-        permafrost_refreeze_tp = permafrost_refreeze_tp +
-            fluxpool(std::min(-biome_c_thaw, thawed_remaining), U_PGC_YR);
-        permafrost_refreeze_soil = permafrost_refreeze_tp +
-            fluxpool(-biome_c_thaw, U_PGC_YR) - permafrost_refreeze_tp;
-      }
+      auto[biome_c_thaw, biome_pf_refreeze_tp, biome_pf_refreeze_soil] = compute_pf_thaw_refreeze(biome);
+      pf_thaw_c = pf_thaw_c + fluxpool(biome_c_thaw, U_PGC_YR);
+      pf_refreeze_tp = pf_refreeze_tp + fluxpool(biome_pf_refreeze_tp, U_PGC_YR);
+      pf_refreeze_soil = pf_refreeze_tp + fluxpool(biome_pf_refreeze_soil, U_PGC_YR);
     }
   }
-
+  
   // If user has supplied NBP (net biome production) values,
   // adjust NPP and RH to match
   const int rounded_t = round(t);
@@ -798,9 +813,8 @@ int SimpleNbox::calcderivs(double t, const double c[], double dcdt[]) const {
       npp_current.value(U_PGC_YR)
       // HACK: For mass balance purposes, dump both RH{CO2} and RH{CH4} into
       // the atmosphere. Effectively, this means that CH4 is emitted on top of
-      // existing CO2 -- i.e. more CH4 emissions does not mean less CO2
-      // emissions from RH). The correct solution is to have a separate, 8th
-      // naturally-emitted CH4 box.
+      // existing CO2 -- i.e., more CH4 emissions does not mean less CO2
+      // emissions from RH
       + rh_ch4_current.value(U_PGC_YR) + rh_current.value(U_PGC_YR);
   dcdt[SNBOX_VEG] = // change in vegetation pool
       npp_fav.value(U_PGC_YR) - litter_flux.value(U_PGC_YR) -
@@ -812,14 +826,14 @@ int SimpleNbox::calcderivs(double t, const double c[], double dcdt[]) const {
   dcdt[SNBOX_SOIL] = // change in soil pool
       npp_fas.value(U_PGC_YR) + litter_fvs.value(U_PGC_YR) +
       detsoil_flux.value(U_PGC_YR) - rh_fsa_current.value(U_PGC_YR) -
-      permafrost_refreeze_soil.value(U_PGC_YR) - luc_fsa.value(U_PGC_YR);
+      pf_refreeze_soil.value(U_PGC_YR) - luc_fsa.value(U_PGC_YR);
   dcdt[SNBOX_PERMAFROST] = // change in permafrost pool
-      -permafrost_thaw_c.value(U_PGC_YR) +
-      permafrost_refreeze_soil.value(U_PGC_YR) +
-      permafrost_refreeze_tp.value(U_PGC_YR);
+      -pf_thaw_c.value(U_PGC_YR) +
+      pf_refreeze_soil.value(U_PGC_YR) +
+      pf_refreeze_tp.value(U_PGC_YR);
   dcdt[SNBOX_THAWEDP] = // change in thawed permafrost pool
-      permafrost_thaw_c.value(U_PGC_YR) -
-      permafrost_refreeze_tp.value(U_PGC_YR) -
+      pf_thaw_c.value(U_PGC_YR) -
+      pf_refreeze_tp.value(U_PGC_YR) -
       rh_ftpa_ch4_current.value(U_PGC_YR) - rh_ftpa_co2_current.value(U_PGC_YR);
   dcdt[SNBOX_OCEAN] = // change in ocean pool
       ocean_uptake.value(U_PGC_YR) - ocean_release.value(U_PGC_YR);

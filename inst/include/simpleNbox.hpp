@@ -297,7 +297,8 @@ private:
      double time = Core::undefinedIndex()) const; //!< calculates RH for a biome
   fluxpool sum_rh(double time = Core::undefinedIndex())
       const; //!< calculates RH, global total
-
+  tuple<double, double, double> compute_pf_thaw_refreeze( string biome ) const;
+  
   /*****************************************************************
    * Private helper functions
    *****************************************************************/
