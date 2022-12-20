@@ -311,11 +311,12 @@ void SimpleNbox::stashCValues(double t, const double c[]) {
   fluxpool npp_rh_total = npp_total + rh_total; // these are both positive
 
   // Pre-NBP constraint new terrestrial pool values
+  unitval newatmos(c[SNBOX_ATMOS], U_PGC);
   unitval newveg(c[SNBOX_VEG], U_PGC);
   unitval newdet(c[SNBOX_DET], U_PGC);
   unitval newsoil(c[SNBOX_SOIL], U_PGC);
-  unitval newatmos(c[SNBOX_ATMOS], U_PGC);
-
+  unitval newpermafrost(c[SNBOX_PERMAFROST], U_PGC);
+  
   // If there an NBP constraint? If yes, at this point adjust npp_total,
   // rh_total, and the newveg/newdet/newsoil variables
   double rh_nbp_constraint_adjust = 1.0;
@@ -739,29 +740,29 @@ int SimpleNbox::calcderivs(double t, const double c[], double dcdt[]) const {
   if (!in_spinup) { // No permafrost thaw during spinup
     // Sum permafrost thaw in all biomes
     for (auto biome : biome_list) {
-      double biome_c_thaw =
+      const double biome_c_thaw =
           permafrost_c.at(biome).value(U_PGC) * new_thaw.at(biome);
 
       if (biome_c_thaw >= 0) {
         permafrost_thaw_c =
             permafrost_thaw_c + fluxpool(biome_c_thaw, U_PGC_YR);
       } else {
-        // If the permafrost thaw is negative, that means refreezing
-        // (preferentially from the thawed permafrost pool, otherwise from soil
-        // pool)
-        double thawed_remaining = thawed_permafrost_c.at(biome).value(U_PGC) -
+        // If the permafrost thaw is negative, that means refreezing.
+        // This occurs preferentially from the thawed permafrost pool,
+        // and secondarily from the soil pool
+        const double thawed_remaining = thawed_permafrost_c.at(biome).value(U_PGC) -
                                   rh_ftpa_co2_current.value(U_PGC_YR) -
                                   rh_ch4_current.value(U_PGC_YR);
-        permafrost_refreeze_tp =
-            fluxpool(std::min(biome_c_thaw, thawed_remaining), U_PGC_YR);
-        permafrost_refreeze_soil =
+        permafrost_refreeze_tp = permafrost_refreeze_tp +
+            fluxpool(std::min(-biome_c_thaw, thawed_remaining), U_PGC_YR);
+        permafrost_refreeze_soil = permafrost_refreeze_tp +
             fluxpool(-biome_c_thaw, U_PGC_YR) - permafrost_refreeze_tp;
       }
     }
   }
 
-  // If user has supplied NBP (net biome production) values, adjust NPP and RH
-  // to match
+  // If user has supplied NBP (net biome production) values,
+  // adjust NPP and RH to match
   const int rounded_t = round(t);
   if (!in_spinup && NBP_constrain.size() && NBP_constrain.exists(rounded_t)) {
     // Compute how different we are from the user-specified constraint
@@ -912,11 +913,17 @@ void SimpleNbox::slowparameval(double t, const double c[]) {
       // Currently, these are calibrated to produce a 0.172 / year slope from
       // 0.8 to 4 degrees C, which was the linear form of this in Kessler.
       new_thaw[biome] = 0.0;
-      if (permafrost_c[ biome ] > unitval(0.0, U_PGC)) {
+      if (permafrost_c[ biome ].value(U_PGC)) {
         // This uses the biome's lognormal distribution, based on its mu and sigma,
-        // which is precomputed in prepareToRun()
-        double f_frozen_current = cdf(pf_s[biome], Tland_biome);
-        
+        // which is precomputed in prepareToRun(). Replicating the behavior of R's
+        // plnorm(), we use a value of zero if Tland_biome <= 0
+        double f_frozen_current = 0.0;
+        if(Tland_biome > 0) {
+          f_frozen_current = cdf(pf_s[biome], Tland_biome);
+          H_LOG(logger, Logger::DEBUG)
+              << "slowparameval: f_frozen_current = " << f_frozen_current << std::endl;
+        }
+
         new_thaw[ biome ] = f_frozen[ biome ] - f_frozen_current;
         f_frozen[ biome ] = f_frozen_current;
       }
