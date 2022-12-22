@@ -39,7 +39,7 @@ simpleNbox,beta,n,n,y,0.36,(unitless),
 simpleNbox,q10_rh,n,n,y,2,(unitless),respiration response Q10
 simpleNbox,boreal.warmingfactor,y,n,n,1.2,(unitless),biome-specific warming factors
 simpleNbox,RF_albedo,n,n,y,"""(csv)""",W m-2,albedo effect
-simpleNbox,permafrost_c,y,n,n,0,Pg C,Preindustrial permafrost carbon pool
+simpleNbox,permafrost_c,y,n,y,0,Pg C,Preindustrial permafrost carbon pool
 simpleNbox,fpf_static,y,n,n,0.74,(unitless),fraction of permafrost that is static (non-labile)
 simpleNbox,rh_ch4_frac,y,n,n,0.023,(unitless),fraction of thawed permafrost decomposed as CH4
 simpleNbox,pf_mu,y,n,n,1.67,(unitless),permafrost thaw parameter; see Woodard et al. 2021
