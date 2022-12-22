@@ -11,14 +11,15 @@ test_that("All ini files can be used to set up a hector core", {
   }
 })
 
-# Check that all parameters found the input_params csv are in the ini files...
-test_that("All csv params are in an ini file...", {
-  expect_warning(
+# Check that all *required* parameters in the input_params csv are in all ini files...
+test_that("All required csv params are in all ini files...", {
+    # Identify required unique parameter names
+    required <- subset(input_table, required == "y")
+    input_params <- sort(unique(required$parameter))
+
+    expect_warning(
     for (ini in ini_list) {
       ini_file <- readLines(system.file("input", ini, package = "hector"))
-
-      # Read in comparison csv, identify unique parameter names
-      input_params <- sort(unique(input_table$parameter))
 
       # Pull out lines with = sign, meaning parameters and definitions
       eq <- ini_file[grepl("=", ini_file)]
@@ -40,8 +41,8 @@ test_that("All csv params are in an ini file...", {
       # If there are extra or missing parameters, issue a warning
       if (length(missing_param) > 0) {
         warning(paste0(
-          "\nParameter ",
-          missing_param, " is failing in ", ini, "."
+          "\nRequired parameter ",
+          missing_param, " is not present in ", ini, "."
         ))
       }
     },
@@ -49,7 +50,7 @@ test_that("All csv params are in an ini file...", {
   )
 })
 
-# ...and that all parameters in the ini files are in the csv
+# ...and that all parameters in the ini files are in the input_params csv
 test_that("All ini parameters are in the input csv", {
   expect_warning(
     for (ini in ini_list) {
