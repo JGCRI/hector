@@ -437,12 +437,14 @@ double SimpleNbox::sum_map(double_stringmap pool) const {
 }
 
 //------------------------------------------------------------------------------
-/*! \brief      Helper function: extract a fluxpool from a time series, or
- * return current fluxpool \param      varName Variable name being requested in
- * getData below \param      date Date to extract from time series \param biome
- * Biome to extract from time series \param      pool The current pool \param
- * pool_tv The time series of the pool \returns    Sum of the unitvals in the
- * map \exception  If the biome doesn't exist
+/*! \brief      Helper function: extract a fluxpool from a time series, or return current fluxpool
+ *  \param varName Variable name being requested in getData below
+ *  \param date Date to extract from time series
+ *  \param biome Biome to extract from time series
+ *  \param pool The current pool
+ *  \param pool_tv The time series of the pool
+ *  \returns    Sum of the unitvals in the map
+ *  \exception  If the biome doesn't exist
  */
 fluxpool
 SimpleNbox::sum_fluxpool_biome_ts(const string varName, const double date,

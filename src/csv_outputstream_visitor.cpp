@@ -181,6 +181,7 @@ void CSVOutputStreamVisitor::visit(SimpleNbox *c) {
   STREAM_MESSAGE(csvFile, c, D_PERMAFROSTC);
   STREAM_MESSAGE(csvFile, c, D_THAWEDPC);
   STREAM_MESSAGE(csvFile, c, D_EARTHC);
+//  STREAM_MESSAGE(csvFile, c, D_F_FROZEN);
 
   // Biome-specific outputs: <biome>.<variable>
   if (c->veg_c.size() > 1) {
@@ -199,6 +200,8 @@ void CSVOutputStreamVisitor::visit(SimpleNbox *c) {
                      c->soil_c[biome]);
       STREAM_UNITVAL( csvFile, c, biome + SNBOX_PARSECHAR + D_PERMAFROSTC, c->permafrost_c[ biome ] );
       STREAM_UNITVAL( csvFile, c, biome + SNBOX_PARSECHAR + D_THAWEDPC, c->thawed_permafrost_c[ biome ] );
+      STREAM_UNITVAL(csvFile, c, biome + SNBOX_PARSECHAR + D_F_FROZEN,
+                     unitval(c->f_frozen[biome], U_UNITLESS));
       STREAM_UNITVAL(csvFile, c, biome + SNBOX_PARSECHAR + D_TEMPFERTD,
                      unitval(c->tempfertd[biome], U_UNITLESS));
       STREAM_UNITVAL(csvFile, c, biome + SNBOX_PARSECHAR + D_TEMPFERTS,

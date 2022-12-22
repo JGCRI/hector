@@ -288,16 +288,16 @@ private:
       const; //!< calculates RH from detritus for a biome
   fluxpool rh_fsa(std::string biome, double time = Core::undefinedIndex())
       const; //!< calculates RH from soil for a biome
-  fluxpool rh_ftpa_co2(std::string biome)
+  fluxpool rh_ftpa_co2(std::string biome, double time = Core::undefinedIndex())
       const; //!< calculates current CO2 RH from thawed permafrost for a biome
-  fluxpool rh_ftpa_ch4(std::string biome)
+  fluxpool rh_ftpa_ch4(std::string biome, double time = Core::undefinedIndex())
       const; //!< calculates current CH4 RH from thawed permafrost for a biome
   fluxpool
   rh(std::string biome,
      double time = Core::undefinedIndex()) const; //!< calculates RH for a biome
   fluxpool sum_rh(double time = Core::undefinedIndex())
       const; //!< calculates RH, global total
-  tuple<double, double, double> compute_pf_thaw_refreeze( string biome ) const;
+  tuple<double, double, double> compute_pf_thaw_refreeze(string biome, fluxpool rh_co2, fluxpool rh_ch4) const;
   
   /*****************************************************************
    * Private helper functions
