@@ -130,8 +130,6 @@ private:
   // Track thawed peramfrost separately from soil, so that
   // we can apply rh_ch4_frac (the CH4:CO2 ratio) to it
   fluxpool_stringmap thawed_permafrost_c; //!< thawed permafrost pool, Pg C
-  fluxpool_stringmap
-      static_c; //!< static carbon total in thawed permafrost pool
 
   // Carbon fluxes -- biome-specific
   fluxpool_stringmap NPP_veg; //!< Net primary productivity of vegetation;
@@ -171,8 +169,6 @@ private:
   tvector<fluxpool_stringmap>
       thawed_permafrost_c_tv; //!< Time series of biome-specific thawed
                               //!< permafrost
-  tvector<fluxpool_stringmap>
-      static_c_tv; //!< Time series of biome-specific thawed permafrost
 
   // Time series versions of flux variables
   tvector<fluxpool_stringmap> NPP_veg_tv, RH_det_tv, RH_soil_tv,
@@ -390,7 +386,6 @@ private:
       soil_c[biome].tracking = true;
       permafrost_c[biome].tracking = true;
       thawed_permafrost_c[biome].tracking = true;
-      static_c[biome].tracking = true;
     }
   }
 };

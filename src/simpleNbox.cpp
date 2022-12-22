@@ -94,10 +94,12 @@ void SimpleNbox::init(Core *coreptr) {
   f_frozen[SNBOX_DEFAULT_BIOME] = 1.0;
   new_thaw[SNBOX_DEFAULT_BIOME] = 0.0;
 
-  rh_ch4_frac[SNBOX_DEFAULT_BIOME] = 0.0;
+  // Following permafrost-related values are from Woodard et al. 2021
+  rh_ch4_frac[SNBOX_DEFAULT_BIOME] = 0.023;
   pf_sigma[SNBOX_DEFAULT_BIOME] = 0.986;
   pf_mu[SNBOX_DEFAULT_BIOME] = 1.67;
   fpf_static[SNBOX_DEFAULT_BIOME] = 0.74;
+  
   final_npp[SNBOX_DEFAULT_BIOME] = fluxpool(0.0, U_PGC_YR, false, "final_npp");
   final_rh[SNBOX_DEFAULT_BIOME] = fluxpool(0.0, U_PGC_YR, false, "final_rh");
 
@@ -378,7 +380,11 @@ void SimpleNbox::setData(const std::string &varName, const message_data &data) {
       H_ASSERT(data.date == Core::undefinedIndex(),
                "date not allowed for static permafrost fraction");
       fpf_static[biome] = data.getUnitval(U_UNITLESS);
-    }
+    } else if (varNameParsed == D_RH_CH4_FRAC) {
+      H_ASSERT(data.date == Core::undefinedIndex(),
+               "date not allowed for CH4 decomposition fraction");
+      rh_ch4_frac[biome] = data.getUnitval(U_UNITLESS);
+   }
 
     else {
       H_LOG(logger, Logger::DEBUG)
@@ -690,7 +696,6 @@ void SimpleNbox::reset(double time) {
   soil_c = soil_c_tv.get(time);
   permafrost_c = permafrost_c_tv.get(time);
   thawed_permafrost_c = thawed_permafrost_c_tv.get(time);
-  static_c = static_c_tv.get(time);
   final_npp = final_npp_tv.get(time);
   final_rh = final_rh_tv.get(time);
 
@@ -723,7 +728,6 @@ void SimpleNbox::reset(double time) {
   soil_c_tv.truncate(time);
   permafrost_c_tv.truncate(time);
   thawed_permafrost_c_tv.truncate(time);
-  static_c_tv.truncate(time);
 
   final_npp_tv.truncate(time);
   final_rh_tv.truncate(time);
@@ -765,7 +769,6 @@ void SimpleNbox::record_state(double t) {
   soil_c_tv.set(t, soil_c);
   permafrost_c_tv.set(t, permafrost_c);
   thawed_permafrost_c_tv.set(t, thawed_permafrost_c);
-  static_c_tv.set(t, static_c);
 
   for (auto it = biome_list.begin(); it != biome_list.end(); it++) {
     std::string biome = *it;
@@ -848,8 +851,6 @@ void SimpleNbox::createBiome(const std::string &biome) {
   add_biome_to_ts(permafrost_c_tv, biome, permafrost_c.at(biome));
   thawed_permafrost_c[biome] = fluxpool(0, U_PGC, false, D_THAWEDPC);
   add_biome_to_ts(thawed_permafrost_c_tv, biome, thawed_permafrost_c.at(biome));
-  static_c[biome] = fluxpool(0, U_PGC, false, "static_c_" + biome);
-  add_biome_to_ts(static_c_tv, biome, static_c.at(biome));
 
   NPP_veg[biome] = fluxpool(0, U_PGC, false, "npp_veg_" + biome);
   add_biome_to_ts(NPP_veg_tv, biome, NPP_veg.at(biome));
@@ -937,8 +938,6 @@ void SimpleNbox::deleteBiome(
   remove_biome_from_ts(permafrost_c_tv, biome);
   thawed_permafrost_c.erase(biome);
   remove_biome_from_ts(thawed_permafrost_c_tv, biome);
-  static_c.erase(biome);
-  remove_biome_from_ts(static_c_tv, biome);
 
   // C fluxes
   NPP_veg.erase(biome);
@@ -1025,9 +1024,6 @@ void SimpleNbox::renameBiome(const std::string &oldname,
   thawed_permafrost_c[newname] = thawed_permafrost_c.at(oldname);
   thawed_permafrost_c.erase(oldname);
   rename_biome_in_ts(thawed_permafrost_c_tv, oldname, newname);
-  static_c[newname] = static_c.at(oldname);
-  static_c.erase(oldname);
-  rename_biome_in_ts(static_c_tv, oldname, newname);
 
   NPP_veg[newname] = NPP_veg.at(oldname);
   NPP_veg.erase(oldname);

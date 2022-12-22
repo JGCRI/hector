@@ -50,7 +50,7 @@ void SimpleNbox::log_pools(const double t, const string msg) {
         << soil_c[biome].value(U_PGC) << "\t\t"
         << permafrost_c[biome].value(U_PGC) << "\t\t"
         << thawed_permafrost_c[biome].value(U_PGC) << "\t\t"
-        << static_c[biome].value(U_PGC) << std::endl;
+        << std::endl;
   }
   H_LOG(logger, Logger::DEBUG) << "Earth = " << earth_c << std::endl;
 }
@@ -115,8 +115,8 @@ void SimpleNbox::prepareToRun() {
     if (!rh_ch4_frac.count(biome)) {
       H_LOG(logger, Logger::NOTICE)
           << "No RH CH4 fraction set for biome '" << biome << "'. "
-          << "Setting to default value = 0.0" << std::endl;
-      rh_ch4_frac[biome] = 0.0;
+          << "Setting to default value = 0.023" << std::endl;
+      rh_ch4_frac[biome] = 0.023;
     }
 
     if (!pf_mu.count(biome)) {
@@ -133,10 +133,16 @@ void SimpleNbox::prepareToRun() {
       pf_sigma[biome] = 0.986;
     }
 
-    // Thawed and static permafrost C start at zero
+    if (!fpf_static.count(biome)) {
+      H_LOG(logger, Logger::NOTICE)
+          << "No thawed permafrost static fraction for biome '" << biome << "'. "
+          << "Setting to default value = 0.74" << std::endl;
+      fpf_static[biome] = 0.74;
+    }
+
+    // Thawed permafrost C starts at zero
     thawed_permafrost_c[biome].set(0.0, U_PGC, permafrost_c[biome].tracking,
                                    D_THAWEDPC);
-    static_c[biome].set(0.0, U_PGC, permafrost_c[biome].tracking, "static_c");
   }
   // Lognormal distribution for current biome's mu and sigma
   // We precompute all of these (one for each biome) since they don't change over time
@@ -320,14 +326,14 @@ void SimpleNbox::stashCValues(double t, const double c[]) {
   fluxpool newdet(c[SNBOX_DET], U_PGC);
   fluxpool newsoil(c[SNBOX_SOIL], U_PGC);
   fluxpool newpermafrost(c[SNBOX_PERMAFROST], U_PGC);
-  // The solver can give very small negative values for thawed permafrost; precision errors?
+  // The solver can give very small negative values for thawed permafrost.
   // If this happens, round to zero so as not to throw a fluxpool error
   double solver_tpf = c[SNBOX_THAWEDP];
   if(abs(solver_tpf) < 1e-10) {
     solver_tpf = 0.0;
   }
   fluxpool newthawedpf(solver_tpf, U_PGC);
-  
+
   // If there an NBP constraint? If yes, at this point adjust npp_total,
   // rh_total, and the newveg/newdet/newsoil/newthawedpf variables
   double rh_nbp_constraint_adjust = 1.0;
@@ -651,10 +657,10 @@ fluxpool SimpleNbox::rh_ftpa_co2(std::string biome, double time) const {
   fluxpool tpfc;
   if (time == Core::undefinedIndex()) {
     tfs = tempferts.at(biome);
-    tpfc = thawed_permafrost_c.at(biome) - static_c.at(biome);
+    tpfc = thawed_permafrost_c.at(biome) * fpf_static.at(biome);
   } else {
     tfs = tempferts_tv.get(time).at(biome);
-    tpfc = thawed_permafrost_c_tv.get(time).at(biome) - static_c_tv.get(time).at(biome);
+    tpfc = thawed_permafrost_c_tv.get(time).at(biome) * fpf_static.at(biome);
   }
   fluxpool tpflux(tpfc.value(U_PGC) * 0.02, U_PGC_YR);
   return tpflux * tfs * (1.0 - rh_ch4_frac.at(biome));
