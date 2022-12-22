@@ -123,7 +123,7 @@ void SimpleNbox::prepareToRun() {
       H_LOG(logger, Logger::NOTICE)
           << "No permafrost mu parameter set for biome '" << biome << "'. "
           << "Setting to default value = 1.67" << std::endl;
-      pf_sigma[biome] = 1.67;
+      pf_mu[biome] = 1.67;
     }
 
     if (!pf_sigma.count(biome)) {

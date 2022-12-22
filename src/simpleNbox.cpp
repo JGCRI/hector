@@ -868,15 +868,11 @@ void SimpleNbox::createBiome(const std::string &biome) {
       fluxpool(0, U_PGC, false, "rh_thawedpf_" + biome);
   add_biome_to_ts(RH_thawed_permafrost_tv, biome,
                   RH_thawed_permafrost.at(biome));
-  RH_ch4[biome] = fluxpool(0, U_PGC, false, "rh_ch4" + biome);
+  RH_ch4[biome] = fluxpool(0, U_PGC_YR, false, D_RH_CH4 + biome);
   add_biome_to_ts(RH_ch4_tv, biome, RH_ch4.at(biome));
 
   final_npp[biome] = fluxpool(0, U_PGC_YR, false, D_NPP);
   add_biome_to_ts(final_npp_tv, biome, final_npp.at(biome));
-  final_rh[biome] = fluxpool(0, U_PGC_YR, false, D_RH);
-  add_biome_to_ts(final_rh_tv, biome, final_rh.at(biome));
-  RH_ch4[biome] = fluxpool(0, U_PGC_YR, false, D_RH_CH4);
-  add_biome_to_ts(RH_ch4_tv, biome, RH_ch4.at(biome));
 
   npp_flux0[biome] = fluxpool(0, U_PGC_YR);
 
@@ -886,7 +882,9 @@ void SimpleNbox::createBiome(const std::string &biome) {
   add_biome_to_ts(tempfertd_tv, biome, 1.0);
   tempferts[biome] = 1.0;
   add_biome_to_ts(tempferts_tv, biome, 1.0);
-
+  f_frozen[biome] = 1.0;
+  add_biome_to_ts(f_frozen_tv, biome, 1.0);
+  
   std::string last_biome = biome_list.back();
 
   // Set parameters to same as most recent biome
@@ -963,8 +961,6 @@ void SimpleNbox::deleteBiome(
   remove_biome_from_ts(final_npp_tv, biome);
   final_rh.erase(biome);
   remove_biome_from_ts(final_rh_tv, biome);
-  RH_ch4.erase(biome);
-  remove_biome_from_ts(RH_ch4_tv, biome);
 
   // Others
   npp_flux0.erase(biome);
@@ -1057,9 +1053,6 @@ void SimpleNbox::renameBiome(const std::string &oldname,
   final_rh[newname] = final_rh.at(oldname);
   final_rh.erase(oldname);
   rename_biome_in_ts(final_rh_tv, oldname, newname);
-  RH_ch4[newname] = RH_ch4.at(oldname);
-  RH_ch4.erase(oldname);
-  rename_biome_in_ts(RH_ch4_tv, oldname, newname);
 
   npp_flux0[newname] = npp_flux0.at(oldname);
   npp_flux0.erase(oldname);
