@@ -102,7 +102,8 @@ void SimpleNbox::init(Core *coreptr) {
   
   final_npp[SNBOX_DEFAULT_BIOME] = fluxpool(0.0, U_PGC_YR, false, "final_npp");
   final_rh[SNBOX_DEFAULT_BIOME] = fluxpool(0.0, U_PGC_YR, false, "final_rh");
-
+  RH_ch4[SNBOX_DEFAULT_BIOME] = fluxpool(0.0, U_PGC_YR, false, "RH_ch4");
+  
   // Constraint residuals
   Ca_residual.set(0.0, U_PGC);
 
@@ -676,6 +677,8 @@ unitval SimpleNbox::getData(const std::string &varName, const double date) {
   } else if (varNameParsed == D_RH) {
     returnval =
         sum_fluxpool_biome_ts(varName, date, biome, final_rh, final_rh_tv);
+  } else if(varNameParsed == D_RH_CH4) {
+    returnval = sum_fluxpool_biome_ts(varName, date, biome, RH_ch4, RH_ch4_tv);
   } else {
     H_THROW("Caller is requesting unknown variable: " + varName);
   }
@@ -698,7 +701,8 @@ void SimpleNbox::reset(double time) {
   thawed_permafrost_c = thawed_permafrost_c_tv.get(time);
   final_npp = final_npp_tv.get(time);
   final_rh = final_rh_tv.get(time);
-
+  RH_ch4 = RH_ch4_tv.get(time);
+  
   Ca_residual = Ca_residual_ts.get(time);
 
   tempferts = tempferts_tv.get(time);
@@ -731,7 +735,8 @@ void SimpleNbox::reset(double time) {
 
   final_npp_tv.truncate(time);
   final_rh_tv.truncate(time);
-
+  RH_ch4_tv.truncate(time);
+  
   Ca_residual_ts.truncate(time);
 
   tempferts_tv.truncate(time);
@@ -794,6 +799,7 @@ void SimpleNbox::record_state(double t) {
 
   final_npp_tv.set(t, final_npp);
   final_rh_tv.set(t, final_rh);
+  RH_ch4_tv.set(t, RH_ch4);
 
   Ca_residual_ts.set(t, Ca_residual);
 
@@ -869,6 +875,8 @@ void SimpleNbox::createBiome(const std::string &biome) {
   add_biome_to_ts(final_npp_tv, biome, final_npp.at(biome));
   final_rh[biome] = fluxpool(0, U_PGC_YR, false, D_RH);
   add_biome_to_ts(final_rh_tv, biome, final_rh.at(biome));
+  RH_ch4[biome] = fluxpool(0, U_PGC_YR, false, D_RH_CH4);
+  add_biome_to_ts(RH_ch4_tv, biome, RH_ch4.at(biome));
 
   npp_flux0[biome] = fluxpool(0, U_PGC_YR);
 
@@ -955,6 +963,8 @@ void SimpleNbox::deleteBiome(
   remove_biome_from_ts(final_npp_tv, biome);
   final_rh.erase(biome);
   remove_biome_from_ts(final_rh_tv, biome);
+  RH_ch4.erase(biome);
+  remove_biome_from_ts(RH_ch4_tv, biome);
 
   // Others
   npp_flux0.erase(biome);
@@ -1047,6 +1057,9 @@ void SimpleNbox::renameBiome(const std::string &oldname,
   final_rh[newname] = final_rh.at(oldname);
   final_rh.erase(oldname);
   rename_biome_in_ts(final_rh_tv, oldname, newname);
+  RH_ch4[newname] = RH_ch4.at(oldname);
+  RH_ch4.erase(oldname);
+  rename_biome_in_ts(RH_ch4_tv, oldname, newname);
 
   npp_flux0[newname] = npp_flux0.at(oldname);
   npp_flux0.erase(oldname);

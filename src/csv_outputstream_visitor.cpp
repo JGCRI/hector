@@ -172,6 +172,7 @@ void CSVOutputStreamVisitor::visit(SimpleNbox *c) {
   STREAM_MESSAGE(csvFile, c, D_NBP);
   STREAM_UNITVAL(csvFile, c, D_NPP, c->final_npp[SNBOX_DEFAULT_BIOME]);
   STREAM_UNITVAL(csvFile, c, D_RH, c->final_rh[SNBOX_DEFAULT_BIOME]);
+  STREAM_UNITVAL(csvFile, c, D_RH_CH4, c->final_rh[SNBOX_DEFAULT_BIOME]);
   STREAM_MESSAGE_DATE(csvFile, c, D_CO2_CONC, current_date);
   STREAM_MESSAGE(csvFile, c, D_ATMOSPHERIC_CO2);
   STREAM_MESSAGE(csvFile, c, D_ATMOSPHERIC_C_RESIDUAL);
@@ -192,7 +193,9 @@ void CSVOutputStreamVisitor::visit(SimpleNbox *c) {
                      c->final_npp[biome]);
       STREAM_UNITVAL(csvFile, c, biome + SNBOX_PARSECHAR + D_RH,
                      c->final_rh[biome]);
-      STREAM_UNITVAL(csvFile, c, biome + SNBOX_PARSECHAR + D_VEGC,
+      STREAM_UNITVAL(csvFile, c, biome + SNBOX_PARSECHAR + D_RH_CH4,
+                     c->RH_ch4[biome]);
+     STREAM_UNITVAL(csvFile, c, biome + SNBOX_PARSECHAR + D_VEGC,
                      c->veg_c[biome]);
       STREAM_UNITVAL(csvFile, c, biome + SNBOX_PARSECHAR + D_DETRITUSC,
                      c->detritus_c[biome]);

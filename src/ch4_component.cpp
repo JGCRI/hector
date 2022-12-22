@@ -161,8 +161,13 @@ void CH4Component::run(const double runToDate) {
         << "Year " << runToDate << " current_toh = " << current_toh
         << std::endl;
 
+    // Permafrost thaw produces CH4 emissions
+    #define PG_C_TO_TG_CH4 (1000.0 * 16.04 / 12.01)
+    const double rh_ch4 = core->sendMessage(M_GETDATA, D_RH_CH4).value(U_PGC_YR) * PG_C_TO_TG_CH4;
+
+    // Additional, background CH4 natural emissions
     const double ch4n = CH4N.value(U_TG_CH4);
-    const double emisTocon = (current_ch4em + ch4n) / UC_CH4.value(U_TG_PPBV);
+    const double emisTocon = (current_ch4em + rh_ch4 + ch4n) / UC_CH4.value(U_TG_PPBV);
     const double previous_ch4 = CH4.get(oldDate);
 
     H_LOG(logger, Logger::DEBUG)

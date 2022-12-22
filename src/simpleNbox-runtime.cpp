@@ -437,6 +437,7 @@ void SimpleNbox::stashCValues(double t, const double c[]) {
     fluxpool rh_fsa_flux = yf * soil_c[biome].flux_from_fluxpool(rh_fsa_adj);
     fluxpool rh_fpa_co2_flux = yf * thawed_permafrost_c[biome].flux_from_fluxpool(rh_ftpa_co2_adj);
     fluxpool rh_fpa_ch4_flux = yf * thawed_permafrost_c[biome].flux_from_fluxpool(rh_ftpa_ch4_adj);
+    RH_ch4[biome] = rh_fpa_ch4_flux;
     
     // Update soil, detritus, and atmosphere pools - luc fluxes
     atmos_c = atmos_c + luc_fva_biome_flux - luc_fav_biome_flux +
