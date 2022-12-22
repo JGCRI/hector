@@ -56,7 +56,7 @@ messages.)
 \itemize{
 \item \code{RF_TOTAL()}: Total radiative forcing
 
-\item \code{RF_ALBEDO}: Radiative forcing due to albedo
+\item \code{RF_ALBEDO()}: Radiative forcing due to albedo
 
 \item \code{RF_CO2()}: Radiative forcing due to CO2
 
