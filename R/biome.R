@@ -52,6 +52,8 @@ create_biome <- function(core, biome,
 #'   biome. Defaults to the same value as \code{fveg_c}.
 #' @param fsoil_c Fractions of soil C distributed to each biome.
 #'   Defaults to the same value as \code{fveg_c}.
+#' @param fpermafrost_c Fraction of permafrost C distributed to each
+#'   biome. Defaults to the same value as \code{fveg_c}.
 #' @param fnpp_flux0 Fraction of initial NPP flux distributed to each
 #'   biome. Defaults to the same value as \code{fveg_c}.
 #' @param ... Additional biome parameters passed to \code{\link{create_biome}}.
