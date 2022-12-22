@@ -313,6 +313,7 @@ private:
                                  const string biome, fluxpool_stringmap pool,
                                  tvector<fluxpool_stringmap> pool_tv);
   bool has_biome(const std::string &biome);
+  double f_frozen_weighted_mean(const string biome, const double date);
 
   OceanComponent *omodel; //!< pointer to the ocean model in use
 

@@ -471,6 +471,32 @@ SimpleNbox::sum_fluxpool_biome_ts(const string varName, const double date,
 }
 
 //------------------------------------------------------------------------------
+/*! \brief      Helper function: compute the biome-weighted mean of f_frozen
+ *  \param biome Biome to extract from time series
+ *  \param date Date to extract from time series
+ */
+double SimpleNbox::f_frozen_weighted_mean(const string biome, const double date) {
+
+  fluxpool perm_tot = sum_map(permafrost_c);
+  double temp_step = 0.0;
+  
+  // f_frozen output should be 1.0 when there is no permafrost carbon in the system
+  // otherwise it should be the permafrost-area weighted average across biomes
+  if(perm_tot.value(U_PGC) > 0.0) {
+    if(date == Core::undefinedIndex()) {
+      for(auto biome : biome_list)
+          temp_step += (permafrost_c.at(biome) / perm_tot) * f_frozen.at(biome);
+    } else {
+      for(auto biome : biome_list)
+        temp_step += (permafrost_c.at(biome)/perm_tot)*f_frozen_tv.get(date).at(biome);
+    }
+  } else { // no permafrost in system
+    temp_step = 1.0;
+  }
+  return temp_step;
+}
+
+//------------------------------------------------------------------------------
 // documentation is inherited
 unitval SimpleNbox::getData(const std::string &varName, const double date) {
   unitval returnval;
@@ -589,18 +615,17 @@ unitval SimpleNbox::getData(const std::string &varName, const double date) {
     returnval = sum_fluxpool_biome_ts(varName, date, biome, permafrost_c,
                                       permafrost_c_tv);
   } else if (varNameParsed == D_F_FROZEN) {
-    // BBL this is super ugly in the permafrost code
-    //  TODO: see lines 550- of
-    //  https://github.com/JGCRI/hector/commit/2d6f867d73bdd7e7d4f863b861d7d951afd28bf9
-    //  For now we require a biome
-    H_ASSERT(biome != SNBOX_DEFAULT_BIOME, "Biome required for frozen_c");
     double tempval;
-    if (date == Core::undefinedIndex())
-      tempval = f_frozen.at(biome);
-    else
-      tempval = f_frozen_tv.get(date).at(biome);
+    if(biome == SNBOX_DEFAULT_BIOME) {
+      tempval = f_frozen_weighted_mean(biome, date);
+    } else {
+      H_ASSERT(has_biome(biome), biome_error);
+      if (date == Core::undefinedIndex())
+        tempval = f_frozen.at(biome);
+      else
+        tempval = f_frozen_tv.get(date).at(biome);
+    }
     returnval = unitval(tempval, U_UNITLESS);
-
   } else if (varNameParsed == D_NPP_FLUX0) {
     H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for npp_flux0");
     H_ASSERT(has_biome(biome), biome_error);

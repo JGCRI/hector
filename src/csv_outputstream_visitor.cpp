@@ -180,8 +180,8 @@ void CSVOutputStreamVisitor::visit(SimpleNbox *c) {
   STREAM_MESSAGE(csvFile, c, D_SOILC);
   STREAM_MESSAGE(csvFile, c, D_PERMAFROSTC);
   STREAM_MESSAGE(csvFile, c, D_THAWEDPC);
+  STREAM_MESSAGE(csvFile, c, D_F_FROZEN);
   STREAM_MESSAGE(csvFile, c, D_EARTHC);
-//  STREAM_MESSAGE(csvFile, c, D_F_FROZEN);
 
   // Biome-specific outputs: <biome>.<variable>
   if (c->veg_c.size() > 1) {
