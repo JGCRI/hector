@@ -1,0 +1,73 @@
+# Build Hector on Travis CI
+# BBL January 2017
+# See https://travis-ci.org/bpbond/hector
+
+--- 
+dist: xenial
+matrix: 
+  include: 
+    - language: cpp
+      compiler: clang
+
+      addons: 
+        apt: 
+          packages: 
+            - libboost-system-dev
+            - libboost-filesystem-dev
+
+      # BOOSTROOT is set to look for header files in the default place
+      #where Ubuntu apt will install them --
+      #i.e. /usr/include/x86_64-linux-gnu. This is set because the
+      #Makefile has a `-I$(BOOSTROOT)` call.  Similarly, BOOSTLIB is
+      #set to /usr/lib/x86_64-linux-gnu, which is where Ubuntu apt
+      #installs boost by default. It has to be specified in full
+      #because otherwise, Hector's Makefile tries to construct
+      #BOOSTLIB by appending `/lib` to BOOSTROOT, which will not work
+      #here because of the `x86_64-linux-gnu` addition.
+
+      before_script: 
+        - "export BOOSTROOT=/usr/include/x86_64-linux-gnu/"
+        - "export BOOSTLIB=/usr/lib/x86_64-linux-gnu/"
+      branches: 
+        only: 
+          - master
+          - rc1.2
+      script: 
+        - "make hector"
+        - "./test_hector.sh ./source/hector"
+
+    - language: cpp
+      compiler: gcc
+
+      addons: 
+        apt: 
+          packages: 
+            - libboost-system-dev
+            - libboost-filesystem-dev
+
+      before_script: 
+        - "export BOOSTROOT=/usr/include/x86_64-linux-gnu/"
+        - "export BOOSTLIB=/usr/lib/x86_64-linux-gnu/"
+      branches: 
+        only: 
+          - master
+          - rc1.2
+      script: 
+        - "make hector"
+        - "./test_hector.sh ./source/hector"
+
+
+    - language: r
+      cache: packages
+
+      # Automatically deploy Hector documentation on the gh-pages
+      # branch. This is based on this guide from `pkgdown`:
+      # https://pkgdown.r-lib.org/reference/deploy_site_github.html
+      before_deploy: Rscript -e 'remotes::install_cran("pkgdown")'
+      deploy:
+        provider: script
+        script: Rscript -e 'pkgdown::deploy_site_github()'
+        skip_cleanup: true
+        # Don't rebuild documentation during Travis CRON jobs.
+        on:
+          condition: $TRAVIS_EVENT_TYPE != "cron"

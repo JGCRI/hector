@@ -1,0 +1,72 @@
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# make dependency files
+*.d
+# emacs backup files
+*~
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+# Executables
+*.exe
+*.out
+*.app
+src/hector
+src/hector-ext
+src/hector-api
+# Hector logs
+logs/*.*
+*.log
+# OS-specific files
+.DS_Store
+.Trashes
+*.swp
+# Xcode build directories, schemes, and interface state
+*.lock
+*.xccheckout
+*~.nib
+build/
+DerivedData/
+xcodeuserstate
+xcuserdata
+project.xcworkspace/
+# Project files
+project_files/*.*
+Release
+ipch
+Run Test Cases
+Debug
+libs
+project_files/visual_studio/
+project_files/VS/*.*
+libs/
+*.kdev4
+*.sdf
+*.suo
+# Output
+output/output*
+# R
+.Rhistory
+R/batchrunner/*.pdf
+R/batchrunner/*.csv
+.Rapp.history
+.Rproj.user
+.RData
+inst/doc
+vignettes/rsconnect
+
+# pkgdown output
+/docs/
+
+# vignette caches
+/vignettes/*_cache

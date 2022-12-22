@@ -1,0 +1,34 @@
+## R system cruft
+^.*\.Rproj$
+^hector.Rproj$
+^\.Rproj\.user$
+
+## Github config, license, CI, etc.
+^CONTRIBUTING.md$
+^LICENSE.md$
+^changelog.txt$
+^.travis.yml$
+^appveyor.yml$
+^.github$
+^wiki/
+## Files supporting stand-alone hector.
+^Makefile$
+^project_files$
+^output$
+^scripts$
+^logs$
+^test_hector.sh$
+^src/hector$
+^src/.*\.txt$
+^src/.*\.a$
+^src/.*\.d$
+^src/main.*$
+^src/makefile.standalone$
+^src/testing$
+^misc$
+^data-raw$
+^analysis$
+
+# pkgdown config and output
+^inst/_pkgdown.yml
+^docs/
