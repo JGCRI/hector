@@ -1,5 +1,5 @@
 ---
-title: Unit values (`unitvals`)
+title: Units values (`unitvals` and `fluxpools`)
 subtitle: C++
 ---
 
@@ -45,6 +45,21 @@ Using `unitvals` *within* a component is optional, but it's required when passin
 * Querying the core for data. Read more about Hector's internal [data passing](InternalDataPassing.html).
 * Responding to a query for data.
 * Output. Read more about Hector's [output visitors](OutputVisitors.html).
+
+Fluxpool values
+--------------
+Hector v3 introduces a new internal unit class: `fluxpool`, a subclass of `unitval`
+defined in `inst/include/fluxpool.hpp`. This class imposes a restriction: values
+may only be zero of positive, and any negative value, or operation that results
+in a negative value, throws an error. This is used for carbon fluxes and pools
+that may _not_ be negative; why this is so for pools is hopefully obvious,
+and fluxes we think of as possibly being 'negative' (e.g., net biome production)
+are in fact the difference between two nominally positive fluxes.
+
+Currently fluxpools may not be passed between model components.
+
+Finally, the fluxpool class is where carbon tracking is implemented; see
+the [relevant vignette](carbon_tracking.html).
 
 
 Missing values
