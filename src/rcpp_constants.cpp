@@ -997,6 +997,16 @@ String OCEAN_C_IO() { return D_CARBON_IO; }
 // [[Rcpp::export]]
 String OCEAN_C_DO() { return D_CARBON_DO; }
 
+//' @describeIn ocean Preindustrial surface ocean carbon pool
+//' @export
+// [[Rcpp::export]]
+String OCEAN_PREIND_C_SURF() { return D_CARBON_PRE_SURF; }
+
+//' @describeIn ocean Preindustrial intermediate+deep ocean carbon pool
+//' @export
+// [[Rcpp::export]]
+String OCEAN_PREIND_C_ID() { return D_CARBON_PRE_ID; }
+
 //' @describeIn ocean Thermohaline overturning
 //' @export
 // [[Rcpp::export]]

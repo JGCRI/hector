@@ -21,15 +21,15 @@ These identifiers correspond to Hector's constraint capabilities
 }
 \section{Functions}{
 \itemize{
-\item \code{FTOT_CONSTRAIN}: Constrain total radiative forcing
+\item \code{FTOT_CONSTRAIN()}: Constrain total radiative forcing
 
-\item \code{CH4_CONSTRAIN}: CH4 concentration constraint \code{"ppbv CH4"}
+\item \code{CH4_CONSTRAIN()}: CH4 concentration constraint \code{"ppbv CH4"}
 
-\item \code{N2O_CONSTRAIN}: N2O concentration constraint (\code{"pbbv N2O"})
+\item \code{N2O_CONSTRAIN()}: N2O concentration constraint (\code{"pbbv N2O"})
 
-\item \code{TAS_CONSTRAIN}: Constrain global mean temperature  (\code{"(degC)"})
+\item \code{TAS_CONSTRAIN()}: Constrain global mean temperature  (\code{"(degC)"})
+
 }}
-
 \section{Note}{
 
 Because these identifiers are provided as \code{#define} macros in the hector code,

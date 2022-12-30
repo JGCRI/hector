@@ -11,6 +11,8 @@ ocean,tt,n,n,y,7.20E+07,m3 s-1,thermohaline circulation
 ocean,tu,n,n,y,4.90E+07,m3 s-1,high latitude overturning
 ocean,twi,n,n,y,1.25E+07,m3 s-1,warm-intermediate exchange
 ocean,tid,n,n,y,2.00E+08,m3 s-1,intermediate-deep exchange
+ocean,preind_surface_c,n,n,n,900,Pg C,surface ocean carbon
+ocean,preind_interdeep_c,n,n,n,37100,Pg C,intermediate + deep ocean carbon
 simpleNbox,atmos_co2,n,n,y,588.071,Pg C,
 simpleNbox,C0,n,n,y,277.15,Pg C,preindustrial CO2 from table 7.SM.1 IPCC AR6
 simpleNbox,boreal.veg_c,y,n,y,100,Pg C,

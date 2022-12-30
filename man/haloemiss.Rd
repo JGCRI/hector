@@ -90,59 +90,59 @@ messages. In all cases, the expected input units are gigagrams
 }
 \section{Functions}{
 \itemize{
-\item \code{EMISSIONS_CF4}: Emissions for CF4
+\item \code{EMISSIONS_CF4()}: Emissions for CF4
 
-\item \code{EMISSIONS_C2F6}: Emissions for C2F6
+\item \code{EMISSIONS_C2F6()}: Emissions for C2F6
 
-\item \code{EMISSIONS_HFC23}: Emissions for HFC-23
+\item \code{EMISSIONS_HFC23()}: Emissions for HFC-23
 
-\item \code{EMISSIONS_HFC32}: Emissions for HFC-32
+\item \code{EMISSIONS_HFC32()}: Emissions for HFC-32
 
-\item \code{EMISSIONS_HFC4310}: Emissions for HFC-4310
+\item \code{EMISSIONS_HFC4310()}: Emissions for HFC-4310
 
-\item \code{EMISSIONS_HFC125}: Emissions for HFC-125
+\item \code{EMISSIONS_HFC125()}: Emissions for HFC-125
 
-\item \code{EMISSIONS_HFC134A}: Emissions for HFC-134a
+\item \code{EMISSIONS_HFC134A()}: Emissions for HFC-134a
 
-\item \code{EMISSIONS_HFC143A}: Emissions for HFC-143a
+\item \code{EMISSIONS_HFC143A()}: Emissions for HFC-143a
 
-\item \code{EMISSIONS_HFC227EA}: Emissions for HFC-227ea
+\item \code{EMISSIONS_HFC227EA()}: Emissions for HFC-227ea
 
-\item \code{EMISSIONS_HFC245FA}: Emissions for HFC-254fa
+\item \code{EMISSIONS_HFC245FA()}: Emissions for HFC-254fa
 
-\item \code{EMISSIONS_SF6}: Emissions for sulfur hexafluoride
+\item \code{EMISSIONS_SF6()}: Emissions for sulfur hexafluoride
 
-\item \code{EMISSIONS_CFC11}: Emissions for CFC-11
+\item \code{EMISSIONS_CFC11()}: Emissions for CFC-11
 
-\item \code{EMISSIONS_CFC12}: Emissions for CFC-12
+\item \code{EMISSIONS_CFC12()}: Emissions for CFC-12
 
-\item \code{EMISSIONS_CFC113}: Emissions for CFC-113
+\item \code{EMISSIONS_CFC113()}: Emissions for CFC-113
 
-\item \code{EMISSIONS_CFC114}: Emissions for CFC-114
+\item \code{EMISSIONS_CFC114()}: Emissions for CFC-114
 
-\item \code{EMISSIONS_CFC115}: Emissions for CFC-115
+\item \code{EMISSIONS_CFC115()}: Emissions for CFC-115
 
-\item \code{EMISSIONS_CCL4}: Emissions for carbon tetrachloride
+\item \code{EMISSIONS_CCL4()}: Emissions for carbon tetrachloride
 
-\item \code{EMISSIONS_CH3CCL3}: Emissions for trichloroethane
+\item \code{EMISSIONS_CH3CCL3()}: Emissions for trichloroethane
 
-\item \code{EMISSIONS_HCFC22}: Emissions for HCFC-22
+\item \code{EMISSIONS_HCFC22()}: Emissions for HCFC-22
 
-\item \code{EMISSIONS_HCFC141B}: Emissions for HcFC-141b
+\item \code{EMISSIONS_HCFC141B()}: Emissions for HcFC-141b
 
-\item \code{EMISSIONS_HCFC142B}: Emissions for HCFC-142b
+\item \code{EMISSIONS_HCFC142B()}: Emissions for HCFC-142b
 
-\item \code{EMISSIONS_HALON1211}: Emissions for halon-1211
+\item \code{EMISSIONS_HALON1211()}: Emissions for halon-1211
 
-\item \code{EMISSIONS_HALON1301}: Emissions for halon-1301
+\item \code{EMISSIONS_HALON1301()}: Emissions for halon-1301
 
-\item \code{EMISSIONS_HALON2402}: Emissions for halon-2402
+\item \code{EMISSIONS_HALON2402()}: Emissions for halon-2402
 
-\item \code{EMISSIONS_CH3CL}: Emissions for chloromethane
+\item \code{EMISSIONS_CH3CL()}: Emissions for chloromethane
 
-\item \code{EMISSIONS_CH3BR}: Emissions for bromomethane
+\item \code{EMISSIONS_CH3BR()}: Emissions for bromomethane
+
 }}
-
 \section{Note}{
 
 Because these identifiers are provided as \code{#define} macros in the hector code,
