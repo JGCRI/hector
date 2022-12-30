@@ -721,8 +721,10 @@ void SimpleNbox::reset(double time) {
     }
   }
   Tland_record.truncate(time);
-  // No need to reset masstot; it's not supposed to change anyhow.
-
+  
+  // Need to reset masstot in case the preindustrial ocean C values changed
+  masstot = 0.0;
+  
   // Truncate all of the state variable time series
   earth_c_ts.truncate(time);
   atmos_c_ts.truncate(time);

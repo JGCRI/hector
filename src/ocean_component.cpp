@@ -76,6 +76,7 @@ void OceanComponent::init(Core *coreptr) {
   max_timestep = OCEAN_MAX_TIMESTEP;
   reduced_timestep_timeout = 0;
 
+  // Pointers to logs and the core
   surfaceHL.logger = &logger;
   surfaceLL.logger = &logger;
   inter.logger = &logger;
@@ -83,10 +84,12 @@ void OceanComponent::init(Core *coreptr) {
 
   core = coreptr;
 
-  SST.set(0.0, U_DEGC);
-
-  lastflux_annualized.set(0.0, U_PGC);
-
+  // Defaults
+  // Define the size of the preindustrial ocean surface and intermediate-deep
+  // ocean carbon pools from IPCC AR6 Figure 5.12.
+  preind_C_surface.set(900, U_PGC); // (Pg C) IPCC AR6 Figure 5.12
+  preind_C_ID.set(37100, U_PGC);    // (Pg C) IPCC AR6 Figure 5.12
+  
   // Register the data we can provide
   core->registerCapability(D_OCEAN_C_UPTAKE, getComponentName());
   core->registerCapability(D_OCEAN_C, getComponentName());
@@ -95,6 +98,8 @@ void OceanComponent::init(Core *coreptr) {
   core->registerCapability(D_CARBON_IO, getComponentName());
   core->registerCapability(D_CARBON_DO, getComponentName());
   core->registerCapability(D_CARBON_ML, getComponentName());
+  core->registerCapability(D_CARBON_PRE_SURF, getComponentName());
+  core->registerCapability(D_CARBON_PRE_ID, getComponentName());
   core->registerCapability(D_TT, getComponentName());
   core->registerCapability(D_TU, getComponentName());
   core->registerCapability(D_TWI, getComponentName());
@@ -121,6 +126,8 @@ void OceanComponent::init(Core *coreptr) {
   core->registerInput(D_TU, getComponentName());
   core->registerInput(D_TWI, getComponentName());
   core->registerInput(D_TID, getComponentName());
+  core->registerInput(D_CARBON_PRE_SURF, getComponentName());
+  core->registerInput(D_CARBON_PRE_ID, getComponentName());
 }
 
 //------------------------------------------------------------------------------
@@ -162,18 +169,12 @@ void OceanComponent::setData(const string &varName, const message_data &data) {
                                << "]=" << data.value_str << std::endl;
 
   try {
-    if (varName == D_CARBON_HL) {
+    if (varName == D_CARBON_PRE_SURF) {
       H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
-      surfaceHL.set_carbon(data.getUnitval(U_PGC));
-    } else if (varName == D_CARBON_LL) {
+      preind_C_surface = data.getUnitval(U_PGC);
+    } else if (varName == D_CARBON_PRE_ID) {
       H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
-      surfaceLL.set_carbon(data.getUnitval(U_PGC));
-    } else if (varName == D_CARBON_IO) {
-      H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
-      inter.set_carbon(data.getUnitval(U_PGC));
-    } else if (varName == D_CARBON_DO) {
-      H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
-      deep.set_carbon(data.getUnitval(U_PGC));
+      preind_C_ID = data.getUnitval(U_PGC);
     } else if (varName == D_TT) {
       H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
       tt.set(data.getUnitval(U_M3_S), U_M3_S);
@@ -208,25 +209,18 @@ void OceanComponent::prepareToRun() {
   const double spy = 60 * 60 * 24 * 365.25; // seconds per year
 
   // ocean depth
-  double thick_LL =
+  const double thick_LL =
       100; // (m) Thickness of surface ocean from Knox and McElroy (1984)
-  double thick_HL =
+  const double thick_HL =
       100; // (m) Thickness of surface ocean from Knox and McElroy (1984)
-  double thick_inter = 1000 - thick_LL; // (m) Thickness of of intermediate
+  const double thick_inter = 1000 - thick_LL; // (m) Thickness of of intermediate
                                         // ocean from Knox and McElroy (1984)
-  double thick_deep =
+  const double thick_deep =
       3777 - thick_inter -
       thick_LL; // (m) Thickness of deep ocean from Knox and McElroy (1984)
 
   // ocean area
   const double ocean_area = 3.6e14; // (m2) Knox and McElroy (1984);
-
-  // Define high and low latitude
-  // The cold high-latitude surface box makes up 15% of the total ocean surface
-  // area and has latitude > 55 The warm low-latitude surface box makes up the
-  // rest.
-  // const double part_high = 0.15;
-  // const double part_low = 1-part_high;
 
   // ocean box volumes (m3)
   const double LL_volume = ocean_area * part_low * thick_LL;
@@ -243,16 +237,11 @@ void OceanComponent::prepareToRun() {
   const double I_vol_frac = I_volume / (I_volume + D_volume);
   const double D_vol_frac = 1 - I_vol_frac;
 
-  // Define the size of the preindustrial ocean surface and intermediate-deep
-  // ocean carbon pools from IPCC AR6 Figure 5.12.
-  const double preind_C_surface = 900; // (Pg C) IPCC AR6 Figure 5.12
-  const double preind_C_ID = 37100;    // (Pg C) IPCC AR6 Figure 5.12
-
   // Partition the preindustrial ocean carbon pools by volume.
-  const double LL_preind_C = LL_vol_frac * preind_C_surface;
-  const double HL_preind_C = HL_vol_frac * preind_C_surface;
-  const double I_preind_C = I_vol_frac * preind_C_ID;
-  const double D_preind_C = D_vol_frac * preind_C_ID;
+  const double LL_preind_C = LL_vol_frac * preind_C_surface.value(U_PGC);
+  const double HL_preind_C = HL_vol_frac * preind_C_surface.value(U_PGC);
+  const double I_preind_C = I_vol_frac * preind_C_ID.value(U_PGC);
+  const double D_preind_C = D_vol_frac * preind_C_ID.value(U_PGC);
 
   // Set up our ocean box model.
   H_LOG(logger, Logger::DEBUG) << "Setting up ocean box model" << std::endl;
@@ -286,7 +275,7 @@ void OceanComponent::prepareToRun() {
   double DO_IOex = (tid.value(U_M3_S) * spy) / D_volume;
   double IO_DOex = (tid.value(U_M3_S) * spy) / I_volume;
 
-  // Make_connection( box to connect to, k value, window size (0=present only) )
+  // Set up the flow connections between the boxes
   surfaceLL.make_connection(&surfaceHL, LL_HL, 1);
   surfaceLL.make_connection(&inter, LL_IOex, 1);
   surfaceHL.make_connection(&deep, HL_DO, 1);
@@ -314,10 +303,14 @@ void OceanComponent::prepareToRun() {
   surfaceLL.mychemistry.As = ocean_area * part_low; // surface area m2
   surfaceLL.mychemistry.U = 6.7; // average wind speed m/s Hartin et al. 2016
 
-  // Initialize surface flux tracking variables
+  // Initialize surface flux tracking variables and other things
   annualflux_sum.set(0.0, U_PGC);
   annualflux_sumHL.set(0.0, U_PGC);
   annualflux_sumLL.set(0.0, U_PGC);
+
+  SST.set(0.0, U_DEGC);
+
+  lastflux_annualized.set(0.0, U_PGC);
 
   // Log the state of all our boxes, so we know things are as they should be
   surfaceLL.log_state();
@@ -456,6 +449,10 @@ unitval OceanComponent::getData(const std::string &varName, const double date) {
       returnval = unitval(annualflux_sumHL.value(U_PGC), U_PGC_YR);
     } else if (varName == D_ATM_OCEAN_FLUX_LL) {
       returnval = unitval(annualflux_sumLL.value(U_PGC), U_PGC_YR);
+    } else if (varName == D_CARBON_PRE_SURF) {
+      returnval = preind_C_surface;
+    } else if (varName == D_CARBON_PRE_ID) {
+      returnval = preind_C_ID;
     } else if (varName == D_CARBON_DO) {
       returnval = deep.get_carbon();
     } else if (varName == D_CARBON_HL) {

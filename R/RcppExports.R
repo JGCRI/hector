@@ -1139,6 +1139,18 @@ OCEAN_C_DO <- function() {
     .Call('_hector_OCEAN_C_DO', PACKAGE = 'hector')
 }
 
+#' @describeIn ocean Preindustrial surface ocean carbon pool
+#' @export
+OCEAN_PREIND_C_SURF <- function() {
+    .Call('_hector_OCEAN_PREIND_C_SURF', PACKAGE = 'hector')
+}
+
+#' @describeIn ocean Preindustrial intermediate+deep ocean carbon pool
+#' @export
+OCEAN_PREIND_C_ID <- function() {
+    .Call('_hector_OCEAN_PREIND_C_ID', PACKAGE = 'hector')
+}
+
 #' @describeIn ocean Thermohaline overturning
 #' @export
 TT <- function() {

@@ -141,7 +141,6 @@ ini_to_core_reader.cpp:159:17: error: 'path' is unavailable: introduced in macOS
       10.15
             fs::path csvFilePath( csvFileName );
                 ^
-
 ```
 
 In this case, you can set an environment variable:
@@ -171,7 +170,7 @@ and then
 
 These directions assume a basic familiarity with Xcode and Mac OS X software installation.
 
-* Install [Xcode](https://developer.apple.com/xcode/downloads/) if necessary. Hector has been built and tested with Mac OS >= 10.8.5. The project files are for Xcode 11.5.
+* Install [Xcode](https://developer.apple.com/xcode/downloads/) if necessary. Hector has been built and tested with MacOS >= 10.8.5, up to Monterey (12.6.1). The project files are for Xcode 14.1.
 * Download and install Boost, following the instructions above.
 * Download the [Hector zip file](https://github.com/JGCRI/hector/archive/master.zip) or check out the repository using Git.
 * From Xcode, open the project file in `project_files/Xcode/hector.xcodeproj`.

@@ -6,18 +6,28 @@ resource_files:
 
 ## Science
 
-Hector's land C sink is divided into three pools: vegetation ($C_v$), detritus ($C_d$), and soil ($C_s$).
-These sinks are global by default, but they can be divided into $n$ "biomes" with unique parameters and initial pool sizes.
+Hector's land system is divided into three pools: vegetation ($C_v$), detritus ($C_d$), and soil ($C_s$);
+a fourth pool, earth ($C_earth$) is used only for anthropogenic emissions and uptake.
+These pools are global by default, but they can be divided into $n$ "biomes" with unique parameters and initial pool sizes.
 
 The total C flux from atmosphere to land at time $t$ ($F_{L}(t)$; also known as Net Biome Production, NBP) is the net of C sequestration by photosynthesis (net primary productivity, $NPP_i(t)$) and C release by heterotrophic respiration ($RH_i(t)$) summed across each biome $i$, and global land use change ($LUC(t)$)
 (note that this calculation does not currently include fire, another important land C source):
 
 $$ F_{L}(t) = \sum_{i=1}^{n} \left( NPP_i(t) - RH_i(t) \right) - LUC(t)  $$
 
-NPP is calculated as the product of a user-specified pre-industrial value ($NPP_0$, default is 56.2 Pg C/year) and a CO~2~ fertilization multiplier ($f(C_{atm}, \beta)$), which in turn is a function of the current atmospheric CO~2~ concentration ($C_{atm}$), the initial ("pre-industrial") CO~2~ concentration ($C_0$), and biome-specific CO~2~ fertilization parameter $\beta_i$ (default = 0.36):
+NPP is calculated as the product of a user-specified pre-industrial value ($NPP_0$, default is 56.2 Pg C/year), a CO~2~ fertilization multiplier ($f(C_{atm}, \beta)$), and the effect of land use change (LUC) on vegetation carbon stocks:
 
-$$ NPP_i(t) = NPP_{0,i} \times f(C_{atm}, \beta_i) $$
+$$ NPP_i(t) = NPP_{0,i} \times f(C_{atm}, \beta_i) \times f(LUC_{v}) $$
+
+The CO~2~ fertilization multiplier is a function of the current atmospheric CO~2~ concentration ($C_{atm}$), the initial ("pre-industrial") CO~2~ concentration ($C_0$), and biome-specific CO~2~ fertilization parameter $\beta_i$ (default = 0.36):
+
 $$ f(C_{atm}, \beta_i) = 1 + \beta_i \left( \log(\frac{C_{atm}}{C_0})\right) $$
+
+The LUC multiplier accounts for the effect of vegetation losses or gains on NPP (although we
+recognize that LUC does not always result in 'lost' NPP); this behavior is new as of Hector v3.
+It is computed as a fraction based on preindustrial (end-of-spinup) vegetation carbon ($C_{v}$) and the running sum of LUC-driven losses from -- or gains to -- vegetation:
+
+$$ f(LUC_{v}) = \frac{C_{0v} - \sum LUC_{veg}}{C_{0v}} $$
 
 Heterotrophic respiration occurs in soil ($RH_s(t)$) and detritus ($RH_d(t))$) as a function of biome-specific atmospheric temperature anomaly ($T_i$, calculated as the global atmospheric temperature anomaly scaled by a biome-specific warming factor $\delta$) and the size of the current soil and detritus C pools ($C_s$ and $C_d$, respectively).
 
@@ -29,6 +39,9 @@ Note that the residence times of soil and detritus C pools -- 50 and 4 years, re
 
 Fluxes associated with land use change ($LUC$) are prescribed via the `luc_emissions` variable in the INI file.
 Example time series associated with shared socioeconomic pathways (SSPs) are included with Hector in the corresponding `inst/input/tables/ssp**_emiss-constraints_rf.csv` files.
+There are two LUC fluxes, land uptake and loss, and both add or remove carbon
+to the land pools in proportion to those pools' size. (This behavior
+is new as of version 3 of the model.) Note that the cumulative $LUC_{v}$, LUC effects on vegetation, affects NPP as documented above.
 
 In each biome at each time step, the vegetation pools change as follows (biome, $i$ and time, $t$ subscripts omitted for clarity):
 C gain from NPP is distributed to vegetation, detritus, and soil according to fraction parameters $f_{nv}$, $f_{nd}$, and $f_{ns}$, respectively.
@@ -39,6 +52,15 @@ Finally, a fixed fraction of vegetation C is transferred to detritus as litterfa
 $$ \frac{dC_v}{dt} = NPP\, f_{nv} - C_v (f_{vd} + f_{vs}) - F_{LC} f_{lv} $$
 $$ \frac{dC_d}{dt} = NPP\, f_{nd} + C_v f_{vd} - C_d f_{ds} - RH_d - F_{LC} f_{ld} $$
 $$ \frac{dC_s}{dt} = NPP\, f_{ns} + C_v f_{vs} - C_d f_{ds} - RH_s - F_{LC} f_{ls} $$
+
+Anthropogenic changes to the earth system are driven by fossil fuel and industrial emissions (FFI) as well as, in some scenarios, direct air carbon capture and storage (DACCS). These fluxes are occur out of,
+or into, an 'earth' pool that is used for mass-balance checks:
+
+$$ \frac{dC_{earth}}{dt} = DACCS - FFI$$
+
+Finally, the atmosphere changes as a result of all the fluxes into or out of it: anthropogenic emissions and uptake; land use change emissions and uptake; fluxes into or out of the ocean; and heterotrophic respiration and net primary production.
+
+$$ \frac{dC_{atm}}{dt} = FFI - DACCS + LUC_{e} - LUC_{u} + O_{i} - O_{u} + RH - NPP $$
 
 The entire terrestrial C cycle is summarized in the following diagram:
 

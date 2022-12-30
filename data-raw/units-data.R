@@ -10,6 +10,9 @@ simpleNbox_vars <- c(PREINDUSTRIAL_CO2(), NPP_FLUX0(),
 simpleNbox_uni <- c("ppmv CO2", "Pg C/yr", "Pg C/yr", "Pg C/yr", "Pg C/yr",
                     "Pg C/yr", "ppmv CO2", "Pg C/yr", "(unitless)", "(unitless)")
 
+ocean_vars <- c(TT(), TU(), TWI(), TID(), OCEAN_PREIND_C_SURF(), OCEAN_PREIND_C_ID())
+ocean_uni <- c("m3/s", "m3/s", "m3/s", "m3/s", "Pg C", "Pg C")
+
 so2_vars <- c(EMISSIONS_SO2(), VOLCANIC_SO2())
 so2_uni <- c("Gg S", "W/m2")
 
@@ -72,6 +75,7 @@ misc_var <- c(TRACKING_DATE())
 misc_uni <- c("(unitless)")
 
 unitstable <- rbind(data.frame(variable = simpleNbox_vars, units = simpleNbox_uni),
+                    data.frame(variable = ocean_vars, units = ocean_uni),
                     data.frame(variable = so2_vars, units = so2_uni),
                     data.frame(variable = ch4_vars, units = ch4_uni),
                     data.frame(variable = oh_vars, units = oh_uni),

@@ -1910,6 +1910,26 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// OCEAN_PREIND_C_SURF
+String OCEAN_PREIND_C_SURF();
+RcppExport SEXP _hector_OCEAN_PREIND_C_SURF() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(OCEAN_PREIND_C_SURF());
+    return rcpp_result_gen;
+END_RCPP
+}
+// OCEAN_PREIND_C_ID
+String OCEAN_PREIND_C_ID();
+RcppExport SEXP _hector_OCEAN_PREIND_C_ID() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(OCEAN_PREIND_C_ID());
+    return rcpp_result_gen;
+END_RCPP
+}
 // TT
 String TT();
 RcppExport SEXP _hector_TT() {
@@ -2915,6 +2935,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_OCEAN_C_ML", (DL_FUNC) &_hector_OCEAN_C_ML, 0},
     {"_hector_OCEAN_C_IO", (DL_FUNC) &_hector_OCEAN_C_IO, 0},
     {"_hector_OCEAN_C_DO", (DL_FUNC) &_hector_OCEAN_C_DO, 0},
+    {"_hector_OCEAN_PREIND_C_SURF", (DL_FUNC) &_hector_OCEAN_PREIND_C_SURF, 0},
+    {"_hector_OCEAN_PREIND_C_ID", (DL_FUNC) &_hector_OCEAN_PREIND_C_ID, 0},
     {"_hector_TT", (DL_FUNC) &_hector_TT, 0},
     {"_hector_TU", (DL_FUNC) &_hector_TU, 0},
     {"_hector_TWI", (DL_FUNC) &_hector_TWI, 0},

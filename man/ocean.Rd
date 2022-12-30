@@ -8,6 +8,8 @@
 \alias{OCEAN_C_ML}
 \alias{OCEAN_C_IO}
 \alias{OCEAN_C_DO}
+\alias{OCEAN_PREIND_C_SURF}
+\alias{OCEAN_PREIND_C_ID}
 \alias{TT}
 \alias{TU}
 \alias{TWI}
@@ -44,6 +46,10 @@ OCEAN_C_ML()
 OCEAN_C_IO()
 
 OCEAN_C_DO()
+
+OCEAN_PREIND_C_SURF()
+
+OCEAN_PREIND_C_ID()
 
 TT()
 
@@ -104,6 +110,10 @@ component using the \code{\link{GETDATA}} message type.
 \item \code{OCEAN_C_IO()}: Intermediate ocean carbon pool
 
 \item \code{OCEAN_C_DO()}: Deep ocean carbon pool
+
+\item \code{OCEAN_PREIND_C_SURF()}: Preindustrial surface ocean carbon pool
+
+\item \code{OCEAN_PREIND_C_ID()}: Preindustrial intermediate+deep ocean carbon pool
 
 \item \code{TT()}: Thermohaline overturning
 

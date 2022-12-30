@@ -84,10 +84,10 @@ private:
 
   // Define high and low latitude
   // The cold high-latitude surface box makes up 15% of the total ocean surface
-  // area and has latitude > 55 The warm low-latitude surface box makes up the
+  // area and has latitude >55; the warm low-latitude surface box makes up the
   // rest.
-  double part_high = 0.15;
-  double part_low = 1 - part_high;
+  const double part_high = 0.15;
+  const double part_low = 1 - part_high;
 
   /*****************************************************************
    * State variables for the component
@@ -151,6 +151,10 @@ private:
    * These are used to record the component state over time so that
    * we can reset to a previous time.
    *****************************************************************/
+  // Ocean initial state
+  unitval preind_C_surface; //!< Carbon in the preindustrial surface pool
+  unitval preind_C_ID;      //!< Carbon in the preindustrial intermediate and deep pool
+  
   // Ocean boxes over time
   tvector<oceanbox> surfaceHL_tv;
   tvector<oceanbox> surfaceLL_tv;
