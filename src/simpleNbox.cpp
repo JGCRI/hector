@@ -235,7 +235,7 @@ void SimpleNbox::setData(const std::string &varName, const message_data &data) {
       H_ASSERT(biome == SNBOX_DEFAULT_BIOME, "preindustrial CO2 must be global");
       if (data.getUnitval(U_PPMV_CO2).value(U_PPMV_CO2) != 277.15) {
           H_LOG(logger, Logger::WARNING) << "Changing " << varNameParsed <<
-              " from default value, this is not recomended and may cause issues with RF CO2 calucations" << std::endl;
+              " from default value; this is not recomended and may cause issues with RF CO2 calucations" << std::endl;
       }
       set_c0(data.getUnitval(U_PPMV_CO2).value(U_PPMV_CO2));
     } else if (varNameParsed == D_VEGC) {

@@ -100,7 +100,7 @@ void CH4Component::setData(const string &varName, const message_data &data) {
       H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
         if (data.getUnitval(U_PPBV_CH4).value(U_PPBV_CH4) != 731.41) {
             H_LOG(logger, Logger::WARNING) << "Changing " << varName <<
-                " from default value, this is not recomended and may cause" <<
+                " from default value; this is not recomended and may cause" <<
                     " issues with RF CH4 calucation" << std::endl;
         }
       M0 = data.getUnitval(U_PPBV_CH4);
