@@ -99,6 +99,11 @@ void N2OComponent::setData(const string &varName, const message_data &data) {
   try {
     if (varName == D_PREINDUSTRIAL_N2O) {
       H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
+        if (data.getUnitval(U_PPBV_N2O).value(U_PPBV_N2O) != 273.87) {
+            H_LOG(logger, Logger::WARNING) << "Changing " << varName <<
+                " from default value; this is not recomended and may cause" <<
+                    " issues with RF N2O calucation" << std::endl;
+        }
       N0 = data.getUnitval(U_PPBV_N2O);
     } else if (varName == D_EMISSIONS_N2O) {
       H_ASSERT(data.date != Core::undefinedIndex(), "date required");
