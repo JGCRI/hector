@@ -1501,28 +1501,6 @@ HEAT_FLUX <- function() {
     .Call('_hector_HEAT_FLUX', PACKAGE = 'hector')
 }
 
-#' Send a message to a Hector instance
-#'
-#' Messages are the mechanism used to get data from Hector model components and
-#' to set values within components.
-#'
-#' A message comprises a type (e.g. GETDATA to retrieve data from a component,
-NULL
-
-#'
-#' The arguments to this function are organized in a slightly more R-friendly
-NULL
-
-#'
-#' Either the date or the value (or both) may be NA.  The date should be NA in
-NULL
-
-#'
-#' @param core a Hector instance
-#' @param msgtype (String) type of message. Usually either GETDATA or SETDATA
-#' @param capability (String) capability being targeted by the message.  The
-NULL
-
 newcore_impl <- function(inifile, loglevel, suppresslogging, name) {
     .Call('_hector_newcore_impl', PACKAGE = 'hector', inifile, loglevel, suppresslogging, name)
 }
@@ -1632,6 +1610,32 @@ rename_biome <- function(core, oldname, newname) {
     .Call('_hector_rename_biome', PACKAGE = 'hector', core, oldname, newname)
 }
 
+#' Send a message to a Hector instance
+#'
+#' Messages are the mechanism used to get data from Hector model components and
+#' to set values within components. A message comprises a type (e.g. GETDATA
+#' to retrieve data from a component, or SETDATA to set data in a component),
+#' a capability, which identifies the information to be operated on (e.g.
+#' Atmospheric CO2 concentration, or global total radiative forcing), and an optional
+#' structure of extra data (comprising a date and a numerical value with units).
+#' The arguments to this function are organized in a slightly more R-friendly
+#' way. The message type and capability are each passed as a single string.
+#' The date portion of the extra data is passed as a numeric vector (one
+#' message will be generated for each date). The value portion of the extra
+#' data is a numeric vector with a length of either 1 or the same length as the
+#' date vector.The units portion is a single string (we don't support sending a
+#' vector of values with heterogeneous units in a single call. Either the date
+#' or the value (or both) may be NA. The date should be NA in cases where the
+#'  parameter being referenced doesn't change with time. The value should be NA in cases
+#'  where the optional data will be ignored.
+#'
+#' @param core a Hector instance
+#' @param msgtype (String) type of message. Usually either GETDATA or SETDATA
+#' @param capability (String) capability being targeted by the message
+#' @param date (NumericVector or NA) Date for which to set/get the variable
+#' @param value (NumericVector) Numeric value of the optional data
+#' @param unit (String) Unit for the value vector.
+#' @export
 sendmessage <- function(core, msgtype, capability, date, value, unit) {
     .Call('_hector_sendmessage', PACKAGE = 'hector', core, msgtype, capability, date, value, unit)
 }
