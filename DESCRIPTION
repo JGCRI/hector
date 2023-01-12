@@ -65,8 +65,7 @@ Suggests:
     ggplot2,
     magrittr (>= 1.5), 
     ragg,
-    here, 
-    kableExtra
+    here
 Collate:
     'RcppExports.R'
     'aadoc.R'
@@ -76,6 +75,7 @@ Collate:
     'messages.R'
     'units.R'
 VignetteBuilder: knitr
+Config/Needs/website: kableExtra
 RoxygenNote: 7.2.3
 SystemRequirements: GNU make
 URL: https://github.com/JGCRI/hector, https://jgcri.github.io/hector/
