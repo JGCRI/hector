@@ -49,7 +49,6 @@ jobs:
             elif [ -f "same_plot.png" ]
             then
                 cat OutputDifferences.knit.md >> report.md
-                echo "![](./same_plot.png)" >> report.md
             else
                 cat OutputDifferences.knit.md >> report.md
                 echo "leeyabot down :(" > report.md
