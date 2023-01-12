@@ -30,11 +30,11 @@ vars <- c(CONCENTRATIONS_CO2(), RF_TOTAL(), RF_CO2(), GLOBAL_TAS())
 
 # Organize data
 compdata <- comp_data %>% 
-  select(scenario, year, variable, value, units, version) %>%
-  filter(scenario == "hector_ssp245.ini") %>%
-  filter(variable %in% vars) %>%
-  mutate(scenario = "ssp245") %>%
-  arrange(variable)
+    select(scenario, year, variable, value, units, version) %>%
+    filter(scenario == "hector_ssp245.ini") %>%
+    filter(variable %in% vars) %>%
+    mutate(scenario = "ssp245") %>%
+    arrange(variable)
 
 # Access compdata version and commit
 version <- compdata$version[1]
@@ -49,12 +49,12 @@ output <- fetchvars(core, core$strtdate:core$enddate, vars, "ssp245")
 shutdown(core)
 
 output <- output %>% 
-  mutate(version = "latest") %>%
-  arrange(variable)
+    mutate(version = "latest") %>%
+    arrange(variable)
 
 # Find differences between versions
 compdata <- compdata %>% 
-  mutate(diff = output$value - compdata$value)
+    mutate(diff = output$value - 2 * compdata$value)
 ```
 
 ```{r, check-any-change, echo=FALSE, results='asis'}
@@ -63,102 +63,104 @@ compdata <- compdata %>%
 zeros <- rep(0, length(compdata$diff))
 SAME <- isTRUE(all.equal(zeros, compdata$diff, tolerance = 1e-7))
 if (SAME) {
-  cat("The current pull request's outputs do not differ from ", 
-      version, " (", commit, ").", sep = "")
+    msg <- paste0("The current pull request's outputs do not differ from ", 
+                  version, " (", commit, ").", sep = "")
+    ggsave("same_plot.png", plot = ggplot(), height = 6, width = 9)
+    cat(msg)
 } else {
-  cat("The current pull request's outputs differ from ", 
-      version, " (", commit, ") as follows:", sep = "")  
+    cat("The current pull request's outputs differ from ", 
+        version, " (", commit, ") as follows:", sep = "")  
 }
 ```
 
 ```{r summary-info, echo = FALSE, message = FALSE}
 if(!SAME) {
-  # Organize data
-  output %>%
-    select(latest_version = value) -> new_values
-  
-  both_versions <- compdata %>%
-    select(year, variable, value, comp_version = value) %>%
-    cbind(new_values)
-  
-  # Define params
-  years <- both_versions$year
-  
-  # Compute linear regression
-  linear <- by(both_versions, both_versions$variable, 
-               function(x) lm (both_versions$latest_version ~ both_versions$comp_version))
-  
-  # Access R squared
-  squares <- as.data.frame(sapply(linear, function(x) summary(x)$r.squared))
-  colnames(squares) <- "R squared"
-  
-  # Extract residuals...
-  resid <- as.data.frame(sapply(linear, function(x) summary(x)$residuals))
-  
-  # ...and calculate RMSE
-  RMSE <- function(res) {
-    r <- sqrt(mean(res^2))
-  }
-  
-  error <- as.data.frame(lapply(resid, RMSE))
-  error <- t(error)
-  
-  # Find mean of data
-  mean <- both_versions %>% 
-    group_by(variable) %>% 
-    summarize(mean(comp_version))
-  
-  # Divide RMSE by means to normalize
-  NRMSE <- as.data.frame(error[,1] / mean[,2])
-  colnames(NRMSE) <- "NRMSE"
-  
-  # Table
-  summary_table <- cbind(squares, NRMSE)
-  knitr::kable(summary_table, digits = 3, 
-               format.args = list(nsmall = 3, scientific = FALSE))
+    # Organize data
+    output %>%
+        select(latest_version = value) -> new_values
+    
+    both_versions <- compdata %>%
+        select(year, variable, value, comp_version = value) %>%
+        cbind(new_values)
+    
+    # Define params
+    years <- both_versions$year
+    
+    # Compute linear regression
+    linear <- by(both_versions, both_versions$variable, 
+                 function(x) lm (both_versions$latest_version ~ both_versions$comp_version))
+    
+    # Access R squared
+    squares <- as.data.frame(sapply(linear, function(x) summary(x)$r.squared))
+    colnames(squares) <- "R squared"
+    
+    # Extract residuals...
+    resid <- as.data.frame(sapply(linear, function(x) summary(x)$residuals))
+    
+    # ...and calculate RMSE
+    RMSE <- function(res) {
+        r <- sqrt(mean(res^2))
+    }
+    
+    error <- as.data.frame(lapply(resid, RMSE))
+    error <- t(error)
+    
+    # Find mean of data
+    mean <- both_versions %>% 
+        group_by(variable) %>% 
+        summarize(mean(comp_version))
+    
+    # Divide RMSE by means to normalize
+    NRMSE <- as.data.frame(error[,1] / mean[,2])
+    colnames(NRMSE) <- "NRMSE"
+    
+    # Table
+    summary_table <- cbind(squares, NRMSE)
+    knitr::kable(summary_table, digits = 3, 
+                 format.args = list(nsmall = 3, scientific = FALSE))
 }
 ```
 
 ``` {r plots, include = FALSE}
 if(!SAME) {
-  # Plot of numerical differences between versions
-  
-  # Access units for legend
-  units <- compdata %>% group_by(variable) %>% slice(1)
-  units <- units$units
-  # Sort variables so that legend works
-  vars <- sort(vars)
-  
-  diff_plot <- ggplot(compdata, aes(year, diff, color = variable)) +
-    geom_hline(yintercept = 0, alpha = 0.5) +
-    geom_line() +
-    facet_grid(~variable, scales = "free") +
-    scale_color_viridis_d(breaks = vars, labels = units) +
-    ggtitle(paste0("Differences relative to ", version, " (", commit, ")", " in ", compdata$scenario)) +
-    labs(x = "Year", y = "Difference in value", col = "Units") +
-    theme_bw()
-  
-  # "Note that if an image is an output of your ML workflow (i.e., it is produced
-  # by your workflow), you will need to use the cml-publish function to include 
-  # it a CML report."  https://github.com/iterative/cml#cml-reports
-  # So instead of printing the graph, we save it to a file
-  ggsave("diff_plot.png", plot = diff_plot, height = 6, width = 9)
-  
+    # Plot of numerical differences between versions
+    
+    # Access units for legend
+    units <- compdata %>% group_by(variable) %>% slice(1)
+    units <- units$units
+    # Sort variables so that legend works
+    vars <- sort(vars)
+    
+    diff_plot <- ggplot(compdata, aes(year, diff, color = variable)) +
+        geom_hline(yintercept = 0, alpha = 0.5) +
+        geom_line() +
+        facet_grid(~variable, scales = "free") +
+        scale_color_viridis_d(breaks = vars, labels = units) +
+        ggtitle(paste0("Differences relative to ", version, " (", commit, ")", " in ", compdata$scenario)) +
+        labs(x = "Year", y = "Difference in value", col = "Units") +
+        theme_bw()
+    
+    # "Note that if an image is an output of your ML workflow (i.e., it is produced
+    # by your workflow), you will need to use the cml-publish function to include 
+    # it a CML report."  https://github.com/iterative/cml#cml-reports
+    # So instead of printing the graph, we save it to a file
+    ggsave("diff_plot.png", plot = diff_plot, height = 6, width = 9)
+    
     # Plot of new commit values against comparison data
-  new_comp <- compdata %>%
-    mutate(new_value = output$value,
-           new_version = output$version)
-  
-  comp_plot <- ggplot(new_comp) +
-    geom_line(aes(year, value, color = version, linetype = units)) +
-    geom_line(aes(year, new_value, color = new_version, linetype = units)) +
-    scale_linetype_manual(values = c(5, 4, 1)) +
-    facet_wrap(~variable, scales = "free_y") +
-    scale_color_viridis_d(end = 0.5) +
-    ggtitle(paste0("Differences in output values relative to ", version, " (", commit, ")", " in ", compdata$scenario)) +
-    labs(x = "Year", y = "Value", color = "Version", linetype = "Units") +
-    theme_bw()
-  
-  ggsave("comp_plot.png", plot = comp_plot, height = 6, width = 9)
+    new_comp <- compdata %>%
+        mutate(new_value = output$value,
+               new_version = output$version)
+    
+    comp_plot <- ggplot(new_comp) +
+        geom_line(aes(year, value, color = version, linetype = units)) +
+        geom_line(aes(year, new_value, color = new_version, linetype = units)) +
+        scale_linetype_manual(values = c(5, 4, 1)) +
+        facet_wrap(~variable, scales = "free_y") +
+        scale_color_viridis_d(end = 0.5) +
+        ggtitle(paste0("Differences in output values relative to ", version, " (", commit, ")", " in ", compdata$scenario)) +
+        labs(x = "Year", y = "Value", color = "Version", linetype = "Units") +
+        theme_bw()
+    
+    ggsave("comp_plot.png", plot = comp_plot, height = 6, width = 9)
 }
 ```
