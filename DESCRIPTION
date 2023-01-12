@@ -1,6 +1,6 @@
 Package: hector
 Title: The Hector Simple Climate Model
-Version: 3.0.0
+Version: 2.9.0.0009
 Authors@R: c(person("Kalyn", "Dorheim", 
 	        email = "kalyn.dorheim@pnnl.gov",
 	        role = c("aut", "cre"),
@@ -77,6 +77,6 @@ Collate:
 VignetteBuilder: knitr
 RoxygenNote: 7.2.3
 SystemRequirements: GNU make
-URL: https://github.com/JGCRI/hector
+URL: https://github.com/JGCRI/hector, https://jgcri.github.io/hector/
 BugReports: https://github.com/JGCRI/hector/issues
 Language: en-US
