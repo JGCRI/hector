@@ -65,7 +65,8 @@ Suggests:
     ggplot2,
     magrittr (>= 1.5), 
     ragg,
-    here
+    here, 
+    kableExtra
 Collate:
     'RcppExports.R'
     'aadoc.R'
