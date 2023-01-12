@@ -54,7 +54,7 @@ output <- output %>%
 
 # Find differences between versions
 compdata <- compdata %>% 
-    mutate(diff = output$value - 2 * compdata$value)
+    mutate(diff = output$value - compdata$value)
 ```
 
 ```{r, check-any-change, echo=FALSE, results='asis'}
