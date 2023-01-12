@@ -58,14 +58,11 @@ Imports:
     BH (>= 1.69)
 Suggests:
     testthat,
-    nleqslv,
     knitr,
     lintr (>= 3.0),
     rmarkdown,
     ggplot2,
     magrittr (>= 1.5), 
-    ragg,
-    here
 Collate:
     'RcppExports.R'
     'aadoc.R'
@@ -75,7 +72,7 @@ Collate:
     'messages.R'
     'units.R'
 VignetteBuilder: knitr
-Config/Needs/website: kableExtra
+Config/Needs/website: kableExtra, nleqslv
 RoxygenNote: 7.2.3
 SystemRequirements: GNU make
 URL: https://github.com/JGCRI/hector, https://jgcri.github.io/hector/

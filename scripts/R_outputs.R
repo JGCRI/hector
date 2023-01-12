@@ -5,10 +5,10 @@
 devtools::load_all()
 
 # Load the inputs_params.csv, it will be used to seperate the inputs from the outputs.
-input_params <- read.csv(here::here("data-raw", "input_params.csv"))
+input_params <- read.csv(file.path("data-raw", "input_params.csv"))
 
 # Read ini the contents of the rcpp file.
-lines <- readLines(here::here("src", "rcpp_constants.cpp"))
+lines <- readLines(file.path("src", "rcpp_constants.cpp"))
 
 # Identify the lines of the script where the R function names are defined.
 conditions <- (grepl("String ", x = lines) & !grepl(";", x = lines) & !grepl("// ", x = lines))
@@ -32,7 +32,7 @@ outputs$R_function <- unlist(lapply(outputs$R_function, function(s){paste0(s, "(
 
 # Use fetchvars to get results for all of the Hector output in order to add the
 # unit information to the output table.
-path <- here::here("inst", "input", "hector_ssp245.ini")
+path <- file.path("inst", "input", "hector_ssp245.ini")
 hc   <- newcore(path)
 run(hc, runtodate = 1900)
 hector_results <- fetchvars(hc, 1900, vars = outputs$name)

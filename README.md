@@ -1,12 +1,8 @@
 
 Hector
 ======
+[![C++ unit tests](https://github.com/JGCRI/hector/actions/workflows/unit-testing.yaml/badge.svg)](https://github.com/JGCRI/hector/actions/workflows/unit-testing.yaml) [![Command Line Hector](https://github.com/JGCRI/hector/actions/workflows/command-line.yaml/badge.svg)](https://github.com/JGCRI/hector/actions/workflows/command-line.yaml) [![R-CMD](https://github.com/JGCRI/hector/actions/workflows/rcmd.yml/badge.svg)](https://github.com/JGCRI/hector/actions/workflows/rcmd.yml) [![codecov](https://codecov.io/gh/JGCRI/hector/branch/master/graph/badge.svg?token=EGM0lXDxRv)](https://codecov.io/gh/JGCRI/hector)
 
-![R-CMD](https://github.com/JGCRI/hector/workflows/R-CMD/badge.svg) | 
-![Command Line Hector](https://github.com/JGCRI/hector/workflows/Command%20Line%20Hector/badge.svg) | 
-![test-coverage](https://github.com/JGCRI/hector/workflows/test-coverage/badge.svg) | 
-[![codecov](https://codecov.io/gh/JGCRI/hector/branch/master/graph/badge.svg?token=EGM0lXDxRv)](https://codecov.io/gh/JGCRI/hector) | 
-![lint](https://github.com/JGCRI/hector/workflows/lint/badge.svg)
 
 This is the repository for **Hector**, an open source, object-oriented, simple 
 global climate carbon-cycle model that runs very quickly while still
