@@ -778,13 +778,7 @@ int SimpleNbox::calcderivs(double t, const double c[], double dcdt[]) const {
   }
   fluxpool rh_current = rh_fda_current + rh_fsa_current + rh_ftpa_co2_current;
   fluxpool rh_ch4_current = rh_ftpa_ch4_current;
-  /*
-  cout << "permafrost_c = " << sum_map(permafrost_c) << endl;
-  cout << "thawed_permafrost = " << sum_map(thawed_permafrost_c) << endl;
-  cout << "thawed_permafrost = " << sum_map(thawed_permafrost_c) << endl;
-  cout << "rh_ftpa_co2_current = " << rh_ftpa_co2_current << endl;
-  cout << "rh_ftpa_ch4_current = " << rh_ftpa_ch4_current << endl;
-  */
+  
   // Detritus flux comes from the vegetation pool
   fluxpool litter_flux(0.0, U_PGC_YR);
   fluxpool litter_fvd(0.0, U_PGC_YR);
