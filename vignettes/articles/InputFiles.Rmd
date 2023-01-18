@@ -45,7 +45,7 @@ kbl(params) %>%
 
 ## Table of biome-specific inputs
 
-It is possible to run Hector with multiple distinct [biomes](multiple-biomes.html).
+It is possible to run Hector with multiple distinct [biomes](ex_multiple-biomes.html).
 The following parameters are specific to a particular biome.
 
 ``` {r biomes, echo = FALSE}

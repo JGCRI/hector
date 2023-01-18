@@ -59,7 +59,7 @@ are in fact the difference between two nominally positive fluxes.
 Currently fluxpools may not be passed between model components.
 
 Finally, the fluxpool class is where carbon tracking is implemented; see
-the [relevant vignette](carbon_tracking.html).
+the [relevant exmaple](ex_carbon_tracking.html).
 
 
 Missing values

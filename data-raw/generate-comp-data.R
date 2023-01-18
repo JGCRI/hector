@@ -9,7 +9,7 @@
 devtools::load_all()
 
 # Create the output directory.
-out_dir <- here::here("tests", "testthat", "compdata")
+out_dir <- file.path("tests", "testthat", "compdata")
 dir.create(out_dir, showWarnings = FALSE)
 
 # Determine the version of Hector and the git commit, that generates the comparison data.
@@ -24,7 +24,7 @@ vars_to_save <- c(CONCENTRATIONS_CO2(), GLOBAL_TAS(), RF_TOTAL(), RF_CO2(), HEAT
 dates_to_save <- 1745:2300
 
 # Second run.
-ini <- here::here("inst", "input", "hector_ssp245.ini")
+ini <- file.path("inst", "input", "hector_ssp245.ini")
 hc <- newcore(ini)
 run(hc, max(dates_to_save))
 hector_ssp245 <- fetchvars(hc, scenario = basename(ini), dates = dates_to_save, vars = vars_to_save)

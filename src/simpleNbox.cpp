@@ -257,7 +257,11 @@ void SimpleNbox::setData(const std::string &varName, const message_data &data) {
       set_c0(data.getUnitval(U_PGC).value(U_PGC) * PGC_TO_PPMVCO2);
     } else if (varNameParsed == D_PREINDUSTRIAL_CO2) {
       H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
-      H_ASSERT(biome == SNBOX_DEFAULT_BIOME, "preindustrial C must be global");
+      H_ASSERT(biome == SNBOX_DEFAULT_BIOME, "preindustrial CO2 must be global");
+      if (data.getUnitval(U_PPMV_CO2).value(U_PPMV_CO2) != 277.15) {
+          H_LOG(logger, Logger::WARNING) << "Changing " << varNameParsed <<
+              " from default value; this is not recomended and may cause issues with RF CO2 calucations" << std::endl;
+      }
       set_c0(data.getUnitval(U_PPMV_CO2).value(U_PPMV_CO2));
     } else if (varNameParsed == D_VEGC) {
       // For `veg_c`, `detritus_c`, `soil_c`, and `permafrost_c`,
@@ -721,10 +725,10 @@ void SimpleNbox::reset(double time) {
     }
   }
   Tland_record.truncate(time);
-  
+
   // Need to reset masstot in case the preindustrial ocean C values changed
   masstot = 0.0;
-  
+
   // Truncate all of the state variable time series
   earth_c_ts.truncate(time);
   atmos_c_ts.truncate(time);

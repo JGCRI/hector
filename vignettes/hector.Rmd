@@ -1,29 +1,24 @@
 ---
-title: A tour of the Hector R interface
-subtitle: R
+title: "hector"
+output: rmarkdown::html_vignette
 author: Alexey Shiklomanov
 date: "2018-10-17 (updated 2022)"
-output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{A tour of the Hector R interface}
-  %\VignetteEncoding{UTF-8}
+  %\VignetteIndexEntry{hector}
   %\VignetteEngine{knitr::rmarkdown}
-editor_options:
-  chunk_output_type: console
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, dpi = 150)
 ```
 
-This vignette provides a basic introduction for running Hector with R.
+This vignette provides a basic introduction for running Hector with R,
+assuming that Hector is already installed.
 First, it shows how to do a simple Hector run with a built-in scenario.
-Then, it shows how to modify Hector parameters from within R and uses this
-functionality to perform a simple sensitivity analysis of how the CO$_2$
+It then demonstrates how to modify Hector parameters from within R to perform
+a simple sensitivity analysis of how the CO$_2$
 fertilization parameter $\beta$ affects several Hector output variables.
-
-If you do not yet have Hector installed, please reference the manual's
-instructions for [building and running Hector](BuildHector.html).
 
 # Basic run
 

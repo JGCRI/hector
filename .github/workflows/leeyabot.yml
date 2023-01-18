@@ -46,7 +46,11 @@ jobs:
                 cat OutputDifferences.knit.md >> report.md
                 echo "![](./diff_plot.png)" >> report.md
                 echo "![](./comp_plot.png)" >> report.md
+            elif [ -f "same_plot.png" ]
+            then
+                cat OutputDifferences.knit.md >> report.md
             else
-                echo “leeyabot down“ > report.md
+                cat OutputDifferences.knit.md >> report.md
+                echo "leeyabot down :(" > report.md
             fi
             cml comment create report.md
