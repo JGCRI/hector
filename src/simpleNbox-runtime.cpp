@@ -145,8 +145,8 @@ void SimpleNbox::prepareToRun() {
                                    D_THAWEDPC);
   }
   // Lognormal distribution for current biome's mu and sigma
-  // We precompute all of these (one for each biome) since they don't change over time
-  // This is equation 10 in Woodard et al. 2021
+  // We precompute these (one for each biome) since they don't change over time
+  // This is equation 10 in Woodard et al. 2021 https://doi.org/10.5194/gmd-14-4751-2021
   for(auto biome : biome_list) {
     boost::math::lognormal s(pf_mu.at( biome ), pf_sigma.at( biome ));
     pf_s[biome] = s;
@@ -985,7 +985,8 @@ void SimpleNbox::slowparameval(double t, const double c[]) {
 
       // Permafrost thaw, as a fraction
       // Currently, these are calibrated to produce a 0.172 / year slope from
-      // 0.8 to 4 degrees C, which was the linear form of this in Kessler.
+      // 0.8 to 4 degrees C, which was the linear form of this in Kessler 2017
+      // https://doi.org/10.1142/s2010007817500087 (referenced in Woodard 2021).
       new_thaw[biome] = 0.0;
       if (permafrost_c[biome].value(U_PGC)) {
         // This uses the biome's lognormal distribution, based on its mu and sigma,

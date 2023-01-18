@@ -79,7 +79,7 @@ split_biome <- function(core,
         sum(fveg_c) == 1, all(fveg_c > 0),
         sum(fdetritus_c) == 1, all(fdetritus_c > 0),
         sum(fsoil_c) == 1, all(fsoil_c > 0),
-        sum(fpermafrost_c) == 1, all(fpermafrost_c > 0),
+        sum(fpermafrost_c) == 1, all(fpermafrost_c >= 0),
         sum(fnpp_flux0) == 1, all(fnpp_flux0 > 0)
     )
 
