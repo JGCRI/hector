@@ -1,6 +1,6 @@
 Package: hector
 Title: The Hector Simple Climate Model
-Version: 3.0.0
+Version: 2.9.0.0009
 Authors@R: c(person("Kalyn", "Dorheim", 
 	        email = "kalyn.dorheim@pnnl.gov",
 	        role = c("aut", "cre"),
@@ -58,14 +58,11 @@ Imports:
     BH (>= 1.69)
 Suggests:
     testthat,
-    nleqslv,
     knitr,
     lintr (>= 3.0),
     rmarkdown,
     ggplot2,
     magrittr (>= 1.5), 
-    ragg,
-    here
 Collate:
     'RcppExports.R'
     'aadoc.R'
@@ -75,8 +72,9 @@ Collate:
     'messages.R'
     'units.R'
 VignetteBuilder: knitr
-RoxygenNote: 7.2.2
+Config/Needs/website: kableExtra, nleqslv
+RoxygenNote: 7.2.3
 SystemRequirements: GNU make
-URL: https://github.com/JGCRI/hector
+URL: https://github.com/JGCRI/hector, https://jgcri.github.io/hector/
 BugReports: https://github.com/JGCRI/hector/issues
 Language: en-US

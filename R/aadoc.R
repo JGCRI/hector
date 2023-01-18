@@ -302,3 +302,13 @@ NULL
 #'  \item{units}{String of the unit value}
 #' }
 "unitstable"
+
+
+#' A data.frame containing information R hector function name and hector string names.
+#'
+#' @format A data.frame of 2 columns and 239 rows.
+#' \describe{
+#'  \item{fxn}{String of the R hector function name}
+#'  \item{string}{String of variable name}
+#' }
+"fxntable"

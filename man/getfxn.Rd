@@ -7,7 +7,7 @@
 getfxn(str)
 }
 \arguments{
-\item{strstr}{String name to find the Hector function for}
+\item{str}{String name to find the Hector function for}
 }
 \value{
 Hector function name
