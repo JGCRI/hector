@@ -13,10 +13,11 @@ vignette: >
 knitr::opts_chunk$set(echo = TRUE, dpi = 150)
 ```
 
-This vignette provides a basic introduction for running Hector with R it assumes that Hector is already installed, please install Hector before continuing.
+This vignette provides a basic introduction for running Hector with R,
+assuming that Hector is already installed.
 First, it shows how to do a simple Hector run with a built-in scenario.
-Then, it shows how to modify Hector parameters from within R and uses this
-functionality to perform a simple sensitivity analysis of how the CO$_2$
+It then demonstrates how to modify Hector parameters from within R to perform
+a simple sensitivity analysis of how the CO$_2$
 fertilization parameter $\beta$ affects several Hector output variables.
 
 # Basic run
