@@ -43,5 +43,8 @@ _pkgdown.yml
 ^doc$
 ^Meta$
 ^vignettes/articles$
+
+# README and similar files
+^CITATION\.cff$
 ^CODE_OF_CONDUCT\.md$
 ^README\.Rmd$
