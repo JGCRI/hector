@@ -69,10 +69,8 @@ unitval CarbonCycleSolver::sendMessage(const std::string &message,
     return getData(datum, info.date);
 
   } else if (message == M_SETDATA) { //! Caller is requesting to set data
-                                     // TODO: call setData below
-    // TODO: change core so that parsing is routed through sendMessage
-    // TODO: make setData private
-
+    // TODO: call setData below
+ 
   } else { //! We don't handle any other messages
     H_THROW("Caller sent unknown message: " + message);
   }

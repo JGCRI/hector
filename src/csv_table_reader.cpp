@@ -161,11 +161,6 @@ void CSVTableReader::process(Core *core, const string &componentName,
 
       split(row, line, is_any_of(","));
 
-      // we should have a constant number of columns
-      // TODO: figure this out for VS!  H_ASSERT( columnIndex < row.size() &&
-      // headerRowSize == row.size(), "varying columns in data line "+
-      // boost::lexical_cast<std::string>( lines_read ) );
-
       // remove extra white space from the table value
       trim(row[0]);
       trim(row[columnIndex]);

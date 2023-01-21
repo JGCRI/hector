@@ -142,8 +142,6 @@ unitval OceanComponent::sendMessage(const std::string &message,
 
   } else if (message == M_SETDATA) { //! Caller is requesting to set data
     setData(datum, info);
-    // TODO: change core so that parsing is routed through sendMessage
-    // TODO: make setData private
 
   } else if (message == M_DUMP_TO_DEEP_OCEAN) {
     // info struct holds the amount being dumped/extracted from deep ocean
