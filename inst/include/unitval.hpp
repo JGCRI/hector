@@ -26,7 +26,12 @@
 // the same practical effect on calculations (in fact, R's NA is a special case
 // of NaN).
 #ifdef USE_RCPP
+// some Rcpp code generates deprecated warnings under clang; ignore
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 #include <Rcpp.h>
+#pragma clang diagnostic pop
+
 #define MISSING_FLOAT NA_REAL
 #else
 #define MISSING_FLOAT NAN

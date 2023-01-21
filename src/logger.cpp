@@ -22,7 +22,12 @@
 
 #ifdef USE_RCPP
 // This should be defined only if compiling as an R package
+// some Rcpp code generates deprecated warnings under clang; ignore
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 #include <Rcpp.h>
+#pragma clang diagnostic pop
+
 #define STDOUT_STREAM Rcpp::Rcout
 #else
 #define STDOUT_STREAM std::cout
