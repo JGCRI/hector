@@ -18,6 +18,7 @@
 \alias{PERMAFROST_C}
 \alias{THAWEDP_C}
 \alias{FRAC_FROZEN}
+\alias{FRAC_STATIC}
 \alias{PERMAFROST_MU}
 \alias{PERMAFROST_SIGMA}
 \alias{FRAC_DECOMP_CH4}
@@ -60,6 +61,8 @@ THAWEDP_C(biome = "")
 
 FRAC_FROZEN(biome = "")
 
+FRAC_STATIC(biome = "")
+
 PERMAFROST_MU(biome = "")
 
 PERMAFROST_SIGMA(biome = "")
@@ -94,6 +97,8 @@ carbon cycle
 \item \code{THAWEDP_C()}: Thawed permafrost C pool (`"Pg C"`)
 
 \item \code{FRAC_FROZEN()}: Fraction of permafrost still frozen (\code{"(unitless)"})
+
+\item \code{FRAC_STATIC()}: Fraction of thawed permafrost that is static (\code{"(unitless)"})
 
 \item \code{PERMAFROST_MU()}: Permafrost thaw mu parameter (\code{"(unitless)"})
 

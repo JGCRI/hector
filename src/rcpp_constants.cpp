@@ -1319,16 +1319,16 @@ String FRAC_FROZEN(String biome = "") {
 }
 
 //' @describeIn carboncycle Fraction of thawed permafrost that is static (\code{"(unitless)"})
- //' @param biome Name of biome (leave empty for global)
- //' @export
- // [[Rcpp::export]]
- String FRAC_STATIC(String biome = "") {
-     if (biome == "") return D_FPF_STATIC;
-     String out = biome;
-     out += BIOME_SPLIT_CHAR();
-     out += D_FPF_STATIC;
-     return out;
- }
+//' @param biome Name of biome (leave empty for global)
+//' @export
+// [[Rcpp::export]]
+String FRAC_STATIC(String biome = "") {
+    if (biome == "") return D_FPF_STATIC;
+    String out = biome;
+    out += BIOME_SPLIT_CHAR();
+    out += D_FPF_STATIC;
+    return out;
+}
 
 //' @describeIn carboncycle Permafrost thaw mu parameter (\code{"(unitless)"})
 //' @param biome Name of biome (leave empty for global)
