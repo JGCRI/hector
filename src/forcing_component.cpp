@@ -22,11 +22,12 @@
  */
 
 // some boost headers generate warnings under clang; not our problem, ignore
+// 2023 and Boost 1.81.0_1: array.hpp still generates one warning
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Weverything"
 #include <boost/array.hpp>
-#include <math.h>
 #pragma clang diagnostic pop
+#include <math.h>
 
 #include "avisitor.hpp"
 #include "forcing_component.hpp"

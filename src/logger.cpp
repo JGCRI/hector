@@ -23,6 +23,7 @@
 #ifdef USE_RCPP
 // This should be defined only if compiling as an R package
 #include <Rcpp.h>
+
 #define STDOUT_STREAM Rcpp::Rcout
 #else
 #define STDOUT_STREAM std::cout

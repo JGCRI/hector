@@ -17,6 +17,7 @@
 #include <string>
 
 // some boost headers generate warnings under clang; not our problem, ignore
+// 2023 and Boost 1.81.0_1: odeint.hpp still generates lots of warnings
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Weverything"
 #include <boost/numeric/odeint.hpp>

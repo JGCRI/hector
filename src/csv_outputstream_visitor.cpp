@@ -16,6 +16,7 @@
 #include <regex>
 
 // some boost headers generate warnings under clang; not our problem, ignore
+// 2023 and Boost 1.81.0_1: lexical_cast.hpp still generates many warnings
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Weverything"
 #include <boost/lexical_cast.hpp>

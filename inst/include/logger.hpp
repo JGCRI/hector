@@ -15,6 +15,8 @@
  */
 
 #include <iostream>
+// some boost headers generate warnings under clang; not our problem, ignore
+// 2023 and Boost 1.81.0_1: filtering_stream.hpp still generates one warning
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Weverything"
 #include <boost/iostreams/filtering_stream.hpp>
