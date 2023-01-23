@@ -31,15 +31,21 @@ exit_loudly () {
    exit 1
 }
 
-
 # Run all INI files (the basic SSPs)
 echo "---------- Running: basic SSPs ----------"
 find ./inst/input -name "*.ini" -print0 | xargs -0 -n1 $HECTOR
 
+# Permafrost (off by default in v3) runs
+echo "---------- Running: permafrost ----------"
+sed 's/permafrost_c=0/permafrost_c=865/' $INPUT/hector_ssp245.ini > $INPUT/hector_ssp245_pf.ini
+# Confirm that a change was made
+if [[ $(diff -q $INPUT/hector_ssp245.ini $INPUT/hector_ssp245_pf.ini | wc -c) -eq 0 ]]; then exit_loudly "permafrost"; fi
+# ...and run
+$HECTOR $INPUT/hector_ssp245_pf.ini
+
 # Make sure the model handles year changes
 echo "---------- Running: year changes ----------"
 sed 's/startDate=1745/startDate=1746/' $INPUT/hector_ssp245.ini > $INPUT/hector_ssp245_time.ini
-# Confirm that a change was made
 if [[ $(diff -q $INPUT/hector_ssp245.ini $INPUT/hector_ssp245_time.ini | wc -c) -eq 0 ]]; then exit_loudly "startDate"; fi
 # ...and run
 $HECTOR $INPUT/hector_ssp245_time.ini

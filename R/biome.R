@@ -5,6 +5,7 @@
 #' @param veg_c0 Initial vegetation C pool
 #' @param detritus_c0 Initial detritus C pool
 #' @param soil_c0 Initial soil C pool
+#' @param permafrost_c0 Initial permafrost C pool
 #' @param npp_flux0 Initial net primary productivity
 #' @param warmingfactor Temperature multiplier (default =
 #'   `1.0`)
@@ -17,7 +18,7 @@
 #' @author Alexey Shiklomanov
 #' @export
 create_biome <- function(core, biome,
-                         veg_c0, detritus_c0, soil_c0,
+                         veg_c0, detritus_c0, soil_c0, permafrost_c0,
                          npp_flux0,
                          warmingfactor, beta, q10_rh,
                          f_nppv, f_nppd, f_litterd) {
@@ -25,6 +26,7 @@ create_biome <- function(core, biome,
     setvar(core, 0, VEG_C(biome), veg_c0, "Pg C")
     setvar(core, 0, DETRITUS_C(biome), detritus_c0, "Pg C")
     setvar(core, 0, SOIL_C(biome), soil_c0, "Pg C")
+    setvar(core, 0, PERMAFROST_C(biome), permafrost_c0, "Pg C")
     setvar(core, NA, NPP_FLUX0(biome), npp_flux0, "Pg C/yr")
     setvar(core, NA, WARMINGFACTOR(biome), warmingfactor, NA)
     setvar(core, NA, BETA(biome), beta, NA)
@@ -50,6 +52,8 @@ create_biome <- function(core, biome,
 #'   biome. Defaults to the same value as \code{fveg_c}.
 #' @param fsoil_c Fractions of soil C distributed to each biome.
 #'   Defaults to the same value as \code{fveg_c}.
+#' @param fpermafrost_c Fraction of permafrost C distributed to each
+#'   biome. Defaults to the same value as \code{fveg_c}.
 #' @param fnpp_flux0 Fraction of initial NPP flux distributed to each
 #'   biome. Defaults to the same value as \code{fveg_c}.
 #' @param ... Additional biome parameters passed to \code{\link{create_biome}}.
@@ -60,6 +64,7 @@ split_biome <- function(core,
                         fveg_c = rep(1 / length(new_biomes), length(new_biomes)),
                         fdetritus_c = fveg_c,
                         fsoil_c = fveg_c,
+                        fpermafrost_c = fveg_c,
                         fnpp_flux0 = fveg_c,
                         ...) {
     stopifnot(
@@ -69,10 +74,12 @@ split_biome <- function(core,
         length(fveg_c) == length(new_biomes),
         length(fdetritus_c) == length(new_biomes),
         length(fsoil_c) == length(new_biomes),
+        length(fpermafrost_c) == length(new_biomes),
         length(fnpp_flux0) == length(new_biomes),
         sum(fveg_c) == 1, all(fveg_c > 0),
         sum(fdetritus_c) == 1, all(fdetritus_c > 0),
         sum(fsoil_c) == 1, all(fsoil_c > 0),
+        sum(fpermafrost_c) == 1, all(fpermafrost_c >= 0),
         sum(fnpp_flux0) == 1, all(fnpp_flux0 > 0)
     )
 
@@ -103,6 +110,7 @@ split_biome <- function(core,
         veg_c0 = cv[["veg_c"]] * fveg_c,
         detritus_c0 = cv[["detritus_c"]] * fdetritus_c,
         soil_c0 = cv[["soil_c"]] * fsoil_c,
+        permafrost_c0 = cv[["permafrost_c"]] * fpermafrost_c,
         npp_flux0 = cv[["npp_flux0"]] * fnpp_flux0,
         warmingfactor = warmingfactor,
         beta = beta,
@@ -133,7 +141,8 @@ get_biome_inits <- function(core, biome) {
     current_data_1 <- rbind.data.frame(
         sendmessage(core, GETDATA(), VEG_C(biome), 0, NA, ""),
         sendmessage(core, GETDATA(), DETRITUS_C(biome), 0, NA, ""),
-        sendmessage(core, GETDATA(), SOIL_C(biome), 0, NA, "")
+        sendmessage(core, GETDATA(), SOIL_C(biome), 0, NA, ""),
+        sendmessage(core, GETDATA(), PERMAFROST_C(biome), 0, NA, "")
     )
     current_data_2 <- fetchvars(core, NA, c(
         NPP_FLUX0(biome),

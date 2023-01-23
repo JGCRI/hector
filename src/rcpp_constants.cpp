@@ -1282,6 +1282,92 @@ String SOIL_C(String biome = "") {
   return out;
 }
 
+//' @describeIn carboncycle Permafrost C pool (`"Pg C"`)
+//' @param biome Name of biome (leave empty for global)
+//' @export
+// [[Rcpp::export]]
+String PERMAFROST_C(String biome = "") {
+    if (biome == "") return D_PERMAFROSTC;
+    String out = biome;
+    out += BIOME_SPLIT_CHAR();
+    out += D_PERMAFROSTC;
+    return out;
+}
+
+//' @describeIn carboncycle Thawed permafrost C pool (`"Pg C"`)
+//' @param biome Name of biome (leave empty for global)
+//' @export
+// [[Rcpp::export]]
+String THAWEDP_C(String biome = "") {
+    if (biome == "") return D_THAWEDPC;
+    String out = biome;
+    out += BIOME_SPLIT_CHAR();
+    out += D_THAWEDPC;
+    return out;
+}
+
+//' @describeIn carboncycle Fraction of permafrost still frozen (\code{"(unitless)"})
+//' @param biome Name of biome (leave empty for global)
+//' @export
+// [[Rcpp::export]]
+String FRAC_FROZEN(String biome = "") {
+    if (biome == "") return D_F_FROZEN;
+    String out = biome;
+    out += BIOME_SPLIT_CHAR();
+    out += D_F_FROZEN;
+    return out;
+}
+
+//' @describeIn carboncycle Fraction of thawed permafrost that is static (\code{"(unitless)"})
+//' @param biome Name of biome (leave empty for global)
+//' @export
+// [[Rcpp::export]]
+String FRAC_STATIC(String biome = "") {
+    if (biome == "") return D_FPF_STATIC;
+    String out = biome;
+    out += BIOME_SPLIT_CHAR();
+    out += D_FPF_STATIC;
+    return out;
+}
+
+//' @describeIn carboncycle Permafrost thaw mu parameter (\code{"(unitless)"})
+//' @param biome Name of biome (leave empty for global)
+//' @note See Woodard et al. (2021)
+//' @export
+// [[Rcpp::export]]
+String PERMAFROST_MU(String biome = "") {
+    if (biome == "") return D_PF_MU;
+    String out = biome;
+    out += BIOME_SPLIT_CHAR();
+    out += D_PF_MU;
+    return out;
+}
+
+//' @describeIn carboncycle Permafrost thaw sigma parameter (\code{"(unitless)"})
+//' @param biome Name of biome (leave empty for global)
+//' @note See Woodard et al. (2021)
+//' @export
+// [[Rcpp::export]]
+String PERMAFROST_SIGMA(String biome = "") {
+    if (biome == "") return D_PF_SIGMA;
+    String out = biome;
+    out += BIOME_SPLIT_CHAR();
+    out += D_PF_SIGMA;
+    return out;
+}
+
+//' @describeIn carboncycle Methane fraction of permafrost decomposition (\code{"(unitless)"})
+//' @param biome Name of biome (leave empty for global)
+//' @export
+// [[Rcpp::export]]
+String FRAC_DECOMP_CH4(String biome = "") {
+    if (biome == "") return D_RH_CH4_FRAC;
+    String out = biome;
+    out += BIOME_SPLIT_CHAR();
+    out += D_RH_CH4_FRAC;
+    return out;
+}
+
 //' @rdname carboncycle
 //' @export
 // [[Rcpp::export]]

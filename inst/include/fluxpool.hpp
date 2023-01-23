@@ -97,7 +97,9 @@ inline fluxpool::fluxpool(unitval v, unordered_map<string, double> pool_map,
   ctmap = pool_map;
   name = pool_name;
 
-  H_ASSERT(v >= 0, "Flux and pool values may not be negative in " + name);
+  if(v < 0) {
+    H_ASSERT(v >= 0, "Flux and pool values may not be negative in " + name);
+  }
 
   // check pool_map data
   double frac = 0.0;
@@ -116,7 +118,9 @@ inline fluxpool::fluxpool(unitval v, unordered_map<string, double> pool_map,
 inline void fluxpool::set(double v, unit_types u, bool track = false,
                           string pool_name = "?") {
   name = pool_name;
-  H_ASSERT(v >= 0, "Flux and pool values may not be negative in " + name);
+  if(v < 0) {
+    H_ASSERT(v >= 0, "Flux and pool values may not be negative in " + name);
+  }
   tracking = track;
   ctmap[name] = 1.0;
   unitval::set(v, u, 0.0);
