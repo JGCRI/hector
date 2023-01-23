@@ -27,7 +27,7 @@ the original implementation [(Woodard et al. 2021)](https://gmd.copernicus.org/a
 is currently an EXPERIMENTAL feature that is not 
 ready for scientific simulations.**
 
-> Woodard, D. L., Shiklomanov, A. N., Kravitz, B., Hartin, C., Bond-Lamberty, B. (2021). A permafrost implementation in the simple carbon-climate model Hector v.2.3pf. Geosci. Model Dev., 14, 4751–4767. ttps://doi.org/10.5194/gmd-14-4751-2021
+> Woodard, D. L., Shiklomanov, A. N., Kravitz, B., Hartin, C., Bond-Lamberty, B. (2021). A permafrost implementation in the simple carbon-climate model Hector v.2.3pf. Geosci. Model Dev., 14, 4751–4767. https://doi.org/10.5194/gmd-14-4751-2021
 
 ### Setup
 
@@ -61,7 +61,7 @@ shutdown(core)
 ### Enabling permafrost
 
 Set up a new core and set its initial permafrost carbon to 865 Pg C,
-the value used by Woodard et al. (2021)...
+the value used by Woodard et al. (2021):
 
 ```{r}
 core <- newcore(ini, name = "ssp245-permafrost")
@@ -71,7 +71,7 @@ invisible(run(core))
 run2 <- fetchvars(core, dates = 1745:2300, vars = c(climate_vars, permafrost_vars))
 ```
 
-Permafrost was lost to the atmosphere as the climate warmed!
+We can check and confirm that permafrost was lost to the atmosphere as the climate warmed...
 
 ```{r}
 fetchvars(core, 2300, PERMAFROST_C())
@@ -140,11 +140,15 @@ results_sigma <- lapply(seq(0.7, 1.2, length.out = 6), run_fn, core, PERMAFROST_
 
 # Combine results and plot
 results <- do.call("rbind", c(results_mu, results_sigma))
-results$param_value <- as.factor(results$param_value)
 
-ggplot(results, aes(year, value, color = param_value)) +
-    geom_line() +
+default <- subset(run2, variable == GLOBAL_TAS() & year %in% 2100:2300)
+
+ggplot(results, aes(year, value, color = param_value, group = paste(varying, param_value))) +
+    geom_line(linetype = 2) +
     ylab(GLOBAL_TAS()) +
-    facet_wrap(~varying)
+    facet_wrap(~varying) +
+    # add a thick black line to show default behavior
+    annotate(geom = "line", x = default$year, y = default$value, linewidth = 1.5)
 ```
 
+Hector's permafrost capability is planned to be fully science-ready in v3.1.
