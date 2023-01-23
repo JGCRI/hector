@@ -13,6 +13,8 @@
  */
 
 // some boost headers generate warnings under clang; not our problem, ignore
+// 2023 and Boost 1.81.0_1: trim.hpp still generates one warning
+// 2023 and Boost 1.81.0_1: lexical_cast.hpp still generates many warnings
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Weverything"
 #include <boost/algorithm/string/trim.hpp>

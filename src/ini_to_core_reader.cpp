@@ -13,6 +13,9 @@
  */
 
 // some boost headers generate warnings under clang; not our problem, ignore
+// 2023 and Boost 1.81.0_1: predicate.hpp still generates one warning
+// 2023 and Boost 1.81.0_1: trim.hpp still generates one warning
+// 2023 and Boost 1.81.0_1: lexical_cast.hpp still generates many warnings
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Weverything"
 #include <boost/algorithm/string/predicate.hpp>
@@ -27,10 +30,7 @@
 // needs to be installed).
 #ifdef USE_RCPP
 // some Rcpp code generates deprecated warnings under clang; ignore
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 #include <Rcpp.h>
-#pragma clang diagnostic pop
 
 #elif __cpp_lib_filesystem || __has_include(<filesystem>)
 #include <filesystem>

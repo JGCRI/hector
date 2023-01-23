@@ -27,11 +27,7 @@
 #include <boost/config.hpp>
 
 #ifdef USE_RCPP
-// some Rcpp code generates deprecated warnings under clang; ignore
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 #include <Rcpp.h>
-#pragma clang diagnostic pop
 
 #elif __cpp_lib_filesystem || __has_include(<filesystem>)
 #include <filesystem>

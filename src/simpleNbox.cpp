@@ -12,6 +12,8 @@
  *
  */
 
+// some boost headers generate warnings under clang; not our problem, ignore
+// 2023 and Boost 1.81.0_1: string.hpp still generates two warnings
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Weverything"
 #include "boost/algorithm/string.hpp"
