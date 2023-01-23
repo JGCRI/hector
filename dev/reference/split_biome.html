@@ -88,6 +88,7 @@ from an existing biome across multiple new biomes.</p>
 <span>  fveg_c <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">new_biomes</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">new_biomes</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  fdetritus_c <span class="op">=</span> <span class="va">fveg_c</span>,</span>
 <span>  fsoil_c <span class="op">=</span> <span class="va">fveg_c</span>,</span>
+<span>  fpermafrost_c <span class="op">=</span> <span class="va">fveg_c</span>,</span>
 <span>  fnpp_flux0 <span class="op">=</span> <span class="va">fveg_c</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -121,6 +122,11 @@ biome. Defaults to the same value as <code>fveg_c</code>.</p></dd>
 <dt>fsoil_c</dt>
 <dd><p>Fractions of soil C distributed to each biome.
 Defaults to the same value as <code>fveg_c</code>.</p></dd>
+
+
+<dt>fpermafrost_c</dt>
+<dd><p>Fraction of permafrost C distributed to each
+biome. Defaults to the same value as <code>fveg_c</code>.</p></dd>
 
 
 <dt>fnpp_flux0</dt>
