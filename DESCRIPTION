@@ -60,7 +60,7 @@ Suggests:
     lintr (>= 3.0),
     rmarkdown,
     ggplot2,
-    magrittr (>= 1.5), 
+    magrittr (>= 1.5) 
 Collate:
     'RcppExports.R'
     'aadoc.R'
