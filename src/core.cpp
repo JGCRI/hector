@@ -94,7 +94,6 @@ void Core::init() {
   // it
   registerInput(D_TRACKING_DATE, CORE_COMPONENT_NAME);
 
-  // TODO: maybe some model component factory?
   IModelComponent *temp;
 
   temp = new SimpleNbox();

@@ -165,7 +165,6 @@ inline unordered_map<string, double> fluxpool::get_tracking_map() const {
  */
 inline fluxpool fluxpool::flux_from_unitval(unitval f,
                                             string name = "?") const {
-  // BBL-TODO seems like we need an assert here
   return fluxpool(f, ctmap, tracking, name);
 }
 
@@ -272,9 +271,6 @@ inline fluxpool operator+(const fluxpool &lhs, const unitval &rhs) {
 /*! \brief Operator overload: subtraction
  */
 inline fluxpool operator-(const fluxpool &lhs, const fluxpool &rhs) {
-  // TODO: Weighted tracking needed for isotope implementation
-  // Should not affect current tracked pools as only fluxes from the
-  // same pools are currently subtracked (same map so should not change map)
   H_ASSERT(lhs.valUnits == rhs.units(), "units mismatch: " + rhs.name);
   H_ASSERT(lhs.tracking == rhs.tracking,
            "tracking mismatch: " + lhs.name + " and " + rhs.name)

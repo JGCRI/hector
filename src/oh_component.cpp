@@ -75,8 +75,8 @@ unitval OHComponent::sendMessage(const std::string &message,
     return getData(datum, info.date);
 
   } else if (message == M_SETDATA) { //! Caller is requesting to set data
-    // TODO: make setData private
     setData(datum, info);
+    
   } else { //! We don't handle any other messages
     H_THROW("Caller sent unknown message: " + message);
   }

@@ -232,7 +232,6 @@ inline double unitval::value(unit_types u) const {
 /*! \brief Operator overload: addition.
  *
  *  Add two unitvals. Must be of the same type.
- *  TODO: should we add the errors?
  */
 inline unitval operator+(const unitval &lhs, const unitval &rhs) {
   H_ASSERT(lhs.valUnits == rhs.valUnits, "units mismatch");
@@ -243,7 +242,6 @@ inline unitval operator+(const unitval &lhs, const unitval &rhs) {
 /*! \brief Operator overload: subtraction.
  *
  *  Subtract two unitvals. Must be of the same type.
- *  TODO: should we add the errors?
  */
 inline unitval operator-(const unitval &lhs, const unitval &rhs) {
   H_ASSERT(lhs.valUnits == rhs.valUnits, "units mismatch");
@@ -263,7 +261,6 @@ inline unitval operator-(const unitval &rhs) {
 /*! \brief Operator overload: constant multiplication.
  *
  *  Multiply a unitval by a double.
- *  TODO: should we multiply error as well?
  */
 inline unitval operator*(const unitval &lhs, const double rhs) {
   return unitval(lhs.val * rhs, lhs.valUnits);
@@ -273,7 +270,6 @@ inline unitval operator*(const unitval &lhs, const double rhs) {
 /*! \brief Operator overload: constant multiplication.
  *
  *  Multiply a unitval by a double.
- *  TODO: should we multiply error as well?
  */
 inline unitval operator*(const double lhs, const unitval &rhs) {
   return unitval(lhs * rhs.val, rhs.valUnits);
@@ -283,7 +279,6 @@ inline unitval operator*(const double lhs, const unitval &rhs) {
 /*! \brief Operator overload: constant division.
  *
  *  Divide a unitval by a double.
- *  TODO: should we divide error as well?
  */
 inline unitval operator/(const unitval &lhs, const double rhs) {
   return unitval(lhs.val / rhs, lhs.valUnits);
@@ -293,7 +288,6 @@ inline unitval operator/(const unitval &lhs, const double rhs) {
 /*! \brief Operator overload: constant division.
  *
  *  Divide a unitval by a double.
- *  TODO: should we divide error as well?
  */
 inline unitval operator/(const double lhs, const unitval &rhs) {
   return unitval(lhs / rhs.val, rhs.valUnits);

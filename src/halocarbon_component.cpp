@@ -89,8 +89,6 @@ unitval HalocarbonComponent::sendMessage( const std::string& message,
 
     } else if( message==M_SETDATA ) {   //! Caller is requesting to set data
         setData( datum, info );
-        //TODO: change core so that parsing is routed through sendMessage
-        //TODO: make setData private
 
     } else {                        //! We don't handle any other messages
         H_THROW( "Caller sent unknown message: "+message );
