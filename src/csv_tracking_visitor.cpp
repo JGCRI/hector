@@ -116,6 +116,8 @@ void CSVFluxPoolVisitor::visit(SimpleNbox *c) {
     print_pool(c->veg_c[biome], cname);
     print_pool(c->detritus_c[biome], cname);
     print_pool(c->soil_c[biome], cname);
+    print_pool( c->permafrost_c[ biome ], cname );
+    print_pool( c->thawed_permafrost_c[ biome ], cname );
   }
 }
 

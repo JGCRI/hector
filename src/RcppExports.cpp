@@ -2349,6 +2349,83 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// PERMAFROST_C
+String PERMAFROST_C(String biome);
+RcppExport SEXP _hector_PERMAFROST_C(SEXP biomeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< String >::type biome(biomeSEXP);
+    rcpp_result_gen = Rcpp::wrap(PERMAFROST_C(biome));
+    return rcpp_result_gen;
+END_RCPP
+}
+// THAWEDP_C
+String THAWEDP_C(String biome);
+RcppExport SEXP _hector_THAWEDP_C(SEXP biomeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< String >::type biome(biomeSEXP);
+    rcpp_result_gen = Rcpp::wrap(THAWEDP_C(biome));
+    return rcpp_result_gen;
+END_RCPP
+}
+// FRAC_FROZEN
+String FRAC_FROZEN(String biome);
+RcppExport SEXP _hector_FRAC_FROZEN(SEXP biomeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< String >::type biome(biomeSEXP);
+    rcpp_result_gen = Rcpp::wrap(FRAC_FROZEN(biome));
+    return rcpp_result_gen;
+END_RCPP
+}
+// FRAC_STATIC
+String FRAC_STATIC(String biome);
+RcppExport SEXP _hector_FRAC_STATIC(SEXP biomeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< String >::type biome(biomeSEXP);
+    rcpp_result_gen = Rcpp::wrap(FRAC_STATIC(biome));
+    return rcpp_result_gen;
+END_RCPP
+}
+// PERMAFROST_MU
+String PERMAFROST_MU(String biome);
+RcppExport SEXP _hector_PERMAFROST_MU(SEXP biomeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< String >::type biome(biomeSEXP);
+    rcpp_result_gen = Rcpp::wrap(PERMAFROST_MU(biome));
+    return rcpp_result_gen;
+END_RCPP
+}
+// PERMAFROST_SIGMA
+String PERMAFROST_SIGMA(String biome);
+RcppExport SEXP _hector_PERMAFROST_SIGMA(SEXP biomeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< String >::type biome(biomeSEXP);
+    rcpp_result_gen = Rcpp::wrap(PERMAFROST_SIGMA(biome));
+    return rcpp_result_gen;
+END_RCPP
+}
+// FRAC_DECOMP_CH4
+String FRAC_DECOMP_CH4(String biome);
+RcppExport SEXP _hector_FRAC_DECOMP_CH4(SEXP biomeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< String >::type biome(biomeSEXP);
+    rcpp_result_gen = Rcpp::wrap(FRAC_DECOMP_CH4(biome));
+    return rcpp_result_gen;
+END_RCPP
+}
 // EARTH_C
 String EARTH_C();
 RcppExport SEXP _hector_EARTH_C() {
@@ -2901,6 +2978,13 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_VEG_C", (DL_FUNC) &_hector_VEG_C, 1},
     {"_hector_DETRITUS_C", (DL_FUNC) &_hector_DETRITUS_C, 1},
     {"_hector_SOIL_C", (DL_FUNC) &_hector_SOIL_C, 1},
+    {"_hector_PERMAFROST_C", (DL_FUNC) &_hector_PERMAFROST_C, 1},
+    {"_hector_THAWEDP_C", (DL_FUNC) &_hector_THAWEDP_C, 1},
+    {"_hector_FRAC_FROZEN", (DL_FUNC) &_hector_FRAC_FROZEN, 1},
+    {"_hector_FRAC_STATIC", (DL_FUNC) &_hector_FRAC_STATIC, 1},
+    {"_hector_PERMAFROST_MU", (DL_FUNC) &_hector_PERMAFROST_MU, 1},
+    {"_hector_PERMAFROST_SIGMA", (DL_FUNC) &_hector_PERMAFROST_SIGMA, 1},
+    {"_hector_FRAC_DECOMP_CH4", (DL_FUNC) &_hector_FRAC_DECOMP_CH4, 1},
     {"_hector_EARTH_C", (DL_FUNC) &_hector_EARTH_C, 0},
     {"_hector_NPP_FLUX0", (DL_FUNC) &_hector_NPP_FLUX0, 1},
     {"_hector_EMISSIONS_SO2", (DL_FUNC) &_hector_EMISSIONS_SO2, 0},

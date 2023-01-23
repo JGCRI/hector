@@ -173,12 +173,16 @@ void CSVOutputStreamVisitor::visit(SimpleNbox *c) {
   STREAM_MESSAGE(csvFile, c, D_NBP);
   STREAM_UNITVAL(csvFile, c, D_NPP, c->final_npp[SNBOX_DEFAULT_BIOME]);
   STREAM_UNITVAL(csvFile, c, D_RH, c->final_rh[SNBOX_DEFAULT_BIOME]);
+  STREAM_UNITVAL(csvFile, c, D_RH_CH4, c->final_rh[SNBOX_DEFAULT_BIOME]);
   STREAM_MESSAGE_DATE(csvFile, c, D_CO2_CONC, current_date);
   STREAM_MESSAGE(csvFile, c, D_ATMOSPHERIC_CO2);
   STREAM_MESSAGE(csvFile, c, D_ATMOSPHERIC_C_RESIDUAL);
   STREAM_MESSAGE(csvFile, c, D_VEGC);
   STREAM_MESSAGE(csvFile, c, D_DETRITUSC);
   STREAM_MESSAGE(csvFile, c, D_SOILC);
+  STREAM_MESSAGE(csvFile, c, D_PERMAFROSTC);
+  STREAM_MESSAGE(csvFile, c, D_THAWEDPC);
+  STREAM_MESSAGE(csvFile, c, D_F_FROZEN);
   STREAM_MESSAGE(csvFile, c, D_EARTHC);
 
   // Biome-specific outputs: <biome>.<variable>
@@ -190,12 +194,18 @@ void CSVOutputStreamVisitor::visit(SimpleNbox *c) {
                      c->final_npp[biome]);
       STREAM_UNITVAL(csvFile, c, biome + SNBOX_PARSECHAR + D_RH,
                      c->final_rh[biome]);
-      STREAM_UNITVAL(csvFile, c, biome + SNBOX_PARSECHAR + D_VEGC,
+      STREAM_UNITVAL(csvFile, c, biome + SNBOX_PARSECHAR + D_RH_CH4,
+                     c->RH_ch4[biome]);
+     STREAM_UNITVAL(csvFile, c, biome + SNBOX_PARSECHAR + D_VEGC,
                      c->veg_c[biome]);
       STREAM_UNITVAL(csvFile, c, biome + SNBOX_PARSECHAR + D_DETRITUSC,
                      c->detritus_c[biome]);
       STREAM_UNITVAL(csvFile, c, biome + SNBOX_PARSECHAR + D_SOILC,
                      c->soil_c[biome]);
+      STREAM_UNITVAL( csvFile, c, biome + SNBOX_PARSECHAR + D_PERMAFROSTC, c->permafrost_c[ biome ] );
+      STREAM_UNITVAL( csvFile, c, biome + SNBOX_PARSECHAR + D_THAWEDPC, c->thawed_permafrost_c[ biome ] );
+      STREAM_UNITVAL(csvFile, c, biome + SNBOX_PARSECHAR + D_F_FROZEN,
+                     unitval(c->f_frozen[biome], U_UNITLESS));
       STREAM_UNITVAL(csvFile, c, biome + SNBOX_PARSECHAR + D_TEMPFERTD,
                      unitval(c->tempfertd[biome], U_UNITLESS));
       STREAM_UNITVAL(csvFile, c, biome + SNBOX_PARSECHAR + D_TEMPFERTS,

@@ -11,6 +11,7 @@ split_biome(
   fveg_c = rep(1/length(new_biomes), length(new_biomes)),
   fdetritus_c = fveg_c,
   fsoil_c = fveg_c,
+  fpermafrost_c = fveg_c,
   fnpp_flux0 = fveg_c,
   ...
 )
@@ -31,6 +32,9 @@ biome. Defaults to the same value as \code{fveg_c}.}
 
 \item{fsoil_c}{Fractions of soil C distributed to each biome.
 Defaults to the same value as \code{fveg_c}.}
+
+\item{fpermafrost_c}{Fraction of permafrost C distributed to each
+biome. Defaults to the same value as \code{fveg_c}.}
 
 \item{fnpp_flux0}{Fraction of initial NPP flux distributed to each
 biome. Defaults to the same value as \code{fveg_c}.}

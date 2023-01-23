@@ -221,8 +221,10 @@ inline void unitval::set(double v, unit_types u, double err = 0.0) {
  *  Get value. Caller has to provide assumed units, as a check.
  */
 inline double unitval::value(unit_types u) const {
-  H_ASSERT(u == valUnits, "variable is not of this type.  Expected: " +
-                              unitsName(valUnits) + "; got: " + unitsName(u));
+  if(u != valUnits) {
+    H_ASSERT(u == valUnits, "variable is not of this type.  Expected: " +
+                                unitsName(valUnits) + "; got: " + unitsName(u));
+  }
   return (val);
 }
 

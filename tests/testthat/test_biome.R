@@ -40,7 +40,7 @@ test_that("Hector runs with multiple biomes created via INI file", {
 
   # Remove non-biome-specific variables
   biome_vars <- c(
-    "veg_c", "detritus_c", "soil_c", "npp_flux0",
+    "veg_c", "detritus_c", "soil_c", "permafrost_c", "npp_flux0",
     "beta", "q10_rh", "f_nppv", "f_nppd", "f_litterd"
   )
   biome_rxp <- paste(biome_vars, collapse = "|")
@@ -57,6 +57,8 @@ test_that("Hector runs with multiple biomes created via INI file", {
     "tropical.detritus_c = 45",
     "boreal.soil_c = 1200",
     "tropical.soil_c = 578",
+    "boreal.permafrost_c = 0",
+    "tropical.permafrost_c = 0",
     "boreal.npp_flux0 = 5.0",
     "tropical.npp_flux0 = 45.0",
     "boreal.beta = 0.36",

@@ -10,6 +10,7 @@ create_biome(
   veg_c0,
   detritus_c0,
   soil_c0,
+  permafrost_c0,
   npp_flux0,
   warmingfactor,
   beta,
@@ -29,6 +30,8 @@ create_biome(
 \item{detritus_c0}{Initial detritus C pool}
 
 \item{soil_c0}{Initial soil C pool}
+
+\item{permafrost_c0}{Initial permafrost C pool}
 
 \item{npp_flux0}{Initial net primary productivity}
 

@@ -15,6 +15,13 @@
 \alias{VEG_C}
 \alias{DETRITUS_C}
 \alias{SOIL_C}
+\alias{PERMAFROST_C}
+\alias{THAWEDP_C}
+\alias{FRAC_FROZEN}
+\alias{FRAC_STATIC}
+\alias{PERMAFROST_MU}
+\alias{PERMAFROST_SIGMA}
+\alias{FRAC_DECOMP_CH4}
 \alias{EARTH_C}
 \alias{NPP_FLUX0}
 \alias{carboncycle}
@@ -48,6 +55,20 @@ DETRITUS_C(biome = "")
 
 SOIL_C(biome = "")
 
+PERMAFROST_C(biome = "")
+
+THAWEDP_C(biome = "")
+
+FRAC_FROZEN(biome = "")
+
+FRAC_STATIC(biome = "")
+
+PERMAFROST_MU(biome = "")
+
+PERMAFROST_SIGMA(biome = "")
+
+FRAC_DECOMP_CH4(biome = "")
+
 EARTH_C()
 
 NPP_FLUX0(biome = "")
@@ -71,9 +92,28 @@ carbon cycle
 
 \item \code{SOIL_C()}: Soil C pool (`"Pg C"`)
 
+\item \code{PERMAFROST_C()}: Permafrost C pool (`"Pg C"`)
+
+\item \code{THAWEDP_C()}: Thawed permafrost C pool (`"Pg C"`)
+
+\item \code{FRAC_FROZEN()}: Fraction of permafrost still frozen (\code{"(unitless)"})
+
+\item \code{FRAC_STATIC()}: Fraction of thawed permafrost that is static (\code{"(unitless)"})
+
+\item \code{PERMAFROST_MU()}: Permafrost thaw mu parameter (\code{"(unitless)"})
+
+\item \code{PERMAFROST_SIGMA()}: Permafrost thaw sigma parameter (\code{"(unitless)"})
+
+\item \code{FRAC_DECOMP_CH4()}: Methane fraction of permafrost decomposition (\code{"(unitless)"})
+
 \item \code{NPP_FLUX0()}: Initial net primary productivity (NPP)flux (`"Pg C year^-1"`)
 
 }}
+\note{
+See Woodard et al. (2021)
+
+See Woodard et al. (2021)
+}
 \section{Output variables}{
 
 These variables can be read using the \code{\link{GETDATA}} message type:

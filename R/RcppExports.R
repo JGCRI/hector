@@ -1398,6 +1398,57 @@ SOIL_C <- function(biome = "") {
     .Call('_hector_SOIL_C', PACKAGE = 'hector', biome)
 }
 
+#' @describeIn carboncycle Permafrost C pool (`"Pg C"`)
+#' @param biome Name of biome (leave empty for global)
+#' @export
+PERMAFROST_C <- function(biome = "") {
+    .Call('_hector_PERMAFROST_C', PACKAGE = 'hector', biome)
+}
+
+#' @describeIn carboncycle Thawed permafrost C pool (`"Pg C"`)
+#' @param biome Name of biome (leave empty for global)
+#' @export
+THAWEDP_C <- function(biome = "") {
+    .Call('_hector_THAWEDP_C', PACKAGE = 'hector', biome)
+}
+
+#' @describeIn carboncycle Fraction of permafrost still frozen (\code{"(unitless)"})
+#' @param biome Name of biome (leave empty for global)
+#' @export
+FRAC_FROZEN <- function(biome = "") {
+    .Call('_hector_FRAC_FROZEN', PACKAGE = 'hector', biome)
+}
+
+#' @describeIn carboncycle Fraction of thawed permafrost that is static (\code{"(unitless)"})
+#' @param biome Name of biome (leave empty for global)
+#' @export
+FRAC_STATIC <- function(biome = "") {
+    .Call('_hector_FRAC_STATIC', PACKAGE = 'hector', biome)
+}
+
+#' @describeIn carboncycle Permafrost thaw mu parameter (\code{"(unitless)"})
+#' @param biome Name of biome (leave empty for global)
+#' @note See Woodard et al. (2021)
+#' @export
+PERMAFROST_MU <- function(biome = "") {
+    .Call('_hector_PERMAFROST_MU', PACKAGE = 'hector', biome)
+}
+
+#' @describeIn carboncycle Permafrost thaw sigma parameter (\code{"(unitless)"})
+#' @param biome Name of biome (leave empty for global)
+#' @note See Woodard et al. (2021)
+#' @export
+PERMAFROST_SIGMA <- function(biome = "") {
+    .Call('_hector_PERMAFROST_SIGMA', PACKAGE = 'hector', biome)
+}
+
+#' @describeIn carboncycle Methane fraction of permafrost decomposition (\code{"(unitless)"})
+#' @param biome Name of biome (leave empty for global)
+#' @export
+FRAC_DECOMP_CH4 <- function(biome = "") {
+    .Call('_hector_FRAC_DECOMP_CH4', PACKAGE = 'hector', biome)
+}
+
 #' @rdname carboncycle
 #' @export
 EARTH_C <- function() {
