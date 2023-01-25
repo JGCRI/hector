@@ -18,10 +18,9 @@ jobs:
     concurrency:
       group: pkgdown-${{ github.event_name != 'pull_request' || github.run_id }}
     env:
-      GITHUB_RUNNER_VERSION: 2.300.2
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v2.300.2
 
       - uses: r-lib/actions/setup-pandoc@v2
 
