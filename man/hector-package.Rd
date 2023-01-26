@@ -65,8 +65,8 @@ Other contributors:
 \itemize{
   \item Skylar Gering \email{sgering@g.hmc.edu} (\href{https://orcid.org/0000-0003-1974-3966}{ORCID}) [contributor]
   \item Corinne Hartin \email{hartin.corinne@epa.gov} (\href{https://orcid.org/0000-0003-1834-6539}{ORCID}) [contributor]
-  \item Robert Link \email{robert.link@pnnl.gov} (\href{https://orcid.org/0000-0002-7071-248X}{ORCID}) [contributor]
-  \item Nicholson Mat (mnichol3) [contributor]
+  \item Robert Link (\href{https://orcid.org/0000-0002-7071-248X}{ORCID}) [contributor]
+  \item Mat Nicholson (mnichol3) [contributor]
   \item Pralit Patel \email{pralit.patel@pnnl.gov} (\href{https://orcid.org/0000-0003-3992-1061}{ORCID}) [contributor]
   \item Leeya Pressburger \email{leeya.pressburger@pnnl.gov} (\href{https://orcid.org/0000-0002-6850-2504}{ORCID}) [contributor, data contributor]
   \item Alexey Shiklomanov \email{alexey.shiklomanov@nasa.gov} (\href{https://orcid.org/0000-0003-4022-5979}{ORCID}) [contributor]
