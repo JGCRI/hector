@@ -1,9 +1,7 @@
 name: leeyabot
 on:
   pull_request:
-    branches:
-      - master
-      - v3_dev
+    branches: [master]
 
 jobs:
   run:
