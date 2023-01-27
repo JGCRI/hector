@@ -8,7 +8,7 @@
 tests](https://github.com/JGCRI/hector/actions/workflows/unit-testing.yaml/badge.svg)](https://github.com/JGCRI/hector/actions/workflows/unit-testing.yaml)
 [![Command Line
 Hector](https://github.com/JGCRI/hector/actions/workflows/command-line.yaml/badge.svg)](https://github.com/JGCRI/hector/actions/workflows/command-line.yaml)
-[![R-CMD](https://github.com/JGCRI/hector/actions/workflows/rcmd.yml/badge.svg)](https://github.com/JGCRI/hector/actions/workflows/rcmd.yml)
+[![R-CMD-check](https://github.com/JGCRI/hector/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/JGCRI/hector/actions/workflows/R-CMD-check.yaml)
 [![codecov](https://codecov.io/gh/JGCRI/hector/branch/master/graph/badge.svg?token=EGM0lXDxRv)](https://codecov.io/gh/JGCRI/hector)
 
 This is the repository for **Hector**, an open source, object-oriented,

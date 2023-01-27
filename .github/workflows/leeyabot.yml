@@ -1,7 +1,8 @@
 name: leeyabot
 on:
   pull_request:
-    branches: [master]
+    branches:
+      - '**' # matches every branch
 
 jobs:
   run:
