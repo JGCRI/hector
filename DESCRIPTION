@@ -72,6 +72,8 @@ VignetteBuilder: knitr
 Config/Needs/website: kableExtra, nleqslv
 RoxygenNote: 7.2.3
 SystemRequirements: GNU make
-URL: https://github.com/JGCRI/hector, https://jgcri.github.io/hector/
+URL: https://github.com/JGCRI/hector,
+    https://jgcri.github.io/hector/,
+    http://jgcri.github.io/hector/
 BugReports: https://github.com/JGCRI/hector/issues
 Language: en-US

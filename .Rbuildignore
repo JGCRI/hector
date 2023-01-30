@@ -48,3 +48,6 @@ _pkgdown.yml
 ^CITATION\.cff$
 ^CODE_OF_CONDUCT\.md$
 ^README\.Rmd$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
