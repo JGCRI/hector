@@ -1,18 +1,11 @@
 on:
   push:
+    branches: [master]
+  pull_request:
     branches:
-      - main
-      - master
-    pull-request:
-      - main
-      - master
-      - oldyaml
-  schedule:
-    # * is a special character in YAML so you have to quote this string
-    # Launch run at 6am the 1st of every month.
-    - cron:  '0 6 1 * *'
-
-  # Allows you to run this workflow manually from the Actions tab
+      - '**' # matches every branch
+  release:
+    types: [published]
   workflow_dispatch:
 
 name: pkgdown
