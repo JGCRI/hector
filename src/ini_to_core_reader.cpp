@@ -30,6 +30,7 @@
 #if __cpp_lib_filesystem || __has_include(<filesystem>)
 #include <filesystem>
 #ifdef USE_RCPP
+#include <Rcpp.h>
 namespace fs = std::__fs::filesystem;
 #else
 namespace fs = std::filesystem;
