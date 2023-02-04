@@ -1,7 +1,9 @@
-url: https://jgcri.github.io/hector/
-
 template:
-  bootstrap: 5
+  params:
+    docsearch:
+      api_key: b2aa343d0c9e9ed33c9582908f3acaf8
+      index_name: hector
+url: https://jgcri.github.io/hector/
 
 navbar:
   structure:
