@@ -105,6 +105,7 @@ int INIToCoreReader::valueHandler(void *user, const char *section,
   Rcpp::Function normalizePath = base["normalizePath"];
   Rcpp::Function dirname = base["dirname"];
   Rcpp::Function filepath = base["file.path"];
+  Rcpp::Function fileexists = base["file.exists"];
 #endif
 
   static const string csvFilePrefix = "csv:";
@@ -144,20 +145,11 @@ int INIToCoreReader::valueHandler(void *user, const char *section,
       // If the csvFileName normalizes to a real path, use that.
       // Otherwise, assume that it is pointing to a file in the
       // same directory as the INI file.
-      try {
-        // Second argument is "winslash", which is only used
-        // on Windows machines and is ignored for Unix-based
-        // systems. "\\" (single backward slash) is the
-        // default. Need it here to access the third argument
-        // -- mustWork -- which throws the error to be caught
-        // if the path doesn't exist
-        csvFileName = Rcpp::as<string>(normalizePath(csvFileName, "\\", true));
-      } catch (...) {
-        // Get the full path of the INI file with
-        // normalizePath. Then, get just the directory using dirname.
-        Rcpp::String parentPath = dirname(normalizePath(reader->iniFilePath));
-        csvFileName = Rcpp::as<string>(filepath(parentPath, csvFileName));
-      }
+      //  csvFileName = Rcpp::as<string>(filepath(csvFileName));
+        if(!Rcpp::as<bool>(fileexists(csvFileName))) {
+          Rcpp::String parentPath = dirname(normalizePath(reader->iniFilePath));
+          csvFileName = Rcpp::as<string>(filepath(parentPath, csvFileName));
+        }
 #else
       // ANS:: Algorithm for standalone Hector. Same logic -- if
       // the given path (absolute or relative) points to a file
