@@ -23,18 +23,14 @@
 #include <boost/lexical_cast.hpp>
 #pragma clang diagnostic pop
 
-// If using the R package, use Rcpp to call R's file processing
-// functions. Otherwise (e.g. if building standalone Hector),
+// Whether using the R package or building standalone Hector,
 // use std::filesystem (which is available since the C++ 17 standard)
-// if available and finally fall back to boost::filesystem (which
+// if available; otherwise fall back to boost::filesystem (which
 // needs to be installed).
-#ifdef USE_RCPP
-// some Rcpp code generates deprecated warnings under clang; ignore
-#include <Rcpp.h>
 
-#elif __cpp_lib_filesystem || __has_include(<filesystem>)
+#if __cpp_lib_filesystem || __has_include(<filesystem>)
 #include <filesystem>
-namespace fs = std::filesystem;
+namespace fs = std::__fs::filesystem;
 #else
 #include <boost/filesystem.hpp>
 namespace fs = boost::filesystem;
@@ -99,13 +95,6 @@ void INIToCoreReader::parse(const string &filename) {
  */
 int INIToCoreReader::valueHandler(void *user, const char *section,
                                   const char *name, const char *value) {
-#ifdef USE_RCPP
-  // Load R functions for path management
-  Rcpp::Environment base("package:base");
-  Rcpp::Function normalizePath = base["normalizePath"];
-  Rcpp::Function dirname = base["dirname"];
-  Rcpp::Function filepath = base["file.path"];
-#endif
 
   static const string csvFilePrefix = "csv:";
   INIToCoreReader *reader = (INIToCoreReader *)user;
@@ -137,30 +126,8 @@ int INIToCoreReader::valueHandler(void *user, const char *section,
       // to process
       string csvFileName(valueStr.begin() + csvFilePrefix.size(),
                          valueStr.end());
-#ifdef USE_RCPP
-      // ANS: This is the algorithm used if Hector is compiled
-      // as an R package.
-      //
-      // If the csvFileName normalizes to a real path, use that.
-      // Otherwise, assume that it is pointing to a file in the
-      // same directory as the INI file.
-      try {
-        // Second argument is "winslash", which is only used
-        // on Windows machines and is ignored for Unix-based
-        // systems. "\\" (single backward slash) is the
-        // default. Need it here to access the third argument
-        // -- mustWork -- which throws the error to be caught
-        // if the path doesn't exist
-        csvFileName = Rcpp::as<string>(normalizePath(csvFileName, "\\", true));
-      } catch (...) {
-        // Get the full path of the INI file with
-        // normalizePath. Then, get just the directory using dirname.
-        Rcpp::String parentPath = dirname(normalizePath(reader->iniFilePath));
-        csvFileName = Rcpp::as<string>(filepath(parentPath, csvFileName));
-      }
-#else
-      // ANS:: Algorithm for standalone Hector. Same logic -- if
-      // the given path (absolute or relative) points to a file
+      
+      // If the given path (absolute or relative) points to a file
       // that exists, use that. Otherwise, assume that the path
       // is relative to the INI file's directory.
       fs::path csvFilePath(csvFileName);
@@ -169,7 +136,6 @@ int INIToCoreReader::valueHandler(void *user, const char *section,
         fs::path fullPath(iniFilePath.parent_path() / csvFilePath);
         csvFileName = fullPath.string();
       }
-#endif
 
       CSVTableReader tableReader(csvFileName);
       tableReader.process(reader->core, section, nameStr);
