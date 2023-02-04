@@ -27,10 +27,14 @@
 // use std::filesystem (which is available since the C++ 17 standard)
 // if available; otherwise fall back to boost::filesystem (which
 // needs to be installed).
-
 #if __cpp_lib_filesystem || __has_include(<filesystem>)
 #include <filesystem>
+#ifdef USE_RCPP
 namespace fs = std::__fs::filesystem;
+#else
+namespace fs = std::filesystem;
+#endif
+
 #else
 #include <boost/filesystem.hpp>
 namespace fs = boost::filesystem;
