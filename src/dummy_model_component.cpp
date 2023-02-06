@@ -74,7 +74,7 @@ unitval DummyModelComponent::sendMessage(const std::string &message,
 
   } else if (message == M_SETDATA) { //! Caller is requesting to set data
     // TODO: call setData below
-  
+
   } else { //! We don't handle any other messages
     H_THROW("Caller sent unknown message: " + message);
   }

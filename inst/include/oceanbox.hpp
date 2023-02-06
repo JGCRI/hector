@@ -29,9 +29,9 @@
 
 // Mean absolute global tos temperature, preindustrial (deg C), this is used by
 // the ocean component which, requires absolute temperature to calculate ocean
-// chemistry, the CMIP6 multi model mean from 1850 - 1860. See Leeya Pressburger,
-// & Kalyn R. Dorheim. (2022). JGCRI/hector_cmip6data: v1.0 (v1.0). Zenodo.
-// https://doi.org/10.5281/zenodo.7304553
+// chemistry, the CMIP6 multi model mean from 1850 - 1860. See Leeya
+// Pressburger, & Kalyn R. Dorheim. (2022). JGCRI/hector_cmip6data: v1.0 (v1.0).
+// Zenodo. https://doi.org/10.5281/zenodo.7304553
 #define MEAN_TOS_TEMP 18
 
 namespace Hector {

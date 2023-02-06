@@ -101,11 +101,11 @@ void SimpleNbox::init(Core *coreptr) {
   pf_sigma[SNBOX_DEFAULT_BIOME] = 0.986;
   pf_mu[SNBOX_DEFAULT_BIOME] = 1.67;
   fpf_static[SNBOX_DEFAULT_BIOME] = 0.74;
-  
+
   final_npp[SNBOX_DEFAULT_BIOME] = fluxpool(0.0, U_PGC_YR, false, "final_npp");
   final_rh[SNBOX_DEFAULT_BIOME] = fluxpool(0.0, U_PGC_YR, false, "final_rh");
   RH_ch4[SNBOX_DEFAULT_BIOME] = fluxpool(0.0, U_PGC_YR, false, "RH_ch4");
-  
+
   // Constraint residuals
   Ca_residual.set(0.0, U_PGC);
 
@@ -256,10 +256,14 @@ void SimpleNbox::setData(const std::string &varName, const message_data &data) {
       set_c0(data.getUnitval(U_PGC).value(U_PGC) * PGC_TO_PPMVCO2);
     } else if (varNameParsed == D_PREINDUSTRIAL_CO2) {
       H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
-      H_ASSERT(biome == SNBOX_DEFAULT_BIOME, "preindustrial CO2 must be global");
+      H_ASSERT(biome == SNBOX_DEFAULT_BIOME,
+               "preindustrial CO2 must be global");
       if (data.getUnitval(U_PPMV_CO2).value(U_PPMV_CO2) != 277.15) {
-          H_LOG(logger, Logger::WARNING) << "Changing " << varNameParsed <<
-              " from default value; this is not recomended and may cause issues with RF CO2 calucations" << std::endl;
+        H_LOG(logger, Logger::WARNING)
+            << "Changing " << varNameParsed
+            << " from default value; this is not recomended and may cause "
+               "issues with RF CO2 calucations"
+            << std::endl;
       }
       set_c0(data.getUnitval(U_PPMV_CO2).value(U_PPMV_CO2));
     } else if (varNameParsed == D_VEGC) {
@@ -388,7 +392,7 @@ void SimpleNbox::setData(const std::string &varName, const message_data &data) {
       H_ASSERT(data.date == Core::undefinedIndex(),
                "date not allowed for CH4 decomposition fraction");
       rh_ch4_frac[biome] = data.getUnitval(U_UNITLESS);
-   }
+    }
 
     else {
       H_LOG(logger, Logger::DEBUG)
@@ -447,14 +451,12 @@ double SimpleNbox::sum_map(double_stringmap pool) const {
 }
 
 //------------------------------------------------------------------------------
-/*! \brief      Helper function: extract a fluxpool from a time series, or return current fluxpool
- *  \param varName Variable name being requested in getData below
- *  \param date Date to extract from time series
- *  \param biome Biome to extract from time series
- *  \param pool The current pool
- *  \param pool_tv The time series of the pool
- *  \returns    Sum of the unitvals in the map
- *  \exception  If the biome doesn't exist
+/*! \brief      Helper function: extract a fluxpool from a time series, or
+ * return current fluxpool \param varName Variable name being requested in
+ * getData below \param date Date to extract from time series \param biome Biome
+ * to extract from time series \param pool The current pool \param pool_tv The
+ * time series of the pool \returns    Sum of the unitvals in the map \exception
+ * If the biome doesn't exist
  */
 fluxpool
 SimpleNbox::sum_fluxpool_biome_ts(const string varName, const double date,
@@ -485,20 +487,23 @@ SimpleNbox::sum_fluxpool_biome_ts(const string varName, const double date,
  *  \param biome Biome to extract from time series
  *  \param date Date to extract from time series
  */
-double SimpleNbox::f_frozen_weighted_mean(const string biome, const double date) {
+double SimpleNbox::f_frozen_weighted_mean(const string biome,
+                                          const double date) {
 
   fluxpool perm_tot = sum_map(permafrost_c);
   double temp_step = 0.0;
-  
-  // f_frozen output should be 1.0 when there is no permafrost carbon in the system
-  // otherwise it should be the permafrost-area weighted average across biomes
-  if(perm_tot.value(U_PGC) > 0.0) {
-    if(date == Core::undefinedIndex()) {
-      for(auto biome : biome_list)
-          temp_step += (permafrost_c.at(biome) / perm_tot) * f_frozen.at(biome);
+
+  // f_frozen output should be 1.0 when there is no permafrost carbon in the
+  // system otherwise it should be the permafrost-area weighted average across
+  // biomes
+  if (perm_tot.value(U_PGC) > 0.0) {
+    if (date == Core::undefinedIndex()) {
+      for (auto biome : biome_list)
+        temp_step += (permafrost_c.at(biome) / perm_tot) * f_frozen.at(biome);
     } else {
-      for(auto biome : biome_list)
-        temp_step += (permafrost_c.at(biome)/perm_tot)*f_frozen_tv.get(date).at(biome);
+      for (auto biome : biome_list)
+        temp_step += (permafrost_c.at(biome) / perm_tot) *
+                     f_frozen_tv.get(date).at(biome);
     }
   } else { // no permafrost in system
     temp_step = 1.0;
@@ -626,7 +631,7 @@ unitval SimpleNbox::getData(const std::string &varName, const double date) {
                                       permafrost_c_tv);
   } else if (varNameParsed == D_F_FROZEN) {
     double tempval;
-    if(biome == SNBOX_DEFAULT_BIOME) {
+    if (biome == SNBOX_DEFAULT_BIOME) {
       tempval = f_frozen_weighted_mean(biome, date);
     } else {
       H_ASSERT(has_biome(biome), biome_error);
@@ -680,7 +685,7 @@ unitval SimpleNbox::getData(const std::string &varName, const double date) {
   } else if (varNameParsed == D_RH) {
     returnval =
         sum_fluxpool_biome_ts(varName, date, biome, final_rh, final_rh_tv);
-  } else if(varNameParsed == D_RH_CH4) {
+  } else if (varNameParsed == D_RH_CH4) {
     returnval = sum_fluxpool_biome_ts(varName, date, biome, RH_ch4, RH_ch4_tv);
   } else {
     H_THROW("Caller is requesting unknown variable: " + varName);
@@ -705,7 +710,7 @@ void SimpleNbox::reset(double time) {
   final_npp = final_npp_tv.get(time);
   final_rh = final_rh_tv.get(time);
   RH_ch4 = RH_ch4_tv.get(time);
-  
+
   Ca_residual = Ca_residual_ts.get(time);
 
   tempferts = tempferts_tv.get(time);
@@ -741,7 +746,7 @@ void SimpleNbox::reset(double time) {
   final_npp_tv.truncate(time);
   final_rh_tv.truncate(time);
   RH_ch4_tv.truncate(time);
-  
+
   Ca_residual_ts.truncate(time);
 
   tempferts_tv.truncate(time);
@@ -889,7 +894,7 @@ void SimpleNbox::createBiome(const std::string &biome) {
   add_biome_to_ts(tempferts_tv, biome, 1.0);
   f_frozen[biome] = 1.0;
   add_biome_to_ts(f_frozen_tv, biome, 1.0);
-  
+
   std::string last_biome = biome_list.back();
 
   // Set parameters to same as most recent biome

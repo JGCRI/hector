@@ -76,7 +76,7 @@ unitval slrComponent::sendMessage(const std::string &message,
   } else if (message == M_SETDATA) { //! Caller is requesting to set data
     H_THROW("SLR sendMessage not yet implemented for message=M_SETDATA.");
     // TODO: call setData below
- 
+
   } else { //! We don't handle any other messages
     H_THROW("Caller sent unknown message: " + message);
   }

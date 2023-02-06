@@ -95,11 +95,12 @@ void CH4Component::setData(const string &varName, const message_data &data) {
   try {
     if (varName == D_PREINDUSTRIAL_CH4) {
       H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
-        if (data.getUnitval(U_PPBV_CH4).value(U_PPBV_CH4) != 731.41) {
-            H_LOG(logger, Logger::WARNING) << "Changing " << varName <<
-                " from default value; this is not recomended and may cause" <<
-                    " issues with RF CH4 calucation" << std::endl;
-        }
+      if (data.getUnitval(U_PPBV_CH4).value(U_PPBV_CH4) != 731.41) {
+        H_LOG(logger, Logger::WARNING)
+            << "Changing " << varName
+            << " from default value; this is not recomended and may cause"
+            << " issues with RF CH4 calucation" << std::endl;
+      }
       M0 = data.getUnitval(U_PPBV_CH4);
     } else if (varName == D_EMISSIONS_CH4) {
       H_ASSERT(data.date != Core::undefinedIndex(), "date required");
@@ -163,13 +164,15 @@ void CH4Component::run(const double runToDate) {
         << "Year " << runToDate << " current_toh = " << current_toh
         << std::endl;
 
-    // Permafrost thaw produces CH4 emissions
-    #define PG_C_TO_TG_CH4 (1000.0 * 16.04 / 12.01)
-    const double rh_ch4 = core->sendMessage(M_GETDATA, D_RH_CH4).value(U_PGC_YR) * PG_C_TO_TG_CH4;
+// Permafrost thaw produces CH4 emissions
+#define PG_C_TO_TG_CH4 (1000.0 * 16.04 / 12.01)
+    const double rh_ch4 =
+        core->sendMessage(M_GETDATA, D_RH_CH4).value(U_PGC_YR) * PG_C_TO_TG_CH4;
 
     // Additional, background CH4 natural emissions
     const double ch4n = CH4N.value(U_TG_CH4);
-    const double emisTocon = (current_ch4em + rh_ch4 + ch4n) / UC_CH4.value(U_TG_PPBV);
+    const double emisTocon =
+        (current_ch4em + rh_ch4 + ch4n) / UC_CH4.value(U_TG_PPBV);
     const double previous_ch4 = CH4.get(oldDate);
 
     H_LOG(logger, Logger::DEBUG)

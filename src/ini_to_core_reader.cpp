@@ -146,10 +146,10 @@ int INIToCoreReader::valueHandler(void *user, const char *section,
       // Otherwise, assume that it is pointing to a file in the
       // same directory as the INI file.
       //  csvFileName = Rcpp::as<string>(filepath(csvFileName));
-        if(!Rcpp::as<bool>(fileexists(csvFileName))) {
-          Rcpp::String parentPath = dirname(normalizePath(reader->iniFilePath));
-          csvFileName = Rcpp::as<string>(filepath(parentPath, csvFileName));
-        }
+      if (!Rcpp::as<bool>(fileexists(csvFileName))) {
+        Rcpp::String parentPath = dirname(normalizePath(reader->iniFilePath));
+        csvFileName = Rcpp::as<string>(filepath(parentPath, csvFileName));
+      }
 #else
       // ANS:: Algorithm for standalone Hector. Same logic -- if
       // the given path (absolute or relative) points to a file

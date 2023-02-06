@@ -89,7 +89,7 @@ void OceanComponent::init(Core *coreptr) {
   // ocean carbon pools from IPCC AR6 Figure 5.12.
   preind_C_surface.set(900, U_PGC); // (Pg C) IPCC AR6 Figure 5.12
   preind_C_ID.set(37100, U_PGC);    // (Pg C) IPCC AR6 Figure 5.12
-  
+
   // Register the data we can provide
   core->registerCapability(D_OCEAN_C_UPTAKE, getComponentName());
   core->registerCapability(D_OCEAN_C, getComponentName());
@@ -211,8 +211,9 @@ void OceanComponent::prepareToRun() {
       100; // (m) Thickness of surface ocean from Knox and McElroy (1984)
   const double thick_HL =
       100; // (m) Thickness of surface ocean from Knox and McElroy (1984)
-  const double thick_inter = 1000 - thick_LL; // (m) Thickness of of intermediate
-                                        // ocean from Knox and McElroy (1984)
+  const double thick_inter =
+      1000 - thick_LL; // (m) Thickness of of intermediate
+                       // ocean from Knox and McElroy (1984)
   const double thick_deep =
       3777 - thick_inter -
       thick_LL; // (m) Thickness of deep ocean from Knox and McElroy (1984)
@@ -284,18 +285,18 @@ void OceanComponent::prepareToRun() {
 
   // Inputs for surface chemistry boxes
   surfaceHL.deltaT.set(-16.4,
-                       U_DEGC); // delta T to the absolute mean ocean tos to
-                                // return the initial temperature value of the
-                                // HL surface. Pressburger & Dorheim (2022)
+                       U_DEGC);   // delta T to the absolute mean ocean tos to
+                                  // return the initial temperature value of the
+                                  // HL surface. Pressburger & Dorheim (2022)
   surfaceHL.mychemistry.S = 34.5; // Salinity Riley and Tongudai (1967)
   surfaceHL.mychemistry.volumeofbox = HL_volume;     // m3
   surfaceHL.mychemistry.As = ocean_area * part_high; // surface area m2
   surfaceHL.mychemistry.U = 6.7; // average wind speed m/s Hartin et al. 2016
 
   surfaceLL.deltaT.set(2.9,
-                       U_DEGC); // delta T to the absolute mean ocean tos to
-                                // return the initial temperature value of the
-                                // LL surface. Pressburger & Dorheim (2022)
+                       U_DEGC);   // delta T to the absolute mean ocean tos to
+                                  // return the initial temperature value of the
+                                  // LL surface. Pressburger & Dorheim (2022)
   surfaceLL.mychemistry.S = 34.5; // Salinity Riley and Tongudai (1967)
   surfaceLL.mychemistry.volumeofbox = LL_volume;    // m3
   surfaceLL.mychemistry.As = ocean_area * part_low; // surface area m2

@@ -17,7 +17,7 @@ For example, assuming that the working directory is the repository root:
 # First, if needed:
 brew install clang-format
 
-# Important note: we do NOT want to touch `src/rcpp_constants.cpp`
+# Important note: we do NOT want to touch `src/rcpp_constants.cpp` pr `src/rcpp_hector.cpp`
 find src/ -name "*.c*" | grep -v rcpp_constants | clang-format -i
 clang-format -i inst/include/*.h*
 ```

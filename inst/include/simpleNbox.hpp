@@ -267,8 +267,8 @@ private:
   double_stringmap pf_mu; //!< Mean for permafrost-temp model fit
   double_stringmap fpf_static; //!< Permafrost C non-labile fraction
   typedef std::map<std::string, boost::math::lognormal> lognormal_stringmap;
-  lognormal_stringmap pf_s;//!< Permafrost lognormal distribution
-  
+  lognormal_stringmap pf_s; //!< Permafrost lognormal distribution
+
   /*****************************************************************
    * Functions computing sub-elements of the carbon cycle
    *****************************************************************/
@@ -293,8 +293,10 @@ private:
      double time = Core::undefinedIndex()) const; //!< calculates RH for a biome
   fluxpool sum_rh(double time = Core::undefinedIndex())
       const; //!< calculates RH, global total
-  tuple<double, double, double> compute_pf_thaw_refreeze(string biome, fluxpool rh_co2, fluxpool rh_ch4) const;
-  
+  tuple<double, double, double> compute_pf_thaw_refreeze(string biome,
+                                                         fluxpool rh_co2,
+                                                         fluxpool rh_ch4) const;
+
   /*****************************************************************
    * Private helper functions
    *****************************************************************/

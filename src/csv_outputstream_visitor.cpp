@@ -196,14 +196,16 @@ void CSVOutputStreamVisitor::visit(SimpleNbox *c) {
                      c->final_rh[biome]);
       STREAM_UNITVAL(csvFile, c, biome + SNBOX_PARSECHAR + D_RH_CH4,
                      c->RH_ch4[biome]);
-     STREAM_UNITVAL(csvFile, c, biome + SNBOX_PARSECHAR + D_VEGC,
+      STREAM_UNITVAL(csvFile, c, biome + SNBOX_PARSECHAR + D_VEGC,
                      c->veg_c[biome]);
       STREAM_UNITVAL(csvFile, c, biome + SNBOX_PARSECHAR + D_DETRITUSC,
                      c->detritus_c[biome]);
       STREAM_UNITVAL(csvFile, c, biome + SNBOX_PARSECHAR + D_SOILC,
                      c->soil_c[biome]);
-      STREAM_UNITVAL( csvFile, c, biome + SNBOX_PARSECHAR + D_PERMAFROSTC, c->permafrost_c[ biome ] );
-      STREAM_UNITVAL( csvFile, c, biome + SNBOX_PARSECHAR + D_THAWEDPC, c->thawed_permafrost_c[ biome ] );
+      STREAM_UNITVAL(csvFile, c, biome + SNBOX_PARSECHAR + D_PERMAFROSTC,
+                     c->permafrost_c[biome]);
+      STREAM_UNITVAL(csvFile, c, biome + SNBOX_PARSECHAR + D_THAWEDPC,
+                     c->thawed_permafrost_c[biome]);
       STREAM_UNITVAL(csvFile, c, biome + SNBOX_PARSECHAR + D_F_FROZEN,
                      unitval(c->f_frozen[biome], U_UNITLESS));
       STREAM_UNITVAL(csvFile, c, biome + SNBOX_PARSECHAR + D_TEMPFERTD,

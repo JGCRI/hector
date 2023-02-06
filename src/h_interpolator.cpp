@@ -48,11 +48,11 @@ h_interpolator::~h_interpolator() { release_data(); }
  *  Release memory used by internal vars.
  */
 void h_interpolator::release_data() {
-  delete[](xdata); // free old memory, if necessary
-  delete[](ydata);
-  delete[](b_coef);
-  delete[](c_coef);
-  delete[](d_coef);
+  delete[] (xdata); // free old memory, if necessary
+  delete[] (ydata);
+  delete[] (b_coef);
+  delete[] (c_coef);
+  delete[] (d_coef);
 }
 
 //-----------------------------------------------------------------------
