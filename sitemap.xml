@@ -4,70 +4,115 @@
     <loc>https://jgcri.github.io/hector/404.html</loc>
   </url>
   <url>
-    <loc>https://jgcri.github.io/hector/CONTRIBUTING.html</loc>
+    <loc>https://jgcri.github.io/hector/CODE_OF_CONDUCT.html</loc>
   </url>
   <url>
     <loc>https://jgcri.github.io/hector/LICENSE.html</loc>
   </url>
   <url>
-    <loc>https://jgcri.github.io/hector/articles/hector_apply.html</loc>
+    <loc>https://jgcri.github.io/hector/articles/AddNewComponent.html</loc>
+  </url>
+  <url>
+    <loc>https://jgcri.github.io/hector/articles/AddNewVariable.html</loc>
+  </url>
+  <url>
+    <loc>https://jgcri.github.io/hector/articles/AuthorshipGuidelines.html</loc>
+  </url>
+  <url>
+    <loc>https://jgcri.github.io/hector/articles/BuildHector.html</loc>
+  </url>
+  <url>
+    <loc>https://jgcri.github.io/hector/articles/ComponentAPI.html</loc>
+  </url>
+  <url>
+    <loc>https://jgcri.github.io/hector/articles/Constraints.html</loc>
+  </url>
+  <url>
+    <loc>https://jgcri.github.io/hector/articles/ContributionsGuide.html</loc>
+  </url>
+  <url>
+    <loc>https://jgcri.github.io/hector/articles/ExternalAPI.html</loc>
+  </url>
+  <url>
+    <loc>https://jgcri.github.io/hector/articles/Hector-Wider-World.html</loc>
+  </url>
+  <url>
+    <loc>https://jgcri.github.io/hector/articles/HectorSummary.html</loc>
+  </url>
+  <url>
+    <loc>https://jgcri.github.io/hector/articles/InputFiles.html</loc>
+  </url>
+  <url>
+    <loc>https://jgcri.github.io/hector/articles/Permafrost.html</loc>
+  </url>
+  <url>
+    <loc>https://jgcri.github.io/hector/articles/SimpleNBox.html</loc>
+  </url>
+  <url>
+    <loc>https://jgcri.github.io/hector/articles/StyleGuide.html</loc>
+  </url>
+  <url>
+    <loc>https://jgcri.github.io/hector/articles/TimeSeries.html</loc>
+  </url>
+  <url>
+    <loc>https://jgcri.github.io/hector/articles/Unitvals.html</loc>
+  </url>
+  <url>
+    <loc>https://jgcri.github.io/hector/articles/VersionNumbers.html</loc>
+  </url>
+  <url>
+    <loc>https://jgcri.github.io/hector/articles/addnewforcer.html</loc>
+  </url>
+  <url>
+    <loc>https://jgcri.github.io/hector/articles/climate.html</loc>
+  </url>
+  <url>
+    <loc>https://jgcri.github.io/hector/articles/ex_GMAT-GMST.html</loc>
+  </url>
+  <url>
+    <loc>https://jgcri.github.io/hector/articles/ex_carbon_tracking.html</loc>
+  </url>
+  <url>
+    <loc>https://jgcri.github.io/hector/articles/ex_hector_apply.html</loc>
+  </url>
+  <url>
+    <loc>https://jgcri.github.io/hector/articles/ex_land_ocean_warming.html</loc>
+  </url>
+  <url>
+    <loc>https://jgcri.github.io/hector/articles/ex_multiple-biomes.html</loc>
+  </url>
+  <url>
+    <loc>https://jgcri.github.io/hector/articles/hector.html</loc>
   </url>
   <url>
     <loc>https://jgcri.github.io/hector/articles/index.html</loc>
   </url>
   <url>
-    <loc>https://jgcri.github.io/hector/articles/intro-to-hector.html</loc>
+    <loc>https://jgcri.github.io/hector/articles/manual.html</loc>
   </url>
   <url>
-    <loc>https://jgcri.github.io/hector/articles/manual/AddNewComponent.html</loc>
+    <loc>https://jgcri.github.io/hector/articles/ocean-carbon-cycle.html</loc>
   </url>
   <url>
-    <loc>https://jgcri.github.io/hector/articles/manual/AddNewVariable.html</loc>
+    <loc>https://jgcri.github.io/hector/articles/output.html</loc>
   </url>
   <url>
-    <loc>https://jgcri.github.io/hector/articles/manual/BuildHector.html</loc>
+    <loc>https://jgcri.github.io/hector/articles/outputstream.html</loc>
   </url>
   <url>
-    <loc>https://jgcri.github.io/hector/articles/manual/ComponentAPI.html</loc>
+    <loc>https://jgcri.github.io/hector/articles/units.html</loc>
   </url>
   <url>
-    <loc>https://jgcri.github.io/hector/articles/manual/Constraints.html</loc>
-  </url>
-  <url>
-    <loc>https://jgcri.github.io/hector/articles/manual/ContributionsGuide.html</loc>
-  </url>
-  <url>
-    <loc>https://jgcri.github.io/hector/articles/manual/Hector-Wider-World.html</loc>
-  </url>
-  <url>
-    <loc>https://jgcri.github.io/hector/articles/manual/InputFiles.html</loc>
-  </url>
-  <url>
-    <loc>https://jgcri.github.io/hector/articles/manual/SimpleNBox.html</loc>
-  </url>
-  <url>
-    <loc>https://jgcri.github.io/hector/articles/manual/StyleGuide.html</loc>
-  </url>
-  <url>
-    <loc>https://jgcri.github.io/hector/articles/manual/TimeSeries.html</loc>
-  </url>
-  <url>
-    <loc>https://jgcri.github.io/hector/articles/manual/Unitvals.html</loc>
-  </url>
-  <url>
-    <loc>https://jgcri.github.io/hector/articles/manual/VersionNumbers.html</loc>
-  </url>
-  <url>
-    <loc>https://jgcri.github.io/hector/articles/manual/index.html</loc>
-  </url>
-  <url>
-    <loc>https://jgcri.github.io/hector/articles/multiple-biomes.html</loc>
+    <loc>https://jgcri.github.io/hector/articles/v3_output_changes.html</loc>
   </url>
   <url>
     <loc>https://jgcri.github.io/hector/authors.html</loc>
   </url>
   <url>
     <loc>https://jgcri.github.io/hector/index.html</loc>
+  </url>
+  <url>
+    <loc>https://jgcri.github.io/hector/news/index.html</loc>
   </url>
   <url>
     <loc>https://jgcri.github.io/hector/reference/carboncycle.html</loc>
@@ -88,6 +133,9 @@
     <loc>https://jgcri.github.io/hector/reference/delete_biome_impl.html</loc>
   </url>
   <url>
+    <loc>https://jgcri.github.io/hector/reference/delta.html</loc>
+  </url>
+  <url>
     <loc>https://jgcri.github.io/hector/reference/emissions.html</loc>
   </url>
   <url>
@@ -97,10 +145,22 @@
     <loc>https://jgcri.github.io/hector/reference/forcings.html</loc>
   </url>
   <url>
+    <loc>https://jgcri.github.io/hector/reference/fxntable.html</loc>
+  </url>
+  <url>
     <loc>https://jgcri.github.io/hector/reference/get_biome_inits.html</loc>
   </url>
   <url>
     <loc>https://jgcri.github.io/hector/reference/get_biome_list.html</loc>
+  </url>
+  <url>
+    <loc>https://jgcri.github.io/hector/reference/get_tracking_data.html</loc>
+  </url>
+  <url>
+    <loc>https://jgcri.github.io/hector/reference/get_tracking_data_impl.html</loc>
+  </url>
+  <url>
+    <loc>https://jgcri.github.io/hector/reference/getfxn.html</loc>
   </url>
   <url>
     <loc>https://jgcri.github.io/hector/reference/getunits.html</loc>
@@ -122,6 +182,9 @@
   </url>
   <url>
     <loc>https://jgcri.github.io/hector/reference/index.html</loc>
+  </url>
+  <url>
+    <loc>https://jgcri.github.io/hector/reference/inputstable.html</loc>
   </url>
   <url>
     <loc>https://jgcri.github.io/hector/reference/loglevels.html</loc>
@@ -151,6 +214,9 @@
     <loc>https://jgcri.github.io/hector/reference/reset.html</loc>
   </url>
   <url>
+    <loc>https://jgcri.github.io/hector/reference/rho.html</loc>
+  </url>
+  <url>
     <loc>https://jgcri.github.io/hector/reference/run.html</loc>
   </url>
   <url>
@@ -173,5 +239,8 @@
   </url>
   <url>
     <loc>https://jgcri.github.io/hector/reference/temperature.html</loc>
+  </url>
+  <url>
+    <loc>https://jgcri.github.io/hector/reference/unitstable.html</loc>
   </url>
 </urlset>

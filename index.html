@@ -4,16 +4,18 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="Provides an R interface for the Hector Simple Climate
+    Model. Using this interface you can set up and initialize the model,
+    change model parameters and emissions inputs, run Hector, and
+    retrieve model outputs. Note that the package authors are not
+    identical to the C++ model authors.">
 <title>The Hector Simple Climate Model • hector</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
-<script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
+<script src="deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script><!-- docsearch --><script src="docsearch.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous">
-<link href="docsearch.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="The Hector Simple Climate Model">
+<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="The Hector Simple Climate Model">
 <meta property="og:description" content="Provides an R interface for the Hector Simple Climate
     Model. Using this interface you can set up and initialize the model,
     change model parameters and emissions inputs, run Hector, and
@@ -24,112 +26,122 @@
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
-<body data-spy="scroll" data-target="#toc">
+<body>
+    <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
     
 
-    <div class="container template-home">
-      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <span class="navbar-brand">
-        <a class="navbar-link" href="index.html">hector</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.5.0</span>
-      </span>
-    </div>
+    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
+    
+    <a class="navbar-brand me-2" href="index.html">hector</a>
 
-    <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
-<li>
-  <a href="index.html">
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">3.0.0</small>
+
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div id="navbar" class="collapse navbar-collapse ms-3">
+      <ul class="navbar-nav me-auto">
+<li class="active nav-item">
+  <a class="nav-link" href="index.html">
     <span class="fa fa-home fa-lg"></span>
      
   </a>
 </li>
-<li>
-  <a href="articles/manual/index.html">Manual</a>
+<li class="nav-item">
+  <a class="nav-link" href="articles/manual.html">Manual</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Vignettes
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
-<li>
-      <a href="articles/intro-to-hector.html">A tour of the Hector R interface</a>
-    </li>
-    <li>
-      <a href="articles/hector_apply.html">Example: Using Hector to solve for an emissions pathway</a>
-    </li>
-    <li>
-      <a href="articles/multiple-biomes.html">Example: Running Hector with multiple biomes</a>
-    </li>
-  </ul>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-getting-started">Getting Started</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-getting-started">
+    <a class="dropdown-item" href="articles/BuildHector.html">Building Hector</a>
+    <a class="dropdown-item" href="articles/hector.html">Intro to Hector R interface</a>
+    <a class="dropdown-item" href="articles/Hector-Wider-World.html">Documentation manuscripts &amp; tutorials</a>
+  </div>
 </li>
-<li>
-  <a href="reference/index.html">Reference</a>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-examples">Examples</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-examples">
+    <a class="dropdown-item" href="articles/hector.html">Example: Basic run and simple sensitivity anlaysis</a>
+    <a class="dropdown-item" href="articles/ex_hector_apply.html">Example: Using Hector to solve for an emissions pathway</a>
+    <a class="dropdown-item" href="articles/ex_multiple-biomes.html">Example: Running Hector with multiple biomes</a>
+    <a class="dropdown-item" href="articles/ex_carbon_tracking.html">Example: Carbon tracking with Hector</a>
+    <a class="dropdown-item" href="articles/ex_land_ocean_warming.html">Example: Changing Hector's land ocean warming ratio parameter</a>
+  </div>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="reference/index.html">Reference</a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="news/index.html">News</a>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right">
-<li>
-  <a href="https://github.com/JGCRI/hector" class="external-link">
+<form class="form-inline my-2 my-lg-0" role="search">
+        <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="search.json" id="search-input" placeholder="Search for" autocomplete="off">
+</form>
+
+      <ul class="navbar-nav">
+<li class="nav-item">
+  <a class="external-link nav-link" href="https://github.com/JGCRI/hector">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
 </li>
       </ul>
-<form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
-        <div class="form-group">
-          <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
 </div>
-      </form>
-      
-    </div>
-<!--/.nav-collapse -->
+
+    
   </div>
-<!--/.container -->
-</div>
-<!--/.navbar -->
-
-      
-
-      </header><div class="row">
-  <div class="contents col-md-9">
-
-
-<div class="section level1">
-<div class="page-header"><h1 id="hector">Hector<a class="anchor" aria-label="anchor" href="#hector"></a>
+</nav><div class="container template-home">
+<div class="row">
+  <main id="main" class="col-md-9"><div class="section level1">
+<div class="page-header"><h1 id="hector">hector<a class="anchor" aria-label="anchor" href="#hector"></a>
 </h1></div>
-<p>This is the repository for <strong>Hector</strong>, an open source, object-oriented, simple global climate carbon-cycle model. It runs essentially instantaneously while still representing the most critical global scale earth system processes, and is one of a class of models heavily used for for emulating complex climate models and uncertainty analyses. For example, Hector’s global temperature rise for the RCP 8.5 scenario, compared to observations and other model results, looks like this:</p>
-<p><img src="https://github.com/JGCRI/hector/wiki/rcp85.png"></p>
-<p>The primary link to Hector model documentation is the <a href="https://jgcri.github.io/hector/articles/manual">online manual</a>, which is included in the repository in the <code>vignettes/manual</code> directory. The code is also documented with <a href="http://doxygen.org" class="external-link">Doxygen</a>-style comments. A formal model description paper (<a href="http://www.geosci-model-dev.net/8/939/2015/gmd-8-939-2015.html" class="external-link">Hartin et al. 2015</a>) documents its science internals and performance relative to observed data, the <a href="http://cmip-pcmdi.llnl.gov/cmip5/" class="external-link">CMIP5</a> archive, and the reduced-complexity <a href="http://www.magicc.org" class="external-link">MAGICC</a> model (as of <a href="https://github.com/JGCRI/hector/tree/v1.0" class="external-link">version 1.0</a>). In addition, we have developed two package vignettes demonstrating the <a href="http://jgcri.github.io/hector/articles/intro-to-hector.html" class="external-link">basics of the Hector R interface</a> and an example application of <a href="http://jgcri.github.io/hector/articles/hector_apply.html" class="external-link">solving for an emissions pathway</a>.</p>
-<p>This research was supported by the U.S. Department of Energy, Office of Science, as part of research in Multi-Sector Dynamics, Earth and Environmental System Modeling Program. The Pacific Northwest National Laboratory is operated for DOE by Battelle Memorial Institute under contract DE-AC05-76RL01830.</p>
+<p><a href="https://zenodo.org/badge/latestdoi/22892935" class="external-link"><img src="https://zenodo.org/badge/22892935.svg" alt="DOI"></a> <a href="https://github.com/JGCRI/hector/actions/workflows/unit-testing.yaml" class="external-link"><img src="https://github.com/JGCRI/hector/actions/workflows/unit-testing.yaml/badge.svg" alt="C++ unit tests"></a> <a href="https://github.com/JGCRI/hector/actions/workflows/command-line.yaml" class="external-link"><img src="https://github.com/JGCRI/hector/actions/workflows/command-line.yaml/badge.svg" alt="Command Line Hector"></a> <a href="https://github.com/JGCRI/hector/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/JGCRI/hector/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a> <a href="https://codecov.io/gh/JGCRI/hector" class="external-link"><img src="https://codecov.io/gh/JGCRI/hector/branch/master/graph/badge.svg?token=EGM0lXDxRv" alt="codecov"></a></p>
+<p>This is the repository for <strong>Hector</strong>, an open source, object-oriented, simple global climate carbon-cycle model that runs very quickly while still representing the most critical global scale earth system processes. Hector is a simple climate model (SCM, also known as a reduced-complexity climate model), a class of models that are extremely versatile with a wide range of applications. Due to their computational efficiency, SCMs can easily be coupled to other models and used to design scenarios, emulate more complex climate models, and conduct uncertainty analyses.</p>
+<p><img src="reference/figures/README-tas_plot-1.png" width="100%"></p>
+<p>Hector’s output for global mean air temperature change for eight Shared Socioeconomic Pathways (SSPs).</p>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<p>The <code>hector</code> R package can be installed using the <code><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">remotes::install_github</a></code> function. More detailed installation instructions, including how to set up Hector as a command line executable, can be found <a href="articles/BuildHector.html">here</a>.</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">'jgcri/hector'</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/JGCRI/hector" class="external-link">hector</a></span><span class="op">)</span></span></code></pre></div>
+</div>
 <div class="section level2">
 <h2 id="tools-and-software-that-work-with-hector">Tools and Software That Work with Hector<a class="anchor" aria-label="anchor" href="#tools-and-software-that-work-with-hector"></a>
 </h2>
 <ul>
 <li>
-<a href="https://github.com/JGCRI/gcam-core" class="external-link">GCAM</a>: Hector can be used as the climate component in <a href="http://jgcri.github.io/gcam-doc/" class="external-link">GCAM</a>.</li>
+<a href="https://github.com/JGCRI/gcam-core" class="external-link">GCAM</a>: Hector can be used as the climate component in <a href="http://jgcri.github.io/gcam-doc/" class="external-link">GCAM</a>
+</li>
 <li>
-<a href="https://github.com/openclimatedata/pyhector" class="external-link">pyhector</a>: a Python interface to Hector.</li>
+<a href="https://github.com/openclimatedata/pyhector" class="external-link">pyhector</a>: a Python interface to Hector</li>
+<li>
+<a href="https://github.com/JGCRI/fldgen" class="external-link">fldgen</a>: a spatially resolved temperature &amp; precipitation emulator for CMIP5 ESMs</li>
 <li>
 <a href="https://jgcri.shinyapps.io/HectorUI/" class="external-link">HectorUI</a>: run Hector in a web interface!</li>
 </ul>
-<p>## Contributing to Hector</p>
-<p>The Hector team welcomes and values community contributions but please see our <a href="KRD-UPDATE">Contribution Guide</a>.</p>
+</div>
+<div class="section level2">
+<h2 id="contributing-to-hector">Contributing to Hector<a class="anchor" aria-label="anchor" href="#contributing-to-hector"></a>
+</h2>
+<p>The Hector team welcomes and values community contributions, but please see our <a href="articles/ContributionsGuide.html">Contribution Guide</a> and note by contributing to this project, you agree to abide to our <a href="CODE_OF_CONDUCT.html">Contributor Code of Conduct</a></p>
+<hr>
+<p>This research was supported by the U.S. Department of Energy, Office of Science, as part of research in Multi-Sector Dynamics, Earth and Environmental System Modeling Program. The Pacific Northwest National Laboratory is operated for DOE by Battelle Memorial Institute under contract DE-AC05-76RL01830.</p>
 </div>
 </div>
+  </main><aside class="col-md-3"><div class="links">
+<h2 data-toc-skip>Links</h2>
+<ul class="list-unstyled">
+<li><a href="https://github.com/JGCRI/hector/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/JGCRI/hector/issues" class="external-link">Report a bug</a></li>
+</ul>
+</div>
 
-  </div>
-
-  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
-    <div class="license">
+<div class="license">
 <h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li><a href="LICENSE.html">Full license</a></li>
@@ -140,7 +152,7 @@
 <div class="community">
 <h2 data-toc-skip>Community</h2>
 <ul class="list-unstyled">
-<li><a href="CONTRIBUTING.html">Contributing guide</a></li>
+<li><a href="CODE_OF_CONDUCT.html">Code of conduct</a></li>
 </ul>
 </div>
 
@@ -154,51 +166,34 @@
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>Robert Link <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-7071-248X" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li>Kalyn Dorheim <br><small class="roles"> Maintainer </small> <a href="https://orcid.org/0000-0001-8093-8397" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Kalyn Dorheim <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0001-8093-8397" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Ben Bond-Lamberty <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-9525-4633" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li><a href="authors.html">More about authors...</a></li>
 </ul>
 </div>
 
-<div class="dev-status">
-<h2 data-toc-skip>Dev status</h2>
-<ul class="list-unstyled">
-<li><a href="https://codecov.io/gh/JGCRI/hector" class="external-link"><img src="https://codecov.io/gh/JGCRI/hector/branch/master/graph/badge.svg?token=EGM0lXDxRv" alt="codecov"></a></li>
-</ul>
-</div>
 
-  </div>
+
+  </aside>
 </div>
 
 
-      <footer><div class="copyright">
+    <footer><div class="pkgdown-footer-left">
   <p></p>
-<p>Developed by Robert Link, Kalyn Dorheim.</p>
+<p>Developed by Kalyn Dorheim, Ben Bond-Lamberty.</p>
 </div>
 
-<div class="pkgdown">
+<div class="pkgdown-footer-right">
   <p></p>
 <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
-      </footer>
+    </footer>
 </div>
 
   
-<script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script><script>
-  docsearch({
-    
-    
-    apiKey: 'b2aa343d0c9e9ed33c9582908f3acaf8',
-    indexName: 'hector',
-    inputSelector: 'input#search-input.form-control',
-    transformData: function(hits) {
-      return hits.map(function (hit) {
-        hit.url = updateHitURL(hit);
-        return hit;
-      });
-    }
-  });
-</script>
-</body>
+
+  
+
+  </body>
 </html>

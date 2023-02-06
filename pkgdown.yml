@@ -1,25 +1,39 @@
-pandoc: 2.7.3
+pandoc: 2.19.2
 pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
-  hector_apply: hector_apply.html
-  intro-to-hector: intro-to-hector.html
-  AddNewComponent: manual/AddNewComponent.html
-  AddNewVariable: manual/AddNewVariable.html
-  BuildHector: manual/BuildHector.html
-  ComponentAPI: manual/ComponentAPI.html
-  Constraints: manual/Constraints.html
-  ContributionsGuide: manual/ContributionsGuide.html
-  Hector-Wider-World: manual/Hector-Wider-World.html
-  InputFiles: manual/InputFiles.html
-  SimpleNBox: manual/SimpleNBox.html
-  StyleGuide: manual/StyleGuide.html
-  TimeSeries: manual/TimeSeries.html
-  Unitvals: manual/Unitvals.html
-  VersionNumbers: manual/VersionNumbers.html
-  index: manual/index.html
-  multiple-biomes: multiple-biomes.html
-last_built: 2023-01-01T06:10Z
+  AddNewComponent: AddNewComponent.html
+  AddNewVariable: AddNewVariable.html
+  AuthorshipGuidelines: AuthorshipGuidelines.html
+  BuildHector: BuildHector.html
+  ComponentAPI: ComponentAPI.html
+  Constraints: Constraints.html
+  ContributionsGuide: ContributionsGuide.html
+  ExternalAPI: ExternalAPI.html
+  Hector-Wider-World: Hector-Wider-World.html
+  HectorSummary: HectorSummary.html
+  InputFiles: InputFiles.html
+  Permafrost: Permafrost.html
+  SimpleNBox: SimpleNBox.html
+  StyleGuide: StyleGuide.html
+  TimeSeries: TimeSeries.html
+  Unitvals: Unitvals.html
+  VersionNumbers: VersionNumbers.html
+  addnewforcer: addnewforcer.html
+  climate: climate.html
+  ex_GMAT-GMST: ex_GMAT-GMST.html
+  ex_carbon_tracking: ex_carbon_tracking.html
+  ex_hector_apply: ex_hector_apply.html
+  ex_land_ocean_warming: ex_land_ocean_warming.html
+  ex_multiple-biomes: ex_multiple-biomes.html
+  manual: manual.html
+  ocean-carbon-cycle: ocean-carbon-cycle.html
+  output: output.html
+  outputstream: outputstream.html
+  units: units.html
+  v3_output_changes: v3_output_changes.html
+  hector: hector.html
+last_built: 2023-02-06T18:34Z
 urls:
   reference: https://jgcri.github.io/hector/reference
   article: https://jgcri.github.io/hector/articles
