@@ -1,5 +1,5 @@
 /* Hector -- A Simple Climate Model
-   Copyright (C) 2014-2015  Battelle Memorial Institute
+   Copyright (C) 2022  Battelle Memorial Institute
 
    Please see the accompanying file LICENSE.md for additional licensing
    information.
@@ -29,16 +29,18 @@ enum readertype_t { INI_style, table_style };
  */
 class h_reader {
 public:
-    h_reader( std::string fname, readertype_t style, bool doparse=true );
-    virtual ~h_reader() {delete reader;}
-    void parse();
-    std::string get_string( std::string section, std::string name, std::string defaultvalue );
-    double get_number( std::string section, std::string name, double defaultvalue );
+  h_reader(std::string fname, readertype_t style, bool doparse = true);
+  virtual ~h_reader() { delete reader; }
+  void parse();
+  std::string get_string(std::string section, std::string name,
+                         std::string defaultvalue);
+  double get_number(std::string section, std::string name, double defaultvalue);
+
 private:
-    INIReader* reader;
-    std::string filename;
+  INIReader *reader;
+  std::string filename;
 };
 
-}
+} // namespace Hector
 
 #endif

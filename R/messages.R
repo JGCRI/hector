@@ -1,7 +1,7 @@
 #### Code for interacting with the hector messaging system
 
 
-default_fetchvars <- c(ATMOSPHERIC_CO2, RF_TOTAL, RF_CO2, GLOBAL_TEMP)
+default_fetchvars <- c(CONCENTRATIONS_CO2, RF_TOTAL, RF_CO2, GLOBAL_TAS)
 
 #' Fetch results from a running Hector core
 #'
@@ -24,8 +24,10 @@ default_fetchvars <- c(ATMOSPHERIC_CO2, RF_TOTAL, RF_CO2, GLOBAL_TEMP)
 #' \link{ocean}, \link{so2}, \link{temperature}, \link{parameters}
 #'
 #' @param core Hector core object
-#' @param dates Vector of dates to fetch.  This will be automatically trimmed to
+#' @param dates Vector of dates to fetch; this will be automatically trimmed to
 #' dates that are between the start date and the latest date currently run.
+#' Set to \code{NA} to return data with no associated dates such as
+#' model \link{parameters}.
 #' @param vars List (or vector) of capability strings defining the variables to
 #' be fetched in the result.
 #' @param scenario Optional scenario name.  If not specified, the name element
@@ -39,6 +41,9 @@ fetchvars <- function(core, dates, vars = NULL, scenario = NULL) {
         f()
       })
     )
+    if (anyNA(dates)) {
+        stop("The default vars (", paste(vars, collapse = ", "), ") all require dates")
+    }
   }
 
   if (is.null(scenario)) {
@@ -46,10 +51,15 @@ fetchvars <- function(core, dates, vars = NULL, scenario = NULL) {
   }
 
   strt <- startdate(core)
-  end <- getdate(core)
+  current <- getdate(core)
 
-  valid <- dates >= strt & dates <= end
+  valid <- dates >= strt & dates <= current
   dates <- dates[valid]
+
+  if (length(dates) == 0) {
+      stop("None of these dates are valid for this core (start=",
+           strt, ", current=", current, ")")
+  }
 
   rslt <- do.call(
     rbind,

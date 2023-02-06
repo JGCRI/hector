@@ -1,0 +1,128 @@
+---
+title: "Command line Hector's outputstream"
+---
+
+The `outputstream.csv` is created and saved to the `output` directory when
+Hector is executed from the command line or Xcode (but _not_ when running 
+from R; R users should use [fetchvars](../reference/fetchvars.html)). 
+
+# Output stream categories:
+
+**An important note about time**: The outputstream code currently writes the
+_end date_ of the current timestep in the outputstream.csv file; e.g., when
+we're running 1 January 1745 - 31 December 1745, what gets written is "1746". 
+This is not intuitive (most people think of "1746" denoting January 1-December 31) 
+but numerically correct: the date is 1746.0, i.e. midnight on December 31 1745.
+A consequence is that carbon fluxes logged at this timepoint are
+effectively for the calendar year 1745 (1745-01-01 to 1745-12-31).
+
+The first line of this file is a timestamp and version number line, and should
+be skipped by any CSV-reading code.
+
+The variables that appear in the outputstream table include:
+
+TODO: this should be auto-generated from @leeyap output table?
+
+| Component     | Variable      | Units | Definition
+| :----------- |:-------------| -----|:----------|
+| OH	        |TAU_OH	        |Years	|OH lifetime |
+| CH4	        |CH4	        |ppbv CH4		|CH4 concentration
+| ozone	        |O3	        |DU O3		|tropospheric ozone concentration
+| bc	        |BC_emissions	|Tg		|BC emissions
+| oc	        |OC_emissions	|Tg		|OC emissions
+| N2O	        |N2O	        |ppbv N2O		|N2O concentration
+| CF4_halocarbon	|hc_emission	|Gg		|CF4 emissions
+| CF4_halocarbon	|hc_concentration	|pptv		|CF4 concentration
+| C2F6_halocarbon	|hc_emission	|Gg		|C2F6 emissions
+| C2F6_halocarbon	|hc_concentration	|pptv		|C2F6 concentration
+| HFC23_halocarbon	|hc_emission	|Gg		|HFC23 emissions
+| HFC23_halocarbon	|hc_concentration	|pptv		|HFC23 concentration
+| HFC32_halocarbon	|hc_emission	|Gg		|HFC32 emissions
+| HFC32_halocarbon	|hc_concentration	|pptv		|HFC32 concentration
+| HFC4310_halocarbon	|hc_emission	|Gg		|HFC4310 emissions
+| HFC4310_halocarbon	|hc_concentration	|pptv		|HFC4310 concentration
+| HFC125_halocarbon	|hc_emission	|Gg		|HFC125 emissions
+| HFC125_halocarbon	|hc_concentration	|pptv		|HFC125 concentration
+| HFC134a_halocarbon	|hc_emission	|Gg		|HFC134a emissions
+| HFC134a_halocarbon	|hc_concentration	|pptv		|HFC134a concentration
+| HFC143a_halocarbon	|hc_emission	|Gg		|HFC143a emissions
+| HFC143a_halocarbon	|hc_concentration	|pptv		|HFC143a concentration
+| HFC227ea_halocarbon	|hc_emission	|Gg		|HFC227ea emissions
+| HFC227ea_halocarbon	|hc_concentration	|pptv		|HFC227ea concentration
+| HFC245fa_halocarbon	|hc_emission	|Gg		|HFC245fa emissions
+| HFC245fa_halocarbon	|hc_concentration	|pptv		|HFC245fa concentration
+| SF6_halocarbon	|hc_emission	|Gg		|SF6 emissions
+| SF6_halocarbon	|hc_concentration	|pptv		|SF6 concentration
+| CFC11_halocarbon	|hc_emission	|Gg		|CFC11 emissions
+| CFC11_halocarbon	|hc_concentration	|pptv		|CFC11 concentration
+| CFC12_halocarbon	|hc_emission	|Gg		|CFC12 emissions
+| CFC12_halocarbon	|hc_concentration	|pptv		|CFC12 concentration
+| CFC113_halocarbon	|hc_emission	|Gg		|CFC113 emissions
+| CFC113_halocarbon	|hc_concentration	|pptv		|CFC113 concentration
+| CFC114_halocarbon	|hc_emission	|Gg		|CFC114 emissions
+| CFC114_halocarbon	|hc_concentration	|pptv		|CFC114 concentration
+| CFC115_halocarbon	|hc_emission	|Gg		|CFC115 emissions
+| CFC115_halocarbon	|hc_concentration	|pptv		|CFC115 concentration
+| CCl4_halocarbon	|hc_emission	|Gg		|CCl4 emissions
+| CCl4_halocarbon	|hc_concentration	|pptv		|CCl4 concentration
+| CH3CCl3_halocarbon	|hc_emission	|Gg		|CH3CCl3 emissions
+| CH3CCl3_halocarbon	|hc_concentration	|pptv		|CH3CCl3 concentration
+| HCF22_halocarbon	|hc_emission	|Gg		|HFC22 emissions
+| HCF22_halocarbon	|hc_concentration	|pptv		|HFC22 concentration
+| HCF141b_halocarbon	|hc_emission	|Gg		|HFC141b emissions
+| HCF141b_halocarbon	|hc_concentration	|pptv		|HFC141b concentration
+| HCF142b_halocarbon	|hc_emission	|Gg		|HFC142b emissions
+| HCF142b_halocarbon	|hc_concentration	|pptv		|HFC142b concentration
+| halon1211_halocarbon	|hc_emission	|Gg		|halon1211 emissions
+| halon1211_halocarbon	|hc_concentration	|pptv		|halon1211 concentration
+| halon1301_halocarbon	|hc_emission	|Gg		|halon1301 emissions
+| halon1301_halocarbon	|hc_concentration	|pptv		|halon1301 concentration
+| halon2402_halocarbon	|hc_emission	|Gg		|halon2402 emissions
+| halon2402_halocarbon	|hc_concentration	|pptv		|halono2402 concentration
+| CH3Br_halocarbon	|hc_emission	|Gg		|CH3Br emissions
+| CH3Br_halocarbon	|hc_concentration	|pptv		|CH3Br concentration
+| CH3Cl_halocarbon	|hc_emission	|Gg		|CH3Cl emissions
+| CH3Cl_halocarbon	|hc_concentration	|pptv		|CH3Cl concentration
+| ocean	|atm_ocean_flux_HL	|Pg C/yr		|flux of carbon between the atmosphere and high latitude surface box
+| ocean	|atm_ocean_flux_LL	|Pg C/yr		|flux of carbon between the atmosphere and low latitude surface box
+| ocean	|carbon_DO	|Pg C		|carbon pool - deep ocean
+| ocean	|carbon_HL	|Pg C		|carbon pool - high latitude surface ocean
+| ocean	|carbon_IO	|Pg C		|carbon pool - intermediate ocean
+| ocean	|carbon_LL	|Pg C		|carbon pool - low latitude surface ocean
+| ocean	|DIC_HL	|umol/kg		|dissolved inorganic carbon - high latitude
+| ocean	|DIC_LL	|umol/kg		|dissolved inorganic carbon - low latitude
+| ocean	|HL_DO_Cflux	|Pg C/yr		|flux of carbon from the high latitude to the deep ocean
+| ocean	|atm_ocean_flux	|Pg C/yr		|total atmosphere ocean flux
+| ocean	|OmegaAr_HL	|(unitless)		|aragnoite saturation - high latitude
+| ocean	|OmegaAr_LL	|(unitless)		|aragnoite saturation - low latitude
+| ocean	|OmegaCa_HL	|(unitless)		|calcite saturation - high latitude
+| ocean	|OmegaCa_LL	|(unitless)		|calcite saturation - low latitude
+| ocean	|PCO2_HL	|uatm		|partial pressure CO2 - high latitude
+| ocean	|PCO2_LL	|uatm		|partial pressure CO2 - low latitude
+| ocean	|pH_HL	|pH		|pH - high latitude
+| ocean	|pH_LL	|pH		|pH - low latitude
+| ocean	|Temp_HL	|degC		|ocean surface temperature - high latitude
+| ocean	|Temp_LL	|degC		|ocean surface temperature - low latitude
+| ocean	|ocean_c	|Pg C		|total ocean carbon pool
+| ocean	|CO3_HL	|umol/kg		|carbonate ion - high latitude
+| ocean	|CO3_LL	|umol/kg		|carbonate ion - low latitude
+| ocean	|ocean_timesteps	|(unitless)		|time step the ocean operates on
+| ocean	|Revelle_HL	|(unitless)		|Revelle factor - high latitude
+| ocean	|Revelle_LL	|(unitless)		|Revelle factor - low latitude
+| ocean	|heatflux	|W/m2		|ocean heat flux
+| ocean	|kappa	|W/m2/K                 |ocean heat uptake efficiency	
+| simpleNbox	|atm_land_flux	|Pg C/yr		|flux of carbon between the atmosphere and the ocean
+| simpleNbox	|ffiEmissions	|Pg C/yr		|total fossil fuel emissions
+| simpleNbox	|lucEmissions	|Pg C/yr		|total land use change emissions
+| simpleNbox	|npp	|Pg C/yr		|net primary production (land)
+| simpleNbox	|rh	|Pg C/yr		|heterotrophic respiration (land)
+| simpleNbox	|Ca	|ppmv CO2		|atmospheric CO2 concentration
+| simpleNbox	|atmos_c	|Pg C		|total atmospheric carbon pool
+| simpleNbox	|atmos_c_residual	|Pg C		|the difference between calculated CO2 and and prescribed CO2 when running with prescribed CO2 concentrations
+| simpleNbox	|veg_c	|Pg C		|total vegetation carbon pool
+| simpleNbox	|detritus_c	|Pg C		|total detritus carbon pool
+| simpleNbox	|soil_c	|Pg C		|total soil carbon pool
+| simpleNbox	|earth_c	|Pg C		|total carbon pool - used a mass balance check 
+| forcing	|FCO2	|W/m2		|radiative forcing from CO2
+| forcing	|Ftot	|W/m2		|total global radiative forcing
+| temperature	|global_tas	|degC		|global atmospheric temperature anomaly

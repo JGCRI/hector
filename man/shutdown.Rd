@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{shutdown}
 \alias{shutdown}
-\title{Shutdown a hector instance}
+\title{Shut down a hector instance}
 \usage{
 shutdown(core)
 }
@@ -13,18 +13,20 @@ shutdown(core)
 The Hector instance handle
 }
 \description{
-Shutting down an instance will free the instance itself and all of the objects it created. Any attempted
-operation on the instance after that will raise an error.
+Shutting down an instance will free the instance itself and all of the
+objects it created. Any attempted operation on the instance after that will
+raise an error.
 }
 \section{Caution}{
 
-This function should be called as \code{mycore <- shutdown(mycore)} so that the change
-from active to inactive will be recorded in the caller.
+This function should be called as \code{mycore <- shutdown(mycore)} so that
+the change from active to inactive will be recorded in the caller.
 }
 
 \seealso{
 Other main user interface functions: 
 \code{\link{fetchvars}()},
+\code{\link{get_tracking_data}()},
 \code{\link{newcore}()},
 \code{\link{reset}()},
 \code{\link{run}()},

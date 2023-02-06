@@ -1,5 +1,5 @@
 /* Hector -- A Simple Climate Model
-   Copyright (C) 2014-2015  Battelle Memorial Institute
+   Copyright (C) 2022  Battelle Memorial Institute
 
    Please see the accompanying file LICENSE.md for additional licensing
    information.
@@ -15,7 +15,12 @@
  */
 
 #include <iostream>
-#include <fstream>
+// some boost headers generate warnings under clang; not our problem, ignore
+// 2023 and Boost 1.81.0_1: filtering_stream.hpp still generates one warning
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Weverything"
+#include <boost/iostreams/filtering_stream.hpp>
+#pragma clang diagnostic pop
 
 #include "h_exception.hpp"
 
@@ -33,96 +38,60 @@ namespace Hector {
  */
 class Logger {
 public:
-    /*! \brief Enumeration to describe available logging priority levels.
-     */
-    enum LogLevel {
-        DEBUG,
-        NOTICE,
-        WARNING,
-        SEVERE
-    };
+  /*! \brief Enumeration to describe available logging priority levels.
+   */
+  enum LogLevel { DEBUG, NOTICE, WARNING, SEVERE };
 
 private:
-    // Make the copy constructs private and undefined to disallow multiple
-    // instances of the same log file.
-    Logger( const Logger& );
-    Logger& operator=( const Logger& );
+  // Make the copy constructs private and undefined to disallow multiple
+  // instances of the same log file.
+  Logger(const Logger &);
+  Logger &operator=(const Logger &);
 
-    //! The minimum log level which will be processed.
-    LogLevel minLogLevel;
+  //! The minimum log level which will be processed.
+  LogLevel minLogLevel;
 
-    //! Flag to indicate that this logger has been successfully opened.
-    bool isInitialized;
+  //! Flag to indicate that this logger has been successfully opened.
+  bool isInitialized;
 
-    //! Flag to indicate that this logger writes into a log file.
-    bool echoToFile;
+  //! Flag to indicate that this logger writes into a log file.
+  bool echoToFile;
 
-    //! Flag to indicate that this logger is enabled.
-    //! If false this logger does not log regardless of log level provided.
-    bool enabled;
+  //! Flag to indicate that this logger is enabled.
+  //! If false this logger does not log regardless of log level provided.
+  bool enabled;
 
-    //! The actual output stream which will handle the logging.
-    std::ostream loggerStream;
+  //! The actual output stream which will handle the logging.
+  boost::iostreams::filtering_ostream loggerStream;
 
-    static const std::string& logLevelToStr( const LogLevel logLevel );
+  static const std::string &logLevelToStr(const LogLevel logLevel);
 
-    static const char* getDateTimeStamp();
+  static const char *getDateTimeStamp();
 
-    static void chk_logdir(std::string dir);
-
-    void printLogHeader( const LogLevel logLevel );
-
-    /*! \brief A customized file stream buffer to enable echoing to a console.
-     *
-     *  This subclass will override the virtual protected methods necessary for
-     *  output only.
-     */
-    class LoggerStreamBuf : public std::filebuf {
-    private:
-        //! A pointer to the streambuf of the console output stream, or null
-        //! if echoToScreen was set to false during construction.
-        std::streambuf* consoleBuf;
-    public:
-        LoggerStreamBuf( const bool echoToScreen );
-        virtual ~LoggerStreamBuf();
-
-    protected:
-        // std::streambuf methods
-        virtual int sync();
-
-        virtual int overflow( int c = EOF );
-
-        virtual std::streamsize xsputn( const char* s, std::streamsize n );
-    };
+  void printLogHeader(const LogLevel logLevel);
 
 public:
-    Logger();
-    ~Logger();
+  Logger();
+  ~Logger();
 
-    void open( const std::string& logName, bool echoToScreen,
-               bool echoToFile, LogLevel minLogLevel );
+  void open(const std::string &logName, bool echoToScreen, bool echoToFile,
+            LogLevel minLogLevel);
 
-    bool shouldWrite( const LogLevel writeLevel ) const;
+  bool shouldWrite(const LogLevel writeLevel) const;
 
-    std::ostream& write( const LogLevel writeLevel,
-                        const std::string& functionInfo );
+  std::ostream &write(const LogLevel writeLevel,
+                      const std::string &functionInfo);
 
-    void close();
+  void close();
 
-    LogLevel getMinLogLevel() const {
-        return minLogLevel;
-    }
+  LogLevel getMinLogLevel() const { return minLogLevel; }
 
-    bool getEchoToFile() const {
-        return echoToFile;
-    }
+  bool getEchoToFile() const { return echoToFile; }
 
-    bool isEnabled() const {
-        return enabled;
-    }
+  bool isEnabled() const { return enabled; }
 };
 
-}
+} // namespace Hector
 
 /*!
  * \brief Some systems define the function name macro differently, so double
@@ -143,7 +112,8 @@ public:
  * \param log An instance of the logger to log to.
  * \param level The logging priority to log at.
  */
-#define H_LOG(log, level)  \
-if( log.shouldWrite( level ) ) log.write( level, __func__ )
+#define H_LOG(log, level)                                                      \
+  if (log.shouldWrite(level))                                                  \
+  log.write(level, __func__)
 
 #endif

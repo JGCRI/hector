@@ -9,7 +9,7 @@
 devtools::load_all()
 
 # Create the output directory.
-out_dir <- here::here("tests", "testthat", "compdata")
+out_dir <- file.path("tests", "testthat", "compdata")
 dir.create(out_dir, showWarnings = FALSE)
 
 # Determine the version of Hector and the git commit, that generates the comparison data.
@@ -19,30 +19,20 @@ hector_version <- packageVersion("hector")
 hector_commit <- system("git rev-parse --short HEAD", intern = TRUE)
 
 
-vars_to_save <- c(ATMOSPHERIC_CO2(), GLOBAL_TEMP(), RF_TOTAL(), RF_CO2(), HEAT_FLUX(), OCEAN_C(), PH_HL())
-dates_to_save <- 1850:1950
-
-
-# During this old new test we will look at results for two scenarios, a concentration and
-# emission driven runs.
-
-# The first scenario to run is the constrained RCP 4.5
-ini <- here::here("inst", "input", "hector_rcp45_constrained.ini")
-hc <- newcore(ini)
-run(hc, max(dates_to_save))
-hector_rcp45_constrained <- fetchvars(hc, scenario = basename(ini), dates = dates_to_save, vars = vars_to_save)
-hector_rcp45_constrained$version <- hector_version # Add the Hector version.
-hector_rcp45_constrained$commit <- hector_commit
+vars_to_save <- c(CONCENTRATIONS_CO2(), GLOBAL_TAS(), RF_TOTAL(), RF_CO2(), HEAT_FLUX(),
+                  OCEAN_C(), PH_HL(), ATMOSPHERIC_CO2(), SST())
+dates_to_save <- 1745:2300
 
 # Second run.
-ini <- here::here("inst", "input", "hector_rcp45.ini")
+ini <- file.path("inst", "input", "hector_ssp245.ini")
 hc <- newcore(ini)
 run(hc, max(dates_to_save))
-hector_rcp45 <- fetchvars(hc, scenario = basename(ini), dates = dates_to_save, vars = vars_to_save)
-hector_rcp45$version <- hector_version # Add the Hector version.
-hector_rcp45$commit <- hector_commit
+hector_ssp245 <- fetchvars(hc, scenario = basename(ini), dates = dates_to_save, vars = vars_to_save)
+hector_ssp245$version <- hector_version # Add the Hector version.
+hector_ssp245$commit <- hector_commit
 
 # Save the comparison data for the unit tests.
-comp_data <- rbind(hector_rcp45_constrained, hector_rcp45)
+comp_data <- hector_ssp245
 out_file <- file.path(out_dir, "hector_comp.csv")
 write.csv(comp_data, file = out_file, row.names = FALSE)
+message("All done.")

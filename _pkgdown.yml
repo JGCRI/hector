@@ -1,50 +1,43 @@
-template:
-  params:
-    docsearch:
-      api_key: b2aa343d0c9e9ed33c9582908f3acaf8
-      index_name: hector
 url: https://jgcri.github.io/hector/
+template:
+  bootstrap: 5
+development:
+  mode: auto
+
 navbar:
-  type: default
+  structure:
+    left:  [reference, articles]
+    right: [search, github]
+
   left:
     - icon: fa-home fa-lg
       href: "index.html"
     - text: Manual
-      href: "articles/manual/index.html"
-    - text: Vignettes
+      href: "articles/manual.html"
+    - text: Getting Started
       menu:
-        - text: "A tour of the Hector R interface"
-          href: articles/intro-to-hector.html
+       - text: "Building Hector"
+         href: articles/BuildHector.html
+       - text: "Intro to Hector R interface"
+         href: articles/hector.html
+       - text: "Documentation manuscripts & tutorials"
+         href: articles/Hector-Wider-World.html
+    - text: Examples
+      menu:
+        - text: "Example: Basic run and simple sensitivity anlaysis"
+          href: articles/hector.html
         - text: "Example: Using Hector to solve for an emissions pathway"
-          href: articles/hector_apply.html
+          href: articles/ex_hector_apply.html
         - text: "Example: Running Hector with multiple biomes"
-          href: articles/multiple-biomes.html
+          href: articles/ex_multiple-biomes.html
+        - text: "Example: Carbon tracking with Hector"
+          href: articles/ex_carbon_tracking.html
+        - text: "Example: Changing Hector's land ocean warming ratio parameter"
+          href: articles/ex_land_ocean_warming.html
     - text: Reference
       href: "reference/index.html"
+    - text: News
+      href: "news/index.html"
   right:
     - icon: fa-github fa-lg
       href: "https://github.com/JGCRI/hector"
-
-reference:
-  - title: Running Hector
-    contents:
-      - newcore
-      - methods
-      - run
-      - reset
-      - shutdown
-      - runscenario
-  - title: Setting and retrieving data
-    contents:
-      - fetchvars
-      - setvar
-      - sendmessage
-      - isactive
-      - getdate
-      - startdate
-      - enddate
-      - getname
-      - getunits
-  - title: Variable and component identifiers
-    contents:
-      - matches("[_A-Z]+")

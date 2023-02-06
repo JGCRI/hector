@@ -1,0 +1,94 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit this file then run devtools::build_readme() -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+    collapse = TRUE,
+    comment = "#>",
+    fig.path = "man/figures/README-",
+    out.width = "100%"
+)
+library(hector)
+library(ggplot2)
+```
+
+# hector
+
+[![DOI](https://zenodo.org/badge/22892935.svg)](https://zenodo.org/badge/latestdoi/22892935) [![C++ unit tests](https://github.com/JGCRI/hector/actions/workflows/unit-testing.yaml/badge.svg)](https://github.com/JGCRI/hector/actions/workflows/unit-testing.yaml) [![Command Line Hector](https://github.com/JGCRI/hector/actions/workflows/command-line.yaml/badge.svg)](https://github.com/JGCRI/hector/actions/workflows/command-line.yaml)  [![R-CMD-check](https://github.com/JGCRI/hector/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/JGCRI/hector/actions/workflows/R-CMD-check.yaml) [![codecov](https://codecov.io/gh/JGCRI/hector/branch/master/graph/badge.svg?token=EGM0lXDxRv)](https://codecov.io/gh/JGCRI/hector)
+
+This is the repository for **Hector**, an open source, object-oriented, simple 
+global climate carbon-cycle model that runs very quickly while still
+representing the most critical global scale earth system processes. 
+Hector is a simple climate model (SCM, also known as a reduced-complexity climate model),
+a class of models that are extremely versatile with a wide
+range of applications. Due to their computational efficiency, SCMs can easily
+be coupled to other models and used to design scenarios, emulate more complex 
+climate models, and conduct uncertainty analyses.
+
+```{r tas_plot, echo=FALSE, fig.width=8, fig.height=4}
+
+# The variable naps and dates of variables to save.
+vars_to_plot <- GLOBAL_TAS()
+dates_to_plot <- 1850:2100
+
+# Color palette used by the IPCC
+SSP_COLORS <- c("ssp119" = "#00a9cf", "ssp126" = "#003466", "ssp245" = "#f69320",
+                "ssp370" = "#df0000", "ssp434" = "#2274ae","ssp460" = "#b0724e",
+                "ssp585"= "#980002",   "ssp534-overshoot" = "grey", "historical" = "#000000",
+                "historical"="#92397a")
+
+# Set up and run hector.
+ini_files <- list.files(file.path("inst", "input"), pattern = "ini", full.names = TRUE)
+hector_tas_results <- do.call(lapply(ini_files, function(f){
+    name <- gsub(pattern = "hector_|.ini", x = basename(path = f), replacement = "")
+    hc <- newcore(f, name = name)
+    run(hc)
+    out <- fetchvars(hc, dates_to_plot, vars = vars_to_plot)
+    return(out)
+}), what = "rbind")
+
+# Modify the results data frame.
+hector_tas_results$scenario <- ifelse(hector_tas_results$scenario == "ssp534-over",
+                                      "ssp534-overshoot", hector_tas_results$scenario)
+hector_tas_results$scenario <- ifelse(hector_tas_results$year <= 2016, "historical",
+                                      hector_tas_results$scenario)
+ggplot(hector_tas_results) +
+    geom_line(aes(year, value, color = scenario), size = 1) +
+    theme_bw(base_size = 15) +
+    labs(color = NULL, x = NULL, y = expression("Temperature Anomaly ("~degree~"C)")) +
+    scale_color_manual(values = SSP_COLORS)
+```
+
+Hector's output for global mean air temperature change for eight Shared Socioeconomic Pathways (SSPs).
+
+## Installation 
+
+The `hector` R package can be installed using the `remotes::install_github` 
+function. More detailed installation instructions, including how to set up
+Hector as a command line executable, can be found [here](articles/BuildHector.html).
+
+```r
+remotes::install_github('jgcri/hector')
+library(hector)
+```
+
+## Tools and Software That Work with Hector
+
+* [GCAM](https://github.com/JGCRI/gcam-core): Hector can be used as the climate component in [GCAM](http://jgcri.github.io/gcam-doc/)
+* [pyhector](https://github.com/openclimatedata/pyhector): a Python
+interface to Hector
+* [fldgen](https://github.com/JGCRI/fldgen): a spatially resolved temperature & precipitation emulator for CMIP5 ESMs
+* [HectorUI](https://jgcri.shinyapps.io/HectorUI/): run Hector in a web interface!
+
+## Contributing to Hector
+
+The Hector team welcomes and values community contributions, but please see 
+our [Contribution Guide](articles/ContributionsGuide.html) and note by  contributing 
+to this project, you agree to abide to our [Contributor Code of Conduct](CODE_OF_CONDUCT.html)
+
+*** 
+
+This research was supported by the U.S. Department of Energy, Office of Science, as part of research in Multi-Sector Dynamics, Earth and Environmental System Modeling Program. The Pacific Northwest National Laboratory is operated for DOE by Battelle Memorial Institute under contract DE-AC05-76RL01830.

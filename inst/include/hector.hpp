@@ -1,5 +1,5 @@
 /* Hector -- A Simple Climate Model
-   Copyright (C) 2014-2015  Battelle Memorial Institute
+   Copyright (C) 2022  Battelle Memorial Institute
 
    Please see the accompanying file LICENSE.md for additional licensing
    information.
@@ -24,9 +24,9 @@
 
 /* Data types and constants */
 #include "component_data.hpp"
-#include "unitval.hpp"
-#include "message_data.hpp"
 #include "h_exception.hpp"
+#include "message_data.hpp"
+#include "unitval.hpp"
 
 /* Core functions */
 #include "core.hpp"
@@ -36,6 +36,5 @@
 
 /* Output functions */
 #include "csv_outputstream_visitor.hpp"
-
 
 #endif

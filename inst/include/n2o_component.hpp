@@ -1,5 +1,5 @@
 /* Hector -- A Simple Climate Model
-   Copyright (C) 2014-2015  Battelle Memorial Institute
+   Copyright (C) 2022  Battelle Memorial Institute
 
    Please see the accompanying file LICENSE.md for additional licensing
    information.
@@ -29,52 +29,54 @@ namespace Hector {
 class N2OComponent : public IModelComponent {
 
 public:
-    N2OComponent();
-    ~N2OComponent();
+  N2OComponent();
+  ~N2OComponent();
 
-    //! IModelComponent methods
-    virtual std::string getComponentName() const;
+  //! IModelComponent methods
+  virtual std::string getComponentName() const;
 
-    virtual void init( Core* core );
+  virtual void init(Core *core);
 
-    virtual unitval sendMessage( const std::string& message,
-                                const std::string& datum,
-                                const message_data info=message_data() );
+  virtual unitval sendMessage(const std::string &message,
+                              const std::string &datum,
+                              const message_data info = message_data());
 
-    virtual void setData( const std::string& varName,
-                          const message_data& data );
+  virtual void setData(const std::string &varName, const message_data &data);
 
-    virtual void prepareToRun();
+  virtual void prepareToRun();
 
-    virtual void run( const double runToDate );
+  virtual void run(const double runToDate);
 
-    virtual void reset(double time);
+  virtual void reset(double time);
 
-    virtual void shutDown();
+  virtual void shutDown();
 
-    //! IVisitable methods
-    virtual void accept( AVisitor* visitor );
+  //! IVisitable methods
+  virtual void accept(AVisitor *visitor);
 
 private:
-    virtual unitval getData( const std::string& varName,
-                            const double date );
+  virtual unitval getData(const std::string &varName, const double date);
 
-    unitval N0;    //! preindustrial N2O, ppbv N2O
-    unitval UC_N2O;  //! conversion from emissions to concentration
-    tseries<unitval> N2O_emissions; //! annual anthropogenic emissions time series, TgN/yr
-    tseries<unitval> N2O_natural_emissions; //! annual natural emissions time series, TgN/yr
-    tseries<unitval> N2O; //! annual N2O concentrations, ppbv N2O
-    tseries<unitval> N2O_constrain; //! N2O concentration constraint time series, ppbv N2O
-    tseries<unitval> TAU_N2O;   //! N2O decay time constant (varies as a function of concentration)
-    unitval TN2O0;  //! inital N2O lifetime, years
+  unitval N0;     //! preindustrial N2O, ppbv N2O
+  unitval UC_N2O; //! conversion from emissions to concentration
+  tseries<unitval>
+      N2O_emissions; //! annual anthropogenic emissions time series, TgN/yr
+  tseries<unitval>
+      N2O_natural_emissions; //! annual natural emissions time series, TgN/yr
+  tseries<unitval> N2O;      //! annual N2O concentrations, ppbv N2O
+  tseries<unitval>
+      N2O_constrain; //! N2O concentration constraint time series, ppbv N2O
+  tseries<unitval> TAU_N2O; //! N2O decay time constant (varies as a function of
+                            //! concentration)
+  unitval TN2O0;            //! inital N2O lifetime, years
 
-    //! logger
-    Logger logger;
+  //! logger
+  Logger logger;
 
-	Core *core;
-    double oldDate;
+  Core *core;
+  double oldDate;
 };
 
-}
+} // namespace Hector
 
 #endif // N2O_COMPONENT_H

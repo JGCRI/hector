@@ -11,6 +11,7 @@ split_biome(
   fveg_c = rep(1/length(new_biomes), length(new_biomes)),
   fdetritus_c = fveg_c,
   fsoil_c = fveg_c,
+  fpermafrost_c = fveg_c,
   fnpp_flux0 = fveg_c,
   ...
 )
@@ -23,21 +24,22 @@ split_biome(
 \item{new_biomes}{Names of biomes to be created}
 
 \item{fveg_c}{Fractions of vegetation C distributed to each biome
-in `new_biomes`. Must be the same length as `new_biomes`. Default
+in \code{new_biomes}; must be the same length as it. Default
 is to split vegetation C evenly between all biomes.}
 
 \item{fdetritus_c}{Fractions of detritus C distributed to each
-biome. Defaults to the same value as `fveg_c`.}
+biome. Defaults to the same value as \code{fveg_c}.}
 
 \item{fsoil_c}{Fractions of soil C distributed to each biome.
-Defaults to the same value as `fveg_c`.}
+Defaults to the same value as \code{fveg_c}.}
+
+\item{fpermafrost_c}{Fraction of permafrost C distributed to each
+biome. Defaults to the same value as \code{fveg_c}.}
 
 \item{fnpp_flux0}{Fraction of initial NPP flux distributed to each
-biome. Defaults to the same value as `fveg_c`.}
+biome. Defaults to the same value as \code{fveg_c}.}
 
-\item{...}{Additional biome-specific parameters, as set by
-[create_biome()]. Note that these are passed to [create_biome()]
-via [base::mapply()], so they can be vectorized across biomes.}
+\item{...}{Additional biome parameters passed to \code{\link{create_biome}}.}
 }
 \description{
 Distributes vegetation, detritus, and soil C, and initial NPP flux

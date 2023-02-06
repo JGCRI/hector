@@ -1,5 +1,5 @@
 /* Hector -- A Simple Climate Model
-   Copyright (C) 2014-2015  Battelle Memorial Institute
+   Copyright (C) 2022  Battelle Memorial Institute
 
    Please see the accompanying file LICENSE.md for additional licensing
    information.
@@ -15,92 +15,97 @@
  *
  */
 
-#include <vector>
-#include <string>
-#include <map>
 #include "math.h"
-#include <stdio.h>
 #include <algorithm>
+#include <map>
+#include <stdio.h>
+#include <string>
+#include <vector>
 
+#include "fluxpool.hpp"
 #include "logger.hpp"
-#include "unitval.hpp"
 #include "ocean_csys.hpp"
+#include "unitval.hpp"
 
-#define MEAN_GLOBAL_TEMP 15
+// Mean absolute global tos temperature, preindustrial (deg C), this is used by
+// the ocean component which, requires absolute temperature to calculate ocean
+// chemistry, the CMIP6 multi model mean from 1850 - 1860. See Leeya
+// Pressburger, & Kalyn R. Dorheim. (2022). JGCRI/hector_cmip6data: v1.0 (v1.0).
+// Zenodo. https://doi.org/10.5281/zenodo.7304553
+#define MEAN_TOS_TEMP 18
 
 namespace Hector {
 
 class oceanbox {
-    /*! /brief  An ocean box
-     *
-     *  Implements an ocean box, which can have arbitrary connections to
-     *  other boxes, may (or not) exchange carbon and heat with the atmosphere,
-     *  and may (or not) have active chemistry.
-     */
+  /*! /brief  An ocean box
+   *
+   *  Implements an ocean box, which can have arbitrary connections to
+   *  other boxes, may (or not) exchange carbon and heat with the atmosphere,
+   *  and may (or not) have active chemistry.
+   */
 private:
-	unitval carbon;
-	unitval CarbonToAdd;
-	std::vector<oceanbox*> connection_list;  //<! a vector of ocean box pointers
-	std::vector<double> connection_k;        //<! a vector of ocean k values (fraction)
-	std::vector<double> carbonHistory;       //<! a vector of past C states
-   	std::vector<double> carbonLossHistory;   //<! a vector of past C losses
-	std::vector<int> connection_window;      //<! a vector of connection windows to average over
+  fluxpool carbon;
+  fluxpool CarbonAdditions, CarbonSubtractions;
+  std::vector<oceanbox *> connection_list; ///< a vector of ocean box pointers
+  std::vector<double> connection_k; ///< a vector of ocean k values (fraction)
+  std::vector<int>
+      connection_window; ///< a vector of connection windows to average over
 
-    double vectorHistoryMean( std::vector<double> v, int lookback ) const;
+  std::string Name;
 
-    unitval compute_connection_flux( int i, double yf ) const;
-
-	std::string Name;
-
-	void sens_parameters();
-
-    unitval Ca;             //<! Atmospheric CO2, ppm
-    unitval Tbox;           //<! box absolute temperature, degC
-    unitval pco2_lastyear;  //
-    unitval dic_lastyear;   //
-    unitval compute_tabsC( const unitval Tgav ) const;
+  unitval CO2_conc;      ///< Atmospheric [CO2], ppm
+  unitval Tbox;          ///< box absolute temperature, degC
+  unitval pco2_lastyear; //
+  unitval dic_lastyear;  //
+  unitval compute_tabsC(const unitval SST) const;
+  fluxpool ao_flux; //!< atmosphere -> ocean flux
+  fluxpool oa_flux; //!< ocean -> atmosphere flux
 
 public:
-	oceanbox (); // constructor
+  oceanbox(); // constructor
 
-	std::map <oceanbox*, unitval> annual_box_fluxes;   //<! Map of our fluxes to other boxes
+  std::map<oceanbox *, unitval>
+      annual_box_fluxes; ///< Map of our fluxes to other boxes
 
-	void initbox( unitval C, std::string N="" );
-    void make_connection( oceanbox* ob, const double k, const int window );
-	void compute_fluxes( const unitval current_Ca, const double yf, const bool do_circ=true );
-    void log_state();
-	void update_state();
-	void new_year( const unitval Tgav );
+  void initbox(double C, std::string name = "");
+  void make_connection(oceanbox *ob, const double k, const int window);
+  void compute_fluxes(const unitval current_Ca, const fluxpool atmosphere_cpool,
+                      const double yf, const bool do_circ = true);
+  void log_state();
+  void update_state();
+  void new_year(const unitval SST);
+  void separate_surface_fluxes(fluxpool atmosphere_pool);
 
-	void set_carbon( const unitval C );
-	unitval get_carbon() const { return carbon; };
-	void add_carbon( unitval C );
+  void set_carbon(const unitval C);
+  fluxpool get_carbon() const { return carbon; };
+  fluxpool get_oa_flux() const { return oa_flux; };
+  fluxpool get_ao_flux() const { return ao_flux; };
 
-    bool oscillating( const unsigned lookback, const double maxamp, const int maxflips ) const;
+  void add_carbon(fluxpool C);
 
-    // Functions to get internal box data
-    unitval get_Tbox() const { return Tbox; };
+  void start_tracking();
 
-    unitval calc_revelle();
+  // Functions to get internal box data
+  unitval get_Tbox() const { return Tbox; };
+  unitval calc_revelle();
+  unitval deltaT; ///< difference between box temperature and global temperature
+  unitval preindustrial_flux;
+  bool surfacebox;
 
-	unitval deltaT;     //<! difference between box temperature and global temperature
-    unitval preindustrial_flux;
-    bool surfacebox;
+  // Ocean box chemistry
+  oceancsys mychemistry; ///< box chemistry
+  bool active_chemistry; ///< box has active chemistry model?
+  void chem_equilibrate(const unitval current_Ca); ///< equilibrate chemistry
+                                                   ///< model to a given flux
+  double fmin(double alk, void *params);
 
-    double warmingfactor;        //!< regional warming relative to global (1.0=same)
+  unitval atmosphere_flux; //!< positive is atmosphere -> ocean flux, negative
+                           //!< ocean -> atmosphere
 
-    // Ocean box chemistry
-    oceancsys mychemistry;      //<! box chemistry
-	bool active_chemistry;      //<! box has active chemistry model?
-	void chem_equilibrate( const unitval current_Ca );    //<! equilibrate chemistry model to a given flux
-    double fmin( double alk, void *params );
-
-    unitval atmosphere_flux;
-
-	// logger
-    Logger* logger;
+  // logger
+  Logger *logger;
 };
 
-}
+} // namespace Hector
 
 #endif

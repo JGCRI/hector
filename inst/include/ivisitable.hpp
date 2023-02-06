@@ -1,5 +1,5 @@
 /* Hector -- A Simple Climate Model
-   Copyright (C) 2014-2015  Battelle Memorial Institute
+   Copyright (C) 2022  Battelle Memorial Institute
 
    Please see the accompanying file LICENSE.md for additional licensing
    information.
@@ -25,20 +25,19 @@ class AVisitor;
  */
 class IVisitable {
 public:
-    inline virtual ~IVisitable();
+  inline virtual ~IVisitable();
 
-    /*! \brief Accept a visitor to visitor your class.
-     *
-     *  This allows a subclass use the double dispatch design pattern to allow
-     *  the visitor to identify which subclass it is visiting.
-     */
-    virtual void accept( AVisitor* visitor ) = 0 ; /* const ? */
+  /*! \brief Accept a visitor to visitor your class.
+   *
+   *  This allows a subclass use the double dispatch design pattern to allow
+   *  the visitor to identify which subclass it is visiting.
+   */
+  virtual void accept(AVisitor *visitor) = 0; /* const ? */
 };
 
 // Inline methods
-IVisitable::~IVisitable() {
-}
+IVisitable::~IVisitable() {}
 
-}
+} // namespace Hector
 
 #endif // IVISITABLE_H

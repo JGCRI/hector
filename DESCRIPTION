@@ -1,30 +1,47 @@
 Package: hector
 Title: The Hector Simple Climate Model
-Version: 2.5.0
-Authors@R: c(person("Robert", "Link", 
-            email = "robert.link@pnnl.gov", 
-            role = "aut",
-            comment = c(ORCID = "0000-0002-7071-248X")),
+Version: 3.0.0
+Authors@R: c(person("Kalyn", "Dorheim", 
+	        email = "kalyn.dorheim@pnnl.gov",
+	        role = c("aut", "cre"),
+	        comment = c(ORCID = "0000-0001-8093-8397")),
+	     person("Ben", "Bond-Lamberty", 
+	        email = "bondlamberty@pnnl.gov", 
+	        role = "aut", 
+	        comment = c(ORCID = "0000-0001-9525-4633")),
+	     person("Skylar", "Gering",
+	        email = "sgering@g.hmc.edu",
+	        role = "ctb",
+	        comment = c(ORCID = "0000-0003-1974-3966")),
 	     person("Corinne", "Hartin", 
 	        email = "hartin.corinne@epa.gov", 
 	        role = "ctb",
 	        comment = c(ORCID = "0000-0003-1834-6539")),
-	     person("Ben", "Bond-Lamberty", 
-	        email = "bondlamberty@pnnl.gov", 
-	        role = "ctb", 
-	        comment = c(ORCID = "0000-0001-9525-4633")),
-	     person("Kalyn", "Dorheim", 
-	        email = "kalyn.dorheim@pnnl.gov",
-	        role = "cre",
-	        comment = c(ORCID = "0000-0001-8093-8397")),
+	     person("Robert", "Link", 
+            role = "ctb",
+            comment = c(ORCID = "0000-0002-7071-248X")),
+        person("Mat", "Nicholson", 
+            role = "ctb",
+            comment = c(github = "mnichol3")),
 	     person("Pralit", "Patel", 
 	        email = "pralit.patel@pnnl.gov", 
 	        role = "ctb",
 	        comment = c(ORCID = "0000-0003-3992-1061")),
+	     person("Leeya", "Pressburger", 
+	        email = "leeya.pressburger@pnnl.gov", 
+	        role = c("ctb", "dtc"),
+	        comment = c(ORCID = "0000-0002-6850-2504")),
 	     person("Alexey", "Shiklomanov",
 	        email = "alexey.shiklomanov@nasa.gov",
 	        role = "ctb",
-	        comment = c(ORCID = "0000-0003-4022-5979")))
+	        comment = c(ORCID = "0000-0003-4022-5979")),
+	   	 person("Benjamin", "Vega-Westhoff",
+	        role = "ctb",
+	        comment = c(ORCID = "0000-0001-7881-8388")),
+	     person("Dawn", "Woodard",
+	        email = "dawn.woodard@pnnl.gov",
+	        role = "ctb",
+	        comment = c(ORCID = "0000-0002-0468-4660")))
 Description: Provides an R interface for the Hector Simple Climate
     Model. Using this interface you can set up and initialize the model,
     change model parameters and emissions inputs, run Hector, and
@@ -35,22 +52,26 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 LinkingTo: Rcpp, BH
-Imports: Rcpp (>= 0.12), BH (>= 1.69)
+Imports: Rcpp (>= 0.12)
 Suggests:
     testthat,
-    nleqslv,
     knitr,
+    lintr (>= 3.0),
     rmarkdown,
     ggplot2,
-    magrittr (>= 1.5), 
-    ragg,
-    here
+    magrittr (>= 1.5)
 Collate:
-    'aadoc.R'
     'RcppExports.R'
+    'aadoc.R'
     'biome.R'
+    'fxns.R'
     'hector.R'
     'messages.R'
     'units.R'
 VignetteBuilder: knitr
-RoxygenNote: 7.1.1
+Config/Needs/website: kableExtra, nleqslv
+RoxygenNote: 7.2.3
+SystemRequirements: GNU make
+URL: https://github.com/JGCRI/hector, https://jgcri.github.io/hector/
+BugReports: https://github.com/JGCRI/hector/issues
+Language: en-US

@@ -1,4 +1,4 @@
-linters: with_defaults(
+linters: linters_with_defaults(
   object_name_linter = NULL,
   line_length_linter(100)
   )

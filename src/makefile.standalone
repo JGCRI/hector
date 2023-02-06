@@ -1,100 +1,135 @@
+## Makefile for Hector v3
+## Original author: Robert Link
+## Greatly revised by Ben Bond-Lamberty, 2021
+
+## ----------------------------------------------------
+## Build settings
 ifeq ($(strip $(CXX)),)
-CXX      = g++
-endif 
-CXXFLAGS = -g $(INCLUDES) $(OPTFLAGS) $(CXXEXTRA) $(CXXPROF) $(WFLAGS) -MMD -std=c++14 
+	CXX  = g++
+endif
+
+## Check if the user has the c++17 standard library which
+## is mostly just so that we do not have to bother linking any
+## boost libraries.  If not we fall back to c++14 and will require
+## the boost system and filesystem libraries are compiled.
+ifeq ($(strip $(NO_CXX17)),)
+	## We can just set the standard and leave BOOST_LDFLAGS and BOOST_LIB_IMPORT
+	## alone
+	CXXSTD = c++17
+else
+	## Not set so use the default standard: c++14 and set the linker flags
+	## to find and link boost system/filesystem which are then required
+	BOOST_LDFLAGS = -L"$(BOOSTLIB)" -Wl,-rpath,"$(BOOSTLIB)"
+	BOOST_LIB_IMPORT = -lboost_system -lboost_filesystem
+	CXXSTD = c++14
+endif
+CXXFLAGS = -g $(INCLUDES) $(OPTFLAGS) $(CXXEXTRA) $(CXXPROF) $(WFLAGS) -MMD -std=$(CXXSTD)
+## Note that $(CCEXTRA) allows for custom flags; see https://github.com/JGCRI/hector/issues/407
 CFLAGS   = -g $(INCLUDES) $(OPTFLAGS) $(CCEXTRA) -MMD
-INCLUDES = -I"$(BOOSTROOT)" -I"$(HDRDIR)"
-WFLAGS   = -Wall -Wno-unused-local-typedefs # Turn on warnings, turn off one particularly annoying one that infests Boost libs
+INCLUDES = -I"$(BOOSTINC)" -I"$(HDRDIR)"
+WFLAGS   = -Wall -Wno-unused-local-typedefs # Turn off warnings, esp. one common in Boost files
 OPTFLAGS = -O3
-LDFLAGS	 = $(CXXPROF) -L"$(BOOSTLIB)" -L. -Wl,-rpath,"$(BOOSTLIB)"
+LDFLAGS	 = $(CXXPROF) -L. $(BOOST_LDFLAGS)
+HDRDIR	 = $(CURDIR)/../inst/include
 
-export CXXFLAGS OPTFLAGS
+## These will be needed by the testing makefile
+export CXX CXXFLAGS OPTFLAGS LDFLAGS INCLUDES
 
-## project root
-HROOT	= $(CURDIR)/..
-HDRDIR	= $(HROOT)/inst/include
-export HROOT
+## ----------------------------------------------------
+## Boost and Googletest settings
 
-## Boost root
-ifeq ($(strip $(BOOSTVERSION)),)
-BOOSTVERSION	= 1_63_0
-endif
-ifeq ($(strip $(BOOSTROOT)),)
-BOOSTROOT	= $(HOME)/src/boost_$(BOOSTVERSION)
-endif
-ifeq ($(strip $(BOOSTLIB)),)
-## BOOSTROOT can be customized in the environment by compiling as:
+## BOOSTROOT and GTROOT can both be customized in the environment by e.g.:
 ##     BOOSTROOT=/path/to/boost_X_Y_Z make hector
-## For package manager installs, this could be in any of the following
-## locations (non-exhaustive list):
-## - /usr (boost libraries are in /usr/lib and headers/includes are in /usr/include)
-## - /usr/local
+## For package manager installs, this could be in locations such as:
+## - /usr - I.e., libraries are in /usr/local/lib and headers/includes are in /usr/local/include
+## - /usr/local - This is the default and used by the GitHub Actions YAML files
+##				  If libraries are installed here, there's nothing to do or define
 ## - /usr/local/Cellar/boost_<version_number> -- For MacOS HomeBrew installs
+##
 ## NOTE that if compiling BOOST from source, libraries may be
 ## installed in BOOSTROOT/stage/lib, in which case you may need to
 ## create a symbolic link from BOOSTROOT/lib to BOOSTROOT/stage/lib.
-BOOSTLIB = $(BOOSTROOT)/lib
+##
+## If the header and library files aren't in include/ and lib/ subdirectories of
+## BOOSTROOT and/or GTROOT, you can also define BOOSTINC, BOOSTLIB, GTINC, and GTLIB.
+ifeq ($(strip $(BOOSTROOT)),)
+	BOOSTROOT	= /usr/local/
+endif
+ifeq ($(strip $(BOOSTINC)),)
+	BOOSTINC	= $(BOOSTROOT)/include
+endif
+ifeq ($(strip $(BOOSTLIB)),)
+	BOOSTLIB	= $(BOOSTROOT)/lib
 endif
 
-## Gtest root
-GTVERS	= 1.5.0
-GTROOT	= $(HROOT)/libs/gtest-$(GTVERS)
-GTINC	= $(GTROOT)/include
-GTLIB	= $(GTROOT)/lib/.libs
+ifeq ($(strip $(GTROOT)),)
+	GTROOT	= /usr/local/
+endif
+ifeq ($(strip $(GTINC)),)
+	GTINC	= $(GTROOT)/include
+endif
+ifeq ($(strip $(GTLIB)),)
+	GTLIB	= $(GTROOT)/lib
+endif
 
+## These will be needed by the testing makefile
 export GTLIB GTINC
 
-
-## sources in the top level directory
+## ----------------------------------------------------
+## Sources in the top level directory
 CXXSRCS	= $(wildcard *.cpp)
 MAINS   = main.cpp main-api.cpp
 RCPPS   = $(wildcard rcpp_*.cpp) RcppExports.cpp
+## Remove the mains, as well as Rcpp files, from source list
+## The main file will be added later; *which* main depends on the target
 CXXSRCS := $(filter-out $(MAINS), $(CXXSRCS))
 CXXSRCS := $(filter-out $(RCPPS), $(CXXSRCS))
 CSRCS   = $(wildcard *.c)
 OBJS	= $(CXXSRCS:.cpp=.o) $(CSRCS:.c=.o)
-DEPS	= $(CXXSRCS:.cpp=.d) $(CSRCS:.c=.d)
 
-## default target
+## ----------------------------------------------------
+## Default target
 hector: libhector.a main.o
-	$(CXX) $(LDFLAGS) -o hector main.o -lhector -lm -lboost_system -lboost_filesystem
+	$(CXX) $(LDFLAGS) -o hector main.o -lhector -lm $(BOOST_LIB_IMPORT)
 
-## alternate version that uses the capabilities needed for driving
-## hector from an external source (e.g., an IAM)
-## DO NOT BUILD THIS TARGET UNLESS YOU ARE TESTING HECTOR'S API
-## FUNCTIONALITY.  It uses some hard-coded emissions for testing and likely
+## Testing target
+testing: libhector.a
+	$(MAKE) -C unit-testing hector-unit-tests
+
+## Alternate version that uses the capabilities needed for driving
+## Hector from an external source (e.g., an IAM)
+## DO NOT BUILD THIS TARGET UNLESS YOU ARE TESTING HECTOR'S API FUNCTIONALITY.
+## It uses some hard-coded emissions for testing and likely
 ## will not do what you want it to under all circumstances.
 # hector-api: libhector.a main-api.o
 # 	$(CXX) $(LDFLAGS) -o hector-api main-api.o -lhector -lgsl -lgslcblas -lm
 
-## Targets that do not literally name files
-.PHONY: clean test gtest
+## Targets that do not literally name files; we always want them run when requested
+.PHONY: clean testing chkvar
 
-test: testing
-	cd testing && ./hector-unit-tests
-
-testing: INCLUDES += -I$(GTINC)
-testing: gtest components topdir
-	$(MAKE) -C testing hector-unit-tests
-
-lib: libhector.a
 libhector.a: $(OBJS)
-	ar ru libhector.a *.o
-
-## top level directory objects
--include $(DEPS)
-
-gtest:
-	if [ ! -f $(GTROOT)/config.status ] ; then cd $(GTROOT) && ./configure; fi
-	$(MAKE) -C $(GTROOT)
+	ar cr libhector.a $(OBJS)
 
 clean:
-	-$(MAKE) -C testing clean
-	-rm hector *.o *.d
+	-$(MAKE) -C unit-testing clean
+	-rm -f hector *.o *.d
 	-rm -rf build
 
 chkvar:
-	echo $(CXXSRCS)
-	echo $(CSRCS)
-	echo $(OBJS)
-	echo $(INCLUDES)
+	@echo "LDFLAGS:"
+	@echo $(LDFLAGS)
+	@echo "CXXFLAGS:"
+	@echo $(CXXFLAGS)
+	@echo -n "CXXSRCS:"
+	@echo $(CXXSRCS)
+	@echo "CSRCS:"
+	@echo $(CSRCS)
+	@echo "OBJS:"
+	@echo $(OBJS)
+	@echo "INCLUDES:"
+	@echo $(INCLUDES)
+	@echo "BOOSTROOT:"
+	@echo $(BOOSTROOT)
+	@echo "GTROOT:"
+	@echo $(GTROOT)
+	-$(MAKE) -C unit-testing chkvar

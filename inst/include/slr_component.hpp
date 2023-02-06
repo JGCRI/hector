@@ -1,5 +1,5 @@
 /* Hector -- A Simple Climate Model
-   Copyright (C) 2014-2015  Battelle Memorial Institute
+   Copyright (C) 2022  Battelle Memorial Institute
 
    Please see the accompanying file LICENSE.md for additional licensing
    information.
@@ -33,60 +33,58 @@ namespace Hector {
 class slrComponent : public IModelComponent {
 
 public:
-    slrComponent();
-    ~slrComponent();
+  slrComponent();
+  ~slrComponent();
 
-    //! IModelComponent methods
-    virtual std::string getComponentName() const;
+  //! IModelComponent methods
+  virtual std::string getComponentName() const;
 
-    virtual void init( Core* core );
+  virtual void init(Core *core);
 
-    virtual unitval sendMessage( const std::string& message,
-                                const std::string& datum,
-                                const message_data info=message_data() );
+  virtual unitval sendMessage(const std::string &message,
+                              const std::string &datum,
+                              const message_data info = message_data());
 
-    virtual void setData( const std::string& varName,
-                          const message_data& );
+  virtual void setData(const std::string &varName, const message_data &);
 
-    virtual void prepareToRun();
+  virtual void prepareToRun();
 
-    virtual void run( const double runToDate );
+  virtual void run(const double runToDate);
 
-    virtual void reset(double time);
+  virtual void reset(double time);
 
-    virtual void shutDown();
+  virtual void shutDown();
 
-    //! IVisitable methods
-    virtual void accept( AVisitor* visitor );
+  //! IVisitable methods
+  virtual void accept(AVisitor *visitor);
 
-    //! Reference period. No output occurs before we reach refperiod_high
-    int refperiod_low, refperiod_high;
-    int normalize_year;
+  //! Reference period. No output occurs before we reach refperiod_high
+  int refperiod_low, refperiod_high;
+  int normalize_year;
 
 private:
-    virtual unitval getData( const std::string& varName,
-                            const double valueIndex );
+  virtual unitval getData(const std::string &varName, const double valueIndex);
 
-    tseries<unitval>	sl_rc;			//!< sea level rate of change, cm/yr
-    tseries<unitval>	slr;			//!< sea level rise, cm
-    tseries<unitval>	sl_rc_no_ice;   //!< sea level rate of change, cm/yr, no ice
-    tseries<unitval>	slr_no_ice;		//!< sea level rise, cm, no ice
+  tseries<unitval> sl_rc;        //!< sea level rate of change, cm/yr
+  tseries<unitval> slr;          //!< sea level rise, cm
+  tseries<unitval> sl_rc_no_ice; //!< sea level rate of change, cm/yr, no ice
+  tseries<unitval> slr_no_ice;   //!< sea level rise, cm, no ice
 
-    unitval             refperiod_tgav;	//!< reference period mean temperature
-    tseries<unitval>    tgav;           //!< private copy of global mean temperature
+  unitval refperiod_tgav; //!< reference period mean temperature
+  tseries<unitval> tgav;  //!< private copy of global mean temperature
 
-    //! pointers to other components and stuff
-    Core *core;
+  //! pointers to other components and stuff
+  Core *core;
 
-    void compute_slr( const double date );
+  void compute_slr(const double date);
 
-    //! logger
-    Logger logger;
+  //! logger
+  Logger logger;
 
-    //! Last date run to
-    double oldDate;
+  //! Last date run to
+  double oldDate;
 };
 
-}
+} // namespace Hector
 
 #endif // SLR_COMPONENT_H

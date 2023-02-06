@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1130"
+   LastUpgradeVersion = "1150"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -53,7 +53,7 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "./inst/input/hector_rcp45.ini"
+            argument = "./inst/input/hector_ssp245.ini"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>

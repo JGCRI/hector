@@ -1,12 +1,12 @@
 /* Hector -- A Simple Climate Model
-   Copyright (C) 2014-2015  Battelle Memorial Institute
+   Copyright (C) 2022  Battelle Memorial Institute
 
    Please see the accompanying file LICENSE.md for additional licensing
    information.
 */
 /*
  *  main-api.cpp - example main() using the API
- *  
+ *
  *
  */
 
@@ -100,7 +100,7 @@ int main (int argc, char * const argv[]) {
         tseries<unitval> tempts;
         tseries<unitval> cats;
         tseries<unitval> forcts;
-        
+
         for(double t=core.getStartDate()+5.0; t<=core.getEndDate(); t+=5.0) {
             read_and_set_co2(tlast, t, core, sim_gcam_emiss);
             core.run(t);
@@ -108,20 +108,20 @@ int main (int argc, char * const argv[]) {
             // from components.  Note you don't need to get the name
             // of the component; you just need to say what kind of
             // data you want, and the core takes care of the rest.
-            unitval temp = core.sendMessage(M_GETDATA, D_GLOBAL_TEMP);
-            unitval ca   = core.sendMessage(M_GETDATA, D_ATMOSPHERIC_CO2);
+            unitval temp = core.sendMessage(M_GETDATA, D_GLOBAL_TAS);
+            unitval CO2_conc   = core.sendMessage(M_GETDATA, D_CO2_CONC);
             unitval forc = core.sendMessage(M_GETDATA, D_RF_TOTAL);
             H_LOG(glog, Logger::NOTICE)
                 << "t= " << t << "\t"
                 << "temp= " << temp << "\t"
-                << "atmos. C= " << ca << "\t"
+                << "atmos. C= " <<  CO2_conc << "\t"
                 << "RF= " << forc << endl;
 
             // Record the values we retrieved above for future reference
             tempts.set(t, temp);
-            cats.set(t, ca);
+            cats.set(t, CO2_conc);
             forcts.set(t, forc);
-            
+
             tlast = t;
         }
 
@@ -133,17 +133,17 @@ int main (int argc, char * const argv[]) {
         core.reset(0);          // reset to start and rerun spinup.
         for(double newt = core.getStartDate()+5.0; newt<=core.getEndDate(); newt+=5.0) {
             core.run(newt);
-            unitval temp = core.sendMessage(M_GETDATA, D_GLOBAL_TEMP);
-            unitval ca   = core.sendMessage(M_GETDATA, D_ATMOSPHERIC_CO2);
+            unitval temp = core.sendMessage(M_GETDATA, D_GLOBAL_TAS);
+            unitval CO2_conc   = core.sendMessage(M_GETDATA, D_CO2_CONC);
             unitval forc = core.sendMessage(M_GETDATA, D_RF_TOTAL);
 
             H_LOG(glog, Logger::NOTICE)
                 << "t= " << newt << ":\n"
                 << "\ttemp old= " << tempts.get(newt) << "\ttemp new= " << temp << "\tdiff= " << temp-tempts.get(newt) << "\n"
-                << "\tca old= " << cats.get(newt) << "\tca new= " << ca << "\tdiff= " << ca-cats.get(newt) << "\n"
+                << "\tca old= " << cats.get(newt) << "\tca new= " << CO2_conc << "\tdiff= " << CO2_conc-cats.get(newt) << "\n"
                 << "\tforc old= " << forcts.get(newt) << "\tforc new= " << forc << "\tdiff= " << forc-forcts.get(newt) << "\n";
         }
-        
+
 
         H_LOG(glog, Logger::NOTICE) << "Shutting down all components.\n";
         core.shutDown();
@@ -176,17 +176,22 @@ void read_and_set_co2(double tstrt, double tend, Core &core, istream &sim_gcam_e
         t = atof(splitvec[0].c_str());
         if(t>=tstrt && t>2010.0) {
             double ffi   = atof(splitvec[1].c_str());
-            double luc   = atof(splitvec[2].c_str());
-            double so2   = atof(splitvec[6].c_str());
-            double bc    = atof(splitvec[10].c_str());
-            double oc    = atof(splitvec[11].c_str());
-            double cf4   = atof(splitvec[13].c_str());
-            double hcf22 = atof(splitvec[32].c_str());
+            double daccs = atof(splitvec[2].c_str());
+            double luc   = atof(splitvec[3].c_str());
+            double so2   = atof(splitvec[7].c_str());
+            double bc    = atof(splitvec[11].c_str());
+            double oc    = atof(splitvec[12].c_str());
+            double cf4   = atof(splitvec[14].c_str());
+            double hcf22 = atof(splitvec[33].c_str());
 
             // This is how you set annual emissions into the model
             core.sendMessage(M_SETDATA, D_FFI_EMISSIONS,
                              message_data(t, unitval(ffi, U_PGC_YR)));
+            core.sendMessage(M_SETDATA, D_DACCS_UPTAKE,
+                             message_data(t, unitval(daccs, U_PGC_YR)));
             core.sendMessage(M_SETDATA, D_LUC_EMISSIONS,
+                             message_data(t, unitval(luc, U_PGC_YR)));
+            core.sendMessage(M_SETDATA, D_LUC_UPTAKE,
                              message_data(t, unitval(luc, U_PGC_YR)));
             core.sendMessage(M_SETDATA, D_EMISSIONS_SO2,
                              message_data(t, unitval(so2, U_GG_S)));
@@ -196,11 +201,12 @@ void read_and_set_co2(double tstrt, double tend, Core &core, istream &sim_gcam_e
                              message_data(t, unitval(oc, U_TG)));
             core.sendMessage(M_SETDATA, D_EMISSIONS_CF4,
                              message_data(t, unitval(cf4, U_GG)));
-            core.sendMessage(M_SETDATA, D_EMISSIONS_HCF22,
+            core.sendMessage(M_SETDATA, D_EMISSIONS_HFC22,
                              message_data(t, unitval(hcf22, U_GG)));
 
             std::cout << "t= " << t << "\n"
                       << "\t\tffi= " << ffi << "\n"
+                      << "\t\tdaccs= " << daccs << "\n"
                       << "\t\tluc= " << luc << "\n"
                       << "\t\tSO2= " << so2 << "\n"
                       << "\t\tBC= "  << bc << "\n"

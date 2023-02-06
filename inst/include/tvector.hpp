@@ -1,5 +1,5 @@
 /* Hector -- A Simple Climate Model
-   Copyright (C) 2014-2015  Battelle Memorial Institute
+   Copyright (C) 2022  Battelle Memorial Institute
 
    Please see the accompanying file LICENSE.md for additional licensing
    information.
@@ -26,14 +26,14 @@
  *
  */
 
-#include <map>
-#include <limits>
-#include <string>
 #include <cmath>
+#include <limits>
+#include <map>
 #include <sstream>
+#include <string>
 
-#include "logger.hpp"
 #include "h_exception.hpp"
+#include "logger.hpp"
 
 namespace Hector {
 
@@ -41,51 +41,47 @@ namespace Hector {
  *
  *  Currently implemented as an STL map.
  */
-template <class T_data>
-class tvector {
-    std::map<double, T_data> mapdata;
+template <class T_data> class tvector {
+  std::map<double, T_data> mapdata;
+
 public:
+  void set(double, const T_data &);
+  const T_data &get(double) const;
+  T_data &get(double); // allow modify-in-place
+  bool exists(double) const;
 
-    void set(double, const T_data &);
-    const T_data &get(double) const;
-    T_data &get(double); // allow modify-in-place
-    bool exists( double ) const;
+  // indexing operators: the const version is just syntactic sugar
+  // for get().  The non-const version works differently.  If the
+  // requested object doesn't exist, it default constructs it,
+  // assigns the new object, and returns the reference to the newly
+  // created object.  This allows you to write tvec[t] = xx.
+  const T_data &operator[](double t) const { return get(t); }
+  T_data &operator[](double t);
 
-    // indexing operators: the const version is just syntactic sugar
-    // for get().  The non-const version works differently.  If the
-    // requested object doesn't exist, it default constructs it,
-    // assigns the new object, and returns the reference to the newly
-    // created object.  This allows you to write tvec[t] = xx.
-    const T_data &operator[](double t) const {
-        return get(t);
-    }
-    T_data &operator[](double t);
+  double firstdate() const;
+  double lastdate() const;
 
-    double firstdate() const;
-    double lastdate() const;
+  int size() const;
 
-    int size() const;
+  void truncate(double t, bool after = true);
 
-    void truncate(double t, bool after=true);
 private:
-    static double round(double t) {
-        // round time values to prevent minute differences in
-        // representation from resulting in a misidentificaiton.
-        // Right now we round to the nearest half-integer, but that could
-        // change in the future, if we need more time resolution.
-        return 0.5 * ::round(2.0*t);
-    }
+  static double round(double t) {
+    // round time values to prevent minute differences in
+    // representation from resulting in a misidentificaiton.
+    // Right now we round to the nearest half-integer, but that could
+    // change in the future, if we need more time resolution.
+    return 0.5 * ::round(2.0 * t);
+  }
 };
-
 
 //-----------------------------------------------------------------------
 /*! \brief 'Set' for time vector data type.
  *
  *  Sets an (t, d) tuple, data d at time t.
  */
-template <class T_data>
-void tvector<T_data>::set(double t, const T_data &d) {
-    mapdata[round(t)] = d;
+template <class T_data> void tvector<T_data>::set(double t, const T_data &d) {
+  mapdata[round(t)] = d;
 }
 
 //-----------------------------------------------------------------------
@@ -93,9 +89,8 @@ void tvector<T_data>::set(double t, const T_data &d) {
  *
  *  Returns a bool to indicate if data exists.
  */
-template <class T_data>
-bool tvector<T_data>::exists( double t ) const {
-    return ( mapdata.find( round(t) ) != mapdata.end() );
+template <class T_data> bool tvector<T_data>::exists(double t) const {
+  return (mapdata.find(round(t)) != mapdata.end());
 }
 
 //-----------------------------------------------------------------------
@@ -104,16 +99,16 @@ bool tvector<T_data>::exists( double t ) const {
  *  Return data associated with time t.
  *  If no value exists, raise an exception.
  */
-template <class T_data>
-const T_data &tvector<T_data>::get( double t ) const {
-    typename std::map<double,T_data>::const_iterator itr = mapdata.find( round(t) );
-    if( itr != mapdata.end() )
-        return (*itr).second;
-    else {
-        std::ostringstream errmsg;
-        errmsg << "No data at requested time= " << round(t) << "\n";
-        H_THROW(errmsg.str());
-    }
+template <class T_data> const T_data &tvector<T_data>::get(double t) const {
+  typename std::map<double, T_data>::const_iterator itr =
+      mapdata.find(round(t));
+  if (itr != mapdata.end())
+    return (*itr).second;
+  else {
+    std::ostringstream errmsg;
+    errmsg << "No data at requested time= " << round(t) << "\n";
+    H_THROW(errmsg.str());
+  }
 }
 
 /*! \brief mutable get method
@@ -121,41 +116,36 @@ const T_data &tvector<T_data>::get( double t ) const {
  * If the time vector object is not const, then get() returns a
  * non-const reference, allowing an object to be modified in place.
  */
-template <class T_data>
-T_data &tvector<T_data>::get( double t ) {
-    typename std::map<double,T_data>::iterator itr = mapdata.find( round(t) );
-    if( itr != mapdata.end() )
-        return itr->second;
-    else {
-        std::ostringstream errmsg;
-        errmsg << "No data at requested time= " << round(t) << "\n";
-        H_THROW(errmsg.str());
-    }
+template <class T_data> T_data &tvector<T_data>::get(double t) {
+  typename std::map<double, T_data>::iterator itr = mapdata.find(round(t));
+  if (itr != mapdata.end())
+    return itr->second;
+  else {
+    std::ostringstream errmsg;
+    errmsg << "No data at requested time= " << round(t) << "\n";
+    H_THROW(errmsg.str());
+  }
 }
 
-template <class T_data>
-T_data &tvector<T_data>::operator[](double t) {
-    try {
-        return get(t);
-    }
-    catch(h_exception &fail) {
-        // h_exception is thrown when the requested object doesn't exist.
-        T_data newdat = T_data();
-        set(t, newdat);
-        return get(t);          // won't fail b/c we just created it
-    }
+template <class T_data> T_data &tvector<T_data>::operator[](double t) {
+  try {
+    return get(t);
+  } catch (h_exception &fail) {
+    // h_exception is thrown when the requested object doesn't exist.
+    T_data newdat = T_data();
+    set(t, newdat);
+    return get(t); // won't fail b/c we just created it
+  }
 }
-
 
 //-----------------------------------------------------------------------
 /*! \brief Return index of first element in vector.
  *
  *  Return index of first element in vector.
  */
-template <class T_data>
-double tvector<T_data>::firstdate() const {
-    H_ASSERT( !mapdata.empty(), "no mapdata" );
-    return (*mapdata.begin()).first;
+template <class T_data> double tvector<T_data>::firstdate() const {
+  H_ASSERT(!mapdata.empty(), "no mapdata");
+  return (*mapdata.begin()).first;
 }
 
 //-----------------------------------------------------------------------
@@ -163,10 +153,9 @@ double tvector<T_data>::firstdate() const {
  *
  *  Return index of last element in vector.
  */
-template <class T_data>
-double tvector<T_data>::lastdate() const {
-    H_ASSERT( !mapdata.empty(), "no mapdata" );
-    return (*mapdata.rbegin()).first;
+template <class T_data> double tvector<T_data>::lastdate() const {
+  H_ASSERT(!mapdata.empty(), "no mapdata");
+  return (*mapdata.rbegin()).first;
 }
 
 //-----------------------------------------------------------------------
@@ -174,9 +163,8 @@ double tvector<T_data>::lastdate() const {
  *
  *  Return size of vector.
  */
-template <class T_data>
-int tvector<T_data>::size() const {
-    return int( mapdata.size() );
+template <class T_data> int tvector<T_data>::size() const {
+  return int(mapdata.size());
 }
 
 /*! \brief truncate a time vector
@@ -186,22 +174,19 @@ int tvector<T_data>::size() const {
  *           argument to false, you can wipe data before the input
  *           date instead.
  */
-template <class T>
-void tvector<T>::truncate(double t, bool after)
-{
-    t = round(t);
-    typename std::map<double, T>::iterator it1, it2;
-    if(after) {
-        it1 = mapdata.upper_bound(t);
-        it2 = mapdata.end();
-    }
-    else {
-        it1 = mapdata.begin();
-        it2 = mapdata.lower_bound(t);
-    }
-    mapdata.erase(it1,it2);
+template <class T> void tvector<T>::truncate(double t, bool after) {
+  t = round(t);
+  typename std::map<double, T>::iterator it1, it2;
+  if (after) {
+    it1 = mapdata.upper_bound(t);
+    it2 = mapdata.end();
+  } else {
+    it1 = mapdata.begin();
+    it2 = mapdata.lower_bound(t);
+  }
+  mapdata.erase(it1, it2);
 }
 
-}
+} // namespace Hector
 
 #endif

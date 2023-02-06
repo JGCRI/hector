@@ -1,5 +1,5 @@
 /* Hector -- A Simple Climate Model
-   Copyright (C) 2014-2015  Battelle Memorial Institute
+   Copyright (C) 2022  Battelle Memorial Institute
 
    Please see the accompanying file LICENSE.md for additional licensing
    information.
@@ -16,18 +16,24 @@
  *  Provides utility services
  */
 
+#include <iostream>
 
-#define H_STRINGIFY_VAR(var) \
-    #var
+#define H_STRINGIFY_VAR(var) #var
 
 #define MODEL_NAME "hector"
 
 /*!
  * \brief The model version number to be included in logs and outputs.
- * \note This must be updated manually when the model version changes.
+ * \note  Manually update the git tag to match this.
  */
-#define MODEL_VERSION "2.5.0"
+#define MODEL_VERSION "3.0.0"
 
 #define OUTPUT_DIRECTORY "output/"
+
+namespace Hector {
+
+void ensure_dir_exists(const std::string &dir);
+
+}
 
 #endif // H_UTIL_H

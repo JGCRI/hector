@@ -1,5 +1,5 @@
 /* Hector -- A Simple Climate Model
-   Copyright (C) 2014-2015  Battelle Memorial Institute
+   Copyright (C) 2022  Battelle Memorial Institute
 
    Please see the accompanying file LICENSE.md for additional licensing
    information.
@@ -30,56 +30,54 @@ namespace Hector {
 class DummyModelComponent : public IModelComponent {
 
 public:
-    DummyModelComponent();
-    ~DummyModelComponent();
+  DummyModelComponent();
+  ~DummyModelComponent();
 
-    double getY() const;
+  double getY() const;
 
-    const tseries<double>& getC() const;
+  const tseries<double> &getC() const;
 
-    //! IModelComponent methods
-    virtual std::string getComponentName() const;
+  //! IModelComponent methods
+  virtual std::string getComponentName() const;
 
-    virtual void init( Core* core );
+  virtual void init(Core *core);
 
-    virtual unitval sendMessage( const std::string& message,
-                                const std::string& datum,
-                                const message_data info=message_data() );
+  virtual unitval sendMessage(const std::string &message,
+                              const std::string &datum,
+                              const message_data info = message_data());
 
-    virtual void setData( const std::string& varName,
-                          const message_data& data );
+  virtual void setData(const std::string &varName, const message_data &data);
 
-    virtual void prepareToRun();
+  virtual void prepareToRun();
 
-    virtual void run( const double runToDate );
+  virtual void run(const double runToDate);
 
-    virtual void reset(double date);
+  virtual void reset(double date);
 
-    virtual void shutDown();
+  virtual void shutDown();
 
-    //! IVisitable methods
-    virtual void accept( AVisitor* visitor );
+  //! IVisitable methods
+  virtual void accept(AVisitor *visitor);
 
 private:
-    virtual unitval getData( const std::string& varName,
-                            const double valueIndex );
+  virtual unitval getData(const std::string &varName, const double valueIndex);
 
-    //! input var
-    double slope;
+  //! input var
+  double slope;
 
-    //! state var
-    double prevX;
+  //! state var
+  double prevX;
 
-    //! result at state
-    double y;
+  //! result at state
+  double y;
 
-    //! input time series var
-    tseries<double> c;
+  //! input time series var
+  tseries<double> c;
 
-    // logger
-    Logger logger;
+  // logger
+  Logger logger;
 };
 
-}
+} // namespace Hector
 
 #endif // DUMMY_MODEL_COMPONENT_H

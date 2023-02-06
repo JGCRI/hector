@@ -1,14 +1,14 @@
-context("Test basic R wrapper functionality")
+context("R wrapper functionality")
 
 inputdir <- system.file("input", package = "hector")
-testvars <- c(ATMOSPHERIC_CO2(), RF_TOTAL(), GLOBAL_TEMP())
+testvars <- c(CONCENTRATIONS_CO2(), RF_TOTAL(), GLOBAL_TAS())
 dates <- 2000:2300
 
 
 test_that("Rerunning spinup produces minimal change", {
 
   # First Hector core run
-  hc <- newcore(file.path(inputdir, "hector_rcp45.ini"), name = "RCP45", suppresslogging = TRUE)
+  hc <- newcore(file.path(inputdir, "hector_ssp245.ini"), name = "ssp245", suppresslogging = TRUE)
   run(hc, 2100)
   dd1 <- fetchvars(hc, dates, testvars)
 
@@ -27,18 +27,22 @@ test_that("Rerunning spinup produces minimal change", {
 
 
 test_that("Basic hcore functionality works", {
-  hc <- newcore(file.path(inputdir, "hector_rcp45.ini"), name = "RCP45", suppresslogging = TRUE)
+  hc <- newcore(file.path(inputdir, "hector_ssp245.ini"), name = "ssp245", suppresslogging = TRUE)
   run(hc, 2100)
   expect_true(inherits(hc, "hcore"))
   expect_true(isactive(hc))
   expect_equal(startdate(hc), 1745)
   expect_equal(enddate(hc), 2300)
   expect_equal(getdate(hc), 2100)
-  expect_equal(getname(hc), "RCP45")
+  expect_equal(getname(hc), "ssp245")
 
   expect_error(run(hc, 2050), "is prior to the current date")
   expect_silent(run(hc, 2100))
   expect_silent(run(hc))
+
+  # All years should appear in the output
+  out <- fetchvars(hc, dates = 1745:2300)
+  expect_equivalent(sort(unique(out$year)), 1745:2300)
 
   hc <- shutdown(hc)
   expect_false(isactive(hc))
@@ -53,8 +57,8 @@ test_that("Write out logs", {
   }
 
   ## Turn logging ON for one test and confirm it runs (see GitHub issues #372 and #381)
-  hc_log <- newcore(file.path(inputdir, "hector_rcp45.ini"),
-                    name = "RCP45",
+  hc_log <- newcore(file.path(inputdir, "hector_ssp245.ini"),
+                    name = "ssp245",
                     suppresslogging = FALSE)
   run(hc_log, 2100)
   shutdown(hc_log)
@@ -63,25 +67,25 @@ test_that("Write out logs", {
   expect_true(dir.exists(log_dir))
 
   # Check to see that individual log files were written out
-  expect_equal(length(list.files(log_dir, pattern = ".log")), 40)
+  expect_equal(length(list.files(log_dir, pattern = ".log")), 41)
 
   # Check that errors on shutdown cores get caught
   expect_error(getdate(hc_log), "Invalid or inactive")
   expect_error(run(hc_log), "Invalid or inactive")
-  expect_error(fetchvars(hc_log), "Invalid or inactive")
+  expect_error(fetchvars(hc_log, hc_log$strtdate), "Invalid or inactive")
 })
 
 
-## Make sure that that when the Hector core is shut downsys
+## Make sure that that when the Hector core is shut down
 ## everything is tidied up.
 test_that("Garbage collection shuts down hector cores", {
   ## This test makes use of some knowledge about the structure of the hector
   ## core objects that no user should ever assume.
-  hc <- newcore(file.path(inputdir, "hector_rcp45.ini"), suppresslogging = TRUE, name = "core1")
+  hc <- newcore(file.path(inputdir, "hector_ssp245.ini"), suppresslogging = TRUE, name = "core1")
   expect_true(isactive(hc))
   coreidx1 <- hc$coreidx
 
-  hc <- newcore(file.path(inputdir, "hector_rcp45.ini"), suppresslogging = TRUE, name = "core2")
+  hc <- newcore(file.path(inputdir, "hector_ssp245.ini"), suppresslogging = TRUE, name = "core2")
   expect_true(isactive(hc))
   coreidx2 <- hc$coreidx
   expect_equal(coreidx2, 1 + coreidx1)
@@ -99,7 +103,8 @@ test_that("Garbage collection shuts down hector cores", {
 ## Ensure the scenario name can change in the output
 ## when the core is set up different names.
 test_that("Scenario column is created in output", {
-  hc <- newcore(file.path(inputdir, "hector_rcp45.ini"), suppresslogging = TRUE, name = "scenario1")
+  hc <- newcore(file.path(inputdir, "hector_ssp245.ini"),
+                suppresslogging = TRUE, name = "scenario1")
   run(hc)
 
   outdata1 <- fetchvars(hc, dates, testvars)
@@ -114,7 +119,7 @@ test_that("Scenario column is created in output", {
 # As a deterministic model Hector should produce the same output each time it is run.
 # Run Hector multiple times and check output.
 test_that("Reset produces identical results", {
-  hc <- newcore(file.path(inputdir, "hector_rcp45.ini"), suppresslogging = TRUE)
+  hc <- newcore(file.path(inputdir, "hector_ssp245.ini"), suppresslogging = TRUE)
   run(hc)
   expect_equal(getdate(hc), enddate(hc))
   outdata1 <- fetchvars(hc, dates, testvars)
@@ -128,8 +133,8 @@ test_that("Reset produces identical results", {
 })
 
 test_that("Exceptions are caught", {
-  expect_error(hc <- newcore("foo"), "does not exist")
-  hc <- newcore(file.path(inputdir, "hector_rcp45.ini"), suppresslogging = TRUE)
+  suppressWarnings(expect_error(hc <- newcore("foo"), "does not exist"))
+  hc <- newcore(file.path(inputdir, "hector_ssp245.ini"), suppresslogging = TRUE)
   setvar(hc, NA, BETA(), -1.0, NA)
   expect_error(reset(hc), "beta")
   ## Verify that the core can continue to run after an error has been thrown.
@@ -140,7 +145,7 @@ test_that("Exceptions are caught", {
 
 
 test_that("Automatic reset is performed if and only if core is not marked 'clean'.", {
-  hc <- newcore(file.path(inputdir, "hector_rcp45.ini"), suppresslogging = TRUE)
+  hc <- newcore(file.path(inputdir, "hector_ssp245.ini"), suppresslogging = TRUE)
 
   expect_true(hc$clean)
   run(hc, 2100)
@@ -149,7 +154,9 @@ test_that("Automatic reset is performed if and only if core is not marked 'clean
   expect_error(run(hc, 2050), "is prior") # No reset
   hc$clean <- FALSE
   hc$reset_date <- 0
-  expect_silent(run(hc, 2050)) # reset performed
+  ## Reset performed - expect_output, not expect_silent, because the core
+  ## prints a message alerting user of reset
+  expect_message(run(hc, 2050), "resetting")
   expect_true(hc$clean)
 
   hc$clean <- FALSE
@@ -168,7 +175,7 @@ test_that("Automatic reset is performed if and only if core is not marked 'clean
 
 
 test_that("Setting future values does not trigger a reset.", {
-  hc <- newcore(file.path(inputdir, "hector_rcp45.ini"), suppresslogging = TRUE)
+  hc <- newcore(file.path(inputdir, "hector_ssp245.ini"), suppresslogging = TRUE)
 
   run(hc, 2100)
   setvar(hc, 2101:2300, FFI_EMISSIONS(), 0.0, "Pg C/yr")
@@ -178,22 +185,28 @@ test_that("Setting future values does not trigger a reset.", {
 })
 
 
-test_that("Setting past or parameter values does trigger a reset.", {
-  hc <- newcore(file.path(inputdir, "hector_rcp45.ini"), suppresslogging = TRUE)
+test_that("Setting parameter values or run date prior to current date does trigger a reset.", {
+  hc <- newcore(file.path(inputdir, "hector_ssp370.ini"), suppresslogging = TRUE)
   run(hc, 2100)
 
   setvar(hc, 2050:2150, FFI_EMISSIONS(), 0.0, "Pg C/yr")
   expect_false(hc$clean)
+  expect_message(run(hc, 2100), "resetting")
+  expect_true(hc$clean) # reset gets run!
   expect_equal(hc$reset_date, 2049)
-  expect_error(run(hc, 2048), "is prior")
-  expect_true(hc$clean) # reset still gets run!
+
+  # requesting a prior date run raises an error BUT also resets
+  setvar(hc, 2050:2150, FFI_EMISSIONS(), 0.0, "Pg C/yr")
+  # suppress message - we know core will auto-reset
+  expect_error(suppressMessages(run(hc, 2048)), "is prior")
   expect_silent(run(hc, 2050))
   expect_true(hc$clean)
 
   setvar(hc, 2050:2150, FFI_EMISSIONS(), 0.0, "Pg C/yr") # edge case
   expect_false(hc$clean)
   expect_equal(hc$reset_date, 2049)
-  expect_error(run(hc, 2048), "is prior")
+  # suppress message - we know core will auto-reset
+  expect_error(suppressMessages(run(hc, 2048)), "is prior")
   expect_silent(run(hc, 2050))
   expect_true(hc$clean)
 

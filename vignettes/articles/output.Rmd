@@ -1,0 +1,91 @@
+---
+title: "Outputs"
+---
+
+## Standalone Executable
+
+Output from the standalone executable is written out to `output` sub-directory of the hector's root directory. The Hector results are stored in `outputstream_name.csv`; if applicable, carbon tracking results are written to `tracking_name.csv` (where the name refers to the hector run name). 
+
+The output stream csv contains results and output from the spin-up period for a handful of variables. 
+
+## R Hector 
+
+The [fetchvars](../reference/fetchvars.html) function is used to get results from a hector core with the identifier functions listed as `R_function` in the table below. 
+
+### R function table
+
+|R_function             |name              |units    |
+|:----------------------|:-----------------|:--------|
+|RF_TOTAL()           |RF_tot            |W/m2     |
+|RF_CO2()             |RF_CO2            |W/m2     |
+|RF_N2O()             |RF_N2O            |W/m2     |
+|RF_H2O_STRAT()       |RF_H2O_strat      |W/m2     |
+|RF_O3_TROP()         |RF_O3_trop        |W/m2     |
+|RF_BC()              |RF_BC             |W/m2     |
+|RF_OC()              |RF_OC             |W/m2     |
+|RF_NH3()             |RF_NH3            |W/m2     |
+|RF_SO2()             |RF_SO2            |W/m2     |
+|RF_ACI()             |RF_aci            |W/m2     |
+|RF_VOL()             |RF_vol            |W/m2     |
+|RF_CF4()             |FadjCF4           |W/m2     |
+|RF_C2F6()            |FadjC2F6          |W/m2     |
+|RF_HFC23()           |FadjHFC23         |W/m2     |
+|RF_HFC32()           |FadjHFC32         |W/m2     |
+|RF_HFC4310()         |FadjHFC4310       |W/m2     |
+|RF_HFC125()          |FadjHFC125        |W/m2     |
+|RF_HFC134A()         |FadjHFC134a       |W/m2     |
+|RF_HFC143A()         |FadjHFC143a       |W/m2     |
+|RF_HFC227EA()        |FadjHFC227ea      |W/m2     |
+|RF_HFC245FA()        |FadjHFC245fa      |W/m2     |
+|RF_SF6()             |FadjSF6           |W/m2     |
+|RF_CFC11()           |FadjCFC11         |W/m2     |
+|RF_CFC12()           |FadjCFC12         |W/m2     |
+|RF_CFC113()          |FadjCFC113        |W/m2     |
+|RF_CFC114()          |FadjCFC114        |W/m2     |
+|RF_CFC115()          |FadjCFC115        |W/m2     |
+|RF_CCL4()            |FadjCCl4          |W/m2     |
+|RF_CH3CCL3()         |FadjCH3CCl3       |W/m2     |
+|RF_HCFC22()          |FadjHCFC22        |W/m2     |
+|RF_HCFC141B()        |FadjHCFC141b      |W/m2     |
+|RF_HCFC142B()        |FadjHCFC142b      |W/m2     |
+|RF_HALON1211()       |Fadjhalon1211     |W/m2     |
+|RF_HALON1301()       |Fadjhalon1301     |W/m2     |
+|RF_HALON2402()       |Fadjhalon2402     |W/m2     |
+|RF_CH3CL()           |FadjCH3Cl         |W/m2     |
+|RF_CH3BR()           |FadjCH3Br         |W/m2     |
+|CONCENTRATIONS_CH4() |CH4_concentration |ppbv CH4 |
+|RF_CH4()             |FCH4              |W/m2     |
+|CONCENTRATIONS_N2O() |N2O_concentration |ppbv N2O |
+|CONCENTRATIONS_O3()  |O3_concentration  |DU O3    |
+|OCEAN_C()            |ocean_c           |Pg C     |
+|OCEAN_C_HL()         |HL_ocean_c        |Pg C     |
+|OCEAN_C_LL()         |LL_ocean_c        |Pg C     |
+|OCEAN_C_ML()         |ML_ocean_c        |Pg C     |
+|OCEAN_C_IO()         |IO_ocean_c        |Pg C     |
+|OCEAN_C_DO()         |DO_ocean_c        |Pg C     |
+|PH_HL()              |HL_pH             |pH       |
+|PH_LL()              |LL_pH             |pH       |
+|PH()                 |pH                |pH       |
+|PCO2_HL()            |HL_PCO2           |uatm     |
+|PCO2_LL()            |LL_PCO2           |uatm     |
+|PCO2()               |PCO2              |uatm     |
+|DIC_HL()             |HL_DIC            |umol/kg  |
+|DIC()                |DIC               |umol/kg  |
+|DIC_LL()             |LL_DIC            |umol/kg  |
+|SST_HL()             |HL_sst            |degC     |
+|SST_LL()             |LL_sst            |degC     |
+|CO3_LL()             |LL_CO3            |umol/kg  |
+|CO3_HL()             |HL_CO3            |umol/kg  |
+|CO3()                |CO3               |umol/kg  |
+|NBP()                |NBP               |Pg C/yr  |
+|CONCENTRATIONS_CO2() |CO2_concentration |ppmv CO2 |
+|NPP()                |NPP               |Pg C/yr  |
+|RH()                 |RH                |Pg C/yr  |
+|EARTH_C()            |earth_c           |Pg C     |
+|GLOBAL_TAS()         |global_tas        |degC     |
+|SST()                |sst               |degC     |
+|OCEAN_TAS()          |ocean_tas         |degC     |
+|LAND_TAS()           |land_tas          |degC     |
+|FLUX_MIXED()         |heatflux_mixed    |W/m2     |
+|FLUX_INTERIOR()      |heatflux_interior |W/m2     |
+|HEAT_FLUX()          |heatflux          |W/m2     |

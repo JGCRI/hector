@@ -1,5 +1,5 @@
 /* Hector -- A Simple Climate Model
-   Copyright (C) 2014-2015  Battelle Memorial Institute
+   Copyright (C) 2022  Battelle Memorial Institute
 
    Please see the accompanying file LICENSE.md for additional licensing
    information.
@@ -14,10 +14,10 @@
  *
  */
 
+#include "imodel_component.hpp"
 #include "logger.hpp"
 #include "tseries.hpp"
 #include "unitval.hpp"
-#include "imodel_component.hpp"
 
 namespace Hector {
 
@@ -29,66 +29,61 @@ namespace Hector {
  *
  */
 class HalocarbonComponent : public IModelComponent {
-    friend class CSVOutputStreamVisitor;
+  friend class CSVOutputStreamVisitor;
 
 public:
-    HalocarbonComponent( std::string g );
-    virtual ~HalocarbonComponent();
+  HalocarbonComponent(std::string g);
+  virtual ~HalocarbonComponent();
 
+  // IModelComponent methods
+  virtual std::string getComponentName() const;
 
-    // IModelComponent methods
-    virtual std::string getComponentName() const;
+  virtual void init(Core *core);
 
-    virtual void init( Core* core );
+  virtual unitval sendMessage(const std::string &message,
+                              const std::string &datum,
+                              const message_data info = message_data());
 
-    virtual unitval sendMessage( const std::string& message,
-                                const std::string& datum,
-                                const message_data info=message_data() );
+  virtual void setData(const std::string &varName, const message_data &data);
 
-    virtual void setData( const std::string& varName,
-                          const message_data& data );
+  virtual void prepareToRun();
 
-    virtual void prepareToRun();
+  virtual void run(const double runToDate);
 
-    virtual void run( const double runToDate );
+  virtual void reset(double time);
 
-    virtual void reset(double time);
+  virtual void shutDown();
 
-    virtual void shutDown();
-
-    // IVisitable methods
-    virtual void accept( AVisitor* visitor );
+  // IVisitable methods
+  virtual void accept(AVisitor *visitor);
 
 private:
-    virtual unitval getData( const std::string& varName,
-                            const double valueIndex );
+  virtual unitval getData(const std::string &varName, const double valueIndex);
 
-    //! Who are we?
-    std::string myGasName;
+  //! Who are we?
+  std::string myGasName;
 
-    //! Rate coefficient of loss [relates to year?]
-    double tau;
+  // Parameters
+  double tau;    // lifetime in years
+  unitval rho;   // radiative efficiencies W/m2/ppt
+  unitval delta; // tropospheric adjustments scalar unitless
 
-    //! Radiative forcing efficiency [W/m^2/pptv]
-    unitval rho;
+  //! Forcing [W/m^2]
+  tseries<unitval> hc_forcing;
+  tseries<unitval> emissions; //! Time series of emissions, pptv
+  tseries<unitval> Ha_ts;     //! Time series of (ambient) concentration, pptv
+  tseries<unitval> Ha_constrain; //! Concentration constraint, pptv
+  unitval H0;                    //! Preindustrial concentration, pptv
 
-    //! Forcing [W/m^2]
-    tseries<unitval> hc_forcing;
+  double molarMass;
 
-    tseries<unitval> emissions;     //! Time series of emissions, pptv
-    tseries<unitval> Ha_ts;         //! Time series of (ambient) concentration, pptv
-    tseries<unitval> Ha_constrain; //! Concentration constraint, pptv
-    unitval H0;                     //! Preindustrial concentration, pptv
+  //! logger
+  Logger logger;
 
-    double molarMass;
-
-    //! logger
-    Logger logger;
-
-	Core *core;
-    double oldDate;
+  Core *core;
+  double oldDate;
 };
 
-}
+} // namespace Hector
 
 #endif // HALOCARBON_COMPONENT_HPP

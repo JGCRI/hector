@@ -7,10 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		277D29DC2683669E003177A2 /* libboost_system.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 277D29DA2683669E003177A2 /* libboost_system.dylib */; };
-		277D29DD2683669E003177A2 /* libboost_filesystem.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 277D29DB2683669E003177A2 /* libboost_filesystem.dylib */; };
+		273FC39626A3570B00D5303E /* test_tseries.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 273FC38B26A3570B00D5303E /* test_tseries.cpp */; };
+		273FC39726A3570B00D5303E /* testing_main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 273FC38C26A3570B00D5303E /* testing_main.cpp */; };
+		273FC39926A3570B00D5303E /* test_tracking.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 273FC38E26A3570B00D5303E /* test_tracking.cpp */; };
+		273FC39B26A3570B00D5303E /* test_inih.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 273FC39026A3570B00D5303E /* test_inih.cpp */; };
+		273FC39D26A3570B00D5303E /* test_hreader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 273FC39226A3570B00D5303E /* test_hreader.cpp */; };
+		273FC39E26A3570B00D5303E /* test_ini_to_core_reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 273FC39326A3570B00D5303E /* test_ini_to_core_reader.cpp */; };
+		273FC39F26A3570B00D5303E /* test_unitval.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 273FC39426A3570B00D5303E /* test_unitval.cpp */; };
+		273FC3A026A3570B00D5303E /* test_logger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 273FC39526A3570B00D5303E /* test_logger.cpp */; };
+		275CBFF227AC7CC0009E2AF5 /* h_util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 275CBFF127AC7CC0009E2AF5 /* h_util.cpp */; };
 		27808CF12615CEFA00BE8B90 /* libgtest.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 27808CF02615CEFA00BE8B90 /* libgtest.dylib */; };
-		27808CF42615D31A00BE8B90 /* test_tseries.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27A02A4B2615CAA100AF9BFA /* test_tseries.cpp */; };
+		27962905268F237300333AA3 /* csv_tracking_visitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27962904268F237200333AA3 /* csv_tracking_visitor.cpp */; };
+		27962908268F23CB00333AA3 /* simpleNbox-runtime.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27962907268F23CB00333AA3 /* simpleNbox-runtime.cpp */; };
+		27962909268F241100333AA3 /* simpleNbox-runtime.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27962907268F23CB00333AA3 /* simpleNbox-runtime.cpp */; };
 		27A02A5E2615CBB800AF9BFA /* halocarbon_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C231261511C5005DE26D /* halocarbon_component.cpp */; };
 		27A02A602615CBB800AF9BFA /* ocean_csys.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C241261511C7005DE26D /* ocean_csys.cpp */; };
 		27A02A612615CBB800AF9BFA /* core.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C23D261511C6005DE26D /* core.cpp */; };
@@ -41,9 +50,6 @@
 		27A02A7B2615CBB800AF9BFA /* forcing_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C230261511C5005DE26D /* forcing_component.cpp */; };
 		27A02A7C2615CBB800AF9BFA /* dummy_model_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C249261511C7005DE26D /* dummy_model_component.cpp */; };
 		27A02A7D2615CBB800AF9BFA /* oceanbox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C23E261511C7005DE26D /* oceanbox.cpp */; };
-		27A02A7F2615CBB800AF9BFA /* libboost_filesystem.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 27B2C27A26155326005DE26D /* libboost_filesystem.dylib */; };
-		27A02A802615CBB800AF9BFA /* libboost_system.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 27B2C27C26155331005DE26D /* libboost_system.dylib */; };
-		27A02A892615CBDB00AF9BFA /* testing_main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27A02A4D2615CAA100AF9BFA /* testing_main.cpp */; };
 		27B2C24F261511C8005DE26D /* ch4_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C22C261511C5005DE26D /* ch4_component.cpp */; };
 		27B2C250261511C8005DE26D /* h_reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C22D261511C5005DE26D /* h_reader.cpp */; };
 		27B2C251261511C8005DE26D /* ini.c in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C22E261511C5005DE26D /* ini.c */; };
@@ -75,6 +81,13 @@
 		27B2C26E261511C8005DE26D /* carbon-cycle-model.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C24B261511C8005DE26D /* carbon-cycle-model.cpp */; };
 		27B2C270261511C8005DE26D /* spline_forsythe.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C24D261511C8005DE26D /* spline_forsythe.cpp */; };
 		27B2C271261511C8005DE26D /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C24E261511C8005DE26D /* main.cpp */; };
+		27F2613726B55617004BDD47 /* csv_tracking_visitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27962904268F237200333AA3 /* csv_tracking_visitor.cpp */; };
+		354045FC2913D50A00CA297D /* test_dependency_finder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 273FC38F26A3570B00D5303E /* test_dependency_finder.cpp */; };
+		354045FB2913CF6600CA297D /* test_csv_file_reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 273FC39126A3570B00D5303E /* test_csv_file_reader.cpp */; };
+		354045FA2913C0F300CA297D /* test_core.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 273FC38D26A3570B00D5303E /* test_core.cpp */; };
+		35ACB833285E4F4E0025928F /* h_util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 275CBFF127AC7CC0009E2AF5 /* h_util.cpp */; };
+		954D62AE278E005500840656 /* nh3_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 954D62AD278E005500840656 /* nh3_component.cpp */; };
+		954D62AF278E005500840656 /* nh3_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 954D62AD278E005500840656 /* nh3_component.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -119,21 +132,26 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		270FA77E2791BEEE00E6A50B /* nh3_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = nh3_component.hpp; path = ../../inst/include/nh3_component.hpp; sourceTree = "<group>"; };
+		270FA77F2791BF2F00E6A50B /* nh3_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = nh3_component.cpp; path = ../../src/nh3_component.cpp; sourceTree = "<group>"; };
+		273FC38B26A3570B00D5303E /* test_tseries.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_tseries.cpp; path = "../../../src/unit-testing/test_tseries.cpp"; sourceTree = "<group>"; };
+		273FC38C26A3570B00D5303E /* testing_main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = testing_main.cpp; path = "../../../src/unit-testing/testing_main.cpp"; sourceTree = "<group>"; };
+		273FC38D26A3570B00D5303E /* test_core.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_core.cpp; path = "../../../src/unit-testing/test_core.cpp"; sourceTree = "<group>"; };
+		273FC38E26A3570B00D5303E /* test_tracking.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_tracking.cpp; path = "../../../src/unit-testing/test_tracking.cpp"; sourceTree = "<group>"; };
+		273FC38F26A3570B00D5303E /* test_dependency_finder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_dependency_finder.cpp; path = "../../../src/unit-testing/test_dependency_finder.cpp"; sourceTree = "<group>"; };
+		273FC39026A3570B00D5303E /* test_inih.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_inih.cpp; path = "../../../src/unit-testing/test_inih.cpp"; sourceTree = "<group>"; };
+		273FC39126A3570B00D5303E /* test_csv_file_reader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_csv_file_reader.cpp; path = "../../../src/unit-testing/test_csv_file_reader.cpp"; sourceTree = "<group>"; };
+		273FC39226A3570B00D5303E /* test_hreader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_hreader.cpp; path = "../../../src/unit-testing/test_hreader.cpp"; sourceTree = "<group>"; };
+		273FC39326A3570B00D5303E /* test_ini_to_core_reader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_ini_to_core_reader.cpp; path = "../../../src/unit-testing/test_ini_to_core_reader.cpp"; sourceTree = "<group>"; };
+		273FC39426A3570B00D5303E /* test_unitval.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_unitval.cpp; path = "../../../src/unit-testing/test_unitval.cpp"; sourceTree = "<group>"; };
+		273FC39526A3570B00D5303E /* test_logger.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_logger.cpp; path = "../../../src/unit-testing/test_logger.cpp"; sourceTree = "<group>"; };
 		27585CF826150F1A00BA1EF5 /* hector */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = hector; sourceTree = BUILT_PRODUCTS_DIR; };
-		277D29DA2683669E003177A2 /* libboost_system.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libboost_system.dylib; path = ../../../../../../../../../usr/local/lib/libboost_system.dylib; sourceTree = "<group>"; };
-		277D29DB2683669E003177A2 /* libboost_filesystem.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libboost_filesystem.dylib; path = ../../../../../../../../../usr/local/lib/libboost_filesystem.dylib; sourceTree = "<group>"; };
+		275CBFF127AC7CC0009E2AF5 /* h_util.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = h_util.cpp; path = ../../src/h_util.cpp; sourceTree = "<group>"; };
 		27808CF02615CEFA00BE8B90 /* libgtest.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libgtest.dylib; path = ../../../../../../../../../usr/local/lib/libgtest.dylib; sourceTree = "<group>"; };
-		27A02A462615CAA100AF9BFA /* test_logger.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_logger.cpp; path = ../../../src/Testing/test_logger.cpp; sourceTree = "<group>"; };
-		27A02A472615CAA100AF9BFA /* test_restart.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_restart.cpp; path = ../../../src/Testing/test_restart.cpp; sourceTree = "<group>"; };
-		27A02A482615CAA100AF9BFA /* test_csv_file_reader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_csv_file_reader.cpp; path = ../../../src/Testing/test_csv_file_reader.cpp; sourceTree = "<group>"; };
-		27A02A492615CAA100AF9BFA /* test_dependency_finder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_dependency_finder.cpp; path = ../../../src/Testing/test_dependency_finder.cpp; sourceTree = "<group>"; };
-		27A02A4A2615CAA100AF9BFA /* test_ini_to_core_reader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_ini_to_core_reader.cpp; path = ../../../src/Testing/test_ini_to_core_reader.cpp; sourceTree = "<group>"; };
-		27A02A4B2615CAA100AF9BFA /* test_tseries.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_tseries.cpp; path = ../../../src/Testing/test_tseries.cpp; sourceTree = "<group>"; };
-		27A02A4C2615CAA100AF9BFA /* test_units.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_units.cpp; path = ../../../src/Testing/test_units.cpp; sourceTree = "<group>"; };
-		27A02A4D2615CAA100AF9BFA /* testing_main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = testing_main.cpp; path = ../../../src/Testing/testing_main.cpp; sourceTree = "<group>"; };
-		27A02A4E2615CAA100AF9BFA /* test_core.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_core.cpp; path = ../../../src/Testing/test_core.cpp; sourceTree = "<group>"; };
-		27A02A4F2615CAA100AF9BFA /* test_hreader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_hreader.cpp; path = ../../../src/Testing/test_hreader.cpp; sourceTree = "<group>"; };
-		27A02A502615CAA100AF9BFA /* test_inih.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = test_inih.cpp; path = ../../../src/Testing/test_inih.cpp; sourceTree = "<group>"; };
+		27962903268F235500333AA3 /* csv_tracking_visitor.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = csv_tracking_visitor.hpp; path = ../../inst/include/csv_tracking_visitor.hpp; sourceTree = "<group>"; };
+		27962904268F237200333AA3 /* csv_tracking_visitor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = csv_tracking_visitor.cpp; path = ../../src/csv_tracking_visitor.cpp; sourceTree = "<group>"; };
+		27962906268F239A00333AA3 /* fluxpool.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = fluxpool.hpp; path = ../../inst/include/fluxpool.hpp; sourceTree = "<group>"; };
+		27962907268F23CB00333AA3 /* simpleNbox-runtime.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "simpleNbox-runtime.cpp"; path = "../../src/simpleNbox-runtime.cpp"; sourceTree = "<group>"; };
 		27A02A882615CBB800AF9BFA /* hector-tests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "hector-tests"; sourceTree = BUILT_PRODUCTS_DIR; };
 		27B2C2012615112D005DE26D /* ocean_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ocean_component.hpp; path = ../../inst/include/ocean_component.hpp; sourceTree = "<group>"; };
 		27B2C2022615112D005DE26D /* csv_table_reader.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = csv_table_reader.hpp; path = ../../inst/include/csv_table_reader.hpp; sourceTree = "<group>"; };
@@ -160,7 +178,6 @@
 		27B2C2172615112E005DE26D /* temperature_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = temperature_component.hpp; path = ../../inst/include/temperature_component.hpp; sourceTree = "<group>"; };
 		27B2C2182615112E005DE26D /* dummy_model_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = dummy_model_component.hpp; path = ../../inst/include/dummy_model_component.hpp; sourceTree = "<group>"; };
 		27B2C2192615112E005DE26D /* oh_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = oh_component.hpp; path = ../../inst/include/oh_component.hpp; sourceTree = "<group>"; };
-		27B2C21A2615112E005DE26D /* onelineocean_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = onelineocean_component.hpp; path = ../../inst/include/onelineocean_component.hpp; sourceTree = "<group>"; };
 		27B2C21B2615112E005DE26D /* ini_to_core_reader.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ini_to_core_reader.hpp; path = ../../inst/include/ini_to_core_reader.hpp; sourceTree = "<group>"; };
 		27B2C21C2615112E005DE26D /* avisitor.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = avisitor.hpp; path = ../../inst/include/avisitor.hpp; sourceTree = "<group>"; };
 		27B2C21D2615112E005DE26D /* so2_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = so2_component.hpp; path = ../../inst/include/so2_component.hpp; sourceTree = "<group>"; };
@@ -207,10 +224,8 @@
 		27B2C24B261511C8005DE26D /* carbon-cycle-model.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = "carbon-cycle-model.cpp"; path = "../../src/carbon-cycle-model.cpp"; sourceTree = "<group>"; };
 		27B2C24D261511C8005DE26D /* spline_forsythe.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = spline_forsythe.cpp; path = ../../src/spline_forsythe.cpp; sourceTree = "<group>"; };
 		27B2C24E261511C8005DE26D /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = ../../src/main.cpp; sourceTree = "<group>"; };
-		27B2C274261551A9005DE26D /* libboost_filesystem.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_filesystem.a; path = ../../../../../../../../../usr/local/boost_1_73_0/stage/lib/libboost_filesystem.a; sourceTree = "<group>"; };
-		27B2C276261551B7005DE26D /* libboost_system.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_system.a; path = ../../../../../../../../../usr/local/boost_1_73_0/stage/lib/libboost_system.a; sourceTree = "<group>"; };
-		27B2C27A26155326005DE26D /* libboost_filesystem.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libboost_filesystem.dylib; path = ../../../../../../../../../usr/local/boost_1_73_0/stage/lib/libboost_filesystem.dylib; sourceTree = "<group>"; };
-		27B2C27C26155331005DE26D /* libboost_system.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libboost_system.dylib; path = ../../../../../../../../../usr/local/boost_1_73_0/stage/lib/libboost_system.dylib; sourceTree = "<group>"; };
+		954D62AD278E005500840656 /* nh3_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = nh3_component.cpp; path = ../../src/nh3_component.cpp; sourceTree = "<group>"; };
+		954D62B0278E007500840656 /* nh3_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = nh3_component.hpp; path = ../../inst/include/nh3_component.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -218,8 +233,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				277D29DC2683669E003177A2 /* libboost_system.dylib in Frameworks */,
-				277D29DD2683669E003177A2 /* libboost_filesystem.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -227,8 +240,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				27A02A7F2615CBB800AF9BFA /* libboost_filesystem.dylib in Frameworks */,
-				27A02A802615CBB800AF9BFA /* libboost_system.dylib in Frameworks */,
 				27808CF12615CEFA00BE8B90 /* libgtest.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -241,7 +252,7 @@
 			children = (
 				27B2C22B26151149005DE26D /* Headers */,
 				27B2C272261511CD005DE26D /* Source */,
-				27A02A452615CA7300AF9BFA /* Testing */,
+				27A02A452615CA7300AF9BFA /* unit-testing */,
 				27585CF926150F1A00BA1EF5 /* Products */,
 				27B2C273261551A9005DE26D /* Frameworks */,
 			);
@@ -256,27 +267,28 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		27A02A452615CA7300AF9BFA /* Testing */ = {
+		27A02A452615CA7300AF9BFA /* unit-testing */ = {
 			isa = PBXGroup;
 			children = (
-				27A02A4E2615CAA100AF9BFA /* test_core.cpp */,
-				27A02A482615CAA100AF9BFA /* test_csv_file_reader.cpp */,
-				27A02A492615CAA100AF9BFA /* test_dependency_finder.cpp */,
-				27A02A4F2615CAA100AF9BFA /* test_hreader.cpp */,
-				27A02A4A2615CAA100AF9BFA /* test_ini_to_core_reader.cpp */,
-				27A02A502615CAA100AF9BFA /* test_inih.cpp */,
-				27A02A462615CAA100AF9BFA /* test_logger.cpp */,
-				27A02A472615CAA100AF9BFA /* test_restart.cpp */,
-				27A02A4B2615CAA100AF9BFA /* test_tseries.cpp */,
-				27A02A4C2615CAA100AF9BFA /* test_units.cpp */,
-				27A02A4D2615CAA100AF9BFA /* testing_main.cpp */,
+				273FC38D26A3570B00D5303E /* test_core.cpp */,
+				273FC39126A3570B00D5303E /* test_csv_file_reader.cpp */,
+				273FC38F26A3570B00D5303E /* test_dependency_finder.cpp */,
+				273FC39426A3570B00D5303E /* test_unitval.cpp */,
+				273FC39226A3570B00D5303E /* test_hreader.cpp */,
+				273FC39326A3570B00D5303E /* test_ini_to_core_reader.cpp */,
+				273FC39026A3570B00D5303E /* test_inih.cpp */,
+				273FC39526A3570B00D5303E /* test_logger.cpp */,
+				273FC38E26A3570B00D5303E /* test_tracking.cpp */,
+				273FC38B26A3570B00D5303E /* test_tseries.cpp */,
+				273FC38C26A3570B00D5303E /* testing_main.cpp */,
 			);
-			path = Testing;
+			path = "unit-testing";
 			sourceTree = "<group>";
 		};
 		27B2C22B26151149005DE26D /* Headers */ = {
 			isa = PBXGroup;
 			children = (
+				954D62B0278E007500840656 /* nh3_component.hpp */,
 				27B2C21C2615112E005DE26D /* avisitor.hpp */,
 				27B2C2042615112D005DE26D /* bc_component.hpp */,
 				27B2C22A2615112F005DE26D /* carbon-cycle-model.hpp */,
@@ -287,8 +299,10 @@
 				27B2C2202615112E005DE26D /* core.hpp */,
 				27B2C2112615112E005DE26D /* csv_outputstream_visitor.hpp */,
 				27B2C2022615112D005DE26D /* csv_table_reader.hpp */,
+				27962903268F235500333AA3 /* csv_tracking_visitor.hpp */,
 				27B2C21E2615112E005DE26D /* dependency_finder.hpp */,
 				27B2C2182615112E005DE26D /* dummy_model_component.hpp */,
+				27962906268F239A00333AA3 /* fluxpool.hpp */,
 				27B2C2062615112D005DE26D /* forcing_component.hpp */,
 				27B2C2292615112F005DE26D /* h_exception.hpp */,
 				27B2C2232615112E005DE26D /* h_interpolator.hpp */,
@@ -304,13 +318,13 @@
 				27B2C20F2615112D005DE26D /* logger.hpp */,
 				27B2C2152615112E005DE26D /* message_data.hpp */,
 				27B2C2262615112F005DE26D /* n2o_component.hpp */,
+				270FA77E2791BEEE00E6A50B /* nh3_component.hpp */,
 				27B2C20C2615112D005DE26D /* o3_component.hpp */,
 				27B2C2272615112F005DE26D /* oc_component.hpp */,
 				27B2C2012615112D005DE26D /* ocean_component.hpp */,
 				27B2C2102615112D005DE26D /* ocean_csys.hpp */,
 				27B2C2162615112E005DE26D /* oceanbox.hpp */,
 				27B2C2192615112E005DE26D /* oh_component.hpp */,
-				27B2C21A2615112E005DE26D /* onelineocean_component.hpp */,
 				27B2C2072615112D005DE26D /* simpleNbox.hpp */,
 				27B2C2242615112E005DE26D /* slr_component.hpp */,
 				27B2C21D2615112E005DE26D /* so2_component.hpp */,
@@ -325,6 +339,7 @@
 		27B2C272261511CD005DE26D /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				954D62AD278E005500840656 /* nh3_component.cpp */,
 				27B2C23B261511C6005DE26D /* bc_component.cpp */,
 				27B2C24B261511C8005DE26D /* carbon-cycle-model.cpp */,
 				27B2C22F261511C5005DE26D /* carbon-cycle-solver.cpp */,
@@ -332,11 +347,13 @@
 				27B2C23D261511C6005DE26D /* core.cpp */,
 				27B2C23F261511C7005DE26D /* csv_outputstream_visitor.cpp */,
 				27B2C234261511C6005DE26D /* csv_table_reader.cpp */,
+				27962904268F237200333AA3 /* csv_tracking_visitor.cpp */,
 				27B2C23C261511C6005DE26D /* dependency_finder.cpp */,
 				27B2C249261511C7005DE26D /* dummy_model_component.cpp */,
 				27B2C230261511C5005DE26D /* forcing_component.cpp */,
 				27B2C239261511C6005DE26D /* h_interpolator.cpp */,
 				27B2C22D261511C5005DE26D /* h_reader.cpp */,
+				275CBFF127AC7CC0009E2AF5 /* h_util.cpp */,
 				27B2C231261511C5005DE26D /* halocarbon_component.cpp */,
 				27B2C240261511C7005DE26D /* ini_to_core_reader.cpp */,
 				27B2C22E261511C5005DE26D /* ini.c */,
@@ -344,6 +361,7 @@
 				27B2C246261511C7005DE26D /* logger.cpp */,
 				27B2C24E261511C8005DE26D /* main.cpp */,
 				27B2C23A261511C6005DE26D /* n2o_component.cpp */,
+				270FA77F2791BF2F00E6A50B /* nh3_component.cpp */,
 				27B2C233261511C5005DE26D /* o3_component.cpp */,
 				27B2C24A261511C8005DE26D /* oc_component.cpp */,
 				27B2C237261511C6005DE26D /* ocean_component.cpp */,
@@ -351,6 +369,7 @@
 				27B2C23E261511C7005DE26D /* oceanbox.cpp */,
 				27B2C236261511C6005DE26D /* oh_component.cpp */,
 				27B2C245261511C7005DE26D /* simpleNbox.cpp */,
+				27962907268F23CB00333AA3 /* simpleNbox-runtime.cpp */,
 				27B2C247261511C7005DE26D /* slr_component.cpp */,
 				27B2C232261511C5005DE26D /* so2_component.cpp */,
 				27B2C24D261511C8005DE26D /* spline_forsythe.cpp */,
@@ -363,13 +382,7 @@
 		27B2C273261551A9005DE26D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				277D29DB2683669E003177A2 /* libboost_filesystem.dylib */,
-				277D29DA2683669E003177A2 /* libboost_system.dylib */,
 				27808CF02615CEFA00BE8B90 /* libgtest.dylib */,
-				27B2C27C26155331005DE26D /* libboost_system.dylib */,
-				27B2C27A26155326005DE26D /* libboost_filesystem.dylib */,
-				27B2C276261551B7005DE26D /* libboost_system.a */,
-				27B2C274261551A9005DE26D /* libboost_filesystem.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -419,7 +432,7 @@
 		27585CF026150F1A00BA1EF5 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1130;
+				LastUpgradeCheck = 1150;
 				ORGANIZATIONNAME = "Bond-Lamberty, Benjamin";
 				TargetAttributes = {
 					27585CF726150F1A00BA1EF5 = {
@@ -459,6 +472,8 @@
 				27B2C26D261511C8005DE26D /* oc_component.cpp in Sources */,
 				27B2C257261511C8005DE26D /* csv_table_reader.cpp in Sources */,
 				27B2C25F261511C8005DE26D /* dependency_finder.cpp in Sources */,
+				27962908268F23CB00333AA3 /* simpleNbox-runtime.cpp in Sources */,
+				275CBFF227AC7CC0009E2AF5 /* h_util.cpp in Sources */,
 				27B2C266261511C8005DE26D /* unitval.cpp in Sources */,
 				27B2C25A261511C8005DE26D /* ocean_component.cpp in Sources */,
 				27B2C26A261511C8005DE26D /* slr_component.cpp in Sources */,
@@ -477,8 +492,10 @@
 				27B2C252261511C8005DE26D /* carbon-cycle-solver.cpp in Sources */,
 				27B2C269261511C8005DE26D /* logger.cpp in Sources */,
 				27B2C256261511C8005DE26D /* o3_component.cpp in Sources */,
+				954D62AE278E005500840656 /* nh3_component.cpp in Sources */,
 				27B2C25D261511C8005DE26D /* n2o_component.cpp in Sources */,
 				27B2C250261511C8005DE26D /* h_reader.cpp in Sources */,
+				27962905268F237300333AA3 /* csv_tracking_visitor.cpp in Sources */,
 				27B2C253261511C8005DE26D /* forcing_component.cpp in Sources */,
 				27B2C26C261511C8005DE26D /* dummy_model_component.cpp in Sources */,
 				27B2C261261511C8005DE26D /* oceanbox.cpp in Sources */,
@@ -489,18 +506,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				27808CF42615D31A00BE8B90 /* test_tseries.cpp in Sources */,
-				27A02A892615CBDB00AF9BFA /* testing_main.cpp in Sources */,
 				27A02A5E2615CBB800AF9BFA /* halocarbon_component.cpp in Sources */,
 				27A02A602615CBB800AF9BFA /* ocean_csys.cpp in Sources */,
 				27A02A612615CBB800AF9BFA /* core.cpp in Sources */,
 				27A02A622615CBB800AF9BFA /* INIReader.cpp in Sources */,
+				27F2613726B55617004BDD47 /* csv_tracking_visitor.cpp in Sources */,
 				27A02A632615CBB800AF9BFA /* so2_component.cpp in Sources */,
 				27A02A642615CBB800AF9BFA /* oc_component.cpp in Sources */,
+				273FC39F26A3570B00D5303E /* test_unitval.cpp in Sources */,
+				354045FB2913CF6600CA297D /* test_csv_file_reader.cpp in Sources */,
+				27962909268F241100333AA3 /* simpleNbox-runtime.cpp in Sources */,
+				273FC39D26A3570B00D5303E /* test_hreader.cpp in Sources */,
 				27A02A652615CBB800AF9BFA /* csv_table_reader.cpp in Sources */,
 				27A02A662615CBB800AF9BFA /* dependency_finder.cpp in Sources */,
 				27A02A672615CBB800AF9BFA /* unitval.cpp in Sources */,
+				273FC39626A3570B00D5303E /* test_tseries.cpp in Sources */,
+				273FC39926A3570B00D5303E /* test_tracking.cpp in Sources */,
 				27A02A682615CBB800AF9BFA /* ocean_component.cpp in Sources */,
+				35ACB833285E4F4E0025928F /* h_util.cpp in Sources */,
 				27A02A692615CBB800AF9BFA /* slr_component.cpp in Sources */,
 				27A02A6A2615CBB800AF9BFA /* spline_forsythe.cpp in Sources */,
 				27A02A6B2615CBB800AF9BFA /* oh_component.cpp in Sources */,
@@ -508,8 +531,10 @@
 				27A02A6D2615CBB800AF9BFA /* temperature_component.cpp in Sources */,
 				27A02A6E2615CBB800AF9BFA /* simpleNbox.cpp in Sources */,
 				27A02A702615CBB800AF9BFA /* h_interpolator.cpp in Sources */,
+				273FC39B26A3570B00D5303E /* test_inih.cpp in Sources */,
 				27A02A712615CBB800AF9BFA /* ini_to_core_reader.cpp in Sources */,
 				27A02A722615CBB800AF9BFA /* bc_component.cpp in Sources */,
+				273FC39E26A3570B00D5303E /* test_ini_to_core_reader.cpp in Sources */,
 				27A02A732615CBB800AF9BFA /* ch4_component.cpp in Sources */,
 				27A02A742615CBB800AF9BFA /* csv_outputstream_visitor.cpp in Sources */,
 				27A02A752615CBB800AF9BFA /* carbon-cycle-model.cpp in Sources */,
@@ -518,6 +543,11 @@
 				27A02A782615CBB800AF9BFA /* o3_component.cpp in Sources */,
 				27A02A792615CBB800AF9BFA /* n2o_component.cpp in Sources */,
 				27A02A7A2615CBB800AF9BFA /* h_reader.cpp in Sources */,
+				354045FC2913D50A00CA297D /* test_dependency_finder.cpp in Sources */,
+				273FC3A026A3570B00D5303E /* test_logger.cpp in Sources */,
+				354045FA2913C0F300CA297D /* test_core.cpp in Sources */,
+				273FC39726A3570B00D5303E /* testing_main.cpp in Sources */,
+				954D62AF278E005500840656 /* nh3_component.cpp in Sources */,
 				27A02A7B2615CBB800AF9BFA /* forcing_component.cpp in Sources */,
 				27A02A7C2615CBB800AF9BFA /* dummy_model_component.cpp in Sources */,
 				27A02A7D2615CBB800AF9BFA /* oceanbox.cpp in Sources */,
@@ -533,7 +563,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -578,15 +608,13 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "${BOOSTROOT}";
+				"HEADER_SEARCH_PATHS[arch=*]" = "${BOOSTROOT}";
 				LIBRARY_SEARCH_PATHS = "${BOOSTLIB}";
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_LDFLAGS = (
-					"-lboost_system",
-					"-lboost_filesystem",
-				);
+				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				SDKROOT = macosx;
 			};
@@ -598,7 +626,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -638,13 +666,11 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "${BOOSTROOT}";
 				LIBRARY_SEARCH_PATHS = "${BOOSTLIB}";
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				OTHER_LDFLAGS = (
-					"-lboost_system",
-					"-lboost_filesystem",
-				);
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				SDKROOT = macosx;
 			};
@@ -653,8 +679,10 @@
 		27585D0026150F1A00BA1EF5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				LIBRARY_SEARCH_PATHS = "${BOOSTLIB}";
+				"OTHER_LDFLAGS[arch=*]" = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -662,6 +690,7 @@
 		27585D0126150F1A00BA1EF5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				LIBRARY_SEARCH_PATHS = "${BOOSTLIB}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -671,20 +700,15 @@
 		27A02A862615CBB800AF9BFA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				HEADER_SEARCH_PATHS = (
 					"${BOOSTROOT}",
 					"${GTEST}",
 				);
-				LIBRARY_SEARCH_PATHS = (
-					"${BOOSTLIB}",
-					"${GTESTLIB}",
-				);
-				OTHER_LDFLAGS = (
-					"-lboost_system",
-					"-lboost_filesystem",
-					"-lgtest",
-				);
+				LIBRARY_SEARCH_PATHS = "${GTESTLIB}";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "-lgtest";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -692,20 +716,15 @@
 		27A02A872615CBB800AF9BFA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				HEADER_SEARCH_PATHS = (
 					"${BOOSTROOT}",
 					"${GTEST}",
 				);
-				LIBRARY_SEARCH_PATHS = (
-					"${BOOSTLIB}",
-					"${GTESTLIB}",
-				);
-				OTHER_LDFLAGS = (
-					"-lboost_system",
-					"-lboost_filesystem",
-					"-lgtest",
-				);
+				LIBRARY_SEARCH_PATHS = "${GTESTLIB}";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "-lgtest";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

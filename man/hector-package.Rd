@@ -6,11 +6,7 @@
 \alias{hector-package}
 \title{hector: The Hector Simple Climate Model}
 \description{
-Provides an R interface for the Hector Simple Climate
-    Model. Using this interface you can set up and initialize the model,
-    change model parameters and emissions inputs, run Hector, and
-    retrieve model outputs. Note that the package authors are not
-    identical to the C++ model authors.
+Provides an R interface for the Hector Simple Climate Model. Using this interface you can set up and initialize the model, change model parameters and emissions inputs, run Hector, and retrieve model outputs. Note that the package authors are not identical to the C++ model authors.
 }
 \details{
 This package allows you to run the Hector Simple Climate Model (SCM) from R
@@ -21,12 +17,8 @@ and receive the results back as R data frames.
 To run a scenario, you will need a scenario input file.  Several examples are
 included in the \code{input} directory, which you can find with the
 expression \code{system.file('input', package='hector')}.  The input files
-have names like \code{'hector_rcpNN.ini'}, where \code{NN} is one of
-\code{26}, \code{45}, \code{60}, or \code{85}.  Example outputs for these
-scenarios are in the \code{output} directory, which you can find in a similar
-way.  Their names are \code{'sample_outputstream_rcpNN.csv'} Note, however,
-that these outputs were rounded to 4 significant digits, so you might see
-some discrepancies with your outputs unless you similarly round them.
+have names like  \code{'hector_sspNNN.ini'}, where \code{NNN} is one of
+\code{119}, \code{126}, \code{245}, \code{370}, \code{434}, \code{460}, or \code{ssp585}.
 
 There is a quickstart wrapper called \code{\link{runscenario}}, which takes
 an input file as an argument, runs the scenario, and returns the results in a
@@ -66,15 +58,20 @@ carbon-cycle model: projections and sensitivities, Biogeosciences, 13,
 
 Authors:
 \itemize{
-  \item Robert Link \email{robert.link@pnnl.gov} (\href{https://orcid.org/0000-0002-7071-248X}{ORCID})
+  \item Ben Bond-Lamberty \email{bondlamberty@pnnl.gov} (\href{https://orcid.org/0000-0001-9525-4633}{ORCID})
 }
 
 Other contributors:
 \itemize{
+  \item Skylar Gering \email{sgering@g.hmc.edu} (\href{https://orcid.org/0000-0003-1974-3966}{ORCID}) [contributor]
   \item Corinne Hartin \email{hartin.corinne@epa.gov} (\href{https://orcid.org/0000-0003-1834-6539}{ORCID}) [contributor]
-  \item Ben Bond-Lamberty \email{bondlamberty@pnnl.gov} (\href{https://orcid.org/0000-0001-9525-4633}{ORCID}) [contributor]
+  \item Robert Link (\href{https://orcid.org/0000-0002-7071-248X}{ORCID}) [contributor]
+  \item Mat Nicholson (mnichol3) [contributor]
   \item Pralit Patel \email{pralit.patel@pnnl.gov} (\href{https://orcid.org/0000-0003-3992-1061}{ORCID}) [contributor]
+  \item Leeya Pressburger \email{leeya.pressburger@pnnl.gov} (\href{https://orcid.org/0000-0002-6850-2504}{ORCID}) [contributor, data contributor]
   \item Alexey Shiklomanov \email{alexey.shiklomanov@nasa.gov} (\href{https://orcid.org/0000-0003-4022-5979}{ORCID}) [contributor]
+  \item Benjamin Vega-Westhoff (\href{https://orcid.org/0000-0001-7881-8388}{ORCID}) [contributor]
+  \item Dawn Woodard \email{dawn.woodard@pnnl.gov} (\href{https://orcid.org/0000-0002-0468-4660}{ORCID}) [contributor]
 }
 
 }

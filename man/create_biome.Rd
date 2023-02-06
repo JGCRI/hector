@@ -10,13 +10,14 @@ create_biome(
   veg_c0,
   detritus_c0,
   soil_c0,
+  permafrost_c0,
   npp_flux0,
-  warmingfactor = 1,
-  beta = 0.36,
-  q10_rh = 2,
-  f_nppv = 0.35,
-  f_nppd = 0.6,
-  f_litterd = 0.98
+  warmingfactor,
+  beta,
+  q10_rh,
+  f_nppv,
+  f_nppd,
+  f_litterd
 )
 }
 \arguments{
@@ -29,6 +30,8 @@ create_biome(
 \item{detritus_c0}{Initial detritus C pool}
 
 \item{soil_c0}{Initial soil C pool}
+
+\item{permafrost_c0}{Initial permafrost C pool}
 
 \item{npp_flux0}{Initial net primary productivity}
 
