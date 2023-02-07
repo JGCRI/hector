@@ -1,5 +1,7 @@
 # hector 3.0.0
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7615632.svg)](https://doi.org/10.5281/zenodo.7615632)
+
 * Updated parameterization, incorporating latest consensus science and for best model performance relative to historical observations
 * New radiative forcing calculations for consistency with AR6
 * Better and more complete software tests; many bug fixes
