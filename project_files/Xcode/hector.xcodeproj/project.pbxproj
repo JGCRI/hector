@@ -82,12 +82,89 @@
 		27B2C270261511C8005DE26D /* spline_forsythe.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C24D261511C8005DE26D /* spline_forsythe.cpp */; };
 		27B2C271261511C8005DE26D /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C24E261511C8005DE26D /* main.cpp */; };
 		27F2613726B55617004BDD47 /* csv_tracking_visitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27962904268F237200333AA3 /* csv_tracking_visitor.cpp */; };
-		354045FC2913D50A00CA297D /* test_dependency_finder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 273FC38F26A3570B00D5303E /* test_dependency_finder.cpp */; };
-		354045FB2913CF6600CA297D /* test_csv_file_reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 273FC39126A3570B00D5303E /* test_csv_file_reader.cpp */; };
 		354045FA2913C0F300CA297D /* test_core.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 273FC38D26A3570B00D5303E /* test_core.cpp */; };
+		354045FB2913CF6600CA297D /* test_csv_file_reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 273FC39126A3570B00D5303E /* test_csv_file_reader.cpp */; };
+		354045FC2913D50A00CA297D /* test_dependency_finder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 273FC38F26A3570B00D5303E /* test_dependency_finder.cpp */; };
 		35ACB833285E4F4E0025928F /* h_util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 275CBFF127AC7CC0009E2AF5 /* h_util.cpp */; };
 		954D62AE278E005500840656 /* nh3_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 954D62AD278E005500840656 /* nh3_component.cpp */; };
 		954D62AF278E005500840656 /* nh3_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 954D62AD278E005500840656 /* nh3_component.cpp */; };
+		CDD51F5129CB9700001E23D6 /* avisitor.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27B2C21C2615112E005DE26D /* avisitor.hpp */; };
+		CDD51F5229CB9700001E23D6 /* bc_component.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27B2C2042615112D005DE26D /* bc_component.hpp */; };
+		CDD51F5329CB9700001E23D6 /* carbon-cycle-model.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27B2C22A2615112F005DE26D /* carbon-cycle-model.hpp */; };
+		CDD51F5429CB9700001E23D6 /* carbon-cycle-solver.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27B2C20B2615112D005DE26D /* carbon-cycle-solver.hpp */; };
+		CDD51F5529CB9700001E23D6 /* ch4_component.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27B2C20A2615112D005DE26D /* ch4_component.hpp */; };
+		CDD51F5629CB9700001E23D6 /* component_data.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27B2C2092615112D005DE26D /* component_data.hpp */; };
+		CDD51F5729CB9700001E23D6 /* component_names.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27B2C2142615112E005DE26D /* component_names.hpp */; };
+		CDD51F5829CB9700001E23D6 /* core.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27B2C2202615112E005DE26D /* core.hpp */; };
+		CDD51F5929CB9700001E23D6 /* csv_outputstream_visitor.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27B2C2112615112E005DE26D /* csv_outputstream_visitor.hpp */; };
+		CDD51F5A29CB9700001E23D6 /* csv_table_reader.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27B2C2022615112D005DE26D /* csv_table_reader.hpp */; };
+		CDD51F5B29CB9700001E23D6 /* csv_tracking_visitor.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27962903268F235500333AA3 /* csv_tracking_visitor.hpp */; };
+		CDD51F5C29CB9700001E23D6 /* dependency_finder.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27B2C21E2615112E005DE26D /* dependency_finder.hpp */; };
+		CDD51F5D29CB9700001E23D6 /* dummy_model_component.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27B2C2182615112E005DE26D /* dummy_model_component.hpp */; };
+		CDD51F5E29CB9700001E23D6 /* fluxpool.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27962906268F239A00333AA3 /* fluxpool.hpp */; };
+		CDD51F5F29CB9700001E23D6 /* forcing_component.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27B2C2062615112D005DE26D /* forcing_component.hpp */; };
+		CDD51F6029CB9700001E23D6 /* h_exception.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27B2C2292615112F005DE26D /* h_exception.hpp */; };
+		CDD51F6129CB9700001E23D6 /* h_interpolator.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27B2C2232615112E005DE26D /* h_interpolator.hpp */; };
+		CDD51F6229CB9700001E23D6 /* h_reader.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27B2C2082615112D005DE26D /* h_reader.hpp */; };
+		CDD51F6329CB9700001E23D6 /* h_util.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27B2C21F2615112E005DE26D /* h_util.hpp */; };
+		CDD51F6429CB9700001E23D6 /* halocarbon_component.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27B2C2052615112D005DE26D /* halocarbon_component.hpp */; };
+		CDD51F6529CB9700001E23D6 /* hector.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27B2C2122615112E005DE26D /* hector.hpp */; };
+		CDD51F6629CB9700001E23D6 /* imodel_component.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27B2C2222615112E005DE26D /* imodel_component.hpp */; };
+		CDD51F6729CB9700001E23D6 /* ini_to_core_reader.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27B2C21B2615112E005DE26D /* ini_to_core_reader.hpp */; };
+		CDD51F6829CB9700001E23D6 /* ini.h in Headers */ = {isa = PBXBuildFile; fileRef = 27B2C2132615112E005DE26D /* ini.h */; };
+		CDD51F6929CB9700001E23D6 /* INIReader.h in Headers */ = {isa = PBXBuildFile; fileRef = 27B2C2282615112F005DE26D /* INIReader.h */; };
+		CDD51F6A29CB9700001E23D6 /* ivisitable.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27B2C20E2615112D005DE26D /* ivisitable.hpp */; };
+		CDD51F6B29CB9700001E23D6 /* logger.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27B2C20F2615112D005DE26D /* logger.hpp */; };
+		CDD51F6C29CB9700001E23D6 /* message_data.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27B2C2152615112E005DE26D /* message_data.hpp */; };
+		CDD51F6D29CB9700001E23D6 /* n2o_component.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27B2C2262615112F005DE26D /* n2o_component.hpp */; };
+		CDD51F6E29CB9700001E23D6 /* nh3_component.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 270FA77E2791BEEE00E6A50B /* nh3_component.hpp */; };
+		CDD51F6F29CB9700001E23D6 /* o3_component.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27B2C20C2615112D005DE26D /* o3_component.hpp */; };
+		CDD51F7029CB9700001E23D6 /* oc_component.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27B2C2272615112F005DE26D /* oc_component.hpp */; };
+		CDD51F7129CB9700001E23D6 /* ocean_component.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27B2C2012615112D005DE26D /* ocean_component.hpp */; };
+		CDD51F7229CB9700001E23D6 /* ocean_csys.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27B2C2102615112D005DE26D /* ocean_csys.hpp */; };
+		CDD51F7329CB9700001E23D6 /* oceanbox.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27B2C2162615112E005DE26D /* oceanbox.hpp */; };
+		CDD51F7429CB9700001E23D6 /* oh_component.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27B2C2192615112E005DE26D /* oh_component.hpp */; };
+		CDD51F7529CB9700001E23D6 /* simpleNbox.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27B2C2072615112D005DE26D /* simpleNbox.hpp */; };
+		CDD51F7629CB9700001E23D6 /* slr_component.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27B2C2242615112E005DE26D /* slr_component.hpp */; };
+		CDD51F7729CB9700001E23D6 /* so2_component.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27B2C21D2615112E005DE26D /* so2_component.hpp */; };
+		CDD51F7829CB9700001E23D6 /* temperature_component.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27B2C2172615112E005DE26D /* temperature_component.hpp */; };
+		CDD51F7929CB9700001E23D6 /* tseries.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27B2C2032615112D005DE26D /* tseries.hpp */; };
+		CDD51F7A29CB9700001E23D6 /* tvector.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27B2C2212615112E005DE26D /* tvector.hpp */; };
+		CDD51F7B29CB9700001E23D6 /* unitval.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 27B2C20D2615112D005DE26D /* unitval.hpp */; };
+		CDD51F7D29CB9713001E23D6 /* bc_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C23B261511C6005DE26D /* bc_component.cpp */; };
+		CDD51F7E29CB9713001E23D6 /* carbon-cycle-model.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C24B261511C8005DE26D /* carbon-cycle-model.cpp */; };
+		CDD51F7F29CB9713001E23D6 /* carbon-cycle-solver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C22F261511C5005DE26D /* carbon-cycle-solver.cpp */; };
+		CDD51F8029CB9713001E23D6 /* ch4_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C22C261511C5005DE26D /* ch4_component.cpp */; };
+		CDD51F8129CB9713001E23D6 /* core.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C23D261511C6005DE26D /* core.cpp */; };
+		CDD51F8229CB9713001E23D6 /* csv_outputstream_visitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C23F261511C7005DE26D /* csv_outputstream_visitor.cpp */; };
+		CDD51F8329CB9713001E23D6 /* csv_table_reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C234261511C6005DE26D /* csv_table_reader.cpp */; };
+		CDD51F8429CB9713001E23D6 /* csv_tracking_visitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27962904268F237200333AA3 /* csv_tracking_visitor.cpp */; };
+		CDD51F8529CB9713001E23D6 /* dependency_finder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C23C261511C6005DE26D /* dependency_finder.cpp */; };
+		CDD51F8629CB9713001E23D6 /* dummy_model_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C249261511C7005DE26D /* dummy_model_component.cpp */; };
+		CDD51F8729CB9713001E23D6 /* forcing_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C230261511C5005DE26D /* forcing_component.cpp */; };
+		CDD51F8829CB9713001E23D6 /* h_interpolator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C239261511C6005DE26D /* h_interpolator.cpp */; };
+		CDD51F8929CB9713001E23D6 /* h_reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C22D261511C5005DE26D /* h_reader.cpp */; };
+		CDD51F8A29CB9713001E23D6 /* h_util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 275CBFF127AC7CC0009E2AF5 /* h_util.cpp */; };
+		CDD51F8B29CB9713001E23D6 /* halocarbon_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C231261511C5005DE26D /* halocarbon_component.cpp */; };
+		CDD51F8C29CB9713001E23D6 /* ini_to_core_reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C240261511C7005DE26D /* ini_to_core_reader.cpp */; };
+		CDD51F8D29CB9713001E23D6 /* ini.c in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C22E261511C5005DE26D /* ini.c */; };
+		CDD51F8E29CB9713001E23D6 /* INIReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C248261511C7005DE26D /* INIReader.cpp */; };
+		CDD51F8F29CB9713001E23D6 /* logger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C246261511C7005DE26D /* logger.cpp */; };
+		CDD51F9029CB9713001E23D6 /* n2o_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C23A261511C6005DE26D /* n2o_component.cpp */; };
+		CDD51F9129CB9713001E23D6 /* nh3_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 270FA77F2791BF2F00E6A50B /* nh3_component.cpp */; };
+		CDD51F9229CB9713001E23D6 /* o3_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C233261511C5005DE26D /* o3_component.cpp */; };
+		CDD51F9329CB9713001E23D6 /* oc_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C24A261511C8005DE26D /* oc_component.cpp */; };
+		CDD51F9429CB9713001E23D6 /* ocean_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C237261511C6005DE26D /* ocean_component.cpp */; };
+		CDD51F9529CB9713001E23D6 /* ocean_csys.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C241261511C7005DE26D /* ocean_csys.cpp */; };
+		CDD51F9629CB9713001E23D6 /* oceanbox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C23E261511C7005DE26D /* oceanbox.cpp */; };
+		CDD51F9729CB9713001E23D6 /* oh_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C236261511C6005DE26D /* oh_component.cpp */; };
+		CDD51F9829CB9713001E23D6 /* simpleNbox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C245261511C7005DE26D /* simpleNbox.cpp */; };
+		CDD51F9929CB9713001E23D6 /* simpleNbox-runtime.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27962907268F23CB00333AA3 /* simpleNbox-runtime.cpp */; };
+		CDD51F9A29CB9713001E23D6 /* slr_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C247261511C7005DE26D /* slr_component.cpp */; };
+		CDD51F9B29CB9713001E23D6 /* so2_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C232261511C5005DE26D /* so2_component.cpp */; };
+		CDD51F9C29CB9713001E23D6 /* spline_forsythe.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C24D261511C8005DE26D /* spline_forsythe.cpp */; };
+		CDD51F9D29CB9713001E23D6 /* temperature_component.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C242261511C7005DE26D /* temperature_component.cpp */; };
+		CDD51F9E29CB9713001E23D6 /* unitval.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 27B2C243261511C7005DE26D /* unitval.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -226,6 +303,10 @@
 		27B2C24E261511C8005DE26D /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = ../../src/main.cpp; sourceTree = "<group>"; };
 		954D62AD278E005500840656 /* nh3_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = nh3_component.cpp; path = ../../src/nh3_component.cpp; sourceTree = "<group>"; };
 		954D62B0278E007500840656 /* nh3_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = nh3_component.hpp; path = ../../inst/include/nh3_component.hpp; sourceTree = "<group>"; };
+		CDD51F4529CB9695001E23D6 /* libhector-lib.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libhector-lib.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CDD51F4729CB9695001E23D6 /* hector_lib.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = hector_lib.hpp; sourceTree = "<group>"; };
+		CDD51F4929CB9695001E23D6 /* hector_libPriv.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = hector_libPriv.hpp; sourceTree = "<group>"; };
+		CDD51F4B29CB9695001E23D6 /* hector_lib.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = hector_lib.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -244,6 +325,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CDD51F4329CB9695001E23D6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -253,6 +341,7 @@
 				27B2C22B26151149005DE26D /* Headers */,
 				27B2C272261511CD005DE26D /* Source */,
 				27A02A452615CA7300AF9BFA /* unit-testing */,
+				CDD51F4629CB9695001E23D6 /* hector-lib */,
 				27585CF926150F1A00BA1EF5 /* Products */,
 				27B2C273261551A9005DE26D /* Frameworks */,
 			);
@@ -263,6 +352,7 @@
 			children = (
 				27585CF826150F1A00BA1EF5 /* hector */,
 				27A02A882615CBB800AF9BFA /* hector-tests */,
+				CDD51F4529CB9695001E23D6 /* libhector-lib.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -387,7 +477,70 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		CDD51F4629CB9695001E23D6 /* hector-lib */ = {
+			isa = PBXGroup;
+			children = (
+				CDD51F4729CB9695001E23D6 /* hector_lib.hpp */,
+				CDD51F4929CB9695001E23D6 /* hector_libPriv.hpp */,
+				CDD51F4B29CB9695001E23D6 /* hector_lib.cpp */,
+			);
+			path = "hector-lib";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		CDD51F4129CB9695001E23D6 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CDD51F5129CB9700001E23D6 /* avisitor.hpp in Headers */,
+				CDD51F5229CB9700001E23D6 /* bc_component.hpp in Headers */,
+				CDD51F5329CB9700001E23D6 /* carbon-cycle-model.hpp in Headers */,
+				CDD51F5429CB9700001E23D6 /* carbon-cycle-solver.hpp in Headers */,
+				CDD51F5529CB9700001E23D6 /* ch4_component.hpp in Headers */,
+				CDD51F5629CB9700001E23D6 /* component_data.hpp in Headers */,
+				CDD51F5729CB9700001E23D6 /* component_names.hpp in Headers */,
+				CDD51F5829CB9700001E23D6 /* core.hpp in Headers */,
+				CDD51F5929CB9700001E23D6 /* csv_outputstream_visitor.hpp in Headers */,
+				CDD51F5A29CB9700001E23D6 /* csv_table_reader.hpp in Headers */,
+				CDD51F5B29CB9700001E23D6 /* csv_tracking_visitor.hpp in Headers */,
+				CDD51F5C29CB9700001E23D6 /* dependency_finder.hpp in Headers */,
+				CDD51F5D29CB9700001E23D6 /* dummy_model_component.hpp in Headers */,
+				CDD51F5E29CB9700001E23D6 /* fluxpool.hpp in Headers */,
+				CDD51F5F29CB9700001E23D6 /* forcing_component.hpp in Headers */,
+				CDD51F6029CB9700001E23D6 /* h_exception.hpp in Headers */,
+				CDD51F6129CB9700001E23D6 /* h_interpolator.hpp in Headers */,
+				CDD51F6229CB9700001E23D6 /* h_reader.hpp in Headers */,
+				CDD51F6329CB9700001E23D6 /* h_util.hpp in Headers */,
+				CDD51F6429CB9700001E23D6 /* halocarbon_component.hpp in Headers */,
+				CDD51F6529CB9700001E23D6 /* hector.hpp in Headers */,
+				CDD51F6629CB9700001E23D6 /* imodel_component.hpp in Headers */,
+				CDD51F6729CB9700001E23D6 /* ini_to_core_reader.hpp in Headers */,
+				CDD51F6829CB9700001E23D6 /* ini.h in Headers */,
+				CDD51F6929CB9700001E23D6 /* INIReader.h in Headers */,
+				CDD51F6A29CB9700001E23D6 /* ivisitable.hpp in Headers */,
+				CDD51F6B29CB9700001E23D6 /* logger.hpp in Headers */,
+				CDD51F6C29CB9700001E23D6 /* message_data.hpp in Headers */,
+				CDD51F6D29CB9700001E23D6 /* n2o_component.hpp in Headers */,
+				CDD51F6E29CB9700001E23D6 /* nh3_component.hpp in Headers */,
+				CDD51F6F29CB9700001E23D6 /* o3_component.hpp in Headers */,
+				CDD51F7029CB9700001E23D6 /* oc_component.hpp in Headers */,
+				CDD51F7129CB9700001E23D6 /* ocean_component.hpp in Headers */,
+				CDD51F7229CB9700001E23D6 /* ocean_csys.hpp in Headers */,
+				CDD51F7329CB9700001E23D6 /* oceanbox.hpp in Headers */,
+				CDD51F7429CB9700001E23D6 /* oh_component.hpp in Headers */,
+				CDD51F7529CB9700001E23D6 /* simpleNbox.hpp in Headers */,
+				CDD51F7629CB9700001E23D6 /* slr_component.hpp in Headers */,
+				CDD51F7729CB9700001E23D6 /* so2_component.hpp in Headers */,
+				CDD51F7829CB9700001E23D6 /* temperature_component.hpp in Headers */,
+				CDD51F7929CB9700001E23D6 /* tseries.hpp in Headers */,
+				CDD51F7A29CB9700001E23D6 /* tvector.hpp in Headers */,
+				CDD51F7B29CB9700001E23D6 /* unitval.hpp in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
 		27585CF726150F1A00BA1EF5 /* hector */ = {
@@ -426,6 +579,23 @@
 			productReference = 27A02A882615CBB800AF9BFA /* hector-tests */;
 			productType = "com.apple.product-type.tool";
 		};
+		CDD51F4429CB9695001E23D6 /* hector-lib */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CDD51F4D29CB9695001E23D6 /* Build configuration list for PBXNativeTarget "hector-lib" */;
+			buildPhases = (
+				CDD51F4129CB9695001E23D6 /* Headers */,
+				CDD51F4229CB9695001E23D6 /* Sources */,
+				CDD51F4329CB9695001E23D6 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "hector-lib";
+			productName = "hector-lib";
+			productReference = CDD51F4529CB9695001E23D6 /* libhector-lib.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -437,6 +607,9 @@
 				TargetAttributes = {
 					27585CF726150F1A00BA1EF5 = {
 						CreatedOnToolsVersion = 11.3.1;
+					};
+					CDD51F4429CB9695001E23D6 = {
+						CreatedOnToolsVersion = 14.2;
 					};
 				};
 			};
@@ -455,6 +628,7 @@
 			targets = (
 				27585CF726150F1A00BA1EF5 /* hector */,
 				27A02A5C2615CBB800AF9BFA /* hector-tests */,
+				CDD51F4429CB9695001E23D6 /* hector-lib */,
 			);
 		};
 /* End PBXProject section */
@@ -551,6 +725,47 @@
 				27A02A7B2615CBB800AF9BFA /* forcing_component.cpp in Sources */,
 				27A02A7C2615CBB800AF9BFA /* dummy_model_component.cpp in Sources */,
 				27A02A7D2615CBB800AF9BFA /* oceanbox.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CDD51F4229CB9695001E23D6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CDD51F7D29CB9713001E23D6 /* bc_component.cpp in Sources */,
+				CDD51F7E29CB9713001E23D6 /* carbon-cycle-model.cpp in Sources */,
+				CDD51F7F29CB9713001E23D6 /* carbon-cycle-solver.cpp in Sources */,
+				CDD51F8029CB9713001E23D6 /* ch4_component.cpp in Sources */,
+				CDD51F8129CB9713001E23D6 /* core.cpp in Sources */,
+				CDD51F8229CB9713001E23D6 /* csv_outputstream_visitor.cpp in Sources */,
+				CDD51F8329CB9713001E23D6 /* csv_table_reader.cpp in Sources */,
+				CDD51F8429CB9713001E23D6 /* csv_tracking_visitor.cpp in Sources */,
+				CDD51F8529CB9713001E23D6 /* dependency_finder.cpp in Sources */,
+				CDD51F8629CB9713001E23D6 /* dummy_model_component.cpp in Sources */,
+				CDD51F8729CB9713001E23D6 /* forcing_component.cpp in Sources */,
+				CDD51F8829CB9713001E23D6 /* h_interpolator.cpp in Sources */,
+				CDD51F8929CB9713001E23D6 /* h_reader.cpp in Sources */,
+				CDD51F8A29CB9713001E23D6 /* h_util.cpp in Sources */,
+				CDD51F8B29CB9713001E23D6 /* halocarbon_component.cpp in Sources */,
+				CDD51F8C29CB9713001E23D6 /* ini_to_core_reader.cpp in Sources */,
+				CDD51F8D29CB9713001E23D6 /* ini.c in Sources */,
+				CDD51F8E29CB9713001E23D6 /* INIReader.cpp in Sources */,
+				CDD51F8F29CB9713001E23D6 /* logger.cpp in Sources */,
+				CDD51F9029CB9713001E23D6 /* n2o_component.cpp in Sources */,
+				CDD51F9129CB9713001E23D6 /* nh3_component.cpp in Sources */,
+				CDD51F9229CB9713001E23D6 /* o3_component.cpp in Sources */,
+				CDD51F9329CB9713001E23D6 /* oc_component.cpp in Sources */,
+				CDD51F9429CB9713001E23D6 /* ocean_component.cpp in Sources */,
+				CDD51F9529CB9713001E23D6 /* ocean_csys.cpp in Sources */,
+				CDD51F9629CB9713001E23D6 /* oceanbox.cpp in Sources */,
+				CDD51F9729CB9713001E23D6 /* oh_component.cpp in Sources */,
+				CDD51F9829CB9713001E23D6 /* simpleNbox.cpp in Sources */,
+				CDD51F9929CB9713001E23D6 /* simpleNbox-runtime.cpp in Sources */,
+				CDD51F9A29CB9713001E23D6 /* slr_component.cpp in Sources */,
+				CDD51F9B29CB9713001E23D6 /* so2_component.cpp in Sources */,
+				CDD51F9C29CB9713001E23D6 /* spline_forsythe.cpp in Sources */,
+				CDD51F9D29CB9713001E23D6 /* temperature_component.cpp in Sources */,
+				CDD51F9E29CB9713001E23D6 /* unitval.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -729,6 +944,40 @@
 			};
 			name = Release;
 		};
+		CDD51F4E29CB9695001E23D6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CODE_SIGN_STYLE = Automatic;
+				EXECUTABLE_PREFIX = lib;
+				GCC_ENABLE_CPP_EXCEPTIONS = YES;
+				GCC_ENABLE_CPP_RTTI = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.4;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		CDD51F4F29CB9695001E23D6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CODE_SIGN_STYLE = Automatic;
+				EXECUTABLE_PREFIX = lib;
+				GCC_ENABLE_CPP_EXCEPTIONS = YES;
+				GCC_ENABLE_CPP_RTTI = YES;
+				MACOSX_DEPLOYMENT_TARGET = 12.4;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -755,6 +1004,15 @@
 			buildConfigurations = (
 				27A02A862615CBB800AF9BFA /* Debug */,
 				27A02A872615CBB800AF9BFA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CDD51F4D29CB9695001E23D6 /* Build configuration list for PBXNativeTarget "hector-lib" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CDD51F4E29CB9695001E23D6 /* Debug */,
+				CDD51F4F29CB9695001E23D6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
