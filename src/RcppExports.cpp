@@ -2507,6 +2507,16 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// GMST
+String GMST();
+RcppExport SEXP _hector_GMST() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(GMST());
+    return rcpp_result_gen;
+END_RCPP
+}
 // SST
 String SST();
 RcppExport SEXP _hector_SST() {
@@ -2993,6 +3003,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_AERO_SCALE", (DL_FUNC) &_hector_AERO_SCALE, 0},
     {"_hector_VOLCANIC_SCALE", (DL_FUNC) &_hector_VOLCANIC_SCALE, 0},
     {"_hector_GLOBAL_TAS", (DL_FUNC) &_hector_GLOBAL_TAS, 0},
+    {"_hector_GMST", (DL_FUNC) &_hector_GMST, 0},
     {"_hector_SST", (DL_FUNC) &_hector_SST, 0},
     {"_hector_OCEAN_TAS", (DL_FUNC) &_hector_OCEAN_TAS, 0},
     {"_hector_LAND_TAS", (DL_FUNC) &_hector_LAND_TAS, 0},

@@ -1498,6 +1498,12 @@ GLOBAL_TAS <- function() {
     .Call('_hector_GLOBAL_TAS', PACKAGE = 'hector')
 }
 
+#' @describeIn temperature Global mean surface temperature anomaly
+#' @export
+GMST <- function() {
+    .Call('_hector_GMST', PACKAGE = 'hector')
+}
+
 #' @describeIn temperature Average sea surface temperature anomaly
 #' @export
 SST <- function() {
