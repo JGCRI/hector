@@ -2,6 +2,7 @@
 % Please edit documentation in R/RcppExports.R, R/aadoc.R
 \name{GLOBAL_TAS}
 \alias{GLOBAL_TAS}
+\alias{GMST}
 \alias{SST}
 \alias{OCEAN_TAS}
 \alias{LAND_TAS}
@@ -12,6 +13,8 @@
 \title{Identifiers for variables associated with the temperature component}
 \usage{
 GLOBAL_TAS()
+
+GMST()
 
 SST()
 
@@ -32,6 +35,8 @@ type.
 \section{Functions}{
 \itemize{
 \item \code{GLOBAL_TAS()}: Global mean air temperature anomaly
+
+\item \code{GMST()}: Global mean surface temperature anomaly
 
 \item \code{SST()}: Average sea surface temperature anomaly
 

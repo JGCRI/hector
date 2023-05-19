@@ -1444,6 +1444,11 @@ String VOLCANIC_SCALE() { return D_VOLCANIC_SCALE; }
 // [[Rcpp::export]]
 String GLOBAL_TAS() { return D_GLOBAL_TAS; }
 
+//' @describeIn temperature Global mean surface temperature anomaly
+//' @export
+// [[Rcpp::export]]
+String GMST() { return D_GMST; }
+
 //' @describeIn temperature Average sea surface temperature anomaly
 //' @export
 // [[Rcpp::export]]

@@ -22,14 +22,11 @@ Although changes in GMST are relatively small in terms of numbers, it takes a
 great deal of heat to warm the entire planet by even a fraction of a degree.
 Measurements of the temperature changes provide evidence for anthropogenic climate change.
 
-However, Hector does not produce GMST as an output at this time. Hector does
-calculate the global mean air temperature (GMAT), which we can use to back-calculate
-GMST. GMAT is the air temperature measured 2 meters above the ground and is what is
+Both GMST and global mean air temperature (GMAT) are reported as Hector outputs.
+GMAT is the air temperature measured 2 meters above the ground and is what is
 presented in a daily weather report.^[Taylor, Jessica. "Analyzing Surface Air
 Temperatures by Latitude." NASA, 2018. https://mynasadata.larc.nasa.gov/mini-lesson/analyzing-surface-air-temperatures-latitude-student-activity]
-
-This vignette demonstrates how to set up the calculation between GMAT and GMST and
-how to plot results to observe differences over time.
+This vignette demonstrates how to set up the calculate GMST and compares the two temperature results. 
 
 (Note that Hector assumes that land air temperature and land surface temperature
 are equivalent.^[Kriegler, Elmar. "Imprecise Probability Analysis

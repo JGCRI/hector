@@ -114,6 +114,7 @@ void TemperatureComponent::init(Core *coreptr) {
 
   // Register the data we can provide
   core->registerCapability(D_GLOBAL_TAS, getComponentName());
+  core->registerCapability(D_GMST, getComponentName());
   core->registerCapability(D_LAND_TAS, getComponentName());
   core->registerCapability(D_OCEAN_TAS, getComponentName());
   core->registerCapability(D_SST, getComponentName());
@@ -241,6 +242,7 @@ void TemperatureComponent::prepareToRun() {
   Ker.resize(ns);
 
   temp.resize(ns);
+  temp_surface.resize(ns);
   temp_landair.resize(ns);
   temp_sst.resize(ns);
   heatflux_mixed.resize(ns);
@@ -488,6 +490,7 @@ void TemperatureComponent::run(const double runToDate) {
 
   // Reset the endogenous varibales for this time step
   temp[tstep] = 0.0;
+  temp_surface[tstep] = 0.0;
   temp_landair[tstep] = 0.0;
   temp_sst[tstep] = 0.0;
   heat_mixed[tstep] = 0.0;
@@ -540,6 +543,8 @@ void TemperatureComponent::run(const double runToDate) {
   }
   temp[tstep] =
       flnd * temp_landair[tstep] + (1.0 - flnd) * bsi * temp_sst[tstep];
+  temp_surface[tstep] =
+      flnd * temp_landair[tstep] + (1.0 - flnd) * temp_sst[tstep];
 
   // If the user has supplied temperature data, use that instead
   if (tas_constrain.size() && runToDate >= tas_constrain.firstdate() &&
@@ -554,6 +559,9 @@ void TemperatureComponent::run(const double runToDate) {
         (temp[tstep] - (1.0 - flnd) * bsi * temp_sst[tstep]) / flnd;
     temp_sst[tstep] =
         (temp[tstep] - flnd * temp_landair[tstep]) / ((1.0 - flnd) * bsi);
+    temp_surface[tstep] =
+        flnd * temp_landair[tstep] + (1.0 - flnd) * temp_sst[tstep];
+
   }
 
   // Calculate ocean heat uptake [W/m^2]
@@ -608,6 +616,12 @@ unitval TemperatureComponent::getData(const std::string &varName,
     } else {
       returnval = unitval(temp[tstep], U_DEGC);
     }
+  } else if (varName == D_GMST) {
+      if (date == Core::undefinedIndex()) {
+          returnval = tas;
+      } else {
+          returnval = unitval(temp_surface[tstep], U_DEGC);
+      }
   } else if (varName == D_LAND_TAS) {
     if (lo_warming_ratio != 0) {
       if (date == Core::undefinedIndex()) {
@@ -745,6 +759,7 @@ void TemperatureComponent::setoutputs(int tstep) {
   heatflux.set(heatflux_mixed[tstep] + fso * heatflux_interior[tstep], U_W_M2,
                0.0);
   tas.set(temp[tstep], U_DEGC, 0.0);
+  gmst_val.set(temp_surface[tstep], U_DEGC, 0.0);
   tas_land.set(temp_landair[tstep], U_DEGC, 0.0);
   sst.set(temp_sst[tstep], U_DEGC, 0.0);
   temp_oceanair = bsi * temp_sst[tstep];

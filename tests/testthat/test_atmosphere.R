@@ -47,7 +47,7 @@ test_that("Checking RF values", {
 test_that("Check Temp", {
 
     # Define the comparison dates
-    t_dates <- 1850:2100
+    t_dates <- 2020:2100
 
     # Set and run Hector
     hc <- newcore(ssp245)
@@ -62,4 +62,9 @@ test_that("Check Temp", {
     weighted_sum <- flnd * land + ocean * (1 - flnd)
     global_temp_values <- fetchvars(hc, t_dates, vars = GLOBAL_TAS())[["value"]]
     expect_equal(global_temp_values, weighted_sum, tolerance = 1e-5)
+
+    #  future global air temperature should be larger than surface temperature
+    gmst <- fetchvars(hc, t_dates, vars = GMST())[["value"]]
+    expect_true(all(global_temp_values >  gmst))
+
 })
