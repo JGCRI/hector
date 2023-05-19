@@ -133,6 +133,7 @@ private:
 
   // Time series arrays that are updated with each DOECLIM time-step
   std::vector<double> temp;
+  std::vector<double> temp_surface;
   std::vector<double> temp_landair;
   std::vector<double> temp_sst;
   std::vector<double> heatflux_mixed;
@@ -148,7 +149,8 @@ private:
   unitval volscl; //!< volcanic forcing scaling factor, unitless
 
   // Model outputs
-  unitval tas;       //!< global average surface air temperature anomaly, deg C
+  unitval tas;       //!< global average air temperature anomaly, deg C
+  unitval gmst_val; //!< global average surface temperature anomaly, deg C
   unitval tas_land;  //!< average air temperature anomaly over land, deg C
   unitval tas_ocean; //!< global average ocean surface air temperature anomaly,
                      //!< deg C

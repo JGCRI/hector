@@ -394,6 +394,7 @@
 #define D_LAND_TAS "land_tas"
 #define D_SST "sst"
 #define D_OCEAN_TAS "ocean_tas"
+#define D_GMST "gmst"
 #define D_LO_WARMING_RATIO "lo_warming_ratio"
 #define D_DIFFUSIVITY "diff"
 #define D_AERO_SCALE "alpha"

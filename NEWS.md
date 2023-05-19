@@ -1,3 +1,14 @@
+# hector 3.1.0 
+
+Return global mean surface temperature as a Hector output.
+
+# hector 3.0.1
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7617326.svg)](https://doi.org/10.5281/zenodo.7617326)
+
+Minor documentation change to the citation file.
+
+
 # hector 3.0.0
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7615632.svg)](https://doi.org/10.5281/zenodo.7615632)
