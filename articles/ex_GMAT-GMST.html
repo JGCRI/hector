@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">hector</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">3.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">3.1.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -121,14 +121,12 @@ small in terms of numbers, it takes a great deal of heat to warm the
 entire planet by even a fraction of a degree. Measurements of the
 temperature changes provide evidence for anthropogenic climate
 change.</p>
-<p>However, Hector does not produce GMST as an output at this time.
-Hector does calculate the global mean air temperature (GMAT), which we
-can use to back-calculate GMST. GMAT is the air temperature measured 2
-meters above the ground and is what is presented in a daily weather
-report.<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Taylor, Jessica. “Analyzing Surface Air Temperatures by
-Latitude.” NASA, 2018. &lt;a href="https://mynasadata.larc.nasa.gov/mini-lesson/analyzing-surface-air-temperatures-latitude-student-activity" class="external-link uri"&gt;https://mynasadata.larc.nasa.gov/mini-lesson/analyzing-surface-air-temperatures-latitude-student-activity&lt;/a&gt;&lt;/p&gt;'><sup>2</sup></a></p>
-<p>This vignette demonstrates how to set up the calculation between GMAT
-and GMST and how to plot results to observe differences over time.</p>
+<p>Both GMST and global mean air temperature (GMAT) are reported as
+Hector outputs. GMAT is the air temperature measured 2 meters above the
+ground and is what is presented in a daily weather report.<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Taylor, Jessica. “Analyzing Surface Air Temperatures by
+Latitude.” NASA, 2018. &lt;a href="https://mynasadata.larc.nasa.gov/mini-lesson/analyzing-surface-air-temperatures-latitude-student-activity" class="external-link uri"&gt;https://mynasadata.larc.nasa.gov/mini-lesson/analyzing-surface-air-temperatures-latitude-student-activity&lt;/a&gt;&lt;/p&gt;'><sup>2</sup></a> This vignette
+demonstrates how to set up the calculate GMST and compares the two
+temperature results.</p>
 <p>(Note that Hector assumes that land air temperature and land surface
 temperature are equivalent.<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Kriegler, Elmar. “Imprecise Probability Analysis for
 Integrated Assessment of Climate Change.” PhD thesis, University of
