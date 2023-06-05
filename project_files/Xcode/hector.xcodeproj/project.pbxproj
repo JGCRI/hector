@@ -896,6 +896,10 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
+				HEADER_SEARCH_PATHS = (
+					"${BOOSTROOT}",
+					"../../../../../../../libs/boost-lib",
+				);
 				LIBRARY_SEARCH_PATHS = "${BOOSTLIB}";
 				"OTHER_LDFLAGS[arch=*]" = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -907,6 +911,10 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
+				HEADER_SEARCH_PATHS = (
+					"${BOOSTROOT}",
+					"../../../../../../../libs/boost-lib",
+				);
 				LIBRARY_SEARCH_PATHS = "${BOOSTLIB}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
