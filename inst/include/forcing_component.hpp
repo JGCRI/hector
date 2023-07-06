@@ -80,17 +80,17 @@ private:
 
 
     // CO2 parameters
-    const double a1 = -2.4785e-7;        // (W m–2 ppm–2) IPCC AR6 parameter for CH4 SARF Table 7.SM.1
-    const double b1 =  7.5906e-4;        // (W m–2 ppm–1) IPCC AR6 parameter for CH4 SARF Table 7.SM.1
-    const double c1 = -2.1492e-3;        // (W m–2 ppb–1/2) IPCC AR6 parameter for CH4 SARF Table 7.SM.1
-    const double d1 =  5.2488;           // (W m–2) IPCC AR6 parameter for CH4 SARF Table 7.SM.1
+    const double a1 = -2.4785e-7;        // (W m–2 ppm–2) IPCC AR6 parameter for CO2 SARF Table 7.SM.1
+    const double b1 =  7.5906e-4;        // (W m–2 ppm–1) IPCC AR6 parameter for CO2 SARF Table 7.SM.1
+    const double c1 = -2.1492e-3;        // (W m–2 ppb–1/2) IPCC AR6 parameter for CO2 SARF Table 7.SM.1
+    const double d1 =  5.2488;           // (W m–2) IPCC AR6 parameter for CO2 SARF Table 7.SM.1
     unitval delta_co2;                  // forcing tropospheric adjustment for CO2 see 7.3.2.1 of IPCC AR6
 
     // N2O parameters
-    const double a2 = -3.4197e-4;       // (W m–2 ppm–1) IPCC AR6 parameter for CH4 SARF Table 7.SM.1
-    const double b2 = 2.5455e-4;        // (W m–2 ppb–1) IPCC AR6 parameter for CH4 SARF Table 7.SM.1
-    const double c2 = -2.4357e-4;       // (W m–2 ppb–1) IPCC AR6 parameter for CH4 SARF Table 7.SM.1
-    const double d2 = 0.12173;          // (W m-2 ppb–1/2) IPCC AR6 parameter for CH4 SARF Table 7.SM.1
+    const double a2 = -3.4197e-4;       // (W m–2 ppm–1) IPCC AR6 parameter for N2O SARF Table 7.SM.1
+    const double b2 = 2.5455e-4;        // (W m–2 ppb–1) IPCC AR6 parameter for N2O SARF Table 7.SM.1
+    const double c2 = -2.4357e-4;       // (W m–2 ppb–1) IPCC AR6 parameter for N2O SARF Table 7.SM.1
+    const double d2 = 0.12173;          // (W m-2 ppb–1/2) IPCC AR6 parameter for N2O SARF Table 7.SM.1
     unitval delta_n2o;                  // forcing tropospheric adjustment for N2O see 7.3.2.3 of IPCC AR6
 
     // CH4 parameters

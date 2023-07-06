@@ -1491,16 +1491,10 @@ HEAT_FLUX <- function() {
     .Call('_hector_HEAT_FLUX', PACKAGE = 'hector')
 }
 
-#' @describeIn special Ocean carbon mixed layer depth
+#' @describeIn ocean define the depth of the mixed layer in the ocean carbon cycle, default is 100m.
 #' @export
 MLD_OCEAN_CARBON <- function() {
     .Call('_hector_MLD_OCEAN_CARBON', PACKAGE = 'hector')
-}
-
-#' @describeIn special Thermal ocean mixed layer depth
-#' @export
-MLD_THERMAL <- function() {
-    .Call('_hector_MLD_THERMAL', PACKAGE = 'hector')
 }
 
 newcore_impl <- function(inifile, loglevel, suppresslogging, name) {

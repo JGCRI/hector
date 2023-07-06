@@ -387,7 +387,6 @@
 #define D_FLUX_MIXED            "flux_mixed"
 #define D_FLUX_INTERIOR         "flux_interior"
 #define D_HEAT_FLUX             "heatflux"
-#define D_THERMAL_MLD            "thermal_mld"
 
 
 // ------------------- messages being passed between components -------------------------

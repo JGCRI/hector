@@ -88,7 +88,7 @@ private:
     // The warm low-latitude surface box makes up the rest.
      double part_high = 0.15;
      double part_low = 1-part_high;
-    
+
     /*****************************************************************
      * State variables for the component
      * All of these will need to be recorded at the end of a timestep,
@@ -120,6 +120,8 @@ private:
     unitval tu;          //!< m3/s high latitude overturning
     unitval twi;         //!< m3/s warm-intermediate exchange
     unitval tid;         //!< m3/s intermediate-deep exchange
+    unitval ocean_carbon_mld;         //!< m3/s intermediate-deep exchange
+
 
     /*****************************************************************
      * Input data
@@ -174,7 +176,7 @@ private:
     tseries<unitval> temp_LL_ts;
     tseries<unitval> co3_HL_ts;
     tseries<unitval> co3_LL_ts;
-  
+
     // timestep control
     tseries<double> max_timestep_ts;
     tseries<int> reduced_timestep_timeout_ts;

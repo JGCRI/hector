@@ -81,6 +81,7 @@ void OceanComponent::init( Core* coreptr ) {
     oceanflux_constrain.name = "atm_ocean_constrain";
 
     SST.set( 0.0, U_DEGC );
+    ocean_carbon_mld.set( 100, U_UNITLESS);
 
 	lastflux_annualized.set( 0.0, U_PGC );
 
@@ -112,6 +113,7 @@ void OceanComponent::init( Core* coreptr ) {
     core->registerCapability( D_CO3_HL, getComponentName() );
     core->registerCapability( D_CO3_LL, getComponentName() );
     core->registerCapability( D_CO3, getComponentName() );
+    core->registerCapability( D_OC_MLD, getComponentName() );
 
 
     // Register the inputs we can receive from outside
@@ -119,6 +121,8 @@ void OceanComponent::init( Core* coreptr ) {
     core->registerInput(D_TU, getComponentName());
     core->registerInput(D_TWI, getComponentName());
     core->registerInput(D_TID, getComponentName());
+    core->registerInput(D_OC_MLD, getComponentName());
+
 }
 
 //------------------------------------------------------------------------------
@@ -167,6 +171,9 @@ void OceanComponent::setData( const string& varName,
         } else if( varName == D_CARBON_LL ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
             surfaceLL.set_carbon( data.getUnitval( U_PGC ) );
+        } else if( varName == D_OC_MLD ) {
+            H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
+            ocean_carbon_mld = data.getUnitval(U_UNITLESS);
         } else if( varName == D_CARBON_IO ) {
             H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
             inter.set_carbon( data.getUnitval( U_PGC ) );
@@ -190,6 +197,9 @@ void OceanComponent::setData( const string& varName,
             spinup_chem = (data.getUnitval(U_UNDEFINED) > 0);
         } else if( varName == D_ATM_OCEAN_CONSTRAIN ) {
             H_ASSERT( data.date != Core::undefinedIndex(), "date required" );
+        } else if( varName == D_OC_MLD ) {
+            H_ASSERT( data.date == Core::undefinedIndex() , "date not allowed" );
+            ocean_carbon_mld = data.getUnitval(U_UNDEFINED);
         } else {
             H_THROW( "Unknown variable name while parsing " + getComponentName() + ": "
                     + varName );
@@ -209,8 +219,8 @@ void OceanComponent::prepareToRun() {
     double spy = 60 * 60 * 24 * 365.25;  // seconds per year
 
     // ocean depth
-    double thick_LL = 100;         // (m) Thickness of surface ocean from Knox and McElroy (1984)
-    double thick_HL = 100;         // (m) Thickness of surface ocean from Knox and McElroy (1984)
+    double thick_LL = ocean_carbon_mld;         // (m) Thickness of surface ocean from Knox and McElroy (1984)
+    double thick_HL = ocean_carbon_mld;         // (m) Thickness of surface ocean from Knox and McElroy (1984)
     double thick_inter = 1000-thick_LL;  // (m) Thickness of of intermediate ocean from Knox and McElroy (1984)
     double thick_deep = 3777-thick_inter-thick_LL; // (m) Thickness of deep ocean from Knox and McElroy (1984)
 
@@ -429,6 +439,8 @@ unitval OceanComponent::getData( const std::string& varName,
             returnval = tid;
          } else if( varName == D_TWI ) {
             returnval = twi;
+         } else if( varName == D_OC_MLD ) {
+             returnval = ocean_carbon_mld;
         } else if( varName == D_OMEGACA_HL ) {
             returnval = surfaceHL.mychemistry.OmegaCa;
         } else if( varName == D_OMEGACA_LL ) {

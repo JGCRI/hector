@@ -29,6 +29,7 @@
 \alias{CO3_LL}
 \alias{CO3_HL}
 \alias{CO3}
+\alias{MLD_OCEAN_CARBON}
 \title{Identifiers for quantities in the ocean component}
 \usage{
 OCEAN_CFLUX()
@@ -84,6 +85,8 @@ CO3_LL()
 CO3_HL()
 
 CO3()
+
+MLD_OCEAN_CARBON()
 }
 \description{
 These identifiers correspond to variables that can be read from the ocean
@@ -144,6 +147,8 @@ component using the \code{\link{GETDATA}} message type.
 \item \code{CO3_HL}: Carbonate concentration, high-latitude
 
 \item \code{CO3}: Ocean surface carbonate concentration
+
+\item \code{MLD_OCEAN_CARBON}: define the depth of the mixed layer in the ocean carbon cycle, default is 100m.
 }}
 
 \section{Note}{
