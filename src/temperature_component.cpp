@@ -618,7 +618,7 @@ unitval TemperatureComponent::getData(const std::string &varName,
     }
   } else if (varName == D_GMST) {
       if (date == Core::undefinedIndex()) {
-          returnval = tas;
+          returnval = gmst_val;
       } else {
           returnval = unitval(temp_surface[tstep], U_DEGC);
       }
