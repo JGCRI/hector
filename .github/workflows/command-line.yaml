@@ -21,10 +21,14 @@ on:
   workflow_dispatch:
 
 jobs:
+
   # This workflow contains two jobs, one that builds hector on ubuntu and the second
   # builds and tests Hector on macos. The purpose of this work for is to make sure that Hector
   # can be built from the command line.
   ubuntu:
+    # Don't run scheduled job on forks, only in main repository.
+    if: (github.event_name == 'schedule' && github.repository == 'JGCRI/hector') || (github.event_name != 'schedule')
+
     runs-on: ubuntu-latest
 
     # Steps represent a sequence of tasks that will be executed as part of the job

@@ -16,6 +16,8 @@ name: test-coverage
 
 jobs:
   test-coverage:
+    # Don't run scheduled job on forks, only in main repository.
+    if: (github.event_name == 'schedule' && github.repository == 'JGCRI/hector') || (github.event_name != 'schedule')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
