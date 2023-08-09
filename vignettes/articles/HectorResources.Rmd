@@ -11,7 +11,7 @@ knitr::opts_chunk$set(
 
 ## Hector V3 
 
-* [Interactive jypter notebook](https://hector.msdlive.org/)
+* [Interactive Jupyter notebook](https://hector.msdlive.org/)
 * Hector V3 installation [YouTube Video](https://www.youtube.com/watch?v=Pg3WY8wg1cY)
 
 
