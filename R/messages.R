@@ -17,7 +17,8 @@ default_fetchvars <- c(CONCENTRATIONS_CO2, RF_TOTAL, RF_CO2, GLOBAL_TAS)
 #' The list of variables to fetch if you don't specify \code{vars} is stored in
 #' the \code{hector.default.fetchvars} option.  If this option is also unset, then
 #' the default variable list is CO2 concentration, total radiative forcing, CO2
-#' forcing, and global mean temperature.
+#' forcing, and global mean temperature. To see a list of the potential \code{vars}
+#' see \code{data(inputstable)} and \code{data(fxntable)}.
 #'
 #' @seealso \link{concentrations}, \link{emissions}, \link{forcings},
 #' \link{carboncycle}, \link{haloemiss}, \link{haloforcings}, \link{methane},
@@ -34,6 +35,14 @@ default_fetchvars <- c(CONCENTRATIONS_CO2, RF_TOTAL, RF_CO2, GLOBAL_TAS)
 #' of the Hector core object will be used.
 #' @family main user interface functions
 #' @export
+#' @examples
+#' \dontrun{
+#' ini <- system.file(package = "hector", "input/hector_ssp245.ini")
+#' hc <- newcore(ini)
+#' run(hc)
+#' out <- fetchvars(core = hc, dates = 1900:2100, vars = c(GLOBAL_TAS(), NPP()))
+#' print(out)
+#' }
 fetchvars <- function(core, dates, vars = NULL, scenario = NULL) {
   if (is.null(vars)) {
     vars <- getOption("hector.default.fetchvars",
