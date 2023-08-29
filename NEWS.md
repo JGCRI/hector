@@ -1,4 +1,4 @@
-# hector 3.1.0 
+# hector 3.1.1 
 
 Return global mean surface temperature as a Hector output.
 
