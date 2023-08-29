@@ -151,4 +151,4 @@ ggplot(results, aes(year, value, color = param_value, group = paste(varying, par
     annotate(geom = "line", x = default$year, y = default$value, linewidth = 1.5)
 ```
 
-Hector's permafrost capability is planned to be fully science-ready in v3.1.
+Hector's permafrost capability is planned to be fully science-ready in v3.2.
