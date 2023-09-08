@@ -22,7 +22,6 @@ jobs:
           GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
         run: |
           install.packages(c("ggplot2", "rmarkdown", "dplyr", "remotes", "here"))
-          remotes::install_github("hadley/emo")
           remotes::install_deps(dependencies = TRUE)
         shell: Rscript {0}
 
