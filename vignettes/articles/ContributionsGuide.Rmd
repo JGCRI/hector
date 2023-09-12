@@ -4,7 +4,7 @@ title: Contribution Guide
 
 The Hector team welcomes and values community contributions to Hector, but there are a few important things to know. 
 
-All contributions must pass through a pull request (PR) process before being merged into the master branch of Hector. Please note that opening a PR does **not** guarantee your work will be merged; we assess potential model changes for fit with Hector’s long-term strategic plan, compatibility, conformance to the model’s code style, and other factors.
+All contributions must pass through a pull request (PR) process before being merged into the main branch of Hector. Please note that opening a PR does **not** guarantee your work will be merged; we assess potential model changes for fit with Hector’s long-term strategic plan, compatibility, conformance to the model’s code style, and other factors.
 
 We encourage all contributors to read and comply with the following guidelines:
 
@@ -19,7 +19,7 @@ Hector adheres to the [semantic versioning](https://semver.org/) ideology. This 
 
 * "Patch changes" that make no impact on Hector functionality, such as documentation fixes or removing dead code, are the easiest to assess and merge.
 * "Minor changes" that don’t change the model’s behavior in any fundamental way and don’t change its inputs may require unit tests and some more review.
-* "Major changes"  that change the model’s input or output structure or induce major behavioral shifts, are considered _breaking changes_. These are subject to the most stringent reviews and will require scientific justification of the development and evidence that the changes have the intended consequences. PRs will almost always be merged into a development branch, not master until a new version of the Hector is ready for release. 
+* "Major changes"  that change the model’s input or output structure or induce major behavioral shifts, are considered _breaking changes_. These are subject to the most stringent reviews and will require scientific justification of the development and evidence that the changes have the intended consequences. PRs will almost always be merged into a development branch, not main until a new version of the Hector is ready for release. 
 
 
 Thank you for your interest in contributing to Hector and we look forward to working with you! However, we maintain the right to refuse to merge PRs that do not comply with these guidelines or that do not meet contribution standards.

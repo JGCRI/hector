@@ -13,7 +13,7 @@ To install R, follow the [official instructions](https://cloud.r-project.org/) f
 
 Follow this [YouTube video](https://www.youtube.com/watch?v=Pg3WY8wg1cY) or continue reading. 
 
-To install the version associated with the current `master` git branch on GitHub, 
+To install the version associated with the current `main` git branch on GitHub, 
 use the `remotes`::install_github` function.
 This will automatically install all of Hector's dependencies as well.
 (Note that because this requires compiling from source, you will need to have a C compiler installed and configured.)
