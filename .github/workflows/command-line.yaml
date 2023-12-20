@@ -1,5 +1,5 @@
 # This is a basic workflow to help you get started with Actions
-# based on https://github.com/JGCRI/hector/new/master?filename=.github%2Fworkflows%2Fmain.yml&workflow_template=blank
+# based on https://github.com/JGCRI/hector/new/main?filename=.github%2Fworkflows%2Fmain.yml&workflow_template=blank
 
 name: Command Line Hector
 
@@ -7,7 +7,7 @@ name: Command Line Hector
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
     branches:
       - '**' # matches every branch

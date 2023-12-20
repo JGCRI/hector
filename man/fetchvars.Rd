@@ -34,7 +34,17 @@ below for a list of documentation pages for these).
 The list of variables to fetch if you don't specify \code{vars} is stored in
 the \code{hector.default.fetchvars} option.  If this option is also unset, then
 the default variable list is CO2 concentration, total radiative forcing, CO2
-forcing, and global mean temperature.
+forcing, and global mean temperature. To see a list of the potential \code{vars}
+see \code{data(inputstable)} and \code{data(fxntable)}.
+}
+\examples{
+\dontrun{
+ini <- system.file(package = "hector", "input/hector_ssp245.ini")
+hc <- newcore(ini)
+run(hc)
+out <- fetchvars(core = hc, dates = 1900:2100, vars = c(GLOBAL_TAS(), NPP()))
+print(out)
+}
 }
 \seealso{
 \link{concentrations}, \link{emissions}, \link{forcings},

@@ -90,9 +90,9 @@ At each Hector time step, `c` is solved by the `CarbonCycleSolver::run()` functi
 These steps are described in more detail below.
 The complete code for the terrestrial C cycle lives in [`src/simpleNbox.cpp`][cpp] file (with associated headers in [`inst/include/simpleNbox.hpp`][hpp]).
 
-[solver]: https://github.com/JGCRI/hector/blob/master/src/carbon-cycle-solver.cpp
-[cpp]: https://github.com/jgcri/hector/blob/master/src/simpleNbox.cpp
-[hpp]: https://github.com/JGCRI/hector/blob/master/inst/include/simpleNbox.hpp
+[solver]: https://github.com/JGCRI/hector/blob/main/src/carbon-cycle-solver.cpp
+[cpp]: https://github.com/jgcri/hector/blob/main/src/simpleNbox.cpp
+[hpp]: https://github.com/JGCRI/hector/blob/main/inst/include/simpleNbox.hpp
 
 ## Setting the `c` vector (`getCValues`)
 
