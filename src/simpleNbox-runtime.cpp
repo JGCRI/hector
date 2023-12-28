@@ -396,7 +396,7 @@ void SimpleNbox::stashCValues(double t, const double c[]) {
   for (auto biome : biome_list) {
     // `wt` is the biome share of major C fluxes; used for apportionment below
     const double wt = (npp(biome) + rh(biome)) / npp_rh_total;
-    // Permafrost weighting
+    // Permafrost is weighted not by NPP+RH but by the pool sizes
     const double wt_pf =
         permafrost_total > 0 ? permafrost_c.at(biome) / permafrost_total : 0;
     H_LOG(logger, Logger::DEBUG) << "Biome " << biome << " wt = " << wt
@@ -515,9 +515,9 @@ void SimpleNbox::stashCValues(double t, const double c[]) {
     veg_c[biome].adjust_pool_to_val(newveg.value(U_PGC) * wt, false);
     detritus_c[biome].adjust_pool_to_val(newdet.value(U_PGC) * wt, false);
     soil_c[biome].adjust_pool_to_val(newsoil.value(U_PGC) * wt, false);
-    permafrost_c[biome].adjust_pool_to_val(newpermafrost.value(U_PGC) * wt,
+    permafrost_c[biome].adjust_pool_to_val(newpermafrost.value(U_PGC) * wt_pf,
                                            false);
-    thawed_permafrost_c[biome].adjust_pool_to_val(newthawedpf.value(U_PGC) * wt,
+    thawed_permafrost_c[biome].adjust_pool_to_val(newthawedpf.value(U_PGC) * wt_pf,
                                                   false);
   }
 
@@ -734,6 +734,8 @@ tuple<double, double, double>
 SimpleNbox::compute_pf_thaw_refreeze(string biome, fluxpool rh_co2,
                                      fluxpool rh_ch4) const {
 
+  H_ASSERT(!in_spinup, "We should not be here!");
+  
   double biome_c_thaw =
       permafrost_c.at(biome).value(U_PGC) * new_thaw.at(biome);
   double pf_refreeze_tp = 0.0;
