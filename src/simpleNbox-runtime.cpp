@@ -916,13 +916,6 @@ int SimpleNbox::calcderivs(double t, const double c[], double dcdt[]) const {
   dcdt[SNBOX_EARTH] = // change in earth pool
       -current_ffi_e.value(U_PGC_YR) + current_daccs_u.value(U_PGC_YR);
 
-  /*
-  if(!in_spinup) {
-    cout << "dcdt[SNBOX_PERMAFROST] = " << dcdt[SNBOX_PERMAFROST] << endl;
-    cout << "dcdt[SNBOX_THAWEDP] = " << dcdt[SNBOX_THAWEDP] << endl;
-
-  }
-  */
   return omodel_err;
 }
 
