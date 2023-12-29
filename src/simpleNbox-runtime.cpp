@@ -865,7 +865,7 @@ int SimpleNbox::calcderivs(double t, const double c[], double dcdt[]) const {
     const unitval diff = NBP_constrain.get(rounded_t) - unitval(nbp, U_PGC_YR);
 
     // Adjust total NPP and total RH equally (but not LUC, which is an input)
-    // so that the net total of all three fluxes will match the NBP constraint
+    // so that their net total will match the NBP constraint
     fluxpool npp_current_old = npp_current;
     npp_current = npp_current + diff / 2.0;
     // ...also need to adjust their sub-components
@@ -874,12 +874,13 @@ int SimpleNbox::calcderivs(double t, const double c[], double dcdt[]) const {
     npp_fad = npp_fad * npp_ratio;
     npp_fas = npp_fas * npp_ratio;
 
-    // Do same thing for RH
+    // Do same thing for the RH sub-components
     fluxpool rh_current_old = rh_current;
     rh_current = rh_current - diff / 2.0;
     const double rh_ratio = rh_current / rh_current_old;
     rh_fda_current = rh_fda_current * rh_ratio;
     rh_fsa_current = rh_fsa_current * rh_ratio;
+    rh_ftpa_co2_current = rh_ftpa_co2_current * rh_ratio;
   }
 
   // Compute fluxes
