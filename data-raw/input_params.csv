@@ -15,20 +15,20 @@ ocean,preind_surface_c,n,n,n,900,Pg C,surface ocean carbon
 ocean,preind_interdeep_c,n,n,n,37100,Pg C,intermediate + deep ocean carbon
 simpleNbox,atmos_co2,n,n,y,588.071,Pg C,
 simpleNbox,C0,n,n,y,277.15,Pg C,preindustrial CO2 from table 7.SM.1 IPCC AR6
-simpleNbox,boreal.veg_c,y,n,y,100,Pg C,
-simpleNbox,tropical.veg_c,y,n,y,450,Pg C,
+simpleNbox,pf.veg_c,y,n,n,55,Pg C,
+simpleNbox,npf.veg_c,y,n,n,495,Pg C,
 simpleNbox,veg_c,n,n,y,550,Pg C,vegetation
-simpleNbox,boreal.detritus_c,y,n,y,15,Pg C,
-simpleNbox,tropical.detritus_c,y,n,y,45,Pg C,
+simpleNbox,pf.detritus_c,y,n,n,5,Pg C,
+simpleNbox,npf.detritus_c,y,n,n,50,Pg C,
 simpleNbox,detritus_c,n,n,y,55,Pg C,detritus
-simpleNbox,boreal.soil_c,y,n,y,1200,Pg C,
-simpleNbox,tropical.soil_c,y,n,y,578,Pg C,
-simpleNbox,soil_c,n,n,y,1782,Pg C,soil
-simpleNbox,boreal.permafrost_c,y,n,n,865,Pg C,permafrost
-simpleNbox,tropical.permafrost_c,y,n,n,0,Pg C,permafrost
-simpleNbox,permafrost_c,n,n,n,0,Pg C,permafrost
-simpleNbox,boreal.npp_flux0,y,n,y,5,Pg C yr-1,
-simpleNbox,tropical.npp_flux0,y,n,y,45,Pg C yr-1,
+simpleNbox,pf.soil_c,y,n,n,308,Pg C,
+simpleNbox,npf.soil_c,y,n,n,609,Pg C,
+simpleNbox,soil_c,n,n,y,917,Pg C,soil
+simpleNbox,pf.permafrost_c,y,n,n,865,Pg C,permafrost
+simpleNbox,npf.permafrost_c,y,n,n,0,Pg C,permafrost
+simpleNbox,permafrost_c,n,n,y,865,Pg C,permafrost
+simpleNbox,pf.npp_flux0,y,n,n,5.6,Pg C yr-1,
+simpleNbox,npf.npp_flux0,y,n,n,50.6,Pg C yr-1,
 simpleNbox,npp_flux0,n,n,y,56.2,Pg C yr-1,net primary production
 simpleNbox,f_nppv,n,n,y,0.35,(unitless),Fraction of NPP to vegetation
 simpleNbox,f_nppd,n,n,y,0.6,(unitless),Fraction of NPP to detritus (balance to soil)
@@ -41,7 +41,7 @@ simpleNbox,CO2_constrain,n,y,n,"""(csv)""",ppmv,atmospheric CO2 constraint
 simpleNbox,NBP_constrain,n,y,n,"""(csv)""",Pg C yr-1,net biome production (land-atmosphere C flux) constaint
 simpleNbox,beta,n,n,y,0.36,(unitless),
 simpleNbox,q10_rh,n,n,y,2,(unitless),respiration response Q10
-simpleNbox,boreal.warmingfactor,y,n,n,1.2,(unitless),biome-specific warming factors
+simpleNbox,pf.warmingfactor,y,n,n,2,(unitless),biome-specific warming factors
 simpleNbox,RF_albedo,n,n,y,"""(csv)""",W m-2,albedo effect
 simpleNbox,permafrost_c,y,n,y,0,Pg C,Preindustrial permafrost carbon pool
 simpleNbox,fpf_static,y,n,n,0.74,(unitless),fraction of permafrost that is static (non-labile)
