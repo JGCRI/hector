@@ -3,7 +3,7 @@ name: R-CMD-check
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
     branches:
       - '**' # matches every branch
@@ -15,9 +15,12 @@ on:
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-  
+
 jobs:
   R-CMD-check:
+    # Don't run scheduled job on forks, only in main repository.
+    if: (github.event_name == 'schedule' && github.repository == 'JGCRI/hector') || (github.event_name != 'schedule')
+
     runs-on: ${{ matrix.config.os }}
 
     name: ${{ matrix.config.os }} (${{ matrix.config.r }})

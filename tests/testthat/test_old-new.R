@@ -1,6 +1,6 @@
 context("Old new tests")
 # Verify that hector output for the canonical rcps matches the output from the
-# master branch. This "bit for bit" comparison of the output is intended to help
+# main branch. This "bit for bit" comparison of the output is intended to help
 # guarantee that Hector's outputs don't change during "minor" and "patch" development.
 # When "major" development is expected to impact Hector output, the comparison data will
 # need to be updated by running data-raw/generate-comp-data.R
