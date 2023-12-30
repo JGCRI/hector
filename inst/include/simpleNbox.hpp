@@ -146,8 +146,7 @@ private:
   unitval Ca_residual; //!< residual (when constraining [CO2]), Pg C
   double_stringmap tempfertd,
       tempferts; //!< temperature effect on respiration (unitless)
-  double_stringmap f_frozen,
-      new_thaw; //!< relative amounts and changes in permafrost
+  double_stringmap f_frozen; //!< fraction of original permafrost that remains frozen
 
   /*****************************************************************
    * Records of component state
@@ -193,6 +192,7 @@ private:
    *****************************************************************/
 
   double_stringmap co2fert;     //!< CO2 fertilization effect (unitless)
+  double_stringmap new_thaw;    //!< New thaw fraction (unitless)
   tseries<double> Tland_record; //!< Record of mean land surface/air temperature
                                 //!< values, for computing soil RH
   bool in_spinup;               //!< flag tracking spinup state
