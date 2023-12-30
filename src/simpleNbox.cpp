@@ -910,7 +910,8 @@ void SimpleNbox::createBiome(const std::string &biome) {
   pf_sigma[biome] = pf_sigma[last_biome];
   pf_mu[biome] = pf_mu[last_biome];
   fpf_static[biome] = fpf_static[last_biome];
-
+  // pf_s will get recomputed when the core is reset
+  
   // Add to end of biome list
   biome_list.push_back(biome);
 
@@ -944,7 +945,8 @@ void SimpleNbox::deleteBiome(
   pf_sigma.erase(biome);
   pf_mu.erase(biome);
   fpf_static.erase(biome);
-
+  pf_s.erase(biome);
+  
   // C pools
   veg_c.erase(biome);
   remove_biome_from_ts(veg_c_tv, biome);
@@ -1026,7 +1028,9 @@ void SimpleNbox::renameBiome(const std::string &oldname,
   pf_mu.erase(oldname);
   fpf_static[newname] = fpf_static.at(oldname);
   fpf_static.erase(oldname);
-
+  pf_s[newname] = pf_s.at(oldname);
+  pf_s.erase(oldname);
+  
   H_LOG(logger, Logger::DEBUG) << "Transferring C from biome '" << oldname
                                << "' to '" << newname << "'." << std::endl;
 
