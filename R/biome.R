@@ -142,7 +142,8 @@ get_biome_inits <- function(core, biome) {
         sendmessage(core, GETDATA(), VEG_C(biome), 0, NA, ""),
         sendmessage(core, GETDATA(), DETRITUS_C(biome), 0, NA, ""),
         sendmessage(core, GETDATA(), SOIL_C(biome), 0, NA, ""),
-        sendmessage(core, GETDATA(), PERMAFROST_C(biome), 0, NA, "")
+        sendmessage(core, GETDATA(), PERMAFROST_C(biome), 0, NA, ""),
+        sendmessage(core, GETDATA(), THAWEDP_C(biome), 0, NA, "")
     )
     current_data_2 <- fetchvars(core, NA, c(
         NPP_FLUX0(biome),

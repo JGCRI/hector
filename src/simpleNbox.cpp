@@ -1082,8 +1082,10 @@ void SimpleNbox::renameBiome(const std::string &oldname,
 
   tempfertd[newname] = tempfertd[oldname];
   tempfertd.erase(oldname);
+  rename_biome_in_ts(tempfertd_tv, oldname, newname);
   tempferts[newname] = tempferts[oldname];
   tempferts.erase(oldname);
+  rename_biome_in_ts(tempferts_tv, oldname, newname);
 
   f_frozen[newname] = f_frozen[oldname];
   f_frozen.erase(oldname);
