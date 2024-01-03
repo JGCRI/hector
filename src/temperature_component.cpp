@@ -250,12 +250,9 @@ void TemperatureComponent::prepareToRun() {
   heat_mixed.resize(ns);
   heat_interior.resize(ns);
   forcing.resize(ns);
-  lo_temp_landair.resize(
-      ns); //!< place to store land temp when lo is provided by users, deg C
-  lo_temp_oceanair.resize(
-      ns); //!< place to store land temp when lo is provided by users, deg C
-  lo_sst.resize(
-      ns); //!< place to store land temp when lo is provided by users, deg C
+  lo_temp_landair.resize(ns);
+  lo_temp_oceanair.resize(ns);
+  lo_sst.resize(ns);
 
   for (int i = 0; i < 3; i++) {
     B[i] = 0.0;
@@ -471,11 +468,11 @@ void TemperatureComponent::run(const double runToDate) {
 
   // Adjust total forcing to account for the aerosol and volcanic forcing
   // scaling factor
+  const double ftot = core->sendMessage(M_GETDATA, D_RF_TOTAL, message_data(runToDate)).value(U_W_M2);
   forcing[tstep] =
-      double(core->sendMessage(M_GETDATA, D_RF_TOTAL, message_data(runToDate))
-                 .value(U_W_M2)) -
+      double(ftot) -
       (1.0 - alpha) * aero_forcing - (1.0 - volscl) * volcanic_forcing;
-
+  
   // Initialize variables for time-stepping through the model
   double DQ1 = 0.0;
   double DQ2 = 0.0;
