@@ -94,7 +94,7 @@ void SimpleNbox::init(Core *coreptr) {
   tempfertd[SNBOX_DEFAULT_BIOME] = 1.0;
   tempferts[SNBOX_DEFAULT_BIOME] = 1.0;
   f_frozen[SNBOX_DEFAULT_BIOME] = 1.0;
-  new_thaw[SNBOX_DEFAULT_BIOME] = 0.0;
+  f_new_thaw[SNBOX_DEFAULT_BIOME] = 0.0;
 
   // Following permafrost-related values are from Woodard et al. 2021
   rh_ch4_frac[SNBOX_DEFAULT_BIOME] = 0.023;
@@ -895,7 +895,7 @@ void SimpleNbox::createBiome(const std::string &biome) {
   add_biome_to_ts(tempferts_tv, biome, 1.0);
   f_frozen[biome] = 1.0;
   add_biome_to_ts(f_frozen_tv, biome, 1.0);
-  new_thaw[biome] = 0.0;
+  f_new_thaw[biome] = 0.0;
   
   std::string last_biome = biome_list.back();
 
@@ -985,7 +985,7 @@ void SimpleNbox::deleteBiome(
   co2fert.erase(biome);
   f_frozen.erase(biome);
   remove_biome_from_ts(f_frozen_tv, biome);
-  new_thaw.erase(biome);
+  f_new_thaw.erase(biome);
   
   // Remove from `biome_list`
   biome_list.erase(i_biome);
@@ -1090,8 +1090,8 @@ void SimpleNbox::renameBiome(const std::string &oldname,
   f_frozen[newname] = f_frozen[oldname];
   f_frozen.erase(oldname);
   rename_biome_in_ts(f_frozen_tv, oldname, newname);
-  new_thaw[newname] = new_thaw[oldname];
-  new_thaw.erase(oldname);
+  f_new_thaw[newname] = f_new_thaw[oldname];
+  f_new_thaw.erase(oldname);
 
   biome_list.push_back(newname);
   biome_list.erase(std::find(biome_list.begin(), biome_list.end(), oldname));

@@ -192,7 +192,7 @@ private:
    *****************************************************************/
 
   double_stringmap co2fert;     //!< CO2 fertilization effect (unitless)
-  double_stringmap new_thaw;    //!< New thaw fraction (unitless)
+  double_stringmap f_new_thaw;    //!< New thaw fraction (unitless)
   tseries<double> Tland_record; //!< Record of mean land surface/air temperature
                                 //!< values, for computing soil RH
   bool in_spinup;               //!< flag tracking spinup state

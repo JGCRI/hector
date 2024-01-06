@@ -511,7 +511,7 @@ void SimpleNbox::stashCValues(double t, const double c[]) {
     // around if it's being used.
     detritus_c[biome] = detritus_c[biome] - detsoil_flux;
 
-    // Adjust biome pools to final values from calcDerivs
+    // Adjust biome pools to final solver values
     veg_c[biome].adjust_pool_to_val(newveg.value(U_PGC) * wt, false);
     detritus_c[biome].adjust_pool_to_val(newdet.value(U_PGC) * wt, false);
     soil_c[biome].adjust_pool_to_val(newsoil.value(U_PGC) * wt, false);
@@ -737,7 +737,7 @@ SimpleNbox::compute_pf_thaw_refreeze(string biome, fluxpool rh_co2,
   H_ASSERT(!in_spinup, "We should not be here!");
   
   double biome_c_thaw =
-      permafrost_c.at(biome).value(U_PGC) * new_thaw.at(biome);
+      permafrost_c.at(biome).value(U_PGC) * f_new_thaw.at(biome);
   double pf_refreeze_tp = 0.0;
   double pf_refreeze_soil = 0.0;
 
@@ -984,7 +984,7 @@ void SimpleNbox::slowparameval(double t, const double c[]) {
       tempfertd[biome] = 1.0; // no perturbation allowed in spinup
       tempferts[biome] = 1.0; // no perturbation allowed in spinup
       f_frozen[biome] = 1.0;  // no perturbation allowed in spinup
-      new_thaw[biome] = 0.0;  // no perturbation allowed in spinup
+      f_new_thaw[biome] = 0.0;  // no perturbation allowed in spinup
     } else {
       double wf;
       if (warmingfactor.count(biome)) {
@@ -1004,7 +1004,7 @@ void SimpleNbox::slowparameval(double t, const double c[]) {
       // Currently, these are calibrated to produce a 0.172 / year slope from
       // 0.8 to 4 degrees C, which was the linear form of this in Kessler 2017
       // https://doi.org/10.1142/s2010007817500087 (referenced in Woodard 2021).
-      new_thaw[biome] = 0.0;
+      f_new_thaw[biome] = 0.0;
       if (permafrost_c[biome].value(U_PGC)) {
         // This uses the biome's lognormal distribution, based on its mu and
         // sigma, which is precomputed in prepareToRun(). Replicating the
@@ -1018,7 +1018,7 @@ void SimpleNbox::slowparameval(double t, const double c[]) {
               << std::endl;
         }
 
-        new_thaw[biome] = f_frozen[biome] - f_frozen_current;
+        f_new_thaw[biome] = f_frozen[biome] - f_frozen_current;
         f_frozen[biome] = f_frozen_current;
       }
 
