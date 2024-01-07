@@ -689,7 +689,7 @@ fluxpool SimpleNbox::rh_ftpa_co2(std::string biome, double time) const {
   fluxpool tpfc;
   if (time == Core::undefinedIndex()) {
     tfs = tempferts.at(biome);
-    tpfc = thawed_permafrost_c.at(biome) * fpf_static.at(biome);
+    tpfc = thawed_permafrost_c.at(biome) * (1 - fpf_static.at(biome));
   } else {
     tfs = tempferts_tv.get(time).at(biome);
     tpfc = thawed_permafrost_c_tv.get(time).at(biome) * fpf_static.at(biome);
