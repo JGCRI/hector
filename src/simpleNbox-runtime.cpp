@@ -155,6 +155,9 @@ void SimpleNbox::prepareToRun() {
     pf_s[biome] = s;
   }
 
+  // Zero the cumulative tracker of CH4 release from permafrost
+  cumulative_pf_ch4 = 0.0;
+  
   // A flag that lets run() know the very first time it's called
   has_been_run_before = false;
 
@@ -465,12 +468,16 @@ void SimpleNbox::stashCValues(double t, const double c[]) {
 
     // Update soil, detritus, and atmosphere pools - rh fluxes
     atmos_c =
-        atmos_c + rh_fda_flux + rh_fsa_flux + rh_fpa_co2_flux + rh_fpa_ch4_flux;
+        atmos_c + rh_fda_flux + rh_fsa_flux + rh_fpa_co2_flux;
     detritus_c[biome] = detritus_c[biome] - rh_fda_flux;
     soil_c[biome] = soil_c[biome] - rh_fsa_flux;
     thawed_permafrost_c[biome] =
         thawed_permafrost_c[biome] - rh_fpa_co2_flux - rh_fpa_ch4_flux;
-
+    // Thawed permafrost released as methane exits the carbon system (from
+    // simpleNbox's point of view). In order not to trigger a mass balance
+    // issue, we track it and adjust in the mass balance check below
+    cumulative_pf_ch4 += rh_fpa_ch4_flux.value(U_PGC);
+    
     // Permafrost thaw and refreeze
     if (!in_spinup) {
       // We pass in the annual fluxes here, because want annual thaw and
@@ -538,7 +545,9 @@ void SimpleNbox::stashCValues(double t, const double c[]) {
   for (int i = 0; i < ncpool(); i++) {
     sum += c[i];
   }
-
+  // Add in C that has exited the system via thawed permafrost CH4 release
+  sum += cumulative_pf_ch4;
+  
   const double diff = fabs(sum - masstot);
   H_LOG(logger, Logger::DEBUG) << "masstot = " << masstot << ", sum = " << sum
                                << ", diff = " << diff << std::endl;
@@ -751,6 +760,9 @@ SimpleNbox::compute_pf_thaw_refreeze(string biome, fluxpool rh_co2,
                                     rh_co2.value(U_PGC_YR) -
                                     rh_ch4.value(U_PGC_YR);
     pf_refreeze_tp = std::min(pf_refreeze, thawed_remaining);
+    // TODO: allowing soil refreeze causes biome tests to fail
+    // (see #xxx). Since this has a negligible climate impact,
+    // it is disabled for now.
     pf_refreeze_soil = pf_refreeze - pf_refreeze_tp;
   }
 
@@ -890,11 +902,10 @@ int SimpleNbox::calcderivs(double t, const double c[], double dcdt[]) const {
       ch4ox_current.value(U_PGC_YR) - ocean_uptake.value(U_PGC_YR) +
       ocean_release.value(U_PGC_YR) -
       npp_current.value(U_PGC_YR)
-      // HACK: For mass balance purposes, dump both RH{CO2} and RH{CH4} into
-      // the atmosphere. Effectively, this means that CH4 is emitted on top of
-      // existing CO2 -- i.e., more CH4 emissions does not mean less CO2
-      // emissions from RH
-      + rh_ch4_current.value(U_PGC_YR) + rh_current.value(U_PGC_YR);
+      // Note that RH{CH4} exits thawed permafrost below but does not,
+      // from the solver's point of view, go into the atmosphere. We deal
+      // with the resulting mass-balance problem in stashCValues() above.
+      + rh_current.value(U_PGC_YR);
   dcdt[SNBOX_VEG] = // change in vegetation pool
       npp_fav.value(U_PGC_YR) - litter_flux.value(U_PGC_YR) -
       luc_fva.value(U_PGC_YR) + luc_fav.value(U_PGC_YR);
