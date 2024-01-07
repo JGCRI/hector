@@ -763,7 +763,7 @@ SimpleNbox::compute_pf_thaw_refreeze(string biome, fluxpool rh_co2,
     // TODO: allowing soil refreeze causes biome tests to fail
     // (see #xxx). Since this has a negligible climate impact,
     // it is disabled for now.
-    pf_refreeze_soil = pf_refreeze - pf_refreeze_tp;
+    //pf_refreeze_soil = pf_refreeze - pf_refreeze_tp;
   }
 
   return {biome_c_thaw, pf_refreeze_tp, pf_refreeze_soil};
