@@ -83,7 +83,7 @@ split_biome <- function(core,
         sum(fnpp_flux0) == 1, all(fnpp_flux0 > 0)
     )
 
-    # If user supplied values in ... for warmingfactor, etc., use thos
+    # If user supplied values in ... for warmingfactor, etc., use those
     # Otherwise use the old biome's values
     cv <- get_biome_inits(core, old_biome) # current values
     dots <- list(...)
@@ -142,7 +142,8 @@ get_biome_inits <- function(core, biome) {
         sendmessage(core, GETDATA(), VEG_C(biome), 0, NA, ""),
         sendmessage(core, GETDATA(), DETRITUS_C(biome), 0, NA, ""),
         sendmessage(core, GETDATA(), SOIL_C(biome), 0, NA, ""),
-        sendmessage(core, GETDATA(), PERMAFROST_C(biome), 0, NA, "")
+        sendmessage(core, GETDATA(), PERMAFROST_C(biome), 0, NA, ""),
+        sendmessage(core, GETDATA(), THAWEDP_C(biome), 0, NA, "")
     )
     current_data_2 <- fetchvars(core, NA, c(
         NPP_FLUX0(biome),

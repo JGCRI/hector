@@ -148,11 +148,9 @@ void CSVTableReader::process(Core *core, const string &componentName,
     // we are all set to process the table
     // note that getline sets the fail bit when it hits eof which is not what
     // want, a work around is to check peek
-    int lines_read = 0;
     while (!tableInputStream.eof() && tableInputStream.peek() != -1) {
       // read the next row to process
       line = csv_getline();
-      lines_read++;
 
       // Ignore blank lines. A stray windows line ending which may have made
       // its way in from a mixed line ending file can be skipped as well.

@@ -116,15 +116,14 @@ private:
   // Carbon pools -- global
   fluxpool earth_c; //!< earth pool, Pg C; for mass-balance
   fluxpool atmos_c; //!< atmosphere pool, Pg C
-
+  double cumulative_pf_ch4; //!< cumulative release of CH4-C thawed permafrost, Pg C
+  
   // Carbon pools -- biome-specific
   fluxpool_stringmap veg_c;      //!< vegetation pools, Pg C
   fluxpool_stringmap detritus_c; //!< detritus pools, Pg C
   fluxpool_stringmap soil_c;     //!< soil pool, Pg C
-  // Permafrost functionality is documented in:
-  // Woodard, D. L., Shiklomanov, A. N., Kravitz, B., Hartin, C., and
-  // Bond-Lamberty, B.: A permafrost implementation in the simple carbon–climate
-  // model Hector v.2.3pf, GMD 14:4751–4767, 2021.
+  // Permafrost functionality is documented in Woodard et al. 2021:
+  // A permafrost implementation in the simple carbon–climate model Hector v.2.3pf,
   // http://dx.doi.org/10.5194/gmd-14-4751-2021
   fluxpool_stringmap permafrost_c; //!< permafrost C pool, Pg C
   // Track thawed peramfrost separately from soil, so that
@@ -146,8 +145,7 @@ private:
   unitval Ca_residual; //!< residual (when constraining [CO2]), Pg C
   double_stringmap tempfertd,
       tempferts; //!< temperature effect on respiration (unitless)
-  double_stringmap f_frozen,
-      new_thaw; //!< relative amounts and changes in permafrost
+  double_stringmap f_frozen; //!< fraction of original permafrost that remains frozen
 
   /*****************************************************************
    * Records of component state
@@ -193,6 +191,7 @@ private:
    *****************************************************************/
 
   double_stringmap co2fert;     //!< CO2 fertilization effect (unitless)
+  double_stringmap f_new_thaw;    //!< New thaw fraction (unitless)
   tseries<double> Tland_record; //!< Record of mean land surface/air temperature
                                 //!< values, for computing soil RH
   bool in_spinup;               //!< flag tracking spinup state
