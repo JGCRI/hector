@@ -251,7 +251,7 @@ test_that("Split biomes, and modify parameters", {
     core <- ssp245()
     orig_val <- fetchvars(core, NA, var_f())[["value"]]
     invisible(run(core))
-    basic <- fetchvars(core, 2000:2100, CONCENTRATIONS_CO2())
+    basic <- fetchvars(core, 2050:2100, CONCENTRATIONS_CO2())
     # Create two biomes, change one of the parameters
     invisible(split_biome(core, "global", c("a", "b")))
     setvar(core, NA, var_f("b"), value, NA)
