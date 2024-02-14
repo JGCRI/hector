@@ -261,7 +261,7 @@ test_that("Split biomes, and modify parameters", {
     reset(core, core$reset_date)
     invisible(run(core))
     # Check that the new result had higher CO2 than original one
-    new <- fetchvars(core, 2000:2100, CONCENTRATIONS_CO2())
+    new <- fetchvars(core, 2050:2100, CONCENTRATIONS_CO2())
     expect_true(all(basic[["value"]] < new[["value"]]))
   }
 
