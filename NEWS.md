@@ -1,3 +1,9 @@
+# hector 3.2.0 
+
+* Correct aerosol forcing coefficients based on Zelinka et al. (2023)
+* Enable permafrost module
+
+
 # hector 3.1.1 
 
 Return global mean surface temperature as a Hector output.
