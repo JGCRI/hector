@@ -119,6 +119,8 @@ test_that("Lowering ECS lowers output Temperature", {
 
 test_that("Raising Q10 increases CO2 concentration", {
 
+  tdates <- 2050:2100
+
   # Define Hector core.
   hc <- newcore(ssp245, suppresslogging = TRUE)
 

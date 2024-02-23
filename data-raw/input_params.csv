@@ -1,57 +1,67 @@
 section,parameter,biome-specific,time-variant,required,default,units,description
-core,run_name,n,n,y,,(unitless),
-core,startDate,n,n,y,1745,year,
-core,endDate,n,n,y,2300,year,
-core,trackingDate,n,n,y,9999,year,year to start tracking (only carbon currently)
-core,do_spinup,n,n,y,1,(unitless),"if 1, spin up model before running (default=1)"
-core,max_spinup,n,n,y,2000,(unitless),maximum steps allowed for spinup (default=2000)
-ocean,enabled,n,n,y,1,(unitless),putting 'enabled=0' will disable any component
-ocean,spinup_chem,n,n,y,0,(unitless),run surface chemistry during spinup phase?
-ocean,tt,n,n,y,7.20E+07,m3 s-1,thermohaline circulation
-ocean,tu,n,n,y,4.90E+07,m3 s-1,high latitude overturning
-ocean,twi,n,n,y,1.25E+07,m3 s-1,warm-intermediate exchange
-ocean,tid,n,n,y,2.00E+08,m3 s-1,intermediate-deep exchange
-ocean,preind_surface_c,n,n,n,900,Pg C,surface ocean carbon
-ocean,preind_interdeep_c,n,n,n,37100,Pg C,intermediate + deep ocean carbon
-simpleNbox,atmos_co2,n,n,y,588.071,Pg C,
-simpleNbox,C0,n,n,y,277.15,Pg C,preindustrial CO2 from table 7.SM.1 IPCC AR6
-simpleNbox,boreal.veg_c,y,n,y,100,Pg C,
-simpleNbox,tropical.veg_c,y,n,y,450,Pg C,
-simpleNbox,veg_c,n,n,y,550,Pg C,vegetation
-simpleNbox,boreal.detritus_c,y,n,y,15,Pg C,
-simpleNbox,tropical.detritus_c,y,n,y,45,Pg C,
-simpleNbox,detritus_c,n,n,y,55,Pg C,detritus
-simpleNbox,boreal.soil_c,y,n,y,1200,Pg C,
-simpleNbox,tropical.soil_c,y,n,y,578,Pg C,
-simpleNbox,soil_c,n,n,y,1782,Pg C,soil
-simpleNbox,boreal.permafrost_c,y,n,n,865,Pg C,permafrost
-simpleNbox,tropical.permafrost_c,y,n,n,0,Pg C,permafrost
-simpleNbox,permafrost_c,n,n,n,0,Pg C,permafrost
-simpleNbox,boreal.npp_flux0,y,n,y,5,Pg C yr-1,
-simpleNbox,tropical.npp_flux0,y,n,y,45,Pg C yr-1,
-simpleNbox,npp_flux0,n,n,y,56.2,Pg C yr-1,net primary production
+core,run_name,n,n,y,,(unitless),Name of model run
+core,startDate,n,n,y,1745,year,Start date of model run
+core,endDate,n,n,y,2300,year,End date of model run
+core,trackingDate,n,n,y,9999,year,Year to start tracking carbon
+core,do_spinup,n,n,y,1,(unitless),"If 1, spin up model before running (default=1)"
+core,max_spinup,n,n,y,2000,(unitless),Maximum steps allowed for spinup (default=2000)
+ocean,enabled,n,n,y,1,(unitless),Putting 'enabled=0' will disable any component
+ocean,spinup_chem,n,n,y,0,(unitless),Run ocean surface chemistry during spinup phase?
+ocean,tt,n,n,y,7.20E+07,m3 s-1,Ocean thermohaline circulation
+ocean,tu,n,n,y,4.90E+07,m3 s-1,Ocean high latitude overturning
+ocean,twi,n,n,y,1.25E+07,m3 s-1,Ocean warm-intermediate exchange
+ocean,tid,n,n,y,2.00E+08,m3 s-1,Ocean intermediate-deep exchange
+ocean,preind_surface_c,n,n,n,900,Pg C,Initial surface ocean carbon
+ocean,preind_interdeep_c,n,n,n,37100,Pg C,Initial intermediate + deep ocean carbon
+simpleNbox,atmos_co2,n,n,y,588.071,Pg C,Initial atmospheric CO2
+simpleNbox,C0,n,n,y,277.15,Pg C,Initial atmospheric C pool
+simpleNbox,pf.veg_c,y,n,n,55,Pg C,Initial vegetation C pool
+simpleNbox,nonpf.veg_c,y,n,n,495,Pg C,Initial vegetation C pool
+simpleNbox,veg_c,n,n,y,550,Pg C,Initial vegetation C pool
+simpleNbox,pf.detritus_c,y,n,n,5,Pg C,Initial detritus C pool
+simpleNbox,nonpf.detritus_c,y,n,n,50,Pg C,Initial detritus C pool
+simpleNbox,detritus_c,n,n,y,55,Pg C,Initial detritus C pool
+simpleNbox,pf.soil_c,y,n,n,308,Pg C,Initial soil C pool
+simpleNbox,nonpf.soil_c,y,n,n,609,Pg C,Initial soil C pool
+simpleNbox,soil_c,n,n,y,917,Pg C,Initial soil C pool
+simpleNbox,pf.permafrost_c,y,n,n,865,Pg C,Initial permafrost C pool
+simpleNbox,nonpf.permafrost_c,y,n,n,0,Pg C,Initial permafrost C pool
+simpleNbox,permafrost_c,n,n,y,865,Pg C,Initial permafrost C pool
+simpleNbox,pf.npp_flux0,y,n,n,5.6,Pg C yr-1,Preindustrial net primary production
+simpleNbox,nonpf.npp_flux0,y,n,n,50.6,Pg C yr-1,Preindustrial net primary production
+simpleNbox,npp_flux0,n,n,y,56.2,Pg C yr-1,Preindustrial net primary production
+simpleNbox,pf.f_nppv,n,n,y,0.35,(unitless),Fraction of NPP to vegetation
+simpleNbox,nonpf.f_nppv,n,n,y,0.35,(unitless),Fraction of NPP to vegetation
 simpleNbox,f_nppv,n,n,y,0.35,(unitless),Fraction of NPP to vegetation
+simpleNbox,pf.f_nppd,n,n,y,0.35,(unitless),Fraction of NPP to vegetation
+simpleNbox,nonpf.f_nppd,n,n,y,0.35,(unitless),Fraction of NPP to vegetation
 simpleNbox,f_nppd,n,n,y,0.6,(unitless),Fraction of NPP to detritus (balance to soil)
+simpleNbox,pf.f_litterd,n,n,n,0.35,(unitless),Fraction of NPP to vegetation
+simpleNbox,nonpf.f_litterd,n,n,n,0.35,(unitless),Fraction of NPP to vegetation
 simpleNbox,f_litterd,n,n,y,0.98,(unitless),Fraction of litter flux to detritus (balance to soil)
 simpleNbox,ffi_emissions,n,y,y,"""(csv)""",Pg C yr-1,Anthropogenic contributions: emissions
 simpleNbox,daccs_uptake,n,y,y,"""(csv)""",Pg C yr-1,Anthropogenic contributions: direct air carbon capture and storage
 simpleNbox,luc_emissions,n,y,y,"""(csv)""",Pg C yr-1,Anthropogenic contributions: land use change
 simpleNbox,luc_uptake,n,y,y,"""(csv)""",Pg C yr-2,Anthropogenic contributions: land use change
-simpleNbox,CO2_constrain,n,y,n,"""(csv)""",ppmv,atmospheric CO2 constraint
-simpleNbox,NBP_constrain,n,y,n,"""(csv)""",Pg C yr-1,net biome production (land-atmosphere C flux) constaint
-simpleNbox,beta,n,n,y,0.36,(unitless),
-simpleNbox,q10_rh,n,n,y,2,(unitless),respiration response Q10
-simpleNbox,boreal.warmingfactor,y,n,n,1.2,(unitless),biome-specific warming factors
-simpleNbox,RF_albedo,n,n,y,"""(csv)""",W m-2,albedo effect
+simpleNbox,CO2_constrain,n,y,n,"""(csv)""",ppmv,Atmospheric CO2 constraint
+simpleNbox,NBP_constrain,n,y,n,"""(csv)""",Pg C yr-1,Net biome production (land-atmosphere C flux) constaint
+simpleNbox,pf.beta,n,n,n,0.36,(unitless),CO2 fertilization factor
+simpleNbox,nonpf.beta,n,n,n,0.36,(unitless),CO2 fertilization factor
+simpleNbox,beta,n,n,y,0.36,(unitless),CO2 fertilization factor
+simpleNbox,pf.q10_rh,n,n,n,2,(unitless),Respiration temperature response (Q10)
+simpleNbox,nonpf.q10_rh,n,n,n,2,(unitless),Respiration temperature response (Q10)
+simpleNbox,q10_rh,n,n,y,2,(unitless),Respiration temperature response (Q10)
+simpleNbox,pf.warmingfactor,y,n,n,2,(unitless),biome-specific warming factors
+simpleNbox,RF_albedo,n,n,y,"""(csv)""",W m-2,Albedo radiative forcing effect
 simpleNbox,permafrost_c,y,n,y,0,Pg C,Preindustrial permafrost carbon pool
-simpleNbox,fpf_static,y,n,n,0.74,(unitless),fraction of permafrost that is static (non-labile)
-simpleNbox,rh_ch4_frac,y,n,n,0.023,(unitless),fraction of thawed permafrost decomposed as CH4
-simpleNbox,pf_mu,y,n,n,1.67,(unitless),permafrost thaw parameter; see Woodard et al. 2021
-simpleNbox,pf_sigma,y,n,n,0.986,(unitless),permafrost thaw parameter; see Woodard et al. 2021
-carbon-cycle-solver,eps_abs,n,n,y,1.00E-06,(unitless),solution tolerance
-carbon-cycle-solver,eps_rel,n,n,y,1.00E-06,(unitless),solution tolerance
-carbon-cycle-solver,dt,n,n,y,0.25,(unitless),default time step
-carbon-cycle-solver,eps_spinup,n,n,y,0.001,Pg C,"spinup tolerance (drift), Pg C"
+simpleNbox,fpf_static,y,n,n,0.74,(unitless),Fraction of permafrost that is static (non-labile)
+simpleNbox,rh_ch4_frac,y,n,n,0.023,(unitless),Fraction of thawed permafrost decomposed as CH4
+simpleNbox,pf_mu,y,n,n,1.67,(unitless),Permafrost thaw parameter; see Woodard et al. 2021
+simpleNbox,pf_sigma,y,n,n,0.986,(unitless),Permafrost thaw parameter; see Woodard et al. 2021
+carbon-cycle-solver,eps_abs,n,n,y,1.00E-06,(unitless),Solver solution tolerance
+carbon-cycle-solver,eps_rel,n,n,y,1.00E-06,(unitless),Solver solution tolerance
+carbon-cycle-solver,dt,n,n,y,0.25,(unitless),Solver default time step
+carbon-cycle-solver,eps_spinup,n,n,y,0.001,Pg C,"Model spinup tolerance (drift), Pg C"
 so2,SO2_emissions,n,y,y,"""(csv)""",,emissions time series
 so2,SV,n,y,y,"""(csv)""",,volcanic radiative forcing time series
 CH4,M0,n,n,y,731.41,ppb,"preindustrial methane IPCC AR6 Table 7.SM.1, the CH4 forcing equations is calibrated to a M0 of 731.41 ppb"
