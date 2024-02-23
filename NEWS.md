@@ -3,7 +3,6 @@
 * Correct aerosol forcing coefficients based on Zelinka et al. (2023)
 * Enable permafrost module and recalibrate model's default parameterization
 
-
 # hector 3.1.1 
 
 Return global mean surface temperature as a Hector output.
