@@ -21,12 +21,6 @@ efficiency, SCMs can easily be coupled to other models and used to
 design scenarios, emulate more complex climate models, and conduct
 uncertainty analyses.
 
-    #> Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
-    #> ℹ Please use `linewidth` instead.
-    #> This warning is displayed once every 8 hours.
-    #> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
-    #> generated.
-
 <img src="man/figures/README-tas_plot-1.png" width="100%" />
 
 Hector’s output for global mean air temperature change for eight Shared
