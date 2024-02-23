@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">hector</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">3.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">3.2.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -160,12 +160,12 @@ to retrieve results from 2000 to 2300.</p>
 <code class="sourceCode R"><span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetchvars.html">fetchvars</a></span><span class="op">(</span><span class="va">core</span>, <span class="fl">2000</span><span class="op">:</span><span class="fl">2300</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##              scenario year          variable    value    units</span></span>
-<span><span class="co">## 1 Unnamed Hector core 2000 CO2_concentration 369.1708 ppmv CO2</span></span>
-<span><span class="co">## 2 Unnamed Hector core 2001 CO2_concentration 370.8896 ppmv CO2</span></span>
-<span><span class="co">## 3 Unnamed Hector core 2002 CO2_concentration 372.5325 ppmv CO2</span></span>
-<span><span class="co">## 4 Unnamed Hector core 2003 CO2_concentration 374.2783 ppmv CO2</span></span>
-<span><span class="co">## 5 Unnamed Hector core 2004 CO2_concentration 376.0798 ppmv CO2</span></span>
-<span><span class="co">## 6 Unnamed Hector core 2005 CO2_concentration 378.1072 ppmv CO2</span></span></code></pre>
+<span><span class="co">## 1 Unnamed Hector core 2000 CO2_concentration 369.5062 ppmv CO2</span></span>
+<span><span class="co">## 2 Unnamed Hector core 2001 CO2_concentration 371.1754 ppmv CO2</span></span>
+<span><span class="co">## 3 Unnamed Hector core 2002 CO2_concentration 372.7740 ppmv CO2</span></span>
+<span><span class="co">## 4 Unnamed Hector core 2003 CO2_concentration 374.4827 ppmv CO2</span></span>
+<span><span class="co">## 5 Unnamed Hector core 2004 CO2_concentration 376.2529 ppmv CO2</span></span>
+<span><span class="co">## 6 Unnamed Hector core 2005 CO2_concentration 378.2501 ppmv CO2</span></span></code></pre>
 <p>The results are returned as a long <code>data.frame</code>. This
 makes it easy to plot them using <code>ggplot2</code>.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
@@ -201,7 +201,7 @@ query parameter values.</p>
 <code class="sourceCode R"><span><span class="va">beta</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetchvars.html">fetchvars</a></span><span class="op">(</span><span class="va">core</span>, <span class="cn">NA</span>, <span class="fu"><a href="../reference/parameters.html">BETA</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">beta</span></span></code></pre></div>
 <pre><code><span><span class="co">##              scenario year variable value      units</span></span>
-<span><span class="co">## 1 Unnamed Hector core   NA     beta  0.55 (unitless)</span></span></code></pre>
+<span><span class="co">## 1 Unnamed Hector core   NA     beta  0.53 (unitless)</span></span></code></pre>
 <p>The result of <code><a href="../reference/fetchvars.html">fetchvars()</a></code> is always a
 <code>data.frame</code> with the same columns, even when returning a
 parameter value. Note also the use of <code>NA</code> in the second
@@ -281,12 +281,12 @@ perform another run with the new CO<span class="math inline">\(_2\)</span> ferti
 <code class="sourceCode R"><span><span class="va">results_40</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetchvars.html">fetchvars</a></span><span class="op">(</span><span class="va">core</span>, <span class="fl">2000</span><span class="op">:</span><span class="fl">2300</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">results_40</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##              scenario year          variable    value    units</span></span>
-<span><span class="co">## 1 Unnamed Hector core 2000 CO2_concentration 382.1723 ppmv CO2</span></span>
-<span><span class="co">## 2 Unnamed Hector core 2001 CO2_concentration 384.1810 ppmv CO2</span></span>
-<span><span class="co">## 3 Unnamed Hector core 2002 CO2_concentration 386.1196 ppmv CO2</span></span>
-<span><span class="co">## 4 Unnamed Hector core 2003 CO2_concentration 388.1667 ppmv CO2</span></span>
-<span><span class="co">## 5 Unnamed Hector core 2004 CO2_concentration 390.2758 ppmv CO2</span></span>
-<span><span class="co">## 6 Unnamed Hector core 2005 CO2_concentration 392.6141 ppmv CO2</span></span></code></pre>
+<span><span class="co">## 1 Unnamed Hector core 2000 CO2_concentration 379.3143 ppmv CO2</span></span>
+<span><span class="co">## 2 Unnamed Hector core 2001 CO2_concentration 381.1770 ppmv CO2</span></span>
+<span><span class="co">## 3 Unnamed Hector core 2002 CO2_concentration 382.9758 ppmv CO2</span></span>
+<span><span class="co">## 4 Unnamed Hector core 2003 CO2_concentration 384.8905 ppmv CO2</span></span>
+<span><span class="co">## 5 Unnamed Hector core 2004 CO2_concentration 386.8731 ppmv CO2</span></span>
+<span><span class="co">## 6 Unnamed Hector core 2005 CO2_concentration 389.0895 ppmv CO2</span></span></code></pre>
 <p>Let’s see how changing the CO<span class="math inline">\(_2\)</span>
 fertilization affects our results.</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">

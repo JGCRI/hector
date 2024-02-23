@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">hector</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">3.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">3.2.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -176,6 +176,7 @@ y
 (unitless)
 </td>
 <td style="text-align:left;">
+Name of model run
 </td>
 </tr>
 <tr>
@@ -201,6 +202,7 @@ y
 year
 </td>
 <td style="text-align:left;">
+Start date of model run
 </td>
 </tr>
 <tr>
@@ -226,6 +228,7 @@ y
 year
 </td>
 <td style="text-align:left;">
+End date of model run
 </td>
 </tr>
 <tr>
@@ -251,7 +254,7 @@ y
 year
 </td>
 <td style="text-align:left;">
-year to start tracking (only carbon currently)
+Year to start tracking carbon
 </td>
 </tr>
 <tr>
@@ -277,7 +280,7 @@ y
 (unitless)
 </td>
 <td style="text-align:left;">
-if 1, spin up model before running (default=1)
+If 1, spin up model before running (default=1)
 </td>
 </tr>
 <tr>
@@ -303,7 +306,7 @@ y
 (unitless)
 </td>
 <td style="text-align:left;">
-maximum steps allowed for spinup (default=2000)
+Maximum steps allowed for spinup (default=2000)
 </td>
 </tr>
 <tr>
@@ -329,7 +332,7 @@ y
 (unitless)
 </td>
 <td style="text-align:left;">
-putting ‘enabled=0’ will disable any component
+Putting ‘enabled=0’ will disable any component
 </td>
 </tr>
 <tr>
@@ -355,7 +358,7 @@ y
 (unitless)
 </td>
 <td style="text-align:left;">
-run surface chemistry during spinup phase?
+Run ocean surface chemistry during spinup phase?
 </td>
 </tr>
 <tr>
@@ -381,7 +384,7 @@ y
 m3 s-1
 </td>
 <td style="text-align:left;">
-thermohaline circulation
+Ocean thermohaline circulation
 </td>
 </tr>
 <tr>
@@ -407,7 +410,7 @@ y
 m3 s-1
 </td>
 <td style="text-align:left;">
-high latitude overturning
+Ocean high latitude overturning
 </td>
 </tr>
 <tr>
@@ -433,7 +436,7 @@ y
 m3 s-1
 </td>
 <td style="text-align:left;">
-warm-intermediate exchange
+Ocean warm-intermediate exchange
 </td>
 </tr>
 <tr>
@@ -459,7 +462,7 @@ y
 m3 s-1
 </td>
 <td style="text-align:left;">
-intermediate-deep exchange
+Ocean intermediate-deep exchange
 </td>
 </tr>
 <tr>
@@ -485,7 +488,7 @@ n
 Pg C
 </td>
 <td style="text-align:left;">
-surface ocean carbon
+Initial surface ocean carbon
 </td>
 </tr>
 <tr>
@@ -511,7 +514,7 @@ n
 Pg C
 </td>
 <td style="text-align:left;">
-intermediate + deep ocean carbon
+Initial intermediate + deep ocean carbon
 </td>
 </tr>
 <tr>
@@ -537,6 +540,7 @@ y
 Pg C
 </td>
 <td style="text-align:left;">
+Initial atmospheric CO2
 </td>
 </tr>
 <tr>
@@ -562,7 +566,7 @@ y
 Pg C
 </td>
 <td style="text-align:left;">
-preindustrial CO2 from table 7.SM.1 IPCC AR6
+Initial atmospheric C pool
 </td>
 </tr>
 <tr>
@@ -570,7 +574,7 @@ preindustrial CO2 from table 7.SM.1 IPCC AR6
 simpleNbox
 </td>
 <td style="text-align:left;">
-boreal.veg_c
+pf.veg_c
 </td>
 <td style="text-align:left;">
 y
@@ -579,15 +583,16 @@ y
 n
 </td>
 <td style="text-align:left;">
-y
+n
 </td>
 <td style="text-align:left;">
-100
+55
 </td>
 <td style="text-align:left;">
 Pg C
 </td>
 <td style="text-align:left;">
+Initial vegetation C pool
 </td>
 </tr>
 <tr>
@@ -595,7 +600,7 @@ Pg C
 simpleNbox
 </td>
 <td style="text-align:left;">
-tropical.veg_c
+nonpf.veg_c
 </td>
 <td style="text-align:left;">
 y
@@ -604,15 +609,16 @@ y
 n
 </td>
 <td style="text-align:left;">
-y
+n
 </td>
 <td style="text-align:left;">
-450
+495
 </td>
 <td style="text-align:left;">
 Pg C
 </td>
 <td style="text-align:left;">
+Initial vegetation C pool
 </td>
 </tr>
 <tr>
@@ -638,7 +644,7 @@ y
 Pg C
 </td>
 <td style="text-align:left;">
-vegetation
+Initial vegetation C pool
 </td>
 </tr>
 <tr>
@@ -646,7 +652,7 @@ vegetation
 simpleNbox
 </td>
 <td style="text-align:left;">
-boreal.detritus_c
+pf.detritus_c
 </td>
 <td style="text-align:left;">
 y
@@ -655,15 +661,16 @@ y
 n
 </td>
 <td style="text-align:left;">
-y
+n
 </td>
 <td style="text-align:left;">
-15
+5
 </td>
 <td style="text-align:left;">
 Pg C
 </td>
 <td style="text-align:left;">
+Initial detritus C pool
 </td>
 </tr>
 <tr>
@@ -671,7 +678,7 @@ Pg C
 simpleNbox
 </td>
 <td style="text-align:left;">
-tropical.detritus_c
+nonpf.detritus_c
 </td>
 <td style="text-align:left;">
 y
@@ -680,15 +687,16 @@ y
 n
 </td>
 <td style="text-align:left;">
-y
+n
 </td>
 <td style="text-align:left;">
-45
+50
 </td>
 <td style="text-align:left;">
 Pg C
 </td>
 <td style="text-align:left;">
+Initial detritus C pool
 </td>
 </tr>
 <tr>
@@ -714,7 +722,7 @@ y
 Pg C
 </td>
 <td style="text-align:left;">
-detritus
+Initial detritus C pool
 </td>
 </tr>
 <tr>
@@ -722,7 +730,7 @@ detritus
 simpleNbox
 </td>
 <td style="text-align:left;">
-boreal.soil_c
+pf.soil_c
 </td>
 <td style="text-align:left;">
 y
@@ -731,15 +739,16 @@ y
 n
 </td>
 <td style="text-align:left;">
-y
+n
 </td>
 <td style="text-align:left;">
-1200
+308
 </td>
 <td style="text-align:left;">
 Pg C
 </td>
 <td style="text-align:left;">
+Initial soil C pool
 </td>
 </tr>
 <tr>
@@ -747,7 +756,7 @@ Pg C
 simpleNbox
 </td>
 <td style="text-align:left;">
-tropical.soil_c
+nonpf.soil_c
 </td>
 <td style="text-align:left;">
 y
@@ -756,15 +765,16 @@ y
 n
 </td>
 <td style="text-align:left;">
-y
+n
 </td>
 <td style="text-align:left;">
-578
+609
 </td>
 <td style="text-align:left;">
 Pg C
 </td>
 <td style="text-align:left;">
+Initial soil C pool
 </td>
 </tr>
 <tr>
@@ -784,13 +794,13 @@ n
 y
 </td>
 <td style="text-align:left;">
-1782
+917
 </td>
 <td style="text-align:left;">
 Pg C
 </td>
 <td style="text-align:left;">
-soil
+Initial soil C pool
 </td>
 </tr>
 <tr>
@@ -798,7 +808,7 @@ soil
 simpleNbox
 </td>
 <td style="text-align:left;">
-boreal.permafrost_c
+pf.permafrost_c
 </td>
 <td style="text-align:left;">
 y
@@ -816,7 +826,7 @@ n
 Pg C
 </td>
 <td style="text-align:left;">
-permafrost
+Initial permafrost C pool
 </td>
 </tr>
 <tr>
@@ -824,7 +834,7 @@ permafrost
 simpleNbox
 </td>
 <td style="text-align:left;">
-tropical.permafrost_c
+nonpf.permafrost_c
 </td>
 <td style="text-align:left;">
 y
@@ -842,7 +852,7 @@ n
 Pg C
 </td>
 <td style="text-align:left;">
-permafrost
+Initial permafrost C pool
 </td>
 </tr>
 <tr>
@@ -859,16 +869,16 @@ n
 n
 </td>
 <td style="text-align:left;">
-n
+y
 </td>
 <td style="text-align:left;">
-0
+865
 </td>
 <td style="text-align:left;">
 Pg C
 </td>
 <td style="text-align:left;">
-permafrost
+Initial permafrost C pool
 </td>
 </tr>
 <tr>
@@ -876,7 +886,7 @@ permafrost
 simpleNbox
 </td>
 <td style="text-align:left;">
-boreal.npp_flux0
+pf.npp_flux0
 </td>
 <td style="text-align:left;">
 y
@@ -885,15 +895,16 @@ y
 n
 </td>
 <td style="text-align:left;">
-y
+n
 </td>
 <td style="text-align:left;">
-5
+5.6
 </td>
 <td style="text-align:left;">
 Pg C yr-1
 </td>
 <td style="text-align:left;">
+Preindustrial net primary production
 </td>
 </tr>
 <tr>
@@ -901,7 +912,7 @@ Pg C yr-1
 simpleNbox
 </td>
 <td style="text-align:left;">
-tropical.npp_flux0
+nonpf.npp_flux0
 </td>
 <td style="text-align:left;">
 y
@@ -910,15 +921,16 @@ y
 n
 </td>
 <td style="text-align:left;">
-y
+n
 </td>
 <td style="text-align:left;">
-45
+50.6
 </td>
 <td style="text-align:left;">
 Pg C yr-1
 </td>
 <td style="text-align:left;">
+Preindustrial net primary production
 </td>
 </tr>
 <tr>
@@ -944,7 +956,59 @@ y
 Pg C yr-1
 </td>
 <td style="text-align:left;">
-net primary production
+Preindustrial net primary production
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+simpleNbox
+</td>
+<td style="text-align:left;">
+pf.f_nppv
+</td>
+<td style="text-align:left;">
+n
+</td>
+<td style="text-align:left;">
+n
+</td>
+<td style="text-align:left;">
+y
+</td>
+<td style="text-align:left;">
+0.35
+</td>
+<td style="text-align:left;">
+(unitless)
+</td>
+<td style="text-align:left;">
+Fraction of NPP to vegetation
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+simpleNbox
+</td>
+<td style="text-align:left;">
+nonpf.f_nppv
+</td>
+<td style="text-align:left;">
+n
+</td>
+<td style="text-align:left;">
+n
+</td>
+<td style="text-align:left;">
+y
+</td>
+<td style="text-align:left;">
+0.35
+</td>
+<td style="text-align:left;">
+(unitless)
+</td>
+<td style="text-align:left;">
+Fraction of NPP to vegetation
 </td>
 </tr>
 <tr>
@@ -953,6 +1017,58 @@ simpleNbox
 </td>
 <td style="text-align:left;">
 f_nppv
+</td>
+<td style="text-align:left;">
+n
+</td>
+<td style="text-align:left;">
+n
+</td>
+<td style="text-align:left;">
+y
+</td>
+<td style="text-align:left;">
+0.35
+</td>
+<td style="text-align:left;">
+(unitless)
+</td>
+<td style="text-align:left;">
+Fraction of NPP to vegetation
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+simpleNbox
+</td>
+<td style="text-align:left;">
+pf.f_nppd
+</td>
+<td style="text-align:left;">
+n
+</td>
+<td style="text-align:left;">
+n
+</td>
+<td style="text-align:left;">
+y
+</td>
+<td style="text-align:left;">
+0.35
+</td>
+<td style="text-align:left;">
+(unitless)
+</td>
+<td style="text-align:left;">
+Fraction of NPP to vegetation
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+simpleNbox
+</td>
+<td style="text-align:left;">
+nonpf.f_nppd
 </td>
 <td style="text-align:left;">
 n
@@ -1004,6 +1120,58 @@ Fraction of NPP to detritus (balance to soil)
 simpleNbox
 </td>
 <td style="text-align:left;">
+pf.f_litterd
+</td>
+<td style="text-align:left;">
+n
+</td>
+<td style="text-align:left;">
+n
+</td>
+<td style="text-align:left;">
+n
+</td>
+<td style="text-align:left;">
+0.35
+</td>
+<td style="text-align:left;">
+(unitless)
+</td>
+<td style="text-align:left;">
+Fraction of NPP to vegetation
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+simpleNbox
+</td>
+<td style="text-align:left;">
+nonpf.f_litterd
+</td>
+<td style="text-align:left;">
+n
+</td>
+<td style="text-align:left;">
+n
+</td>
+<td style="text-align:left;">
+n
+</td>
+<td style="text-align:left;">
+0.35
+</td>
+<td style="text-align:left;">
+(unitless)
+</td>
+<td style="text-align:left;">
+Fraction of NPP to vegetation
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+simpleNbox
+</td>
+<td style="text-align:left;">
 f_litterd
 </td>
 <td style="text-align:left;">
@@ -1030,6 +1198,58 @@ Fraction of litter flux to detritus (balance to soil)
 simpleNbox
 </td>
 <td style="text-align:left;">
+pf.beta
+</td>
+<td style="text-align:left;">
+n
+</td>
+<td style="text-align:left;">
+n
+</td>
+<td style="text-align:left;">
+n
+</td>
+<td style="text-align:left;">
+0.36
+</td>
+<td style="text-align:left;">
+(unitless)
+</td>
+<td style="text-align:left;">
+CO2 fertilization factor
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+simpleNbox
+</td>
+<td style="text-align:left;">
+nonpf.beta
+</td>
+<td style="text-align:left;">
+n
+</td>
+<td style="text-align:left;">
+n
+</td>
+<td style="text-align:left;">
+n
+</td>
+<td style="text-align:left;">
+0.36
+</td>
+<td style="text-align:left;">
+(unitless)
+</td>
+<td style="text-align:left;">
+CO2 fertilization factor
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+simpleNbox
+</td>
+<td style="text-align:left;">
 beta
 </td>
 <td style="text-align:left;">
@@ -1048,6 +1268,59 @@ y
 (unitless)
 </td>
 <td style="text-align:left;">
+CO2 fertilization factor
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+simpleNbox
+</td>
+<td style="text-align:left;">
+pf.q10_rh
+</td>
+<td style="text-align:left;">
+n
+</td>
+<td style="text-align:left;">
+n
+</td>
+<td style="text-align:left;">
+n
+</td>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:left;">
+(unitless)
+</td>
+<td style="text-align:left;">
+Respiration temperature response (Q10)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+simpleNbox
+</td>
+<td style="text-align:left;">
+nonpf.q10_rh
+</td>
+<td style="text-align:left;">
+n
+</td>
+<td style="text-align:left;">
+n
+</td>
+<td style="text-align:left;">
+n
+</td>
+<td style="text-align:left;">
+2
+</td>
+<td style="text-align:left;">
+(unitless)
+</td>
+<td style="text-align:left;">
+Respiration temperature response (Q10)
 </td>
 </tr>
 <tr>
@@ -1073,7 +1346,7 @@ y
 (unitless)
 </td>
 <td style="text-align:left;">
-respiration response Q10
+Respiration temperature response (Q10)
 </td>
 </tr>
 <tr>
@@ -1081,7 +1354,7 @@ respiration response Q10
 simpleNbox
 </td>
 <td style="text-align:left;">
-boreal.warmingfactor
+pf.warmingfactor
 </td>
 <td style="text-align:left;">
 y
@@ -1093,7 +1366,7 @@ n
 n
 </td>
 <td style="text-align:left;">
-1.2
+2
 </td>
 <td style="text-align:left;">
 (unitless)
@@ -1125,7 +1398,7 @@ y
 W m-2
 </td>
 <td style="text-align:left;">
-albedo effect
+Albedo radiative forcing effect
 </td>
 </tr>
 <tr>
@@ -1177,7 +1450,7 @@ n
 (unitless)
 </td>
 <td style="text-align:left;">
-fraction of permafrost that is static (non-labile)
+Fraction of permafrost that is static (non-labile)
 </td>
 </tr>
 <tr>
@@ -1203,7 +1476,7 @@ n
 (unitless)
 </td>
 <td style="text-align:left;">
-fraction of thawed permafrost decomposed as CH4
+Fraction of thawed permafrost decomposed as CH4
 </td>
 </tr>
 <tr>
@@ -1229,7 +1502,7 @@ n
 (unitless)
 </td>
 <td style="text-align:left;">
-permafrost thaw parameter; see Woodard et al. 2021
+Permafrost thaw parameter; see Woodard et al. 2021
 </td>
 </tr>
 <tr>
@@ -1255,7 +1528,7 @@ n
 (unitless)
 </td>
 <td style="text-align:left;">
-permafrost thaw parameter; see Woodard et al. 2021
+Permafrost thaw parameter; see Woodard et al. 2021
 </td>
 </tr>
 <tr>
@@ -1281,7 +1554,7 @@ y
 (unitless)
 </td>
 <td style="text-align:left;">
-solution tolerance
+Solver solution tolerance
 </td>
 </tr>
 <tr>
@@ -1307,7 +1580,7 @@ y
 (unitless)
 </td>
 <td style="text-align:left;">
-solution tolerance
+Solver solution tolerance
 </td>
 </tr>
 <tr>
@@ -1333,7 +1606,7 @@ y
 (unitless)
 </td>
 <td style="text-align:left;">
-default time step
+Solver default time step
 </td>
 </tr>
 <tr>
@@ -1359,7 +1632,7 @@ y
 Pg C
 </td>
 <td style="text-align:left;">
-spinup tolerance (drift), Pg C
+Model spinup tolerance (drift), Pg C
 </td>
 </tr>
 <tr>
@@ -4934,7 +5207,7 @@ Description
 simpleNbox
 </td>
 <td style="text-align:left;">
-boreal.veg_c
+pf.veg_c
 </td>
 <td style="text-align:left;">
 y
@@ -4943,15 +5216,16 @@ y
 n
 </td>
 <td style="text-align:left;">
-y
+n
 </td>
 <td style="text-align:left;">
-100
+55
 </td>
 <td style="text-align:left;">
 Pg C
 </td>
 <td style="text-align:left;">
+Initial vegetation C pool
 </td>
 </tr>
 <tr>
@@ -4959,7 +5233,7 @@ Pg C
 simpleNbox
 </td>
 <td style="text-align:left;">
-tropical.veg_c
+nonpf.veg_c
 </td>
 <td style="text-align:left;">
 y
@@ -4968,15 +5242,16 @@ y
 n
 </td>
 <td style="text-align:left;">
-y
+n
 </td>
 <td style="text-align:left;">
-450
+495
 </td>
 <td style="text-align:left;">
 Pg C
 </td>
 <td style="text-align:left;">
+Initial vegetation C pool
 </td>
 </tr>
 <tr>
@@ -4984,7 +5259,7 @@ Pg C
 simpleNbox
 </td>
 <td style="text-align:left;">
-boreal.detritus_c
+pf.detritus_c
 </td>
 <td style="text-align:left;">
 y
@@ -4993,15 +5268,16 @@ y
 n
 </td>
 <td style="text-align:left;">
-y
+n
 </td>
 <td style="text-align:left;">
-15
+5
 </td>
 <td style="text-align:left;">
 Pg C
 </td>
 <td style="text-align:left;">
+Initial detritus C pool
 </td>
 </tr>
 <tr>
@@ -5009,7 +5285,7 @@ Pg C
 simpleNbox
 </td>
 <td style="text-align:left;">
-tropical.detritus_c
+nonpf.detritus_c
 </td>
 <td style="text-align:left;">
 y
@@ -5018,15 +5294,16 @@ y
 n
 </td>
 <td style="text-align:left;">
-y
+n
 </td>
 <td style="text-align:left;">
-45
+50
 </td>
 <td style="text-align:left;">
 Pg C
 </td>
 <td style="text-align:left;">
+Initial detritus C pool
 </td>
 </tr>
 <tr>
@@ -5034,7 +5311,7 @@ Pg C
 simpleNbox
 </td>
 <td style="text-align:left;">
-boreal.soil_c
+pf.soil_c
 </td>
 <td style="text-align:left;">
 y
@@ -5043,15 +5320,16 @@ y
 n
 </td>
 <td style="text-align:left;">
-y
+n
 </td>
 <td style="text-align:left;">
-1200
+308
 </td>
 <td style="text-align:left;">
 Pg C
 </td>
 <td style="text-align:left;">
+Initial soil C pool
 </td>
 </tr>
 <tr>
@@ -5059,7 +5337,7 @@ Pg C
 simpleNbox
 </td>
 <td style="text-align:left;">
-tropical.soil_c
+nonpf.soil_c
 </td>
 <td style="text-align:left;">
 y
@@ -5068,15 +5346,16 @@ y
 n
 </td>
 <td style="text-align:left;">
-y
+n
 </td>
 <td style="text-align:left;">
-578
+609
 </td>
 <td style="text-align:left;">
 Pg C
 </td>
 <td style="text-align:left;">
+Initial soil C pool
 </td>
 </tr>
 <tr>
@@ -5084,7 +5363,7 @@ Pg C
 simpleNbox
 </td>
 <td style="text-align:left;">
-boreal.permafrost_c
+pf.permafrost_c
 </td>
 <td style="text-align:left;">
 y
@@ -5102,7 +5381,7 @@ n
 Pg C
 </td>
 <td style="text-align:left;">
-permafrost
+Initial permafrost C pool
 </td>
 </tr>
 <tr>
@@ -5110,7 +5389,7 @@ permafrost
 simpleNbox
 </td>
 <td style="text-align:left;">
-tropical.permafrost_c
+nonpf.permafrost_c
 </td>
 <td style="text-align:left;">
 y
@@ -5128,7 +5407,7 @@ n
 Pg C
 </td>
 <td style="text-align:left;">
-permafrost
+Initial permafrost C pool
 </td>
 </tr>
 <tr>
@@ -5136,7 +5415,7 @@ permafrost
 simpleNbox
 </td>
 <td style="text-align:left;">
-boreal.npp_flux0
+pf.npp_flux0
 </td>
 <td style="text-align:left;">
 y
@@ -5145,15 +5424,16 @@ y
 n
 </td>
 <td style="text-align:left;">
-y
+n
 </td>
 <td style="text-align:left;">
-5
+5.6
 </td>
 <td style="text-align:left;">
 Pg C yr-1
 </td>
 <td style="text-align:left;">
+Preindustrial net primary production
 </td>
 </tr>
 <tr>
@@ -5161,7 +5441,7 @@ Pg C yr-1
 simpleNbox
 </td>
 <td style="text-align:left;">
-tropical.npp_flux0
+nonpf.npp_flux0
 </td>
 <td style="text-align:left;">
 y
@@ -5170,15 +5450,16 @@ y
 n
 </td>
 <td style="text-align:left;">
-y
+n
 </td>
 <td style="text-align:left;">
-45
+50.6
 </td>
 <td style="text-align:left;">
 Pg C yr-1
 </td>
 <td style="text-align:left;">
+Preindustrial net primary production
 </td>
 </tr>
 <tr>
@@ -5186,7 +5467,7 @@ Pg C yr-1
 simpleNbox
 </td>
 <td style="text-align:left;">
-boreal.warmingfactor
+pf.warmingfactor
 </td>
 <td style="text-align:left;">
 y
@@ -5198,7 +5479,7 @@ n
 n
 </td>
 <td style="text-align:left;">
-1.2
+2
 </td>
 <td style="text-align:left;">
 (unitless)
@@ -5256,7 +5537,7 @@ n
 (unitless)
 </td>
 <td style="text-align:left;">
-fraction of permafrost that is static (non-labile)
+Fraction of permafrost that is static (non-labile)
 </td>
 </tr>
 <tr>
@@ -5282,7 +5563,7 @@ n
 (unitless)
 </td>
 <td style="text-align:left;">
-fraction of thawed permafrost decomposed as CH4
+Fraction of thawed permafrost decomposed as CH4
 </td>
 </tr>
 <tr>
@@ -5308,7 +5589,7 @@ n
 (unitless)
 </td>
 <td style="text-align:left;">
-permafrost thaw parameter; see Woodard et al. 2021
+Permafrost thaw parameter; see Woodard et al. 2021
 </td>
 </tr>
 <tr>
@@ -5334,7 +5615,7 @@ n
 (unitless)
 </td>
 <td style="text-align:left;">
-permafrost thaw parameter; see Woodard et al. 2021
+Permafrost thaw parameter; see Woodard et al. 2021
 </td>
 </tr>
 </tbody>
@@ -5514,7 +5795,7 @@ n
 ppmv
 </td>
 <td style="text-align:left;">
-atmospheric CO2 constraint
+Atmospheric CO2 constraint
 </td>
 </tr>
 <tr>
@@ -5540,7 +5821,7 @@ n
 Pg C yr-1
 </td>
 <td style="text-align:left;">
-net biome production (land-atmosphere C flux) constaint
+Net biome production (land-atmosphere C flux) constaint
 </td>
 </tr>
 <tr>

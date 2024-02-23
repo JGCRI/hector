@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">hector</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">3.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">3.2.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -132,7 +132,7 @@ permafrost carbon:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/fetchvars.html">fetchvars</a></span><span class="op">(</span><span class="va">core</span>, dates <span class="op">=</span> <span class="cn">NA</span>, vars <span class="op">=</span> <span class="fu"><a href="../reference/carboncycle.html">PERMAFROST_C</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         scenario year     variable value units</span></span>
-<span><span class="co">#&gt; 1 ssp245-default   NA permafrost_c     0  Pg C</span></span></code></pre></div>
+<span><span class="co">#&gt; 1 ssp245-default   NA permafrost_c   865  Pg C</span></span></code></pre></div>
 <p>Run the default core and save its outputs:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="fu"><a href="../reference/run.html">run</a></span><span class="op">(</span><span class="va">core</span><span class="op">)</span><span class="op">)</span></span>
@@ -162,7 +162,7 @@ as the climate warmed…</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/fetchvars.html">fetchvars</a></span><span class="op">(</span><span class="va">core</span>, <span class="fl">2300</span>, <span class="fu"><a href="../reference/carboncycle.html">PERMAFROST_C</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;            scenario year     variable    value units</span></span>
-<span><span class="co">#&gt; 1 ssp245-permafrost 2300 permafrost_c 629.4915  Pg C</span></span>
+<span><span class="co">#&gt; 1 ssp245-permafrost 2300 permafrost_c 672.0806  Pg C</span></span>
 <span><span class="fu"><a href="../reference/shutdown.html">shutdown</a></span><span class="op">(</span><span class="va">core</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Hector core (INACTIVE)</span></span></code></pre></div>
 <p>…leading to earth system and climate differences:</p>
