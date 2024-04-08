@@ -113,11 +113,11 @@ beta
 The result of `fetchvars()` is always a `data.frame` with the same columns, even when returning a parameter value.
 Note also the use of `NA` in the second argument (`dates`).
 
-The current value is set to 0.36 (note that it is a unitless quantity, hence the `(unitless)` unit).
-Let's bump it up a little to 0.40.
+The current value is set to 0.53 (note that it is a unitless quantity, hence the `(unitless)` unit).
+Let's bump it up a little to 0.60.
 
 ```{r set-beta }
-setvar(core, NA, BETA(), 0.40, "(unitless)")
+setvar(core, NA, BETA(), 0.60, "(unitless)")
 ```
 
 Similarly to `run`, this returns no output.
@@ -183,9 +183,9 @@ head(results_40)
 Let's see how changing the CO$_2$ fertilization affects our results.
 
 ```{r  compare-co2-fert }
-results[["beta"]] <- 0.36
-results_40[["beta"]] <- 0.40
-compare_results <- rbind(results, results_40)
+results[["beta"]] <- 0.53
+results_60[["beta"]] <- 0.60
+compare_results <- rbind(results, results_60)
 
 ggplot(compare_results) +
   aes(x = year, y = value, color = factor(beta)) +
