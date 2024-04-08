@@ -176,8 +176,8 @@ We can now perform another run with the new CO$_2$ fertilization value.
 
 ```{r  run-sim-2}
 run(core)
-results_40 <- fetchvars(core, 2000:2300)
-head(results_40)
+results_60 <- fetchvars(core, 2000:2300)
+head(results_60)
 ```
 
 Let's see how changing the CO$_2$ fertilization affects our results.
