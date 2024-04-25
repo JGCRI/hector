@@ -344,11 +344,18 @@ void SimpleNbox::stashCValues(double t, const double c[]) {
   // rh_total, and the newveg/newdet/newsoil/newthawedpf variables
   double rh_nbp_constraint_adjust = 1.0;
   const int rounded_t = round(t);
+  if (!core->inSpinup()) {
+    const int xxxx = 1;
+  }
   if (!core->inSpinup() && NBP_constrain.size() &&
       NBP_constrain.exists(rounded_t)) {
     const unitval nbp_constrained = NBP_constrain.get(rounded_t);
-    const unitval diff = (nbp_constrained - unitval(alf, U_PGC_YR));
-
+    unitval diff = nbp_constrained - unitval(alf, U_PGC_YR);
+    // Round to 0.1 Pg C, otherwise numerical errors accumulate and
+    // will eventually crash the model with a mass-balance error
+    diff.set(round(diff.value(U_PGC_YR) * 10) / 10, U_PGC_YR);
+    cout << "Rounded diff = " << diff << endl;
+    
     // Adjust fluxes equally
     npp_total = npp_total + diff / 2.0;
     rh_nbp_constraint_adjust = (rh_total - diff / 2.0) / rh_total;
@@ -357,21 +364,22 @@ void SimpleNbox::stashCValues(double t, const double c[]) {
     // Adjust pools
     // NOTE we only adjust for whatever year fraction we're currently stashing
     unitval pool_diff = unitval(diff.value(U_PGC_YR), U_PGC) * yf;
-    const double total_land =
-        c[SNBOX_DET] + c[SNBOX_VEG] + c[SNBOX_SOIL] + c[SNBOX_THAWEDP];
+    // Don't include thawed permafrost, because it can be zero and so not adjustable downward
+    const double total_land = c[SNBOX_DET] + c[SNBOX_VEG] + c[SNBOX_SOIL];
     newdet = newdet + pool_diff * c[SNBOX_DET] / total_land;
     newveg = newveg + pool_diff * c[SNBOX_VEG] / total_land;
     newsoil = newsoil + pool_diff * c[SNBOX_SOIL] / total_land;
-    newthawedpf = newthawedpf + pool_diff * c[SNBOX_THAWEDP] / total_land;
 
     // We do NOT adjust the `newatmos` variable, because doing so can put the
     // model into an atmos_C feedback; see
     // https://github.com/JGCRI/hector/issues/659 Instead, follow the CO2
     // constraint behavior and transfer any difference to the deep ocean
-    H_LOG(logger, Logger::DEBUG) << "Sending NBP_constrain residual of "
-                                 << pool_diff << " to deep ocean" << std::endl;
-    core->sendMessage(M_DUMP_TO_DEEP_OCEAN, D_OCEAN_C,
-                      message_data(-pool_diff));
+    if(pool_diff.value(U_PGC) != 0.0) {
+      H_LOG(logger, Logger::DEBUG) << "Sending NBP_constrain residual of "
+                                   << pool_diff << " to deep ocean" << std::endl;
+      core->sendMessage(M_DUMP_TO_DEEP_OCEAN, D_OCEAN_C,
+                        message_data(-pool_diff));
+    }
 
     // Re-calculate atmosphere-land flux (NBP)
     alf = npp_total.value(U_PGC_YR) - rh_total.value(U_PGC_YR) -
@@ -381,7 +389,8 @@ void SimpleNbox::stashCValues(double t, const double c[]) {
         << " requested; final value was " << alf << " with final adjustment of "
         << diff << std::endl;
   }
-
+  H_LOG(logger, Logger::NOTICE) << "NBP = " << alf << std::endl;
+  
   nbp.set(alf, U_PGC_YR);
   nbp_ts.set(t, nbp);
 
@@ -874,8 +883,12 @@ int SimpleNbox::calcderivs(double t, const double c[], double dcdt[]) const {
     const double nbp =
         npp_current.value(U_PGC_YR) - rh_current.value(U_PGC_YR) -
         current_luc_e.value(U_PGC_YR) + current_luc_u.value(U_PGC_YR);
-    const unitval diff = NBP_constrain.get(rounded_t) - unitval(nbp, U_PGC_YR);
-
+    unitval diff = NBP_constrain.get(rounded_t) - unitval(nbp, U_PGC_YR);
+    // Round to 0.1 Pg C, otherwise numerical errors accumulate and
+    // will eventually crash the model with a mass-balance error
+    diff.set(round(diff.value(U_PGC_YR) * 10) / 10, U_PGC_YR);
+    cout << "calcderivs diff = " << diff << endl;
+    
     // Adjust total NPP and total RH equally (but not LUC, which is an input)
     // so that their net total will match the NBP constraint
     fluxpool npp_current_old = npp_current;
