@@ -12,8 +12,8 @@ knitr::opts_chunk$set(
 ```
 
 
-This page is meant to serve as a reference for places where Hector has been featured. This list will be updated with time.
-  
+This page lists the key model documentation manuscripts, articles featuring Hector, and other Hector-related resources. 
+
 ## Documentation Manuscripts {#hector_documentation}
 
 ### Hector V 2.0
