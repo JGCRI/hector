@@ -26,6 +26,7 @@ Building and Running Hector
 * How to [do a basic run and sensitivity analysis](intro-to-hector.html)
 * How to [run Hector under constraints](Constraints.html)
 * How to [run Hector with multiple biomes](multiple-biomes.html)
+* [Videos & other resources](HectorResources.html)
 
 For Developers
 --------------------

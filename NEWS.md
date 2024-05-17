@@ -1,4 +1,9 @@
-# hector 3.1.0 
+# hector 3.2.0 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10698028.svg)](https://doi.org/10.5281/zenodo.10698028)
+* Correct aerosol forcing coefficients based on Zelinka et al. (2023)
+* Enable permafrost module and recalibrate model's default parameterization
+
+# hector 3.1.1 
 
 Return global mean surface temperature as a Hector output.
 

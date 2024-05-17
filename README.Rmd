@@ -17,7 +17,7 @@ library(ggplot2)
 
 # hector
 
-[![DOI](https://zenodo.org/badge/22892935.svg)](https://zenodo.org/badge/latestdoi/22892935) [![C++ unit tests](https://github.com/JGCRI/hector/actions/workflows/unit-testing.yaml/badge.svg)](https://github.com/JGCRI/hector/actions/workflows/unit-testing.yaml) [![Command Line Hector](https://github.com/JGCRI/hector/actions/workflows/command-line.yaml/badge.svg)](https://github.com/JGCRI/hector/actions/workflows/command-line.yaml)  [![R-CMD-check](https://github.com/JGCRI/hector/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/JGCRI/hector/actions/workflows/R-CMD-check.yaml) [![codecov](https://codecov.io/gh/JGCRI/hector/branch/master/graph/badge.svg?token=EGM0lXDxRv)](https://codecov.io/gh/JGCRI/hector)
+[![DOI](https://zenodo.org/badge/22892935.svg)](https://zenodo.org/badge/latestdoi/22892935) [![C++ unit tests](https://github.com/JGCRI/hector/actions/workflows/unit-testing.yaml/badge.svg)](https://github.com/JGCRI/hector/actions/workflows/unit-testing.yaml) [![Command Line Hector](https://github.com/JGCRI/hector/actions/workflows/command-line.yaml/badge.svg)](https://github.com/JGCRI/hector/actions/workflows/command-line.yaml)  [![R-CMD-check](https://github.com/JGCRI/hector/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/JGCRI/hector/actions/workflows/R-CMD-check.yaml) [![codecov](https://codecov.io/gh/JGCRI/hector/branch/main/graph/badge.svg?token=EGM0lXDxRv)](https://codecov.io/gh/JGCRI/hector)
 
 This is the repository for **Hector**, an open source, object-oriented, simple 
 global climate carbon-cycle model that runs very quickly while still
@@ -56,7 +56,7 @@ hector_tas_results$scenario <- ifelse(hector_tas_results$scenario == "ssp534-ove
 hector_tas_results$scenario <- ifelse(hector_tas_results$year <= 2016, "historical",
                                       hector_tas_results$scenario)
 ggplot(hector_tas_results) +
-    geom_line(aes(year, value, color = scenario), size = 1) +
+    geom_line(aes(year, value, color = scenario), linewidth = 1) +
     theme_bw(base_size = 15) +
     labs(color = NULL, x = NULL, y = expression("Temperature Anomaly ("~degree~"C)")) +
     scale_color_manual(values = SSP_COLORS)

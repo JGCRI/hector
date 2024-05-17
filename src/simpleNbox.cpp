@@ -94,7 +94,7 @@ void SimpleNbox::init(Core *coreptr) {
   tempfertd[SNBOX_DEFAULT_BIOME] = 1.0;
   tempferts[SNBOX_DEFAULT_BIOME] = 1.0;
   f_frozen[SNBOX_DEFAULT_BIOME] = 1.0;
-  new_thaw[SNBOX_DEFAULT_BIOME] = 0.0;
+  f_new_thaw[SNBOX_DEFAULT_BIOME] = 0.0;
 
   // Following permafrost-related values are from Woodard et al. 2021
   rh_ch4_frac[SNBOX_DEFAULT_BIOME] = 0.023;
@@ -709,6 +709,7 @@ void SimpleNbox::reset(double time) {
   thawed_permafrost_c = thawed_permafrost_c_tv.get(time);
   final_npp = final_npp_tv.get(time);
   final_rh = final_rh_tv.get(time);
+  RH_thawed_permafrost = RH_thawed_permafrost_tv.get(time);
   RH_ch4 = RH_ch4_tv.get(time);
 
   Ca_residual = Ca_residual_ts.get(time);
@@ -716,7 +717,7 @@ void SimpleNbox::reset(double time) {
   tempferts = tempferts_tv.get(time);
   tempfertd = tempfertd_tv.get(time);
   f_frozen = f_frozen_tv.get(time);
-
+  
   cum_luc_va = cum_luc_va_ts.get(time);
 
   // Calculate derived quantities
@@ -745,6 +746,7 @@ void SimpleNbox::reset(double time) {
 
   final_npp_tv.truncate(time);
   final_rh_tv.truncate(time);
+  RH_thawed_permafrost_tv.truncate(time);
   RH_ch4_tv.truncate(time);
 
   Ca_residual_ts.truncate(time);
@@ -809,14 +811,13 @@ void SimpleNbox::record_state(double t) {
 
   final_npp_tv.set(t, final_npp);
   final_rh_tv.set(t, final_rh);
-  RH_ch4_tv.set(t, RH_ch4);
 
   Ca_residual_ts.set(t, Ca_residual);
 
   tempfertd_tv.set(t, tempfertd);
   tempferts_tv.set(t, tempferts);
   f_frozen_tv.set(t, f_frozen);
-
+  
   cum_luc_va_ts.set(t, cum_luc_va);
 
   H_LOG(logger, Logger::DEBUG)
@@ -894,7 +895,8 @@ void SimpleNbox::createBiome(const std::string &biome) {
   add_biome_to_ts(tempferts_tv, biome, 1.0);
   f_frozen[biome] = 1.0;
   add_biome_to_ts(f_frozen_tv, biome, 1.0);
-
+  f_new_thaw[biome] = 0.0;
+  
   std::string last_biome = biome_list.back();
 
   // Set parameters to same as most recent biome
@@ -908,7 +910,8 @@ void SimpleNbox::createBiome(const std::string &biome) {
   pf_sigma[biome] = pf_sigma[last_biome];
   pf_mu[biome] = pf_mu[last_biome];
   fpf_static[biome] = fpf_static[last_biome];
-
+  // pf_s will get recomputed when the core is reset
+  
   // Add to end of biome list
   biome_list.push_back(biome);
 
@@ -942,7 +945,8 @@ void SimpleNbox::deleteBiome(
   pf_sigma.erase(biome);
   pf_mu.erase(biome);
   fpf_static.erase(biome);
-
+  pf_s.erase(biome);
+  
   // C pools
   veg_c.erase(biome);
   remove_biome_from_ts(veg_c_tv, biome);
@@ -979,7 +983,10 @@ void SimpleNbox::deleteBiome(
   tempferts.erase(biome);
   remove_biome_from_ts(tempferts_tv, biome);
   co2fert.erase(biome);
-
+  f_frozen.erase(biome);
+  remove_biome_from_ts(f_frozen_tv, biome);
+  f_new_thaw.erase(biome);
+  
   // Remove from `biome_list`
   biome_list.erase(i_biome);
 
@@ -1012,6 +1019,7 @@ void SimpleNbox::renameBiome(const std::string &oldname,
   f_nppd.erase(oldname);
   f_litterd[newname] = f_litterd.at(oldname);
   f_litterd.erase(oldname);
+  
   rh_ch4_frac[newname] = rh_ch4_frac.at(oldname);
   rh_ch4_frac.erase(oldname);
   pf_sigma[newname] = pf_sigma.at(oldname);
@@ -1020,7 +1028,9 @@ void SimpleNbox::renameBiome(const std::string &oldname,
   pf_mu.erase(oldname);
   fpf_static[newname] = fpf_static.at(oldname);
   fpf_static.erase(oldname);
-
+  pf_s[newname] = pf_s.at(oldname);
+  pf_s.erase(oldname);
+  
   H_LOG(logger, Logger::DEBUG) << "Transferring C from biome '" << oldname
                                << "' to '" << newname << "'." << std::endl;
 
@@ -1072,8 +1082,16 @@ void SimpleNbox::renameBiome(const std::string &oldname,
 
   tempfertd[newname] = tempfertd[oldname];
   tempfertd.erase(oldname);
+  rename_biome_in_ts(tempfertd_tv, oldname, newname);
   tempferts[newname] = tempferts[oldname];
   tempferts.erase(oldname);
+  rename_biome_in_ts(tempferts_tv, oldname, newname);
+
+  f_frozen[newname] = f_frozen[oldname];
+  f_frozen.erase(oldname);
+  rename_biome_in_ts(f_frozen_tv, oldname, newname);
+  f_new_thaw[newname] = f_new_thaw[oldname];
+  f_new_thaw.erase(oldname);
 
   biome_list.push_back(newname);
   biome_list.erase(std::find(biome_list.begin(), biome_list.end(), oldname));

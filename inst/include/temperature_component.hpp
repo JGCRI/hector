@@ -168,17 +168,12 @@ private:
 
   // Create a place to store temp time series that are over written when
   // a user provided land ocean warming ratio is being used.
-  unitval lo_tas_land;  //!< place to store land temp when lo is provided by
-                        //!< users, deg C
-  unitval lo_tas_ocean; //!< place to store ocean air temp when lo is provided
-                        //!< by users, deg C
-  unitval lo_seast; //!< place to store sst when lo is provided by users, deg C
-  std::vector<double> lo_temp_landair;  //!< place to store land temp when lo is
-                                        //!< provided by users, deg C
-  std::vector<double> lo_temp_oceanair; //!< place to store land temp when lo is
-                                        //!< provided by users, deg C
-  std::vector<double>
-      lo_sst; //!< place to store land temp when lo is provided by users, deg C
+  unitval lo_tas_land;  //!< land temp when lo is provided by users, deg C
+  unitval lo_tas_ocean; //!< ocean air temp when lo is provided by users, deg C
+  unitval lo_seast; //!< sst when lo is provided by users, deg C
+  std::vector<double> lo_temp_landair;  //!< land temp when lo is provided by users, deg C
+  std::vector<double> lo_temp_oceanair; //!< land temp when lo is provided by users, deg C
+  std::vector<double> lo_sst; //!< land temp when lo is provided by users, deg C
 
   tseries<unitval>
       tas_constrain; //! Temperature change to constrain model to, degC

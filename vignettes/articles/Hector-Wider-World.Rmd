@@ -95,17 +95,6 @@ pyhector is a Python interface for Hector.
 [Here](https://joss.theoj.org/papers/10.21105/joss.00248) is a paper describing pyhector by Sven N Wilner, Corrine Hartin, and Robert Gieseke.  
 Github found [here](https://github.com/openclimatedata/pyhector).
 
-### YouTube Walkthrough
-[Here](https://www.youtube.com/watch?v=EFJS-buvGN8) is a video walk through by Kalyn Dorheim including information on using Hector v2.5: 
-
-* Installing Hector
-* Running a core
-* Running a scenario
-* Accessing and plotting results
-* Shutting down a core
-* Changing a parameter
-* A brief explanation of documentation
-
 ### HectorUI
 HectorUI is an R Shiny web interface designed to be user-friendly and to provide an alternative to the command line for running Hector. This allows users who may not be fluent in C++ or R to explore model scenarios and outputs. 
 
