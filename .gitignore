@@ -64,7 +64,7 @@ libs/
 *.suo
 
 # Output
-output/tracking*.csv
+output/*.csv
 
 # R
 .Rhistory
