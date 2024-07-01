@@ -174,6 +174,8 @@ void ForcingComponent::init(Core *coreptr) {
   core->registerDependency(D_RF_T_ALBEDO, getComponentName());
 
   // Register the inputs we can receive from outside
+  core->registerInput(D_AERO_SCALE, getComponentName());
+  core->registerInput(D_VOLCANIC_SCALE, getComponentName());
   core->registerInput(D_DELTA_CH4, getComponentName());
   core->registerInput(D_DELTA_N2O, getComponentName());
   core->registerInput(D_DELTA_CO2, getComponentName());
@@ -237,6 +239,12 @@ void ForcingComponent::setData(const string &varName,
     } else if (varName == D_RHO_SO2) {
       H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
       rho_so2 = data.getUnitval(U_W_M2_GG);
+    } else if (varName == D_AERO_SCALE) {
+        H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
+        alpha = data.getUnitval(U_UNITLESS);
+    } else if (varName == D_VOLCANIC_SCALE) {
+        H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
+        volscl = data.getUnitval(U_UNITLESS);
     } else if (varName == D_FTOT_CONSTRAIN) {
       H_ASSERT(data.date != Core::undefinedIndex(), "date required");
       Ftot_constrain.set(data.date, data.getUnitval(U_W_M2));
@@ -532,6 +540,10 @@ unitval ForcingComponent::getData(const std::string &varName,
     returnval = delta_n2o;
   } else if (varName == D_DELTA_CO2) {
     returnval = delta_co2;
+  } else if (varName == D_AERO_SCALE) {
+      returnval = alpha;
+  } else if (varName == D_VOLCANIC_SCALE) {
+      returnval = volscl;
   } else if (varName == D_RHO_BC) {
     returnval = rho_bc;
   } else if (varName == D_RHO_OC) {

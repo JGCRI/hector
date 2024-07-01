@@ -127,6 +127,10 @@ private:
       (32.065 /
        64.066); // (Tg SO2 yr–1) IPCC AR6 7.SM.1.3.1 converted to (Gg S yr-1)
 
+  // Forcing uncertainty scalars
+  unitval alpha;  //!< aerosol forcing factor, unitless
+  unitval volscl; //!< volcanic forcing scaling factor, unitless
+
   Core *core;    //! Core
   Logger logger; //! Logger
 

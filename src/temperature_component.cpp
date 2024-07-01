@@ -132,14 +132,15 @@ void TemperatureComponent::init(Core *coreptr) {
   core->registerDependency(D_RF_SO2, getComponentName());
   core->registerDependency(D_RF_ACI, getComponentName());
   core->registerDependency(D_RF_VOL, getComponentName());
+  core->registerDependency(D_AERO_SCALE, getComponentName());
+  core->registerDependency(D_VOLCANIC_SCALE, getComponentName());
+
 
   // Register the inputs we can receive from outside
   core->registerInput(D_ECS, getComponentName());
   core->registerInput(D_QCO2, getComponentName());
   core->registerInput(D_DIFFUSIVITY, getComponentName());
   core->registerInput(D_AERO_SCALE, getComponentName());
-  core->registerInput(D_VOLCANIC_SCALE, getComponentName());
-  core->registerInput(D_LO_WARMING_RATIO, getComponentName());
   core->registerInput(D_TAS_CONSTRAIN, getComponentName());
 }
 
@@ -177,12 +178,6 @@ void TemperatureComponent::setData(const string &varName,
     } else if (varName == D_DIFFUSIVITY) {
       H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
       diff = data.getUnitval(U_CM2_S);
-    } else if (varName == D_AERO_SCALE) {
-      H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
-      alpha = data.getUnitval(U_UNITLESS);
-    } else if (varName == D_VOLCANIC_SCALE) {
-      H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
-      volscl = data.getUnitval(U_UNITLESS);
     } else if (varName == D_QCO2) {
       H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
       qco2 = data.getUnitval(U_UNITLESS).value(U_UNITLESS);
@@ -468,11 +463,15 @@ void TemperatureComponent::run(const double runToDate) {
 
   // Adjust total forcing to account for the aerosol and volcanic forcing
   // scaling factor
+  double alpha = core->sendMessage(M_GETDATA, D_AERO_SCALE, message_data(runToDate))
+      .value(U_UNITLESS);
+  double volscl = core->sendMessage(M_GETDATA, D_VOLCANIC_SCALE, message_data(runToDate))
+      .value(U_UNITLESS);
   const double ftot = core->sendMessage(M_GETDATA, D_RF_TOTAL, message_data(runToDate)).value(U_W_M2);
   forcing[tstep] =
       double(ftot) -
       (1.0 - alpha) * aero_forcing - (1.0 - volscl) * volcanic_forcing;
-  
+
   // Initialize variables for time-stepping through the model
   double DQ1 = 0.0;
   double DQ2 = 0.0;
@@ -695,17 +694,9 @@ unitval TemperatureComponent::getData(const std::string &varName,
     H_ASSERT(date == Core::undefinedIndex(),
              "Date not allowed for diffusivity");
     returnval = diff;
-  } else if (varName == D_AERO_SCALE) {
-    H_ASSERT(date == Core::undefinedIndex(),
-             "Date not allowed for aero scaler");
-    returnval = alpha;
   } else if (varName == D_ECS) {
     H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for ECS");
     returnval = S;
-  } else if (varName == D_VOLCANIC_SCALE) {
-    H_ASSERT(date == Core::undefinedIndex(),
-             "Date not allowed for volcanic scaler");
-    returnval = volscl;
   } else if (varName == D_QCO2) {
     H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for q2co2");
     returnval = unitval(qco2, U_W_M2);
