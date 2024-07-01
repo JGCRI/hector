@@ -65,6 +65,8 @@
 #define D_RHO_OC "rho_oc"            // BC radiative efficiency
 #define D_RHO_SO2 "rho_so2"          // SO2 radiative efficiency
 #define D_RHO_NH3 "rho_nh3"          // NH3 radiative efficiency
+#define D_AERO_SCALE "alpha"
+#define D_VOLCANIC_SCALE "volscl"
 
 // halocarbon components
 #define D_RF_CF4 D_RF_PREFIX CF4_COMPONENT_BASE
@@ -397,8 +399,6 @@
 #define D_GMST "gmst"
 #define D_LO_WARMING_RATIO "lo_warming_ratio"
 #define D_DIFFUSIVITY "diff"
-#define D_AERO_SCALE "alpha"
-#define D_VOLCANIC_SCALE "volscl"
 #define D_FLUX_MIXED "heatflux_mixed"
 #define D_FLUX_INTERIOR "heatflux_interior"
 #define D_HEAT_FLUX "heatflux"

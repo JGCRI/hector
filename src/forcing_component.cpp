@@ -132,6 +132,9 @@ void ForcingComponent::init(Core *coreptr) {
   core->registerCapability(D_RHO_SO2, getComponentName());
   core->registerCapability(D_RF_SO2, getComponentName());
   core->registerCapability(D_RF_ACI, getComponentName());
+  core->registerCapability(D_AERO_SCALE, getComponentName());
+  core->registerCapability(D_VOLCANIC_SCALE, getComponentName());
+
   for (int i = 0; i < N_HALO_FORCINGS; ++i) {
     core->registerCapability(adjusted_halo_forcings[i], getComponentName());
     forcing_name_map[adjusted_halo_forcings[i]] = halo_forcing_names[i];
@@ -183,6 +186,9 @@ void ForcingComponent::init(Core *coreptr) {
   core->registerInput(D_RHO_NH3, getComponentName());
   core->registerInput(D_RF_MISC, getComponentName());
   core->registerInput(D_FTOT_CONSTRAIN, getComponentName());
+  core->registerInput(D_AERO_SCALE, getComponentName());
+  core->registerInput(D_VOLCANIC_SCALE, getComponentName());
+
 }
 
 //------------------------------------------------------------------------------
@@ -237,6 +243,12 @@ void ForcingComponent::setData(const string &varName,
     } else if (varName == D_RHO_SO2) {
       H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
       rho_so2 = data.getUnitval(U_W_M2_GG);
+    } else if (varName == D_AERO_SCALE) {
+      H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
+      alpha = data.getUnitval(U_UNITLESS);
+    } else if (varName == D_VOLCANIC_SCALE) {
+      H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
+      volscl = data.getUnitval(U_UNITLESS);
     } else if (varName == D_FTOT_CONSTRAIN) {
       H_ASSERT(data.date != Core::undefinedIndex(), "date required");
       Ftot_constrain.set(data.date, data.getUnitval(U_W_M2));
@@ -422,7 +434,9 @@ void ForcingComponent::run(const double runToDate) {
       double E_BC =
           core->sendMessage(M_GETDATA, D_EMISSIONS_BC, message_data(runToDate))
               .value(U_TG);
-      double fbc = rho_bc * E_BC;
+      // The 0.2 value comes from equally distributing the alpha scalar to all 5
+      // aerosol RF types.
+      double fbc = 0.2 * alpha.value(U_UNITLESS) * rho_bc * E_BC;
       forcings[D_RF_BC].set(fbc, U_W_M2);
 
       // ---------- Organic carbon ----------
@@ -540,6 +554,10 @@ unitval ForcingComponent::getData(const std::string &varName,
     returnval = rho_so2;
   } else if (varName == D_RHO_NH3) {
     returnval = rho_nh3;
+  } else if (varName == D_AERO_SCALE) {
+    returnval = alpha;
+  } else if (varName == D_VOLCANIC_SCALE) {
+    returnval = volscl;
   } else if (varName == D_RF_BASEYEAR) {
     returnval.set(baseyear, U_UNITLESS);
   } else {
