@@ -436,7 +436,7 @@ void ForcingComponent::run(const double runToDate) {
               .value(U_TG);
       // The 0.2 value comes from equally distributing the alpha scalar to all 5
       // aerosol RF types.
-      double fbc = 0.2 * alpha.value(U_UNITLESS) * rho_bc * E_BC;
+      double fbc = rho_bc * E_BC * (1 - 0.2 * (1 - alpha.value(U_UNITLESS)));
       forcings[D_RF_BC].set(fbc, U_W_M2);
 
       // ---------- Organic carbon ----------
@@ -445,7 +445,7 @@ void ForcingComponent::run(const double runToDate) {
               .value(U_TG);
       // The 0.2 value comes from equally distributing the alpha scalar to all 5
       // aerosol RF types.
-      double foc = 0.2 * alpha.value(U_UNITLESS) * rho_oc * E_OC;
+      double foc = rho_oc * E_OC * (1 - 0.2 * (1 - alpha.value(U_UNITLESS)));
       forcings[D_RF_OC].set(foc, U_W_M2);
 
       // ---------- Sulphate Aerosols ----------
@@ -453,7 +453,7 @@ void ForcingComponent::run(const double runToDate) {
                                                message_data(runToDate));
       // The 0.2 value comes from equally distributing the alpha scalar to all 5
       // aerosol RF types.
-      double fso2 = 0.2 * alpha.value(U_UNITLESS) * rho_so2 * SO2_emission.value(U_GG_S);
+      double fso2 = rho_so2 * SO2_emission.value(U_GG_S) * (1 - 0.2 * (1 - alpha.value(U_UNITLESS)));
       forcings[D_RF_SO2].set(fso2, U_W_M2);
 
       // ---------- NH3 ----------
@@ -462,7 +462,7 @@ void ForcingComponent::run(const double runToDate) {
               .value(U_TG);
       // The 0.2 value comes from equally distributing the alpha scalar to all 5
       // aerosol RF types.
-      double fnh3 = 0.2 * alpha.value(U_UNITLESS) * rho_nh3 * E_NH3;
+      double fnh3 = rho_nh3 * E_NH3 * (1 - 0.2 * (1 - alpha.value(U_UNITLESS)));
       forcings[D_RF_NH3].set(fnh3, U_W_M2);
 
       // ---------- RFaci ----------
@@ -470,9 +470,10 @@ void ForcingComponent::run(const double runToDate) {
       // Based on Equation 7.SM.1.2 from IPCC AR6 where
       // The 0.2 value comes from equally distributing the alpha scalar to all 5
       // aerosol RF types.
-      double aci_rf =
-          0.2 * alpha.value(U_UNITLESS) * -1 * aci_beta *
-          log(1 + (SO2_emission / s_SO2) + ((E_BC + E_OC) / s_BCOC));
+        double aci_rf =
+            -1 * aci_beta *
+            log(1 + (SO2_emission / s_SO2) + ((E_BC + E_OC) / s_BCOC)) *
+            (1 - 0.2 * (1 - alpha.value(U_UNITLESS)));
       forcings[D_RF_ACI].set(aci_rf, U_W_M2);
     }
 

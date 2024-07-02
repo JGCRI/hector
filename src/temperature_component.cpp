@@ -126,12 +126,6 @@ void TemperatureComponent::init(Core *coreptr) {
 
   // Register our dependencies
   core->registerDependency(D_RF_TOTAL, getComponentName());
-  core->registerDependency(D_RF_BC, getComponentName());
-  core->registerDependency(D_RF_OC, getComponentName());
-  core->registerDependency(D_RF_NH3, getComponentName());
-  core->registerDependency(D_RF_SO2, getComponentName());
-  core->registerDependency(D_RF_ACI, getComponentName());
-  core->registerDependency(D_RF_VOL, getComponentName());
 
   // Register the inputs we can receive from outside
   core->registerInput(D_ECS, getComponentName());
@@ -439,31 +433,8 @@ void TemperatureComponent::run(const double runToDate) {
 
   // Some needed inputs
   int tstep = runToDate - core->getStartDate();
+  forcing[tstep] = core->sendMessage(M_GETDATA, D_RF_TOTAL, message_data(runToDate)).value(U_W_M2);
 
-  // Calculate the total aresol forcing from aerosol-radiation interactions and
-  // the aerosol-cloud interactions so that that total aerosol forcing can be
-  // adjusted by the aerosol forcing scaling factor.
-  double aero_forcing =
-      core->sendMessage(M_GETDATA, D_RF_BC, message_data(runToDate))
-          .value(U_W_M2) +
-      core->sendMessage(M_GETDATA, D_RF_OC, message_data(runToDate))
-          .value(U_W_M2) +
-      core->sendMessage(M_GETDATA, D_RF_NH3, message_data(runToDate))
-          .value(U_W_M2) +
-      core->sendMessage(M_GETDATA, D_RF_SO2, message_data(runToDate))
-          .value(U_W_M2) +
-      core->sendMessage(M_GETDATA, D_RF_ACI, message_data(runToDate))
-          .value(U_W_M2);
-
-  double volcanic_forcing =
-      double(core->sendMessage(M_GETDATA, D_RF_VOL, message_data(runToDate)));
-
-  // Adjust total forcing to account for the aerosol and volcanic forcing
-  // scaling factor
-  const double ftot = core->sendMessage(M_GETDATA, D_RF_TOTAL, message_data(runToDate)).value(U_W_M2);
-  forcing[tstep] =
-      double(ftot) -
-      (0.0) * aero_forcing - (0.0) * volcanic_forcing;
 
   // Initialize variables for time-stepping through the model
   double DQ1 = 0.0;
