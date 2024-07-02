@@ -443,27 +443,35 @@ void ForcingComponent::run(const double runToDate) {
       double E_OC =
           core->sendMessage(M_GETDATA, D_EMISSIONS_OC, message_data(runToDate))
               .value(U_TG);
-      double foc = rho_oc * E_OC;
+      // The 0.2 value comes from equally distributing the alpha scalar to all 5
+      // aerosol RF types.
+      double foc = 0.2 * alpha.value(U_UNITLESS) * rho_oc * E_OC;
       forcings[D_RF_OC].set(foc, U_W_M2);
 
       // ---------- Sulphate Aerosols ----------
       unitval SO2_emission = core->sendMessage(M_GETDATA, D_EMISSIONS_SO2,
                                                message_data(runToDate));
-      double fso2 = rho_so2 * SO2_emission.value(U_GG_S);
+      // The 0.2 value comes from equally distributing the alpha scalar to all 5
+      // aerosol RF types.
+      double fso2 = 0.2 * alpha.value(U_UNITLESS) * rho_so2 * SO2_emission.value(U_GG_S);
       forcings[D_RF_SO2].set(fso2, U_W_M2);
 
       // ---------- NH3 ----------
       double E_NH3 =
           core->sendMessage(M_GETDATA, D_EMISSIONS_NH3, message_data(runToDate))
               .value(U_TG);
-      double fnh3 = rho_nh3 * E_NH3;
+      // The 0.2 value comes from equally distributing the alpha scalar to all 5
+      // aerosol RF types.
+      double fnh3 = 0.2 * alpha.value(U_UNITLESS) * rho_nh3 * E_NH3;
       forcings[D_RF_NH3].set(fnh3, U_W_M2);
 
       // ---------- RFaci ----------
       // ERF from aerosol-cloud interactions (RFaci)
       // Based on Equation 7.SM.1.2 from IPCC AR6 where
+      // The 0.2 value comes from equally distributing the alpha scalar to all 5
+      // aerosol RF types.
       double aci_rf =
-          -1 * aci_beta *
+          0.2 * alpha.value(U_UNITLESS) * -1 * aci_beta *
           log(1 + (SO2_emission / s_SO2) + ((E_BC + E_OC) / s_BCOC));
       forcings[D_RF_ACI].set(aci_rf, U_W_M2);
     }
@@ -478,6 +486,7 @@ void ForcingComponent::run(const double runToDate) {
     if (core->checkCapability(D_VOLCANIC_SO2)) {
       // The volcanic forcings are read in from an ini file.
       forcings[D_RF_VOL] =
+          volscl.value(U_UNITLESS) *
           core->sendMessage(M_GETDATA, D_VOLCANIC_SO2, message_data(runToDate));
     }
 

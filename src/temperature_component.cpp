@@ -463,7 +463,7 @@ void TemperatureComponent::run(const double runToDate) {
   const double ftot = core->sendMessage(M_GETDATA, D_RF_TOTAL, message_data(runToDate)).value(U_W_M2);
   forcing[tstep] =
       double(ftot) -
-      (1.0) * aero_forcing - (1.0) * volcanic_forcing;
+      (0.0) * aero_forcing - (0.0) * volcanic_forcing;
 
   // Initialize variables for time-stepping through the model
   double DQ1 = 0.0;
