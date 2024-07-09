@@ -6,9 +6,9 @@
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Differences in Hector outputs
-
 Hello, this is `leeyabot`! 
+
+## Differences from last commit 
 
 ``` {r differences, echo = FALSE, message = FALSE, include = FALSE}
 # Load packages
@@ -163,3 +163,9 @@ if(!SAME) {
     ggsave("comp_plot.png", plot = comp_plot, height = 6, width = 9)
 }
 ```
+
+
+## Differences from last release 
+
+TODO ADD here 
+
