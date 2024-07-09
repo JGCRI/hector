@@ -1,6 +1,8 @@
 name: leeyabot
 on:
-  workflow_dispatch: # Add this line to enable manual triggering
+  pull_request:
+    branches:
+      - '**' # matches every branch
 
 jobs:
   run:
