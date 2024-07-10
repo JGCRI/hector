@@ -58,7 +58,8 @@ hector_tas_results$scenario <- ifelse(hector_tas_results$year <= 2016, "historic
 ggplot(hector_tas_results) +
     geom_line(aes(year, value, color = scenario), linewidth = 1) +
     theme_bw(base_size = 15) +
-    labs(color = NULL, x = NULL, y = expression("Temperature Anomaly ("~degree~"C)")) +
+    theme(axis.title = element_text(size = 12))+
+    labs(color = NULL, x = NULL, y = expression("Temperature Anomaly Relative to 1750 ("~degree~"C)")) +
     scale_color_manual(values = SSP_COLORS)
 ```
 
