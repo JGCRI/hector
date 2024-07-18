@@ -145,8 +145,6 @@ private:
   // Model parameters
   unitval S;      //!< climate sensitivity for 2xCO2, deg C
   unitval diff;   //!< ocean heat diffusivity, cm2/s
-  unitval alpha;  //!< aerosol forcing factor, unitless
-  unitval volscl; //!< volcanic forcing scaling factor, unitless
 
   // Model outputs
   unitval tas;       //!< global average air temperature anomaly, deg C
