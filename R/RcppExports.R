@@ -1082,6 +1082,12 @@ EMISSIONS_NMVOC <- function() {
     .Call('_hector_EMISSIONS_NMVOC', PACKAGE = 'hector')
 }
 
+#' @describeIn oh OH lifetime (\code{"Yr"})
+#' @export
+LIFETIME_OH <- function() {
+    .Call('_hector_LIFETIME_OH', PACKAGE = 'hector')
+}
+
 #' @describeIn emissions Emissions for organic carbon (\code{"Tg"})
 #' @export
 EMISSIONS_OC <- function() {
