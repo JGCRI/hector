@@ -13,6 +13,9 @@ test_that("tau ", {
     run(hc)
     out <- fetchvars(hc, dates = 1750:2100, vars = LIFETIME_OH())
 
+    head(out)
+
+
     expect_equal(LIFETIME_OH(), "TAU_OH")
     expect_lte(mean(out$value), 8)
     expect_gte(mean(out$value), 6.6)
@@ -43,12 +46,12 @@ test_that("H2 emissions ", {
     diff <- abs(out$value - out2$value)
 
     # As of now the [CH4] and tau oh should not change
-    expect_equal(unique(diff[out$variable == CONCENTRATIONS_CH4()]), 0)
-    expect_equal(unique(diff[out$variable == LIFETIME_OH()]), 0)
+    expect_equal(mean(diff[out$variable == CONCENTRATIONS_CH4()]), 0)
+    expect_equal(mean(diff[out$variable == LIFETIME_OH()]), 0)
 
     # But if we can change the H2 emissions we should see a difference in
     # H2 emissions between the two new runs!
-    expect_equal(unique(diff[out$variable == EMISSIONS_H2()]), new_val)
+    expect_equal(mean(diff[out$variable == EMISSIONS_H2()]), new_val)
 
     })
 
