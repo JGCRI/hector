@@ -949,6 +949,11 @@ String EMISSIONS_CO() { return D_EMISSIONS_CO; }
 // [[Rcpp::export]]
 String EMISSIONS_NMVOC() { return D_EMISSIONS_NMVOC; }
 
+//' @describeIn emissions Emissions hydrogen gas (\code{"Tg H2"})
+ //' @export
+ // [[Rcpp::export]]
+ String EMISSIONS_H2() { return D_EMISSIONS_H2; }
+
 //' @describeIn oh OH lifetime (\code{"Yr"})
 //' @export
 // [[Rcpp::export]]

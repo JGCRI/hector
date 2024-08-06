@@ -1820,6 +1820,16 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// EMISSIONS_H2
+String EMISSIONS_H2();
+RcppExport SEXP _hector_EMISSIONS_H2() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(EMISSIONS_H2());
+    return rcpp_result_gen;
+END_RCPP
+}
 // LIFETIME_OH
 String LIFETIME_OH();
 RcppExport SEXP _hector_LIFETIME_OH() {
@@ -2946,6 +2956,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_EMISSIONS_NOX", (DL_FUNC) &_hector_EMISSIONS_NOX, 0},
     {"_hector_EMISSIONS_CO", (DL_FUNC) &_hector_EMISSIONS_CO, 0},
     {"_hector_EMISSIONS_NMVOC", (DL_FUNC) &_hector_EMISSIONS_NMVOC, 0},
+    {"_hector_EMISSIONS_H2", (DL_FUNC) &_hector_EMISSIONS_H2, 0},
     {"_hector_LIFETIME_OH", (DL_FUNC) &_hector_LIFETIME_OH, 0},
     {"_hector_EMISSIONS_OC", (DL_FUNC) &_hector_EMISSIONS_OC, 0},
     {"_hector_EMISSIONS_NH3", (DL_FUNC) &_hector_EMISSIONS_NH3, 0},
