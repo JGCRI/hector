@@ -80,6 +80,7 @@ enum unit_types {
   U_TG_CH4,
   U_TG_N,
   U_TG_NMVOC,
+  U_TG_H2,
   U_DU_O3,
   U_GG_S, // SO2 emissions in Gg-S/yr
 
