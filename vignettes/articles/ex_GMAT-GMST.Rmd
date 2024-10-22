@@ -130,11 +130,6 @@ ggplot(GMAT_d) +
 
 ```
 
-## Conclusion
-
-GMST allows for measuring global temperature fluctuations and is used to report
-global warming trends. While Hector does not directly return GMST as an output, it
-is straightforward to calculate the metric by using land and ocean surface temperatures.
 
 Remember to shut down the core.
 
