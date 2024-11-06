@@ -71,6 +71,8 @@ private:
   double CNMVOC; // coefficent for NMVOC
   double CNOX;   // coefficent for NOX
   double CCH4;   // coefficent for CH4
+  double CH2;   // coefficent for CH4
+
 
   // logger
   Logger logger;

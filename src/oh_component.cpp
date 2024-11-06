@@ -117,6 +117,9 @@ void OHComponent::setData(const string &varName, const message_data &data) {
     } else if (varName == D_COEFFICENT_NOX) {
       H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
       CNOX = data.getUnitval(U_UNDEFINED);
+    } else if (varName == D_COEFFICENT_H2) {
+      H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
+      CH2 = data.getUnitval(U_UNDEFINED);
     } else {
       H_THROW("Unknown variable name while parsing " + getComponentName() +
               ": " + varName);
@@ -172,7 +175,7 @@ void OHComponent::run(const double runToDate) {
         ((1.0 * +current_nmvoc) -
          NMVOC_emissions.get(NMVOC_emissions.firstdate()).value(U_TG_NMVOC));
     const double e =
-          (-0.00044625) *
+         CH2 *
           ((1.0 * +current_h2) -
            H2_emissions.get(H2_emissions.firstdate()).value(U_TG_H2));
       
