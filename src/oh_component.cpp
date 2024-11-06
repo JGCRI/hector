@@ -149,6 +149,8 @@ void OHComponent::run(const double runToDate) {
   unitval current_nox = NOX_emissions.get(runToDate);
   unitval current_co = CO_emissions.get(runToDate);
   unitval current_nmvoc = NMVOC_emissions.get(runToDate);
+  unitval current_h2 = H2_emissions.get(runToDate);
+
 
   // get this from CH4 component, this is last year's value
   const double previous_ch4 =
@@ -169,7 +171,13 @@ void OHComponent::run(const double runToDate) {
         CNMVOC *
         ((1.0 * +current_nmvoc) -
          NMVOC_emissions.get(NMVOC_emissions.firstdate()).value(U_TG_NMVOC));
-    toh = a + b + c + d;
+    const double e =
+          (-0.00044625) *
+          ((1.0 * +current_h2) -
+           H2_emissions.get(H2_emissions.firstdate()).value(U_TG_H2));
+      
+      
+    toh = a + b + c + d + e;
     H_LOG(logger, Logger::DEBUG)
         << "Year " << runToDate << " toh = " << toh << std::endl;
   }
