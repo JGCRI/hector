@@ -4,6 +4,9 @@
 #' @describeIn emissions Emissions hydrogen gas (\code{"Tg H2"})
 NULL
 
+#' @describeIn oh coefficent for the h2 emissions
+NULL
+
 #' @describeIn msgtype Message type for retrieving data from a component
 #' @keywords internal
 GETDATA <- function() {
@@ -1569,6 +1572,10 @@ FLUX_INTERIOR <- function() {
 #' @export
 HEAT_FLUX <- function() {
     .Call('_hector_HEAT_FLUX', PACKAGE = 'hector')
+}
+
+COEFF_H2 <- function() {
+    .Call('_hector_COEFF_H2', PACKAGE = 'hector')
 }
 
 newcore_impl <- function(inifile, loglevel, suppresslogging, name) {

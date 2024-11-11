@@ -57,12 +57,15 @@ void OHComponent::init(Core *coreptr) {
 
   // Inform core what data we can provide
   core->registerCapability(D_LIFETIME_OH, getComponentName());
+  core->registerCapability(D_COEFFICENT_H2, getComponentName());
   // Register inputs accepted.  Note that more than one component
   // can accept an input
   core->registerInput(D_EMISSIONS_CO, getComponentName());
   core->registerInput(D_EMISSIONS_NMVOC, getComponentName());
   core->registerInput(D_EMISSIONS_NOX, getComponentName());
   core->registerInput(D_EMISSIONS_H2, getComponentName());
+  core->registerInput(D_COEFFICENT_H2, getComponentName());
+
 
 }
 
@@ -178,8 +181,8 @@ void OHComponent::run(const double runToDate) {
          CH2 *
           ((1.0 * +current_h2) -
            H2_emissions.get(H2_emissions.firstdate()).value(U_TG_H2));
-      
-      
+
+
     toh = a + b + c + d + e;
     H_LOG(logger, Logger::DEBUG)
         << "Year " << runToDate << " toh = " << toh << std::endl;
@@ -212,6 +215,9 @@ unitval OHComponent::getData(const std::string &varName, const double date) {
     H_ASSERT(date != Core::undefinedIndex(),
              "Date required for NMVOC emissions");
     returnval = NMVOC_emissions.get(date);
+  } else if (varName == D_COEFFICENT_H2) {
+      H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for ECS");
+     returnval = CH2;
   } else if (varName == D_EMISSIONS_H2) {
       H_ASSERT(date != Core::undefinedIndex(), "Date required for H2 emissions");
       returnval = H2_emissions.get(date);
