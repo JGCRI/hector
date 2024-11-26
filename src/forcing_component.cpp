@@ -144,6 +144,7 @@ void ForcingComponent::init(Core *coreptr) {
   core->registerDependency(D_EMISSIONS_BC, getComponentName());
   core->registerDependency(D_EMISSIONS_OC, getComponentName());
   core->registerDependency(D_EMISSIONS_NH3, getComponentName());
+  core->registerDependency(D_EMISSIONS_H2, getComponentName());
   core->registerDependency(D_N2O_CONC, getComponentName());
   core->registerDependency(D_RF_CF4, getComponentName());
   core->registerDependency(D_RF_C2F6, getComponentName());
@@ -372,7 +373,25 @@ void ForcingComponent::run(const double runToDate) {
           1831; // 2014 CH4 concentration ppb from the cmip6 historical scenario
       const double stratH2O_base =
           0.0485; // W m-2 Strat H2O RF (1850 to 2014) from 7.3.2.6 IPCC AR6
-      const double fh2o_strat = stratH2O_base * ((Ma - M0) / (Ma_base - M0)); //
+     // unitval current_h2 = H2_emissions.get(runToDate);
+
+        //H2_emissions.get(H2_emissions.firstdate()).value(U_TG_H2);
+
+
+        double current_h2 = core->sendMessage(M_GETDATA, D_EMISSIONS_H2,
+                                               message_data(runToDate))
+                                 .value(U_TG_H2);
+        // TODO this needs to actually be the first date should not be hard codded in
+        double inital_h2 = core->sendMessage(M_GETDATA, D_EMISSIONS_H2,
+                                             message_data(1750))
+                                 .value(U_TG_H2);
+        // TODO this is shoudl not be hard coded in ither!
+      const double fh2o_strat = stratH2O_base * ((Ma - M0) / (Ma_base - M0)) + 0.001 * 0.19 * (current_h2 - inital_h2); //
+
+
+
+
+
       forcings[D_RF_H2O_STRAT].set(fh2o_strat, U_W_M2);
     }
 
