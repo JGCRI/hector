@@ -103,8 +103,8 @@ void OHComponent::setData(const string &varName, const message_data &data) {
       H_ASSERT(data.date != Core::undefinedIndex(), "date required");
       NMVOC_emissions.set(data.date, data.getUnitval(U_TG_NMVOC));
     } else if (varName == D_EMISSIONS_H2) {
-        H_ASSERT(data.date != Core::undefinedIndex(), "date required");
-        H2_emissions.set(data.date, data.getUnitval(U_TG_H2));
+      H_ASSERT(data.date != Core::undefinedIndex(), "date required");
+      H2_emissions.set(data.date, data.getUnitval(U_TG_H2));
     } else if (varName == D_INITIAL_LIFETIME_OH) {
       H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
       TOH0 = data.getUnitval(U_YRS);
@@ -216,11 +216,11 @@ unitval OHComponent::getData(const std::string &varName, const double date) {
              "Date required for NMVOC emissions");
     returnval = NMVOC_emissions.get(date);
   } else if (varName == D_COEFFICENT_H2) {
-      H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for ECS");
-     returnval = CH2;
+    H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for H2 coefficent");
+    returnval = CH2 ;
   } else if (varName == D_EMISSIONS_H2) {
-      H_ASSERT(date != Core::undefinedIndex(), "Date required for H2 emissions");
-      returnval = H2_emissions.get(date);
+    H_ASSERT(date != Core::undefinedIndex(), "Date required for H2 emissions");
+    returnval = H2_emissions.get(date);
   } else {
     H_THROW("Caller is requesting unknown variable: " + varName);
   }
