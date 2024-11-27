@@ -57,12 +57,15 @@ void OHComponent::init(Core *coreptr) {
 
   // Inform core what data we can provide
   core->registerCapability(D_LIFETIME_OH, getComponentName());
+  core->registerCapability(D_COEFFICENT_H2, getComponentName());
   // Register inputs accepted.  Note that more than one component
   // can accept an input
   core->registerInput(D_EMISSIONS_CO, getComponentName());
   core->registerInput(D_EMISSIONS_NMVOC, getComponentName());
   core->registerInput(D_EMISSIONS_NOX, getComponentName());
   core->registerInput(D_EMISSIONS_H2, getComponentName());
+  core->registerInput(D_COEFFICENT_H2, getComponentName());
+
 
 }
 
@@ -100,8 +103,8 @@ void OHComponent::setData(const string &varName, const message_data &data) {
       H_ASSERT(data.date != Core::undefinedIndex(), "date required");
       NMVOC_emissions.set(data.date, data.getUnitval(U_TG_NMVOC));
     } else if (varName == D_EMISSIONS_H2) {
-        H_ASSERT(data.date != Core::undefinedIndex(), "date required");
-        H2_emissions.set(data.date, data.getUnitval(U_TG_H2));
+      H_ASSERT(data.date != Core::undefinedIndex(), "date required");
+      H2_emissions.set(data.date, data.getUnitval(U_TG_H2));
     } else if (varName == D_INITIAL_LIFETIME_OH) {
       H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
       TOH0 = data.getUnitval(U_YRS);
@@ -117,6 +120,9 @@ void OHComponent::setData(const string &varName, const message_data &data) {
     } else if (varName == D_COEFFICENT_NOX) {
       H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
       CNOX = data.getUnitval(U_UNDEFINED);
+    } else if (varName == D_COEFFICENT_H2) {
+      H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
+      CH2 = data.getUnitval(U_UNDEFINED);
     } else {
       H_THROW("Unknown variable name while parsing " + getComponentName() +
               ": " + varName);
@@ -149,6 +155,8 @@ void OHComponent::run(const double runToDate) {
   unitval current_nox = NOX_emissions.get(runToDate);
   unitval current_co = CO_emissions.get(runToDate);
   unitval current_nmvoc = NMVOC_emissions.get(runToDate);
+  unitval current_h2 = H2_emissions.get(runToDate);
+
 
   // get this from CH4 component, this is last year's value
   const double previous_ch4 =
@@ -169,7 +177,13 @@ void OHComponent::run(const double runToDate) {
         CNMVOC *
         ((1.0 * +current_nmvoc) -
          NMVOC_emissions.get(NMVOC_emissions.firstdate()).value(U_TG_NMVOC));
-    toh = a + b + c + d;
+    const double e =
+         CH2 *
+          ((1.0 * +current_h2) -
+           H2_emissions.get(H2_emissions.firstdate()).value(U_TG_H2));
+
+
+    toh = a + b + c + d + e;
     H_LOG(logger, Logger::DEBUG)
         << "Year " << runToDate << " toh = " << toh << std::endl;
   }
@@ -201,9 +215,12 @@ unitval OHComponent::getData(const std::string &varName, const double date) {
     H_ASSERT(date != Core::undefinedIndex(),
              "Date required for NMVOC emissions");
     returnval = NMVOC_emissions.get(date);
+  } else if (varName == D_COEFFICENT_H2) {
+    H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for H2 coefficent");
+    returnval = CH2 ;
   } else if (varName == D_EMISSIONS_H2) {
-      H_ASSERT(date != Core::undefinedIndex(), "Date required for H2 emissions");
-      returnval = H2_emissions.get(date);
+    H_ASSERT(date != Core::undefinedIndex(), "Date required for H2 emissions");
+    returnval = H2_emissions.get(date);
   } else {
     H_THROW("Caller is requesting unknown variable: " + varName);
   }

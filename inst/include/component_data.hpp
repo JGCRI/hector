@@ -281,6 +281,7 @@
 #define D_COEFFICENT_CH4 "CCH4"
 #define D_COEFFICENT_NMVOC "CNMVOC"
 #define D_COEFFICENT_CO "CCO"
+#define D_COEFFICENT_H2 "CH2"
 #define D_EMISSIONS_H2 "H2_emissions"
 
 
