@@ -177,13 +177,13 @@ void OHComponent::run(const double runToDate) {
         CNMVOC *
         ((1.0 * +current_nmvoc) -
          NMVOC_emissions.get(NMVOC_emissions.firstdate()).value(U_TG_NMVOC));
-    const double e =
+    const double f =
          CH2 *
           ((1.0 * +current_h2) -
            H2_emissions.get(H2_emissions.firstdate()).value(U_TG_H2));
 
 
-    toh = a + b + c + d + e;
+    toh = a + b + c + d + f;
     H_LOG(logger, Logger::DEBUG)
         << "Year " << runToDate << " toh = " << toh << std::endl;
   }

@@ -165,7 +165,7 @@ void CH4Component::run(const double runToDate) {
         << std::endl;
 
 // Permafrost thaw produces CH4 emissions
-    const double PG_C_TO_TG_CH4 (1000.0 * 16.04 / 12.01);
+    #define PG_C_TO_TG_CH4 (1000.0 * 16.04 / 12.01);
     const double rh_ch4 =
         core->sendMessage(M_GETDATA, D_RH_CH4).value(U_PGC_YR) * PG_C_TO_TG_CH4;
 
