@@ -52,7 +52,8 @@ library(hector)
 ## Contributing to Hector
 
 The Hector team welcomes and values community contributions, but please
-see our [Contribution Guide](vignettes/articles/ContributionsGuide.Rmd)
+see our [Contribution
+Guide](https://jgcri.github.io/hector/articles/ContributionsGuide.html)
 and note by contributing to this project, you agree to abide to our
 [Contributor Code of Conduct](CODE_OF_CONDUCT.md)
 
