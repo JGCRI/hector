@@ -52,7 +52,7 @@ library(hector)
 ## Contributing to Hector
 
 The Hector team welcomes and values community contributions, but please
-see our [Contribution Guide](vignettes/articles/ContributionsGuide.html)
+see our [Contribution Guide](vignettes/articles/ContributionsGuide.Rmd)
 and note by contributing to this project, you agree to abide to our
 [Contributor Code of Conduct](CODE_OF_CONDUCT.md)
 
