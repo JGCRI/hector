@@ -67,10 +67,12 @@ private:
   unitval M0;   // initial CH4 concentration
   unitval TOH0; // preindustrial OH lifetime
 
-  double CCO;    // coefficent for CO
-  double CNMVOC; // coefficent for NMVOC
-  double CNOX;   // coefficent for NOX
-  double CCH4;   // coefficent for CH4
+  double CCO;    // coefficient for CO
+  double CNMVOC; // coefficient for NMVOC
+  double CNOX;   // coefficient for NOX
+  double CCH4;   // coefficient for CH4
+  unitval CH2;   // coefficient for CH4
+
 
   // logger
   Logger logger;
