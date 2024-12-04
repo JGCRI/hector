@@ -1505,7 +1505,7 @@ String FLUX_INTERIOR() { return D_FLUX_INTERIOR; }
 String HEAT_FLUX() { return D_HEAT_FLUX; }
 
 
-//' @describeIn oh coefficent for the h2 emissions
+//' @describeIn oh coefficient for the h2 emissions
  //' @export
  // [[Rcpp::export]]
- String COEFF_H2() { return D_COEFFICENT_H2; }
+ String COEFF_H2() { return D_COEFFICIENT_H2; }
