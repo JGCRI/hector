@@ -5,85 +5,59 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="hector">
 <title>Terrestrial C cycle • hector</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Terrestrial C cycle">
-<meta property="og:description" content="hector">
-<!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
-<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-<![endif]-->
+<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Terrestrial C cycle">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
-    
 
-    <nav class="navbar fixed-top navbar-light navbar-expand-lg bg-light"><div class="container">
-    
+
+    <nav class="navbar navbar-expand-lg fixed-top bg-light" data-bs-theme="light" aria-label="Site navigation"><div class="container">
+
     <a class="navbar-brand me-2" href="../index.html">hector</a>
 
     <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">3.2.0</small>
 
-    
+
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="nav-item">
-  <a class="nav-link" href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li class="nav-item">
-  <a class="nav-link" href="../articles/manual.html">Manual</a>
+<li class="nav-item"><a class="nav-link" href="../index.html"><span class="fa fa-home fa-lg"></span></a></li>
+<li class="nav-item"><a class="nav-link" href="../articles/manual.html">Manual</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-getting-started" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Getting Started</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-getting-started">
+<li><a class="dropdown-item" href="../articles/BuildHector.html">Building Hector</a></li>
+    <li><a class="dropdown-item" href="../articles/hector.html">Intro to Hector R interface</a></li>
+    <li><a class="dropdown-item" href="../articles/Hector-Wider-World.html">Documentation manuscripts &amp; tutorials</a></li>
+  </ul>
 </li>
 <li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-getting-started">Getting Started</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-getting-started">
-    <a class="dropdown-item" href="../articles/BuildHector.html">Building Hector</a>
-    <a class="dropdown-item" href="../articles/hector.html">Intro to Hector R interface</a>
-    <a class="dropdown-item" href="../articles/Hector-Wider-World.html">Documentation manuscripts &amp; tutorials</a>
-  </div>
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-examples" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Examples</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-examples">
+<li><a class="dropdown-item" href="../articles/hector.html">Example: Basic run and simple sensitivity anlaysis</a></li>
+    <li><a class="dropdown-item" href="../articles/ex_hector_apply.html">Example: Using Hector to solve for an emissions pathway</a></li>
+    <li><a class="dropdown-item" href="../articles/ex_multiple-biomes.html">Example: Running Hector with multiple biomes</a></li>
+    <li><a class="dropdown-item" href="../articles/ex_carbon_tracking.html">Example: Carbon tracking with Hector</a></li>
+    <li><a class="dropdown-item" href="../articles/ex_land_ocean_warming.html">Example: Changing Hector's land ocean warming ratio parameter</a></li>
+  </ul>
 </li>
-<li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-examples">Examples</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-examples">
-    <a class="dropdown-item" href="../articles/hector.html">Example: Basic run and simple sensitivity anlaysis</a>
-    <a class="dropdown-item" href="../articles/ex_hector_apply.html">Example: Using Hector to solve for an emissions pathway</a>
-    <a class="dropdown-item" href="../articles/ex_multiple-biomes.html">Example: Running Hector with multiple biomes</a>
-    <a class="dropdown-item" href="../articles/ex_carbon_tracking.html">Example: Carbon tracking with Hector</a>
-    <a class="dropdown-item" href="../articles/ex_land_ocean_warming.html">Example: Changing Hector's land ocean warming ratio parameter</a>
-  </div>
-</li>
-<li class="nav-item">
-  <a class="nav-link" href="../reference/index.html">Reference</a>
-</li>
-<li class="nav-item">
-  <a class="nav-link" href="../news/index.html">News</a>
-</li>
+<li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">News</a></li>
       </ul>
-<form class="form-inline my-2 my-lg-0" role="search">
-        <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
-</form>
-
-      <ul class="navbar-nav">
-<li class="nav-item">
-  <a class="external-link nav-link" href="https://github.com/JGCRI/hector">
-    <span class="fa fa-github fa-lg"></span>
-     
-  </a>
-</li>
+<ul class="navbar-nav">
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/JGCRI/hector"><span class="fa fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
-    
+
   </div>
 </nav><div class="container template-article">
 
@@ -92,10 +66,11 @@
 
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
-      <img src="" class="logo" alt=""><h1>Terrestrial C cycle</h1>
+
+      <h1>Terrestrial C cycle</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/JGCRI/hector/blob/HEAD/vignettes/articles/SimpleNBox.Rmd" class="external-link"><code>vignettes/articles/SimpleNBox.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/JGCRI/hector/blob/main/vignettes/articles/SimpleNBox.Rmd" class="external-link"><code>vignettes/articles/SimpleNBox.Rmd</code></a></small>
       <div class="d-none name"><code>SimpleNBox.Rmd</code></div>
     </div>
 
@@ -104,89 +79,133 @@
 <div class="section level2">
 <h2 id="science">Science<a class="anchor" aria-label="anchor" href="#science"></a>
 </h2>
-<p>Hector’s land system is divided into three pools: vegetation (<span class="math inline">\(C_v\)</span>), detritus (<span class="math inline">\(C_d\)</span>), and soil (<span class="math inline">\(C_s\)</span>); a fourth pool, earth (<span class="math inline">\(C_earth\)</span>) is used only for anthropogenic
-emissions and uptake. These pools are global by default, but they can be
-divided into <span class="math inline">\(n\)</span> “biomes” with unique
-parameters and initial pool sizes.</p>
-<p>The total C flux from atmosphere to land at time <span class="math inline">\(t\)</span> (<span class="math inline">\(F_{L}(t)\)</span>; also known as Net Biome
-Production, NBP) is the net of C sequestration by photosynthesis (net
-primary productivity, <span class="math inline">\(NPP_i(t)\)</span>) and
-C release by heterotrophic respiration (<span class="math inline">\(RH_i(t)\)</span>) summed across each biome <span class="math inline">\(i\)</span>, and global land use change (<span class="math inline">\(LUC(t)\)</span>) (note that this calculation does
-not currently include fire, another important land C source):</p>
-<p><span class="math display">\[ F_{L}(t) = \sum_{i=1}^{n} \left(
-NPP_i(t) - RH_i(t) \right) - LUC(t)  \]</span></p>
+<p>Hector’s land system is divided into three pools: vegetation
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>C</mi><mi>v</mi></msub><annotation encoding="application/x-tex">C_v</annotation></semantics></math>),
+detritus
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>C</mi><mi>d</mi></msub><annotation encoding="application/x-tex">C_d</annotation></semantics></math>),
+and soil
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>C</mi><mi>s</mi></msub><annotation encoding="application/x-tex">C_s</annotation></semantics></math>);
+a fourth pool, earth
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mi>e</mi></msub><mi>a</mi><mi>r</mi><mi>t</mi><mi>h</mi></mrow><annotation encoding="application/x-tex">C_earth</annotation></semantics></math>)
+is used only for anthropogenic emissions and uptake. These pools are
+global by default, but they can be divided into
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+“biomes” with unique parameters and initial pool sizes.</p>
+<p>The total C flux from atmosphere to land at time
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>F</mi><mi>L</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">F_{L}(t)</annotation></semantics></math>;
+also known as Net Biome Production, NBP) is the net of C sequestration
+by photosynthesis (net primary productivity,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mi>P</mi><msub><mi>P</mi><mi>i</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">NPP_i(t)</annotation></semantics></math>)
+and C release by heterotrophic respiration
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><msub><mi>H</mi><mi>i</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">RH_i(t)</annotation></semantics></math>)
+summed across each biome
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>,
+and global land use change
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mi>U</mi><mi>C</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">LUC(t)</annotation></semantics></math>)
+(note that this calculation does not currently include fire, another
+important land C source):</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>F</mi><mi>L</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mrow><mo stretchy="true" form="prefix">(</mo><mi>N</mi><mi>P</mi><msub><mi>P</mi><mi>i</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mi>R</mi><msub><mi>H</mi><mi>i</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mi>L</mi><mi>U</mi><mi>C</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex"> F_{L}(t) = \sum_{i=1}^{n} \left( NPP_i(t) - RH_i(t) \right) - LUC(t)  </annotation></semantics></math></p>
 <p>NPP is calculated as the product of a user-specified pre-industrial
-value (<span class="math inline">\(NPP_0\)</span>, default is 56.2 Pg
-C/year), a CO<sub>2</sub> fertilization multiplier (<span class="math inline">\(f(C_{atm}, \beta)\)</span>), and the effect of
-land use change (LUC) on vegetation carbon stocks:</p>
-<p><span class="math display">\[ NPP_i(t) = NPP_{0,i} \times f(C_{atm},
-\beta_i) \times f(LUC_{v}) \]</span></p>
+value
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mi>P</mi><msub><mi>P</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">NPP_0</annotation></semantics></math>,
+default is 56.2 Pg C/year), a CO<sub>2</sub> fertilization multiplier
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>C</mi><mrow><mi>a</mi><mi>t</mi><mi>m</mi></mrow></msub><mo>,</mo><mi>β</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">f(C_{atm}, \beta)</annotation></semantics></math>),
+and the effect of land use change (LUC) on vegetation carbon stocks:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mi>P</mi><msub><mi>P</mi><mi>i</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>N</mi><mi>P</mi><msub><mi>P</mi><mrow><mn>0</mn><mo>,</mo><mi>i</mi></mrow></msub><mo>×</mo><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>C</mi><mrow><mi>a</mi><mi>t</mi><mi>m</mi></mrow></msub><mo>,</mo><msub><mi>β</mi><mi>i</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>×</mo><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>L</mi><mi>U</mi><msub><mi>C</mi><mi>v</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex"> NPP_i(t) = NPP_{0,i} \times f(C_{atm}, \beta_i) \times f(LUC_{v}) </annotation></semantics></math></p>
 <p>The CO<sub>2</sub> fertilization multiplier is a function of the
-current atmospheric CO<sub>2</sub> concentration (<span class="math inline">\(C_{atm}\)</span>), the initial (“pre-industrial”)
-CO<sub>2</sub> concentration (<span class="math inline">\(C_0\)</span>),
-and biome-specific CO<sub>2</sub> fertilization parameter <span class="math inline">\(\beta_i\)</span> (default = 0.36):</p>
-<p><span class="math display">\[ f(C_{atm}, \beta_i) = 1 + \beta_i
-\left( \log(\frac{C_{atm}}{C_0})\right) \]</span></p>
+current atmospheric CO<sub>2</sub> concentration
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>C</mi><mrow><mi>a</mi><mi>t</mi><mi>m</mi></mrow></msub><annotation encoding="application/x-tex">C_{atm}</annotation></semantics></math>),
+the initial (“pre-industrial”) CO<sub>2</sub> concentration
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>C</mi><mn>0</mn></msub><annotation encoding="application/x-tex">C_0</annotation></semantics></math>),
+and biome-specific CO<sub>2</sub> fertilization parameter
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>β</mi><mi>i</mi></msub><annotation encoding="application/x-tex">\beta_i</annotation></semantics></math>
+(default = 0.36):</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>C</mi><mrow><mi>a</mi><mi>t</mi><mi>m</mi></mrow></msub><mo>,</mo><msub><mi>β</mi><mi>i</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>1</mn><mo>+</mo><msub><mi>β</mi><mi>i</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mo>log</mo><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><msub><mi>C</mi><mrow><mi>a</mi><mi>t</mi><mi>m</mi></mrow></msub><msub><mi>C</mi><mn>0</mn></msub></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex"> f(C_{atm}, \beta_i) = 1 + \beta_i \left( \log(\frac{C_{atm}}{C_0})\right) </annotation></semantics></math></p>
 <p>The LUC multiplier accounts for the effect of vegetation losses or
 gains on NPP (although we recognize that LUC does not always result in
 ‘lost’ NPP); this behavior is new as of Hector v3. It is computed as a
-fraction based on preindustrial (end-of-spinup) vegetation carbon (<span class="math inline">\(C_{v}\)</span>) and the running sum of LUC-driven
-losses from – or gains to – vegetation:</p>
-<p><span class="math display">\[ f(LUC_{v}) = \frac{C_{0v} - \sum
-LUC_{veg}}{C_{0v}} \]</span></p>
-<p>Heterotrophic respiration occurs in soil (<span class="math inline">\(RH_s(t)\)</span>) and detritus (<span class="math inline">\(RH_d(t))\)</span>) as a function of biome-specific
-atmospheric temperature anomaly (<span class="math inline">\(T_i\)</span>, calculated as the global atmospheric
-temperature anomaly scaled by a biome-specific warming factor <span class="math inline">\(\delta\)</span>) and the size of the current soil
-and detritus C pools (<span class="math inline">\(C_s\)</span> and <span class="math inline">\(C_d\)</span>, respectively).</p>
-<p><span class="math display">\[ T_i(t) = \delta \, T_G(t) \]</span>
-<span class="math display">\[ RH_s = \frac{1}{50} C_s Q_{10}^{T_{i}(t) /
-10}\]</span> <span class="math display">\[ RH_d = \frac{1}{4} C_d
-Q_{10}^{T_{i}(t) / 10}\]</span></p>
+fraction based on preindustrial (end-of-spinup) vegetation carbon
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>C</mi><mi>v</mi></msub><annotation encoding="application/x-tex">C_{v}</annotation></semantics></math>)
+and the running sum of LUC-driven losses from – or gains to –
+vegetation:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>L</mi><mi>U</mi><msub><mi>C</mi><mi>v</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mfrac><mrow><msub><mi>C</mi><mrow><mn>0</mn><mi>v</mi></mrow></msub><mo>−</mo><mo>∑</mo><mi>L</mi><mi>U</mi><msub><mi>C</mi><mrow><mi>v</mi><mi>e</mi><mi>g</mi></mrow></msub></mrow><msub><mi>C</mi><mrow><mn>0</mn><mi>v</mi></mrow></msub></mfrac></mrow><annotation encoding="application/x-tex"> f(LUC_{v}) = \frac{C_{0v} - \sum LUC_{veg}}{C_{0v}} </annotation></semantics></math></p>
+<p>Heterotrophic respiration occurs in soil
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><msub><mi>H</mi><mi>s</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">RH_s(t)</annotation></semantics></math>)
+and detritus
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><msub><mi>H</mi><mi>d</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">RH_d(t))</annotation></semantics></math>)
+as a function of biome-specific atmospheric temperature anomaly
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>T</mi><mi>i</mi></msub><annotation encoding="application/x-tex">T_i</annotation></semantics></math>,
+calculated as the global atmospheric temperature anomaly scaled by a
+biome-specific warming factor
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>δ</mi><annotation encoding="application/x-tex">\delta</annotation></semantics></math>)
+and the size of the current soil and detritus C pools
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>C</mi><mi>s</mi></msub><annotation encoding="application/x-tex">C_s</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>C</mi><mi>d</mi></msub><annotation encoding="application/x-tex">C_d</annotation></semantics></math>,
+respectively).</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>T</mi><mi>i</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>δ</mi><mspace width="0.167em"></mspace><msub><mi>T</mi><mi>G</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex"> T_i(t) = \delta \, T_G(t) </annotation></semantics></math><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><msub><mi>H</mi><mi>s</mi></msub><mo>=</mo><mfrac><mn>1</mn><mn>50</mn></mfrac><msub><mi>C</mi><mi>s</mi></msub><msubsup><mi>Q</mi><mn>10</mn><mrow><msub><mi>T</mi><mi>i</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>/</mi><mn>10</mn></mrow></msubsup></mrow><annotation encoding="application/x-tex"> RH_s = \frac{1}{50} C_s Q_{10}^{T_{i}(t) / 10}</annotation></semantics></math><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><msub><mi>H</mi><mi>d</mi></msub><mo>=</mo><mfrac><mn>1</mn><mn>4</mn></mfrac><msub><mi>C</mi><mi>d</mi></msub><msubsup><mi>Q</mi><mn>10</mn><mrow><msub><mi>T</mi><mi>i</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>/</mi><mn>10</mn></mrow></msubsup></mrow><annotation encoding="application/x-tex"> RH_d = \frac{1}{4} C_d Q_{10}^{T_{i}(t) / 10}</annotation></semantics></math></p>
 <p>Note that the residence times of soil and detritus C pools – 50 and 4
 years, respectively – are currently hard-coded values in Hector.</p>
-<p>Fluxes associated with land use change (<span class="math inline">\(LUC\)</span>) are prescribed via the
-<code>luc_emissions</code> variable in the INI file. Example time series
-associated with shared socioeconomic pathways (SSPs) are included with
-Hector in the corresponding
+<p>Fluxes associated with land use change
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mi>U</mi><mi>C</mi></mrow><annotation encoding="application/x-tex">LUC</annotation></semantics></math>)
+are prescribed via the <code>luc_emissions</code> variable in the INI
+file. Example time series associated with shared socioeconomic pathways
+(SSPs) are included with Hector in the corresponding
 <code>inst/input/tables/ssp**_emiss-constraints_rf.csv</code> files.
 There are two LUC fluxes, land uptake and loss, and both add or remove
 carbon to the land pools in proportion to those pools’ size. (This
 behavior is new as of version 3 of the model.) Note that the cumulative
-<span class="math inline">\(LUC_{v}\)</span>, LUC effects on vegetation,
-affects NPP as documented above.</p>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mi>U</mi><msub><mi>C</mi><mi>v</mi></msub></mrow><annotation encoding="application/x-tex">LUC_{v}</annotation></semantics></math>,
+LUC effects on vegetation, affects NPP as documented above.</p>
 <p>In each biome at each time step, the vegetation pools change as
-follows (biome, <span class="math inline">\(i\)</span> and time, <span class="math inline">\(t\)</span> subscripts omitted for clarity): C gain
-from NPP is distributed to vegetation, detritus, and soil according to
-fraction parameters <span class="math inline">\(f_{nv}\)</span>, <span class="math inline">\(f_{nd}\)</span>, and <span class="math inline">\(f_{ns}\)</span>, respectively. Similarly, each
-pool bears a fraction of the total C loss from land-use change (<span class="math inline">\(F_{LC}\)</span>), again according to fractions
-<span class="math inline">\(f_{lv}\)</span>, <span class="math inline">\(f_{ld}\)</span>, and <span class="math inline">\(f_{ls}\)</span>. The detritus and soil pools also
-lose C via heterotrophic respiration (<span class="math inline">\(RH_d\)</span> and <span class="math inline">\(RH_s\)</span>, respectively). Finally, a fixed
-fraction of vegetation C is transferred to detritus as litterfall (<span class="math inline">\(f_{vd}\)</span>), and a fraction of both
-vegetation (<span class="math inline">\(f_{vs}\)</span>) and detritus
-(<span class="math inline">\(f_{ds}\)</span>) C are transferred to
-soil.</p>
-<p><span class="math display">\[ \frac{dC_v}{dt} = NPP\, f_{nv} - C_v
-(f_{vd} + f_{vs}) - F_{LC} f_{lv} \]</span> <span class="math display">\[ \frac{dC_d}{dt} = NPP\, f_{nd} + C_v f_{vd} -
-C_d f_{ds} - RH_d - F_{LC} f_{ld} \]</span> <span class="math display">\[ \frac{dC_s}{dt} = NPP\, f_{ns} + C_v f_{vs} -
-C_d f_{ds} - RH_s - F_{LC} f_{ls} \]</span></p>
+follows (biome,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+and time,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>
+subscripts omitted for clarity): C gain from NPP is distributed to
+vegetation, detritus, and soil according to fraction parameters
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>f</mi><mrow><mi>n</mi><mi>v</mi></mrow></msub><annotation encoding="application/x-tex">f_{nv}</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>f</mi><mrow><mi>n</mi><mi>d</mi></mrow></msub><annotation encoding="application/x-tex">f_{nd}</annotation></semantics></math>,
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>f</mi><mrow><mi>n</mi><mi>s</mi></mrow></msub><annotation encoding="application/x-tex">f_{ns}</annotation></semantics></math>,
+respectively. Similarly, each pool bears a fraction of the total C loss
+from land-use change
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>F</mi><mrow><mi>L</mi><mi>C</mi></mrow></msub><annotation encoding="application/x-tex">F_{LC}</annotation></semantics></math>),
+again according to fractions
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>f</mi><mrow><mi>l</mi><mi>v</mi></mrow></msub><annotation encoding="application/x-tex">f_{lv}</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>f</mi><mrow><mi>l</mi><mi>d</mi></mrow></msub><annotation encoding="application/x-tex">f_{ld}</annotation></semantics></math>,
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>f</mi><mrow><mi>l</mi><mi>s</mi></mrow></msub><annotation encoding="application/x-tex">f_{ls}</annotation></semantics></math>.
+The detritus and soil pools also lose C via heterotrophic respiration
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><msub><mi>H</mi><mi>d</mi></msub></mrow><annotation encoding="application/x-tex">RH_d</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><msub><mi>H</mi><mi>s</mi></msub></mrow><annotation encoding="application/x-tex">RH_s</annotation></semantics></math>,
+respectively). Finally, a fixed fraction of vegetation C is transferred
+to detritus as litterfall
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>f</mi><mrow><mi>v</mi><mi>d</mi></mrow></msub><annotation encoding="application/x-tex">f_{vd}</annotation></semantics></math>),
+and a fraction of both vegetation
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>f</mi><mrow><mi>v</mi><mi>s</mi></mrow></msub><annotation encoding="application/x-tex">f_{vs}</annotation></semantics></math>)
+and detritus
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>f</mi><mrow><mi>d</mi><mi>s</mi></mrow></msub><annotation encoding="application/x-tex">f_{ds}</annotation></semantics></math>)
+C are transferred to soil.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>d</mi><msub><mi>C</mi><mi>v</mi></msub></mrow><mrow><mi>d</mi><mi>t</mi></mrow></mfrac><mo>=</mo><mi>N</mi><mi>P</mi><mi>P</mi><mspace width="0.167em"></mspace><msub><mi>f</mi><mrow><mi>n</mi><mi>v</mi></mrow></msub><mo>−</mo><msub><mi>C</mi><mi>v</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>f</mi><mrow><mi>v</mi><mi>d</mi></mrow></msub><mo>+</mo><msub><mi>f</mi><mrow><mi>v</mi><mi>s</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><msub><mi>F</mi><mrow><mi>L</mi><mi>C</mi></mrow></msub><msub><mi>f</mi><mrow><mi>l</mi><mi>v</mi></mrow></msub></mrow><annotation encoding="application/x-tex"> \frac{dC_v}{dt} = NPP\, f_{nv} - C_v (f_{vd} + f_{vs}) - F_{LC} f_{lv} </annotation></semantics></math><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>d</mi><msub><mi>C</mi><mi>d</mi></msub></mrow><mrow><mi>d</mi><mi>t</mi></mrow></mfrac><mo>=</mo><mi>N</mi><mi>P</mi><mi>P</mi><mspace width="0.167em"></mspace><msub><mi>f</mi><mrow><mi>n</mi><mi>d</mi></mrow></msub><mo>+</mo><msub><mi>C</mi><mi>v</mi></msub><msub><mi>f</mi><mrow><mi>v</mi><mi>d</mi></mrow></msub><mo>−</mo><msub><mi>C</mi><mi>d</mi></msub><msub><mi>f</mi><mrow><mi>d</mi><mi>s</mi></mrow></msub><mo>−</mo><mi>R</mi><msub><mi>H</mi><mi>d</mi></msub><mo>−</mo><msub><mi>F</mi><mrow><mi>L</mi><mi>C</mi></mrow></msub><msub><mi>f</mi><mrow><mi>l</mi><mi>d</mi></mrow></msub></mrow><annotation encoding="application/x-tex"> \frac{dC_d}{dt} = NPP\, f_{nd} + C_v f_{vd} - C_d f_{ds} - RH_d - F_{LC} f_{ld} </annotation></semantics></math><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>d</mi><msub><mi>C</mi><mi>s</mi></msub></mrow><mrow><mi>d</mi><mi>t</mi></mrow></mfrac><mo>=</mo><mi>N</mi><mi>P</mi><mi>P</mi><mspace width="0.167em"></mspace><msub><mi>f</mi><mrow><mi>n</mi><mi>s</mi></mrow></msub><mo>+</mo><msub><mi>C</mi><mi>v</mi></msub><msub><mi>f</mi><mrow><mi>v</mi><mi>s</mi></mrow></msub><mo>−</mo><msub><mi>C</mi><mi>d</mi></msub><msub><mi>f</mi><mrow><mi>d</mi><mi>s</mi></mrow></msub><mo>−</mo><mi>R</mi><msub><mi>H</mi><mi>s</mi></msub><mo>−</mo><msub><mi>F</mi><mrow><mi>L</mi><mi>C</mi></mrow></msub><msub><mi>f</mi><mrow><mi>l</mi><mi>s</mi></mrow></msub></mrow><annotation encoding="application/x-tex"> \frac{dC_s}{dt} = NPP\, f_{ns} + C_v f_{vs} - C_d f_{ds} - RH_s - F_{LC} f_{ls} </annotation></semantics></math></p>
 <p>Anthropogenic changes to the earth system are driven by fossil fuel
 and industrial emissions (FFI) as well as, in some scenarios, direct air
 carbon capture and storage (DACCS). These fluxes are occur out of, or
 into, an ‘earth’ pool that is used for mass-balance checks:</p>
-<p><span class="math display">\[ \frac{dC_{earth}}{dt} = DACCS -
-FFI\]</span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>d</mi><msub><mi>C</mi><mrow><mi>e</mi><mi>a</mi><mi>r</mi><mi>t</mi><mi>h</mi></mrow></msub></mrow><mrow><mi>d</mi><mi>t</mi></mrow></mfrac><mo>=</mo><mi>D</mi><mi>A</mi><mi>C</mi><mi>C</mi><mi>S</mi><mo>−</mo><mi>F</mi><mi>F</mi><mi>I</mi></mrow><annotation encoding="application/x-tex"> \frac{dC_{earth}}{dt} = DACCS - FFI</annotation></semantics></math></p>
 <p>Finally, the atmosphere changes as a result of all the fluxes into or
 out of it: anthropogenic emissions and uptake; land use change emissions
 and uptake; fluxes into or out of the ocean; and heterotrophic
 respiration and net primary production.</p>
-<p><span class="math display">\[ \frac{dC_{atm}}{dt} = FFI - DACCS +
-LUC_{e} - LUC_{u} + O_{i} - O_{u} + RH - NPP \]</span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>d</mi><msub><mi>C</mi><mrow><mi>a</mi><mi>t</mi><mi>m</mi></mrow></msub></mrow><mrow><mi>d</mi><mi>t</mi></mrow></mfrac><mo>=</mo><mi>F</mi><mi>F</mi><mi>I</mi><mo>−</mo><mi>D</mi><mi>A</mi><mi>C</mi><mi>C</mi><mi>S</mi><mo>+</mo><mi>L</mi><mi>U</mi><msub><mi>C</mi><mi>e</mi></msub><mo>−</mo><mi>L</mi><mi>U</mi><msub><mi>C</mi><mi>u</mi></msub><mo>+</mo><msub><mi>O</mi><mi>i</mi></msub><mo>−</mo><msub><mi>O</mi><mi>u</mi></msub><mo>+</mo><mi>R</mi><mi>H</mi><mo>−</mo><mi>N</mi><mi>P</mi><mi>P</mi></mrow><annotation encoding="application/x-tex"> \frac{dC_{atm}}{dt} = FFI - DACCS + LUC_{e} - LUC_{u} + O_{i} - O_{u} + RH - NPP </annotation></semantics></math></p>
 <p>The entire terrestrial C cycle is summarized in the following
 diagram:</p>
-<div class="figure">
-<img src="hector_terrestrial_c.svg" alt=""><p class="caption">Summary of terrestrial C cycle in Hector. The full
-Hector C cycle also includes ocean and “Earth” C pools that exchange C
-with the atmosphere, but these are omitted for clarity.</p>
+<div class="float">
+<img src="hector_terrestrial_c.svg" alt="Summary of terrestrial C cycle in Hector. The full Hector C cycle also includes ocean and “Earth” C pools that exchange C with the atmosphere, but these are omitted for clarity."><div class="figcaption">Summary of terrestrial C cycle in Hector. The
+full Hector C cycle also includes ocean and “Earth” C pools that
+exchange C with the atmosphere, but these are omitted for clarity.</div>
 </div>
 </div>
 <div class="section level2">
@@ -652,28 +671,26 @@ default of -0.2</li>
 </li>
 </ul>
 </div>
-  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
 </div>
 
 
 
     <footer><div class="pkgdown-footer-left">
-  <p></p>
-<p>Developed by Kalyn Dorheim, Ben Bond-Lamberty.</p>
+  <p>Developed by Kalyn Dorheim, Ben Bond-Lamberty.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
     </footer>
 </div>
 
-  
 
-  
+
+
 
   </body>
 </html>

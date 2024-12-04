@@ -1,41 +1,40 @@
-pandoc: 2.19.2
-pkgdown: 2.0.7
+pandoc: 3.1.11
+pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
-  AddNewComponent: AddNewComponent.html
-  AddNewVariable: AddNewVariable.html
-  AuthorshipGuidelines: AuthorshipGuidelines.html
-  BuildHector: BuildHector.html
-  ComponentAPI: ComponentAPI.html
-  Constraints: Constraints.html
-  ContributionsGuide: ContributionsGuide.html
-  ExternalAPI: ExternalAPI.html
-  Hector-Wider-World: Hector-Wider-World.html
-  HectorResources: HectorResources.html
-  HectorSummary: HectorSummary.html
-  InputFiles: InputFiles.html
-  Permafrost: Permafrost.html
-  SimpleNBox: SimpleNBox.html
-  StyleGuide: StyleGuide.html
-  TimeSeries: TimeSeries.html
-  Unitvals: Unitvals.html
-  VersionNumbers: VersionNumbers.html
-  addnewforcer: addnewforcer.html
-  climate: climate.html
-  ex_GMAT-GMST: ex_GMAT-GMST.html
-  ex_carbon_tracking: ex_carbon_tracking.html
-  ex_hector_apply: ex_hector_apply.html
-  ex_land_ocean_warming: ex_land_ocean_warming.html
-  ex_multiple-biomes: ex_multiple-biomes.html
-  manual: manual.html
-  ocean-carbon-cycle: ocean-carbon-cycle.html
-  output: output.html
-  outputstream: outputstream.html
-  units: units.html
-  v3_output_changes: v3_output_changes.html
+  articles/AddNewComponent: AddNewComponent.html
+  articles/addnewforcer: addnewforcer.html
+  articles/AddNewVariable: AddNewVariable.html
+  articles/AuthorshipGuidelines: AuthorshipGuidelines.html
+  articles/BuildHector: BuildHector.html
+  articles/climate: climate.html
+  articles/ComponentAPI: ComponentAPI.html
+  articles/Constraints: Constraints.html
+  articles/ContributionsGuide: ContributionsGuide.html
+  articles/ex_carbon_tracking: ex_carbon_tracking.html
+  articles/ex_GMAT-GMST: ex_GMAT-GMST.html
+  articles/ex_hector_apply: ex_hector_apply.html
+  articles/ex_land_ocean_warming: ex_land_ocean_warming.html
+  articles/ex_multiple-biomes: ex_multiple-biomes.html
+  articles/ExternalAPI: ExternalAPI.html
+  articles/Hector-Wider-World: Hector-Wider-World.html
   hector: hector.html
-last_built: 2024-02-23T17:35Z
+  articles/HectorResources: HectorResources.html
+  articles/HectorSummary: HectorSummary.html
+  articles/InputFiles: InputFiles.html
+  articles/manual: manual.html
+  articles/ocean-carbon-cycle: ocean-carbon-cycle.html
+  articles/output: output.html
+  articles/outputstream: outputstream.html
+  articles/Permafrost: Permafrost.html
+  articles/SimpleNBox: SimpleNBox.html
+  articles/StyleGuide: StyleGuide.html
+  articles/TimeSeries: TimeSeries.html
+  articles/units: units.html
+  articles/Unitvals: Unitvals.html
+  articles/v3_output_changes: v3_output_changes.html
+  articles/VersionNumbers: VersionNumbers.html
+last_built: 2024-12-04T18:01Z
 urls:
   reference: https://jgcri.github.io/hector/reference
   article: https://jgcri.github.io/hector/articles
-
