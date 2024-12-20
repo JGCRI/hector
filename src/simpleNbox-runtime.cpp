@@ -862,7 +862,7 @@ int SimpleNbox::calcderivs(double t, const double c[], double dcdt[]) const {
       pf_refreeze_tp =
           pf_refreeze_tp + fluxpool(biome_pf_refreeze_tp, U_PGC_YR);
       pf_refreeze_soil =
-          pf_refreeze_tp + fluxpool(biome_pf_refreeze_soil, U_PGC_YR);
+        pf_refreeze_soil + fluxpool(biome_pf_refreeze_soil, U_PGC_YR);
     }
   }
 
