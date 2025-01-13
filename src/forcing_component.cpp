@@ -144,6 +144,7 @@ void ForcingComponent::init(Core *coreptr) {
   core->registerDependency(D_EMISSIONS_BC, getComponentName());
   core->registerDependency(D_EMISSIONS_OC, getComponentName());
   core->registerDependency(D_EMISSIONS_NH3, getComponentName());
+  core->registerDependency(D_EMISSIONS_H2, getComponentName());
   core->registerDependency(D_N2O_CONC, getComponentName());
   core->registerDependency(D_RF_CF4, getComponentName());
   core->registerDependency(D_RF_C2F6, getComponentName());
@@ -322,6 +323,7 @@ void ForcingComponent::run(const double runToDate) {
           core->sendMessage(M_GETDATA, D_N2O_CONC, message_data(runToDate))
               .value(U_PPBV_N2O);
 
+
       // ---------- CO2 ----------
       // CO2 SARF is calculated using simplified expressions from IPCC
       // AR6 listed in Table 7.SM.1. Then the SARF is adjusted by a scalar
@@ -372,8 +374,14 @@ void ForcingComponent::run(const double runToDate) {
           1831; // 2014 CH4 concentration ppb from the cmip6 historical scenario
       const double stratH2O_base =
           0.0485; // W m-2 Strat H2O RF (1850 to 2014) from 7.3.2.6 IPCC AR6
-      const double fh2o_strat = stratH2O_base * ((Ma - M0) / (Ma_base - M0)); //
+        
+      double inital_h2 = core->sendMessage(M_GETDATA, D_EMISSIONS_H2, baseyear).value(U_TG_H2);
+      double current_h2 = core->sendMessage(M_GETDATA, D_EMISSIONS_H2, message_data(runToDate)).value(U_TG_H2);
+        
+      const double fh2o_strat = stratH2O_base * ((Ma - M0) / (Ma_base - M0)) + stratH2O_H2  * (current_h2 - inital_h2); //
       forcings[D_RF_H2O_STRAT].set(fh2o_strat, U_W_M2);
+
+        
     }
 
     // ---------- Troposheric Ozone ----------
