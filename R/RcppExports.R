@@ -4,7 +4,7 @@
 #' @describeIn emissions Emissions hydrogen gas (\code{"Tg H2"})
 NULL
 
-#' @describeIn oh coefficent for the h2 emissions
+#' @describeIn oh coefficient for the h2 emissions
 NULL
 
 #' @describeIn msgtype Message type for retrieving data from a component

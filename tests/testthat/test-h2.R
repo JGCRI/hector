@@ -25,9 +25,9 @@ test_that("tau ", {
 
 test_that("H2 emissions ", {
 
-    # Check to make sure that can fetch and set the H2 emissions although
-    # at this point changing the emissions will have no impact on
-    # [ch4] dynamics but in the future it should...
+    # Check to make sure that can fetch and set the H2 emissions and
+    # that the effects of adding some H2 emissions change thigns
+    # now that we have the CH4 indrect effects implement.
 
     hc <- newcore(ini)
     run(hc)
@@ -45,12 +45,13 @@ test_that("H2 emissions ", {
 
     diff <- abs(out$value - out2$value)
 
-    # As of now the [CH4] and tau oh should not change
-    expect_equal(mean(diff[out$variable == CONCENTRATIONS_CH4()]), 0)
-    expect_equal(mean(diff[out$variable == LIFETIME_OH()]), 0)
+    # Now we do expect to see changes in CH4 concentrations in response
+    # to H2 emissions
+    expect_gt(mean(diff[out$variable == CONCENTRATIONS_CH4()]), 0)
+    expect_gt(mean(diff[out$variable == LIFETIME_OH()]), 0)
 
-    # But if we can change the H2 emissions we should see a difference in
-    # H2 emissions between the two new runs!
+    # Since we are working off of some default H2 emissions = 0, then
+    # changing the H2 emissions we should see a difference.
     expect_equal(mean(diff[out$variable == EMISSIONS_H2()]), new_val)
 
     })
