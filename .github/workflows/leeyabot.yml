@@ -1,61 +1,54 @@
-# Leeyabot does automatic reporting on Hector output, it should be run once
-# right before the PR is ready to merge.
 name: leeyabot
 on:
-  push:
+  pull_request:
     branches:
-      - 'main'  # Triggers on push to the main branch
-  schedule:
-    - cron: '0 0 1 * *'  # Triggers once a month on the first day at midnight UTC
-  workflow_dispatch:     # Allows manual trigger via a button in the GitHub UI for other branches
+      - '**' # matches every branch
 
 jobs:
   run:
     runs-on: ubuntu-latest
-
     steps:
-      # Checkout the code
       - uses: actions/checkout@v3
-
-      # Set up CML (Continuous Machine Learning)
       - uses: iterative/setup-cml@v1
-
-      # Set up R
       - uses: r-lib/actions/setup-r@v2
         with:
           r-version: 'release'
 
-      # Install libcurl and dependencies
-      - name: Install libcurl and dependencies
-        run: |
-          sudo apt-get install -y libcurl4-openssl-dev
-          Rscript -e "install.packages(c('ggplot2', 'rmarkdown', 'dplyr', 'remotes', 'here'))"
-          Rscript -e "remotes::install_deps(dependencies = TRUE)"
+      - name: Install libcurl
+        run: sudo apt-get install libcurl4-openssl-dev
 
-      # Install the R package
+      - name: Install dependencies
+        env:
+          GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          install.packages(c("ggplot2", "rmarkdown", "dplyr", "remotes", "here"))
+          remotes::install_deps(dependencies = TRUE)
+        shell: Rscript {0}
+
       - name: Install package
         run: R CMD INSTALL .
 
-      # Generate the report only if the previous steps succeed
       - name: Generate report
         run: |
           rmarkdown::render("./scripts/OutputDifferences.Rmd", run_pandoc = FALSE)
         shell: Rscript {0}
 
-      # Post a comment to GitHub PR based on report content
       - name: Post comment
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          cd scripts/
-          # Conditionally handle report files
-          if [ -f "diff_plot.png" ]; then
-            cat OutputDifferences.knit.md > report.md
-            echo "![](./diff_plot.png)" >> report.md
-            echo "![](./comp_plot.png)" >> report.md
-          elif [ -f "same_plot.png" ]; then
-            cat OutputDifferences.knit.md > report.md
-          else
-            echo "leeyabot down :(" > report.md
-          fi
-          cml comment create report.md
+            # Post reports as comments in GitHub PRs
+            cd scripts/
+            if [ -f "diff_plot.png" ]
+            then
+                cat OutputDifferences.knit.md >> report.md
+                echo "![](./diff_plot.png)" >> report.md
+                echo "![](./comp_plot.png)" >> report.md
+            elif [ -f "same_plot.png" ]
+            then
+                cat OutputDifferences.knit.md >> report.md
+            else
+                cat OutputDifferences.knit.md >> report.md
+                echo "leeyabot down :(" > report.md
+            fi
+            cml comment create report.md
