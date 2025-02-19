@@ -4,30 +4,34 @@ on:
       - main
   pull_request:
     branches:
-      - '**' # matches every branch
+      - '**'  # matches all branches
   schedule:
-   # * is a special character in YAML so you have to quote this string, it is set up to run at 6am
-   # on the first day of the month, this is helpful for periods of time when PRs are not being merged.
-    - cron:  '0 6 1 * *'
-  # Allows you to run this workflow manually from the Actions tab
+    # Run at 6am on the first day of the month
+    - cron: '0 6 1 * *'
   workflow_dispatch:
 
 name: test-coverage
 
 jobs:
   test-coverage:
-    # Don't run scheduled job on forks, only in main repository.
-    if: (github.event_name == 'schedule' && github.repository == 'JGCRI/hector') || (github.event_name != 'schedule')
+    if: |
+      (github.event_name == 'schedule' && github.repository == 'JGCRI/hector') ||
+      (github.event_name != 'schedule')
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
 
+    steps:
+      # Checkout code
+      - uses: actions/checkout@v3
+
+      # Set up R
       - uses: r-lib/actions/setup-r@v2
         with:
           r-version: 'release'
 
+      # Set up Pandoc
       - uses: r-lib/actions/setup-pandoc@v2
 
+      # Query dependencies and save them
       - name: Query dependencies
         run: |
           install.packages('remotes')
@@ -35,23 +39,27 @@ jobs:
           writeLines(sprintf("R-%i.%i", getRversion()$major, getRversion()$minor), ".github/R-version")
         shell: Rscript {0}
 
+      # Cache R packages
       - name: Cache R packages
         uses: actions/cache@v4
         with:
           path: ${{ env.R_LIBS_USER }}
-          key: macOS-r-4.0-2-${{ hashFiles('.github/depends.Rds') }}
-          restore-keys: macOS-r-4.0-2-
+          key: linux-r-${{ hashFiles('.github/depends.Rds') }}
+          restore-keys: linux-r-
 
+      # Install system dependencies
       - name: Install libcurl
-        run: sudo apt-get install libcurl4-openssl-dev
+        run: sudo apt-get install -y libcurl4-openssl-dev
 
-      - name: Install dependencies
+      # Install R dependencies
+      - name: Install R dependencies
         run: |
           install.packages(c("remotes"))
           remotes::install_deps(dependencies = TRUE)
           remotes::install_cran("covr")
         shell: Rscript {0}
 
+      # Run test coverage
       - name: Test coverage
         run: covr::codecov()
         shell: Rscript {0}
