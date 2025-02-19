@@ -31,15 +31,16 @@ jobs:
       # Set up Pandoc
       - uses: r-lib/actions/setup-pandoc@v2
 
-      # Query dependencies and save them
-      - name: Query dependencies
+      # Install dependencies
+      - name: Install dependencies
         run: |
-          install.packages('remotes')
-          saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
-          writeLines(sprintf("R-%i.%i", getRversion()$major, getRversion()$minor), ".github/R-version")
+          install.packages(c("remotes"))
+          remotes::install_deps(dependencies = TRUE)
+          remotes::install_cran("covr")
+          remotes::install_local("/home/runner/work/hector/hector")
         shell: Rscript {0}
 
-      # Cache R dependencies
+      # Cache R package dependencies
       - name: Cache R package dependencies
         uses: actions/cache@v4
         with:
@@ -47,25 +48,9 @@ jobs:
           key: linux-r-${{ hashFiles('.github/depends.Rds') }}-${{ hashFiles('.github/R-version') }}
           restore-keys: linux-r-
 
-      # Cache .github/depends.Rds file
-      - name: Cache package dependencies file
-        uses: actions/cache@v4
-        with:
-          path: .github/depends.Rds
-          key: depend-file-${{ hashFiles('.github/depends.Rds') }}
-          restore-keys: depend-file-
-
-      # Install system dependencies
+      # Install system dependencies (libcurl)
       - name: Install libcurl
         run: sudo apt-get install -y libcurl4-openssl-dev
-
-      # Install R dependencies
-      - name: Install R dependencies
-        run: |
-          install.packages(c("remotes"))
-          remotes::install_deps(dependencies = TRUE)
-          remotes::install_cran("covr")
-        shell: Rscript {0}
 
       # Run test coverage
       - name: Test coverage
