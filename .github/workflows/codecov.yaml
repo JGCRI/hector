@@ -39,13 +39,21 @@ jobs:
           writeLines(sprintf("R-%i.%i", getRversion()$major, getRversion()$minor), ".github/R-version")
         shell: Rscript {0}
 
-      # Cache R packages
-      - name: Cache R packages
+      # Cache R dependencies
+      - name: Cache R package dependencies
         uses: actions/cache@v4
         with:
           path: ${{ env.R_LIBS_USER }}
-          key: linux-r-${{ hashFiles('.github/depends.Rds') }}
+          key: linux-r-${{ hashFiles('.github/depends.Rds') }}-${{ hashFiles('.github/R-version') }}
           restore-keys: linux-r-
+
+      # Cache .github/depends.Rds file
+      - name: Cache package dependencies file
+        uses: actions/cache@v4
+        with:
+          path: .github/depends.Rds
+          key: depend-file-${{ hashFiles('.github/depends.Rds') }}
+          restore-keys: depend-file-
 
       # Install system dependencies
       - name: Install libcurl
