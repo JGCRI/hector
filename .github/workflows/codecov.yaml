@@ -34,9 +34,8 @@ jobs:
       # Install dependencies
       - name: Install dependencies
         run: |
-          install.packages(c("remotes"))
+          install.packages(c("remotes", "covr"))  # Ensure covr is installed here
           remotes::install_deps(dependencies = TRUE)
-          remotes::install_cran("covr")
           remotes::install_local("/home/runner/work/hector/hector")
         shell: Rscript {0}
 
