@@ -1,43 +1,73 @@
-# This is a basic workflow to help you get started with Actions
-# based on https://github.com/JGCRI/hector/new/main?filename=.github%2Fworkflows%2Fmain.yml&workflow_template=blank
+name: Run command line and C++ unit tests
 
-name: Command Line Hector
-
-# Controls when the action will run.
 on:
   push:
     branches:
       - main
   pull_request:
     branches:
-      - '**' # matches every branch
-
+      - '**'
   schedule:
-    # * is a special character in YAML so you have to quote this string
-    # Launch run at 6am the 1st of every month.
-    - cron:  '0 6 1 * *'
-
-  # Allows you to run this workflow manually from the Actions tab
+    - cron: '0 6 1 * *'  # Run at 6am on the 1st of every month
   workflow_dispatch:
+    inputs:
+      build_type:
+        description: 'Build type (e.g., Debug or Release)'
+        required: false
+        default: 'Release'
+      verbose_logs:
+        description: 'Enable verbose logging? (true/false)'
+        required: false
+        default: 'false'
 
 jobs:
-
-  # This workflow contains two jobs, one that builds hector on ubuntu and the second
-  # builds and tests Hector on macos. The purpose of this work for is to make sure that Hector
-  # can be built from the command line.
-  ubuntu:
-    # Don't run scheduled job on forks, only in main repository.
-    if: (github.event_name == 'schedule' && github.repository == 'JGCRI/hector') || (github.event_name != 'schedule')
-
+  build:
+    if: github.event_name != 'schedule' || github.repository == 'JGCRI/hector'
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-      - name: build and run
+      - uses: actions/checkout@v3
+
+      # Cache dependencies for Boost and GTest (shared between both tasks)
+      - name: Cache Boost and GTest Dependencies
+        uses: actions/cache@v3
+        with:
+          path: /usr/local/lib /usr/local/include
+          key: ${{ runner.os }}-boost-gtest-${{ hashFiles('**/CMakeLists.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-boost-gtest-
+
+      # Install dependencies if not found in cache
+      - name: Install Dependencies
         run: |
           sudo apt-get update
-          sudo apt install libboost-dev
+          sudo apt-get install -y libboost-all-dev libgtest-dev
+          # Build GTest if needed (in case it's not cached)
+          if [ ! -f /usr/local/lib/libgtest.a ]; then
+            cd /usr/src/gtest && sudo cmake CMakeLists.txt && sudo make && sudo cp lib/*.a /usr/local/lib
+          fi
+
+      # Build and run Hector (for both regular and unit tests)
+      - name: Build and Run Hector
+        run: |
           make hector
           bash ./test_hector.sh ./src/hector
+
+      # Build and run unit tests if on the main branch or other events
+      - name: Build and Run Unit Tests
+        run: |
+          set -e
+          BOOSTROOT=/usr/local/
+          GTROOT=/usr/local/
+          BUILD_TYPE=${{ github.event.inputs.build_type }}
+          VERBOSE=${{ github.event.inputs.verbose_logs }}
+
+          echo "Build Type: $BUILD_TYPE"
+          if [ "$VERBOSE" == "true" ]; then
+            echo "Running in verbose mode..."
+            make VERBOSE=1 testing
+          else
+            make testing
+          fi
+
+          ./src/unit-testing/hector-unit-tests
