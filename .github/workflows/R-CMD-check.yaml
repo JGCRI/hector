@@ -50,17 +50,14 @@ jobs:
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
 
+      - name: Install BH 1.84.0
+        run: Rscript -e 'install.packages("BH", version = "1.84.0", repos = "http://cran.us.r-project.org")'
+
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: |
             any::rcmdcheck
           needs: check
-
-      - name: Install remotes
-        run: Rscript -e 'install.packages("remotes", repos = "http://cran.us.r-project.org")'
-
-      - name: Install BH 1.84.0
-        run: Rscript -e 'remotes::install_version("BH", version = "1.84.0", repos = "http://cran.us.r-project.org")'
 
       - uses: r-lib/actions/check-r-package@v2
         with:
