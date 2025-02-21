@@ -1,4 +1,6 @@
-name: R-CMD-check
+# This is a temporary test to help with debugging the enviornment problems with
+# the github actions
+name: R-devtools-build
 # Controls when the action will run.
 on:
   push:
@@ -17,7 +19,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  R-CMD-check:
+  R-devtools-build:
     # Don't run scheduled job on forks, only in main repository.
     if: (github.event_name == 'schedule' && github.repository == 'JGCRI/hector') || (github.event_name != 'schedule')
 
@@ -29,11 +31,7 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: macos-latest,   r: 'release'}
-          - {os: windows-latest, r: 'release'}
-          - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release'}
           - {os: ubuntu-latest,   r: 'release'}
-          - {os: ubuntu-latest,   r: 'oldrel-1'}
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
@@ -53,15 +51,8 @@ jobs:
       - name: Install BH 1.84.0
         run: Rscript -e 'install.packages("BH", version = "1.84.0", repos = "http://cran.us.r-project.org")'
 
-      - uses: r-lib/actions/setup-r-dependencies@v2
-        with:
-          extra-packages: |
-            any::rcmdcheck
-          needs: check
+      - name: Install devtools
+        run: Rscript -e 'install.packages("devtools", repos = "http://cran.us.r-project.org")'
 
-      - uses: r-lib/actions/check-r-package@v2
-        with:
-          upload-snapshots: true
-          args: 'c("--no-manual", "--as-cran")'
-          error-on: '"error"'
-          check-dir: '"check"'
+      - name: Run devtools::build()
+        run: Rscript -e 'devtools::build()'
