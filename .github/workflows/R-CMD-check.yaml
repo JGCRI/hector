@@ -54,8 +54,10 @@ jobs:
         with:
           extra-packages: |
             any::rcmdcheck
-            remotes::remotes
           needs: check
+
+      - name: Install remotes
+        run: Rscript -e 'install.packages("remotes", repos = "http://cran.us.r-project.org")'
 
       - name: Install BH 1.84.0
         run: Rscript -e 'remotes::install_version("BH", version = "1.84.0", repos = "http://cran.us.r-project.org")'
