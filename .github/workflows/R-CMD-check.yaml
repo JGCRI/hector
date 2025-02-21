@@ -52,8 +52,13 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::rcmdcheck
+          extra-packages: |
+            any::rcmdcheck
+            remotes::remotes
           needs: check
+
+      - name: Install BH 1.84.0
+        run: Rscript -e 'remotes::install_version("BH", version = "1.84.0", repos = "http://cran.us.r-project.org")'
 
       - uses: r-lib/actions/check-r-package@v2
         with:
