@@ -62,7 +62,7 @@ void SimpleNbox::prepareToRun() {
   H_LOG(logger, Logger::DEBUG) << "prepareToRun " << std::endl;
 
   // If any 'global' settings, there shouldn't also be regional
-  if ((has_biome(SNBOX_DEFAULT_BIOME)) & (biome_list.size() > 1)) {
+  if ((has_biome(SNBOX_DEFAULT_BIOME)) && (biome_list.size() > 1)) {
     H_THROW("Cannot have both global and biome-specific data! "
             "Did you forget to rename the default ('global') biome?")
   }
