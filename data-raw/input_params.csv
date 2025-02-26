@@ -79,6 +79,7 @@ OH,CNOX,n,n,y,0.0042,,coefficient for NOX
 OH,CCO,n,n,y,-1.05E-04,,coefficient for CO
 OH,CNMVOC,n,n,y,-3.15E-04,,coefficient for NMVOC (non methane VOC)
 OH,CCH4,n,n,y,-0.32,,coefficient for CH4
+OH,H2_emissions,n,y,y,"""(csv)""",Tg H2,emissions time series
 ozone,PO3,n,n,y,30,,preindustrial O3 concentration
 ozone,NOX_emissions,n,y,y,"""(csv)""",,emissions time series
 ozone,CO_emissions,n,y,y,"""(csv)""",,emissions time series

@@ -61,6 +61,7 @@ private:
   tseries<unitval> CO_emissions;
   tseries<unitval> NOX_emissions;
   tseries<unitval> NMVOC_emissions;
+  tseries<unitval> H2_emissions;
   tseries<unitval> TAU_OH;
 
   unitval M0;   // initial CH4 concentration

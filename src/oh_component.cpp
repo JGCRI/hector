@@ -29,8 +29,8 @@ OHComponent::OHComponent() {
   NOX_emissions.allowInterp(true);
   NMVOC_emissions.allowInterp(true);
   CO_emissions.allowInterp(true);
+  H2_emissions.allowInterp(true);
   TAU_OH.allowInterp(true);
-  // TOH0.set( 0.0, U_YRS );
 }
 
 //------------------------------------------------------------------------------
@@ -62,6 +62,8 @@ void OHComponent::init(Core *coreptr) {
   core->registerInput(D_EMISSIONS_CO, getComponentName());
   core->registerInput(D_EMISSIONS_NMVOC, getComponentName());
   core->registerInput(D_EMISSIONS_NOX, getComponentName());
+  core->registerInput(D_EMISSIONS_H2, getComponentName());
+
 }
 
 //------------------------------------------------------------------------------
@@ -97,6 +99,9 @@ void OHComponent::setData(const string &varName, const message_data &data) {
     } else if (varName == D_EMISSIONS_NMVOC) {
       H_ASSERT(data.date != Core::undefinedIndex(), "date required");
       NMVOC_emissions.set(data.date, data.getUnitval(U_TG_NMVOC));
+    } else if (varName == D_EMISSIONS_H2) {
+        H_ASSERT(data.date != Core::undefinedIndex(), "date required");
+        H2_emissions.set(data.date, data.getUnitval(U_TG_H2));
     } else if (varName == D_INITIAL_LIFETIME_OH) {
       H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
       TOH0 = data.getUnitval(U_YRS);
@@ -196,6 +201,9 @@ unitval OHComponent::getData(const std::string &varName, const double date) {
     H_ASSERT(date != Core::undefinedIndex(),
              "Date required for NMVOC emissions");
     returnval = NMVOC_emissions.get(date);
+  } else if (varName == D_EMISSIONS_H2) {
+      H_ASSERT(date != Core::undefinedIndex(), "Date required for H2 emissions");
+      returnval = H2_emissions.get(date);
   } else {
     H_THROW("Caller is requesting unknown variable: " + varName);
   }
