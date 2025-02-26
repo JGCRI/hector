@@ -1,4 +1,4 @@
-name: Commandline build and Cpp unit tests
+name: Build & C++ Tests
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
   pull_request:
     branches:
-      - '**'
+      - main
   schedule:
     - cron: '0 6 1 * *' # Run at 6 AM on the 1st of each month
   workflow_dispatch:
