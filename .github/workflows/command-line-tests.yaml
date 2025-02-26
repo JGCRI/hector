@@ -9,7 +9,7 @@ on:
       - '**'
   schedule:
     - cron: '0 6 1 * *' # Run at 6 AM on the 1st of each month
-  workflow_dispatch:  # Allows manual triggering for PR tests
+  workflow_dispatch:
 
 jobs:
   scheduled-job:
