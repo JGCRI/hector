@@ -6,7 +6,7 @@ on:
       - main
   pull_request:
     branches:
-      - main
+      - fake
   schedule:
     - cron: '0 6 1 * *' # Run at 6 AM on the 1st of each month
   workflow_dispatch:

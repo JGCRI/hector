@@ -7,7 +7,7 @@ on:
       - main
   pull_request:
     branches:
-      - main
+      - '**'
   schedule:
     - cron: '0 6 1 * *'  # Run at 6 AM on the 1st of each month
   workflow_dispatch:
@@ -39,18 +39,6 @@ jobs:
           saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
           writeLines(sprintf("R-%i.%i", getRversion()$major, getRversion()$minor), ".github/R-version")
         shell: Rscript {0}
-
-      # Cache R packages to speed up subsequent runs
-      - name: Cache R packages
-        uses: actions/cache@v4
-        with:
-          path: ${{ env.R_LIBS_USER }}
-          key: ${{ env.CACHE_KEY }}
-          restore-keys: r-
-
-      # Install necessary system dependencies
-      - name: Install libcurl
-        run: sudo apt-get install libcurl4-openssl-dev
 
       # Install R dependencies
       - name: Install R dependencies
