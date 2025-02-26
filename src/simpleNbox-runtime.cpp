@@ -62,7 +62,7 @@ void SimpleNbox::prepareToRun() {
   H_LOG(logger, Logger::DEBUG) << "prepareToRun " << std::endl;
 
   // If any 'global' settings, there shouldn't also be regional
-  if ((has_biome(SNBOX_DEFAULT_BIOME)) & (biome_list.size() > 1)) {
+  if ((has_biome(SNBOX_DEFAULT_BIOME)) && (biome_list.size() > 1)) {
     H_THROW("Cannot have both global and biome-specific data! "
             "Did you forget to rename the default ('global') biome?")
   }
@@ -157,7 +157,7 @@ void SimpleNbox::prepareToRun() {
 
   // Zero the cumulative tracker of CH4 release from permafrost
   cumulative_pf_ch4 = 0.0;
-  
+
   // A flag that lets run() know the very first time it's called
   has_been_run_before = false;
 
@@ -477,7 +477,7 @@ void SimpleNbox::stashCValues(double t, const double c[]) {
     // simpleNbox's point of view). In order not to trigger a mass balance
     // issue, we track it and adjust in the mass balance check below
     cumulative_pf_ch4 += rh_fpa_ch4_flux.value(U_PGC);
-    
+
     // Permafrost thaw and refreeze
     if (!in_spinup) {
       // We pass in the annual fluxes here, because want annual thaw and
@@ -547,7 +547,7 @@ void SimpleNbox::stashCValues(double t, const double c[]) {
   }
   // Add in C that has exited the system via thawed permafrost CH4 release
   sum += cumulative_pf_ch4;
-  
+
   const double diff = fabs(sum - masstot);
   H_LOG(logger, Logger::DEBUG) << "masstot = " << masstot << ", sum = " << sum
                                << ", diff = " << diff << std::endl;
@@ -744,7 +744,7 @@ SimpleNbox::compute_pf_thaw_refreeze(string biome, fluxpool rh_co2,
                                      fluxpool rh_ch4) const {
 
   H_ASSERT(!in_spinup, "We should not be here!");
-  
+
   double biome_c_thaw =
       permafrost_c.at(biome).value(U_PGC) * f_new_thaw.at(biome);
   double pf_refreeze_tp = 0.0;
@@ -862,7 +862,7 @@ int SimpleNbox::calcderivs(double t, const double c[], double dcdt[]) const {
       pf_refreeze_tp =
           pf_refreeze_tp + fluxpool(biome_pf_refreeze_tp, U_PGC_YR);
       pf_refreeze_soil =
-          pf_refreeze_tp + fluxpool(biome_pf_refreeze_soil, U_PGC_YR);
+        pf_refreeze_soil + fluxpool(biome_pf_refreeze_soil, U_PGC_YR);
     }
   }
 
