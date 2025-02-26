@@ -1,0 +1,41 @@
+name: Commandline build and Cpp unit tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - '**'
+  schedule:
+    - cron: '0 6 1 * *' # Run at 6 AM on the 1st of each month
+  workflow_dispatch:  # Allows manual triggering for PR tests
+
+jobs:
+  scheduled-job:
+    if: github.ref == 'refs/heads/main'  # Ensures the scheduled run only triggers on main
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt install -y libboost-dev
+      - name: Build and run
+        run: |
+          make hector
+          bash ./test_hector.sh ./src/hector
+
+  unit-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt install -y libgtest-dev libboost-filesystem-dev libboost-system-dev
+          cd /usr/src/gtest && sudo cmake CMakeLists.txt && sudo make && sudo cp lib/*.a /usr/local/lib
+      - name: Build and run unit tests
+        run: |
+          make testing
+          ./src/unit-testing/hector-unit-tests
