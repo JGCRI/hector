@@ -21,8 +21,17 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y pandoc
 
+      - name: Cache R Packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.local/share/R/  # Default library path for R on Ubuntu
+          key: r-packages-${{ runner.os }}-${{ hashFiles('**/DESCRIPTION') }}
+          restore-keys: |
+            r-packages-${{ runner.os }}-
+
       - name: Install R Packages
-        run: R -e 'install.packages(c("rmarkdown", "ggplot2", "here", "knitr", "kableExtra"))'
+        run: |
+          Rscript -e 'packages <- c("rmarkdown", "ggplot2", "here", "knitr", "kableExtra", "dplyr"); new_packages <- packages[!(packages %in% installed.packages()[,"Package"])]; if(length(new_packages)) install.packages(new_packages)'
 
       - name: Render RMarkdown
         run: R -e 'rmarkdown::render("./scripts/leeyabot.Rmd", run_pandoc = FALSE)'
@@ -34,4 +43,3 @@ jobs:
           git add report.md
           git commit -m "Automated report update [skip ci]" || echo "No changes to commit"
           git push origin HEAD:${{ github.head_ref }}
-
