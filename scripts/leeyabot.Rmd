@@ -1,0 +1,501 @@
+---
+title: "Leeyabot report!"
+date: "`r Sys.Date()`"
+---
+
+
+```{r, include=FALSE}
+# This is the leeyabot Rmarkdown, a workflow that looks for differences in a developmental version 
+# typically associated with a GitHub PR. 
+
+# It can be run by the `leeyabot.yml` GitHub Action workflow, note that you will need to manually trigger this 
+# workflow from GitHub for a PR, where only key results/figures will be posted as part of the PR. For a more detailed report knit the markdown on your local machine. 
+
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, out.width='80%', fig.align='center', class='center')
+```
+
+
+```{r}
+# Load packages these will need to be read in the leeybot ymal! 
+library(dplyr)
+library(ggplot2)
+library(hector)
+library(here)
+library(knitr)
+library(kableExtra)
+```
+
+
+```{r}
+# Set root directory
+BASE_DIR <- here()
+
+# Variables of interest
+vars <- c(CONCENTRATIONS_CO2(), RF_TOTAL(), RF_CO2(), GLOBAL_TAS())
+
+
+# Set global plotting themes 
+theme_set(theme_bw())
+
+# Boolean to control if figures should be printed out or not 
+PRINT_FIGS <- FALSE
+
+```
+
+
+```{r}
+# Read in the comparison data from the oldnew test 
+# Read in comp-data
+file.path(BASE_DIR, "tests", "testthat", "compdata", "hector_comp.csv") %>% 
+    read.csv %>% 
+    filter(variable %in% vars) -> 
+    oldnew_data
+
+# Save oldnew version and commit tag 
+oldnew_vrsn <- unique(oldnew_data$version)
+oldnew_commit <- unique(oldnew_data$commit)
+
+
+# Read in the comparison data associated with the official releases minted on Zenodo
+read.csv("https://zenodo.org/records/13286176/files/leeyabot-data.csv?download=1") %>% 
+    filter(variable %in% vars) -> 
+    zenodo_data
+
+#TODO eventually we will probably need the ability to determine what the most recent 
+# release version is since the zenodo archive might include results from multiple 
+zenodo_data %>% 
+    filter(version ==  "3.2.0") -> 
+    release_data
+
+# Save oldnew version and commit tag 
+release_vrsn <- unique(release_data$version)
+release_commit <- unique(release_data$commit)
+
+```
+
+Hello, this is `Leeyabot`! I look for differences between the this "dev" version of Hector and make some standard diagnostic plots. I specifically compare this version of Hector with 
+
+* **old-new** test data -  `r oldnew_vrsn` (commit `r oldnew_commit`) 
+* **previous release** data - `r release_vrsn` (commit `r release_commit`)
+
+
+```{r}
+# Define helper functions used in multiple places throughout the Leeyabot script. 
+
+# Run Hector for the standard ssp scenarios
+# Args 
+#   inis: complete path to the ini files 
+#   stryr: int the first year of values returned in the output
+#   endyr: int the final year of values returned in the output
+#   vars: chr vector of Hector variables to be included in the output
+# Returns: data.frame of Hector output results from multiple scenarios
+run_hector <- function(inis, stryr, endyr, vars){
+    
+    lapply(inis, function(scn_ini) {
+        
+        # Set up Hector core 
+        hc <- newcore(inifile = scn_ini, name = basename(scn_ini))
+        run(hc, endyr)
+        
+        # Fetch and format Hector results. 
+        fetchvars(hc, vars = vars, dates = stryr:endyr) %>%
+            mutate(version = "dev") %>% 
+            filter(year %in% stryr:endyr) 
+    }) %>%
+        do.call(what = "rbind") -> 
+        out 
+    
+    return(out)
+    
+}
+
+
+
+
+# Summarize the differences by scenario and variable
+# Args 
+#   df: wide data.frame of "dev values" to be compared with the original "values"
+#   returns: data.frame 
+get_summary_diff <- function(df){
+    # Quick check to make sure the input df contains the correct information
+    req_names <- c("scenario", "var_units", "dev_value", "value")
+    stopifnot(all(req_names %in% names(df)))
+    stopifnot(any(!is.na(df)))
+    
+    
+    # For each of the scenarios run a regression and compute the RMSE and NRMSE. 
+    split(df, interaction(df$scenario, df$var_units, drop = TRUE)) %>% 
+        lapply(function(x){
+            
+            # Quick linear regression 
+            fit <- lm(data = x, dev_value ~ value)
+            
+            # Get summary stats from the fit when there is 
+            # a perfect fit, ie no change in output behavior a 
+            # warning may be thrown, silence it. 
+            suppressWarnings({
+                Rsqrd <- summary(fit)[["r.squared"]]
+                resid <- summary(fit)[["residuals"]]
+            })
+
+            RMSE <- sqrt(mean(resid^2))
+            
+            # The mean of the comparison data to normalize RMSE
+            var_mean <- mean(x$value)
+            
+            table <- data.frame(
+                "scenario" = unique(x$scenario), 
+                "variable" = unique(x$var_units),
+                "R squared" = Rsqrd, 
+                "RMSE" = RMSE, 
+                "NRMSE" = RMSE/var_mean)
+            return(table)
+        }) %>% 
+        bind_rows -> 
+        out
+    
+    return(out)
+    
+}
+
+```
+
+
+# Previous Dev Version Comparison
+
+The **old-new** test data is used in the R testthat unit tests to verify that recent model development has not introduced changes to Hector's output. Here, we generate standard diagnostic plots to identify any changes in model behavior. Depending on the nature of the development, custom comparison plots may also be useful.
+
+```{r}
+# Run all the scenarios included in the old-new test data set. 
+stryr <- min(oldnew_data$year)
+endyr <- max(oldnew_data$year)
+
+inis <- file.path(BASE_DIR, "inst", "input", unique(oldnew_data$scenario)) 
+dev_data <- run_hector(inis = inis, stryr = stryr, endyr = endyr, vars =  vars)
+```
+    
+    
+    
+    
+```{r}
+# Compute the difference between Hector results, if there are substantial differences 
+# diagnostic plots will be produced, otherwise the summary table will indicate
+# that the results are the same. 
+dev_data %>%  
+    select(scenario, year, variable, dev_value = value) %>% 
+    inner_join(oldnew_data, by = join_by(scenario, year, variable)) %>% 
+    mutate(dif = dev_value - value) %>% 
+    mutate(scenario = gsub(replacement = "", pattern = "hector_|.ini", x = scenario)) %>%  
+    mutate(var_units = paste0(variable, " (", units, ")")) -> 
+    comp_data
+
+# If there are no differences in outputs, do nothing
+# Otherwise, run summary table and graph code
+tolerance <- 1e-7 
+SAME <- all(abs(comp_data$dif) <= tolerance)  
+
+if (SAME) {
+    msg <- paste0("The current pull request's outputs do not differ from the old-new version of Hector ", 
+                  oldnew_vrsn, ", ", oldnew_commit, sep = "")
+} else {
+    msg <- paste0("The current pull request's outputs differ from ", 
+        oldnew_vrsn, ", ", oldnew_commit, " as follows:", sep = "")  
+}
+cat(msg)
+```
+
+
+This summary table indicates the $R^2$,  root mean squared error (RMSE), and normalized RMSE (NRMSE) for each variable and scenario. An $R^2$ of 1 and NRMSE of 0 indicate that the Hector results are identical to the previous developmental version of Hector. 
+
+
+```{r}
+# Quantify the difference between Hector results per scenario and variable.  
+summary_table <- get_summary_diff(comp_data)
+
+kable(summary_table, digits = 3, 
+             format.args = list(scientific = TRUE), format = "html") %>%
+  kable_styling(full_width = FALSE)
+
+```
+
+
+
+## Diagnostic Plots
+
+
+```{r}
+# Quick plot of the output 
+ggplot(comp_data) +
+    geom_line(aes(year, value, 
+                  linetype = "old-new data"), color = "grey", linewidth = 1)  + 
+    geom_line(aes(year, dev_value, linetype = "dev", 
+                  color = scenario), linewidth = 1)  +
+    facet_wrap(~var_units, scales = "free") + 
+    scale_linetype_manual(values = c("old-new data" = 1, "dev" = 2)) + 
+    scale_color_viridis_d() + 
+    labs(title = "Dev Hector vs. old-new results", y = NULL, x = NULL, linetype = "Hector Version") -> 
+    rslts1 ; rslts1
+```
+
+```{r}
+# Plot the differences over time
+ggplot(comp_data, aes(year, dif, color = scenario)) +
+    geom_hline(yintercept = 0, alpha = 0.5) +
+    geom_line() +
+    facet_wrap(~var_units, scales = "free") +
+    scale_color_viridis_d() +
+    ggtitle("Differences between dev Hector and old-new testing data") +
+    labs(x = "Year", y = "Difference in value")-> 
+    diff_time1; diff_time1
+```
+
+
+```{r}
+# Box plot of differences per scenario & variable
+ggplot(comp_data, aes(variable, dif, fill = scenario)) +
+    geom_boxplot(alpha = 0.4) +
+    facet_wrap(~var_units, scales = "free") +
+    scale_fill_viridis_d() +
+    ggtitle("Differences between dev Hector and old-new testing data") +
+    labs(x = "Variable", y = "Difference in value", col = "Units") +
+    theme_bw() -> 
+    boxplot1; boxplot1
+```
+
+
+```{r}
+# TODO need to figure out what is the best way to handle writing out the png files... if 
+# it makes sense to always write them out or it if only when in a certain mode... I 
+# guess it will depend on how we want to include the Leeyabot reporting on the PR
+# I could see a world where the TRUE part is determined by if not SAME or by 
+# a boolean at the beginning of the document that says SAVE
+if(TRUE){
+    ggsave(filename = "./figs/01_rslts.png", plot = rslts1, height = 6, width = 9)
+    ggsave(filename = "./figs/01_diff_time.png", plot = diff_time1, height = 6, width = 9)
+    ggsave(filename = "./figs/01_boxplot.png", plot = boxplot1, height = 6, width = 9)
+}
+```
+
+
+```{r}
+# Clean up to avoid confusion 
+remove(dev_data, oldnew_data)
+```
+
+# Release Version with Comparison
+
+In the remainder of the document we compare this version of Hector, the **dev** version with the minted results from Hector `r release_vrsn` the most recent major release. There are two different sets of experiments to be considered here - idealized and multiforcing scenarios. The summary table will contain results from both types of experiments while the diagnostic plots will consider them separately. 
+
+
+```{r}
+# Prepare the multiforcing comparison data. 
+zenodo_scns <- unique(release_data$scenario)
+multiforcing_scns <- zenodo_scns[grepl(pattern = "ssp", x = zenodo_scns)]
+idealized_scns <- setdiff(zenodo_scns, multiforcing_scns)
+
+release_data %>% 
+    filter(scenario %in% multiforcing_scns) -> 
+    multiforing_data
+
+release_data %>% 
+    filter(scenario %in% idealized_scns) -> 
+    idealized_data
+```
+
+```{r}
+# Run Hector with all the multiforcing scenarios 
+inis <- file.path(BASE_DIR, "inst", "input", paste0("hector_", multiforcing_scns, ".ini")) 
+run_hector(inis = inis, 
+           stryr = min(multiforing_data$year), 
+           endyr = max(multiforing_data$year), 
+           vars =  unique(multiforing_data$variable)) %>% 
+    mutate(scenario = gsub(replacement = "", pattern = "hector_|.ini", x = scenario)) -> 
+    dev_mf_data
+```
+
+
+```{r}
+# Run Hector with the idealized scenarios
+yrs_to_keep <- unique(idealized_data$year)
+vars_to_keep <- unique(idealized_data$variable)
+
+# Run the idealized experiment with the current version of Hector. 
+# Extract the CO2 concentrations to drive the pi-control. 
+idealized_data %>% 
+    filter(variable == CONCENTRATIONS_CO2()) %>% 
+    split(., .$scenario) -> 
+    idealized_co2
+
+lapply(idealized_co2, function(input_df){
+    
+    # Set up the ini and read in the concentration constraint 
+    ini <- file.path(BASE_DIR, "inst", "input", "hector_picontrol.ini")
+    core <- newcore(ini, name = unique(input_df$scenario))
+    setvar(core, dates = input_df$year, var = CO2_CONSTRAIN(), values = input_df$value, unit = getunits(CO2_CONSTRAIN()))
+    reset(core)
+    
+    # Run Hector 
+    run(core)
+    
+    # Fetch the results!
+    out <- fetchvars(core, dates = yrs_to_keep, vars = vars_to_keep)
+    return(out)
+    
+}) %>% 
+    do.call(what = "rbind") %>% 
+    mutate(version = "dev") -> 
+    dev_idealized_df
+```
+
+```{r}
+# Compare the dev results with the release data. 
+dev_idealized_df %>% 
+    rbind(dev_mf_data) %>% 
+    select(scenario, year, variable, dev_value = value) %>% 
+    inner_join(release_data, by = join_by(scenario, year, variable)) %>% 
+    mutate(dif = dev_value - value) %>% 
+    mutate(var_units = paste0(variable, " (", units, ")")) -> 
+    comp_data
+```
+
+```{r}
+
+tolerance <- 1e-7 
+SAME <- all(abs(comp_data$dif) <= tolerance)  
+
+if (SAME) {
+    msg <- paste0("The current pull request's outputs do not differ from the old-new version of Hector ", 
+                  oldnew_vrsn, ", ", oldnew_commit, sep = "")
+} else {
+    msg <- paste0("The current pull request's outputs differ from ", 
+        oldnew_vrsn, ", ", oldnew_commit, " as follows:", sep = "")  
+}
+cat(msg)
+
+
+
+```
+
+
+```{r}
+# Quantify the difference between Hector results per scenario and variable.  
+mf_summary_table <- get_summary_diff(comp_data)
+
+kable(mf_summary_table, digits = 3, 
+             format.args = list(scientific = TRUE), format = "html") %>%
+  kable_styling(full_width = FALSE)
+```
+
+
+
+## Idealized Experiments Diagnostic Plots
+
+
+```{r}
+comp_data %>% 
+    filter(scenario %in% idealized_scns) -> 
+    comp_data_ideal
+
+
+# Quick plot of the output 
+ggplot(comp_data_ideal) +
+    geom_line(aes(year, value, 
+                  linetype = "old-new data", group = scenario), color = "grey", linewidth = 1)  + 
+    geom_line(aes(year, dev_value, linetype = "dev", 
+                  color = scenario), linewidth = 1)  +
+    facet_wrap(~var_units, scales = "free", ncol=1) + 
+    scale_linetype_manual(values = c("old-new data" = 1, "dev" = 2)) + 
+    scale_color_viridis_d() + 
+    labs(title = "Dev Hector vs. old-new results", y = NULL, x = NULL, linetype = "Hector Version") -> 
+    rslts1 ; rslts1
+```
+
+```{r}
+# Plot the differences over time
+ggplot(comp_data, aes(year, dif, color = scenario)) +
+    geom_hline(yintercept = 0, alpha = 0.5) +
+    geom_line() +
+    facet_wrap(~var_units, scales = "free", ncol=1) +
+    scale_color_viridis_d() +
+    ggtitle("Differences between dev Hector and old-new testing data") +
+    labs(x = "Year", y = "Difference in value")-> 
+    diff_time1; diff_time1
+```
+
+
+```{r}
+# Box plot of differences per scenario & variable
+ggplot(comp_data, aes(variable, dif, fill = scenario)) +
+    geom_boxplot(alpha = 0.4) +
+    facet_wrap(~var_units, scales = "free", ncol=1) +
+    scale_fill_viridis_d() +
+    ggtitle("Differences between dev Hector and old-new testing data") +
+    labs(x = "Variable", y = "Difference in value", col = "Units") +
+    theme_bw() -> 
+    boxplot1; boxplot1
+```
+
+## Multiforing Experiments Diagnostic Plots
+
+
+```{r}
+comp_data %>% 
+    filter(!scenario %in% idealized_scns) -> 
+    comp_data_mf
+
+# Quick plot of the output 
+ggplot(comp_data_mf) +
+    geom_line(aes(year, value, 
+                  linetype = "old-new data", group = scenario), color = "grey", linewidth = 1)  + 
+    geom_line(aes(year, dev_value, linetype = "dev", 
+                  color = scenario), linewidth = 1)  +
+    facet_wrap(~var_units, scales = "free", ncol=1) + 
+    scale_linetype_manual(values = c("old-new data" = 1, "dev" = 2)) + 
+    scale_color_viridis_d() + 
+    labs(title = "Dev Hector vs. old-new results", y = NULL, x = NULL, linetype = "Hector Version") -> 
+    rslts2 ; rslts2
+```
+
+```{r}
+# Plot the differences over time
+ggplot(comp_data_mf, aes(year, dif, color = scenario)) +
+    geom_hline(yintercept = 0, alpha = 0.5) +
+    geom_line() +
+    facet_wrap(~var_units, scales = "free", ncol =1) +
+    scale_color_viridis_d() +
+    ggtitle("Differences between dev Hector and old-new testing data") +
+    labs(x = "Year", y = "Difference in value")-> 
+    diff_time2; diff_time2
+```
+
+
+```{r}
+# Box plot of differences per scenario & variable
+ggplot(comp_data_mf, aes(variable, dif, fill = scenario)) +
+    geom_boxplot(alpha = 0.4) +
+    facet_wrap(~var_units, scales = "free", ncol = 1) +
+    scale_fill_viridis_d() +
+    ggtitle("Differences between dev Hector and old-new testing data") +
+    labs(x = "Variable", y = "Difference in value", col = "Units") +
+    theme_bw() -> 
+    boxplot2; boxplot2
+```
+
+
+```{r}
+# TODO need to figure out what is the best way to handle writing out the png files... if 
+# it makes sense to always write them out or it if only when in a certain mode... I 
+# guess it will depend on how we want to include the Leeyabot reporting on the PR
+# I could see a world where the TRUE part is determined by if not SAME or by 
+# a boolean at the beginning of the document that says SAVE
+if(PRINT_FIGS){
+    dir.create("figs", showWarnings = FALSE)
+    ggsave(filename = "./figs/02_rslts_idealized.png", plot = rslts1, height = 6, width = 9)
+    ggsave(filename = "./figs/02_diff_time_idealized.png", plot = diff_time1, height = 6, width = 9)
+    ggsave(filename = "./figs/02_boxplot_idealized.png", plot = boxplot1, height = 6, width = 9)
+    ggsave(filename = "./figs/02_rslts_mf.png", plot = rslts1, height = 6, width = 9)
+    ggsave(filename = "./figs/02_diff_time_mf.png", plot = diff_time1, height = 6, width = 9)
+    ggsave(filename = "./figs/02_boxplot_mf.png", plot = boxplot1, height = 6, width = 9)
+}
+```
+

@@ -1,0 +1,32 @@
+name: Leeyabot Report
+
+on:
+  workflow_dispatch:  # Allows manual triggering from GitHub UI
+  pull_request:
+    paths:
+      - "scripts/leeyabot.Rmd"  # Runs when report.Rmd changes in a PR
+
+jobs:
+  render-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup R
+        uses: r-lib/actions/setup-r@v2
+
+      - name: Install R Packages
+        run: R -e 'install.packages(c("rmarkdown", "ggplot2", "here", "knitr", "kableExtra"))'
+
+      - name: Render RMarkdown
+        run: R -e 'rmarkdown::render("./scripts/leeyabot.Rmd")'
+
+      - name: Commit and Push Report
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add report.md
+          git commit -m "Automated report update [skip ci]" || echo "No changes to commit"
+          git push origin HEAD:${{ github.head_ref }}
+
