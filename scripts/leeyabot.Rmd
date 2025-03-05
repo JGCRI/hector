@@ -22,7 +22,6 @@ library(ggplot2)
 library(hector)
 library(here)
 library(knitr)
-library(kableExtra)
 ```
 
 
@@ -213,8 +212,7 @@ This summary table indicates the $R^2$,  root mean squared error (RMSE), and nor
 summary_table <- get_summary_diff(comp_data)
 
 kable(summary_table, digits = 3, 
-             format.args = list(scientific = TRUE), format = "html") %>%
-  kable_styling(full_width = FALSE)
+             format.args = list(scientific = TRUE), format = "html") 
 
 ```
 
@@ -382,8 +380,7 @@ cat(msg)
 mf_summary_table <- get_summary_diff(comp_data)
 
 kable(mf_summary_table, digits = 3, 
-             format.args = list(scientific = TRUE), format = "html") %>%
-  kable_styling(full_width = FALSE)
+             format.args = list(scientific = TRUE), format = "html")
 ```
 
 
