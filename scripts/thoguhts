@@ -1,0 +1,39 @@
+name: Render & Push Report
+
+on:
+  pull_request:
+    types: [opened, synchronize]  # Runs when a PR is opened or updated
+
+jobs:
+  render-report:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the PR branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: Install R and dependencies
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '4.2.0'  # Change to match your R version
+
+      - name: Install R packages
+        run: |
+          Rscript -e 'install.packages(c("rmarkdown", "knitr", "ggplot2"))'
+
+      - name: Render RMarkdown report
+        run: |
+          Rscript -e 'rmarkdown::render("report.Rmd", output_format = "github_document")'
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Commit and push report
+        run: |
+          git add report.md
+          git commit -m "Auto-update report for PR #${{ github.event.pull_request.number }}" || echo "No changes to commit"
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}

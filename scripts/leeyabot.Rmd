@@ -262,20 +262,6 @@ ggplot(comp_data, aes(variable, dif, fill = scenario)) +
 
 
 ```{r}
-# TODO need to figure out what is the best way to handle writing out the png files... if 
-# it makes sense to always write them out or it if only when in a certain mode... I 
-# guess it will depend on how we want to include the Leeyabot reporting on the PR
-# I could see a world where the TRUE part is determined by if not SAME or by 
-# a boolean at the beginning of the document that says SAVE
-if(TRUE){
-    ggsave(filename = "./figs/01_rslts.png", plot = rslts1, height = 6, width = 9)
-    ggsave(filename = "./figs/01_diff_time.png", plot = diff_time1, height = 6, width = 9)
-    ggsave(filename = "./figs/01_boxplot.png", plot = boxplot1, height = 6, width = 9)
-}
-```
-
-
-```{r}
 # Clean up to avoid confusion 
 remove(dev_data, oldnew_data)
 ```
@@ -487,12 +473,12 @@ ggplot(comp_data_mf, aes(variable, dif, fill = scenario)) +
 # a boolean at the beginning of the document that says SAVE
 if(PRINT_FIGS){
     dir.create("figs", showWarnings = FALSE)
-    ggsave(filename = "./figs/02_rslts_idealized.png", plot = rslts1, height = 6, width = 9)
-    ggsave(filename = "./figs/02_diff_time_idealized.png", plot = diff_time1, height = 6, width = 9)
-    ggsave(filename = "./figs/02_boxplot_idealized.png", plot = boxplot1, height = 6, width = 9)
-    ggsave(filename = "./figs/02_rslts_mf.png", plot = rslts1, height = 6, width = 9)
-    ggsave(filename = "./figs/02_diff_time_mf.png", plot = diff_time1, height = 6, width = 9)
-    ggsave(filename = "./figs/02_boxplot_mf.png", plot = boxplot1, height = 6, width = 9)
+    ggsave(filename = "./figs/02_rslts_idealized.png", plot = rslts1, height = 6, width = 9, create.dir = TRUE)
+    ggsave(filename = "./figs/02_diff_time_idealized.png", plot = diff_time1, height = 6, width = 9, create.dir = TRUE)
+    ggsave(filename = "./figs/02_boxplot_idealized.png", plot = boxplot1, height = 6, width = 9, create.dir = TRUE)
+    ggsave(filename = "./figs/02_rslts_mf.png", plot = rslts1, height = 6, width = 9, create.dir = TRUE)
+    ggsave(filename = "./figs/02_diff_time_mf.png", plot = diff_time1, height = 6, width = 9, create.dir = TRUE)
+    ggsave(filename = "./figs/02_boxplot_mf.png", plot = boxplot1, height = 6, width = 9, create.dir = TRUE)
 }
 ```
 
