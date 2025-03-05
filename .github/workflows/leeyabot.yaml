@@ -30,11 +30,12 @@ jobs:
           restore-keys: |
             r-packages-${{ runner.os }}-
 
-      - name: Install R Packages
+      - name: Install dependencies
+        env:
+          GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          packages <- c("rmarkdown", "ggplot2", "here", "knitr", "kableExtra", "dplyr", "Rcpp", "BH")
-          new_packages <- packages[!(packages %in% installed.packages()[,"Package"])]
-          if(length(new_packages)) install.packages(new_packages)
+          install.packages(c("ggplot2", "rmarkdown", "dplyr", "remotes", "here", "knitr", "kableExtra", "Rcpp", "BH")
+          remotes::install_deps(dependencies = TRUE)
         shell: Rscript {0}
 
       - name: Install package
