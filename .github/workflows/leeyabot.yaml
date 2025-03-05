@@ -1,45 +1,55 @@
 name: Leeyabot Report
 
 on:
-  workflow_dispatch:  # Allows manual triggering from GitHub UI
   pull_request:
-    paths:
-      - "scripts/leeyabot.Rmd"  # Runs when report.Rmd changes in a PR
+    branches:
+      - '**' # matches every branch
 
 jobs:
-  render-and-push:
+  run:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-
-      - name: Setup R
-        uses: r-lib/actions/setup-r@v2
-
-      - name: Install System Dependencies (including Pandoc)
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y pandoc
-
-      - name: Cache R Packages
-        uses: actions/cache@v3
+      - uses: actions/checkout@v3
+      - uses: iterative/setup-cml@v1
+      - uses: r-lib/actions/setup-r@v2
         with:
-          path: ~/.local/share/R/  # Default library path for R on Ubuntu
-          key: r-packages-${{ runner.os }}-${{ hashFiles('**/DESCRIPTION') }}
-          restore-keys: |
-            r-packages-${{ runner.os }}-
+          r-version: 'release'
 
-      - name: Install R Packages
+      - name: Install libcurl
+        run: sudo apt-get install libcurl4-openssl-dev
+
+      - name: Install dependencies
+        env:
+          GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          Rscript -e 'packages <- c("rmarkdown", "ggplot2", "here", "knitr", "kableExtra", "dplyr"); new_packages <- packages[!(packages %in% installed.packages()[,"Package"])]; if(length(new_packages)) install.packages(new_packages)'
+          install.packages(c("ggplot2", "rmarkdown", "dplyr", "remotes", "here"))
+          remotes::install_deps(dependencies = TRUE)
+        shell: Rscript {0}
 
-      - name: Render RMarkdown
-        run: R -e 'rmarkdown::render("./scripts/leeyabot.Rmd", run_pandoc = FALSE)'
+      - name: Install package
+        run: R CMD INSTALL .
 
-      - name: Commit and Push Report
+      - name: Generate report
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add report.md
-          git commit -m "Automated report update [skip ci]" || echo "No changes to commit"
-          git push origin HEAD:${{ github.head_ref }}
+          rmarkdown::render("./scripts/leeyabot.Rmd", run_pandoc = FALSE)
+        shell: Rscript {0}
+
+      - name: Post comment
+        env:
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+            # Post reports as comments in GitHub PRs
+            cd scripts/figs
+            if [ -f "01_rslts.png" ]
+            then
+                cat leeyabot.knit.md >> report.md
+                echo "![](./01_rslts.png)" >> report.md
+                echo "![](./01_diff_time.png)" >> report.md
+            elif [ -f "same_plot.png" ]
+            then
+                cat leeyabot.knit.md >> report.md
+            else
+                cat leeyabot.knit.md >> report.md
+                echo "leeyabot down :(" > report.md
+            fi
+            cml comment create report.md
