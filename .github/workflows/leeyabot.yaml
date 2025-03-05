@@ -34,7 +34,7 @@ jobs:
         env:
           GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          install.packages(c("ggplot2", "rmarkdown", "dplyr", "remotes", "here", "knitr", "kableExtra", "Rcpp", "BH")
+          install.packages(c("ggplot2", "rmarkdown", "dplyr", "remotes", "here", "knitr", "kableExtra", "Rcpp", "BH"))
           remotes::install_deps(dependencies = TRUE)
         shell: Rscript {0}
 
