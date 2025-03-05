@@ -31,7 +31,13 @@ jobs:
 
       - name: Install R Packages
         run: |
-          Rscript -e 'packages <- c("rmarkdown", "ggplot2", "here", "knitr", "kableExtra", "dplyr"); new_packages <- packages[!(packages %in% installed.packages()[,"Package"])]; if(length(new_packages)) install.packages(new_packages)'
+          packages <- c("rmarkdown", "ggplot2", "here", "knitr", "kableExtra", "dplyr")
+          new_packages <- packages[!(packages %in% installed.packages()[,"Package"])]
+          if(length(new_packages)) install.packages(new_packages)
+        shell: Rscript {0}
+
+      - name: Install package
+        run: R CMD INSTALL .
 
       - name: Render RMarkdown
         run: R -e 'rmarkdown::render("./scripts/leeyabot.Rmd", run_pandoc = FALSE)'
