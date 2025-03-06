@@ -46,17 +46,13 @@ jobs:
         run: R -e 'rmarkdown::render("scripts/leeyabot.Rmd", output_format="github_document")'
 
       - name: Comment Report on PR
-        uses: peter-evans/create-or-update-comment@v3
-        with:
-            issue-number: ${{ github.event.pull_request.number }}
-            body: |
-                :bar_chart: **Leeyabot Report Generated** :robot:
+        run: |
+            echo ":bar_chart: **Leeyabot Report Generated** :robot:" >> comment.txt
+            echo "" >> comment.txt
+            echo "Here is the latest automated report:" >> comment.txt
+            echo "" >> comment.txt
+            cat scripts/leeyabot.md >> comment.txt  # Append the report contents
+            gh pr comment ${{ github.event.pull_request.number }} --body-file comment.txt
+        env:
+            GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-                Here is the latest automated report:
-
-                ```
-                 $(cat scripts/leeyabot.md)
-                ```
-
-                :chart_with_upwards_trend: *Figures generated are available in the PR.*
-            reactions: "+1"
