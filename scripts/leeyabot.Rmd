@@ -212,7 +212,7 @@ This summary table indicates the $R^2$,  root mean squared error (RMSE), and nor
 summary_table <- get_summary_diff(comp_data)
 
 kable(summary_table, digits = 3, 
-             format.args = list(scientific = TRUE), format = "html") 
+             format.args = list(scientific = TRUE), format = "markdown") 
 
 ```
 
@@ -279,7 +279,7 @@ idealized_scns <- setdiff(zenodo_scns, multiforcing_scns)
 
 release_data %>% 
     filter(scenario %in% multiforcing_scns) -> 
-    multiforing_data
+    multiforcing_data
 
 release_data %>% 
     filter(scenario %in% idealized_scns) -> 
@@ -290,9 +290,9 @@ release_data %>%
 # Run Hector with all the multiforcing scenarios 
 inis <- file.path(BASE_DIR, "inst", "input", paste0("hector_", multiforcing_scns, ".ini")) 
 run_hector(inis = inis, 
-           stryr = min(multiforing_data$year), 
-           endyr = max(multiforing_data$year), 
-           vars =  unique(multiforing_data$variable)) %>% 
+           stryr = min(multiforcing_data$year), 
+           endyr = max(multiforcing_data$year), 
+           vars =  unique(multiforcing_data$variable)) %>% 
     mutate(scenario = gsub(replacement = "", pattern = "hector_|.ini", x = scenario)) -> 
     dev_mf_data
 ```
@@ -418,7 +418,7 @@ ggplot(comp_data, aes(variable, dif, fill = scenario)) +
     boxplot1; boxplot1
 ```
 
-## Multiforing Experiments Diagnostic Plots
+## Multiforcing Experiments Diagnostic Plots
 
 
 ```{r}
