@@ -45,7 +45,7 @@ jobs:
       - name: Render RMarkdown
         run: R -e 'rmarkdown::render("scripts/leeyabot.Rmd", output_format="github_document")'
 
-       - name: Comment on PR with Report
+      - name: Comment on PR with Report
         uses: actions/github-script@v7
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
