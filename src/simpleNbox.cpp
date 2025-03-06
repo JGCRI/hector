@@ -685,6 +685,9 @@ unitval SimpleNbox::getData(const std::string &varName, const double date) {
   } else if (varNameParsed == D_RH) {
     returnval =
         sum_fluxpool_biome_ts(varName, date, biome, final_rh, final_rh_tv);
+  } else if (varNameParsed == D_RH_DETRITUS) {
+      returnval =
+        sum_fluxpool_biome_ts(varName, date, biome, final_rh_detritus, final_rh_detritus_tv);
   } else if (varNameParsed == D_RH_CH4) {
     returnval = sum_fluxpool_biome_ts(varName, date, biome, RH_ch4, RH_ch4_tv);
   } else {
@@ -709,6 +712,7 @@ void SimpleNbox::reset(double time) {
   thawed_permafrost_c = thawed_permafrost_c_tv.get(time);
   final_npp = final_npp_tv.get(time);
   final_rh = final_rh_tv.get(time);
+  final_rh_detritus = final_rh_detritus_tv.get(time);
   RH_thawed_permafrost = RH_thawed_permafrost_tv.get(time);
   RH_ch4 = RH_ch4_tv.get(time);
 

@@ -1128,6 +1128,11 @@ String NPP() { return D_NPP; }
 // [[Rcpp::export]]
 String RH() { return D_RH; }
 
+//' @rdname carboncycle
+ //' @export
+ // [[Rcpp::export]]
+ String RH_DETRITU() { return D_RH_DETRITUS; }
+
 //' @describeIn parameters Preindustrial CO2 concentration (\code{"ppmv CO2"})
 //' @export
 // [[Rcpp::export]]
