@@ -21,6 +21,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y pandoc
           sudo apt-get install libcurl4-openssl-dev
+          sudo apt-get install -y libjs-mathjax
 
       - name: Cache R Packages
         uses: actions/cache@v3
