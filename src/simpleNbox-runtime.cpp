@@ -442,6 +442,7 @@ void SimpleNbox::stashCValues(double t, const double c[]) {
 
     final_rh[biome] =
         rh_fda_adj + rh_fsa_adj + rh_ftpa_co2_adj + rh_ftpa_ch4_adj; // per year
+    final_rh_detritus[biome] = rh_fda_adj;
     // Note that the following fluxes are weighted by 'yf' (year fraction)
     fluxpool rh_fda_flux =
         yf * detritus_c[biome].flux_from_fluxpool(rh_fda_adj);
@@ -477,6 +478,8 @@ void SimpleNbox::stashCValues(double t, const double c[]) {
     // simpleNbox's point of view). In order not to trigger a mass balance
     // issue, we track it and adjust in the mass balance check below
     cumulative_pf_ch4 += rh_fpa_ch4_flux.value(U_PGC);
+    //final_rh_detritus[biome] = rh_fda_flux; I don't think this is the right one but woudl like to confirm... 
+
 
     // Permafrost thaw and refreeze
     if (!in_spinup) {
