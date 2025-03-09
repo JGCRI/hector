@@ -174,6 +174,7 @@ void CSVOutputStreamVisitor::visit(SimpleNbox *c) {
   STREAM_UNITVAL(csvFile, c, D_NPP, c->final_npp[SNBOX_DEFAULT_BIOME]);
   STREAM_UNITVAL(csvFile, c, D_RH, c->final_rh[SNBOX_DEFAULT_BIOME]);
   STREAM_UNITVAL(csvFile, c, D_RH_DETRITUS, c->final_rh_detritus[SNBOX_DEFAULT_BIOME]);
+  STREAM_UNITVAL(csvFile, c, D_RH_SOIL, c->final_rh_soil[SNBOX_DEFAULT_BIOME]);
   STREAM_UNITVAL(csvFile, c, D_RH_CH4, c->final_rh[SNBOX_DEFAULT_BIOME]);
   STREAM_MESSAGE_DATE(csvFile, c, D_CO2_CONC, current_date);
   STREAM_MESSAGE(csvFile, c, D_ATMOSPHERIC_CO2);
