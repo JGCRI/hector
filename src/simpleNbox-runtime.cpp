@@ -479,9 +479,6 @@ void SimpleNbox::stashCValues(double t, const double c[]) {
     // simpleNbox's point of view). In order not to trigger a mass balance
     // issue, we track it and adjust in the mass balance check below
     cumulative_pf_ch4 += rh_fpa_ch4_flux.value(U_PGC);
-    //final_rh_detritus[biome] = rh_fda_flux; I don't think this is the right one but woudl like to confirm...
-    //final_rh_soil[biome] = rh_fsa_flux; I don't think this is the right one but woudl like to confirm...
-
 
     // Permafrost thaw and refreeze
     if (!in_spinup) {
