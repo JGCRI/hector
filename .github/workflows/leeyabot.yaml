@@ -47,7 +47,7 @@ jobs:
 
       - name: Comment Report on PR
         run: |
-            echo ":bar_chart: **Leeyabot Report Generated** :robot:" >> comment.txt
+            echo ":bar_chart: **Report Generated** :robot:" >> comment.txt
             echo "" >> comment.txt
             echo "Here is the latest automated report:" >> comment.txt
             echo "" >> comment.txt
