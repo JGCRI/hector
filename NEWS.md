@@ -1,3 +1,7 @@
+# hector 3.3.0.9999999
+
+* under development for the H2 integration, increasing the version index though will be ensure that the right version of hector is being run with gcam
+
 # hector 3.2.0 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10698028.svg)](https://doi.org/10.5281/zenodo.10698028)
 
