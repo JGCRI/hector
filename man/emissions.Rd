@@ -7,6 +7,7 @@
 \alias{EMISSIONS_NOX}
 \alias{EMISSIONS_CO}
 \alias{EMISSIONS_NMVOC}
+\alias{EMISSIONS_H2}
 \alias{EMISSIONS_OC}
 \alias{EMISSIONS_NH3}
 \alias{emissions}
@@ -23,6 +24,8 @@ EMISSIONS_NOX()
 EMISSIONS_CO()
 
 EMISSIONS_NMVOC()
+
+EMISSIONS_H2()
 
 EMISSIONS_OC()
 
@@ -45,6 +48,8 @@ type.
 \item \code{EMISSIONS_CO()}: Emissions for carbon monoxide (\code{"Tg CO"})
 
 \item \code{EMISSIONS_NMVOC()}: Emissions for non-methane volatile organic compounds (NMVOC) (\code{"Tg NMVOC"})
+
+\item \code{EMISSIONS_H2()}: Emissions hydrogen gas (\code{"Tg H2"})
 
 \item \code{EMISSIONS_OC()}: Emissions for organic carbon (\code{"Tg"})
 

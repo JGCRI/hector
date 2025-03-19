@@ -950,14 +950,14 @@ String EMISSIONS_CO() { return D_EMISSIONS_CO; }
 String EMISSIONS_NMVOC() { return D_EMISSIONS_NMVOC; }
 
 //' @describeIn emissions Emissions hydrogen gas (\code{"Tg H2"})
- //' @export
- // [[Rcpp::export]]
- String EMISSIONS_H2() { return D_EMISSIONS_H2; }
-
-//' @describeIn oh OH lifetime (\code{"Yr"})
 //' @export
 // [[Rcpp::export]]
-String LIFETIME_OH() { return D_LIFETIME_OH; }
+String EMISSIONS_H2() { return D_EMISSIONS_H2; }
+
+//' @describeIn methane CH4 lifetime with respect to the OH sink (\code{"Yr"})
+//' @export
+// [[Rcpp::export]]
+String CH4_LIFETIME_OH() { return D_LIFETIME_OH; }
 
 /* OC component */
 //' @describeIn emissions Emissions for organic carbon (\code{"Tg"})
@@ -1504,8 +1504,3 @@ String FLUX_INTERIOR() { return D_FLUX_INTERIOR; }
 // [[Rcpp::export]]
 String HEAT_FLUX() { return D_HEAT_FLUX; }
 
-
-//' @describeIn oh coefficient for the h2 emissions
- //' @export
- // [[Rcpp::export]]
- String COEFF_H2() { return D_COEFFICIENT_H2; }
