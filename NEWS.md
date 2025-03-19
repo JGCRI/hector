@@ -4,6 +4,8 @@
 
 # hector 3.2.0 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10698028.svg)](https://doi.org/10.5281/zenodo.10698028)
+
+* Fully documented in Dorheim, K., Gering, S., Gieseke, R., Hartin, C., Pressburger, L., Shiklomanov, A. N., Smith, S. J., Tebaldi, C., Woodard, D. L., and Bond-Lamberty, B.: Hector V3.2.0: functionality and performance of a reduced-complexity climate model, Geosci. Model Dev., 17, 4855–4869, https://doi.org/10.5194/gmd-17-4855-2024, 2024.
 * Correct aerosol forcing coefficients based on Zelinka et al. (2023)
 * Enable permafrost module and recalibrate model's default parameterization
 
