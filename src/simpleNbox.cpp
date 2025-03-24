@@ -717,8 +717,6 @@ void SimpleNbox::reset(double time) {
   thawed_permafrost_c = thawed_permafrost_c_tv.get(time);
   final_npp = final_npp_tv.get(time);
   final_rh = final_rh_tv.get(time);
-  final_rh_detritus = final_rh_detritus_tv.get(time);
-  final_rh_soil = final_rh_soil_tv.get(time);
   RH_thawed_permafrost = RH_thawed_permafrost_tv.get(time);
   RH_ch4 = RH_ch4_tv.get(time);
 
