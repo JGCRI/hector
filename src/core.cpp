@@ -184,7 +184,7 @@ void Core::init() {
   for (auto mc : modelComponents) {
     try {
       mc.second->init(this);
-    } catch (h_exception e) {
+    } catch (h_exception &e) {
       H_LOG(glog, Logger::SEVERE)
           << "error initializing component " << mc.first;
       throw;

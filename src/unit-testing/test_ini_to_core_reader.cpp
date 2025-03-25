@@ -136,7 +136,7 @@ TEST_F(TestINIToCore, TableFilenameNoPrefix) {
     // a nonexistent file
     try {
         reader.parse(testFileName);
-    } catch( h_exception e) {
+    } catch( h_exception &e) {
         // we should get and exception from dummy model component when it
         // tries to set c to a single value
         ASSERT_EQ( e.get_filename(), "dummy_model_component.cpp" );
@@ -148,7 +148,7 @@ TEST_F(TestINIToCore, TableFilenameWithCSVPrefix) {
     testFile << "c=csv:non_existent.csv" << std::endl;
     try {
         reader.parse(testFileName);
-    } catch( h_exception e ) {
+    } catch( h_exception &e ) {
         // looking for an exception from CSVTableReader which indicates that it
         // understood to try to read a CSV file
         ASSERT_EQ( e.get_filename(), "csv_table_reader.cpp" );

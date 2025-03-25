@@ -53,7 +53,7 @@ Environment newcore_impl(String inifile, int loglevel, bool suppresslogging,
     try {
       Hector::INIToCoreReader coreParser(hcore);
       coreParser.parse(inifile);
-    } catch (h_exception e) {
+    } catch (h_exception &e) {
       std::stringstream msg;
       msg << "While parsing hector input file " << fn << ": " << e;
       Rcpp::stop(msg.str());
@@ -78,7 +78,7 @@ Environment newcore_impl(String inifile, int loglevel, bool suppresslogging,
     rv["reset_date"] = 0;
 
     return rv;
-  } catch (h_exception e) {
+  } catch (h_exception &e) {
     std::stringstream msg;
     msg << "During hector core setup: " << e;
     Rcpp::stop(msg.str());
@@ -125,7 +125,7 @@ Environment reset(Environment core, double date = 0) {
   Hector::Core *hcore = gethcore(core);
   try {
     hcore->reset(date);
-  } catch (h_exception e) {
+  } catch (h_exception &e) {
     std::stringstream msg;
     msg << "Error resetting to date= " << date << " :  " << e;
     Rcpp::stop(msg.str());
@@ -171,7 +171,7 @@ Environment run(Environment core, double runtodate = -1.0) {
 
   try {
     hcore->run(runtodate);
-  } catch (h_exception e) {
+  } catch (h_exception &e) {
     std::stringstream msg;
     msg << "Error while running hector:  " << e;
     Rcpp::stop(msg.str());
@@ -296,7 +296,7 @@ DataFrame sendmessage(Environment core, String msgtype, String capability,
   Hector::unit_types utype;
   try {
     utype = Hector::unitval::parseUnitsName(unitstr);
-  } catch (h_exception e) {
+  } catch (h_exception &e) {
     // Units need to be specified in setData and incorrect pr missing units will
     // throw an error
     if (msgstr == M_SETDATA) {
@@ -340,7 +340,7 @@ DataFrame sendmessage(Environment core, String msgtype, String capability,
       unitsout[i] = rtn.unitsName();
       valueout[i] = rtn.value(rtn.units());
     }
-  } catch (h_exception e) {
+  } catch (h_exception &e) {
     std::stringstream emsg;
     emsg << "sendmessage: " << e;
     Rcpp::stop(emsg.str());
