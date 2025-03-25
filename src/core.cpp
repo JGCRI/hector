@@ -832,7 +832,7 @@ int Core::mkcore(bool logtofile, Logger::LogLevel loglvl, bool logtoscrn) {
  * \details Return a pointer to the core corresponding to the input
  * index.  If an invalid index is passed, return a null pointer.
  */
-Core *Core::getcore(int idx) {
+Core *Core::getcore(std::vector<Core *>::size_type idx) {
   if (idx < core_registry.size() && idx >= 0) {
     return core_registry[idx];
   } else {
@@ -845,7 +845,7 @@ Core *Core::getcore(int idx) {
  * and set its entry in the registry to a null pointer. If an invalid
  * index is passed, this is a no-op.
  */
-void Core::delcore(int idx) {
+void Core::delcore(std::vector<Core *>::size_type idx) {
   Core *core = getcore(idx);
 
   if (core) {
