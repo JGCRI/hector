@@ -9,9 +9,25 @@ on:
 jobs:
   render-and-push:
     runs-on: ubuntu-latest
+    name: Build and run leeyabot
+    env:
+        GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
+      - uses: r-lib/actions/setup-r@v2
+      - uses: r-lib/actions/setup-pandoc@v2
+      - uses: quarto-dev/quarto-actions/setup@v2
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+            packages:
+                any::ggplot2
+                any::rmarkdown
+                any::dplyr
+                any::remotes
+                any::here
+                any::knitr
+                any::Rcpp
+                any::BH
 
       - name: Setup R
         uses: r-lib/actions/setup-r@v2
@@ -22,23 +38,6 @@ jobs:
           sudo apt-get install -y pandoc
           sudo apt-get install libcurl4-openssl-dev
           sudo apt-get install -y libjs-mathjax
-
-      - name: Cache R Packages
-        uses: actions/cache@v3
-        with:
-          path: ~/.local/share/R/  # Default library path for R on Ubuntu
-          key: r-packages-${{ runner.os }}-${{ hashFiles('**/DESCRIPTION') }}
-          restore-keys: |
-            r-packages-${{ runner.os }}-
-
-      - name: Install dependencies
-        env:
-          GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          install.packages(c("ggplot2", "rmarkdown", "dplyr", "remotes", "here", "knitr", "Rcpp", "BH"))
-          remotes::install_deps(dependencies = TRUE)
-        shell: Rscript {0}
-
       - name: Install package
         run: R CMD INSTALL .
 
