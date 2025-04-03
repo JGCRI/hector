@@ -1,0 +1,57 @@
+name: Leeyabot Report
+
+on:
+  workflow_dispatch:  # Allows manual triggering from GitHub UI
+  pull_request:
+    paths:
+      - "scripts/leeyabot.Rmd"  # Runs when report.Rmd changes in a PR
+
+jobs:
+  render-and-push:
+    runs-on: ubuntu-latest
+    name: Build and run leeyabot
+    env:
+        GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: r-lib/actions/setup-r@v2
+      - uses: r-lib/actions/setup-pandoc@v2
+      - uses: quarto-dev/quarto-actions/setup@v2
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+            packages:
+                any::ggplot2
+                any::rmarkdown
+                any::dplyr
+                any::remotes
+                any::here
+                any::knitr
+                any::Rcpp
+                any::BH
+
+      - name: Setup R
+        uses: r-lib/actions/setup-r@v2
+
+      - name: Install System Dependencies (including Pandoc)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y pandoc
+          sudo apt-get install libcurl4-openssl-dev
+          sudo apt-get install -y libjs-mathjax
+      - name: Install package
+        run: R CMD INSTALL .
+
+      - name: Render RMarkdown
+        run: R -e 'rmarkdown::render("scripts/leeyabot.Rmd", output_format="github_document")'
+
+      - name: Comment Report on PR
+        run: |
+            echo ":bar_chart: **Report Generated** :robot:" >> comment.txt
+            echo "" >> comment.txt
+            echo "Here is the latest automated report:" >> comment.txt
+            echo "" >> comment.txt
+            cat scripts/leeyabot.md >> comment.txt  # Append the report contents
+            gh pr comment ${{ github.event.pull_request.number }} --body-file comment.txt
+        env:
+            GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
