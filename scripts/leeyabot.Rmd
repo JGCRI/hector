@@ -1,0 +1,545 @@
+---
+title: "Leeyabot report!"
+date: "`r Sys.Date()`"
+output: github_document
+---
+
+
+```{r knit settings, include=FALSE}
+# This is the leeyabot Rmarkdown, a workflow that looks for differences in a developmental version 
+# typically associated with a GitHub PR. 
+
+# It can be run by the `leeyabot.yml` GitHub Action workflow, note that you will need to manually trigger this 
+# workflow from GitHub for a PR, where only key results/figures will be posted as part of the PR. For a more detailed report knit the markdown on your local machine. 
+
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, 
+                      out.width='80%', fig.align='center', class='center', 
+                      fig.path = "figs/")
+```
+
+
+```{r setup}
+# Load packages used in this report, note that these will also need to be 
+# read in as dependencies in the leeyabot yml file.
+library(dplyr)
+library(ggplot2)
+library(hector)
+library(here)
+library(knitr)
+
+# Set root directory
+BASE_DIR <- here()
+
+# Variables of interest
+vars <- c(CONCENTRATIONS_CO2(), RF_TOTAL(), RF_CO2(), GLOBAL_TAS())
+
+# Set global plotting themes 
+theme_set(theme_bw())
+
+# Detect platform, we do not want to generate the plots when running on GitHub Actions 
+platform <- Sys.info()["sysname"]
+
+PRINT_FIGS <- FALSE
+```
+
+
+```{r helper functions}
+# Define helper functions used in multiple places throughout the Leeyabot script. 
+
+# Run Hector for the standard ssp scenarios
+# Args 
+#   inis: complete path to the ini files 
+#   stryr: int the first year of values returned in the output
+#   endyr: int the final year of values returned in the output
+#   vars: chr vector of Hector variables to be included in the output
+# Returns: data.frame of Hector output results from multiple scenarios
+run_hector <- function(inis, stryr, endyr, vars){
+    
+    lapply(inis, function(scn_ini) {
+        
+        # Set up Hector core 
+        hc <- newcore(inifile = scn_ini, name = basename(scn_ini))
+        run(hc, endyr)
+        
+        # Fetch and format Hector results. 
+        fetchvars(hc, vars = vars, dates = stryr:endyr) %>%
+            mutate(version = "dev") %>% 
+            filter(year %in% stryr:endyr) 
+    }) %>%
+        do.call(what = "rbind") -> 
+        out 
+    
+    return(out)
+    
+}
+
+
+
+
+# Summarize the differences by scenario and variable
+# Args 
+#   df: wide data.frame of "dev values" to be compared with the original "values"
+#   returns: data.frame 
+get_summary_diff <- function(df){
+    # Quick check to make sure the input df contains the correct information
+    req_names <- c("scenario", "var_units", "dev_value", "value")
+    stopifnot(all(req_names %in% names(df)))
+    stopifnot(any(!is.na(df)))
+    
+    
+    # For each of the scenarios run a regression and compute the RMSE and NRMSE. 
+    split(df, interaction(df$scenario, df$var_units, drop = TRUE)) %>% 
+        lapply(function(x){
+            
+            # Quick linear regression 
+            fit <- lm(data = x, dev_value ~ value)
+            
+            # Get summary stats from the fit when there is 
+            # a perfect fit, ie no change in output behavior a 
+            # warning may be thrown, silence it. 
+            suppressWarnings({
+                Rsqrd <- summary(fit)[["r.squared"]]
+                resid <- summary(fit)[["residuals"]]
+            })
+            
+            RMSE <- sqrt(mean(resid^2))
+            
+            # The mean of the comparison data to normalize RMSE
+            var_mean <- mean(x$value)
+            
+            table <- data.frame(
+                "scenario" = unique(x$scenario), 
+                "variable" = unique(x$var_units),
+                "R squared" = Rsqrd, 
+                "RMSE" = RMSE, 
+                "NRMSE" = RMSE/var_mean)
+            return(table)
+        }) %>% 
+        bind_rows -> 
+        out
+    
+    return(out)
+    
+}
+
+```
+
+
+
+```{r get comparison data}
+# Read in the comparison data from the oldnew test 
+# Read in comp-data
+file.path(BASE_DIR, "tests", "testthat", "compdata", "hector_comp.csv") %>% 
+    read.csv %>% 
+    filter(variable %in% vars) -> 
+    oldnew_data
+
+# Save oldnew version and commit tag 
+oldnew_vrsn <- unique(oldnew_data$version)
+oldnew_commit <- unique(oldnew_data$commit)
+
+
+# Read in the comparison data associated with the official releases minted on Zenodo
+read.csv("https://zenodo.org/records/13286176/files/leeyabot-data.csv?download=1") %>% 
+    filter(variable %in% vars) -> 
+    zenodo_data
+
+#TODO eventually we will probably need the ability to determine what the most recent 
+# release version is since the zenodo archive might include results from multiple 
+zenodo_data %>% 
+    filter(version ==  "3.2.0") -> 
+    release_data
+
+# Save oldnew version and commit tag 
+release_vrsn <- unique(release_data$version)
+release_commit <- unique(release_data$commit)
+
+```
+
+Hello, this is `Leeyabot`! I look for differences between the this "dev" version of Hector and make some standard diagnostic plots. I specifically compare this version of Hector with 
+
+* **old-new** test data -  `r oldnew_vrsn` (commit `r oldnew_commit`) 
+* **previous release** data - `r release_vrsn` (commit `r release_commit`)
+
+
+# Previous Dev Version Comparison
+
+The **old-new** test data is used in the R testthat unit tests to verify that recent model development has not introduced changes to Hector's output. Here, we generate standard diagnostic plots to identify any changes in model behavior. 
+
+```{r}
+# Years of data to save. 
+stryr <- min(oldnew_data$year)
+endyr <- max(oldnew_data$year)
+
+
+# Run all the scenarios included in the old-new test data set. 
+inis <- file.path(BASE_DIR, "inst", "input", unique(oldnew_data$scenario)) 
+dev_data <- run_hector(inis = inis, stryr = stryr, endyr = endyr, vars =  vars)
+```
+
+
+
+```{r}
+# Compute the difference between Hector results, if there are substantial differences 
+# diagnostic plots will be produced, otherwise the summary table will indicate
+# that the results are the same. 
+dev_data %>%  
+    select(scenario, year, variable, dev_value = value) %>% 
+    inner_join(oldnew_data, by = join_by(scenario, year, variable)) %>% 
+    mutate(dif = dev_value - value) %>% 
+    mutate(scenario = gsub(replacement = "", pattern = "hector_|.ini", x = scenario)) %>%  
+    mutate(var_units = paste0(variable, " (", units, ")")) -> 
+    comp_data
+```
+
+
+This summary table indicates the $R^2$,  root mean squared error (RMSE), and normalized RMSE (NRMSE) for each variable and scenario. An $R^2$ of 1 and NRMSE of 0 indicate that the Hector results are identical to the previous developmental version of Hector. 
+
+
+```{r}
+# Quantify the difference between Hector results per scenario and variable.  
+summary_table <- get_summary_diff(comp_data)
+
+kable(summary_table, digits = 3, 
+      format.args = list(scientific = TRUE), format = "markdown") 
+```
+
+
+```{r}
+# If there are no differences in outputs, do nothing
+# Otherwise, run summary table and graph code
+tolerance <- 1e-7 
+SAME <- all(abs(comp_data$dif) <= tolerance)  
+
+if (SAME) {
+    msg <- paste0("The current pull request's outputs do not differ from the old-new data of Hector ", 
+                  oldnew_vrsn, ", ", oldnew_commit, sep = "")
+} else {
+    msg <- paste0("The current pull request's outputs differ from ", 
+                  oldnew_vrsn, ", ", oldnew_commit, sep = "")  
+}
+cat(msg)
+
+```
+
+
+
+```{r oldnew, echo=FALSE}
+plotlist <- NULL
+
+# If results look different 
+if(!SAME){
+    # Skip the plotting if running on github actions
+    if(tolower(platform) != "linux"){
+        
+        # Make a plot list
+        plotlist <- list()
+        
+        # Quick plot of the output 
+        ggplot(comp_data) +
+            geom_line(aes(year, value, 
+                          linetype = "old-new data"), color = "grey", linewidth = 1)  + 
+            geom_line(aes(year, dev_value, linetype = "dev", 
+                          color = scenario), linewidth = 1)  +
+            facet_wrap(~var_units, scales = "free") + 
+            scale_linetype_manual(values = c("old-new data" = 1, "dev" = 2)) + 
+            scale_color_viridis_d() + 
+            labs(title = "Dev Hector vs. old-new results", y = NULL, x = NULL, linetype = "Hector Version") -> 
+            plotlist[["fig1"]]
+        
+        # Plot the differences over time
+        ggplot(comp_data, aes(year, dif, color = scenario)) +
+            geom_hline(yintercept = 0, alpha = 0.5) +
+            geom_line() +
+            facet_wrap(~var_units, scales = "free") +
+            scale_color_viridis_d() +
+            ggtitle("Differences between dev Hector and old-new testing data") +
+            labs(x = "Year", y = "Difference in value")-> 
+            plotlist[["fig2"]]
+        
+        
+        # Box plot of differences per scenario & variable
+        ggplot(comp_data, aes(variable, dif, fill = scenario)) +
+            geom_boxplot(alpha = 0.4) +
+            facet_wrap(~var_units, scales = "free") +
+            scale_fill_viridis_d() +
+            ggtitle("Differences between dev Hector and old-new testing data") +
+            labs(x = "Variable", y = "Difference in value", col = "Units") +
+            theme_bw() -> 
+            plotlist[["fig3"]]
+        
+    } else {
+        cat("Run leeyabot locally to generate diagnostic plots showing the differences.")
+    }
+}
+
+
+if(!is.null(plotlist)){
+    for (p in plotlist) {
+        print(p)
+    }
+}
+
+```
+
+
+
+```{r clean up 1}
+# Clean up to avoid confusion 
+remove(dev_data, oldnew_data, plotlist, SAME)
+```
+
+# Release Version Comparison
+
+In the remainder of the document we compare this version of Hector, the **dev** version with the minted results from Hector `r release_vrsn` the most recent major release. There are two different sets of experiments to be considered here - idealized and multiforcing scenarios. Each summary table will contain results from both types of experiments while the diagnostic plots will consider them separately. 
+
+
+```{r}
+# Prepare the multiforcing comparison data. 
+zenodo_scns <- unique(release_data$scenario)
+multiforcing_scns <- zenodo_scns[grepl(pattern = "ssp", x = zenodo_scns)]
+idealized_scns <- setdiff(zenodo_scns, multiforcing_scns)
+
+release_data %>% 
+    filter(scenario %in% multiforcing_scns) -> 
+    multiforcing_data
+
+release_data %>% 
+    filter(scenario %in% idealized_scns) -> 
+    idealized_data
+```
+
+```{r}
+# Run Hector with all the multiforcing scenarios 
+inis <- file.path(BASE_DIR, "inst", "input", paste0("hector_", multiforcing_scns, ".ini")) 
+run_hector(inis = inis, 
+           stryr = min(multiforcing_data$year), 
+           endyr = max(multiforcing_data$year), 
+           vars =  unique(multiforcing_data$variable)) %>% 
+    mutate(scenario = gsub(replacement = "", pattern = "hector_|.ini", x = scenario)) -> 
+    dev_mf_data
+```
+
+
+```{r}
+# Run Hector with the idealized scenarios
+yrs_to_keep <- unique(idealized_data$year)
+vars_to_keep <- unique(idealized_data$variable)
+
+# Run the idealized experiment with the current version of Hector. 
+# Extract the CO2 concentrations to drive the pi-control. 
+idealized_data %>% 
+    filter(variable == CONCENTRATIONS_CO2()) %>% 
+    split(., .$scenario) -> 
+    idealized_co2
+
+lapply(idealized_co2, function(input_df){
+    
+    # Set up the ini and read in the concentration constraint 
+    ini <- file.path(BASE_DIR, "inst", "input", "hector_picontrol.ini")
+    core <- newcore(ini, name = unique(input_df$scenario))
+    setvar(core, dates = input_df$year, var = CO2_CONSTRAIN(), values = input_df$value, unit = getunits(CO2_CONSTRAIN()))
+    reset(core)
+    
+    # Run Hector 
+    run(core)
+    
+    # Fetch the results!
+    out <- fetchvars(core, dates = yrs_to_keep, vars = vars_to_keep)
+    return(out)
+    
+}) %>% 
+    do.call(what = "rbind") %>% 
+    mutate(version = "dev") -> 
+    dev_idealized_df
+```
+
+```{r}
+# Compare the dev results with the release data. 
+dev_idealized_df %>% 
+    rbind(dev_mf_data) %>% 
+    select(scenario, year, variable, dev_value = value) %>% 
+    inner_join(release_data, by = join_by(scenario, year, variable)) %>% 
+    mutate(dif = dev_value - value) %>% 
+    mutate(var_units = paste0(variable, " (", units, ")")) -> 
+    comp_data
+
+# Save the idealized and multiforcing experiment results seperatly
+idealized_comp_data <- filter(comp_data, scenario %in% idealized_scns)
+multiforcing_comp_data <- filter(comp_data, !scenario %in% idealized_scns)
+```
+
+## Idealized Experiments
+
+```{r}
+# Quantify the difference between Hector results per scenario and variable.  
+id_summary_table <- get_summary_diff(idealized_comp_data)
+
+kable(id_summary_table, digits = 3, 
+      format.args = list(scientific = TRUE), format = "html")
+```
+
+
+```{r}
+tolerance <- 1e-4 
+SAME <- all(abs(idealized_comp_data$dif) <= tolerance)  
+
+if(SAME) {
+    msg <- paste0("The current pull request's idealized outputs do not differ from the Hector release ", 
+                  release_vrsn, ", ", release_commit, sep = "")
+} else {
+    msg <- paste0("The current pull request's idealized outputs differ from ", 
+                  release_vrsn, ", ", release_commit, sep = "")  
+}
+cat(msg)
+```
+
+
+
+
+```{r release_idealized}
+plotlist <- NULL
+
+# If results look different 
+if(!SAME){
+    # Skip the plotting if running on github actions
+    if(tolower(platform) != "linux"){
+        
+        # Make a plot list
+        plotlist <- list()
+        
+        # Quick plot of the output 
+        ggplot(idealized_comp_data) +
+            geom_line(aes(year, value, 
+                          linetype = "release data", group = scenario), color = "grey", linewidth = 1)  + 
+            geom_line(aes(year, dev_value, linetype = "dev", 
+                          color = scenario), linewidth = 1)  +
+            facet_wrap(~var_units, scales = "free", ncol=1) + 
+            scale_linetype_manual(values = c("release data" = 1, "dev" = 2)) + 
+            scale_color_viridis_d() + 
+            labs(title = "Dev Hector vs. release results", y = NULL, x = NULL, linetype = "Hector Version") -> 
+            plotlist[["fig1"]]
+             
+        
+        # Plot the differences over time
+        ggplot(idealized_comp_data, aes(year, dif, color = scenario)) +
+            geom_hline(yintercept = 0, alpha = 0.5) +
+            geom_line() +
+            facet_wrap(~var_units, scales = "free", ncol=1) +
+            scale_color_viridis_d() +
+            ggtitle("Differences between dev Hector and release data") +
+            labs(x = "Year", y = "Difference in value")-> 
+            plotlist[["fig2"]]
+        
+        
+        # Box plot of differences per scenario & variable
+        ggplot(idealized_comp_data, aes(variable, dif, fill = scenario)) +
+            geom_boxplot(alpha = 0.4) +
+            facet_wrap(~var_units, scales = "free", ncol=1) +
+            scale_fill_viridis_d() +
+            ggtitle("Differences between dev Hector and release data") +
+            labs(x = "Variable", y = "Difference in value", col = "Units") +
+            theme_bw() -> 
+            plotlist[["fig3"]]
+        
+        
+    } else {
+        cat("Run leeyabot locally to generate diagnostic plots showing the differences.")
+    }
+}
+
+
+if(!is.null(plotlist)){
+    for (p in plotlist) {
+        print(p)
+    }
+}
+
+```
+
+
+
+## Multiforcing Experiments 
+
+```{r}
+# Quantify the difference between Hector results per scenario and variable.  
+mf_summary_table <- get_summary_diff(multiforcing_comp_data)
+
+kable(mf_summary_table, digits = 3, 
+      format.args = list(scientific = TRUE), format = "html")
+```
+
+```{r}
+tolerance <- 1e-4 
+SAME <- all(abs(multiforcing_comp_data$dif) <= tolerance)  
+
+if(SAME) {
+    msg <- paste0("The current pull request's multiforcing outputs do not differ from the Hector release ", 
+                  release_vrsn, ", ", release_commit, sep = "")
+} else {
+    msg <- paste0("The current pull request's multiforcing outputs differ from ", 
+                  release_vrsn, ", ", release_commit, sep = "")  
+}
+cat(msg)
+```
+
+
+
+```{r release_multiforcing}
+plotlist <- NULL
+
+# If results look different 
+if(!SAME){
+    # Skip the plotting if running on github actions
+    if(tolower(platform) != "linux"){
+        
+        # Make a plot list
+        plotlist <- list()
+        
+        # Quick plot of the output 
+        ggplot(multiforcing_comp_data) +
+            geom_line(aes(year, value, 
+                          linetype = "release data", group = scenario), color = "grey", linewidth = 1)  + 
+            geom_line(aes(year, dev_value, linetype = "dev", 
+                          color = scenario), linewidth = 1)  +
+            facet_wrap(~var_units, scales = "free", ncol=1) + 
+            scale_linetype_manual(values = c("release data" = 1, "dev" = 2)) + 
+            scale_color_viridis_d() + 
+            labs(title = "Dev Hector vs. release results", y = NULL, x = NULL, linetype = "Hector Version") -> 
+            plotlist[["fig1"]]
+             
+        
+        # Plot the differences over time
+        ggplot(multiforcing_comp_data, aes(year, dif, color = scenario)) +
+            geom_hline(yintercept = 0, alpha = 0.5) +
+            geom_line() +
+            facet_wrap(~var_units, scales = "free", ncol=1) +
+            scale_color_viridis_d() +
+            ggtitle("Differences between dev Hector and release data") +
+            labs(x = "Year", y = "Difference in value")-> 
+            plotlist[["fig2"]]
+        
+        
+        # Box plot of differences per scenario & variable
+        ggplot(multiforcing_comp_data, aes(variable, dif, fill = scenario)) +
+            geom_boxplot(alpha = 0.4) +
+            facet_wrap(~var_units, scales = "free", ncol=1) +
+            scale_fill_viridis_d() +
+            ggtitle("Differences between dev Hector and release data") +
+            labs(x = "Variable", y = "Difference in value", col = "Units") +
+            theme_bw() -> 
+            plotlist[["fig3"]]
+        
+        
+    } else {
+        cat("Run leeyabot locally to generate diagnostic plots showing the differences.")
+    }
+}
+
+
+if(!is.null(plotlist)){
+    for (p in plotlist) {
+        print(p)
+    }
+}
+```

@@ -109,6 +109,9 @@ private:
   unitval delta_ch4; // forcing tropospheric adjustment for CH4 see 7.3.2.2 of
                      // IPCC AR6
 
+  // Stratospheric water vapor (strat. H2O) parameters
+  unitval rho_h2o_h2; // W m −2 per Tg yr− 1 from Sand et al. 2023
+
   // Aerosol parameters for aerosol-radiation interactions (RFari) see
   // equation 7.SM.1.1 of IPCC AR6
   unitval rho_bc; // (W yr m–2 Tg–1) IPCC AR6 radiative efficiency BC 7.SM.1.3
