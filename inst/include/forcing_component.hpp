@@ -110,8 +110,7 @@ private:
                      // IPCC AR6
 
   // Stratospheric water vapor (strat. H2O) parameters
-  const double stratH2O_H2 =
-      0.00019; // W m −2 per Tg yr− 1 from Sand et al. 2023
+  unitval rho_h2o_h2; // W m −2 per Tg yr− 1 from Sand et al. 2023
 
   // Aerosol parameters for aerosol-radiation interactions (RFari) see
   // equation 7.SM.1.1 of IPCC AR6
