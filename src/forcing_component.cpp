@@ -131,6 +131,7 @@ void ForcingComponent::init(Core *coreptr) {
   core->registerCapability(D_RHO_OC, getComponentName());
   core->registerCapability(D_RHO_SO2, getComponentName());
   core->registerCapability(D_RHO_H2O_H2, getComponentName());
+  core->registerCapability(D_RHO_O3_H2, getComponentName());
   core->registerCapability(D_RF_SO2, getComponentName());
   core->registerCapability(D_RF_ACI, getComponentName());
   for (int i = 0; i < N_HALO_FORCINGS; ++i) {
@@ -183,6 +184,7 @@ void ForcingComponent::init(Core *coreptr) {
   core->registerInput(D_RHO_SO2, getComponentName());
   core->registerInput(D_RHO_NH3, getComponentName());
   core->registerInput(D_RHO_H2O_H2, getComponentName());
+  core->registerInput(D_RHO_O3_H2, getComponentName());
   core->registerInput(D_RF_MISC, getComponentName());
   core->registerInput(D_FTOT_CONSTRAIN, getComponentName());
 }
@@ -242,6 +244,9 @@ void ForcingComponent::setData(const string &varName,
     } else if (varName == D_RHO_H2O_H2) {
         H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
         rho_h2o_h2 = data.getUnitval(U_W_M2_TG);
+    } else if (varName == D_RHO_O3_H2) {
+        H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
+        rho_o3_h2 = data.getUnitval(U_W_M2_TG);
     } else if (varName == D_FTOT_CONSTRAIN) {
       H_ASSERT(data.date != Core::undefinedIndex(), "date required");
       Ftot_constrain.set(data.date, data.getUnitval(U_W_M2));
@@ -386,10 +391,11 @@ void ForcingComponent::run(const double runToDate) {
     // ---------- Troposheric Ozone ----------
     if (core->checkCapability(D_ATMOSPHERIC_O3)) {
       // from Tanaka et al, 2007
+      double current_h2 = core->sendMessage(M_GETDATA, D_EMISSIONS_H2, message_data(runToDate)).value(U_TG_H2);
       const double ozone = core->sendMessage(M_GETDATA, D_ATMOSPHERIC_O3,
                                              message_data(runToDate))
                                .value(U_DU_O3);
-      const double fo3_trop = 0.042 * ozone;
+      const double fo3_trop = 0.042 * ozone + rho_o3_h2 * current_h2;
       forcings[D_RF_O3_TROP].set(fo3_trop, U_W_M2);
     }
 
@@ -549,6 +555,8 @@ unitval ForcingComponent::getData(const std::string &varName,
     returnval = rho_nh3;
   } else if (varName == D_RHO_H2O_H2) {
       returnval = rho_h2o_h2;
+  } else if (varName == D_RHO_O3_H2) {
+      returnval = rho_o3_h2;
   } else if (varName == D_RF_BASEYEAR) {
     returnval.set(baseyear, U_UNITLESS);
   } else {
