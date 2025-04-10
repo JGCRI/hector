@@ -1082,6 +1082,18 @@ EMISSIONS_NMVOC <- function() {
     .Call('_hector_EMISSIONS_NMVOC', PACKAGE = 'hector')
 }
 
+#' @describeIn emissions Emissions hydrogen gas (\code{"Tg H2"})
+#' @export
+EMISSIONS_H2 <- function() {
+    .Call('_hector_EMISSIONS_H2', PACKAGE = 'hector')
+}
+
+#' @describeIn methane CH4 lifetime with respect to the OH sink (\code{"Yr"})
+#' @export
+CH4_LIFETIME_OH <- function() {
+    .Call('_hector_CH4_LIFETIME_OH', PACKAGE = 'hector')
+}
+
 #' @describeIn emissions Emissions for organic carbon (\code{"Tg"})
 #' @export
 EMISSIONS_OC <- function() {
