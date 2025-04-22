@@ -130,6 +130,7 @@ void ForcingComponent::init(Core *coreptr) {
   core->registerCapability(D_RHO_BC, getComponentName());
   core->registerCapability(D_RHO_OC, getComponentName());
   core->registerCapability(D_RHO_SO2, getComponentName());
+  core->registerCapability(D_RHO_H2O_H2, getComponentName());
   core->registerCapability(D_RF_SO2, getComponentName());
   core->registerCapability(D_RF_ACI, getComponentName());
   for (int i = 0; i < N_HALO_FORCINGS; ++i) {
@@ -181,6 +182,7 @@ void ForcingComponent::init(Core *coreptr) {
   core->registerInput(D_RHO_OC, getComponentName());
   core->registerInput(D_RHO_SO2, getComponentName());
   core->registerInput(D_RHO_NH3, getComponentName());
+  core->registerInput(D_RHO_H2O_H2, getComponentName());
   core->registerInput(D_RF_MISC, getComponentName());
   core->registerInput(D_FTOT_CONSTRAIN, getComponentName());
 }
@@ -237,6 +239,9 @@ void ForcingComponent::setData(const string &varName,
     } else if (varName == D_RHO_SO2) {
       H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
       rho_so2 = data.getUnitval(U_W_M2_GG);
+    } else if (varName == D_RHO_H2O_H2) {
+        H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
+        rho_h2o_h2 = data.getUnitval(U_W_M2_TG);
     } else if (varName == D_FTOT_CONSTRAIN) {
       H_ASSERT(data.date != Core::undefinedIndex(), "date required");
       Ftot_constrain.set(data.date, data.getUnitval(U_W_M2));
@@ -366,13 +371,15 @@ void ForcingComponent::run(const double runToDate) {
       forcings[D_RF_CH4].set(fch4, U_W_M2);
 
       // ---------- Stratospheric H2O based on CH4 oxidation ----------
-      // The stratospheric water vapour RF based on changes in CH4
+      // The stratospheric water vapor RF based on changes in CH4
       // concentrations.
       const double Ma_base =
           1831; // 2014 CH4 concentration ppb from the cmip6 historical scenario
       const double stratH2O_base =
           0.0485; // W m-2 Strat H2O RF (1850 to 2014) from 7.3.2.6 IPCC AR6
-      const double fh2o_strat = stratH2O_base * ((Ma - M0) / (Ma_base - M0)); //
+      double inital_h2 = core->sendMessage(M_GETDATA, D_EMISSIONS_H2, baseyear).value(U_TG_H2);
+      double current_h2 = core->sendMessage(M_GETDATA, D_EMISSIONS_H2, message_data(runToDate)).value(U_TG_H2);
+      const double fh2o_strat = stratH2O_base * ((Ma - M0) / (Ma_base - M0)) + rho_h2o_h2  * (current_h2 - inital_h2); //
       forcings[D_RF_H2O_STRAT].set(fh2o_strat, U_W_M2);
     }
 
@@ -540,6 +547,8 @@ unitval ForcingComponent::getData(const std::string &varName,
     returnval = rho_so2;
   } else if (varName == D_RHO_NH3) {
     returnval = rho_nh3;
+  } else if (varName == D_RHO_H2O_H2) {
+      returnval = rho_h2o_h2;
   } else if (varName == D_RF_BASEYEAR) {
     returnval.set(baseyear, U_UNITLESS);
   } else {
