@@ -58,10 +58,12 @@ private:
 
   //! Current ozone concentration, relative to preindustrial, Dobson units
   unitval PO3;
+  unitval CO3_H2;
   tseries<unitval> O3;
   tseries<unitval> CO_emissions;
   tseries<unitval> NMVOC_emissions;
   tseries<unitval> NOX_emissions;
+  tseries<unitval> H2_emissions;
 
   //! logger
   Logger logger;
