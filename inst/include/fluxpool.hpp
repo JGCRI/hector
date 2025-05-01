@@ -116,10 +116,10 @@ inline fluxpool::fluxpool(unitval v, unordered_map<string, double> pool_map,
  *  \warning Resets map so 'name' key's value is 1, all others removed
  */
 inline void fluxpool::set(double v, unit_types u, bool track = false,
-                          string pool_name = "?") {
+                          string pool_name = "test") {
   name = pool_name;
   if (v < 0) {
-    H_ASSERT(v >= 0, "Flux and pool values may not be negative in " + name);
+    H_ASSERT(v >= 0, "Flux and pool values may not be negative in 2 " + name);
   }
   tracking = track;
   ctmap[name] = 1.0;

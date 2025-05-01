@@ -108,8 +108,8 @@ void Core::init() {
   temp = new N2OComponent();
   modelComponents[temp->getComponentName()] = temp;
 
-  temp = new ForcingComponent();
-  modelComponents[temp->getComponentName()] = temp;
+  temp = new ForcingComponent(); // create forcing component
+  modelComponents[temp->getComponentName()] = temp; //get its name
   temp = new slrComponent();
   modelComponents[temp->getComponentName()] = temp;
   temp = new OceanComponent();
@@ -181,9 +181,9 @@ void Core::init() {
   temp = new OzoneComponent();
   modelComponents[temp->getComponentName()] = temp;
 
-  for (auto mc : modelComponents) {
+  for (auto mc : modelComponents) { // for each componenet we have created, each has an init fcn; call those, thells componet to set itself up
     try {
-      mc.second->init(this);
+      mc.second->init(this); // initilizng each component 
     } catch (h_exception e) {
       H_LOG(glog, Logger::SEVERE)
           << "error initializing component " << mc.first;
@@ -298,7 +298,10 @@ void Core::addVisitor(AVisitor *visitor) {
  *           5) Run spin-up, if required
  *
  *  \exception h_exception An error which may occur at any stage of the process.
- */
+ */ 
+ // all components and core have init fcn and prepare to run fcn
+ // call init for each component
+ //then prepare torun
 void Core::prepareToRun(void) {
   /* Most of this stuff only needs to be done once, even if we reset the
    * model; therefore it would be a good candidate to go in init instead of

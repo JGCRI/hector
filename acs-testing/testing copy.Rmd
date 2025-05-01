@@ -1,0 +1,1071 @@
+---
+title: "plotting_and_hector_code"
+author: "acs"
+date: {r, Sys.Date()}
+output: 
+  html_document:
+    toc: true
+    toc_depth: 3
+    toc_float: true
+---
+
+# Setup relevant libraries and directory for saving figs and data
+
+```{r setup}
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+library(zoo)
+devtools::load_all('..')
+
+data_dir <- 'data/'
+ini_dir <- 'data/pic_hector_ini/climate/'
+```
+
+
+
+#  GCP data
+
+## Read in and understand GCP data
+
+This is true NBP: atmosphere to land, positive NBP = a sink
+
+```{r}
+# load the file passed from Dawn
+gcp_data_dawn <- read.csv(paste0(data_dir, "nbp_gcp.csv"))
+
+# Load the file pulled directly from GCP:
+read.csv(paste0(data_dir,'Global_Carbon_Budget_2022v1p0_historical_co2_tab.csv'), stringsAsFactors = F) %>%
+  select(year=Year, e_luc=land.use.change.emissions, s_land = land.sink, Units) %>%
+  tidyr::replace_na(list(e_luc=0)) %>%
+  # If we want to sum e_luc + s_land, uncomment from the `gather` to `ungroup` 
+  # calls here and comment out the `mutate`:
+  # gather(reporting_id, value, -year, -Units) %>%
+  # group_by(year, Units) %>%
+  # summarize(nbp = -sum(value, na.rm=T)) %>%
+  # ungroup %>%
+  # Following slide 56 of GCP_data/papers/GCP_CarbonBudget_2023_slides_v1.0-2-Alissa-Haward.pdf
+  mutate(nbp = (s_land - e_luc)) ->
+  gcp_data
+```
+
+### Check if GCP data and Dawn's agree
+
+Check if `nbp = (s_land-e_luc)` from the raw GCP download agrees
+ with file from Dawn. Note Dawn's file did `-(s_land-e_luc)` to have things
+ in the land to atmosphere direction instead, and compare with offline model 
+ outputs directly. so  have to do minus a minus
+
+```{r}
+
+print("Difference to Dawn's file:")
+print(max(abs(gcp_data$nbp - -gcp_data_dawn$nbp)))
+```
+
+## Proceed with GCP data
+
+Label data and convert units
+
+```{r}
+
+# Label data and convert units
+gcp_data$scenario <- "1. Global Carbon Project"
+gcp_data$nbp_raw <- gcp_data$nbp*1000
+gcp_data$nbp <- zoo::rollmean(gcp_data$nbp_raw,k=10, align='right', fill= NA)
+
+gcp_data %>% 
+    filter(year >=1970)
+```
+
+# compare hector NBP with GCP
+
+```{r}
+#comparison with GCP
+
+# package scenario
+rcp <- "ssp245"
+scenario_file <- paste0("input/hector_",rcp,".ini")
+ini_file245 <- system.file(scenario_file, package="hector") 
+#### QUESTION - is this right hector package if did devtools::load_all
+#### ANSWER: yes, because add different ini to inst/input  directory and do load_all 
+####         and that new ini is then accessible.
+
+core245 <- hector::newcore(ini_file245, suppresslogging = FALSE, name='245')
+hector::run(core245,runtodate = 2100)
+
+out <- hector::fetchvars(core245, dates=1746:2100, vars=c(hector::NBP()))
+
+
+# gcam-hector scenario
+scenario_file <- paste0(ini_dir, 'hector-gcam.ini')
+# didn't work:
+# coregcam <- hector::newcore(scenario_file, suppresslogging = FALSE, name='gcam-hector')
+
+# move the ini file to /inst/input and do devtools::load_all():
+ini_file_gcam <- system.file('input/hector-gcam.ini', package="hector")
+coregcam <- hector::newcore(ini_file_gcam, suppresslogging = FALSE, name='gcam-hector')
+hector::run(coregcam, runtodate = 2005)
+#### QUESTION: brought over default_emissions and gcam_emissions csv files; updated
+####           paths in the hector-gcam.ini file to be exact to point to those files.
+####           was getting error in OH_component.cpp on assertion that timestep wasn't 1,
+####           made me think just wasn't seeing data in gcam_emissions.csv, so updated paths and worked.
+####           Cannot run to 2100:
+####.          Error: Error while running hector:  msg:  	Assertion failed: end interpolation not allowed
+#func: 	error_check
+#file: 	tseries.hpp
+#ffile:	../inst/include/tseries.hpp
+#
+#line: 	218
+####    Come back to it since GCP doesn't go too much further.
+#### ANSWER: I had seen this issue before
+####  If hector::run returns an interpolation error, it means we gave it a runtodate
+# that is later than the emissions file actually has data for.
+# have to reset(core) before updating the runtodate or else you will get 
+# errors referring to oh values at the start of their name.
+
+out <- bind_rows(out, hector::fetchvars(coregcam, dates=1746:2005, vars=c(hector::NBP())))
+
+
+```
+
+
+
+
+# LUC emissions received by Hector
+
+```{r}
+gcam_emiss <- read.csv('/Users/snyd535/Documents/GitHub/hector/inst/input/gcam_emissions.csv', skip =4)
+
+ggplot(gcam_emiss) +
+    geom_line(mapping = aes(x=Date, y=luc_emissions))
+```
+
+```{r}
+library(rgcam)
+
+get_gcam_luc_emissR <- function(db_name="database_basexdb", gcam_dir, scenario,
+                                read_from_file=FALSE,
+                                filename="data/gcam_land_alloc.csv"){
+  
+  if (read_from_file) {
+    gcam_land_alloc <- read.csv2(file=filename,header=TRUE)
+  }
+  else {
+    base_conn <- rgcam::localDBConn(gcam_dir, db_name)
+    
+    land_alloc_query <- '<query title="LUC emissions by region">
+                <axis1 name="LandLeaf">LandLeaf</axis1>
+                <axis2 name="Year">land-use-change-emission[@year]</axis2>
+                <xPath buildList="true" dataName="land-use-change-emission" group="false" sumAll="true">/LandNode[@name=\'root\' or @type=\'LandNode\' (:collapse:)]//
+                land-use-change-emission[@year&gt;1970]/text()</xPath>
+                <comments/>
+            </query>'
+    
+    new.proj <- rgcam::addSingleQuery(base_conn, "new.proj", "LUC_R", land_alloc_query, c(scenario), clobber=TRUE)
+    
+    gcam_land_alloc <- rgcam::getQuery(new.proj, "LUC_R")
+   # write.csv(gcam_land_alloc, file=filename, row.names = FALSE)
+  }
+  
+  return(gcam_land_alloc)
+}
+
+
+luc_R<- get_gcam_luc_emissR(db_name = 'database_basexdbGCAM',
+                                 gcam_dir = 'data/pic_hector_ini',
+                               scenario = 'GCAM')
+
+ggplot(luc_R %>% filter(landleaf == 'Pasture_MissouriR', region == 'USA', year <=2015)) +
+    geom_line(mapping = aes(x=year, y=value, color = scenario)) +
+    ylab('MtC/yr')+
+    ggtitle('Pasture_MissouriR GCAM output LUC emissions')
+
+ggplot(luc_R %>% 
+           group_by(Units, scenario, year) %>%
+           summarize(value = sum( value)) %>%
+           ungroup %>% 
+           filter(year<=2015)) +
+    geom_point(mapping = aes(x=year, y=value, color = scenario)) +
+    ylab('MtC/yr')+
+    ggtitle('Global aggregate GCAM output LUC emissions') +
+    geom_line(data = gcam_emiss %>% filter(Date >= 1975, Date <= 2015),
+              mapping = aes(x=Date, y=luc_emissions*1e3), color = 'black')
+
+
+
+
+```
+
+# Plot
+
+```{r}
+gcp_data %>%
+  select(year, scenario, nbp, Units) %>%
+    select(year, value=nbp, units=Units) %>%
+    mutate(variable = 'NBP',
+           scenario ="GCP",
+           value = 0.001*value,
+           units = 'PgC/year'
+           ) %>% 
+  bind_rows(out) ->
+  out2
+
+
+ggplot(out2 %>% filter(year <= 2021)) +
+    geom_line(mapping = aes(x=year,y=value, colour=scenario)) +
+    geom_line(data= (gcp_data %>%
+                         select(year, scenario, nbp_raw, Units) %>%
+                         select(year, value=nbp_raw, units=Units) %>%
+                         mutate(variable = 'NBP_raw',
+                                scenario ="GCP_raw",
+                                value = 0.001*value,
+                                units = 'PgC/year'
+                                )),
+              mapping = aes(x=year, y=value), color = 'grey', alpha = 0.5)
+
+```
+
+- note that the default hector and gcam-hector have the same historical NBP (because
+they have the same historical luc emissions). 
+
+- likely, this means the `gcam-emissions.csv` file is ignoring the luc emissions
+calculations that gcam does in the historical period.
+
+
+
+# Test Hector NBP constraints.
+
+The 0-level test for whether the NBP constraint works is if you can do a Hector run,
+extract the NBP from that run, use that NBP as a constraint for a new Hector run,
+and get the same results. 
+
+This is trickier than it sounds, due to uninformative errors triggered in `fluxpool.hpp`:
+```
+inline void fluxpool::set(double v, unit_types u, bool track = false,
+                          string pool_name = "test") {
+  name = pool_name;
+  if (v < 0) {
+    H_ASSERT(v >= 0, "Flux and pool values may not be negative in 2 " + name);
+  }
+ ```
+  - even updating the default pool string name from "?", rebuilding hector, doing devtools::load_all 
+  here so it's updated, the resulting error is still 
+  "Flux and pool values may not be negative in 2 ?"
+  - added the 2 to the error statement so I knew Rstudio was seeing update in C++ code'.
+  
+  **Solution Part 1**: only use an NBP constraint with positive values.
+  
+  - In practice, this just means only using years >1970 or so as the constraint. 
+  - for GCP, depending on how you smooth it, this can be 1972. But if you try to use
+  1972 on with hector data, need to figure out a different diffusivity. very dumb.
+  - This led to some different errors, sometimes, that made me think I was on the right 
+  track but still ultimately gave the same flux values may not be negative error most of
+  the time.
+  
+  **Solution Part 2**: Lower the ocean heat diffusivity from its default value 
+  of 2.38 cm2/s to 2.31 cm2/s (for a 245).
+  
+  - ACS had run some NBP constraints a year+ ago and they were NOT as finicky to get to solve,
+  but that version of hector had different beta, q10, and diffusivity.
+  - the old (1.16) vs new value of diffusivity was the biggest difference (new was about 
+  double old), so started at 2.38 and just started incremementing lower until the
+  constraint solved. 
+  
+  - definitely had some runs with 2.34 that solved but can't replicate. I _think_ this
+  is not a real instability in hector code but is instead user error - in rstudio,
+  you can't cmd+enter a bunch of `rhector` function calls together - some end up 
+  kind of skipped because the `newcore` and `setvar` functions seem to take an 
+  extra moment and need to be run on their own before proceeding?
+  - but also only sometimes. 
+  - it's fine when knitting, but for quick adjustments and tests while writing
+  the code, executing blocks at a time just doesn't work.
+  
+
+## Hector 245 1970-2100 constraint
+
+```{r}
+
+# Default hector, trying to run as constraint fails
+# need to adjust a few hector params to get it to work.
+# Good to have as reference for plotting though.
+rcp <- "ssp245"
+scenario_file <- paste0("input/hector_",rcp,".ini")
+ini_file245 <- system.file(scenario_file, package="hector") 
+#### QUESTION - is this right hector package if did devtools::load_all
+#### ANSWER: yes, because add different ini to inst/input  directory and do load_all 
+####         and that new ini is then accessible.
+
+core245 <- hector::newcore(ini_file245, suppresslogging = FALSE, name='245_defaultconfig')
+hector::run(core245,runtodate = 2100)
+
+nbp245 <- hector::fetchvars(core245, dates=1746:2100, vars=c(hector::NBP()))
+
+
+# Core with adjusted params that work for constraint
+#reset(core_test)
+core_test <- hector::newcore(ini_file245, name = '245_diff2.31_generate')
+#setvar(core_test, NA, BETA(), 0.55, "(unitless)") # default 0.53
+#setvar(core_test, NA, Q10_RH(), 2.2, "(unitless)") # defualt 1.76
+setvar(core_test, NA, DIFFUSIVITY(), 2.31, "cm2/s") # default 2.38
+print(fetchvars(core_test, NA, DIFFUSIVITY()))
+
+hector::run(core_test,runtodate = 2100)
+
+nbp <- fetchvars(core_test, 1746:2100, NBP()) %>% bind_rows(nbp245)
+ggplot(nbp) + 
+    geom_line(data=nbp,
+              mapping = aes(x =year, y = value, color = scenario, linetype = scenario)) +
+    #scale_color_brewer(palette = 'Set3') +
+    ggtitle('NBP values')
+
+
+
+# Constraint with updated params
+nbp %>% 
+    filter(scenario == '245_diff2.31_generate',
+           year >= 1970,
+           year<= 2100) ->
+    nbp_constrainer
+
+# reset(core_test2)
+core_test2 <- hector::newcore(ini_file245, name = '245_diff2.31_constrain_1970~2100')
+# setvar(core_test2, NA, BETA(), 0.55, "(unitless)")
+# setvar(core_test2, NA, Q10_RH(), 2.2, "(unitless)")
+setvar(core_test2, NA, DIFFUSIVITY(), 2.31, "cm2/s")
+print(fetchvars(core_test2, NA, DIFFUSIVITY()))
+
+setvar(core_test2, nbp_constrainer$year, NBP_CONSTRAIN(), nbp_constrainer$value, "Pg C/yr")
+
+hector::run(core_test2,runtodate = 2100)
+
+
+nbp <- fetchvars(core_test2, 1746:2100, NBP()) %>% bind_rows(nbp,.)
+ggplot(nbp) + 
+    geom_line(data=nbp,
+              mapping = aes(x =year, y = value, color = scenario, linetype = scenario)) +
+    # scale_color_brewer(palette = 'Set3') +
+    ggtitle('NBP values')
+
+```
+
+So not surprisingly based on a lot of other things we have seen over the last
+couple years with hector, the **ocean** is the part that needs maintenance.
+
+- good to know diffusivity is a lever. Will do some sensitivity tests further
+down sweeping out different diffusivity values vs different magnitudes of NBP
+(will explain more there).
+
+- Maximum difference in NBP between diffusivity = 2.38 and diffusivity = 2.31:
+
+```{r}
+max(abs( (nbp%>% filter(scenario == '245_defaultconfig'))$value -
+             (nbp%>% filter(scenario == '245_diff2.31_generate'))$value))
+```
+
+Is 0.0076 PgC/year actually significant or in the noise?
+
+## hector 245 1970-2021 constraint
+
+- Seems useful to understand what happens when you just constrain the (usable)
+historical period.
+
+- usable in the sense that need NBP constraint values not to be negative, so
+years > 1970.
+
+- cutting at 2021 because that's the last year in the GCP data I have.
+Prob updated by now.
+
+```{r}
+# Constraint with updated params
+nbp %>% 
+    filter(scenario == '245_diff2.31_generate',
+           year >= 1970,
+           year<= 2021) ->
+    nbp_constrainer
+
+
+core_test3 <- hector::newcore(ini_file245, name = '245_diff2.31_constrain_1970~2021')
+# setvar(core_test2, NA, BETA(), 0.55, "(unitless)")
+# setvar(core_test2, NA, Q10_RH(), 2.2, "(unitless)")
+setvar(core_test3, NA, DIFFUSIVITY(), 2.31, "cm2/s")
+print(fetchvars(core_test3, NA, DIFFUSIVITY()))
+
+setvar(core_test3, nbp_constrainer$year, NBP_CONSTRAIN(), nbp_constrainer$value, "Pg C/yr")
+
+hector::run(core_test3,runtodate = 2100)
+
+
+nbp <- fetchvars(core_test3, 1746:2100, NBP()) %>% bind_rows(nbp,.)
+ggplot(nbp) +
+    geom_line(data=nbp,mapping = aes(x =year, y = value, color = scenario, linetype = scenario))  + 
+    geom_vline(xintercept = 2021, size=0.1) +
+    #scale_color_brewer(palette = 'Set3')+
+    ggtitle('NBP values')
+
+```
+
+- Is it interesting that you get a jump in NBP when the constraint ends (2021) 
+and then converge towards the main trajectory, or expected? 
+
+
+## GCP NBP constraint 1972-2021
+
+A few years in the GCP data from 1970-1980 have nbp<0.
+
+This seems to cause the NBP constraint Hector actually sees to remain at 0,
+leading to a huge rebound spike when the constraint ends in 2021.
+
+Just droping the specific years with negative nbp causes Hector to fill in 0s for
+those years, leading to a rebound at each of these years (not shown).
+
+```{r}
+
+# Run with GCP NBP
+
+gcp_data %>% 
+    filter(year >= 1972,
+           year<= 2021) %>%
+    #filter(nbp>0) %>%
+    mutate(nbp = 0.001*nbp,
+           Units = "Pg C/yr")->
+    nbp_constrainer
+
+
+coreGCP <- hector::newcore(ini_file245, name = 'GCP_diff2.31_constraint_1972~2021')
+setvar(coreGCP, NA, DIFFUSIVITY(), 2.31, "cm2/s") # have to be consistent with above
+print(fetchvars(coreGCP, NA, DIFFUSIVITY()))
+
+setvar(coreGCP,nbp_constrainer$year,"NBP_constrain",nbp_constrainer$nbp,"Pg C/yr")
+
+hector::run(coreGCP,runtodate = 2100)
+
+
+nbp <- fetchvars(coreGCP, 1746:2100, NBP()) %>% bind_rows(nbp,.)
+ggplot(nbp) +
+    geom_line(data=nbp,mapping = aes(x =year, y = value, color = scenario, linetype = scenario))  + 
+    geom_vline(xintercept = 2021, size=0.1) +
+    #scale_color_brewer(palette = 'Set3')+
+    ggtitle('NBP values')
+
+```
+- Near end of GCP constaint (~2015), NBP is almost twice as large as in the 
+hector default. This leads to a rebound dip.
+
+**SOLUTION Part 1a** Need a continuous stretch of positive NBP for the
+constraint to work.
+
+
+## GCP 1972-2000
+
+```{r}
+
+# Run with GCP NBP
+
+gcp_data %>% 
+    filter(year >= 1972,
+           year<= 2000) %>%
+    #filter(nbp>0) %>%
+    mutate(nbp = 0.001*nbp,
+           Units = "Pg C/yr")->
+    nbp_constrainer
+
+
+coreGCP2 <- hector::newcore(ini_file245, name = 'GCP_diff2.31_constraint_1972~2000')
+setvar(coreGCP2, NA, DIFFUSIVITY(), 2.31, "cm2/s") # have to be consistent with above
+print(fetchvars(coreGCP2, NA, DIFFUSIVITY()))
+
+setvar(coreGCP2,nbp_constrainer$year,"NBP_constrain",nbp_constrainer$nbp,"Pg C/yr")
+
+hector::run(coreGCP2,runtodate = 2100)
+
+
+nbp <- fetchvars(coreGCP2, 1746:2100, NBP()) %>% bind_rows(nbp,.)
+ggplot(nbp) +
+    geom_line(data=nbp,mapping = aes(x =year, y = value, color = scenario, linetype = scenario))  + 
+    geom_vline(xintercept = 2021, size=0.1) +
+    scale_color_brewer(palette = 'Set3')+
+    ggtitle('NBP values')
+
+```
+
+- rebound spike after constraint ending in 2000 much smaller than others.
+
+## 585 1970-2100
+
+
+```{r}
+
+rcp <- "ssp585"
+scenario_file <- paste0("input/hector_",rcp,".ini")
+ini_file585 <- system.file(scenario_file, package="hector") 
+#### QUESTION - is this right hector package if did devtools::load_all
+#### ANSWER: yes, because add different ini to inst/input  directory and do load_all 
+####         and that new ini is then accessible.
+
+core585 <- hector::newcore(ini_file585, suppresslogging = FALSE, name='585_defaultconfig')
+hector::run(core585,runtodate = 2100)
+
+nbp585 <- hector::fetchvars(core585, dates=1746:2100, vars=c(hector::NBP()))
+
+
+# Core with adjusted params that work for constraint
+#reset(core_test)
+core_test4 <- hector::newcore(ini_file585, name = '585_diff2.31_generate')
+#setvar(core_test, NA, BETA(), 0.55, "(unitless)") # default 0.53
+#setvar(core_test, NA, Q10_RH(), 2.2, "(unitless)") # defualt 1.76
+setvar(core_test4, NA, DIFFUSIVITY(), 2.31, "cm2/s") # default 2.38
+print(fetchvars(core_test4, NA, DIFFUSIVITY()))
+
+hector::run(core_test4,runtodate = 2100)
+
+nbp <- fetchvars(core_test4, 1746:2100, NBP()) %>% bind_rows(nbp585, nbp)
+ggplot(nbp) + 
+    geom_line(data=nbp,
+              mapping = aes(x =year, y = value, color = scenario, linetype = scenario)) +
+    #scale_color_brewer(palette = 'Set3') +
+    ggtitle('NBP values')
+
+
+
+# Constraint with updated params
+nbp %>% 
+    filter(scenario == '585_diff2.31_generate',
+           year >= 1970,
+           year<= 2100) ->
+    nbp_constrainer
+
+# reset(core_test2)
+core_test5 <- hector::newcore(ini_file585, name = '585_diff2.31_constrain_1970~2100')
+# setvar(core_test2, NA, BETA(), 0.55, "(unitless)")
+# setvar(core_test2, NA, Q10_RH(), 2.2, "(unitless)")
+setvar(core_test5, NA, DIFFUSIVITY(), 2.31, "cm2/s")
+print(fetchvars(core_test5, NA, DIFFUSIVITY()))
+
+setvar(core_test5, nbp_constrainer$year, NBP_CONSTRAIN(), nbp_constrainer$value, "Pg C/yr")
+
+hector::run(core_test5,runtodate = 2100)
+
+
+nbp <- fetchvars(core_test5, 1746:2100, NBP()) %>% bind_rows(nbp,.)
+ggplot(nbp) + 
+    geom_line(data=nbp,
+              mapping = aes(x =year, y = value, color = scenario, linetype = scenario)) +
+    # scale_color_brewer(palette = 'Set3') +
+    ggtitle('NBP values')
+
+ggplot(nbp %>% filter(grepl('585', scenario))) + 
+    geom_line(mapping = aes(x =year, y = value, color = scenario, linetype = scenario)) +
+    # scale_color_brewer(palette = 'Set3') +
+    ggtitle('NBP values')
+
+```
+
+
+## hector 585 1970-2021 constraint
+
+
+
+```{r}
+# Constraint with updated params
+nbp %>% 
+    filter(scenario == '585_diff2.31_generate',
+           year >= 1970,
+           year<= 2021) ->
+    nbp_constrainer
+
+
+core_test6<- hector::newcore(ini_file585, name = '585_diff2.31_constrain_1970~2021')
+# setvar(core_test2, NA, BETA(), 0.55, "(unitless)")
+# setvar(core_test2, NA, Q10_RH(), 2.2, "(unitless)")
+setvar(core_test6, NA, DIFFUSIVITY(), 2.31, "cm2/s")
+print(fetchvars(core_test6, NA, DIFFUSIVITY()))
+
+setvar(core_test6, nbp_constrainer$year, NBP_CONSTRAIN(), nbp_constrainer$value, "Pg C/yr")
+
+hector::run(core_test6,runtodate = 2100)
+
+
+nbp <- fetchvars(core_test6, 1746:2100, NBP()) %>% bind_rows(nbp,.)
+ggplot(nbp) +
+    geom_line(mapping = aes(x =year, y = value, color = scenario, linetype = scenario))  + 
+    geom_vline(xintercept = 2021, size=0.1) +
+    #scale_color_brewer(palette = 'Set3')+
+    ggtitle('NBP values')
+
+ggplot(nbp %>% filter(grepl('585', scenario))) + 
+    geom_line(mapping = aes(x =year, y = value, color = scenario, linetype = scenario)) +
+    # scale_color_brewer(palette = 'Set3') +
+    ggtitle('NBP values')
+
+```
+
+## GCP constraint under 585
+
+```{r}
+# Run with GCP NBP
+
+gcp_data %>% 
+    filter(year >= 1972,
+           year<= 2021) %>%
+    #filter(nbp>0) %>%
+    mutate(nbp = 0.001*nbp,
+           Units = "Pg C/yr")->
+    nbp_constrainer
+
+
+coreGCP3 <- hector::newcore(ini_file585, name = 'GCP585_diff2.31_constraint_1972~2021')
+setvar(coreGCP3, NA, DIFFUSIVITY(), 2.31, "cm2/s") # have to be consistent with above
+print(fetchvars(coreGCP3, NA, DIFFUSIVITY()))
+
+setvar(coreGCP3,nbp_constrainer$year,"NBP_constrain",nbp_constrainer$nbp,"Pg C/yr")
+
+hector::run(coreGCP3,runtodate = 2100)
+
+
+nbp <- fetchvars(coreGCP3, 1746:2100, NBP()) %>% bind_rows(nbp,.)
+ggplot(nbp) +
+    geom_line(mapping = aes(x =year, y = value, color = scenario, linetype = scenario))  + 
+    geom_vline(xintercept = 2021, size=0.1) +
+    #scale_color_brewer(palette = 'Set3')+
+    ggtitle('NBP values')
+
+```
+
+
+# Take a look at figure on trimmed years
+
+```{r}
+ggplot(nbp %>% filter(year >= 1970)) +
+    geom_line(mapping = aes(x =year, y = value, color = scenario, linetype = scenario))  + 
+    geom_vline(xintercept = 2021, size=0.1) +
+    #scale_color_brewer(palette = 'Set3')+
+    ggtitle('NBP values')
+```
+
+
+# Science questions
+
+1. is the rebound jump in NBP after a constraint ends expected or not? 
+
+1b. if not expected, what other quantities should we be tracing out? tas, co2, 
+hl_ocean, ll_ocean?
+
+- we can see that the size of the rebound varies with when the constraint ends - 
+maybe distance from there to default Hector?
+
+2. How did we get to 2.38 for ocean diffusivity and how confident is that estimate?
+
+2b. is that estimate putting us in a regime of behavior where the ocean is 
+unstable but lower values would be more stable? 
+
+- unlikely based on some past behavior seend withd diff of 1.16
+
+3. Do we want GCAM's historical LUC emissions calculations to talk to hector?
+
+
+
+# other tests
+
+all of above was just trying to get NBP cosntraint to run at all.
+
+Need:
+
+1. to make sure that for an ordered set of NBP constraints, T and CO2 should
+be following sensible order
+
+2. sensitivity on magnitude of constraint vs diffusivity
+
+
+## Ordered constraints 1970-2021 and T, CO2
+
+keep it simple  - couple multiples of 245 NBP with 2.31
+
+```{r, fig.width = 14, fig.height = 5, units = 'in'}
+
+# Get constraint:
+core_constrain <- hector::newcore(ini_file245, name = '245_diff2.31_generate')
+setvar(core_constrain, NA, DIFFUSIVITY(), 2.31, "cm2/s") # default 2.38
+
+
+hector::run(core_constrain,runtodate = 2050)
+
+nbp <- fetchvars(core_constrain, 1965:2050, NBP())
+
+out  <-fetchvars(core_constrain,dates=1965:2050,vars=c(GLOBAL_TAS(),
+                                                       CONCENTRATIONS_CO2(), 
+                                                       NBP(),
+                                                       LL_OCEAN_UPTAKE(),
+                                                       HL_OCEAN_UPTAKE())) %>%
+    mutate(k=1)
+
+
+# Constraint with updated params
+nbp %>% 
+    filter(scenario == '245_diff2.31_generate',
+           year >= 1970,
+           year<= 2021) ->
+    nbp_constrainer
+
+
+for (k in c(0.5, 1, 2, 5, 8)){
+    core_k <- hector::newcore(ini_file245, name = paste0('245_diff2.31_constrain_k',k))
+    setvar(core_k, NA, DIFFUSIVITY(), 2.31, "cm2/s")
+    
+    setvar(core_k, nbp_constrainer$year, NBP_CONSTRAIN(), k*nbp_constrainer$value, "Pg C/yr")
+    
+    hector::run(core_k,runtodate = 2050)
+
+    
+    fetchvars(core_k,dates=1965:2050,vars=c(GLOBAL_TAS(),
+                                            CONCENTRATIONS_CO2(), 
+                                            NBP(),
+                                            LL_OCEAN_UPTAKE(),
+                                            HL_OCEAN_UPTAKE())) %>%
+        mutate(k=k) %>%
+        bind_rows(out) -> 
+        out
+    rm(core_k)
+}
+
+
+# Order the variables for faceting
+out %>%
+    mutate(variable = if_else( variable == 'NBP', 'A.NBP',
+                               if_else(variable == 'CO2_concentration', 'B.CO2_concentration',
+                                       if_else(variable == 'global_tas', 'C.global_tas',
+                                               if_else(variable == 'LL_ocean_uptake', 'D.LL_ocean_uptake',
+                                                       if_else(variable == 'HL_ocean_uptake', 'E.HL_ocean_uptake',
+                                                               variable)))))) %>%
+    mutate(variable = paste0(variable, '~', units)) ->
+    out2
+
+ggplot(out2) +
+    geom_line(mapping = aes(x=year, y = value, color = k, linetype = scenario)) +
+    facet_wrap(~variable, scales = 'free_y', nrow=1) +
+    geom_vline(xintercept = 2021, size = 0.3) +
+    scale_color_continuous() +
+    ggtitle('diffusivity 2.31 cm2/s')
+
+```
+
+## Ordered constraints 1970-2050 and T, CO2
+
+keep it simple  - couple multiples of 245 NBP with 2.31
+
+```{r, fig.width = 14, fig.height = 5, units = 'in'}
+
+# Get constraint:
+nbp <- fetchvars(core_constrain, 1965:2050, NBP())
+
+out  <-fetchvars(core_constrain,dates=1965:2050,vars=c(GLOBAL_TAS(),
+                                                       CONCENTRATIONS_CO2(), 
+                                                       NBP(),
+                                                       LL_OCEAN_UPTAKE(),
+                                                       HL_OCEAN_UPTAKE())) %>%
+    mutate(k=1)
+
+
+# Constraint with updated params
+nbp %>% 
+    filter(scenario == '245_diff2.31_generate',
+           year >= 1970,
+           year<= 2050) ->
+    nbp_constrainer
+
+
+for (k in c(0.5, 1, 2, 5)){
+    core_k <- hector::newcore(ini_file245, name = paste0('245_diff2.31_constrain_k',k))
+    setvar(core_k, NA, DIFFUSIVITY(), 2.31, "cm2/s")
+    
+    setvar(core_k, nbp_constrainer$year, NBP_CONSTRAIN(), k*nbp_constrainer$value, "Pg C/yr")
+    
+    hector::run(core_k,runtodate = 2050)
+
+    
+    fetchvars(core_k,dates=1965:2050,vars=c(GLOBAL_TAS(),
+                                            CONCENTRATIONS_CO2(), 
+                                            NBP(),
+                                            LL_OCEAN_UPTAKE(),
+                                            HL_OCEAN_UPTAKE())) %>%
+        mutate(k=k) %>%
+        bind_rows(out) -> 
+        out
+    rm(core_k)
+}
+
+
+# Order the variables for faceting
+out %>%
+    mutate(variable = if_else( variable == 'NBP', 'A.NBP',
+                               if_else(variable == 'CO2_concentration', 'B.CO2_concentration',
+                                       if_else(variable == 'global_tas', 'C.global_tas',
+                                               if_else(variable == 'LL_ocean_uptake', 'D.LL_ocean_uptake',
+                                                       if_else(variable == 'HL_ocean_uptake', 'E.HL_ocean_uptake',
+                                                               variable)))))) %>%
+    mutate(variable = paste0(variable, '~', units)) ->
+    out2
+
+ggplot(out2) +
+    geom_line(mapping = aes(x=year, y = value, color = k, linetype = scenario)) +
+    facet_wrap(~variable, scales = 'free_y', nrow=1) +
+    # geom_vline(xintercept = 2021, size = 0.3) +
+    scale_color_continuous() +
+    ggtitle('diffusivity 2.31 cm2/s')
+
+```
+
+
+
+## lower diffusivity 1970-2021
+
+use 1.16, show that nbp/co2/temp don't behave the way they should.
+
+
+```{r, fig.width = 14, fig.height = 5, units = 'in'}
+
+# Get constraint:
+core_constrain <- hector::newcore(ini_file245, name = '245_diff1.16_generate')
+setvar(core_constrain, NA, DIFFUSIVITY(), 1.16, "cm2/s") # default 2.38
+
+
+hector::run(core_constrain,runtodate = 2050)
+
+nbp <- fetchvars(core_constrain, 1965:2050, NBP())
+
+out  <-fetchvars(core_constrain,dates=1965:2050,vars=c(GLOBAL_TAS(),
+                                                       CONCENTRATIONS_CO2(), 
+                                                       NBP(),
+                                                       LL_OCEAN_UPTAKE(),
+                                                       HL_OCEAN_UPTAKE())) %>%
+    mutate(k=1)
+
+
+# Constraint with updated params
+nbp %>% 
+    filter(scenario == '245_diff1.16_generate',
+           year >= 1970,
+           year<= 2021) ->
+    nbp_constrainer
+
+
+for (k in c(0.5, 1, 2, 5, 8)){
+    core_k <- hector::newcore(ini_file245, name = paste0('245_diff1.16_constrain_k',k))
+    setvar(core_k, NA, DIFFUSIVITY(), 1.16, "cm2/s")
+    
+    setvar(core_k, nbp_constrainer$year, NBP_CONSTRAIN(), k*nbp_constrainer$value, "Pg C/yr")
+    
+    hector::run(core_k,runtodate = 2050)
+
+    
+    fetchvars(core_k,dates=1965:2050,vars=c(GLOBAL_TAS(),
+                                            CONCENTRATIONS_CO2(), 
+                                            NBP(),
+                                            LL_OCEAN_UPTAKE(),
+                                            HL_OCEAN_UPTAKE())) %>%
+        mutate(k=k) %>%
+        bind_rows(out) -> 
+        out
+    rm(core_k)
+}
+
+
+# Order the variables for faceting
+out %>%
+    mutate(variable = if_else( variable == 'NBP', 'A.NBP',
+                               if_else(variable == 'CO2_concentration', 'B.CO2_concentration',
+                                       if_else(variable == 'global_tas', 'C.global_tas',
+                                               if_else(variable == 'LL_ocean_uptake', 'D.LL_ocean_uptake',
+                                                       if_else(variable == 'HL_ocean_uptake', 'E.HL_ocean_uptake',
+                                                               variable)))))) %>%
+    mutate(variable = paste0(variable, '~', units)) ->
+    out2
+
+ggplot(out2) +
+    geom_line(mapping = aes(x=year, y = value, color = k, linetype = scenario)) +
+    facet_wrap(~variable, scales = 'free_y', nrow=1) +
+    geom_vline(xintercept = 2021, size = 0.3) +
+    scale_color_continuous() +
+    ggtitle('diffusivity 1.16 cm2/s')
+
+
+```
+
+
+## lower diffusivity 1970-2050
+
+use 1.16, show that nbp/co2/temp don't behave the way they should.
+
+
+```{r, fig.width = 14, fig.height = 5, units = 'in'}
+
+# Get constraint:
+nbp <- fetchvars(core_constrain, 1965:2050, NBP())
+
+out  <-fetchvars(core_constrain,dates=1965:2050,vars=c(GLOBAL_TAS(),
+                                                       CONCENTRATIONS_CO2(), 
+                                                       NBP(),
+                                                       LL_OCEAN_UPTAKE(),
+                                                       HL_OCEAN_UPTAKE())) %>%
+    mutate(k=1)
+
+
+# Constraint with updated params
+nbp %>% 
+    filter(scenario == '245_diff1.16_generate',
+           year >= 1970,
+           year<= 2050) ->
+    nbp_constrainer
+
+
+for (k in c(0.5, 1, 2, 5)){
+    core_k <- hector::newcore(ini_file245, name = paste0('245_diff1.16_constrain_k',k))
+    setvar(core_k, NA, DIFFUSIVITY(), 1.16, "cm2/s")
+    
+    setvar(core_k, nbp_constrainer$year, NBP_CONSTRAIN(), k*nbp_constrainer$value, "Pg C/yr")
+    
+    hector::run(core_k,runtodate = 2050)
+
+    
+    fetchvars(core_k,dates=1965:2050,vars=c(GLOBAL_TAS(),
+                                            CONCENTRATIONS_CO2(), 
+                                            NBP(),
+                                            LL_OCEAN_UPTAKE(),
+                                            HL_OCEAN_UPTAKE())) %>%
+        mutate(k=k) %>%
+        bind_rows(out) -> 
+        out
+    rm(core_k)
+}
+
+
+# Order the variables for faceting
+out %>%
+    mutate(variable = if_else( variable == 'NBP', 'A.NBP',
+                               if_else(variable == 'CO2_concentration', 'B.CO2_concentration',
+                                       if_else(variable == 'global_tas', 'C.global_tas',
+                                               if_else(variable == 'LL_ocean_uptake', 'D.LL_ocean_uptake',
+                                                       if_else(variable == 'HL_ocean_uptake', 'E.HL_ocean_uptake',
+                                                               variable)))))) %>%
+    mutate(variable = paste0(variable, '~', units)) ->
+    out2
+
+ggplot(out2) +
+    geom_line(mapping = aes(x=year, y = value, color = k, linetype = scenario)) +
+    facet_wrap(~variable, scales = 'free_y', nrow=1) +
+    geom_vline(xintercept = 2021, size = 0.3) +
+    scale_color_continuous() +
+    ggtitle('diffusivity 1.16 cm2/s')
+
+
+
+```
+
+
+## replicate NBP-T-C issue 
+
+```{r}
+
+# GCP
+gcp_data %>% 
+    filter(year >= 1972,
+           year<= 2021) %>%
+    #filter(nbp>0) %>%
+    mutate(nbp = 0.001*nbp,
+           Units = "Pg C/yr")->
+    nbp_constrainer
+
+
+coreGCP <- hector::newcore(ini_file245, name = 'GCP_diff2.31_constraint_1972~2021')
+# setvar(coreGCP, NA, BETA(), 0.55, "(unitless)")
+# setvar(coreGCP, NA, Q10_RH(), 2.2, "(unitless)") 
+setvar(coreGCP, NA, DIFFUSIVITY(), 1.16, "cm2/s") 
+
+setvar(coreGCP,nbp_constrainer$year,"NBP_constrain",nbp_constrainer$nbp,"Pg C/yr")
+
+hector::run(coreGCP,runtodate = 2050)
+
+
+out  <-fetchvars(coreGCP, dates=1965:2050,vars=c(GLOBAL_TAS(),
+                                                       CONCENTRATIONS_CO2(), 
+                                                       NBP(),
+                                                       LL_OCEAN_UPTAKE(),
+                                                       HL_OCEAN_UPTAKE())) %>%
+    mutate(k=1)
+
+
+for (k in c(2, 6)){
+    core_k <- hector::newcore(ini_file245, name = paste0('245_k',k))
+    # setvar(coreGCP, NA, BETA(), 0.55, "(unitless)") # have to be consistent with above
+    # setvar(coreGCP, NA, Q10_RH(),2.2, "(unitless)") # have to be consistent with above
+    setvar(core_k, NA, DIFFUSIVITY(), 1.16, "cm2/s")
+    
+    setvar(core_k, nbp_constrainer$year, NBP_CONSTRAIN(), k*nbp_constrainer$nbp, "Pg C/yr")
+    
+    hector::run(core_k,runtodate = 2050)
+
+    
+    fetchvars(core_k,dates=1965:2050,vars=c(GLOBAL_TAS(),
+                                            CONCENTRATIONS_CO2(), 
+                                            NBP(),
+                                            LL_OCEAN_UPTAKE(),
+                                            HL_OCEAN_UPTAKE())) %>%
+        mutate(k=k) %>%
+        bind_rows(out) -> 
+        out
+    rm(core_k)
+}
+
+
+# Order the variables for faceting
+out %>%
+    mutate(variable = if_else( variable == 'NBP', 'A.NBP',
+                               if_else(variable == 'CO2_concentration', 'B.CO2_concentration',
+                                       if_else(variable == 'global_tas', 'C.global_tas',
+                                               if_else(variable == 'LL_ocean_uptake', 'D.LL_ocean_uptake',
+                                                       if_else(variable == 'HL_ocean_uptake', 'E.HL_ocean_uptake',
+                                                               variable)))))) %>%
+    mutate(variable = paste0(variable, '~', units)) ->
+    out2
+
+ggplot(out2 %>% filter(year <= 2000)) +
+    geom_line(mapping = aes(x=year, y = value, color = k, linetype = scenario)) +
+    facet_wrap(~variable, scales = 'free_y', nrow=1) +
+    geom_vline(xintercept = 1994, size = 0.3) +
+    scale_color_continuous() #+
+    #ggtitle('diffusivity 1.16 cm2/s, beta=0.55, q10=2.2 \n just changing diff is not enough')
+
+
+
+
+```
+diff: 1.16, beta:.55, q10: 2.2
+
+can't replicate but ocean uptake in 1993-1995 interesting: in default, both 
+LL and HL ocean are a valley at the same time as NBP valley.
+
+But when that NBP valley is made more extreme, HL and LL become peaks
+
+
+diff:2.31, beta:0.53, q10:1.76
+
+
+TODO have plots for both parameterization, not just toggle in code
+
+ALSO TODO: why changing beta and q10 changing plots for same diffusivity (double check side by side)
+- have to use diff 1.16 to solve with both sets of beta/q10 but identical as should be (think)
+
+
+- make a copy of the old notebook and see if can re-generate there with old params and new hector.
+
+
+## sweep diffusivity vs gcp magnitude
+
+
+
+# test doing one year at a time (like DW work)
+
+is there a rebound when feeding on next time step
+
+ALSO double check gcamlandc - is it passing emissions/land (spikes) or stock/land
+stock/land might have spikes too, since dividing by land tricky at the changes, esp
+with lag 

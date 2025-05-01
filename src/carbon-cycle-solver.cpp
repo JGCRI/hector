@@ -229,17 +229,17 @@ void CarbonCycleSolver::run(const double tnew) {
   // Get the initial state data from the box model. c will be filled in
   // Note that we rely on the box model to handle the units.  Inside the
   // solver we strip the unit values and work with raw numbers.
-  cmodel->getCValues(t, &c[0]);
+  cmodel->getCValues(t, &c[0]); // simpleN box - give current state
 
   double t0 = t; // stash this in case we need to report & diagnose an error
   // Now integrate from the beginning of the time step using the updated
   // slow params.  Note we can discard t0 and the values in cc
-  cmodel->slowparameval(t, &c[0]);
+  cmodel->slowparameval(t, &c[0]); // things that don't have to be evaluated repeatedly as part of adaptive solver - just once per time step
   int retry = 0;
 
   H_LOG(logger, Logger::DEBUG)
       << "Entering ODE solver " << t << "->" << tnew << std::endl;
-  while (t < tnew && retry < MAX_CARBON_MODEL_RETRIES) {
+  while (t < tnew && retry < MAX_CARBON_MODEL_RETRIES) { // call the solver 
 
     H_LOG(logger, Logger::DEBUG)
         << "Resetting evolver and stepper" << std::endl;
@@ -252,7 +252,7 @@ void CarbonCycleSolver::run(const double tnew) {
           << "->" << tnew << ")" << std::endl;
 
       int stat = ODE_SUCCESS;
-      ODEEvalFunctor odeFunctor(cmodel, &t);
+      ODEEvalFunctor odeFunctor(cmodel, &t); // call the solver on the cmodel (pointer to diff eqs in simple n box)
       try {
         using namespace boost::numeric::odeint;
         typedef runge_kutta_dopri5<std::vector<double>> error_stepper_type;
@@ -266,7 +266,7 @@ void CarbonCycleSolver::run(const double tnew) {
       if (stat == CARBON_CYCLE_RETRY) {
         H_LOG(logger, Logger::NOTICE) << "Carbon model requests retry #"
                                       << ++retry << " at t= " << t << std::endl;
-        t_target = t_start + (t_target - t_start) / 2.0;
+        t_target = t_start + (t_target - t_start) / 2.0; //if component has trouble getting to goal year (t_target) shorten time step and try again
         t = t_start;
 
         dt = t_target - t;
@@ -278,7 +278,7 @@ void CarbonCycleSolver::run(const double tnew) {
         failure(stat, t_start, t_target);
     }
 
-    // We have exited GSL solver loop, but did we make it?
+    // We have exited solver loop, but did we make it?
     if (retry < MAX_CARBON_MODEL_RETRIES) {
       H_LOG(logger, Logger::NOTICE)
           << "Success: we have reached " << t_target << std::endl;

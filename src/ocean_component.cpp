@@ -245,18 +245,18 @@ void OceanComponent::prepareToRun() {
   // Set up our ocean box model.
   H_LOG(logger, Logger::DEBUG) << "Setting up ocean box model" << std::endl;
   surfaceHL.initbox(HL_preind_C, "HL");
-  surfaceHL.surfacebox = true;
+  surfaceHL.surfacebox = true; // surface box means need to comput flex to atmos
   surfaceHL.preindustrial_flux.set(1.000,
                                    U_PGC_YR); // used if no spinup chemistry
   surfaceHL.active_chemistry = spinup_chem;
 
-  surfaceLL.initbox(LL_preind_C, "LL");
+  surfaceLL.initbox(LL_preind_C, "LL"); 
   surfaceLL.surfacebox = true;
   surfaceLL.preindustrial_flux.set(-1.000,
                                    U_PGC_YR); // used if no spinup chemistry
   surfaceLL.active_chemistry = spinup_chem;
 
-  inter.initbox(I_preind_C, "intermediate");
+  inter.initbox(I_preind_C, "intermediate"); // no chemistry, not a surface box
   deep.initbox(D_preind_C, "deep");
 
   // transport * seconds / volume of box
@@ -275,9 +275,10 @@ void OceanComponent::prepareToRun() {
   double IO_DOex = (tid.value(U_M3_S) * spy) / I_volume;
 
   // Set up the flow connections between the boxes
-  surfaceLL.make_connection(&surfaceHL, LL_HL, 1);
+  // thermohalian circulation setup 
+  surfaceLL.make_connection(&surfaceHL, LL_HL, 1); // 
   surfaceLL.make_connection(&inter, LL_IOex, 1);
-  surfaceHL.make_connection(&deep, HL_DO, 1);
+  surfaceHL.make_connection(&deep, HL_DO, 1); // sinking water at poles (?)
   inter.make_connection(&surfaceLL, IO_LL + IO_LLex, 1);
   inter.make_connection(&surfaceHL, IO_HL, 1);
   inter.make_connection(&deep, IO_DOex, 1);
@@ -365,7 +366,7 @@ void OceanComponent::run(const double runToDate) {
     deep.start_tracking();
   }
 
-  CO2_conc = core->sendMessage(M_GETDATA, D_CO2_CONC, message_data(runToDate));
+  CO2_conc = core->sendMessage(M_GETDATA, D_CO2_CONC, message_data(runToDate));// example of message passing 'I need to know atmos co2 concentration'
   SST.set(core->sendMessage(M_GETDATA, D_SST), U_DEGC);
 
   in_spinup = core->inSpinup();
@@ -629,7 +630,7 @@ int OceanComponent::calcderivs(double t, const double c[],
 // documentation is inherited
 void OceanComponent::slowparameval(double t, const double c[]) {
 
-  in_spinup = core->inSpinup();
+  in_spinup = core->inSpinup(); // just recording if in spinup or not; land would be different - CO2fert doesn't get computed repeatedly
 }
 
 //------------------------------------------------------------------------------

@@ -1,0 +1,718 @@
+---
+title: "plotting_and_hector_code"
+author: "acs"
+date: "2024-03-14"
+output: 
+  html_document:
+    toc: true
+    toc_depth: 3
+    toc_float: true
+---
+
+# Setup relevant libraries and directory for saving figs and data
+
+```{r setup}
+library(dplyr)
+library(ggplot2)
+library(ggsci)
+library(zoo)
+
+library(data.table)
+library(tidyr)
+library(hector)
+
+data_dir <- 'plot_data_14Mar_2024/'
+figure_dir <- 'plot_data_14Mar_2024/figures/'
+```
+
+# Read in data from runs
+
+CRITICAL: the offline model outputs files labeled 
+
+`ag_emiss_<scenarioinfo>.csv` , `bg_emiss_<scenarioinfo>.csv`
+
+based on tracing through code, these are GCAM style emissions i.e. land to
+atmosphere flows. Tracethrough captured in definitions slide deck but to summarize:
+GCAM style emissions are 
+
+`carbon_content_change = cdiff = c_stock(prev)-cstock(current)` 
+
+and if "If carbon content increases , then carbon was sequestered." (comment from
+simple carbon calc). In terms of cdiff, increasing carbon content <=> 
+current > prev <=> cdiff < 0.  
+
+So that's why the code variables `ag_emissions`, `luc_total` are land to atmoshphere.
+
+NBP is atmosphere to land. Dawn correctly flips the direction of carbon flow
+in the call to Hector on each time step to get updated T and C for feedback.
+
+But the code output is still land to to atmosphere so for plotting NBP, we have
+to flip the code outputs for plotting.
+
+
+
+## Create the data frame from runs if needed
+
+This block defaults to FALSE for evaluation while knitting
+
+
+
+```{r readin, eval=FALSE}
+# create if needed, but restart Rstudio to free up memory
+source('read_in_landcalcs.R')
+
+# Not bad run-wise but does take a few min:
+bind_rows(read.csv(paste0(data_dir, 'ref_plot_data.csv'),
+                   stringsAsFactors = F) %>%
+            select(year, region, landleaf, name, scenario, tot_land_to_atm_emiss) %>%
+            rename(value=tot_land_to_atm_emiss)%>%
+            mutate(variable = 'tot_land_to_atm_emiss'),
+          read.csv(paste0(data_dir, 'pro_plot_data.csv'),
+                   stringsAsFactors = F) %>%
+            select(year, region, landleaf, name, scenario,tot_land_to_atm_emiss) %>%
+            rename(value=tot_land_to_atm_emiss)%>%
+            mutate(variable = 'tot_land_to_atm_emiss')) ->
+  plot_data_all
+
+write.csv(plot_data_all, paste0(data_dir, 'all_tot_land_to_atmos.csv'), row.names = F)
+```
+
+## Read in the data to proceed
+
+```{r read2}
+plot_data_all <- read.csv(paste0(data_dir, 'all_tot_land_to_atmos.csv'),
+                          stringsAsFactors = F)
+```
+
+# Reshape the data for plotting
+
+This includes flipping the direction of the carbon flows so that they are 
+atmosphere to land, as NBP is. And adding additional info to the scenario
+names to clarify what processes are included.
+
+```{r reshaping}
+# Reshape data a bit
+plot_data_all %>%
+  select(year, region, landleaf, name, scenario, variable, value) %>%
+  # Clarify that the uncoupled model's land_to_atmos_emissions is actually just the 
+  # land use change emissions of the old GCAM way:
+  # delta_land * constant carbon density
+  # in a full GCAM run, this land use change emission passes to hector, which
+  # simulates global NPP and Rh and combines the 3 processes to get NBP.
+  # In the coupled run, all three of these processes are occuring at the land 
+  # leaf level, so it is a true NBP (or at least more true than for the uncoupled).
+  mutate(scenario = if_else(scenario == 'uncoupled',
+                            '2. uncoupled_luc',
+                            '3. coupled_NBP')) %>%
+  # Switch direction from (land to atmosphere) to (atmosphere to)
+  mutate(value = -value, 
+         variable = 'tot_NBP') -> 
+  for_emissions
+rm(plot_data_all)
+
+```
+
+# Create world totals data frame, Plotting on managed vs unmanaged leaves 
+
+```{r}
+# pull out emissions by land type (managed vs unmanaged):
+#all leaf names
+all_leaves <- unique(for_emissions$name)
+
+managed_leaves <- grep("Unmanaged|RockIceDesert|Tundra", all_leaves, value=TRUE, invert=TRUE)
+#removes Unmanaged, RockIceDesert, and Tundra 
+
+unmanaged_leaves <- grep("Unmanaged|RockIceDesert|Tundra", all_leaves, value=TRUE)
+#selects Unmanaged, RockIceDesert, and Tundra 
+
+static_leaves <- grep("Urban|RockIceDesert|Tundra", all_leaves, value=TRUE)
+
+# acs note - is no land change or C density change for rock ice desert, tundra, or 
+# urban. Maybe want to pull them out separately as Gcam's static leaves?
+# maybe just for sanity checking or something
+
+
+##NOTE
+#Dawn previously had pasture as part of unmanaged,
+#here they are counted as managed land
+
+#for managed leaves, create regional (comparing to gasser) and 
+# global(comparing to GCP) nbp data sets
+managed_data <- dplyr::filter(for_emissions,name %in% managed_leaves)
+
+managed_data %>%
+  group_by(region,scenario, year) %>% 
+  summarise(nbp=sum(value)) %>%
+  ungroup -> 
+  reg_totals_mgd
+reg_totals_mgd$mgd <- "managed"
+
+managed_data %>% 
+  group_by(scenario, year) %>%
+  summarise(nbp=sum(value)) %>%
+  ungroup -> 
+  world_totals_mgd
+world_totals_mgd$mgd <- "managed"
+
+#same for unmanaged
+unmgd_data <- dplyr::filter(for_emissions,!(name %in% managed_leaves))
+
+unmgd_data %>%
+  group_by(region,scenario, year) %>% 
+  summarise(nbp=sum(value))%>% 
+  ungroup -> 
+  reg_totals_unmgd
+reg_totals_unmgd$mgd <- "unmanaged"
+
+unmgd_data %>% 
+  group_by(scenario, year) %>% 
+  summarise(nbp=sum(value)) %>% 
+  ungroup->
+  world_totals_unmgd
+world_totals_unmgd$mgd <- "unmanaged"
+
+
+# process static leaves similarly
+# note that this includes leaves from both managed and unmanaged
+for_emissions %>%
+  filter(name %in% static_leaves) %>%
+  group_by(scenario, year) %>% 
+  summarise(nbp=sum(value)) %>% 
+  ungroup %>%
+  mutate(mgd = 'static') ->
+  world_totals_static
+
+# combine the managed and unmanaged leaves for global
+# Right now, ignore static. Just there for reference if needed.
+world_totals <- bind_rows(# world_totals_static, 
+                          world_totals_mgd, world_totals_unmgd)
+
+
+#protected vs reference (aka baseline), managed vs unmanaged
+ggplot(data=world_totals,aes(x=year,y=nbp,color= mgd)) +
+  geom_point()+
+  ylab("Atmosphere to land Flux (Mt C/yr)") +
+  facet_grid(mgd~scenario, scales = "free") + 
+  theme_classic() -> fig
+
+ggplot(data=world_totals,aes(x=year,y=nbp,color= scenario)) +
+  geom_point()+
+  facet_wrap(~mgd)+
+  ylab("Atmosphere to land Flux (Mt C/yr)") +
+  theme_classic() -> fig2
+
+fig
+
+fig2
+
+ggsave(filename=paste0(figure_dir,"coupled_vs_un_world_2010_mgd_comp.png"),
+       plot=fig, width=10, height=6)
+ggsave(filename=paste0(figure_dir,"coupled_vs_un_world_2010_mgd_comp2.png"),
+       plot=fig2, width=10, height=6)
+
+```
+
+It is NOT a result that 'coupling changes unmanged land from a source to a sink.'
+The pink vs blue line is not an apples to apples comparison of processes.
+
+Note that the uncoupled does not have NPP and Rh effects, and we can only get
+those globally from Hector, not for mgd vs unmgd. 
+
+But it adjacent to how reporting definitions are hard and different definitions 
+can have different results. 
+
+# Comparison to GCP
+
+## Read in and understand GCP data
+
+This is true NBP: atmosphere to land, positive NBP = a sink
+
+```{r}
+# load the file passed from Dawn
+gcp_data_dawn <- read.csv("GCP_data/nbp_gcp.csv")
+
+# Load the file pulled directly from GCP:
+read.csv('GCP_data/Global_Carbon_Budget_2022v1p0_historical_co2_tab.csv', stringsAsFactors = F) %>%
+  select(year=Year, e_luc=land.use.change.emissions, s_land = land.sink, Units) %>%
+  tidyr::replace_na(list(e_luc=0)) %>%
+  # If we want to sum e_luc + s_land, uncomment from the `gather` to `ungroup` 
+  # calls here and comment out the `mutate`:
+  # gather(reporting_id, value, -year, -Units) %>%
+  # group_by(year, Units) %>%
+  # summarize(nbp = -sum(value, na.rm=T)) %>%
+  # ungroup %>%
+  # Following slide 56 of GCP_data/papers/GCP_CarbonBudget_2023_slides_v1.0-2-Alissa-Haward.pdf
+  mutate(nbp = (s_land - e_luc)) ->
+  gcp_data
+```
+
+### Check if GCP data and Dawn's agree
+
+Check if `nbp = (s_land-e_luc)` from the raw GCP download agrees
+ with file from Dawn. Note Dawn's file did `-(s_land-e_luc)` to have things
+ in the land to atmosphere direction instead, and compare with offline model 
+ outputs directly. so  have to do minus a minus
+
+```{r}
+
+print("Difference to Dawn's file:")
+print(max(abs(gcp_data$nbp - -gcp_data_dawn$nbp)))
+```
+
+## Proceed with GCP data
+
+Label data and convert units
+
+```{r}
+
+# Label data and convert units
+gcp_data$scenario <- "1. Global Carbon Project"
+gcp_data$nbp_raw <- gcp_data$nbp*1000
+gcp_data$nbp <- rollmean(gcp_data$nbp*1000,k=10,fill=NA)
+```
+
+
+## Compare on mgd vs unmgd leaves (GCP plotting 1 of 2 in old code)
+
+we don't think this is the correct definition now.
+
+```{r mgd_gcp}
+#comparison with GCP
+gcp_data %>%
+  select(year, scenario, nbp) %>%
+  full_join(world_totals[world_totals$mgd == "managed",]) ->
+  world_totals_gcp
+
+ggplot(data=dplyr::filter(world_totals_gcp,year<=2015),
+       aes(x=year,y=nbp,colour=scenario, group = interaction(mgd, scenario)))+
+  geom_line(size=1.5)+
+  scale_color_uchicago()+
+  ylab("Atmosphere to land Flux (Mt C/yr)") +
+  xlab("Year") +
+  ggtitle('world total (managed leaves) vs GCP total (all leaves). \nNBP is inaccurate label for uncoupled case. \nactually -LUC emissions in that case.') + 
+  theme_classic() +
+  theme(axis.title = element_text(size=14),
+        axis.text = element_text(size=14)) -> 
+  fig
+
+fig
+
+ggsave(filename=paste0(figure_dir, "coupled_vs_un_world_2015_gcp_comparison_mgd_leaves.png"), 
+       plot=fig,
+       width=8, height=4.5)
+
+ggsave(filename=paste0(figure_dir, "coupled_vs_un_world_2015_gcp_comparison_mgd_leaves_w_ELUC.png"), 
+       plot=fig +  
+         geom_line(data = dplyr::filter(gcp_data,year<=2015) %>%
+                     mutate(mgd = 'E_LUC'),
+                   mapping = aes(x = year, y = e_luc*1000, color =interaction(mgd, scenario))) +
+         geom_line(data = dplyr::filter(world_totals_gcp,
+                                        scenario == '2. uncoupled_luc',
+                                        year<=2015) %>%
+                     mutate(mgd = 'E_LUC'),
+                   mapping = aes(x = year, y = -nbp, color =interaction(mgd, scenario))),
+       width=8, height=4.5)
+
+#same as comparison with GCP above
+#but with raw GCP nbp
+gcp_data %>%
+  select(year, scenario, nbp_raw) %>%
+  mutate(nbp = nbp_raw) %>%
+  full_join(world_totals[world_totals$mgd == "managed",]
+  ) -> 
+  raw_world_totals_gcp
+
+ggplot(data=dplyr::filter(raw_world_totals_gcp,year<=2015),
+       aes(x=year,y=nbp,colour=scenario))+
+  geom_line(size=1.5)+
+  scale_color_uchicago()+
+  ylab("Atmosphere to land Flux (Mt C/yr) on managed leaves") +
+  xlab("Year")+
+  theme_classic() +
+  theme(axis.title = element_text(size=14),
+        axis.text = element_text(size=14)) -> fig
+
+
+ggsave(filename=paste0(figure_dir, "coupled_vs_un_world_2015_raw_mgd.png"),
+       plot=fig,width=8,height=3.5)
+
+```
+
+
+## Compare full NBP's to GCP (GCP 2 of 2 in old code)
+
+Assuming that GCP total land flux is land allocation, NPP, Rh effects on all 
+leaves
+
+### Run uncoupled through hector so have effect of land change, NPP, Rh
+
+We DON'T flip the offline model's emissions file direction for this because
+this is the old way of Hector, which expects land to atmosphere and does the
+flip itself. 
+
+```{r hector}
+###############################################################################
+# package scenario
+rcp <- "ssp245"
+scenario_file <- paste0("input/hector_",rcp,".ini")
+ini_file245 <- system.file(scenario_file, package="hector")
+
+core245 <- hector::newcore(ini_file245, suppresslogging = FALSE, name='245')
+hector::run(core245,runtodate = 2100)
+
+out <- hector::fetchvars(core245, dates=1746:2100, vars=c(hector::NBP()))
+
+rcp <- "ssp585"
+scenario_file <- paste0("input/hector_",rcp,".ini")
+ini_file585 <- system.file(scenario_file, package="hector")
+
+core585 <- hector::newcore(ini_file585, suppresslogging = FALSE, name='585')
+hector::run(core585,runtodate = 2100)
+
+out <- bind_rows(out, hector::fetchvars(core585, dates=1746:2100, vars=c(hector::NBP())))
+ggplot(out %>% filter(year <=2015)) + geom_line(aes(x = year, y = value, color = scenario)) +
+  geom_line(data = gcp_data , mapping = aes(x = year, y = nbp/1000))+
+  ggtitle('Hector nbp vs GCP, in Hector units \nNote this is updated hector params in acs install \nbeta=.53, q10=1.76, ocean = ???')
+
+
+
+
+###############################################################################
+
+# GCAM scenario
+# the orignal gcam emissions the ini file calls:
+ini_dir <- 'pic_data/pic_hector_ini/climate/'
+orig_emiss <- read.csv(paste0(ini_dir, 'gcam_emissions.csv'), skip = 4, stringsAsFactors = F)
+
+# read in our LUC emissions from the uncoupled model and aggregate to global"
+gcam_years <- c(1750, 1800, 1850, 1900, 1950, 1975, 1990, 2005, 2010, 2015)
+
+net_luc_emiss_uncoupled_offline <- read.csv(paste0(data_dir, 'all_tot_land_to_atmos.csv'),
+                                                             stringsAsFactors = F) %>%
+  filter(scenario == 'uncoupled') %>% 
+  group_by(year, variable) %>%
+  summarize(value=sum(value)*1e-3) %>% #NOT flipping the offline model values, just changing unit
+  ungroup 
+
+# tidy the gcam year jumps
+# applying NA out the gcam years and use approx() to interpolate between years 
+gcam_years <- c(1750, 1800, 1850, 1900, 1950, 1975, 1990, 2005, 2010)
+
+
+# consider using this pipeline to fill NAs for gcam_years and interpolating to
+# re-fill NAs
+net_luc_emiss_uncoupled_offline <- net_luc_emiss_uncoupled_offline %>%
+  # replace values for years in gcam_years with NAs
+  mutate(value = replace(value, year %in% gcam_years, NA)) %>%
+  # if there is an NA in the value column approximate that value, otherwise use original value
+  mutate(value = ifelse(is.na(value),
+                        approx(year, value, xout= year, rule = 2)$y, # rule 2 copies 2009 value to 2010
+                        value))
+
+# # make a new emissions data frame that is identical to the old but with
+# # luc_emissions column updated:
+new_emiss <- orig_emiss %>%
+  # left_join the offline values by Date after renaming columns in the offline results
+  left_join(net_luc_emiss_uncoupled_offline %>% 
+              # rename year column to Date
+              rename(Date = year) %>% 
+              # delete variable column from offline results  
+              select(-variable),
+            by = "Date") %>%
+  # substitute the original luc_emissions with the offline values 
+  mutate(luc_emissions = value) %>% 
+  # delete the value column, leaving the new luc_emissions column
+  select(-value)
+
+# write new_emission .csv
+write.csv(new_emiss, paste0(ini_dir, 'new_emissions.csv'), quote = FALSE, row.names = FALSE)
+
+# get the header info of the original emissions data frame:
+## readLines() to read first four lines and store
+header <- readLines(paste0(ini_dir, 'gcam_emissions.csv'), n = 4)
+
+# add it to the new data frame and save
+## readLines() of the new_emiss .csv file
+dat_new_emiss <- readLines(paste0(ini_dir, 'new_emissions.csv'))
+
+## concatenate with header
+dat <- c(header, dat_new_emiss)
+
+## and write new lines
+writeLines(dat, paste0(ini_dir, "new_emissions.csv"))
+
+# replace old emissions file path with new emissions file path
+## readLines() of the old emissions file path
+old_emission_ini <- readLines(paste0(ini_dir, 'hector-gcam.ini'))
+
+## substitute old emissions path with new emissions path in the old emissions ini
+new_emission_ini <- gsub("./gcam_emissions.csv", "./new_emissions.csv", old_emission_ini)
+
+## write lines for the new emisisons ini.
+writeLines(new_emission_ini, paste0(ini_dir, 'new-hector-gcam.ini'))
+
+## save and close out
+### ALSO check the beta and q10 values in that file and update with beta=0.55
+### and q10=2.2 that we used to generate the coupled data, if needed 
+
+# read in the new ini file and run hector with it 
+ini_file <- paste0(ini_dir, 'new-hector-gcam.ini') # update to whatever name of new file
+core <- hector::newcore(ini_file)
+
+hector::run(core, runtodate = 2005) #gcam_emissions.csv file only goes to 2005
+
+out <- fetchvars(core, 1750:2005, vars = c(GLOBAL_TAS(),CONCENTRATIONS_CO2(), NBP()))
+head(out)
+
+ggplot(out) + 
+  geom_line(aes(x = year, y = value, color = scenario)) +
+  facet_wrap(~variable, scales = 'free')+ 
+  ggtitle('Hector with pic ini and offline LUC - beta =.55, q10=2.2 \nocean might be diff to what made coupled result') 
+
+# If hector::run returns an interpolation error, it means we gave it a runtodate
+# that is later than the emissions file actually has data for.
+
+# have to reset(core) before updating the runtodate or else you will get 
+# errors referring to oh values at the start of their name.
+
+```
+
+
+### plot land fluxes
+
+```{r}
+#comparison with GCP
+# trim GCAM years from data
+world_totals %>% 
+  group_by (scenario, year) %>% 
+  summarize(nbp = sum(nbp)) %>%
+  ungroup -> 
+  # mutate(scenario = if_else(scenario == "2. uncoupled_luc_noNPP_noRh",
+  #                           "4. uncoupled_LUC_only",
+  #                           scenario)) ->
+  trimmed_world_totals
+# not working:
+  # mutate(nbp= replace(nbp, year %in% gcam_years, NA), 
+  #        nbp = if_else(is.na(nbp),
+  #                      approx(year, nbp, xout= year, rule = 2)$y, 
+  #                      nbp)) ->
+  # trimmed_world_totals
+
+gcam_yr_ind <- which(trimmed_world_totals$year %in% gcam_years)
+for (ind in gcam_yr_ind){
+  trimmed_world_totals[ind,]$nbp <-0.5*(trimmed_world_totals[ind-1,]$nbp +
+                                                      trimmed_world_totals[ind+1,]$nbp)
+}
+trimmed_world_totals[trimmed_world_totals$year == 2010,]$nbp <-
+  trimmed_world_totals[trimmed_world_totals$year == 2009,]$nbp
+
+gcp_data %>%
+  select(year, scenario, nbp) %>%
+  full_join(trimmed_world_totals) %>%
+  bind_rows(out %>%
+              filter(variable =='NBP') %>%
+              select(year, nbp = value) %>%
+              mutate(scenario ="4. uncoupled_NBP",
+                     nbp = 1000*nbp)) ->
+  world_totals_gcp2
+
+
+ggplot(data=dplyr::filter(world_totals_gcp2,year<=2015),
+       aes(x=year,y=nbp,colour=scenario, group = scenario))+
+  geom_line(size=1.5)+
+  scale_color_uchicago()+
+  ylab("Atmosphere to land Flux (Mt C/yr)") +
+  xlab("Year") +
+  ggtitle('world total (all leaves) vs GCP total (all leaves).') + 
+  theme_classic() +
+  theme(axis.title = element_text(size=14),
+        axis.text = element_text(size=14)) -> 
+  fig2
+fig2
+
+ggsave(filename=paste0(figure_dir, "coupled_vs_un_world_2015_gcp_comparison_all_leaves.png"), 
+       plot=fig2,
+       width=8, height=4.5)
+
+ggsave(filename=paste0(figure_dir,"coupled_vs_un_world_2015_gcp_comparison_all_leaves_clip_y_compare_DW.png"), 
+       plot=fig2+ylim(-2000, 1200),
+       width=8, height=4.5)
+
+
+
+```
+
+- This is as apples to apples as we can get it for now. Ocean is possibly different
+for coupled run. But, it seems clear that having the coupling introduces much
+more of a sink. 
+
+- This _was_ the case in Dawn's figures as best we could tell - have to infer
+from their figure's uncoupled plus how our 'uncoupled' changes before and
+after we plot hector's NBP. 
+
+
+- Suggests that we need different beta and q10 values when having spatial dynamics.
+
+- based on Dawn's results, lower beta
+
+- ACS at least, this seems reasonable considering we now have Leaf level NPP and
+Rh affecting densities. 
+
+- having the same beta and q10 for every leaf is going to be wrong no matter 
+what, the point is that now we have the option to do better with more research.
+
+- And for now, it just means that having the leaf-level dynamics means we need
+a different beta and q10 for every leaf than for old style runs.
+
+- there's _probably_ some averageing we could do to figure out ok if we estimate
+(roughly, because it's wrong anyway) a beta and q10 value that gets the coupled
+version closer to GCP, what would the Old-style Hector beta and q10 need to be
+for the uncoupled version to match the coupled. 
+
+- guess we could do the reverse easily, run the uncoupled through Hector for a 
+bunch of different beta and q10 values to see what makes resulting NBP match 
+coupled.
+
+- For paper, could imagine this plot without `scenario 4` but with two different
+versions of the 'coupled': one with the same set of beta and q10 as default Hector 
+(what we do now) but also with a 'better' beta and q10 value to match GCP
+
+- other notes, considering Hector's new beta and q10 value: recent history
+coming in too low compared to GCP with beta = .53, q10 = 1.76. Uncoupled coming
+in too high with beta = .55 and q10=2.2. Could split the difference to get
+q10=2 and just lower beta until the coupled run matches GCP better? Hoping KM has
+better informed choice.
+
+# Run Hector with each NBP.
+
+Running the NBP from the uncoupled scenario, which comes from a hector run, through
+hector again might be wrong? Plot of Tas and CO2 for that run above so can compare
+
+- look close but hard to eyeball
+
+- interesting hector test with default files, run core, fetch NBP, set nbp to that in a core, run again
+
+```{r}
+# read in the new ini file and run hector with it 
+ini_file <- paste0(ini_dir, 'new-hector-gcam.ini') # update to whatever name of new file
+
+# Run with GCP NBP
+coreGCP <- hector::newcore(ini_file, name = '1. GCP_NBP')
+setvar(coreGCP,gcp_data$year,"NBP_constrain",gcp_data$nbp*0.001,"Pg C/yr")
+hector::run(coreGCP,runtodate = 2005)
+outGCP  <-fetchvars(coreGCP,dates=1750:2005,vars=c(GLOBAL_TAS(),CONCENTRATIONS_CO2(), NBP()))
+
+
+# uncoupled NBP
+world_totals_gcp2 %>% 
+  filter(grepl('2. uncoupled', scenario)) ->
+  uncoupled_nbp
+
+coreUn <- hector::newcore(ini_file, name = '2. uncoupled_nbp')
+setvar(coreGCP,uncoupled_nbp$year,"NBP_constrain",uncoupled_nbp$nbp*0.001,"Pg C/yr")
+hector::run(coreUn,runtodate = 2005)
+outUn  <-fetchvars(coreUn,dates=1750:2005,vars=c(GLOBAL_TAS(),CONCENTRATIONS_CO2(), NBP()))
+
+
+# coupled NBP
+world_totals_gcp2 %>% 
+  filter(grepl('3. coupled', scenario)) ->
+  coupled_nbp
+
+coreCoup <- hector::newcore(ini_file, name = '3. coupled_nbp')
+setvar(coreCoup,coupled_nbp$year,"NBP_constrain",coupled_nbp$nbp*0.001,"Pg C/yr")
+hector::run(coreCoup,runtodate = 2005)
+outCoup  <-fetchvars(coreCoup,dates=1750:2005,vars=c(GLOBAL_TAS(),CONCENTRATIONS_CO2(), NBP()))
+
+
+```
+
+## plot
+
+```{r}
+
+ggplot(bind_rows(outGCP, outUn, outCoup)) + 
+  geom_line(aes(x = year, y = value, color = scenario)) +
+  scale_color_uchicago()+
+  facet_wrap(~variable, scales = 'free') +
+  ggtitle('with pic ini - ocean old params') ->
+  nbp_hector_fig 
+nbp_hector_fig 
+
+ggsave(filename=paste0(figure_dir, "hector_results_of_NBP.png"), 
+       nbp_hector_fig,
+       width=8, height=4.5)
+
+```
+
+
+Weird stuff: highest to lowest NBP is: Coupled, uncoupled, GCP
+
+- Highest to lowest temperature and CO2 is GCP, coupled, uncoupled. Would have expected
+GCP, uncoupled, coupled? Why is that big sink from coupled NBP not resulting in MUCH
+lower temperatures????
+
+- and why is the uncoupled NBP close GCP but the temperature is DRAMATICALLY lower
+
+- Maybe I don't understand hector
+
+- I have a number in DW Sept 2022 slides that 1959-2020 atmospheric CO2 avg is
+~443 ppm, and avg temp anomaly ~1.6degC 
+
+- this plot only goes to 2005 so the Hector run with GCP might be a little higher
+than that but with updated ocean param, maybe not bad.
+
+
+
+# tests for Hector
+
+of stuff without the offline model coming in at all
+
+## using updated ini file
+
+ In theory we are totally ignoring the land module in Hector by setting the NBP constraint so it maybe shouldn't be an issue that the beta and q10 values in that ini file is out of sync with what our runs were done with. and we will be doing them with a synced up version. 
+
+```{r, eval=FALSE}
+# Run with GCP NBP
+coreGCP_newini <- hector::newcore(ini_file585, name = 'GCP_NBP_newini')
+setvar(coreGCP_newini,gcp_data$year,"NBP_constrain",gcp_data$nbp*0.001,"Pg C/yr")
+hector::run(coreGCP_newini,runtodate = 2005)
+outGCP_newini  <-fetchvars(coreGCP_newini,dates=1750:2005,vars=c(GLOBAL_TAS(),CONCENTRATIONS_CO2(), NBP()))
+
+```
+
+
+## run hector with pkg ini, re-feed NBP from that
+
+```{r, eval=FALSE}
+
+rcp <- "ssp585"
+scenario_file <- paste0("input/hector_",rcp,".ini")
+ini_file585 <- system.file(scenario_file, package="hector")
+
+core585 <- hector::newcore(ini_file585, suppresslogging = FALSE, name='585')
+hector::run(core585,runtodate = 2100)
+
+
+core585_nbp  <- hector::fetchvars(core585, dates=1746:2020, vars=c(NBP()))
+
+core585_new <- hector::newcore(ini_file585, name = 'pkg_585_nbp')
+setvar(core585_new, core585_nbp$year,"NBP_constrain", core585_nbp$value,"Pg C/yr")
+
+hector::run(core585_new,runtodate = 2020)
+
+out585_new  <-fetchvars(core585_new,dates=1750:2020,vars=c(GLOBAL_TAS(),CONCENTRATIONS_CO2(), NBP()))
+
+
+
+ggplot(out %>% filter(year <=2015)) + geom_line(aes(x = year, y = value, color = scenario)) +
+  geom_line(data = gcp_data , mapping = aes(x = year, y = nbp/1000))+
+  ggtitle('Hector nbp vs GCP, in Hector units \nNote this is updated hector params in acs install \nbeta=.53, q10=1.76, ocean = ???')
+
+```
+
+## frankenstein GCP
+
+ From like 1975 on, update the nbp values to be double or triple and see what Hector does with that?
+
+
