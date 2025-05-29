@@ -140,6 +140,10 @@ private:
       final_npp; //!< final NPP after any NBP constraint accounted for, Pg C/yr
   fluxpool_stringmap
       final_rh; //!< final RH after any NBP constraint accounted for, Pg C/yr
+  fluxpool_stringmap
+      final_rh_detritus; //!< final RH after any NBP constraint accounted for, Pg C/yr
+  fluxpool_stringmap
+      final_rh_soil; //!< final RH after any NBP constraint accounted for, Pg C/yr
 
   // Other state variables
   unitval Ca_residual; //!< residual (when constraining [CO2]), Pg C
@@ -175,6 +179,10 @@ private:
       final_npp_tv; //!< Time series of biome-specific final NPP
   tvector<fluxpool_stringmap>
       final_rh_tv; //!< Time series of biome-specific final RH
+  tvector<fluxpool_stringmap>
+      final_rh_detritus_tv; //!< Time series of biome-specific final RH
+  tvector<fluxpool_stringmap>
+      final_rh_soil_tv; //!< Time series of biome-specific final RH
 
   tseries<unitval> Ca_residual_ts; //!< Time series of residual flux values
 

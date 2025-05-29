@@ -442,6 +442,8 @@ void SimpleNbox::stashCValues(double t, const double c[]) {
 
     final_rh[biome] =
         rh_fda_adj + rh_fsa_adj + rh_ftpa_co2_adj + rh_ftpa_ch4_adj; // per year
+    final_rh_detritus[biome] = rh_fda_adj;
+    final_rh_soil[biome] = rh_fsa_adj;
     // Note that the following fluxes are weighted by 'yf' (year fraction)
     fluxpool rh_fda_flux =
         yf * detritus_c[biome].flux_from_fluxpool(rh_fda_adj);
