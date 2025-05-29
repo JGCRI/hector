@@ -6,6 +6,11 @@ sampledir <- system.file("output", package = "hector")
 testvars <- c(CONCENTRATIONS_CO2(), RF_TOTAL(), GLOBAL_TAS())
 
 dates <- 1750:2100
+
+# Limit the test dates to the future, where the historical
+# variability won't impact the temp.
+tdates <- 2000:2100
+
 ssp245 <- file.path(inputdir, "hector_ssp245.ini")
 
 
@@ -87,9 +92,6 @@ test_that("Lowering initial CO2 lowers output CO2", {
   shutdown(hc)
 })
 
-# Limit the test dates to the future, where the historical
-# variability won't impact the temp.
-tdates <- 2000:2100
 
 test_that("Lowering ECS lowers output Temperature", {
 
@@ -176,7 +178,7 @@ test_that("Lowering diffusivity increases temperature", {
 test_that("Lowering aerosol forcing scaling factor increases temperature", {
 
   # Relevant vars to save and test.
-  vars <- c(GLOBAL_TAS())
+  vars <- c(GLOBAL_TAS(), RF_BC(), RF_OC(), RF_SO2(), RF_NH3(), RF_ACI(), RF_TOTAL())
 
   # Define Hector core.
   hc <- newcore(ssp245, suppresslogging = TRUE)
@@ -193,11 +195,47 @@ test_that("Lowering aerosol forcing scaling factor increases temperature", {
   setvar(hc, NA, AERO_SCALE(), new_alpha, getunits(AERO_SCALE()))
   reset(hc, hc$reset_date)
   run(hc, 2100)
-  dd2 <- fetchvars(hc, tdates, GLOBAL_TAS())
+  dd2 <- fetchvars(hc, tdates, vars)
 
   # Check to make sure that the temp and RF have changed.
-  diff <- dd2$value - dd1$value
-  expect_gt(min(diff), 0.0)
+
+  # Checking that temperatures increase
+  temp1 <- dd1[dd1$variable == GLOBAL_TAS(),]
+  temp2 <- dd2[dd2$variable == GLOBAL_TAS(),]
+  temp_diff <- temp2$value - temp1$value
+  expect_gt(min(temp_diff), 0.0)
+
+  # Checking that black carbon RF decreases
+  bc1 <- dd1[dd1$variable == RF_BC(),]
+  bc2 <- dd2[dd2$variable == RF_BC(),]
+  bc_diff <- bc2$value - bc1$value
+  expect_lt(max(bc_diff), 0.0)
+
+  # Checking organic carbon RF magnitude decreases
+  oc1 <- dd1[dd1$variable == RF_OC(),]
+  oc2 <- dd2[dd2$variable == RF_OC(),]
+  oc_diff <- abs(oc2$value) - abs(oc1$value)
+  expect_lt(max(oc_diff), 0.0)
+
+  # Checking that NH3 RF increases (becomes less negative)
+  nh3_1 <- dd1[dd1$variable == RF_NH3(),]
+  nh3_2 <- dd2[dd2$variable == RF_NH3(),]
+  nh3_diff <- nh3_2$value - nh3_1$value
+  expect_gt(min(nh3_diff), 0.0)
+
+  # Checking that SO2 RF increases (becomes less negative)
+  so2_1 <- dd1[dd1$variable == RF_SO2(),]
+  so2_2 <- dd2[dd2$variable == RF_SO2(),]
+  so2_diff <- so2_2$value - so2_1$value
+  expect_gt(min(so2_diff), 0.0)
+
+  # Checking that ACI RF increases (becomes less negative)
+  aci1 <- dd1[dd1$variable == RF_ACI(),]
+  aci2 <- dd2[dd2$variable == RF_ACI(),]
+  aci_diff <- aci2$value - aci1$value
+  expect_gt(min(aci_diff), 0.0)
+
+
 
   shutdown(hc)
 })
@@ -207,7 +245,7 @@ test_that("Increasing volcanic forcing scaling factor increases the effect of vo
   ## Because the volcanic forcing scaling factor only has an impact during the
   ## the volcanic events. Only check the temp during those years.
   tdates <- c(1960, 1965)
-  vars <- GLOBAL_TAS()
+  vars <- c(GLOBAL_TAS(), RF_VOL())
 
   # Set up and run Hector
   hc <- newcore(ssp245, suppresslogging = TRUE)
@@ -222,7 +260,18 @@ test_that("Increasing volcanic forcing scaling factor increases the effect of vo
   run(hc)
   new_out <- fetchvars(hc, tdates, vars)
 
-  expect_true(all(out$value != new_out$value))
+  # Getting temperature and RF data
+  temps <- out[out$variable == GLOBAL_TAS(),]
+  rfs   <- out[out$variable == RF_VOL(),]
+
+  new_temps <- new_out[new_out$variable == GLOBAL_TAS(),]
+  new_rfs   <- new_out[new_out$variable == RF_VOL(),]
+
+  expect_true(all(temps$value != new_temps$value))
+
+  # Volcanic RF should decrease (become more negative)
+  rf_diff <- new_rfs$value - rfs$value
+  expect_lt(max(rf_diff), 0.0)
 })
 
 test_that("Decreasing vegetation NPP fraction has down stream impacts", {
