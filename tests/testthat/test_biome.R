@@ -1,8 +1,9 @@
 context("Hector with multiple biomes")
 
 ssp245 <- function() {
-    newcore(system.file("input", "hector_ssp245.ini", package = "hector"),
-            name = "test core", suppresslogging = TRUE)
+  newcore(system.file("input", "hector_ssp245.ini", package = "hector"),
+    name = "test core", suppresslogging = TRUE
+  )
 }
 
 # Save a copy of the default values
@@ -179,7 +180,9 @@ test_that("Correct way to create new biomes", {
   results_pf <- fetchvars(core, 2000:2100)
   expect_error(create_biome(core, "permafrost"), "Biome 'permafrost' is already in `biome_list`")
   expect_error(invisible(create_biome(core, "empty")),
-               'argument "veg_c0" is missing, with no default', fixed = FALSE)
+    'argument "veg_c0" is missing, with no default',
+    fixed = FALSE
+  )
   expect_equal(get_biome_list(core), c("permafrost", "empty"))
   expect_equal(fetchvars(core, NA, BETA("empty"))[["value"]], pbeta[["value"]])
   expect_silent(invisible(run(core)))
@@ -194,9 +197,11 @@ test_that("Split biomes, and modify parameters", {
   global_veg <- fetchvars(core, dates = NA, vars = VEG_C("default"))[["value"]]
   invisible(run(core))
   r_global <- fetchvars(core, 2000:2100)
-  r_global_pools <- fetchvars(core, 2000:2100, c(VEG_C("default"),
-                                                 DETRITUS_C("default"),
-                                                 SOIL_C("default")))
+  r_global_pools <- fetchvars(core, 2000:2100, c(
+    VEG_C("default"),
+    DETRITUS_C("default"),
+    SOIL_C("default")
+  ))
 
   r_global_pools$biome <- gsub("^(.*)\\.(.*)", "\\1", r_global_pools$variable)
   r_global_pools$variable <- gsub("^(.*)\\.(.*)", "\\2", r_global_pools$variable)
@@ -236,10 +241,13 @@ test_that("Split biomes, and modify parameters", {
   # Climate should be the same
   expect_equivalent(r_global, r_biome)
   # Summed pools should be the same
-  r_biome_data <- fetchvars(core, 2000:2100, c(VEG_C("non-pf"), VEG_C("permafrost"),
-                                               DETRITUS_C("non-pf"), DETRITUS_C("permafrost"),
-                                               SOIL_C("non-pf"), SOIL_C("permafrost")),
-                            scenario = "default pf")
+  r_biome_data <- fetchvars(core, 2000:2100, c(
+    VEG_C("non-pf"), VEG_C("permafrost"),
+    DETRITUS_C("non-pf"), DETRITUS_C("permafrost"),
+    SOIL_C("non-pf"), SOIL_C("permafrost")
+  ),
+  scenario = "default pf"
+  )
   r_biome_data$biome <- gsub("^(.*)\\.(.*)", "\\1", r_biome_data$variable)
   r_biome_data$variable <- gsub("^(.*)\\.(.*)", "\\2", r_biome_data$variable)
   r_biome_totals <- aggregate(value ~ year + variable, data = r_biome_data, sum)
@@ -276,20 +284,20 @@ test_that("Split biomes, and modify parameters", {
 })
 
 test_that("More than 2 biomes", {
-    save_this_year <- 2020
-    core <- ssp245()
-    invisible(run(core))
-    global_vegc <- fetchvars(core, dates = save_this_year, VEG_C())
+  save_this_year <- 2020
+  core <- ssp245()
+  invisible(run(core))
+  global_vegc <- fetchvars(core, dates = save_this_year, VEG_C())
 
-    # Using default arguments
-    invisible(reset(core))
-    biomes <- paste0("b", 1:5)
-    veg_c_biomes <- vapply(biomes, VEG_C, character(1))
-    split_biome(core, "global", biomes)
-    expect_equal(get_biome_list(core), biomes)
-    invisible(reset(core))
-    invisible(run(core))
+  # Using default arguments
+  invisible(reset(core))
+  biomes <- paste0("b", 1:5)
+  veg_c_biomes <- vapply(biomes, VEG_C, character(1))
+  split_biome(core, "global", biomes)
+  expect_equal(get_biome_list(core), biomes)
+  invisible(reset(core))
+  invisible(run(core))
 
-    biome_vegc <- fetchvars(core, save_this_year, veg_c_biomes)
-    expect_equivalent(sum(biome_vegc[["value"]]), global_vegc[["value"]])
+  biome_vegc <- fetchvars(core, save_this_year, veg_c_biomes)
+  expect_equivalent(sum(biome_vegc[["value"]]), global_vegc[["value"]])
 })

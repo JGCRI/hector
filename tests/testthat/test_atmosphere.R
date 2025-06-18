@@ -10,7 +10,6 @@ ssp245 <- file.path(inputdir, "hector_ssp245.ini")
 error_threshold <- 1e-8
 
 test_that("Checking RF values", {
-
   # Define the comparison dates
   t_dates <- 1850:2100
 
@@ -42,29 +41,27 @@ test_that("Checking RF values", {
   )
 
   expect_equal(total_rf$value, sum_individuals$value, tolerance = error_threshold)
-  })
+})
 
 test_that("Check Temp", {
+  # Define the comparison dates
+  t_dates <- 2020:2100
 
-    # Define the comparison dates
-    t_dates <- 2020:2100
+  # Set and run Hector
+  hc <- newcore(ssp245)
+  run(hc, max(t_dates))
 
-    # Set and run Hector
-    hc <- newcore(ssp245)
-    run(hc, max(t_dates))
+  # Make sure that the weighted sum of the land and ocean air temps is equal to the
+  # global mean air temp. This is useful for preserving behavior of the temp component.
+  land <- fetchvars(hc, t_dates, vars = LAND_TAS())[["value"]]
+  ocean <- fetchvars(hc, t_dates, vars = OCEAN_TAS())[["value"]]
 
-    # Make sure that the weighted sum of the land and ocean air temps is equal to the
-    # global mean air temp. This is useful for preserving behavior of the temp component.
-    land  <- fetchvars(hc, t_dates, vars = LAND_TAS())[["value"]]
-    ocean <- fetchvars(hc, t_dates, vars = OCEAN_TAS())[["value"]]
+  flnd <- 0.29
+  weighted_sum <- flnd * land + ocean * (1 - flnd)
+  global_temp_values <- fetchvars(hc, t_dates, vars = GLOBAL_TAS())[["value"]]
+  expect_equal(global_temp_values, weighted_sum, tolerance = 1e-5)
 
-    flnd <- 0.29
-    weighted_sum <- flnd * land + ocean * (1 - flnd)
-    global_temp_values <- fetchvars(hc, t_dates, vars = GLOBAL_TAS())[["value"]]
-    expect_equal(global_temp_values, weighted_sum, tolerance = 1e-5)
-
-    #  future global air temperature should be larger than surface temperature
-    gmst <- fetchvars(hc, t_dates, vars = GMST())[["value"]]
-    expect_true(all(global_temp_values >  gmst))
-
+  #  future global air temperature should be larger than surface temperature
+  gmst <- fetchvars(hc, t_dates, vars = GMST())[["value"]]
+  expect_true(all(global_temp_values > gmst))
 })

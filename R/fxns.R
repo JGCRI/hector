@@ -9,14 +9,13 @@
 #' getfxn("beta")
 #' getfxn("q10_rh")
 getfxn <- function(str) {
-
-    rows <- match(str, hector::fxntable$string)
-    rslt <- hector::fxntable$fxn[rows]
-    if (any(is.na(rows))) {
-        warning(
-            "Functions for the following are not found: ",
-            paste(str[is.na(rslt)], collapse = ", ")
-        )
-    }
-    as.character(rslt)
+  rows <- match(str, hector::fxntable$string)
+  rslt <- hector::fxntable$fxn[rows]
+  if (any(is.na(rows))) {
+    warning(
+      "Functions for the following are not found: ",
+      paste(str[is.na(rslt)], collapse = ", ")
+    )
+  }
+  as.character(rslt)
 }
