@@ -10,7 +10,8 @@ ALL_VARS()
 Character vector of variable names.
 }
 \description{
-
+This function returns all of the possible hector output variables
+that can be accessed with \code{\link{fetchvars}}.
 }
 \examples{
 \dontrun{

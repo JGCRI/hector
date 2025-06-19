@@ -24,7 +24,7 @@ getfxn <- function(str) {
 #' Get all of the possible Hector output variables
 #'
 #' This function returns all of the possible hector output variables
-#' that can be accessed with \code{\link{fetchvars}.
+#' that can be accessed with \code{\link{fetchvars}}.
 #' @return Character vector of variable names.
 #' @export
 #' @family outputs
