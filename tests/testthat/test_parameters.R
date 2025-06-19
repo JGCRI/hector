@@ -265,7 +265,7 @@ test_that("Increasing volcanic forcing scaling factor increases the effect of vo
   # Volcanic RF should change and the absolute difference
   # the volcanic forcing should be greater than 0.
   rf_diff <- abs(new_rfs$value - rfs$value)
-  expect_true(all(rf_diff > 0.0 ))
+  expect_true(all(rf_diff > 0.0))
 })
 
 test_that("Decreasing vegetation NPP fraction has down stream impacts", {
