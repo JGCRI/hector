@@ -47,7 +47,8 @@ Description: Provides an R interface for the Hector Simple Climate
     change model parameters and emissions inputs, run Hector, and
     retrieve model outputs. Note that the package authors are not
     identical to the C++ model authors.
-Depends: R (>= 3.3)
+Depends: 
+    R (>= 3.5)
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

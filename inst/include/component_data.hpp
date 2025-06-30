@@ -66,6 +66,8 @@
 #define D_RHO_SO2 "rho_so2"          // SO2 radiative efficiency
 #define D_RHO_NH3 "rho_nh3"          // NH3 radiative efficiency
 #define D_RHO_H2O_H2 "rho_h2o_h2"    // radiative efficiency of H2 emissions on strat. H2O vapor
+#define D_AERO_SCALE "aero_scalar"
+#define D_VOLCANIC_SCALE "vol_scalar"
 
 
 // halocarbon components
@@ -402,8 +404,6 @@
 #define D_GMST "gmst"
 #define D_LO_WARMING_RATIO "lo_warming_ratio"
 #define D_DIFFUSIVITY "diff"
-#define D_AERO_SCALE "alpha"
-#define D_VOLCANIC_SCALE "volscl"
 #define D_FLUX_MIXED "heatflux_mixed"
 #define D_FLUX_INTERIOR "heatflux_interior"
 #define D_HEAT_FLUX "heatflux"
