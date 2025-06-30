@@ -291,6 +291,7 @@
 
 // o3 component
 #define D_PREINDUSTRIAL_O3 "PO3"
+#define D_COEFF_O3_H2 "CO3_H2"
 #define D_ATMOSPHERIC_O3 "O3" CONCENTRATION_EXTENSION
 #define D_ATMOSPHERIC_EM_CH4 "CH4"
 #define D_EMISSIONS_NOX "NOX_emissions"
