@@ -30,7 +30,6 @@ OHComponent::OHComponent() {
   NMVOC_emissions.allowInterp(true);
   CO_emissions.allowInterp(true);
   H2_emissions.allowInterp(true);
-  TAU_OH.allowInterp(true);
 }
 
 //------------------------------------------------------------------------------
