@@ -26,8 +26,8 @@ test_that("tau ", {
 test_that("H2 emissions ", {
 
     # Check to make sure that can fetch and set the H2 emissions and
-    # that the effects of adding some H2 emissions change thigns
-    # now that we have the CH4 indrect effects implement.
+    # that the effects of adding some H2 emissions change things
+    # now that we have the CH4 indirect effects implement.
 
     hc <- newcore(ini)
     run(hc)
