@@ -82,6 +82,7 @@ OH,CCH4,n,n,y,-0.32,,coefficient for CH4
 OH,CH2,n,n,y,-0.00044625,,coefficient for H2
 OH,H2_emissions,n,y,y,"""(csv)""",Tg H2,emissions time series
 ozone,PO3,n,n,y,30,,preindustrial O3 concentration
+ozone,CO3_H2,n,n,y,4.09E-03,DU O3 Tg H2-1,coefficient for H2 contirbtuion to trop. O3 RF (DU O3 Tg H2-1) SI Table 3 of Sand
 ozone,NOX_emissions,n,y,y,"""(csv)""",,emissions time series
 ozone,CO_emissions,n,y,y,"""(csv)""",,emissions time series
 ozone,NMVOC_emissions,n,y,y,"""(csv)""",,emissions time series
