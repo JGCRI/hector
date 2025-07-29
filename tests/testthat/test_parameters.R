@@ -42,7 +42,7 @@ test_that("Initial CO2 concentration equals preindustrial", {
   hc <- newcore(ssp245, suppresslogging = TRUE)
   run(hc, 1800)
 
-  # Extract the inital atmosphere CO2 from the output.
+  # Extract the initial atmosphere CO2 from the output.
   initcval <- fetchvars(hc, 1745, CONCENTRATIONS_CO2())
 
   # Extract the preindustrial value, this Hector is a parameter.
