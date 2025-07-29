@@ -51,7 +51,7 @@ fetchvars <- function(core, dates, vars = NULL, scenario = NULL) {
       })
     )
     if (anyNA(dates)) {
-        stop("The default vars (", paste(vars, collapse = ", "), ") all require dates")
+      stop("The default vars (", paste(vars, collapse = ", "), ") all require dates")
     }
   }
 
@@ -66,8 +66,10 @@ fetchvars <- function(core, dates, vars = NULL, scenario = NULL) {
   dates <- dates[valid]
 
   if (length(dates) == 0) {
-      stop("None of these dates are valid for this core (start=",
-           strt, ", current=", current, ")")
+    stop(
+      "None of these dates are valid for this core (start=",
+      strt, ", current=", current, ")"
+    )
   }
 
   rslt <- do.call(
