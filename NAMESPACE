@@ -3,6 +3,7 @@
 S3method(format,hcore)
 S3method(print,hcore)
 export(AERO_SCALE)
+export(ALL_VARS)
 export(ATMOSPHERIC_CO2)
 export(BETA)
 export(C2F6_CONSTRAIN)

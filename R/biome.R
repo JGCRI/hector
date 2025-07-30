@@ -22,19 +22,19 @@ create_biome <- function(core, biome,
                          npp_flux0,
                          warmingfactor, beta, q10_rh,
                          f_nppv, f_nppd, f_litterd) {
-    create_biome_impl(core, biome)
-    setvar(core, 0, VEG_C(biome), veg_c0, "Pg C")
-    setvar(core, 0, DETRITUS_C(biome), detritus_c0, "Pg C")
-    setvar(core, 0, SOIL_C(biome), soil_c0, "Pg C")
-    setvar(core, 0, PERMAFROST_C(biome), permafrost_c0, "Pg C")
-    setvar(core, NA, NPP_FLUX0(biome), npp_flux0, "Pg C/yr")
-    setvar(core, NA, WARMINGFACTOR(biome), warmingfactor, NA)
-    setvar(core, NA, BETA(biome), beta, NA)
-    setvar(core, NA, Q10_RH(biome), q10_rh, NA)
-    setvar(core, NA, F_NPPV(biome), f_nppv, NA)
-    setvar(core, NA, F_NPPD(biome), f_nppd, NA)
-    setvar(core, NA, F_LITTERD(biome), f_litterd, NA)
-    invisible(core)
+  create_biome_impl(core, biome)
+  setvar(core, 0, VEG_C(biome), veg_c0, "Pg C")
+  setvar(core, 0, DETRITUS_C(biome), detritus_c0, "Pg C")
+  setvar(core, 0, SOIL_C(biome), soil_c0, "Pg C")
+  setvar(core, 0, PERMAFROST_C(biome), permafrost_c0, "Pg C")
+  setvar(core, NA, NPP_FLUX0(biome), npp_flux0, "Pg C/yr")
+  setvar(core, NA, WARMINGFACTOR(biome), warmingfactor, NA)
+  setvar(core, NA, BETA(biome), beta, NA)
+  setvar(core, NA, Q10_RH(biome), q10_rh, NA)
+  setvar(core, NA, F_NPPV(biome), f_nppv, NA)
+  setvar(core, NA, F_NPPD(biome), f_nppd, NA)
+  setvar(core, NA, F_LITTERD(biome), f_litterd, NA)
+  invisible(core)
 }
 
 #' Create new biomes by splitting up an existing biome
@@ -67,64 +67,66 @@ split_biome <- function(core,
                         fpermafrost_c = fveg_c,
                         fnpp_flux0 = fveg_c,
                         ...) {
-    stopifnot(
-        length(old_biome) == 1,
-        old_biome %in% get_biome_list(core),
-        !any(new_biomes %in% get_biome_list(core)),
-        length(fveg_c) == length(new_biomes),
-        length(fdetritus_c) == length(new_biomes),
-        length(fsoil_c) == length(new_biomes),
-        length(fpermafrost_c) == length(new_biomes),
-        length(fnpp_flux0) == length(new_biomes),
-        sum(fveg_c) == 1, all(fveg_c > 0),
-        sum(fdetritus_c) == 1, all(fdetritus_c > 0),
-        sum(fsoil_c) == 1, all(fsoil_c > 0),
-        sum(fpermafrost_c) == 1, all(fpermafrost_c >= 0),
-        sum(fnpp_flux0) == 1, all(fnpp_flux0 > 0)
-    )
+  stopifnot(
+    length(old_biome) == 1,
+    old_biome %in% get_biome_list(core),
+    !any(new_biomes %in% get_biome_list(core)),
+    length(fveg_c) == length(new_biomes),
+    length(fdetritus_c) == length(new_biomes),
+    length(fsoil_c) == length(new_biomes),
+    length(fpermafrost_c) == length(new_biomes),
+    length(fnpp_flux0) == length(new_biomes),
+    sum(fveg_c) == 1, all(fveg_c > 0),
+    sum(fdetritus_c) == 1, all(fdetritus_c > 0),
+    sum(fsoil_c) == 1, all(fsoil_c > 0),
+    sum(fpermafrost_c) == 1, all(fpermafrost_c >= 0),
+    sum(fnpp_flux0) == 1, all(fnpp_flux0 > 0)
+  )
 
-    # If user supplied values in ... for warmingfactor, etc., use those
-    # Otherwise use the old biome's values
-    cv <- get_biome_inits(core, old_biome) # current values
-    dots <- list(...)
-    # We can't use ifelse for this because return shape may differ
-    pick <- function(x, y) { if (is.null(x)) y else x } # nolint
-    warmingfactor <- pick(dots$warmingfactor, cv[["warmingfactor"]])
-    beta <- pick(dots$beta, cv[["beta"]])
-    q10_rh <- pick(dots$q10_rh, cv[["q10_rh"]])
-    f_nppv <- pick(dots$f_nppv, cv[["f_nppv"]])
-    f_nppd <- pick(dots$f_nppd, cv[["f_nppd"]])
-    f_litterd <- pick(dots$f_litterd, cv[["f_litterd"]])
+  # If user supplied values in ... for warmingfactor, etc., use those
+  # Otherwise use the old biome's values
+  cv <- get_biome_inits(core, old_biome) # current values
+  dots <- list(...)
+  # We can't use ifelse for this because return shape may differ
+  pick <- function(x, y) {
+    if (is.null(x)) y else x
+  } # nolint
+  warmingfactor <- pick(dots$warmingfactor, cv[["warmingfactor"]])
+  beta <- pick(dots$beta, cv[["beta"]])
+  q10_rh <- pick(dots$q10_rh, cv[["q10_rh"]])
+  f_nppv <- pick(dots$f_nppv, cv[["f_nppv"]])
+  f_nppd <- pick(dots$f_nppd, cv[["f_nppd"]])
+  f_litterd <- pick(dots$f_litterd, cv[["f_litterd"]])
 
-    # This allows users to split the `global` biome without having to
-    # rename it first. Otherwise, we hit an error about using non-global
-    # biomes when a "global" biome is present.
-    if (old_biome == "global") {
-        invisible(rename_biome(core, "global", "_zzz"))
-        old_biome <- "_zzz"
-    }
+  # This allows users to split the `global` biome without having to
+  # rename it first. Otherwise, we hit an error about using non-global
+  # biomes when a "global" biome is present.
+  if (old_biome == "global") {
+    invisible(rename_biome(core, "global", "_zzz"))
+    old_biome <- "_zzz"
+  }
 
-    mapply(
-        create_biome,
-        biome = new_biomes,
-        veg_c0 = cv[["veg_c"]] * fveg_c,
-        detritus_c0 = cv[["detritus_c"]] * fdetritus_c,
-        soil_c0 = cv[["soil_c"]] * fsoil_c,
-        permafrost_c0 = cv[["permafrost_c"]] * fpermafrost_c,
-        npp_flux0 = cv[["npp_flux0"]] * fnpp_flux0,
-        warmingfactor = warmingfactor,
-        beta = beta,
-        q10_rh = q10_rh,
-        f_nppv = f_nppv,
-        f_nppd = f_nppd,
-        f_litterd = f_litterd,
-        MoreArgs = list(core = core)
-    )
+  mapply(
+    create_biome,
+    biome = new_biomes,
+    veg_c0 = cv[["veg_c"]] * fveg_c,
+    detritus_c0 = cv[["detritus_c"]] * fdetritus_c,
+    soil_c0 = cv[["soil_c"]] * fsoil_c,
+    permafrost_c0 = cv[["permafrost_c"]] * fpermafrost_c,
+    npp_flux0 = cv[["npp_flux0"]] * fnpp_flux0,
+    warmingfactor = warmingfactor,
+    beta = beta,
+    q10_rh = q10_rh,
+    f_nppv = f_nppv,
+    f_nppd = f_nppd,
+    f_litterd = f_litterd,
+    MoreArgs = list(core = core)
+  )
 
-    delete_biome_impl(core, old_biome)
+  delete_biome_impl(core, old_biome)
 
-    reset(core, 0)
-    invisible(core)
+  reset(core, 0)
+  invisible(core)
 }
 
 #' Retrieve the initial conditions and parameters for a given biome
@@ -136,29 +138,29 @@ split_biome <- function(core,
 #' @return Named numeric vector of biome initial conditions and parameters
 #' @author Alexey Shiklomanov
 get_biome_inits <- function(core, biome) {
-    # `fetchvars` requires date to be between start and end date, so
-    # we need to call the lower-level `sendmessage` method here.
-    current_data_1 <- rbind.data.frame(
-        sendmessage(core, GETDATA(), VEG_C(biome), 0, NA, ""),
-        sendmessage(core, GETDATA(), DETRITUS_C(biome), 0, NA, ""),
-        sendmessage(core, GETDATA(), SOIL_C(biome), 0, NA, ""),
-        sendmessage(core, GETDATA(), PERMAFROST_C(biome), 0, NA, ""),
-        sendmessage(core, GETDATA(), THAWEDP_C(biome), 0, NA, "")
-    )
-    current_data_2 <- fetchvars(core, NA, c(
-        NPP_FLUX0(biome),
-        F_LITTERD(biome),
-        F_NPPD(biome),
-        F_NPPV(biome),
-        BETA(biome),
-        Q10_RH(biome),
-        WARMINGFACTOR(biome)
-    ))[, -1]
-    current_data <- rbind.data.frame(current_data_1, current_data_2)
-    current_values <- current_data[["value"]]
-    names(current_values) <- gsub(paste0(biome, BIOME_SPLIT_CHAR()), "",
-                                  current_data[["variable"]],
-                                  fixed = TRUE
-    )
-    current_values
+  # `fetchvars` requires date to be between start and end date, so
+  # we need to call the lower-level `sendmessage` method here.
+  current_data_1 <- rbind.data.frame(
+    sendmessage(core, GETDATA(), VEG_C(biome), 0, NA, ""),
+    sendmessage(core, GETDATA(), DETRITUS_C(biome), 0, NA, ""),
+    sendmessage(core, GETDATA(), SOIL_C(biome), 0, NA, ""),
+    sendmessage(core, GETDATA(), PERMAFROST_C(biome), 0, NA, ""),
+    sendmessage(core, GETDATA(), THAWEDP_C(biome), 0, NA, "")
+  )
+  current_data_2 <- fetchvars(core, NA, c(
+    NPP_FLUX0(biome),
+    F_LITTERD(biome),
+    F_NPPD(biome),
+    F_NPPV(biome),
+    BETA(biome),
+    Q10_RH(biome),
+    WARMINGFACTOR(biome)
+  ))[, -1]
+  current_data <- rbind.data.frame(current_data_1, current_data_2)
+  current_values <- current_data[["value"]]
+  names(current_values) <- gsub(paste0(biome, BIOME_SPLIT_CHAR()), "",
+    current_data[["variable"]],
+    fixed = TRUE
+  )
+  current_values
 }

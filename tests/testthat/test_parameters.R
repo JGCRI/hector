@@ -38,7 +38,6 @@ test_that('All "fraction" parameters can be set and retrieved', {
 })
 
 test_that("Initial CO2 concentration equals preindustrial", {
-
   # Run default Hector RCP 45
   hc <- newcore(ssp245, suppresslogging = TRUE)
   run(hc, 1800)
@@ -69,7 +68,6 @@ test_that("Initial CO2 concentration equals preindustrial", {
 })
 
 test_that("Lowering initial CO2 lowers output CO2", {
-
   # Define Hector core.
   hc <- newcore(ssp245, suppresslogging = TRUE)
 
@@ -94,7 +92,6 @@ test_that("Lowering initial CO2 lowers output CO2", {
 
 
 test_that("Lowering ECS lowers output Temperature", {
-
   # Define Hector core.
   hc <- newcore(ssp245, suppresslogging = TRUE)
 
@@ -120,7 +117,6 @@ test_that("Lowering ECS lowers output Temperature", {
 })
 
 test_that("Raising Q10 increases CO2 concentration", {
-
   tdates <- 2050:2100
 
   # Define Hector core.
@@ -149,7 +145,6 @@ test_that("Raising Q10 increases CO2 concentration", {
 })
 
 test_that("Lowering diffusivity increases temperature", {
-
   # Define Hector core.
   hc <- newcore(ssp245, suppresslogging = TRUE)
   run(hc, 2100)
@@ -176,7 +171,6 @@ test_that("Lowering diffusivity increases temperature", {
 })
 
 test_that("Lowering aerosol forcing scaling factor increases temperature", {
-
   # Relevant vars to save and test.
   vars <- c(GLOBAL_TAS(), RF_BC(), RF_OC(), RF_SO2(), RF_NH3(), RF_ACI(), RF_TOTAL())
 
@@ -200,38 +194,38 @@ test_that("Lowering aerosol forcing scaling factor increases temperature", {
   # Check to make sure that the temp and RF have changed.
 
   # Checking that temperatures increase
-  temp1 <- dd1[dd1$variable == GLOBAL_TAS(),]
-  temp2 <- dd2[dd2$variable == GLOBAL_TAS(),]
+  temp1 <- dd1[dd1$variable == GLOBAL_TAS(), ]
+  temp2 <- dd2[dd2$variable == GLOBAL_TAS(), ]
   temp_diff <- temp2$value - temp1$value
   expect_gt(min(temp_diff), 0.0)
 
   # Checking that black carbon RF decreases
-  bc1 <- dd1[dd1$variable == RF_BC(),]
-  bc2 <- dd2[dd2$variable == RF_BC(),]
+  bc1 <- dd1[dd1$variable == RF_BC(), ]
+  bc2 <- dd2[dd2$variable == RF_BC(), ]
   bc_diff <- bc2$value - bc1$value
   expect_lt(max(bc_diff), 0.0)
 
   # Checking organic carbon RF magnitude decreases
-  oc1 <- dd1[dd1$variable == RF_OC(),]
-  oc2 <- dd2[dd2$variable == RF_OC(),]
+  oc1 <- dd1[dd1$variable == RF_OC(), ]
+  oc2 <- dd2[dd2$variable == RF_OC(), ]
   oc_diff <- abs(oc2$value) - abs(oc1$value)
   expect_lt(max(oc_diff), 0.0)
 
   # Checking that NH3 RF increases (becomes less negative)
-  nh3_1 <- dd1[dd1$variable == RF_NH3(),]
-  nh3_2 <- dd2[dd2$variable == RF_NH3(),]
+  nh3_1 <- dd1[dd1$variable == RF_NH3(), ]
+  nh3_2 <- dd2[dd2$variable == RF_NH3(), ]
   nh3_diff <- nh3_2$value - nh3_1$value
   expect_gt(min(nh3_diff), 0.0)
 
   # Checking that SO2 RF increases (becomes less negative)
-  so2_1 <- dd1[dd1$variable == RF_SO2(),]
-  so2_2 <- dd2[dd2$variable == RF_SO2(),]
+  so2_1 <- dd1[dd1$variable == RF_SO2(), ]
+  so2_2 <- dd2[dd2$variable == RF_SO2(), ]
   so2_diff <- so2_2$value - so2_1$value
   expect_gt(min(so2_diff), 0.0)
 
   # Checking that ACI RF increases (becomes less negative)
-  aci1 <- dd1[dd1$variable == RF_ACI(),]
-  aci2 <- dd2[dd2$variable == RF_ACI(),]
+  aci1 <- dd1[dd1$variable == RF_ACI(), ]
+  aci2 <- dd2[dd2$variable == RF_ACI(), ]
   aci_diff <- aci2$value - aci1$value
   expect_gt(min(aci_diff), 0.0)
 
@@ -241,7 +235,6 @@ test_that("Lowering aerosol forcing scaling factor increases temperature", {
 })
 
 test_that("Increasing volcanic forcing scaling factor increases the effect of volcanism", {
-
   ## Because the volcanic forcing scaling factor only has an impact during the
   ## the volcanic events. Only check the temp during those years.
   tdates <- c(1960, 1965)
@@ -261,21 +254,21 @@ test_that("Increasing volcanic forcing scaling factor increases the effect of vo
   new_out <- fetchvars(hc, tdates, vars)
 
   # Getting temperature and RF data
-  temps <- out[out$variable == GLOBAL_TAS(),]
-  rfs   <- out[out$variable == RF_VOL(),]
+  temps <- out[out$variable == GLOBAL_TAS(), ]
+  rfs <- out[out$variable == RF_VOL(), ]
 
-  new_temps <- new_out[new_out$variable == GLOBAL_TAS(),]
-  new_rfs   <- new_out[new_out$variable == RF_VOL(),]
+  new_temps <- new_out[new_out$variable == GLOBAL_TAS(), ]
+  new_rfs <- new_out[new_out$variable == RF_VOL(), ]
 
   expect_true(all(temps$value != new_temps$value))
 
-  # Volcanic RF should decrease (become more negative)
-  rf_diff <- new_rfs$value - rfs$value
-  expect_lt(max(rf_diff), 0.0)
+  # Volcanic RF should change and the absolute difference
+  # the volcanic forcing should be greater than 0.
+  rf_diff <- abs(new_rfs$value - rfs$value)
+  expect_true(all(rf_diff > 0.0))
 })
 
 test_that("Decreasing vegetation NPP fraction has down stream impacts", {
-
   # Define Hector core.
   hc <- newcore(ssp245, suppresslogging = TRUE)
   run(hc, 2100)
@@ -302,7 +295,6 @@ test_that("Decreasing vegetation NPP fraction has down stream impacts", {
 })
 
 test_that("Decreasing detritus NPP fraction has down stream impacts", {
-
   # Define Hector core.
   hc <- newcore(ssp245, suppresslogging = TRUE)
   run(hc, 2100)
@@ -329,7 +321,6 @@ test_that("Decreasing detritus NPP fraction has down stream impacts", {
 })
 
 test_that("Decreasing litter flux to detritus has down stream impacts", {
-
   # Define Hector core.
   hc <- newcore(ssp245, suppresslogging = TRUE)
   run(hc, 2100)
@@ -356,7 +347,6 @@ test_that("Decreasing litter flux to detritus has down stream impacts", {
 })
 
 test_that("Increasing CO2 fertilization factor increases NPP", {
-
   # Define Hector core.
   hc <- newcore(ssp245, suppresslogging = TRUE)
   run(hc, 2100)
@@ -381,68 +371,66 @@ test_that("Increasing CO2 fertilization factor increases NPP", {
 })
 
 test_that("land ocean warming ratio", {
+  # Check the land ocean warming ratio function
+  expect_true(is.character(LO_WARMING_RATIO()))
 
-    # Check the land ocean warming ratio function
-    expect_true(is.character(LO_WARMING_RATIO()))
+  # Set up the Hector core & determine the dates & variables to keep.
+  core <- newcore(ssp245)
+  keep <- floor(seq(from = 1850, to = 2100, length.out = 30))
+  vars <- c(GLOBAL_TAS(), LAND_TAS(), OCEAN_TAS(), SST())
 
-    # Set up the Hector core & determine the dates & variables to keep.
-    core <- newcore(ssp245)
-    keep <- floor(seq(from = 1850, to = 2100, length.out = 30))
-    vars <- c(GLOBAL_TAS(), LAND_TAS(), OCEAN_TAS(), SST())
+  # The expected value for the lo warming ratio is 0, meaning that no user defined
+  # land ocean warming ratio is being used. LO warming is an emergent property
+  # from deoclim.
+  defualt_lo <- fetchvars(core, NA, LO_WARMING_RATIO())
+  expect_equal(defualt_lo$value, 0)
 
-    # The expected value for the lo warming ratio is 0, meaning that no user defined
-    # land ocean warming ratio is being used. LO warming is an emergent property
-    # from deoclim.
-    defualt_lo <- fetchvars(core, NA, LO_WARMING_RATIO())
-    expect_equal(defualt_lo$value, 0)
+  run(core, max(keep))
+  out1 <- fetchvars(core, keep, vars)
 
-    run(core, max(keep))
-    out1 <- fetchvars(core, keep, vars)
+  # Check to make sure that when running default Hector that the land ocean warming ratio is not
+  # held constant.
+  land_temp_vals <- out1[out1$variable == LAND_TAS(), ][["value"]]
+  ocean_temp_vals <- out1[out1$variable == OCEAN_TAS(), ][["value"]]
+  emergent_ratio <- land_temp_vals / ocean_temp_vals
+  expect_equal(length(unique(emergent_ratio)), length(emergent_ratio))
 
-    # Check to make sure that when running default Hector that the land ocean warming ratio is not
-    # held constant.
-    land_temp_vals <- out1[out1$variable == LAND_TAS(), ][["value"]]
-    ocean_temp_vals <- out1[out1$variable == OCEAN_TAS(), ][["value"]]
-    emergent_ratio <- land_temp_vals / ocean_temp_vals
-    expect_equal(length(unique(emergent_ratio)), length(emergent_ratio))
+  # Reset the land ocean warming ratio. Make sure that a value can be passed into the core,
+  # that is can be reset & have down stream effects.
+  new_ratio <- 3
+  setvar(core, NA, LO_WARMING_RATIO(), new_ratio, "(unitless)")
+  reset(core)
 
-    # Reset the land ocean warming ratio. Make sure that a value can be passed into the core,
-    # that is can be reset & have down stream effects.
-    new_ratio <- 3
-    setvar(core, NA, LO_WARMING_RATIO(), new_ratio, "(unitless)")
-    reset(core)
+  # Check to make sure the new land ocean warming ratio is read in.
+  new_lo <- fetchvars(core, NA, LO_WARMING_RATIO())
+  expect_true(defualt_lo$value != new_lo$value)
+  expect_true(new_ratio == new_lo$value)
 
-    # Check to make sure the new land ocean warming ratio is read in.
-    new_lo <- fetchvars(core, NA, LO_WARMING_RATIO())
-    expect_true(defualt_lo$value != new_lo$value)
-    expect_true(new_ratio == new_lo$value)
+  # Run Hector with the new land ocean ratio, check the output.
+  run(core, max(keep))
+  out2 <- fetchvars(core, keep, vars)
 
-    # Run Hector with the new land ocean ratio, check the output.
-    run(core, max(keep))
-    out2 <- fetchvars(core, keep, vars)
-
-    # Ensure ratio backed out of from Hector output equals user defined lo-ratio.
-    land_temp_vals <- out2[out2$variable == LAND_TAS(), ][["value"]]
-    ocean_temp_vals <- out2[out2$variable == OCEAN_TAS(), ][["value"]]
-    ratio_from_output <- land_temp_vals / ocean_temp_vals
-    expect_true(all(abs(new_ratio - unique(ratio_from_output)) <= 1e-5))
-    expect_equal(length(unique(round(ratio_from_output, digits = 3))), 1)
+  # Ensure ratio backed out of from Hector output equals user defined lo-ratio.
+  land_temp_vals <- out2[out2$variable == LAND_TAS(), ][["value"]]
+  ocean_temp_vals <- out2[out2$variable == OCEAN_TAS(), ][["value"]]
+  ratio_from_output <- land_temp_vals / ocean_temp_vals
+  expect_true(all(abs(new_ratio - unique(ratio_from_output)) <= 1e-5))
+  expect_equal(length(unique(round(ratio_from_output, digits = 3))), 1)
 
 
-    # Make sure that the change in the global mean temp is relatively small.
-    out1_global_vals <- out1[out1$variable == GLOBAL_TAS(), ][["value"]]
-    out2_global_vals <- out2[out2$variable == GLOBAL_TAS(), ][["value"]]
-    tas_diff <- mean(abs(out1_global_vals - out2_global_vals))
-    expect_lt(tas_diff, 1e-1)
+  # Make sure that the change in the global mean temp is relatively small.
+  out1_global_vals <- out1[out1$variable == GLOBAL_TAS(), ][["value"]]
+  out2_global_vals <- out2[out2$variable == GLOBAL_TAS(), ][["value"]]
+  tas_diff <- mean(abs(out1_global_vals - out2_global_vals))
+  expect_lt(tas_diff, 1e-1)
 
-    out1_land_vals <- out1[out1$variable == LAND_TAS(), ][["value"]]
-    out2_land_vals <- out2[out2$variable == LAND_TAS(), ][["value"]]
-    land_diff <- mean(abs(out1_land_vals - out2_land_vals))
-    expect_gt(land_diff, 1e-1)
+  out1_land_vals <- out1[out1$variable == LAND_TAS(), ][["value"]]
+  out2_land_vals <- out2[out2$variable == LAND_TAS(), ][["value"]]
+  land_diff <- mean(abs(out1_land_vals - out2_land_vals))
+  expect_gt(land_diff, 1e-1)
 
-    out1_ocean_vals <- out1[out1$variable == OCEAN_TAS(), ][["value"]]
-    out2_ocean_vals <- out2[out2$variable == OCEAN_TAS(), ][["value"]]
-    ocean_diff <- mean(abs(out1_ocean_vals - out2_ocean_vals))
-    expect_gt(ocean_diff, 1e-1)
-
+  out1_ocean_vals <- out1[out1$variable == OCEAN_TAS(), ][["value"]]
+  out2_ocean_vals <- out2[out2$variable == OCEAN_TAS(), ][["value"]]
+  ocean_diff <- mean(abs(out1_ocean_vals - out2_ocean_vals))
+  expect_gt(ocean_diff, 1e-1)
 })

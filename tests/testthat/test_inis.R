@@ -17,11 +17,11 @@ test_that("All ini files can be used to set up a hector core", {
 # except for idealized runs.
 scns_inis_list <- ini_list[grepl(pattern = "ssp", x = ini_list)]
 test_that("All required csv params are in all ini files...", {
-    # Identify required unique parameter names
-    required <- subset(input_table, required == "y")
-    input_params <- sort(unique(required$parameter))
+  # Identify required unique parameter names
+  required <- subset(input_table, required == "y")
+  input_params <- sort(unique(required$parameter))
 
-    expect_warning(
+  expect_warning(
     for (ini in scns_inis_list) {
       ini_file <- readLines(system.file("input", ini, package = "hector"))
 
