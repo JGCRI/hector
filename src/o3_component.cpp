@@ -54,6 +54,8 @@ void OzoneComponent::init(Core *coreptr) {
   NMVOC_emissions.allowInterp(true);
   NOX_emissions.allowInterp(true); // Inputs like CO and NMVOC and NOX,
   O3.allowInterp(true);
+  H2_emissions.allowInterp(true);
+
 
   // Inform core what data we can provide
   core->registerCapability(D_ATMOSPHERIC_O3, getComponentName());

@@ -71,7 +71,7 @@ private:
   double CNMVOC; // coefficient for NMVOC
   double CNOX;   // coefficient for NOX
   double CCH4;   // coefficient for CH4
-  unitval CH2;   // coefficient for CH4
+  unitval H2_CCO;   // adjust CO coefficient for H2
 
 
   // logger

@@ -79,11 +79,13 @@ OH,CNOX,n,n,y,0.0042,,coefficient for NOX
 OH,CCO,n,n,y,-1.05E-04,,coefficient for CO
 OH,CNMVOC,n,n,y,-3.15E-04,,coefficient for NMVOC (non methane VOC)
 OH,CCH4,n,n,y,-0.32,,coefficient for CH4
-OH,CH2,n,n,y,-0.00044625,,coefficient for H2
-OH,H2_emissions,n,y,y,"""(csv)""",Tg H2,emissions time series
+OH,H2_CCO,n,n,y,4.25,, H2 adjustment for CO coefficient
+OH,H2_emissions[1745],n,y,y,0,,emissions time series
 ozone,PO3,n,n,y,30,,preindustrial O3 concentration
+ozone,CO3_H2,n,n,y,4.09E-03,DU O3 Tg H2-1,coefficient for H2 contribution to trop. O3 RF (DU O3 Tg H2-1) SI Table 3 of Sand
 ozone,NOX_emissions,n,y,y,"""(csv)""",,emissions time series
 ozone,CO_emissions,n,y,y,"""(csv)""",,emissions time series
+ozone,H2_emissions[1745],n,y,y,0,,emissions time series
 ozone,NMVOC_emissions,n,y,y,"""(csv)""",,emissions time series
 N2O,N0,n,n,y,273.87,ppb,preindustrial nitrous oxide from IPCC AR6 table 7.SM.1
 N2O,UC_N2O,n,n,y,4.8,TgN ppbv-1,unit conversion between emissions and concentrations
@@ -100,12 +102,13 @@ forcing,rho_bc,n,n,y,0.0508,W yr m-2 C Tg-1,IPCC AR6 radiative efficiency BC (7.
 forcing,rho_oc,n,n,y,-0.00621,W yr m-2 C Tg-1,IPCC AR6 radiative efficiency OC (7.SM.1.3.1 of IPCC AR6)
 forcing,rho_so2,n,n,y,-7.24E-06,W yr m-2 S Gg-1,IPCC AR6 radiative efficiency SO2 (7.SM.1.3.1 of IPCC AR6)
 forcing,rho_nh3,n,n,y,-0.00208,W yr m-2 NH3 Tg-1,IPCC AR6 radiative efficiency NH3 (7.SM.1.3.1 of IPCC AR6)
+forcing,rho_h2o_h2,n,n,y,0.00019,W m _2 H2 Tg_1,strat. H2O vapor forcing from H2 emissions (Sand et al. 2023)
 forcing,RF_misc,n,n,n,"""(csv)""",,Miscellaneous radiative forcings default set to 0
+forcing,aero_scalar,n,n,y,1,(unitless),Uncerainty scalar
+forcing,vol_scalar,n,n,y,1,(unitless),Uncerainty scalar
 forcing,RF_misc,n,n,y,0,,"Miscellaneous radiative forcings default set to 0, or read in from a input table, may be used to read in additional forcings not modeled by Hector (i.e. solar, bc on snow , contrails from)"
 temperature,S,n,n,y,3,degC,equilibrium climate sensitivity for 2xCO2
 temperature,diff,n,n,y,2.3,cm2 s-1,ocean heat diffusivity
-temperature,alpha,n,n,y,1,(unitless),scaling factor for aerosol forcing
-temperature,volscl,n,n,y,1,(unitless),scaling factor for volcanic forcing
 temperature,qco2,n,n,y,3.75,,CO2 RF (7.3.2 of IPCC AR6)
 temperature,tas_constrain,n,y,n,"""(csv)""",,"Optional global temperature constraint; If supplied, the model will use these data, ignoring what it calculates"
 bc,BC_emissions,n,y,y,"""(csv)""",,

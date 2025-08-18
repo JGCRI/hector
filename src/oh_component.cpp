@@ -30,7 +30,6 @@ OHComponent::OHComponent() {
   NMVOC_emissions.allowInterp(true);
   CO_emissions.allowInterp(true);
   H2_emissions.allowInterp(true);
-  TAU_OH.allowInterp(true);
 }
 
 //------------------------------------------------------------------------------
@@ -122,7 +121,7 @@ void OHComponent::setData(const string &varName, const message_data &data) {
       CNOX = data.getUnitval(U_UNDEFINED);
     } else if (varName == D_COEFFICIENT_H2) {
       H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
-      CH2 = data.getUnitval(U_UNDEFINED);
+      H2_CCO = data.getUnitval(U_UNDEFINED);
     } else {
       H_THROW("Unknown variable name while parsing " + getComponentName() +
               ": " + varName);
@@ -179,7 +178,7 @@ void OHComponent::run(const double runToDate) {
         ((1.0 * +current_nmvoc) -
          NMVOC_emissions.get(NMVOC_emissions.firstdate()).value(U_TG_NMVOC));
     const double toh_h2 =
-         CH2 *
+        H2_CCO * CCO *
           ((1.0 * +current_h2) -
            H2_emissions.get(H2_emissions.firstdate()).value(U_TG_H2));
 
@@ -217,7 +216,7 @@ unitval OHComponent::getData(const std::string &varName, const double date) {
     returnval = NMVOC_emissions.get(date);
   } else if (varName == D_COEFFICIENT_H2) {
     H_ASSERT(date == Core::undefinedIndex(), "Date not allowed for H2 coefficent");
-    returnval = CH2 ;
+    returnval = H2_CCO ;
   } else if (varName == D_EMISSIONS_H2) {
     H_ASSERT(date != Core::undefinedIndex(), "Date required for H2 emissions");
     returnval = H2_emissions.get(date);
