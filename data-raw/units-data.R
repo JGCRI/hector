@@ -91,8 +91,8 @@ halodeltas_vars <- c(
 )
 halodeltas_uni <- "(unitless)"
 
-misc_var <- c(TRACKING_DATE())
-misc_uni <- c("(unitless)")
+misc_var <- c(TRACKING_DATE(), NA)
+misc_uni <- c("(unitless)", "(unitless)")
 
 unitstable <- rbind(
   data.frame(variable = simpleNbox_vars, units = simpleNbox_uni),
