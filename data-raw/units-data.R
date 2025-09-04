@@ -34,7 +34,7 @@ n2o_uni <- c("Tg N", "ppbv N2O", "Tg N", "ppbv N2O")
 
 forcing_vars <- c(
   DELTA_CO2(), DELTA_CH4(), DELTA_N2O(), RHO_BC(),
-  RHO_OC(), RHO_SO2(), RHO_NH3(), RF_ALBEDO(), RF_MISC(), "SV"
+  RHO_OC(), RHO_SO2(), RHO_NH3(), RF_ALBEDO(), RF_MISC(), VOLCANIC_SO2()
 )
 forcing_uni <- c(
   "(unitless)", "(unitless)", "(unitless)", "W/m2/Tg",
