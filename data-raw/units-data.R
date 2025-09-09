@@ -34,11 +34,11 @@ n2o_uni <- c("Tg N", "ppbv N2O", "Tg N", "ppbv N2O")
 
 forcing_vars <- c(
   DELTA_CO2(), DELTA_CH4(), DELTA_N2O(), RHO_BC(),
-  RHO_OC(), RHO_SO2(), RHO_NH3(), RF_ALBEDO(), RF_MISC()
+  RHO_OC(), RHO_SO2(), RHO_NH3(), RF_ALBEDO(), RF_MISC(), VOLCANIC_SO2()
 )
 forcing_uni <- c(
   "(unitless)", "(unitless)", "(unitless)", "W/m2/Tg",
-  "W/m2/Tg", "W/m2/Gg", "W/m2/Tg", "W/m2", "W/m2"
+  "W/m2/Tg", "W/m2/Gg", "W/m2/Tg", "W/m2", "W/m2", "W/m2"
 )
 
 temp_vars <- c(
@@ -75,7 +75,7 @@ haloconstrain_vars <- c(
   CFC115_CONSTRAIN(), CCL4_CONSTRAIN(), CH3CCL3_CONSTRAIN(),
   HCFC22_CONSTRAIN(), HCFC141B_CONSTRAIN(), HCFC142B_CONSTRAIN(),
   HALON1211_CONSTRAIN(), HALON1301_CONSTRAIN(), HALON2402_CONSTRAIN(),
-  CH3CL_CONSTRAIN(), CH3BR_CONSTRAIN()
+  CH3CL_CONSTRAIN(), CH3BR_CONSTRAIN(), "HFC245_constrain"
 )
 haloconstrain_uni <- "pptv"
 
@@ -91,8 +91,8 @@ halodeltas_vars <- c(
 )
 halodeltas_uni <- "(unitless)"
 
-misc_var <- c(TRACKING_DATE())
-misc_uni <- c("(unitless)")
+misc_var <- c(TRACKING_DATE(), NA)
+misc_uni <- c("(unitless)", "(unitless)")
 
 unitstable <- rbind(
   data.frame(variable = simpleNbox_vars, units = simpleNbox_uni),
