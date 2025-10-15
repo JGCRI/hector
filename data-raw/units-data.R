@@ -26,8 +26,8 @@ ch4_vars <- c(
 )
 ch4_uni <- c("ppbv CH4", "Tg CH4", "Tg CH4", "ppbv CH4", "Years", "Years")
 
-oh_vars <- c(EMISSIONS_NOX(), EMISSIONS_CO(), EMISSIONS_NMVOC())
-oh_uni <- c("Tg N", "Tg CO", "Tg NMVOC")
+oh_vars <- c(EMISSIONS_NOX(), EMISSIONS_CO(), EMISSIONS_NMVOC(), EMISSIONS_H2())
+oh_uni <- c("Tg N", "Tg CO", "Tg NMVOC", "Tg H2")
 
 n2o_vars <- c(EMISSIONS_N2O(), N2O_CONSTRAIN(), NAT_EMISSIONS_N2O(), PREINDUSTRIAL_N2O())
 n2o_uni <- c("Tg N", "ppbv N2O", "Tg N", "ppbv N2O")
