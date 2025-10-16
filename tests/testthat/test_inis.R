@@ -95,23 +95,19 @@ test_that("All ini parameters are in the input csv", {
 
 
 # Check that there is no signal in the pi control
-test_that("picontrol",{
+test_that("picontrol", {
+  pi_ini <- ini_list[grepl(pattern = "picontrol", x = tolower(ini_list))]
+  hc <- newcore(system.file(package = "hector", file.path("input", pi_ini)))
 
-    pi_ini <- ini_list[grepl(pattern = "picontrol", x = tolower(ini_list))]
-    hc <- newcore(system.file(package = "hector", file.path("input", pi_ini)))
+  run(hc)
 
-    run(hc)
+  # Fetch variables that should be constant over the course of the run
+  dates <- 1750:2100
+  temp <- fetchvars(hc, dates, vars = GLOBAL_TAS())
+  total_rf <- fetchvars(hc, dates, vars = RF_TOTAL())
+  ch4_conc <- fetchvars(hc, dates, vars = CONCENTRATIONS_CH4())
 
-    # Fetch variables that should be constant over the course of the run
-    dates <- 1750:2100
-    temp <- fetchvars(hc, dates, vars = GLOBAL_TAS())
-    total_rf <- fetchvars(hc, dates, vars = RF_TOTAL())
-    ch4_conc <- fetchvars(hc, dates, vars = CONCENTRATIONS_CH4())
-
-    expect_lte(object = sd(temp$value), expected = 1e-4)
-    expect_lte(object = sd(total_rf$value), expected = 1e-4)
-    expect_lte(object = sd(ch4_conc$value), expected = 1e-4)
-
+  expect_lte(object = sd(temp$value), expected = 1e-4)
+  expect_lte(object = sd(total_rf$value), expected = 1e-4)
+  expect_lte(object = sd(ch4_conc$value), expected = 1e-4)
 })
-
-
