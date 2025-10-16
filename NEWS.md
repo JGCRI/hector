@@ -1,3 +1,15 @@
+# hector 3.5.0 
+
+* Minor documentation changes 
+* Several variables/parameters were renamed, FCH4 -> RF_CH4, alpha -> aero_scalar, & volscl -> vol_scalar 
+* Change RF vol implementation so it is not negative in the future period
+* Expose soil and detritus RH fluxes as possible Hector outputs, RH_DETRITUS() & RH_SOIL()
+* Add ALL_VARS() which helps users fetch all Hector output variables 
+* Update [CH4] lifetime parameters
+* Allow for time varying historical N2O and CH4 natural emissions 
+
+
+
 # hector 3.2.0 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10698028.svg)](https://doi.org/10.5281/zenodo.10698028)
 
