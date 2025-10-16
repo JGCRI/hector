@@ -7,7 +7,10 @@
 * Add ALL_VARS() which helps users fetch all Hector output variables 
 * Update [CH4] lifetime parameters
 * Allow for time varying historical N2O and CH4 natural emissions 
+<<<<<<< HEAD
 * New default parameter values for ocean heat diffusivity, CO2 fertilization, and heterotrophic respiration temperature sensitivity 
+=======
+>>>>>>> 5d4091c3d20f46d54c244ff18d823ee6fe40a104
 
 
 
