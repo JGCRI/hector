@@ -28,6 +28,8 @@ using namespace std;
 CH4Component::CH4Component() {
   CH4_emissions.allowInterp(true);
   CH4_emissions.name = CH4_COMPONENT_NAME;
+  CH4N.allowInterp(true);
+  CH4N.name = CH4_COMPONENT_NAME;
   CH4.allowInterp(true);
   CH4.name = D_CH4_CONC;
 }
