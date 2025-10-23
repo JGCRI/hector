@@ -5,6 +5,8 @@
 \alias{CONCENTRATIONS_CO2}
 \alias{NPP}
 \alias{RH}
+\alias{RH_DETRITUS}
+\alias{RH_SOIL}
 \alias{ATMOSPHERIC_CO2}
 \alias{FFI_EMISSIONS}
 \alias{DACCS_UPTAKE}
@@ -34,6 +36,10 @@ CONCENTRATIONS_CO2()
 NPP()
 
 RH()
+
+RH_DETRITUS()
+
+RH_SOIL()
 
 ATMOSPHERIC_CO2()
 

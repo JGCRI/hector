@@ -1,6 +1,6 @@
 Package: hector
 Title: The Hector Simple Climate Model
-Version: 3.2.0
+Version: 3.5.0
 Authors@R: c(person("Kalyn", "Dorheim", 
 	        email = "kalyn.dorheim@pnnl.gov",
 	        role = c("aut", "cre"),
@@ -31,6 +31,10 @@ Authors@R: c(person("Kalyn", "Dorheim",
 	        email = "leeya.pressburger@pnnl.gov", 
 	        role = c("ctb", "dtc"),
 	        comment = c(ORCID = "0000-0002-6850-2504")),
+	    person("Peter", "Scully",
+	        email = "ptrscll@gmail.com",
+	        role = "ctb",
+	        comment = c(ORCID = "0009-0007-0234-0366")),
 	     person("Alexey", "Shiklomanov",
 	        email = "alexey.shiklomanov@nasa.gov",
 	        role = "ctb",
@@ -47,7 +51,8 @@ Description: Provides an R interface for the Hector Simple Climate
     change model parameters and emissions inputs, run Hector, and
     retrieve model outputs. Note that the package authors are not
     identical to the C++ model authors.
-Depends: R (>= 3.3)
+Depends: 
+    R (>= 3.5)
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
@@ -70,7 +75,7 @@ Collate:
     'units.R'
 VignetteBuilder: knitr
 Config/Needs/website: kableExtra, nleqslv
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
 SystemRequirements: GNU make
 URL: https://github.com/JGCRI/hector, https://jgcri.github.io/hector/
 BugReports: https://github.com/JGCRI/hector/issues

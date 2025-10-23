@@ -6,10 +6,10 @@ output: github_document
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
-    collapse = TRUE,
-    comment = "#>",
-    fig.path = "man/figures/README-",
-    out.width = "100%"
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
 )
 library(hector)
 library(ggplot2)
@@ -29,37 +29,41 @@ be coupled to other models and used to design scenarios, emulate more complex
 climate models, and conduct uncertainty analyses.
 
 ```{r tas_plot, echo=FALSE, fig.width=8, fig.height=4}
-
 # The variable naps and dates of variables to save.
 vars_to_plot <- GLOBAL_TAS()
 dates_to_plot <- 1850:2100
 
 # Color palette used by the IPCC
-SSP_COLORS <- c("ssp119" = "#00a9cf", "ssp126" = "#003466", "ssp245" = "#f69320",
-                "ssp370" = "#df0000", "ssp434" = "#2274ae","ssp460" = "#b0724e",
-                "ssp585"= "#980002",   "ssp534-overshoot" = "grey", "historical" = "#000000",
-                "historical"="#92397a")
+SSP_COLORS <- c(
+  "ssp119" = "#00a9cf", "ssp126" = "#003466", "ssp245" = "#f69320",
+  "ssp370" = "#df0000", "ssp434" = "#2274ae", "ssp460" = "#b0724e",
+  "ssp585" = "#980002", "ssp534-overshoot" = "grey", "historical" = "#000000",
+  "historical" = "#92397a"
+)
 
 # Set up and run hector.
 ini_files <- list.files(file.path("inst", "input"), pattern = "ini", full.names = TRUE)
-hector_tas_results <- do.call(lapply(ini_files, function(f){
-    name <- gsub(pattern = "hector_|.ini", x = basename(path = f), replacement = "")
-    hc <- newcore(f, name = name)
-    run(hc)
-    out <- fetchvars(hc, dates_to_plot, vars = vars_to_plot)
-    return(out)
+hector_tas_results <- do.call(lapply(ini_files, function(f) {
+  name <- gsub(pattern = "hector_|.ini", x = basename(path = f), replacement = "")
+  hc <- newcore(f, name = name)
+  run(hc)
+  out <- fetchvars(hc, dates_to_plot, vars = vars_to_plot)
+  return(out)
 }), what = "rbind")
 
 # Modify the results data frame.
 hector_tas_results$scenario <- ifelse(hector_tas_results$scenario == "ssp534-over",
-                                      "ssp534-overshoot", hector_tas_results$scenario)
+  "ssp534-overshoot", hector_tas_results$scenario
+)
 hector_tas_results$scenario <- ifelse(hector_tas_results$year <= 2016, "historical",
-                                      hector_tas_results$scenario)
+  hector_tas_results$scenario
+)
 ggplot(hector_tas_results) +
-    geom_line(aes(year, value, color = scenario), linewidth = 1) +
-    theme_bw(base_size = 15) +
-    labs(color = NULL, x = NULL, y = expression("Temperature Anomaly ("~degree~"C)")) +
-    scale_color_manual(values = SSP_COLORS)
+  geom_line(aes(year, value, color = scenario), linewidth = 1) +
+  theme_bw(base_size = 15) +
+  theme(axis.title = element_text(size = 12)) +
+  labs(color = NULL, x = NULL, y = expression("Temperature Anomaly Relative to 1750 (" ~ degree ~ "C)")) +
+  scale_color_manual(values = SSP_COLORS)
 ```
 
 Hector's output for global mean air temperature change for eight Shared Socioeconomic Pathways (SSPs).

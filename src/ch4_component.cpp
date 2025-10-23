@@ -28,6 +28,8 @@ using namespace std;
 CH4Component::CH4Component() {
   CH4_emissions.allowInterp(true);
   CH4_emissions.name = CH4_COMPONENT_NAME;
+  CH4N.allowInterp(true);
+  CH4N.name = CH4_COMPONENT_NAME;
   CH4.allowInterp(true);
   CH4.name = D_CH4_CONC;
 }
@@ -115,8 +117,8 @@ void CH4Component::setData(const string &varName, const message_data &data) {
       H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
       UC_CH4 = data.getUnitval(U_TG_PPBV);
     } else if (varName == D_NATURAL_CH4) {
-      H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
-      CH4N = data.getUnitval(U_TG_CH4);
+      H_ASSERT(data.date != Core::undefinedIndex(), "date required");
+      CH4N.set(data.date, data.getUnitval(U_TG_CH4));
     } else if (varName == D_CONSTRAINT_CH4) {
       H_ASSERT(data.date != Core::undefinedIndex(),
                "date required for CH4 concentration constraint");
@@ -170,7 +172,7 @@ void CH4Component::run(const double runToDate) {
         core->sendMessage(M_GETDATA, D_RH_CH4).value(U_PGC_YR) * PG_C_TO_TG_CH4;
 
     // Additional, background CH4 natural emissions
-    const double ch4n = CH4N.value(U_TG_CH4);
+    const double ch4n = CH4N.get(runToDate).value(U_TG_CH4);
     const double emisTocon =
         (current_ch4em + rh_ch4 + ch4n) / UC_CH4.value(U_TG_PPBV);
     const double previous_ch4 = CH4.get(oldDate);
@@ -214,9 +216,9 @@ unitval CH4Component::getData(const std::string &varName, const double date) {
     H_ASSERT(date != Core::undefinedIndex(), "Date required for CH4 emissions");
     returnval = CH4_emissions.get(date);
   } else if (varName == D_NATURAL_CH4) {
-    H_ASSERT(date == Core::undefinedIndex(),
-             "Date not allowed for natural CH4 emissions");
-    returnval = CH4N;
+    H_ASSERT(date != Core::undefinedIndex(),
+             "Date required for natural CH4 emissions");
+    returnval = CH4N.get(date);
   } else if (varName == D_LIFETIME_SOIL) {
     H_ASSERT(date == Core::undefinedIndex(),
              "Date not allowed for CH4 soil lifetime");

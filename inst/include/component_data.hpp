@@ -65,6 +65,8 @@
 #define D_RHO_OC "rho_oc"            // BC radiative efficiency
 #define D_RHO_SO2 "rho_so2"          // SO2 radiative efficiency
 #define D_RHO_NH3 "rho_nh3"          // NH3 radiative efficiency
+#define D_AERO_SCALE "aero_scalar"
+#define D_VOLCANIC_SCALE "vol_scalar"
 
 // halocarbon components
 #define D_RF_CF4 D_RF_PREFIX CF4_COMPONENT_BASE
@@ -256,7 +258,7 @@
 // methane component
 #define D_CH4_CONC "CH4" CONCENTRATION_EXTENSION
 #define D_PREINDUSTRIAL_CH4 "M0"
-#define D_RF_CH4 "FCH4"
+#define D_RF_CH4 D_RF_PREFIX "CH4"
 #define D_EMISSIONS_CH4 "CH4_emissions"
 #define D_CONSTRAINT_CH4 "CH4_constrain"
 #define D_NATURAL_CH4 "CH4N"
@@ -397,8 +399,6 @@
 #define D_GMST "gmst"
 #define D_LO_WARMING_RATIO "lo_warming_ratio"
 #define D_DIFFUSIVITY "diff"
-#define D_AERO_SCALE "alpha"
-#define D_VOLCANIC_SCALE "volscl"
 #define D_FLUX_MIXED "heatflux_mixed"
 #define D_FLUX_INTERIOR "heatflux_interior"
 #define D_HEAT_FLUX "heatflux"

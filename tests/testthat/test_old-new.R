@@ -6,12 +6,11 @@ context("Old new tests")
 # need to be updated by running data-raw/generate-comp-data.R
 
 test_that("Hector output passes old new test", {
-
   # In order to pass the old new test the mean absolute difference between
   # the old and new hector output must be less than the defined threshold.
   error_threshold <- 1e-10
 
-  # Read in the comparison data and extract the information to save.
+  # Read in the comparison data and extract the information to save.c
   comp_data <- read.csv("compdata/hector_comp.csv", stringsAsFactors = FALSE)
   vars <- unique(comp_data$variable)
 
