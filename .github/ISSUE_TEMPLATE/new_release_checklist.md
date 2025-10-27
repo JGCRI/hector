@@ -10,8 +10,10 @@ Since the dev branch only includes materials that have been peer-reviewed at lea
 * Add text to the PR documenting the major model changes. The PR is going to serve as an important record 
 * Pass automated checks
 * Change the version number in the DESCRIPTION file 
+* Change the version number in the CITATION.cff file
 * Update the NEWS.md, are links additional materials necessary? Does the release need a new naming file? 
 * Check to make sure the internal package data is up to date (fxntable, inputstable, unitstable)
+
 
 After merging PR 
 

@@ -69,6 +69,7 @@ Other contributors:
   \item Mat Nicholson (mnichol3) [contributor]
   \item Pralit Patel \email{pralit.patel@pnnl.gov} (\href{https://orcid.org/0000-0003-3992-1061}{ORCID}) [contributor]
   \item Leeya Pressburger \email{leeya.pressburger@pnnl.gov} (\href{https://orcid.org/0000-0002-6850-2504}{ORCID}) [contributor, data contributor]
+  \item Peter Scully \email{ptrscll@gmail.com} (\href{https://orcid.org/0009-0007-0234-0366}{ORCID}) [contributor]
   \item Alexey Shiklomanov \email{alexey.shiklomanov@nasa.gov} (\href{https://orcid.org/0000-0003-4022-5979}{ORCID}) [contributor]
   \item Benjamin Vega-Westhoff (\href{https://orcid.org/0000-0001-7881-8388}{ORCID}) [contributor]
   \item Dawn Woodard \email{dawn.woodard@pnnl.gov} (\href{https://orcid.org/0000-0002-0468-4660}{ORCID}) [contributor]

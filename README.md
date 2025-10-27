@@ -9,7 +9,6 @@ tests](https://github.com/JGCRI/hector/actions/workflows/unit-testing.yaml/badge
 [![Command Line
 Hector](https://github.com/JGCRI/hector/actions/workflows/command-line.yaml/badge.svg)](https://github.com/JGCRI/hector/actions/workflows/command-line.yaml)
 [![R-CMD-check](https://github.com/JGCRI/hector/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/JGCRI/hector/actions/workflows/R-CMD-check.yaml)
-[![codecov](https://codecov.io/gh/JGCRI/hector/branch/main/graph/badge.svg?token=EGM0lXDxRv)](https://codecov.io/gh/JGCRI/hector)
 
 This is the repository for **Hector**, an open source, object-oriented,
 simple global climate carbon-cycle model that runs very quickly while
