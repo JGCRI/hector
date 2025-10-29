@@ -1,0 +1,44 @@
+name: Build & C++ Unit Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  schedule:
+    - cron: '0 6 1 * *' # Run at 6 AM on the 1st of each month
+  workflow_dispatch:
+
+jobs:
+  executable-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt install -y libboost-dev
+      - name: Build and run
+        run: |
+          set -e  # Exit on failure
+          make hector
+          bash ./test_hector.sh ./src/hector
+
+  gunit-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt install -y libgtest-dev libboost-filesystem-dev libboost-system-dev
+          cd /usr/src/gtest && sudo cmake . && sudo make && sudo cp lib/*.a /usr/local/lib
+      - name: Build and run unit tests
+        run: |
+          set -e  # Exit on failure
+          make testing
+          ./src/unit-testing/hector-unit-tests

@@ -229,7 +229,7 @@ void OceanComponent::prepareToRun() {
 
   // Calculate the fraction of volume of the two surface boxes, the deep, and
   // intermediate ocean boxes. The fraction of the volumes will be used to
-  // determine the inital size of the preindustrial carbon pools for Hector's
+  // determine the initial size of the preindustrial carbon pools for Hector's
   // ocean boxes.
   const double LL_vol_frac = LL_volume / (LL_volume + HL_volume);
   const double HL_vol_frac = 1 - LL_vol_frac;

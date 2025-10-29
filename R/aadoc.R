@@ -312,3 +312,8 @@ NULL
 #'  \item{string}{String of variable name}
 #' }
 "fxntable"
+
+#' A vector containing all the hector output names.
+#'
+#' @format A vector of length 82.
+"all_vars"

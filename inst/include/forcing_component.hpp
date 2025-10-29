@@ -118,9 +118,12 @@ private:
   unitval
       rho_nh3; // (W yr m–2 Tg–1) IPCC AR6 radiative efficiency SO2 7.SM.1.3.1
 
-  // Aerosol parameters for aerosol-cloud interactions (RFaci) see equation
+  // Aerosol parameters
+  unitval alpha;  // aerosol forcing factor, unitless
+  unitval volscl; // volcanic forcing scaling factor, unitless
+  // Parameters for aerosol-cloud interactions (RFaci) see equation
   // Equation 7.SM.1.2 of IPCC AR6
-  double const aci_beta = 2.279759; // see Dorheim et al. in prep
+  double const aci_beta = 2.279759; //  Dorheim et al. 2024
   double const s_BCOC = 111.05064063; // (Tg C yr-1) IPCC AR6 7.SM.1.3.1
   double const s_SO2 =
       (260.34644166 * 1000) *

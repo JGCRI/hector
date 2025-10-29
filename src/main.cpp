@@ -113,7 +113,7 @@ int main(int argc, char *const argv[]) {
 
     H_LOG(glog, Logger::NOTICE) << "Hector wrapper end" << endl;
     glog.close();
-  } catch (h_exception e) {
+  } catch (h_exception &e) {
     cerr << "* Program exception:\n" << e << endl;
     return 1;
   } catch (std::exception &e) {

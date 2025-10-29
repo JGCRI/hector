@@ -48,7 +48,7 @@ CSVTableReader::CSVTableReader(const string &fileName) : fileName(fileName) {
   try {
     // attempt to open the file
     tableInputStream.open(fileName.c_str());
-  } catch (ifstream::failure e) {
+  } catch (ifstream::failure &e) {
     // the macro errno in combination with strerror seem to be much more
     // informative than error message from the exception
     string errorStr =
@@ -66,7 +66,7 @@ CSVTableReader::CSVTableReader(const string &fileName) : fileName(fileName) {
 CSVTableReader::~CSVTableReader() {
   try {
     tableInputStream.close();
-  } catch (ifstream::failure e) {
+  } catch (ifstream::failure &e) {
     // ignoring close errors
   }
 }
@@ -183,7 +183,7 @@ void CSVTableReader::process(Core *core, const string &componentName,
       }
     }
 
-  } catch (ifstream::failure e) {
+  } catch (ifstream::failure &e) {
     string errorStr = "I/O exception while processing " + fileName +
                       " error: " + strerror(errno);
     H_THROW(errorStr);

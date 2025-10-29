@@ -113,11 +113,11 @@ beta
 The result of `fetchvars()` is always a `data.frame` with the same columns, even when returning a parameter value.
 Note also the use of `NA` in the second argument (`dates`).
 
-The current value is set to 0.36 (note that it is a unitless quantity, hence the `(unitless)` unit).
-Let's bump it up a little to 0.40.
+The current value is set to 0.53 (note that it is a unitless quantity, hence the `(unitless)` unit).
+Let's bump it up a little to 0.60.
 
 ```{r set-beta }
-setvar(core, NA, BETA(), 0.40, "(unitless)")
+setvar(core, NA, BETA(), 0.60, "(unitless)")
 ```
 
 Similarly to `run`, this returns no output.
@@ -176,16 +176,16 @@ We can now perform another run with the new CO$_2$ fertilization value.
 
 ```{r  run-sim-2}
 run(core)
-results_40 <- fetchvars(core, 2000:2300)
-head(results_40)
+results_60 <- fetchvars(core, 2000:2300)
+head(results_60)
 ```
 
 Let's see how changing the CO$_2$ fertilization affects our results.
 
 ```{r  compare-co2-fert }
-results[["beta"]] <- 0.36
-results_40[["beta"]] <- 0.40
-compare_results <- rbind(results, results_40)
+results[["beta"]] <- 0.53
+results_60[["beta"]] <- 0.60
+compare_results <- rbind(results, results_60)
 
 ggplot(compare_results) +
   aes(x = year, y = value, color = factor(beta)) +
@@ -204,7 +204,13 @@ However, the effects only become pronounced in the latter half of the 21st centu
 
 Hector runs quickly, making it easy to run many simulations under slightly different
 configurations. One application of this is to explore the sensitivity of Hector
-to variability in its parameters.
+to variability in its parameters. This is an example of a basic sensitivity analysis, 
+where we change Hector parameter values and look at the impacts on Hector output. For 
+users that are interested in more advanced sensitivity analyses or may be probabilistic 
+Hector runs we recommend using [Matilda](https://github.com/JGCRI/matilda)! Matilda 
+is a package that provides a probabilistic framework to the Hector simple climate model. 
+Now to continue with this example.
+
 
 The basic procedure for this is the same as in the previous section. However, to
 save typing (and, in general, to be good programmers!), let's create some functions.

@@ -105,8 +105,8 @@ public:
   static int mkcore(bool logtofile = false,
                     Logger::LogLevel loglvl = Logger::NOTICE,
                     bool logtoscrn = false);
-  static Core *getcore(int idx);
-  static void delcore(int idx);
+  static Core *getcore(std::vector<Core *>::size_type idx);
+  static void delcore(std::vector<Core *>::size_type idx);
 
   std::vector<std::string> getBiomeList() const;
   void createBiome(const std::string &biome);

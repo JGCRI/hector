@@ -68,7 +68,7 @@ private:
       N2O_constrain; //! N2O concentration constraint time series, ppbv N2O
   tseries<unitval> TAU_N2O; //! N2O decay time constant (varies as a function of
                             //! concentration)
-  unitval TN2O0;            //! inital N2O lifetime, years
+  unitval TN2O0;            //! initial N2O lifetime, years
 
   //! logger
   Logger logger;

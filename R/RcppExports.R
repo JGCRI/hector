@@ -1292,6 +1292,18 @@ RH <- function() {
     .Call('_hector_RH', PACKAGE = 'hector')
 }
 
+#' @rdname carboncycle
+#' @export
+RH_DETRITUS <- function() {
+    .Call('_hector_RH_DETRITUS', PACKAGE = 'hector')
+}
+
+#' @rdname carboncycle
+#' @export
+RH_SOIL <- function() {
+    .Call('_hector_RH_SOIL', PACKAGE = 'hector')
+}
+
 #' @describeIn parameters Preindustrial CO2 concentration (\code{"ppmv CO2"})
 #' @export
 PREINDUSTRIAL_CO2 <- function() {

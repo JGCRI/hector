@@ -1,4 +1,4 @@
-cff-version: 3.0.1
+cff-version: 3.5.0
 message: "If you use this software in your work, please cite it as below."
 authors:
 - family-names: "Dorheim"
@@ -7,6 +7,9 @@ authors:
 - family-names: "Bond-Lamberty"
   given-names: "Ben"
   orcid: "https://orcid.org/0000-0001-9525-4633"
+- family-names: "Scully"
+  given-names: "Peter"
+  orcid: "https://orcid.org/0009-0007-0234-0366"
 - family-names: "Hartin"
   given-names: "Corinne"
   orcid: "https://orcid.org/0000-0003-1834-6539"
@@ -31,7 +34,7 @@ authors:
   given-names: "Dawn"
   orcid: "https://orcid.org/0000-0002-0468-4660"
 title: "Hector a simple carbon-climate model"
-version: 3.0.1
-doi: 10.5281/zenodo.7617326
-date-released: 2023-02-07
+version: 3.5.0
+doi: 10.5281/zenodo.821645
+date-released: 2025-10-24
 url: "https://github.com/jgcri/hector"

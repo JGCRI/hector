@@ -6,7 +6,6 @@ dates <- 2000:2300
 
 
 test_that("Rerunning spinup produces minimal change", {
-
   # First Hector core run
   hc <- newcore(file.path(inputdir, "hector_ssp245.ini"), name = "ssp245", suppresslogging = TRUE)
   run(hc, 2100)
@@ -49,7 +48,6 @@ test_that("Basic hcore functionality works", {
 })
 
 test_that("Write out logs", {
-
   log_dir <- file.path(getwd(), "logs")
   if (dir.exists(log_dir)) {
     # Remove any pre-existing logs so we get an accurate count below
@@ -58,8 +56,9 @@ test_that("Write out logs", {
 
   ## Turn logging ON for one test and confirm it runs (see GitHub issues #372 and #381)
   hc_log <- newcore(file.path(inputdir, "hector_ssp245.ini"),
-                    name = "ssp245",
-                    suppresslogging = FALSE)
+    name = "ssp245",
+    suppresslogging = FALSE
+  )
   run(hc_log, 2100)
   shutdown(hc_log)
 
@@ -104,7 +103,8 @@ test_that("Garbage collection shuts down hector cores", {
 ## when the core is set up different names.
 test_that("Scenario column is created in output", {
   hc <- newcore(file.path(inputdir, "hector_ssp245.ini"),
-                suppresslogging = TRUE, name = "scenario1")
+    suppresslogging = TRUE, name = "scenario1"
+  )
   run(hc)
 
   outdata1 <- fetchvars(hc, dates, testvars)

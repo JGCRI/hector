@@ -1,2 +1,2 @@
-CXX_STD = CXX11
+CXX_STD = CXX17
 PKG_CPPFLAGS = -I../inst/include -DUSE_RCPP
