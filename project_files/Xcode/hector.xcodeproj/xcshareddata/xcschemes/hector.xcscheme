@@ -36,7 +36,7 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
       useCustomWorkingDirectory = "YES"
-      customWorkingDirectory = "${HECTORDIR}"
+      customWorkingDirectory = "/Users/dorh012/Documents/Hector-WD/misc-hector-analyses/halocarbon_things/hector/src"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
@@ -53,7 +53,7 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "./inst/input/hector_ssp245.ini"
+            argument = "../inst/input/hector_dev.ini"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>

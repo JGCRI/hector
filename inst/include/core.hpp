@@ -36,7 +36,7 @@ class IModelComponent;
  */
 class Core : public IVisitable {
 public:
-  Core(Logger::LogLevel loglvl = Logger::DEBUG, bool echotoscreen = true,
+    Core(Logger::LogLevel loglvl = Logger::SEVERE, bool echotoscreen = true,
        bool echotofile = true);
   ~Core();
 
