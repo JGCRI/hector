@@ -67,7 +67,8 @@ private:
   double tau;    // lifetime in years
   unitval rho;   // radiative efficiencies W/m2/ppt
   unitval delta; // tropospheric adjustments scalar unitless
-  unitval H0;                    //! Preindustrial concentration, pptv
+  unitval H0;    // Preindustrial concentration, pptv
+  unitval molarMass; // hc molar mass, g/mol
 
     
   // Time series
@@ -76,7 +77,6 @@ private:
   tseries<unitval> Ha_ts;     //! Time series of (ambient) concentration, pptv
   tseries<unitval> Ha_constrain; //! Concentration constraint, pptv
 
-  double molarMass;
 
   //! logger
   Logger logger;

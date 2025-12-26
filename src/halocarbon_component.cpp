@@ -58,7 +58,6 @@ void HalocarbonComponent::init(Core *coreptr) {
 
   emissions.allowInterp(true);
   emissions.name = myGasName;
-  molarMass = 0.0;
   H0.set(0.0, U_PPTV); //! Default is no preindustrial, but user can override
 
   // Register the data we can provide
@@ -135,7 +134,7 @@ void HalocarbonComponent::setData(const string &varName,
       delta = data.getUnitval(U_UNITLESS);
     } else if (varName == D_HC_MOLARMASS) {
       H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
-      molarMass = data.getUnitval(U_UNDEFINED);
+      molarMass = data.getUnitval(U_G_MOL);
     } else if (varName == emiss_var_name) {
       H_ASSERT(data.date != Core::undefinedIndex(), "date required");
       emissions.set(data.date, data.getUnitval(U_GG));
@@ -194,7 +193,7 @@ void HalocarbonComponent::run(const double runToDate) {
     const double alpha = 1 / tau;
 
     // Compute the delta atmospheric concentration from current emissions
-    double emissMol = emissions.get(runToDate).value(U_GG) / molarMass *
+    double emissMol = emissions.get(runToDate).value(U_GG) / molarMass.value(U_G_MOL) *
                       timestep; // this is in U_GMOL
     unitval concDeltaEmiss;
     concDeltaEmiss.set(emissMol / (0.1 * AtmosphereDryAirConstant), U_PPTV);
