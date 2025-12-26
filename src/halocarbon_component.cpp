@@ -184,7 +184,8 @@ void HalocarbonComponent::run(const double runToDate) {
 
   unitval Ha(Ha_ts.get(oldDate));
 
-  // If emissions-forced, calculate concentration from emissions and lifespan.
+  // If oncentration-forced, use the perscribed value otherwise if
+  // emission driven calculate concentration from emissions and lifespan.
   if (Ha_constrain.size() && Ha_constrain.exists(runToDate)) {
     // Concentration-forced. Just grab the current value from the time series.
     Ha = Ha_constrain.get(runToDate);
