@@ -190,12 +190,10 @@ void HalocarbonComponent::run(const double runToDate) {
     // Concentration-forced. Just grab the current value from the time series.
     Ha = Ha_constrain.get(runToDate);
   } else {
-    const double timestep = 1.0;
     const double alpha = 1 / tau;
 
     // Compute the delta atmospheric concentration from current emissions
-    double emissMol = emissions.get(runToDate).value(U_GG) / molarMass.value(U_G_MOL) *
-                      timestep; // this is in U_GMOL
+    double emissMol = emissions.get(runToDate).value(U_GG) / molarMass.value(U_G_MOL); // this is in U_GMOL
     unitval concDeltaEmiss;
     concDeltaEmiss.set(emissMol / (0.1 * AtmosphereDryAirConstant), U_PPTV);
 
@@ -267,7 +265,7 @@ unitval HalocarbonComponent::getData(const std::string &varName,
       returnval = Ha_constrain.get(getdate);
     } else {
       H_LOG(logger, Logger::DEBUG)
-          << "No CH4 constraint for requested date " << date
+          << "No "<< myGasName << "constraint for requested date " << date
           << ". Returning missing value." << std::endl;
       returnval.set(MISSING_FLOAT, U_PPTV);
     }
