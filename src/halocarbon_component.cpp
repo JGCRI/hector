@@ -162,7 +162,6 @@ void HalocarbonComponent::prepareToRun() {
   oldDate = core->getStartDate();
 
   H_ASSERT(tau != -1 && tau != 0, "tau has bad value");
-  H_ASSERT(rho.units() != U_UNDEFINED, "rho has undefined units");
   H_ASSERT(molarMass > 0, "molarMass must be >0");
   H_ASSERT(
       delta >= -1 && delta <= 1,
@@ -182,7 +181,8 @@ void HalocarbonComponent::run(const double runToDate) {
            "timestep must equal 1");
 #define AtmosphereDryAirConstant 1.8
 
-  unitval Ha(Ha_ts.get(oldDate));
+  unitval Ha_lagg(Ha_ts.get(oldDate));
+  unitval Ha;
 
   // If oncentration-forced, use the perscribed value otherwise if
   // emission driven calculate concentration from emissions and lifespan.
@@ -202,26 +202,19 @@ void HalocarbonComponent::run(const double runToDate) {
     // Update the atmospheric concentration, accounting for this delta and
     // exponential decay
     double expfac = exp(-alpha);
-    Ha = Ha * expfac + concDeltaEmiss * tau * (1.0 - expfac);
+    Ha = Ha_lagg * expfac + concDeltaEmiss * tau * (1.0 - expfac);
   }
 
   H_LOG(logger, Logger::DEBUG)
       << "date: " << runToDate << " concentration: " << Ha << endl;
   Ha_ts.set(runToDate, Ha);
 
-  // Calculate radiative forcing
-  double adjusted_rf;
-  double rf_unadjusted;
+  // Calculate radiative forcing, note this rf will not be relative
+  // to the appropriate base year period, this wil be done in the forcing component.
+  // Calculate the effetive radiative forcing using Equation 16 from Hartin
+  // 2015 and parameter values from IPCC AR6.
   unitval rf;
-
-  // First calculate the stratospheric-temperature adjusted radiative
-  // efficiencies using parameter values from IPCC AR6 & Equation 16 from Hartin
-  // 2015.
-  rf_unadjusted = rho.value(U_W_M2_PPTV) * Ha.value(U_PPTV);
-  // Now calculate the effective radiative forcing value by adjusting the
-  // radiative forcing by the tropospheric adjustments (the delta parameter).
-  adjusted_rf = rf_unadjusted + delta.value(U_UNITLESS) * rf_unadjusted;
-  rf.set(adjusted_rf, U_W_M2);
+  rf.set((1.0 + delta.value(U_UNITLESS)) * rho.value(U_W_M2_PPTV) * Ha.value(U_PPTV), U_W_M2);
   hc_forcing.set(runToDate, rf);
 
   // Update time counter.
