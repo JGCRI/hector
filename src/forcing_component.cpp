@@ -148,33 +148,13 @@ void ForcingComponent::init(Core *coreptr) {
   core->registerDependency(D_EMISSIONS_OC, getComponentName());
   core->registerDependency(D_EMISSIONS_NH3, getComponentName());
   core->registerDependency(D_N2O_CONC, getComponentName());
-  core->registerDependency(D_RF_CF4, getComponentName());
-  core->registerDependency(D_RF_C2F6, getComponentName());
-  core->registerDependency(D_RF_HFC23, getComponentName());
-  core->registerDependency(D_RF_HFC32, getComponentName());
-  core->registerDependency(D_RF_HFC4310, getComponentName());
-  core->registerDependency(D_RF_HFC125, getComponentName());
-  core->registerDependency(D_RF_HFC134a, getComponentName());
-  core->registerDependency(D_RF_HFC143a, getComponentName());
-  core->registerDependency(D_RF_HFC227ea, getComponentName());
-  core->registerDependency(D_RF_HFC245fa, getComponentName());
-  core->registerDependency(D_RF_SF6, getComponentName());
-  core->registerDependency(D_RF_CFC11, getComponentName());
-  core->registerDependency(D_RF_CFC12, getComponentName());
-  core->registerDependency(D_RF_CFC113, getComponentName());
-  core->registerDependency(D_RF_CFC114, getComponentName());
-  core->registerDependency(D_RF_CFC115, getComponentName());
-  core->registerDependency(D_RF_CCl4, getComponentName());
-  core->registerDependency(D_RF_CH3CCl3, getComponentName());
-  core->registerDependency(D_RF_HCFC22, getComponentName());
-  core->registerDependency(D_RF_HCFC141b, getComponentName());
-  core->registerDependency(D_RF_HCFC142b, getComponentName());
-  core->registerDependency(D_RF_halon1211, getComponentName());
-  core->registerDependency(D_RF_halon1301, getComponentName());
-  core->registerDependency(D_RF_halon2402, getComponentName());
-  core->registerDependency(D_RF_CH3Br, getComponentName());
-  core->registerDependency(D_RF_CH3Cl, getComponentName());
   core->registerDependency(D_RF_T_ALBEDO, getComponentName());
+  // The unadjusted halocarbon forcings calculated by halocarbon_component
+  for (int i = 0; i < N_HALO_FORCINGS; ++i) {
+    core->registerDependency(halo_forcing_names[i], getComponentName());
+    forcing_name_map[halo_forcing_names[i]] = halo_forcing_names[i];
+  }
+
 
   // Register the inputs we can receive from outside
   core->registerInput(D_DELTA_CH4, getComponentName());
@@ -412,7 +392,7 @@ void ForcingComponent::run(const double runToDate) {
     // through all possible ones
     for (auto hc : halos) {
       if (core->checkCapability(hc)) {
-        // Forcing values are actually computed by the halocarbon itself
+        // Forcing values are actually computed by the halocarbon component itself
         forcings[hc] =
             core->sendMessage(M_GETDATA, hc, message_data(runToDate));
       }
