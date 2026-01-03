@@ -169,9 +169,6 @@ void HalocarbonComponent::prepareToRun() {
 
   Ha_ts.set(oldDate, H0);
 
-  //! \remark concentration values will not be allowed to interpolate beyond
-  //! years already read in
-  //    concentration.allowPartialInterp( true );
 }
 
 //------------------------------------------------------------------------------
@@ -179,7 +176,9 @@ void HalocarbonComponent::prepareToRun() {
 void HalocarbonComponent::run(const double runToDate) {
   H_ASSERT(!core->inSpinup() && runToDate - oldDate == 1,
            "timestep must equal 1");
-#define AtmosphereDryAirConstant 1.8
+#define GG_to_G 1e9 // 1 Gigagram = 1e9 Grams
+#define ratio_to_PPT 1e12 // used to convert a ratio to ppt
+#define atmos_moles 1.727e20 // physical constant for moles of dry air
 
   unitval Ha_lagg(Ha_ts.get(oldDate));
   unitval Ha;
@@ -190,12 +189,15 @@ void HalocarbonComponent::run(const double runToDate) {
     // Concentration-forced. Just grab the current value from the time series.
     Ha = Ha_constrain.get(runToDate);
   } else {
-    const double alpha = 1 / tau;
-
-    // Compute the delta atmospheric concentration from current emissions
-    double emissMol = emissions.get(runToDate).value(U_GG) / molarMass.value(U_G_MOL); // this is in U_GMOL
-    unitval concDeltaEmiss;
-    concDeltaEmiss.set(emissMol / (0.1 * AtmosphereDryAirConstant), U_PPTV);
+      
+      // Emission driven.
+      // Convert the annual emissions to moles. Use the ratio of hc moles
+      // to atmosphere moles to determine the annual change in hc in ppt.
+      double emissMol = emissions.get(runToDate).value(U_GG) * GG_to_G / molarMass.value(U_G_MOL);
+      unitval concDeltaEmiss;
+      concDeltaEmiss.set((emissMol/atmos_moles) * ratio_to_PPT, U_PPTV);
+      
+      const double alpha = 1 / tau;
 
     // Update the atmospheric concentration, accounting for this delta and
     // exponential decay
