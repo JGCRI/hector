@@ -176,9 +176,6 @@ void HalocarbonComponent::prepareToRun() {
 void HalocarbonComponent::run(const double runToDate) {
   H_ASSERT(!core->inSpinup() && runToDate - oldDate == 1,
            "timestep must equal 1");
-#define GG_to_G 1e9 // 1 Gigagram = 1e9 Grams
-#define ratio_to_PPT 1e12 // used to convert a ratio to ppt
-#define atmos_moles 1.727e20 // physical constant for moles of dry air
 
   unitval Ha_lagg(Ha_ts.get(oldDate));
   unitval Ha;
@@ -191,6 +188,13 @@ void HalocarbonComponent::run(const double runToDate) {
   } else {
       
       // Emission driven.
+      
+      // Constants used in the emission driven hc calculations
+      const double GG_to_G = 1e9; // 1 Gigagram = 1e9 Grams
+      const double ratio_to_PPT = 1e12; // used to convert a ratio to ppt
+      const double atmos_moles = 1.727e20; // physical constant for moles of dry air
+      
+      
       // Convert the annual emissions to moles. Use the ratio of hc moles
       // to atmosphere moles to determine the annual change in hc in ppt.
       double emissMol = emissions.get(runToDate).value(U_GG) * GG_to_G / molarMass.value(U_G_MOL);
