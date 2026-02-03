@@ -83,6 +83,7 @@ public:
   double getStartDate() const { return startDate; };
   double getEndDate() const { return endDate; };
   double getTrackingDate() const { return trackingDate; };
+  double getAtmMols() const { return atm_mols; };
   std::string getTrackingData() const;
   double getCurrentDate() const { return lastDate; }
   std::string getRun_name() const { return run_name; };
@@ -163,6 +164,10 @@ private:
   //! Maximum number of spinup steps allowed.
   int max_spinup;
 
+  //------------------------------------------------------------------------------
+  //! Total moles in the atmopshere based on the atmosperic fry air constant
+  double atm_mols;
+    
   //------------------------------------------------------------------------------
   //! A comparison object to ensure modelComponents are ordered according to
   //! dependencies.

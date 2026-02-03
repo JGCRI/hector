@@ -93,7 +93,8 @@ void Core::init() {
   // We handle this input; need to register it here so that R users can change
   // it
   registerInput(D_TRACKING_DATE, CORE_COMPONENT_NAME);
-
+  registerInput(D_ATM_MOLS, CORE_COMPONENT_NAME);
+    
   IModelComponent *temp;
 
   temp = new SimpleNbox();
@@ -232,6 +233,9 @@ void Core::setData(const string &componentName, const string &varName,
       } else if (varName == D_TRACKING_DATE) {
         H_ASSERT(data.date == undefinedIndex(), "date not allowed");
         trackingDate = data.getUnitval(U_UNITLESS);
+      } else if (varName == D_ATM_MOLS) {
+        H_ASSERT(data.date == undefinedIndex(), "date not allowed");
+        atm_mols = data.getUnitval(U_MOL);
       } else if (varName == D_DO_SPINUP) {
         H_ASSERT(data.date == undefinedIndex(), "date not allowed");
         do_spinup = (data.getUnitval(U_UNDEFINED) > 0);
@@ -699,6 +703,8 @@ unitval Core::getData(const std::string &varName, const double date) {
     H_ASSERT(date == Core::undefinedIndex(),
              "Date not allowed for tracking date");
     returnval = unitval(trackingDate, U_UNITLESS);
+  } else if (varName == D_ATM_MOLS) {
+    returnval = unitval(atm_mols, U_MOL);
   } else {
     H_THROW("Caller is requesting unknown variable: " + varName);
   }

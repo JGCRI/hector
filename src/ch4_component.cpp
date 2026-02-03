@@ -61,7 +61,6 @@ void CH4Component::init(Core *coreptr) {
   core->registerCapability(D_PREINDUSTRIAL_CH4, getComponentName());
   core->registerCapability(D_LIFETIME_STRAT, getComponentName());
   core->registerCapability(D_LIFETIME_SOIL, getComponentName());
-  core->registerDependency(D_LIFETIME_OH, getComponentName());
   // ...and what input data that we can accept
   core->registerInput(D_EMISSIONS_CH4, getComponentName());
   core->registerInput(D_NATURAL_CH4, getComponentName());
@@ -69,6 +68,9 @@ void CH4Component::init(Core *coreptr) {
   core->registerInput(D_PREINDUSTRIAL_CH4, getComponentName());
   core->registerInput(D_LIFETIME_STRAT, getComponentName());
   core->registerInput(D_LIFETIME_SOIL, getComponentName());
+  // ... and what is needed from else where
+  core->registerDependency(D_LIFETIME_OH, getComponentName());
+
 }
 
 //------------------------------------------------------------------------------
@@ -113,9 +115,6 @@ void CH4Component::setData(const string &varName, const message_data &data) {
     } else if (varName == D_LIFETIME_STRAT) {
       H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
       Tstrat = data.getUnitval(U_YRS);
-    } else if (varName == D_CONVERSION_CH4) {
-      H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
-      UC_CH4 = data.getUnitval(U_TG_PPBV);
     } else if (varName == D_NATURAL_CH4) {
       H_ASSERT(data.date != Core::undefinedIndex(), "date required");
       CH4N.set(data.date, data.getUnitval(U_TG_CH4));
@@ -157,24 +156,38 @@ void CH4Component::run(const double runToDate) {
     CH4.set(runToDate, CH4_constrain.get(runToDate));
   } else {
 
-    // modified from Wigley et al, 2002
-    // https://doi.org/10.1175/1520-0442(2002)015%3C2690:RFDTRG%3E2.0.CO;2
-    const double current_ch4em = CH4_emissions.get(runToDate).value(U_TG_CH4);
+   // When emission driven hector uses a modified implementation of
+   // Wigley et al, 2002 (https://doi.org/10.1175/1520-0442(2002)015%3C2690:RFDTRG%3E2.0.CO;2)
+      
+    // Unit conversion realted terms
+    #define PG_C_TO_TG_CH4 (1000.0 * 16.04 / 12.01) // should this be #define or would it make sense to do something like constexpr?
+    
+    // Determine the conversion factor used to convert from Tg CH4 --> ppbv
+    double atm_mols = core->getAtmMols();
+    const double Tg_to_mol = 1 * 1e12 * (1/16.04);         // 1 Tg CH4 --> moles of CH4
+    const double mol_ratio = Tg_to_mol / atm_mols;         // ratio of CH4 moles to total moles in atmosphere
+    double UC_CH4 = 1/(mol_ratio * 1e9);               // convert from decimal ratio to parts per billion
+    UC_CH4 = std::round(UC_CH4 * 1000.0)/1000.0;       // control the number of digits
+      
+    // Get the OH methane sink
     const double current_toh =
-        core->sendMessage(M_GETDATA, D_LIFETIME_OH, runToDate).value(U_YRS);
-    H_LOG(logger, Logger::DEBUG)
-        << "Year " << runToDate << " current_toh = " << current_toh
-        << std::endl;
-
-// Permafrost thaw produces CH4 emissions
-#define PG_C_TO_TG_CH4 (1000.0 * 16.04 / 12.01)
+      core->sendMessage(M_GETDATA, D_LIFETIME_OH, runToDate).value(U_YRS);
+      H_LOG(logger, Logger::DEBUG)
+          << "Year " << runToDate << " current_toh = " << current_toh
+          << std::endl;
+      
+    // Get the different sources of CH4
+    // Anthropogenic emissions
+    const double current_ch4em = CH4_emissions.get(runToDate).value(U_TG_CH4);
+    // Permafrost thaw produces CH4 emissions
     const double rh_ch4 =
         core->sendMessage(M_GETDATA, D_RH_CH4).value(U_PGC_YR) * PG_C_TO_TG_CH4;
-
     // Additional, background CH4 natural emissions
     const double ch4n = CH4N.get(runToDate).value(U_TG_CH4);
+      
+
     const double emisTocon =
-        (current_ch4em + rh_ch4 + ch4n) / UC_CH4.value(U_TG_PPBV);
+        (current_ch4em + rh_ch4 + ch4n) / UC_CH4;
     const double previous_ch4 = CH4.get(oldDate);
 
     H_LOG(logger, Logger::DEBUG)
