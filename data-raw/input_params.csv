@@ -44,7 +44,6 @@ simpleNbox,daccs_uptake,n,y,y,"""(csv)""",Pg C yr-1,Anthropogenic contributions:
 simpleNbox,luc_emissions,n,y,y,"""(csv)""",Pg C yr-1,Anthropogenic contributions: land use change
 simpleNbox,luc_uptake,n,y,y,"""(csv)""",Pg C yr-2,Anthropogenic contributions: land use change
 simpleNbox,CO2_constrain,n,y,n,"""(csv)""",ppmv,Atmospheric CO2 constraint
-simpleNbox,NBP_constrain,n,y,n,"""(csv)""",Pg C yr-1,Net biome production (land-atmosphere C flux) constaint
 simpleNbox,pf.beta,n,n,n,0.36,(unitless),CO2 fertilization factor
 simpleNbox,nonpf.beta,n,n,n,0.36,(unitless),CO2 fertilization factor
 simpleNbox,beta,n,n,y,0.36,(unitless),CO2 fertilization factor

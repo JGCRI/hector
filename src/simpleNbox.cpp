@@ -59,7 +59,7 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel(8), masstot(0.0) {
   Falbedo.name = D_RF_T_ALBEDO;
 
   CO2_constrain.name = D_CO2_CONSTRAIN;
-  NBP_constrain.name = D_NBP_CONSTRAIN;
+
 
   // The actual atmos_c value will be filled in later by setData
   atmos_c.set(0.0, U_PGC, false, D_ATMOSPHERIC_CO2);
@@ -165,7 +165,6 @@ void SimpleNbox::init(Core *coreptr) {
   core->registerInput(D_PF_SIGMA, getComponentName());
   core->registerInput(D_PF_MU, getComponentName());
   core->registerInput(D_FPF_STATIC, getComponentName());
-  core->registerInput(D_NBP_CONSTRAIN, getComponentName());
   core->registerInput(D_RF_T_ALBEDO, getComponentName());
 }
 
@@ -358,13 +357,7 @@ void SimpleNbox::setData(const std::string &varName, const message_data &data) {
       CO2_constrain.set(data.date,
                         fluxpool(co2c.value(U_PPMV_CO2), U_PPMV_CO2));
     }
-    // Land-atmosphere change to constrain model to (optional)
-    else if (varNameParsed == D_NBP_CONSTRAIN) {
-      H_ASSERT(data.date != Core::undefinedIndex(), "date required");
-      H_ASSERT(biome == SNBOX_DEFAULT_BIOME,
-               "NBP (land-atmosphere) constraint must be global");
-      NBP_constrain.set(data.date, data.getUnitval(U_PGC_YR));
-    }
+
 
     // Fertilization
     else if (varNameParsed == D_BETA) {
@@ -669,17 +662,6 @@ unitval SimpleNbox::getData(const std::string &varName, const double date) {
           << "No CO2 constraint for requested date " << date
           << ". Returning missing value." << std::endl;
       returnval = unitval(MISSING_FLOAT, U_PPMV_CO2);
-    }
-  } else if (varNameParsed == D_NBP_CONSTRAIN) {
-    H_ASSERT(date != Core::undefinedIndex(),
-             "Date required for NBP constraint");
-    if (NBP_constrain.exists(date)) {
-      returnval = NBP_constrain.get(date);
-    } else {
-      H_LOG(logger, Logger::DEBUG)
-          << "No NBP constraint for requested date " << date
-          << ". Returning missing value." << std::endl;
-      returnval = unitval(MISSING_FLOAT, U_PGC_YR);
     }
   } else if (varNameParsed == D_NPP) {
     returnval =
