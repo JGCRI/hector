@@ -65,8 +65,10 @@
 #define D_RHO_OC "rho_oc"            // BC radiative efficiency
 #define D_RHO_SO2 "rho_so2"          // SO2 radiative efficiency
 #define D_RHO_NH3 "rho_nh3"          // NH3 radiative efficiency
+#define D_RHO_H2O_H2 "rho_h2o_h2"    // radiative efficiency of H2 emissions on strat. H2O vapor
 #define D_AERO_SCALE "aero_scalar"
 #define D_VOLCANIC_SCALE "vol_scalar"
+
 
 // halocarbon components
 #define D_RF_CF4 D_RF_PREFIX CF4_COMPONENT_BASE
@@ -279,13 +281,17 @@
 // oh component
 #define D_LIFETIME_OH "TAU_OH"
 #define D_INITIAL_LIFETIME_OH "TOH0"
-#define D_COEFFICENT_NOX "CNOX"
-#define D_COEFFICENT_CH4 "CCH4"
-#define D_COEFFICENT_NMVOC "CNMVOC"
-#define D_COEFFICENT_CO "CCO"
+#define D_COEFFICIENT_NOX "CNOX"
+#define D_COEFFICIENT_CH4 "CCH4"
+#define D_COEFFICIENT_NMVOC "CNMVOC"
+#define D_COEFFICIENT_CO "CCO"
+#define D_COEFFICIENT_H2 "H2_CCO"
+#define D_EMISSIONS_H2 "H2_emissions"
+
 
 // o3 component
 #define D_PREINDUSTRIAL_O3 "PO3"
+#define D_COEFF_O3_H2 "CO3_H2"
 #define D_ATMOSPHERIC_O3 "O3" CONCENTRATION_EXTENSION
 #define D_ATMOSPHERIC_EM_CH4 "CH4"
 #define D_EMISSIONS_NOX "NOX_emissions"

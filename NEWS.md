@@ -1,3 +1,8 @@
+# hector 3.5.6 
+
+under development, adding H2 
+
+
 # hector 3.5.0 
 
 * Minor documentation changes 
@@ -8,9 +13,6 @@
 * Update [CH4] lifetime parameters
 * Allow for time varying historical N2O and CH4 natural emissions 
 * New default parameter values for ocean heat diffusivity, CO2 fertilization, and heterotrophic respiration temperature sensitivity 
-
-
-
 
 
 # hector 3.2.0 
