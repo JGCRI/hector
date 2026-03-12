@@ -69,9 +69,9 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel(8), masstot(0.0) {
   // earth_c keeps track of how much fossil C is pulled out
   // so that we can do a mass-balance check throughout the run
   // 2020-02-05 With the introduction of non-negative 'fluxpool' class
-  // we can't start earth_c at zero. Value of 5500 is set to avoid
-  // overdrawing in RCP 8.5
-  earth_c.set(5500, U_PGC, false, D_EARTHC);
+  // we can't start earth_c at zero. Value of 6400 is set to avoid
+  // overdrawing in esm-flat20
+  earth_c.set(6400, U_PGC, false, D_EARTHC);
 
   // We keep a running total of LUC emissions from (and uptake to) vegetation
   // This is used in slowparameval() to calculate npp_luc_adjust
