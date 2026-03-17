@@ -16,6 +16,7 @@
 #include "avisitor.hpp"
 #include "core.hpp"
 #include "h_util.hpp"
+#include "physical_constants.hpp"
 #include <math.h>
 
 namespace Hector {
