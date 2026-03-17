@@ -67,7 +67,6 @@ so2,SV,n,y,y,"""(csv)""",,volcanic radiative forcing time series
 CH4,M0,n,n,y,731.41,ppb,"preindustrial methane IPCC AR6 Table 7.SM.1, the CH4 forcing equations is calibrated to a M0 of 731.41 ppb"
 CH4,Tsoil,n,n,y,160,years,CH4 loss to soil
 CH4,Tstrat,n,n,y,120,years,CH4 loss to stratosphere
-CH4,UC_CH4,n,n,y,2.78,Tg CH4 ppb-1,unit conversion between emissions and concentrations
 CH4,CH4N,n,n,y,341,,best fit
 CH4,CH4_emissions,n,y,y,"""(csv)""",,emissions time series
 CH5,CH4_constrain,n,y,n,"""(csv)""",,CH4 concentration constraint

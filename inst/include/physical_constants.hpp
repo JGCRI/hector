@@ -10,14 +10,13 @@
  *  physical_constants.hpp
  *  hector
  *
- *  Created by Dorheim on March 2026.
+ *  Created by K. Dorheim on March 2026.
  *
  */
 
+// The number of moles in the atmosphere
+constexpr double ATMOSPHERE_MOL = 1.727e20;
+constexpr double CH4_molarMass = 16.043;
 
-namespace Hector {
-
-
-} // namespace Hector
 
 #endif // PHYSICAL_CONSTANTS_H

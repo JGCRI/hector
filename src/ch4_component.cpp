@@ -114,9 +114,6 @@ void CH4Component::setData(const string &varName, const message_data &data) {
     } else if (varName == D_LIFETIME_STRAT) {
       H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
       Tstrat = data.getUnitval(U_YRS);
-    } else if (varName == D_CONVERSION_CH4) {
-      H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
-      UC_CH4 = data.getUnitval(U_TG_PPBV);
     } else if (varName == D_NATURAL_CH4) {
       H_ASSERT(data.date != Core::undefinedIndex(), "date required");
       CH4N.set(data.date, data.getUnitval(U_TG_CH4));
@@ -158,6 +155,13 @@ void CH4Component::run(const double runToDate) {
     CH4.set(runToDate, CH4_constrain.get(runToDate));
   } else {
 
+    // Define conversion factors used in this componet
+     constexpr double PG_C_TO_TG_CH4 = (1000.0 * CH4_molarMass / 12.01);
+     constexpr double TG_TO_MOL = (1 * 1e12 * (1/CH4_molarMass)); // 1 Tg CH4 --> moles of CH4
+     constexpr double mol_ratio = TG_TO_MOL / ATMOSPHERE_MOL;     // ratio of CH4 moles to total moles in atmosphere
+     double UC_CH4 = 1/(mol_ratio * 1e9);                         // convert from decimal ratio to parts per billion
+     UC_CH4 = std::round(UC_CH4 * 100.0)/100.0;                   // control the number of digits
+      
     // modified from Wigley et al, 2002
     // https://doi.org/10.1175/1520-0442(2002)015%3C2690:RFDTRG%3E2.0.CO;2
     const double current_ch4em = CH4_emissions.get(runToDate).value(U_TG_CH4);
@@ -166,16 +170,14 @@ void CH4Component::run(const double runToDate) {
     H_LOG(logger, Logger::DEBUG)
         << "Year " << runToDate << " current_toh = " << current_toh
         << std::endl;
-
+      
 // Permafrost thaw produces CH4 emissions
-#define PG_C_TO_TG_CH4 (1000.0 * 16.04 / 12.01)
     const double rh_ch4 =
         core->sendMessage(M_GETDATA, D_RH_CH4).value(U_PGC_YR) * PG_C_TO_TG_CH4;
-
     // Additional, background CH4 natural emissions
     const double ch4n = CH4N.get(runToDate).value(U_TG_CH4);
     const double emisTocon =
-        (current_ch4em + rh_ch4 + ch4n) / UC_CH4.value(U_TG_PPBV);
+        (current_ch4em + rh_ch4 + ch4n) / UC_CH4;
     const double previous_ch4 = CH4.get(oldDate);
 
     H_LOG(logger, Logger::DEBUG)
