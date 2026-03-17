@@ -155,7 +155,7 @@ void CH4Component::run(const double runToDate) {
     CH4.set(runToDate, CH4_constrain.get(runToDate));
   } else {
 
-    // Define conversion factors used in this componet
+    // Define the conversion factors used by the CH4 componet
      constexpr double PG_C_TO_TG_CH4 = (1000.0 * CH4_molarMass / 12.01);
      constexpr double TG_TO_MOL = (1 * 1e12 * (1/CH4_molarMass)); // 1 Tg CH4 --> moles of CH4
      constexpr double mol_ratio = TG_TO_MOL / ATMOSPHERE_MOL;     // ratio of CH4 moles to total moles in atmosphere
