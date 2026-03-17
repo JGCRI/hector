@@ -156,8 +156,8 @@ void CH4Component::run(const double runToDate) {
   } else {
 
     // Define the conversion factors used by the CH4 componet
-     constexpr double PG_C_TO_TG_CH4 = (1000.0 * CH4_molarMass / 12.01);
-     constexpr double TG_TO_MOL = (1 * 1e12 * (1/CH4_molarMass)); // 1 Tg CH4 --> moles of CH4
+     constexpr double PG_C_TO_TG_CH4 = (1000.0 * CH4_MOLARMASS / 12.01);
+     constexpr double TG_TO_MOL = (1 * 1e12 * (1/CH4_MOLARMASS)); // 1 Tg CH4 --> moles of CH4
      constexpr double mol_ratio = TG_TO_MOL / ATMOSPHERE_MOL;     // ratio of CH4 moles to total moles in atmosphere
      double UC_CH4 = 1/(mol_ratio * 1e9);                         // convert from decimal ratio to parts per billion
      UC_CH4 = std::round(UC_CH4 * 100.0)/100.0;                   // control the number of digits

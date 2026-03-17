@@ -227,6 +227,7 @@
 		954D62AD278E005500840656 /* nh3_component.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = nh3_component.cpp; path = ../../src/nh3_component.cpp; sourceTree = "<group>"; };
 		954D62B0278E007500840656 /* nh3_component.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = nh3_component.hpp; path = ../../inst/include/nh3_component.hpp; sourceTree = "<group>"; };
 		95C532092F6974470094077B /* physical_constants.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = physical_constants.hpp; sourceTree = "<group>"; };
+		95C5320B2F69C5FF0094077B /* physical_constants.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = physical_constants.hpp; path = "/Users/dorh012/Documents/Hector-WD/hector/inst/include/physical_constants.hpp"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -289,6 +290,7 @@
 		27B2C22B26151149005DE26D /* Headers */ = {
 			isa = PBXGroup;
 			children = (
+				95C5320B2F69C5FF0094077B /* physical_constants.hpp */,
 				95C532092F6974470094077B /* physical_constants.hpp */,
 				954D62B0278E007500840656 /* nh3_component.hpp */,
 				27B2C21C2615112E005DE26D /* avisitor.hpp */,
