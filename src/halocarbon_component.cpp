@@ -61,8 +61,8 @@ void HalocarbonComponent::init(Core *coreptr) {
   H0.set(0.0, U_PPTV); //! Default is no preindustrial, but user can override
 
   // Register the data we can provide
-  core->registerCapability(D_RF_PREFIX + myGasName,
-                           getComponentName()); // can provide forcing data
+  core->registerCapability(D_RFUNADJ_PREFIX + myGasName,
+                           getComponentName()); // can provide the unadjusted forcing data
   core->registerCapability(myGasName + CONCENTRATION_EXTENSION,
                            getComponentName()); // can provide concentrations
   core->registerCapability(
@@ -238,7 +238,7 @@ unitval HalocarbonComponent::getData(const std::string &varName,
     getdate = oldDate;
   }
 
-  if (varName == D_RF_PREFIX + myGasName) {
+  if (varName == D_RFUNADJ_PREFIX + myGasName) {
     returnval = hc_forcing.get(getdate);
   } else if (varName == D_PREINDUSTRIAL_HC) {
     // use date as input, not getdate, b/c there should be no date specified.

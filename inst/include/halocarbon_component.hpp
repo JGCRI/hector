@@ -72,7 +72,7 @@ private:
 
     
   // Time series
-  tseries<unitval> hc_forcing;
+  tseries<unitval> hc_forcing; //! The unadjusted halocarbon RFs
   tseries<unitval> emissions; //! Time series of emissions, Gg
   tseries<unitval> Ha_ts;     //! Time series of (ambient) concentration, pptv
   tseries<unitval> Ha_constrain; //! Concentration constraint, pptv
