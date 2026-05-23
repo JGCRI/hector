@@ -74,6 +74,7 @@ CSVOutputStreamVisitor::CSVOutputStreamVisitor(ostream &outputStream,
   current_date = 0;
   datestring = "";
   spinupstring = "";
+  csvFile.precision(15);
 }
 
 //------------------------------------------------------------------------------
@@ -109,18 +110,6 @@ void CSVOutputStreamVisitor::visit(Core *c) {
   core = c;
 }
 
-// TODO: consolidate these macros into the two MESSAGE ones,
-// and shift string literals to D_xxxx definitions
-
-// Macro to send a variable with associated unitval units to some output stream
-// Takes s (stream), c (component), xname (variable name), x (output variable)
-#define STREAM_UNITVAL(s, c, xname, x)                                         \
-  {                                                                            \
-    s << linestamp() << c->getComponentName() << DELIMITER << xname            \
-      << DELIMITER << x.value(x.units()) << DELIMITER << x.unitsName()         \
-      << std::endl;                                                            \
-  }
-
 // Macro to send a variable with associated unitval units to some output stream
 // This uses new sendMessage interface in imodel_component
 // Takes s (stream), c (component), xname (variable name)
@@ -146,7 +135,6 @@ void CSVOutputStreamVisitor::visit(Core *c) {
 void CSVOutputStreamVisitor::visit(ForcingComponent *c) {
   if (!core->outputEnabled(c->getComponentName()))
     return;
-  streamsize oldPrecision = csvFile.precision(4);
 
   if (c->currentYear < c->baseyear)
     return;
@@ -155,10 +143,9 @@ void CSVOutputStreamVisitor::visit(ForcingComponent *c) {
 
   // Walk through the forcings map, outputting everything
   for (auto f : forcings) {
-    STREAM_UNITVAL(csvFile, c, f.first, f.second);
+      STREAM_MESSAGE_DATE(csvFile, c, f.first, current_date);
   }
 
-  csvFile.precision(oldPrecision);
 }
 
 //------------------------------------------------------------------------------
@@ -171,11 +158,11 @@ void CSVOutputStreamVisitor::visit(SimpleNbox *c) {
   // Note if there are multiple biomes, these values will be totals, summed
   // across all biomes
   STREAM_MESSAGE(csvFile, c, D_NBP);
-  STREAM_UNITVAL(csvFile, c, D_NPP, c->final_npp[SNBOX_DEFAULT_BIOME]);
-  STREAM_UNITVAL(csvFile, c, D_RH, c->final_rh[SNBOX_DEFAULT_BIOME]);
-  STREAM_UNITVAL(csvFile, c, D_RH_DETRITUS, c->final_rh_detritus[SNBOX_DEFAULT_BIOME]);
-  STREAM_UNITVAL(csvFile, c, D_RH_SOIL, c->final_rh_soil[SNBOX_DEFAULT_BIOME]);
-  STREAM_UNITVAL(csvFile, c, D_RH_CH4, c->final_rh[SNBOX_DEFAULT_BIOME]);
+  STREAM_MESSAGE(csvFile, c, D_NPP);
+  STREAM_MESSAGE(csvFile, c, D_RH);
+  STREAM_MESSAGE(csvFile, c, D_RH_DETRITUS);
+  STREAM_MESSAGE(csvFile, c, D_RH_SOIL);
+  STREAM_MESSAGE(csvFile, c, D_RH_CH4);
   STREAM_MESSAGE_DATE(csvFile, c, D_CO2_CONC, current_date);
   STREAM_MESSAGE(csvFile, c, D_ATMOSPHERIC_CO2);
   STREAM_MESSAGE(csvFile, c, D_ATMOSPHERIC_C_RESIDUAL);
@@ -192,28 +179,17 @@ void CSVOutputStreamVisitor::visit(SimpleNbox *c) {
     SimpleNbox::fluxpool_stringmap::const_iterator it;
     for (auto b : c->veg_c) {
       std::string biome = b.first;
-      STREAM_UNITVAL(csvFile, c, biome + SNBOX_PARSECHAR + D_NPP,
-                     c->final_npp[biome]);
-      STREAM_UNITVAL(csvFile, c, biome + SNBOX_PARSECHAR + D_RH,
-                     c->final_rh[biome]);
-      STREAM_UNITVAL(csvFile, c, biome + SNBOX_PARSECHAR + D_RH_CH4,
-                     c->RH_ch4[biome]);
-      STREAM_UNITVAL(csvFile, c, biome + SNBOX_PARSECHAR + D_VEGC,
-                     c->veg_c[biome]);
-      STREAM_UNITVAL(csvFile, c, biome + SNBOX_PARSECHAR + D_DETRITUSC,
-                     c->detritus_c[biome]);
-      STREAM_UNITVAL(csvFile, c, biome + SNBOX_PARSECHAR + D_SOILC,
-                     c->soil_c[biome]);
-      STREAM_UNITVAL(csvFile, c, biome + SNBOX_PARSECHAR + D_PERMAFROSTC,
-                     c->permafrost_c[biome]);
-      STREAM_UNITVAL(csvFile, c, biome + SNBOX_PARSECHAR + D_THAWEDPC,
-                     c->thawed_permafrost_c[biome]);
-      STREAM_UNITVAL(csvFile, c, biome + SNBOX_PARSECHAR + D_F_FROZEN,
-                     unitval(c->f_frozen[biome], U_UNITLESS));
-      STREAM_UNITVAL(csvFile, c, biome + SNBOX_PARSECHAR + D_TEMPFERTD,
-                     unitval(c->tempfertd[biome], U_UNITLESS));
-      STREAM_UNITVAL(csvFile, c, biome + SNBOX_PARSECHAR + D_TEMPFERTS,
-                     unitval(c->tempferts[biome], U_UNITLESS));
+      STREAM_MESSAGE(csvFile, c, biome + SNBOX_PARSECHAR + D_NPP);
+      STREAM_MESSAGE(csvFile, c, biome + SNBOX_PARSECHAR + D_RH);
+      STREAM_MESSAGE(csvFile, c, biome + SNBOX_PARSECHAR + D_RH_CH4);
+      STREAM_MESSAGE(csvFile, c, biome + SNBOX_PARSECHAR + D_VEGC);
+      STREAM_MESSAGE(csvFile, c, biome + SNBOX_PARSECHAR + D_DETRITUSC);
+      STREAM_MESSAGE(csvFile, c, biome + SNBOX_PARSECHAR + D_SOILC);
+      STREAM_MESSAGE(csvFile, c, biome + SNBOX_PARSECHAR + D_PERMAFROSTC);
+      STREAM_MESSAGE(csvFile, c, biome + SNBOX_PARSECHAR + D_THAWEDPC);
+      STREAM_MESSAGE(csvFile, c, biome + SNBOX_PARSECHAR + D_F_FROZEN);
+      STREAM_MESSAGE(csvFile, c, biome + SNBOX_PARSECHAR + D_TEMPFERTD);
+      STREAM_MESSAGE(csvFile, c, biome + SNBOX_PARSECHAR + D_TEMPFERTS);
     }
   }
 }

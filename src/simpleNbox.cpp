@@ -69,9 +69,9 @@ SimpleNbox::SimpleNbox() : CarbonCycleModel(8), masstot(0.0) {
   // earth_c keeps track of how much fossil C is pulled out
   // so that we can do a mass-balance check throughout the run
   // 2020-02-05 With the introduction of non-negative 'fluxpool' class
-  // we can't start earth_c at zero. Value of 5500 is set to avoid
-  // overdrawing in RCP 8.5
-  earth_c.set(5500, U_PGC, false, D_EARTHC);
+  // we can't start earth_c at zero. Value of 6400 is set to avoid
+  // overdrawing in esm-flat20
+  earth_c.set(6400, U_PGC, false, D_EARTHC);
 
   // We keep a running total of LUC emissions from (and uptake to) vegetation
   // This is used in slowparameval() to calculate npp_luc_adjust
@@ -246,17 +246,7 @@ void SimpleNbox::setData(const std::string &varName, const message_data &data) {
   }
   try {
     // Initial pools
-    if (varNameParsed == D_ATMOSPHERIC_CO2) {
-      // Hector input files specify initial atmospheric CO2 in terms of
-      // the carbon pool, rather than the CO2 concentration.  Since we
-      // don't have a place to store the initial carbon pool, we convert
-      // it to initial concentration and store that.  It will be converted
-      // back to carbon content when the state variables are set up in
-      // prepareToRun.
-      H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
-      H_ASSERT(biome == SNBOX_DEFAULT_BIOME, "atmospheric C must be global");
-      set_c0(data.getUnitval(U_PGC).value(U_PGC) * PGC_TO_PPMVCO2);
-    } else if (varNameParsed == D_PREINDUSTRIAL_CO2) {
+      if (varNameParsed == D_PREINDUSTRIAL_CO2) {
       H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
       H_ASSERT(biome == SNBOX_DEFAULT_BIOME,
                "preindustrial CO2 must be global");
