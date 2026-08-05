@@ -20,11 +20,6 @@ halo_constraints <- paste0(halo_base_names, "_constrain")
 halo_conc <- paste0(halo_base_names, "_concentration")
 halo_rf <- paste0("RF_", halo_base_names)
 
-usethis::use_data(halo_emiss, internal = TRUE, overwrite = TRUE)
-usethis::use_data(halo_constraints, internal = TRUE, overwrite = TRUE)
-usethis::use_data(halo_conc, internal = TRUE, overwrite = TRUE)
-usethis::use_data(halo_rf, internal = TRUE, overwrite = TRUE)
-
 all_vars <- unique(c(dat$variable, halo_conc, halo_rf))
 all_vars <- all_vars[!all_vars %in% c(
   "hc_concentration", "HL_downwelling", "HL_OmegaAr", "LL_OmegaAr",
@@ -32,4 +27,6 @@ all_vars <- all_vars[!all_vars %in% c(
   "LL_Revelle", "slr", "slr_no_ice", "sl_rc", "sl_rc_no_ice"
 )]
 
-usethis::use_data(all_vars, internal = TRUE, overwrite = TRUE)
+
+usethis::use_data(halo_emiss, all_vars, halo_constraints, halo_conc, halo_rf, internal = TRUE, overwrite = TRUE)
+

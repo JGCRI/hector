@@ -9,15 +9,15 @@
 #' getfxn("beta")
 #' getfxn("q10_rh")
 getfxn <- function(str) {
-  rows <- match(str, hector::fxntable$string)
-  rslt <- hector::fxntable$fxn[rows]
-  if (any(is.na(rows))) {
-    warning(
-      "Functions for the following are not found: ",
-      paste(str[is.na(rslt)], collapse = ", ")
-    )
-  }
-  as.character(rslt)
+    rows <- match(str, hector::fxntable$string)
+    rslt <- hector::fxntable$fxn[rows]
+    if (any(is.na(rows))) {
+        warning(
+            "Functions for the following are not found: ",
+            paste(str[is.na(rslt)], collapse = ", ")
+        )
+    }
+    as.character(rslt)
 }
 
 
@@ -37,7 +37,7 @@ getfxn <- function(str) {
 #' print(out)
 #' }
 ALL_VARS <- function() {
-  all_vars
+    getFromNamespace("all_vars", "hector")
 }
 
 #' Get all of the possible Hector halocarbon concentrations
@@ -56,7 +56,7 @@ ALL_VARS <- function() {
 #' print(out)
 #' }
 ALL_HALOCARBON_CONCENTRATIONS <- function() {
-    halo_conc
+    getFromNamespace("halo_conc", "hector")
 }
 
 
@@ -76,7 +76,7 @@ ALL_HALOCARBON_CONCENTRATIONS <- function() {
 #' print(out)
 #' }
 ALL_HALOCARBON_EMISSIONS <- function() {
-    halo_emiss
+    getFromNamespace("halo_emiss", "hector")
 }
 
 
@@ -96,7 +96,7 @@ ALL_HALOCARBON_EMISSIONS <- function() {
 #' print(out)
 #' }
 ALL_HALOCARBON_CONSTRAINTS <- function() {
-    halo_constraints
+    getFromNamespace("halo_constraints", "hector")
 }
 
 #' Get all of the possible Hector halocarbon radiative forcings
@@ -115,5 +115,5 @@ ALL_HALOCARBON_CONSTRAINTS <- function() {
 #' print(out)
 #' }
 ALL_HALOCARBON_RF <- function() {
-    halo_rf
+    getFromNamespace("halo_rf", "hector")
 }
