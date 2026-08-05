@@ -192,8 +192,7 @@ void HalocarbonComponent::run(const double runToDate) {
       // Constants used in the emission driven hc calculations
       const double GG_to_G = 1e9; // 1 Gigagram = 1e9 Grams
       const double ratio_to_PPT = 1e12; // used to convert a ratio to ppt
-      const double atmos_moles = 1.727e20; // physical constant for moles of dry air
-      
+      const double atmos_moles = 1.77e20; // physical constant for moles of dry air https://doi.org/10.1175/JCLI-3299.1 TODO this should be defined in physical constants
       
       // Convert the annual emissions to moles. Use the ratio of hc moles
       // to atmosphere moles to determine the annual change in hc in ppt.
