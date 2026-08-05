@@ -25,12 +25,12 @@ differ from those used in the model's standard output stream (\code{variable},
 \code{value}, and \code{units} respectively).
 }
 \seealso{
-Other main user interface functions: 
-\code{\link{fetchvars}()},
-\code{\link{newcore}()},
-\code{\link{reset}()},
-\code{\link{run}()},
-\code{\link{setvar}()},
-\code{\link{shutdown}()}
+Other main user interface functions:
+\code{\link[=fetchvars]{fetchvars()}},
+\code{\link[=newcore]{newcore()}},
+\code{\link[=reset]{reset()}},
+\code{\link[=run]{run()}},
+\code{\link[=setvar]{setvar()}},
+\code{\link[=shutdown]{shutdown()}}
 }
 \concept{main user interface functions}

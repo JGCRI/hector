@@ -58,6 +58,7 @@ carbon-cycle model: projections and sensitivities, Biogeosciences, 13,
 
 Authors:
 \itemize{
+  \item Kalyn Dorheim \email{kalyn.dorheim@pnnl.gov} (\href{https://orcid.org/0000-0001-8093-8397}{ORCID})
   \item Ben Bond-Lamberty \email{bondlamberty@pnnl.gov} (\href{https://orcid.org/0000-0001-9525-4633}{ORCID})
 }
 
@@ -66,7 +67,7 @@ Other contributors:
   \item Skylar Gering \email{sgering@g.hmc.edu} (\href{https://orcid.org/0000-0003-1974-3966}{ORCID}) [contributor]
   \item Corinne Hartin \email{hartin.corinne@epa.gov} (\href{https://orcid.org/0000-0003-1834-6539}{ORCID}) [contributor]
   \item Robert Link (\href{https://orcid.org/0000-0002-7071-248X}{ORCID}) [contributor]
-  \item Mat Nicholson (mnichol3) [contributor]
+  \item Mat Nicholson (github: mnichol3) [contributor]
   \item Pralit Patel \email{pralit.patel@pnnl.gov} (\href{https://orcid.org/0000-0003-3992-1061}{ORCID}) [contributor]
   \item Leeya Pressburger \email{leeya.pressburger@pnnl.gov} (\href{https://orcid.org/0000-0002-6850-2504}{ORCID}) [contributor, data contributor]
   \item Peter Scully \email{ptrscll@gmail.com} (\href{https://orcid.org/0009-0007-0234-0366}{ORCID}) [contributor]

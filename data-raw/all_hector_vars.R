@@ -7,11 +7,29 @@ file <- list.files(path = "output", pattern = "outputstream_", full.names = TRUE
 stopifnot("need to generate outputstream file" = length(file) > 0)
 
 dat <- read.csv(file = file[[1]], comment.char = "#")
-all_vars <- unique(dat$variable)
+
+# Extract all of the halocarbon base names.
+componet_names <- unique(dat$component)
+halo_base_names <- gsub(x = componet_names[grepl(pattern = "halocarbon", x = componet_names)],
+                        pattern = "_halocarbon", replacement = "")
+
+# Format the halocarbon emissions, constraints, concentrations, and forcings
+# helper vectors.
+halo_emiss <- paste0(halo_base_names, "_emissions")
+halo_constraints <- paste0(halo_base_names, "_constrain")
+halo_conc <- paste0(halo_base_names, "_concentration")
+halo_rf <- paste0("RF_", halo_base_names)
+
+usethis::use_data(halo_emiss, internal = TRUE, overwrite = TRUE)
+usethis::use_data(halo_constraints, internal = TRUE, overwrite = TRUE)
+usethis::use_data(halo_conc, internal = TRUE, overwrite = TRUE)
+usethis::use_data(halo_rf, internal = TRUE, overwrite = TRUE)
+
+all_vars <- unique(c(dat$variable, halo_conc, halo_rf))
 all_vars <- all_vars[!all_vars %in% c(
   "hc_concentration", "HL_downwelling", "HL_OmegaAr", "LL_OmegaAr",
   "HL_OmegaCa", "LL_OmegaCa", "atmos_c_residual", "HL_Revelle", "HL_Revelle",
   "LL_Revelle", "slr", "slr_no_ice", "sl_rc", "sl_rc_no_ice"
 )]
 
-usethis::use_data(all_vars, internal = FALSE, overwrite = TRUE)
+usethis::use_data(all_vars, internal = TRUE, overwrite = TRUE)
