@@ -13,7 +13,6 @@ ocean,twi,n,n,y,1.25E+07,m3 s-1,Ocean warm-intermediate exchange
 ocean,tid,n,n,y,2.00E+08,m3 s-1,Ocean intermediate-deep exchange
 ocean,preind_surface_c,n,n,n,900,Pg C,Initial surface ocean carbon
 ocean,preind_interdeep_c,n,n,n,37100,Pg C,Initial intermediate + deep ocean carbon
-simpleNbox,atmos_co2,n,n,y,588.071,Pg C,Initial atmospheric CO2
 simpleNbox,C0,n,n,y,277.15,Pg C,Initial atmospheric C pool
 simpleNbox,pf.veg_c,y,n,n,55,Pg C,Initial vegetation C pool
 simpleNbox,nonpf.veg_c,y,n,n,495,Pg C,Initial vegetation C pool
