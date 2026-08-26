@@ -7,11 +7,11 @@ devtools::load_all()
 simpleNbox_vars <- c(
   PREINDUSTRIAL_CO2(), NPP_FLUX0(),
   FFI_EMISSIONS(), DACCS_UPTAKE(), LUC_EMISSIONS(), LUC_UPTAKE(),
-  CO2_CONSTRAIN(), NBP_CONSTRAIN(), BETA(), Q10_RH()
+  CO2_CONSTRAIN(), BETA(), Q10_RH()
 )
 simpleNbox_uni <- c(
   "ppmv CO2", "Pg C/yr", "Pg C/yr", "Pg C/yr", "Pg C/yr",
-  "Pg C/yr", "ppmv CO2", "Pg C/yr", "(unitless)", "(unitless)"
+  "Pg C/yr", "ppmv CO2", "(unitless)", "(unitless)"
 )
 
 ocean_vars <- c(TT(), TU(), TWI(), TID(), OCEAN_PREIND_C_SURF(), OCEAN_PREIND_C_ID())

@@ -378,7 +378,6 @@
 // Constraints
 #define D_CO2_CONSTRAIN "CO2_constrain"
 #define D_TAS_CONSTRAIN "tas_constrain"
-#define D_NBP_CONSTRAIN "NBP_constrain"
 
 // slr component
 #define D_SL_RC "sl_rc"
