@@ -4,7 +4,7 @@
 
 
 file <- list.files(path = "output", pattern = "outputstream_", full.names = TRUE)
-stopifnot("need to generate outputstream file" = length(file) > 0)
+stopifnot("need to generate outputstream file" = length(file) == 1)
 
 dat <- read.csv(file = file[[1]], comment.char = "#")
 
