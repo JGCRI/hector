@@ -170,156 +170,135 @@ String RF_VOL() { return D_RF_VOL; }
 // [[Rcpp::export]]
 String RF_MISC() { return D_RF_MISC; }
 
-/* Halocarbon forcings */
-/* There's a constant for total halocarbon forcing defined in
-   component_data.hpp, but returning the total halocarbon forcing appears not to
-   be implemented. */
-// //' @export
-// // [[Rcpp::export]]
-// String RF_HALOCARBONS() {
-// return D_RF_halocarbons;
-// }
-
-// This is the prefix for adjusted radiative forcing.  We use it
-// internally to correct the reported names of the halocarbon
-// forcings.
-// [[Rcpp::export]]
-String RFADJ_PREFIX() { return D_RFADJ_PREFIX; }
-
-// Prefix for unadjusted forcing.  This is what we substitute for
-// the adjusted forcing prefix
-// [[Rcpp::export]]
-String RF_PREFIX() { return D_RF_PREFIX; }
-
 //' @describeIn haloforcings Radiative forcing due to CF4
 //' @export
 // [[Rcpp::export]]
-String RF_CF4() { return D_RFADJ_CF4; }
+String RF_CF4() { return D_RF_CF4; }
 
 //' @describeIn haloforcings Radiative forcing due to C2F6
 //' @export
 // [[Rcpp::export]]
-String RF_C2F6() { return D_RFADJ_C2F6; }
+String RF_C2F6() { return D_RF_C2F6; }
 
 //' @describeIn haloforcings Radiative forcing due to HFC-23
 //' @export
 // [[Rcpp::export]]
-String RF_HFC23() { return D_RFADJ_HFC23; }
+String RF_HFC23() { return D_RF_HFC23; }
 
 //' @describeIn haloforcings Radiative forcing due to HFC-32
 //' @export
 // [[Rcpp::export]]
-String RF_HFC32() { return D_RFADJ_HFC32; }
+String RF_HFC32() { return D_RF_HFC32; }
 
 //' @describeIn haloforcings Radiative forcing due to HFC-4310
 //' @export
 // [[Rcpp::export]]
-String RF_HFC4310() { return D_RFADJ_HFC4310; }
+String RF_HFC4310() { return D_RF_HFC4310; }
 
 //' @describeIn haloforcings Radiative forcing due to HFC-125
 //' @export
 // [[Rcpp::export]]
-String RF_HFC125() { return D_RFADJ_HFC125; }
+String RF_HFC125() { return D_RF_HFC125; }
 
 //' @describeIn haloforcings Radiative forcing due to HFC-134a
 //' @export
 // [[Rcpp::export]]
-String RF_HFC134A() { return D_RFADJ_HFC134a; }
+String RF_HFC134A() { return D_RF_HFC134a; }
 
 //' @describeIn haloforcings Radiative forcing due to HFC-143a
 //' @export
 // [[Rcpp::export]]
-String RF_HFC143A() { return D_RFADJ_HFC143a; }
+String RF_HFC143A() { return D_RF_HFC143a; }
 
 //' @describeIn haloforcings Radiative forcing due to HFC227ea
 //' @export
 // [[Rcpp::export]]
-String RF_HFC227EA() { return D_RFADJ_HFC227ea; }
+String RF_HFC227EA() { return D_RF_HFC227ea; }
 
 //' @describeIn haloforcings Radiative forcing due to HFC-245fa
 //' @export
 // [[Rcpp::export]]
-String RF_HFC245FA() { return D_RFADJ_HFC245fa; }
+String RF_HFC245FA() { return D_RF_HFC245fa; }
 
 //' @describeIn haloforcings Radiative forcing due to sulfur hexafluoride
 //' @export
 // [[Rcpp::export]]
-String RF_SF6() { return D_RFADJ_SF6; }
+String RF_SF6() { return D_RF_SF6; }
 
 //' @describeIn haloforcings Radiative forcing due to CFC-11
 //' @export
 // [[Rcpp::export]]
-String RF_CFC11() { return D_RFADJ_CFC11; }
+String RF_CFC11() { return D_RF_CFC11; }
 
 //' @describeIn haloforcings Radiative forcing due to CFC-12
 //' @export
 // [[Rcpp::export]]
-String RF_CFC12() { return D_RFADJ_CFC12; }
+String RF_CFC12() { return D_RF_CFC12; }
 
 //' @describeIn haloforcings Radiative forcing due to CFC-113
 //' @export
 // [[Rcpp::export]]
-String RF_CFC113() { return D_RFADJ_CFC113; }
+String RF_CFC113() { return D_RF_CFC113; }
 
 //' @describeIn haloforcings Radiative forcing due to CFC-114
 //' @export
 // [[Rcpp::export]]
-String RF_CFC114() { return D_RFADJ_CFC114; }
+String RF_CFC114() { return D_RF_CFC114; }
 
 //' @describeIn haloforcings Radiative forcing due to CFC-115
 //' @export
 // [[Rcpp::export]]
-String RF_CFC115() { return D_RFADJ_CFC115; }
+String RF_CFC115() { return D_RF_CFC115; }
 
 //' @describeIn haloforcings Radiative forcing due to carbon tetrachloride
 //' @export
 // [[Rcpp::export]]
-String RF_CCL4() { return D_RFADJ_CCl4; }
+String RF_CCL4() { return D_RF_CCl4; }
 
 //' @describeIn haloforcings Radiative forcing due to trichloroethane
 //' @export
 // [[Rcpp::export]]
-String RF_CH3CCL3() { return D_RFADJ_CH3CCl3; }
+String RF_CH3CCL3() { return D_RF_CH3CCl3; }
 
 //' @describeIn haloforcings Radiative forcing due to HCFC-22
 //' @export
 // [[Rcpp::export]]
-String RF_HCFC22() { return D_RFADJ_HCFC22; }
+String RF_HCFC22() { return D_RF_HCFC22; }
 
 //' @describeIn haloforcings Radiative forcing due to HCFC-141b
 //' @export
 // [[Rcpp::export]]
-String RF_HCFC141B() { return D_RFADJ_HCFC141b; }
+String RF_HCFC141B() { return D_RF_HCFC141b; }
 
 //' @describeIn haloforcings Radiative forcing due to HCCFC-142b
 //' @export
 // [[Rcpp::export]]
-String RF_HCFC142B() { return D_RFADJ_HCFC142b; }
+String RF_HCFC142B() { return D_RF_HCFC142b; }
 
 //' @describeIn haloforcings Radiative forcing due to halon-1211
 //' @export
 // [[Rcpp::export]]
-String RF_HALON1211() { return D_RFADJ_halon1211; }
+String RF_HALON1211() { return D_RF_halon1211; }
 
 //' @describeIn haloforcings Radiative forcing due to halon-1301
 //' @export
 // [[Rcpp::export]]
-String RF_HALON1301() { return D_RFADJ_halon1301; }
+String RF_HALON1301() { return D_RF_halon1301; }
 
 //' @describeIn haloforcings Radiative forcing due to halon-2402
 //' @export
 // [[Rcpp::export]]
-String RF_HALON2402() { return D_RFADJ_halon2402; }
+String RF_HALON2402() { return D_RF_halon2402; }
 
 //' @describeIn haloforcings Radiative forcing due to chloromethane
 //' @export
 // [[Rcpp::export]]
-String RF_CH3CL() { return D_RFADJ_CH3Cl; }
+String RF_CH3CL() { return D_RF_CH3Cl; }
 
 //' @describeIn haloforcings Radiative forcing due to bromomethane
 //' @export
 // [[Rcpp::export]]
-String RF_CH3BR() { return D_RFADJ_CH3Br; }
+String RF_CH3BR() { return D_RF_CH3Br; }
 
 /* halocarbon rho (radiative forcing efficiency) */
 //' @describeIn rho a radiative forcing efficiency for user-specified preindustrial concentration (Wm-2 pptv-1) for CF4
@@ -1211,11 +1190,6 @@ String WARMINGFACTOR(String biome = "") {
 //' @export
 // [[Rcpp::export]]
 String CO2_CONSTRAIN() { return D_CO2_CONSTRAIN; }
-
-//' @describeIn carboncycle Constrain net biome production (land-atmosphere flux) (\code{"(PgC/yr)"})
-//' @export
-// [[Rcpp::export]]
-String NBP_CONSTRAIN() { return D_NBP_CONSTRAIN; }
 
 //' @describeIn parameters NPP fraction to vegetation (\code{"(unitless)"})
 //' @export

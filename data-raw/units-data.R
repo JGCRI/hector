@@ -7,11 +7,11 @@ devtools::load_all()
 simpleNbox_vars <- c(
   PREINDUSTRIAL_CO2(), NPP_FLUX0(),
   FFI_EMISSIONS(), DACCS_UPTAKE(), LUC_EMISSIONS(), LUC_UPTAKE(),
-  CO2_CONSTRAIN(), NBP_CONSTRAIN(), BETA(), Q10_RH()
+  CO2_CONSTRAIN(), BETA(), Q10_RH()
 )
 simpleNbox_uni <- c(
   "ppmv CO2", "Pg C/yr", "Pg C/yr", "Pg C/yr", "Pg C/yr",
-  "Pg C/yr", "ppmv CO2", "Pg C/yr", "(unitless)", "(unitless)"
+  "Pg C/yr", "ppmv CO2", "(unitless)", "(unitless)"
 )
 
 ocean_vars <- c(TT(), TU(), TWI(), TID(), OCEAN_PREIND_C_SURF(), OCEAN_PREIND_C_ID())
@@ -53,31 +53,14 @@ temp_uni <- c(
 misc_emiss_vars <- c(EMISSIONS_BC(), EMISSIONS_OC(), EMISSIONS_NH3())
 misc_emiss_uni <- c("Tg", "Tg", "Tg")
 
-haloemis_vars <- c(
-  EMISSIONS_CF4(), EMISSIONS_C2F6(), EMISSIONS_HFC23(),
-  EMISSIONS_HFC32(), EMISSIONS_HFC4310(), EMISSIONS_HFC125(),
-  EMISSIONS_HFC134A(), EMISSIONS_HFC143A(), EMISSIONS_HFC227EA(),
-  EMISSIONS_HFC245FA(), EMISSIONS_SF6(), EMISSIONS_CFC11(),
-  EMISSIONS_CFC12(), EMISSIONS_CFC113(), EMISSIONS_CFC114(),
-  EMISSIONS_CFC115(), EMISSIONS_CCL4(), EMISSIONS_CH3CCL3(),
-  EMISSIONS_HCFC22(), EMISSIONS_HCFC141B(), EMISSIONS_HCFC142B(),
-  EMISSIONS_HALON1211(), EMISSIONS_HALON1301(),
-  EMISSIONS_HALON2402(), EMISSIONS_CH3CL(), EMISSIONS_CH3BR()
-)
+haloemis <- ALL_HALOCARBON_EMISSIONS()
 haloemis_uni <- "Gg"
 
-haloconstrain_vars <- c(
-  CF4_CONSTRAIN(), C2F6_CONSTRAIN(), HFC23_CONSTRAIN(),
-  HFC32_CONSTRAIN(), HFC4310_CONSTRAIN(), HFC125_CONSTRAIN(),
-  HFC134A_CONSTRAIN(), HFC143A_CONSTRAIN(), HFC227EA_CONSTRAIN(),
-  HFC245FA_CONSTRAIN(), SF6_CONSTRAIN(), CFC11_CONSTRAIN(),
-  CFC12_CONSTRAIN(), CFC113_CONSTRAIN(), CFC114_CONSTRAIN(),
-  CFC115_CONSTRAIN(), CCL4_CONSTRAIN(), CH3CCL3_CONSTRAIN(),
-  HCFC22_CONSTRAIN(), HCFC141B_CONSTRAIN(), HCFC142B_CONSTRAIN(),
-  HALON1211_CONSTRAIN(), HALON1301_CONSTRAIN(), HALON2402_CONSTRAIN(),
-  CH3CL_CONSTRAIN(), CH3BR_CONSTRAIN(), "HFC245_constrain"
-)
+haloconstrain_vars <- ALL_HALOCARBON_CONSTRAINTS()
 haloconstrain_uni <- "pptv"
+
+haloconc_vars <- ALL_HALOCARBON_CONCENTRATIONS()
+haloconc_uni <- haloconstrain_uni
 
 halodeltas_vars <- c(
   DELTA_CF4(), DELTA_C2F6(), DELTA_HFC23(), DELTA_HFC32(),
@@ -104,8 +87,9 @@ unitstable <- rbind(
   data.frame(variable = forcing_vars, units = forcing_uni),
   data.frame(variable = temp_vars, units = temp_uni),
   data.frame(variable = misc_emiss_vars, units = misc_emiss_uni),
-  data.frame(variable = haloemis_vars, units = haloemis_uni),
+  data.frame(variable = haloemis, units = haloemis_uni),
   data.frame(variable = haloconstrain_vars, units = haloconstrain_uni),
+  data.frame(variable = haloconc_vars, units = haloconc_uni),
   data.frame(variable = halodeltas_vars, units = halodeltas_uni),
   data.frame(variable = misc_var, units = misc_uni)
 )
