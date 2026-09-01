@@ -1,0 +1,4 @@
+
+# Ignore all the csv file written to here 
+*.csv
+

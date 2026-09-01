@@ -20,12 +20,12 @@ Run Hector up through the specified time.  This function does not return the
 results of the run.  To get results, run \code{fetch}.
 }
 \seealso{
-Other main user interface functions: 
-\code{\link{fetchvars}()},
-\code{\link{get_tracking_data}()},
-\code{\link{newcore}()},
-\code{\link{reset}()},
-\code{\link{setvar}()},
-\code{\link{shutdown}()}
+Other main user interface functions:
+\code{\link[=fetchvars]{fetchvars()}},
+\code{\link[=get_tracking_data]{get_tracking_data()}},
+\code{\link[=newcore]{newcore()}},
+\code{\link[=reset]{reset()}},
+\code{\link[=setvar]{setvar()}},
+\code{\link[=shutdown]{shutdown()}}
 }
 \concept{main user interface functions}

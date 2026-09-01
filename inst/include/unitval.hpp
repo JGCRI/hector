@@ -94,12 +94,13 @@ enum unit_types {
   U_CM, // Length-related
   U_CM_YR,
 
-  U_G,
-  U_TG, // Mass-related
+  U_G,  // Mass-related
+  U_TG,
   U_GG, // Giga-grams
   U_MOL,
   U_GMOL,
   U_GT,
+  U_G_MOL, // molar mass
 
   U_PGC, // Carbon pools and fluxes
   U_PGC_YR,

@@ -151,20 +151,20 @@ instead of the more natural looking \code{GETDATA}.
 }
 
 \seealso{
-Other capability identifiers: 
-\code{\link{CONCENTRATIONS_CH4}()},
-\code{\link{CONCENTRATIONS_N2O}()},
-\code{\link{DELTA_CO2}()},
-\code{\link{EMISSIONS_BC}()},
-\code{\link{EMISSIONS_CF4}()},
-\code{\link{EMISSIONS_SO2}()},
-\code{\link{FTOT_CONSTRAIN}()},
-\code{\link{GLOBAL_TAS}()},
-\code{\link{NBP}()},
-\code{\link{OCEAN_UPTAKE}()},
-\code{\link{RF_CF4}()},
-\code{\link{RF_TOTAL}()},
-\code{\link{RHO_BC}()},
-\code{\link{TRACKING_DATE}()}
+Other capability identifiers:
+\code{\link[=CONCENTRATIONS_CH4]{CONCENTRATIONS_CH4()}},
+\code{\link[=CONCENTRATIONS_N2O]{CONCENTRATIONS_N2O()}},
+\code{\link[=DELTA_CO2]{DELTA_CO2()}},
+\code{\link[=EMISSIONS_BC]{EMISSIONS_BC()}},
+\code{\link[=EMISSIONS_CF4]{EMISSIONS_CF4()}},
+\code{\link[=EMISSIONS_SO2]{EMISSIONS_SO2()}},
+\code{\link[=FTOT_CONSTRAIN]{FTOT_CONSTRAIN()}},
+\code{\link[=GLOBAL_TAS]{GLOBAL_TAS()}},
+\code{\link[=NBP]{NBP()}},
+\code{\link[=OCEAN_UPTAKE]{OCEAN_UPTAKE()}},
+\code{\link[=RF_CF4]{RF_CF4()}},
+\code{\link[=RF_TOTAL]{RF_TOTAL()}},
+\code{\link[=RHO_BC]{RHO_BC()}},
+\code{\link[=TRACKING_DATE]{TRACKING_DATE()}}
 }
 \concept{capability identifiers}

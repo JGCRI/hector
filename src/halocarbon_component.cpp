@@ -58,12 +58,11 @@ void HalocarbonComponent::init(Core *coreptr) {
 
   emissions.allowInterp(true);
   emissions.name = myGasName;
-  molarMass = 0.0;
   H0.set(0.0, U_PPTV); //! Default is no preindustrial, but user can override
 
   // Register the data we can provide
-  core->registerCapability(D_RF_PREFIX + myGasName,
-                           getComponentName()); // can provide forcing data
+  core->registerCapability(D_RFUNADJ_PREFIX + myGasName,
+                           getComponentName()); // can provide the unadjusted forcing data
   core->registerCapability(myGasName + CONCENTRATION_EXTENSION,
                            getComponentName()); // can provide concentrations
   core->registerCapability(
@@ -135,7 +134,7 @@ void HalocarbonComponent::setData(const string &varName,
       delta = data.getUnitval(U_UNITLESS);
     } else if (varName == D_HC_MOLARMASS) {
       H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
-      molarMass = data.getUnitval(U_UNDEFINED);
+      molarMass = data.getUnitval(U_G_MOL);
     } else if (varName == emiss_var_name) {
       H_ASSERT(data.date != Core::undefinedIndex(), "date required");
       emissions.set(data.date, data.getUnitval(U_GG));
@@ -163,7 +162,6 @@ void HalocarbonComponent::prepareToRun() {
   oldDate = core->getStartDate();
 
   H_ASSERT(tau != -1 && tau != 0, "tau has bad value");
-  H_ASSERT(rho.units() != U_UNDEFINED, "rho has undefined units");
   H_ASSERT(molarMass > 0, "molarMass must be >0");
   H_ASSERT(
       delta >= -1 && delta <= 1,
@@ -171,9 +169,6 @@ void HalocarbonComponent::prepareToRun() {
 
   Ha_ts.set(oldDate, H0);
 
-  //! \remark concentration values will not be allowed to interpolate beyond
-  //! years already read in
-  //    concentration.allowPartialInterp( true );
 }
 
 //------------------------------------------------------------------------------
@@ -181,47 +176,48 @@ void HalocarbonComponent::prepareToRun() {
 void HalocarbonComponent::run(const double runToDate) {
   H_ASSERT(!core->inSpinup() && runToDate - oldDate == 1,
            "timestep must equal 1");
-#define AtmosphereDryAirConstant 1.8
 
-  unitval Ha(Ha_ts.get(oldDate));
+  unitval Ha_lagg(Ha_ts.get(oldDate));
+  unitval Ha;
 
-  // If emissions-forced, calculate concentration from emissions and lifespan.
+  // If oncentration-forced, use the perscribed value otherwise if
+  // emission driven calculate concentration from emissions and lifespan.
   if (Ha_constrain.size() && Ha_constrain.exists(runToDate)) {
     // Concentration-forced. Just grab the current value from the time series.
     Ha = Ha_constrain.get(runToDate);
   } else {
-    const double timestep = 1.0;
-    const double alpha = 1 / tau;
-
-    // Compute the delta atmospheric concentration from current emissions
-    double emissMol = emissions.get(runToDate).value(U_GG) / molarMass *
-                      timestep; // this is in U_GMOL
-    unitval concDeltaEmiss;
-    concDeltaEmiss.set(emissMol / (0.1 * AtmosphereDryAirConstant), U_PPTV);
+      
+      // Emission driven.
+      
+      // Constants used in the emission driven hc calculations
+      const double GG_to_G = 1e9; // 1 Gigagram = 1e9 Grams
+      const double ratio_to_PPT = 1e12; // used to convert a ratio to ppt
+      const double atmos_moles = 1.77e20; // physical constant for moles of dry air https://doi.org/10.1175/JCLI-3299.1 TODO this should be defined in physical constants
+      
+      // Convert the annual emissions to moles. Use the ratio of hc moles
+      // to atmosphere moles to determine the annual change in hc in ppt.
+      double emissMol = emissions.get(runToDate).value(U_GG) * GG_to_G / molarMass.value(U_G_MOL);
+      unitval concDeltaEmiss;
+      concDeltaEmiss.set((emissMol/atmos_moles) * ratio_to_PPT, U_PPTV);
+      
+      const double alpha = 1 / tau;
 
     // Update the atmospheric concentration, accounting for this delta and
     // exponential decay
     double expfac = exp(-alpha);
-    Ha = Ha * expfac + concDeltaEmiss * tau * (1.0 - expfac);
+    Ha = Ha_lagg * expfac + concDeltaEmiss * tau * (1.0 - expfac);
   }
 
   H_LOG(logger, Logger::DEBUG)
       << "date: " << runToDate << " concentration: " << Ha << endl;
   Ha_ts.set(runToDate, Ha);
 
-  // Calculate radiative forcing
-  double adjusted_rf;
-  double rf_unadjusted;
+  // Calculate radiative forcing, note this rf will not be relative
+  // to the appropriate base year period, this wil be done in the forcing component.
+  // Calculate the effetive radiative forcing using Equation 16 from Hartin
+  // 2015 and parameter values from IPCC AR6.
   unitval rf;
-
-  // First calculate the stratospheric-temperature adjusted radiative
-  // efficiencies using parameter values from IPCC AR6 & Equation 16 from Hartin
-  // 2015.
-  rf_unadjusted = rho.value(U_W_M2_PPTV) * Ha.value(U_PPTV);
-  // Now calculate the effective radiative forcing value by adjusting the
-  // radiative forcing by the tropospheric adjustments (the delta parameter).
-  adjusted_rf = rf_unadjusted + delta.value(U_UNITLESS) * rf_unadjusted;
-  rf.set(adjusted_rf, U_W_M2);
+  rf.set((1.0 + delta.value(U_UNITLESS)) * rho.value(U_W_M2_PPTV) * Ha.value(U_PPTV), U_W_M2);
   hc_forcing.set(runToDate, rf);
 
   // Update time counter.
@@ -241,7 +237,7 @@ unitval HalocarbonComponent::getData(const std::string &varName,
     getdate = oldDate;
   }
 
-  if (varName == D_RF_PREFIX + myGasName) {
+  if (varName == D_RFUNADJ_PREFIX + myGasName) {
     returnval = hc_forcing.get(getdate);
   } else if (varName == D_PREINDUSTRIAL_HC) {
     // use date as input, not getdate, b/c there should be no date specified.
@@ -274,7 +270,7 @@ unitval HalocarbonComponent::getData(const std::string &varName,
       returnval = Ha_constrain.get(getdate);
     } else {
       H_LOG(logger, Logger::DEBUG)
-          << "No CH4 constraint for requested date " << date
+          << "No "<< myGasName << "constraint for requested date " << date
           << ". Returning missing value." << std::endl;
       returnval.set(MISSING_FLOAT, U_PPTV);
     }

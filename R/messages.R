@@ -78,9 +78,6 @@ fetchvars <- function(core, dates, vars = NULL, scenario = NULL) {
       sendmessage(core, GETDATA(), v, dates, NA, "")
     })
   )
-  ## Fix the variable name for the adjusted halocarbon forcings so that they are
-  ## consistent with other forcings.
-  rslt$variable <- sub(paste0("^", RFADJ_PREFIX()), RF_PREFIX(), rslt$variable)
   cols <- names(rslt)
   rslt$scenario <- scenario
   ## reorder the columns to put the scenario name first

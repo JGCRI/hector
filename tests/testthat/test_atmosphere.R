@@ -11,7 +11,7 @@ error_threshold <- 1e-8
 
 test_that("Checking RF values", {
   # Define the comparison dates
-  t_dates <- 1850:2100
+  t_dates <- c(1750, 1850:2100)
 
   # Set and run Hector
   hc <- newcore(ssp245)
@@ -41,6 +41,10 @@ test_that("Checking RF values", {
   )
 
   expect_equal(total_rf$value, sum_individuals$value, tolerance = error_threshold)
+
+  # Make sure that the base year values (1750) equal 0.
+  expect_equal(sum_individuals$value[sum_individuals$year == 1750], 0)
+
 })
 
 test_that("Check Temp", {

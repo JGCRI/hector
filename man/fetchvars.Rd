@@ -51,12 +51,12 @@ print(out)
 \link{carboncycle}, \link{haloemiss}, \link{haloforcings}, \link{methane},
 \link{ocean}, \link{so2}, \link{temperature}, \link{parameters}
 
-Other main user interface functions: 
-\code{\link{get_tracking_data}()},
-\code{\link{newcore}()},
-\code{\link{reset}()},
-\code{\link{run}()},
-\code{\link{setvar}()},
-\code{\link{shutdown}()}
+Other main user interface functions:
+\code{\link[=get_tracking_data]{get_tracking_data()}},
+\code{\link[=newcore]{newcore()}},
+\code{\link[=reset]{reset()}},
+\code{\link[=run]{run()}},
+\code{\link[=setvar]{setvar()}},
+\code{\link[=shutdown]{shutdown()}}
 }
 \concept{main user interface functions}
