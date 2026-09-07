@@ -73,10 +73,11 @@ Collate:
     'hector.R'
     'messages.R'
     'units.R'
+    'zzz.R'
 VignetteBuilder: knitr
 Config/Needs/website: kableExtra, nleqslv
-RoxygenNote: 7.3.2
 SystemRequirements: GNU make
 URL: https://github.com/JGCRI/hector, https://jgcri.github.io/hector/
 BugReports: https://github.com/JGCRI/hector/issues
 Language: en-US
+Config/roxygen2/version: 8.1.0

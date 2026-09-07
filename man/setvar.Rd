@@ -26,12 +26,12 @@ against the expected unit in the code, and an error is signaled if they don't
 match (i.e., there is no attempt to convert units).
 }
 \seealso{
-Other main user interface functions: 
-\code{\link{fetchvars}()},
-\code{\link{get_tracking_data}()},
-\code{\link{newcore}()},
-\code{\link{reset}()},
-\code{\link{run}()},
-\code{\link{shutdown}()}
+Other main user interface functions:
+\code{\link[=fetchvars]{fetchvars()}},
+\code{\link[=get_tracking_data]{get_tracking_data()}},
+\code{\link[=newcore]{newcore()}},
+\code{\link[=reset]{reset()}},
+\code{\link[=run]{run()}},
+\code{\link[=shutdown]{shutdown()}}
 }
 \concept{main user interface functions}

@@ -74,5 +74,5 @@ test_that("Can fetch all variables", {
   )
   run(hc, runtodate = 1850)
   out <- fetchvars(hc, 1845, vars = ALL_VARS())
-  expect_equal(length(unique(out$variable)), 82)
+  expect_equal(length(unique(out$variable)), 110)
 })

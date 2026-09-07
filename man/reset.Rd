@@ -20,12 +20,12 @@ contrast, resetting \emph{to} the start date leaves the model ready to run
 at the start date, but without having rerun the spinup.)
 }
 \seealso{
-Other main user interface functions: 
-\code{\link{fetchvars}()},
-\code{\link{get_tracking_data}()},
-\code{\link{newcore}()},
-\code{\link{run}()},
-\code{\link{setvar}()},
-\code{\link{shutdown}()}
+Other main user interface functions:
+\code{\link[=fetchvars]{fetchvars()}},
+\code{\link[=get_tracking_data]{get_tracking_data()}},
+\code{\link[=newcore]{newcore()}},
+\code{\link[=run]{run()}},
+\code{\link[=setvar]{setvar()}},
+\code{\link[=shutdown]{shutdown()}}
 }
 \concept{main user interface functions}

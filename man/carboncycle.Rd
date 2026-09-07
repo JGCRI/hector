@@ -13,7 +13,6 @@
 \alias{LUC_EMISSIONS}
 \alias{LUC_UPTAKE}
 \alias{CO2_CONSTRAIN}
-\alias{NBP_CONSTRAIN}
 \alias{VEG_C}
 \alias{DETRITUS_C}
 \alias{SOIL_C}
@@ -53,8 +52,6 @@ LUC_UPTAKE()
 
 CO2_CONSTRAIN()
 
-NBP_CONSTRAIN()
-
 VEG_C(biome = "")
 
 DETRITUS_C(biome = "")
@@ -89,8 +86,6 @@ carbon cycle
 \section{Functions}{
 \itemize{
 \item \code{CO2_CONSTRAIN()}: Constrain atmospheric CO2 concentration (\code{"(ppmv CO2)"})
-
-\item \code{NBP_CONSTRAIN()}: Constrain net biome production (land-atmosphere flux) (\code{"(PgC/yr)"})
 
 \item \code{VEG_C()}: Vegetation C pool (`"Pg C"`)
 
@@ -146,7 +141,6 @@ These variables can be read using the \code{\link{GETDATA}} message type:
 \item{FFI_EMISSIONS}{Fossil fuel and industrial emissions (\code{"Pg C/yr"})}
 \item{LUC_EMISSIONS}{Land use change emissions (\code{"Pg C/yr"})}
 \item{CO2_CONSTRAIN}{Prescribed atmospheric CO2 concentration (\code{"ppmv CO2"})}
-\item{NBP_CONSTRAIN}{Prescribed net biome production (land-atmosphere C flux) (\code{"Pg C/yr"})}
 \item{DACCS_UPTAKE}{Direct air carbon capture and storage}
 \item{LUC_UPTAKE}{Land use change uptake}
 }
@@ -164,20 +158,20 @@ instead of the more natural looking \code{GETDATA}.
 \link{concentrations} for other gas concentrations and
 \link{emissions} for other gas emissions
 
-Other capability identifiers: 
-\code{\link{CF4_CONSTRAIN}()},
-\code{\link{CONCENTRATIONS_CH4}()},
-\code{\link{CONCENTRATIONS_N2O}()},
-\code{\link{DELTA_CO2}()},
-\code{\link{EMISSIONS_BC}()},
-\code{\link{EMISSIONS_CF4}()},
-\code{\link{EMISSIONS_SO2}()},
-\code{\link{FTOT_CONSTRAIN}()},
-\code{\link{GLOBAL_TAS}()},
-\code{\link{OCEAN_UPTAKE}()},
-\code{\link{RF_CF4}()},
-\code{\link{RF_TOTAL}()},
-\code{\link{RHO_BC}()},
-\code{\link{TRACKING_DATE}()}
+Other capability identifiers:
+\code{\link[=CF4_CONSTRAIN]{CF4_CONSTRAIN()}},
+\code{\link[=CONCENTRATIONS_CH4]{CONCENTRATIONS_CH4()}},
+\code{\link[=CONCENTRATIONS_N2O]{CONCENTRATIONS_N2O()}},
+\code{\link[=DELTA_CO2]{DELTA_CO2()}},
+\code{\link[=EMISSIONS_BC]{EMISSIONS_BC()}},
+\code{\link[=EMISSIONS_CF4]{EMISSIONS_CF4()}},
+\code{\link[=EMISSIONS_SO2]{EMISSIONS_SO2()}},
+\code{\link[=FTOT_CONSTRAIN]{FTOT_CONSTRAIN()}},
+\code{\link[=GLOBAL_TAS]{GLOBAL_TAS()}},
+\code{\link[=OCEAN_UPTAKE]{OCEAN_UPTAKE()}},
+\code{\link[=RF_CF4]{RF_CF4()}},
+\code{\link[=RF_TOTAL]{RF_TOTAL()}},
+\code{\link[=RHO_BC]{RHO_BC()}},
+\code{\link[=TRACKING_DATE]{TRACKING_DATE()}}
 }
 \concept{capability identifiers}

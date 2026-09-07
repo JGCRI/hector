@@ -29,12 +29,12 @@ argument for all functions that operate on the instance.  Creating multiple inst
 simultaneously is supported.
 }
 \seealso{
-Other main user interface functions: 
-\code{\link{fetchvars}()},
-\code{\link{get_tracking_data}()},
-\code{\link{reset}()},
-\code{\link{run}()},
-\code{\link{setvar}()},
-\code{\link{shutdown}()}
+Other main user interface functions:
+\code{\link[=fetchvars]{fetchvars()}},
+\code{\link[=get_tracking_data]{get_tracking_data()}},
+\code{\link[=reset]{reset()}},
+\code{\link[=run]{run()}},
+\code{\link[=setvar]{setvar()}},
+\code{\link[=shutdown]{shutdown()}}
 }
 \concept{main user interface functions}
