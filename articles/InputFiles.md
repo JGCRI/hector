@@ -1,0 +1,320 @@
+# Hector input files
+
+## General information
+
+When Hector is invoked from the command line, it takes a single
+parameter: the name of the primary input file to read. This file,
+typically stored in the `input/` directory, contains configuration and
+parameter data controlling the model’s run, output, and behavior.
+
+The primary input file is a text file with *sections*, *properties*, and
+*values*. For example, the beginning of the [SSP245
+file](https://jgcri.github.io/tree/main/inst/input/hector_ssp245.ini)
+included in the repository looks like this:
+
+    ; Config file for hector model: SSP245
+    ;------------------------------------------------------------------------
+    [core]
+    run_name=ssp245
+
+Here, comments start with a semicolon (`;`); *section names* (`core`)
+are enclosed in square brackets; and a *property* (`run_name`) is
+assigned a *value* (`ssp245`). Properties are guaranteed to be unique
+within a particular section, and all sections match one-to-one with a
+model
+[component](https://jgcri.github.io/hector/articles/ComponentAPI.md).
+
+### Table of model parameters
+
+| Section | Parameter | Biome specific | Time variant | Required | Default | Units | Description |
+|:---|:---|:---|:---|:---|:---|:---|:---|
+| core | run_name | n | n | y |  | (unitless) | Name of model run |
+| core | startDate | n | n | y | 1745 | year | Start date of model run |
+| core | endDate | n | n | y | 2300 | year | End date of model run |
+| core | trackingDate | n | n | y | 9999 | year | Year to start tracking carbon |
+| core | do_spinup | n | n | y | 1 | (unitless) | If 1, spin up model before running (default=1) |
+| core | max_spinup | n | n | y | 2000 | (unitless) | Maximum steps allowed for spinup (default=2000) |
+| ocean | enabled | n | n | y | 1 | (unitless) | Putting ‘enabled=0’ will disable any component |
+| ocean | spinup_chem | n | n | y | 0 | (unitless) | Run ocean surface chemistry during spinup phase? |
+| ocean | tt | n | n | y | 7.20E+07 | m3 s-1 | Ocean thermohaline circulation |
+| ocean | tu | n | n | y | 4.90E+07 | m3 s-1 | Ocean high latitude overturning |
+| ocean | twi | n | n | y | 1.25E+07 | m3 s-1 | Ocean warm-intermediate exchange |
+| ocean | tid | n | n | y | 2.00E+08 | m3 s-1 | Ocean intermediate-deep exchange |
+| ocean | preind_surface_c | n | n | n | 900 | Pg C | Initial surface ocean carbon |
+| ocean | preind_interdeep_c | n | n | n | 37100 | Pg C | Initial intermediate + deep ocean carbon |
+| simpleNbox | C0 | n | n | y | 277.15 | Pg C | Initial atmospheric C pool |
+| simpleNbox | pf.veg_c | y | n | n | 55 | Pg C | Initial vegetation C pool |
+| simpleNbox | nonpf.veg_c | y | n | n | 495 | Pg C | Initial vegetation C pool |
+| simpleNbox | veg_c | n | n | y | 550 | Pg C | Initial vegetation C pool |
+| simpleNbox | pf.detritus_c | y | n | n | 5 | Pg C | Initial detritus C pool |
+| simpleNbox | nonpf.detritus_c | y | n | n | 50 | Pg C | Initial detritus C pool |
+| simpleNbox | detritus_c | n | n | y | 55 | Pg C | Initial detritus C pool |
+| simpleNbox | pf.soil_c | y | n | n | 308 | Pg C | Initial soil C pool |
+| simpleNbox | nonpf.soil_c | y | n | n | 609 | Pg C | Initial soil C pool |
+| simpleNbox | soil_c | n | n | y | 917 | Pg C | Initial soil C pool |
+| simpleNbox | pf.permafrost_c | y | n | n | 865 | Pg C | Initial permafrost C pool |
+| simpleNbox | nonpf.permafrost_c | y | n | n | 0 | Pg C | Initial permafrost C pool |
+| simpleNbox | permafrost_c | n | n | y | 865 | Pg C | Initial permafrost C pool |
+| simpleNbox | pf.npp_flux0 | y | n | n | 5.6 | Pg C yr-1 | Preindustrial net primary production |
+| simpleNbox | nonpf.npp_flux0 | y | n | n | 50.6 | Pg C yr-1 | Preindustrial net primary production |
+| simpleNbox | npp_flux0 | n | n | y | 56.2 | Pg C yr-1 | Preindustrial net primary production |
+| simpleNbox | pf.f_nppv | n | n | y | 0.35 | (unitless) | Fraction of NPP to vegetation |
+| simpleNbox | nonpf.f_nppv | n | n | y | 0.35 | (unitless) | Fraction of NPP to vegetation |
+| simpleNbox | f_nppv | n | n | y | 0.35 | (unitless) | Fraction of NPP to vegetation |
+| simpleNbox | pf.f_nppd | n | n | y | 0.35 | (unitless) | Fraction of NPP to vegetation |
+| simpleNbox | nonpf.f_nppd | n | n | y | 0.35 | (unitless) | Fraction of NPP to vegetation |
+| simpleNbox | f_nppd | n | n | y | 0.6 | (unitless) | Fraction of NPP to detritus (balance to soil) |
+| simpleNbox | pf.f_litterd | n | n | n | 0.35 | (unitless) | Fraction of NPP to vegetation |
+| simpleNbox | nonpf.f_litterd | n | n | n | 0.35 | (unitless) | Fraction of NPP to vegetation |
+| simpleNbox | f_litterd | n | n | y | 0.98 | (unitless) | Fraction of litter flux to detritus (balance to soil) |
+| simpleNbox | pf.beta | n | n | n | 0.36 | (unitless) | CO2 fertilization factor |
+| simpleNbox | nonpf.beta | n | n | n | 0.36 | (unitless) | CO2 fertilization factor |
+| simpleNbox | beta | n | n | y | 0.36 | (unitless) | CO2 fertilization factor |
+| simpleNbox | pf.q10_rh | n | n | n | 2 | (unitless) | Respiration temperature response (Q10) |
+| simpleNbox | nonpf.q10_rh | n | n | n | 2 | (unitless) | Respiration temperature response (Q10) |
+| simpleNbox | q10_rh | n | n | y | 2 | (unitless) | Respiration temperature response (Q10) |
+| simpleNbox | pf.warmingfactor | y | n | n | 2 | (unitless) | biome-specific warming factors |
+| simpleNbox | RF_albedo | n | n | y | “(csv)” | W m-2 | Albedo radiative forcing effect |
+| simpleNbox | permafrost_c | y | n | y | 0 | Pg C | Preindustrial permafrost carbon pool |
+| simpleNbox | fpf_static | y | n | n | 0.74 | (unitless) | Fraction of permafrost that is static (non-labile) |
+| simpleNbox | rh_ch4_frac | y | n | n | 0.023 | (unitless) | Fraction of thawed permafrost decomposed as CH4 |
+| simpleNbox | pf_mu | y | n | n | 1.67 | (unitless) | Permafrost thaw parameter; see Woodard et al. 2021 |
+| simpleNbox | pf_sigma | y | n | n | 0.986 | (unitless) | Permafrost thaw parameter; see Woodard et al. 2021 |
+| carbon-cycle-solver | eps_abs | n | n | y | 1.00E-06 | (unitless) | Solver solution tolerance |
+| carbon-cycle-solver | eps_rel | n | n | y | 1.00E-06 | (unitless) | Solver solution tolerance |
+| carbon-cycle-solver | dt | n | n | y | 0.25 | (unitless) | Solver default time step |
+| carbon-cycle-solver | eps_spinup | n | n | y | 0.001 | Pg C | Model spinup tolerance (drift), Pg C |
+| CH4 | M0 | n | n | y | 731.41 | ppb | preindustrial methane IPCC AR6 Table 7.SM.1, the CH4 forcing equations is calibrated to a M0 of 731.41 ppb |
+| CH4 | Tsoil | n | n | y | 160 | years | CH4 loss to soil |
+| CH4 | Tstrat | n | n | y | 120 | years | CH4 loss to stratosphere |
+| CH4 | UC_CH4 | n | n | y | 2.78 | Tg CH4 ppb-1 | unit conversion between emissions and concentrations |
+| CH4 | CH4N | n | n | y | 341 |  | best fit |
+| OH | TOH0 | n | n | y | 6.6 | years | initial OH lifetime |
+| OH | CNOX | n | n | y | 0.0042 |  | coefficient for NOX |
+| OH | CCO | n | n | y | -1.05E-04 |  | coefficient for CO |
+| OH | CNMVOC | n | n | y | -3.15E-04 |  | coefficient for NMVOC (non methane VOC) |
+| OH | CCH4 | n | n | y | -0.32 |  | coefficient for CH4 |
+| ozone | PO3 | n | n | y | 30 |  | preindustrial O3 concentration |
+| N2O | N0 | n | n | y | 273.87 | ppb | preindustrial nitrous oxide from IPCC AR6 table 7.SM.1 |
+| N2O | UC_N2O | n | n | y | 4.8 | TgN ppbv-1 | unit conversion between emissions and concentrations |
+| N2O | TN2O0 | n | n | y | 132 | years | initial lifetime of N2O |
+| forcing | baseyear | n | n | y | 1750 |  | when to start reporting; by definition, all F=0 in this year |
+| forcing | delta_co2 | n | n | y | 0.05 | (unitless) | forcing tropospheric adjustments for CO2 (7.3.2.1 of IPCC AR6) |
+| forcing | delta_ch4 | n | n | y | -0.14 | (unitless) | forcing tropospheric adjustments for CH4 (7.3.2.2 of IPCC AR6) |
+| forcing | delta_n2o | n | n | y | 0.07 | (unitless) | forcing tropospheric adjustments for N2O (7.3.2.3 of IPCC AR6) |
+| forcing | rho_bc | n | n | y | 0.0508 | W yr m-2 C Tg-1 | IPCC AR6 radiative efficiency BC (7.SM.1.3 of IPCC AR6) |
+| forcing | rho_oc | n | n | y | -0.00621 | W yr m-2 C Tg-1 | IPCC AR6 radiative efficiency OC (7.SM.1.3.1 of IPCC AR6) |
+| forcing | rho_so2 | n | n | y | -7.24E-06 | W yr m-2 S Gg-1 | IPCC AR6 radiative efficiency SO2 (7.SM.1.3.1 of IPCC AR6) |
+| forcing | rho_nh3 | n | n | y | -0.00208 | W yr m-2 NH3 Tg-1 | IPCC AR6 radiative efficiency NH3 (7.SM.1.3.1 of IPCC AR6) |
+| forcing | RF_misc | n | n | n | “(csv)” |  | Miscellaneous radiative forcings default set to 0 |
+| forcing | RF_misc | n | n | y | 0 |  | Miscellaneous radiative forcings default set to 0, or read in from a input table, may be used to read in additional forcings not modeled by Hector (i.e. solar, bc on snow , contrails from) |
+| forcing | aero_scalar | n | n | y | 1 | (unitless) | scaling factor for aerosol forcing |
+| forcing | vol_scalar | n | n | y | 1 | (unitless) | scaling factor for volcanic forcing |
+| temperature | S | n | n | y | 3 | degC | equilibrium climate sensitivity for 2xCO2 |
+| temperature | diff | n | n | y | 2.3 | cm2 s-1 | ocean heat diffusivity |
+| temperature | qco2 | n | n | y | 3.75 |  | CO2 RF (7.3.2 of IPCC AR6) |
+| CF4_halocarbon | tau | n | n | y | 50000 | years | lifetime in years (Table 7.SM.7 IPPC AR6) |
+| CF4_halocarbon | rho_CF4 | n | n | y | 9.90E-05 | W m-2 ppt-1 | radiative efficiencies (Table 7.SM.7 IPPC AR6) |
+| CF4_halocarbon | delta_CF4 | n | n | y | 0 | (unitless) | tropospheric adjustments scalar (7.3.2.4 IPCC AR6) |
+| CF4_halocarbon | H0 | n | n | y | 35 | pptv | preindustrial concentration |
+| CF4_halocarbon | molarMass | n | n | y | 88.0043 | g | molar mass |
+| C2F6_halocarbon | tau | n | n | y | 10000 | years | lifetime in years (Table 7.SM.7 IPPC AR6) |
+| C2F6_halocarbon | rho_C2F6 | n | n | y | 2.61E-04 | W m-2 ppt-1 | radiative efficiencies (Table 7.SM.7 IPPC AR6) |
+| C2F6_halocarbon | delta_C2F6 | n | n | y | 0 | (unitless) | tropospheric adjustments scalar (7.3.2.4 IPCC AR6) |
+| C2F6_halocarbon | molarMass | n | n | y | 138.01 | g | molar mass |
+| HFC23_halocarbon | tau | n | n | y | 228 | years | lifetime in years (Table 7.SM.7 IPPC AR6) |
+| HFC23_halocarbon | rho_HFC23 | n | n | y | 1.91E-04 | W m-2 ppt-1 | radiative efficiencies (Table 7.SM.7 IPPC AR6) |
+| HFC23_halocarbon | delta_HFC23 | n | n | y | 0 | (unitless) | tropospheric adjustments scalar (7.3.2.4 IPCC AR6) |
+| HFC23_halocarbon | molarMass | n | n | y | 70 | g | molar mass |
+| HFC32_halocarbon | tau | n | n | y | 5.4 | years | lifetime in years (Table 7.SM.7 IPPC AR6) |
+| HFC32_halocarbon | rho_HFC32 | n | n | y | 1.11E-04 | W m-2 ppt-1 | radiative efficiencies (Table 7.SM.7 IPPC AR6) |
+| HFC32_halocarbon | delta_HFC32 | n | n | y | 0 | (unitless) | tropospheric adjustments scalar (7.3.2.4 IPCC AR6) |
+| HFC32_halocarbon | molarMass | n | n | y | 52 | g | molar mass |
+| HFC4310_halocarbon | tau | n | n | y | 17 | years | lifetime in years (Table 7.SM.7 IPPC AR6) |
+| HFC4310_halocarbon | rho_HFC4310 | n | n | y | 3.57E-04 | W m-2 ppt-1 | radiative efficiencies (Table 7.SM.7 IPPC AR6) |
+| HFC4310_halocarbon | delta_HFC4310 | n | n | y | 0 | (unitless) | tropospheric adjustments scalar (7.3.2.4 IPCC AR6) |
+| HFC4310_halocarbon | molarMass | n | n | y | 252 | g | molar mass |
+| HFC125_halocarbon | tau | n | n | y | 30 | years | lifetime in years (Table 7.SM.7 IPPC AR6) |
+| HFC125_halocarbon | rho_HFC125 | n | n | y | 2.34E-04 | W m-2 ppt-1 | radiative efficiencies (Table 7.SM.7 IPPC AR6) |
+| HFC125_halocarbon | delta_HFC125 | n | n | y | 0 | (unitless) | tropospheric adjustments scalar (7.3.2.4 IPCC AR6) |
+| HFC125_halocarbon | molarMass | n | n | y | 120.02 | g | molar mass |
+| HFC134a_halocarbon | tau | n | n | y | 14 | years | lifetime in years (Table 7.SM.7 IPPC AR6) |
+| HFC134a_halocarbon | rho_HFC134a | n | n | y | 1.67E-04 | W m-2 ppt-1 | radiative efficiencies (Table 7.SM.7 IPPC AR6) |
+| HFC134a_halocarbon | delta_HFC134a | n | n | y | 0 | (unitless) | tropospheric adjustments scalar (7.3.2.4 IPCC AR6) |
+| HFC134a_halocarbon | molarMass | n | n | y | 102.02 | g | molar mass |
+| HFC143a_halocarbon | tau | n | n | y | 51 | years | lifetime in years (Table 7.SM.7 IPPC AR6) |
+| HFC143a_halocarbon | rho_HFC143a | n | n | y | 1.68E-04 | W m-2 ppt-1 | radiative efficiencies (Table 7.SM.7 IPPC AR6) |
+| HFC143a_halocarbon | delta_HFC143a | n | n | y | 0 | (unitless) | tropospheric adjustments scalar (7.3.2.4 IPCC AR6) |
+| HFC143a_halocarbon | molarMass | n | n | y | 84.04 | g | molar mass |
+| HFC227ea_halocarbon | tau | n | n | y | 36 | years | lifetime in years (Table 7.SM.7 IPPC AR6) |
+| HFC227ea_halocarbon | rho_HFC227ea | n | n | y | 2.73E-04 | W m-2 ppt-1 | radiative efficiencies (Table 7.SM.7 IPPC AR6) |
+| HFC227ea_halocarbon | delta_HFC227ea | n | n | y | 0 | (unitless) | tropospheric adjustments scalar (7.3.2.4 IPCC AR6) |
+| HFC227ea_halocarbon | molarMass | n | n | y | 170.03 | g | molar mass |
+| HFC245fa_halocarbon | tau | n | n | y | 7.9 | years | lifetime in years (Table 7.SM.7 IPPC AR6) |
+| HFC245fa_halocarbon | rho_HFC245fa | n | n | y | 2.45E-04 | W m-2 ppt-1 | radiative efficiencies (Table 7.SM.7 IPPC AR6) |
+| HFC245fa_halocarbon | delta_HFC245fa | n | n | y | 0 | (unitless) | tropospheric adjustments scalar (7.3.2.4 IPCC AR6) |
+| HFC245fa_halocarbon | molarMass | n | n | y | 134 | g | molar mass |
+| SF6_halocarbon | tau | n | n | y | 3200 | years | lifetime in years (Table 7.SM.7 IPPC AR6) |
+| SF6_halocarbon | rho_SF6 | n | n | y | 5.67E-04 | W m-2 ppt-1 | radiative efficiencies (Table 7.SM.7 IPPC AR6) |
+| SF6_halocarbon | delta_SF6 | n | n | y | 0 | (unitless) | tropospheric adjustments scalar (7.3.2.4 IPCC AR6) |
+| SF6_halocarbon | molarMass | n | n | y | 146.06 | g | molar mass |
+| CFC11_halocarbon | tau | n | n | y | 52 | years | lifetime in years (Table 7.SM.7 IPPC AR6) |
+| CFC11_halocarbon | rho_CFC11 | n | n | y | 2.59E-04 | W m-2 ppt-1 | radiative efficiencies (Table 7.SM.7 IPPC AR6) |
+| CFC11_halocarbon | delta_CFC11 | n | n | y | 0.13 | (unitless) | tropospheric adjustments scalar (7.3.2.4 IPCC AR6) |
+| CFC11_halocarbon | molarMass | n | n | y | 137.35 | g | molar mass |
+| CFC12_halocarbon | tau | n | n | y | 102 | years | lifetime in years (Table 7.SM.7 IPPC AR6) |
+| CFC12_halocarbon | rho_CFC12 | n | n | y | 3.20E-03 | W m-2 ppt-1 | radiative efficiencies (Table 7.SM.7 IPPC AR6) |
+| CFC12_halocarbon | delta_CFC12 | n | n | y | 0.13 | (unitless) | tropospheric adjustments scalar (7.3.2.4 IPCC AR6) |
+| CFC12_halocarbon | molarMass | n | n | y | 120.9 | g | molar mass |
+| CFC113_halocarbon | tau | n | n | y | 93 | years | lifetime in years (Table 7.SM.7 IPPC AR6) |
+| CFC113_halocarbon | rho_CFC113 | n | n | y | 3.01E-04 | W m-2 ppt-1 | radiative efficiencies (Table 7.SM.7 IPPC AR6) |
+| CFC113_halocarbon | delta_CFC113 | n | n | y | 0 | (unitless) | tropospheric adjustments scalar (7.3.2.4 IPCC AR6) |
+| CFC113_halocarbon | molarMass | n | n | y | 187.35 | g | molar mass |
+| CFC114_halocarbon | tau | n | n | y | 189 | years | lifetime in years (Table 7.SM.7 IPPC AR6) |
+| CFC114_halocarbon | rho_CFC114 | n | n | y | 3.14E-04 | W m-2 ppt-1 | radiative efficiencies (Table 7.SM.7 IPPC AR6) |
+| CFC114_halocarbon | delta_CFC114 | n | n | y | 0 | (unitless) | tropospheric adjustments scalar (7.3.2.4 IPCC AR6) |
+| CFC114_halocarbon | molarMass | n | n | y | 170.9 | g | molar mass |
+| CFC115_halocarbon | tau | n | n | y | 540 | years | lifetime in years (Table 7.SM.7 IPPC AR6) |
+| CFC115_halocarbon | rho_CFC115 | n | n | y | 2.46E-04 | W m-2 ppt-1 | radiative efficiencies (Table 7.SM.7 IPPC AR6) |
+| CFC115_halocarbon | delta_CFC115 | n | n | y | 0 | (unitless) | tropospheric adjustments scalar (7.3.2.4 IPCC AR6) |
+| CFC115_halocarbon | molarMass | n | n | y | 154.45 | g | molar mass |
+| CCl4_halocarbon | tau | n | n | y | 32 | years | lifetime in years (Table 7.SM.7 IPPC AR6) |
+| CCl4_halocarbon | rho_CCl4 | n | n | y | 1.66E-04 | W m-2 ppt-1 | radiative efficiencies (Table 7.SM.7 IPPC AR6) |
+| CCl4_halocarbon | delta_CCl4 | n | n | y | 0 | (unitless) | tropospheric adjustments scalar (7.3.2.4 IPCC AR6) |
+| CCl4_halocarbon | molarMass | n | n | y | 153.8 | g | molar mass |
+| CH3CC13_halocarbon | tau | n | n | y | 5 | years | lifetime in years (Table 7.SM.7 IPPC AR6) |
+| CH3CC13_halocarbon | rho_CH3CCl3 | n | n | y | 6.50E-05 | W m-2 ppt-1 | radiative efficiencies (Table 7.SM.7 IPPC AR6) |
+| CH3CC13_halocarbon | delta_CH3CCl3 | n | n | y | 0 | (unitless) | tropospheric adjustments scalar (7.3.2.4 IPCC AR6) |
+| CH3CC13_halocarbon | molarMass | n | n | y | 133.35 | g | molar mass |
+| halon1211_halocarbon | tau | n | n | y | 16 | years | lifetime in years (Table 7.SM.7 IPPC AR6) |
+| halon1211_halocarbon | rho_halon1211 | n | n | y | 3.00E-04 | W m-2 ppt-1 | radiative efficiencies (Table 7.SM.7 IPPC AR6) |
+| halon1211_halocarbon | delta_halon1211 | n | n | y | 0 | (unitless) | tropospheric adjustments scalar (7.3.2.4 IPCC AR6) |
+| halon1211_halocarbon | molarMass | n | n | y | 165.35 | g | molar mass |
+| halon1301_halocarbon | tau | n | n | y | 72 | years | lifetime in years (Table 7.SM.7 IPPC AR6) |
+| halon1301_halocarbon | rho_halon1301 | n | n | y | 2.99E-04 | W m-2 ppt-1 | radiative efficiencies (Table 7.SM.7 IPPC AR6) |
+| halon1301_halocarbon | delta_halon1301 | n | n | y | 0 | (unitless) | tropospheric adjustments scalar (7.3.2.4 IPCC AR6) |
+| halon1301_halocarbon | molarMass | n | n | y | 148.9 | g | molar mass |
+| halon2402_halocarbon | tau | n | n | y | 28 | years | lifetime in years (Table 7.SM.7 IPPC AR6) |
+| halon2402_halocarbon | rho_halon2402 | n | n | y | 3.12E-04 | W m-2 ppt-1 | radiative efficiencies (Table 7.SM.7 IPPC AR6) |
+| halon2402_halocarbon | delta_halon2402 | n | n | y | 0 | (unitless) | tropospheric adjustments scalar (7.3.2.4 IPCC AR6) |
+| halon2402_halocarbon | molarMass | n | n | y | 259.8 | g | molar mass |
+| HCF22_halocarbon | tau | n | n | y | 11.9 | years | lifetime in years (Table 7.SM.7 IPPC AR6) |
+| HCF22_halocarbon | rho_HCFC22 | n | n | y | 2.14E-04 | W m-2 ppt-1 | radiative efficiencies (Table 7.SM.7 IPPC AR6) |
+| HCF22_halocarbon | delta_HCFC22 | n | n | y | 0 | (unitless) | tropospheric adjustments scalar (7.3.2.4 IPCC AR6) |
+| HCF22_halocarbon | molarMass | n | n | y | 86.45 | g | molar mass |
+| HCFC141b_halocarbon | tau | n | n | y | 9.4 | years | lifetime in years (Table 7.SM.7 IPPC AR6) |
+| HCFC141b_halocarbon | rho_HCFC141b | n | n | y | 1.61E-04 | W m-2 ppt-1 | radiative efficiencies (Table 7.SM.7 IPPC AR6) |
+| HCFC141b_halocarbon | delta_HCFC141b | n | n | y | 0 | (unitless) | tropospheric adjustments scalar (7.3.2.4 IPCC AR6) |
+| HCFC141b_halocarbon | molarMass | n | n | y | 116.9 | g | molar mass |
+| HCFC142b_halocarbon | tau | n | n | y | 18 | years | lifetime in years (Table 7.SM.7 IPPC AR6) |
+| HCFC142b_halocarbon | rho_HCFC142b | n | n | y | 1.93E-04 | W m-2 ppt-1 | radiative efficiencies (Table 7.SM.7 IPPC AR6) |
+| HCFC142b_halocarbon | delta_HCFC142b | n | n | y | 0 | (unitless) | tropospheric adjustments scalar (7.3.2.4 IPCC AR6) |
+| HCFC142b_halocarbon | molarMass | n | n | y | 100.45 | g | molar mass |
+| CH3Cl_halocarbon | tau | n | n | y | 0.9 | years | lifetime in years (Table 7.SM.7 IPPC AR6) |
+| CH3Cl_halocarbon | rho_CH3Cl | n | n | y | 5.00E-06 | W m-2 ppt-1 | radiative efficiencies (Table 7.SM.7 IPPC AR6) |
+| CH3Cl_halocarbon | delta_CH3Cl | n | n | y | 0 | (unitless) | tropospheric adjustments scalar (7.3.2.4 IPCC AR6) |
+| CH3Cl_halocarbon | H0 | n | n | y | 504 | pptv | preindustrial concentration, from Saito et al 2007 GRL |
+| CH3Cl_halocarbon | molarMass | n | n | y | 50.45 | g | molar mass |
+| CH3Br_halocarbon | tau | n | n | y | 0.8 | years | lifetime in years (Table 7.SM.7 IPPC AR6) |
+| CH3Br_halocarbon | rho_CH3Br | n | n | y | 4.00E-06 | W m-2 ppt-1 | radiative efficiencies (Table 7.SM.7 IPPC AR6) |
+| CH3Br_halocarbon | delta_CH3Br | n | n | y | 0 | (unitless) | tropospheric adjustments scalar (7.3.2.4 IPCC AR6) |
+| CH3Br_halocarbon | H0 | n | n | y | 5.8 | pptv | preindustrial concentration, from Saltzman et al 2004 JGR |
+| CH3Br_halocarbon | molarMass | n | n | y | 50.45 | g | molar mass |
+
+### Table of biome-specific inputs
+
+It is possible to run Hector with multiple distinct
+[biomes](https://jgcri.github.io/hector/articles/ex_multiple-biomes.md).
+The following parameters are specific to a particular biome.
+
+| Section | Parameter | Biome specific | Time variant | Required | Default | Units | Description |
+|:---|:---|:---|:---|:---|:---|:---|:---|
+| simpleNbox | pf.veg_c | y | n | n | 55 | Pg C | Initial vegetation C pool |
+| simpleNbox | nonpf.veg_c | y | n | n | 495 | Pg C | Initial vegetation C pool |
+| simpleNbox | pf.detritus_c | y | n | n | 5 | Pg C | Initial detritus C pool |
+| simpleNbox | nonpf.detritus_c | y | n | n | 50 | Pg C | Initial detritus C pool |
+| simpleNbox | pf.soil_c | y | n | n | 308 | Pg C | Initial soil C pool |
+| simpleNbox | nonpf.soil_c | y | n | n | 609 | Pg C | Initial soil C pool |
+| simpleNbox | pf.permafrost_c | y | n | n | 865 | Pg C | Initial permafrost C pool |
+| simpleNbox | nonpf.permafrost_c | y | n | n | 0 | Pg C | Initial permafrost C pool |
+| simpleNbox | pf.npp_flux0 | y | n | n | 5.6 | Pg C yr-1 | Preindustrial net primary production |
+| simpleNbox | nonpf.npp_flux0 | y | n | n | 50.6 | Pg C yr-1 | Preindustrial net primary production |
+| simpleNbox | pf.warmingfactor | y | n | n | 2 | (unitless) | biome-specific warming factors |
+| simpleNbox | permafrost_c | y | n | y | 0 | Pg C | Preindustrial permafrost carbon pool |
+| simpleNbox | fpf_static | y | n | n | 0.74 | (unitless) | Fraction of permafrost that is static (non-labile) |
+| simpleNbox | rh_ch4_frac | y | n | n | 0.023 | (unitless) | Fraction of thawed permafrost decomposed as CH4 |
+| simpleNbox | pf_mu | y | n | n | 1.67 | (unitless) | Permafrost thaw parameter; see Woodard et al. 2021 |
+| simpleNbox | pf_sigma | y | n | n | 0.986 | (unitless) | Permafrost thaw parameter; see Woodard et al. 2021 |
+
+### Table of variable inputs (with a time index)
+
+There are two Hector-specific wrinkles to the INI property-value
+assignment scheme. First, some properties have a time index that’s
+required when assigning:
+
+    Ftalbedo[1750]=0.0
+    Ftalbedo[1950]=-0.2
+
+More commonly, such [time
+series](https://jgcri.github.io/hector/articles/TimeSeries.md) are
+assigned by reading data in from a comma-separated value text file:
+
+    lucEmissions=csv:input/emissions/ssp245_emissions.csv
+
+In this case, the `input/emissions/ssp245_emissions.csv` file is parsed
+and the data in column `lucEmissions` are assigned to the model
+variable, with a required `Date` column providing the time index. Note
+that a “(csv)” entry in the `default` column indicates that the values
+are passed in via a path to a csv file.
+
+| Section | Input variable | Biome specific | Time variant | Required | Default | Units | Description |
+|:---|:---|:---|:---|:---|:---|:---|:---|
+| simpleNbox | ffi_emissions | n | y | y | “(csv)” | Pg C yr-1 | Anthropogenic contributions: emissions |
+| simpleNbox | daccs_uptake | n | y | y | “(csv)” | Pg C yr-1 | Anthropogenic contributions: direct air carbon capture and storage |
+| simpleNbox | luc_emissions | n | y | y | “(csv)” | Pg C yr-1 | Anthropogenic contributions: land use change |
+| simpleNbox | luc_uptake | n | y | y | “(csv)” | Pg C yr-2 | Anthropogenic contributions: land use change |
+| simpleNbox | CO2_constrain | n | y | n | “(csv)” | ppmv | Atmospheric CO2 constraint |
+| so2 | SO2_emissions | n | y | y | “(csv)” |  | emissions time series |
+| so2 | SV | n | y | y | “(csv)” |  | volcanic radiative forcing time series |
+| CH4 | CH4_emissions | n | y | y | “(csv)” |  | emissions time series |
+| CH5 | CH4_constrain | n | y | n | “(csv)” |  | CH4 concentration constraint |
+| OH | NOX_emissions | n | y | y | “(csv)” |  | emissions time series |
+| OH | CO_emissions | n | y | y | “(csv)” |  | emissions time series |
+| OH | NMVOC_emissions | n | y | y | “(csv)” |  | emissions time series |
+| ozone | NOX_emissions | n | y | y | “(csv)” |  | emissions time series |
+| ozone | CO_emissions | n | y | y | “(csv)” |  | emissions time series |
+| ozone | NMVOC_emissions | n | y | y | “(csv)” |  | emissions time series |
+| N2O | N2O_natural_emissions | n | y | y | 9.5 |  | default natural emissions based on a best fit to IPCC AR6 N2O RF |
+| N2O | N2O_emissions | n | y | y | “(csv)” |  | emissions time series |
+| N2O | N2O_constrain | n | y | n | “(csv)” |  | N2O concentration constraint |
+| forcing | RF_tot_constrain | n | y | n | “(csv)” |  | If supplied, the model will use these data, ignoring what it calculates |
+| temperature | tas_constrain | n | y | n | “(csv)” |  | Optional global temperature constraint; If supplied, the model will use these data, ignoring what it calculates |
+| bc | BC_emissions | n | y | y | “(csv)” |  |  |
+| oc | OC_emissions | n | y | y | “(csv)” |  |  |
+| nh3 | NH3_emissions | n | y | y | “(csv)” |  |  |
+| CF4_halocarbon | CF4_emissions | n | y | y | “(csv)” |  |  |
+| C2F6_halocarbon | C2F6_emissions | n | y | y | “(csv)” |  |  |
+| HFC23_halocarbon | HFC23_emissions | n | y | y | “(csv)” |  |  |
+| HFC32_halocarbon | HFC32_emissions | n | y | y | “(csv)” |  |  |
+| HFC4310_halocarbon | HFC4310_emissions | n | y | y | “(csv)” |  |  |
+| HFC125_halocarbon | HFC125_emissions | n | y | y | “(csv)” |  |  |
+| HFC134a_halocarbon | HFC134a_emissions | n | y | y | “(csv)” |  |  |
+| HFC143a_halocarbon | HFC143a_emissions | n | y | y | “(csv)” |  |  |
+| HFC227ea_halocarbon | HFC227ea_emissions | n | y | y | “(csv)” |  |  |
+| HFC245fa_halocarbon | HFC245fa_emissions | n | y | y | “(csv)” |  |  |
+| SF6_halocarbon | SF6_emissions | n | y | y | “(csv)” |  |  |
+| CFC11_halocarbon | CFC11_emissions | n | y | y | “(csv)” |  |  |
+| CFC12_halocarbon | CFC12_emissions | n | y | y | “(csv)” |  |  |
+| CFC113_halocarbon | CFC113_emissions | n | y | y | “(csv)” |  |  |
+| CFC114_halocarbon | CFC114_emissions | n | y | y | “(csv)” |  |  |
+| CFC115_halocarbon | CCl4_emissions | n | y | y | “(csv)” |  |  |
+| CCl4_halocarbon | CFC115_emissions | n | y | y | “(csv)” |  |  |
+| CH3CC13_halocarbon | CH3CCl3_emissions | n | y | y | “(csv)” |  |  |
+| halon1211_halocarbon | halon1211_emissions | n | y | y | “(csv)” |  |  |
+| halon1301_halocarbon | halon1301_emissions | n | y | y | “(csv)” |  |  |
+| halon2402_halocarbon | halon2402_emissions | n | y | y | “(csv)” |  |  |
+| HCF22_halocarbon | HCFC22_emissions | n | y | y | “(csv)” |  |  |
+| HCFC141b_halocarbon | HCFC141b_emissions | n | y | y | “(csv)” |  |  |
+| HCFC142b_halocarbon | HCFC142b_emissions | n | y | y | “(csv)” |  |  |
+| CH3Cl_halocarbon | CH3Cl_emissions | n | y | y | “(csv)” |  |  |
+| CH3Br_halocarbon | CH3Br_emissions | n | y | y | “(csv)” |  |  |

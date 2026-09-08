@@ -7,8 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Example: Calculating GMST from GMAT in Hector • hector</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Example: Calculating GMST from GMAT in Hector">
 </head>
@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">hector</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">3.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">3.5.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -73,7 +73,7 @@ Pressburger</h4>
             
             <h4 data-toc-skip class="date">2021-08-18</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/JGCRI/hector/blob/v3.5.0/vignettes/articles/ex_GMAT-GMST.Rmd" class="external-link"><code>vignettes/articles/ex_GMAT-GMST.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/JGCRI/hector/blob/main/vignettes/articles/ex_GMAT-GMST.Rmd" class="external-link"><code>vignettes/articles/ex_GMAT-GMST.Rmd</code></a></small>
       <div class="d-none name"><code>ex_GMAT-GMST.Rmd</code></div>
     </div>
 
@@ -185,7 +185,7 @@ slowly than the atmosphere.</p>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span>  <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html" class="external-link">expression</a></span><span class="op">(</span><span class="va">degree</span> <span class="op">~</span> <span class="st">"C"</span><span class="op">)</span>,</span>
 <span>       title <span class="op">=</span> <span class="st">"Comparison of Hector GMST and GMAT"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="ex_GMAT-GMST_files/figure-html/plot-1.png" width="700"></p>
+<p><img src="ex_GMAT-GMST_files/figure-html/plot-1.png" class="r-plt" alt="" width="700"></p>
 <p>Then, to highlight the gap between the two temperatures, we can plot
 the difference.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
@@ -200,7 +200,7 @@ the difference.</p>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span><span class="op">)</span>  <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/expression.html" class="external-link">expression</a></span><span class="op">(</span><span class="va">degree</span> <span class="op">~</span> <span class="st">"C"</span><span class="op">)</span>,</span>
 <span>       title <span class="op">=</span> <span class="st">"Differences in temperature over time"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="ex_GMAT-GMST_files/figure-html/plot.diff-1.png" width="700"></p>
+<p><img src="ex_GMAT-GMST_files/figure-html/plot.diff-1.png" class="r-plt" alt="" width="700"></p>
 <p>Remember to shut down the core.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/shutdown.html">shutdown</a></span><span class="op">(</span><span class="va">core</span><span class="op">)</span></span></code></pre></div>
@@ -218,7 +218,7 @@ the difference.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>

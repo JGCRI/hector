@@ -7,8 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>An Introduction to Permafrost in Hector • hector</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="An Introduction to Permafrost in Hector">
 </head>
@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">hector</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">3.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">3.5.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -70,7 +70,7 @@
       <h1>An Introduction to Permafrost in Hector</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/JGCRI/hector/blob/v3.5.0/vignettes/articles/Permafrost.Rmd" class="external-link"><code>vignettes/articles/Permafrost.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/JGCRI/hector/blob/main/vignettes/articles/Permafrost.Rmd" class="external-link"><code>vignettes/articles/Permafrost.Rmd</code></a></small>
       <div class="d-none name"><code>Permafrost.Rmd</code></div>
     </div>
 
@@ -137,7 +137,7 @@ as the climate warmed…</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/fetchvars.html">fetchvars</a></span><span class="op">(</span><span class="va">core</span>, <span class="fl">2300</span>, <span class="fu"><a href="../reference/carboncycle.html">PERMAFROST_C</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;            scenario year     variable    value units</span></span>
-<span><span class="co">#&gt; 1 ssp245-permafrost 2300 permafrost_c 675.8901  Pg C</span></span>
+<span><span class="co">#&gt; 1 ssp245-permafrost 2300 permafrost_c 675.5492  Pg C</span></span>
 <span><span class="fu"><a href="../reference/shutdown.html">shutdown</a></span><span class="op">(</span><span class="va">core</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Hector core (INACTIVE)</span></span></code></pre></div>
 <p>…leading to earth system and climate differences:</p>
@@ -149,7 +149,7 @@ as the climate warmed…</p>
 <span>       <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">value</span>, color <span class="op">=</span> <span class="va">scenario</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">variable</span>, scales <span class="op">=</span> <span class="st">"free"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Permafrost_files/figure-html/unnamed-chunk-6-1.png" width="672"></p>
+<p><img src="Permafrost_files/figure-html/unnamed-chunk-6-1.png" class="r-plt" alt="" width="672"></p>
 </div>
 <div class="section level3">
 <h3 id="a-closer-look-at-permafrost-dynamics">A closer look at permafrost dynamics<a class="anchor" aria-label="anchor" href="#a-closer-look-at-permafrost-dynamics"></a>
@@ -165,7 +165,7 @@ We can look at some of these effects in more detail:</p>
 <span>       <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">value</span>, color <span class="op">=</span> <span class="va">scenario</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">variable</span>, scales <span class="op">=</span> <span class="st">"free"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Permafrost_files/figure-html/unnamed-chunk-7-1.png" width="672"></p>
+<p><img src="Permafrost_files/figure-html/unnamed-chunk-7-1.png" class="r-plt" alt="" width="672"></p>
 <p>Here we can see how permafrost thaws and then, in the 22nd century,
 slightly refreezes; the thawed permafrost pool peaks in the second half
 of the 20th century and then declines; and both atmospheric methane and
@@ -213,7 +213,7 @@ calibrated to CMIP6 data:</p>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html" class="external-link">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">varying</span><span class="op">)</span> <span class="op">+</span></span>
 <span>    <span class="co"># add a thick black line to show default behavior</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/annotate.html" class="external-link">annotate</a></span><span class="op">(</span>geom <span class="op">=</span> <span class="st">"line"</span>, x <span class="op">=</span> <span class="va">default</span><span class="op">$</span><span class="va">year</span>, y <span class="op">=</span> <span class="va">default</span><span class="op">$</span><span class="va">value</span>, linewidth <span class="op">=</span> <span class="fl">1.5</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Permafrost_files/figure-html/unnamed-chunk-9-1.png" width="672"></p>
+<p><img src="Permafrost_files/figure-html/unnamed-chunk-9-1.png" class="r-plt" alt="" width="672"></p>
 <p>Hector’s permafrost capability is planned to be fully science-ready
 in v3.2.</p>
 </div>
@@ -228,7 +228,7 @@ in v3.2.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>

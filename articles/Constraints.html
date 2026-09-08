@@ -7,8 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Constraints • hector</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Constraints">
 </head>
@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">hector</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">3.5.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">3.5.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -70,7 +70,7 @@
       <h1>Constraints</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/JGCRI/hector/blob/v3.5.0/vignettes/articles/Constraints.Rmd" class="external-link"><code>vignettes/articles/Constraints.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/JGCRI/hector/blob/main/vignettes/articles/Constraints.Rmd" class="external-link"><code>vignettes/articles/Constraints.Rmd</code></a></small>
       <div class="d-none name"><code>Constraints.Rmd</code></div>
     </div>
 
@@ -212,7 +212,7 @@ function and <code><a href="../reference/carboncycle.html">CO2_CONSTRAIN()</a></
 <span><span class="va">constrained_out</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetchvars.html">fetchvars</a></span><span class="op">(</span><span class="va">core</span>, <span class="fl">1850</span><span class="op">:</span><span class="fl">2100</span>, vars <span class="op">=</span> <span class="va">vars_to_keep</span><span class="op">)</span></span></code></pre></div>
 <p>Plot results from the free running Hector with the constrained
 Hector.</p>
-<p><img src="Constraints_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
+<p><img src="Constraints_files/figure-html/unnamed-chunk-3-1.png" class="r-plt" alt="" width="700"></p>
 <p><strong>How the constraint is implemented in Hector
 (C++)</strong></p>
 <p>The
@@ -374,7 +374,7 @@ forcing constraint.</p>
 <span><span class="va">constrained_out</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetchvars.html">fetchvars</a></span><span class="op">(</span><span class="va">core</span>, <span class="fl">1850</span><span class="op">:</span><span class="fl">2100</span>, vars <span class="op">=</span> <span class="va">vars_to_keep</span><span class="op">)</span></span></code></pre></div>
 <p>Plot the total radiative forcing and global mean temperature. Recall
 the constraint is only in effect between 1950 and 2050.</p>
-<p><img src="Constraints_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
+<p><img src="Constraints_files/figure-html/unnamed-chunk-5-1.png" class="r-plt" alt="" width="700"></p>
 </div>
 <div class="section level3">
 <h3 id="temperature">Temperature<a class="anchor" aria-label="anchor" href="#temperature"></a>
@@ -428,59 +428,7 @@ average mean temperature (<code>global_tas</code>) constraint.</p>
 <span><span class="va">constrained_out</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetchvars.html">fetchvars</a></span><span class="op">(</span><span class="va">core</span>, <span class="fl">1850</span><span class="op">:</span><span class="fl">2100</span>, vars <span class="op">=</span> <span class="va">vars_to_keep</span><span class="op">)</span></span></code></pre></div>
 <p>Plot the total radiative forcing and global mean temperature. Recall
 the constraint is only in effect between 1950 and 2050.</p>
-<p><img src="Constraints_files/figure-html/unnamed-chunk-7-1.png" width="700"></p>
-</div>
-<div class="section level3">
-<h3 id="nbp">NBP<a class="anchor" aria-label="anchor" href="#nbp"></a>
-</h3>
-<p>The NBP constraint can be activated via the ini file by adding the
-line</p>
-<pre><code><span><span class="va">NBP_constrain</span><span class="op">=</span><span class="va">csv</span><span class="op">:</span><span class="va">path</span><span class="op">/</span><span class="va">to</span><span class="op">/</span><span class="va">constraint</span><span class="op">/</span><span class="va">file.csv</span></span></code></pre>
-<p>to the <code>[simpleNbox]</code> section of the <a href="InputFiles.html">input file</a>, where the constraint csv file has
-columns titled <code>Date</code> and <code>NBP_constrain</code> similar
-to the sample file is included in the repository (see
-<code>inst/input/tables/tgav_historical.csv</code>).</p>
-<p>Here is an example implemented in the R interface</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">constraint_yrs</span> <span class="op">&lt;-</span> <span class="fl">2001</span><span class="op">:</span><span class="fl">2010</span></span>
-<span><span class="va">constraint_values</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.2</span>, <span class="fl">0.3</span>, <span class="op">-</span><span class="fl">0.4</span>, <span class="op">-</span><span class="fl">0.5</span>, <span class="op">-</span><span class="fl">0.6</span>, <span class="fl">0.7</span>, <span class="fl">0.8</span>, <span class="fl">0.9</span>, <span class="fl">1.0</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">ini</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"input/hector_ssp245.ini"</span>, package <span class="op">=</span> <span class="st">"hector"</span><span class="op">)</span></span>
-<span><span class="va">core</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/newcore.html">newcore</a></span><span class="op">(</span><span class="va">ini</span>, name <span class="op">=</span> <span class="st">"ssp245"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="fu"><a href="../reference/run.html">run</a></span><span class="op">(</span><span class="va">core</span><span class="op">)</span><span class="op">)</span> <span class="co"># `invisible` prevents Hector core info from being printed out</span></span>
-<span></span>
-<span><span class="co"># Extract the output</span></span>
-<span><span class="va">dates_to_keep</span> <span class="op">&lt;-</span> <span class="fl">1850</span><span class="op">:</span><span class="fl">2100</span></span>
-<span><span class="va">vars_to_keep</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="../reference/carboncycle.html">ATMOSPHERIC_CO2</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="../reference/carboncycle.html">NBP</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="../reference/carboncycle.html">NPP</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="../reference/carboncycle.html">RH</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">free_out</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetchvars.html">fetchvars</a></span><span class="op">(</span><span class="va">core</span>, <span class="fl">1850</span><span class="op">:</span><span class="fl">2100</span>, vars <span class="op">=</span> <span class="va">vars_to_keep</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Use setvar() to set up the the constraint, reset and run Hector, and fetch the results</span></span>
-<span><span class="fu"><a href="../reference/setvar.html">setvar</a></span><span class="op">(</span><span class="va">core</span>, dates <span class="op">=</span> <span class="va">constraint_yrs</span>, var <span class="op">=</span> <span class="fu"><a href="../reference/carboncycle.html">NBP_CONSTRAIN</a></span><span class="op">(</span><span class="op">)</span>, values <span class="op">=</span> <span class="va">constraint_values</span>,</span>
-<span>       unit <span class="op">=</span> <span class="fu"><a href="../reference/getunits.html">getunits</a></span><span class="op">(</span><span class="fu"><a href="../reference/carboncycle.html">NBP_CONSTRAIN</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/reset.html">reset</a></span><span class="op">(</span><span class="va">core</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Hector core: ssp245</span></span>
-<span><span class="co">## Start date:  1745</span></span>
-<span><span class="co">## End date:    2300</span></span>
-<span><span class="co">## Current date:    1745</span></span>
-<span><span class="co">## Input file:  /home/runner/work/_temp/Library/hector/input/hector_ssp245.ini</span></span></code></pre>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="fu"><a href="../reference/run.html">run</a></span><span class="op">(</span><span class="va">core</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">constrained_out</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fetchvars.html">fetchvars</a></span><span class="op">(</span><span class="va">core</span>, <span class="fl">1850</span><span class="op">:</span><span class="fl">2100</span>, vars <span class="op">=</span> <span class="va">vars_to_keep</span><span class="op">)</span></span></code></pre></div>
-<p>Plot results from the free running Hector with the constrained
-Hector.</p>
-<p><img src="Constraints_files/figure-html/unnamed-chunk-9-1.png" width="700"></p>
-<p>The model hits the constraint exactly by raising RH and lowering NPP.
-Because of this, atmospheric
-CO<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi></mi><mn>2</mn></msub><annotation encoding="application/x-tex">_2</annotation></semantics></math>
-rises rapidly during the constraint period, as we’ve basically shut down
-the land C sink. As a result, when the model exits the constraint
-period, NPP shoots up very high (because the atmosphere is saturated
-with
-CO<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi></mi><mn>2</mn></msub><annotation encoding="application/x-tex">_2</annotation></semantics></math>).
-In a similar vein, the suppressed NPP means, once outside of the
-constraint, that RH is low and thus the land becomes a large sink as it
-draws down the excess atmospheric
-CO<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi></mi><mn>2</mn></msub><annotation encoding="application/x-tex">_2</annotation></semantics></math>.</p>
+<p><img src="Constraints_files/figure-html/unnamed-chunk-7-1.png" class="r-plt" alt="" width="700"></p>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -494,7 +442,7 @@ CO<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>
