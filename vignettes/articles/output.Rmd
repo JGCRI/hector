@@ -54,7 +54,7 @@ The [fetchvars](../reference/fetchvars.html) function is used to get results fro
 |RF_CH3CL()           |FadjCH3Cl         |W/m2     |
 |RF_CH3BR()           |FadjCH3Br         |W/m2     |
 |CONCENTRATIONS_CH4() |CH4_concentration |ppbv CH4 |
-|RF_CH4()             |FCH4              |W/m2     |
+|RF_CH4()             |RF_CH4            |W/m2     |
 |CONCENTRATIONS_N2O() |N2O_concentration |ppbv N2O |
 |CONCENTRATIONS_O3()  |O3_concentration  |DU O3    |
 |OCEAN_C()            |ocean_c           |Pg C     |

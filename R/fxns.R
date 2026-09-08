@@ -28,6 +28,7 @@ getfxn <- function(str) {
 #' @return Character vector of variable names.
 #' @export
 #' @family outputs
+#' @importFrom utils getFromNamespace
 #' @examples
 #' \dontrun{
 #' ini <- system.file(package = "hector", "input/hector_ssp245.ini")
@@ -37,5 +38,87 @@ getfxn <- function(str) {
 #' print(out)
 #' }
 ALL_VARS <- function() {
-  hector::all_vars
+  getFromNamespace("all_vars", "hector")
+}
+
+#' Get all of the possible Hector halocarbon concentrations
+#'
+#' This function returns a vector of the possible hector halocarbon concentrations
+#' that can be accessed with \code{\link{fetchvars}}.
+#' @return Character vector of variable names.
+#' @export
+#' @family outputs
+#' @importFrom utils getFromNamespace
+#' @examples
+#' \dontrun{
+#' ini <- system.file(package = "hector", "input/hector_ssp245.ini")
+#' hc <- newcore(ini)
+#' run(hc)
+#' out <- fetchvars(core = hc, dates = 1900:2100, vars = ALL_HALOCARBON_CONCENTRATIONS())
+#' print(out)
+#' }
+ALL_HALOCARBON_CONCENTRATIONS <- function() {
+  getFromNamespace("halo_conc", "hector")
+}
+
+
+#' Get all of the possible Hector halocarbon emissions
+#'
+#' This function returns a vector of the possible hector halocarbon emissions
+#' that can be accessed with \code{\link{fetchvars}} or set with \code{\link{setvar}}.
+#' @return Character vector of variable names.
+#' @export
+#' @importFrom utils getFromNamespace
+#' @family haloemiss
+#' @examples
+#' \dontrun{
+#' ini <- system.file(package = "hector", "input/hector_ssp245.ini")
+#' hc <- newcore(ini)
+#' run(hc)
+#' out <- fetchvars(core = hc, dates = 1900:2100, vars = ALL_HALOCARBON_EMISSIONS())
+#' print(out)
+#' }
+ALL_HALOCARBON_EMISSIONS <- function() {
+  getFromNamespace("halo_emiss", "hector")
+}
+
+
+#' Get all of the possible Hector halocarbon constraints
+#'
+#' This function returns a vector of the possible hector halocarbon constraints
+#' that can be accessed with \code{\link{fetchvars}} or set with \code{\link{setvar}}.
+#' @return Character vector of variable names.
+#' @export
+#' @importFrom utils getFromNamespace
+#' @family outputs, inputs
+#' @examples
+#' \dontrun{
+#' ini <- system.file(package = "hector", "input/hector_ssp245.ini")
+#' hc <- newcore(ini)
+#' run(hc)
+#' out <- fetchvars(core = hc, dates = 1900:2100, vars = ALL_HALOCARBON_CONSTRAINTS())
+#' print(out)
+#' }
+ALL_HALOCARBON_CONSTRAINTS <- function() {
+  getFromNamespace("halo_constraints", "hector")
+}
+
+#' Get all of the possible Hector halocarbon radiative forcings
+#'
+#' This function returns a vector of the possible hector halocarbon forcings
+#' that can be accessed with \code{\link{fetchvars}}.
+#' @return Character vector of variable names.
+#' @export
+#' @importFrom utils getFromNamespace
+#' @family outputs
+#' @examples
+#' \dontrun{
+#' ini <- system.file(package = "hector", "input/hector_ssp245.ini")
+#' hc <- newcore(ini)
+#' run(hc)
+#' out <- fetchvars(core = hc, dates = 1900:2100, vars = ALL_HALOCARBON_RF())
+#' print(out)
+#' }
+ALL_HALOCARBON_RF <- function() {
+  getFromNamespace("halo_rf", "hector")
 }

@@ -119,6 +119,9 @@ string unitval::unitsName(const unit_types u) {
   case U_GMOL:
     return "Gmol";
     break;
+  case U_G_MOL:
+    return "g/mol";
+    break;
   case U_GT:
     return "GT(?)";
     break;

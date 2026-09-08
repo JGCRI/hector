@@ -1,3 +1,12 @@
+# hector 3.5.5
+
+* Minor documentation changes 
+* Minor bug fixes related to output reporting (precision level in output stream and rh_ch4)
+* Simplify ini files
+* Remove the NBP constraint 
+* Update halocarbon parameter values
+
+
 # hector 3.5.0 
 
 * Minor documentation changes 
@@ -8,9 +17,6 @@
 * Update [CH4] lifetime parameters
 * Allow for time varying historical N2O and CH4 natural emissions 
 * New default parameter values for ocean heat diffusivity, CO2 fertilization, and heterotrophic respiration temperature sensitivity 
-
-
-
 
 
 # hector 3.2.0 

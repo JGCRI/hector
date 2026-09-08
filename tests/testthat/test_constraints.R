@@ -271,24 +271,3 @@ test_that("tas constraint works", {
   expect_equal(x$value[2], t2000) # identical to the constraint in 2000,
   expect_lt(x$value[3], t2000) # and again lower the year after
 })
-
-test_that("NBP constraint works", {
-  yr <- 2000
-  nbp2000 <- 1.0
-  hc <- ssp245()
-  setvar(hc, 2000, NBP_CONSTRAIN(), nbp2000, getunits(NBP_CONSTRAIN()))
-  invisible(run(hc))
-
-  # constraint returns NA for non-set years
-  constraint_otheryear <- fetchvars(hc, 1999, vars = NBP_CONSTRAIN())
-  expect_true(is.na(constraint_otheryear$value))
-  # constraint returns correct value for set year
-  constraint_year <- fetchvars(hc, 2000, vars = NBP_CONSTRAIN())
-  expect_equal(constraint_year$value, nbp2000)
-
-  x <- fetchvars(hc, 1999:2001, vars = NBP())
-
-  expect_false(x$value[1] == nbp2000) # NBP should be higher than constraint the year before,
-  expect_equal(x$value[2], nbp2000) # identical to the constraint in 2000,
-  expect_false(x$value[3] == nbp2000) # and again higher the year after
-})

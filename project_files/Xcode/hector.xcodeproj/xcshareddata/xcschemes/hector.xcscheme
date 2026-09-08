@@ -54,6 +54,10 @@
       <CommandLineArguments>
          <CommandLineArgument
             argument = "./inst/input/hector_ssp245.ini"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "/Users/dorh012/Documents/Hector-WD/hector/inst/input/hector_ssp245.ini"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>

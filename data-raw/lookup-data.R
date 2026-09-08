@@ -21,7 +21,7 @@ lines <- readLines("./src/rcpp_constants.cpp")
 # Specific functions to exclude
 # TODO is there a way to make this not hard coded?
 lines <- lines[!grepl(
-  pattern = "GETDATA|SETDATA|BIOME_SPLIT_CHAR|RFADJ_PREFIX|RF_PREFIX",
+  pattern = "GETDATA|SETDATA|BIOME_SPLIT_CHAR|RF_PREFIX",
   x = lines
 )]
 

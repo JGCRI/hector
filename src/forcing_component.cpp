@@ -53,14 +53,14 @@ namespace Hector {
  * being a little ugly, but it gets the job done.
  */
 
-const char *ForcingComponent::adjusted_halo_forcings[N_HALO_FORCINGS] = {
-    D_RFADJ_CF4,      D_RFADJ_C2F6,      D_RFADJ_HFC23,     D_RFADJ_HFC32,
-    D_RFADJ_HFC4310,  D_RFADJ_HFC125,    D_RFADJ_HFC134a,   D_RFADJ_HFC143a,
-    D_RFADJ_HFC227ea, D_RFADJ_HFC245fa,  D_RFADJ_SF6,       D_RFADJ_CFC11,
-    D_RFADJ_CFC12,    D_RFADJ_CFC113,    D_RFADJ_CFC114,    D_RFADJ_CFC115,
-    D_RFADJ_CCl4,     D_RFADJ_CH3CCl3,   D_RFADJ_HCFC22,    D_RFADJ_HCFC141b,
-    D_RFADJ_HCFC142b, D_RFADJ_halon1211, D_RFADJ_halon1301, D_RFADJ_halon2402,
-    D_RFADJ_CH3Cl,    D_RFADJ_CH3Br};
+const char *ForcingComponent::unadjusted_halo_forcings[N_HALO_FORCINGS] = {
+    D_RFUNADJ_CF4,      D_RFUNADJ_C2F6,      D_RFUNADJ_HFC23,     D_RFUNADJ_HFC32,
+    D_RFUNADJ_HFC4310,  D_RFUNADJ_HFC125,    D_RFUNADJ_HFC134a,   D_RFUNADJ_HFC143a,
+    D_RFUNADJ_HFC227ea, D_RFUNADJ_HFC245fa,  D_RFUNADJ_SF6,       D_RFUNADJ_CFC11,
+    D_RFUNADJ_CFC12,    D_RFUNADJ_CFC113,    D_RFUNADJ_CFC114,    D_RFUNADJ_CFC115,
+    D_RFUNADJ_CCl4,     D_RFUNADJ_CH3CCl3,   D_RFUNADJ_HCFC22,    D_RFUNADJ_HCFC141b,
+    D_RFUNADJ_HCFC142b, D_RFUNADJ_halon1211, D_RFUNADJ_halon1301, D_RFUNADJ_halon2402,
+    D_RFUNADJ_CH3Cl,    D_RFUNADJ_CH3Br};
 
 const char *ForcingComponent::halo_forcing_names[N_HALO_FORCINGS] = {
     D_RF_CF4,      D_RF_C2F6,      D_RF_HFC23,     D_RF_HFC32,
@@ -136,8 +136,7 @@ void ForcingComponent::init(Core *coreptr) {
   core->registerCapability(D_VOLCANIC_SCALE, getComponentName());
 
   for (int i = 0; i < N_HALO_FORCINGS; ++i) {
-    core->registerCapability(adjusted_halo_forcings[i], getComponentName());
-    forcing_name_map[adjusted_halo_forcings[i]] = halo_forcing_names[i];
+    core->registerCapability(halo_forcing_names[i], getComponentName());
   }
 
   // Register our dependencies
@@ -148,33 +147,12 @@ void ForcingComponent::init(Core *coreptr) {
   core->registerDependency(D_EMISSIONS_OC, getComponentName());
   core->registerDependency(D_EMISSIONS_NH3, getComponentName());
   core->registerDependency(D_N2O_CONC, getComponentName());
-  core->registerDependency(D_RF_CF4, getComponentName());
-  core->registerDependency(D_RF_C2F6, getComponentName());
-  core->registerDependency(D_RF_HFC23, getComponentName());
-  core->registerDependency(D_RF_HFC32, getComponentName());
-  core->registerDependency(D_RF_HFC4310, getComponentName());
-  core->registerDependency(D_RF_HFC125, getComponentName());
-  core->registerDependency(D_RF_HFC134a, getComponentName());
-  core->registerDependency(D_RF_HFC143a, getComponentName());
-  core->registerDependency(D_RF_HFC227ea, getComponentName());
-  core->registerDependency(D_RF_HFC245fa, getComponentName());
-  core->registerDependency(D_RF_SF6, getComponentName());
-  core->registerDependency(D_RF_CFC11, getComponentName());
-  core->registerDependency(D_RF_CFC12, getComponentName());
-  core->registerDependency(D_RF_CFC113, getComponentName());
-  core->registerDependency(D_RF_CFC114, getComponentName());
-  core->registerDependency(D_RF_CFC115, getComponentName());
-  core->registerDependency(D_RF_CCl4, getComponentName());
-  core->registerDependency(D_RF_CH3CCl3, getComponentName());
-  core->registerDependency(D_RF_HCFC22, getComponentName());
-  core->registerDependency(D_RF_HCFC141b, getComponentName());
-  core->registerDependency(D_RF_HCFC142b, getComponentName());
-  core->registerDependency(D_RF_halon1211, getComponentName());
-  core->registerDependency(D_RF_halon1301, getComponentName());
-  core->registerDependency(D_RF_halon2402, getComponentName());
-  core->registerDependency(D_RF_CH3Br, getComponentName());
-  core->registerDependency(D_RF_CH3Cl, getComponentName());
   core->registerDependency(D_RF_T_ALBEDO, getComponentName());
+  // The unadjusted halocarbon forcings calculated by halocarbon_component
+  for (int i = 0; i < N_HALO_FORCINGS; ++i) {
+    core->registerDependency(unadjusted_halo_forcings[i], getComponentName());
+  }
+
 
   // Register the inputs we can receive from outside
   core->registerInput(D_DELTA_CH4, getComponentName());
@@ -399,25 +377,19 @@ void ForcingComponent::run(const double runToDate) {
     }
 
     // ---------- Halocarbons ----------
-    boost::array<string, 26> halos = {
-        {D_RF_CF4,      D_RF_C2F6,      D_RF_HFC23,     D_RF_HFC32,
-         D_RF_HFC4310,  D_RF_HFC125,    D_RF_HFC134a,   D_RF_HFC143a,
-         D_RF_HFC227ea, D_RF_HFC245fa,  D_RF_SF6,       D_RF_CFC11,
-         D_RF_CFC12,    D_RF_CFC113,    D_RF_CFC114,    D_RF_CFC115,
-         D_RF_CCl4,     D_RF_CH3CCl3,   D_RF_HCFC22,    D_RF_HCFC141b,
-         D_RF_HCFC142b, D_RF_halon1211, D_RF_halon1301, D_RF_halon2402,
-         D_RF_CH3Cl,    D_RF_CH3Br}};
-
     // Halocarbons can be disabled individually via the input file, so we run
     // through all possible ones
-    for (auto hc : halos) {
-      if (core->checkCapability(hc)) {
-        // Forcing values are actually computed by the halocarbon itself
-        forcings[hc] =
-            core->sendMessage(M_GETDATA, hc, message_data(runToDate));
+      for (int i = 0; i < N_HALO_FORCINGS; ++i) {
+          if (core->checkCapability(unadjusted_halo_forcings[i])) {
+            // Pull the unadjusted forcing values from the halocarbon component and
+            // add them to the forcings vector so that they may be normalized to
+            // the base year.
+            forcings[halo_forcing_names[i]] =
+                core->sendMessage(M_GETDATA, unadjusted_halo_forcings[i], message_data(runToDate));
+          }
       }
-    }
-
+      
+      
     // Aerosols
     if (core->checkCapability(D_EMISSIONS_BC) &&
         core->checkCapability(D_EMISSIONS_OC) &&
