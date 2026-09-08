@@ -311,4 +311,3 @@ NULL
 #'  \item{string}{String of variable name}
 #' }
 "fxntable"
-

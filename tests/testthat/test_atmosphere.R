@@ -44,7 +44,6 @@ test_that("Checking RF values", {
 
   # Make sure that the base year values (1750) equal 0.
   expect_equal(sum_individuals$value[sum_individuals$year == 1750], 0)
-
 })
 
 test_that("Check Temp", {
