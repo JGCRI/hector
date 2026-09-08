@@ -77,7 +77,7 @@ entry.
 max(abs(slv$fvec))
 ```
 
-    ## [1] 1.785793e-08
+    ## [1] 1.785816e-08
 
 ## Results
 
