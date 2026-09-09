@@ -228,9 +228,7 @@ private:
 
   // Constraints
   tseries<fluxpool> CO2_constrain; //!< input [CO2] record to constrain model to
-  tseries<unitval>
-      NBP_constrain; //!< input net biome production (atmosphere-land C flux,
-                     //!< positive = flux to land) to constrain model to
+
 
   /*****************************************************************
    * Model parameters

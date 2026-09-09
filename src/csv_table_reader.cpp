@@ -22,6 +22,7 @@
 #pragma clang diagnostic pop
 
 #include <boost/algorithm/string/split.hpp>
+#include <boost/tokenizer.hpp>
 #include <boost/algorithm/string/trim.hpp>
 #include <errno.h>
 
@@ -32,6 +33,8 @@
 namespace Hector {
 
 using namespace std;
+using CsvTok = boost::tokenizer<boost::escaped_list_separator<char>>;
+
 
 //------------------------------------------------------------------------------
 /*! \brief Constructor
@@ -92,6 +95,33 @@ string CSVTableReader::csv_getline() {
 }
 
 //------------------------------------------------------------------------------
+/*! \brief Helper function
+ *
+ *  Read in and format the header of a hector input csv table.
+ */
+std::vector<std::string> Hector::CSVTableReader::read_header() {
+    using namespace boost;
+
+    // Skip all the comments at the start of the hector CSV input table
+    std::string line = csv_getline();
+    H_ASSERT(!line.empty(), "Header line is empty");
+
+    // Parse variable names from the CSV
+    std::vector<std::string> headerRow;
+    CsvTok tok(line);
+    headerRow.assign(tok.begin(), tok.end());
+
+    // Tim any whitespace included in the header
+    for (auto& colName : headerRow) {
+        trim(colName);
+    }
+
+    return headerRow;
+}
+
+
+
+//------------------------------------------------------------------------------
 /*! \brief Process the CSV file looking for the given varName and route the data
  *         into the core.
  *
@@ -129,21 +159,18 @@ void CSVTableReader::process(Core *core, const string &componentName,
 
     // read the header line and attempt to find varName. The first column is
     // not considered because that should be the index column.
-    line = csv_getline();
-    H_ASSERT(!line.empty(), "line empty");
-    split(row, line, is_any_of(","));
-    //        const int headerRowSize = row.size();
-    for (size_t col = 1; col < row.size() && columnIndex == 0; ++col) {
-      // ignore white space before comparing variable names
-      trim(row[col]);
-      if (row[col] == varName) {
-        columnIndex = col;
+    row = read_header();
+      
+    for (size_t col = 1; col < row.size(); ++col) {
+          if (row[col] == varName) {
+              columnIndex = col;
+              break;
+          }
       }
-    }
-    if (columnIndex == 0) {
-      H_THROW("Could not find a column for " + varName + " in " + fileName +
-              " header=" + line);
-    }
+      if (columnIndex == 0) {
+          H_THROW("Could not find a column for " + varName +
+                  " in " + fileName);
+      }
 
     // we are all set to process the table
     // note that getline sets the fail bit when it hits eof which is not what

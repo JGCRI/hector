@@ -22,4 +22,9 @@ out <- fetchvars(core = hc, dates = 1900:2100, vars = ALL_VARS())
 print(out)
 }
 }
+\seealso{
+Other outputs: 
+\code{\link{ALL_HALOCARBON_CONCENTRATIONS}()},
+\code{\link{ALL_HALOCARBON_RF}()}
+}
 \concept{outputs}

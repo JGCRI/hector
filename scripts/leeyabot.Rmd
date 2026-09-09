@@ -140,14 +140,14 @@ oldnew_commit <- unique(oldnew_data$commit)
 
 
 # Read in the comparison data associated with the official releases minted on Zenodo
-read.csv("https://zenodo.org/records/13286176/files/leeyabot-data.csv?download=1") %>% 
+read.csv("https://zenodo.org/records/17458844/files/leeyabot-data.csv?download=1") %>% 
     filter(variable %in% vars) -> 
     zenodo_data
 
 #TODO eventually we will probably need the ability to determine what the most recent 
 # release version is since the zenodo archive might include results from multiple 
 zenodo_data %>% 
-    filter(version ==  "3.2.0") -> 
+    filter(version ==  "3.5.0") -> 
     release_data
 
 # Save oldnew version and commit tag 

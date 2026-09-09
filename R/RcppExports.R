@@ -174,14 +174,6 @@ RF_MISC <- function() {
     .Call('_hector_RF_MISC', PACKAGE = 'hector')
 }
 
-RFADJ_PREFIX <- function() {
-    .Call('_hector_RFADJ_PREFIX', PACKAGE = 'hector')
-}
-
-RF_PREFIX <- function() {
-    .Call('_hector_RF_PREFIX', PACKAGE = 'hector')
-}
-
 #' @describeIn haloforcings Radiative forcing due to CF4
 #' @export
 RF_CF4 <- function() {
@@ -1363,12 +1355,6 @@ WARMINGFACTOR <- function(biome = "") {
 #' @export
 CO2_CONSTRAIN <- function() {
     .Call('_hector_CO2_CONSTRAIN', PACKAGE = 'hector')
-}
-
-#' @describeIn carboncycle Constrain net biome production (land-atmosphere flux) (\code{"(PgC/yr)"})
-#' @export
-NBP_CONSTRAIN <- function() {
-    .Call('_hector_NBP_CONSTRAIN', PACKAGE = 'hector')
 }
 
 #' @describeIn parameters NPP fraction to vegetation (\code{"(unitless)"})

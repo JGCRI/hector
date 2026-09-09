@@ -180,12 +180,7 @@ void SimpleNbox::prepareToRun() {
         << "Atmospheric CO2 will be constrained to user-supplied values!"
         << std::endl;
   }
-  if (NBP_constrain.size()) {
-    Logger &glog = core->getGlobalLogger();
-    H_LOG(glog, Logger::WARNING) << "NBP (land-atmosphere C exchange) will be "
-                                    "constrained to user-supplied values!"
-                                 << std::endl;
-  }
+
 
   // Save a pointer to the ocean model in use
   omodel =
@@ -340,48 +335,6 @@ void SimpleNbox::stashCValues(double t, const double c[]) {
   }
   fluxpool newthawedpf(solver_tpf, U_PGC);
 
-  // If there an NBP constraint? If yes, at this point adjust npp_total,
-  // rh_total, and the newveg/newdet/newsoil/newthawedpf variables
-  double rh_nbp_constraint_adjust = 1.0;
-  const int rounded_t = round(t);
-  if (!core->inSpinup() && NBP_constrain.size() &&
-      NBP_constrain.exists(rounded_t)) {
-    const unitval nbp_constrained = NBP_constrain.get(rounded_t);
-    const unitval diff = (nbp_constrained - unitval(alf, U_PGC_YR));
-
-    // Adjust fluxes equally
-    npp_total = npp_total + diff / 2.0;
-    rh_nbp_constraint_adjust = (rh_total - diff / 2.0) / rh_total;
-    rh_total = rh_total - diff / 2.0;
-
-    // Adjust pools
-    // NOTE we only adjust for whatever year fraction we're currently stashing
-    unitval pool_diff = unitval(diff.value(U_PGC_YR), U_PGC) * yf;
-    const double total_land =
-        c[SNBOX_DET] + c[SNBOX_VEG] + c[SNBOX_SOIL] + c[SNBOX_THAWEDP];
-    newdet = newdet + pool_diff * c[SNBOX_DET] / total_land;
-    newveg = newveg + pool_diff * c[SNBOX_VEG] / total_land;
-    newsoil = newsoil + pool_diff * c[SNBOX_SOIL] / total_land;
-    newthawedpf = newthawedpf + pool_diff * c[SNBOX_THAWEDP] / total_land;
-
-    // We do NOT adjust the `newatmos` variable, because doing so can put the
-    // model into an atmos_C feedback; see
-    // https://github.com/JGCRI/hector/issues/659 Instead, follow the CO2
-    // constraint behavior and transfer any difference to the deep ocean
-    H_LOG(logger, Logger::DEBUG) << "Sending NBP_constrain residual of "
-                                 << pool_diff << " to deep ocean" << std::endl;
-    core->sendMessage(M_DUMP_TO_DEEP_OCEAN, D_OCEAN_C,
-                      message_data(-pool_diff));
-
-    // Re-calculate atmosphere-land flux (NBP)
-    alf = npp_total.value(U_PGC_YR) - rh_total.value(U_PGC_YR) -
-          luc_e_untracked.value(U_PGC_YR) + luc_u_untracked.value(U_PGC_YR);
-    H_LOG(logger, Logger::NOTICE)
-        << "** NBP constraint " << nbp_constrained
-        << " requested; final value was " << alf << " with final adjustment of "
-        << diff << std::endl;
-  }
-
   nbp.set(alf, U_PGC_YR);
   nbp_ts.set(t, nbp);
 
@@ -434,24 +387,18 @@ void SimpleNbox::stashCValues(double t, const double c[]) {
         yf * atmos_c.flux_from_fluxpool(
                  npp_biome * (1 - f_nppv.at(biome) - f_nppd.at(biome)));
 
-    // Calculate and record the final RH values adjusted for any NBP constraint
-    fluxpool rh_fda_adj = rh_fda(biome) * rh_nbp_constraint_adjust;
-    fluxpool rh_fsa_adj = rh_fsa(biome) * rh_nbp_constraint_adjust;
-    fluxpool rh_ftpa_co2_adj = rh_ftpa_co2(biome) * rh_nbp_constraint_adjust;
-    fluxpool rh_ftpa_ch4_adj = rh_ftpa_ch4(biome) * rh_nbp_constraint_adjust;
-
     final_rh[biome] =
-        rh_fda_adj + rh_fsa_adj + rh_ftpa_co2_adj + rh_ftpa_ch4_adj; // per year
-    final_rh_detritus[biome] = rh_fda_adj;
-    final_rh_soil[biome] = rh_fsa_adj;
+      rh_fda(biome) + rh_fsa(biome) + rh_ftpa_co2(biome) + rh_ftpa_ch4(biome); // per year
+    final_rh_detritus[biome] = rh_fda(biome);
+    final_rh_soil[biome] = rh_fsa(biome);
     // Note that the following fluxes are weighted by 'yf' (year fraction)
     fluxpool rh_fda_flux =
-        yf * detritus_c[biome].flux_from_fluxpool(rh_fda_adj);
-    fluxpool rh_fsa_flux = yf * soil_c[biome].flux_from_fluxpool(rh_fsa_adj);
+        yf * detritus_c[biome].flux_from_fluxpool( rh_fda(biome));
+    fluxpool rh_fsa_flux = yf * soil_c[biome].flux_from_fluxpool(rh_fsa(biome));
     fluxpool rh_fpa_co2_flux =
-        yf * thawed_permafrost_c[biome].flux_from_fluxpool(rh_ftpa_co2_adj);
+        yf * thawed_permafrost_c[biome].flux_from_fluxpool(rh_ftpa_co2(biome));
     fluxpool rh_fpa_ch4_flux =
-        yf * thawed_permafrost_c[biome].flux_from_fluxpool(rh_ftpa_ch4_adj);
+        yf * thawed_permafrost_c[biome].flux_from_fluxpool(rh_ftpa_ch4(biome));
     RH_ch4[biome] = rh_fpa_ch4_flux;
 
     // Update soil, detritus, and atmosphere pools - luc fluxes
@@ -485,7 +432,7 @@ void SimpleNbox::stashCValues(double t, const double c[]) {
       // We pass in the annual fluxes here, because want annual thaw and
       // refreeze
       auto [x, y, z] =
-          compute_pf_thaw_refreeze(biome, rh_ftpa_co2_adj, rh_ftpa_ch4_adj);
+          compute_pf_thaw_refreeze(biome, rh_ftpa_co2(biome), rh_ftpa_ch4(biome));
       // Construct fluxes...
       fluxpool pf_thaw =
           yf * permafrost_c[biome].flux_from_fluxpool(fluxpool(x, U_PGC_YR));
@@ -866,35 +813,6 @@ int SimpleNbox::calcderivs(double t, const double c[], double dcdt[]) const {
       pf_refreeze_soil =
         pf_refreeze_soil + fluxpool(biome_pf_refreeze_soil, U_PGC_YR);
     }
-  }
-
-  // If user has supplied NBP (net biome production) values,
-  // adjust NPP and RH to match
-  const int rounded_t = round(t);
-  if (!in_spinup && NBP_constrain.size() && NBP_constrain.exists(rounded_t)) {
-    // Compute how different we are from the user-specified constraint
-    const double nbp =
-        npp_current.value(U_PGC_YR) - rh_current.value(U_PGC_YR) -
-        current_luc_e.value(U_PGC_YR) + current_luc_u.value(U_PGC_YR);
-    const unitval diff = NBP_constrain.get(rounded_t) - unitval(nbp, U_PGC_YR);
-
-    // Adjust total NPP and total RH equally (but not LUC, which is an input)
-    // so that their net total will match the NBP constraint
-    fluxpool npp_current_old = npp_current;
-    npp_current = npp_current + diff / 2.0;
-    // ...also need to adjust their sub-components
-    const double npp_ratio = npp_current / npp_current_old;
-    npp_fav = npp_fav * npp_ratio;
-    npp_fad = npp_fad * npp_ratio;
-    npp_fas = npp_fas * npp_ratio;
-
-    // Do same thing for the RH sub-components
-    fluxpool rh_current_old = rh_current;
-    rh_current = rh_current - diff / 2.0;
-    const double rh_ratio = rh_current / rh_current_old;
-    rh_fda_current = rh_fda_current * rh_ratio;
-    rh_fsa_current = rh_fsa_current * rh_ratio;
-    rh_ftpa_co2_current = rh_ftpa_co2_current * rh_ratio;
   }
 
   // Compute fluxes

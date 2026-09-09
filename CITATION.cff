@@ -1,4 +1,4 @@
-cff-version: 3.5.0
+cff-version: 3.5.5
 message: "If you use this software in your work, please cite it as below."
 authors:
 - family-names: "Dorheim"
@@ -34,7 +34,7 @@ authors:
   given-names: "Dawn"
   orcid: "https://orcid.org/0000-0002-0468-4660"
 title: "Hector a simple carbon-climate model"
-version: 3.5.0
+version: 3.5.5
 doi: 10.5281/zenodo.821645
 date-released: 2025-10-24
 url: "https://github.com/jgcri/hector"

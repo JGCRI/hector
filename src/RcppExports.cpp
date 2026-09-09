@@ -300,26 +300,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// RFADJ_PREFIX
-String RFADJ_PREFIX();
-RcppExport SEXP _hector_RFADJ_PREFIX() {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(RFADJ_PREFIX());
-    return rcpp_result_gen;
-END_RCPP
-}
-// RF_PREFIX
-String RF_PREFIX();
-RcppExport SEXP _hector_RF_PREFIX() {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(RF_PREFIX());
-    return rcpp_result_gen;
-END_RCPP
-}
 // RF_CF4
 String RF_CF4();
 RcppExport SEXP _hector_RF_CF4() {
@@ -2293,16 +2273,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// NBP_CONSTRAIN
-String NBP_CONSTRAIN();
-RcppExport SEXP _hector_NBP_CONSTRAIN() {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(NBP_CONSTRAIN());
-    return rcpp_result_gen;
-END_RCPP
-}
 // F_NPPV
 String F_NPPV(String biome);
 RcppExport SEXP _hector_F_NPPV(SEXP biomeSEXP) {
@@ -2804,8 +2774,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_RHO_SO2", (DL_FUNC) &_hector_RHO_SO2, 0},
     {"_hector_RF_VOL", (DL_FUNC) &_hector_RF_VOL, 0},
     {"_hector_RF_MISC", (DL_FUNC) &_hector_RF_MISC, 0},
-    {"_hector_RFADJ_PREFIX", (DL_FUNC) &_hector_RFADJ_PREFIX, 0},
-    {"_hector_RF_PREFIX", (DL_FUNC) &_hector_RF_PREFIX, 0},
     {"_hector_RF_CF4", (DL_FUNC) &_hector_RF_CF4, 0},
     {"_hector_RF_C2F6", (DL_FUNC) &_hector_RF_C2F6, 0},
     {"_hector_RF_HFC23", (DL_FUNC) &_hector_RF_HFC23, 0},
@@ -3003,7 +2971,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_hector_Q10_RH", (DL_FUNC) &_hector_Q10_RH, 1},
     {"_hector_WARMINGFACTOR", (DL_FUNC) &_hector_WARMINGFACTOR, 1},
     {"_hector_CO2_CONSTRAIN", (DL_FUNC) &_hector_CO2_CONSTRAIN, 0},
-    {"_hector_NBP_CONSTRAIN", (DL_FUNC) &_hector_NBP_CONSTRAIN, 0},
     {"_hector_F_NPPV", (DL_FUNC) &_hector_F_NPPV, 1},
     {"_hector_F_NPPD", (DL_FUNC) &_hector_F_NPPD, 1},
     {"_hector_F_LITTERD", (DL_FUNC) &_hector_F_LITTERD, 1},

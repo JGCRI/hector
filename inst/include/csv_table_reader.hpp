@@ -56,8 +56,11 @@ private:
   //! Current line (that has just been read)
   int lineNum;
 
-  // Helper function to find next non-commented line
+  //! Helper function to find next non-commented line
   std::string csv_getline();
+    
+  //! Helper function that reads the header row and returns all column names as a vector
+  std::vector<std::string> read_header();
 };
 
 } // namespace Hector

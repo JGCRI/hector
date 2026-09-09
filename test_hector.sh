@@ -94,11 +94,4 @@ if [[ $(diff -q $INPUT/hector_ssp245.ini $INPUT/hector_ssp245_ftot.ini | wc -c) 
 $HECTOR $INPUT/hector_ssp245_ftot.ini
 rm $INPUT/hector_ssp245_ftot.ini
 
-# Net biome production
-echo "---------- Running: NBP constraint ----------"
-sed 's/;[[:space:]]*NBP_constrain=csv:tables\/ssp245_emiss-constraints_rf.csv/NBP_constrain=csv:tables\/nbp_output.csv/' $INPUT/hector_ssp245.ini > $INPUT/hector_ssp245_nbp.ini
-if [[ $(diff -q $INPUT/hector_ssp245.ini $INPUT/hector_ssp245_nbp.ini | wc -c) -eq 0 ]]; then exit_loudly "NBP_constrain"; fi
-$HECTOR $INPUT/hector_ssp245_nbp.ini
-rm $INPUT/hector_ssp245_nbp.ini
-
 echo "All done."
