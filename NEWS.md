@@ -1,3 +1,7 @@
+# hector 3.6.0
+
+* Add the indirect effects of H2 on forcing
+
 # hector 3.5.5
 
 * Minor documentation changes 
