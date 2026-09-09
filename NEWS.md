@@ -1,7 +1,10 @@
-# hector 3.5.6 
+# hector 3.5.5
 
-under development, adding H2 
-
+* Minor documentation changes 
+* Minor bug fixes related to output reporting (precision level in output stream and rh_ch4)
+* Simplify ini files
+* Remove the NBP constraint 
+* Update halocarbon parameter values
 
 # hector 3.5.0 
 

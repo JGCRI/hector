@@ -23,8 +23,8 @@ print(out)
 }
 }
 \seealso{
-Other outputs:
-\code{\link[=ALL_HALOCARBON_CONCENTRATIONS]{ALL_HALOCARBON_CONCENTRATIONS()}},
-\code{\link[=ALL_VARS]{ALL_VARS()}}
+Other outputs: 
+\code{\link{ALL_HALOCARBON_CONCENTRATIONS}()},
+\code{\link{ALL_VARS}()}
 }
 \concept{outputs}

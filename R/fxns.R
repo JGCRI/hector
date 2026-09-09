@@ -9,15 +9,15 @@
 #' getfxn("beta")
 #' getfxn("q10_rh")
 getfxn <- function(str) {
-    rows <- match(str, hector::fxntable$string)
-    rslt <- hector::fxntable$fxn[rows]
-    if (any(is.na(rows))) {
-        warning(
-            "Functions for the following are not found: ",
-            paste(str[is.na(rslt)], collapse = ", ")
-        )
-    }
-    as.character(rslt)
+  rows <- match(str, hector::fxntable$string)
+  rslt <- hector::fxntable$fxn[rows]
+  if (any(is.na(rows))) {
+    warning(
+      "Functions for the following are not found: ",
+      paste(str[is.na(rslt)], collapse = ", ")
+    )
+  }
+  as.character(rslt)
 }
 
 
@@ -28,6 +28,7 @@ getfxn <- function(str) {
 #' @return Character vector of variable names.
 #' @export
 #' @family outputs
+#' @importFrom utils getFromNamespace
 #' @examples
 #' \dontrun{
 #' ini <- system.file(package = "hector", "input/hector_ssp245.ini")
@@ -37,7 +38,7 @@ getfxn <- function(str) {
 #' print(out)
 #' }
 ALL_VARS <- function() {
-    getFromNamespace("all_vars", "hector")
+  getFromNamespace("all_vars", "hector")
 }
 
 #' Get all of the possible Hector halocarbon concentrations
@@ -47,6 +48,7 @@ ALL_VARS <- function() {
 #' @return Character vector of variable names.
 #' @export
 #' @family outputs
+#' @importFrom utils getFromNamespace
 #' @examples
 #' \dontrun{
 #' ini <- system.file(package = "hector", "input/hector_ssp245.ini")
@@ -56,7 +58,7 @@ ALL_VARS <- function() {
 #' print(out)
 #' }
 ALL_HALOCARBON_CONCENTRATIONS <- function() {
-    getFromNamespace("halo_conc", "hector")
+  getFromNamespace("halo_conc", "hector")
 }
 
 
@@ -66,6 +68,7 @@ ALL_HALOCARBON_CONCENTRATIONS <- function() {
 #' that can be accessed with \code{\link{fetchvars}} or set with \code{\link{setvar}}.
 #' @return Character vector of variable names.
 #' @export
+#' @importFrom utils getFromNamespace
 #' @family haloemiss
 #' @examples
 #' \dontrun{
@@ -76,7 +79,7 @@ ALL_HALOCARBON_CONCENTRATIONS <- function() {
 #' print(out)
 #' }
 ALL_HALOCARBON_EMISSIONS <- function() {
-    getFromNamespace("halo_emiss", "hector")
+  getFromNamespace("halo_emiss", "hector")
 }
 
 
@@ -86,6 +89,7 @@ ALL_HALOCARBON_EMISSIONS <- function() {
 #' that can be accessed with \code{\link{fetchvars}} or set with \code{\link{setvar}}.
 #' @return Character vector of variable names.
 #' @export
+#' @importFrom utils getFromNamespace
 #' @family outputs, inputs
 #' @examples
 #' \dontrun{
@@ -96,7 +100,7 @@ ALL_HALOCARBON_EMISSIONS <- function() {
 #' print(out)
 #' }
 ALL_HALOCARBON_CONSTRAINTS <- function() {
-    getFromNamespace("halo_constraints", "hector")
+  getFromNamespace("halo_constraints", "hector")
 }
 
 #' Get all of the possible Hector halocarbon radiative forcings
@@ -105,6 +109,7 @@ ALL_HALOCARBON_CONSTRAINTS <- function() {
 #' that can be accessed with \code{\link{fetchvars}}.
 #' @return Character vector of variable names.
 #' @export
+#' @importFrom utils getFromNamespace
 #' @family outputs
 #' @examples
 #' \dontrun{
@@ -115,5 +120,5 @@ ALL_HALOCARBON_CONSTRAINTS <- function() {
 #' print(out)
 #' }
 ALL_HALOCARBON_RF <- function() {
-    getFromNamespace("halo_rf", "hector")
+  getFromNamespace("halo_rf", "hector")
 }

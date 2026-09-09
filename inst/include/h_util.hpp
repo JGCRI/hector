@@ -27,8 +27,7 @@
  * \note  Manually update the git tag to match this.
  */
 
-#define MODEL_VERSION "3.5.6"
-
+#define MODEL_VERSION "3.5.5"
 
 #define OUTPUT_DIRECTORY "output/"
 

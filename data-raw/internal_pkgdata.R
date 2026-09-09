@@ -10,8 +10,10 @@ dat <- read.csv(file = file[[1]], comment.char = "#")
 
 # Extract all of the halocarbon base names.
 componet_names <- unique(dat$component)
-halo_base_names <- gsub(x = componet_names[grepl(pattern = "halocarbon", x = componet_names)],
-                        pattern = "_halocarbon", replacement = "")
+halo_base_names <- gsub(
+  x = componet_names[grepl(pattern = "halocarbon", x = componet_names)],
+  pattern = "_halocarbon", replacement = ""
+)
 
 # Format the halocarbon emissions, constraints, concentrations, and forcings
 # helper vectors.
@@ -28,5 +30,5 @@ all_vars <- all_vars[!all_vars %in% c(
 )]
 
 
-usethis::use_data(halo_emiss, all_vars, halo_constraints, halo_conc, halo_rf, internal = TRUE, overwrite = TRUE)
-
+usethis::use_data(halo_emiss, all_vars, halo_constraints, halo_conc, halo_rf,
+                  internal = TRUE, overwrite = TRUE)

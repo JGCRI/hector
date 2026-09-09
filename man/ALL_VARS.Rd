@@ -23,8 +23,8 @@ print(out)
 }
 }
 \seealso{
-Other outputs:
-\code{\link[=ALL_HALOCARBON_CONCENTRATIONS]{ALL_HALOCARBON_CONCENTRATIONS()}},
-\code{\link[=ALL_HALOCARBON_RF]{ALL_HALOCARBON_RF()}}
+Other outputs: 
+\code{\link{ALL_HALOCARBON_CONCENTRATIONS}()},
+\code{\link{ALL_HALOCARBON_RF}()}
 }
 \concept{outputs}
