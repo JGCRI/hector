@@ -31,4 +31,5 @@ all_vars <- all_vars[!all_vars %in% c(
 
 
 usethis::use_data(halo_emiss, all_vars, halo_constraints, halo_conc, halo_rf,
-                  internal = TRUE, overwrite = TRUE)
+  internal = TRUE, overwrite = TRUE
+)

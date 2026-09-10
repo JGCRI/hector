@@ -147,7 +147,7 @@ read.csv("https://zenodo.org/records/17458844/files/leeyabot-data.csv?download=1
 #TODO eventually we will probably need the ability to determine what the most recent 
 # release version is since the zenodo archive might include results from multiple 
 zenodo_data %>% 
-    filter(version ==  "3.5.0") -> 
+    filter(version ==  "3.5.5") -> 
     release_data
 
 # Save oldnew version and commit tag 
