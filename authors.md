@@ -41,7 +41,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/JGCRI/hector/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/JGCRI/hector/blob/v3.5.5/DESCRIPTION)
 
 Dorheim K, Bond-Lamberty B (2026). *hector: The Hector Simple Climate
 Model*. R package version 3.5.5, <https://github.com/JGCRI/hector>.
