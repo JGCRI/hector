@@ -54,6 +54,8 @@ void OzoneComponent::init(Core *coreptr) {
   NMVOC_emissions.allowInterp(true);
   NOX_emissions.allowInterp(true); // Inputs like CO and NMVOC and NOX,
   O3.allowInterp(true);
+  H2_emissions.allowInterp(true);
+
 
   // Inform core what data we can provide
   core->registerCapability(D_ATMOSPHERIC_O3, getComponentName());
@@ -62,6 +64,11 @@ void OzoneComponent::init(Core *coreptr) {
   core->registerInput(D_EMISSIONS_CO, getComponentName());
   core->registerInput(D_EMISSIONS_NMVOC, getComponentName());
   core->registerInput(D_EMISSIONS_NOX, getComponentName());
+  core->registerInput(D_EMISSIONS_H2, getComponentName());
+  // Parameters read in from the ini
+  core->registerInput(D_COEFF_O3_H2, getComponentName());
+  core->registerInput(D_PREINDUSTRIAL_O3, getComponentName());
+
 }
 
 //------------------------------------------------------------------------------
@@ -94,6 +101,9 @@ void OzoneComponent::setData(const string &varName, const message_data &data) {
     if (varName == D_PREINDUSTRIAL_O3) {
       H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
       PO3 = data.getUnitval(U_DU_O3);
+    } else if (varName == D_COEFF_O3_H2) {
+      H_ASSERT(data.date == Core::undefinedIndex(), "date not allowed");
+      CO3_H2 = data.getUnitval(U_DU_O3_TG);
     } else if (varName == D_EMISSIONS_NOX) {
       H_ASSERT(data.date != Core::undefinedIndex(), "date required");
       NOX_emissions.set(data.date, data.getUnitval(U_TG_N));
@@ -103,6 +113,9 @@ void OzoneComponent::setData(const string &varName, const message_data &data) {
     } else if (varName == D_EMISSIONS_NMVOC) {
       H_ASSERT(data.date != Core::undefinedIndex(), "date required");
       NMVOC_emissions.set(data.date, data.getUnitval(U_TG_NMVOC));
+    } else if (varName == D_EMISSIONS_H2) {
+      H_ASSERT(data.date != Core::undefinedIndex(), "date required");
+      H2_emissions.set(data.date, data.getUnitval(U_TG_H2));
     } else {
       H_THROW("Unknown variable name while parsing " + getComponentName() +
               ": " + varName);
@@ -131,12 +144,13 @@ void OzoneComponent::run(const double runToDate) {
   unitval current_nox = NOX_emissions.get(runToDate);
   unitval current_co = CO_emissions.get(runToDate);
   unitval current_nmvoc = NMVOC_emissions.get(runToDate);
+  unitval current_h2 = H2_emissions.get(runToDate);
   unitval current_ch4 = core->sendMessage(M_GETDATA, D_CH4_CONC, runToDate);
 
   O3.set(runToDate,
          unitval((5 * log(current_ch4)) + (0.125 * current_nox) +
-                     (0.0011 * current_co) + (0.0033 * current_nmvoc),
-                 U_DU_O3));
+                     (0.0011 * current_co) + (0.0033 * current_nmvoc) +
+                 (CO3_H2.value(U_DU_O3_TG) * current_h2), U_DU_O3));
 
   oldDate = runToDate;
 

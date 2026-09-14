@@ -7,6 +7,7 @@
 \alias{NATURAL_CH4}
 \alias{LIFETIME_SOIL}
 \alias{LIFETIME_STRAT}
+\alias{CH4_LIFETIME_OH}
 \alias{methane}
 \title{Identifiers for quantities in the methane component}
 \usage{
@@ -21,11 +22,18 @@ NATURAL_CH4()
 LIFETIME_SOIL()
 
 LIFETIME_STRAT()
+
+CH4_LIFETIME_OH()
 }
 \description{
 These identifiers correspond to variables that can be read and/or set in the
 methane component.
 }
+\section{Functions}{
+\itemize{
+\item \code{CH4_LIFETIME_OH()}: CH4 lifetime with respect to the OH sink (\code{"Yr"})
+
+}}
 \section{Output variables}{
 
 These variables can be read from the methane component.

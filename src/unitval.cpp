@@ -62,6 +62,9 @@ string unitval::unitsName(const unit_types u) {
   case U_DU_O3:
     return "DU O3";
     break;
+  case U_DU_O3_TG:
+    return "DU O3/Tg";
+    break;
   case U_TG_N:
     return "Tg N";
     break;
@@ -77,6 +80,9 @@ string unitval::unitsName(const unit_types u) {
   case U_TG_NMVOC:
     return "Tg NMVOC";
     break;
+  case U_TG_H2:
+      return "Tg H2";
+      break;
   case U_TG_PPBV:
     return "Tg/ppbv";
     break;
