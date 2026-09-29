@@ -20,7 +20,6 @@ CESM sub-model. Currently, the available constraints include:
 * GHG concentrations
 * Radiative forcing
 * Temperature
-* Net Biome Production (NBP)
 
 Constraints can be applied to Hector within the ini file (command-line & R) or
 using the Hector package `setvar()` function.
